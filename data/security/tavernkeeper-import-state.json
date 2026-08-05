@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-08-05T00:33:56.841Z",
+  "updated_at": "2026-08-05T01:17:48.817Z",
   "quarantines": [
     {
       "report_id": "4efc45df08f6177f4a0a910e33d8cf1cfeb2ba000fd91ebf161bb6983e378244",
@@ -12,6 +12,18 @@
       "diagnostic": "unsupported_escalation",
       "first_failed_at": "2026-08-05T00:33:56.841Z",
       "last_failed_at": "2026-08-05T00:33:56.841Z",
+      "attempts": 1
+    },
+    {
+      "report_id": "6fb95c8c0f96125ad3cf0d906f15ae13fa8f436190ae80851d4fcfdbdfababe6",
+      "report_digest": "6fb95c8c0f96125ad3cf0d906f15ae13fa8f436190ae80851d4fcfdbdfababe6",
+      "repository_id": 956654271,
+      "repository": "bmen25124/SillyTavern-Character-Creator",
+      "target_sha": "8ddf5ba08188fa8044469518d540c7dded4db701",
+      "synthesis_policy_version": "3",
+      "diagnostic": "unsupported_escalation",
+      "first_failed_at": "2026-08-05T01:17:48.817Z",
+      "last_failed_at": "2026-08-05T01:17:48.817Z",
       "attempts": 1
     }
   ]

@@ -35,7 +35,11 @@
     "90535616b0dfb341b554b4f667a02ab1a6d46b63b1a662f930feea8d33b71fe8",
     "5c59bb6048da852746272c3bb5e707e30b206a026bbc385817b13c2eb18b5f01",
     "82748f14a8aa14354f4fef2f164b75399933725d82618180afd6d68b7c3725a4",
-    "69f6abbe9f4aa02b1507ea59092c96f03309032dd2ca7a37281f5625af2aa9bc"
+    "69f6abbe9f4aa02b1507ea59092c96f03309032dd2ca7a37281f5625af2aa9bc",
+    "e610ec7bdb165967a462d502aff2e11ebe48cb5c5ba4570a78af9932d218fc05",
+    "dc1c4cd879408f6a211c65373c449e68016047eaec24a289433bc962d0f0adec",
+    "cb023695b79104b85da770937db22f8fa4ed1dce3a06a277f5c37454abb034ee",
+    "e1134f191b1561e5ed9015941ee8ff6bc7b7e333d33891ad3ea720524751d3ae"
   ],
   "reports": [
     {
@@ -3404,19 +3408,19 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/949189091/0510988bcce7ba4fdd1aed89c5b95fec3297e5ce/3/e610ec7bdb165967a462d502aff2e11ebe48cb5c5ba4570a78af9932d218fc05/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/949189091/history/",
-      "assessed_at": "2026-08-04T21:04:23.558Z",
-      "synthesis_policy_version": "2",
+      "assessed_at": "2026-08-05T01:17:52.284Z",
+      "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No validated malicious evidence was identified in this review.",
+        "malicious_evidence": "No credible malicious behavior or validated security findings were identified in the reviewed report. This review cannot prove the absence of unknown behavior.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "TavernKeeper found no validated security findings for this exact commit. This assessment cannot prove the absence of unknown behavior."
+        "summary": "The validated assessment found no material vulnerabilities, minor weaknesses, or evidence of malicious behavior in this project at the reviewed commit. Ordinary caution is still appropriate when installing community extensions, especially when granting them access to sensitive data or external services."
       }
     },
     {
@@ -6099,19 +6103,19 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/953012653/b40082351f9a42dc8e6ed82b7c7a05e41fa3e397/3/cb023695b79104b85da770937db22f8fa4ed1dce3a06a277f5c37454abb034ee/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/953012653/history/",
-      "assessed_at": "2026-08-04T21:51:40.019Z",
-      "synthesis_policy_version": "2",
+      "assessed_at": "2026-08-05T01:17:57.777Z",
+      "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
       "assessment": {
         "cited_finding_ids": [],
-        "headline": "No validated security concerns found",
+        "headline": "No validated security concerns were identified",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No validated malicious behavior or security findings were identified in this review.",
+        "malicious_evidence": "No credible malicious behavior was identified in the validated report. This review cannot prove the absence of unknown behavior.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The reviewed commit has no validated concerns requiring caution. This assessment cannot prove the absence of unknown behavior."
+        "summary": "The validated assessment found no security findings for this project at the reviewed commit. Ordinary extension behavior was not treated as suspicious, and no material vulnerabilities or malicious activity were reported."
       }
     },
     {
@@ -9996,19 +10000,19 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/954256242/4c7b006216f504ddc0c23d179391f40fbcdbd00f/3/e1134f191b1561e5ed9015941ee8ff6bc7b7e333d33891ad3ea720524751d3ae/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/954256242/history/",
-      "assessed_at": "2026-08-04T23:10:50.310Z",
-      "synthesis_policy_version": "2",
+      "assessed_at": "2026-08-05T01:18:00.166Z",
+      "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No validated malicious evidence was identified in this review.",
+        "malicious_evidence": "No malicious behavior was validated in this review. This advisory assessment cannot prove the absence of unknown behavior.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The validated review found no material vulnerabilities, malicious behavior, or other security concerns. This does not prove that unknown behavior is absent."
+        "summary": "TavernKeeper found no validated security findings for the reviewed commit. No evidence indicates API-key theft, harmful payloads, trojan delivery, or bot infection."
       }
     },
     {
@@ -10810,19 +10814,19 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/949765337/42c283b6630bfa5380918e00a9762e19881ee59b/3/dc1c4cd879408f6a211c65373c449e68016047eaec24a289433bc962d0f0adec/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/949765337/history/",
-      "assessed_at": "2026-08-04T23:23:40.988Z",
-      "synthesis_policy_version": "2",
+      "assessed_at": "2026-08-05T01:17:55.014Z",
+      "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
       "assessment": {
         "cited_finding_ids": [],
-        "headline": "No validated security concerns found",
+        "headline": "No validated security concerns identified",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No validated evidence of malicious behavior was identified in this review.",
+        "malicious_evidence": "No validated evidence of malicious behavior was identified in this review. This advisory assessment cannot prove the absence of unknown behavior.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "TavernKeeper found no validated security concerns for this project at the reviewed commit. This assessment cannot prove the absence of unknown behavior."
+        "summary": "The reviewed commit has no validated findings indicating malicious behavior, material vulnerabilities, or minor security weaknesses. Ordinary project behavior was not treated as suspicious without supporting evidence."
       }
     },
     {
