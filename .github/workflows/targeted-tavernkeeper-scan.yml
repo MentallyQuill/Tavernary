@@ -109,7 +109,7 @@ jobs:
           [[ "$target_sha" =~ ^[0-9a-f]{40}$ ]]
           echo "repository=$repository" >> "$GITHUB_OUTPUT"
           echo "target_sha=$target_sha" >> "$GITHUB_OUTPUT"
-      - name: Wait for matching public V2 TavernKeeper target
+      - name: Wait for matching public V2 or V3 TavernKeeper target
         env:
           REPOSITORY_ID: ${{ steps.resolve.outputs.repository_id }}
           REPOSITORY: ${{ steps.target.outputs.repository }}
@@ -124,13 +124,13 @@ jobs:
                 --argjson repository_id "$REPOSITORY_ID" \
                 --arg repository "$REPOSITORY" \
                 --arg target_sha "$TARGET_SHA" \
-                '.schema_version == 2 and any(.repositories[]; .repository_id == $repository_id and .repository == $repository and .target_sha == $target_sha)' \
+                '(.schema_version == 2 or .schema_version == 3) and any(.repositories[]; .repository_id == $repository_id and .repository == $repository and .target_sha == $target_sha)' \
                 "$RUNNER_TEMP/tavernkeeper-targets.json" >/dev/null; then
               exit 0
             fi
             sleep 15
           done
-          echo "The refreshed repository never appeared in Tavernary's public V2 target manifest." >&2
+          echo "The refreshed repository never appeared in Tavernary's public V2 or V3 target manifest." >&2
           exit 1
       - name: Create destination-only TavernKeeper token
         id: tavernkeeper-token
