@@ -1,0 +1,28 @@
+{
+  "schema_version": 6,
+  "id": "mokimoko-github-io-pages-presets-white-lotus-html",
+  "name": "white-lotus.html",
+  "kind": "preset",
+  "summary": "No README file found.",
+  "metadata_status": "provisional",
+  "source_id": "url-mokimoko-github-io-pages-presets-white-lotus-html",
+  "frontends": ["sillytavern", "tauritavern"],
+  "primary_function": "preset",
+  "tags": [],
+  "model_families": ["deepseek", "glm", "kimi", "mimo", "model-agnostic"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-08-05T18:46:19.612Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "External URL source; requires manual curation."
+    },
+    "tags": {
+      "mode": "manual",
+      "note": "External URL source; requires manual curation."
+    }
+  }
+}
