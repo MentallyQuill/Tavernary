@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "mattjaybe-sillytavern-echotext",
+  "name": "SillyTavern-EchoText",
+  "kind": "extension",
+  "summary": "EchoText lets you directly message SillyTavern characters in tethered chats that carry over roleplay context or untethered conversations that leave the story untouched.",
+  "metadata_status": "curated",
+  "source_id": "github-1169709495",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["manage-characters-and-personas", "preserve-story-continuity"],
+  "cataloged_at": "2026-08-05T01:06:35.655Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
