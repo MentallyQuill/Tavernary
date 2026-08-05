@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "m4marvin-charon",
+  "source_id": "github-1282991131",
+  "source_identity": "github:m4marvin/charon",
+  "evidence_fingerprint": "090101e4f3372bf28ffa2e2fab46a152764acb0a9f61b723bf72263206f6c3b4",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-05T05:29:11.100Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-05T05:29:11.100Z"
+  },
+  "maintenance_issue_number": null
+}
