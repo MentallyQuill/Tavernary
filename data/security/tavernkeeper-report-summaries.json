@@ -1,6 +1,6 @@
 {
   "schema_version": 5,
-  "generated_at": "2026-08-05T00:48:01.553Z",
+  "generated_at": "2026-08-05T01:04:58.717Z",
   "preferred_report_ids": [
     "a09120867995ba186db654617ffd6ee040c89b272e35e1c6147ad404f9f9c5a8",
     "d4bcd22a3017c1f4962071991ae7fb31d0037d853d6fe0c6e1667c3acf32f70c",
@@ -30,7 +30,12 @@
     "2d3c08e26c37c09563f6b2ad2679d98c85b5acde25cf075bebf2b522c5772592",
     "562510b1dac8819bfd1e8fe7cc48f8b41ab894019abdf437b76368d5db09daaa",
     "0585f0ec5ce8c6ba6688464bb44a343ccae1165029e1ecc7c8e79d38e47526a8",
-    "e1a5b1a8dee5edb4649f0603221621e842cb74e3b489f2f0b7105f2c318a1a54"
+    "e1a5b1a8dee5edb4649f0603221621e842cb74e3b489f2f0b7105f2c318a1a54",
+    "f07af1911442fc8da5045c2e680f4298ed9c4770f3729df8762215f3d13df223",
+    "90535616b0dfb341b554b4f667a02ab1a6d46b63b1a662f930feea8d33b71fe8",
+    "5c59bb6048da852746272c3bb5e707e30b206a026bbc385817b13c2eb18b5f01",
+    "82748f14a8aa14354f4fef2f164b75399933725d82618180afd6d68b7c3725a4",
+    "69f6abbe9f4aa02b1507ea59092c96f03309032dd2ca7a37281f5625af2aa9bc"
   ],
   "reports": [
     {
@@ -585,19 +590,19 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/933528919/77b885b03ba2f55e7a2867dff49a5ded6d129d9b/3/f07af1911442fc8da5045c2e680f4298ed9c4770f3729df8762215f3d13df223/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/933528919/history/",
-      "assessed_at": "2026-08-04T20:58:02.618Z",
-      "synthesis_policy_version": "2",
+      "assessed_at": "2026-08-05T01:11:22.057Z",
+      "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
       "assessment": {
         "cited_finding_ids": [],
-        "headline": "Low risk: no material security concerns identified",
+        "headline": "Low risk: no concerning behavior was validated",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No malicious evidence was identified. The only flagged behavior is expected: the extension runs JavaScript that the user entered in its settings.",
+        "malicious_evidence": "No malicious behavior was validated. The only flagged code runs JavaScript that the user has entered in the extension's settings, which is expected functionality rather than hidden or harmful activity. This review cannot prove that unknown behavior is absent.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The validated review found no API-key theft, hidden payload, or other harmful behavior. The JavaScript execution finding reflects the extension’s intended user-configured functionality, with low impact and unlikely exploitability."
+        "summary": "The project appears low risk based on the validated review. Its use of user-provided JavaScript is intentional and visible, and no API-key theft, harmful payload, or other malicious behavior was identified."
       }
     },
     {
@@ -1476,8 +1481,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/945720767/04fdfe4410d59534ab379e9741e1277a95f6d384/3/82748f14a8aa14354f4fef2f164b75399933725d82618180afd6d68b7c3725a4/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/945720767/history/",
-      "assessed_at": "2026-08-04T20:58:13.914Z",
-      "synthesis_policy_version": "2",
+      "assessed_at": "2026-08-05T01:11:36.476Z",
+      "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
       "assessment": {
         "cited_finding_ids": [
@@ -1512,14 +1517,14 @@
           "ee46117eea42a99f0b4cd5a20fd99cdb398352e5dbf991d60d083734e2c3937d",
           "f0e8931d6c7e65e0b51435de3123eb9739db7551debc42771f54f6099efafd2d"
         ],
-        "headline": "Material dependency maintenance risk; no evidence of malicious behavior",
+        "headline": "Material dependency maintenance concerns, but no signs of malicious behavior",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No credible malicious behavior was identified. The validated findings are dependency advisories, predominantly affecting development or build tooling rather than user-run extension behavior.",
+        "malicious_evidence": "No credible malicious behavior was identified. The review found no evidence of API-key phishing or theft, trojan delivery, harmful payloads, or bot infection. The findings are dependency advisories, mostly affecting development or build tooling rather than intentional behavior in the extension.",
         "material_concerns": 6,
         "minor_cautions": 24,
         "risk_level": "material",
-        "summary": "The project is assessed as material risk because six known dependency vulnerabilities require attention, although exploitation was judged unlikely and the affected packages are probably build-time tools. The remaining 24 findings are low-impact dependency weaknesses. Users should not interpret this report as evidence of API-key theft, phishing, trojans, or other intentional harm; developers should identify the affected packages and update them to patched versions, prioritizing the six materially"
+        "summary": "The project appears to be made in good faith, and the validated review found no directly exploitable issue affecting ordinary extension users. However, six dependency findings were assessed as material because serious vulnerabilities in build-related packages should be remediated, even though exploitation was judged unlikely. The remaining 24 findings are lower-risk dependency weaknesses, generally limited to development or build tools. Update affected dependencies and verify whether any serious"
       }
     },
     {
@@ -1588,8 +1593,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/948787177/8bd72bdbfecf707ebf2d15f0dd11d9fd886644ed/3/69f6abbe9f4aa02b1507ea59092c96f03309032dd2ca7a37281f5625af2aa9bc/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/948787177/history/",
-      "assessed_at": "2026-08-04T21:04:21.461Z",
-      "synthesis_policy_version": "2",
+      "assessed_at": "2026-08-05T01:11:44.722Z",
+      "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
       "assessment": {
         "cited_finding_ids": [
@@ -1626,14 +1631,14 @@
           "ee46117eea42a99f0b4cd5a20fd99cdb398352e5dbf991d60d083734e2c3937d",
           "f0e8931d6c7e65e0b51435de3123eb9739db7551debc42771f54f6099efafd2d"
         ],
-        "headline": "Material dependency risk; no evidence of malicious behavior",
+        "headline": "Material dependency risk, but no sign of malicious behavior",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No credible malicious behavior was identified. The review found dependency advisories, not API-key phishing, theft, trojans, harmful payloads, or bot infection.",
+        "malicious_evidence": "No credible malicious behavior was identified. The validated findings concern known vulnerabilities in declared dependencies, many of which appear to be development or build-time tools rather than code shipped to users. This review cannot prove the absence of unknown behavior.",
         "material_concerns": 3,
         "minor_cautions": 29,
         "risk_level": "material",
-        "summary": "The project has three validated dependency findings assessed as material concerns: they may affect installed code and should be investigated and patched promptly [14a66334365238113c6ae7edc276bf763ada97c62141b3ea60a7125543bbff4c, 33cfa16bd80b3eb834001b8b09bf4e2915341dc121c11641eba9a3f3c169b489, 4710183c6d2e1e2b8b866180e7f50e50edf9f10e892a3dacce12fffb651ef1a4]. Twenty-nine additional dependency advisories are assessed as minor, low-impact cautions because they are unlikely to affect end users and—"
+        "summary": "The project is assessed as material risk because three dependency advisories require investigation, including whether any affected package is part of the installed extension's runtime dependency path. The remaining 29 findings are minor, low-impact dependency weaknesses with unlikely exploitation and are generally expected to affect development tooling rather than end users. Developers should identify and update the affected packages, prioritizing any runtime dependency; users should not treatこれ"
       }
     },
     {
@@ -5284,19 +5289,19 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/936859577/b43ddb9f15c508df4749ebf48a8a5f4c3c924419/3/90535616b0dfb341b554b4f667a02ab1a6d46b63b1a662f930feea8d33b71fe8/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/936859577/history/",
-      "assessed_at": "2026-08-04T20:58:05.050Z",
-      "synthesis_policy_version": "2",
+      "assessed_at": "2026-08-05T01:11:26.170Z",
+      "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
       "assessment": {
         "cited_finding_ids": [],
-        "headline": "No validated security concerns found",
+        "headline": "No validated security concerns identified",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No validated evidence of malicious behavior was reported. This review cannot prove the absence of unknown behavior.",
+        "malicious_evidence": "No credible malicious behavior or other validated security findings were identified in this review. This cannot prove the absence of unknown behavior.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The validated review found no candidates, observations, or assessed security concerns for this commit. No material vulnerabilities or API-key theft, trojan, harmful payload, or bot-infection indicators were identified."
+        "summary": "The reviewed commit contains no validated evidence of API-key theft, harmful payloads, bot infection, or material security weaknesses. The project appears low risk based on the available deterministic and contextual review."
       }
     },
     {
@@ -7016,19 +7021,19 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/940123423/bceadfdb025247b616ca76f7ede9b220cad26777/3/5c59bb6048da852746272c3bb5e707e30b206a026bbc385817b13c2eb18b5f01/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/940123423/history/",
-      "assessed_at": "2026-08-04T22:09:47.728Z",
-      "synthesis_policy_version": "2",
+      "assessed_at": "2026-08-05T01:11:28.736Z",
+      "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
       "assessment": {
         "cited_finding_ids": [],
-        "headline": "No validated security concerns found",
+        "headline": "No validated security concerns were identified",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No validated evidence of malicious behavior was identified in this review.",
+        "malicious_evidence": "No validated evidence of malicious behavior, harmful payloads, API-key theft, phishing, or bot infection was identified. This review cannot prove the absence of unknown behavior.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The validated review found no material vulnerabilities, minor weaknesses, or credible malicious behavior at the assessed commit. This assessment cannot prove the absence of unknown behavior."
+        "summary": "The validated review found no candidates or observations requiring action. PersonaTags appears low risk based on the available evidence, while normal caution is still appropriate when installing any third-party extension."
       }
     },
     {
