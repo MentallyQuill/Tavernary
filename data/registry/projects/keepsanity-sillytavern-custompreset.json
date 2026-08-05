@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "keepsanity-sillytavern-custompreset",
+  "name": "SillyTavern-CustomPreset",
+  "kind": "extension",
+  "summary": "SillyTavern-CustomPreset is a SillyTavern extension for managing and customizing prompt presets, helping users organize reusable generation configurations.",
+  "metadata_status": "curated",
+  "source_id": "github-1143287385",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["manage-prompts-and-presets"],
+  "cataloged_at": "2026-08-05T15:25:13.536Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
