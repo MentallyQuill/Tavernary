@@ -21,6 +21,11 @@
       "description": "Works with the Aventuras roleplay frontend."
     },
     {
+      "id": "charon",
+      "label": "charon",
+      "description": "Works with the charon roleplay frontend."
+    },
+    {
       "id": "focus",
       "label": "Focus",
       "description": "Works with the Focus roleplay frontend."
