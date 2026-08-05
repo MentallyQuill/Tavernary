@@ -252,6 +252,7 @@ function repairFor(requirements, extra = {}) {
   return {
     ...extra,
     allowed_candidate_ids: requirements.allowed_candidate_ids,
+    required_candidate_ids: requirements.required_candidate_ids,
     required_counts: requirements.required_counts,
     evidence_floor: requirements.evidence_floor,
   };

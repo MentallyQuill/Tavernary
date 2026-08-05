@@ -384,16 +384,22 @@ describe("Tavernary final assessment contract", () => {
   });
 
   test("rejects escalation beyond the floor without a cited interaction chain", () => {
+    const report = reportWith([assessment({ disposition: "minor_weakness" })]);
     expect(
       validationFailure(() =>
         validateTavernaryAssessment(
-          lowOutput({ risk_level: "material" }),
-          reportWith([]),
+          lowOutput({
+            risk_level: "material",
+            minor_cautions: 1,
+            cited_finding_ids: [candidateId],
+          }),
+          report,
         ),
       ),
     ).toMatchObject({
       diagnostic: "unsupported_escalation",
       repair: {
+        required_candidate_ids: [candidateId],
         evidence_floor: "low",
         rejected_risk_level: "material",
         required_risk_level: "low",
