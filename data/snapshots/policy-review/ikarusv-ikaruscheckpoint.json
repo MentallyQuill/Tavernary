@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "ikarusv-ikaruscheckpoint",
+  "source_id": "github-1226984172",
+  "source_identity": "github:ikarusv/ikaruscheckpoint",
+  "evidence_fingerprint": "09bc25bd2df47a981e86f81317678f4528ea59db4b36cb9ae4562124cb3ceb68",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-05T11:11:17.439Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-05T11:11:17.439Z"
+  },
+  "maintenance_issue_number": null
+}
