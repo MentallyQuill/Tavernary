@@ -5249,8 +5249,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1132564534/4cc4baa42b16e2cfcfb013416f72993c67a931c6/3/18eedbcee2392e937c9b8c7f0dd309932a5706ddceb7d9f675dd3dd0b99289bf/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1132564534/history/",
-      "assessed_at": "2026-08-05T02:49:43.520Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T07:44:09.271Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
@@ -5266,14 +5266,14 @@
           "ea5600cc0fe45413ee1b1684b9a900fab3fef45f77c9bd2b24d61033781df27a",
           "f0e8931d6c7e65e0b51435de3123eb9739db7551debc42771f54f6099efafd2d"
         ],
-        "headline": "Low risk: no evidence of malicious behavior",
+        "headline": "Low risk: no malicious behavior found",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No credible malicious behavior was identified. Apparent secret detections were ordinary image-generation settings and menu labels. The remaining concerns are limited to low-impact workflow configuration and known issues in development-only tools; they do not indicate API-key theft, phishing, trojan-",
+        "malicious_evidence": "No credible evidence of API-key phishing, credential theft, trojan delivery, harmful payloads, or bot infection was found. Secret-scanner alerts were reviewed as ordinary image-generation settings and interface text.",
         "material_concerns": 0,
         "minor_cautions": 10,
         "risk_level": "low",
-        "summary": "This project appears suitable for normal use based on the validated review. Ten low-impact cautions were identified, including updating development dependencies and tightening CI workflow settings. These issues affect the development or automation environment rather than the installed extension, and all were assessed as unlikely to be exploitable."
+        "summary": "The extension appears safe to use based on this review. Ten low-impact cautions were identified: known issues in development-only tools and some workflow configuration that could be cleaned up. These do not affect the installed extension in normal use; updating development dependencies and tightening workflow settings would improve hygiene."
       }
     },
     {
@@ -5674,21 +5674,21 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1132967377/f5c625419e7dfc46317660d165b8ceb42786938d/3/167dcd0ea1b4f5e7b04b912c844e4b974819c8b7c33735c687a59312b9ba4a30/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1132967377/history/",
-      "assessed_at": "2026-08-05T02:50:01.807Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T07:44:16.261Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
-        "headline": "No validated security concerns were identified",
+        "headline": "No validated security concerns found",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No credible malicious behavior was identified in the validated review. This review cannot prove the absence of unknown behavior.",
+        "malicious_evidence": "No validated evidence of malicious behavior, API-key theft, phishing, harmful payloads, or bot infection was identified. This review cannot prove the absence of unknown behavior.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The reviewed project has no validated findings indicating API-key theft, harmful payloads, trojan delivery, or other material security concerns. Ordinary unknowns remain possible, but no evidence supports elevating the project above low risk."
+        "summary": "The reviewed project is assessed as low risk based on the validated report. No security weaknesses or suspicious behavior were identified in the available evidence."
       }
     },
     {
@@ -5840,21 +5840,24 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1133521830/26f6957247b6f76e754b335ab0cd0e7def6becf6/3/350143c2751d464d8cf311f92166bab2e45dda23cd989686ab0e71f4a7c0e42f/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1133521830/history/",
-      "assessed_at": "2026-08-05T02:50:05.816Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T07:44:19.335Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
       "assessment": {
-        "cited_finding_ids": [],
-        "headline": "Low risk: no security concerns identified",
+        "cited_finding_ids": [
+          "0cf4de9a1feea477d0a30589df76c1e48c0d374cd0b0fff84dcd17109910b6e2",
+          "7be07f94242c38874e64ef25341a457cd845f827b843321f19fd1a2188335663"
+        ],
+        "headline": "No material security concerns identified",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No malicious behavior was identified. The flagged dynamic code loading is confined to tests and loads the project's own code, rather than external or user-provided content.",
+        "malicious_evidence": "No credible malicious behavior was identified. The flagged dynamic loading occurs in tests and uses the project's own code, with no indication of external or user-controlled input. This review cannot prove the absence of unknown behavior.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "This project appears to be a normal SillyTavern extension with no validated security issues. The scanner matches are in the test suite and reflect a standard testing technique, not API-key theft, harmful payloads, or other suspicious behavior. As with any software review, this assessment cannot prove that unknown behavior is absent."
+        "summary": "The validated findings are expected test-suite behavior rather than a security threat. No API-key theft, harmful payload, trojan delivery, or other malicious activity was identified, and the project is assessed as low risk."
       }
     },
     {
@@ -7863,21 +7866,21 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1132429516/e222639d3452ad0452af61efea4846362e548476/3/5aebb21a5328b49eac38cbbf79c6862ba0d1cc16d47cfdd0eefef989ed154fb0/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1132429516/history/",
-      "assessed_at": "2026-08-05T02:49:33.289Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T07:44:01.190Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
-        "headline": "No validated security concerns found",
+        "headline": "No validated security concerns identified",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No credible malicious behavior was identified in the validated review. This review cannot prove the absence of unknown behavior.",
+        "malicious_evidence": "No validated evidence of malicious behavior, credential theft, harmful payloads, or bot infection was identified. This review cannot prove the absence of unknown behavior.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The reviewed commit showed no validated evidence of API-key theft, harmful payloads, trojan delivery, or other material security issues. Ordinary project behavior was not treated as malicious."
+        "summary": "The validated review found no security findings for this project. It is assessed as low risk based on the available evidence."
       }
     },
     {
@@ -12352,8 +12355,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1132779410/d7d17addf01db615a65bc0834cf5a223fd792583/3/79f999e1316d516459b43385ecc8556de1ddc5cd2e806ca392174ab67e6cfbba/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1132779410/history/",
-      "assessed_at": "2026-08-05T02:49:58.036Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T07:44:13.971Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
@@ -12370,14 +12373,14 @@
           "de701d1cfc51b7d230f2873b53cfa8b4544a71f84f7228530dd715226d7792ec",
           "ecd674f3d6d254bac95bbe84054daf7e7c2670f61a0683d360f053bc2b276fbf"
         ],
-        "headline": "Low risk: reviewed alerts match normal proxy operation",
+        "headline": "Low risk: validated findings are consistent with normal proxy operation",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No credible malicious behavior was validated. The reviewed credential handling sends a user-provided backend key to the intended service through the local proxy, while the flagged shell commands are fixed update checks or updates rather than user-controlled command execution. Documentation containsن",
+        "malicious_evidence": "No credible malicious behavior was validated. The reviewed credential handling sends keys to the intended image-generation service, the documentation contains only placeholders, and the fixed update commands do not use user-provided text.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The project appears to be a normal image-generation proxy at this commit. Scanner alerts were explained by expected API-key forwarding, placeholder keys in documentation, and fixed git update commands. No secret theft, unexpected data transmission, harmful payload, or exploitable weakness was confirmed. As with any code review, this cannot rule out unknown behavior."
+        "summary": "The project is assessed as low risk at the reviewed commit. Findings involving API keys, outbound requests, and shell commands were determined to be expected behavior for this proxy rather than theft, injection, or harmful payload delivery. As with any code review, this does not prove that unknown behavior is absent."
       }
     },
     {
