@@ -3,14 +3,14 @@
   "project_id": "mentallyquill-tavernary",
   "source_id": "github-1309605115",
   "source_identity": "github:mentallyquill/tavernary",
-  "evidence_fingerprint": "42e5b5b346fc274b8d7e56d78c5b16f202236af40e49523e5a920d11aa6a993f",
+  "evidence_fingerprint": "e3dbc3941900cd3cb179edbf79092ff0647601f58de3cdf70ddfb81e3f59ec30",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-01T09:36:01.703Z",
+  "reviewed_at": "2026-08-05T23:46:52.774Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-01T09:36:01.703Z"
+    "attempts": 2,
+    "last_failure_at": "2026-08-05T23:46:52.774Z"
   },
   "maintenance_issue_number": null
 }
