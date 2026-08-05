@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mattjaybe-sillytavern-echotext",
+  "source_id": "github-1169709495",
+  "source_identity": "github:mattjaybe/sillytavern-echotext",
+  "evidence_fingerprint": "7ff65b8d793acf9b54dbcb1c1e23143083370df038de618aa716559ac79384ca",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-05T01:09:40.264Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-05T01:09:40.264Z"
+  },
+  "maintenance_issue_number": null
+}
