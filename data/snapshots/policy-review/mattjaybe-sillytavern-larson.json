@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mattjaybe-sillytavern-larson",
+  "source_id": "github-1163573440",
+  "source_identity": "github:mattjaybe/sillytavern-larson",
+  "evidence_fingerprint": "80037030212647263f486aaf291ad710ac31873a03cf85d372e55d042e58a91d",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-05T01:29:14.235Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-05T01:29:14.235Z"
+  },
+  "maintenance_issue_number": null
+}
