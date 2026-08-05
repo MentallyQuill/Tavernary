@@ -197,8 +197,10 @@
     "cbe5b653e0df03e135233f94050f809ff186127bcd3808a4650ec40a29ac4fdc",
     "4ae776cbdf01fa15ac910661d6b684c72f54517fbc64fd34aea9d4104923041d",
     "734cadb63fb95ef83235c142ebefab51f0dbd450372dcfe9bd0196d77112de7e",
+    "940369e37d998d434edea6e1601e077ae0f27fc39e141b34c6c35f327a89549b",
     "9dccf341bad99bccca52f7460351d8f16631524161d4e1a37bfd5ac8474fd17d",
     "c87045731680bb67399dde1cfb4975d9c3429d20a0d58a4395ee9a4d50540b16",
+    "4db689b532c9ddb764577589e49b77f553a8cdbcdb45587c2474c75c700d8a5a",
     "05275b37d1d9bd95f6dea4ab5442552d735b933d2077174538f97193a07a3041",
     "59928311171a151fd97ece43df1db152ea7d7e00fd9a705dd2b1e7ceedf403af",
     "daea257fdc9f3ed2777acfaf4a1d14cabebea1370e6453301aa6f0a010694f15",
@@ -9291,8 +9293,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1248922425/b148433416cac30511d29ee51dc6c44993ceb56d/3/9dccf341bad99bccca52f7460351d8f16631524161d4e1a37bfd5ac8474fd17d/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1248922425/history/",
-      "assessed_at": "2026-08-04T22:48:15.148Z",
-      "synthesis_policy_version": "2",
+      "assessed_at": "2026-08-05T09:31:16.274Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
@@ -9301,11 +9303,11 @@
         "headline": "No validated security concerns found",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No validated evidence of malicious behavior was identified in this review. This advisory assessment cannot prove the absence of unknown behavior.",
+        "malicious_evidence": "No validated evidence of malicious behavior was identified in this review. Unknown behavior cannot be ruled out completely.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "TavernKeeper found no validated candidates or assessed security issues for LumiBooks at the reviewed commit. No material vulnerabilities, minor weaknesses, or credible malicious behavior were reported."
+        "summary": "The validated review found no security findings for LumiBooks at the assessed commit. The project is assessed as low risk based on the available evidence."
       }
     },
     {
@@ -12006,8 +12008,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1248993662/a3f0778f58a4ab0193facc91b9e2bbc556bfcfa3/3/c87045731680bb67399dde1cfb4975d9c3429d20a0d58a4395ee9a4d50540b16/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1248993662/history/",
-      "assessed_at": "2026-08-04T23:30:16.989Z",
-      "synthesis_policy_version": "2",
+      "assessed_at": "2026-08-05T09:31:20.173Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
@@ -12015,14 +12017,14 @@
         "cited_finding_ids": [
           "cd8865121e6cdd7a7ba8570b5a1bec9536028900063e0494c731825e64e47e21"
         ],
-        "headline": "Low risk: no signs of malicious behavior",
+        "headline": "Low risk: ordinary app behavior with one minor build-tool caution",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No credible malicious behavior was validated. The apparent credential and network-access findings were reviewed as ordinary local health checks, login handling, or settings synchronization. Dynamic execution in production code was also assessed as a protective sandbox, not arbitrary command running.",
+        "malicious_evidence": "No credible evidence of credential theft, data exfiltration, harmful payloads, or other malicious behavior was found. The flagged network activity is normal local health checking, login-token handling, or saving app settings. The review cannot prove the absence of unknown behavior.",
         "material_concerns": 0,
         "minor_cautions": 1,
         "risk_level": "low",
-        "summary": "The project appears low risk for Tavernary users. Four findings were assessed as expected application or tooling behavior. One build-tool finding uses eval to read project-local error data; this has low practical impact but should be replaced with safer parsing such as JSON.parse. Unknown behavior cannot be ruled out, but no credential theft, harmful payload, or data exfiltration was validated."
+        "summary": "The project appears low risk. One build tool uses JavaScript eval to read project-controlled error-code data; this has low practical danger because it does not use outside input, but a safer parser would be preferable. Other flagged code was assessed as expected behavior, including protected user-regex processing, local health checks, normal login handling, and sending settings to the app’s own server."
       }
     },
     {
@@ -12277,8 +12279,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1248273779/729fbe89d4e6f21bb91efec6767aeb66ce541117/3/734cadb63fb95ef83235c142ebefab51f0dbd450372dcfe9bd0196d77112de7e/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1248273779/history/",
-      "assessed_at": "2026-08-04T23:36:12.857Z",
-      "synthesis_policy_version": "2",
+      "assessed_at": "2026-08-05T09:31:11.382Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
@@ -12287,11 +12289,11 @@
         "headline": "No validated security concerns found",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No validated evidence of malicious behavior was identified in this review. This does not prove that unknown behavior is absent.",
+        "malicious_evidence": "No validated evidence of malicious behavior, such as API-key theft, phishing, trojan delivery, harmful payloads, or bot infection, was identified. This review cannot prove the absence of unknown behavior.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The reviewed commit has no validated findings indicating ordinary security weaknesses, material vulnerabilities, or malicious activity. Based on the available evidence, the project presents low security risk."
+        "summary": "The validated review found no security findings or material concerns for this project at the reviewed commit. It appears low risk based on the available evidence."
       }
     },
     {
@@ -15944,6 +15946,89 @@
       }
     },
     {
+      "report_id": "940369e37d998d434edea6e1601e077ae0f27fc39e141b34c6c35f327a89549b",
+      "report_digest": "940369e37d998d434edea6e1601e077ae0f27fc39e141b34c6c35f327a89549b",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "3",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "1",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v1",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1248549303",
+      "provider": "github",
+      "repository_id": 1248549303,
+      "repository": "THEJACKALS/SillyTavern-MapRegionsLocator",
+      "target_sha": "435ff13a305499304e60accf4bd6685b8d3d0f37",
+      "completed_at": "2026-08-05T01:40:10.681Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 0,
+        "assessments": 0,
+        "observations": 0,
+        "items": 0,
+        "disposition": {
+          "expected_behavior": 0,
+          "minor_weakness": 0,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 0,
+          "low": 0,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 0,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 0,
+          "high": 0
+        },
+        "recommended_risk": {
+          "low": 0,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 7,
+        "inventory_files": 10,
+        "inventory_bytes": 2778346,
+        "tools_completed": 5,
+        "tools_not_applicable": 2,
+        "evidence_validated": 0,
+        "review_required": 0,
+        "review_completed": 0
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1248549303/435ff13a305499304e60accf4bd6685b8d3d0f37/3/940369e37d998d434edea6e1601e077ae0f27fc39e141b34c6c35f327a89549b/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1248549303/history/",
+      "assessed_at": "2026-08-05T09:31:13.695Z",
+      "synthesis_policy_version": "4",
+      "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
+      "assessment": {
+        "cited_finding_ids": [],
+        "headline": "No validated security concerns found",
+        "high_danger": 0,
+        "interaction_chains": [],
+        "malicious_evidence": "No validated evidence of malicious behavior, API-key theft, harmful payloads, or bot infection was identified. This review cannot prove the absence of unknown behavior.",
+        "material_concerns": 0,
+        "minor_cautions": 0,
+        "risk_level": "low",
+        "summary": "The reviewed commit presents no validated security concerns. Based on the available evidence, the project has a low security risk."
+      }
+    },
+    {
       "report_id": "957543f55f09a8340b340150711fef84de2fa3421dc1557b9ea5eabbf9bdbe55",
       "report_digest": "957543f55f09a8340b340150711fef84de2fa3421dc1557b9ea5eabbf9bdbe55",
       "report_version": 1,
@@ -17700,6 +17785,89 @@
         "minor_cautions": 0,
         "risk_level": "low",
         "summary": "The validated review found no evidence of API-key theft, harmful payloads, or other material security problems. The project is assessed as low risk based on the available evidence."
+      }
+    },
+    {
+      "report_id": "4db689b532c9ddb764577589e49b77f553a8cdbcdb45587c2474c75c700d8a5a",
+      "report_digest": "4db689b532c9ddb764577589e49b77f553a8cdbcdb45587c2474c75c700d8a5a",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "3",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "1",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v1",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1249921512",
+      "provider": "github",
+      "repository_id": 1249921512,
+      "repository": "mokimoko/SillyTavern-DynamicAudioRedux",
+      "target_sha": "56663e0cd4f9e200e7caf2871fa1db09a61d6670",
+      "completed_at": "2026-08-05T04:10:33.855Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 0,
+        "assessments": 0,
+        "observations": 0,
+        "items": 0,
+        "disposition": {
+          "expected_behavior": 0,
+          "minor_weakness": 0,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 0,
+          "low": 0,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 0,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 0,
+          "high": 0
+        },
+        "recommended_risk": {
+          "low": 0,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 12,
+        "inventory_files": 21,
+        "inventory_bytes": 418917,
+        "tools_completed": 4,
+        "tools_not_applicable": 3,
+        "evidence_validated": 0,
+        "review_required": 0,
+        "review_completed": 0
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1249921512/56663e0cd4f9e200e7caf2871fa1db09a61d6670/3/4db689b532c9ddb764577589e49b77f553a8cdbcdb45587c2474c75c700d8a5a/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1249921512/history/",
+      "assessed_at": "2026-08-05T09:31:22.812Z",
+      "synthesis_policy_version": "4",
+      "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
+      "assessment": {
+        "cited_finding_ids": [],
+        "headline": "No validated security concerns identified",
+        "high_danger": 0,
+        "interaction_chains": [],
+        "malicious_evidence": "No validated evidence of malicious behavior, credential theft, harmful payloads, or trojan delivery was identified. This review cannot prove the absence of unknown behavior.",
+        "material_concerns": 0,
+        "minor_cautions": 0,
+        "risk_level": "low",
+        "summary": "The reviewed project has no validated security findings in this assessment and is rated low risk."
       }
     },
     {
