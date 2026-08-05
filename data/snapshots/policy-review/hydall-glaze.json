@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "hydall-glaze",
+  "source_id": "github-1195300925",
+  "source_identity": "github:hydall/glaze",
+  "evidence_fingerprint": "812db4180d9a24cd31ad3366102ec1b5066dcf38ac475e64515e116c1a0cf7e5",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-05T21:06:46.092Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-05T21:06:46.092Z"
+  },
+  "maintenance_issue_number": null
+}
