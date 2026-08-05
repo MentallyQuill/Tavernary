@@ -1,6 +1,6 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-08-05T15:57:36.708Z",
+  "generated_at": "2026-08-05T17:11:07.820Z",
   "preferred_report_ids": [
     "a09120867995ba186db654617ffd6ee040c89b272e35e1c6147ad404f9f9c5a8",
     "d4bcd22a3017c1f4962071991ae7fb31d0037d853d6fe0c6e1667c3acf32f70c",
@@ -135,6 +135,7 @@
     "f1da587a1375b75d4566f34f07af71f5941abd5043d3e5163cfedb20c4231ad1",
     "4bb33f850c7ccd045a4e74ad54169d5d29b5635987269b9f44ca6af8010ea7e3",
     "939cf9c8a476df0e2f47f9ebe739931c0d56f1f4bf62c16f9d8d21b3b85cb09f",
+    "04fdab5ed443441dc6923ba37adae99881b35a24c0aa9bd29150ff890037e89f",
     "7b806e2019e03f7f85f37ed5e5bcf19696825f949f9bfefdf45a5948f83883fd",
     "2a6f9ddead79af29e0e5200f013b43027ae9f2e05740077e49772a23856a42ee",
     "8685b55aece016951c60384dca5cf2fe6f8a3abb1faeec1782d8f5a6aa51c38a",
@@ -22506,6 +22507,91 @@
         "minor_cautions": 8,
         "risk_level": "low",
         "summary": "The reviewed commit appears safe for ordinary use. The project has eight minor workflow-hardening issues, such as using movable tool versions, broad workflow permissions, and retaining a temporary access token in the checkout configuration. These are common maintenance weaknesses with unlikely exploitation paths, not evidence of malware, phishing, credential theft, or harmful payloads. Pinning workflow tools and limiting permissions would improve security."
+      }
+    },
+    {
+      "report_id": "04fdab5ed443441dc6923ba37adae99881b35a24c0aa9bd29150ff890037e89f",
+      "report_digest": "04fdab5ed443441dc6923ba37adae99881b35a24c0aa9bd29150ff890037e89f",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "3",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "2",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v2",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1169709495",
+      "provider": "github",
+      "repository_id": 1169709495,
+      "repository": "mattjaybe/SillyTavern-EchoText",
+      "target_sha": "35a7940f77691807be08c4e2e153118341a90c6e",
+      "completed_at": "2026-08-05T17:10:45.695Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 1,
+        "assessments": 1,
+        "observations": 1,
+        "items": 2,
+        "disposition": {
+          "expected_behavior": 1,
+          "minor_weakness": 1,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 0,
+          "low": 2,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 2,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 1,
+          "high": 1
+        },
+        "recommended_risk": {
+          "low": 2,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 23,
+        "inventory_bytes": 1514341,
+        "tools_completed": 4,
+        "tools_not_applicable": 3,
+        "evidence_validated": 1,
+        "review_required": 1,
+        "review_completed": 1
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1169709495/35a7940f77691807be08c4e2e153118341a90c6e/3/04fdab5ed443441dc6923ba37adae99881b35a24c0aa9bd29150ff890037e89f/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1169709495/history/",
+      "assessed_at": "2026-08-05T17:12:30.211Z",
+      "synthesis_policy_version": "4",
+      "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
+      "assessment": {
+        "cited_finding_ids": [
+          "483f472a367e38f47337c39db30b240767efc0fdafbb1ef4cb6d3e79d0d925c9"
+        ],
+        "headline": "Low risk: no malicious behavior found",
+        "high_danger": 0,
+        "interaction_chains": [],
+        "malicious_evidence": "No evidence of API-key theft, phishing, harmful payloads, unexpected code downloads, or bot infection was found. The flagged code-loading behavior is consistent with the extension loading its own internal files.",
+        "material_concerns": 0,
+        "minor_cautions": 1,
+        "risk_level": "low",
+        "summary": "The extension appears to be a legitimate SillyTavern add-on. It runs its own internal code files, which is ordinary for this type of extension and is not controlled by unexpected downloads or user input. One minor technical caution is that its synchronous loading can briefly freeze the interface and may lead to future browser compatibility warnings, but this is not a security issue."
       }
     }
   ]
