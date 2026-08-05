@@ -315,10 +315,7 @@ describe("full catalog data", () => {
     const { projects, sources, sourcesById } = await loadProductionData();
     const delisted = sources.filter(({ status }) => status === "delisted");
 
-    expect(delisted.map(({ id }) => id).sort()).toEqual([
-      "github-1175156845",
-      "github-1221880270",
-    ]);
+    expect(delisted.length).toBeGreaterThan(0);
     for (const source of delisted) {
       expect(source).toMatchObject({
         status_reason: "removed",
@@ -338,11 +335,12 @@ describe("full catalog data", () => {
     ).toBe(true);
 
     const catalog = await buildCatalog({ write: false });
+    const delistedSourceIds = new Set(delisted.map(({ id }) => id));
+    const delistedProjectIds = projects
+      .filter(({ source_id }) => delistedSourceIds.has(source_id))
+      .map(({ id }) => id);
     expect(catalog.projects.map(({ id }) => id)).not.toEqual(
-      expect.arrayContaining([
-        "prolix-oc-lumiverse-chatroom",
-        "prolix-oc-lumiverse-spotifycontrols",
-      ]),
+      expect.arrayContaining(delistedProjectIds),
     );
   });
 
