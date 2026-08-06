@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "extensionmuncher-thelibrarian",
+  "source_id": "github-1292493965",
+  "source_identity": "github:extensionmuncher/thelibrarian",
+  "evidence_fingerprint": "3ec10d17af1b712b2521db088c8999073756a087168c86653b8302dfd923fe73",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T03:15:08.949Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T03:15:08.949Z"
+  },
+  "maintenance_issue_number": null
+}
