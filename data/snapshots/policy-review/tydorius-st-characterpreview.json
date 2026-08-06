@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "tydorius-st-characterpreview",
+  "source_id": "github-1069371232",
+  "source_identity": "github:tydorius/st-characterpreview",
+  "evidence_fingerprint": "ccc3cee540e7967cdd846ba9a49eafb5a47cdcf21568eace2494bb04959c2c98",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T10:09:58.060Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T10:09:58.060Z"
+  },
+  "maintenance_issue_number": null
+}
