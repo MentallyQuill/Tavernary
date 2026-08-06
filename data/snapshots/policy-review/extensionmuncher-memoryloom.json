@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "extensionmuncher-memoryloom",
+  "source_id": "github-1268616226",
+  "source_identity": "github:extensionmuncher/memoryloom",
+  "evidence_fingerprint": "7aa86d46d9c28810056e7a5e98b07becced5c9d8a191355027fbea6043facfa7",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T05:00:51.100Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T05:00:51.100Z"
+  },
+  "maintenance_issue_number": null
+}
