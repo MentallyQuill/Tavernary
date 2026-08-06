@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "wanichka-sillytavern-context-tracker",
+  "source_id": "github-1299759505",
+  "source_identity": "github:wanichka/sillytavern-context-tracker",
+  "evidence_fingerprint": "5388df7726399661f9a4c2ec2e2e7f34e5e6a8f6e3eab294ecbf57b5108fd27c",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T03:44:44.990Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T03:44:44.990Z"
+  },
+  "maintenance_issue_number": null
+}
