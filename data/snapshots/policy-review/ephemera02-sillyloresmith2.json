@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "ephemera02-sillyloresmith2",
+  "source_id": "github-1267079391",
+  "source_identity": "github:ephemera02/sillyloresmith2",
+  "evidence_fingerprint": "96b145234fe8182b0e4d1397c00e5a9575e54a45c1aabbf03084f4f8b6e706bc",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T02:51:47.172Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T02:51:47.172Z"
+  },
+  "maintenance_issue_number": null
+}
