@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "extensionmuncher-thelibrarian",
+  "name": "TheLibrarian",
+  "kind": "extension",
+  "summary": "TheLibrarian is a lightweight SillyTavern extension for tool-call-based lorebook retrieval, indexing active entries so the model can browse and read only scene-relevant lore.",
+  "metadata_status": "curated",
+  "source_id": "github-1292493965",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "agentic-tool-use",
+    "manage-context-limits",
+    "retrieve-relevant-context"
+  ],
+  "cataloged_at": "2026-08-06T03:12:02.607Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
