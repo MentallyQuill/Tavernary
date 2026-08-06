@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "rebootflume-tipsytavern",
+  "source_id": "github-1285238973",
+  "source_identity": "github:rebootflume/tipsytavern",
+  "evidence_fingerprint": "3233f25c6b1a88a637dea015512ba29564aa9d4534c1e692769ad45a85711d5f",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T05:22:15.925Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T05:22:15.925Z"
+  },
+  "maintenance_issue_number": null
+}
