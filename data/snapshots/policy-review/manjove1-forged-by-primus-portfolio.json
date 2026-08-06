@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "manjove1-forged-by-primus-portfolio",
+  "source_id": "github-1305418059",
+  "source_identity": "github:manjove1/forged-by-primus-portfolio",
+  "evidence_fingerprint": "5e37745a6f987fed8db0d0825d8aaacdd944a185b19a588cb91281ed6530950b",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T10:14:52.808Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T10:14:52.808Z"
+  },
+  "maintenance_issue_number": null
+}
