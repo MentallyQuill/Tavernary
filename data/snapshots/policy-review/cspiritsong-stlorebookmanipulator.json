@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "cspiritsong-stlorebookmanipulator",
+  "source_id": "github-1254744625",
+  "source_identity": "github:cspiritsong/stlorebookmanipulator",
+  "evidence_fingerprint": "36a341bb506b890f4ce86a430f982f1d186a70ce27eaf282ed8011b119d34aa5",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T03:00:37.945Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T03:00:37.945Z"
+  },
+  "maintenance_issue_number": null
+}
