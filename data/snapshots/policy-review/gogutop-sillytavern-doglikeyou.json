@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "gogutop-sillytavern-doglikeyou",
+  "source_id": "github-1234094202",
+  "source_identity": "github:gogutop/sillytavern-doglikeyou",
+  "evidence_fingerprint": "ce854b5169a689cc3a80021c68008c356bd7143a4d78415dac8ea5e93995fee3",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T05:15:37.806Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T05:15:37.806Z"
+  },
+  "maintenance_issue_number": null
+}
