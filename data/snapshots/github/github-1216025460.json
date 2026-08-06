@@ -1,0 +1,53 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1216025460",
+  "repository": {
+    "id": 1216025460,
+    "owner": "EvaL3n4",
+    "name": "SillyTavern-STARmem",
+    "url": "https://github.com/EvaL3n4/SillyTavern-STARmem",
+    "description": "A memory retrieval and extraction system implementing a mixture of different research papers from arXiv.",
+    "default_branch": "main",
+    "head_sha": "801909b70c510dfab7268cdfef3bd7986f574d4d",
+    "head_committed_at": "2026-05-08T14:41:15.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-04-20T13:44:47.000Z",
+    "size_kb": 1909
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-05-08T14:41:15.000Z",
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-06T03:57:07.562Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "801909b70c510dfab7268cdfef3bd7986f574d4d"
+  },
+  "community": {
+    "stars_count": 7,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 7
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "Apache-2.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-06T03:57:07.562Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "EvaL3n4", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-06T03:57:07.562Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
