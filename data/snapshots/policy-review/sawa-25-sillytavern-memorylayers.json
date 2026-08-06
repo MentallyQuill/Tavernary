@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sawa-25-sillytavern-memorylayers",
+  "source_id": "github-1307266714",
+  "source_identity": "github:sawa-25/sillytavern-memorylayers",
+  "evidence_fingerprint": "85d34d22f9b143fe7577dd47f03c67a70f69b875e17b90478e13b7437345a810",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T05:07:15.776Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T05:07:15.776Z"
+  },
+  "maintenance_issue_number": null
+}
