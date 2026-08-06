@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "myrkr146-chronicle-sillytavern",
+  "source_id": "github-1302699300",
+  "source_identity": "github:myrkr146/chronicle-sillytavern",
+  "evidence_fingerprint": "7a79df0015089f0d9b005a0d91beb48af7aaeaf0c171bad72379eb2a4f4c66d0",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T04:48:38.918Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T04:48:38.918Z"
+  },
+  "maintenance_issue_number": null
+}
