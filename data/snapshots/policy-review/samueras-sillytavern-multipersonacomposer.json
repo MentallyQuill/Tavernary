@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "samueras-sillytavern-multipersonacomposer",
+  "source_id": "github-1168534011",
+  "source_identity": "github:samueras/sillytavern-multipersonacomposer",
+  "evidence_fingerprint": "6869ae355f57a495189bab814b938e66e010eb8c2e8f4996269892f74dfd9b89",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T10:11:27.287Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T10:11:27.287Z"
+  },
+  "maintenance_issue_number": null
+}
