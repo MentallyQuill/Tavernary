@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "myrkr146-chronicle-sillytavern",
+  "name": "chronicle-sillytavern",
+  "kind": "extension",
+  "summary": "Chronicle tracks roleplay state with custom panels and small AI updates, then injects compact briefings while its persistent Codex grows locations, people, and world details.",
+  "metadata_status": "curated",
+  "source_id": "github-1302699300",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "automate-roleplay-workflows",
+    "build-worlds-and-lore",
+    "inspect-prompts-and-generations",
+    "manage-context-limits",
+    "persistent-state",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-08-06T04:45:53.664Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
