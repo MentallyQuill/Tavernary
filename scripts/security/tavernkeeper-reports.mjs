@@ -161,12 +161,16 @@ function registrySources(registry) {
   throw new Error("TavernKeeper report registry is invalid");
 }
 
-function activeGithubSourcesByRepositoryId(registry) {
+function activeGithubSourcesByRepositoryId(
+  registry,
+  { includeDelisted = false } = {},
+) {
   const sources = new Map();
   for (const source of registrySources(registry)) {
     if (
       source?.type === "github" &&
-      source.status === "active" &&
+      (source.status === "active" ||
+        (includeDelisted && source.status === "delisted")) &&
       Number.isSafeInteger(source.repository_id) &&
       source.repository_id > 0 &&
       typeof source.id === "string" &&
@@ -585,7 +589,9 @@ export function validateStoredReportIndex(snapshotInput, registry) {
   ) {
     throw new Error("Tracked TavernKeeper assessment snapshot is invalid");
   }
-  const sources = activeGithubSourcesByRepositoryId(registry);
+  const sources = activeGithubSourcesByRepositoryId(registry, {
+    includeDelisted: true,
+  });
   const reportIds = new Set();
   for (const entry of snapshot.reports) {
     assertExactKeys(

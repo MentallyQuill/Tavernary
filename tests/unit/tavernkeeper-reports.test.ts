@@ -585,6 +585,29 @@ describe("TavernKeeper V5 report import", () => {
     ).toThrow(/preferred/u);
   });
 
+  test("keeps stored history valid during a source delist transition", async () => {
+    const [index] = await fixtures();
+    const entry = assessedEntry(index.reports[0]);
+    const stored = {
+      schema_version: 5,
+      generated_at: index.generated_at,
+      preferred_report_ids: [entry.report_id],
+      reports: [entry],
+    };
+    const delistedRegistry = registry.map((source) => ({
+      ...source,
+      status: "delisted",
+    }));
+
+    expect(validateStoredReportIndex(stored, delistedRegistry)).toMatchObject({
+      schema_version: 6,
+      reports: [expect.objectContaining({ source_id: "github-42" })],
+    });
+    expect(() => validateReportIndex(index, delistedRegistry)).toThrow(
+      /active Tavernary source/u,
+    );
+  });
+
   test("retains an inactive-policy assessment only as non-preferred history", async () => {
     const [index] = await fixtures();
     const historical = {
