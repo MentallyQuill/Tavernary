@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "gogutop-sillytavern-doglikeyou",
+  "name": "sillytavern-doglikeyou",
+  "kind": "extension",
+  "summary": "SillyTavern-DogLikeYou adds loyal-dog-like memory to roleplay, remembering what you said, every promise, and each relationship across conversations.",
+  "metadata_status": "curated",
+  "source_id": "github-1234094202",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": ["maintain-long-term-memory"],
+  "cataloged_at": "2026-08-06T05:12:38.189Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
