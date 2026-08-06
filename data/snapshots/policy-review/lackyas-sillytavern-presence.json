@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "lackyas-sillytavern-presence",
+  "source_id": "github-875709373",
+  "source_identity": "github:lackyas/sillytavern-presence",
+  "evidence_fingerprint": "230b5e3d7b939adb9f9a1e62a08ee93557791f2a57de526738fbe8c32f48fb96",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T10:15:52.737Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T10:15:52.737Z"
+  },
+  "maintenance_issue_number": null
+}
