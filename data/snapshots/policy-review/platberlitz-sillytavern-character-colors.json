@@ -3,14 +3,14 @@
   "project_id": "platberlitz-sillytavern-character-colors",
   "source_id": "github-1133521830",
   "source_identity": "github:platberlitz/sillytavern-character-colors",
-  "evidence_fingerprint": "31c05a4c84f522556caea273a47e67340f8580d2b796f87ad0e4b332ef59f61f",
+  "evidence_fingerprint": "ae58eb7c3e54a08515c0aafe63a4233f3aa9b9077d68200255736a441fae9b5b",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-02T09:33:53.507Z",
+  "reviewed_at": "2026-08-06T10:10:58.661Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-02T09:33:53.507Z"
+    "attempts": 2,
+    "last_failure_at": "2026-08-06T10:10:58.661Z"
   },
   "maintenance_issue_number": null
 }
