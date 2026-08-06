@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "thejackals-sillytavern-summaryn-resizechat",
+  "source_id": "github-1263408079",
+  "source_identity": "github:thejackals/sillytavern-summaryn-resizechat",
+  "evidence_fingerprint": "df75f947fa50cfa5d96a03950fa44762d04d271cbc8d06033997761bdbfff7ae",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T10:13:46.560Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T10:13:46.560Z"
+  },
+  "maintenance_issue_number": null
+}
