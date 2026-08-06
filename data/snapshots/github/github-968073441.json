@@ -15,7 +15,7 @@
     "fork": false,
     "parent": null,
     "created_at": "2025-04-17T13:13:08.000Z",
-    "size_kb": 68644
+    "size_kb": 75994
   },
   "source_health": "healthy",
   "activity": {
@@ -90,18 +90,19 @@
     "evidence_head_sha": "7b8f1fa7da142cf7b83c13cf5426736f24266012"
   },
   "community": {
-    "stars_count": 1155,
+    "stars_count": 1167,
     "forks_count": 75,
     "watchers_count": 6,
-    "aggregate": 1236
+    "aggregate": 1248
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-05T18:30:39.328Z",
+  "refreshed_at": "2026-08-06T10:02:12.858Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "Darkatse", "type": "User", "provider": "github" },
@@ -122,8 +123,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-05T18:30:39.328Z",
+    "refreshed_at": "2026-08-06T10:02:12.858Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

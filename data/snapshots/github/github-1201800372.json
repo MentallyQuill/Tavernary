@@ -9,21 +9,56 @@
     "url": "https://github.com/SillyBunnyTeam/SillyBunny",
     "description": "A SillyTavern fork with Bun as the backend, along with UI/UX improvements",
     "default_branch": "main",
-    "head_sha": "feb98fdc665f7d5f1841b14bbc43bd6363a18071",
-    "head_committed_at": "2026-06-15T15:10:07.000Z",
+    "head_sha": "3021edcae1a5212a9f828e051d46e7945c7e4fec",
+    "head_committed_at": "2026-08-06T01:09:02.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-05T07:10:53.000Z",
-    "size_kb": 321492
+    "size_kb": 322015
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-06-15T15:10:07.000Z",
+    "latest_source_activity_at": "2026-08-05T23:54:28.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-05T23:54:28.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-08-02T23:07:26.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-26T22:26:29.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-17T06:13:30.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T23:51:34.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-05T22:57:16.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-28T23:26:00.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-06-15",
-        "latest_at": "2026-06-15T15:10:07.000Z",
+        "latest_at": "2026-06-21T11:58:43.000Z",
         "precision": "exact"
       },
       {
@@ -45,32 +80,27 @@
         "week_start": "2026-05-18",
         "latest_at": "2026-05-24T01:21:14.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-11",
-        "latest_at": "2026-05-17T22:49:26.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-06-15T14:47:45.000Z",
+    "latest_release_at": "2026-08-06T01:09:40.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-02T02:49:06.399Z",
+    "baseline_completed_at": "2026-08-06T10:02:12.858Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "feb98fdc665f7d5f1841b14bbc43bd6363a18071"
+    "evidence_head_sha": "3021edcae1a5212a9f828e051d46e7945c7e4fec"
   },
   "community": {
-    "stars_count": 81,
+    "stars_count": 82,
     "forks_count": 13,
-    "watchers_count": 3,
-    "aggregate": 97
+    "watchers_count": 4,
+    "aggregate": 99
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-05T10:00:04.864Z",
+  "refreshed_at": "2026-08-06T10:02:12.858Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -78,12 +108,13 @@
       { "login": "Cohee1207", "type": "User", "provider": "github" },
       { "login": "Wolfsblvt", "type": "User", "provider": "github" },
       { "login": "web-flow", "type": "User", "provider": "github" },
-      { "login": "RossAscends", "type": "User", "provider": "github" },
       { "login": "platberlitz", "type": "User", "provider": "github" },
       { "login": "TheLonelyDevil9", "type": "User", "provider": "github" },
+      { "login": "RossAscends", "type": "User", "provider": "github" },
       { "login": "github-actions[bot]", "type": "Bot", "provider": "github" },
       { "login": "valadaptive", "type": "User", "provider": "github" },
       { "login": "Tony-sama", "type": "User", "provider": "github" },
+      { "login": "Geechan", "type": "User", "provider": "github" },
       { "login": "WolframRavenwolf", "type": "User", "provider": "github" },
       { "login": "cunnymessiah", "type": "User", "provider": "github" },
       { "login": "kingbri1", "type": "User", "provider": "github" },
@@ -91,7 +122,6 @@
       { "login": "GiveMeSomeUsername", "type": "User", "provider": "github" },
       { "login": "RivelleDays", "type": "User", "provider": "github" },
       { "login": "RealBeepMcJeep", "type": "User", "provider": "github" },
-      { "login": "Geechan", "type": "User", "provider": "github" },
       { "login": "bmen25124", "type": "User", "provider": "github" },
       { "login": "BPplays", "type": "User", "provider": "github" },
       { "login": "Technologicat", "type": "User", "provider": "github" },
@@ -279,7 +309,6 @@
       { "login": "toby3d", "type": "User", "provider": "github" },
       { "login": "racinmat", "type": "User", "provider": "github" },
       { "login": "Kristyku", "type": "User", "provider": "github" },
-      { "login": "SenatusSPQR1", "type": "User", "provider": "github" },
       { "login": "Zhongyi-Lu", "type": "User", "provider": "github" },
       { "login": "aalizelau", "type": "User", "provider": "github" },
       { "login": "adventchilde", "type": "User", "provider": "github" },
@@ -295,6 +324,8 @@
       { "login": "cierru", "type": "User", "provider": "github" },
       { "login": "closuretxt", "type": "User", "provider": "github" },
       { "login": "coffeegrind123", "type": "User", "provider": "github" },
+      { "login": "crsp6447", "type": "User", "provider": "github" },
+      { "login": "02loka", "type": "User", "provider": "github" },
       { "login": "annoawesome", "type": "User", "provider": "github" },
       { "login": "Ristellise", "type": "User", "provider": "github" },
       { "login": "egirlmilkers", "type": "User", "provider": "github" },
@@ -334,7 +365,6 @@
       { "login": "yokuminto", "type": "User", "provider": "github" },
       { "login": "zeroDtree", "type": "User", "provider": "github" },
       { "login": "zhongerxll", "type": "User", "provider": "github" },
-      { "login": "crsp6447", "type": "User", "provider": "github" },
       { "login": "daiaji", "type": "User", "provider": "github" },
       { "login": "duncannah", "type": "User", "provider": "github" },
       { "login": "epyllia", "type": "User", "provider": "github" },
@@ -350,11 +380,11 @@
       { "login": "huisman", "type": "User", "provider": "github" },
       { "login": "issues-opener", "type": "User", "provider": "github" },
       { "login": "kashmirmydon", "type": "User", "provider": "github" },
+      { "login": "kilonova1832", "type": "User", "provider": "github" },
       { "login": "kir-gadjello", "type": "User", "provider": "github" },
       { "login": "kokansei", "type": "User", "provider": "github" },
       { "login": "leopardracer", "type": "User", "provider": "github" },
       { "login": "dylenyedc", "type": "User", "provider": "github" },
-      { "login": "Crush0", "type": "User", "provider": "github" },
       { "login": "DN2331", "type": "User", "provider": "github" },
       { "login": "Dalethium", "type": "User", "provider": "github" },
       { "login": "witten", "type": "User", "provider": "github" },
@@ -377,7 +407,7 @@
       { "login": "GentleBurr", "type": "User", "provider": "github" },
       { "login": "GhostXia", "type": "User", "provider": "github" },
       { "login": "GoldenglowMeow", "type": "User", "provider": "github" },
-      { "login": "02loka", "type": "User", "provider": "github" },
+      { "login": "Goshe-nite", "type": "User", "provider": "github" },
       { "login": "9nbf7c4q6b-lgtm", "type": "User", "provider": "github" },
       { "login": "AeonBlack", "type": "User", "provider": "github" },
       { "login": "Ahbahl", "type": "User", "provider": "github" },
@@ -396,7 +426,7 @@
       { "login": "chrisbennight", "type": "User", "provider": "github" },
       { "login": "kaiser-chris", "type": "User", "provider": "github" },
       { "login": "Claude", "type": "Bot", "provider": "github" },
-      { "login": "plumface-gcc", "type": "User", "provider": "github" },
+      { "login": "Crush0", "type": "User", "provider": "github" },
       { "login": "MakksSh", "type": "User", "provider": "github" },
       { "login": "malformed-c", "type": "User", "provider": "github" },
       { "login": "Mijyuoon", "type": "User", "provider": "github" },
@@ -415,7 +445,7 @@
       { "login": "rdeforest", "type": "User", "provider": "github" },
       { "login": "Roland4396", "type": "User", "provider": "github" },
       { "login": "Sanitised", "type": "User", "provider": "github" },
-      { "login": "Goshe-nite", "type": "User", "provider": "github" },
+      { "login": "SenatusSPQR1", "type": "User", "provider": "github" },
       { "login": "Halsey1006", "type": "User", "provider": "github" },
       { "login": "hcsum", "type": "User", "provider": "github" },
       { "login": "Hime-Hina", "type": "User", "provider": "github" },
@@ -433,12 +463,13 @@
       { "login": "LammyShark", "type": "User", "provider": "github" },
       { "login": "pi6am", "type": "User", "provider": "github" },
       { "login": "madobeichika", "type": "User", "provider": "github" },
-      { "login": "maeeeeee", "type": "User", "provider": "github" }
+      { "login": "maeeeeee", "type": "User", "provider": "github" },
+      { "login": "plumface-gcc", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-05T10:00:04.864Z",
+    "refreshed_at": "2026-08-06T10:02:12.858Z",
     "stale_since": null
   }
 }

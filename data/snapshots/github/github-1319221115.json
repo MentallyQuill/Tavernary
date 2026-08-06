@@ -45,15 +45,15 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-06T02:33:23.220Z",
+  "refreshed_at": "2026-08-06T10:02:12.858Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "Phiarlan", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-06T02:33:23.220Z",
+    "refreshed_at": "2026-08-06T10:02:12.858Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

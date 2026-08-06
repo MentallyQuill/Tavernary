@@ -39,15 +39,15 @@
     "spdx_id": "Apache-2.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-06T03:57:07.562Z",
+  "refreshed_at": "2026-08-06T10:02:12.858Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "EvaL3n4", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-06T03:57:07.562Z",
+    "refreshed_at": "2026-08-06T10:02:12.858Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

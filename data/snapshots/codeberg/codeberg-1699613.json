@@ -9,18 +9,23 @@
     "url": "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
     "description": null,
     "default_branch": "master",
-    "head_sha": "e96102846734ce167bf26d38d1bc8e70ee3c5988",
-    "head_committed_at": "2026-08-02T19:50:42.000Z",
+    "head_sha": "a65b75000d6e58769847076d7b9493f7f4060c5e",
+    "head_committed_at": "2026-08-06T04:19:27.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-30T23:15:30.000Z",
-    "size_kb": 442
+    "size_kb": 457
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-02T19:50:42.000Z",
+    "latest_source_activity_at": "2026-08-06T04:19:27.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-06T04:19:27.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-27",
         "latest_at": "2026-08-02T19:50:42.000Z",
@@ -60,9 +65,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-05T10:00:04.783Z",
+    "baseline_completed_at": "2026-08-06T10:02:12.780Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "e96102846734ce167bf26d38d1bc8e70ee3c5988"
+    "evidence_head_sha": "a65b75000d6e58769847076d7b9493f7f4060c5e"
   },
   "community": {
     "stars_count": 0,
@@ -75,7 +80,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-08-05T10:00:04.783Z",
+  "refreshed_at": "2026-08-06T10:02:12.780Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -83,9 +88,9 @@
       { "provider": "codeberg", "login": "targren", "type": "User" }
     ],
     "method": "commit-and-merged-pull-request-authors",
-    "baseline_completed_at": "2026-08-05T10:00:04.783Z",
+    "baseline_completed_at": "2026-08-06T10:02:12.780Z",
     "scan": null,
-    "refreshed_at": "2026-08-05T10:00:04.783Z",
+    "refreshed_at": "2026-08-06T10:02:12.780Z",
     "stale_since": null
   }
 }

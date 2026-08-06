@@ -51,8 +51,9 @@
     "aggregate": 0
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-06T04:35:40.547Z",
+  "refreshed_at": "2026-08-06T10:02:12.858Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "dan0dandeleon11", "type": "User", "provider": "github" }
@@ -60,8 +61,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-06T04:35:40.547Z",
+    "refreshed_at": "2026-08-06T10:02:12.858Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }
