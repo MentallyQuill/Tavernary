@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "sawa-25-sillytavern-memorylayers",
+  "name": "SillyTavern-MemoryLayers",
+  "kind": "extension",
+  "summary": "SillyTavern-MemoryLayers provides editable long-term memory with configurable isolation, visible token accounting, and selective retrieval injected into each exchange.",
+  "metadata_status": "curated",
+  "source_id": "github-1307266714",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "maintain-long-term-memory",
+    "modular-and-extensible",
+    "monitor-token-usage-and-cost",
+    "persistent-state",
+    "retrieve-relevant-context"
+  ],
+  "cataloged_at": "2026-08-06T05:04:15.063Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
