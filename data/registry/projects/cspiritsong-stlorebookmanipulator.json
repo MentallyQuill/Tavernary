@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "cspiritsong-stlorebookmanipulator",
+  "name": "STLorebookManipulator",
+  "kind": "extension",
+  "summary": "STLorebookManipulator safely edits and prunes SillyTavern lorebooks with LLM review, batched issue detection, approved cross-entry fixes, diffs, and automatic backups.",
+  "metadata_status": "curated",
+  "source_id": "github-1254744625",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": [
+    "edit-and-refine-messages",
+    "manage-context-limits",
+    "manage-lorebooks",
+    "preserve-story-continuity",
+    "recover-failed-generations",
+    "secondary-model"
+  ],
+  "cataloged_at": "2026-08-06T02:57:23.179Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

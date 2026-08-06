@@ -1,0 +1,82 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1254744625",
+  "repository": {
+    "id": 1254744625,
+    "owner": "cspiritsong",
+    "name": "STLorebookManipulator",
+    "url": "https://github.com/cspiritsong/STLorebookManipulator",
+    "description": "SillyTavern extension for safely rewriting and pruning lorebook entries with LLM-powered suggestions, highlighted diff preview, and backup history",
+    "default_branch": "master",
+    "head_sha": "4603b7cd354ad992480f0dce99c029528ec44116",
+    "head_committed_at": "2026-07-15T03:16:20.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-05-31T00:29:17.000Z",
+    "size_kb": 460
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-15T03:16:20.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-15T03:16:20.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T07:39:36.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-08T12:06:21.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-06T20:52:00.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-31T23:43:10.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-06-01T13:16:08.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-06T02:57:23.179Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "4603b7cd354ad992480f0dce99c029528ec44116"
+  },
+  "community": {
+    "stars_count": 1,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 1
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-06T02:57:23.179Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "cspiritsong", "type": "User", "provider": "github" },
+      { "login": "Spiritsong", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-06T02:57:23.179Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
