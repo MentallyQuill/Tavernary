@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "phiarlan-sillytavern-worldinfoplus",
+  "name": "SillyTavern-WorldInfoPlus",
+  "kind": "extension",
+  "summary": "SillyTavern extension that improves the World Info workflow, addressing common pain points for lorebook creators and casual users.",
+  "metadata_status": "curated",
+  "source_id": "github-1319221115",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["manage-lorebooks"],
+  "cataloged_at": "2026-08-06T02:33:23.220Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
