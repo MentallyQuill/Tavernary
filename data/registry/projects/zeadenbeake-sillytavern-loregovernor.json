@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "zeadenbeake-sillytavern-loregovernor",
+  "name": "SillyTavern-LoreGovernor",
+  "kind": "extension",
+  "summary": "Configure shared SillyTavern lorebooks per chat with grouped entry controls and whole-book toggles, while applying changes in memory without altering the source file.",
+  "metadata_status": "curated",
+  "source_id": "github-1319688315",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["guide-model-responses", "manage-lorebooks", "non-destructive"],
+  "cataloged_at": "2026-08-06T02:41:24.669Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
