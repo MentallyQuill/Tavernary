@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "dan0dandeleon11-dandeleon-multiverse",
+  "name": "dandeleon-multiverse",
+  "kind": "extension",
+  "summary": "Dandeleon Multiverse is a SillyTavern multiverse RP world-keeper that stores full canon externally and injects condensed, spoiler-safe slices to preserve long-running roleplay.",
+  "metadata_status": "curated",
+  "source_id": "github-1282097657",
+  "frontends": ["sillytavern"],
+  "primary_function": "rpg-systems",
+  "tags": [
+    "maintain-long-term-memory",
+    "manage-context-limits",
+    "preserve-story-continuity",
+    "retrieve-relevant-context",
+    "secondary-model",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-08-06T04:35:40.547Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
