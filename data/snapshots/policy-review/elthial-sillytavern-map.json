@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "elthial-sillytavern-map",
+  "source_id": "github-711475454",
+  "source_identity": "github:elthial/sillytavern-map",
+  "evidence_fingerprint": "e33ff2680a0aa45a787f560e9ab2fbfc9644eee3171d0ae6675f74407f3c0ba9",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T10:15:23.917Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T10:15:23.917Z"
+  },
+  "maintenance_issue_number": null
+}
