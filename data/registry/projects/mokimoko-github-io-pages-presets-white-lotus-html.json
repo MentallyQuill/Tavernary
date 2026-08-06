@@ -1,15 +1,15 @@
 {
   "schema_version": 6,
   "id": "mokimoko-github-io-pages-presets-white-lotus-html",
-  "name": "white-lotus.html",
+  "name": "White Lotus",
   "kind": "preset",
-  "summary": "No README file found.",
-  "metadata_status": "provisional",
+  "summary": "A preset built to get LLMs out of their own way — more initiative, more creativity, fewer stalled scenes.",
+  "metadata_status": "curated",
   "source_id": "url-mokimoko-github-io-pages-presets-white-lotus-html",
-  "frontends": ["sillytavern", "tauritavern"],
+  "frontends": ["sillytavern", "tauritavern", "marinara-engine"],
   "primary_function": "preset",
   "tags": [],
-  "model_families": ["deepseek", "glm", "kimi", "mimo", "model-agnostic"],
+  "model_families": ["deepseek", "glm", "kimi", "model-agnostic", "mimo"],
   "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-08-05T18:46:19.612Z",
   "catalog_cohort": "standard",
@@ -18,11 +18,8 @@
   "metadata_policy": {
     "summary": {
       "mode": "manual",
-      "note": "External URL source; requires manual curation."
+      "note": "Trusted Tavernary editor selection."
     },
-    "tags": {
-      "mode": "manual",
-      "note": "External URL source; requires manual curation."
-    }
+    "tags": { "mode": "manual", "note": "Trusted Tavernary editor selection." }
   }
 }
