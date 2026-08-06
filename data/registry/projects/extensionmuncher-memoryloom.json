@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "extensionmuncher-memoryloom",
+  "name": "MemoryLoom",
+  "kind": "extension",
+  "summary": "MemoryLoom preserves long-form roleplay continuity per chat by distilling scenes into vivid memories, retrieving relevant context with embeddings, and tracking evolving world lore.",
+  "metadata_status": "curated",
+  "source_id": "github-1268616226",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "inspect-prompts-and-generations",
+    "maintain-long-term-memory",
+    "manage-context-limits",
+    "retrieve-relevant-context",
+    "semantic-retrieval",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-08-06T04:57:46.567Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
