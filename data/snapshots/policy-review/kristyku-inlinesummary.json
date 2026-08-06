@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "kristyku-inlinesummary",
+  "source_id": "github-1113293446",
+  "source_identity": "github:kristyku/inlinesummary",
+  "evidence_fingerprint": "0f091834c0a7f1675f9eb49719444645bbb21863a953c96c4f7e7d8b2a5344a3",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T10:10:27.713Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T10:10:27.713Z"
+  },
+  "maintenance_issue_number": null
+}
