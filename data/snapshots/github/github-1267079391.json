@@ -1,0 +1,66 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1267079391",
+  "repository": {
+    "id": 1267079391,
+    "owner": "ephemera02",
+    "name": "SillyLoreSmith2",
+    "url": "https://github.com/ephemera02/SillyLoreSmith2",
+    "description": "AI-powered lorebook builder for SillyTavern. Crawl, summarize, edit, export. The Cat supervises. Open source 💜",
+    "default_branch": "main",
+    "head_sha": "e133dc6139709c291f7911b03ecf54288cacef43",
+    "head_committed_at": "2026-07-03T21:12:14.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-06-12T07:46:06.000Z",
+    "size_kb": 486
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-03T21:06:58.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-03T21:06:58.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-12T07:58:40.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-03T21:31:51.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-06T02:48:57.726Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "e133dc6139709c291f7911b03ecf54288cacef43"
+  },
+  "community": {
+    "stars_count": 3,
+    "forks_count": 1,
+    "watchers_count": 0,
+    "aggregate": 4
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-06T02:48:57.726Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "ephemera02", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-06T02:48:57.726Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

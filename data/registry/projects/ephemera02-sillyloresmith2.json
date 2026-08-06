@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "ephemera02-sillyloresmith2",
+  "name": "SillyLoreSmith2",
+  "kind": "extension",
+  "summary": "SillyLoresmith 2 builds and maintains lorebooks for AI roleplay by turning wikis or your writing into structured entries, then exporting them to platforms like SillyTavern.",
+  "metadata_status": "curated",
+  "source_id": "github-1267079391",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": [
+    "build-worlds-and-lore",
+    "local-first",
+    "manage-lorebooks",
+    "move-and-back-up-data",
+    "retrieve-relevant-context"
+  ],
+  "cataloged_at": "2026-08-06T02:48:57.726Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
