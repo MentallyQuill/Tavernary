@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "tclowe1982-marinara-extender",
+  "source_id": "github-1239116905",
+  "source_identity": "github:tclowe1982/marinara-extender",
+  "evidence_fingerprint": "805c45865091e7e6306ecc762a92ae3d4a6e973bac1bf5b99f84a72ab9b07d32",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T10:13:14.088Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T10:13:14.088Z"
+  },
+  "maintenance_issue_number": null
+}
