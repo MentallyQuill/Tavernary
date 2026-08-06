@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "closuretxt-recast-post-processing",
+  "source_id": "github-1188318311",
+  "source_identity": "github:closuretxt/recast-post-processing",
+  "evidence_fingerprint": "7c85bce95f5620e7b83ff8d993dec054b4bab68d3c4b890923e79a9a508199fa",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T10:12:09.724Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T10:12:09.724Z"
+  },
+  "maintenance_issue_number": null
+}
