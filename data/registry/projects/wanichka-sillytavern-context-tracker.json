@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "wanichka-sillytavern-context-tracker",
+  "name": "sillytavern-context-tracker",
+  "kind": "extension",
+  "summary": "An always-on-screen SillyTavern badge shows current chat context state, with a saved, draggable position that stays within the screen for easy tracking.",
+  "metadata_status": "curated",
+  "source_id": "github-1299759505",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["manage-context-limits", "mobile-friendly"],
+  "cataloged_at": "2026-08-06T03:41:51.094Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
