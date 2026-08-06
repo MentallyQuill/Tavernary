@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "eval3n4-sillytavern-starmem",
+  "source_id": "github-1216025460",
+  "source_identity": "github:eval3n4/sillytavern-starmem",
+  "evidence_fingerprint": "7fe9f63ab06114b5a3a7b59231ad19f22987e5dd545a3d17fe52b331cb6e8b18",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-06T04:00:04.468Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-06T04:00:04.468Z"
+  },
+  "maintenance_issue_number": null
+}
