@@ -118,6 +118,8 @@ jobs:
             git fetch origin "refs/heads/$BRANCH:refs/remotes/origin/$BRANCH"
             git checkout -B "$BRANCH" "origin/$BRANCH"
             git rebase origin/main
+            # Shared vocabulary proposals must be rebuilt from canonical main state.
+            git checkout origin/main -- data/vocabularies/frontends.json
             while IFS= read -r generated_path; do
               [[ -z "$generated_path" ]] && continue
               case "$generated_path" in

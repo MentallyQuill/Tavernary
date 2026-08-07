@@ -1091,6 +1091,20 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
     source.indexOf('git config user.name "github-actions[bot]"'),
   ).toBeLessThan(source.indexOf("git rebase origin/main"));
   expect(source).toContain("previous-generated-paths.txt");
+  const existingPrRegeneration = source.indexOf(
+    'if [[ -n "$PR_NUMBER" && -n "$REMOTE_SHA" && -n "$MARKER_SHA" ]]; then',
+  );
+  const vocabularyReset = source.indexOf(
+    "git checkout origin/main -- data/vocabularies/frontends.json",
+    existingPrRegeneration,
+  );
+  const markerCleanup = source.indexOf(
+    "while IFS= read -r generated_path; do",
+    existingPrRegeneration,
+  );
+  expect(existingPrRegeneration).toBeGreaterThanOrEqual(0);
+  expect(vocabularyReset).toBeGreaterThan(existingPrRegeneration);
+  expect(vocabularyReset).toBeLessThan(markerCleanup);
   expect(source).toContain("Refusing unsafe generated path");
   expect(source).toContain("Prepare generated path set");
   expect(source).toContain("Reject conflicting open submission paths");
