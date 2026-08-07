@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "cierru-st-stepped-thinking",
+  "source_id": "github-871361642",
+  "source_identity": "github:cierru/st-stepped-thinking",
+  "evidence_fingerprint": "e02309535b13ec49d072028d3ab17c85405b8b3ccdadd3204467f81e75c04326",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T08:46:43.623Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T08:46:43.623Z"
+  },
+  "maintenance_issue_number": null
+}
