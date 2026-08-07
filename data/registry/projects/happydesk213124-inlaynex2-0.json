@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "happydesk213124-inlaynex2-0",
+  "name": "inlaynex2.0",
+  "kind": "extension",
+  "summary": "A RisuAI plugin that converts chat prose into Danbooru-style tags, generates images through NovelAI or ComfyUI, and overlays them inline in chat.",
+  "metadata_status": "curated",
+  "source_id": "github-1323292424",
+  "frontends": ["risuai"],
+  "primary_function": "interface-workflow",
+  "tags": ["add-visual-immersion", "generate-images", "multi-stage-generation"],
+  "cataloged_at": "2026-08-07T23:21:03.081Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
