@@ -25,11 +25,13 @@ Do not edit generated artifacts manually.
 
 ### Issue admission
 
-`.github/workflows/admit-issue.yml` runs on `opened` and `reopened` issue
-events. External accounts may keep their oldest 10 issues open across every
-public issue type. Ordering uses creation time and then issue number; pull
-requests do not count. Repository owners, members, and collaborators bypass
-this public-intake cap.
+`.github/workflows/admit-issue.yml` runs on `opened`, `reopened`, and `edited`
+issue events. Maintainers can also run it manually with an issue number to
+recover a missed webhook; the manual path fetches the live open issue and
+applies the same admission policy before routing it. External accounts may keep
+their oldest 10 issues open across every public issue type. Ordering uses
+creation time and then issue number; pull requests do not count. Repository
+owners, members, and collaborators bypass this public-intake cap.
 
 Admission labels are workflow state:
 
@@ -42,8 +44,9 @@ reset. Reopening a limited issue reruns admission. If the open-issue lookup
 fails, admission fails open so a legitimate report is not discarded or
 stranded.
 
-After a GitHub API outage, rerun failed admission workflows. Do not manually
-publish a submission that has not passed its normal Project or Kit validation.
+After a GitHub API outage, run **Submission intake: Check issue eligibility**
+with the affected issue number. Do not dispatch triage first or manually publish
+a submission that has not passed its normal Project or Kit validation.
 
 ### Submission triage
 

@@ -224,7 +224,10 @@ skipped jobs and do not perform checkout, setup, or lifecycle work.
 ### 9.1 Route newly opened submission issues to the right validation path
 
 - Workflow: `admit-issue.yml`
-- What it does: checks if a new issue is eligible and dispatches to either project or Kit triage.
+- What it does: checks if an issue is eligible and dispatches it to the
+  appropriate Project, Kit, owner-request, withdrawal, or help triage path.
+- Manual recovery: choose **Run workflow**, enter the issue number, and let
+  admission dispatch the downstream workflow. Do not dispatch triage first.
 
 ### 9.2 Build and maintain the generated project transaction PR
 

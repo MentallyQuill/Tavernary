@@ -1,5 +1,5 @@
 name: "Submission intake: Check issue eligibility"
-run-name: "Issue #${{ github.event.issue.number }}: Check submission eligibility"
+run-name: "Issue #${{ inputs.issue_number || github.event.issue.number }}: Check submission eligibility"
 
 on:
   issues:
@@ -7,6 +7,12 @@ on:
       - opened
       - reopened
       - edited
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: "Issue number to re-run admission for"
+        required: true
+        type: number
 
 permissions:
   contents: read
@@ -14,7 +20,7 @@ permissions:
   actions: write
 
 concurrency:
-  group: issue-admission-${{ github.event.issue.number }}
+  group: issue-admission-${{ inputs.issue_number || github.event.issue.number }}
   cancel-in-progress: false
 
 jobs:
@@ -32,6 +38,7 @@ jobs:
         run: node scripts/submissions/admit-issue.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number }}
       - name: Reject conflicting submission labels
         if: >-
           steps.admission.outputs.admitted == 'true' &&

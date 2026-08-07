@@ -1481,16 +1481,28 @@ test("continues admitted submissions in the admission run", async () => {
   );
 
   expect(admission.on.issues.types).toEqual(["opened", "reopened", "edited"]);
+  expect(admission.on.workflow_dispatch.inputs.issue_number).toMatchObject({
+    description: "Issue number to re-run admission for",
+    required: true,
+    type: "number",
+  });
   expect(admission.permissions).toEqual({
     contents: "read",
     issues: "write",
     actions: "write",
   });
   expect(admission.concurrency).toEqual({
-    group: "issue-admission-${{ github.event.issue.number }}",
+    group:
+      "issue-admission-${{ inputs.issue_number || github.event.issue.number }}",
     "cancel-in-progress": false,
   });
+  expect(admission["run-name"]).toBe(
+    "Issue #${{ inputs.issue_number || github.event.issue.number }}: Check submission eligibility",
+  );
   expect(source).toContain("node scripts/submissions/admit-issue.mjs");
+  expect(source).toContain(
+    "ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number }}",
+  );
   expect(source).toContain("steps.admission.outputs.admitted == 'true'");
   expect(source).toContain("gh workflow run triage-submission.yml");
   expect(source).toContain("gh workflow run triage-kit-submission.yml");
