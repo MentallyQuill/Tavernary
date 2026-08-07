@@ -80,17 +80,17 @@
     "evidence_head_sha": "4bb3ff780ed9a05e4a5995d76ee577d9318d9cb3"
   },
   "community": {
-    "stars_count": 15,
+    "stars_count": 16,
     "forks_count": 0,
     "watchers_count": 2,
-    "aggregate": 17
+    "aggregate": 18
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-06T10:02:12.858Z",
+  "refreshed_at": "2026-08-07T08:32:22.684Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -98,7 +98,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T15:17:57.249Z",
     "scan": null,
-    "refreshed_at": "2026-08-06T10:02:12.858Z",
+    "refreshed_at": "2026-08-07T08:32:22.684Z",
     "stale_since": null
   }
 }

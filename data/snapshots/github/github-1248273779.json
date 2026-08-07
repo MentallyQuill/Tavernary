@@ -9,8 +9,8 @@
     "url": "https://github.com/virgilianshailer/lorebook-creator",
     "description": "Build complete SillyTavern World Info / LoreBooks with an LLM — from a single idea or a guided, tabbed worldbuilding form. Video demo https://youtu.be/RtjhyeD_NQc",
     "default_branch": "main",
-    "head_sha": "729fbe89d4e6f21bb91efec6767aeb66ce541117",
-    "head_committed_at": "2026-05-25T13:21:23.000Z",
+    "head_sha": "d17c069e423ce014aeb687d5e8e3f0fcd2cb6df6",
+    "head_committed_at": "2026-08-07T07:33:22.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
@@ -19,8 +19,13 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-05-25T13:21:23.000Z",
+    "latest_source_activity_at": "2026-08-07T07:33:22.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-07T07:33:22.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-05-25",
         "latest_at": "2026-05-25T13:21:23.000Z",
@@ -35,21 +40,22 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T06:20:47.793Z",
-    "baseline_attempts": 0
+    "baseline_completed_at": "2026-08-07T08:32:22.684Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "d17c069e423ce014aeb687d5e8e3f0fcd2cb6df6"
   },
   "community": {
-    "stars_count": 6,
+    "stars_count": 7,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 6
+    "aggregate": 7
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-06T10:02:12.858Z",
+  "refreshed_at": "2026-08-07T08:32:22.684Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -58,7 +64,8 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-06T10:02:12.858Z",
+    "refreshed_at": "2026-08-07T08:32:22.684Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }

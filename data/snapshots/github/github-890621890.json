@@ -15,7 +15,7 @@
     "fork": false,
     "parent": null,
     "created_at": "2024-11-18T22:24:34.000Z",
-    "size_kb": 937
+    "size_kb": 950
   },
   "source_health": "healthy",
   "activity": {
@@ -39,8 +39,9 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-07T02:43:52.152Z",
+  "refreshed_at": "2026-08-07T08:32:22.684Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "leandrojofre", "type": "User", "provider": "github" },
@@ -49,8 +50,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-07T02:43:52.152Z",
+    "refreshed_at": "2026-08-07T08:32:22.684Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

@@ -9,21 +9,21 @@
     "url": "https://github.com/MultihogAurelius/SillyTavern-MultihogDnDFramework",
     "description": "Started off as a humble \"RPG State Tracker\" but has since expanded into a more ambitious game engine, simulation system, and modular RPG platform where you can even make your own RPGs with their own systems and game logic. By default, ships with a \"hardcore\" setup that can best be described as simulation autism. Actions have consequences.",
     "default_branch": "main",
-    "head_sha": "86e88396b9ef7eea2f6f20cc1b27b76ceaa4fd74",
-    "head_committed_at": "2026-08-05T23:08:02.000Z",
+    "head_sha": "c0db3711add2fe655443b3155b5e8ee133778f99",
+    "head_committed_at": "2026-08-07T01:30:49.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-16T01:18:13.000Z",
-    "size_kb": 7791
+    "size_kb": 8298
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-05T23:08:02.000Z",
+    "latest_source_activity_at": "2026-08-07T01:30:49.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-03",
-        "latest_at": "2026-08-05T23:08:02.000Z",
+        "latest_at": "2026-08-07T01:30:49.000Z",
         "precision": "exact"
       },
       {
@@ -78,11 +78,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-05T14:15:30.000Z",
+    "latest_release_at": "2026-08-06T23:20:45.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-03T10:52:31.892Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "86e88396b9ef7eea2f6f20cc1b27b76ceaa4fd74"
+    "evidence_head_sha": "c0db3711add2fe655443b3155b5e8ee133778f99"
   },
   "community": {
     "stars_count": 65,
@@ -95,7 +95,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-06T10:02:12.858Z",
+  "refreshed_at": "2026-08-07T08:32:22.684Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -108,7 +108,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-06T10:02:12.858Z",
+    "refreshed_at": "2026-08-07T08:32:22.684Z",
     "stale_since": null
   }
 }

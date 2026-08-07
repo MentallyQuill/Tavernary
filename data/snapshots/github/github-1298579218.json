@@ -50,17 +50,17 @@
     "evidence_head_sha": "477549fa8d4ec73e8947278e59a18ab7f04cd603"
   },
   "community": {
-    "stars_count": 4,
+    "stars_count": 5,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 4
+    "aggregate": 5
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "Unlicense",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-06T10:02:12.858Z",
+  "refreshed_at": "2026-08-07T08:32:22.684Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -70,7 +70,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-30T04:53:54.074Z",
     "scan": null,
-    "refreshed_at": "2026-08-06T10:02:12.858Z",
+    "refreshed_at": "2026-08-07T08:32:22.684Z",
     "stale_since": null
   }
 }
