@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "myanadi-risuai-floating-memo",
+  "source_id": "github-1267771402",
+  "source_identity": "github:myanadi/risuai-floating-memo",
+  "evidence_fingerprint": "bcba914b3835eb8ce356afc0bce0284ed4dd2f9162d8e2a5e4d2fefb2db6f86f",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T22:49:30.743Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T22:49:30.743Z"
+  },
+  "maintenance_issue_number": null
+}
