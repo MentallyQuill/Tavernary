@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "kangjoseph90-risu-antigravity",
+  "name": "Risu-Antigravity",
+  "kind": "extension",
+  "summary": "Risu-Antigravity integrates Google Antigravity as a chat completion provider in RisuAI, giving chats direct access to models available through Antigravity.",
+  "metadata_status": "curated",
+  "source_id": "github-1100781311",
+  "frontends": ["risuai"],
+  "primary_function": "interface-workflow",
+  "tags": ["connect-external-services"],
+  "cataloged_at": "2026-08-07T23:48:20.083Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
