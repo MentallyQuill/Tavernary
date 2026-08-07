@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "0cyris-sillytavern-imagegen",
+  "name": "SillyTavern-ImageGen",
+  "kind": "extension",
+  "summary": "SillyTavern-ImageGen improves image generation by using a dedicated prompt connection and final user instruction, while exposing OpenRouter image controls such as resolution, quality, seed, and format.",
+  "metadata_status": "curated",
+  "source_id": "github-1327103953",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "build-extensions-and-scripts",
+    "generate-images",
+    "guide-model-responses",
+    "route-tasks-across-models"
+  ],
+  "cataloged_at": "2026-08-07T22:08:22.010Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
