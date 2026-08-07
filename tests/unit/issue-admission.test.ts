@@ -159,6 +159,9 @@ test("documents the shared public issue cap and maintainer recovery", async () =
   expect(kits).toContain("repository-wide open-issue limit");
   expect(operations).toContain("issue-admitted");
   expect(operations).toContain("issue-limit-reached");
-  expect(operations).toContain("opened` and `reopened");
+  expect(operations).toContain("`opened`, `reopened`, and `edited`");
+  expect(operations).toContain(
+    "run **Submission intake: Check issue eligibility**",
+  );
   expect(operations).toContain("fails open");
 });

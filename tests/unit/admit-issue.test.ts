@@ -6,6 +6,7 @@ import {
   issueAdmissionOutputs,
   listOpenIssues,
   processIssueAdmission,
+  resolveIssueAdmissionEvent,
 } from "../../scripts/submissions/admit-issue.mjs";
 
 const kitBody = [
@@ -113,6 +114,66 @@ function openIssues(count: number) {
     user: { id: 42 },
   }));
 }
+
+test("resolves a manual admission dispatch from the live open issue", async () => {
+  const dispatchEvent = {
+    action: "workflow_dispatch",
+    repository: { full_name: "MentallyQuill/Tavernary" },
+  };
+  const liveIssue = {
+    number: 325,
+    state: "open",
+    author_association: "NONE",
+    user: { id: 42, login: "submitter" },
+    labels: [{ name: "project-submission" }],
+  };
+  const request = vi.fn(async () => liveIssue);
+
+  await expect(
+    resolveIssueAdmissionEvent({
+      event: dispatchEvent,
+      issueNumber: "325",
+      request,
+    }),
+  ).resolves.toEqual({
+    ...dispatchEvent,
+    action: "reopened",
+    issue: liveIssue,
+  });
+  expect(request).toHaveBeenCalledWith(
+    "/repos/MentallyQuill/Tavernary/issues/325",
+  );
+});
+
+test.each([
+  ["missing", "", undefined],
+  ["zero", "0", undefined],
+  ["non-integer", "3.25", undefined],
+  ["closed issue", "325", { number: 325, state: "closed" }],
+  [
+    "pull request",
+    "325",
+    {
+      number: 325,
+      state: "open",
+      pull_request: { url: "https://example.test" },
+    },
+  ],
+])(
+  "rejects a manual admission dispatch for a %s",
+  async (_, issueNumber, issue) => {
+    await expect(
+      resolveIssueAdmissionEvent({
+        event: {
+          action: "workflow_dispatch",
+          repository: { full_name: "MentallyQuill/Tavernary" },
+        },
+        issueNumber,
+        request: async () => issue,
+      }),
+    ).rejects.toThrow();
+  },
+);
 
 test("paginates open issues and preserves numeric identity data", async () => {
   const firstPage = Array.from({ length: 100 }, (_, index) => ({

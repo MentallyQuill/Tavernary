@@ -262,11 +262,45 @@ export function issueAdmissionOutputs(decision, event) {
   };
 }
 
+export async function resolveIssueAdmissionEvent({
+  event,
+  issueNumber,
+  request,
+}) {
+  if (event.issue) return event;
+
+  const normalizedIssueNumber = String(issueNumber ?? "").trim();
+  if (!/^[1-9]\d*$/.test(normalizedIssueNumber)) {
+    throw new Error("Manual issue admission requires a positive issue number.");
+  }
+
+  const repository = event.repository?.full_name;
+  if (!repository) {
+    throw new Error("Manual issue admission requires a repository.");
+  }
+
+  const issue = await request(
+    `/repos/${repository}/issues/${normalizedIssueNumber}`,
+  );
+  if (issue?.pull_request) {
+    throw new Error("Manual issue admission does not accept pull requests.");
+  }
+  if (issue?.state !== "open") {
+    throw new Error("Manual issue admission requires an open issue.");
+  }
+
+  return { ...event, action: "reopened", issue };
+}
+
 async function main() {
-  const event = JSON.parse(
+  const rawEvent = JSON.parse(
     await readFile(process.env.GITHUB_EVENT_PATH, "utf8"),
   );
-  if (!event.issue) return;
+  const event = await resolveIssueAdmissionEvent({
+    event: rawEvent,
+    issueNumber: process.env.ISSUE_NUMBER,
+    request: github,
+  });
   const decision = await processIssueAdmission({ event, request: github });
   if (process.env.GITHUB_OUTPUT) {
     const outputs = issueAdmissionOutputs(decision, event);

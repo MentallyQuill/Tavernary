@@ -58,3 +58,13 @@ export function issueAdmissionOutputs(
   issue_number: string;
   route: IssueRoute;
 };
+
+export function resolveIssueAdmissionEvent(input: {
+  event: {
+    action?: string;
+    repository?: { full_name: string };
+    issue?: AdmissionEvent["issue"];
+  };
+  issueNumber?: string | number;
+  request: GitHubRequest;
+}): Promise<AdmissionEvent>;
