@@ -1,0 +1,55 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1168003843",
+  "repository": {
+    "id": 1168003843,
+    "owner": "EugenesDad",
+    "name": "RisuAI-Agent-plugin",
+    "url": "https://github.com/EugenesDad/RisuAI-Agent-plugin",
+    "description": "A plugin that simulates an AI agent orchestration layer on top of RisuAI.",
+    "default_branch": "main",
+    "head_sha": "07df0c25498f9efd5dccf75c741f5d23404506d0",
+    "head_committed_at": "2026-04-13T20:52:01.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-02-26T23:07:30.000Z",
+    "size_kb": 4288
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-04-13T20:52:45.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-07T22:24:34.575Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "07df0c25498f9efd5dccf75c741f5d23404506d0"
+  },
+  "community": {
+    "stars_count": 17,
+    "forks_count": 1,
+    "watchers_count": 0,
+    "aggregate": 18
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-07T22:24:34.575Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "EugenesDad", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-07T22:24:34.575Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
