@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "leandrojofre-sillytavern-wi-bulk-mover",
+  "name": "SillyTavern-WI-Bulk-Mover",
+  "kind": "extension",
+  "summary": "An extension that allows to copy and transfer multiple entries from one Lorebook into another.",
+  "metadata_status": "curated",
+  "source_id": "github-958439567",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "build-extensions-and-scripts",
+    "build-worlds-and-lore",
+    "manage-lorebooks"
+  ],
+  "cataloged_at": "2026-08-07T04:01:59.375Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "manual", "note": "Verified repository owner selection." }
+  }
+}
