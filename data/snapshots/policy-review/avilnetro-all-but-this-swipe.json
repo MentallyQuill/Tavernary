@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "avilnetro-all-but-this-swipe",
+  "source_id": "github-1189004275",
+  "source_identity": "github:avilnetro/all-but-this-swipe",
+  "evidence_fingerprint": "0f6b5b70101cc9f9b7f43dffbeea3bdcb717cd0c91942c8236f26e55705ea8db",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T03:59:58.514Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T03:59:58.514Z"
+  },
+  "maintenance_issue_number": null
+}
