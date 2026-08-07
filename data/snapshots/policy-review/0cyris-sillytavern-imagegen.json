@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "0cyris-sillytavern-imagegen",
+  "source_id": "github-1327103953",
+  "source_identity": "github:0cyris/sillytavern-imagegen",
+  "evidence_fingerprint": "88b562051aa66b6ce1b526398122806516212fd6cab220c035334cc96e9b4808",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T22:11:17.597Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T22:11:17.597Z"
+  },
+  "maintenance_issue_number": null
+}
