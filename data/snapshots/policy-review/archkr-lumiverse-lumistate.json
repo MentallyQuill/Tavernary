@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "archkr-lumiverse-lumistate",
+  "source_id": "github-1303397173",
+  "source_identity": "github:archkr/lumiverse-lumistate",
+  "evidence_fingerprint": "0808addb63633cfb8263285078e4ab04d23f50e8f2cc9d0bc998041c0c309ad9",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T08:45:44.687Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T08:45:44.687Z"
+  },
+  "maintenance_issue_number": null
+}
