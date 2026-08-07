@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "myanadi-risuai-webnovel-community",
+  "source_id": "github-1267775620",
+  "source_identity": "github:myanadi/risuai-webnovel-community",
+  "evidence_fingerprint": "736426e4cea1c8c54e01bb456d9f894fb0efa88c216903dccc6cd6633b0937bb",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T22:55:13.558Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T22:55:13.558Z"
+  },
+  "maintenance_issue_number": null
+}
