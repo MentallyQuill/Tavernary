@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "city-unit-sillytavern-chub-search",
+  "source_id": "github-687155351",
+  "source_identity": "github:city-unit/sillytavern-chub-search",
+  "evidence_fingerprint": "a6003f6c71e0177a5a4862014d13a9cdca4a8698412a5e314974db2e71cbf69c",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T08:46:16.859Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T08:46:16.859Z"
+  },
+  "maintenance_issue_number": null
+}
