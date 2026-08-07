@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "archkr-lumiverse-lumiworld",
+  "source_id": "github-1285750198",
+  "source_identity": "github:archkr/lumiverse-lumiworld",
+  "evidence_fingerprint": "fc3ec41859df870fef61f55644ae2b686a6915555dfda2c33599287c49d44d14",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T08:45:11.735Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T08:45:11.735Z"
+  },
+  "maintenance_issue_number": null
+}
