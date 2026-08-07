@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "myanadi-risuai-webnovel-community",
+  "name": "risuai-webnovel-community",
+  "kind": "extension",
+  "summary": "A serialized web novel community simulation plugin for RisuAI that turns RP sessions into chapters and simulates reader reactions through reputation, hooks, reader memory, and a fandom glossary.",
+  "metadata_status": "curated",
+  "source_id": "github-1267775620",
+  "frontends": ["risuai"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "maintain-long-term-memory",
+    "plan-stories-and-scenes",
+    "run-group-roleplay",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-08-07T22:52:18.080Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
