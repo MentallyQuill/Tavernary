@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "eugenesdad-risuai-agent-plugin",
+  "name": "RisuAI-Agent-plugin",
+  "kind": "extension",
+  "summary": "A multi-agent orchestration plugin for RisuAI roleplay, combining parallel reasoning, persona directing, and vector retrieval for token-efficient conversations.",
+  "metadata_status": "curated",
+  "source_id": "github-1168003843",
+  "frontends": ["risuai"],
+  "primary_function": "generation-reasoning",
+  "tags": [
+    "agentic-tool-use",
+    "guide-model-responses",
+    "multi-stage-generation",
+    "multilingual",
+    "semantic-retrieval"
+  ],
+  "cataloged_at": "2026-08-07T22:24:34.575Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
