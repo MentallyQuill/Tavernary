@@ -1,0 +1,59 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1267778093",
+  "repository": {
+    "id": 1267778093,
+    "owner": "myanadi",
+    "name": "risuai-gpt-image",
+    "url": "https://github.com/myanadi/risuai-gpt-image",
+    "description": "OpenAI image generation plugin for RisuAI — direct API call workaround with scene/character mode.",
+    "default_branch": "main",
+    "head_sha": "b2e37ec0d3a715b949faa81748dd9bf0133a9375",
+    "head_committed_at": "2026-06-12T21:26:59.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-06-12T21:16:05.000Z",
+    "size_kb": 31
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-06-12T21:16:40.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-12T21:16:40.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-07T23:27:34.568Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "b2e37ec0d3a715b949faa81748dd9bf0133a9375"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-07T23:27:34.568Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "myanadi", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-07T23:27:34.568Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
