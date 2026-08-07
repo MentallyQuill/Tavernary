@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "senjinthedragon-sillytavern-discord-connector",
+  "source_id": "github-1164267316",
+  "source_identity": "github:senjinthedragon/sillytavern-discord-connector",
+  "evidence_fingerprint": "eaa911bc740e185f9cc01b536d9f9f01eab66e8671d319bad2d04832b71c8e36",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T08:41:57.557Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T08:41:57.557Z"
+  },
+  "maintenance_issue_number": null
+}
