@@ -1,0 +1,53 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1088497436",
+  "repository": {
+    "id": 1088497436,
+    "owner": "kangjoseph90",
+    "name": "Risu-InlayManager",
+    "url": "https://github.com/kangjoseph90/Risu-InlayManager",
+    "description": "RisuAI Plugin - A plugin for managing Inlay assets.",
+    "default_branch": "main",
+    "head_sha": "4b0ad18f2bf1bcced450fa62bfb2d0f49ba98e37",
+    "head_committed_at": "2026-01-08T12:29:14.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-11-03T03:35:13.000Z",
+    "size_kb": 482
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-01-08T12:43:24.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-07T23:33:06.714Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "4b0ad18f2bf1bcced450fa62bfb2d0f49ba98e37"
+  },
+  "community": {
+    "stars_count": 1,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 1
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-08-07T23:33:06.714Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "kangjoseph90", "type": "User", "provider": "github" },
+      { "login": "Copilot", "type": "Bot", "provider": "github" },
+      { "login": "google-labs-jules[bot]", "type": "Bot", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-07T23:33:06.714Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
