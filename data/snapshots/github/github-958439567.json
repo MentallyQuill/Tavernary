@@ -1,0 +1,55 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-958439567",
+  "repository": {
+    "id": 958439567,
+    "owner": "leandrojofre",
+    "name": "SillyTavern-WI-Bulk-Mover",
+    "url": "https://github.com/leandrojofre/SillyTavern-WI-Bulk-Mover",
+    "description": "This is a simple extension that allows you to clone WI entries from one lorebook into another.",
+    "default_branch": "release",
+    "head_sha": "68ff2113d6183073f2848dc0e7318df32bf0b65f",
+    "head_committed_at": "2026-05-05T21:32:08.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-04-01T07:47:14.000Z",
+    "size_kb": 1495
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-05-05T21:30:58.000Z",
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-05-05T21:32:27.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-07T04:01:59.375Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "68ff2113d6183073f2848dc0e7318df32bf0b65f"
+  },
+  "community": {
+    "stars_count": 17,
+    "forks_count": 3,
+    "watchers_count": 0,
+    "aggregate": 20
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-07T04:01:59.375Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "leandrojofre", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-07T04:01:59.375Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
