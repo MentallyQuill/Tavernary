@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "kangjoseph90-risu-antigravity",
+  "source_id": "github-1100781311",
+  "source_identity": "github:kangjoseph90/risu-antigravity",
+  "evidence_fingerprint": "aac36ced839bf8041129e303b9131dbb78eb90ea2a6a1886176cb4f56d001e7f",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T23:51:48.109Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T23:51:48.109Z"
+  },
+  "maintenance_issue_number": null
+}
