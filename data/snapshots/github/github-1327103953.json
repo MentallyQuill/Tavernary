@@ -1,0 +1,59 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1327103953",
+  "repository": {
+    "id": 1327103953,
+    "owner": "0cyris",
+    "name": "SillyTavern-ImageGen",
+    "url": "https://github.com/0cyris/SillyTavern-ImageGen",
+    "description": "A fork of SillyTavern's built-in Image Generation extension.",
+    "default_branch": "master",
+    "head_sha": "d53b8e8004296bd27607276eebd46b30f16834e7",
+    "head_committed_at": "2026-08-07T21:59:48.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-08-07T19:51:09.000Z",
+    "size_kb": 0
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-07T05:27:14.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-07T05:27:14.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-07T22:08:22.010Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "d53b8e8004296bd27607276eebd46b30f16834e7"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-07T22:08:22.010Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "0cyris", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-07T22:08:22.010Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
