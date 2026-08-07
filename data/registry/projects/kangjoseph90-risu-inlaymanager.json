@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "kangjoseph90-risu-inlaymanager",
+  "name": "Risu-InlayManager",
+  "kind": "extension",
+  "summary": "RisuAI plugin for managing inlay assets and syncing inlay data across devices, keeping assets organized and available across installations.",
+  "metadata_status": "curated",
+  "source_id": "github-1088497436",
+  "frontends": ["risuai"],
+  "primary_function": "interface-workflow",
+  "tags": ["manage-characters-and-personas", "move-and-back-up-data"],
+  "cataloged_at": "2026-08-07T23:33:06.714Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
