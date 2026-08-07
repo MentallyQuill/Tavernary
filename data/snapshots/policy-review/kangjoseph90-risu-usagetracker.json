@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "kangjoseph90-risu-usagetracker",
+  "source_id": "github-1082494236",
+  "source_identity": "github:kangjoseph90/risu-usagetracker",
+  "evidence_fingerprint": "0f08c9b8fa6b787a67e0c725c933bc155b59bf2973e5d790d70cb4ebbd595e8d",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T23:16:05.805Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T23:16:05.805Z"
+  },
+  "maintenance_issue_number": null
+}
