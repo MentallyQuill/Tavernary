@@ -11,6 +11,11 @@ test("explains safety, reporting, and legal information on About", () => {
   render(<AboutPage />);
 
   expect(
+    screen.getByText(
+      "Tavernary is a search and discovery catalog for AI roleplay tools in and around the SillyTavern community. It indexes public project information and directs visitors to each project's creator-owned repository or source page.",
+    ),
+  ).toBeInTheDocument();
+  expect(
     screen.getByRole("heading", { name: "Safety and security" }),
   ).toBeInTheDocument();
   expect(
@@ -25,7 +30,7 @@ test("explains safety, reporting, and legal information on About", () => {
   );
   expect(
     screen.getByText(
-      /scan results are not a guarantee that a project is safe or free of harmful behavior/i,
+      /scan results do not guarantee that a project is safe or free of harmful behavior/i,
     ),
   ).toBeInTheDocument();
   expect(

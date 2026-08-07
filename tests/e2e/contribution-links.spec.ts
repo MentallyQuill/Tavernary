@@ -21,7 +21,7 @@ test("explains Tavernary and links to contribution flows", async ({ page }) => {
   ).toBeVisible();
   await expect(
     page.getByText(
-      /Both providers receive the same repository activity, community, and attribution treatment/i,
+      /Repositories from both providers receive the same activity, community, and attribution treatment/i,
     ),
   ).toBeVisible();
   await expect(
