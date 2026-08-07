@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "brucestarkallen-sillytavern-chat-assistant",
+  "source_id": "github-1287690691",
+  "source_identity": "github:brucestarkallen/sillytavern-chat-assistant",
+  "evidence_fingerprint": "28e2e41836a2e6c838a22ef355de9cde2da0994c391ce7f92393203397398ef6",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T21:40:00.739Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T21:40:00.739Z"
+  },
+  "maintenance_issue_number": null
+}
