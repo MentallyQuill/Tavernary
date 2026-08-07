@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "pocketrisu-pocketrisu",
+  "name": "PocketRisu",
+  "kind": "frontend",
+  "summary": "Self-hosted AI roleplay chat for PC, tablet, and smartphone, with server-side generation that continues through disconnections and restores completed responses.",
+  "metadata_status": "curated",
+  "source_id": "github-1183860600",
+  "frontends": ["pocketrisu"],
+  "primary_function": "frontend",
+  "tags": [
+    "maintain-long-term-memory",
+    "mobile-friendly",
+    "model-agnostic",
+    "modular-and-extensible",
+    "move-and-back-up-data",
+    "self-hosted"
+  ],
+  "cataloged_at": "2026-08-07T04:00:13.017Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
