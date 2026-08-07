@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "myanadi-risuai-gpt-image",
+  "name": "risuai-gpt-image",
+  "kind": "extension",
+  "summary": "Direct OpenAI image generation for RisuAI that extracts the latest AI response, organizes scene tags with an LLM, and creates contextual images through gpt-image-2.",
+  "metadata_status": "curated",
+  "source_id": "github-1267778093",
+  "frontends": ["risuai"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "connect-external-services",
+    "generate-images",
+    "multi-stage-generation"
+  ],
+  "cataloged_at": "2026-08-07T23:27:34.568Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
