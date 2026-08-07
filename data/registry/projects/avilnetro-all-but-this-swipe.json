@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "avilnetro-all-but-this-swipe",
+  "name": "all-but-this-swipe",
+  "kind": "extension",
+  "summary": "Adds a SillyTavern option to delete every unused swipe while keeping the displayed one, with popup and STscript commands for quick chat cleanup.",
+  "metadata_status": "curated",
+  "source_id": "github-1189004275",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["organize-chats-and-messages"],
+  "cataloged_at": "2026-08-07T03:57:02.777Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
