@@ -4,7 +4,7 @@
 
 **Goal:** Make automated frontend-submission regeneration idempotent and use the repaired workflow to restore PR #332 to one PocketRisu vocabulary entry.
 
-**Architecture:** The workflow owns cleanup of automation-generated branch state. On an existing generated PR it will reset the shared frontend vocabulary directly from current `origin/main` before marker-scoped cleanup, then run the unchanged generator against that canonical baseline. PR #332 will be regenerated through this patched workflow so its transaction marker and generated head remain consistent.
+**Architecture:** The workflow owns cleanup of automation-generated branch state. On an existing generated PR it will recreate the automation branch directly from current `origin/main` before marker-scoped cleanup, then run the unchanged generator against that canonical baseline. PR #332 will be regenerated through this patched workflow so its transaction marker and generated head remain consistent.
 
 **Tech Stack:** GitHub Actions YAML, Bash, TypeScript, Vitest, GitHub CLI, Node.js 24.
 
@@ -18,35 +18,28 @@
 
 ---
 
-### Task 1: Make Existing-PR Vocabulary Cleanup Independent of Marker Paths
+### Task 1: Rebuild Existing Generated Branches from Canonical Main
 
 **Files:**
 - Modify: `.github/workflows/generate-project-submission.yml`
+- Create: `scripts/submissions/reset-project-submission-branch.mjs`
 - Test: `tests/unit/workflows.test.ts`
+- Test: `tests/unit/reset-project-submission-branch.test.ts`
 
 **Interfaces:**
 - Consumes: existing `PR_NUMBER`, `REMOTE_SHA`, `MARKER_SHA`, `BRANCH`, and fetched `origin/main` workflow state.
-- Produces: an existing-PR regeneration workspace whose `data/vocabularies/frontends.json` exactly matches `origin/main` before `generate-project-submission.mjs` runs.
+- Produces: an existing-PR regeneration branch whose `HEAD` and catalog files exactly match `origin/main` before `generate-project-submission.mjs` runs.
 
-- [ ] **Step 1: Write the failing workflow regression test**
+- [ ] **Step 1: Write the failing Git-history regression test**
 
-Add this assertion inside `generates submission PRs with scoped permissions and manual recovery`:
+Create a temporary bare remote with stale generated PocketRisu history and an overlapping canonical vocabulary commit on `main`. Invoke the reset CLI and assert:
 
 ```ts
-  const existingPrRegeneration = source.indexOf(
-    'if [[ -n "$PR_NUMBER" && -n "$REMOTE_SHA" && -n "$MARKER_SHA" ]]; then',
-  );
-  const vocabularyReset = source.indexOf(
-    "git checkout origin/main -- data/vocabularies/frontends.json",
-    existingPrRegeneration,
-  );
-  const markerCleanup = source.indexOf(
-    "while IFS= read -r generated_path; do",
-    existingPrRegeneration,
-  );
-  expect(existingPrRegeneration).toBeGreaterThanOrEqual(0);
-  expect(vocabularyReset).toBeGreaterThan(existingPrRegeneration);
-  expect(vocabularyReset).toBeLessThan(markerCleanup);
+expect(result.status, result.stderr).toBe(0);
+expect(git(runner, "branch", "--show-current")).toBe(branch);
+expect(git(runner, "rev-parse", "HEAD")).toBe(
+  git(runner, "rev-parse", "origin/main"),
+);
 ```
 
 - [ ] **Step 2: Run the focused test and verify RED**
@@ -54,28 +47,30 @@ Add this assertion inside `generates submission PRs with scoped permissions and 
 Run:
 
 ```powershell
-npm.cmd test -- tests/unit/workflows.test.ts
+npm.cmd test -- tests/unit/reset-project-submission-branch.test.ts
 ```
 
-Expected: FAIL because `vocabularyReset` is `-1`.
+Expected: FAIL because the reset CLI does not exist.
 
-- [ ] **Step 3: Add the minimal workflow reset**
+- [ ] **Step 3: Add the tested branch-reset CLI and workflow call**
 
-Immediately after `git rebase origin/main` in the existing-PR branch, add:
+Validate the generated branch name and reset it without replaying stale commits:
 
-```bash
-# Shared vocabulary proposals must be rebuilt from canonical main state.
-git checkout origin/main -- data/vocabularies/frontends.json
+```js
+execFileSync("git", ["checkout", "-B", branch, "origin/main"], {
+  cwd,
+  stdio: "inherit",
+});
 ```
 
-Keep the marker-declared generated-path loop unchanged for all transaction-owned files.
+Call the CLI inside the existing-PR workflow branch before the marker-declared generated-path loop. Remove the rebase of stale generated history.
 
 - [ ] **Step 4: Run focused tests and verify GREEN**
 
 Run:
 
 ```powershell
-npm.cmd test -- tests/unit/workflows.test.ts tests/unit/frontend-reconciliation.test.ts tests/unit/draft-project-record.test.ts tests/unit/generate-project-submission.test.ts
+npm.cmd test -- tests/unit/reset-project-submission-branch.test.ts tests/unit/workflows.test.ts tests/unit/frontend-reconciliation.test.ts tests/unit/draft-project-record.test.ts tests/unit/generate-project-submission.test.ts
 ```
 
 Expected: all selected tests pass with zero failures.
@@ -94,7 +89,7 @@ Expected: both commands exit 0.
 - [ ] **Step 6: Commit the systemic fix**
 
 ```powershell
-git add -- .github/workflows/generate-project-submission.yml tests/unit/workflows.test.ts docs/superpowers/plans/2026-08-06-project-submission-frontend-regeneration.md
+git add -- .github/workflows/generate-project-submission.yml scripts/submissions/reset-project-submission-branch.mjs tests/unit/reset-project-submission-branch.test.ts tests/unit/workflows.test.ts docs/superpowers/plans/2026-08-06-project-submission-frontend-regeneration.md docs/superpowers/specs/2026-08-06-project-submission-frontend-regeneration-design.md
 git commit -m "fix(submissions): reset frontend vocabulary"
 ```
 

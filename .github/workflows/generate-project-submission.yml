@@ -115,11 +115,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if [[ -n "$PR_NUMBER" && -n "$REMOTE_SHA" && -n "$MARKER_SHA" ]]; then
-            git fetch origin "refs/heads/$BRANCH:refs/remotes/origin/$BRANCH"
-            git checkout -B "$BRANCH" "origin/$BRANCH"
-            git rebase origin/main
-            # Shared vocabulary proposals must be rebuilt from canonical main state.
-            git checkout origin/main -- data/vocabularies/frontends.json
+            node scripts/submissions/reset-project-submission-branch.mjs --branch "$BRANCH"
             while IFS= read -r generated_path; do
               [[ -z "$generated_path" ]] && continue
               case "$generated_path" in

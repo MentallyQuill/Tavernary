@@ -1082,20 +1082,27 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
     "project-submission-${{ inputs.issue_number }}",
   );
   expect(source).toContain("git push --force-with-lease=");
-  expect(source).toContain("git rebase origin/main");
+  expect(source).not.toContain("git rebase origin/main");
+  expect(source).toContain(
+    'node scripts/submissions/reset-project-submission-branch.mjs --branch "$BRANCH"',
+  );
   expect(source).toContain('git config user.name "github-actions[bot]"');
   expect(source).toContain(
     'git config user.email "41898282+github-actions[bot]@users.noreply.github.com"',
   );
   expect(
     source.indexOf('git config user.name "github-actions[bot]"'),
-  ).toBeLessThan(source.indexOf("git rebase origin/main"));
+  ).toBeLessThan(
+    source.indexOf(
+      "node scripts/submissions/reset-project-submission-branch.mjs",
+    ),
+  );
   expect(source).toContain("previous-generated-paths.txt");
   const existingPrRegeneration = source.indexOf(
     'if [[ -n "$PR_NUMBER" && -n "$REMOTE_SHA" && -n "$MARKER_SHA" ]]; then',
   );
-  const vocabularyReset = source.indexOf(
-    "git checkout origin/main -- data/vocabularies/frontends.json",
+  const branchReset = source.indexOf(
+    "node scripts/submissions/reset-project-submission-branch.mjs",
     existingPrRegeneration,
   );
   const markerCleanup = source.indexOf(
@@ -1103,8 +1110,8 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
     existingPrRegeneration,
   );
   expect(existingPrRegeneration).toBeGreaterThanOrEqual(0);
-  expect(vocabularyReset).toBeGreaterThan(existingPrRegeneration);
-  expect(vocabularyReset).toBeLessThan(markerCleanup);
+  expect(branchReset).toBeGreaterThan(existingPrRegeneration);
+  expect(branchReset).toBeLessThan(markerCleanup);
   expect(source).toContain("Refusing unsafe generated path");
   expect(source).toContain("Prepare generated path set");
   expect(source).toContain("Reject conflicting open submission paths");
