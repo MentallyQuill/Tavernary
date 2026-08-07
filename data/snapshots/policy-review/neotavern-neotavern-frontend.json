@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "neotavern-neotavern-frontend",
+  "source_id": "github-1095193888",
+  "source_identity": "github:neotavern/neotavern-frontend",
+  "evidence_fingerprint": "38deda01bcdfffac98c442389fd44a0c123c2b1d40ba172dabd3258aaaf1042b",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T23:57:18.384Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T23:57:18.384Z"
+  },
+  "maintenance_issue_number": null
+}
