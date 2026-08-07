@@ -1,0 +1,52 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1082494236",
+  "repository": {
+    "id": 1082494236,
+    "owner": "kangjoseph90",
+    "name": "Risu-UsageTracker",
+    "url": "https://github.com/kangjoseph90/Risu-UsageTracker",
+    "description": "RisuAI Plugin – A plugin for tracking LLM API usage.",
+    "default_branch": "master",
+    "head_sha": "8021b5342963c84e74970dd7cc5865ca66ed101b",
+    "head_committed_at": "2025-11-30T04:30:19.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-10-24T10:20:54.000Z",
+    "size_kb": 615
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": "2025-11-28T14:40:50.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-07T23:12:46.106Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "8021b5342963c84e74970dd7cc5865ca66ed101b"
+  },
+  "community": {
+    "stars_count": 2,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 2
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-08-07T23:12:46.106Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "kangjoseph90", "type": "User", "provider": "github" },
+      { "login": "google-labs-jules[bot]", "type": "Bot", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-07T23:12:46.106Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
