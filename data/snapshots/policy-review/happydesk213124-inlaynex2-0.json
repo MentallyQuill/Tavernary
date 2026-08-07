@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "happydesk213124-inlaynex2-0",
+  "source_id": "github-1323292424",
+  "source_identity": "github:happydesk213124/inlaynex2.0",
+  "evidence_fingerprint": "4eef08d5dfac05de571cdd4f6e686b0e08774dd771f4825032180bc251852739",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T23:24:16.536Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T23:24:16.536Z"
+  },
+  "maintenance_issue_number": null
+}
