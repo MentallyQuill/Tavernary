@@ -6,7 +6,7 @@
   "summary": "Self-hosted AI roleplay chat for PC, tablet, and smartphone, with server-side generation that continues through disconnections and restores completed responses.",
   "metadata_status": "curated",
   "source_id": "github-1183860600",
-  "frontends": ["pocketrisu-pocketrisu"],
+  "frontends": ["pocketrisu"],
   "primary_function": "frontend",
   "tags": [
     "maintain-long-term-memory",
