@@ -1,0 +1,63 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1100781311",
+  "repository": {
+    "id": 1100781311,
+    "owner": "kangjoseph90",
+    "name": "Risu-Antigravity",
+    "url": "https://github.com/kangjoseph90/Risu-Antigravity",
+    "description": "RisuAI Plugin - A plugin powered by Google Antigravity",
+    "default_branch": "main",
+    "head_sha": "3f77962ab416253643d8f86344ea03cac9a47f3c",
+    "head_committed_at": "2026-07-22T08:42:10.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-11-20T18:44:35.000Z",
+    "size_kb": 283
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-22T08:42:10.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-22T08:42:10.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-13T10:20:32.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-22T08:44:39.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-07T23:48:20.083Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "3f77962ab416253643d8f86344ea03cac9a47f3c"
+  },
+  "community": {
+    "stars_count": 6,
+    "forks_count": 3,
+    "watchers_count": 1,
+    "aggregate": 10
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-08-07T23:48:20.083Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "kangjoseph90", "type": "User", "provider": "github" },
+      { "login": "google-labs-jules[bot]", "type": "Bot", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-07T23:48:20.083Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
