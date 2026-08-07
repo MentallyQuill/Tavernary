@@ -1,0 +1,56 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-890621890",
+  "repository": {
+    "id": 890621890,
+    "owner": "leandrojofre",
+    "name": "SillyTavern-QOL",
+    "url": "https://github.com/leandrojofre/SillyTavern-QOL",
+    "description": "A SillyTavern estension that adds small QOL features.",
+    "default_branch": "release",
+    "head_sha": "864b31cc33c35a28e3c04cbea7f14f9a34b52bbb",
+    "head_committed_at": "2026-05-05T21:39:01.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2024-11-18T22:24:34.000Z",
+    "size_kb": 937
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-05-05T21:38:22.000Z",
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-05-05T21:39:18.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-07T02:43:52.152Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "864b31cc33c35a28e3c04cbea7f14f9a34b52bbb"
+  },
+  "community": {
+    "stars_count": 9,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 9
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-07T02:43:52.152Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "leandrojofre", "type": "User", "provider": "github" },
+      { "login": "city-unit", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-07T02:43:52.152Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
