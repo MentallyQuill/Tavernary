@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "leandrojofre-sillytavern-qol",
+  "name": "SillyTavern-QOL",
+  "kind": "extension",
+  "summary": "An estension that adds small QOL features for SillyTavern.",
+  "metadata_status": "curated",
+  "source_id": "github-890621890",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "automate-roleplay-workflows",
+    "inspect-prompts-and-generations",
+    "manage-prompts-and-presets"
+  ],
+  "cataloged_at": "2026-08-07T02:43:52.152Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "manual", "note": "Verified repository owner selection." }
+  }
+}
