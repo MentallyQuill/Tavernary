@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "myanadi-risuai-floating-memo",
+  "name": "risuai-floating-memo",
+  "kind": "extension",
+  "summary": "A floating notepad overlay plugin for RisuAI that preserves settings, character notes, and scratch context without leaving the chat screen.",
+  "metadata_status": "curated",
+  "source_id": "github-1267771402",
+  "frontends": ["risuai"],
+  "primary_function": "interface-workflow",
+  "tags": ["customize-the-interface", "maintain-long-term-memory"],
+  "cataloged_at": "2026-08-07T22:46:22.745Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
