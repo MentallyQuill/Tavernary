@@ -56,6 +56,11 @@
       "description": "Works with the Narrative Engine roleplay frontend."
     },
     {
+      "id": "neotavern-frontend",
+      "label": "NeoTavern-Frontend",
+      "description": "Works with the NeoTavern-Frontend roleplay frontend."
+    },
+    {
       "id": "pocketrisu",
       "label": "PocketRisu",
       "description": "Works with the PocketRisu roleplay frontend."

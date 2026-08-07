@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "neotavern-neotavern-frontend",
+  "name": "NeoTavern-Frontend",
+  "kind": "frontend",
+  "summary": "NeoTavern-Frontend is a modern, experimental frontend for SillyTavern, offering an alternative interface while remaining pre-alpha with incomplete features and expected bugs.",
+  "metadata_status": "curated",
+  "source_id": "github-1095193888",
+  "frontends": ["neotavern-frontend"],
+  "primary_function": "frontend",
+  "tags": [],
+  "cataloged_at": "2026-08-07T23:54:09.816Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
