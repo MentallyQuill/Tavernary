@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "al4xdev-alex-tavern",
+  "source_id": "github-1297079548",
+  "source_identity": "github:al4xdev/alex-tavern",
+  "evidence_fingerprint": "dde6f604a80bb92af7acaa4836406e8bce070477cb391f1ce84720222347edce",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T22:07:52.969Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T22:07:52.969Z"
+  },
+  "maintenance_issue_number": null
+}
