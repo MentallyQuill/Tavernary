@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "thejackals-sillytavern-mapregionslocator",
+  "source_id": "github-1248549303",
+  "source_identity": "github:thejackals/sillytavern-mapregionslocator",
+  "evidence_fingerprint": "1e3a6ef9860e7ec40070b93b6a9b13cc535114b3bb1eac6e1dc420cc44201a7e",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T08:44:07.286Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T08:44:07.286Z"
+  },
+  "maintenance_issue_number": null
+}
