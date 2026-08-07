@@ -1,0 +1,79 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1297079548",
+  "repository": {
+    "id": 1297079548,
+    "owner": "al4xdev",
+    "name": "alex-tavern",
+    "url": "https://github.com/al4xdev/alex-tavern",
+    "description": "A multi-agent AI system with isolated agent memory, deterministic confidentiality guards, transactional context compaction, provider adapters, and replayable observability.",
+    "default_branch": "master",
+    "head_sha": "ee89bf454ca8faae24c4345b6cfdc01a05f08f16",
+    "head_committed_at": "2026-08-05T22:41:50.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-07-11T03:07:09.000Z",
+    "size_kb": 33491
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-05T22:41:50.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-05T22:41:50.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-08-02T15:07:45.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-26T23:26:34.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T23:16:40.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T23:58:46.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-07T22:04:37.225Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "ee89bf454ca8faae24c4345b6cfdc01a05f08f16"
+  },
+  "community": {
+    "stars_count": 3,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 3
+  },
+  "license": {
+    "status": "proprietary",
+    "spdx_id": null,
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-07T22:04:37.225Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "al4xdev", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-07T22:04:37.225Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
