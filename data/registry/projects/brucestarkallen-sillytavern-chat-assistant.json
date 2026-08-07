@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "brucestarkallen-sillytavern-chat-assistant",
+  "name": "SillyTavern-Chat-Assistant",
+  "kind": "extension",
+  "summary": "A floating SillyTavern panel with a second assistant model that edits chats, memory, and worldbook for continuity, while Director and Editor systems sharpen storytelling.",
+  "metadata_status": "curated",
+  "source_id": "github-1287690691",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "edit-and-refine-messages",
+    "improve-writing-and-prose",
+    "plan-stories-and-scenes",
+    "preserve-story-continuity",
+    "secondary-model"
+  ],
+  "cataloged_at": "2026-08-07T21:36:24.703Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
