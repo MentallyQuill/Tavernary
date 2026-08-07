@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "al4xdev-alex-tavern",
+  "name": "alex-tavern",
+  "kind": "frontend",
+  "summary": "Alex Tavern is a rigid multi-agent roleplay kernel where blind agents enforce narrative physics, private perspectives, and player agency through a code-owned clock and knowledge boundaries.",
+  "metadata_status": "curated",
+  "source_id": "github-1297079548",
+  "frontends": ["alex-tavern"],
+  "primary_function": "frontend",
+  "tags": [
+    "maintain-long-term-memory",
+    "model-agnostic",
+    "modular-and-extensible",
+    "persistent-state",
+    "rules-driven",
+    "run-group-roleplay"
+  ],
+  "cataloged_at": "2026-08-07T22:04:37.225Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
