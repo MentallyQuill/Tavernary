@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "eugenesdad-risuai-agent-plugin",
+  "source_id": "github-1168003843",
+  "source_identity": "github:eugenesdad/risuai-agent-plugin",
+  "evidence_fingerprint": "797df8f9d035e6b17abd3898ec233082d347cc947bfe10adbf77884eaa0c5557",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T22:27:48.460Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T22:27:48.460Z"
+  },
+  "maintenance_issue_number": null
+}
