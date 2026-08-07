@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "kangjoseph90-risu-inlaymanager",
+  "source_id": "github-1088497436",
+  "source_identity": "github:kangjoseph90/risu-inlaymanager",
+  "evidence_fingerprint": "16b18f26cdea00d14724a6a2d984200b02933229f0d04ec1d5fc612812fd6d66",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-07T23:36:10.361Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-07T23:36:10.361Z"
+  },
+  "maintenance_issue_number": null
+}
