@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "myanadi-risuai-lorebook-manager",
+  "name": "risuai-lorebook-manager",
+  "kind": "extension",
+  "summary": "A fullscreen RisuAI lorebook editor that replaces the narrow side panel with an environment optimized for managing large worldbuilding databases.",
+  "metadata_status": "curated",
+  "source_id": "github-1267774290",
+  "frontends": ["risuai"],
+  "primary_function": "interface-workflow",
+  "tags": ["build-worlds-and-lore", "manage-lorebooks", "mobile-friendly"],
+  "cataloged_at": "2026-08-07T23:05:40.855Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
