@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "windy-sora-sillytavern-groupworld",
+  "name": "SillyTavern-GroupWorld",
+  "kind": "extension",
+  "summary": "SillyTavern-GroupWorld coordinates multi-character chats by reading recent events before generation and directing who speaks, stays silent, or enters the scene.",
+  "metadata_status": "curated",
+  "source_id": "github-1262742050",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [
+    "guide-model-responses",
+    "improve-writing-and-prose",
+    "increase-narrative-variety",
+    "plan-stories-and-scenes",
+    "run-group-roleplay"
+  ],
+  "cataloged_at": "2026-08-08T03:58:50.938Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
