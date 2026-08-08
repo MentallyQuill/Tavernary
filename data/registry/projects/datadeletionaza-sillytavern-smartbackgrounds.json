@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "datadeletionaza-sillytavern-smartbackgrounds",
+  "name": "SillyTavern-SmartBackgrounds",
+  "kind": "extension",
+  "summary": "Smart Backgrounds restores detail locally and optimizes large SillyTavern backgrounds, with side-by-side review, per-image Undo, and recoverable replacement.",
+  "metadata_status": "curated",
+  "source_id": "github-1312041003",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "local-first",
+    "mobile-friendly",
+    "non-destructive",
+    "privacy-focused"
+  ],
+  "cataloged_at": "2026-08-08T02:24:01.737Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
