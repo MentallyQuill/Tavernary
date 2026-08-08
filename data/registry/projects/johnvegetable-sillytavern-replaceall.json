@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "johnvegetable-sillytavern-replaceall",
+  "name": "SillyTavern-ReplaceAll",
+  "kind": "extension",
+  "summary": "Edit stored SillyTavern chat text and swipes with /replaceall, then re-render and save the chat; optional flags support case-sensitive and whole-word matching.",
+  "metadata_status": "curated",
+  "source_id": "github-1319768827",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["edit-and-refine-messages"],
+  "cataloged_at": "2026-08-08T03:14:18.062Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
