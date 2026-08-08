@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "owler-tavern-context-image-generation",
+  "source_id": "github-1298579218",
+  "source_identity": "github:owler-tavern/context-image-generation",
+  "evidence_fingerprint": "4872239d78288af90f71d6c4a2c2697e732d133ac4160a589d1ddf6ae11734dd",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T08:15:03.788Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T08:15:03.788Z"
+  },
+  "maintenance_issue_number": null
+}
