@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "ghostd93-bettersimtracker",
+  "source_id": "github-1160848402",
+  "source_identity": "github:ghostd93/bettersimtracker",
+  "evidence_fingerprint": "cbc256681f269daab61b37022b45236970540b0418f62501b903b6928971cc35",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T08:11:25.636Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T08:11:25.636Z"
+  },
+  "maintenance_issue_number": null
+}
