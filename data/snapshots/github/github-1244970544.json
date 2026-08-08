@@ -1,0 +1,75 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1244970544",
+  "repository": {
+    "id": 1244970544,
+    "owner": "CalamitousFelicitousness",
+    "name": "SillyTavern-ReasoningProfiles",
+    "url": "https://github.com/CalamitousFelicitousness/SillyTavern-ReasoningProfiles",
+    "description": "SillyTavern third-party extension that injects per-provider reasoning/thinking parameters into chat completion requests.",
+    "default_branch": "main",
+    "head_sha": "267be002d4ede346a70d676c720298374eb72545",
+    "head_committed_at": "2026-08-05T23:02:43.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-05-20T19:28:54.000Z",
+    "size_kb": 46
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-05T23:02:43.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-05T23:02:43.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-27T19:40:55.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-21T00:58:22.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-08T01:42:43.536Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "267be002d4ede346a70d676c720298374eb72545"
+  },
+  "community": {
+    "stars_count": 2,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 2
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-08T01:42:43.536Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      {
+        "login": "CalamitousFelicitousness",
+        "type": "User",
+        "provider": "github"
+      }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-08T01:42:43.536Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
