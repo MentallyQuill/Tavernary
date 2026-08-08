@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "adnv3k-sillytavern-inline-generated-media",
+  "source_id": "github-1309521887",
+  "source_identity": "github:adnv3k/sillytavern-inline-generated-media",
+  "evidence_fingerprint": "9adf09feef87cb7272c9031e9d864caf62487a9ffe236ce40f0c58483165118c",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T05:36:51.561Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T05:36:51.561Z"
+  },
+  "maintenance_issue_number": null
+}
