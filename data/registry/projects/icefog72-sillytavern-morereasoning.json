@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "icefog72-sillytavern-morereasoning",
+  "name": "SillyTavern-MoreReasoning",
+  "kind": "extension",
+  "summary": "SillyTavern-MoreReasoning adds multiple custom-tag reasoning parsers, with per-parser prompt injection controls plus automatic parsing and UI expansion for streamed or historical messages.",
+  "metadata_status": "curated",
+  "source_id": "github-1199215475",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [
+    "add-structured-reasoning",
+    "guide-model-responses",
+    "streaming-aware"
+  ],
+  "cataloged_at": "2026-08-08T05:00:06.170Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
