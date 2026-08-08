@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "agnaistic-agnai",
+  "source_id": "github-609727033",
+  "source_identity": "github:agnaistic/agnai",
+  "evidence_fingerprint": "577cf3c0c0507ae87d22e47e541c8dfbe0e9823de963ceae6cebd08c05b1f0dd",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T21:42:22.971Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T21:42:22.971Z"
+  },
+  "maintenance_issue_number": null
+}
