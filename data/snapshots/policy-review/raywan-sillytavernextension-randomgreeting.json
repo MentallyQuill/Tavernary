@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "raywan-sillytavernextension-randomgreeting",
+  "source_id": "github-1295846426",
+  "source_identity": "github:raywan/sillytavernextension-randomgreeting",
+  "evidence_fingerprint": "760ac34d969a64b4e84203caa880faaa591744085b3865d7d856b2ce908723dd",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T05:55:47.566Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T05:55:47.566Z"
+  },
+  "maintenance_issue_number": null
+}
