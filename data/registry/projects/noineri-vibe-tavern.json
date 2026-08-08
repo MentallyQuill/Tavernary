@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "noineri-vibe-tavern",
+  "name": "vibe_tavern",
+  "kind": "frontend",
+  "summary": "A local AI roleplay client focused on good UX and long sessions, with a mobile-friendly experience across Windows, Linux, Docker, and Android.",
+  "metadata_status": "curated",
+  "source_id": "github-1218770712",
+  "frontends": ["vibe-tavern"],
+  "primary_function": "frontend",
+  "tags": ["local-first", "mobile-friendly"],
+  "cataloged_at": "2026-08-08T02:41:53.971Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

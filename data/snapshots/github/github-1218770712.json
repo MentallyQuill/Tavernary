@@ -1,0 +1,113 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1218770712",
+  "repository": {
+    "id": 1218770712,
+    "owner": "Noineri",
+    "name": "vibe_tavern",
+    "url": "https://github.com/Noineri/vibe_tavern",
+    "description": "A modern, local-first AI roleplay platform",
+    "default_branch": "dev",
+    "head_sha": "0ac153b97a97caa4be71bbee1a45da715ea732a0",
+    "head_committed_at": "2026-08-02T18:15:01.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-04-23T07:45:41.000Z",
+    "size_kb": 40078
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-02T18:15:01.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-08-02T18:15:01.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-26T20:47:18.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T22:28:42.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T22:38:05.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-05T23:09:11.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-28T23:11:29.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-21T21:02:58.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T22:38:22.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-07T20:11:15.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-31T23:47:15.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-24T23:48:41.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-08-02T18:29:41.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-08T02:41:53.971Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "0ac153b97a97caa4be71bbee1a45da715ea732a0"
+  },
+  "community": {
+    "stars_count": 14,
+    "forks_count": 1,
+    "watchers_count": 0,
+    "aggregate": 15
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-08T02:41:53.971Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "Noineri", "type": "User", "provider": "github" },
+      { "login": "zbndev", "type": "User", "provider": "github" },
+      { "login": "github-actions[bot]", "type": "Bot", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-08T02:41:53.971Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
