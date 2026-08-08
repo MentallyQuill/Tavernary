@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "xays-101-theme-studio-silly-tavern",
+  "name": "Theme-Studio-Silly-Tavern",
+  "kind": "extension",
+  "summary": "A SillyTavern theming studio with ready-made palettes, Google or custom fonts, plain-language controls, and reversible native theme saves via automatic snapshots.",
+  "metadata_status": "curated",
+  "source_id": "github-1309872055",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["customize-the-interface", "non-destructive"],
+  "cataloged_at": "2026-08-08T06:18:21.089Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
