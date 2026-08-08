@@ -1,0 +1,53 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-915968373",
+  "repository": {
+    "id": 915968373,
+    "owner": "IceFog72",
+    "name": "SillyTavern-CustomThemeStyleInputs",
+    "url": "https://github.com/IceFog72/SillyTavern-CustomThemeStyleInputs",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "a001f9ebfcf2e41de1904e631d5884032b8b319b",
+    "head_committed_at": "2026-01-10T13:55:37.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-01-13T07:49:24.000Z",
+    "size_kb": 30
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-08T05:01:34.390Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "a001f9ebfcf2e41de1904e631d5884032b8b319b"
+  },
+  "community": {
+    "stars_count": 39,
+    "forks_count": 0,
+    "watchers_count": 1,
+    "aggregate": 40
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-08T05:01:34.390Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "IceFog72", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-08T05:01:34.390Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
