@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "calamitousfelicitousness-sillytavern-reasoningprofiles",
+  "name": "SillyTavern-ReasoningProfiles",
+  "kind": "extension",
+  "summary": "SillyTavern extension that injects provider-specific reasoning parameters, auto-selects profiles, and previews the JSON patch merged into chat completion requests.",
+  "metadata_status": "curated",
+  "source_id": "github-1244970544",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [
+    "guide-model-responses",
+    "inspect-prompts-and-generations",
+    "model-agnostic"
+  ],
+  "cataloged_at": "2026-08-08T01:42:43.536Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
