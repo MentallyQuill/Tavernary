@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "jeremyoha450-sillytavern-character-continuity-manager",
+  "source_id": "github-1276977142",
+  "source_identity": "github:jeremyoha450/sillytavern-character-continuity-manager",
+  "evidence_fingerprint": "239998431261b3967b2fb6736713fdd679f8869f0732860ef0eba004696c2f85",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T02:51:47.303Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T02:51:47.303Z"
+  },
+  "maintenance_issue_number": null
+}
