@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "zne4-sillytavern-chromaticdialogue",
+  "source_id": "github-1316937800",
+  "source_identity": "github:zne4/sillytavern-chromaticdialogue",
+  "evidence_fingerprint": "a342593464b36585067054ae8246b1c2e08c54e47d57ff8cf17236badd4eeaa4",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T03:06:30.129Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T03:06:30.129Z"
+  },
+  "maintenance_issue_number": null
+}
