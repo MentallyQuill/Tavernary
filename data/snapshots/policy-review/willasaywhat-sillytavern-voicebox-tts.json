@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "willasaywhat-sillytavern-voicebox-tts",
+  "source_id": "github-1310625840",
+  "source_identity": "github:willasaywhat/sillytavern-voicebox-tts",
+  "evidence_fingerprint": "72854e3068ed9360562bb616ef30fca31bb1a2b71fea8f4a3c3c6b4c50ecacd9",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T06:01:55.994Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T06:01:55.994Z"
+  },
+  "maintenance_issue_number": null
+}
