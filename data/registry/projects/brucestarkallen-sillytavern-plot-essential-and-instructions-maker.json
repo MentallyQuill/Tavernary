@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "brucestarkallen-sillytavern-plot-essential-and-instructions-maker",
+  "name": "SillyTavern-Plot-Essential-and-Instructions-Maker",
+  "kind": "extension",
+  "summary": "A floating AI editor for Plot Essential, instruction, and worldbook documents, using conversational surgical edits, reviewable diffs, references, sessions, Compare, and undo.",
+  "metadata_status": "curated",
+  "source_id": "github-1288668022",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "agentic-tool-use",
+    "build-worlds-and-lore",
+    "inspect-prompts-and-generations",
+    "manage-lorebooks",
+    "manage-prompts-and-presets",
+    "non-destructive"
+  ],
+  "cataloged_at": "2026-08-08T04:26:19.337Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
