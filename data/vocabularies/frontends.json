@@ -116,6 +116,11 @@
       "description": "Works with the TauriTavern roleplay frontend."
     },
     {
+      "id": "tavernai",
+      "label": "TavernAI",
+      "description": "Works with the TavernAI roleplay frontend."
+    },
+    {
       "id": "tipsytavern",
       "label": "TipsyTavern",
       "description": "Works with the TipsyTavern roleplay frontend."

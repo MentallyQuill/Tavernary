@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "tavernai-tavernai",
+  "name": "TavernAI",
+  "kind": "frontend",
+  "summary": "TavernAI is a private, portable AI roleplay chat where scenes branch at any message, add characters, and run multiple replies with per-scene prompts, rules, files, and scripts.",
+  "metadata_status": "curated",
+  "source_id": "github-1271548133",
+  "frontends": ["tavernai"],
+  "primary_function": "frontend",
+  "tags": [
+    "guide-model-responses",
+    "local-first",
+    "model-agnostic",
+    "multi-stage-generation",
+    "privacy-focused",
+    "run-group-roleplay"
+  ],
+  "cataloged_at": "2026-08-08T04:09:47.834Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
