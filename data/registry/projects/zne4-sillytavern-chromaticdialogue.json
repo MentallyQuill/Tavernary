@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "zne4-sillytavern-chromaticdialogue",
+  "name": "SillyTavern-ChromaticDialogue",
+  "kind": "extension",
+  "summary": "Chat-scoped SillyTavern dialogue color manager that assigns c1–c99 markers to reusable colors, generating CSS with automatic refresh as chats change.",
+  "metadata_status": "curated",
+  "source_id": "github-1316937800",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "add-visual-immersion",
+    "customize-the-interface",
+    "persistent-state"
+  ],
+  "cataloged_at": "2026-08-08T03:03:09.760Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
