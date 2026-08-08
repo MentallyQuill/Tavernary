@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "skyjinxx-sillytavern-finalpromptviewer",
+  "name": "SillyTavern-FinalPromptViewer",
+  "kind": "extension",
+  "summary": "SillyTavern-FinalPromptViewer captures fully rendered final prompts, including worldbook and EJS preprocessing, then provides model-aware token estimates, search, and message inspection.",
+  "metadata_status": "curated",
+  "source_id": "github-1198459430",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["inspect-prompts-and-generations", "monitor-token-usage-and-cost"],
+  "cataloged_at": "2026-08-08T01:49:48.148Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
