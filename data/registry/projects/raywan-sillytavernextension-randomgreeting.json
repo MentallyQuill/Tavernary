@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "raywan-sillytavernextension-randomgreeting",
+  "name": "SillyTavernExtension-RandomGreeting",
+  "kind": "extension",
+  "summary": "Randomizes alternate greetings in SillyTavern chats, with a no-repeat dice button to reshuffle the first message and an optional automatic choice for new chats.",
+  "metadata_status": "curated",
+  "source_id": "github-1295846426",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["increase-narrative-variety"],
+  "cataloged_at": "2026-08-08T05:52:56.823Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
