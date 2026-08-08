@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "skyjinxx-sillytavern-finalpromptviewer",
+  "source_id": "github-1198459430",
+  "source_identity": "github:skyjinxx/sillytavern-finalpromptviewer",
+  "evidence_fingerprint": "3da5b39d1c557f3cf32ba0f5c32b7dd1d99d12d243b7dcabfbcb669cf91ddbdd",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T01:52:49.812Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T01:52:49.812Z"
+  },
+  "maintenance_issue_number": null
+}
