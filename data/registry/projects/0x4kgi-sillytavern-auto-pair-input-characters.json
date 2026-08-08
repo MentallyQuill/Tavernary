@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "0x4kgi-sillytavern-auto-pair-input-characters",
+  "name": "SillyTavern-Auto-Pair-Input-Characters",
+  "kind": "extension",
+  "summary": "Automatically pairs or closes brackets and other characters in all text inputs, with VS Code-style completion that also wraps selected text.",
+  "metadata_status": "curated",
+  "source_id": "github-1317341957",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["edit-and-refine-messages"],
+  "cataloged_at": "2026-08-08T03:48:42.948Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
