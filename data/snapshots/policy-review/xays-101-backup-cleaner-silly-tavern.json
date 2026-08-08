@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "xays-101-backup-cleaner-silly-tavern",
+  "source_id": "github-1314351595",
+  "source_identity": "github:xays-101/backup-cleaner-silly-tavern",
+  "evidence_fingerprint": "77eceee427d5e4cee41bdbd139abd50211e6d02ab3279faac2332b6d063abb4c",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T04:22:42.622Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T04:22:42.622Z"
+  },
+  "maintenance_issue_number": null
+}
