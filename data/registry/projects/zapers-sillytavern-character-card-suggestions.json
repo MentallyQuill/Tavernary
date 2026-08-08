@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "zapers-sillytavern-character-card-suggestions",
+  "name": "SillyTavern-Character-Card-Suggestions",
+  "kind": "extension",
+  "summary": "Review-first SillyTavern extension that watches one-on-one chats for durable information and suggests improvements to the active character card.",
+  "metadata_status": "curated",
+  "source_id": "github-1324619032",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": ["maintain-long-term-memory", "manage-characters-and-personas"],
+  "cataloged_at": "2026-08-08T01:35:58.658Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
