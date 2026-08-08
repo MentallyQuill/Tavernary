@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sofizzticated-sillytavern-scrolltolast",
+  "source_id": "github-1311326828",
+  "source_identity": "github:sofizzticated/sillytavern-scrolltolast",
+  "evidence_fingerprint": "abcb1308b09346aad9e8bcdfd24c7f2f422941ef1a2db07fb4c62d695ce733df",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T05:44:19.446Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T05:44:19.446Z"
+  },
+  "maintenance_issue_number": null
+}
