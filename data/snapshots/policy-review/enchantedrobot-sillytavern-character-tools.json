@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "enchantedrobot-sillytavern-character-tools",
+  "source_id": "github-1300808393",
+  "source_identity": "github:enchantedrobot/sillytavern-character-tools",
+  "evidence_fingerprint": "3177c12daafdd55757a16fd6e4d53158b9286118e9a0930688b78e0348e00e1c",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T03:42:54.067Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T03:42:54.067Z"
+  },
+  "maintenance_issue_number": null
+}
