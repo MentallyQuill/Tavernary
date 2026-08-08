@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mokimoko-sillytavern-scenariocrafter",
+  "source_id": "github-1244123455",
+  "source_identity": "github:mokimoko/sillytavern-scenariocrafter",
+  "evidence_fingerprint": "47806a536bf6bbcf12c4a200fd539028c25b45a0753bbae0f03c761000fdb6f3",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T08:13:28.370Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T08:13:28.370Z"
+  },
+  "maintenance_issue_number": null
+}
