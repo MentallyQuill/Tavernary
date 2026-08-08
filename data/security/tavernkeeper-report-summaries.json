@@ -112,6 +112,7 @@
     "b3955226d60fef5defeb3d793d55f7cbb45dd850f7c0855a0cd0c44df51bd2ee",
     "c30522f5152953fe0e9bd59167e018a11bf5185370c6f4b57081b4762d64dd14",
     "e29d130fe3de243ac77a04e00716bbdda32717b8e89121e797410bdc14fa0a05",
+    "630631f684cf9b82f1f612e78c6122bf2409e7843fce8350a0db0c0f3ee4814a",
     "b47db6d7ea337dee425ddbf73fef77650d2a823e6d1a99388bce7516712da7d6",
     "edec52a68ab13b884769335464f92e50a7e1a7121b528d4e5f4efd6a1c0451ba",
     "8c6fd5d36745a095af5c58385aa13fdda0af5de60ba2d80275566c3e285714c8",
@@ -126,6 +127,7 @@
     "7e85fa1bc228c166cb85df2d0730c0646bb3932c4171ea40d9ea2a4f503eb8e0",
     "e38e150788b8805eccc3c093457711a074d12f762a7454160512475b39a61789",
     "de0469d3e2155038455de6f9aa25df4d55e4a2c6f4e14c4bbb8c1c1ffe048f2f",
+    "51c08afd7ab8ec6e1af36c590fd3701477dfe58158f9ca47f818918552dd92bf",
     "ecdc54030effa788dafb45552cf0909cbd694d5e9edbeaef1b8945e9edbfe8ec",
     "385d1ac976b3b7136921d62b03e730f834750358c810279ac61311b667d9dfb4",
     "e2203f4bd9e76692ba138164b6d1472dc8e59681d0d78aafc0e99f13bf6cd704",
@@ -134,11 +136,13 @@
     "a1ff01c030ba2116b297786e4ebb61a04e7f07f698d37df76a272757774c3b88",
     "79f999e1316d516459b43385ecc8556de1ddc5cd2e806ca392174ab67e6cfbba",
     "167dcd0ea1b4f5e7b04b912c844e4b974819c8b7c33735c687a59312b9ba4a30",
+    "9c6d8efcb144982b5646d6cc016c63b89069c790020da4525733be8a4d5e5d75",
     "ae04c136f8d7f8b6c7a35324b1d31f32718fdc5ce75fe77b20df3a327d018f98",
     "8532f0a82dd08bca0c5a07f4452f9418e8087b74f3fe578bf4de5b1f42f4d68a",
     "e2363acc45d399480b5b23e0fb71b02dc6c75a999b4d57e4d252ad1f5bf8a2fd",
     "24b07ad49a5335eb4ae90d32d5bee58dd9de5299e385fe145d904973a09362a8",
     "f93a3ced46f183892411e9725b2f6b70716ed1c4370613c8a2a36c24233216cf",
+    "a9642214ee294084d2c5cf831c115619ea8eceada651b98c86fc54adf1321052",
     "1c9f68f2c660ec5542eb77c3332b524a59a5e00538a5abf43b632dff750eeab4",
     "5060598bbb0fcdd1ffb72b052c061e9a371f4a472fa629fe126ef2e5c34e2559",
     "427e19092f53f682da273b9a257f267852e51af6dae9cf79e626e90eaabe3cc9",
@@ -152,6 +156,7 @@
     "1448579768691a5dfd7ce81cfc919b2aaff5fa705aff0a6cf4ad15b1027fd209",
     "a5dc30d3db7efc2e37e6a76214ab2a5d4ef9b41a4c11e81f2e7385e5bdc2ff7a",
     "031ce63409e4e444e8a65bef8d2547dcdd9bfd117b82541b4924aedca313e519",
+    "ee6af84c0f9c7c4582bfb1eec978c759a0e82f027396cebc40025a430d968731",
     "f1da587a1375b75d4566f34f07af71f5941abd5043d3e5163cfedb20c4231ad1",
     "9df87a9f554e3b9aa1fdeb65b5f76bce94ba41fdecf36adc7db16bfff95ad0b0",
     "4bb33f850c7ccd045a4e74ad54169d5d29b5635987269b9f44ca6af8010ea7e3",
@@ -25639,6 +25644,181 @@
       }
     },
     {
+      "report_id": "51c08afd7ab8ec6e1af36c590fd3701477dfe58158f9ca47f818918552dd92bf",
+      "report_digest": "51c08afd7ab8ec6e1af36c590fd3701477dfe58158f9ca47f818918552dd92bf",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "3",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "2",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v4",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1126279204",
+      "provider": "github",
+      "repository_id": 1126279204,
+      "repository": "AventurasTeam/Aventuras",
+      "target_sha": "c936f71fa0ea832528febfd387aaff85f7032d3a",
+      "completed_at": "2026-08-06T00:14:53.754Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 94,
+        "assessments": 94,
+        "observations": 3,
+        "items": 97,
+        "disposition": {
+          "expected_behavior": 15,
+          "minor_weakness": 78,
+          "material_vulnerability": 4,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 15,
+          "low": 69,
+          "medium": 13,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 81,
+          "plausible": 16,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 19,
+          "medium": 30,
+          "high": 48
+        },
+        "recommended_risk": {
+          "low": 93,
+          "material": 4,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 771,
+        "inventory_bytes": 9337744,
+        "tools_completed": 7,
+        "tools_not_applicable": 0,
+        "evidence_validated": 94,
+        "review_required": 94,
+        "review_completed": 94
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1126279204/c936f71fa0ea832528febfd387aaff85f7032d3a/3/51c08afd7ab8ec6e1af36c590fd3701477dfe58158f9ca47f818918552dd92bf/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1126279204/history/",
+      "assessed_at": "2026-08-08T15:56:46.226Z",
+      "synthesis_policy_version": "4",
+      "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
+      "assessment": {
+        "cited_finding_ids": [
+          "1675de85aeac623170fc7494ae4e7d0e0ea7282854cb8d912547a7ecf3254a78",
+          "1733b246d7529050c0baf6fbf1ba6bc22a243466ccf58dbbedf72c5d6bcdfb26",
+          "347481918a4a655b013d2446af983f2a13916086731a6551dd3bd04beb203e2a",
+          "6fff7a7a3ee15c88683aae98d719329148f9c966e1a6d475151f81b01de480bf",
+          "046aeba7f724c32b67171cdf286cec3fd66e25f27f9e27e8faade989af6496f2",
+          "04ce55efc1a28c40b5919750968de4cf34decf557f12189c2caf6e6fb5b965ab",
+          "051050be3a3dd58780349f55ca9e10fb7d80377b583c6118c3c1782067893d13",
+          "06d53ef7241124d51494cc0c101d2efaaf325055d1e942f3f43b235c19699aaf",
+          "08556770fc657bdcca85983eb0977ba74857c0480996bf5a88049a95e694bc08",
+          "11cee2b73d3a94a56fcde5eabb30d12f5a970f72fc33862a691d570f528a7eae",
+          "16919e2d99b40658f5eaa8b1d814b7bb7f4b9371f0a2258c27af7724b65540bc",
+          "1c2c9bd99ba5fbbb174829373be00944c96a187f91684f739c0c70f6d755922b",
+          "1f863edb6d2770deb36ee1e65a50ed2ed78b6c1576fd30a3023e52b6c9891715",
+          "2a412ab5c8e73c8ff37779dc66b1517ee1cc0a718e12903f8c1b4ea2cbf9142c",
+          "378387582272a07c4b2b793597850e555682dcba43ca309e4eed530a11c299bf",
+          "3f78455b3803ad8f26e883b41c4fb86b7c46536e6249603023946d3784385cd6",
+          "45bb1ea200b20f21f71b7bf651d5f09bae61fd1a7cdcfc2ef4d80a46f1815556",
+          "47ac794864af32de78d5922d05e69aabc961df5990459714b799f64ec34b600d",
+          "47bcdeceee94f2f4f36728e4a61ce5974ed84d1118c813472a6428290301b564",
+          "4b7682562ee9780b4bf54d584ad30baf1c0f41b566beb710e814459b409540e1",
+          "53de584b1b8fdc5b0a82dc3b1906a0c9ef7bafcd39459a32ab59eef535d8397a",
+          "546d6bbd9181a5945344196bee80bf68ee7905292d1e80454ac71b5314534011",
+          "57bbb6b3937df4c64b487db1c446420d969a1826f2ec3983490ea787853be6e6",
+          "5e90611ac5fee0682c253c5bcf84c6c5c8a93fb4e2465da843f945a4a4a29fdd",
+          "62d3fb9e55637e7b4dc0d3d5aa279794d35636bdc77aad340c50fed4f854b9ef",
+          "62f7c4c35a0c20ce61a5bc541ed34d84d83f786a5f85869be54606d9f1db3da9",
+          "656284c4889de550fee0acb48ee19f179d7da3e5de27873e78dd60fb53451fc8",
+          "672fa14a34675e55747d09920ff3dbfba6e2d542ab39fab0f4df5cabd653b1c3",
+          "6a285f7984080500a0116c6841233692e106f69f851328ecc1cfdb20dec78bbc",
+          "6af3d927f84fa8a693da6fc1bff65971e0266c00f256e6df957f0cc020b9e912",
+          "6d5740cead7fbe35a5cc8f3ecf52fceb2e4ebbda55e59b611e0765492cfab4b8",
+          "75b0e824be2844196f51c17c0bd44f43bad430ef5bcf09d3249f6116cdb42c91",
+          "75d8bbb0e0794f05273753b207bf373783b9213121d48f5865db0eb047dd83c1",
+          "78e02f802e011a76d49dfb7700fbd2192bffa72bfa2f7277679d75b1118b5293",
+          "796cfce792deecc19884ecf48bcbb4b8fdcc4d93dfe9a933652f80ff14dc7d59",
+          "79e753d38df2b3c68030e8d5099f55ab491d74ceb23b3529b3283656c6573ad8",
+          "7c00049656e535d704accf6f64c032faeeab349d5b3b847c7c937264ce43b378",
+          "7d2443578183d7da2b57af216abd7aaf3539051bfd547e18099a943b30d97a97",
+          "7d7d4380c74080bb869b09b0ebd1f4933547c4cf78fe02ff66f40f372a2bcb69",
+          "7df123ce14d235eaa8c87f6532bc9cebe968f48e22ad6f505437752f70b13b48",
+          "8520893d6e467aa6dc7c80d341c05fdfb7f93195ede3fbcb0f1817eacb3fe4cc",
+          "89015bb2a7df33be27ef0aad667b751e13110dce4527ba2bd599cf5019b18d1e",
+          "8b5293ca0561a5b5386c74ae9dd63a9cd4e8864754c908f6e1073d240197084a",
+          "8c20ac9a3dde9d0c1795d650fcd7e35cbc5d40c4600d8e508362d9381f030457",
+          "8efb8a2ae180e6c9fbda159e9a51983c4f759d79c94afb21acf3836bc4d1082b",
+          "91f255b0267a00c2dec3c845200ed52469369782f5febaaceb6e7cacd1b62818",
+          "9612df464b568b9557c63ff1959402373e5ca89761c5fe1ea530b03266fd26bf",
+          "9691690389cdbbfd614276a684a140c34dbc7256068f8ac13a9632158339bd06",
+          "9a45ffbbe292e0d413041690c8e5efab6086a71ccca29038f0d0ad5dbb3451a8",
+          "9b7fae08b291f39d148dcef4a5363694b720cb60ab5a71a1100362e38582b55e",
+          "9bad23bb59a4fe5e1062cffa3d50ccd17d99daa4c0ade014fad2a25d15f4840b",
+          "a1ed6072aa7cb210adbb95b2af09b01ca4214950b1218ea836a794379e3820fd",
+          "a40150ac32d3d0ca59db4c0346494f7ced06ec417b6cfa10952e7a49e202b603",
+          "ab2445e632856143a3b784f2df7b57ed92e485580d19affd984a9913fe51d1f9",
+          "aea3b13db3173199d943dc0b5374c2c90cdcef74e4cfdc5179c0ca751ca2f4d9",
+          "af7677741d30c22c70f512bacbabcaf04828c1acb190a77d852d0c79cabd84a6",
+          "afd6733e2a77f9f59ce10a25068261cc70be83ebdcccba4fbf75f141da8eccb7",
+          "b36fda87c2f9684a742769b9e5a75e90945e22a09e42089b9810c8cd1d0e8c92",
+          "b45416accc03bd7c2d8807bd3db1174299a6c85c2ac18422c470a98580d73353",
+          "c01ff57dafc33ea3a372073dd3f152bbd4224d15781d6105455b265446e219c4",
+          "c070e41c1e4ada18e039138394a20a2f06440fa708d8616ac5c7ecfbfdf78d5a",
+          "c28ccea32f0853ff33dabb25f03b8da7504330d711dad4cec6482785308a036c",
+          "cfc3e3a8a4ec723258a1772dcf9697a2c0921fd21e2449391038040df5e0f894",
+          "cfd176dba4648de07bf3df0026954d250b8571ba067fc1c8b8e951e98a1c772b",
+          "d3fc5fe4787b8e9a71f73a19852f7a99e6689f98ca08fbb8272a7ba8c6bd4cd2",
+          "d6a4ee4d5bbfc4e7ebc9f5247dbf6856a8b52494b8383f3360578891641988fb",
+          "d906f68550d6e97ed4248485b928c20c56a77e058f49a142fb14ae984f368282",
+          "da74577a226e781802df8dff4d1bad958fadd4c29a3fbde5b17965de5e475e23",
+          "dbcd4d0797ffd66cf16419ee0a58aced752fcdae46a94d77f350afed66b50aa5",
+          "e0e2150f797eef7767c19275e791d94a113cce2bb5326817ba6a86782b7797a2",
+          "e53fb8d5d189cf3bd0d5c1e5d13cd81efae2b3611bda9aa64ef9fd1d68176854",
+          "ea5600cc0fe45413ee1b1684b9a900fab3fef45f77c9bd2b24d61033781df27a",
+          "eb2b7ec045bf63448433794f4d5ad9474aaff251c5d57d7f27f8b19d71c35eb1",
+          "ed53fbe9979ec46fcd110f15ccb838798b7b7f53c6b315e488ac7e07b57d0c8a",
+          "f169cb17c9a52292389b4c77f74cfb5c36ec3c0b552b1507ae26e89cd5c595a5",
+          "f1b5f64a668acfaeed9602292de1408ef2d66b1e9e2721497eb7b121b318fe5c",
+          "f2ba67f977780e80a32ee1470e8c973e79a882d1f62af80dac0ecd514f26b106",
+          "f6de9e2173d32bafc0c1df6f0e69e110decc4eba3b81558d1253e0ec43460ad9",
+          "f9e110c1562ed894534d21618c4e3702c43719404981cb3bc6cb6346371290da",
+          "fbc6bf7369b604a378cefa549ec57154cd04e051209dcea451ca0714f48cb7f8"
+        ],
+        "headline": "Material risk: investigate and update four flagged dependencies",
+        "high_danger": 0,
+        "interaction_chains": [
+          {
+            "explanation": "The desktop app processes network responses and AI-generated content. If one of the flagged vulnerable dependencies is used in those paths, a malicious or compromised service could potentially send crafted data that triggers the weakness. The reports do not identify all affected packages or prove reachability, so the practical impact remains uncertain, but the dependencies should be identified and patched.",
+            "finding_ids": [
+              "1675de85aeac623170fc7494ae4e7d0e0ea7282854cb8d912547a7ecf3254a78",
+              "1733b246d7529050c0baf6fbf1ba6bc22a243466ccf58dbbedf72c5d6bcdfb26",
+              "347481918a4a655b013d2446af983f2a13916086731a6551dd3bd04beb203e2a",
+              "6fff7a7a3ee15c88683aae98d719329148f9c966e1a6d475151f81b01de480bf"
+            ],
+            "resulting_risk": "material"
+          }
+        ],
+        "malicious_evidence": "No credible malicious behavior was identified. The review found no evidence of API-key phishing, credential theft, trojan delivery, harmful payloads, or bot infection. The exposed service keys appear intended for a public character-search feature, although they can be copied and abused for service-ข",
+        "material_concerns": 4,
+        "minor_cautions": 78,
+        "risk_level": "material",
+        "summary": "This project appears to be a good-faith desktop application, not malware. However, four dependency findings were assessed as material because vulnerable libraries may process network or AI-generated content. The available evidence does not identify every affected package or prove that the vulnerable code is reachable, so the real-world danger is uncertain rather than confirmed. Maintainers should identify the packages, determine whether they ship in production, and update them to patched or well"
+      }
+    },
+    {
       "report_id": "3fbedc2065d0a8c54a2cc488885f3d6a1b86c666bf672044302834f2281d823f",
       "report_digest": "3fbedc2065d0a8c54a2cc488885f3d6a1b86c666bf672044302834f2281d823f",
       "report_version": 1,
@@ -25744,6 +25924,89 @@
         "minor_cautions": 25,
         "risk_level": "low",
         "summary": "The review found only low-impact maintenance issues in tools used to build the project. These tools are not included in the distributed Twemoji library and are unlikely to affect users. Maintainers should update the flagged dependencies, prioritizing the highest-severity advisory, but no action is required from downstream users."
+      }
+    },
+    {
+      "report_id": "630631f684cf9b82f1f612e78c6122bf2409e7843fce8350a0db0c0f3ee4814a",
+      "report_digest": "630631f684cf9b82f1f612e78c6122bf2409e7843fce8350a0db0c0f3ee4814a",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "3",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "2",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v4",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1113293446",
+      "provider": "github",
+      "repository_id": 1113293446,
+      "repository": "Kristyku/InlineSummary",
+      "target_sha": "708247c59bbf2de6e386b094097de0589df251a4",
+      "completed_at": "2026-08-06T00:21:11.605Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 0,
+        "assessments": 0,
+        "observations": 0,
+        "items": 0,
+        "disposition": {
+          "expected_behavior": 0,
+          "minor_weakness": 0,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 0,
+          "low": 0,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 0,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 0,
+          "high": 0
+        },
+        "recommended_risk": {
+          "low": 0,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 16,
+        "inventory_bytes": 194931,
+        "tools_completed": 5,
+        "tools_not_applicable": 2,
+        "evidence_validated": 0,
+        "review_required": 0,
+        "review_completed": 0
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1113293446/708247c59bbf2de6e386b094097de0589df251a4/3/630631f684cf9b82f1f612e78c6122bf2409e7843fce8350a0db0c0f3ee4814a/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1113293446/history/",
+      "assessed_at": "2026-08-08T15:56:40.354Z",
+      "synthesis_policy_version": "4",
+      "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
+      "assessment": {
+        "cited_finding_ids": [],
+        "headline": "No validated security concerns found",
+        "high_danger": 0,
+        "interaction_chains": [],
+        "malicious_evidence": "No validated evidence of malicious behavior, API-key theft, harmful payloads, or trojan delivery was identified. This review cannot prove that unknown behavior is absent, and some source files could not be parsed.",
+        "material_concerns": 0,
+        "minor_cautions": 0,
+        "risk_level": "low",
+        "summary": "The reviewed commit presents a low security risk based on the available validated evidence. No material vulnerabilities or ordinary security weaknesses were identified."
       }
     },
     {
@@ -25874,6 +26137,103 @@
         "minor_cautions": 49,
         "risk_level": "low",
         "summary": "The validated review rates this project low risk. It identified dependency advisories, including some severe upstream ratings, but assessed their practical impact as low and exploitation as unlikely because the extension is distributed as a pre-built bundle and the affected packages appear largely to be build or development dependencies. Package mapping was incomplete, so production reachability was not fully confirmed; updating dependencies and auditing production packages would improve that,,?"
+      }
+    },
+    {
+      "report_id": "ee6af84c0f9c7c4582bfb1eec978c759a0e82f027396cebc40025a430d968731",
+      "report_digest": "ee6af84c0f9c7c4582bfb1eec978c759a0e82f027396cebc40025a430d968731",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "3",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "2",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v4",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1160848402",
+      "provider": "github",
+      "repository_id": 1160848402,
+      "repository": "ghostd93/BetterSimTracker",
+      "target_sha": "fa1d9a1d7c8cac6953ee6cb8df64a9599dfdadb1",
+      "completed_at": "2026-08-06T00:59:13.719Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 18,
+        "assessments": 18,
+        "observations": 1,
+        "items": 19,
+        "disposition": {
+          "expected_behavior": 5,
+          "minor_weakness": 14,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 14,
+          "low": 5,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 19,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 9,
+          "medium": 5,
+          "high": 5
+        },
+        "recommended_risk": {
+          "low": 19,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 221,
+        "inventory_bytes": 4877003,
+        "tools_completed": 6,
+        "tools_not_applicable": 1,
+        "evidence_validated": 18,
+        "review_required": 18,
+        "review_completed": 18
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1160848402/fa1d9a1d7c8cac6953ee6cb8df64a9599dfdadb1/3/ee6af84c0f9c7c4582bfb1eec978c759a0e82f027396cebc40025a430d968731/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1160848402/history/",
+      "assessed_at": "2026-08-08T15:57:00.753Z",
+      "synthesis_policy_version": "4",
+      "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
+      "assessment": {
+        "cited_finding_ids": [
+          "2af75b980c72ba07c81194251a8f311f55e2fc45e5e7e681d66339af047fe645",
+          "33cfa16bd80b3eb834001b8b09bf4e2915341dc121c11641eba9a3f3c169b489",
+          "4710183c6d2e1e2b8b866180e7f50e50edf9f10e892a3dacce12fffb651ef1a4",
+          "5fd3ee8bfaab8d274db8e2018b4becd1d51790e2f7009a6d43e3213271098059",
+          "7024f701afb7e88ffa8fd829c826f25d8ebd221e15dbdb33595cfdd1b0c94fa3",
+          "83ea362e12aca48eaedf87622a66f63ac0f4505396a6a7b0099ea8bab765e9fb",
+          "8d82b543075ac6c256a139940ab29de41dceb67988f8d5d53e1ebb7f1677218b",
+          "9670d7b37938497075e9c9a5dfbe205c55464eea4df6df2576a24e6af1ee7ac5",
+          "9bef70873aaa98b38569900b52b4cc742ddaea5974329065f185e60b3452d98c",
+          "9e4ea854686dcc6d674383d0379dafb8ff2a191640da8642fa8bffd581a815e0",
+          "b3cded55d75a0e122ed769ca3b55225a5be14f0270debdbaa9d5da068a6449b3",
+          "bb2f11c41b3bac2f0b0809ff92e9858ffd4209502d3d1e84f5babc409ba31362",
+          "db95119b6791eb799baa81f794ed0f80537c4c68b9d684e3ec3e51e012962a71"
+        ],
+        "headline": "Low risk: no validated malicious behavior or user-facing security threat",
+        "high_danger": 0,
+        "interaction_chains": [],
+        "malicious_evidence": "No credible malicious behavior was identified. The dynamic execution findings were validated as fixed, local SillyTavern module loading with no user-controlled code or external payload. Dependency advisories appear to affect development/build tooling rather than the shipped extension, though unknown",
+        "material_concerns": 0,
+        "minor_cautions": 14,
+        "risk_level": "low",
+        "summary": "The project is assessed as low risk. Several dependencies have known advisories, including some with high scanner severity, but the extension ships pre-built files and the affected packages are most likely build-time tools that do not run on users’ machines. Developers should update dependencies during routine maintenance. The flagged dynamic execution is ordinary SillyTavern extension behavior using hardcoded local targets, not evidence of code injection or theft."
       }
     },
     {
@@ -27308,6 +27668,185 @@
         "minor_cautions": 0,
         "risk_level": "low",
         "summary": "The reviewed findings are harmless translation and help-document text related to API settings. They do not contain passwords, API keys, or other sensitive information. As with any code review, this assessment cannot prove the absence of unknown behavior, but no actionable security concern was validated."
+      }
+    },
+    {
+      "report_id": "9c6d8efcb144982b5646d6cc016c63b89069c790020da4525733be8a4d5e5d75",
+      "report_digest": "9c6d8efcb144982b5646d6cc016c63b89069c790020da4525733be8a4d5e5d75",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "3",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "2",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v4",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1133521830",
+      "provider": "github",
+      "repository_id": 1133521830,
+      "repository": "platberlitz/sillytavern-character-colors",
+      "target_sha": "6cb7ab040d5ef166e52b477917f4b255a2fbaf7b",
+      "completed_at": "2026-08-08T10:03:10.489Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 2,
+        "assessments": 2,
+        "observations": 0,
+        "items": 2,
+        "disposition": {
+          "expected_behavior": 2,
+          "minor_weakness": 0,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 2,
+          "low": 0,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 2,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 0,
+          "high": 2
+        },
+        "recommended_risk": {
+          "low": 2,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 4,
+        "inventory_files": 73,
+        "inventory_bytes": 1949581,
+        "tools_completed": 4,
+        "tools_not_applicable": 3,
+        "evidence_validated": 2,
+        "review_required": 2,
+        "review_completed": 2
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1133521830/6cb7ab040d5ef166e52b477917f4b255a2fbaf7b/3/9c6d8efcb144982b5646d6cc016c63b89069c790020da4525733be8a4d5e5d75/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1133521830/history/",
+      "assessed_at": "2026-08-08T15:56:48.799Z",
+      "synthesis_policy_version": "4",
+      "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
+      "assessment": {
+        "cited_finding_ids": [],
+        "headline": "No security concerns identified",
+        "high_danger": 0,
+        "interaction_chains": [],
+        "malicious_evidence": "No malicious evidence was validated. The flagged dynamic-execution matches are confined to test code that loads the project's own source, does not run in the extension, and does not process outside input.",
+        "material_concerns": 0,
+        "minor_cautions": 0,
+        "risk_level": "low",
+        "summary": "The reviewed findings are expected test behavior rather than a security issue. No material vulnerabilities, malicious behavior, or actionable cautions were identified. As with any review, this does not prove that unknown behavior is impossible."
+      }
+    },
+    {
+      "report_id": "a9642214ee294084d2c5cf831c115619ea8eceada651b98c86fc54adf1321052",
+      "report_digest": "a9642214ee294084d2c5cf831c115619ea8eceada651b98c86fc54adf1321052",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "3",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "2",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v4",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1139430137",
+      "provider": "github",
+      "repository_id": 1139430137,
+      "repository": "Sillyanonymous/SillyTavern-CharacterLibrary",
+      "target_sha": "5224eb70b3a4b1f3ec6b6bc545b27b3b52dcc248",
+      "completed_at": "2026-08-08T10:03:49.235Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 13,
+        "assessments": 13,
+        "observations": 1,
+        "items": 14,
+        "disposition": {
+          "expected_behavior": 12,
+          "minor_weakness": 2,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 12,
+          "low": 1,
+          "medium": 1,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 13,
+          "plausible": 1,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 1,
+          "high": 13
+        },
+        "recommended_risk": {
+          "low": 14,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 3,
+        "inventory_files": 105,
+        "inventory_bytes": 6131122,
+        "tools_completed": 5,
+        "tools_not_applicable": 2,
+        "evidence_validated": 13,
+        "review_required": 13,
+        "review_completed": 13
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1139430137/5224eb70b3a4b1f3ec6b6bc545b27b3b52dcc248/3/a9642214ee294084d2c5cf831c115619ea8eceada651b98c86fc54adf1321052/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1139430137/history/",
+      "assessed_at": "2026-08-08T15:56:54.413Z",
+      "synthesis_policy_version": "4",
+      "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
+      "assessment": {
+        "cited_finding_ids": [
+          "1d8d5d5e5bc2f5b34f706b5897ad9a25292d1e5fc5f682068daa687907eccd42",
+          "a34bdfa4bea2cccac02223e2778783eae3b63c8e70830e19ee590b2c4f21388e",
+          "b9291ceb60f334d9b790eea6421417f05c22d81bcff06002d9f151e766b03eb7"
+        ],
+        "headline": "Low risk: no validated evidence of malicious behavior",
+        "high_danger": 0,
+        "interaction_chains": [
+          {
+            "explanation": "If the browser-control relay is deliberately exposed beyond the local computer, its lack of authentication could allow another person on the same network to control the browser and access an existing login session. The tool warns about this, and local-only use avoids the concern.",
+            "finding_ids": [
+              "1d8d5d5e5bc2f5b34f706b5897ad9a25292d1e5fc5f682068daa687907eccd42",
+              "b9291ceb60f334d9b790eea6421417f05c22d81bcff06002d9f151e766b03eb7"
+            ],
+            "resulting_risk": "material"
+          }
+        ],
+        "malicious_evidence": "None validated. The apparent credential-handling matches ordinary local SillyTavern, browser, and third-party service integrations; no evidence shows API-key theft, phishing, trojan delivery, harmful payloads, or bot infection.",
+        "material_concerns": 0,
+        "minor_cautions": 2,
+        "risk_level": "low",
+        "summary": "The project is assessed as low risk. Most flagged items are scanner false positives or normal behavior, such as using SillyTavern security tokens with the local server and including public service keys. Two minor cautions remain: a third-party search-key fallback may become stale, and exposing the browser relay to other network devices without authentication could expose a logged-in browser session. Keep the relay local unless network exposure is explicitly needed."
       }
     }
   ]
