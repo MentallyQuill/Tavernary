@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "hapsburgtopquark388-sillytavern-streamline",
+  "name": "SillyTavern-Streamline",
+  "kind": "extension",
+  "summary": "SillyTavern extension that hides legacy UI clutter and simplifies the interface for narrative roleplay, keeping focus on the story.",
+  "metadata_status": "curated",
+  "source_id": "github-1195775310",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["customize-the-interface"],
+  "cataloged_at": "2026-08-08T01:04:46.198Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
