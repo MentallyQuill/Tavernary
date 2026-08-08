@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "tavernai-tavernai",
+  "source_id": "github-1271548133",
+  "source_identity": "github:tavernai/tavernai",
+  "evidence_fingerprint": "6bc15bcc7774508e1a5335ffaabb39790e9d1cdd8507e08d24d8333f53c3a195",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T04:13:01.829Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T04:13:01.829Z"
+  },
+  "maintenance_issue_number": null
+}
