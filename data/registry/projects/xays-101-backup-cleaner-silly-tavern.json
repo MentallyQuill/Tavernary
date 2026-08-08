@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "xays-101-backup-cleaner-silly-tavern",
+  "name": "Backup-Cleaner-Silly-Tavern",
+  "kind": "extension",
+  "summary": "A SillyTavern backup manager scans and groups chats by disk usage, flags duplicates and corrupted files, protects newest copies, and supports confirmed bulk deletion or ZIP export.",
+  "metadata_status": "curated",
+  "source_id": "github-1314351595",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "move-and-back-up-data",
+    "non-destructive",
+    "organize-chats-and-messages"
+  ],
+  "cataloged_at": "2026-08-08T04:19:56.422Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
