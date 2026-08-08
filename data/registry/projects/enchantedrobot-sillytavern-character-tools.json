@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "enchantedrobot-sillytavern-character-tools",
+  "name": "SillyTavern-Character-Tools",
+  "kind": "extension",
+  "summary": "SillyTavern Character Tools repairs and upgrades character cards, compresses card and gallery images, and merges tags through one panel with separate, repeatable workflows.",
+  "metadata_status": "curated",
+  "source_id": "github-1300808393",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": [
+    "add-visual-immersion",
+    "manage-character-libraries",
+    "manage-characters-and-personas",
+    "rules-driven"
+  ],
+  "cataloged_at": "2026-08-08T03:40:05.149Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
