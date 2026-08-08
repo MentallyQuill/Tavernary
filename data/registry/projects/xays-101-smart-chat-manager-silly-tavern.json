@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "xays-101-smart-chat-manager-silly-tavern",
+  "name": "Smart-Chat-Manager-Silly-Tavern",
+  "kind": "extension",
+  "summary": "Smart Chat Manager organizes SillyTavern chats with automatic titles, tags, folders, search, bulk operations, and badges, plus a prompt library and multi-profile API manager.",
+  "metadata_status": "curated",
+  "source_id": "github-1220986145",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "manage-prompts-and-presets",
+    "non-destructive",
+    "organize-chats-and-messages",
+    "route-tasks-across-models"
+  ],
+  "cataloged_at": "2026-08-08T04:50:18.435Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
