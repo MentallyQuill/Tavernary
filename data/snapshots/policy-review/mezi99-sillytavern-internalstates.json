@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mezi99-sillytavern-internalstates",
+  "source_id": "github-1320029623",
+  "source_identity": "github:mezi99/sillytavern-internalstates",
+  "evidence_fingerprint": "42d599eb19ddc9000d7e77d351f4f9156f6f2f45ccab2857e81eab9578918f38",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T02:34:18.151Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T02:34:18.151Z"
+  },
+  "maintenance_issue_number": null
+}
