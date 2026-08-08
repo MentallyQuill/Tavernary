@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "xays-101-chaotic-lorebooks-silly-tavern",
+  "name": "Chaotic-lorebooks-Silly-Tavern",
+  "kind": "extension",
+  "summary": "An active memory extension for SillyTavern with a self-maintaining lorebook that keeps long chats coherent and reduces manual World Info upkeep across models.",
+  "metadata_status": "curated",
+  "source_id": "github-1277371044",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "local-first",
+    "maintain-long-term-memory",
+    "manage-lorebooks",
+    "model-agnostic",
+    "preserve-story-continuity",
+    "retrieve-relevant-context"
+  ],
+  "cataloged_at": "2026-08-08T04:52:26.309Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
