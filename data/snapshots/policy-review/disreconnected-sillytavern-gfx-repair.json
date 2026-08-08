@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "disreconnected-sillytavern-gfx-repair",
+  "source_id": "github-1316434519",
+  "source_identity": "github:disreconnected/sillytavern-gfx-repair",
+  "evidence_fingerprint": "70047f91422d3016305cbb3ecfa948d83a032ee6f112fc855073f49b25891fe9",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T03:25:38.152Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T03:25:38.152Z"
+  },
+  "maintenance_issue_number": null
+}
