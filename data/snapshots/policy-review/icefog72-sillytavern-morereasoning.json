@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "icefog72-sillytavern-morereasoning",
+  "source_id": "github-1199215475",
+  "source_identity": "github:icefog72/sillytavern-morereasoning",
+  "evidence_fingerprint": "f1c4b3c2ef1a5194680b8d8e1ec92919a3d7177a956941f6ec7f0bc2f6f32cdd",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T05:03:27.087Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T05:03:27.087Z"
+  },
+  "maintenance_issue_number": null
+}
