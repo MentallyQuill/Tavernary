@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "quackified-floating-viewer",
+  "source_id": "github-1111979731",
+  "source_identity": "github:quackified/floating-viewer",
+  "evidence_fingerprint": "a5067ff805fa5ad43b903d707fc12d93b5a8df52ef34612369c263bb55f94907",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T08:10:28.108Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T08:10:28.108Z"
+  },
+  "maintenance_issue_number": null
+}
