@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "willasaywhat-sillytavern-voicebox-tts",
+  "name": "SillyTavern-Voicebox-TTS",
+  "kind": "extension",
+  "summary": "Adds Voicebox as a local Text-to-Speech provider for SillyTavern, loading cloned or preset voice profiles from Voicebox and mapping them to characters for narration.",
+  "metadata_status": "curated",
+  "source_id": "github-1310625840",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "add-voice-interaction",
+    "connect-external-services",
+    "local-first",
+    "self-hosted"
+  ],
+  "cataloged_at": "2026-08-08T05:58:37.464Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
