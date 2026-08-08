@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "jeremyoha450-sillytavern-character-continuity-manager",
+  "name": "SillyTavern-Character-Continuity-Manager",
+  "kind": "extension",
+  "summary": "SillyTavern extension for persistent character continuity, managing stable facts, current state, and durable knowledge across chats with separate solo and group continuity.",
+  "metadata_status": "curated",
+  "source_id": "github-1276977142",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": [
+    "maintain-long-term-memory",
+    "persistent-state",
+    "preserve-story-continuity",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-08-08T02:48:23.030Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
