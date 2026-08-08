@@ -1,6 +1,11 @@
 {
   "frontends": [
     {
+      "id": "agnai",
+      "label": "agnai",
+      "description": "Works with the agnai roleplay frontend."
+    },
+    {
       "id": "ai-rpg",
       "label": "AI RPG",
       "description": "Works with the AI RPG roleplay frontend."
