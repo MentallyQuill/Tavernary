@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "86482t-sillytavern-personage",
+  "source_id": "github-1292551529",
+  "source_identity": "github:86482t/sillytavern-personage",
+  "evidence_fingerprint": "bd4cc6e3b05f40943bca766be310cea2350b9b604cfc1e577f764c04067b3ce6",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T00:02:10.366Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T00:02:10.366Z"
+  },
+  "maintenance_issue_number": null
+}
