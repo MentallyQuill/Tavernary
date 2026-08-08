@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "roderickwqz-sillytavern-dualmodel-engine",
+  "name": "SillyTavern-DualModel-Engine",
+  "kind": "extension",
+  "summary": "SillyTavern-DualModel-Engine adds a Git-installable extension for local one-to-one roleplay, using a separate Recorder model to version and restore narrative state per swipe, with optional D20 and custom rules.",
+  "metadata_status": "curated",
+  "source_id": "github-1321898165",
+  "frontends": ["sillytavern"],
+  "primary_function": "rpg-systems",
+  "tags": [
+    "add-rpg-gameplay",
+    "persistent-state",
+    "preserve-story-continuity",
+    "rules-driven",
+    "secondary-model"
+  ],
+  "cataloged_at": "2026-08-08T02:18:30.690Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
