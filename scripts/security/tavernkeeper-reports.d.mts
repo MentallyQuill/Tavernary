@@ -217,6 +217,7 @@ export function validateReportIndex(
   registry:
     | TavernKeeperSourceRegistryEntry[]
     | { sources: TavernKeeperSourceRegistryEntry[] },
+  options?: { pruneDelisted?: boolean },
 ): TavernKeeperReportIndexV5;
 export function validateScanReport(
   report: unknown,
