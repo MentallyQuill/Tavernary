@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "disreconnected-sillytavern-gfx-repair",
+  "name": "SillyTavern-GFX-Repair",
+  "kind": "extension",
+  "summary": "SillyTavern-GFX-Repair restores missing clickable details/summary markup, GFX markers, and HTML wrappers in structured panels across presets.",
+  "metadata_status": "curated",
+  "source_id": "github-1316434519",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["edit-and-refine-messages", "inspect-prompts-and-generations"],
+  "cataloged_at": "2026-08-08T03:22:35.122Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
