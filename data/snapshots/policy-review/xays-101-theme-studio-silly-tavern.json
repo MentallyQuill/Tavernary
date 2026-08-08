@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "xays-101-theme-studio-silly-tavern",
+  "source_id": "github-1309872055",
+  "source_identity": "github:xays-101/theme-studio-silly-tavern",
+  "evidence_fingerprint": "e2e6ea14c8c2525d13983829d2115d1bdc2b686494accc4015cacfb1b309664b",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T06:21:29.000Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T06:21:29.000Z"
+  },
+  "maintenance_issue_number": null
+}
