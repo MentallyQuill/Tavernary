@@ -1937,6 +1937,10 @@
   align-items: start;
 }
 
+.compact-cards .project-card-shell {
+  contain-intrinsic-size: 96px;
+}
+
 .compact-cards .relationship-pair {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
