@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "xays-101-map-generators-silly-tavern",
+  "name": "Map-generators-Silly-Tavern",
+  "kind": "extension",
+  "summary": "Generate procedural maps in SillyTavern, save them per chat, and give the AI structured descriptions through lorebook or prompt injection memory.",
+  "metadata_status": "curated",
+  "source_id": "github-1269579220",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "guide-model-responses",
+    "local-first",
+    "manage-maps-and-locations",
+    "mobile-friendly",
+    "persistent-state",
+    "rules-driven"
+  ],
+  "cataloged_at": "2026-08-08T04:14:22.072Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
