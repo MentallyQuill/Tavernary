@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "vegu-ai-talemate",
+  "source_id": "github-692674090",
+  "source_identity": "github:vegu-ai/talemate",
+  "evidence_fingerprint": "787e1044c936401b806614c80ef45d3c4cec94a51007facaa95934c87cccd627",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T05:24:27.638Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T05:24:27.638Z"
+  },
+  "maintenance_issue_number": null
+}
