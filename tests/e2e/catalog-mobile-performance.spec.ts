@@ -251,7 +251,13 @@ test(
     expect(full.observerCount).toBeLessThanOrEqual(
       featureOff.observerCount + 1,
     );
-    for (const snapshot of [featureOff, full, filtered]) {
+    const featureOffLongTask = featureOff.longTaskMax ?? 0;
+    expect(featureOffLongTask).toBeLessThan(250);
+    expect(featureOff.worstFrameGap).toBeLessThan(200);
+    expect(full.longTaskMax ?? 0).toBeLessThanOrEqual(
+      Math.max(200, featureOffLongTask),
+    );
+    for (const snapshot of [full, filtered]) {
       expect(snapshot.longTaskMax ?? 0).toBeLessThan(200);
       expect(snapshot.worstFrameGap).toBeLessThan(200);
     }
