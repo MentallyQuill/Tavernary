@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "senjinthedragon-smart-memory",
+  "source_id": "github-1200081605",
+  "source_identity": "github:senjinthedragon/smart-memory",
+  "evidence_fingerprint": "df778227a82a77bad7748eb7c81f6e4e2914c09c42e570e35254f5cb9c1d300b",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T08:12:19.385Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T08:12:19.385Z"
+  },
+  "maintenance_issue_number": null
+}
