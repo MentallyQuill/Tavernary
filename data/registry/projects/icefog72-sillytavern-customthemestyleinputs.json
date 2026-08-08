@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "icefog72-sillytavern-customthemestyleinputs",
+  "name": "SillyTavern-CustomThemeStyleInputs",
+  "kind": "extension",
+  "summary": "SillyTavern-CustomThemeStyleInputs adds User Settings controls for managing custom CSS properties, including Blur Strength and Shadow Width sliders.",
+  "metadata_status": "curated",
+  "source_id": "github-915968373",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["customize-the-interface"],
+  "cataloged_at": "2026-08-08T05:04:47.752Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
