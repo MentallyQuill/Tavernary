@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "sofizzticated-sillytavern-scrolltolast",
+  "name": "SillyTavern-ScrollToLast",
+  "kind": "extension",
+  "summary": "A lightweight SillyTavern extension that scrolls to a selected last AI or user message on chat load or on demand, with configurable position and motion.",
+  "metadata_status": "curated",
+  "source_id": "github-1311326828",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["customize-the-interface", "organize-chats-and-messages"],
+  "cataloged_at": "2026-08-08T05:41:09.086Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
