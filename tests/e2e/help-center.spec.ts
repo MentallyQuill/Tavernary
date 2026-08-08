@@ -249,6 +249,9 @@ test("selects project reports through Help and preserves contextual Kit reports"
     .getByRole("link", { name: "Help" })
     .click();
   await page.getByRole("link", { name: "Report a project listing" }).click();
+  await expect
+    .poll(() => new URL(page.url()).pathname)
+    .toBe(sitePath("/help/report-project"));
   await page
     .getByLabel("Project", { exact: true })
     .selectOption("aikohanasaki-aikobots");

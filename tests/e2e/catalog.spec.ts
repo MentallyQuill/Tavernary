@@ -89,6 +89,10 @@ function displayedProjectName(name: string) {
 
 test.beforeEach(async ({ page }) => {
   await page.goto(sitePath());
+  await expect(page.locator(".catalog-shell")).toHaveAttribute(
+    "data-hydrated",
+    "true",
+  );
 });
 
 test("keeps summaries clamped at standard and compact card widths", async ({
