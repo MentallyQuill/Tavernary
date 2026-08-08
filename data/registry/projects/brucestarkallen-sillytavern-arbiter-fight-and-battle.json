@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "brucestarkallen-sillytavern-arbiter-fight-and-battle",
+  "name": "SillyTavern-Arbiter-Fight-and-Battle",
+  "kind": "extension",
+  "summary": "A dice-driven SillyTavern referee adjudicates uncertain actions and fights with persistent state, fair randomness, and rewindable outcomes across edits and branches.",
+  "metadata_status": "curated",
+  "source_id": "github-1289563434",
+  "frontends": ["sillytavern"],
+  "primary_function": "rpg-systems",
+  "tags": [
+    "add-rpg-gameplay",
+    "automate-roleplay-workflows",
+    "model-agnostic",
+    "persistent-state",
+    "rules-driven",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-08-08T03:29:50.847Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

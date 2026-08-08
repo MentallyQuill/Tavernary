@@ -1,0 +1,72 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1289563434",
+  "repository": {
+    "id": 1289563434,
+    "owner": "brucestarkallen",
+    "name": "SillyTavern-Arbiter-Fight-and-Battle",
+    "url": "https://github.com/brucestarkallen/SillyTavern-Arbiter-Fight-and-Battle",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "3a5029ff4035561557a5f9b28d1f35dd453cb4f9",
+    "head_committed_at": "2026-08-01T13:12:03.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-07-04T23:14:58.000Z",
+    "size_kb": 1153
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-01T13:12:03.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-08-01T13:12:03.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-24T07:12:01.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-11T21:14:11.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-05T23:54:44.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-08T03:29:50.847Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "3a5029ff4035561557a5f9b28d1f35dd453cb4f9"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-08-08T03:29:50.847Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "brucestarkallen", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-08T03:29:50.847Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
