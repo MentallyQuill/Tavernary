@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mokimoko-sillytavern-simplesummarizer",
+  "source_id": "github-1244089494",
+  "source_identity": "github:mokimoko/sillytavern-simplesummarizer",
+  "evidence_fingerprint": "e6b68f117555a6c288335fe231aa811f482bd15b940c9515c28eb114d5c50a9a",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T14:44:08.472Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T14:44:08.472Z"
+  },
+  "maintenance_issue_number": null
+}
