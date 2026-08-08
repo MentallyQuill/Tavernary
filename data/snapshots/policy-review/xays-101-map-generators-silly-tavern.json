@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "xays-101-map-generators-silly-tavern",
+  "source_id": "github-1269579220",
+  "source_identity": "github:xays-101/map-generators-silly-tavern",
+  "evidence_fingerprint": "07deabf10ff28d08ae38e56c6413f90d23b7d5242c08fd044d3adf21bfabccc0",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T04:17:31.014Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T04:17:31.014Z"
+  },
+  "maintenance_issue_number": null
+}
