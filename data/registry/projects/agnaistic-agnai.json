@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "agnaistic-agnai",
+  "name": "agnai",
+  "kind": "frontend",
+  "summary": "AI roleplay chat with personalized characters across multiple AI services, supporting group conversations, AI character creation, lore books, and optional long-term memory.",
+  "metadata_status": "curated",
+  "source_id": "github-609727033",
+  "frontends": ["agnai"],
+  "primary_function": "frontend",
+  "tags": [
+    "create-character-cards",
+    "maintain-long-term-memory",
+    "manage-lorebooks",
+    "model-agnostic",
+    "retrieve-relevant-context",
+    "run-group-roleplay"
+  ],
+  "cataloged_at": "2026-08-08T21:39:13.634Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

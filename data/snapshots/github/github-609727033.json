@@ -1,0 +1,109 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-609727033",
+  "repository": {
+    "id": 609727033,
+    "owner": "agnaistic",
+    "name": "agnai",
+    "url": "https://github.com/agnaistic/agnai",
+    "description": "AI Agnostic (Multi-user and Multi-bot) Chat with Fictional Characters. Designed with scale in mind.",
+    "default_branch": "dev",
+    "head_sha": "fccee00f5f7628d150760c787c4be87e6b1a652c",
+    "head_committed_at": "2026-06-13T11:58:57.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2023-03-05T03:26:17.000Z",
+    "size_kb": 39723
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-06-13T11:58:57.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-13T11:58:57.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-03T07:38:48.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-29T08:25:05.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-08T21:39:13.634Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "fccee00f5f7628d150760c787c4be87e6b1a652c"
+  },
+  "community": {
+    "stars_count": 769,
+    "forks_count": 146,
+    "watchers_count": 23,
+    "aggregate": 938
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE.md"
+  },
+  "refreshed_at": "2026-08-08T21:39:13.634Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "sceuick", "type": "User", "provider": "github" },
+      { "login": "malfoyslastname", "type": "User", "provider": "github" },
+      { "login": "0x000011b", "type": "User", "provider": "github" },
+      { "login": "acidbubbles", "type": "User", "provider": "github" },
+      { "login": "ewof", "type": "User", "provider": "github" },
+      { "login": "cingorn", "type": "User", "provider": "github" },
+      { "login": "codedealer", "type": "User", "provider": "github" },
+      { "login": "cousincrusher", "type": "User", "provider": "github" },
+      { "login": "khanonnie", "type": "User", "provider": "github" },
+      { "login": "stevenksmith", "type": "User", "provider": "github" },
+      { "login": "KGRC199913", "type": "User", "provider": "github" },
+      { "login": "SammCheese", "type": "User", "provider": "github" },
+      { "login": "erinmaybe", "type": "User", "provider": "github" },
+      { "login": "einstein95", "type": "User", "provider": "github" },
+      { "login": "eevbb", "type": "User", "provider": "github" },
+      { "login": "chadfurman", "type": "User", "provider": "github" },
+      { "login": "152334H", "type": "User", "provider": "github" },
+      { "login": "tarcs999", "type": "User", "provider": "github" },
+      { "login": "sandwichdoge", "type": "User", "provider": "github" },
+      { "login": "lt455067", "type": "User", "provider": "github" },
+      { "login": "gramedcart", "type": "User", "provider": "github" },
+      { "login": "gd1551", "type": "User", "provider": "github" },
+      { "login": "dordle", "type": "User", "provider": "github" },
+      { "login": "TearGosling", "type": "User", "provider": "github" },
+      { "login": "TehVenomm", "type": "User", "provider": "github" },
+      { "login": "Pleasant-Cry", "type": "User", "provider": "github" },
+      { "login": "TehNut", "type": "User", "provider": "github" },
+      { "login": "rmalleman", "type": "User", "provider": "github" },
+      { "login": "kyle-rb", "type": "User", "provider": "github" },
+      { "login": "ropwareJB", "type": "User", "provider": "github" },
+      { "login": "eltociear", "type": "User", "provider": "github" },
+      { "login": "HimangshuYadav", "type": "User", "provider": "github" },
+      { "login": "FarukhS52", "type": "User", "provider": "github" },
+      { "login": "Dnaynu", "type": "User", "provider": "github" },
+      { "login": "CncAnon1", "type": "User", "provider": "github" },
+      { "login": "AranavMahalpure", "type": "User", "provider": "github" },
+      { "login": "AlpinDale", "type": "User", "provider": "github" },
+      { "login": "Silver-f0x", "type": "User", "provider": "github" },
+      { "login": "Aldimensch", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-08T21:39:13.634Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
