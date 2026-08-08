@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "johnvegetable-sillytavern-replaceall",
+  "source_id": "github-1319768827",
+  "source_identity": "github:johnvegetable/sillytavern-replaceall",
+  "evidence_fingerprint": "8657c3d2c9a3a1e6f374dea66e7c033cadf8ca992335c67388c49ad7e23fa606",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T03:16:58.418Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T03:16:58.418Z"
+  },
+  "maintenance_issue_number": null
+}
