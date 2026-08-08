@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "mezi99-sillytavern-internalstates",
+  "name": "SillyTavern-InternalStates",
+  "kind": "extension",
+  "summary": "SillyTavern extension that runs the modular Internal States game-master engine regardless of the active preset, with modules for RPG mechanics, inventory, relationships, world simulation, and more.",
+  "metadata_status": "curated",
+  "source_id": "github-1320029623",
+  "frontends": ["sillytavern"],
+  "primary_function": "rpg-systems",
+  "tags": [
+    "add-rpg-gameplay",
+    "modular-and-extensible",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-08-08T02:31:11.788Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
