@@ -1,0 +1,59 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1309521887",
+  "repository": {
+    "id": 1309521887,
+    "owner": "adnv3k",
+    "name": "SillyTavern-Inline-Generated-Media",
+    "url": "https://github.com/adnv3k/SillyTavern-Inline-Generated-Media",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "62b9fcecc97e7594d89fd9f1fa2cc372d8a34271",
+    "head_committed_at": "2026-07-25T05:16:02.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-07-23T04:39:34.000Z",
+    "size_kb": 15
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-25T05:13:32.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-25T05:13:32.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-08T05:33:32.072Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "62b9fcecc97e7594d89fd9f1fa2cc372d8a34271"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-08T05:33:32.072Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "adnv3k", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-08T05:33:32.072Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

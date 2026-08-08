@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "adnv3k-sillytavern-inline-generated-media",
+  "name": "SillyTavern-Inline-Generated-Media",
+  "kind": "extension",
+  "summary": "Moves SillyTavern-generated images inline into message text while preserving zoom, caption, delete, and regeneration controls through forwarded interactions.",
+  "metadata_status": "curated",
+  "source_id": "github-1309521887",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["add-visual-immersion"],
+  "cataloged_at": "2026-08-08T05:33:32.072Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
