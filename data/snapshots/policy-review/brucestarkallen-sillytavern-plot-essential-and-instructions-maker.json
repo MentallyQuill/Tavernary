@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "brucestarkallen-sillytavern-plot-essential-and-instructions-maker",
+  "source_id": "github-1288668022",
+  "source_identity": "github:brucestarkallen/sillytavern-plot-essential-and-instructions-maker",
+  "evidence_fingerprint": "fec1697f42583448e6010b7a889cbb71ff40bc128613d8b241b2478731e90b52",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T04:29:25.668Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T04:29:25.668Z"
+  },
+  "maintenance_issue_number": null
+}
