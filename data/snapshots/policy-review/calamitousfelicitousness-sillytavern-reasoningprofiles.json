@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "calamitousfelicitousness-sillytavern-reasoningprofiles",
+  "source_id": "github-1244970544",
+  "source_identity": "github:calamitousfelicitousness/sillytavern-reasoningprofiles",
+  "evidence_fingerprint": "f59e533749aefca2981a79cc4c672f9a015b0b04880b4f3d1ec585badf15d7d4",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T01:46:04.683Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T01:46:04.683Z"
+  },
+  "maintenance_issue_number": null
+}
