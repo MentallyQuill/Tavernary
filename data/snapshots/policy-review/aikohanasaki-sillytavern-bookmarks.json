@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "aikohanasaki-sillytavern-bookmarks",
+  "source_id": "github-1064216842",
+  "source_identity": "github:aikohanasaki/sillytavern-bookmarks",
+  "evidence_fingerprint": "51c12743fca5bd30eee9e32c5451817b6e6c64b0e99d3ccbfef5026f1a89ea0b",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T08:09:55.097Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T08:09:55.097Z"
+  },
+  "maintenance_issue_number": null
+}
