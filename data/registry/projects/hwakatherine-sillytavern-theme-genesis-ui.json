@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "hwakatherine-sillytavern-theme-genesis-ui",
+  "name": "SillyTavern-Theme-Genesis-UI",
+  "kind": "extension",
+  "summary": "Genesis UI is a lightweight glassmorphism RPG interface extension for SillyTavern, providing a distinctive themed interface for RPG roleplay.",
+  "metadata_status": "curated",
+  "source_id": "github-1311125047",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["add-rpg-gameplay", "customize-the-interface"],
+  "cataloged_at": "2026-08-08T04:45:53.199Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
