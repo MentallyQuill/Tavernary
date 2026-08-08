@@ -1,0 +1,63 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1198459430",
+  "repository": {
+    "id": 1198459430,
+    "owner": "SkyJinXX",
+    "name": "SillyTavern-FinalPromptViewer",
+    "url": "https://github.com/SkyJinXX/SillyTavern-FinalPromptViewer",
+    "description": "SillyTavern extension that captures the truly final rendered prompt via fetch interception — works with EJS, worldbooks, Evolution World, and any frontend-heavy extension",
+    "default_branch": "main",
+    "head_sha": "b750812dc7e91987558b122adc3f966beff70854",
+    "head_committed_at": "2026-08-05T04:12:46.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-04-01T12:53:05.000Z",
+    "size_kb": 116
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-05T04:12:46.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-05T04:12:46.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-28T05:34:36.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-08T01:49:48.148Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "b750812dc7e91987558b122adc3f966beff70854"
+  },
+  "community": {
+    "stars_count": 2,
+    "forks_count": 1,
+    "watchers_count": 1,
+    "aggregate": 4
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-08-08T01:49:48.148Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "SkyJinXX", "type": "User", "provider": "github" },
+      { "login": "2722550596", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-08T01:49:48.148Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
