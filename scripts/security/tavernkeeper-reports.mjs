@@ -211,10 +211,13 @@ function assertActiveScannerPolicy(entry) {
   }
 }
 
-function assertIndexSemantics(index, registry) {
+function assertIndexSemantics(index, registry, { pruneDelisted = false } = {}) {
   const reportIds = new Set();
   const repositoryIds = new Set();
-  const sources = activeGithubSourcesByRepositoryId(registry);
+  const sources = activeGithubSourcesByRepositoryId(registry, {
+    includeDelisted: pruneDelisted,
+  });
+  const reports = [];
   for (const entry of index.reports) {
     assertCanonicalIndexEntry(entry);
     assertSourceIdentity(entry, sources);
@@ -229,13 +232,28 @@ function assertIndexSemantics(index, registry) {
     }
     reportIds.add(entry.report_id);
     repositoryIds.add(entry.repository_id);
+    if (sources.get(entry.repository_id).status === "active") {
+      reports.push(entry);
+    }
   }
+  return reports;
 }
 
-export function validateReportIndex(index, registry) {
+export function validateReportIndex(index, registry, options = {}) {
+  if (
+    options === null ||
+    typeof options !== "object" ||
+    Array.isArray(options) ||
+    Object.keys(options).some((key) => key !== "pruneDelisted") ||
+    (options.pruneDelisted !== undefined &&
+      typeof options.pruneDelisted !== "boolean")
+  ) {
+    throw new Error("TavernKeeper report index validation options are invalid");
+  }
   assertIndexSchema(index);
-  assertIndexSemantics(index, registry);
-  return index;
+  const pruneDelisted = options.pruneDelisted === true;
+  const reports = assertIndexSemantics(index, registry, { pruneDelisted });
+  return pruneDelisted ? { ...index, reports } : index;
 }
 
 const itemCountKeys = {

@@ -217,6 +217,7 @@ export async function reconcileTavernKeeperReports(options = {}) {
   const index = validateReportIndex(
     await fetchAndValidateTavernKeeperIndex(options),
     registry,
+    { pruneDelisted: true },
   );
   const [previous, priorImportState] = await Promise.all([
     readPrevious(outputPath, registry),

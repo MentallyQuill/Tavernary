@@ -449,6 +449,64 @@ describe("TavernKeeper V5 report import", () => {
     expect(() => validateReportIndex(index, inactive)).toThrow(/active/u);
   });
 
+  test("rejects a non-boolean delisted-source pruning option", async () => {
+    const [index] = await fixtures();
+    const delistedRegistry = registry.map((source) => ({
+      ...source,
+      status: "delisted",
+    }));
+
+    expect(() =>
+      validateReportIndex(index, delistedRegistry, {
+        pruneDelisted: "false",
+      } as never),
+    ).toThrow(/option/u);
+  });
+
+  test("prunes only exact known delisted identities from a mixed index", async () => {
+    const [index, report] = await fixtures();
+    const delistedReport = secondReportFrom(report);
+    const delistedEntry = projectIndexReport(delistedReport);
+    index.reports.push(delistedEntry);
+    const mixedRegistry = [
+      ...registry,
+      {
+        id: "github-43",
+        type: "github",
+        status: "delisted",
+        repository_id: 43,
+        repository: "owner/repo-two",
+      },
+    ];
+
+    expect(
+      validateReportIndex(index, mixedRegistry, { pruneDelisted: true })
+        .reports,
+    ).toEqual([index.reports[0]]);
+
+    const unknownIndex = clone(index);
+    unknownIndex.reports[1].repository_id = 44;
+    unknownIndex.reports[1].source_id = "github-44";
+    unknownIndex.reports[1].report_url = unknownIndex.reports[1].report_url
+      .replace("/github/43/", "/github/44/")
+      .replace(delistedEntry.report_id, unknownIndex.reports[1].report_id);
+    unknownIndex.reports[1].history_url =
+      unknownIndex.reports[1].history_url.replace("/github/43/", "/github/44/");
+    expect(() =>
+      validateReportIndex(unknownIndex, mixedRegistry, {
+        pruneDelisted: true,
+      }),
+    ).toThrow(/active Tavernary source/u);
+
+    const mismatchedIndex = clone(index);
+    mismatchedIndex.reports[1].repository = "other/repo";
+    expect(() =>
+      validateReportIndex(mismatchedIndex, mixedRegistry, {
+        pruneDelisted: true,
+      }),
+    ).toThrow(/identity/u);
+  });
+
   test("rejects a repository identity that differs from Tavernary", async () => {
     const [index] = await fixtures();
     index.reports[0].repository = "other/repo";
@@ -606,6 +664,62 @@ describe("TavernKeeper V5 report import", () => {
     expect(() => validateReportIndex(index, delistedRegistry)).toThrow(
       /active Tavernary source/u,
     );
+  });
+
+  test("prunes a known delisted source before reconciling the preferred index", async () => {
+    const root = await mkdtemp(
+      resolve(tmpdir(), "tavernkeeper-v6-delisted-index-"),
+    );
+    const outputPath = resolve(
+      root,
+      "data/security/tavernkeeper-report-summaries.json",
+    );
+    const importStatePath = resolve(
+      root,
+      "data/security/tavernkeeper-import-state.json",
+    );
+    await mkdir(resolve(root, "data/security"), { recursive: true });
+    const [index] = await fixtures();
+    const entry = assessedEntry(index.reports[0], {
+      danger_basis: "none",
+      assessment_source: "model",
+    });
+    await writeFile(
+      outputPath,
+      `${JSON.stringify({
+        schema_version: 6,
+        generated_at: index.generated_at,
+        preferred_report_ids: [entry.report_id],
+        reports: [entry],
+      })}\n`,
+    );
+    const delistedRegistry = registry.map((source) => ({
+      ...source,
+      status: "delisted",
+    }));
+
+    const outcome = await reconcileTavernKeeperReports({
+      root,
+      outputPath,
+      importStatePath,
+      registry: delistedRegistry,
+      dnsLookup: publicDnsLookup,
+      requestImpl: async (url: string) => {
+        if (url !== TAVERNKEEPER_REPORT_INDEX_URL) {
+          throw new Error("delisted reports must not be fetched");
+        }
+        return jsonResponse(index);
+      },
+      synthesizeReport: async () => {
+        throw new Error("delisted reports must not be synthesized");
+      },
+    });
+
+    expect(outcome).toMatchObject({ imported: 0, retained: 0, remaining: 0 });
+    expect(outcome.snapshot).toMatchObject({
+      preferred_report_ids: [],
+      reports: [],
+    });
   });
 
   test("retains an inactive-policy assessment only as non-preferred history", async () => {
