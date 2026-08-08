@@ -9,8 +9,8 @@
     "url": "https://github.com/virgilianshailer/llm-tools",
     "description": "A SillyTavern extension that bundles a set of quality-of-life tools for roleplay: a floating widget with one-click actions, an immersive Visual Novel Mode with page-by-page reading, an Alternate Greeting Picker, LLM Translation, and a Dynamic Caption Prompt for image. Video demo https://youtu.be/FM5GMpaOHC0",
     "default_branch": "main",
-    "head_sha": "2c0b9fac11446b9e9a11ccdb8d66537ae7001ba9",
-    "head_committed_at": "2026-05-27T17:51:08.000Z",
+    "head_sha": "63a5fc60a7d413bed59f388304b5d95647d49e31",
+    "head_committed_at": "2026-08-08T07:57:30.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
@@ -19,8 +19,13 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-05-27T17:51:08.000Z",
+    "latest_source_activity_at": "2026-08-08T07:57:30.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-08T07:57:30.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-05-25",
         "latest_at": "2026-05-27T17:51:08.000Z",
@@ -30,8 +35,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T06:20:47.793Z",
-    "baseline_attempts": 0
+    "baseline_completed_at": "2026-08-08T08:02:47.675Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "63a5fc60a7d413bed59f388304b5d95647d49e31"
   },
   "community": {
     "stars_count": 2,
@@ -44,7 +50,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-07T08:32:22.684Z",
+  "refreshed_at": "2026-08-08T08:02:47.675Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -53,7 +59,8 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-07T08:32:22.684Z",
+    "refreshed_at": "2026-08-08T08:02:47.675Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }

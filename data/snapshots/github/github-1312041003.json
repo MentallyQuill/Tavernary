@@ -9,21 +9,21 @@
     "url": "https://github.com/DataDeletionAZA/SillyTavern-SmartBackgrounds",
     "description": "Local AI upscaling and performance optimization for SillyTavern backgrounds.",
     "default_branch": "main",
-    "head_sha": "29f16d23e45125ebdc8e93b444d11688e76b8ccf",
-    "head_committed_at": "2026-08-04T03:48:18.000Z",
+    "head_sha": "706d74defa9e4dcbf26bec38753f132be2815181",
+    "head_committed_at": "2026-08-08T04:28:02.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-25T14:16:48.000Z",
-    "size_kb": 25043
+    "size_kb": 25065
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-04T03:48:18.000Z",
+    "latest_source_activity_at": "2026-08-08T04:28:02.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-03",
-        "latest_at": "2026-08-04T03:48:18.000Z",
+        "latest_at": "2026-08-08T04:28:02.000Z",
         "precision": "exact"
       },
       {
@@ -37,7 +37,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-08T02:24:01.737Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "29f16d23e45125ebdc8e93b444d11688e76b8ccf"
+    "evidence_head_sha": "706d74defa9e4dcbf26bec38753f132be2815181"
   },
   "community": {
     "stars_count": 1,
@@ -50,8 +50,9 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-08T02:24:01.737Z",
+  "refreshed_at": "2026-08-08T08:02:47.675Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "DataDeletionAZA", "type": "User", "provider": "github" }
@@ -59,8 +60,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-08T02:24:01.737Z",
+    "refreshed_at": "2026-08-08T08:02:47.675Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

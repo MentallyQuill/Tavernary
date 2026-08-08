@@ -45,15 +45,15 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-07T23:27:34.568Z",
+  "refreshed_at": "2026-08-08T08:02:47.675Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "myanadi", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-07T23:27:34.568Z",
+    "refreshed_at": "2026-08-08T08:02:47.675Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

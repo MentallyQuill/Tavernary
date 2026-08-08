@@ -46,8 +46,9 @@
     "aggregate": 0
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-08T04:45:53.199Z",
+  "refreshed_at": "2026-08-08T08:02:47.675Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "hwakatherine", "type": "User", "provider": "github" }
@@ -55,8 +56,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-08T04:45:53.199Z",
+    "refreshed_at": "2026-08-08T08:02:47.675Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

@@ -56,8 +56,9 @@
     "aggregate": 53
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-08T04:09:47.834Z",
+  "refreshed_at": "2026-08-08T08:02:47.675Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "TavernAI", "type": "User", "provider": "github" },
@@ -67,8 +68,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-08T04:09:47.834Z",
+    "refreshed_at": "2026-08-08T08:02:47.675Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

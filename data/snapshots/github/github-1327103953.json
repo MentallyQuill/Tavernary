@@ -15,7 +15,7 @@
     "fork": false,
     "parent": null,
     "created_at": "2026-08-07T19:51:09.000Z",
-    "size_kb": 0
+    "size_kb": 83
   },
   "source_health": "healthy",
   "activity": {
@@ -45,15 +45,15 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-07T22:08:22.010Z",
+  "refreshed_at": "2026-08-08T08:02:47.675Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "0cyris", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-07T22:08:22.010Z",
+    "refreshed_at": "2026-08-08T08:02:47.675Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

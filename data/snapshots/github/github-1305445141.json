@@ -9,18 +9,23 @@
     "url": "https://github.com/datacat-run/datacat-sillytavern-browser",
     "description": "Browse Data Cat from SillyTavern.",
     "default_branch": "main",
-    "head_sha": "34abe49aba887bb0f966ba2040453d7554915905",
-    "head_committed_at": "2026-07-19T15:30:30.000Z",
+    "head_sha": "25906c5da1ae3718a1aa70d3be704e955b9ff7da",
+    "head_committed_at": "2026-08-08T05:48:17.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-19T05:29:50.000Z",
-    "size_kb": 110
+    "size_kb": 123
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-19T15:30:30.000Z",
+    "latest_source_activity_at": "2026-08-08T05:48:17.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-08T05:48:17.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-13",
         "latest_at": "2026-07-19T15:30:30.000Z",
@@ -30,8 +35,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T02:49:36.921Z",
-    "baseline_attempts": 0
+    "baseline_completed_at": "2026-08-08T08:02:47.675Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "25906c5da1ae3718a1aa70d3be704e955b9ff7da"
   },
   "community": {
     "stars_count": 5,
@@ -44,14 +50,15 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-07T08:32:22.684Z",
+  "refreshed_at": "2026-08-08T08:02:47.675Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "d4t4c4t", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-07T08:32:22.684Z",
+    "refreshed_at": "2026-08-08T08:02:47.675Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }

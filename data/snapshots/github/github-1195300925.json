@@ -9,18 +9,23 @@
     "url": "https://github.com/hydall/Glaze",
     "description": "Glaze is a local, novice-friendly AI roleplay chat client for mobile devices. Works with any OpenAI-compatible (Chat Completion) LLM provider.",
     "default_branch": "stable",
-    "head_sha": "40a1ce7ef5409ab1f8eba39aac17b7cb422c0d74",
-    "head_committed_at": "2026-07-28T20:00:23.000Z",
+    "head_sha": "854c704f7154f88637d7a12a661f36ae640cba2d",
+    "head_committed_at": "2026-08-07T10:36:29.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-29T13:58:23.000Z",
-    "size_kb": 95511
+    "size_kb": 95742
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-28T19:56:04.000Z",
+    "latest_source_activity_at": "2026-08-07T10:36:29.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-07T10:36:29.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-27",
         "latest_at": "2026-07-28T19:56:04.000Z",
@@ -78,11 +83,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-07-28T20:12:16.000Z",
+    "latest_release_at": "2026-08-07T10:48:58.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-05T21:02:03.409Z",
+    "baseline_completed_at": "2026-08-08T08:02:47.675Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "40a1ce7ef5409ab1f8eba39aac17b7cb422c0d74"
+    "evidence_head_sha": "854c704f7154f88637d7a12a661f36ae640cba2d"
   },
   "community": {
     "stars_count": 16,
@@ -95,7 +100,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-07T08:32:22.684Z",
+  "refreshed_at": "2026-08-08T08:02:47.675Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -108,7 +113,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-07T08:32:22.684Z",
+    "refreshed_at": "2026-08-08T08:02:47.675Z",
     "stale_since": null
   }
 }
