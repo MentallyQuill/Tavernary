@@ -1,0 +1,70 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-692674090",
+  "repository": {
+    "id": 692674090,
+    "owner": "vegu-ai",
+    "name": "talemate",
+    "url": "https://github.com/vegu-ai/talemate",
+    "description": "Roleplay with AI with a focus on strong narration, consistent world and game state tracking.",
+    "default_branch": "main",
+    "head_sha": "c12a82930e913816fdac21aedada1962ac45c3d7",
+    "head_committed_at": "2026-07-02T06:28:45.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2023-09-17T08:24:24.000Z",
+    "size_kb": 110446
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-02T06:28:45.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-02T06:28:45.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-21T18:41:29.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-02T06:30:43.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-08T05:21:27.355Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "c12a82930e913816fdac21aedada1962ac45c3d7"
+  },
+  "community": {
+    "stars_count": 408,
+    "forks_count": 52,
+    "watchers_count": 18,
+    "aggregate": 478
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-08T05:21:27.355Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "vegu-ai-tools", "type": "User", "provider": "github" },
+      { "login": "final-wombat", "type": "User", "provider": "github" },
+      { "login": "eltociear", "type": "User", "provider": "github" },
+      { "login": "kaldigo", "type": "User", "provider": "github" },
+      { "login": "henk717", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-08T05:21:27.355Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

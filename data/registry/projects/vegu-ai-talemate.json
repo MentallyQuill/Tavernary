@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "vegu-ai-talemate",
+  "name": "talemate",
+  "kind": "frontend",
+  "summary": "Roleplay with AI focused on strong narration and consistent world and game state tracking across ongoing scenes and interactions.",
+  "metadata_status": "curated",
+  "source_id": "github-692674090",
+  "frontends": ["talemate"],
+  "primary_function": "frontend",
+  "tags": ["preserve-story-continuity", "track-characters-and-world-state"],
+  "cataloged_at": "2026-08-08T05:21:27.355Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
