@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "mokimoko-sillytavern-simplesummarizer",
+  "name": "SillyTavern-SimpleSummarizer",
+  "kind": "extension",
+  "summary": "SillyTavern-SimpleSummarizer keeps long chats usable by batching conversations, extracting memorable quotes, and injecting summaries into context, with rollups for fresh chats.",
+  "metadata_status": "curated",
+  "source_id": "github-1244089494",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "maintain-long-term-memory",
+    "manage-context-limits",
+    "preserve-story-continuity",
+    "retrieve-relevant-context"
+  ],
+  "cataloged_at": "2026-08-08T14:41:15.655Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
