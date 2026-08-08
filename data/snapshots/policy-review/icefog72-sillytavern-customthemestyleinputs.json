@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "icefog72-sillytavern-customthemestyleinputs",
+  "source_id": "github-915968373",
+  "source_identity": "github:icefog72/sillytavern-customthemestyleinputs",
+  "evidence_fingerprint": "242585e73e87ab193c2ee20350bb86b04769bd3d50f3e030c18fe356c094f4cf",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-08T05:07:40.825Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-08T05:07:40.825Z"
+  },
+  "maintenance_issue_number": null
+}
