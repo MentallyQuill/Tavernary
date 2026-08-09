@@ -118,6 +118,21 @@ function validationFailure(run: () => unknown) {
 }
 
 describe("TavernKeeper evidence floors", () => {
+  test("accepts a large candidate universe with bounded required citations", () => {
+    const items = Array.from({ length: 566 }, (_, index) =>
+      assessment({
+        candidate_id: index.toString(16).padStart(64, "0"),
+        disposition: index < 11 ? "minor_weakness" : "expected_behavior",
+      }),
+    );
+    const report = reportWith(items);
+
+    const requirements = tavernKeeperAssessmentRequirements(report);
+
+    expect(requirements.allowed_candidate_ids).toHaveLength(566);
+    expect(requirements.required_candidate_ids).toHaveLength(11);
+  });
+
   test("raises high-confidence credible malicious behavior to high", () => {
     expect(
       deriveEvidenceFloor([
