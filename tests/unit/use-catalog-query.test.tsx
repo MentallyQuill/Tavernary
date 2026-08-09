@@ -24,6 +24,28 @@ describe("catalog query history", () => {
     expect(result.current.query.sort).toBe(sort);
   });
 
+  test("round-trips a literal plus operator through the shared URL", () => {
+    window.history.replaceState(null, "", "/?q=vectfox%2Bsummaryception");
+    const replaceState = vi.spyOn(window.history, "replaceState");
+    const { result } = renderHook(() => useCatalogQuery());
+
+    expect(result.current.query.search).toBe("vectfox+summaryception");
+
+    act(() => {
+      result.current.setQuery({
+        ...result.current.query,
+        search: "Stab's Directives+Directive",
+      });
+    });
+
+    expect(replaceState).toHaveBeenLastCalledWith(
+      null,
+      "",
+      "/?q=Stab%27s+Directives%2BDirective",
+    );
+    expect(result.current.query.search).toBe("Stab's Directives+Directive");
+  });
+
   test("treats a stale Uncategorized URL as the default category", () => {
     window.history.replaceState(null, "", "/?category=uncategorized");
 

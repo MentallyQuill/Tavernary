@@ -39,6 +39,17 @@ test("resets a manual override after a meaningful edit", () => {
   ).toBe("relevance");
 });
 
+test("treats changing AND terms into OR clauses as a meaningful edit", () => {
+  expect(
+    nextSearchSort({
+      previousSearch: "preset freaky",
+      nextSearch: "preset+freaky",
+      currentSort: "alphabetical",
+      browseSort: "alphabetical",
+    }),
+  ).toBe("relevance");
+});
+
 test("restores the remembered browse sort when cleared", () => {
   expect(
     nextSearchSort({

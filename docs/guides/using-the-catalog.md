@@ -9,6 +9,10 @@ projects shown on the page.
 - Search requires all meaningful words, but the words may appear in any order.
   For example, `preset freaky` and `freaky preset` both find **Freaky
   Frankenstein 5.0**.
+- Join ordinary searches with `+` to show results matching any clause. For
+  example, `vectfox+summaryception` shows matches for either search, while
+  `Stab's Directives+Directive` keeps normal all-word matching inside each
+  clause. Copied catalog URLs preserve the complete expression.
 - Project and Kit titles, aliases, source identities, descriptions, kinds,
   primary functions, tags, frontends, compatibility, maintainers, and
   relationships are searchable.

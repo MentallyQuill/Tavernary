@@ -8,6 +8,7 @@ import {
 import {
   allowedEditDistance,
   normalizeSearchText,
+  searchClauses,
   searchDocumentTerms,
   searchMeaning,
   searchTerms,
@@ -62,6 +63,14 @@ describe("search normalization", () => {
     expect(searchMeaning("PRESET FREAKY")).toBe("preset freaky");
   });
 
+  test("preserves nonempty plus-separated clauses in query meaning", () => {
+    expect(searchClauses("  preset freaky + memory ++ ")).toEqual([
+      "preset freaky",
+      "memory",
+    ]);
+    expect(searchMeaning("preset freaky+memory")).toBe("preset freaky+memory");
+  });
+
   test("preserves compact identity tokens alongside camel-case words", () => {
     expect(searchDocumentTerms("MentallyQuill/SillyTavern")).toEqual([
       "mentally",
@@ -92,6 +101,32 @@ describe("catalog search", () => {
     expect(index.search("freaky preset").matches.map(({ id }) => id)).toEqual([
       "freaky",
     ]);
+  });
+
+  test("unions ordinary searches while requiring every term in each clause", () => {
+    const index = createCatalogSearchIndex(documents);
+
+    expect(
+      index
+        .search("preset freaky+memory books")
+        .matches.map(({ id }) => id)
+        .sort(),
+    ).toEqual(["freaky", "memory"]);
+    expect(
+      index.search("preset missing+memory books").matches.map(({ id }) => id),
+    ).toEqual(["memory"]);
+  });
+
+  test("ignores empty clauses and keeps a duplicate at its best match", () => {
+    const result = createCatalogSearchIndex(documents).search(
+      "++memory+memory books+",
+    );
+
+    expect(result.normalizedQuery).toBe("memory+memory books");
+    expect(result.matches).toHaveLength(1);
+    expect(
+      result.matches[0]?.evidence.map(({ queryTerm }) => queryTerm),
+    ).toEqual(["memory", "books"]);
   });
 
   test("ranks exact title terms above supporting-field matches", () => {
@@ -143,6 +178,14 @@ describe("catalog search", () => {
     expect(index.search("gln").matches).toEqual([]);
   });
 
+  test("composes corrections without replacing unchanged clauses", () => {
+    const index = createCatalogSearchIndex(documents);
+
+    expect(index.search("frankenstien+memory books").correction).toBe(
+      "frankenstein+memory books",
+    );
+  });
+
   test("returns field evidence for exact visible and hidden matches", () => {
     const index = createCatalogSearchIndex(documents);
 
@@ -166,6 +209,11 @@ describe("catalog search", () => {
     ).toEqual(["freaky"]);
     expect(exactAllTermSearch(documents, "frankenstien").matches).toEqual([]);
     expect(exactAllTermSearch(documents, "set freaky").matches).toEqual([]);
+    expect(
+      exactAllTermSearch(documents, "preset freaky+memory books")
+        .matches.map(({ id }) => id)
+        .sort(),
+    ).toEqual(["freaky", "memory"]);
   });
 
   test("degrades to exact tokens when MiniSearch initialization fails", () => {
@@ -179,11 +227,15 @@ describe("catalog search", () => {
       });
 
     try {
-      const result =
-        createCatalogSearchIndex(documents).search("preset freaky");
+      const result = createCatalogSearchIndex(documents).search(
+        "preset freaky+memory books",
+      );
 
       expect(result.degraded).toBe(true);
-      expect(result.matches.map(({ id }) => id)).toEqual(["freaky"]);
+      expect(result.matches.map(({ id }) => id).sort()).toEqual([
+        "freaky",
+        "memory",
+      ]);
     } finally {
       addAll.mockRestore();
       consoleError.mockRestore();
@@ -202,10 +254,13 @@ describe("catalog search", () => {
       });
 
     try {
-      const result = index.search("preset freaky");
+      const result = index.search("preset freaky+memory books");
 
       expect(result.degraded).toBe(true);
-      expect(result.matches.map(({ id }) => id)).toEqual(["freaky"]);
+      expect(result.matches.map(({ id }) => id).sort()).toEqual([
+        "freaky",
+        "memory",
+      ]);
     } finally {
       search.mockRestore();
       consoleError.mockRestore();

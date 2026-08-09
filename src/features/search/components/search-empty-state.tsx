@@ -1,4 +1,4 @@
-import { searchMeaning } from "../search-normalization";
+import { searchClauses } from "../search-normalization";
 
 export interface SearchFeedback {
   query: string;
@@ -38,7 +38,8 @@ export function SearchEmptyState({
   onUseCorrection,
   onClearFilters,
 }: SearchFeedback & { mode: "projects" | "kits" }) {
-  if (!searchMeaning(query)) {
+  const clauseCount = searchClauses(query).length;
+  if (clauseCount === 0) {
     return (
       <div className="catalog-empty">
         <strong>
@@ -72,15 +73,22 @@ export function SearchEmptyState({
     );
   }
 
+  const hasAlternatives = clauseCount > 1;
+
   return (
     <div className="catalog-empty search-empty-state">
       <strong>
-        No {mode === "kits" ? "Kit" : "project"} matches all search terms
+        No {mode === "kits" ? "Kit" : "project"} matches{" "}
+        {hasAlternatives ? "any search clause" : "all search terms"}
       </strong>
       <span>
         {correction
-          ? "All terms are required. Check the suggested spelling."
-          : "Try removing a term."}
+          ? hasAlternatives
+            ? "All words within each clause are required. Check the suggested spelling."
+            : "All terms are required. Check the suggested spelling."
+          : hasAlternatives
+            ? "Try removing a word from a clause."
+            : "Try removing a term."}
       </span>
       {correction ? (
         <SearchCorrection
