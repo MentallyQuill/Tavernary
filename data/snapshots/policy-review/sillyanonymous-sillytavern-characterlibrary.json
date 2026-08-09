@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sillyanonymous-sillytavern-characterlibrary",
+  "source_id": "github-1139430137",
+  "source_identity": "github:sillyanonymous/sillytavern-characterlibrary",
+  "evidence_fingerprint": "4ce6d1db0d1cbdbd941acd0cbdf9bdec7bbba74559a79a6826d2614e70de2482",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-09T08:11:58.537Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-09T08:11:58.537Z"
+  },
+  "maintenance_issue_number": null
+}
