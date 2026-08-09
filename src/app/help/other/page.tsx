@@ -4,7 +4,7 @@ import { OtherHelpForm } from "@/features/help/components/other-help-form";
 export const metadata = {
   title: "Other Help | Tavernary",
   description:
-    "Ask Tavernary maintainers about something not covered elsewhere.",
+    "Ask a Tavernary question about something not covered elsewhere.",
 };
 
 export default function OtherHelpPage() {

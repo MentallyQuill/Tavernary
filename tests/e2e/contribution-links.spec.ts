@@ -63,3 +63,57 @@ test("keeps responsive header help and utility actions available", async ({
   expect(submitBox).not.toBeNull();
   expect(helpBox!.x + helpBox!.width).toBeLessThanOrEqual(submitBox!.x);
 });
+
+test("links to the transparent support page beside Submit Project", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(sitePath());
+
+  const submit = page.getByRole("link", { name: "Submit Project" });
+  const support = page.getByRole("link", {
+    name: "Support Tavernary on Ko-fi",
+  });
+  const [submitBox, supportBox] = await Promise.all([
+    submit.boundingBox(),
+    support.boundingBox(),
+  ]);
+  expect(submitBox).not.toBeNull();
+  expect(supportBox).not.toBeNull();
+  expect(supportBox!.x).toBeGreaterThanOrEqual(submitBox!.x + submitBox!.width);
+  expect(supportBox!.height).toBe(submitBox!.height);
+  await expect(support).toHaveCSS("color", "rgb(22, 16, 8)");
+  await expect(submit).toHaveCSS("color", "rgb(22, 16, 8)");
+
+  await support.hover();
+  await expect(
+    page.getByRole("tooltip", { name: "Support Tavernary on Ko-fi" }),
+  ).toBeVisible();
+
+  await support.click();
+  await expect(
+    page.getByRole("heading", { name: "Support Tavernary", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Contribute through Ko-fi" }),
+  ).toHaveCount(0);
+  await expect(page.getByTitle("Support Tavernary on Ko-fi")).toHaveCount(0);
+  const supportOnKofi = page.getByTitle("Support on Ko-fi");
+  await expect(supportOnKofi).toHaveAttribute(
+    "srcdoc",
+    /kofiwidget2\.init\('Support on Ko-fi', '#E18A24', 'I1F724I7NT'\)/,
+  );
+  const upkeep = page.locator(".support-target");
+  await expect(upkeep).toHaveCSS("padding-left", "24px");
+  await expect(upkeep).toHaveCSS("padding-right", "24px");
+  await expect(upkeep).toHaveCSS("border-top-color", "rgb(43, 58, 64)");
+  await expect(upkeep).toHaveCSS("border-left-color", "rgb(225, 138, 36)");
+  await expect(upkeep).toHaveCSS("border-left-width", "3px");
+});
+
+test("does not expose a separate recent-support feed", async ({ page }) => {
+  await page.goto(sitePath());
+  await expect(page.getByText("Recent support on Ko-fi")).toHaveCount(0);
+  await page.goto(sitePath("/support/"));
+  await expect(page.getByText("Recent support on Ko-fi")).toHaveCount(0);
+});

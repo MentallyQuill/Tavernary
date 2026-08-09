@@ -191,7 +191,7 @@ test("keeps Extension selected through review, edit, and a fresh handoff", async
   await user.type(sourceUrl, "https://github.com/example/extension");
   await user.click(screen.getByLabelText("SillyTavern"));
   await user.type(
-    screen.getByLabelText("Anything we should know? (optional)"),
+    screen.getByLabelText("Additional context (optional)"),
     "Owner-tested workflow.",
   );
 
@@ -251,12 +251,12 @@ test("defaults summary and tags to Tavernary automation", async () => {
   ).toBeVisible();
   expect(
     screen.getByText(
-      "Only the verified repository owner or trusted Tavernary staff can set this description. If you are not the owner, leave this set to Let TavernAI write the description; any description you enter will be ignored.",
+      "Only the verified repository owner or Tavernary can set this description. If you are not the owner, leave this set to Let TavernAI write the description; any description you enter will be ignored.",
     ),
   ).toBeVisible();
   expect(
     screen.getByText(
-      "Only the verified repository owner or trusted Tavernary staff can set these tags. If you are not the owner, leave this set to Let Tavernary select tags; any tags you select will be ignored.",
+      "Only the verified repository owner or Tavernary can set these tags. If you are not the owner, leave this set to Let Tavernary select tags; any tags you select will be ignored.",
     ),
   ).toBeVisible();
 });

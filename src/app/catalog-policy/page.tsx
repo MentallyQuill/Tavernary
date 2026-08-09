@@ -36,18 +36,17 @@ export default function CatalogPolicyPage() {
             Promotion of hatred or discrimination is prohibited. Sexual
             exploitation or sexual content involving minors is prohibited. Other
             material that presents a concrete catalog-policy conflict may be
-            reviewed by Tavernary staff.
+            reviewed by Tavernary.
           </p>
         </section>
 
         <section>
           <h2>How descriptions are prepared</h2>
           <p>
-            When a verified project owner or authorized Tavernary staff member
-            supplies a summary, Tavernary preserves their exact wording and
-            structure whenever possible. Only the smallest necessary
-            catalog-policy, emoji, punctuation, or high-confidence spelling
-            correction is made.
+            When a verified project owner or Tavernary supplies a summary, the
+            original wording and structure are preserved whenever possible. Only
+            the smallest necessary catalog-policy, emoji, punctuation, or
+            high-confidence spelling correction is made.
           </p>
           <p>
             For other submissions, Tavernary grounds its summary in repository
@@ -68,7 +67,7 @@ export default function CatalogPolicyPage() {
             A verified owner may permanently delist their project through the
             project-management workflow. Anyone can{" "}
             <Link href="/help/report-project/">report a project listing</Link>{" "}
-            that may need staff review.
+            that may need catalog review.
           </p>
         </section>
 

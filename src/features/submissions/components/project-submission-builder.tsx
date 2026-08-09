@@ -53,8 +53,7 @@ const summaryChoices = [
   {
     id: "manual",
     label: "Write the description myself",
-    description:
-      "Available to the verified repository owner or trusted Tavernary staff.",
+    description: "Available to the verified repository owner or Tavernary.",
   },
 ];
 
@@ -68,8 +67,7 @@ const tagChoices = [
   {
     id: "manual",
     label: "Set tags myself",
-    description:
-      "Available to the verified repository owner or trusted Tavernary staff.",
+    description: "Available to the verified repository owner or Tavernary.",
   },
 ];
 
@@ -605,10 +603,9 @@ export function ProjectSubmissionBuilder({
           onChange={(value) => setSummaryMode(value as "automatic" | "manual")}
         />
         <p className="submission-hint" id="project-description-authority">
-          Only the verified repository owner or trusted Tavernary staff can set
-          this description. If you are not the owner, leave this set to Let
-          TavernAI write the description; any description you enter will be
-          ignored.
+          Only the verified repository owner or Tavernary can set this
+          description. If you are not the owner, leave this set to Let TavernAI
+          write the description; any description you enter will be ignored.
         </p>
         {summaryMode === "automatic" ? (
           <p className="submission-hint">
@@ -669,9 +666,9 @@ export function ProjectSubmissionBuilder({
           onChange={(value) => setTagMode(value as "automatic" | "manual")}
         />
         <p className="submission-hint">
-          Only the verified repository owner or trusted Tavernary staff can set
-          these tags. If you are not the owner, leave this set to Let Tavernary
-          select tags; any tags you select will be ignored.
+          Only the verified repository owner or Tavernary can set these tags. If
+          you are not the owner, leave this set to Let Tavernary select tags;
+          any tags you select will be ignored.
         </p>
         {tagMode === "manual" ? (
           <div className="submission-field">
@@ -770,7 +767,7 @@ export function ProjectSubmissionBuilder({
             <span>
               <strong>Other or not listed</strong>
               <small>
-                Request maintainer review for a family missing from this list.
+                Request catalog review for a family missing from this list.
               </small>
             </span>
           </label>
@@ -907,7 +904,7 @@ export function ProjectSubmissionBuilder({
             />
             <span>
               <strong>Other or not listed</strong>
-              <small>Tell us about a frontend missing from the catalog.</small>
+              <small>Describe a frontend missing from the catalog.</small>
             </span>
           </label>
 
@@ -971,7 +968,7 @@ export function ProjectSubmissionBuilder({
       <section className="submission-section">
         <div className="submission-field">
           <label htmlFor="additional-context">
-            Anything we should know? (optional)
+            Additional context (optional)
           </label>
           <textarea
             id="additional-context"

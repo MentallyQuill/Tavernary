@@ -263,7 +263,7 @@ export function WebsiteReportForm({ siteRevision }: { siteRevision: string }) {
       />
       <HelpTextArea
         id="website-reproduction-steps"
-        label="How can we reproduce it?"
+        label="How can the problem be reproduced?"
         value={reproductionSteps}
         maxLength={2_000}
         onChange={(event) => setReproductionSteps(event.target.value)}

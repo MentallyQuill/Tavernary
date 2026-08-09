@@ -24,6 +24,20 @@ test("explains safety, reporting, and legal information on About", () => {
   expect(
     screen.getByRole("heading", { name: "Legal information" }),
   ).toBeInTheDocument();
+  expect(
+    screen.getByRole("heading", { name: "Sustainability and support" }),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(/anything above that rolls forward/i),
+  ).toBeInTheDocument();
+  expect(screen.getByText(/\$12 per month/i)).toBeInTheDocument();
+  expect(screen.getByText(/community-funding goal/i)).toBeInTheDocument();
+  expect(
+    screen.getByText(/owner intends to cover costs above it for now/i),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole("link", { name: "See Tavernary's costs and usage" }),
+  ).toHaveAttribute("href", "/support");
   expect(screen.getByRole("link", { name: "TavernKeeper" })).toHaveAttribute(
     "href",
     "https://mentallyquill.github.io/TavernKeeper/",
@@ -54,11 +68,7 @@ test("explains safety, reporting, and legal information on About", () => {
   expect(
     screen.getByText(/a verified personal GitHub owner/i),
   ).toBeInTheDocument();
-  expect(
-    screen.getByText(
-      /reviewed Tavernary owners, admins, and maintainers.*any card/i,
-    ),
-  ).toBeInTheDocument();
+  expect(screen.getByText(/Tavernary's owner.*any card/i)).toBeInTheDocument();
   expect(
     screen.getByText(
       /other organization maintainers and rights holders.*public report/i,

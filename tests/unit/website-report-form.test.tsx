@@ -32,7 +32,7 @@ async function completeWebsiteReport(user: ReturnType<typeof userEvent.setup>) {
     "Keyboard focus remains visible.",
   );
   await user.type(
-    screen.getByLabelText("How can we reproduce it?"),
+    screen.getByLabelText("How can the problem be reproduced?"),
     "Open Help and press Tab.",
   );
   await user.click(screen.getByRole("button", { name: "Review request" }));

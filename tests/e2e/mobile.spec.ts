@@ -61,9 +61,41 @@ test("matches the approved mobile header hierarchy", async ({ page }) => {
   ).toBeVisible();
 
   const submit = page.getByRole("link", { name: "Submit Project" });
+  const support = page.getByRole("link", {
+    name: "Support Tavernary on Ko-fi",
+  });
+  await expect(support).toBeVisible();
+  await expect(support.locator(".kofi-support-label")).toHaveCSS(
+    "width",
+    "1px",
+  );
+  const supportBox = await support.boundingBox();
+  const submitBox = await submit.boundingBox();
+  expect(supportBox).not.toBeNull();
+  expect(submitBox).not.toBeNull();
+  expect(supportBox!.width).toBe(34);
+  expect(supportBox!.height).toBe(34);
+  expect(supportBox!.x).toBeGreaterThanOrEqual(submitBox!.x + submitBox!.width);
   expect(
     await submit.evaluate((element) => element.getBoundingClientRect().height),
   ).toBeLessThan(40);
+});
+
+test("opens the Tavernary support page from a 320px viewport", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.goto(sitePath());
+  await page.getByRole("link", { name: "Support Tavernary on Ko-fi" }).click();
+
+  await expect(
+    page.getByRole("heading", { name: "Support Tavernary", exact: true }),
+  ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    ),
+  ).toBeLessThanOrEqual(0);
 });
 
 test("uses mobile browse and filter sheets without page overflow", async ({

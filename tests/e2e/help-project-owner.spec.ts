@@ -40,7 +40,7 @@ test("reviews one owner card edit and hands the complete manifest to GitHub", as
 
   await expect(
     page.getByText(
-      "GitHub will verify either current personal-owner authority or reviewed Tavernary staff authority.",
+      "GitHub will verify either current personal-owner authority or reviewed Tavernary authority.",
     ),
   ).toBeVisible();
   await page.getByRole("button", { name: "Continue on GitHub" }).click();
@@ -167,7 +167,7 @@ test("requires the typed repository before handing off a permanent source delist
   });
 });
 
-test("offers staff maintenance and owner help for non-GitHub listings", async ({
+test("offers maintenance and owner help for non-GitHub listings", async ({
   page,
 }) => {
   await page.goto(sitePath("/help/manage-project/?project=tavern-rpg-suite"));
@@ -176,7 +176,7 @@ test("offers staff maintenance and owner help for non-GitHub listings", async ({
     page.getByText(/Only GitHub repository listings/iu),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "Request staff help with this listing" }),
+    page.getByRole("link", { name: "Request a listing review" }),
   ).toHaveAttribute(
     "href",
     /\/help\/report-project\/?\?project=tavern-rpg-suite$/u,

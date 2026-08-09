@@ -49,7 +49,7 @@ test("documents both personal-owner and reviewed Tavernary staff management", ()
   expect(
     screen.getByRole("heading", { name: "Reporting and removal" })
       .parentElement,
-  ).toHaveTextContent(/Tavernary owners, admins, and maintainers.*any card/i);
+  ).toHaveTextContent(/Tavernary's owner.*any card/i);
 });
 
 test("documents immutable trusted-editor authority instead of association alone", () => {
