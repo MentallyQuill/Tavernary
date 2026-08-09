@@ -718,6 +718,21 @@ test("shares plus OR searches with normal clause behavior", async ({
   await expect(
     page.getByRole("heading", { name: "Directive", exact: true }),
   ).toBeVisible();
+
+  await search.fill("Stab's Directives+vectfox");
+
+  await expect(
+    page.getByRole("heading", {
+      name: "Stab's Directives",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "VectFox", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Directive", exact: true }),
+  ).toHaveCount(0);
 });
 
 test("searches Kits by noncontiguous structured fields", async ({ page }) => {

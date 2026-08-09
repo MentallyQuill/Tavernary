@@ -109,6 +109,23 @@ test("distinguishes all-term misses from ordinary empty catalog states", () => {
   rerender(
     <SearchEmptyState
       mode="kits"
+      query="missing clause+other missing"
+      textMatchCount={0}
+      activeFilterCount={0}
+      correction="missing clauses+other missing"
+      onUseCorrection={vi.fn()}
+    />,
+  );
+  expect(screen.getByText("No Kit matches any search clause")).toBeVisible();
+  expect(
+    screen.getByText(
+      "All words within each clause are required. Check the suggested spelling.",
+    ),
+  ).toBeVisible();
+
+  rerender(
+    <SearchEmptyState
+      mode="kits"
       query=""
       textMatchCount={0}
       activeFilterCount={0}
