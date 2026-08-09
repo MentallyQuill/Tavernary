@@ -47,29 +47,23 @@ export type TavernKeeperDangerBasis =
   | "malicious_or_compromised"
   | "critical_exploitable_vulnerability"
   | "mixed";
+export interface TavernKeeperClassificationCandidate {
+  candidate_id: string;
+  origin?: string;
+  file_role?: string;
+  title?: string;
+  explanation?: string;
+  category?: string;
+}
 export function deriveProjectAdvisory(
   assessments: readonly TavernKeeperContextualItemV5[],
-  candidates?: ReadonlyArray<{
-    candidate_id: string;
-    origin?: string;
-    file_role?: string;
-    title?: string;
-    explanation?: string;
-    category?: string;
-  }>,
+  candidates?: ReadonlyArray<TavernKeeperClassificationCandidate>,
 ): {
   risk_level: TavernKeeperRiskLevel;
   danger_basis: TavernKeeperDangerBasis;
 };
 export function deriveReportAdvisory(report: {
-  candidates: Array<{
-    candidate_id: string;
-    origin?: string;
-    file_role?: string;
-    title?: string;
-    explanation?: string;
-    category?: string;
-  }>;
+  candidates: TavernKeeperClassificationCandidate[];
   assessments: TavernKeeperContextualItemV5[];
   observations: Array<
     Omit<TavernKeeperContextualItemV5, "candidate_id"> & {
@@ -81,7 +75,7 @@ export function deriveReportAdvisory(report: {
   danger_basis: TavernKeeperDangerBasis;
 };
 export function buildDeterministicAssessment(report: {
-  candidates: Array<{ candidate_id: string }>;
+  candidates: TavernKeeperClassificationCandidate[];
   assessments: TavernKeeperContextualItemV5[];
   observations: Array<
     Omit<TavernKeeperContextualItemV5, "candidate_id"> & {
@@ -90,7 +84,7 @@ export function buildDeterministicAssessment(report: {
   >;
 }): TavernaryAssessmentV1;
 export function tavernKeeperAssessmentRequirements(report: {
-  candidates: Array<{ candidate_id: string }>;
+  candidates: TavernKeeperClassificationCandidate[];
   assessments: TavernKeeperContextualItemV5[];
   observations: Array<
     Omit<TavernKeeperContextualItemV5, "candidate_id"> & {
@@ -110,7 +104,7 @@ export function tavernKeeperAssessmentRequirements(report: {
 export function validateTavernaryAssessment(
   assessment: unknown,
   report: {
-    candidates: Array<{ candidate_id: string }>;
+    candidates: TavernKeeperClassificationCandidate[];
     assessments: TavernKeeperContextualItemV5[];
     observations: Array<
       Omit<TavernKeeperContextualItemV5, "candidate_id"> & {

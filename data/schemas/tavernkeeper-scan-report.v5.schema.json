@@ -690,6 +690,10 @@
             "enum": ["unlikely", "plausible", "readily_exploitable"]
           },
           "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
+          "risk_exposure": {
+            "type": "string",
+            "enum": ["not_demonstrated", "demonstrated"]
+          },
           "recommended_risk": {
             "type": "string",
             "enum": ["low", "material", "high"]
@@ -785,6 +789,10 @@
             "enum": ["unlikely", "plausible", "readily_exploitable"]
           },
           "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
+          "risk_exposure": {
+            "type": "string",
+            "enum": ["not_demonstrated", "demonstrated"]
+          },
           "recommended_risk": {
             "type": "string",
             "enum": ["low", "material", "high"]

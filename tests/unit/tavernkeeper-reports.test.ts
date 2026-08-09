@@ -315,6 +315,64 @@ describe("TavernKeeper V5 report import", () => {
     );
   });
 
+  test("accepts policy-3 risk exposure on assessments and observations", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = addExpectedCandidate(policy4Report(baseReport));
+    report.contextual_review_policy_version = "3";
+    report.prompt_version = "contextual-review-v6";
+    report.assessment_schema_version = "contextual-assessment-v2";
+    report.assessments[0].risk_exposure = "not_demonstrated";
+    report.observations = [
+      {
+        observation_id: "d".repeat(64),
+        related_candidate_ids: [candidateId],
+        evidence_ids: [evidenceId],
+        disposition: "minor_weakness",
+        impact: "low",
+        exploitability: "unlikely",
+        confidence: "high",
+        risk_exposure: "not_demonstrated",
+        recommended_risk: "low",
+        title: "Related low-risk observation",
+        technical_explanation:
+          "The reviewed behavior does not expose an untrusted-input path.",
+        layman_explanation:
+          "The related behavior is visible but does not create a demonstrated risk.",
+        developer_action: "Keep the input boundary documented and tested.",
+        locations: [{ path: "src/index.js", line_start: 10, line_end: 12 }],
+      },
+    ];
+    report.counts = {
+      ...report.counts,
+      observations: 1,
+      items: 2,
+      disposition: {
+        expected_behavior: 1,
+        minor_weakness: 1,
+        material_vulnerability: 0,
+        credible_malicious_behavior: 0,
+      },
+      impact: { none: 0, low: 2, medium: 0, high: 0, critical: 0 },
+      exploitability: {
+        unlikely: 2,
+        plausible: 0,
+        readily_exploitable: 0,
+      },
+      confidence: { low: 0, medium: 0, high: 2 },
+      recommended_risk: { low: 2, material: 0, high: 0 },
+    };
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(validateScanReport(rebound, validatedIndex.reports[0])).toEqual(
+      rebound,
+    );
+  });
+
   test("accepts policy-4 candidates from completed JavaScript analysis", async () => {
     const [fixtureIndex, baseReport] = await fixtures();
     const report = addExpectedCandidate(policy4Report(baseReport));

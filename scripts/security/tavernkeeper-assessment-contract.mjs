@@ -243,14 +243,18 @@ function classifyContextualItem(item, candidatesById) {
     return "minor";
   }
 
+  if (
+    !newContract &&
+    item.impact === "critical" &&
+    item.exploitability === "readily_exploitable"
+  ) {
+    return "high";
+  }
+
   if (!newContract) {
     const legacy = legacyCandidateContext(item, candidatesById);
     if (!legacy.shipped || legacy.unsupported) {
-      const legacyImmediateDanger =
-        candidatesById === undefined &&
-        item.impact === "critical" &&
-        item.exploitability === "readily_exploitable";
-      return legacyImmediateDanger ? "high" : "minor";
+      return "minor";
     }
   }
 

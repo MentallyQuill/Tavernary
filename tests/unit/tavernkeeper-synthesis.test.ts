@@ -378,6 +378,39 @@ describe("TavernKeeper deterministic project advisory", () => {
     },
   );
 
+  test.each([
+    ["non-shipped file role", { file_role: "test" }, {}],
+    ["OSV origin", { origin: "osv-scanner" }, {}],
+    [
+      "unconfirmed reachability prose",
+      {},
+      {
+        technical_explanation:
+          "Runtime reachability is not demonstrated by the available evidence.",
+      },
+    ],
+  ])("preserves legacy red for %s", (_label, candidate, itemOverrides) => {
+    const item = assessment({
+      disposition: "material_vulnerability",
+      impact: "critical",
+      exploitability: "readily_exploitable",
+      confidence: "high",
+      recommended_risk: "high",
+      ...itemOverrides,
+    });
+    const report = reportWith([item], [candidate]);
+
+    expect(deriveReportAdvisory(report)).toEqual({
+      risk_level: "high",
+      danger_basis: "critical_exploitable_vulnerability",
+    });
+    expect(tavernKeeperAssessmentRequirements(report).required_counts).toEqual({
+      minor_cautions: 0,
+      material_concerns: 0,
+      high_danger: 1,
+    });
+  });
+
   test("keeps a concrete legacy shipped-code execution vulnerability yellow", () => {
     const item = assessment({
       disposition: "material_vulnerability",
@@ -546,6 +579,24 @@ describe("TavernKeeper deterministic project advisory", () => {
         "No credible malicious behavior was identified; the immediate-danger result is based on a critical, readily exploitable vulnerability.",
       cited_finding_ids: [candidateId],
       interaction_chains: [],
+    });
+  });
+
+  test("types the classifier candidate metadata used by deterministic builds", () => {
+    const typedCandidate: Parameters<
+      typeof buildDeterministicAssessment
+    >[0]["candidates"][number] = {
+      candidate_id: candidateId,
+      origin: "opengrep",
+      file_role: "production",
+      title: "Imported content reaches execution",
+      explanation: "Untrusted imported content reaches an execution sink.",
+      category: "code-execution",
+    };
+
+    expect(typedCandidate).toMatchObject({
+      origin: "opengrep",
+      file_role: "production",
     });
   });
 });
