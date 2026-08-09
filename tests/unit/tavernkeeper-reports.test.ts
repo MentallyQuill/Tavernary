@@ -310,6 +310,30 @@ describe("TavernKeeper V5 report import", () => {
     );
   });
 
+  test("accepts policy-4 candidates from completed JavaScript analysis", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = addExpectedCandidate(policy4Report(baseReport));
+    report.candidates[0].origin = "javascript-analysis";
+    report.candidates[0].scanner_version =
+      "webcrack-2.16.0_js-x-ray-16.0.0_signatures-1_literals-1";
+    report.candidates[0].rule_id = "javascript.xray.unsafe-command";
+    report.coverage.tools.push({
+      name: "javascript-analysis",
+      version: report.candidates[0].scanner_version,
+      status: "completed",
+    });
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(validateScanReport(rebound, validatedIndex.reports[0])).toEqual(
+      rebound,
+    );
+  });
+
   test("normalizes fetched policy-3 indexes that predate JavaScript coverage", async () => {
     const [index] = await fixtures();
     delete index.reports[0].coverage.javascript_analysis_status;
