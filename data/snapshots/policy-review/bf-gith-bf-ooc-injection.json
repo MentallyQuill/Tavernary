@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "bf-gith-bf-ooc-injection",
+  "source_id": "github-1116087330",
+  "source_identity": "github:bf-gith/bf-ooc-injection",
+  "evidence_fingerprint": "a18cdee5dcca43c5cc60771c90b0f20ea436bfee5190e7ebb358ad52edfc32ed",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-09T08:11:25.185Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-09T08:11:25.185Z"
+  },
+  "maintenance_issue_number": null
+}
