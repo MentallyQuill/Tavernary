@@ -15,6 +15,10 @@ async function interceptHelpWindow(page: import("@playwright/test").Page) {
   });
 }
 
+function currentPathname(page: import("@playwright/test").Page) {
+  return new URL(page.url()).pathname.replace(/\/$/u, "");
+}
+
 test("routes header visitors through every Help path and back to the catalog", async ({
   page,
 }) => {
@@ -250,7 +254,7 @@ test("selects project reports through Help and preserves contextual Kit reports"
     .click();
   await page.getByRole("link", { name: "Report a project listing" }).click();
   await expect
-    .poll(() => new URL(page.url()).pathname)
+    .poll(() => currentPathname(page))
     .toBe(sitePath("/help/report-project"));
   await page
     .getByLabel("Project", { exact: true })
@@ -263,7 +267,7 @@ test("selects project reports through Help and preserves contextual Kit reports"
   const kit = page.getByRole("article", { name: "Aiko's Loadout" });
   await kit.getByRole("button", { name: "Report Kit" }).click();
   await expect
-    .poll(() => new URL(page.url()).pathname)
+    .poll(() => currentPathname(page))
     .toBe(sitePath("/help/report-kit"));
   await expect
     .poll(() => new URL(page.url()).searchParams.get("kit"))
@@ -312,7 +316,7 @@ test("takes a Kit report from source control through validation, review, cancel,
     .getByRole("button", { name: "Report Kit" })
     .click();
   await expect
-    .poll(() => new URL(page.url()).pathname)
+    .poll(() => currentPathname(page))
     .toBe(sitePath("/help/report-kit"));
   await expect(page.getByLabel("What is wrong?")).toBeVisible();
   await interceptHelpWindow(page);
