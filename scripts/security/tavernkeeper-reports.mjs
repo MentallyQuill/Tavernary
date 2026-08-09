@@ -376,6 +376,7 @@ const originTools = {
   "osv-scanner": "osv-scanner",
   zizmor: "zizmor",
   malcontent: "malcontent",
+  "javascript-analysis": "javascript-analysis",
 };
 
 function assertReportCoverage(report) {
