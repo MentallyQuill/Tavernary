@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "mignon-ui-mignon-ui",
+  "name": "Mignon-UI",
+  "kind": "frontend",
+  "summary": "Mignon-UI is a local AI roleplay frontend for multi-character rooms, with Tavern Card and Lorebook imports plus milestone-based story memory and local retrieval.",
+  "metadata_status": "curated",
+  "source_id": "github-1289246212",
+  "frontends": ["mignon-ui"],
+  "primary_function": "frontend",
+  "tags": [
+    "local-first",
+    "maintain-long-term-memory",
+    "manage-context-limits",
+    "manage-lorebooks",
+    "retrieve-relevant-context",
+    "run-group-roleplay"
+  ],
+  "cataloged_at": "2026-08-09T08:38:21.169Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
