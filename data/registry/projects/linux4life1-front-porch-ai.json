@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "linux4life1-front-porch-ai",
+  "name": "front-porch-AI",
+  "kind": "frontend",
+  "summary": "A local-first AI companion for character chat and roleplay with a Realism Engine for emotion, trust, needs, and memory, plus built-in TTS, images, and The Stoop card hub.",
+  "metadata_status": "curated",
+  "source_id": "github-1158227036",
+  "frontends": ["front-porch-ai"],
+  "primary_function": "frontend",
+  "tags": [
+    "add-voice-interaction",
+    "generate-images",
+    "local-first",
+    "manage-character-libraries",
+    "run-group-roleplay",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-08-09T02:54:23.775Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
