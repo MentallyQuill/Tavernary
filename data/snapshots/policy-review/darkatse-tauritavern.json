@@ -3,14 +3,14 @@
   "project_id": "darkatse-tauritavern",
   "source_id": "github-968073441",
   "source_identity": "github:darkatse/tauritavern",
-  "evidence_fingerprint": "75b4528b5bb9c644a3173ae6aad1c3778d8a311e7516cb33dffd2bd48cad14a0",
+  "evidence_fingerprint": "641157b6418b709af118add26c75346a9030c9b3d65e4f9e73954fa65a217cd8",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-05T18:34:52.054Z",
+  "reviewed_at": "2026-08-09T08:17:23.703Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-05T18:34:52.054Z"
+    "attempts": 2,
+    "last_failure_at": "2026-08-09T08:17:23.703Z"
   },
   "maintenance_issue_number": null
 }
