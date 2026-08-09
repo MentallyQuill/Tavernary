@@ -1,6 +1,6 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-08-09T09:36:47.203Z",
+  "generated_at": "2026-08-09T11:32:33.309Z",
   "preferred_report_ids": [
     "c7c2b00bada3b75d92ba266174c49d0f2d682cef0cc1c7a93ebc98e49e2f6e55",
     "a09120867995ba186db654617ffd6ee040c89b272e35e1c6147ad404f9f9c5a8",
@@ -291,7 +291,7 @@
     "5a83066cfe7d65ceb90cac4c6cbef8ee8e2369f8be47e280ccf6962a3ec73bb0",
     "0b409db71cd59dc9ece4b9cf1f009b711f41d26edf537ceae9a5743c9fe13c1d",
     "a19bf4d78f673be3d406d6bfafa7554aeadbfb8e98fda7adddbf1539ef68b506",
-    "b34f85eda2f7c4c9843645fe57719897984ded26f8a0c72ca746e7e496d9bdfe",
+    "c983411f593908ca1409d3b1b83f8325d07657190e118b16ea5ff5238d8e970c",
     "3fdd61a96fe373b9e819cdbb2f5b5ce905e64e9f39f1a108986fb364a5e138c5",
     "db3789287d19cf8671ddeca31fd271f46f473681b9a6e15dd9cbda84db813f41",
     "7c6a43b45b48f3f2ac816e10b47011c2a9a90f6ca0bf28efbab53c0bbc5e2930",
@@ -35649,6 +35649,94 @@
         "minor_cautions": 0,
         "risk_level": "low",
         "summary": "TavernKeeper assessed both flagged code-execution signals as expected behavior for this extension’s stated purpose. The functionality is documented, user-controlled, and unlikely to create a security impact in the reviewed context. Unknown behavior cannot be ruled out completely."
+      }
+    },
+    {
+      "report_id": "c983411f593908ca1409d3b1b83f8325d07657190e118b16ea5ff5238d8e970c",
+      "report_digest": "c983411f593908ca1409d3b1b83f8325d07657190e118b16ea5ff5238d8e970c",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "4",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "2",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v5",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1282991131",
+      "provider": "github",
+      "repository_id": 1282991131,
+      "repository": "M4Marvin/charon",
+      "target_sha": "0efd69ed6bd48f6f46a3825b173e0f5b8fe2fe14",
+      "completed_at": "2026-08-09T11:32:13.176Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 2,
+        "assessments": 2,
+        "observations": 0,
+        "items": 2,
+        "disposition": {
+          "expected_behavior": 0,
+          "minor_weakness": 2,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 0,
+          "low": 2,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 2,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 0,
+          "high": 2
+        },
+        "recommended_risk": {
+          "low": 2,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 409,
+        "inventory_bytes": 2663232,
+        "tools_completed": 8,
+        "tools_not_applicable": 0,
+        "evidence_validated": 2,
+        "metadata_only_candidates": 0,
+        "review_required": 2,
+        "review_completed": 2,
+        "javascript_analysis_status": "incomplete"
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1282991131/0efd69ed6bd48f6f46a3825b173e0f5b8fe2fe14/4/c983411f593908ca1409d3b1b83f8325d07657190e118b16ea5ff5238d8e970c/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1282991131/history/",
+      "assessed_at": "2026-08-09T11:34:03.609Z",
+      "synthesis_policy_version": "4",
+      "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
+      "assessment": {
+        "cited_finding_ids": [
+          "1eb8ae5d86a937827b9e7f887d91d40c2d22bfdf54629c0dd5c32c1762ee00ff",
+          "70b520f57b1201e94ee1881b85fb555df8e03f6b33119f691601a6eac2a5c44e"
+        ],
+        "headline": "No validated signs of malicious behavior; two CI supply-chain cautions remain",
+        "high_danger": 0,
+        "interaction_chains": [],
+        "malicious_evidence": "No credible malicious behavior, API-key theft, phishing, trojan delivery, or harmful payload was validated. The findings concern workflow configuration rather than the project’s user-facing functionality.",
+        "material_concerns": 0,
+        "minor_cautions": 2,
+        "risk_level": "material",
+        "summary": "The review found two minor weaknesses in GitHub workflow security: third-party actions use movable version tags instead of fixed commit hashes, and one action has broad permissions that may not all be necessary. These issues are unlikely to be exploited but should be corrected by pinning actions to verified commit SHAs and minimizing permissions. JavaScript analysis was incomplete, so this assessment cannot establish that all unobserved behavior is clean. The material advisory classification is이"
       }
     }
   ]
