@@ -61,6 +61,11 @@
       "description": "Works with the Marinara Engine roleplay frontend."
     },
     {
+      "id": "mignon-ui",
+      "label": "Mignon-UI",
+      "description": "Works with the Mignon-UI roleplay frontend."
+    },
+    {
       "id": "narrative-engine",
       "label": "Narrative Engine",
       "description": "Works with the Narrative Engine roleplay frontend."
