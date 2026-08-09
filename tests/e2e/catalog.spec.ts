@@ -676,6 +676,50 @@ test("searches, changes density, and accepts legacy view URLs", async ({
   ).toHaveValue("");
 });
 
+test("shares plus OR searches with normal clause behavior", async ({
+  page,
+}) => {
+  const search = page.getByRole("searchbox", { name: "Search projects" });
+
+  await search.fill("vectfox+summaryception");
+
+  await expect(
+    page.getByRole("heading", { name: "VectFox", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", {
+      name: "Extension-Summaryception",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(page).toHaveURL(/q=vectfox%2Bsummaryception/iu);
+
+  await page.reload();
+
+  await expect(search).toHaveValue("vectfox+summaryception");
+  await expect(
+    page.getByRole("heading", { name: "VectFox", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", {
+      name: "Extension-Summaryception",
+      exact: true,
+    }),
+  ).toBeVisible();
+
+  await search.fill("Stab's Directives+Directive");
+
+  await expect(
+    page.getByRole("heading", {
+      name: "Stab's Directives",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Directive", exact: true }),
+  ).toBeVisible();
+});
+
 test("searches Kits by noncontiguous structured fields", async ({ page }) => {
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await expect(
