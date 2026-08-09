@@ -49,6 +49,7 @@ export interface TavernKeeperReportIndexEntryV5 {
     tools_completed: number;
     tools_not_applicable: number;
     evidence_validated: number;
+    metadata_only_candidates: number;
     review_required: number;
     review_completed: number;
     javascript_analysis_status: "complete" | "incomplete" | "legacy";
@@ -101,6 +102,11 @@ export interface TavernKeeperScanReportV5 {
   assessment_method: "deterministic-evidence-contextual-review";
   counts: TavernKeeperContextualCountsV5;
   coverage: {
+    evidence_validation: {
+      status: "completed" | "completed-with-limitations";
+      validated_candidates: number;
+      metadata_only_candidates?: number;
+    };
     javascript_analysis?: {
       status: "complete" | "incomplete";
       candidates: number;

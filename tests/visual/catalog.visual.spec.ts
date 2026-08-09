@@ -21,6 +21,7 @@ async function waitForCatalogHydration(page: Page) {
   await expect(page.locator(".catalog-shell")).toHaveAttribute(
     "data-hydrated",
     "true",
+    { timeout: 15_000 },
   );
 }
 

@@ -237,6 +237,27 @@ describe("TavernKeeper deterministic project advisory", () => {
     });
   });
 
+  test("raises metadata-only contextual coverage to material", async () => {
+    const report = Object.assign(await fixture(), reportWith([assessment()]));
+    report.coverage.evidence_validation = {
+      status: "completed-with-limitations",
+      validated_candidates: 1,
+      metadata_only_candidates: 1,
+    };
+
+    expect(deriveReportAdvisory(report)).toEqual({
+      risk_level: "material",
+      danger_basis: "none",
+    });
+    expect(tavernKeeperAssessmentRequirements(report)).toMatchObject({
+      evidence_floor: "material",
+    });
+    expect(buildDeterministicAssessment(report)).toMatchObject({
+      risk_level: "material",
+      summary: expect.stringMatching(/non-text artifact.*raw contents/iu),
+    });
+  });
+
   test("does not turn a critical but merely plausible dependency finding red", () => {
     expect(
       deriveProjectAdvisory([

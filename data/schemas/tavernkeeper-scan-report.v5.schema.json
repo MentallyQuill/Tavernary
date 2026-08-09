@@ -485,17 +485,46 @@
           "additionalProperties": false
         },
         "evidence_validation": {
-          "type": "object",
-          "properties": {
-            "status": { "type": "string", "const": "completed" },
-            "validated_candidates": {
-              "type": "integer",
-              "minimum": 0,
-              "maximum": 9007199254740991
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": { "type": "string", "const": "completed" },
+                "validated_candidates": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": ["status", "validated_candidates"],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "const": "completed-with-limitations"
+                },
+                "validated_candidates": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "metadata_only_candidates": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "status",
+                "validated_candidates",
+                "metadata_only_candidates"
+              ],
+              "additionalProperties": false
             }
-          },
-          "required": ["status", "validated_candidates"],
-          "additionalProperties": false
+          ]
         }
       },
       "required": ["inventory", "tools", "evidence_validation"],
