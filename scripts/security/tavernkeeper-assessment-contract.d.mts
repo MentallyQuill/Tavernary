@@ -1,11 +1,10 @@
 import type {
   TavernKeeperContextualItemV5,
   TavernKeeperRiskLevel,
-  TavernKeeperScanReportV5,
   TavernaryAssessmentV1,
 } from "./tavernkeeper-reports.mjs";
 
-export const TAVERNKEEPER_SYNTHESIS_POLICY_VERSION: "4";
+export const TAVERNKEEPER_SYNTHESIS_POLICY_VERSION: "5";
 export const TAVERNKEEPER_ASSESSMENT_JSON_SCHEMA: Record<string, unknown>;
 export type TavernaryAssessmentDiagnostic =
   | "response_schema"
@@ -50,11 +49,34 @@ export type TavernKeeperDangerBasis =
   | "mixed";
 export function deriveProjectAdvisory(
   assessments: readonly TavernKeeperContextualItemV5[],
+  candidates?: ReadonlyArray<{
+    candidate_id: string;
+    origin?: string;
+    file_role?: string;
+    title?: string;
+    explanation?: string;
+    category?: string;
+  }>,
 ): {
   risk_level: TavernKeeperRiskLevel;
   danger_basis: TavernKeeperDangerBasis;
 };
-export function deriveReportAdvisory(report: TavernKeeperScanReportV5): {
+export function deriveReportAdvisory(report: {
+  candidates: Array<{
+    candidate_id: string;
+    origin?: string;
+    file_role?: string;
+    title?: string;
+    explanation?: string;
+    category?: string;
+  }>;
+  assessments: TavernKeeperContextualItemV5[];
+  observations: Array<
+    Omit<TavernKeeperContextualItemV5, "candidate_id"> & {
+      related_candidate_ids: string[];
+    }
+  >;
+}): {
   risk_level: TavernKeeperRiskLevel;
   danger_basis: TavernKeeperDangerBasis;
 };

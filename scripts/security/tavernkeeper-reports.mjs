@@ -780,27 +780,13 @@ export function validateStoredReportIndex(snapshotInput, registry) {
         "critical_exploitable_vulnerability",
         "mixed",
       ].includes(entry.danger_basis) ||
-      !["model", "deterministic_fallback"].includes(entry.assessment_source)
+      !["model", "deterministic_fallback", "deterministic_regrade"].includes(
+        entry.assessment_source,
+      )
     ) {
       throw new Error("Tracked TavernKeeper synthesis identity is invalid");
     }
     validateStoredAssessmentShape(entry.assessment);
-    if (
-      entry.coverage.javascript_analysis_status === "incomplete" &&
-      entry.assessment.risk_level === "low"
-    ) {
-      throw new Error(
-        "Tracked TavernKeeper low-risk assessment has incomplete JavaScript coverage",
-      );
-    }
-    if (
-      entry.coverage.metadata_only_candidates > 0 &&
-      entry.assessment.risk_level === "low"
-    ) {
-      throw new Error(
-        "Tracked TavernKeeper low-risk assessment has metadata-only evidence",
-      );
-    }
     if (
       (entry.assessment.risk_level === "high") !==
       (entry.danger_basis !== "none")

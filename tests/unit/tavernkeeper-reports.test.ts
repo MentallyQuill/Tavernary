@@ -964,7 +964,7 @@ describe("TavernKeeper V5 report import", () => {
     });
   });
 
-  test("rejects a stored low-risk assessment with incomplete JavaScript coverage", async () => {
+  test("accepts a stored low-risk assessment with incomplete JavaScript coverage", async () => {
     const [index, baseReport] = await fixtures();
     const report = policy4Report(baseReport);
     report.coverage.javascript_analysis.status = "incomplete";
@@ -984,7 +984,7 @@ describe("TavernKeeper V5 report import", () => {
       assessment_source: "model",
     });
 
-    expect(() =>
+    expect(
       validateStoredReportIndex(
         {
           schema_version: 6,
@@ -994,10 +994,19 @@ describe("TavernKeeper V5 report import", () => {
         },
         registry,
       ),
-    ).toThrow(/incomplete JavaScript coverage/u);
+    ).toMatchObject({
+      reports: [
+        expect.objectContaining({
+          assessment: expect.objectContaining({ risk_level: "low" }),
+          coverage: expect.objectContaining({
+            javascript_analysis_status: "incomplete",
+          }),
+        }),
+      ],
+    });
   });
 
-  test("rejects a stored low-risk assessment with metadata-only evidence", async () => {
+  test("accepts a stored low-risk assessment with metadata-only evidence", async () => {
     const [index, baseReport] = await fixtures();
     const report = addExpectedCandidate(policy4Report(baseReport));
     report.coverage.evidence_validation = {
@@ -1013,7 +1022,7 @@ describe("TavernKeeper V5 report import", () => {
       assessment_source: "model",
     });
 
-    expect(() =>
+    expect(
       validateStoredReportIndex(
         {
           schema_version: 6,
@@ -1023,7 +1032,40 @@ describe("TavernKeeper V5 report import", () => {
         },
         registry,
       ),
-    ).toThrow(/metadata-only evidence/iu);
+    ).toMatchObject({
+      reports: [
+        expect.objectContaining({
+          assessment: expect.objectContaining({ risk_level: "low" }),
+          coverage: expect.objectContaining({ metadata_only_candidates: 1 }),
+        }),
+      ],
+    });
+  });
+
+  test("accepts deterministic regrade as an assessment source", async () => {
+    const [index] = await fixtures();
+    const entry = assessedEntry(index.reports[0], {
+      danger_basis: "none",
+      assessment_source: "deterministic_regrade",
+    });
+
+    expect(
+      validateStoredReportIndex(
+        {
+          schema_version: 6,
+          generated_at: index.generated_at,
+          preferred_report_ids: [entry.report_id],
+          reports: [entry],
+        },
+        registry,
+      ),
+    ).toMatchObject({
+      reports: [
+        expect.objectContaining({
+          assessment_source: "deterministic_regrade",
+        }),
+      ],
+    });
   });
 
   test("keeps stored history valid during a source delist transition", async () => {
