@@ -461,6 +461,81 @@ describe("TavernKeeper V5 report import", () => {
     ).toThrow(/metadata-only evidence limitation/iu);
   });
 
+  test("accepts disclosed conservative model fallback coverage", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = addExpectedCandidate(policy4Report(baseReport));
+    report.review_coverage = {
+      required: 1,
+      completed: 1,
+      model_completed: 0,
+      deterministic_fallback: 1,
+    };
+    report.assessments[0] = {
+      ...report.assessments[0],
+      disposition: "material_vulnerability",
+      impact: "medium",
+      exploitability: "plausible",
+      confidence: "low",
+      recommended_risk: "material",
+      technical_explanation:
+        "Contextual model assessment was unavailable within the bounded review window.",
+      layman_explanation:
+        "Automated contextual review could not resolve this scanner warning.",
+      developer_action: "Manually inspect the cited evidence before release.",
+    };
+    report.counts = {
+      ...report.counts,
+      disposition: {
+        expected_behavior: 0,
+        minor_weakness: 0,
+        material_vulnerability: 1,
+        credible_malicious_behavior: 0,
+      },
+      impact: { none: 0, low: 0, medium: 1, high: 0, critical: 0 },
+      exploitability: {
+        unlikely: 0,
+        plausible: 1,
+        readily_exploitable: 0,
+      },
+      confidence: { low: 1, medium: 0, high: 0 },
+      recommended_risk: { low: 0, material: 1, high: 0 },
+    };
+    report.limitations.push(
+      "One or more scanner candidates did not receive contextual model assessment within the bounded review window. They remain conservatively classified as material concerns and require manual inspection.",
+    );
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).not.toThrow();
+  });
+
+  test("rejects fallback coverage that is missing or presented as clean", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = addExpectedCandidate(policy4Report(baseReport));
+    report.review_coverage = {
+      required: 1,
+      completed: 1,
+      model_completed: 0,
+      deterministic_fallback: 1,
+    };
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).toThrow(/fallback/iu);
+  });
+
   test("rejects incomplete JavaScript coverage when every stage recovered", async () => {
     const [fixtureIndex, baseReport] = await fixtures();
     const report = policy4Report(baseReport);
