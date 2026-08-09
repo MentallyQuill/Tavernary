@@ -21,6 +21,8 @@ const versionPattern = /^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$/u;
 const supportedScannerPolicyVersions = new Set(["3", "4"]);
 const incompleteJavascriptLimitation =
   "JavaScript analysis was incomplete, so this first-filter scan supports no clean conclusion about unobserved behavior.";
+const metadataOnlyEvidenceLimitation =
+  "One or more scanner candidates refer to non-text artifacts. Their size, digest, and scanner metadata were verified, but raw contents were not provided to the contextual model.";
 const rfc3339DateTime =
   /^(?<year>\d{4})-(?<month>0[1-9]|1[0-2])-(?<day>0[1-9]|[12]\d|3[01])T(?<hour>[01]\d|2[0-3]):(?<minute>[0-5]\d):(?<second>[0-5]\d)(?:\.\d+)?Z$/u;
 
@@ -152,7 +154,8 @@ function assertCanonicalIndexEntry(entry) {
     entry.coverage.review_required !== entry.counts.candidates ||
     entry.coverage.review_completed !== entry.counts.assessments ||
     entry.coverage.review_required !== entry.coverage.review_completed ||
-    entry.coverage.evidence_validated !== entry.counts.candidates
+    entry.coverage.evidence_validated !== entry.counts.candidates ||
+    entry.coverage.metadata_only_candidates > entry.coverage.evidence_validated
   ) {
     throw new Error("TavernKeeper report review coverage is incomplete");
   }
@@ -254,7 +257,7 @@ function normalizeLegacyReportIndex(index) {
   return Array.isArray(index?.reports)
     ? {
         ...index,
-        reports: index.reports.map(migrateLegacyJavascriptCoverage),
+        reports: index.reports.map(migrateLegacyCoverage),
       }
     : index;
 }
@@ -380,15 +383,29 @@ const originTools = {
 };
 
 function assertReportCoverage(report) {
+  const evidenceValidation = report.coverage.evidence_validation;
+  const metadataOnlyEvidence =
+    evidenceValidation.status === "completed-with-limitations";
   if (
     report.review_coverage.required !== report.candidates.length ||
     report.review_coverage.completed !== report.assessments.length ||
     report.review_coverage.required !== report.review_coverage.completed ||
-    report.coverage.evidence_validation.status !== "completed" ||
-    report.coverage.evidence_validation.validated_candidates !==
-      report.candidates.length
+    evidenceValidation.validated_candidates !== report.candidates.length ||
+    (evidenceValidation.status !== "completed" && !metadataOnlyEvidence) ||
+    (metadataOnlyEvidence &&
+      (evidenceValidation.metadata_only_candidates < 1 ||
+        evidenceValidation.metadata_only_candidates >
+          evidenceValidation.validated_candidates))
   ) {
     throw new Error("TavernKeeper report review coverage is incomplete");
+  }
+  if (
+    metadataOnlyEvidence !==
+    report.limitations.includes(metadataOnlyEvidenceLimitation)
+  ) {
+    throw new Error(
+      "TavernKeeper metadata-only evidence limitation is invalid",
+    );
   }
   const tools = new Map();
   for (const tool of report.coverage.tools) {
@@ -463,6 +480,11 @@ function projectedCoverage(report) {
     tools_not_applicable: report.coverage.tools.length - completed,
     evidence_validated:
       report.coverage.evidence_validation.validated_candidates,
+    metadata_only_candidates:
+      report.coverage.evidence_validation.status ===
+      "completed-with-limitations"
+        ? report.coverage.evidence_validation.metadata_only_candidates
+        : 0,
     review_required: report.review_coverage.required,
     review_completed: report.review_coverage.completed,
     javascript_analysis_status:
@@ -609,29 +631,38 @@ const priorStoredEntryExtraKeys = [
 ];
 const indexEntryKeys = reportIndexV5Schema.properties.reports.items.required;
 
-function migrateLegacyJavascriptCoverage(entry) {
-  if (
-    entry?.scanner_policy_version === "3" &&
-    entry.coverage !== null &&
-    typeof entry.coverage === "object" &&
+function migrateLegacyCoverage(entry) {
+  if (entry?.coverage === null || typeof entry?.coverage !== "object")
+    return entry;
+  const javascriptCoverage =
+    entry.scanner_policy_version === "3" &&
     !("javascript_analysis_status" in entry.coverage)
-  ) {
-    return {
-      ...entry,
-      coverage: {
-        ...entry.coverage,
-        javascript_analysis_status: "legacy",
-      },
-    };
-  }
-  return entry;
+      ? { javascript_analysis_status: "legacy" }
+      : {};
+  const contextualCoverage =
+    "metadata_only_candidates" in entry.coverage
+      ? {}
+      : { metadata_only_candidates: 0 };
+  if (
+    Object.keys(javascriptCoverage).length === 0 &&
+    Object.keys(contextualCoverage).length === 0
+  )
+    return entry;
+  return {
+    ...entry,
+    coverage: {
+      ...entry.coverage,
+      ...javascriptCoverage,
+      ...contextualCoverage,
+    },
+  };
 }
 
 function migrateStoredSnapshot(snapshot) {
   if (snapshot?.schema_version === 6 && Array.isArray(snapshot.reports)) {
     return {
       ...snapshot,
-      reports: snapshot.reports.map(migrateLegacyJavascriptCoverage),
+      reports: snapshot.reports.map(migrateLegacyCoverage),
     };
   }
   if (snapshot?.schema_version !== 5) return snapshot;
@@ -652,7 +683,7 @@ function migrateStoredSnapshot(snapshot) {
         [...indexEntryKeys, ...priorStoredEntryExtraKeys],
         "Tracked TavernKeeper assessment",
       );
-      return migrateLegacyJavascriptCoverage({
+      return migrateLegacyCoverage({
         ...entry,
         danger_basis: "none",
         assessment_source: "model",
@@ -731,6 +762,14 @@ export function validateStoredReportIndex(snapshotInput, registry) {
     ) {
       throw new Error(
         "Tracked TavernKeeper low-risk assessment has incomplete JavaScript coverage",
+      );
+    }
+    if (
+      entry.coverage.metadata_only_candidates > 0 &&
+      entry.assessment.risk_level === "low"
+    ) {
+      throw new Error(
+        "Tracked TavernKeeper low-risk assessment has metadata-only evidence",
       );
     }
     if (

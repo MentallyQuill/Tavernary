@@ -92,6 +92,11 @@ function projectIndexReport(report: Record<string, any>) {
       tools_not_applicable: report.coverage.tools.length - completed,
       evidence_validated:
         report.coverage.evidence_validation.validated_candidates,
+      metadata_only_candidates:
+        report.coverage.evidence_validation.status ===
+        "completed-with-limitations"
+          ? report.coverage.evidence_validation.metadata_only_candidates
+          : 0,
       review_required: report.review_coverage.required,
       review_completed: report.review_coverage.completed,
       javascript_analysis_status:
@@ -337,6 +342,7 @@ describe("TavernKeeper V5 report import", () => {
   test("normalizes fetched policy-3 indexes that predate JavaScript coverage", async () => {
     const [index] = await fixtures();
     delete index.reports[0].coverage.javascript_analysis_status;
+    delete index.reports[0].coverage.metadata_only_candidates;
 
     const fetched = await fetchAndValidateTavernKeeperIndex({
       dnsLookup: publicDnsLookup,
@@ -348,6 +354,7 @@ describe("TavernKeeper V5 report import", () => {
         expect.objectContaining({
           coverage: expect.objectContaining({
             javascript_analysis_status: "legacy",
+            metadata_only_candidates: 0,
           }),
         }),
       ],
@@ -409,6 +416,49 @@ describe("TavernKeeper V5 report import", () => {
     expect(() =>
       validateScanReport(rebound, validatedIndex.reports[0]),
     ).toThrow(/unrecovered JavaScript/u);
+  });
+
+  test("accepts bounded metadata-only evidence with its fixed limitation", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = addExpectedCandidate(policy4Report(baseReport));
+    report.coverage.evidence_validation = {
+      status: "completed-with-limitations",
+      validated_candidates: 1,
+      metadata_only_candidates: 1,
+    };
+    report.limitations.push(
+      "One or more scanner candidates refer to non-text artifacts. Their size, digest, and scanner metadata were verified, but raw contents were not provided to the contextual model.",
+    );
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(validateScanReport(rebound, validatedIndex.reports[0])).toEqual(
+      rebound,
+    );
+  });
+
+  test("rejects metadata-only evidence without its fixed limitation", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = addExpectedCandidate(policy4Report(baseReport));
+    report.coverage.evidence_validation = {
+      status: "completed-with-limitations",
+      validated_candidates: 1,
+      metadata_only_candidates: 1,
+    };
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).toThrow(/metadata-only evidence limitation/iu);
   });
 
   test("rejects incomplete JavaScript coverage when every stage recovered", async () => {
@@ -870,6 +920,35 @@ describe("TavernKeeper V5 report import", () => {
         registry,
       ),
     ).toThrow(/incomplete JavaScript coverage/u);
+  });
+
+  test("rejects a stored low-risk assessment with metadata-only evidence", async () => {
+    const [index, baseReport] = await fixtures();
+    const report = addExpectedCandidate(policy4Report(baseReport));
+    report.coverage.evidence_validation = {
+      status: "completed-with-limitations",
+      validated_candidates: 1,
+      metadata_only_candidates: 1,
+    };
+    report.limitations.push(
+      "One or more scanner candidates refer to non-text artifacts. Their size, digest, and scanner metadata were verified, but raw contents were not provided to the contextual model.",
+    );
+    const entry = assessedEntry(projectIndexReport(rebindReport(report)), {
+      danger_basis: "none",
+      assessment_source: "model",
+    });
+
+    expect(() =>
+      validateStoredReportIndex(
+        {
+          schema_version: 6,
+          generated_at: index.generated_at,
+          preferred_report_ids: [entry.report_id],
+          reports: [entry],
+        },
+        registry,
+      ),
+    ).toThrow(/metadata-only evidence/iu);
   });
 
   test("keeps stored history valid during a source delist transition", async () => {
