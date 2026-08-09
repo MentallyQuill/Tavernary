@@ -13,11 +13,14 @@ export const TAVERNKEEPER_ORIGIN = "https://mentallyquill.github.io";
 export const TAVERNKEEPER_REPORTS_PATH_PREFIX = "/TavernKeeper/reports/";
 export const TAVERNKEEPER_REPORT_INDEX_URL =
   "https://mentallyquill.github.io/TavernKeeper/reports/index.json";
-export const ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION = "3";
+export const ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION = "4";
 
 const digestPattern = /^[0-9a-f]{64}$/u;
 const fullShaPattern = /^[0-9a-f]{40}$/u;
 const versionPattern = /^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$/u;
+const supportedScannerPolicyVersions = new Set(["3", "4"]);
+const incompleteJavascriptLimitation =
+  "JavaScript analysis was incomplete, so this first-filter scan supports no clean conclusion about unobserved behavior.";
 const rfc3339DateTime =
   /^(?<year>\d{4})-(?<month>0[1-9]|1[0-2])-(?<day>0[1-9]|[12]\d|3[01])T(?<hour>[01]\d|2[0-3]):(?<minute>[0-5]\d):(?<second>[0-5]\d)(?:\.\d+)?Z$/u;
 
@@ -153,6 +156,16 @@ function assertCanonicalIndexEntry(entry) {
   ) {
     throw new Error("TavernKeeper report review coverage is incomplete");
   }
+  if (
+    (entry.scanner_policy_version === "4" &&
+      entry.coverage.javascript_analysis_status === "legacy") ||
+    (entry.scanner_policy_version === "3" &&
+      entry.coverage.javascript_analysis_status !== "legacy")
+  ) {
+    throw new Error(
+      "TavernKeeper report JavaScript coverage does not match scanner policy",
+    );
+  }
 }
 
 function registrySources(registry) {
@@ -203,10 +216,8 @@ function assertSourceIdentity(entry, sources) {
   }
 }
 
-function assertActiveScannerPolicy(entry) {
-  if (
-    entry.scanner_policy_version !== ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION
-  ) {
+function assertSupportedScannerPolicy(entry) {
+  if (!supportedScannerPolicyVersions.has(entry.scanner_policy_version)) {
     throw new Error("TavernKeeper scanner policy version is unsupported");
   }
 }
@@ -221,7 +232,7 @@ function assertIndexSemantics(index, registry, { pruneDelisted = false } = {}) {
   for (const entry of index.reports) {
     assertCanonicalIndexEntry(entry);
     assertSourceIdentity(entry, sources);
-    assertActiveScannerPolicy(entry);
+    assertSupportedScannerPolicy(entry);
     if (
       reportIds.has(entry.report_id) ||
       repositoryIds.has(entry.repository_id)
@@ -239,6 +250,15 @@ function assertIndexSemantics(index, registry, { pruneDelisted = false } = {}) {
   return reports;
 }
 
+function normalizeLegacyReportIndex(index) {
+  return Array.isArray(index?.reports)
+    ? {
+        ...index,
+        reports: index.reports.map(migrateLegacyJavascriptCoverage),
+      }
+    : index;
+}
+
 export function validateReportIndex(index, registry, options = {}) {
   if (
     options === null ||
@@ -250,10 +270,13 @@ export function validateReportIndex(index, registry, options = {}) {
   ) {
     throw new Error("TavernKeeper report index validation options are invalid");
   }
-  assertIndexSchema(index);
+  const normalizedIndex = normalizeLegacyReportIndex(index);
+  assertIndexSchema(normalizedIndex);
   const pruneDelisted = options.pruneDelisted === true;
-  const reports = assertIndexSemantics(index, registry, { pruneDelisted });
-  return pruneDelisted ? { ...index, reports } : index;
+  const reports = assertIndexSemantics(normalizedIndex, registry, {
+    pruneDelisted,
+  });
+  return pruneDelisted ? { ...normalizedIndex, reports } : normalizedIndex;
 }
 
 const itemCountKeys = {
@@ -382,6 +405,27 @@ function assertReportCoverage(report) {
       "TavernKeeper report candidate lacks completed tool coverage",
     );
   }
+  const javascript = report.coverage.javascript_analysis;
+  if (report.scanner_policy_version === "4" && javascript === undefined) {
+    throw new Error(
+      "TavernKeeper policy-4 report lacks JavaScript analysis coverage",
+    );
+  }
+  const incomplete = javascript?.status === "incomplete";
+  const hasUnrecoveredJavascript =
+    javascript?.unresolved.some(({ recovered }) => !recovered) ?? false;
+  if (javascript && incomplete !== hasUnrecoveredJavascript) {
+    throw new Error(
+      "TavernKeeper JavaScript coverage does not match its unrecovered JavaScript stages",
+    );
+  }
+  if (
+    incomplete !== report.limitations.includes(incompleteJavascriptLimitation)
+  ) {
+    throw new Error(
+      "TavernKeeper incomplete JavaScript coverage limitation is invalid",
+    );
+  }
 }
 
 const reportIdentityFields = [
@@ -420,6 +464,8 @@ function projectedCoverage(report) {
       report.coverage.evidence_validation.validated_candidates,
     review_required: report.review_coverage.required,
     review_completed: report.review_coverage.completed,
+    javascript_analysis_status:
+      report.coverage.javascript_analysis?.status ?? "legacy",
   };
 }
 
@@ -447,9 +493,9 @@ export function validateScanReport(report, indexEntry) {
   ) {
     throw new Error("TavernKeeper scan report digest does not match its body");
   }
+  assertReportCoverage(report);
   assertReportMatchesIndex(report, indexEntry);
   assertReportReferences(report);
-  assertReportCoverage(report);
   if (
     JSON.stringify(contextualCounts(report)) !== JSON.stringify(report.counts)
   ) {
@@ -505,12 +551,14 @@ function hardenedOptions(options, resourceLabel, url, assertInitialUrl) {
 }
 
 export async function fetchAndValidateTavernKeeperIndex(options = {}) {
-  const index = await fetchHardenedJson(
-    hardenedOptions(
-      options,
-      "TavernKeeper report index",
-      options.url ?? TAVERNKEEPER_REPORT_INDEX_URL,
-      assertInitialIndexUrl,
+  const index = normalizeLegacyReportIndex(
+    await fetchHardenedJson(
+      hardenedOptions(
+        options,
+        "TavernKeeper report index",
+        options.url ?? TAVERNKEEPER_REPORT_INDEX_URL,
+        assertInitialIndexUrl,
+      ),
     ),
   );
   assertIndexSchema(index);
@@ -560,7 +608,31 @@ const priorStoredEntryExtraKeys = [
 ];
 const indexEntryKeys = reportIndexV5Schema.properties.reports.items.required;
 
+function migrateLegacyJavascriptCoverage(entry) {
+  if (
+    entry?.scanner_policy_version === "3" &&
+    entry.coverage !== null &&
+    typeof entry.coverage === "object" &&
+    !("javascript_analysis_status" in entry.coverage)
+  ) {
+    return {
+      ...entry,
+      coverage: {
+        ...entry.coverage,
+        javascript_analysis_status: "legacy",
+      },
+    };
+  }
+  return entry;
+}
+
 function migrateStoredSnapshot(snapshot) {
+  if (snapshot?.schema_version === 6 && Array.isArray(snapshot.reports)) {
+    return {
+      ...snapshot,
+      reports: snapshot.reports.map(migrateLegacyJavascriptCoverage),
+    };
+  }
   if (snapshot?.schema_version !== 5) return snapshot;
   assertExactKeys(
     snapshot,
@@ -579,11 +651,11 @@ function migrateStoredSnapshot(snapshot) {
         [...indexEntryKeys, ...priorStoredEntryExtraKeys],
         "Tracked TavernKeeper assessment",
       );
-      return {
+      return migrateLegacyJavascriptCoverage({
         ...entry,
         danger_basis: "none",
         assessment_source: "model",
-      };
+      });
     }),
   };
 }
@@ -653,6 +725,14 @@ export function validateStoredReportIndex(snapshotInput, registry) {
     }
     validateStoredAssessmentShape(entry.assessment);
     if (
+      entry.coverage.javascript_analysis_status === "incomplete" &&
+      entry.assessment.risk_level === "low"
+    ) {
+      throw new Error(
+        "Tracked TavernKeeper low-risk assessment has incomplete JavaScript coverage",
+      );
+    }
+    if (
       (entry.assessment.risk_level === "high") !==
       (entry.danger_basis !== "none")
     ) {
@@ -671,7 +751,7 @@ export function validateStoredReportIndex(snapshotInput, registry) {
     if (!report) {
       throw new Error("Tracked TavernKeeper preferred report ID is unknown");
     }
-    assertActiveScannerPolicy(report);
+    assertSupportedScannerPolicy(report);
     if (preferredRepositories.has(report.repository_id)) {
       throw new Error(
         "Tracked TavernKeeper preferred repositories are duplicate",

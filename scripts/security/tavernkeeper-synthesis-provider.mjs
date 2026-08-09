@@ -1,6 +1,6 @@
 import { createStructuredProviderTransport } from "../catalog/enrichment-provider.mjs";
 import {
-  deriveProjectAdvisory,
+  deriveReportAdvisory,
   TAVERNKEEPER_ASSESSMENT_JSON_SCHEMA,
   tavernKeeperAssessmentRequirements,
 } from "./tavernkeeper-assessment-contract.mjs";
@@ -24,11 +24,9 @@ function synthesisInput(input) {
     contextual_review_policy_version: report.contextual_review_policy_version,
     ecosystem_context_version: report.ecosystem_context_version,
     counts: report.counts,
+    javascript_analysis: report.coverage?.javascript_analysis ?? null,
     ...tavernKeeperAssessmentRequirements(report),
-    required_project_advisory: deriveProjectAdvisory([
-      ...report.assessments,
-      ...report.observations,
-    ]),
+    required_project_advisory: deriveReportAdvisory(report),
     candidates: report.candidates.map((candidate) => ({
       candidate_id: candidate.candidate_id,
       origin: candidate.origin,

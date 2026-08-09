@@ -1,6 +1,7 @@
 import type {
   TavernKeeperContextualItemV5,
   TavernKeeperRiskLevel,
+  TavernKeeperScanReportV5,
   TavernaryAssessmentV1,
 } from "./tavernkeeper-reports.mjs";
 
@@ -50,6 +51,10 @@ export type TavernKeeperDangerBasis =
 export function deriveProjectAdvisory(
   assessments: readonly TavernKeeperContextualItemV5[],
 ): {
+  risk_level: TavernKeeperRiskLevel;
+  danger_basis: TavernKeeperDangerBasis;
+};
+export function deriveReportAdvisory(report: TavernKeeperScanReportV5): {
   risk_level: TavernKeeperRiskLevel;
   danger_basis: TavernKeeperDangerBasis;
 };

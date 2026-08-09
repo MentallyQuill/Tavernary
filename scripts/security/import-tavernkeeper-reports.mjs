@@ -5,7 +5,7 @@ import { isDeepStrictEqual } from "node:util";
 
 import {
   buildDeterministicAssessment,
-  deriveProjectAdvisory,
+  deriveReportAdvisory,
   TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
 } from "./tavernkeeper-assessment-contract.mjs";
 import {
@@ -270,10 +270,7 @@ export async function reconcileTavernKeeperReports(options = {}) {
       );
     }
     const report = await fetchAndValidateTavernKeeperReport(entry, options);
-    const advisory = deriveProjectAdvisory([
-      ...report.assessments,
-      ...report.observations,
-    ]);
+    const advisory = deriveReportAdvisory(report);
     let synthesis;
     let assessmentSource = "model";
     try {

@@ -31,7 +31,7 @@ function report(
     repository_id: source.repository_id,
     repository: source.repository,
     target_sha: currentSha,
-    scanner_policy_version: "3",
+    scanner_policy_version: "4",
     contextual_review_policy_version: "1",
     completed_at: "2026-07-31T12:05:00.000Z",
     assessed_at: "2026-07-31T12:06:00.000Z",
@@ -41,7 +41,7 @@ function report(
     assessment_source: "model",
     report_url:
       "https://mentallyquill.github.io/TavernKeeper/reports/github/42/" +
-      `${currentSha}/3/${"c".repeat(64)}/`,
+      `${currentSha}/4/${"c".repeat(64)}/`,
     assessment: {
       risk_level: "low",
       headline: "Low concern",
@@ -180,6 +180,36 @@ describe("deriveTavernKeeperCardStatus", () => {
         }),
       ).toMatchObject({ state: "gray", riskLevel: null });
     }
+  });
+
+  test("keeps supported policy-3 danger visible as a stale fallback", () => {
+    const historical = report({
+      scanner_policy_version: "3",
+      danger_basis: "malicious_or_compromised",
+      report_url: report().report_url.replace("/4/", "/3/"),
+      assessment: {
+        ...report().assessment,
+        risk_level: "high",
+        headline: "Immediate danger",
+        high_danger: 1,
+        malicious_evidence: "Credible malicious behavior was identified.",
+      },
+    });
+
+    expect(
+      deriveTavernKeeperCardStatus({
+        source,
+        snapshot,
+        assessedReports: [historical],
+        preferredReportIds: [historical.report_id],
+      }),
+    ).toMatchObject({
+      state: "red",
+      riskLevel: "high",
+      freshness: "stale",
+      report: { scannerPolicyVersion: "3" },
+      history: [expect.objectContaining({ scannerPolicyVersion: "3" })],
+    });
   });
 
   test("uses the explicit preferred report while retaining every final assessment in history", () => {

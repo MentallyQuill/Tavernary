@@ -94,6 +94,8 @@ function projectIndexReport(report: Record<string, any>) {
         report.coverage.evidence_validation.validated_candidates,
       review_required: report.review_coverage.required,
       review_completed: report.review_coverage.completed,
+      javascript_analysis_status:
+        report.coverage.javascript_analysis?.status ?? "legacy",
     },
     report_url:
       "https://mentallyquill.github.io/TavernKeeper/reports/github/" +
@@ -103,6 +105,32 @@ function projectIndexReport(report: Record<string, any>) {
       "https://mentallyquill.github.io/TavernKeeper/reports/github/" +
       `${report.repository_id}/history/`,
   };
+}
+
+function policy4Report(reportInput: Record<string, any>) {
+  const report = clone(reportInput);
+  report.scanner_policy_version = "4";
+  report.coverage.javascript_analysis = {
+    status: "complete",
+    candidates: 1,
+    candidate_bytes: 12,
+    representations: {
+      raw: 1,
+      decoded: 0,
+      normalized: 1,
+      bundle_modules: 0,
+    },
+    stages: {
+      raw_signatures: 1,
+      raw_ast: 1,
+      raw_opengrep: 1,
+      derived_signatures: 1,
+      derived_ast: 1,
+      derived_opengrep: 1,
+    },
+    unresolved: [],
+  };
+  return rebindReport(report);
 }
 
 function addExpectedCandidate(reportInput: Record<string, any>) {
@@ -266,8 +294,124 @@ function secondReportFrom(reportInput: Record<string, any>) {
 }
 
 describe("TavernKeeper V5 report import", () => {
-  test("accepts only scanner policy 3 as active catalog evidence", () => {
-    expect(ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION).toBe("3");
+  test("uses scanner policy 4 as active catalog evidence", () => {
+    expect(ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION).toBe("4");
+  });
+
+  test("accepts a policy-4 index and matching JavaScript coverage", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    const entry = projectIndexReport(report);
+    const index = { ...fixtureIndex, reports: [entry] };
+
+    const validatedIndex = validateReportIndex(index, registry);
+    expect(validateScanReport(report, validatedIndex.reports[0])).toEqual(
+      report,
+    );
+  });
+
+  test("normalizes fetched policy-3 indexes that predate JavaScript coverage", async () => {
+    const [index] = await fixtures();
+    delete index.reports[0].coverage.javascript_analysis_status;
+
+    const fetched = await fetchAndValidateTavernKeeperIndex({
+      dnsLookup: publicDnsLookup,
+      requestImpl: async () => jsonResponse(index),
+    });
+
+    expect(validateReportIndex(fetched, registry)).toMatchObject({
+      reports: [
+        expect.objectContaining({
+          coverage: expect.objectContaining({
+            javascript_analysis_status: "legacy",
+          }),
+        }),
+      ],
+    });
+  });
+
+  test("rejects policy-4 index entries without policy-4 JavaScript coverage", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    const entry = projectIndexReport(report);
+    entry.coverage.javascript_analysis_status = "legacy";
+
+    expect(() =>
+      validateReportIndex({ ...fixtureIndex, reports: [entry] }, registry),
+    ).toThrow(/JavaScript coverage/u);
+  });
+
+  test("rejects policy-4 reports that omit detailed JavaScript coverage", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const covered = policy4Report(baseReport);
+    const entry = projectIndexReport(covered);
+    const report = clone(covered);
+    delete report.coverage.javascript_analysis;
+    const rebound = rebindReport(report);
+    entry.report_id = rebound.report_id;
+    entry.report_digest = rebound.report_digest;
+    entry.report_url = entry.report_url.replace(
+      covered.report_id,
+      rebound.report_id,
+    );
+
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).toThrow(/JavaScript .*coverage/u);
+  });
+
+  test("rejects complete JavaScript coverage with an unrecovered stage", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    report.coverage.javascript_analysis.unresolved = [
+      {
+        path: "dist/index.min.js",
+        stage: "derived-ast",
+        reason: "parse",
+        recovered: false,
+      },
+    ];
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).toThrow(/unrecovered JavaScript/u);
+  });
+
+  test("rejects incomplete JavaScript coverage when every stage recovered", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    report.coverage.javascript_analysis.status = "incomplete";
+    report.coverage.javascript_analysis.unresolved = [
+      {
+        path: "dist/index.min.js",
+        stage: "derived-ast",
+        reason: "parse",
+        recovered: true,
+      },
+    ];
+    report.limitations.push(
+      "JavaScript analysis was incomplete, so this first-filter scan supports no clean conclusion about unobserved behavior.",
+    );
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).toThrow(/unrecovered JavaScript/u);
   });
 
   test("rejects an inactive scanner policy from the preferred report index", async () => {
@@ -641,6 +785,67 @@ describe("TavernKeeper V5 report import", () => {
         registry,
       ),
     ).toThrow(/preferred/u);
+  });
+
+  test("migrates legacy policy-3 stored summaries in memory", async () => {
+    const [index] = await fixtures();
+    const entry = assessedEntry(index.reports[0]);
+    delete entry.coverage.javascript_analysis_status;
+    entry.danger_basis = "none";
+    entry.assessment_source = "model";
+
+    expect(
+      validateStoredReportIndex(
+        {
+          schema_version: 6,
+          generated_at: index.generated_at,
+          preferred_report_ids: [],
+          reports: [entry],
+        },
+        registry,
+      ),
+    ).toMatchObject({
+      reports: [
+        expect.objectContaining({
+          coverage: expect.objectContaining({
+            javascript_analysis_status: "legacy",
+          }),
+        }),
+      ],
+    });
+  });
+
+  test("rejects a stored low-risk assessment with incomplete JavaScript coverage", async () => {
+    const [index, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    report.coverage.javascript_analysis.status = "incomplete";
+    report.coverage.javascript_analysis.unresolved = [
+      {
+        path: "dist/index.min.js",
+        stage: "derived-ast",
+        reason: "parse",
+        recovered: false,
+      },
+    ];
+    report.limitations.push(
+      "JavaScript analysis was incomplete, so this first-filter scan supports no clean conclusion about unobserved behavior.",
+    );
+    const entry = assessedEntry(projectIndexReport(rebindReport(report)), {
+      danger_basis: "none",
+      assessment_source: "model",
+    });
+
+    expect(() =>
+      validateStoredReportIndex(
+        {
+          schema_version: 6,
+          generated_at: index.generated_at,
+          preferred_report_ids: [entry.report_id],
+          reports: [entry],
+        },
+        registry,
+      ),
+    ).toThrow(/incomplete JavaScript coverage/u);
   });
 
   test("keeps stored history valid during a source delist transition", async () => {
