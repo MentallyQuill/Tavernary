@@ -12,7 +12,7 @@ const pinnedActions = {
   "actions/upload-pages-artifact": "fc324d3547104276b827a68afc52ff2a11cc49c9",
   "actions/deploy-pages": "cd2ce8fcbc39b97be8ca5fce6e763baed58fa128",
   "actions/upload-artifact": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
-  "actions/create-github-app-token": "f8d387b68d61c58ab83c6c016672934102569859",
+  "actions/create-github-app-token": "bcd2ba49218906704ab6c1aa796996da409d3eb1",
 };
 
 async function workflow(name: string) {
@@ -1082,15 +1082,36 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
     "project-submission-${{ inputs.issue_number }}",
   );
   expect(source).toContain("git push --force-with-lease=");
-  expect(source).toContain("git rebase origin/main");
+  expect(source).not.toContain("git rebase origin/main");
+  expect(source).toContain(
+    'node scripts/submissions/reset-project-submission-branch.mjs --branch "$BRANCH"',
+  );
   expect(source).toContain('git config user.name "github-actions[bot]"');
   expect(source).toContain(
     'git config user.email "41898282+github-actions[bot]@users.noreply.github.com"',
   );
   expect(
     source.indexOf('git config user.name "github-actions[bot]"'),
-  ).toBeLessThan(source.indexOf("git rebase origin/main"));
+  ).toBeLessThan(
+    source.indexOf(
+      "node scripts/submissions/reset-project-submission-branch.mjs",
+    ),
+  );
   expect(source).toContain("previous-generated-paths.txt");
+  const existingPrRegeneration = source.indexOf(
+    'if [[ -n "$PR_NUMBER" && -n "$REMOTE_SHA" && -n "$MARKER_SHA" ]]; then',
+  );
+  const branchReset = source.indexOf(
+    "node scripts/submissions/reset-project-submission-branch.mjs",
+    existingPrRegeneration,
+  );
+  const markerCleanup = source.indexOf(
+    "while IFS= read -r generated_path; do",
+    existingPrRegeneration,
+  );
+  expect(existingPrRegeneration).toBeGreaterThanOrEqual(0);
+  expect(branchReset).toBeGreaterThan(existingPrRegeneration);
+  expect(branchReset).toBeLessThan(markerCleanup);
   expect(source).toContain("Refusing unsafe generated path");
   expect(source).toContain("Prepare generated path set");
   expect(source).toContain("Reject conflicting open submission paths");
