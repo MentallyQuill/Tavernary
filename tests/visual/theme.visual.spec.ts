@@ -1027,7 +1027,7 @@ test("captures the complete guided Help surface on Windows", async ({
   await page.getByLabel("What happens instead?").fill("Focus disappears.");
   await page.getByLabel("What should happen?").fill("Focus remains visible.");
   await page
-    .getByLabel("How can we reproduce it?")
+    .getByLabel("How can the problem be reproduced?")
     .fill("Open Help and press Tab.");
   await page.getByRole("button", { name: "Review request" }).click();
   await expect(page.locator(".help-review")).toHaveScreenshot(

@@ -48,8 +48,8 @@ export default function ProjectSubmissionPage() {
         <p className="submission-kicker">Contribute</p>
         <h1>Submit a project</h1>
         <p className="submission-lead">
-          Tell us what the project is and where it belongs. Tavernary validates
-          the request and shows the authoritative submission for review before
+          Describe the project and where it belongs. Tavernary validates the
+          request and shows the authoritative submission for review before
           opening GitHub, where you can create the issue with your GitHub
           identity.
         </p>

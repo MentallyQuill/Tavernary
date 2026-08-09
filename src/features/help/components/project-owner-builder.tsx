@@ -282,7 +282,7 @@ function policyStatement(
   project: OwnerProjectOption,
 ) {
   if (manifest.operation === "add-cards") {
-    return "Tavernary maintainers review and approve the complete card batch together.";
+    return "Tavernary reviews and approves the complete card batch together.";
   }
   if (manifest.operation === "retire-card") {
     return `Retiring ${project.name} is reversible and affects only this card.`;
@@ -507,7 +507,7 @@ export function ProjectOwnerBuilder({
       <>
         <p className="help-hint">
           GitHub will verify either current personal-owner authority or reviewed
-          Tavernary staff authority.
+          Tavernary authority.
         </p>
         <p className="owner-policy-statement">
           {policyStatement(reviewManifest, selected)}
@@ -550,7 +550,7 @@ export function ProjectOwnerBuilder({
       >
         <p className="help-hint">
           GitHub verifies current personal repository ownership after
-          submission. Trusted Tavernary staff may submit reviewed maintenance
+          submission. Tavernary&apos;s owner may submit reviewed maintenance
           requests for any active listing, including listings from other
           sources.
         </p>
@@ -568,14 +568,14 @@ export function ProjectOwnerBuilder({
             {selected.sourceType !== "github" &&
             selected.sourceState.status === "active" ? (
               <p>
-                If you own this listing, use the help request below so staff can
-                review proof of ownership before making changes.
+                If you own this listing, use the help request below so proof of
+                ownership can be reviewed before making changes.
               </p>
             ) : null}
             <Link href={`/help/report-project?project=${selected.id}`}>
               {selected.sourceType === "github"
                 ? "Report this listing instead"
-                : "Request staff help with this listing"}
+                : "Request a listing review"}
             </Link>
           </div>
         ) : null}

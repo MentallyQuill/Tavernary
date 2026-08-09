@@ -37,7 +37,7 @@ test("prepares a website report without collecting browser diagnostics", async (
     .getByLabel("What should happen?")
     .fill("Keyboard focus remains visible.");
   await page
-    .getByLabel("How can we reproduce it?")
+    .getByLabel("How can the problem be reproduced?")
     .fill("Open Help and press Tab.");
   await page.getByRole("button", { name: "Review request" }).click();
   await page.getByRole("button", { name: "Continue on GitHub" }).click();

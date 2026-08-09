@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
+import { KoFiSupport } from "@/features/catalog/components/kofi-support";
 
 export function SiteHeader({
   search,
@@ -58,6 +59,7 @@ export function SiteHeader({
         <Link className="submit-link" href="/submit/project/">
           Submit Project
         </Link>
+        <KoFiSupport />
       </nav>
     </header>
   );

@@ -76,6 +76,18 @@ test("serves every favicon declared on the About page", async ({ page }) => {
   }
 });
 
+test("exports the support transparency page", async ({ page }) => {
+  await page.goto(sitePath("/support/"));
+
+  await expect(
+    page.getByRole("heading", { name: "Support Tavernary" }),
+  ).toBeVisible();
+  await expect(page.getByText("$12/month", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText(/anything above the current month.*carries forward/i),
+  ).toBeVisible();
+});
+
 test("locks the built-in dark theme against Dark Reader recoloring", async ({
   page,
 }) => {

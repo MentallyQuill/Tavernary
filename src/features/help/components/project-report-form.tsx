@@ -43,15 +43,14 @@ const categoryGuidance: Record<ProjectReportCategory, string> = {
     "Explain what is wrong and what the correct information should be.",
   "source-moved-or-unavailable":
     "Share the last known source and the proposed current source.",
-  "duplicate-or-wrong-listing": "Tell us which listing should remain.",
+  "duplicate-or-wrong-listing": "Identify which listing should remain.",
   "unsafe-or-malicious":
     "Describe the specific behavior and include public evidence.",
   "abusive-or-inappropriate":
     "Describe the content or behavior that violates Tavernary's published safety boundaries.",
   "rights-concern":
     "Explain your relationship to the affected work and the review you are requesting. Do not publish private legal or personal information.",
-  "other-listing-concern":
-    "Describe the listing concern for maintainers to review.",
+  "other-listing-concern": "Describe the listing concern for review.",
 };
 
 function nullable(value: string) {

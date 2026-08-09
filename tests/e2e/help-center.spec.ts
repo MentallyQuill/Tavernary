@@ -33,7 +33,7 @@ test("routes header visitors through every Help path and back to the catalog", a
 
   await siteActions.getByRole("link", { name: "Help" }).click();
   await expect(
-    page.getByRole("heading", { name: "How can we help?" }),
+    page.getByRole("heading", { name: "Help", exact: true }),
   ).toBeVisible();
 
   for (const [name, path] of [
@@ -88,7 +88,7 @@ test("preserves reviewed report state and cancels without opening GitHub", async
     .fill("Focus is not visible after a keyboard action.");
   await page.getByLabel("What should happen?").fill("Focus remains visible.");
   await page
-    .getByLabel("How can we reproduce it?")
+    .getByLabel("How can the problem be reproduced?")
     .fill("Open Help and press Tab.");
   await expect(page.getByText("45/2000")).toBeVisible();
 

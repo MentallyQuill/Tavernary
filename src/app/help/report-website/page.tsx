@@ -5,8 +5,7 @@ import { WebsiteReportForm } from "@/features/help/components/website-report-for
 
 export const metadata = {
   title: "Report a website problem | Tavernary",
-  description:
-    "Report a problem with Tavernary's website for maintainer review.",
+  description: "Report a problem with Tavernary's website for review.",
 };
 
 export default function WebsiteReportPage() {

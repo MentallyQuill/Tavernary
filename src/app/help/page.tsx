@@ -31,7 +31,7 @@ const helpPaths = [
     href: "/help/other/",
     title: "Get other help",
     description:
-      "Ask a Tavernary question, report a stuck request, suggest an improvement, or contact maintainers about something not covered above.",
+      "Ask a Tavernary question, report a stuck request, or suggest an improvement not covered above.",
   },
 ];
 
@@ -44,7 +44,7 @@ export default function HelpPage() {
   return (
     <HelpPageShell
       kicker="Help"
-      title="How can we help?"
+      title="Help"
       lead={
         <p>
           Choose the closest match. Tavernary will help you prepare the right
