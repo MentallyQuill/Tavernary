@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "syfr512-sweetrolllm",
+  "source_id": "github-1260345718",
+  "source_identity": "github:syfr512/sweetrolllm",
+  "evidence_fingerprint": "f2cf11f1dc75be35dd5225e4e5d64781e95f3bc1ddee4fbd2902ddbdeeaf3dcb",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-09T08:47:40.059Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-09T08:47:40.059Z"
+  },
+  "maintenance_issue_number": null
+}
