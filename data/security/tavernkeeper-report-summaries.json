@@ -1,6 +1,6 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-08-09T11:32:33.309Z",
+  "generated_at": "2026-08-09T12:02:52.628Z",
   "preferred_report_ids": [
     "c7c2b00bada3b75d92ba266174c49d0f2d682cef0cc1c7a93ebc98e49e2f6e55",
     "a09120867995ba186db654617ffd6ee040c89b272e35e1c6147ad404f9f9c5a8",
@@ -260,7 +260,7 @@
     "0cdaa8e42f925174b67195a4ebcde3972ae6fbaba973c741541adcf1754cb050",
     "2335f3d2b3bd2e19593c6747a8c141ec9ee69040c84fed880949166be827ccb2",
     "9664e565c60214a5263573d4b83263e07ec403425c33d66f72c49780442852fd",
-    "8290ce10c25a7d2e3169b06ead0b1b8140040de3cb181008fc3d00b3abc693cf",
+    "9efa49cb96e470c1cb6d05ddfcdaa402b8adf17d6b69cbe2de98f90271281bff",
     "6ee1ceea484706f990f0f73c05a480b8e39707fd784267f72b7c390c7813b898",
     "583f4a545d00a02dd6e332690db83761bc176a72c4acc5540ad5f9d1d88db9f4",
     "e14103198f55ff05c3dbd6a0f02c72610089fdf2026c7cc3c57f956f143ca1f3",
@@ -35737,6 +35737,98 @@
         "minor_cautions": 2,
         "risk_level": "material",
         "summary": "The review found two minor weaknesses in GitHub workflow security: third-party actions use movable version tags instead of fixed commit hashes, and one action has broad permissions that may not all be necessary. These issues are unlikely to be exploited but should be corrected by pinning actions to verified commit SHAs and minimizing permissions. JavaScript analysis was incomplete, so this assessment cannot establish that all unobserved behavior is clean. The material advisory classification is이"
+      }
+    },
+    {
+      "report_id": "9efa49cb96e470c1cb6d05ddfcdaa402b8adf17d6b69cbe2de98f90271281bff",
+      "report_digest": "9efa49cb96e470c1cb6d05ddfcdaa402b8adf17d6b69cbe2de98f90271281bff",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "4",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "2",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v5",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1263145747",
+      "provider": "github",
+      "repository_id": 1263145747,
+      "repository": "starlitcode/Lumiverse-Auto-Retry",
+      "target_sha": "71e617060a6b1945895a2985ffdf4772efdc7dc7",
+      "completed_at": "2026-08-09T12:02:33.401Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 21,
+        "assessments": 21,
+        "observations": 0,
+        "items": 21,
+        "disposition": {
+          "expected_behavior": 15,
+          "minor_weakness": 6,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 14,
+          "low": 7,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 21,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 2,
+          "high": 19
+        },
+        "recommended_risk": {
+          "low": 21,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 34,
+        "inventory_bytes": 1477474,
+        "tools_completed": 6,
+        "tools_not_applicable": 2,
+        "evidence_validated": 21,
+        "metadata_only_candidates": 0,
+        "review_required": 21,
+        "review_completed": 21,
+        "javascript_analysis_status": "incomplete"
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/71e617060a6b1945895a2985ffdf4772efdc7dc7/4/9efa49cb96e470c1cb6d05ddfcdaa402b8adf17d6b69cbe2de98f90271281bff/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/history/",
+      "assessed_at": "2026-08-09T12:04:25.248Z",
+      "synthesis_policy_version": "4",
+      "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
+      "assessment": {
+        "cited_finding_ids": [
+          "0854d348bdbe16f8938bf431a9da95ca05b9ce03854c943fed9585beb78e1e5e",
+          "0ed4b4581961467092117cc44a6cbd7d4a23204c512aef701091d47212b248fa",
+          "4917c017bc73a93bf2c6905fc159957dea6ae5d90ecc429753236bdb72c9c7f8",
+          "723a9affbe206f3412f3220af1bc0e87566aa7a1a8201f5aa46ca8068982c808",
+          "802c76a1cb7359ce9c5c930f51ee82d24e46a4b3b1f168abceea1ba9bb993a21",
+          "afd70ee1deb12945077689fc777ad3ae9d44afd32cc1a4c497f24d0264a6770a"
+        ],
+        "headline": "No confirmed malicious behavior, but this review cannot provide a clean security clearance",
+        "high_danger": 0,
+        "interaction_chains": [],
+        "malicious_evidence": "No credible malicious behavior, API-key theft, harmful payload, or hidden remote-code delivery was validated. Several scanner alerts were confirmed as ordinary test code, refusal-detection logic, browser helpers, or development setup behavior.",
+        "material_concerns": 0,
+        "minor_cautions": 6,
+        "risk_level": "material",
+        "summary": "The validated findings are six low-impact workflow security weaknesses: CI actions use movable version tags, and checkout may leave a temporary read-only token in the build environment. These do not appear readily exploitable and are not evidence of a malicious project. However, JavaScript analysis was incomplete because some files could not be parsed, so the review cannot establish that no unknown behavior exists. The material advisory level reflects that unresolved review limitation, not a,;la"
       }
     }
   ]
