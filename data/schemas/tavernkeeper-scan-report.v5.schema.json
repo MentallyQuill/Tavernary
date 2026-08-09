@@ -340,6 +340,150 @@
             "additionalProperties": false
           }
         },
+        "javascript_analysis": {
+          "type": "object",
+          "properties": {
+            "status": { "type": "string", "enum": ["complete", "incomplete"] },
+            "candidates": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "candidate_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "representations": {
+              "type": "object",
+              "properties": {
+                "raw": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "decoded": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "normalized": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "bundle_modules": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": ["raw", "decoded", "normalized", "bundle_modules"],
+              "additionalProperties": false
+            },
+            "stages": {
+              "type": "object",
+              "properties": {
+                "raw_signatures": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "raw_ast": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "raw_opengrep": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "derived_signatures": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "derived_ast": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "derived_opengrep": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "raw_signatures",
+                "raw_ast",
+                "raw_opengrep",
+                "derived_signatures",
+                "derived_ast",
+                "derived_opengrep"
+              ],
+              "additionalProperties": false
+            },
+            "unresolved": {
+              "maxItems": 100,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 500
+                  },
+                  "stage": {
+                    "type": "string",
+                    "enum": [
+                      "raw-signatures",
+                      "raw-ast",
+                      "raw-opengrep",
+                      "literal-decode",
+                      "normalize",
+                      "bundle-extract",
+                      "derived-signatures",
+                      "derived-ast",
+                      "derived-opengrep"
+                    ]
+                  },
+                  "reason": {
+                    "type": "string",
+                    "enum": [
+                      "binary",
+                      "invalid-utf8",
+                      "parse",
+                      "timeout",
+                      "memory-limit",
+                      "input-limit",
+                      "output-limit",
+                      "candidate-limit",
+                      "derivative-limit",
+                      "recursion-limit",
+                      "target-limit",
+                      "unsupported"
+                    ]
+                  },
+                  "recovered": { "type": "boolean" }
+                },
+                "required": ["path", "stage", "reason", "recovered"],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "status",
+            "candidates",
+            "candidate_bytes",
+            "representations",
+            "stages",
+            "unresolved"
+          ],
+          "additionalProperties": false
+        },
         "evidence_validation": {
           "type": "object",
           "properties": {

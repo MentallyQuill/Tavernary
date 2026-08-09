@@ -51,6 +51,7 @@ export interface TavernKeeperReportIndexEntryV5 {
     evidence_validated: number;
     review_required: number;
     review_completed: number;
+    javascript_analysis_status: "complete" | "incomplete" | "legacy";
   };
   report_url: string;
   history_url: string;
@@ -99,6 +100,34 @@ export interface TavernKeeperScanReportV5 {
   completed_at: string;
   assessment_method: "deterministic-evidence-contextual-review";
   counts: TavernKeeperContextualCountsV5;
+  coverage: {
+    javascript_analysis?: {
+      status: "complete" | "incomplete";
+      candidates: number;
+      candidate_bytes: number;
+      representations: {
+        raw: number;
+        decoded: number;
+        normalized: number;
+        bundle_modules: number;
+      };
+      stages: {
+        raw_signatures: number;
+        raw_ast: number;
+        raw_opengrep: number;
+        derived_signatures: number;
+        derived_ast: number;
+        derived_opengrep: number;
+      };
+      unresolved: Array<{
+        path: string;
+        stage: string;
+        reason: string;
+        recovered: boolean;
+      }>;
+    };
+    [key: string]: unknown;
+  };
   candidates: Array<{
     candidate_id: string;
     origin: string;
@@ -209,7 +238,7 @@ export interface TavernKeeperFetchOptions {
 export const TAVERNKEEPER_ORIGIN: "https://mentallyquill.github.io";
 export const TAVERNKEEPER_REPORTS_PATH_PREFIX: "/TavernKeeper/reports/";
 export const TAVERNKEEPER_REPORT_INDEX_URL: "https://mentallyquill.github.io/TavernKeeper/reports/index.json";
-export const ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION: "3";
+export const ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION: "4";
 
 export function computeReportDigest(reportBody: object): string;
 export function validateReportIndex(

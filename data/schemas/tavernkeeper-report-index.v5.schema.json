@@ -292,6 +292,11 @@
                 "type": "integer",
                 "minimum": 0,
                 "maximum": 9007199254740991
+              },
+              "javascript_analysis_status": {
+                "default": "legacy",
+                "type": "string",
+                "enum": ["complete", "incomplete", "legacy"]
               }
             },
             "required": [
@@ -302,7 +307,8 @@
               "tools_not_applicable",
               "evidence_validated",
               "review_required",
-              "review_completed"
+              "review_completed",
+              "javascript_analysis_status"
             ],
             "additionalProperties": false
           },

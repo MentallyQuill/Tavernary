@@ -152,7 +152,9 @@ function reportMatchesSource(
     report.source_id === source.id &&
     report.repository === source.repository &&
     report.provider === "github" &&
-    report.scanner_policy_version === ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION
+    ["3", ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION].includes(
+      report.scanner_policy_version,
+    )
   );
 }
 
@@ -228,11 +230,20 @@ export function deriveTavernKeeperCardStatus({
   const reports = assessedReports
     .filter((report) => reportMatchesSource(report, source))
     .sort(compareReports);
+  const activeReports = reports.filter(
+    (report) =>
+      report.scanner_policy_version ===
+      ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION,
+  );
   const preferredIds = new Set(preferredReportIds);
   const preferred = newest(
-    reports.filter((report) => preferredIds.has(report.report_id)),
+    activeReports.filter((report) => preferredIds.has(report.report_id)),
   );
-  const selected = preferred ?? newest(reports);
+  const selected =
+    preferred ??
+    newest(activeReports) ??
+    newest(reports.filter((report) => preferredIds.has(report.report_id))) ??
+    newest(reports);
   const currentSha = currentShaFor(source, snapshot);
   const history = reports.slice(-12).map(summarize);
   const historyUrl =

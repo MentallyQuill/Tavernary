@@ -211,6 +211,17 @@ function reportItems(report) {
   return [...(report.assessments ?? []), ...(report.observations ?? [])];
 }
 
+export function deriveReportAdvisory(report) {
+  const advisory = deriveProjectAdvisory(reportItems(report));
+  if (
+    advisory.risk_level === "low" &&
+    report.coverage?.javascript_analysis?.status === "incomplete"
+  ) {
+    return { risk_level: "material", danger_basis: "none" };
+  }
+  return advisory;
+}
+
 function expectedCounts(report) {
   const items = reportItems(report);
   return {
@@ -259,15 +270,16 @@ export function tavernKeeperAssessmentRequirements(report) {
     allowed_candidate_ids: allowedCandidateIds,
     required_candidate_ids: requiredCandidateIds,
     required_counts: expectedCounts(report),
-    evidence_floor: deriveEvidenceFloor(reportItems(report)),
+    evidence_floor: deriveReportAdvisory(report).risk_level,
   };
 }
 
 export function buildDeterministicAssessment(report) {
-  const items = reportItems(report);
-  const advisory = deriveProjectAdvisory(items);
+  const advisory = deriveReportAdvisory(report);
   const requirements = tavernKeeperAssessmentRequirements(report);
   const counts = requirements.required_counts;
+  const incompleteJavascript =
+    report.coverage?.javascript_analysis?.status === "incomplete";
   const copy = {
     low: {
       headline: "Low concern",
@@ -277,9 +289,12 @@ export function buildDeterministicAssessment(report) {
         "No evidence of malicious behavior was identified in the completed review.",
     },
     material: {
-      headline: "Material security concerns identified",
-      summary:
-        "TavernKeeper identified material security concerns at the scanned commit. The detailed generated summary was unavailable; review the complete technical report before installing or using this project.",
+      headline: incompleteJavascript
+        ? "JavaScript coverage incomplete"
+        : "Material security concerns identified",
+      summary: incompleteJavascript
+        ? "JavaScript coverage was incomplete, so this first-filter scan cannot support a low-risk conclusion about unobserved behavior. Review the complete technical report before installing or using this project."
+        : "TavernKeeper identified material security concerns at the scanned commit. The detailed generated summary was unavailable; review the complete technical report before installing or using this project.",
       malicious_evidence:
         "No high-confidence evidence of malicious or compromised behavior met the immediate-danger threshold.",
     },

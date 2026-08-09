@@ -8,6 +8,7 @@ import {
   buildDeterministicAssessment,
   deriveEvidenceFloor,
   deriveProjectAdvisory,
+  deriveReportAdvisory,
   TavernaryAssessmentValidationError,
   tavernKeeperAssessmentRequirements,
   validateTavernaryAssessment,
@@ -192,6 +193,50 @@ describe("TavernKeeper evidence floors", () => {
 });
 
 describe("TavernKeeper deterministic project advisory", () => {
+  test("raises incomplete policy-4 JavaScript coverage to material", async () => {
+    const report = await fixture();
+    report.scanner_policy_version = "4";
+    report.coverage.javascript_analysis = {
+      status: "incomplete",
+      candidates: 1,
+      candidate_bytes: 12,
+      representations: {
+        raw: 1,
+        decoded: 0,
+        normalized: 1,
+        bundle_modules: 0,
+      },
+      stages: {
+        raw_signatures: 1,
+        raw_ast: 1,
+        raw_opengrep: 1,
+        derived_signatures: 1,
+        derived_ast: 1,
+        derived_opengrep: 1,
+      },
+      unresolved: [
+        {
+          path: "dist/index.min.js",
+          stage: "normalize",
+          reason: "timeout",
+          recovered: false,
+        },
+      ],
+    };
+
+    expect(deriveReportAdvisory(report)).toEqual({
+      risk_level: "material",
+      danger_basis: "none",
+    });
+    expect(tavernKeeperAssessmentRequirements(report)).toMatchObject({
+      evidence_floor: "material",
+    });
+    expect(buildDeterministicAssessment(report)).toMatchObject({
+      risk_level: "material",
+      summary: expect.stringMatching(/JavaScript coverage was incomplete/iu),
+    });
+  });
+
   test("does not turn a critical but merely plausible dependency finding red", () => {
     expect(
       deriveProjectAdvisory([
