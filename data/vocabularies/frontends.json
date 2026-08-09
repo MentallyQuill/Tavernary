@@ -121,6 +121,11 @@
       "description": "Works with the Sonder Engine roleplay frontend."
     },
     {
+      "id": "sweetrolllm",
+      "label": "SweetrollLM",
+      "description": "Works with the SweetrollLM roleplay frontend."
+    },
+    {
       "id": "talemate",
       "label": "talemate",
       "description": "Works with the talemate roleplay frontend."
