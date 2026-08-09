@@ -99,6 +99,51 @@ function assertReportSchema(report) {
   }
 }
 
+function policy3RecommendedRisk(item) {
+  if (
+    item.disposition === "expected_behavior" ||
+    item.disposition === "minor_weakness"
+  ) {
+    return "low";
+  }
+  if (item.disposition === "credible_malicious_behavior") return "high";
+  const demonstratedMaterial =
+    item.risk_exposure === "demonstrated" &&
+    item.confidence === "high" &&
+    ["medium", "high", "critical"].includes(item.impact) &&
+    ["plausible", "readily_exploitable"].includes(item.exploitability);
+  if (!demonstratedMaterial) return "low";
+  return item.impact === "critical" &&
+    item.exploitability === "readily_exploitable"
+    ? "high"
+    : "material";
+}
+
+function assertContextualReviewPolicy(report) {
+  if (report.contextual_review_policy_version !== "3") return;
+  if (
+    report.prompt_version !== "contextual-review-v6" ||
+    report.assessment_schema_version !== "contextual-assessment-v2"
+  ) {
+    throw new Error(
+      "TavernKeeper policy-3 report has invalid demonstrated-risk contract versions",
+    );
+  }
+  const invalid = [...report.assessments, ...report.observations].some(
+    (item) =>
+      !["not_demonstrated", "demonstrated"].includes(item.risk_exposure) ||
+      (item.disposition === "credible_malicious_behavior" &&
+        (item.confidence !== "high" ||
+          item.risk_exposure !== "demonstrated")) ||
+      item.recommended_risk !== policy3RecommendedRisk(item),
+  );
+  if (invalid) {
+    throw new Error(
+      "TavernKeeper policy-3 report violates demonstrated-risk rules",
+    );
+  }
+}
+
 function canonicalValue(value) {
   if (Array.isArray(value)) return value.map(canonicalValue);
   if (value !== null && typeof value === "object") {
@@ -538,6 +583,7 @@ function assertReportMatchesIndex(report, entry) {
 
 export function validateScanReport(report, indexEntry) {
   assertReportSchema(report);
+  assertContextualReviewPolicy(report);
   assertCanonicalIndexEntry(indexEntry);
   if (
     report.report_id !== report.report_digest ||
@@ -787,6 +833,30 @@ export function validateStoredReportIndex(snapshotInput, registry) {
       throw new Error("Tracked TavernKeeper synthesis identity is invalid");
     }
     validateStoredAssessmentShape(entry.assessment);
+    const numericSynthesisPolicy = /^\d+$/u.test(entry.synthesis_policy_version)
+      ? Number(entry.synthesis_policy_version)
+      : Number.NaN;
+    const legacyCoverageFloor =
+      Number.isSafeInteger(numericSynthesisPolicy) &&
+      numericSynthesisPolicy <= 4;
+    if (
+      legacyCoverageFloor &&
+      entry.assessment.risk_level === "low" &&
+      entry.coverage.javascript_analysis_status === "incomplete"
+    ) {
+      throw new Error(
+        "Tracked TavernKeeper low-risk assessment has incomplete JavaScript coverage",
+      );
+    }
+    if (
+      legacyCoverageFloor &&
+      entry.assessment.risk_level === "low" &&
+      entry.coverage.metadata_only_candidates > 0
+    ) {
+      throw new Error(
+        "Tracked TavernKeeper low-risk assessment has metadata-only evidence",
+      );
+    }
     if (
       (entry.assessment.risk_level === "high") !==
       (entry.danger_basis !== "none")

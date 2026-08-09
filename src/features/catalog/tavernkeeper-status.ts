@@ -1,4 +1,9 @@
-import { ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION } from "../../../scripts/security/tavernkeeper-reports.mjs";
+import {
+  ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION,
+  type TavernKeeperAssessmentSource,
+} from "../../../scripts/security/tavernkeeper-reports.mjs";
+
+export type { TavernKeeperAssessmentSource };
 
 export type TavernKeeperRiskLevel = "low" | "material" | "high";
 export type TavernKeeperDangerBasis =
@@ -6,7 +11,6 @@ export type TavernKeeperDangerBasis =
   | "malicious_or_compromised"
   | "critical_exploitable_vulnerability"
   | "mixed";
-export type TavernKeeperAssessmentSource = "model" | "deterministic_fallback";
 export type TavernKeeperVisualState =
   "teal" | "orange" | "red" | "gray" | "unsupported";
 export type TavernKeeperFreshness =
