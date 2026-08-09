@@ -963,6 +963,96 @@ describe("TavernKeeper V5 report import", () => {
     ]);
   });
 
+  test("prioritizes a new contextual report ahead of offline legacy regrading", async () => {
+    const root = await mkdtemp(
+      resolve(tmpdir(), "tavernkeeper-v6-new-before-legacy-"),
+    );
+    const outputPath = resolve(
+      root,
+      "data/security/tavernkeeper-report-summaries.json",
+    );
+    const importStatePath = resolve(
+      root,
+      "data/security/tavernkeeper-import-state.json",
+    );
+    await mkdir(resolve(root, "data/security"), { recursive: true });
+    const [fixtureIndex, baseReport] = await fixtures();
+    const legacyReport = policy4Report(baseReport);
+    const legacyEntry = projectIndexReport(legacyReport);
+    const newReport = secondReportFrom(
+      rebindReport(policy3ExposureReport(baseReport)),
+    );
+    const newEntry = projectIndexReport(newReport);
+    const index = { ...fixtureIndex, reports: [legacyEntry, newEntry] };
+    const prior = assessedEntry(legacyEntry, {
+      synthesis_policy_version: "4",
+      danger_basis: "none",
+      assessment_source: "model",
+    });
+    await writeFile(
+      outputPath,
+      `${JSON.stringify({
+        schema_version: 6,
+        generated_at: index.generated_at,
+        preferred_report_ids: [legacyEntry.report_id],
+        reports: [prior],
+      })}\n`,
+    );
+    const expandedRegistry = [
+      ...registry,
+      {
+        id: "github-43",
+        type: "github",
+        status: "active",
+        repository_id: 43,
+        repository: "owner/repo-two",
+      },
+    ];
+    const requests: string[] = [];
+    let synthesisCalls = 0;
+
+    const outcome = await reconcileTavernKeeperReports({
+      root,
+      outputPath,
+      importStatePath,
+      registry: expandedRegistry,
+      dnsLookup: publicDnsLookup,
+      requestImpl: async (url: string) => {
+        requests.push(url);
+        if (url === TAVERNKEEPER_REPORT_INDEX_URL) return jsonResponse(index);
+        if (url === `${newEntry.report_url}report.json`)
+          return jsonResponse(newReport);
+        throw new Error("legacy regrade must remain behind the new report");
+      },
+      synthesizeReport: async () => {
+        synthesisCalls += 1;
+        return synthesisFor(newEntry);
+      },
+      batchSize: 1,
+      now: () => new Date("2026-08-09T10:02:30.000Z"),
+    });
+
+    expect(requests).toEqual([
+      TAVERNKEEPER_REPORT_INDEX_URL,
+      `${newEntry.report_url}report.json`,
+    ]);
+    expect(synthesisCalls).toBe(1);
+    expect(outcome).toMatchObject({ imported: 1, remaining: 1 });
+    expect(outcome.snapshot.reports).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          report_id: legacyEntry.report_id,
+          synthesis_policy_version: "4",
+        }),
+        expect.objectContaining({
+          report_id: newEntry.report_id,
+          synthesis_policy_version: TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
+          assessment_source: "model",
+        }),
+      ]),
+    );
+  });
+
   test("deterministically regrades a new legacy-policy report without synthesis", async () => {
     const root = await mkdtemp(
       resolve(tmpdir(), "tavernkeeper-v6-legacy-new-"),

@@ -285,6 +285,22 @@ export async function reconcileTavernKeeperReports(options = {}) {
     }
     return !matchingTrackedEntry(existing.get(entry.report_id), entry);
   });
+  const prioritizedEligible = [...eligible].sort((left, right) => {
+    const priority = ({ entry, prior, mode }) =>
+      retryReportDigest === entry.report_digest
+        ? 0
+        : prior === undefined
+          ? 1
+          : mode === "model"
+            ? 2
+            : 3;
+    return (
+      priority(left) - priority(right) ||
+      Date.parse(right.entry.completed_at) -
+        Date.parse(left.entry.completed_at) ||
+      left.entry.report_id.localeCompare(right.entry.report_id)
+    );
+  });
   const skippedQuarantines = work.filter(
     ({ entry, mode }) =>
       mode === "model" &&
@@ -295,7 +311,10 @@ export async function reconcileTavernKeeperReports(options = {}) {
   let imported = 0;
   let quarantined = 0;
 
-  for (const { entry, prior, mode } of eligible.slice(0, batchSize)) {
+  for (const { entry, prior, mode } of prioritizedEligible.slice(
+    0,
+    batchSize,
+  )) {
     if (
       prior !== undefined &&
       !isDeepStrictEqual(indexProjection(prior), entry)
