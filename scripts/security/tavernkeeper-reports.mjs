@@ -23,6 +23,8 @@ const incompleteJavascriptLimitation =
   "JavaScript analysis was incomplete, so this first-filter scan supports no clean conclusion about unobserved behavior.";
 const metadataOnlyEvidenceLimitation =
   "One or more scanner candidates refer to non-text artifacts. Their size, digest, and scanner metadata were verified, but raw contents were not provided to the contextual model.";
+const deterministicReviewFallbackLimitation =
+  "One or more scanner candidates did not receive contextual model assessment within the bounded review window. They remain conservatively classified as material concerns and require manual inspection.";
 const rfc3339DateTime =
   /^(?<year>\d{4})-(?<month>0[1-9]|1[0-2])-(?<day>0[1-9]|[12]\d|3[01])T(?<hour>[01]\d|2[0-3]):(?<minute>[0-5]\d):(?<second>[0-5]\d)(?:\.\d+)?Z$/u;
 
@@ -398,6 +400,33 @@ function assertReportCoverage(report) {
           evidenceValidation.validated_candidates))
   ) {
     throw new Error("TavernKeeper report review coverage is incomplete");
+  }
+  const modelCompleted = report.review_coverage.model_completed;
+  const deterministicFallback = report.review_coverage.deterministic_fallback;
+  if (
+    (modelCompleted === undefined) !== (deterministicFallback === undefined) ||
+    (modelCompleted !== undefined &&
+      modelCompleted + deterministicFallback !==
+        report.review_coverage.completed)
+  ) {
+    throw new Error(
+      "TavernKeeper report model and fallback coverage is incomplete",
+    );
+  }
+  const conservativeFallbackAssessments = report.assessments.filter(
+    (assessment) =>
+      assessment.disposition === "material_vulnerability" &&
+      assessment.impact === "medium" &&
+      assessment.exploitability === "plausible" &&
+      assessment.confidence === "low" &&
+      assessment.recommended_risk === "material",
+  ).length;
+  if (
+    (deterministicFallback ?? 0) > conservativeFallbackAssessments ||
+    (deterministicFallback ?? 0) > 0 !==
+      report.limitations.includes(deterministicReviewFallbackLimitation)
+  ) {
+    throw new Error("TavernKeeper deterministic fallback coverage is invalid");
   }
   if (
     metadataOnlyEvidence !==
