@@ -40,8 +40,15 @@ export function searchDocumentTerms(value: string) {
   return [...new Set([...normalizedTerms, ...compactTerms])];
 }
 
+export function searchClauses(value: string) {
+  return value
+    .split("+")
+    .map((clause) => searchTerms(clause).join(" "))
+    .filter(Boolean);
+}
+
 export function searchMeaning(value: string) {
-  return searchTerms(value).join(" ");
+  return searchClauses(value).join("+");
 }
 
 export function allowedEditDistance(term: string): 0 | 1 | 2 {

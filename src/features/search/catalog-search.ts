@@ -3,6 +3,7 @@ import MiniSearch, { type SearchResult } from "minisearch";
 import {
   allowedEditDistance,
   normalizeSearchText,
+  searchClauses,
   searchDocumentTerms,
   searchMeaning,
   searchTerms,
@@ -236,6 +237,20 @@ function degradedFallback(
   return { ...exactAllTermSearch(documents, query), degraded: true };
 }
 
+function mergeMatches(matches: CatalogSearchMatch[]) {
+  const bestById = new Map<string, CatalogSearchMatch>();
+  for (const match of matches) {
+    const current = bestById.get(match.id);
+    if (!current || match.score > current.score) {
+      bestById.set(match.id, match);
+    }
+  }
+  return [...bestById.values()].sort(
+    (left, right) =>
+      right.score - left.score || left.id.localeCompare(right.id),
+  );
+}
+
 function conservativeCorrection(original: string, candidate: string) {
   const originalTerms = uniqueTerms(original);
   const candidateTerms = uniqueTerms(candidate);
@@ -281,8 +296,8 @@ export function exactAllTermSearch(
   documents: CatalogSearchDocument[],
   query: string,
 ): CatalogSearchResults {
-  const normalizedQuery = searchMeaning(query);
-  const fullQuery = normalizeSearchText(query);
+  const clauses = searchClauses(query);
+  const normalizedQuery = clauses.join("+");
   if (!normalizedQuery) {
     return {
       normalizedQuery,
@@ -292,21 +307,22 @@ export function exactAllTermSearch(
     };
   }
 
-  const terms = uniqueTerms(normalizedQuery);
-  const matches = documents
-    .filter((document) => {
-      const tokens = tokenSet(documentText(document));
-      return terms.every((term) => tokens.has(term));
-    })
-    .map((document): CatalogSearchMatch => ({
-      id: document.id,
-      score: matchScore(document, fullQuery, 3, 0),
-      evidence: exactEvidence(document, normalizedQuery),
-    }))
-    .sort(
-      (left, right) =>
-        right.score - left.score || left.id.localeCompare(right.id),
-    );
+  const matches = mergeMatches(
+    clauses.flatMap((clause) => {
+      const terms = uniqueTerms(clause);
+      const fullQuery = normalizeSearchText(clause);
+      return documents
+        .filter((document) => {
+          const tokens = tokenSet(documentText(document));
+          return terms.every((term) => tokens.has(term));
+        })
+        .map((document): CatalogSearchMatch => ({
+          id: document.id,
+          score: matchScore(document, fullQuery, 3, 0),
+          evidence: exactEvidence(document, clause),
+        }));
+    }),
+  );
 
   return {
     normalizedQuery,
@@ -355,8 +371,8 @@ export function createCatalogSearchIndex(
 
   return {
     search(query) {
-      const normalizedQuery = searchMeaning(query);
-      const fullQuery = normalizeSearchText(query);
+      const clauses = searchClauses(query);
+      const normalizedQuery = clauses.join("+");
       if (!normalizedQuery) {
         return {
           normalizedQuery,
@@ -367,46 +383,56 @@ export function createCatalogSearchIndex(
       }
 
       try {
-        const results = miniSearch.search(normalizedQuery);
-        const matches = results
-          .flatMap((result): CatalogSearchMatch[] => {
-            const document = documentsById.get(String(result.id));
-            if (!document) return [];
-            const termMatches = uniqueTerms(normalizedQuery)
-              .map((term) => bestTermMatch(result, term))
-              .filter((match): match is TermMatch => match !== null);
-            if (termMatches.length !== uniqueTerms(normalizedQuery).length) {
-              return [];
-            }
-            const exactnessTier = termMatches.some(
-              ({ kind }) => kind === "fuzzy",
-            )
-              ? 1
-              : termMatches.some(({ kind }) => kind === "prefix")
-                ? 2
-                : 3;
-            return [
-              {
-                id: document.id,
-                score: matchScore(
-                  document,
-                  fullQuery,
-                  exactnessTier,
-                  result.score,
-                ),
-                evidence: evidenceForResult(document, result, normalizedQuery),
-              },
-            ];
-          })
-          .sort(
-            (left, right) =>
-              right.score - left.score || left.id.localeCompare(right.id),
-          );
+        const matches = mergeMatches(
+          clauses.flatMap((clause) => {
+            const fullQuery = normalizeSearchText(clause);
+            const terms = uniqueTerms(clause);
+            return miniSearch
+              .search(clause)
+              .flatMap((result): CatalogSearchMatch[] => {
+                const document = documentsById.get(String(result.id));
+                if (!document) return [];
+                const termMatches = terms
+                  .map((term) => bestTermMatch(result, term))
+                  .filter((match): match is TermMatch => match !== null);
+                if (termMatches.length !== terms.length) {
+                  return [];
+                }
+                const exactnessTier = termMatches.some(
+                  ({ kind }) => kind === "fuzzy",
+                )
+                  ? 1
+                  : termMatches.some(({ kind }) => kind === "prefix")
+                    ? 2
+                    : 3;
+                return [
+                  {
+                    id: document.id,
+                    score: matchScore(
+                      document,
+                      fullQuery,
+                      exactnessTier,
+                      result.score,
+                    ),
+                    evidence: evidenceForResult(document, result, clause),
+                  },
+                ];
+              });
+          }),
+        );
+        const correctedClauses = clauses.map(
+          (clause) => correctionForQuery(miniSearch, clause) ?? clause,
+        );
+        const correction = correctedClauses.some(
+          (clause, index) => clause !== clauses[index],
+        )
+          ? correctedClauses.join("+")
+          : null;
 
         return {
           normalizedQuery,
           matches,
-          correction: correctionForQuery(miniSearch, normalizedQuery),
+          correction,
           degraded: false,
         };
       } catch (error) {
