@@ -3,14 +3,14 @@
   "project_id": "zdost-story-engine",
   "source_id": "github-1225640741",
   "source_identity": "github:zdost/story-engine",
-  "evidence_fingerprint": "71875b836a52468ae2345805e732fb76edf7071e68223675f5b539b950c35f7d",
+  "evidence_fingerprint": "2a03c6db0356e8b8901230c5c9d6788ffc219f38c0d6f7b5f593a6507cbe7142",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-04T08:09:38.879Z",
+  "reviewed_at": "2026-08-09T08:13:36.006Z",
   "retry": {
-    "attempts": 6,
-    "last_failure_at": "2026-08-04T08:09:38.879Z"
+    "attempts": 7,
+    "last_failure_at": "2026-08-09T08:13:36.006Z"
   },
   "maintenance_issue_number": null
 }
