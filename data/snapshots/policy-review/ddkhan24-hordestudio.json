@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "ddkhan24-hordestudio",
+  "source_id": "github-1318310911",
+  "source_identity": "github:ddkhan24/hordestudio",
+  "evidence_fingerprint": "fb1c12ff0aed3477df767d5b401924b527a0f5f212eed991ad5fdd6bc18cad0a",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-09T17:08:37.376Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-09T17:08:37.376Z"
+  },
+  "maintenance_issue_number": null
+}
