@@ -77,10 +77,9 @@ export default function SupportPage() {
               carries forward to help cover future Tavernary operating costs.
             </p>
             <p>
-              The $12 target is a simple community-funding goal.
-              Tavernary&apos;s owner intends to cover costs above it for now.
-              The $13.50 model figure below is an uncached estimate; measured
-              costs may be lower with cached input and will vary with usage.
+              The $12 target is a simple community-funding goal. I&apos;ll cover
+              anything beyond that for now as I explore community interest in
+              supporting Tavernary and making it sustainable.
             </p>
           </div>
         </section>

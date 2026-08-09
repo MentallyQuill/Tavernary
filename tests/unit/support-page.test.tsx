@@ -14,9 +14,14 @@ test("explains Tavernary's operating target, costs, and rollover policy", () => 
   expect(screen.getByText("$12/month", { exact: true })).toBeInTheDocument();
   expect(
     screen.getByText(
-      /\$12 target is a simple community-funding goal.*owner intends to cover costs above it for now.*\$13\.50 model figure.*uncached estimate/i,
+      "The $12 target is a simple community-funding goal. I'll cover anything beyond that for now as I explore community interest in supporting Tavernary and making it sustainable.",
     ),
   ).toBeInTheDocument();
+  expect(
+    screen.queryByText(
+      /The \$13\.50 model figure below is an uncached estimate/i,
+    ),
+  ).not.toBeInTheDocument();
   expect(
     screen.getByText(/anything above the current month.*carries forward/i),
   ).toBeInTheDocument();
