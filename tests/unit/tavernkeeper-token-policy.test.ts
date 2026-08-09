@@ -6,7 +6,7 @@ import { parse } from "yaml";
 
 const workflowDirectory = resolve(".github/workflows");
 const appTokenAction =
-  "actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859";
+  "actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1";
 
 async function workflowSources() {
   const names = (await readdir(workflowDirectory)).filter((name) =>
