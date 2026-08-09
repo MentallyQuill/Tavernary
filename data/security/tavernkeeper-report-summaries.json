@@ -1,8 +1,8 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-08-09T08:54:54.654Z",
+  "generated_at": "2026-08-09T09:14:53.482Z",
   "preferred_report_ids": [
-    "3fbedc2065d0a8c54a2cc488885f3d6a1b86c666bf672044302834f2281d823f",
+    "c7c2b00bada3b75d92ba266174c49d0f2d682cef0cc1c7a93ebc98e49e2f6e55",
     "a09120867995ba186db654617ffd6ee040c89b272e35e1c6147ad404f9f9c5a8",
     "d4bcd22a3017c1f4962071991ae7fb31d0037d853d6fe0c6e1667c3acf32f70c",
     "91e68293156c07b203915830d316a6d1f6787e322663d499ef396191e1b9b617",
@@ -35,7 +35,7 @@
     "562510b1dac8819bfd1e8fe7cc48f8b41ab894019abdf437b76368d5db09daaa",
     "0585f0ec5ce8c6ba6688464bb44a343ccae1165029e1ecc7c8e79d38e47526a8",
     "3ed236422fbf533b3744a8f3ef60b3ca8bf29d064895456223dbe05b2a4d8dba",
-    "e1a5b1a8dee5edb4649f0603221621e842cb74e3b489f2f0b7105f2c318a1a54",
+    "246c579abc13c4f31ad173bd94dc53c32bde1d48bdad3b07128088001df11eaf",
     "f07af1911442fc8da5045c2e680f4298ed9c4770f3729df8762215f3d13df223",
     "90535616b0dfb341b554b4f667a02ab1a6d46b63b1a662f930feea8d33b71fe8",
     "1f94e192667fe97dc2f115432140f57f7bcd476b7d7e8d39ba8c8b5047e94544",
@@ -34783,6 +34783,222 @@
         "minor_cautions": 0,
         "risk_level": "low",
         "summary": "The project appears safe to use based on the validated review. The reported matches were expected project behavior rather than API-key theft, phishing, harmful payloads, or suspicious data exfiltration. No material vulnerabilities or minor weaknesses were identified."
+      }
+    },
+    {
+      "report_id": "246c579abc13c4f31ad173bd94dc53c32bde1d48bdad3b07128088001df11eaf",
+      "report_digest": "246c579abc13c4f31ad173bd94dc53c32bde1d48bdad3b07128088001df11eaf",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "4",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "2",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v4",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-932766847",
+      "provider": "github",
+      "repository_id": 932766847,
+      "repository": "RivelleDays/SillyTavern-MoonlitEchoesTheme",
+      "target_sha": "a84cfebb86a1852e72ac7a5c7acca4ee413c137b",
+      "completed_at": "2026-08-09T09:11:53.577Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 7,
+        "assessments": 7,
+        "observations": 0,
+        "items": 7,
+        "disposition": {
+          "expected_behavior": 7,
+          "minor_weakness": 0,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 7,
+          "low": 0,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 7,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 0,
+          "high": 7
+        },
+        "recommended_risk": {
+          "low": 7,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 47,
+        "inventory_bytes": 16640814,
+        "tools_completed": 6,
+        "tools_not_applicable": 2,
+        "evidence_validated": 7,
+        "review_required": 7,
+        "review_completed": 7,
+        "javascript_analysis_status": "complete"
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/932766847/a84cfebb86a1852e72ac7a5c7acca4ee413c137b/4/246c579abc13c4f31ad173bd94dc53c32bde1d48bdad3b07128088001df11eaf/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/932766847/history/",
+      "assessed_at": "2026-08-09T09:16:30.689Z",
+      "synthesis_policy_version": "4",
+      "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
+      "assessment": {
+        "cited_finding_ids": [],
+        "headline": "Low risk: no harmful behavior identified",
+        "high_danger": 0,
+        "interaction_chains": [],
+        "malicious_evidence": "No credible malicious behavior was identified. Scanner signals were validated as ordinary theme settings, color parsing, and transparency handling; they do not indicate data access, network activity, or harmful code.",
+        "material_concerns": 0,
+        "minor_cautions": 0,
+        "risk_level": "low",
+        "summary": "This theme extension appears safe to use based on the validated review. The flagged code supports normal color and layout customization, uses understandable logic, and presents no material security concerns. As with any software review, this cannot prove that unknown behavior is impossible."
+      }
+    },
+    {
+      "report_id": "c7c2b00bada3b75d92ba266174c49d0f2d682cef0cc1c7a93ebc98e49e2f6e55",
+      "report_digest": "c7c2b00bada3b75d92ba266174c49d0f2d682cef0cc1c7a93ebc98e49e2f6e55",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "4",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "2",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v4",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-26291683",
+      "provider": "github",
+      "repository_id": 26291683,
+      "repository": "twitter/twemoji",
+      "target_sha": "bad3bceeafc901ace42a3dfe0421db6388daafb9",
+      "completed_at": "2026-08-09T09:14:34.554Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 29,
+        "assessments": 29,
+        "observations": 3,
+        "items": 32,
+        "disposition": {
+          "expected_behavior": 7,
+          "minor_weakness": 25,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 15,
+          "low": 17,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 32,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 25,
+          "high": 7
+        },
+        "recommended_risk": {
+          "low": 32,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 7406,
+        "inventory_bytes": 12393412,
+        "tools_completed": 7,
+        "tools_not_applicable": 1,
+        "evidence_validated": 29,
+        "review_required": 29,
+        "review_completed": 29,
+        "javascript_analysis_status": "incomplete"
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/26291683/bad3bceeafc901ace42a3dfe0421db6388daafb9/4/c7c2b00bada3b75d92ba266174c49d0f2d682cef0cc1c7a93ebc98e49e2f6e55/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/26291683/history/",
+      "assessed_at": "2026-08-09T09:16:28.234Z",
+      "synthesis_policy_version": "4",
+      "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
+      "assessment": {
+        "cited_finding_ids": [
+          "05501171f0f514cddceea5229fc07e4ec526376d9a644453594e87c21d5e5136",
+          "2196448ce4e3bd2ad7f6affd133f1184fffbe46cbc1de5b28a071e896b41cd0c",
+          "2b8178a580a11c3298f664e1bc70c70c70c7cf6081ec8df9d6acb689a0438a8e",
+          "3cc575eae9b4fba7985e377ec60559ac05a9b6b2aa7cc863704294d4151eda71",
+          "50abc4c262a7203e92e80a20a5c546d64a33077e09ea946ab1e44bfe0e0a7e48",
+          "5f2ab267ad4e228d71f3cb5dcdc22a51e44ad6555f239fee070f59cdac95bbc2",
+          "61ac4f7e4f516ab6fc1dbf977b4ed8705d6c8101dce64704f1e324fc25840294",
+          "72fa9db17f9f001277176333c82d4a31128d85cb161c5f13fbc15532c2e699aa",
+          "8542598c897cf2fc364c2174b2fc0396347a6adb91b12c14cf6d70c8e2b08952",
+          "86cb4d697aec692da3c782eafc1f8051c39d0bf86ef90c493a623ba2c00c567d",
+          "8aab5181f470fbd4aef093d25b07b1ea756b22a6d0ae5ebb05e9861a19e13c61",
+          "a577c2d3e17d07e0b6d999bccb3cc4e1644a24d7b272411c472903718a9f74f7",
+          "a6a650bb8a9d87bc5a4a534781c89d6be2c97676b10de295b93f22d83f05fc66",
+          "b092d1a691e53bb07a809b24f6d3e26a78b9ea94c664dea6f7a4d599e746e0db",
+          "b3a34404d7ed56fd304b1f07dffe42b2d60227a1f73fb2030f45280b90b065c8",
+          "b6fa91dae511efb38b1f24b2ab0ec28188912963cc1ed130ff735cf901813ee1",
+          "b7557f2ca7ef2d51fd5579cb702e75dfd5924c5ec78e47f4a6de95b0937f4058",
+          "c0aa65f45501b12bcdc18fa7325de8a990b45efe019b74b33cbeb36785f18d8e",
+          "c19943fee7a1fe0f6616c94d18e126474d044cdbe1a960c5eaa00dcfbd8e76ba",
+          "ddf0be3e444fff91f24e5dc057eb95f29243af7091fb9c534354eceb40b72f44",
+          "ebd23b43ca43eace23738d60eb3165bb1bd8eeca519145ec4e54459286f3eedd",
+          "f2170750b3a140b778e129c56f1acf59dd2cdbf3cb7b4ab9a7b9e3c2c5370b94",
+          "f56afd18e8d40dd2ceaed021dfb7152e82882c2c39cb14098d8aa7c0a569358d",
+          "fa522a2ef1d3f94f3046fb13615d03f0238d606bf97803a36af8d887fe185908"
+        ],
+        "headline": "No malicious behavior found; build dependencies need routine updating",
+        "high_danger": 0,
+        "interaction_chains": [
+          {
+            "explanation": "The review found multiple known issues in development and build-time packages. They are not included in the finished client-side emoji library, and exploitation was assessed as unlikely, but the dependency set should be updated and the incomplete JavaScript analysis means the review cannot establish a fully clean conclusion.",
+            "finding_ids": [
+              "05501171f0f514cddceea5229fc07e4ec526376d9a644453594e87c21d5e5136",
+              "2196448ce4e3bd2ad7f6affd133f1184fffbe46cbc1de5b28a071e896b41cd0c",
+              "2b8178a580a11c3298f664e1bc70c70c70c7cf6081ec8df9d6acb689a0438a8e",
+              "3cc575eae9b4fba7985e377ec60559ac05a9b6b2aa7cc863704294d4151eda71",
+              "50abc4c262a7203e92e80a20a5c546d64a33077e09ea946ab1e44bfe0e0a7e48",
+              "5f2ab267ad4e228d71f3cb5dcdc22a51e44ad6555f239fee070f59cdac95bbc2",
+              "61ac4f7e4f516ab6fc1dbf977b4ed8705d6c8101dce64704f1e324fc25840294",
+              "72fa9db17f9f001277176333c82d4a31128d85cb161c5f13fbc15532c2e699aa",
+              "8542598c897cf2fc364c2174b2fc0396347a6adb91b12c14cf6d70c8e2b08952",
+              "86cb4d697aec692da3c782eafc1f8051c39d0bf86ef90c493a623ba2c00c567d",
+              "8aab5181f470fbd4aef093d25b07b1ea756b22a6d0ae5ebb05e9861a19e13c61",
+              "a577c2d3e17d07e0b6d999bccb3cc4e1644a24d7b272411c472903718a9f74f7",
+              "a6a650bb8a9d87bc5a4a534781c89d6be2c97676b10de295b93f22d83f05fc66",
+              "b092d1a691e53bb07a809b24f6d3e26a78b9ea94c664dea6f7a4d599e746e0db",
+              "b3a34404d7ed56fd304b1f07dffe42b2d60227a1f73fb2030f45280b90b065c8",
+              "b6fa91dae511efb38b1f24b2ab0ec28188912963cc1ed130ff735cf901813ee1"
+            ],
+            "resulting_risk": "material"
+          }
+        ],
+        "malicious_evidence": "No credible malicious behavior was identified. The apparent command execution, obfuscation, and suspicious-link signals were assessed as normal build or test behavior, including safe integrity hashing, standard SVG metadata, emoji test encoding, and a local data link. The dependency issues are build",
+        "material_concerns": 0,
+        "minor_cautions": 25,
+        "risk_level": "material",
+        "summary": "The project appears to be a legitimate emoji library, not a phishing, theft, trojan, or bot-infection project. The validated review classified 25 findings as minor weaknesses, chiefly known vulnerabilities in build-time dependencies that are not shipped to end users; exploitation was considered unlikely. Update the build toolchain as routine maintenance. JavaScript analysis was incomplete, so the review cannot prove that no unobserved behavior exists; this unresolved uncertainty is why the final"
       }
     }
   ]
