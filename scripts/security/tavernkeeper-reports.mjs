@@ -19,6 +19,7 @@ const digestPattern = /^[0-9a-f]{64}$/u;
 const fullShaPattern = /^[0-9a-f]{40}$/u;
 const versionPattern = /^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$/u;
 const supportedScannerPolicyVersions = new Set(["3", "4"]);
+const supportedContextualReviewPolicyVersions = new Set(["1", "2", "3"]);
 const incompleteJavascriptLimitation =
   "JavaScript analysis was incomplete, so this first-filter scan supports no clean conclusion about unobserved behavior.";
 const metadataOnlyEvidenceLimitation =
@@ -119,7 +120,20 @@ function policy3RecommendedRisk(item) {
     : "material";
 }
 
+function assertSupportedContextualReviewPolicy(entry) {
+  if (
+    !supportedContextualReviewPolicyVersions.has(
+      entry.contextual_review_policy_version,
+    )
+  ) {
+    throw new Error(
+      "TavernKeeper has an unsupported contextual review policy version",
+    );
+  }
+}
+
 function assertContextualReviewPolicy(report) {
+  assertSupportedContextualReviewPolicy(report);
   const items = [...report.assessments, ...report.observations];
   if (report.contextual_review_policy_version !== "3") {
     if (items.some((item) => Object.hasOwn(item, "risk_exposure"))) {
@@ -189,6 +203,7 @@ function canonicalHistoryUrl(entry) {
 }
 
 function assertCanonicalIndexEntry(entry) {
+  assertSupportedContextualReviewPolicy(entry);
   if (
     !digestPattern.test(entry.report_id) ||
     entry.report_id !== entry.report_digest ||

@@ -487,6 +487,20 @@ describe("TavernKeeper V5 report import", () => {
     ).toThrow(/legacy.*risk exposure/iu);
   });
 
+  test.each(["4", "999"])(
+    "rejects unsupported contextual policy %s on an immutable report",
+    async (policy) => {
+      const [index, baseReport] = await fixtures();
+      const report = clone(baseReport);
+      report.contextual_review_policy_version = policy;
+      const rebound = rebindReport(report);
+
+      expect(() => validateScanReport(rebound, index.reports[0])).toThrow(
+        /unsupported contextual.*policy/iu,
+      );
+    },
+  );
+
   test("accepts policy-4 candidates from completed JavaScript analysis", async () => {
     const [fixtureIndex, baseReport] = await fixtures();
     const report = addExpectedCandidate(policy4Report(baseReport));
@@ -992,6 +1006,54 @@ describe("TavernKeeper V5 report import", () => {
     ]);
     expect(outcome.import_state.quarantines).toEqual([]);
   });
+
+  test.each(["4", "999"])(
+    "rejects unsupported contextual policy %s before reconciliation routes work",
+    async (policy) => {
+      const root = await mkdtemp(
+        resolve(tmpdir(), "tavernkeeper-v6-policy-reject-"),
+      );
+      const outputPath = resolve(
+        root,
+        "data/security/tavernkeeper-report-summaries.json",
+      );
+      const importStatePath = resolve(
+        root,
+        "data/security/tavernkeeper-import-state.json",
+      );
+      await mkdir(resolve(root, "data/security"), { recursive: true });
+      await writeFile(
+        outputPath,
+        '{"schema_version":6,"generated_at":"1970-01-01T00:00:00.000Z","preferred_report_ids":[],"reports":[]}\n',
+      );
+      const [index] = await fixtures();
+      index.reports[0].contextual_review_policy_version = policy;
+      const requests: string[] = [];
+      let synthesisCalls = 0;
+
+      await expect(
+        reconcileTavernKeeperReports({
+          root,
+          outputPath,
+          importStatePath,
+          registry,
+          dnsLookup: publicDnsLookup,
+          requestImpl: async (url: string) => {
+            requests.push(url);
+            return jsonResponse(index);
+          },
+          synthesizeReport: async () => {
+            synthesisCalls += 1;
+            throw new Error("unsupported policy must not synthesize");
+          },
+          now: () => new Date("2026-08-09T10:03:30.000Z"),
+        }),
+      ).rejects.toThrow(/unsupported contextual.*policy/iu);
+
+      expect(requests).toEqual([TAVERNKEEPER_REPORT_INDEX_URL]);
+      expect(synthesisCalls).toBe(0);
+    },
+  );
 
   test("is idempotent after an offline legacy regrade", async () => {
     const root = await mkdtemp(
