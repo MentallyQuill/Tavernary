@@ -5720,18 +5720,18 @@
         "tools_completed": 4,
         "tools_not_applicable": 3,
         "evidence_validated": 0,
+        "metadata_only_candidates": 0,
         "review_required": 0,
         "review_completed": 0,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/936859577/b43ddb9f15c508df4749ebf48a8a5f4c3c924419/3/90535616b0dfb341b554b4f667a02ab1a6d46b63b1a662f930feea8d33b71fe8/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/936859577/history/",
       "assessed_at": "2026-08-05T06:00:11.038Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -7536,18 +7536,18 @@
         "tools_completed": 4,
         "tools_not_applicable": 3,
         "evidence_validated": 0,
+        "metadata_only_candidates": 0,
         "review_required": 0,
         "review_completed": 0,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/940123423/bceadfdb025247b616ca76f7ede9b220cad26777/3/5c59bb6048da852746272c3bb5e707e30b206a026bbc385817b13c2eb18b5f01/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/940123423/history/",
       "assessed_at": "2026-08-05T06:00:15.113Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -27101,18 +27101,18 @@
         "tools_completed": 6,
         "tools_not_applicable": 1,
         "evidence_validated": 35,
+        "metadata_only_candidates": 0,
         "review_required": 35,
         "review_completed": 35,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/938386740/a2207bbf53413199444e4f15b9d614c3a3fc830d/3/1f94e192667fe97dc2f115432140f57f7bcd476b7d7e8d39ba8c8b5047e94544/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/938386740/history/",
       "assessed_at": "2026-08-08T15:38:39.596Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [
           "0a8447d0767a1afb00c05158daed5d8e6638693dc34080464e5c3b5c06bee959",
@@ -36824,12 +36824,19 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/945720767/04fdfe4410d59534ab379e9741e1277a95f6d384/4/01a9f53afb4638a8f03036c93394ea310826dabef7bcdb52306a19067fff4dbf/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/945720767/history/",
-      "assessed_at": "2026-08-09T16:00:06.046Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "assessed_at": "2026-08-09T19:49:25.457Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 33,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
         "cited_finding_ids": [
           "0a8447d0767a1afb00c05158daed5d8e6638693dc34080464e5c3b5c06bee959",
           "0b57f46e6a48a2af0fd147370c4d36cad8be2bb73f629c751f7c54b0bb8b04a3",
@@ -36864,45 +36871,7 @@
           "ee46117eea42a99f0b4cd5a20fd99cdb398352e5dbf991d60d083734e2c3937d",
           "f0e8931d6c7e65e0b51435de3123eb9739db7551debc42771f54f6099efafd2d"
         ],
-        "headline": "Material security concerns require dependency and source review",
-        "high_danger": 0,
-        "interaction_chains": [
-          {
-            "explanation": "A bundled-file scan places downloaded data and an execution capability in the same file, but the available evidence does not establish that they are connected or reachable during normal use.",
-            "finding_ids": [
-              "35951637cd11c0e1499be8b1651bb1f882426133c8c9a0468d813dff62c50b9f",
-              "0a8447d0767a1afb00c05158daed5d8e6638693dc34080464e5c3b5c06bee959"
-            ],
-            "resulting_risk": "material"
-          },
-          {
-            "explanation": "Many production dependencies matched published security advisories. The report does not provide package names, resolved versions, dependency paths, or runtime reachability, so practical user exposure remains unconfirmed.",
-            "finding_ids": [
-              "0b57f46e6a48a2af0fd147370c4d36cad8be2bb73f629c751f7c54b0bb8b04a3",
-              "14a66334365238113c6ae7edc276bf763ada97c62141b3ea60a7125543bbff4c",
-              "20873129c0c64c138d41bd41e6c0c35dc612fd9113f801581822e14a8d8e0df8",
-              "2af75b980c72ba07c81194251a8f311f55e2fc45e5e7e681d66339af047fe645",
-              "33cfa16bd80b3eb834001b8b09bf4e2915341dc121c11641eba9a3f3c169b489",
-              "4710183c6d2e1e2b8b866180e7f50e50edf9f10e892a3dacce12fffb651ef1a4",
-              "511e978c0526973159ceb1091bc3d11a5a4aa2b7ff0fea1c577e5e8d39ac425f",
-              "5b73afe052eebcc2ffc1d28b3cc71a1c8aa80d8a9e7df88de66b2457b9da352c",
-              "5fd3ee8bfaab8d274db8e2018b4becd1d51790e2f7009a6d43e3213271098059",
-              "5fd8216377419dbdc06e6101361f55d5146f52597d0a1ba76d815b065cfa46c9",
-              "7024f701afb7e88ffa8fd829c826f25d8ebd221e15dbdb33595cfdd1b0c94fa3",
-              "7515568b3cda8b3404cfda1fcc0621cc7bf9f8c6279c09a15e8cab04f4059cb1",
-              "7a9b663e3b6cf212d742ee2e39d66445d38ad46d311be1fb5506c88589662c35",
-              "7b46ec349d03aa1adbaa5f0cb58ae7d604d4578ab09f37d76f9aadc758109e83",
-              "83b2c40c68d172cf291198aa9e5d25575a2a1f6fde9b1640dc3d111118317cd0",
-              "83ea362e12aca48eaedf87622a66f63ac0f4505396a6a7b0099ea8bab765e9fb"
-            ],
-            "resulting_risk": "material"
-          }
-        ],
-        "malicious_evidence": "No credible malicious behavior was validated. The review found no evidence of API-key phishing, credential theft, trojan delivery, harmful payloads, or bot infection. Some scanner signals are ordinary build or extension behavior, while the remaining concerns are unconfirmed vulnerabilities and scan-",
-        "material_concerns": 33,
-        "minor_cautions": 0,
-        "risk_level": "material",
-        "summary": "The project is assessed as material risk because numerous production dependency advisories and an unresolved bundled download-to-execution signal require follow-up. The evidence is incomplete: JavaScript analysis could not fully parse several source files, and dependency details needed to confirm practical exposure were not supplied. Users should treat the project cautiously until its dependencies, runtime paths, and downloaded-data handling are reviewed and remediated."
+        "interaction_chains": []
       }
     },
     {
@@ -37102,12 +37071,19 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/948787177/8bd72bdbfecf707ebf2d15f0dd11d9fd886644ed/4/f4abf4f60fb927fed3b571fdf6616288b92316502154d6646a3c7d979d79fd11/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/948787177/history/",
-      "assessed_at": "2026-08-09T16:00:14.635Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "assessed_at": "2026-08-09T19:49:25.457Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 35,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
         "cited_finding_ids": [
           "0a8447d0767a1afb00c05158daed5d8e6638693dc34080464e5c3b5c06bee959",
           "0b57f46e6a48a2af0fd147370c4d36cad8be2bb73f629c751f7c54b0bb8b04a3",
@@ -37145,14 +37121,7 @@
           "ee46117eea42a99f0b4cd5a20fd99cdb398352e5dbf991d60d083734e2c3937d",
           "f0e8931d6c7e65e0b51435de3123eb9739db7551debc42771f54f6099efafd2d"
         ],
-        "headline": "Material security concerns require dependency review",
-        "high_danger": 0,
-        "interaction_chains": [],
-        "malicious_evidence": "No credible malicious behavior was validated. Scanner signals involving obfuscation, prototype pollution, and environment serialization were assessed as ordinary build or bundled-code behavior, not evidence of credential theft, harmful payloads, or data exfiltration. JavaScript analysis was complete",
-        "material_concerns": 35,
-        "minor_cautions": 0,
-        "risk_level": "material",
-        "summary": "The project is assessed as material risk because many production dependencies match published security advisories, including several high-severity advisories. The report does not identify the affected packages or establish that vulnerable code is reachable during normal extension use, so the practical user impact remains uncertain. Users should treat the project cautiously until its dependency tree, shipped versions, runtime reachability, and fixed upgrades are verified. The available review did"
+        "interaction_chains": []
       }
     },
     {
