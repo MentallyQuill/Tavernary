@@ -1,18 +1,5 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-08-05T08:08:51.421Z",
-  "quarantines": [
-    {
-      "report_id": "f1da587a1375b75d4566f34f07af71f5941abd5043d3e5163cfedb20c4231ad1",
-      "report_digest": "f1da587a1375b75d4566f34f07af71f5941abd5043d3e5163cfedb20c4231ad1",
-      "repository_id": 1163555391,
-      "repository": "DangerDaza/Dooms-Enhancement-Suite",
-      "target_sha": "c534fa0969e449c364b85ab03f1aa00d607b11be",
-      "synthesis_policy_version": "4",
-      "diagnostic": "response_schema",
-      "first_failed_at": "2026-08-05T08:08:51.421Z",
-      "last_failed_at": "2026-08-05T08:08:51.421Z",
-      "attempts": 1
-    }
-  ]
+  "updated_at": "2026-08-09T19:04:32.045Z",
+  "quarantines": []
 }
