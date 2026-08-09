@@ -120,7 +120,15 @@ function policy3RecommendedRisk(item) {
 }
 
 function assertContextualReviewPolicy(report) {
-  if (report.contextual_review_policy_version !== "3") return;
+  const items = [...report.assessments, ...report.observations];
+  if (report.contextual_review_policy_version !== "3") {
+    if (items.some((item) => Object.hasOwn(item, "risk_exposure"))) {
+      throw new Error(
+        "TavernKeeper legacy contextual-policy report contains risk exposure",
+      );
+    }
+    return;
+  }
   if (
     report.prompt_version !== "contextual-review-v6" ||
     report.assessment_schema_version !== "contextual-assessment-v2"
@@ -129,7 +137,7 @@ function assertContextualReviewPolicy(report) {
       "TavernKeeper policy-3 report has invalid demonstrated-risk contract versions",
     );
   }
-  const invalid = [...report.assessments, ...report.observations].some(
+  const invalid = items.some(
     (item) =>
       !["not_demonstrated", "demonstrated"].includes(item.risk_exposure) ||
       (item.disposition === "credible_malicious_behavior" &&

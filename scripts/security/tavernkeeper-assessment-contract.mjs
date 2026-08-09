@@ -230,9 +230,8 @@ function hasAtLeast(value, minimum, ranks) {
   return (ranks.get(value) ?? -1) >= (ranks.get(minimum) ?? Number.MAX_VALUE);
 }
 
-function classifyContextualItem(item, candidatesById) {
+function classifyContextualItem(item, candidatesById, newContract) {
   if (item?.disposition === "expected_behavior") return "none";
-  const newContract = Object.hasOwn(item ?? {}, "risk_exposure");
   if (newContract && item.risk_exposure !== "demonstrated") return "minor";
 
   const highConfidence = item?.confidence === "high";
@@ -273,7 +272,11 @@ function classifyContextualItem(item, candidatesById) {
   return "minor";
 }
 
-function classifications(assessments, candidates) {
+function classifications(
+  assessments,
+  candidates,
+  contextualReviewPolicyVersion,
+) {
   const candidatesById =
     candidates === undefined
       ? undefined
@@ -282,17 +285,29 @@ function classifications(assessments, candidates) {
         );
   return assessments.map((item) => ({
     item,
-    risk: classifyContextualItem(item, candidatesById),
+    risk: classifyContextualItem(
+      item,
+      candidatesById,
+      contextualReviewPolicyVersion === "3",
+    ),
   }));
 }
 
-export function deriveProjectAdvisory(assessments, candidates) {
+export function deriveProjectAdvisory(
+  assessments,
+  candidates,
+  contextualReviewPolicyVersion,
+) {
   if (!Array.isArray(assessments)) {
     throw new Error(
       "TavernKeeper assessments are required for project advisory",
     );
   }
-  const classified = classifications(assessments, candidates);
+  const classified = classifications(
+    assessments,
+    candidates,
+    contextualReviewPolicyVersion,
+  );
   const malicious = classified.some(
     ({ item, risk }) =>
       risk === "high" && item.disposition === "credible_malicious_behavior",
@@ -327,13 +342,18 @@ function reportItems(report) {
 }
 
 export function deriveReportAdvisory(report) {
-  return deriveProjectAdvisory(reportItems(report), report.candidates ?? []);
+  return deriveProjectAdvisory(
+    reportItems(report),
+    report.candidates ?? [],
+    report.contextual_review_policy_version,
+  );
 }
 
 function expectedCounts(report) {
   const classified = classifications(
     reportItems(report),
     report.candidates ?? [],
+    report.contextual_review_policy_version,
   );
   return {
     minor_cautions: classified.filter(({ risk }) => risk === "minor").length,

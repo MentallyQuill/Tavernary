@@ -58,11 +58,13 @@ export interface TavernKeeperClassificationCandidate {
 export function deriveProjectAdvisory(
   assessments: readonly TavernKeeperContextualItemV5[],
   candidates?: ReadonlyArray<TavernKeeperClassificationCandidate>,
+  contextualReviewPolicyVersion?: string,
 ): {
   risk_level: TavernKeeperRiskLevel;
   danger_basis: TavernKeeperDangerBasis;
 };
 export function deriveReportAdvisory(report: {
+  contextual_review_policy_version: string;
   candidates: TavernKeeperClassificationCandidate[];
   assessments: TavernKeeperContextualItemV5[];
   observations: Array<
@@ -75,6 +77,7 @@ export function deriveReportAdvisory(report: {
   danger_basis: TavernKeeperDangerBasis;
 };
 export function buildDeterministicAssessment(report: {
+  contextual_review_policy_version: string;
   candidates: TavernKeeperClassificationCandidate[];
   assessments: TavernKeeperContextualItemV5[];
   observations: Array<
@@ -84,6 +87,7 @@ export function buildDeterministicAssessment(report: {
   >;
 }): TavernaryAssessmentV1;
 export function tavernKeeperAssessmentRequirements(report: {
+  contextual_review_policy_version: string;
   candidates: TavernKeeperClassificationCandidate[];
   assessments: TavernKeeperContextualItemV5[];
   observations: Array<
@@ -104,6 +108,7 @@ export function tavernKeeperAssessmentRequirements(report: {
 export function validateTavernaryAssessment(
   assessment: unknown,
   report: {
+    contextual_review_policy_version: string;
     candidates: TavernKeeperClassificationCandidate[];
     assessments: TavernKeeperContextualItemV5[];
     observations: Array<

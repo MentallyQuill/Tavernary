@@ -53,11 +53,13 @@ function assessment(
 function reportWith(
   items: TavernKeeperContextualItemV5[],
   candidateOverrides: Array<Record<string, unknown>> = [],
+  contextualReviewPolicyVersion = "3",
 ) {
   return {
     report_id: "d".repeat(64),
     target_sha: "a".repeat(40),
     repository: "owner/repo",
+    contextual_review_policy_version: contextualReviewPolicyVersion,
     counts: {
       disposition: {
         expected_behavior: items.filter(
@@ -273,29 +275,37 @@ describe("TavernKeeper deterministic project advisory", () => {
 
   test("turns only demonstrated material risk yellow", () => {
     expect(
-      deriveProjectAdvisory([
-        assessment({
-          disposition: "material_vulnerability",
-          impact: "medium",
-          exploitability: "plausible",
-          confidence: "high",
-          recommended_risk: "material",
-          risk_exposure: "demonstrated",
-        }),
-      ]),
+      deriveProjectAdvisory(
+        [
+          assessment({
+            disposition: "material_vulnerability",
+            impact: "medium",
+            exploitability: "plausible",
+            confidence: "high",
+            recommended_risk: "material",
+            risk_exposure: "demonstrated",
+          }),
+        ],
+        undefined,
+        "3",
+      ),
     ).toEqual({ risk_level: "material", danger_basis: "none" });
 
     expect(
-      deriveProjectAdvisory([
-        assessment({
-          disposition: "material_vulnerability",
-          impact: "critical",
-          exploitability: "readily_exploitable",
-          confidence: "high",
-          recommended_risk: "high",
-          risk_exposure: "not_demonstrated",
-        }),
-      ]),
+      deriveProjectAdvisory(
+        [
+          assessment({
+            disposition: "material_vulnerability",
+            impact: "critical",
+            exploitability: "readily_exploitable",
+            confidence: "high",
+            recommended_risk: "high",
+            risk_exposure: "not_demonstrated",
+          }),
+        ],
+        undefined,
+        "3",
+      ),
     ).toEqual({ risk_level: "low", danger_basis: "none" });
   });
 
@@ -339,6 +349,7 @@ describe("TavernKeeper deterministic project advisory", () => {
             "The primitives occur in the same representation; data flow was not established.",
         },
       ],
+      "2",
     );
 
     expect(deriveReportAdvisory(report)).toEqual({
@@ -362,7 +373,7 @@ describe("TavernKeeper deterministic project advisory", () => {
         confidence: "high",
         recommended_risk: "material",
       });
-      const report = reportWith([item], [{ file_role: fileRole }]);
+      const report = reportWith([item], [{ file_role: fileRole }], "2");
 
       expect(deriveReportAdvisory(report)).toEqual({
         risk_level: "low",
@@ -398,7 +409,7 @@ describe("TavernKeeper deterministic project advisory", () => {
       recommended_risk: "high",
       ...itemOverrides,
     });
-    const report = reportWith([item], [candidate]);
+    const report = reportWith([item], [candidate], "2");
 
     expect(deriveReportAdvisory(report)).toEqual({
       risk_level: "high",
@@ -434,6 +445,7 @@ describe("TavernKeeper deterministic project advisory", () => {
           title: "Imported template content reaches dynamic execution",
         },
       ],
+      "2",
     );
 
     expect(deriveReportAdvisory(report)).toEqual({
@@ -495,18 +507,49 @@ describe("TavernKeeper deterministic project advisory", () => {
     );
   });
 
+  test("does not activate policy-3 exposure semantics on a policy-2 report", () => {
+    const item = assessment({
+      disposition: "material_vulnerability",
+      impact: "medium",
+      exploitability: "plausible",
+      confidence: "high",
+      recommended_risk: "material",
+      risk_exposure: "demonstrated",
+    });
+    const candidate = {
+      origin: "osv-scanner",
+      rule_id: "GHSA-example",
+      category: "known-vulnerability",
+      file_role: "production",
+      title: "Known dependency advisory",
+    };
+
+    expect(deriveReportAdvisory(reportWith([item], [candidate], "2"))).toEqual({
+      risk_level: "low",
+      danger_basis: "none",
+    });
+    expect(deriveReportAdvisory(reportWith([item], [candidate], "3"))).toEqual({
+      risk_level: "material",
+      danger_basis: "none",
+    });
+  });
+
   test("identifies high-confidence malicious behavior as immediate danger", () => {
     expect(
-      deriveProjectAdvisory([
-        assessment({
-          disposition: "credible_malicious_behavior",
-          impact: "critical",
-          exploitability: "readily_exploitable",
-          confidence: "high",
-          recommended_risk: "high",
-          risk_exposure: "demonstrated",
-        }),
-      ]),
+      deriveProjectAdvisory(
+        [
+          assessment({
+            disposition: "credible_malicious_behavior",
+            impact: "critical",
+            exploitability: "readily_exploitable",
+            confidence: "high",
+            recommended_risk: "high",
+            risk_exposure: "demonstrated",
+          }),
+        ],
+        undefined,
+        "3",
+      ),
     ).toEqual({
       risk_level: "high",
       danger_basis: "malicious_or_compromised",
@@ -515,16 +558,20 @@ describe("TavernKeeper deterministic project advisory", () => {
 
   test("identifies a critical readily exploitable vulnerability as immediate danger", () => {
     expect(
-      deriveProjectAdvisory([
-        assessment({
-          disposition: "material_vulnerability",
-          impact: "critical",
-          exploitability: "readily_exploitable",
-          confidence: "high",
-          recommended_risk: "high",
-          risk_exposure: "demonstrated",
-        }),
-      ]),
+      deriveProjectAdvisory(
+        [
+          assessment({
+            disposition: "material_vulnerability",
+            impact: "critical",
+            exploitability: "readily_exploitable",
+            confidence: "high",
+            recommended_risk: "high",
+            risk_exposure: "demonstrated",
+          }),
+        ],
+        undefined,
+        "3",
+      ),
     ).toEqual({
       risk_level: "high",
       danger_basis: "critical_exploitable_vulnerability",
@@ -533,25 +580,29 @@ describe("TavernKeeper deterministic project advisory", () => {
 
   test("identifies mixed immediate-danger evidence", () => {
     expect(
-      deriveProjectAdvisory([
-        assessment({
-          disposition: "credible_malicious_behavior",
-          impact: "critical",
-          exploitability: "readily_exploitable",
-          confidence: "high",
-          recommended_risk: "high",
-          risk_exposure: "demonstrated",
-        }),
-        assessment({
-          candidate_id: "e".repeat(64),
-          disposition: "material_vulnerability",
-          impact: "critical",
-          exploitability: "readily_exploitable",
-          confidence: "high",
-          recommended_risk: "high",
-          risk_exposure: "demonstrated",
-        }),
-      ]),
+      deriveProjectAdvisory(
+        [
+          assessment({
+            disposition: "credible_malicious_behavior",
+            impact: "critical",
+            exploitability: "readily_exploitable",
+            confidence: "high",
+            recommended_risk: "high",
+            risk_exposure: "demonstrated",
+          }),
+          assessment({
+            candidate_id: "e".repeat(64),
+            disposition: "material_vulnerability",
+            impact: "critical",
+            exploitability: "readily_exploitable",
+            confidence: "high",
+            recommended_risk: "high",
+            risk_exposure: "demonstrated",
+          }),
+        ],
+        undefined,
+        "3",
+      ),
     ).toEqual({ risk_level: "high", danger_basis: "mixed" });
   });
 

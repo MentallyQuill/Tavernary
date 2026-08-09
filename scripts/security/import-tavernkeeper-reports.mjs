@@ -41,8 +41,7 @@ const defaultImportStatePath = resolve(
 );
 const digestPattern = /^[0-9a-f]{64}$/u;
 const contextualReviewPolicyVersion = "3";
-const deterministicSynthesisModel =
-  `deterministic-policy-v${TAVERNKEEPER_SYNTHESIS_POLICY_VERSION}`;
+const deterministicSynthesisModel = `deterministic-policy-v${TAVERNKEEPER_SYNTHESIS_POLICY_VERSION}`;
 
 function indexProjection(entry) {
   const {

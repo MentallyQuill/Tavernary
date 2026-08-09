@@ -468,6 +468,25 @@ describe("TavernKeeper V5 report import", () => {
     }
   });
 
+  test("rejects risk exposure fields on a legacy contextual-policy report", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = addExpectedCandidate(policy4Report(baseReport));
+    report.contextual_review_policy_version = "2";
+    report.prompt_version = "contextual-review-v5";
+    report.assessment_schema_version = "contextual-assessment-v1";
+    report.assessments[0].risk_exposure = "demonstrated";
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).toThrow(/legacy.*risk exposure/iu);
+  });
+
   test("accepts policy-4 candidates from completed JavaScript analysis", async () => {
     const [fixtureIndex, baseReport] = await fixtures();
     const report = addExpectedCandidate(policy4Report(baseReport));
@@ -737,7 +756,9 @@ describe("TavernKeeper V5 report import", () => {
   });
 
   test("upgrades an unchanged low policy-4 summary without fetching its report or synthesizing", async () => {
-    const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v6-low-migrate-"));
+    const root = await mkdtemp(
+      resolve(tmpdir(), "tavernkeeper-v6-low-migrate-"),
+    );
     const outputPath = resolve(
       root,
       "data/security/tavernkeeper-report-summaries.json",
@@ -881,7 +902,9 @@ describe("TavernKeeper V5 report import", () => {
   });
 
   test("uses model synthesis for a new contextual-policy-3 report", async () => {
-    const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v6-contextual-"));
+    const root = await mkdtemp(
+      resolve(tmpdir(), "tavernkeeper-v6-contextual-"),
+    );
     const outputPath = resolve(
       root,
       "data/security/tavernkeeper-report-summaries.json",
@@ -927,7 +950,9 @@ describe("TavernKeeper V5 report import", () => {
   });
 
   test("deterministically regrades a new legacy-policy report without synthesis", async () => {
-    const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v6-legacy-new-"));
+    const root = await mkdtemp(
+      resolve(tmpdir(), "tavernkeeper-v6-legacy-new-"),
+    );
     const outputPath = resolve(
       root,
       "data/security/tavernkeeper-report-summaries.json",
@@ -969,7 +994,9 @@ describe("TavernKeeper V5 report import", () => {
   });
 
   test("is idempotent after an offline legacy regrade", async () => {
-    const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v6-idempotent-"));
+    const root = await mkdtemp(
+      resolve(tmpdir(), "tavernkeeper-v6-idempotent-"),
+    );
     const outputPath = resolve(
       root,
       "data/security/tavernkeeper-report-summaries.json",
