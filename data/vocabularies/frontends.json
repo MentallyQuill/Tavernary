@@ -41,6 +41,11 @@
       "description": "Works with the Focus roleplay frontend."
     },
     {
+      "id": "front-porch-ai",
+      "label": "front-porch-AI",
+      "description": "Works with the front-porch-AI roleplay frontend."
+    },
+    {
       "id": "glaze",
       "label": "Glaze",
       "description": "Works with the Glaze roleplay frontend."
