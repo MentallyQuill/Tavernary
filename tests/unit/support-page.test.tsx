@@ -56,22 +56,20 @@ test("describes model selection as Tavernary's observed result", () => {
   ).not.toBeInTheDocument();
 });
 
-test("renders the official Ko-fi button in Tavernary orange", () => {
+test("renders a direct Ko-fi link in the monthly target", () => {
   render(<SupportPage />);
 
-  const widget = screen.getByTitle("Support on Ko-fi");
-  expect(widget.tagName).toBe("IFRAME");
-  expect(widget).toHaveAttribute(
-    "srcdoc",
-    expect.stringContaining(
-      "kofiwidget2.init('Support on Ko-fi', '#E18A24', 'I1F724I7NT')",
-    ),
+  const monthlyTarget = screen.getByRole("region", {
+    name: "Monthly operating target",
+  });
+  const supportLink = within(monthlyTarget).getByRole("link", {
+    name: "Support on Ko-fi",
+  });
+
+  expect(supportLink).toHaveAttribute(
+    "href",
+    "https://ko-fi.com/mentallyquill",
   );
-  expect(widget).toHaveAttribute(
-    "srcdoc",
-    expect.stringContaining("color: #161008 !important"),
-  );
-  expect(
-    screen.queryByRole("heading", { name: "Contribute through Ko-fi" }),
-  ).not.toBeInTheDocument();
+  expect(supportLink).toHaveAttribute("target", "_blank");
+  expect(supportLink).toHaveAttribute("rel", "noreferrer noopener");
 });

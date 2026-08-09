@@ -91,6 +91,22 @@ test("opens the Tavernary support page from a 320px viewport", async ({
   await expect(
     page.getByRole("heading", { name: "Support Tavernary", exact: true }),
   ).toBeVisible();
+
+  const supportOnKofi = page
+    .locator(".support-target")
+    .getByRole("link", { name: "Support on Ko-fi" });
+  await expect(supportOnKofi).toBeVisible();
+  await expect(supportOnKofi).toHaveAttribute(
+    "href",
+    "https://ko-fi.com/mentallyquill",
+  );
+
+  const supportOnKofiBox = await supportOnKofi.boundingBox();
+  expect(supportOnKofiBox).not.toBeNull();
+  expect(supportOnKofiBox!.x).toBeGreaterThanOrEqual(0);
+  expect(supportOnKofiBox!.x + supportOnKofiBox!.width).toBeLessThanOrEqual(
+    320,
+  );
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth - window.innerWidth,
