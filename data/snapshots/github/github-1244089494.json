@@ -71,8 +71,9 @@
     "aggregate": 1
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-08T14:41:15.655Z",
+  "refreshed_at": "2026-08-09T08:04:15.301Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "mokimoko", "type": "User", "provider": "github" },
@@ -81,8 +82,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-08T14:41:15.655Z",
+    "refreshed_at": "2026-08-09T08:04:15.301Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

@@ -9,21 +9,21 @@
     "url": "https://github.com/platberlitz/sillytavern-character-colors",
     "description": "LLM-powered dialogue and thought coloring with auto-regex-install for SillyTavern",
     "default_branch": "main",
-    "head_sha": "6cb7ab040d5ef166e52b477917f4b255a2fbaf7b",
-    "head_committed_at": "2026-08-08T05:06:15.000Z",
+    "head_sha": "7a462566105ec1315b18e3299995f3253bcff3f9",
+    "head_committed_at": "2026-08-09T07:20:24.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-13T13:14:46.000Z",
-    "size_kb": 1434
+    "size_kb": 1447
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-08T05:06:15.000Z",
+    "latest_source_activity_at": "2026-08-09T07:20:24.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-03",
-        "latest_at": "2026-08-08T05:06:15.000Z",
+        "latest_at": "2026-08-09T07:20:24.000Z",
         "precision": "exact"
       },
       {
@@ -77,7 +77,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-04T10:01:46.256Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "6cb7ab040d5ef166e52b477917f4b255a2fbaf7b"
+    "evidence_head_sha": "7a462566105ec1315b18e3299995f3253bcff3f9"
   },
   "community": {
     "stars_count": 20,
@@ -86,19 +86,20 @@
     "aggregate": 23
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-08T08:02:47.675Z",
+  "refreshed_at": "2026-08-09T08:04:15.301Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "web-flow", "type": "User", "provider": "github" },
       { "login": "platberlitz", "type": "User", "provider": "github" },
-      { "login": "Wolfsblvt", "type": "User", "provider": "github" }
+      { "login": "Wolfsblvt", "type": "User", "provider": "github" },
+      { "login": "claude", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-08T08:02:47.675Z",
+    "refreshed_at": "2026-08-09T08:04:15.301Z",
     "stale_since": null
   }
 }

@@ -15,7 +15,7 @@
     "fork": false,
     "parent": null,
     "created_at": "2026-05-27T17:07:09.000Z",
-    "size_kb": 130
+    "size_kb": 139
   },
   "source_health": "healthy",
   "activity": {
@@ -50,8 +50,9 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-08T08:02:47.675Z",
+  "refreshed_at": "2026-08-09T08:04:15.301Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "virgilianshailer", "type": "User", "provider": "github" }
@@ -59,8 +60,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-08T08:02:47.675Z",
+    "refreshed_at": "2026-08-09T08:04:15.301Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

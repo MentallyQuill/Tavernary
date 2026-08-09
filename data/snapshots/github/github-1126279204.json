@@ -9,21 +9,21 @@
     "url": "https://github.com/AventurasTeam/Aventuras",
     "description": "A frontend for LLM-based text adventure",
     "default_branch": "master",
-    "head_sha": "c936f71fa0ea832528febfd387aaff85f7032d3a",
-    "head_committed_at": "2026-08-04T13:59:48.000Z",
+    "head_sha": "6d18d6973996f61c0d88a7a71e761ddb191f0c10",
+    "head_committed_at": "2026-08-08T20:41:26.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-01T15:03:20.000Z",
-    "size_kb": 45706
+    "size_kb": 43909
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-04T13:59:48.000Z",
+    "latest_source_activity_at": "2026-08-08T20:41:26.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-03",
-        "latest_at": "2026-08-04T13:59:48.000Z",
+        "latest_at": "2026-08-08T20:41:26.000Z",
         "precision": "exact"
       },
       {
@@ -53,24 +53,24 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-04T15:03:55.000Z",
+    "latest_release_at": "2026-08-08T21:01:42.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-04T10:01:46.256Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "c936f71fa0ea832528febfd387aaff85f7032d3a"
+    "evidence_head_sha": "6d18d6973996f61c0d88a7a71e761ddb191f0c10"
   },
   "community": {
-    "stars_count": 173,
+    "stars_count": 176,
     "forks_count": 30,
     "watchers_count": 13,
-    "aggregate": 216
+    "aggregate": 219
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-08-08T08:02:47.675Z",
+  "refreshed_at": "2026-08-09T08:04:15.301Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -84,12 +84,13 @@
       { "login": "Fensterbank", "type": "User", "provider": "github" },
       { "login": "surfacecoaster", "type": "User", "provider": "github" },
       { "login": "EventideMiles", "type": "User", "provider": "github" },
+      { "login": "collegatore", "type": "User", "provider": "github" },
       { "login": "vire70", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-08T08:02:47.675Z",
+    "refreshed_at": "2026-08-09T08:04:15.301Z",
     "stale_since": null
   }
 }

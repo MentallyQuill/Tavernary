@@ -9,8 +9,8 @@
     "url": "https://github.com/vadash/Extension-Summaryception",
     "description": "Sillytavern memory plug-in. Simpler  = better",
     "default_branch": "main",
-    "head_sha": "4bb3ff780ed9a05e4a5995d76ee577d9318d9cb3",
-    "head_committed_at": "2026-08-04T22:00:32.000Z",
+    "head_sha": "1865d561a12f680e48048a2b68f4ef204759ad40",
+    "head_committed_at": "2026-08-08T17:03:03.000Z",
     "archived": false,
     "fork": true,
     "parent": {
@@ -20,15 +20,15 @@
       "url": "https://github.com/Lodactio/Extension-Summaryception"
     },
     "created_at": "2026-07-02T14:13:57.000Z",
-    "size_kb": 1672
+    "size_kb": 1611
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-04T22:00:32.000Z",
+    "latest_source_activity_at": "2026-08-08T17:03:03.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-03",
-        "latest_at": "2026-08-04T22:00:32.000Z",
+        "latest_at": "2026-08-08T17:03:03.000Z",
         "precision": "interval"
       },
       {
@@ -77,20 +77,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-04T10:01:46.256Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "4bb3ff780ed9a05e4a5995d76ee577d9318d9cb3"
+    "evidence_head_sha": "1865d561a12f680e48048a2b68f4ef204759ad40"
   },
   "community": {
-    "stars_count": 16,
-    "forks_count": 0,
+    "stars_count": 18,
+    "forks_count": 1,
     "watchers_count": 2,
-    "aggregate": 18
+    "aggregate": 21
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-08T08:02:47.675Z",
+  "refreshed_at": "2026-08-09T08:04:15.301Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -98,7 +98,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T15:17:57.249Z",
     "scan": null,
-    "refreshed_at": "2026-08-08T08:02:47.675Z",
+    "refreshed_at": "2026-08-09T08:04:15.301Z",
     "stale_since": null
   }
 }
