@@ -1,4 +1,4 @@
-export const TAVERNKEEPER_SYNTHESIS_POLICY_VERSION = "4";
+export const TAVERNKEEPER_SYNTHESIS_POLICY_VERSION = "5";
 
 const riskLevels = ["low", "material", "high"];
 const digestPattern = /^[0-9a-f]{64}$/u;
@@ -164,27 +164,157 @@ export function validateStoredAssessmentShape(assessment) {
   return assessment;
 }
 
-function isMaterialFloor(item) {
-  return item.disposition === "material_vulnerability";
+const impactRank = new Map([
+  ["none", 0],
+  ["low", 1],
+  ["medium", 2],
+  ["high", 3],
+  ["critical", 4],
+]);
+const exploitabilityRank = new Map([
+  ["unlikely", 0],
+  ["plausible", 1],
+  ["readily_exploitable", 2],
+]);
+const shippedLegacyFileRoles = new Set(["production", "generated", "vendored"]);
+const legacyUnconfirmedEvidencePattern =
+  /(?:\bnot (?:demonstrated|established|confirmed|shown)\b|\b(?:unconfirmed|unknown)\b|\binsufficient evidence\b|\bno (?:concrete |demonstrated )?(?:data flow|runtime (?:path|reachability)|attacker-controlled (?:path|trigger|input))\b|\b(?:data flow|runtime (?:path|reachability)|affected (?:package )?version) (?:is |was |remains )?(?:absent|missing|unclear|unknown|unconfirmed)\b)/iu;
+
+function candidateIdsForItem(item) {
+  if (typeof item.candidate_id === "string") return [item.candidate_id];
+  return Array.isArray(item.related_candidate_ids)
+    ? item.related_candidate_ids.filter((id) => typeof id === "string")
+    : [];
 }
 
-export function deriveProjectAdvisory(assessments) {
+function legacyCandidateContext(item, candidatesById) {
+  const candidates = candidateIdsForItem(item)
+    .map((id) => candidatesById?.get(id))
+    .filter(Boolean);
+  if (
+    candidates.length === 0 ||
+    candidates.some(
+      (candidate) => !shippedLegacyFileRoles.has(candidate.file_role),
+    )
+  ) {
+    return { shipped: false, unsupported: true };
+  }
+  if (candidates.some((candidate) => candidate.origin === "osv-scanner")) {
+    return { shipped: true, unsupported: true };
+  }
+  const contextualText = [
+    item.technical_explanation,
+    item.layman_explanation,
+    item.developer_action,
+    item.title,
+  ]
+    .filter((value) => typeof value === "string")
+    .join(" ");
+  const candidateText = candidates
+    .flatMap((candidate) => [
+      candidate.title,
+      candidate.explanation,
+      candidate.category,
+    ])
+    .filter((value) => typeof value === "string")
+    .join(" ");
+  return {
+    shipped: true,
+    unsupported: legacyUnconfirmedEvidencePattern.test(
+      `${contextualText} ${candidateText}`,
+    ),
+  };
+}
+
+function hasAtLeast(value, minimum, ranks) {
+  return (ranks.get(value) ?? -1) >= (ranks.get(minimum) ?? Number.MAX_VALUE);
+}
+
+function classifyContextualItem(item, candidatesById, newContract) {
+  if (item?.disposition === "expected_behavior") return "none";
+  if (newContract && item.risk_exposure !== "demonstrated") return "minor";
+
+  const highConfidence = item?.confidence === "high";
+  if (item?.disposition === "credible_malicious_behavior" && highConfidence) {
+    return "high";
+  }
+  if (item?.disposition !== "material_vulnerability" || !highConfidence) {
+    return "minor";
+  }
+
+  if (
+    !newContract &&
+    item.impact === "critical" &&
+    item.exploitability === "readily_exploitable"
+  ) {
+    return "high";
+  }
+
+  if (!newContract) {
+    const legacy = legacyCandidateContext(item, candidatesById);
+    if (!legacy.shipped || legacy.unsupported) {
+      return "minor";
+    }
+  }
+
+  if (
+    item.impact === "critical" &&
+    item.exploitability === "readily_exploitable"
+  ) {
+    return "high";
+  }
+  if (
+    hasAtLeast(item.impact, "medium", impactRank) &&
+    hasAtLeast(item.exploitability, "plausible", exploitabilityRank)
+  ) {
+    return "material";
+  }
+  return "minor";
+}
+
+function classifications(
+  assessments,
+  candidates,
+  contextualReviewPolicyVersion,
+) {
+  const candidatesById =
+    candidates === undefined
+      ? undefined
+      : new Map(
+          candidates.map((candidate) => [candidate.candidate_id, candidate]),
+        );
+  return assessments.map((item) => ({
+    item,
+    risk: classifyContextualItem(
+      item,
+      candidatesById,
+      contextualReviewPolicyVersion === "3",
+    ),
+  }));
+}
+
+export function deriveProjectAdvisory(
+  assessments,
+  candidates,
+  contextualReviewPolicyVersion,
+) {
   if (!Array.isArray(assessments)) {
     throw new Error(
       "TavernKeeper assessments are required for project advisory",
     );
   }
-  const malicious = assessments.some(
-    (item) =>
-      item.disposition === "credible_malicious_behavior" &&
-      item.confidence === "high",
+  const classified = classifications(
+    assessments,
+    candidates,
+    contextualReviewPolicyVersion,
   );
-  const exploitable = assessments.some(
-    (item) =>
-      item.disposition === "material_vulnerability" &&
-      item.confidence === "high" &&
-      item.impact === "critical" &&
-      item.exploitability === "readily_exploitable",
+  const malicious = classified.some(
+    ({ item, risk }) =>
+      risk === "high" && item.disposition === "credible_malicious_behavior",
+  );
+  const exploitable = classified.some(
+    ({ item, risk }) =>
+      risk === "high" && item.disposition === "material_vulnerability",
   );
   if (malicious || exploitable) {
     return {
@@ -197,7 +327,7 @@ export function deriveProjectAdvisory(assessments) {
             : "critical_exploitable_vulnerability",
     };
   }
-  if (assessments.some(isMaterialFloor)) {
+  if (classified.some(({ risk }) => risk === "material")) {
     return { risk_level: "material", danger_basis: "none" };
   }
   return { risk_level: "low", danger_basis: "none" };
@@ -212,31 +342,24 @@ function reportItems(report) {
 }
 
 export function deriveReportAdvisory(report) {
-  const advisory = deriveProjectAdvisory(reportItems(report));
-  const metadataOnlyEvidence =
-    report.coverage?.evidence_validation?.status ===
-    "completed-with-limitations";
-  if (
-    advisory.risk_level === "low" &&
-    (report.coverage?.javascript_analysis?.status === "incomplete" ||
-      metadataOnlyEvidence)
-  ) {
-    return { risk_level: "material", danger_basis: "none" };
-  }
-  return advisory;
+  return deriveProjectAdvisory(
+    reportItems(report),
+    report.candidates ?? [],
+    report.contextual_review_policy_version,
+  );
 }
 
 function expectedCounts(report) {
-  const items = reportItems(report);
+  const classified = classifications(
+    reportItems(report),
+    report.candidates ?? [],
+    report.contextual_review_policy_version,
+  );
   return {
-    minor_cautions: items.filter(
-      (item) => item.disposition === "minor_weakness",
-    ).length,
-    material_concerns: items.filter(
-      (item) => item.recommended_risk === "material",
-    ).length,
-    high_danger: items.filter((item) => item.recommended_risk === "high")
+    minor_cautions: classified.filter(({ risk }) => risk === "minor").length,
+    material_concerns: classified.filter(({ risk }) => risk === "material")
       .length,
+    high_danger: classified.filter(({ risk }) => risk === "high").length,
   };
 }
 
@@ -282,11 +405,6 @@ export function buildDeterministicAssessment(report) {
   const advisory = deriveReportAdvisory(report);
   const requirements = tavernKeeperAssessmentRequirements(report);
   const counts = requirements.required_counts;
-  const incompleteJavascript =
-    report.coverage?.javascript_analysis?.status === "incomplete";
-  const metadataOnlyEvidence =
-    report.coverage?.evidence_validation?.status ===
-    "completed-with-limitations";
   const copy = {
     low: {
       headline: "Low concern",
@@ -296,16 +414,9 @@ export function buildDeterministicAssessment(report) {
         "No evidence of malicious behavior was identified in the completed review.",
     },
     material: {
-      headline: incompleteJavascript
-        ? "JavaScript coverage incomplete"
-        : metadataOnlyEvidence
-          ? "Contextual coverage incomplete"
-          : "Material security concerns identified",
-      summary: incompleteJavascript
-        ? "JavaScript coverage was incomplete, so this first-filter scan cannot support a low-risk conclusion about unobserved behavior. Review the complete technical report before installing or using this project."
-        : metadataOnlyEvidence
-          ? "One or more scanner candidates refer to a non-text artifact whose raw contents were not available to the contextual model, so this first-filter scan cannot support a low-risk conclusion. Review the complete technical report before installing or using this project."
-          : "TavernKeeper identified material security concerns at the scanned commit. The detailed generated summary was unavailable; review the complete technical report before installing or using this project.",
+      headline: "Material security concerns identified",
+      summary:
+        "TavernKeeper identified material security concerns at the scanned commit. The detailed generated summary was unavailable; review the complete technical report before installing or using this project.",
       malicious_evidence:
         "No high-confidence evidence of malicious or compromised behavior met the immediate-danger threshold.",
     },

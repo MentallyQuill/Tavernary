@@ -40,6 +40,8 @@ const defaultImportStatePath = resolve(
   "data/security/tavernkeeper-import-state.json",
 );
 const digestPattern = /^[0-9a-f]{64}$/u;
+const contextualReviewPolicyVersion = "3";
+const deterministicSynthesisModel = `deterministic-policy-v${TAVERNKEEPER_SYNTHESIS_POLICY_VERSION}`;
 
 function indexProjection(entry) {
   const {
@@ -75,14 +77,25 @@ function trackedEntry(entry, synthesis, dangerBasis, assessmentSource) {
   };
 }
 
-function fallbackSynthesis(report, assessedAt) {
+function deterministicSynthesis(report, assessedAt) {
   return {
     report_id: report.report_id,
     target_sha: report.target_sha,
     assessed_at: assessedAt,
     synthesis_policy_version: TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
-    synthesis_model: "deterministic-policy-v4",
+    synthesis_model: deterministicSynthesisModel,
     assessment: buildDeterministicAssessment(report),
+  };
+}
+
+function directLowMigrationSynthesis(prior) {
+  return {
+    report_id: prior.report_id,
+    target_sha: prior.target_sha,
+    assessed_at: prior.assessed_at,
+    synthesis_policy_version: TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
+    synthesis_model: deterministicSynthesisModel,
+    assessment: prior.assessment,
   };
 }
 
@@ -122,6 +135,21 @@ function matchingTrackedEntry(existing, entry) {
     matchingIndexEntry(existing, entry) &&
     existing.synthesis_policy_version === TAVERNKEEPER_SYNTHESIS_POLICY_VERSION
   );
+}
+
+function reconciliationMode(existing, entry) {
+  if (
+    matchingIndexEntry(existing, entry) &&
+    existing.synthesis_policy_version !== TAVERNKEEPER_SYNTHESIS_POLICY_VERSION
+  ) {
+    return existing.assessment.risk_level === "low"
+      ? "direct-low-migration"
+      : "deterministic-regrade";
+  }
+  return entry.contextual_review_policy_version ===
+    contextualReviewPolicyVersion
+    ? "model"
+    : "deterministic-regrade";
 }
 
 function incidentProjection(quarantine) {
@@ -241,17 +269,25 @@ export async function reconcileTavernKeeperReports(options = {}) {
   const existing = new Map(
     previous.reports.map((entry) => [entry.report_id, entry]),
   );
-  const synthesize =
-    options.synthesizeReport ?? createDefaultSynthesis(options);
-  const eligible = index.reports.filter((entry) => {
+  let synthesize;
+  const work = index.reports.map((entry) => ({
+    entry,
+    prior: existing.get(entry.report_id),
+    mode: reconciliationMode(existing.get(entry.report_id), entry),
+  }));
+  const eligible = work.filter(({ entry, mode }) => {
     if (retryReportDigest === entry.report_digest) return true;
-    if (currentQuarantine(importState, entry.report_digest) !== undefined) {
+    if (
+      mode === "model" &&
+      currentQuarantine(importState, entry.report_digest) !== undefined
+    ) {
       return false;
     }
     return !matchingTrackedEntry(existing.get(entry.report_id), entry);
   });
-  const skippedQuarantines = index.reports.filter(
-    (entry) =>
+  const skippedQuarantines = work.filter(
+    ({ entry, mode }) =>
+      mode === "model" &&
       retryReportDigest !== entry.report_digest &&
       currentQuarantine(importState, entry.report_digest) !== undefined,
   ).length;
@@ -259,8 +295,7 @@ export async function reconcileTavernKeeperReports(options = {}) {
   let imported = 0;
   let quarantined = 0;
 
-  for (const entry of eligible.slice(0, batchSize)) {
-    const prior = existing.get(entry.report_id);
+  for (const { entry, prior, mode } of eligible.slice(0, batchSize)) {
     if (
       prior !== undefined &&
       !isDeepStrictEqual(indexProjection(prior), entry)
@@ -269,41 +304,57 @@ export async function reconcileTavernKeeperReports(options = {}) {
         "Tracked TavernKeeper report identity conflicts with index",
       );
     }
-    const report = await fetchAndValidateTavernKeeperReport(entry, options);
-    const advisory = deriveReportAdvisory(report);
     let synthesis;
-    let assessmentSource = "model";
-    try {
-      synthesis = await synthesize(report);
-    } catch (error) {
-      if (error instanceof TavernKeeperSynthesisError) {
-        importState = quarantineTavernKeeperReport(
-          importState,
-          entry,
-          TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
-          error.diagnostic,
-          now,
-        );
-        createdOrUpdated.push(
-          incidentProjection(
-            currentQuarantine(importState, entry.report_digest),
-          ),
-        );
-        quarantined += 1;
-        assessmentSource = "deterministic_fallback";
-        synthesis = fallbackSynthesis(report, now);
+    let dangerBasis;
+    let assessmentSource;
+    if (mode === "direct-low-migration") {
+      synthesis = directLowMigrationSynthesis(prior);
+      dangerBasis = prior.danger_basis;
+      assessmentSource = "deterministic_regrade";
+    } else {
+      const report = await fetchAndValidateTavernKeeperReport(entry, options);
+      const advisory = deriveReportAdvisory(report);
+      dangerBasis = advisory.danger_basis;
+      if (mode === "deterministic-regrade") {
+        synthesis = deterministicSynthesis(report, now);
+        assessmentSource = "deterministic_regrade";
       } else {
-        throw error;
+        synthesize ??=
+          options.synthesizeReport ?? createDefaultSynthesis(options);
+        assessmentSource = "model";
+        try {
+          synthesis = await synthesize(report);
+        } catch (error) {
+          if (error instanceof TavernKeeperSynthesisError) {
+            importState = quarantineTavernKeeperReport(
+              importState,
+              entry,
+              TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
+              error.diagnostic,
+              now,
+            );
+            createdOrUpdated.push(
+              incidentProjection(
+                currentQuarantine(importState, entry.report_digest),
+              ),
+            );
+            quarantined += 1;
+            assessmentSource = "deterministic_fallback";
+            synthesis = deterministicSynthesis(report, now);
+          } else {
+            throw error;
+          }
+        }
       }
     }
     const tracked = trackedEntry(
       entry,
       synthesis,
-      advisory.danger_basis,
+      dangerBasis,
       assessmentSource,
     );
     const recovered = currentQuarantine(importState, entry.report_digest);
-    if (assessmentSource === "model") {
+    if (assessmentSource !== "deterministic_fallback") {
       if (recovered !== undefined) resolved.push(incidentProjection(recovered));
       importState = removeTavernKeeperQuarantine(
         importState,

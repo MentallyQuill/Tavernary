@@ -239,6 +239,69 @@ function addImmediateDangerCandidate(reportInput: Record<string, any>) {
   return rebindReport(report);
 }
 
+function policy3ExposureReport(reportInput: Record<string, any>) {
+  const report = addExpectedCandidate(policy4Report(reportInput));
+  report.contextual_review_policy_version = "3";
+  report.prompt_version = "contextual-review-v6";
+  report.assessment_schema_version = "contextual-assessment-v2";
+  report.assessments[0].risk_exposure = "not_demonstrated";
+  report.observations = [
+    {
+      observation_id: "d".repeat(64),
+      related_candidate_ids: [candidateId],
+      evidence_ids: [evidenceId],
+      disposition: "minor_weakness",
+      impact: "low",
+      exploitability: "unlikely",
+      confidence: "high",
+      risk_exposure: "not_demonstrated",
+      recommended_risk: "low",
+      title: "Related low-risk observation",
+      technical_explanation:
+        "The reviewed behavior does not expose an untrusted-input path.",
+      layman_explanation:
+        "The related behavior is visible but does not create a demonstrated risk.",
+      developer_action: "Keep the input boundary documented and tested.",
+      locations: [{ path: "src/index.js", line_start: 10, line_end: 12 }],
+    },
+  ];
+  report.counts = {
+    ...report.counts,
+    observations: 1,
+    items: 2,
+    disposition: {
+      expected_behavior: 1,
+      minor_weakness: 1,
+      material_vulnerability: 0,
+      credible_malicious_behavior: 0,
+    },
+    impact: { none: 0, low: 2, medium: 0, high: 0, critical: 0 },
+    exploitability: {
+      unlikely: 2,
+      plausible: 0,
+      readily_exploitable: 0,
+    },
+    confidence: { low: 0, medium: 0, high: 2 },
+    recommended_risk: { low: 2, material: 0, high: 0 },
+  };
+  return report;
+}
+
+function policy3ImmediateDangerReport(reportInput: Record<string, any>) {
+  const report = addImmediateDangerCandidate(policy4Report(reportInput));
+  report.contextual_review_policy_version = "3";
+  report.prompt_version = "contextual-review-v6";
+  report.assessment_schema_version = "contextual-assessment-v2";
+  report.assessments[0].risk_exposure = "demonstrated";
+  return rebindReport(report);
+}
+
+async function contextualFixtures() {
+  const [index, baseReport] = await fixtures();
+  const report = rebindReport(policy3ExposureReport(baseReport));
+  return [{ ...index, reports: [projectIndexReport(report)] }, report];
+}
+
 function publicDnsLookup() {
   return Promise.resolve([{ address: "8.8.8.8", family: 4 }]);
 }
@@ -314,6 +377,129 @@ describe("TavernKeeper V5 report import", () => {
       report,
     );
   });
+
+  test("accepts policy-3 risk exposure on assessments and observations", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = rebindReport(policy3ExposureReport(baseReport));
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(validateScanReport(rebound, validatedIndex.reports[0])).toEqual(
+      rebound,
+    );
+  });
+
+  test.each([
+    [
+      "missing assessment exposure",
+      (report: Record<string, any>) => {
+        delete report.assessments[0].risk_exposure;
+      },
+    ],
+    [
+      "missing observation exposure",
+      (report: Record<string, any>) => {
+        delete report.observations[0].risk_exposure;
+      },
+    ],
+    [
+      "non-demonstrated material recommendation",
+      (report: Record<string, any>) => {
+        Object.assign(report.assessments[0], {
+          disposition: "material_vulnerability",
+          impact: "high",
+          exploitability: "plausible",
+          confidence: "high",
+          risk_exposure: "not_demonstrated",
+          recommended_risk: "material",
+        });
+      },
+    ],
+    [
+      "material recommendation without high confidence",
+      (report: Record<string, any>) => {
+        Object.assign(report.observations[0], {
+          disposition: "material_vulnerability",
+          impact: "high",
+          exploitability: "plausible",
+          confidence: "medium",
+          risk_exposure: "demonstrated",
+          recommended_risk: "material",
+        });
+      },
+    ],
+  ])("rejects policy-3 %s", async (_label, mutate) => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy3ExposureReport(baseReport);
+    mutate(report);
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).toThrow(/policy-3.*demonstrated-risk/iu);
+  });
+
+  test("keeps policy-1 and policy-2 reports compatible without risk exposure", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const policy1 = clone(baseReport);
+    const policy2 = addImmediateDangerCandidate(policy4Report(baseReport));
+    policy2.contextual_review_policy_version = "2";
+    policy2.prompt_version = "contextual-review-v5";
+    policy2.assessment_schema_version = "contextual-assessment-v1";
+
+    for (const report of [policy1, rebindReport(policy2)]) {
+      const entry = projectIndexReport(report);
+      const validatedIndex = validateReportIndex(
+        { ...fixtureIndex, reports: [entry] },
+        registry,
+      );
+      expect(validateScanReport(report, validatedIndex.reports[0])).toEqual(
+        report,
+      );
+    }
+  });
+
+  test("rejects risk exposure fields on a legacy contextual-policy report", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = addExpectedCandidate(policy4Report(baseReport));
+    report.contextual_review_policy_version = "2";
+    report.prompt_version = "contextual-review-v5";
+    report.assessment_schema_version = "contextual-assessment-v1";
+    report.assessments[0].risk_exposure = "demonstrated";
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).toThrow(/legacy.*risk exposure/iu);
+  });
+
+  test.each(["4", "999"])(
+    "rejects unsupported contextual policy %s on an immutable report",
+    async (policy) => {
+      const [index, baseReport] = await fixtures();
+      const report = clone(baseReport);
+      report.contextual_review_policy_version = policy;
+      const rebound = rebindReport(report);
+
+      expect(() => validateScanReport(rebound, index.reports[0])).toThrow(
+        /unsupported contextual.*policy/iu,
+      );
+    },
+  );
 
   test("accepts policy-4 candidates from completed JavaScript analysis", async () => {
     const [fixtureIndex, baseReport] = await fixtures();
@@ -583,6 +769,344 @@ describe("TavernKeeper V5 report import", () => {
     );
   });
 
+  test("upgrades an unchanged low policy-4 summary without fetching its report or synthesizing", async () => {
+    const root = await mkdtemp(
+      resolve(tmpdir(), "tavernkeeper-v6-low-migrate-"),
+    );
+    const outputPath = resolve(
+      root,
+      "data/security/tavernkeeper-report-summaries.json",
+    );
+    const importStatePath = resolve(
+      root,
+      "data/security/tavernkeeper-import-state.json",
+    );
+    await mkdir(resolve(root, "data/security"), { recursive: true });
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    const entry = projectIndexReport(report);
+    const index = { ...fixtureIndex, reports: [entry] };
+    const prior = assessedEntry(entry, {
+      synthesis_policy_version: "4",
+      danger_basis: "none",
+      assessment_source: "model",
+    });
+    await writeFile(
+      outputPath,
+      `${JSON.stringify({
+        schema_version: 6,
+        generated_at: index.generated_at,
+        preferred_report_ids: [entry.report_id],
+        reports: [prior],
+      })}\n`,
+    );
+    const requests: string[] = [];
+
+    const outcome = await reconcileTavernKeeperReports({
+      root,
+      outputPath,
+      importStatePath,
+      registry,
+      dnsLookup: publicDnsLookup,
+      requestImpl: async (url: string) => {
+        requests.push(url);
+        if (url !== TAVERNKEEPER_REPORT_INDEX_URL) {
+          throw new Error("low migration must not fetch immutable report JSON");
+        }
+        return jsonResponse(index);
+      },
+      synthesizeReport: async () => {
+        throw new Error("low migration must not synthesize");
+      },
+      now: () => new Date("2026-08-09T10:00:00.000Z"),
+    });
+
+    expect(requests).toEqual([TAVERNKEEPER_REPORT_INDEX_URL]);
+    expect(outcome).toMatchObject({ imported: 1, remaining: 0 });
+    expect(outcome.snapshot.reports).toEqual([
+      expect.objectContaining({
+        report_id: entry.report_id,
+        assessed_at: prior.assessed_at,
+        synthesis_policy_version: TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
+        synthesis_model: "deterministic-policy-v5",
+        danger_basis: "none",
+        assessment_source: "deterministic_regrade",
+        assessment: prior.assessment,
+      }),
+    ]);
+  });
+
+  test("fetches and deterministically regrades an unchanged non-low summary without synthesis", async () => {
+    const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v6-regrade-"));
+    const outputPath = resolve(
+      root,
+      "data/security/tavernkeeper-report-summaries.json",
+    );
+    const importStatePath = resolve(
+      root,
+      "data/security/tavernkeeper-import-state.json",
+    );
+    await mkdir(resolve(root, "data/security"), { recursive: true });
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = addImmediateDangerCandidate(policy4Report(baseReport));
+    const entry = projectIndexReport(report);
+    const index = { ...fixtureIndex, reports: [entry] };
+    const prior = assessedEntry(entry, {
+      synthesis_policy_version: "4",
+      danger_basis: "none",
+      assessment_source: "model",
+      assessment: {
+        risk_level: "material",
+        headline: "Previous caution",
+        summary: "The previous policy classified this report as cautionary.",
+        minor_cautions: 0,
+        material_concerns: 1,
+        high_danger: 0,
+        malicious_evidence: "No malicious behavior was identified.",
+        cited_finding_ids: [candidateId],
+        interaction_chains: [],
+      },
+    });
+    await writeFile(
+      outputPath,
+      `${JSON.stringify({
+        schema_version: 6,
+        generated_at: index.generated_at,
+        preferred_report_ids: [entry.report_id],
+        reports: [prior],
+      })}\n`,
+    );
+    const requests: string[] = [];
+
+    const outcome = await reconcileTavernKeeperReports({
+      root,
+      outputPath,
+      importStatePath,
+      registry,
+      dnsLookup: publicDnsLookup,
+      requestImpl: async (url: string) => {
+        requests.push(url);
+        return jsonResponse(
+          url === TAVERNKEEPER_REPORT_INDEX_URL ? index : report,
+        );
+      },
+      synthesizeReport: async () => {
+        throw new Error("legacy regrade must not synthesize");
+      },
+      now: () => new Date("2026-08-09T10:01:00.000Z"),
+    });
+
+    expect(requests).toEqual([
+      TAVERNKEEPER_REPORT_INDEX_URL,
+      `${entry.report_url}report.json`,
+    ]);
+    expect(outcome.snapshot.reports).toEqual([
+      expect.objectContaining({
+        report_id: entry.report_id,
+        synthesis_policy_version: TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
+        synthesis_model: "deterministic-policy-v5",
+        danger_basis: "critical_exploitable_vulnerability",
+        assessment_source: "deterministic_regrade",
+        assessment: expect.objectContaining({
+          risk_level: "high",
+          high_danger: 1,
+        }),
+      }),
+    ]);
+  });
+
+  test("uses model synthesis for a new contextual-policy-3 report", async () => {
+    const root = await mkdtemp(
+      resolve(tmpdir(), "tavernkeeper-v6-contextual-"),
+    );
+    const outputPath = resolve(
+      root,
+      "data/security/tavernkeeper-report-summaries.json",
+    );
+    const importStatePath = resolve(
+      root,
+      "data/security/tavernkeeper-import-state.json",
+    );
+    await mkdir(resolve(root, "data/security"), { recursive: true });
+    await writeFile(
+      outputPath,
+      '{"schema_version":6,"generated_at":"1970-01-01T00:00:00.000Z","preferred_report_ids":[],"reports":[]}\n',
+    );
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = rebindReport(policy3ExposureReport(baseReport));
+    const entry = projectIndexReport(report);
+    const index = { ...fixtureIndex, reports: [entry] };
+    let synthesisCalls = 0;
+
+    const outcome = await reconcileTavernKeeperReports({
+      root,
+      outputPath,
+      importStatePath,
+      registry,
+      dnsLookup: publicDnsLookup,
+      requestImpl: async (url: string) =>
+        jsonResponse(url === TAVERNKEEPER_REPORT_INDEX_URL ? index : report),
+      synthesizeReport: async () => {
+        synthesisCalls += 1;
+        return synthesisFor(entry);
+      },
+      now: () => new Date("2026-08-09T10:02:00.000Z"),
+    });
+
+    expect(synthesisCalls).toBe(1);
+    expect(outcome.snapshot.reports).toEqual([
+      expect.objectContaining({
+        report_id: entry.report_id,
+        synthesis_model: "gpt-5.6-luna",
+        assessment_source: "model",
+      }),
+    ]);
+  });
+
+  test("deterministically regrades a new legacy-policy report without synthesis", async () => {
+    const root = await mkdtemp(
+      resolve(tmpdir(), "tavernkeeper-v6-legacy-new-"),
+    );
+    const outputPath = resolve(
+      root,
+      "data/security/tavernkeeper-report-summaries.json",
+    );
+    const importStatePath = resolve(
+      root,
+      "data/security/tavernkeeper-import-state.json",
+    );
+    await mkdir(resolve(root, "data/security"), { recursive: true });
+    await writeFile(
+      outputPath,
+      '{"schema_version":6,"generated_at":"1970-01-01T00:00:00.000Z","preferred_report_ids":[],"reports":[]}\n',
+    );
+    const [index, report] = await fixtures();
+
+    const outcome = await reconcileTavernKeeperReports({
+      root,
+      outputPath,
+      importStatePath,
+      registry,
+      dnsLookup: publicDnsLookup,
+      requestImpl: async (url: string) =>
+        jsonResponse(url === TAVERNKEEPER_REPORT_INDEX_URL ? index : report),
+      synthesizeReport: async () => {
+        throw new Error("legacy report must not synthesize");
+      },
+      now: () => new Date("2026-08-09T10:03:00.000Z"),
+    });
+
+    expect(outcome.snapshot.reports).toEqual([
+      expect.objectContaining({
+        report_id: index.reports[0].report_id,
+        synthesis_policy_version: TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
+        synthesis_model: "deterministic-policy-v5",
+        assessment_source: "deterministic_regrade",
+      }),
+    ]);
+    expect(outcome.import_state.quarantines).toEqual([]);
+  });
+
+  test.each(["4", "999"])(
+    "rejects unsupported contextual policy %s before reconciliation routes work",
+    async (policy) => {
+      const root = await mkdtemp(
+        resolve(tmpdir(), "tavernkeeper-v6-policy-reject-"),
+      );
+      const outputPath = resolve(
+        root,
+        "data/security/tavernkeeper-report-summaries.json",
+      );
+      const importStatePath = resolve(
+        root,
+        "data/security/tavernkeeper-import-state.json",
+      );
+      await mkdir(resolve(root, "data/security"), { recursive: true });
+      await writeFile(
+        outputPath,
+        '{"schema_version":6,"generated_at":"1970-01-01T00:00:00.000Z","preferred_report_ids":[],"reports":[]}\n',
+      );
+      const [index] = await fixtures();
+      index.reports[0].contextual_review_policy_version = policy;
+      const requests: string[] = [];
+      let synthesisCalls = 0;
+
+      await expect(
+        reconcileTavernKeeperReports({
+          root,
+          outputPath,
+          importStatePath,
+          registry,
+          dnsLookup: publicDnsLookup,
+          requestImpl: async (url: string) => {
+            requests.push(url);
+            return jsonResponse(index);
+          },
+          synthesizeReport: async () => {
+            synthesisCalls += 1;
+            throw new Error("unsupported policy must not synthesize");
+          },
+          now: () => new Date("2026-08-09T10:03:30.000Z"),
+        }),
+      ).rejects.toThrow(/unsupported contextual.*policy/iu);
+
+      expect(requests).toEqual([TAVERNKEEPER_REPORT_INDEX_URL]);
+      expect(synthesisCalls).toBe(0);
+    },
+  );
+
+  test("is idempotent after an offline legacy regrade", async () => {
+    const root = await mkdtemp(
+      resolve(tmpdir(), "tavernkeeper-v6-idempotent-"),
+    );
+    const outputPath = resolve(
+      root,
+      "data/security/tavernkeeper-report-summaries.json",
+    );
+    const importStatePath = resolve(
+      root,
+      "data/security/tavernkeeper-import-state.json",
+    );
+    await mkdir(resolve(root, "data/security"), { recursive: true });
+    await writeFile(
+      outputPath,
+      '{"schema_version":6,"generated_at":"1970-01-01T00:00:00.000Z","preferred_report_ids":[],"reports":[]}\n',
+    );
+    const [index, report] = await fixtures();
+    const requests: string[] = [];
+    const options = {
+      root,
+      outputPath,
+      importStatePath,
+      registry,
+      dnsLookup: publicDnsLookup,
+      requestImpl: async (url: string) => {
+        requests.push(url);
+        return jsonResponse(
+          url === TAVERNKEEPER_REPORT_INDEX_URL ? index : report,
+        );
+      },
+      synthesizeReport: async () => {
+        throw new Error("legacy report must not synthesize");
+      },
+      now: () => new Date("2026-08-09T10:04:00.000Z"),
+    };
+
+    const first = await reconcileTavernKeeperReports(options);
+    const firstSnapshot = clone(first.snapshot);
+    const second = await reconcileTavernKeeperReports(options);
+
+    expect(first.imported).toBe(1);
+    expect(second.imported).toBe(0);
+    expect(second.remaining).toBe(0);
+    expect(second.snapshot).toEqual(firstSnapshot);
+    expect(requests).toEqual([
+      TAVERNKEEPER_REPORT_INDEX_URL,
+      `${index.reports[0].report_url}report.json`,
+      TAVERNKEEPER_REPORT_INDEX_URL,
+    ]);
+  });
+
   test("publishes a deterministic immediate-danger fallback when synthesis is invalid", async () => {
     const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v6-red-"));
     const outputPath = resolve(
@@ -599,7 +1123,7 @@ describe("TavernKeeper V5 report import", () => {
       '{"schema_version":5,"generated_at":"1970-01-01T00:00:00.000Z","preferred_report_ids":[],"reports":[]}\n',
     );
     const [fixtureIndex, fixtureReport] = await fixtures();
-    const report = addImmediateDangerCandidate(fixtureReport);
+    const report = policy3ImmediateDangerReport(fixtureReport);
     const entry = projectIndexReport(report);
     const index = { ...fixtureIndex, reports: [entry] };
 
@@ -628,7 +1152,7 @@ describe("TavernKeeper V5 report import", () => {
           report_id: entry.report_id,
           danger_basis: "critical_exploitable_vulnerability",
           assessment_source: "deterministic_fallback",
-          synthesis_model: "deterministic-policy-v4",
+          synthesis_model: "deterministic-policy-v5",
           assessment: {
             risk_level: "high",
             headline: "Immediate danger identified",
@@ -645,7 +1169,7 @@ describe("TavernKeeper V5 report import", () => {
     ]);
   });
 
-  test("keeps prior summaries preferred while policy-4 enrichment advances in batches", async () => {
+  test("keeps prior summaries preferred while offline migration advances in batches", async () => {
     const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v6-rollout-"));
     const outputPath = resolve(
       root,
@@ -656,7 +1180,7 @@ describe("TavernKeeper V5 report import", () => {
       "data/security/tavernkeeper-import-state.json",
     );
     await mkdir(resolve(root, "data/security"), { recursive: true });
-    const [index, report] = await fixtures();
+    const [index, report] = await contextualFixtures();
     const secondReport = secondReportFrom(report);
     const secondEntry = projectIndexReport(secondReport);
     index.reports.push(secondEntry);
@@ -686,6 +1210,7 @@ describe("TavernKeeper V5 report import", () => {
         repository: "owner/repo-two",
       },
     ];
+    const requests: string[] = [];
 
     const outcome = await reconcileTavernKeeperReports({
       root,
@@ -693,24 +1218,23 @@ describe("TavernKeeper V5 report import", () => {
       importStatePath,
       registry: expandedRegistry,
       dnsLookup: publicDnsLookup,
-      requestImpl: async (url: string) =>
-        jsonResponse(
-          url === TAVERNKEEPER_REPORT_INDEX_URL
-            ? index
-            : url.includes(secondReport.report_id)
-              ? secondReport
-              : report,
-        ),
-      synthesizeReport: async (currentReport: Record<string, any>) =>
-        synthesisFor(
-          currentReport.repository_id === 43 ? secondEntry : index.reports[0],
-        ),
+      requestImpl: async (url: string) => {
+        requests.push(url);
+        if (url !== TAVERNKEEPER_REPORT_INDEX_URL) {
+          throw new Error("low migration must not fetch immutable reports");
+        }
+        return jsonResponse(index);
+      },
+      synthesizeReport: async () => {
+        throw new Error("offline migration must not synthesize");
+      },
       batchSize: 1,
       now: () => new Date("2026-08-04T20:05:00.000Z"),
     });
 
     expect(outcome.imported).toBe(1);
     expect(outcome.remaining).toBe(1);
+    expect(requests).toEqual([TAVERNKEEPER_REPORT_INDEX_URL]);
     expect(outcome.snapshot.preferred_report_ids).toEqual(
       index.reports.map((entry: Record<string, any>) => entry.report_id),
     );
@@ -964,7 +1488,7 @@ describe("TavernKeeper V5 report import", () => {
     });
   });
 
-  test("rejects a stored low-risk assessment with incomplete JavaScript coverage", async () => {
+  test("applies the JavaScript coverage floor through synthesis policy 4 only", async () => {
     const [index, baseReport] = await fixtures();
     const report = policy4Report(baseReport);
     report.coverage.javascript_analysis.status = "incomplete";
@@ -984,20 +1508,35 @@ describe("TavernKeeper V5 report import", () => {
       assessment_source: "model",
     });
 
+    const snapshot = {
+      schema_version: 6,
+      generated_at: index.generated_at,
+      preferred_report_ids: [entry.report_id],
+      reports: [entry],
+    };
+
+    expect(validateStoredReportIndex(snapshot, registry)).toMatchObject({
+      reports: [
+        expect.objectContaining({
+          assessment: expect.objectContaining({ risk_level: "low" }),
+          coverage: expect.objectContaining({
+            javascript_analysis_status: "incomplete",
+          }),
+        }),
+      ],
+    });
     expect(() =>
       validateStoredReportIndex(
         {
-          schema_version: 6,
-          generated_at: index.generated_at,
-          preferred_report_ids: [entry.report_id],
-          reports: [entry],
+          ...snapshot,
+          reports: [{ ...entry, synthesis_policy_version: "4" }],
         },
         registry,
       ),
     ).toThrow(/incomplete JavaScript coverage/u);
   });
 
-  test("rejects a stored low-risk assessment with metadata-only evidence", async () => {
+  test("applies the metadata-only coverage floor through synthesis policy 4 only", async () => {
     const [index, baseReport] = await fixtures();
     const report = addExpectedCandidate(policy4Report(baseReport));
     report.coverage.evidence_validation = {
@@ -1013,7 +1552,40 @@ describe("TavernKeeper V5 report import", () => {
       assessment_source: "model",
     });
 
+    const snapshot = {
+      schema_version: 6,
+      generated_at: index.generated_at,
+      preferred_report_ids: [entry.report_id],
+      reports: [entry],
+    };
+
+    expect(validateStoredReportIndex(snapshot, registry)).toMatchObject({
+      reports: [
+        expect.objectContaining({
+          assessment: expect.objectContaining({ risk_level: "low" }),
+          coverage: expect.objectContaining({ metadata_only_candidates: 1 }),
+        }),
+      ],
+    });
     expect(() =>
+      validateStoredReportIndex(
+        {
+          ...snapshot,
+          reports: [{ ...entry, synthesis_policy_version: "4" }],
+        },
+        registry,
+      ),
+    ).toThrow(/metadata-only evidence/iu);
+  });
+
+  test("accepts deterministic regrade as an assessment source", async () => {
+    const [index] = await fixtures();
+    const entry = assessedEntry(index.reports[0], {
+      danger_basis: "none",
+      assessment_source: "deterministic_regrade",
+    });
+
+    expect(
       validateStoredReportIndex(
         {
           schema_version: 6,
@@ -1023,7 +1595,13 @@ describe("TavernKeeper V5 report import", () => {
         },
         registry,
       ),
-    ).toThrow(/metadata-only evidence/iu);
+    ).toMatchObject({
+      reports: [
+        expect.objectContaining({
+          assessment_source: "deterministic_regrade",
+        }),
+      ],
+    });
   });
 
   test("keeps stored history valid during a source delist transition", async () => {
@@ -1364,7 +1942,7 @@ describe("TavernKeeper V5 report import", () => {
       root,
       "data/security/tavernkeeper-import-state.json",
     );
-    const [index, report] = await fixtures();
+    const [index, report] = await contextualFixtures();
     const secondReport = secondReportFrom(report);
     const secondEntry = projectIndexReport(secondReport);
     index.reports.push(secondEntry);
@@ -1459,7 +2037,7 @@ describe("TavernKeeper V5 report import", () => {
       "data/security/tavernkeeper-import-state.json",
     );
     await mkdir(resolve(root, "data/security"), { recursive: true });
-    const [index, report] = await fixtures();
+    const [index, report] = await contextualFixtures();
     const prior = assessedEntry(index.reports[0]);
     await writeFile(
       outputPath,
@@ -1533,7 +2111,7 @@ describe("TavernKeeper V5 report import", () => {
       outputPath,
       '{"schema_version":5,"generated_at":"1970-01-01T00:00:00.000Z","preferred_report_ids":[],"reports":[]}\n',
     );
-    const [index, report] = await fixtures();
+    const [index, report] = await contextualFixtures();
 
     await reconcileTavernKeeperReports({
       root,
@@ -1646,7 +2224,7 @@ describe("TavernKeeper V5 report import", () => {
       outputPath,
       '{"schema_version":5,"generated_at":"1970-01-01T00:00:00.000Z","preferred_report_ids":[],"reports":[]}\n',
     );
-    const [index, report] = await fixtures();
+    const [index, report] = await contextualFixtures();
     await writeFile(
       importStatePath,
       `${JSON.stringify({
@@ -1706,7 +2284,7 @@ describe("TavernKeeper V5 report import", () => {
       "data/security/tavernkeeper-import-state.json",
     );
     await mkdir(resolve(root, "data/security"), { recursive: true });
-    const [index, report] = await fixtures();
+    const [index, report] = await contextualFixtures();
     const prior = assessedEntry(index.reports[0]);
     await writeFile(
       outputPath,
@@ -1765,7 +2343,7 @@ describe("TavernKeeper V5 report import", () => {
       outputPath,
       '{"schema_version":5,"generated_at":"1970-01-01T00:00:00.000Z","preferred_report_ids":[],"reports":[]}\n',
     );
-    const [index, report] = await fixtures();
+    const [index, report] = await contextualFixtures();
     await writeFile(
       importStatePath,
       `${JSON.stringify({
@@ -1846,7 +2424,7 @@ describe("TavernKeeper V5 report import", () => {
     const initialState =
       '{"schema_version":2,"updated_at":"1970-01-01T00:00:00.000Z","quarantines":[]}\n';
     await writeFile(importStatePath, initialState);
-    const [index, report] = await fixtures();
+    const [index, report] = await contextualFixtures();
 
     const outcome = await reconcileTavernKeeperReports({
       root,
@@ -1872,7 +2450,7 @@ describe("TavernKeeper V5 report import", () => {
         {
           report_id: index.reports[0].report_id,
           assessment_source: "deterministic_fallback",
-          synthesis_model: "deterministic-policy-v4",
+          synthesis_model: "deterministic-policy-v5",
         },
       ],
     });

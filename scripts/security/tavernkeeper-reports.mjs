@@ -19,6 +19,7 @@ const digestPattern = /^[0-9a-f]{64}$/u;
 const fullShaPattern = /^[0-9a-f]{40}$/u;
 const versionPattern = /^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$/u;
 const supportedScannerPolicyVersions = new Set(["3", "4"]);
+const supportedContextualReviewPolicyVersions = new Set(["1", "2", "3"]);
 const incompleteJavascriptLimitation =
   "JavaScript analysis was incomplete, so this first-filter scan supports no clean conclusion about unobserved behavior.";
 const metadataOnlyEvidenceLimitation =
@@ -99,6 +100,72 @@ function assertReportSchema(report) {
   }
 }
 
+function policy3RecommendedRisk(item) {
+  if (
+    item.disposition === "expected_behavior" ||
+    item.disposition === "minor_weakness"
+  ) {
+    return "low";
+  }
+  if (item.disposition === "credible_malicious_behavior") return "high";
+  const demonstratedMaterial =
+    item.risk_exposure === "demonstrated" &&
+    item.confidence === "high" &&
+    ["medium", "high", "critical"].includes(item.impact) &&
+    ["plausible", "readily_exploitable"].includes(item.exploitability);
+  if (!demonstratedMaterial) return "low";
+  return item.impact === "critical" &&
+    item.exploitability === "readily_exploitable"
+    ? "high"
+    : "material";
+}
+
+function assertSupportedContextualReviewPolicy(entry) {
+  if (
+    !supportedContextualReviewPolicyVersions.has(
+      entry.contextual_review_policy_version,
+    )
+  ) {
+    throw new Error(
+      "TavernKeeper has an unsupported contextual review policy version",
+    );
+  }
+}
+
+function assertContextualReviewPolicy(report) {
+  assertSupportedContextualReviewPolicy(report);
+  const items = [...report.assessments, ...report.observations];
+  if (report.contextual_review_policy_version !== "3") {
+    if (items.some((item) => Object.hasOwn(item, "risk_exposure"))) {
+      throw new Error(
+        "TavernKeeper legacy contextual-policy report contains risk exposure",
+      );
+    }
+    return;
+  }
+  if (
+    report.prompt_version !== "contextual-review-v6" ||
+    report.assessment_schema_version !== "contextual-assessment-v2"
+  ) {
+    throw new Error(
+      "TavernKeeper policy-3 report has invalid demonstrated-risk contract versions",
+    );
+  }
+  const invalid = items.some(
+    (item) =>
+      !["not_demonstrated", "demonstrated"].includes(item.risk_exposure) ||
+      (item.disposition === "credible_malicious_behavior" &&
+        (item.confidence !== "high" ||
+          item.risk_exposure !== "demonstrated")) ||
+      item.recommended_risk !== policy3RecommendedRisk(item),
+  );
+  if (invalid) {
+    throw new Error(
+      "TavernKeeper policy-3 report violates demonstrated-risk rules",
+    );
+  }
+}
+
 function canonicalValue(value) {
   if (Array.isArray(value)) return value.map(canonicalValue);
   if (value !== null && typeof value === "object") {
@@ -136,6 +203,7 @@ function canonicalHistoryUrl(entry) {
 }
 
 function assertCanonicalIndexEntry(entry) {
+  assertSupportedContextualReviewPolicy(entry);
   if (
     !digestPattern.test(entry.report_id) ||
     entry.report_id !== entry.report_digest ||
@@ -538,6 +606,7 @@ function assertReportMatchesIndex(report, entry) {
 
 export function validateScanReport(report, indexEntry) {
   assertReportSchema(report);
+  assertContextualReviewPolicy(report);
   assertCanonicalIndexEntry(indexEntry);
   if (
     report.report_id !== report.report_digest ||
@@ -780,22 +849,32 @@ export function validateStoredReportIndex(snapshotInput, registry) {
         "critical_exploitable_vulnerability",
         "mixed",
       ].includes(entry.danger_basis) ||
-      !["model", "deterministic_fallback"].includes(entry.assessment_source)
+      !["model", "deterministic_fallback", "deterministic_regrade"].includes(
+        entry.assessment_source,
+      )
     ) {
       throw new Error("Tracked TavernKeeper synthesis identity is invalid");
     }
     validateStoredAssessmentShape(entry.assessment);
+    const numericSynthesisPolicy = /^\d+$/u.test(entry.synthesis_policy_version)
+      ? Number(entry.synthesis_policy_version)
+      : Number.NaN;
+    const legacyCoverageFloor =
+      Number.isSafeInteger(numericSynthesisPolicy) &&
+      numericSynthesisPolicy <= 4;
     if (
-      entry.coverage.javascript_analysis_status === "incomplete" &&
-      entry.assessment.risk_level === "low"
+      legacyCoverageFloor &&
+      entry.assessment.risk_level === "low" &&
+      entry.coverage.javascript_analysis_status === "incomplete"
     ) {
       throw new Error(
         "Tracked TavernKeeper low-risk assessment has incomplete JavaScript coverage",
       );
     }
     if (
-      entry.coverage.metadata_only_candidates > 0 &&
-      entry.assessment.risk_level === "low"
+      legacyCoverageFloor &&
+      entry.assessment.risk_level === "low" &&
+      entry.coverage.metadata_only_candidates > 0
     ) {
       throw new Error(
         "Tracked TavernKeeper low-risk assessment has metadata-only evidence",

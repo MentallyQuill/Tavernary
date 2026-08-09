@@ -75,6 +75,7 @@ export interface TavernKeeperContextualItemV5 {
   exploitability: "unlikely" | "plausible" | "readily_exploitable";
   confidence: "low" | "medium" | "high";
   recommended_risk: TavernKeeperRiskLevel;
+  risk_exposure?: "not_demonstrated" | "demonstrated";
   [key: string]: unknown;
 }
 
@@ -189,7 +190,8 @@ export type TavernKeeperDangerBasis =
   | "malicious_or_compromised"
   | "critical_exploitable_vulnerability"
   | "mixed";
-export type TavernKeeperAssessmentSource = "model" | "deterministic_fallback";
+export type TavernKeeperAssessmentSource =
+  "model" | "deterministic_fallback" | "deterministic_regrade";
 
 export interface TavernaryAssessedReportV6 extends TavernKeeperReportIndexEntryV5 {
   assessed_at: string;

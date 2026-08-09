@@ -10,7 +10,9 @@ export function tavernKeeperSynthesisInstructions() {
 
 Most projects in this open-source, often vibe-coded community are made in good faith, but rare projects have attempted API-key phishing or theft, trojan delivery, harmful payloads, and bot infection. Judge the validated evidence in that context without treating ordinary SillyTavern extension behavior or scanner keywords as malicious by themselves.
 
-Produce a concise project-level assessment for nontechnical Tavernary visitors. Preserve material uncertainty and distinguish malicious evidence from ordinary security weaknesses. Put cited IDs only in cited_finding_ids and interaction_chains.finding_ids, using IDs listed in allowed_candidate_ids. Never put finding IDs or citation markers in visitor-facing prose. Observation IDs are never valid citations. Copy required_counts exactly. A nonzero high_danger count does not set the project risk level. risk_level must exactly equal required_project_advisory.risk_level; prose and interaction chains cannot select or change the project color. Return only the required structured object.`;
+Produce a concise project-level assessment for nontechnical Tavernary visitors. Teal means findings or limitations exist but no caution-level risk was demonstrated. Yellow means a concrete, demonstrated, exploitable, non-malicious vulnerability that requires an attacker-controlled or untrusted-input trigger and does not cause harm autonomously. Red means demonstrated credible malicious or compromised behavior, or a demonstrated critical and readily exploitable vulnerability. Incomplete coverage, metadata-only evidence, advisory presence, broad correlations, and unresolved uncertainty never change the project color by themselves. Keep those limitations visible without describing them as material concerns.
+
+Put cited IDs only in cited_finding_ids and interaction_chains.finding_ids, using IDs listed in allowed_candidate_ids. Never put finding IDs or citation markers in visitor-facing prose. Observation IDs are never valid citations. Copy required_counts exactly; these counts are already calibrated by the deterministic classifier. A nonzero high_danger count requires the project risk level to be high. risk_level must exactly equal required_project_advisory.risk_level; prose and interaction chains cannot select or change the project color. Return only the required structured object.`;
 }
 
 function synthesisInput(input) {
@@ -45,6 +47,7 @@ function synthesisInput(input) {
       exploitability: assessment.exploitability,
       confidence: assessment.confidence,
       recommended_risk: assessment.recommended_risk,
+      risk_exposure: assessment.risk_exposure ?? null,
       layman_explanation: assessment.layman_explanation,
       developer_action: assessment.developer_action,
     })),
@@ -55,6 +58,7 @@ function synthesisInput(input) {
       exploitability: observation.exploitability,
       confidence: observation.confidence,
       recommended_risk: observation.recommended_risk,
+      risk_exposure: observation.risk_exposure ?? null,
       title: observation.title,
       layman_explanation: observation.layman_explanation,
       developer_action: observation.developer_action,

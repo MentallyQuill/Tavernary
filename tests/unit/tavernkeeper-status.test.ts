@@ -71,6 +71,14 @@ function derive(
 }
 
 describe("deriveTavernKeeperCardStatus", () => {
+  test("preserves deterministic regrade provenance in the card summary", () => {
+    expect(
+      derive(report({ assessment_source: "deterministic_regrade" })),
+    ).toMatchObject({
+      report: { assessmentSource: "deterministic_regrade" },
+    });
+  });
+
   test("keeps risk color independent from current or stale freshness", () => {
     expect(derive(report())).toMatchObject({
       state: "teal",
