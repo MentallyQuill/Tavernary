@@ -4,7 +4,7 @@
 
 **Goal:** Publish a responsive Ko-fi support flow, a transparent Support Tavernary page, an About-page sustainability summary, and safely aggregated monthly OpenAI usage.
 
-**Architecture:** The static site reads a validated repository-owned usage snapshot. A Node script and monthly GitHub Action are the privileged boundary that query OpenAI with an Admin key and emit only Tavernary-project aggregates; React pages never receive credentials. A focused client component owns the lazy Ko-fi modal while shared editorial CSS keeps Support visually aligned with About.
+**Architecture:** The static site reads a validated repository-owned usage snapshot. A Node script and monthly GitHub Action are the privileged boundary that query OpenAI with an Admin key and emit only Tavernary-project aggregates; React pages never receive credentials. Focused client components own the lazy Ko-fi modal and Ko-fi-hosted recent-support disclosure while shared editorial CSS keeps Support visually aligned with About.
 
 **Tech Stack:** Next.js 16, React 19, TypeScript 6, Node.js 24, GitHub Actions, Vitest/Testing Library, Playwright
 
@@ -18,6 +18,8 @@
 - Header order is `About`, `Help`, `Submit Project`, then Ko-fi; mobile is icon-only at `<=760px`.
 - Ko-fi iframe and direct URLs remain exactly those recorded in the design spec.
 - Add no runtime dependency.
+- GitHub Pages receives no Ko-fi webhook or donor data. Recent support and goal
+  progress remain inside Ko-fi's cross-origin public-feed embed.
 
 ---
 
@@ -83,7 +85,32 @@
 - [ ] Extend browser tests for header order, desktop copy, mobile square geometry, modal containment, Escape, focus restoration, and 320px overflow.
 - [ ] Run focused unit and Playwright tests until green.
 
-### Task 4: Monthly Publication Workflow
+### Task 4: Ko-fi-Hosted Recent Support Disclosure
+
+**Files:**
+- Create: `src/features/support/kofi-recent-support.tsx`
+- Create: `tests/unit/kofi-recent-support.test.tsx`
+- Modify: `src/features/catalog/components/catalog-page.tsx`
+- Modify: `src/app/support/page.tsx`
+- Modify: `src/styles/catalog.css`
+- Modify: `src/styles/support.css`
+- Modify: `src/styles/responsive.css`
+
+**Interfaces:**
+- `KoFiRecentSupport({ compact })` renders a native disclosure that creates the
+  public-feed iframe only after opening.
+
+- [ ] Write failing tests for closed-state lazy loading, native disclosure
+  semantics, exact public-feed URL, iframe title, and explanatory GitHub-only
+  limitation copy.
+- [ ] Run the component test and verify the missing module failure.
+- [ ] Implement the shared component, place its compact disclosure below the
+  catalog toolbar, and use the public-feed URL on Support.
+- [ ] Add responsive styling and browser coverage without cropping or inspecting
+  the cross-origin frame.
+- [ ] Run focused component and browser tests until green.
+
+### Task 5: Monthly OpenAI Publication Workflow
 
 **Files:**
 - Create: `.github/workflows/publish-openai-usage.yml`
@@ -98,7 +125,7 @@
 - [ ] Implement checkout, Node 24 setup, install, scoped refresh, repository check, retrying rebase/push, and exact deployment dispatch consistent with existing maintenance workflows.
 - [ ] Re-run workflow and updater tests until green.
 
-### Task 5: Verification, Review, and Publication
+### Task 6: Verification, Review, and Publication
 
 **Files:** all changed files.
 

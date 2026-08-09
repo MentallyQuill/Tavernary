@@ -50,6 +50,8 @@ contains:
 7. Methodology and privacy notes explaining that numbers change with community
    activity, pricing, caching, retries, and workload mix; no prompts, outputs,
    API keys, donor identities, or project/user identifiers are published.
+8. Ko-fi's public activity feed inside the Ko-fi-owned embed, labeled `Recent
+   support on Ko-fi` rather than as a complete current-month ledger.
 
 The About page gains a `Sustainability and support` section summarizing the
 $20 target, rollover policy, and link to `/support/`.
@@ -78,12 +80,24 @@ and commits only the aggregate snapshot. Until those secrets are configured,
 the checked-in estimate remains visible and the workflow fails without exposing
 data from the broader OpenAI organization.
 
-## Funding progress
+## Ko-fi progress and recent support
 
-Ko-fi remains the authority for live contribution and goal progress. Tavernary
-does not maintain a second donation ledger or claim a payment total it cannot
-verify. The page explains the $20 target and rollover policy beside the Ko-fi
-embed; an active Ko-fi goal can provide live progress inside that frame.
+Tavernary is hosted entirely on GitHub Pages and adds no external application
+server. GitHub Pages cannot receive Ko-fi webhook POSTs, GitHub Actions cannot
+act as a continuously available listener, and Ko-fi does not offer a supported
+read API for a monthly payment ledger. Tavernary therefore does not claim an
+automatic `this month's supporters` list or calculate funding from payments it
+cannot retrieve.
+
+Ko-fi remains the authority for contribution activity and goal progress. The
+Support page uses Ko-fi's public-feed embed rather than `hidefeed=true`. The main
+catalog offers a native `Recent support on Ko-fi` disclosure that lazily mounts
+the same Ko-fi-owned view. Names, messages, privacy choices, and progress stay
+inside Ko-fi's cross-origin frame; Tavernary neither collects nor republishes
+them. An active Ko-fi Goal provides the automatic progress display available
+under the GitHub-only constraint. Ko-fi goals do not automatically reset by
+calendar month, so the site describes the `$20 per month` operating target but
+does not label Ko-fi's cumulative goal total as current-month revenue.
 
 ## Accessibility and responsive behavior
 
@@ -101,7 +115,7 @@ numbers, and never relies on color alone to communicate estimate/measured state.
 - Unit tests cover the usage aggregator, pagination, required project scope,
   malformed responses, and stable snapshot output.
 - Component tests cover the Support and About content plus modal lifecycle,
-  URLs, accessibility, and fallback navigation.
+  URLs, accessibility, fallback navigation, and the lazy recent-support embed.
 - Workflow tests cover permissions, secret boundaries, schedule, scoped output,
   and validation before publication.
 - Playwright tests cover static export, desktop/mobile header order and geometry,
@@ -111,7 +125,9 @@ numbers, and never relies on color alone to communicate estimate/measured state.
 
 ## Non-goals
 
-- A Tavernary payment backend or donor database.
+- Receiving or storing Ko-fi webhooks, donor data, messages, or raw payments.
+- Claiming a complete current-month supporter list, active membership, or
+  payment-provider ledger parity.
 - Publishing prompts, outputs, API keys, user/project identifiers, or daily
   organization-wide usage.
 - Restyling Ko-fi's cross-origin contents.
