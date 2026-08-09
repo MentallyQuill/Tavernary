@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "ayvencore-sillytavern-another-character-library",
+  "source_id": "github-1182272252",
+  "source_identity": "github:ayvencore/sillytavern-another-character-library",
+  "evidence_fingerprint": "b2d77724688e0bbdbca6642afedc76d72d93f9b0e44d4c442c9a5584eb90555e",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-09T08:12:31.407Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-09T08:12:31.407Z"
+  },
+  "maintenance_issue_number": null
+}
