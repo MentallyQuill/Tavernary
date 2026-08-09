@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "ddkhan24-hordestudio",
+  "name": "hordestudio",
+  "kind": "frontend",
+  "summary": "Horde Studio is a creator-focused local web application combining character creation, persistent worlds, and virtual companion simulation in one workflow.",
+  "metadata_status": "curated",
+  "source_id": "github-1318310911",
+  "frontends": ["hordestudio"],
+  "primary_function": "frontend",
+  "tags": [
+    "build-worlds-and-lore",
+    "create-character-cards",
+    "local-first",
+    "manage-characters-and-personas",
+    "persistent-state"
+  ],
+  "cataloged_at": "2026-08-09T17:05:29.957Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
