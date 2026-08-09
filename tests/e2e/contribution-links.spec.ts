@@ -97,13 +97,16 @@ test("links to the transparent support page beside Submit Project", async ({
   await expect(
     page.getByRole("heading", { name: "Contribute through Ko-fi" }),
   ).toHaveCount(0);
-  await expect(page.getByTitle("Support Tavernary on Ko-fi")).toHaveCount(0);
-  const supportOnKofi = page.getByTitle("Support on Ko-fi");
-  await expect(supportOnKofi).toHaveAttribute(
-    "srcdoc",
-    /kofiwidget2\.init\('Support on Ko-fi', '#E18A24', 'I1F724I7NT'\)/,
-  );
   const upkeep = page.locator(".support-target");
+  const supportOnKofi = upkeep.getByRole("link", {
+    name: "Support on Ko-fi",
+  });
+  await expect(supportOnKofi).toBeVisible();
+  await expect(supportOnKofi).toHaveAttribute(
+    "href",
+    "https://ko-fi.com/mentallyquill",
+  );
+  await expect(supportOnKofi).toHaveCSS("color", "rgb(22, 16, 8)");
   await expect(upkeep).toHaveCSS("padding-left", "24px");
   await expect(upkeep).toHaveCSS("padding-right", "24px");
   await expect(upkeep).toHaveCSS("border-top-color", "rgb(43, 58, 64)");
