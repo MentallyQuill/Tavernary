@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "bmen25124-sillytavern-worldinfo-recommender",
+  "name": "SillyTavern-WorldInfo-Recommender",
+  "kind": "extension",
+  "summary": "SillyTavern extension that manages World Info from current context with LLMs, using connection profiles to recommend relevant entries.",
+  "metadata_status": "curated",
+  "source_id": "github-953212287",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": ["manage-lorebooks", "retrieve-relevant-context", "secondary-model"],
+  "cataloged_at": "2026-08-10T17:02:17.465Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
