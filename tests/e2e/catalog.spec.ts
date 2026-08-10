@@ -330,6 +330,25 @@ test("uses one focus boundary for the main search", async ({ page }) => {
     "border-top-color",
     "rgb(45, 212, 191)",
   );
+
+  const shortcut = page.locator(".site-search > kbd");
+  const help = page.getByRole("button", { name: "Search help" });
+  await expect(shortcut).toBeVisible();
+  await expect(help).toBeVisible();
+  const shortcutBox = await shortcut.boundingBox();
+  const helpBox = await help.boundingBox();
+  expect(shortcutBox).not.toBeNull();
+  expect(helpBox).not.toBeNull();
+  expect(helpBox!.x).toBeGreaterThan(shortcutBox!.x);
+
+  await help.click();
+  await expect(
+    page.getByRole("dialog", { name: "Search basics" }),
+  ).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(help).toBeFocused();
+  await page.keyboard.press("/");
+  await expect(search).toBeFocused();
 });
 
 test("uses the approved desktop filter controls", async ({ page }) => {

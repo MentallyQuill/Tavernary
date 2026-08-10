@@ -19,7 +19,7 @@ const digestPattern = /^[0-9a-f]{64}$/u;
 const fullShaPattern = /^[0-9a-f]{40}$/u;
 const versionPattern = /^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$/u;
 const supportedScannerPolicyVersions = new Set(["3", "4"]);
-const supportedContextualReviewPolicyVersions = new Set(["1", "2", "3"]);
+const supportedContextualReviewPolicyVersions = new Set(["1", "2", "3", "4"]);
 const incompleteJavascriptLimitation =
   "JavaScript analysis was incomplete, so this first-filter scan supports no clean conclusion about unobserved behavior.";
 const metadataOnlyEvidenceLimitation =
@@ -135,7 +135,10 @@ function assertSupportedContextualReviewPolicy(entry) {
 function assertContextualReviewPolicy(report) {
   assertSupportedContextualReviewPolicy(report);
   const items = [...report.assessments, ...report.observations];
-  if (report.contextual_review_policy_version !== "3") {
+  const demonstratedRiskPolicy = ["3", "4"].includes(
+    report.contextual_review_policy_version,
+  );
+  if (!demonstratedRiskPolicy) {
     if (items.some((item) => Object.hasOwn(item, "risk_exposure"))) {
       throw new Error(
         "TavernKeeper legacy contextual-policy report contains risk exposure",
@@ -143,12 +146,16 @@ function assertContextualReviewPolicy(report) {
     }
     return;
   }
+  const expectedPromptVersion =
+    report.contextual_review_policy_version === "4"
+      ? "contextual-review-v7"
+      : "contextual-review-v6";
   if (
-    report.prompt_version !== "contextual-review-v6" ||
+    report.prompt_version !== expectedPromptVersion ||
     report.assessment_schema_version !== "contextual-assessment-v2"
   ) {
     throw new Error(
-      "TavernKeeper policy-3 report has invalid demonstrated-risk contract versions",
+      `TavernKeeper policy-${report.contextual_review_policy_version} report has invalid demonstrated-risk contract versions`,
     );
   }
   const invalid = items.some(
@@ -161,7 +168,7 @@ function assertContextualReviewPolicy(report) {
   );
   if (invalid) {
     throw new Error(
-      "TavernKeeper policy-3 report violates demonstrated-risk rules",
+      `TavernKeeper policy-${report.contextual_review_policy_version} report violates demonstrated-risk rules`,
     );
   }
 }
@@ -520,10 +527,59 @@ function assertReportCoverage(report) {
       "TavernKeeper report candidate lacks completed tool coverage",
     );
   }
+  if (
+    report.review_batches &&
+    [
+      "input_tokens",
+      "output_tokens",
+      "cache_read_tokens",
+      "reasoning_tokens",
+    ].some(
+      (field) =>
+        report.review_batches.reduce((sum, batch) => sum + batch[field], 0) !==
+        report.review_usage[field],
+    )
+  ) {
+    throw new Error(
+      "TavernKeeper review batch usage does not reconcile with its totals",
+    );
+  }
+  if (report.review_reuse) {
+    const sourceIds = report.review_reuse.source_report_ids;
+    if (
+      report.review_reuse.candidates.fresh +
+        report.review_reuse.candidates.reused !==
+        report.candidates.length ||
+      (report.review_reuse.groups.reused === 0) !== (sourceIds.length === 0) ||
+      new Set(sourceIds).size !== sourceIds.length ||
+      sourceIds.some(
+        (sourceId, index) => index > 0 && sourceIds[index - 1] >= sourceId,
+      )
+    ) {
+      throw new Error("TavernKeeper review reuse provenance is inconsistent");
+    }
+  }
   const javascript = report.coverage.javascript_analysis;
   if (report.scanner_policy_version === "4" && javascript === undefined) {
     throw new Error(
       "TavernKeeper policy-4 report lacks JavaScript analysis coverage",
+    );
+  }
+  if (
+    javascript &&
+    Object.hasOwn(javascript, "warning_occurrences") !==
+      Object.hasOwn(javascript, "warning_families")
+  ) {
+    throw new Error(
+      "TavernKeeper JavaScript warning occurrence and family counts must appear together",
+    );
+  }
+  if (
+    javascript?.warning_occurrences !== undefined &&
+    javascript.warning_families > javascript.warning_occurrences
+  ) {
+    throw new Error(
+      "TavernKeeper JavaScript warning families cannot exceed warning occurrences",
     );
   }
   const incomplete = javascript?.status === "incomplete";

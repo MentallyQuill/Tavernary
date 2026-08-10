@@ -287,6 +287,14 @@ function policy3ExposureReport(reportInput: Record<string, any>) {
   return report;
 }
 
+function policy4ExposureReport(reportInput: Record<string, any>) {
+  const report = policy3ExposureReport(reportInput);
+  report.contextual_review_policy_version = "4";
+  report.prompt_version = "contextual-review-v7";
+  report.assessment_schema_version = "contextual-assessment-v2";
+  return rebindReport(report);
+}
+
 function policy3ImmediateDangerReport(reportInput: Record<string, any>) {
   const report = addImmediateDangerCandidate(policy4Report(reportInput));
   report.contextual_review_policy_version = "3";
@@ -393,6 +401,31 @@ describe("TavernKeeper V5 report import", () => {
     );
   });
 
+  test("accepts policy-4 demonstrated-risk reports", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4ExposureReport(baseReport);
+    const entry = projectIndexReport(report);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(validateScanReport(report, validatedIndex.reports[0])).toEqual(
+      report,
+    );
+  });
+
+  test("rejects policy-4 reports bound to the policy-3 prompt", async () => {
+    const [, baseReport] = await fixtures();
+    const report = policy4ExposureReport(baseReport);
+    report.prompt_version = "contextual-review-v6";
+    const rebound = rebindReport(report);
+
+    expect(() =>
+      validateScanReport(rebound, projectIndexReport(rebound)),
+    ).toThrow(/policy-4.*contract versions/iu);
+  });
+
   test.each([
     [
       "missing assessment exposure",
@@ -487,7 +520,7 @@ describe("TavernKeeper V5 report import", () => {
     ).toThrow(/legacy.*risk exposure/iu);
   });
 
-  test.each(["4", "999"])(
+  test.each(["5", "999"])(
     "rejects unsupported contextual policy %s on an immutable report",
     async (policy) => {
       const [index, baseReport] = await fixtures();
@@ -579,6 +612,126 @@ describe("TavernKeeper V5 report import", () => {
     expect(() =>
       validateScanReport(rebound, validatedIndex.reports[0]),
     ).toThrow(/JavaScript .*coverage/u);
+  });
+
+  test("accepts X-Ray warning-family coverage", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    report.coverage.javascript_analysis.warning_occurrences = 12;
+    report.coverage.javascript_analysis.warning_families = 3;
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(validateScanReport(rebound, validatedIndex.reports[0])).toEqual(
+      rebound,
+    );
+  });
+
+  test("rejects incomplete X-Ray warning-family coverage", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    report.coverage.javascript_analysis.warning_occurrences = 12;
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).toThrow(/warning.*counts.*together/iu);
+  });
+
+  test("rejects more X-Ray families than warning occurrences", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    report.coverage.javascript_analysis.warning_occurrences = 2;
+    report.coverage.javascript_analysis.warning_families = 3;
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).toThrow(/families.*exceed.*occurrences/iu);
+  });
+
+  test("accepts review batch and reuse telemetry", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    report.review_batches = [];
+    report.review_reuse = {
+      groups: { fresh: 0, reused: 0 },
+      candidates: { fresh: 0, reused: 0 },
+      source_report_ids: [],
+    };
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(validateScanReport(rebound, validatedIndex.reports[0])).toEqual(
+      rebound,
+    );
+  });
+
+  test("rejects review batch usage that disagrees with totals", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    report.review_batches = [
+      {
+        kind: "contextual_review",
+        attempt: 1,
+        group_count: 1,
+        candidate_count: 1,
+        estimated_input_tokens: 1,
+        over_budget: false,
+        input_tokens: 1,
+        output_tokens: 0,
+        cache_read_tokens: 0,
+        reasoning_tokens: 0,
+      },
+    ];
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).toThrow(/batch usage.*totals/iu);
+  });
+
+  test("rejects inconsistent review reuse provenance", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    report.review_reuse = {
+      groups: { fresh: 1, reused: 0 },
+      candidates: { fresh: 1, reused: 0 },
+      source_report_ids: [],
+    };
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).toThrow(/reuse provenance/iu);
   });
 
   test("rejects complete JavaScript coverage with an unrecovered stage", async () => {
@@ -1097,7 +1250,7 @@ describe("TavernKeeper V5 report import", () => {
     expect(outcome.import_state.quarantines).toEqual([]);
   });
 
-  test.each(["4", "999"])(
+  test.each(["5", "999"])(
     "rejects unsupported contextual policy %s before reconciliation routes work",
     async (policy) => {
       const root = await mkdtemp(

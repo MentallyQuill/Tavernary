@@ -1,0 +1,55 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1092642614",
+  "repository": {
+    "id": 1092642614,
+    "owner": "chesswoodspixel",
+    "name": "SillyTavern-Ghostfinder",
+    "url": "https://github.com/chesswoodspixel/SillyTavern-Ghostfinder",
+    "description": "SillyTavern extension that finds and jumps to the boundaries between hidden and unhidden messages.",
+    "default_branch": "main",
+    "head_sha": "3f6235661e9888410ff05f00ca63edd20abdf926",
+    "head_committed_at": "2025-11-18T21:09:39.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-11-09T02:30:35.000Z",
+    "size_kb": 107
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-10T17:16:37.802Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "3f6235661e9888410ff05f00ca63edd20abdf926"
+  },
+  "community": {
+    "stars_count": 6,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 6
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "GPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-10T17:16:37.802Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "chesswoodspixel", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-10T17:16:37.802Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "chesswoodspixel-sillytavern-ghostfinder",
+  "source_id": "github-1092642614",
+  "source_identity": "github:chesswoodspixel/sillytavern-ghostfinder",
+  "evidence_fingerprint": "bbc289f9857932379ef7b5fe032398367a7fba9dfa8b97d4237c1ff192af9fea",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-10T17:19:45.434Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-10T17:19:45.434Z"
+  },
+  "maintenance_issue_number": null
+}

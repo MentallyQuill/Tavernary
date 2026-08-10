@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "welvet-sillytavern-narrator",
+  "source_id": "github-1058500059",
+  "source_identity": "github:welvet/sillytavern-narrator",
+  "evidence_fingerprint": "8d5a9cf60c4a999c765f378f0674860b7e485b4182550418f7be816928a26ab4",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-10T17:23:16.552Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-10T17:23:16.552Z"
+  },
+  "maintenance_issue_number": null
+}

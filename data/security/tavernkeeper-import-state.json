@@ -1,18 +1,5 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-08-10T02:59:30.847Z",
-  "quarantines": [
-    {
-      "report_id": "11f7bea761dfa400588c9c2d89ce40e6ae8949111f86f510056b54dccf5afdc5",
-      "report_digest": "11f7bea761dfa400588c9c2d89ce40e6ae8949111f86f510056b54dccf5afdc5",
-      "repository_id": 1126279204,
-      "repository": "AventurasTeam/Aventuras",
-      "target_sha": "6d18d6973996f61c0d88a7a71e761ddb191f0c10",
-      "synthesis_policy_version": "5",
-      "diagnostic": "response_schema",
-      "first_failed_at": "2026-08-10T02:59:30.847Z",
-      "last_failed_at": "2026-08-10T02:59:30.847Z",
-      "attempts": 1
-    }
-  ]
+  "updated_at": "2026-08-10T17:34:22.482Z",
+  "quarantines": []
 }

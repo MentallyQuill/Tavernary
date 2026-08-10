@@ -84,6 +84,27 @@ test("matches the approved mobile header hierarchy", async ({ page }) => {
   ).toBeLessThan(40);
 });
 
+test("keeps search help available within the mobile viewport", async ({
+  page,
+}) => {
+  await page.goto(sitePath());
+
+  await expect(page.locator(".site-search > kbd")).toBeHidden();
+  const help = page.getByRole("button", { name: "Search help" });
+  await expect(help).toBeVisible();
+  const helpBox = await help.boundingBox();
+  expect(helpBox).not.toBeNull();
+  expect(helpBox!.x + helpBox!.width).toBeLessThanOrEqual(382);
+  await help.click();
+
+  const dialog = page.getByRole("dialog", { name: "Search basics" });
+  await expect(dialog).toBeVisible();
+  const box = await dialog.boundingBox();
+  expect(box).not.toBeNull();
+  expect(box!.x).toBeGreaterThanOrEqual(8);
+  expect(box!.x + box!.width).toBeLessThanOrEqual(382);
+});
+
 test("keeps the mobile support action inside a 412px viewport", async ({
   page,
 }) => {

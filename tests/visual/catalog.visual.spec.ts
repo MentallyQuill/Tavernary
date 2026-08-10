@@ -61,6 +61,32 @@ async function stabilizeRelationshipActivityAge(page: Page) {
   await repositorySizes.nth(1).evaluate((label) => {
     label.textContent = "9.1 MB repo";
   });
+
+  const activityCounts = page.locator(".relationship-pair .activity-score > b");
+  await expect(activityCounts).toHaveCount(2);
+  await activityCounts.nth(0).evaluate((label) => {
+    label.textContent = "1/12";
+  });
+  await activityCounts.nth(1).evaluate((label) => {
+    label.textContent = "12/12";
+  });
+
+  const activityWeeks = page.locator(".relationship-pair .activity-weeks");
+  await expect(activityWeeks).toHaveCount(2);
+  await activityWeeks
+    .nth(0)
+    .locator("i")
+    .evaluateAll((weeks) => {
+      weeks.forEach((week, index) => {
+        week.classList.toggle("active", index === 10);
+      });
+    });
+  await activityWeeks
+    .nth(1)
+    .locator("i")
+    .evaluateAll((weeks) => {
+      weeks.forEach((week) => week.classList.add("active"));
+    });
 }
 
 async function expectNoHorizontalOverflow(page: Page) {
