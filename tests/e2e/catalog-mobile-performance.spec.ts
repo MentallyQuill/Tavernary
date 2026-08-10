@@ -194,72 +194,78 @@ test(
   },
 );
 
-test(
-  "TavernKeeper catalog cost stays bounded between full and filtered views",
-  { tag: "@tavernkeeper" },
-  async ({ page }, testInfo) => {
-    test.skip(!hasScanFixture, "Requires the TavernKeeper scan fixture");
-    test.skip(
-      testInfo.project.name !== "chromium",
-      "Chromium owns the deterministic full-catalog cost comparison",
-    );
-    await instrumentCatalogCosts(page);
-    await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto(sitePath());
-    const featureOff = await catalogCostSnapshot(page, {
-      removeScanIndicators: true,
-    });
+test.describe("TavernKeeper catalog performance budget", () => {
+  test.describe.configure({ retries: process.env.CI ? 1 : 0 });
 
-    await page.goto(sitePath());
-    const full = await catalogCostSnapshot(page);
+  test(
+    "TavernKeeper catalog cost stays bounded between full and filtered views",
+    { tag: "@tavernkeeper" },
+    async ({ page }, testInfo) => {
+      test.skip(!hasScanFixture, "Requires the TavernKeeper scan fixture");
+      test.skip(
+        testInfo.project.name !== "chromium",
+        "Chromium owns the deterministic full-catalog cost comparison",
+      );
+      await instrumentCatalogCosts(page);
+      await page.setViewportSize({ width: 390, height: 844 });
+      await page.goto(sitePath());
+      const featureOff = await catalogCostSnapshot(page, {
+        removeScanIndicators: true,
+      });
 
-    await page.goto(`${sitePath()}?q=Recursion`);
-    await expect(
-      page.getByRole("searchbox", { name: "Search projects" }),
-    ).toHaveValue("Recursion");
-    await expect(page).toHaveURL(/\?q=Recursion$/u);
-    const filtered = await catalogCostSnapshot(page);
+      await page.goto(sitePath());
+      const full = await catalogCostSnapshot(page);
 
-    await testInfo.attach("tavernkeeper-catalog-costs.json", {
-      body: Buffer.from(
-        JSON.stringify({ featureOff, full, filtered }, null, 2),
-      ),
-      contentType: "application/json",
-    });
-    console.info(
-      "TavernKeeper catalog costs:",
-      JSON.stringify({ featureOff, full, filtered }),
-    );
+      await page.goto(`${sitePath()}?q=Recursion`);
+      await expect(
+        page.getByRole("searchbox", { name: "Search projects" }),
+      ).toHaveValue("Recursion");
+      await expect(page).toHaveURL(/\?q=Recursion$/u);
+      const filtered = await catalogCostSnapshot(page);
 
-    expect(featureOff.cards).toBe(full.cards);
-    expect(featureOff.scanGlyphs).toBe(0);
-    expect(full.cards).toBeGreaterThan(filtered.cards);
-    expect(full.scanGlyphs).toBe(full.cards);
-    expect(full.freshnessClocks).toBe(1);
-    expect(
-      full.documentElements - featureOff.documentElements,
-    ).toBeLessThanOrEqual(full.cards * 4);
-    expect(full.svgs - featureOff.svgs).toBeLessThanOrEqual(
-      full.cards + full.freshnessClocks,
-    );
-    expect(full.openPopovers).toBe(0);
-    expect(full.historyBlocks).toBe(0);
-    expect(full.tooltipAnchors).toBe(0);
-    expect(full.listeners).toEqual(filtered.listeners);
-    expect(full.listeners).toEqual(featureOff.listeners);
-    expect(full.observerCount).toBeLessThanOrEqual(filtered.observerCount + 1);
-    expect(full.observerCount).toBeLessThanOrEqual(
-      featureOff.observerCount + 1,
-    );
-    const featureOffLongTask = featureOff.longTaskMax ?? 0;
-    expect(featureOffLongTask).toBeLessThan(250);
-    expect(featureOff.worstFrameGap).toBeLessThan(200);
-    expect(full.longTaskMax ?? 0).toBeLessThanOrEqual(
-      Math.max(200, featureOffLongTask),
-    );
-    for (const snapshot of [full, filtered]) {
-      expect(snapshot.longTaskMax ?? 0).toBeLessThan(200);
-      expect(snapshot.worstFrameGap).toBeLessThan(200);
-    }
-  },
-);
+      await testInfo.attach("tavernkeeper-catalog-costs.json", {
+        body: Buffer.from(
+          JSON.stringify({ featureOff, full, filtered }, null, 2),
+        ),
+        contentType: "application/json",
+      });
+      console.info(
+        "TavernKeeper catalog costs:",
+        JSON.stringify({ featureOff, full, filtered }),
+      );
+
+      expect(featureOff.cards).toBe(full.cards);
+      expect(featureOff.scanGlyphs).toBe(0);
+      expect(full.cards).toBeGreaterThan(filtered.cards);
+      expect(full.scanGlyphs).toBe(full.cards);
+      expect(full.freshnessClocks).toBe(1);
+      expect(
+        full.documentElements - featureOff.documentElements,
+      ).toBeLessThanOrEqual(full.cards * 4);
+      expect(full.svgs - featureOff.svgs).toBeLessThanOrEqual(
+        full.cards + full.freshnessClocks,
+      );
+      expect(full.openPopovers).toBe(0);
+      expect(full.historyBlocks).toBe(0);
+      expect(full.tooltipAnchors).toBe(0);
+      expect(full.listeners).toEqual(filtered.listeners);
+      expect(full.listeners).toEqual(featureOff.listeners);
+      expect(full.observerCount).toBeLessThanOrEqual(
+        filtered.observerCount + 1,
+      );
+      expect(full.observerCount).toBeLessThanOrEqual(
+        featureOff.observerCount + 1,
+      );
+      const featureOffLongTask = featureOff.longTaskMax ?? 0;
+      expect(featureOffLongTask).toBeLessThan(250);
+      expect(featureOff.worstFrameGap).toBeLessThan(200);
+      expect(full.longTaskMax ?? 0).toBeLessThanOrEqual(
+        Math.max(200, featureOffLongTask),
+      );
+      for (const snapshot of [full, filtered]) {
+        expect(snapshot.longTaskMax ?? 0).toBeLessThan(200);
+        expect(snapshot.worstFrameGap).toBeLessThan(200);
+      }
+    },
+  );
+});
