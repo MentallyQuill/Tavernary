@@ -1,0 +1,49 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-736459676",
+  "repository": {
+    "id": 736459676,
+    "owner": "LenAnderson",
+    "name": "SillyTavern-TriggerCards",
+    "url": "https://github.com/LenAnderson/SillyTavern-TriggerCards",
+    "description": null,
+    "default_branch": "master",
+    "head_sha": "44b0fc029315d678f186b0ae9cb35c915a32b0d3",
+    "head_committed_at": "2024-08-03T15:15:55.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2023-12-28T01:11:10.000Z",
+    "size_kb": 1349
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-10T18:04:15.163Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "44b0fc029315d678f186b0ae9cb35c915a32b0d3"
+  },
+  "community": {
+    "stars_count": 18,
+    "forks_count": 3,
+    "watchers_count": 1,
+    "aggregate": 22
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-08-10T18:04:15.163Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-10T18:04:15.163Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
