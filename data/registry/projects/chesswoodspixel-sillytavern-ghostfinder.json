@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "chesswoodspixel-sillytavern-ghostfinder",
+  "name": "SillyTavern-Ghostfinder",
+  "kind": "extension",
+  "summary": "SillyTavern-Ghostfinder navigates between boundary messages, jumping to the first unhidden messages after hidden or system messages in a chat.",
+  "metadata_status": "curated",
+  "source_id": "github-1092642614",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["organize-chats-and-messages"],
+  "cataloged_at": "2026-08-10T17:16:37.802Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
