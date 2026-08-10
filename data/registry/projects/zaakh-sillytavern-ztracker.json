@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "zaakh-sillytavern-ztracker",
+  "name": "SillyTavern-zTracker",
+  "kind": "extension",
+  "summary": "SillyTavern extension for tracking chat statistics with LLMs through connection profiles, helping users monitor usage across their conversations.",
+  "metadata_status": "curated",
+  "source_id": "github-1138762188",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["monitor-token-usage-and-cost"],
+  "cataloged_at": "2026-08-10T17:32:34.633Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
