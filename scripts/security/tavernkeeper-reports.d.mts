@@ -1,4 +1,13 @@
 export type TavernKeeperRiskLevel = "low" | "material" | "high";
+export type TavernKeeperExecutionScope =
+  | "runtime"
+  | "install-update"
+  | "automation"
+  | "tooling-only"
+  | "test-documentation-data"
+  | "unknown";
+export type TavernKeeperReviewAssessmentSource =
+  "deterministic-policy" | "contextual-model";
 
 export interface TavernKeeperContextualCountsV5 {
   candidates: number;
@@ -76,6 +85,8 @@ export interface TavernKeeperContextualItemV5 {
   confidence: "low" | "medium" | "high";
   recommended_risk: TavernKeeperRiskLevel;
   risk_exposure?: "not_demonstrated" | "demonstrated";
+  assessment_source?: TavernKeeperReviewAssessmentSource;
+  triage_reason_code?: string;
   [key: string]: unknown;
 }
 
@@ -101,6 +112,59 @@ export interface TavernKeeperScanReportV5 {
   target_sha: string;
   completed_at: string;
   assessment_method: "deterministic-evidence-contextual-review";
+  contextual_reviewer?: {
+    provider: string;
+    model: string;
+  };
+  review_usage: {
+    input_tokens: number;
+    output_tokens: number;
+    cache_read_tokens: number;
+    reasoning_tokens: number;
+  };
+  review_batches?: Array<{
+    kind: "contextual_review" | "json_repair";
+    attempt: number;
+    group_count: number;
+    candidate_count: number;
+    estimated_input_tokens: number | null;
+    over_budget: boolean;
+    input_tokens: number;
+    output_tokens: number;
+    cache_read_tokens: number;
+    reasoning_tokens: number;
+  }>;
+  review_triage?: {
+    policy_version: "1";
+    candidates: {
+      total: number;
+      deterministic: number;
+      contextual: number;
+      reused_contextual: number;
+    };
+    cases: {
+      total: number;
+      contextual: number;
+      reused_contextual: number;
+    };
+    reasons: Array<{ reason_code: string; count: number }>;
+    model_budget: {
+      configured: {
+        max_fresh_behavior_cases: 12;
+        max_provider_calls: 6;
+        max_estimated_input_tokens: 200000;
+        max_actual_input_tokens: 250000;
+        max_actual_output_tokens: 40000;
+      };
+      actual: {
+        fresh_behavior_cases: number;
+        provider_calls: number;
+        estimated_input_tokens: number;
+        input_tokens: number;
+        output_tokens: number;
+      };
+    };
+  };
   counts: TavernKeeperContextualCountsV5;
   coverage: {
     evidence_validation: {
@@ -143,10 +207,20 @@ export interface TavernKeeperScanReportV5 {
     scanner_severity: string;
     scanner_confidence: string;
     file_role: string;
+    execution_scope?: TavernKeeperExecutionScope;
     title: string;
     explanation: string;
     [key: string]: unknown;
   }>;
+  review_coverage: {
+    required: number;
+    completed: number;
+  };
+  review_reuse?: {
+    groups: { fresh: number; reused: number };
+    candidates: { fresh: number; reused: number };
+    source_report_ids: string[];
+  };
   assessments: TavernKeeperContextualItemV5[];
   observations: Array<
     Omit<TavernKeeperContextualItemV5, "candidate_id"> & {
@@ -246,7 +320,7 @@ export interface TavernKeeperFetchOptions {
 export const TAVERNKEEPER_ORIGIN: "https://mentallyquill.github.io";
 export const TAVERNKEEPER_REPORTS_PATH_PREFIX: "/TavernKeeper/reports/";
 export const TAVERNKEEPER_REPORT_INDEX_URL: "https://mentallyquill.github.io/TavernKeeper/reports/index.json";
-export const ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION: "4";
+export const ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION: "5";
 
 export function computeReportDigest(reportBody: object): string;
 export function validateReportIndex(

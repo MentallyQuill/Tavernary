@@ -109,8 +109,8 @@ async function fixtureReports() {
     const reportId = ordinal.toString(16).padStart(64, "0");
     return {
       report_id: reportId,
-      scanner_policy_version: "4",
-      contextual_review_policy_version: "1",
+      scanner_policy_version: "5",
+      contextual_review_policy_version: "5",
       source_id: source.id,
       provider: "github",
       repository_id: source.repository_id,
@@ -139,7 +139,7 @@ async function fixtureReports() {
       },
       report_url:
         `https://mentallyquill.github.io/TavernKeeper/reports/github/` +
-        `${source.repository_id}/${targetSha}/4/${reportId}/`,
+        `${source.repository_id}/${targetSha}/5/${reportId}/`,
       history_url:
         `https://mentallyquill.github.io/TavernKeeper/reports/github/` +
         `${source.repository_id}/history/`,

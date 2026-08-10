@@ -1,0 +1,178 @@
+{
+  "schema_version": 5,
+  "report_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "report_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "report_version": 1,
+  "supersedes_report_id": null,
+  "scanner_version": "1.0.0",
+  "scanner_policy_version": "5",
+  "rule_catalog_version": "2",
+  "package_schema_version": 1,
+  "contextual_review_policy_version": "5",
+  "ecosystem_context_version": "sillytavern-community-v1",
+  "prompt_version": "contextual-review-v7",
+  "assessment_schema_version": "contextual-assessment-v2",
+  "source_id": "github-42",
+  "provider": "github",
+  "repository_id": 42,
+  "repository": "owner/repo",
+  "canonical_url": "https://github.com/owner/repo",
+  "target_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "completed_at": "2026-08-02T12:00:00.000Z",
+  "assessment_method": "deterministic-evidence-contextual-review",
+  "review_usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_read_tokens": 0,
+    "reasoning_tokens": 0
+  },
+  "review_triage": {
+    "policy_version": "1",
+    "candidates": {
+      "total": 1,
+      "deterministic": 1,
+      "contextual": 0,
+      "reused_contextual": 0
+    },
+    "cases": { "total": 1, "contextual": 0, "reused_contextual": 0 },
+    "reasons": [{ "reason_code": "owned-structured-weakness", "count": 1 }],
+    "model_budget": {
+      "configured": {
+        "max_fresh_behavior_cases": 12,
+        "max_provider_calls": 6,
+        "max_estimated_input_tokens": 200000,
+        "max_actual_input_tokens": 250000,
+        "max_actual_output_tokens": 40000
+      },
+      "actual": {
+        "fresh_behavior_cases": 0,
+        "provider_calls": 0,
+        "estimated_input_tokens": 0,
+        "input_tokens": 0,
+        "output_tokens": 0
+      }
+    }
+  },
+  "history": { "base_sha": null, "commits": 1 },
+  "coverage": {
+    "inventory": {
+      "files": 1,
+      "bytes": 12,
+      "first_party_text_files": 1,
+      "first_party_text_bytes": 12,
+      "excluded": {
+        "dependency_lockfiles": { "files": 0, "bytes": 0 },
+        "vendored_dependencies": { "files": 0, "bytes": 0 },
+        "generated_bundles": { "files": 0, "bytes": 0 },
+        "minified_files": { "files": 0, "bytes": 0 },
+        "binaries": { "files": 0, "bytes": 0 },
+        "archives": { "files": 0, "bytes": 0 },
+        "oversized_files": { "files": 0, "bytes": 0 },
+        "unsafe_entries": { "files": 0, "bytes": 0 }
+      }
+    },
+    "tools": [
+      { "name": "inventory", "version": "1.0.0", "status": "completed" },
+      { "name": "tavernkeeper-static", "version": "2", "status": "completed" },
+      { "name": "gitleaks", "version": "8.30.1", "status": "completed" },
+      { "name": "opengrep", "version": "1.26.0", "status": "completed" },
+      { "name": "osv-scanner", "version": "2.4.0", "status": "not-applicable" },
+      { "name": "zizmor", "version": "1.28.0", "status": "not-applicable" },
+      { "name": "malcontent", "version": "1.25.7", "status": "not-applicable" },
+      {
+        "name": "javascript-analysis",
+        "version": "1.0.0",
+        "status": "completed"
+      }
+    ],
+    "javascript_analysis": {
+      "status": "complete",
+      "candidates": 1,
+      "candidate_bytes": 12,
+      "representations": {
+        "raw": 1,
+        "decoded": 0,
+        "normalized": 0,
+        "bundle_modules": 0
+      },
+      "stages": {
+        "raw_signatures": 1,
+        "raw_ast": 1,
+        "raw_opengrep": 1,
+        "derived_signatures": 0,
+        "derived_ast": 0,
+        "derived_opengrep": 0
+      },
+      "unresolved": []
+    },
+    "evidence_validation": {
+      "status": "completed",
+      "validated_candidates": 1
+    }
+  },
+  "review_coverage": { "required": 1, "completed": 1 },
+  "candidates": [
+    {
+      "candidate_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "evidence_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "origin": "tavernkeeper",
+      "scanner_version": "2",
+      "rule_id": "unicode-bidi-control",
+      "category": "source-integrity",
+      "scanner_severity": "medium",
+      "scanner_confidence": "high",
+      "path": "src/index.ts",
+      "line_start": 1,
+      "line_end": 1,
+      "evidence_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "file_role": "production",
+      "execution_scope": "runtime",
+      "title": "Bidirectional source control",
+      "explanation": "The scanner found a bidirectional source control."
+    }
+  ],
+  "assessments": [
+    {
+      "candidate_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "evidence_ids": [
+        "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+      ],
+      "disposition": "material_vulnerability",
+      "impact": "low",
+      "exploitability": "plausible",
+      "confidence": "high",
+      "risk_exposure": "not_demonstrated",
+      "recommended_risk": "low",
+      "technical_explanation": "The source contains a confusing control character, without demonstrated attacker reachability.",
+      "layman_explanation": "A source character may hide code from reviewers, but no exploit is demonstrated.",
+      "developer_action": "Remove the control character when it is not required.",
+      "locations": [{ "path": "src/index.ts", "line_start": 1, "line_end": 1 }],
+      "assessment_source": "deterministic-policy",
+      "triage_reason_code": "owned-structured-weakness"
+    }
+  ],
+  "observations": [],
+  "counts": {
+    "candidates": 1,
+    "assessments": 1,
+    "observations": 0,
+    "items": 1,
+    "disposition": {
+      "expected_behavior": 0,
+      "minor_weakness": 0,
+      "material_vulnerability": 1,
+      "credible_malicious_behavior": 0
+    },
+    "impact": { "none": 0, "low": 1, "medium": 0, "high": 0, "critical": 0 },
+    "exploitability": {
+      "unlikely": 0,
+      "plausible": 1,
+      "readily_exploitable": 0
+    },
+    "confidence": { "low": 0, "medium": 0, "high": 1 },
+    "recommended_risk": { "low": 1, "material": 0, "high": 0 }
+  },
+  "limitations": [
+    "This advisory review cannot prove the absence of unknown behavior."
+  ]
+}
