@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "dmitryplyaskin-sillytavern-user-persona-extended",
+  "source_id": "github-1087049931",
+  "source_identity": "github:dmitryplyaskin/sillytavern-user-persona-extended",
+  "evidence_fingerprint": "34ef1e135c5f2cbd6d151964106ad0585fa639a4c7fd099cfa878ef120f4550e",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-10T17:32:00.715Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-10T17:32:00.715Z"
+  },
+  "maintenance_issue_number": null
+}
