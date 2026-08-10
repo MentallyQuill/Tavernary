@@ -6,6 +6,7 @@ import {
   parseProviderMessage,
   validateProviderConfiguration,
 } from "../../scripts/catalog/enrichment-provider.mjs";
+import { generateValidatedEnrichment } from "../../scripts/catalog/enrichment-attempts.mjs";
 
 const model = "minimax/minimax-m3:thinking";
 
@@ -517,4 +518,284 @@ test("uses the configured timeout in its safe diagnostic", async () => {
   });
   await vi.advanceTimersByTimeAsync(7_500);
   await rejection;
+});
+
+const utilityModel = "deepseek/deepseek-v4-flash-0731:thinking";
+const repairModel = "gpt-5.6-luna";
+const utilityUrl = "https://nano.example/v1/chat/completions";
+const repairUrl = "https://openai.example/v1/chat/completions";
+
+function modelResponse(responseModel: string, content: unknown) {
+  return new Response(
+    JSON.stringify({
+      model: responseModel,
+      choices: [{ message: content }],
+    }),
+    { status: 200, headers: { "content-type": "application/json" } },
+  );
+}
+
+function utilityProviderOptions(fetchImpl: typeof fetch) {
+  return {
+    apiUrl: utilityUrl,
+    apiKey: "utility-key",
+    model: utilityModel,
+    jsonRepair: {
+      apiUrl: repairUrl,
+      apiKey: "repair-key",
+      model: repairModel,
+    },
+    fetchImpl,
+  };
+}
+
+test("repairs malformed utility JSON once without sending original source context", async () => {
+  const requests: Array<{ url: string; body: Record<string, any> }> = [];
+  const markedInput = {
+    ...input,
+    evidence: {
+      ...input.evidence,
+      readme: {
+        ...input.evidence.readme,
+        text: "PRIVATE README MARKER",
+      },
+    },
+    source: {
+      ...input.source,
+      text: "PRIVATE README MARKER",
+    },
+  };
+  const provider = createEnrichmentProvider(
+    utilityProviderOptions(async (url, init) => {
+      const body = JSON.parse(String(init?.body));
+      requests.push({ url: String(url), body });
+      return String(url) === utilityUrl
+        ? modelResponse(utilityModel, {
+            content: `Here is the result: ${JSON.stringify(output)}`,
+          })
+        : modelResponse(repairModel, {
+            content: JSON.stringify(output),
+          });
+    }),
+  );
+
+  const result = await provider.generate(markedInput);
+
+  expect(result.output).toEqual(output);
+  expect(requests.map(({ url }) => url)).toEqual([utilityUrl, repairUrl]);
+  const [primaryRequest, repairRequest] = requests;
+  expect(repairRequest.body.model).toBe(repairModel);
+  expect(repairRequest.body.reasoning_effort).toBe("none");
+  expect(repairRequest.body.max_completion_tokens).toBeLessThanOrEqual(4_096);
+  expect(repairRequest.body.response_format).toEqual(
+    primaryRequest.body.response_format,
+  );
+  expect(JSON.stringify(repairRequest.body)).not.toContain(
+    "PRIVATE README MARKER",
+  );
+  expect(result.metadata).toMatchObject({
+    requestedModel: utilityModel,
+    returnedModel: utilityModel,
+    jsonRepair: {
+      diagnosticCode: "json-invalid",
+      requestedModel: repairModel,
+      returnedModel: repairModel,
+      succeeded: true,
+    },
+  });
+});
+
+test("repairs schema-invalid utility JSON before returning it", async () => {
+  const urls: string[] = [];
+  const provider = createEnrichmentProvider(
+    utilityProviderOptions(async (url) => {
+      urls.push(String(url));
+      return String(url) === utilityUrl
+        ? modelResponse(utilityModel, {
+            content: JSON.stringify({
+              summary: output.summary,
+              result: output.result,
+              change_reasons: output.change_reasons,
+              policy_signal: output.policy_signal,
+            }),
+          })
+        : modelResponse(repairModel, {
+            content: JSON.stringify(output),
+          });
+    }),
+  );
+
+  await expect(provider.generate(input)).resolves.toMatchObject({
+    output,
+    metadata: {
+      requestedModel: utilityModel,
+      jsonRepair: {
+        diagnosticCode: "json-schema-invalid",
+        succeeded: true,
+      },
+    },
+  });
+  expect(urls).toEqual([utilityUrl, repairUrl]);
+});
+
+test("preserves the primary invalid-response diagnostic when Luna repair fails", async () => {
+  const urls: string[] = [];
+  const provider = createEnrichmentProvider(
+    utilityProviderOptions(async (url) => {
+      urls.push(String(url));
+      return String(url) === utilityUrl
+        ? modelResponse(utilityModel, { content: "{not-json" })
+        : modelResponse(repairModel, { content: "still not JSON" });
+    }),
+  );
+
+  await expect(provider.generate(input)).rejects.toMatchObject({
+    code: "provider-response-invalid",
+    diagnosticCode: "json-invalid",
+  });
+  expect(urls).toEqual([utilityUrl, repairUrl]);
+});
+
+test("does not attach damaged schema-invalid output to a thrown error", async () => {
+  const damagedOutput = {
+    summary: {
+      value: "PRIVATE DAMAGED OUTPUT MARKER",
+      evidence: ["readme:1"],
+    },
+    result: output.result,
+    change_reasons: output.change_reasons,
+    policy_signal: output.policy_signal,
+  };
+  const provider = createEnrichmentProvider(
+    utilityProviderOptions(async (url) =>
+      String(url) === utilityUrl
+        ? modelResponse(utilityModel, {
+            content: JSON.stringify(damagedOutput),
+          })
+        : modelResponse(repairModel, { content: "still not JSON" }),
+    ),
+  );
+
+  let error: unknown;
+  try {
+    await provider.generate(input);
+  } catch (caught) {
+    error = caught;
+  }
+
+  expect(error).toMatchObject({
+    code: "provider-response-invalid",
+    diagnosticCode: "json-schema-invalid",
+  });
+  expect(error).not.toHaveProperty("damagedText");
+  expect(JSON.stringify(error)).not.toContain("PRIVATE DAMAGED OUTPUT MARKER");
+});
+
+test("rejects invalid repair configuration before calling either provider", () => {
+  expect(() =>
+    createEnrichmentProvider({
+      apiUrl: utilityUrl,
+      apiKey: "utility-key",
+      model: utilityModel,
+      jsonRepair: {
+        apiUrl: "",
+        apiKey: "repair-key",
+        model: repairModel,
+      },
+    }),
+  ).toThrow("URL");
+});
+
+test("rejects an oversized primary envelope without invoking Luna", async () => {
+  const urls: string[] = [];
+  const provider = createEnrichmentProvider(
+    utilityProviderOptions(async (url) => {
+      urls.push(String(url));
+      return modelResponse(utilityModel, {
+        content: "x".repeat(300 * 1_024),
+      });
+    }),
+  );
+
+  await expect(provider.generate(input)).rejects.toMatchObject({
+    code: "provider-response-invalid",
+    diagnosticCode: "response-too-large",
+  });
+  expect(urls).toEqual([utilityUrl]);
+});
+
+test.each([
+  [
+    "missing content",
+    () => modelResponse(utilityModel, {}),
+    "provider-response-invalid",
+  ],
+  [
+    "tool calls",
+    () =>
+      modelResponse(utilityModel, {
+        content: JSON.stringify(output),
+        tool_calls: [{ id: "call-1", type: "function" }],
+      }),
+    "provider-response-invalid",
+  ],
+  [
+    "model mismatch",
+    () =>
+      modelResponse("unexpected-model", { content: JSON.stringify(output) }),
+    "provider-model-mismatch",
+  ],
+  [
+    "rate limit",
+    () => new Response("private provider body", { status: 429 }),
+    "provider-rate-limited",
+  ],
+] as const)(
+  "does not invoke Luna for an ineligible %s failure",
+  async (_name, primaryResponse, code) => {
+    const urls: string[] = [];
+    const provider = createEnrichmentProvider(
+      utilityProviderOptions(async (url) => {
+        urls.push(String(url));
+        return primaryResponse();
+      }),
+    );
+
+    await expect(provider.generate(input)).rejects.toMatchObject({ code });
+    expect(urls).toEqual([utilityUrl]);
+  },
+);
+
+test("keeps schema-valid semantic repairs on the utility provider", async () => {
+  const urls: string[] = [];
+  let utilityCalls = 0;
+  const semanticFailure = {
+    ...output,
+    summary: { ...output.summary, value: "" },
+  };
+  const provider = createEnrichmentProvider(
+    utilityProviderOptions(async (url) => {
+      urls.push(String(url));
+      utilityCalls += 1;
+      return modelResponse(utilityModel, {
+        content: JSON.stringify(utilityCalls === 1 ? semanticFailure : output),
+      });
+    }),
+  );
+
+  const result = await generateValidatedEnrichment({
+    initialInput: input,
+    maxAttempts: 2,
+    generate: (candidate) => provider.generate(candidate),
+    validate: (candidate) => ({
+      valid: (candidate.summary?.value.length ?? 0) > 0,
+    }),
+    repair: (candidate) => ({
+      ...candidate,
+      repair: { reasonCode: "summary-empty" },
+    }),
+  });
+
+  expect(result.validation.valid).toBe(true);
+  expect(urls).toEqual([utilityUrl, utilityUrl]);
 });
