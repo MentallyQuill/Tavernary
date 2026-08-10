@@ -35441,24 +35441,24 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1282991131/0efd69ed6bd48f6f46a3825b173e0f5b8fe2fe14/4/c983411f593908ca1409d3b1b83f8325d07657190e118b16ea5ff5238d8e970c/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1282991131/history/",
-      "assessed_at": "2026-08-09T11:34:03.609Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "assessed_at": "2026-08-10T19:54:52.121Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 2,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
         "cited_finding_ids": [
           "1eb8ae5d86a937827b9e7f887d91d40c2d22bfdf54629c0dd5c32c1762ee00ff",
           "70b520f57b1201e94ee1881b85fb555df8e03f6b33119f691601a6eac2a5c44e"
         ],
-        "headline": "No validated signs of malicious behavior; two CI supply-chain cautions remain",
-        "high_danger": 0,
-        "interaction_chains": [],
-        "malicious_evidence": "No credible malicious behavior, API-key theft, phishing, trojan delivery, or harmful payload was validated. The findings concern workflow configuration rather than the project’s user-facing functionality.",
-        "material_concerns": 0,
-        "minor_cautions": 2,
-        "risk_level": "material",
-        "summary": "The review found two minor weaknesses in GitHub workflow security: third-party actions use movable version tags instead of fixed commit hashes, and one action has broad permissions that may not all be necessary. These issues are unlikely to be exploited but should be corrected by pinning actions to verified commit SHAs and minimizing permissions. JavaScript analysis was incomplete, so this assessment cannot establish that all unobserved behavior is clean. The material advisory classification is이"
+        "interaction_chains": []
       }
     },
     {
@@ -35876,25 +35876,25 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1204673207/c67626ab83ee86ec1be4f55b9b3d1d19adb79999/4/24391d764a93b27b0f1f6edc58675e50524a527df4995624590e5d80c896ba16/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1204673207/history/",
-      "assessed_at": "2026-08-09T15:42:09.762Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "assessed_at": "2026-08-10T19:54:52.121Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 2,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
         "cited_finding_ids": [
           "2a0eea7158e787071d2f38c5d66c7ca4b605b81bdb554a371147be1329fd6edf",
           "9cc4cebd86d2513f234b977a6fc57ab7a582520164eb579b47f1253c67bce816",
           "f79bff8a3c25dc7e47158bc5b6cb6f8c73a5000d80cd881c37dcba4ac1b23052"
         ],
-        "headline": "No verified malicious behavior, but review limitations warrant caution",
-        "high_danger": 0,
-        "interaction_chains": [],
-        "malicious_evidence": "No credible malicious behavior was validated. Scanner signals for suspicious links and possible obfuscation were not supported by the reviewed context. A download-and-execution pattern remains insufficiently connected to attacker-controlled input, and JavaScript analysis was incomplete, so malicious",
-        "material_concerns": 0,
-        "minor_cautions": 2,
-        "risk_level": "material",
-        "summary": "The extension’s network requests and streamed responses fit its stated purpose of connecting to an OpenAI-compatible service. Users should be told where entered API keys are stored and that requests may go to the configured endpoint. A possible download-to-execution path should be documented and constrained. The required advisory level is material because the analysis was incomplete, not because confirmed harmful behavior or a demonstrated exploitable chain was found."
+        "interaction_chains": []
       }
     },
     {
@@ -35965,21 +35965,21 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1158218954/7a8859897bbfc6f0781ac5eb2451bc607e2bab95/4/dcdb972a60355052cb96d8ab5fd7f4cf97ee73c0d8ab954c7d1f3ba5c9d1d86f/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1158218954/history/",
-      "assessed_at": "2026-08-09T15:41:59.555Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "assessed_at": "2026-08-10T19:54:52.121Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
-        "cited_finding_ids": [],
-        "headline": "No malicious behavior was validated, but the review is incomplete",
-        "high_danger": 0,
-        "interaction_chains": [],
-        "malicious_evidence": "No credible malicious behavior, API-key theft, harmful payload, or hidden data transmission was validated. The reviewed signals were consistent with ordinary text parsing, inventory handling, and API-address cleanup.",
-        "material_concerns": 0,
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
         "minor_cautions": 0,
-        "risk_level": "material",
-        "summary": "The validated findings do not show a security problem: all 20 reviewed items were assessed as expected extension behavior with no observed impact. However, JavaScript analysis was incomplete because two files could not be fully parsed, so this is a material advisory rather than a clean low-risk conclusion. Users should treat the assessment as limited assurance, not proof that unknown behavior is absent."
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
+        "cited_finding_ids": [],
+        "interaction_chains": []
       }
     },
     {
@@ -36050,23 +36050,23 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1174011234/febe6180d69dd20e3b545ed837f3c58b13424324/4/fdab56efad0ac840201f58411e16df28348bb4844740afaf78540cdc769c4960/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1174011234/history/",
-      "assessed_at": "2026-08-09T15:42:03.669Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "assessed_at": "2026-08-10T19:54:52.121Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 1,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
         "cited_finding_ids": [
           "811e1a8c79d47cf2b8ed4309c798af5138ca04769d137afd37ede385d584405a"
         ],
-        "headline": "No malicious behavior found, but one code-readability caution remains",
-        "high_danger": 0,
-        "interaction_chains": [],
-        "malicious_evidence": "The review found no credible evidence of API-key theft, phishing, harmful payloads, trojan delivery, or bot infection. Several scanner signals were explained by ordinary extension features and local-service tests. JavaScript analysis was incomplete, so unknown behavior cannot be ruled out completely",
-        "material_concerns": 0,
-        "minor_cautions": 1,
-        "risk_level": "material",
-        "summary": "The validated review found the project’s observed behavior consistent with its documented summarization, lorebook, and local AI-sidecar features. One low-confidence signal suggests some production JavaScript may be harder to read than necessary; the available evidence does not show that it hides harmful behavior. Users should prefer a complete, readable build and note that the automated JavaScript review was incomplete."
+        "interaction_chains": []
       }
     },
     {
@@ -36225,10 +36225,10 @@
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1133781448/f8eadedb124d41a54d84a40d1f84d1332ec4d2f0/4/1c7c9ab6de3b67abedb0a4a9b02f27b2f06055cf72fa97283aa1ea1535b7f465/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1133781448/history/",
       "assessed_at": "2026-08-09T15:41:56.231Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No material security concerns identified",
