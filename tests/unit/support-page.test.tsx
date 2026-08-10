@@ -38,20 +38,36 @@ test("labels the initial monthly usage numbers as estimates", () => {
   render(<SupportPage />);
 
   expect(screen.getByText("Estimated", { exact: true })).toBeInTheDocument();
-  expect(screen.getByText("45M", { exact: true })).toBeInTheDocument();
+  expect(screen.getByText("160M", { exact: true })).toBeInTheDocument();
   expect(screen.getByText("4,000", { exact: true })).toBeInTheDocument();
   expect(screen.getByText("9:1", { exact: true })).toBeInTheDocument();
-  expect(screen.getByText("$13.50", { exact: true })).toBeInTheDocument();
-  expect(screen.getByText(/July 30, 2026 pricing/i)).toBeInTheDocument();
+  expect(screen.getByText("$48.00", { exact: true })).toBeInTheDocument();
+  expect(screen.getByText(/144 million input tokens/i)).toBeInTheDocument();
+  expect(screen.getByText(/16 million output tokens/i)).toBeInTheDocument();
+  expect(
+    screen.getByText(/June 30, 2026 reduced pricing/i),
+  ).toBeInTheDocument();
+  expect(screen.getByText(/uncached Luna-equivalent/i)).toBeInTheDocument();
 });
 
-test("describes model selection as Tavernary's observed result", () => {
+test("describes Scan v4's model roles and token-saving safeguards", () => {
   render(<SupportPage />);
 
   expect(screen.getByText(/strict structured output/i)).toBeInTheDocument();
-  expect(screen.getByText(/DeepSeek V4 and GLM-5.2/i)).toBeInTheDocument();
   expect(
-    screen.getByText(/not a universal ranking of those models/i),
+    screen.getByText(/DeepSeek V4 Flash.*first pass/i),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(/shared repository context.*once/i),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(/only invalid or missing reviews/i),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(/meaningful review inputs are identical/i),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(/changed or higher-risk evidence/i),
   ).toBeInTheDocument();
   expect(
     screen.queryByRole("heading", { name: "How these numbers are published" }),

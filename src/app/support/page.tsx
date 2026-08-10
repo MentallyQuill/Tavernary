@@ -97,13 +97,15 @@ export default function SupportPage() {
           >
             <li>
               <strong>LLM-assisted security scanning.</strong> Reviewing
-              eligible source repositories and producing bounded public
-              assessments is the largest part of monthly model use.
+              eligible source repositories with DeepSeek V4 Flash and producing
+              strict structured assessments is the largest part of monthly model
+              use.
             </li>
             <li>
               <strong>Update reassessment and catalog churn.</strong> Repository
-              changes can trigger new evidence collection, review, and summary
-              work so listings do not quietly become stale.
+              changes can trigger new evidence collection and review. Exact
+              difference detection reuses unchanged low-risk work while sending
+              changed evidence back through the model pipeline.
             </li>
             <li>
               <strong>New-project intake and enrichment.</strong> New
@@ -139,31 +141,41 @@ export default function SupportPage() {
               <dd>{inputOutputRatio}:1</dd>
             </div>
             <div>
-              <dt>Model cost</dt>
+              <dt>Luna-equivalent cost</dt>
               <dd>${usage.costUsd.toFixed(2)}</dd>
             </div>
           </dl>
           <p>
-            The estimate uses 40.5 million input tokens and 4.5 million output
-            tokens at GPT-5.6 Luna&apos;s July 30, 2026 pricing of $0.20 and
-            $1.20 per million tokens respectively. Measured costs may be lower
-            with cached input or differ with service tier and workload shape.
+            At a 9:1 input-to-output ratio, the 160 million-token estimate is
+            144 million input tokens and 16 million output tokens. Using GPT-5.6
+            Luna&apos;s June 30, 2026 reduced pricing of $0.20 per million input
+            tokens and $1.20 per million output tokens, that is a $48 uncached
+            Luna-equivalent. The actual blended cost may be lower because Scan
+            V.4 also uses DeepSeek V4 Flash and avoids repurchasing unchanged or
+            overlapping work.
           </p>
         </section>
 
         <section>
-          <h2>Why GPT-5.6 Luna</h2>
+          <h2>How Scan V.4 controls model costs</h2>
           <p>
-            Tavernary&apos;s automation depends on strict structured output.
-            Testing found that GPT-5.6 Luna produced valid JSON more
-            consistently, which meant fewer repair retries and faster processing
-            as the community grew.
+            DeepSeek V4 Flash handles the first pass over scanner evidence.
+            GPT-5.6 Luna is reserved for work that depends on strict structured
+            output. In Tavernary&apos;s testing, Luna&apos;s more consistent
+            valid JSON meant fewer repair retries and less model churn.
           </p>
           <p>
-            DeepSeek V4 and GLM-5.2 were tested extensively, but
-            Tavernary&apos;s workflows required more retries and more model or
-            configuration changes to stay reliable. That is an observation from
-            Tavernary&apos;s workload, not a universal ranking of those models.
+            Related review cards are compacted into bounded batches, so shared
+            repository context is sent once instead of repeated for every card.
+            Successful cards are checkpointed, and only invalid or missing
+            reviews are retried.
+          </p>
+          <p>
+            For update churn, a prior assessment can be reused only when its
+            meaningful review inputs are identical, including the repository,
+            evidence, relevant code context, scanner and policy versions, model,
+            prompt, and schema. Changed or higher-risk evidence is always
+            reviewed fresh.
           </p>
         </section>
 
