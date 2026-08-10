@@ -664,6 +664,9 @@ test("reconciles reports independently and wakes TavernKeeper only after a chang
   expect(reportImport.jobs.continue.if).toContain(
     "needs.import.outputs.remaining != '0'",
   );
+  expect(reportImport.jobs.continue.if).toContain(
+    "inputs.retry_report_digest == ''",
+  );
   expect(JSON.stringify(reportImport.jobs.continue)).not.toContain(
     "needs.deploy",
   );
