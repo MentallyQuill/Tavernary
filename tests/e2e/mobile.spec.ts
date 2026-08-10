@@ -76,9 +76,28 @@ test("matches the approved mobile header hierarchy", async ({ page }) => {
   expect(supportBox!.width).toBe(34);
   expect(supportBox!.height).toBe(34);
   expect(supportBox!.x).toBeGreaterThanOrEqual(submitBox!.x + submitBox!.width);
+  expect
+    .soft(supportBox!.x - (submitBox!.x + submitBox!.width))
+    .toBeLessThanOrEqual(4);
   expect(
     await submit.evaluate((element) => element.getBoundingClientRect().height),
   ).toBeLessThan(40);
+});
+
+test("keeps the mobile support action inside a 412px viewport", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 412, height: 915 });
+  await page.goto(sitePath());
+
+  const support = page.getByRole("link", {
+    name: "Support Tavernary on Ko-fi",
+  });
+  const supportBox = await support.boundingBox();
+  expect(supportBox).not.toBeNull();
+  expect(supportBox!.width).toBe(34);
+  expect(supportBox!.height).toBe(34);
+  expect(supportBox!.x + supportBox!.width).toBeLessThanOrEqual(412);
 });
 
 test("opens the Tavernary support page from a 320px viewport", async ({

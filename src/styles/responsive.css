@@ -49,6 +49,7 @@
 
   .header-actions {
     grid-area: actions;
+    gap: 4px;
   }
 
   .header-actions .about-link {

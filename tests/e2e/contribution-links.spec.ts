@@ -107,6 +107,34 @@ test("links to the transparent support page beside Submit Project", async ({
     "https://ko-fi.com/mentallyquill",
   );
   await expect(supportOnKofi).toHaveCSS("color", "rgb(22, 16, 8)");
+  const targetHeading = upkeep.getByRole("heading", {
+    name: "Monthly operating target",
+  });
+  const targetValue = upkeep.getByText("$12/month", { exact: true });
+  const [targetHeadingBox, targetValueBox, supportOnKofiBox] =
+    await Promise.all([
+      targetHeading.boundingBox(),
+      targetValue.boundingBox(),
+      supportOnKofi.boundingBox(),
+    ]);
+  expect(targetHeadingBox).not.toBeNull();
+  expect(targetValueBox).not.toBeNull();
+  expect(supportOnKofiBox).not.toBeNull();
+  expect(targetValueBox!.x).toBeGreaterThanOrEqual(
+    targetHeadingBox!.x + targetHeadingBox!.width,
+  );
+  expect(supportOnKofiBox!.x).toBeGreaterThanOrEqual(
+    targetValueBox!.x + targetValueBox!.width,
+  );
+  const targetCenterY = targetHeadingBox!.y + targetHeadingBox!.height / 2;
+  expect(
+    Math.abs(targetValueBox!.y + targetValueBox!.height / 2 - targetCenterY),
+  ).toBeLessThanOrEqual(2);
+  expect(
+    Math.abs(
+      supportOnKofiBox!.y + supportOnKofiBox!.height / 2 - targetCenterY,
+    ),
+  ).toBeLessThanOrEqual(2);
   await expect(upkeep).toHaveCSS("padding-left", "24px");
   await expect(upkeep).toHaveCSS("padding-right", "24px");
   await expect(upkeep).toHaveCSS("border-top-color", "rgb(43, 58, 64)");
