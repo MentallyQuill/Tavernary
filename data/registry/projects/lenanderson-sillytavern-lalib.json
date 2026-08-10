@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "lenanderson-sillytavern-lalib",
+  "name": "SillyTavern-LALib",
+  "kind": "extension",
+  "summary": "LALib is a SillyTavern STScript command library, adding boolean, list, text, data, chat, World Info, audio, and web-request workflows.",
+  "metadata_status": "curated",
+  "source_id": "github-747254693",
+  "frontends": ["sillytavern"],
+  "primary_function": "developer-infrastructure",
+  "tags": [
+    "build-extensions-and-scripts",
+    "connect-external-services",
+    "manage-lorebooks",
+    "organize-chats-and-messages",
+    "rules-driven"
+  ],
+  "cataloged_at": "2026-08-10T17:45:24.647Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
