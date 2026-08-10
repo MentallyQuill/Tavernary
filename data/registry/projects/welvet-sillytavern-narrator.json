@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "welvet-sillytavern-narrator",
+  "name": "SillyTavern-Narrator",
+  "kind": "extension",
+  "summary": "SillyTavern-Narrator uses a configured LLM to propose six paragraph-long next-story scenarios from chat context, which you can revise, publish, copy, or dismiss to guide the plot.",
+  "metadata_status": "curated",
+  "source_id": "github-1058500059",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [
+    "edit-and-refine-messages",
+    "guide-model-responses",
+    "increase-narrative-variety",
+    "plan-stories-and-scenes"
+  ],
+  "cataloged_at": "2026-08-10T17:20:00.361Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
