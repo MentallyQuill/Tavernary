@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "coneja-chibi-the-hawthorne-directives",
+  "name": "The-HawThorne-Directives",
+  "kind": "preset",
+  "summary": "Paramnesia is a SillyTavern narrative preset with rotating Directors and layered controls for prose quality, content clearances, sensory detail, and world logic.",
+  "metadata_status": "curated",
+  "source_id": "github-1170213715",
+  "frontends": ["sillytavern"],
+  "primary_function": "preset",
+  "tags": [
+    "build-worlds-and-lore",
+    "guide-model-responses",
+    "improve-writing-and-prose",
+    "increase-narrative-variety"
+  ],
+  "model_families": ["model-agnostic"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-08-10T18:00:06.926Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

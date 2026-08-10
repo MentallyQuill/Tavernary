@@ -1,0 +1,57 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1170213715",
+  "repository": {
+    "id": 1170213715,
+    "owner": "Coneja-Chibi",
+    "name": "The-HawThorne-Directives",
+    "url": "https://github.com/Coneja-Chibi/The-HawThorne-Directives",
+    "description": "The HawThorne Directives — A creative writing preset system for SillyTavern",
+    "default_branch": "main",
+    "head_sha": "9156f1c17e1a17f2061b66a388001b8cd5a37036",
+    "head_committed_at": "2026-07-31T01:11:02.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-03-01T21:27:52.000Z",
+    "size_kb": 5613
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-31T01:11:02.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-31T01:11:02.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-10T18:00:06.926Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "9156f1c17e1a17f2061b66a388001b8cd5a37036"
+  },
+  "community": {
+    "stars_count": 36,
+    "forks_count": 2,
+    "watchers_count": 1,
+    "aggregate": 39
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-08-10T18:00:06.926Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "Coneja-Chibi", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-10T18:00:06.926Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
