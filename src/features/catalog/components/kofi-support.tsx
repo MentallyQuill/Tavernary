@@ -29,16 +29,16 @@ export function KoFiSupport() {
   return (
     <Tooltip
       id={tooltipId}
-      label="Support Tavernary on Ko-fi"
+      label="Buy Me a Ko-Fi"
       className="kofi-support-tooltip"
     >
       <Link
         href="/support/"
         className="kofi-support-trigger"
-        aria-label="Support Tavernary on Ko-fi"
+        aria-label="Buy Me a Ko-Fi"
       >
         <CoffeeIcon />
-        <span className="kofi-support-label">Support Tavernary</span>
+        <span className="kofi-support-label">Buy Me a Ko-Fi</span>
       </Link>
     </Tooltip>
   );

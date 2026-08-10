@@ -62,7 +62,7 @@ test("matches the approved mobile header hierarchy", async ({ page }) => {
 
   const submit = page.getByRole("link", { name: "Submit Project" });
   const support = page.getByRole("link", {
-    name: "Support Tavernary on Ko-fi",
+    name: "Buy Me a Ko-Fi",
   });
   await expect(support).toBeVisible();
   await expect(support.locator(".kofi-support-label")).toHaveCSS(
@@ -112,7 +112,7 @@ test("keeps the mobile support action inside a 412px viewport", async ({
   await page.goto(sitePath());
 
   const support = page.getByRole("link", {
-    name: "Support Tavernary on Ko-fi",
+    name: "Buy Me a Ko-Fi",
   });
   const supportBox = await support.boundingBox();
   expect(supportBox).not.toBeNull();
@@ -126,7 +126,7 @@ test("opens the Tavernary support page from a 320px viewport", async ({
 }) => {
   await page.setViewportSize({ width: 320, height: 700 });
   await page.goto(sitePath());
-  await page.getByRole("link", { name: "Support Tavernary on Ko-fi" }).click();
+  await page.getByRole("link", { name: "Buy Me a Ko-Fi" }).click();
 
   await expect(
     page.getByRole("heading", { name: "Support Tavernary", exact: true }),
