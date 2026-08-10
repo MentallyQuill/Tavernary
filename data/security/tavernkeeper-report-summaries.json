@@ -25007,18 +25007,18 @@
         "tools_completed": 7,
         "tools_not_applicable": 0,
         "evidence_validated": 12,
+        "metadata_only_candidates": 0,
         "review_required": 12,
         "review_completed": 12,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1281396724/69eca239911b7224e3fccc279902eb43cb583339/3/5a83066cfe7d65ceb90cac4c6cbef8ee8e2369f8be47e280ccf6962a3ec73bb0/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1281396724/history/",
       "assessed_at": "2026-08-05T21:53:00.681Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [
           "11cc889293f4562ffcfffa043f2010370c2ddbad4e92355f3a422817edd47e0e",
@@ -25105,18 +25105,18 @@
         "tools_completed": 6,
         "tools_not_applicable": 1,
         "evidence_validated": 26,
+        "metadata_only_candidates": 0,
         "review_required": 26,
         "review_completed": 26,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1190054879/ab04dfdbf8e2a011db3528512cf547d15bdae79c/3/8989cc2307eccda50c5122294c68401a4b1b178f3514c5827f21b5e2d75350fa/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1190054879/history/",
       "assessed_at": "2026-08-05T21:52:49.174Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [
           "11c4541ba1fe2c0d3c1e2d0e2c01d10393d0d1f0bb064d4371b45aa07fe9f38f",
@@ -25217,18 +25217,18 @@
         "tools_completed": 5,
         "tools_not_applicable": 2,
         "evidence_validated": 11,
+        "metadata_only_candidates": 0,
         "review_required": 11,
         "review_completed": 11,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1268032451/56a1f679a3e470c06e5dda4260386fb09fcb1ce9/3/d74922a1012d12ed3779388419e85d06a6a1e919a5dedc94203c508f17e94888/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1268032451/history/",
       "assessed_at": "2026-08-05T22:02:31.466Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [
           "0397056563b1b7873056136a413c67c2a2d3235db1db74ea738dba1d83819202",
@@ -25313,18 +25313,18 @@
         "tools_completed": 6,
         "tools_not_applicable": 1,
         "evidence_validated": 15,
+        "metadata_only_candidates": 0,
         "review_required": 15,
         "review_completed": 15,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1104616181/b8558fcd196714af823f604d4c30ed8f39d73acc/3/cc2259b1a2792bb870e90bdf943f58d8ee12bb7410b34c4247abcbbb636e9dcd/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1104616181/history/",
       "assessed_at": "2026-08-05T22:02:17.203Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [
           "11cc889293f4562ffcfffa043f2010370c2ddbad4e92355f3a422817edd47e0e",
@@ -25412,18 +25412,18 @@
         "tools_completed": 6,
         "tools_not_applicable": 1,
         "evidence_validated": 4,
+        "metadata_only_candidates": 0,
         "review_required": 4,
         "review_completed": 4,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1300836750/2550e36fc25cf5e2c924d2cae87a4419b97eec51/3/68fb4690d2e7d111c6ec82dd0773cc8d7671f3862100fdb841c28b4e6938902e/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1300836750/history/",
       "assessed_at": "2026-08-05T22:02:35.510Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [
           "4c402794e45c5f898238a8d6a44f88a50893fbf27511ae71d69bd8dcbc4ca3ac",
