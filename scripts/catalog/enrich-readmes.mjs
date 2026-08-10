@@ -20,6 +20,7 @@ import {
   createEnrichmentProvider,
   validateProviderConfiguration,
 } from "./enrichment-provider.mjs";
+import { modelProviderOptionsFromEnvironment } from "./model-provider-configuration.mjs";
 import {
   MANUAL_ENRICHMENT_REASON_CODE,
   supportsAutomaticEnrichmentSource,
@@ -961,13 +962,16 @@ async function runPreflight(provider, sleep) {
 }
 
 function providerConfiguration(options) {
-  return validateProviderConfiguration(
-    options.providerConfiguration ?? {
-      apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
-      apiKey: process.env.TAVERNARY_ENRICHMENT_API_KEY,
-      model: process.env.TAVERNARY_ENRICHMENT_MODEL,
-    },
-  );
+  const providerOptions =
+    options.providerConfiguration ?? modelProviderOptionsFromEnvironment();
+  return {
+    ...validateProviderConfiguration(providerOptions),
+    ...(providerOptions.jsonRepair
+      ? {
+          jsonRepair: validateProviderConfiguration(providerOptions.jsonRepair),
+        }
+      : {}),
+  };
 }
 
 export async function runCli(options = {}) {

@@ -101,15 +101,17 @@ action, and evidence citation. Missing context, missing coverage, quota/token
 failure, invalid structured output, or provider failure produces no degraded
 report.
 
-After importing a complete V5 report, Tavernary's configured Luna provider
+After importing a complete V5 report, Tavernary's configured utility provider
 synthesizes only the already validated candidates, assessments, observations,
 counts, identity, and limitations. It does not rescan source. Its strict JSON
 response may cite only the explicit `allowed_candidate_ids` and must copy the
 deterministic `required_counts`. Observation IDs are not exposed and are never
-valid citations. A rejected response receives only a bounded diagnostic,
-allowed or rejected candidate IDs when applicable, and the required counts;
-generated prose is never returned as repair context. An identical repair stops
-early instead of spending a third request on the same correction.
+valid citations. A rejected semantically invalid response receives only a
+bounded diagnostic, allowed or rejected candidate IDs when applicable, and the
+required counts; generated prose is never returned as semantic retry context.
+An identical retry stops early instead of spending a third utility request on
+the same correction. Luna is limited to one structural JSON repair when a
+utility response cannot be parsed or fails its JSON schema.
 
 Tavernary then enforces deterministic floors:
 
@@ -118,13 +120,13 @@ Tavernary then enforces deterministic floors:
 - a medium-or-higher-confidence material vulnerability is at least `material`;
 - expected behavior and minor weaknesses remain in the `low` range.
 
-Luna cannot lower a floor. It can escalate only with a validated interaction
-chain citing at least two known findings. A report enters the tracked snapshot
-only after its validation, synthesis, floor validation, history merge, and
-atomic write succeed. A failed replacement remains absent from preferred
-assessments. An older assessment for that repository remains immutable history,
-but is not presented as the current preferred result. Independently valid peers
-may still commit.
+Model synthesis cannot lower a floor. The utility provider can escalate only
+with a validated interaction chain citing at least two known findings. A report
+enters the tracked snapshot only after its validation, synthesis, floor
+validation, history merge, and atomic write succeed. A failed replacement
+remains absent from preferred assessments. An older assessment for that
+repository remains immutable history, but is not presented as the current
+preferred result. Independently valid peers may still commit.
 
 ## Handshake and recovery
 
@@ -133,9 +135,10 @@ manifest, then conditionally wakes TavernKeeper's `reconcile.yml`. TavernKeeper
 refetches that public manifest, scans in disposable isolated runners, publishes
 sanitized immutable V5 output through its dedicated Publisher App, and wakes
 Tavernary's **Security: Reconcile TavernKeeper reports** workflow. Tavernary
-imports up to five eligible unseen preferred reports, performs Luna synthesis,
-commits the bounded V5 assessment snapshot and import ledger, runs the complete
-site check, and dispatches deployment of the exact commit.
+imports up to five eligible unseen preferred reports, performs utility
+synthesis with Luna available only for structural JSON repair, commits the
+bounded V5 assessment snapshot and import ledger, runs the complete site check,
+and dispatches deployment of the exact commit.
 
 Each report import completes independently. Only bounded terminal
 `invalid-output` synthesis failures become report-local quarantines. The exact
@@ -165,8 +168,13 @@ also recovers missed wake-ups without retrying unchanged quarantines.
 Both directions also reconcile on schedule. Wake calls are non-authoritative:
 they carry no target SHA, mode, token budget, priority, or report URL. A missed
 wake is repaired by scheduled reconciliation. The Tavernary import workflow
-exposes `TAVERNARY_ENRICHMENT_API_URL`, `TAVERNARY_ENRICHMENT_API_KEY`, and
-`TAVERNARY_ENRICHMENT_MODEL` only to its synthesis step.
+exposes `UTILITY_API_ENDPOINT`, `UTILITY_API_KEY`, `UTILITY_MODEL`,
+`TAVERNARY_ENRICHMENT_API_URL`, `TAVERNARY_ENRICHMENT_API_KEY`, and
+`TAVERNARY_ENRICHMENT_MODEL` only to its synthesis step. The utility provider
+creates the first structured result. Luna receives only a malformed or
+schema-invalid utility response plus its schema and sanitized validation paths;
+raw TavernKeeper reports and their synthesis prompt are never sent to the
+repair provider.
 
 Tavernary staff can run the protected targeted-scan Action with one GitHub URL
 already backing an eligible catalog project. The action refreshes and deploys

@@ -3,6 +3,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { isDeepStrictEqual } from "node:util";
 
+import { modelProviderOptionsFromEnvironment } from "../catalog/model-provider-configuration.mjs";
 import {
   buildDeterministicAssessment,
   deriveReportAdvisory,
@@ -107,10 +108,13 @@ async function readPrevious(path, registry) {
 function createDefaultSynthesis(options) {
   let provider;
   return async (report) => {
+    const configured = modelProviderOptionsFromEnvironment();
     provider ??= createTavernKeeperSynthesisProvider({
-      apiUrl: options.apiUrl ?? process.env.TAVERNARY_ENRICHMENT_API_URL,
-      apiKey: options.apiKey ?? process.env.TAVERNARY_ENRICHMENT_API_KEY,
-      model: options.model ?? process.env.TAVERNARY_ENRICHMENT_MODEL,
+      ...configured,
+      apiUrl: options.apiUrl ?? configured.apiUrl,
+      apiKey: options.apiKey ?? configured.apiKey,
+      model: options.model ?? configured.model,
+      jsonRepair: options.jsonRepair ?? configured.jsonRepair,
       fetchImpl: options.providerFetchImpl,
       timeoutMs: options.providerTimeoutMs,
       now: options.providerNow,

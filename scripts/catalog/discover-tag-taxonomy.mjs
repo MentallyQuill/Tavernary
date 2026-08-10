@@ -11,6 +11,7 @@ import { basename, dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { createStructuredProviderTransport } from "./enrichment-provider.mjs";
+import { modelProviderOptionsFromEnvironment } from "./model-provider-configuration.mjs";
 
 const repositoryRoot = resolve(
   dirname(fileURLToPath(import.meta.url)),
@@ -564,9 +565,7 @@ export async function runTagTaxonomyDiscoveryCli(arguments_, options = {}) {
   const provider =
     options.provider ??
     createTaxonomyDiscoveryProvider({
-      apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
-      apiKey: process.env.TAVERNARY_ENRICHMENT_API_KEY,
-      model: process.env.TAVERNARY_ENRICHMENT_MODEL,
+      ...modelProviderOptionsFromEnvironment(),
     });
   const report = await discoverTagTaxonomy({
     ...corpus,

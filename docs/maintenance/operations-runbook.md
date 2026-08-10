@@ -425,11 +425,28 @@ Workflow: `.github/workflows/enrich-catalog.yml`
   `Catalog enrichment errors` issue with sanitized terminal errors. A later
   clean completed run closes it. Recovered first-attempt errors are omitted.
 
-Provider mode uses environment secrets:
+Every model-backed workflow uses the utility provider for its first structured
+response. Configure NanoGPT DeepSeek V4 Flash with:
 
-- `TAVERNARY_ENRICHMENT_API_URL`
+- `UTILITY_API_ENDPOINT` — the complete OpenAI-compatible
+  `/chat/completions` URL
+- `UTILITY_API_KEY`
+- `UTILITY_MODEL`
+
+The existing enrichment secrets configure GPT-5.6 Luna as a JSON-only repair
+provider:
+
+- `TAVERNARY_ENRICHMENT_API_URL` — the complete OpenAI-compatible
+  `/chat/completions` URL
 - `TAVERNARY_ENRICHMENT_API_KEY`
 - `TAVERNARY_ENRICHMENT_MODEL`
+
+Luna is called at most once and only when the utility response is malformed
+JSON, is not an object, or fails the requested JSON schema. It receives the
+damaged utility response, the schema, and sanitized validation paths—not the
+original repository, report, issue, README, or prompt content. Provider errors,
+tool calls, missing content, unsafe oversized responses, and model mismatches
+fail normally without a repair attempt.
 
 ### Locking a metadata field from model enrichment
 

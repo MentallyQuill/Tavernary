@@ -29,6 +29,11 @@ export interface TavernKeeperImportOptions {
   apiUrl?: string;
   apiKey?: string;
   model?: string;
+  jsonRepair?: {
+    apiUrl?: string;
+    apiKey?: string;
+    model?: string;
+  };
   providerFetchImpl?: typeof fetch;
   providerTimeoutMs?: number;
   providerNow?: () => number;

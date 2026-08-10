@@ -16,6 +16,7 @@ import { enrichRecord } from "../catalog/enrich-readmes.mjs";
 import { loadEnrichmentSource } from "../catalog/enrichment-source.mjs";
 import { createEnrichmentProvider } from "../catalog/enrichment-provider.mjs";
 import { formatJson } from "../catalog/json-format.mjs";
+import { modelProviderOptionsFromEnvironment } from "../catalog/model-provider-configuration.mjs";
 import {
   automaticMetadataPolicy,
   manualMetadataPolicy,
@@ -505,9 +506,7 @@ async function generatedMetadataOutput(
   const provider =
     input.enrichmentProvider ??
     createEnrichmentProvider({
-      apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
-      apiKey: process.env.TAVERNARY_ENRICHMENT_API_KEY,
-      model: process.env.TAVERNARY_ENRICHMENT_MODEL,
+      ...modelProviderOptionsFromEnvironment(),
     });
   return enrichRecord(context.record, final.source, snapshot, provider, {
     force: true,

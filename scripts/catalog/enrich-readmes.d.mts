@@ -215,6 +215,11 @@ export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
     apiUrl?: string;
     apiKey?: string;
     model?: string;
+    jsonRepair?: {
+      apiUrl?: string;
+      apiKey?: string;
+      model?: string;
+    };
   };
   provider?: EnrichmentProvider;
   timeoutMs?: number;

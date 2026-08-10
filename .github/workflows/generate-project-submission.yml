@@ -32,9 +32,6 @@ jobs:
       ISSUE_NUMBER: ${{ inputs.issue_number }}
       FORCE_REGENERATION: ${{ inputs.force_regeneration }}
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      TAVERNARY_ENRICHMENT_API_URL: ${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}
-      TAVERNARY_ENRICHMENT_API_KEY: ${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}
-      TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}
     steps:
       - name: Check out full main history
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -105,6 +102,12 @@ jobs:
       - name: Regenerate declared project files
         shell: bash
         env:
+          UTILITY_API_ENDPOINT: ${{ secrets.UTILITY_API_ENDPOINT }}
+          UTILITY_API_KEY: ${{ secrets.UTILITY_API_KEY }}
+          UTILITY_MODEL: ${{ secrets.UTILITY_MODEL }}
+          TAVERNARY_ENRICHMENT_API_URL: ${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}
+          TAVERNARY_ENRICHMENT_API_KEY: ${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}
+          TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}
           BRANCH: ${{ steps.state.outputs.branch }}
           PR_NUMBER: ${{ steps.state.outputs.pr_number }}
           MARKER_SHA: ${{ steps.state.outputs.marker_sha }}
