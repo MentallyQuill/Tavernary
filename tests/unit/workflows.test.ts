@@ -15,6 +15,25 @@ const pinnedActions = {
   "actions/create-github-app-token": "bcd2ba49218906704ab6c1aa796996da409d3eb1",
 };
 
+const modelProviderEnvironment = {
+  UTILITY_API_ENDPOINT: "${{ secrets.UTILITY_API_ENDPOINT }}",
+  UTILITY_API_KEY: "${{ secrets.UTILITY_API_KEY }}",
+  UTILITY_MODEL: "${{ secrets.UTILITY_MODEL }}",
+  TAVERNARY_ENRICHMENT_API_URL: "${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}",
+  TAVERNARY_ENRICHMENT_API_KEY: "${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}",
+  TAVERNARY_ENRICHMENT_MODEL: "${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}",
+} as const;
+
+const modelProviderEnvironmentKeys = Object.keys(modelProviderEnvironment);
+
+function exposesModelProviderEnvironment(step: {
+  env?: Record<string, string>;
+}) {
+  return modelProviderEnvironmentKeys.some((key) =>
+    Object.hasOwn(step.env ?? {}, key),
+  );
+}
+
 async function workflow(name: string) {
   return parse(
     await readFile(resolve(workflowDirectory, `${name}.yml`), "utf8"),
@@ -649,9 +668,7 @@ test("reconciles reports independently and wakes TavernKeeper only after a chang
     "needs.deploy",
   );
   expect(synthesisStep?.env).toEqual({
-    TAVERNARY_ENRICHMENT_API_URL: "${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}",
-    TAVERNARY_ENRICHMENT_API_KEY: "${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}",
-    TAVERNARY_ENRICHMENT_MODEL: "${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}",
+    ...modelProviderEnvironment,
     TAVERNARY_RETRY_REPORT_DIGEST: "${{ inputs.retry_report_digest || '' }}",
   });
   for (const output of [
@@ -677,11 +694,7 @@ test("reconciles reports independently and wakes TavernKeeper only after a chang
   expect(
     reportImportSteps
       .filter((step) => step !== synthesisStep)
-      .some((step) =>
-        Object.keys(step.env ?? {}).some((key) =>
-          key.startsWith("TAVERNARY_ENRICHMENT_"),
-        ),
-      ),
+      .some(exposesModelProviderEnvironment),
   ).toBe(false);
   expect(importSource).toContain("for attempt in 1 2 3");
   expect(importSource).toContain("-f source_sha=");
@@ -1067,6 +1080,13 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
     resolve(workflowDirectory, "generate-project-submission.yml"),
     "utf8",
   );
+  const generationJob = generation.jobs.generate as {
+    env?: Record<string, string>;
+    steps: Array<{ name?: string; env?: Record<string, string> }>;
+  };
+  const modelStep = generationJob.steps.find(
+    (step) => step.name === "Regenerate declared project files",
+  );
 
   expect(generation.permissions).toEqual({
     contents: "write",
@@ -1082,6 +1102,17 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
   ).toBe(false);
   expect(generation.concurrency.group).toContain(
     "project-submission-${{ inputs.issue_number }}",
+  );
+  expect(exposesModelProviderEnvironment(generationJob)).toBe(false);
+  expect(modelStep?.env).toMatchObject(modelProviderEnvironment);
+  expect(
+    generationJob.steps
+      .filter((step) => step !== modelStep)
+      .some(exposesModelProviderEnvironment),
+  ).toBe(false);
+  expect(source.match(/secrets\.UTILITY_API_KEY/gu)).toHaveLength(1);
+  expect(source.match(/secrets\.TAVERNARY_ENRICHMENT_API_KEY/gu)).toHaveLength(
+    1,
   );
   expect(source).toContain("git push --force-with-lease=");
   expect(source).not.toContain("git rebase origin/main");
@@ -1328,6 +1359,17 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   const checkout = allSteps(generation).find((step) =>
     step.uses?.startsWith("actions/checkout@"),
   ) as { with?: { "fetch-depth"?: number; ref?: string } } | undefined;
+  const generationJob = generation.jobs.generate as {
+    env?: Record<string, string>;
+    steps: Array<{ name?: string; env?: Record<string, string> }>;
+  };
+  const modelStep = generationJob.steps.find(
+    (step) => step.name === "Generate from latest main and issue state",
+  );
+  const replayStep = generationJob.steps.find(
+    (step) =>
+      step.name === "Regenerate final owner state before branch mutation",
+  );
 
   expect(generation.permissions).toEqual({
     contents: "write",
@@ -1347,11 +1389,18 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
     "cancel-in-progress": false,
   });
   expect(checkout?.with).toMatchObject({ "fetch-depth": 0, ref: "main" });
-  expect(generation.jobs.generate.env).toMatchObject({
-    TAVERNARY_ENRICHMENT_API_URL: "${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}",
-    TAVERNARY_ENRICHMENT_API_KEY: "${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}",
-    TAVERNARY_ENRICHMENT_MODEL: "${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}",
-  });
+  expect(exposesModelProviderEnvironment(generationJob)).toBe(false);
+  expect(modelStep?.env).toMatchObject(modelProviderEnvironment);
+  expect(exposesModelProviderEnvironment(replayStep ?? {})).toBe(false);
+  expect(
+    generationJob.steps
+      .filter((step) => step !== modelStep)
+      .some(exposesModelProviderEnvironment),
+  ).toBe(false);
+  expect(source.match(/secrets\.UTILITY_API_KEY/gu)).toHaveLength(1);
+  expect(source.match(/secrets\.TAVERNARY_ENRICHMENT_API_KEY/gu)).toHaveLength(
+    1,
+  );
   expect(source).toContain("npm ci");
   expect(source).toContain("generate-project-owner-request.mjs");
   expect(

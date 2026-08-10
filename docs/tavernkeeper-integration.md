@@ -165,8 +165,13 @@ also recovers missed wake-ups without retrying unchanged quarantines.
 Both directions also reconcile on schedule. Wake calls are non-authoritative:
 they carry no target SHA, mode, token budget, priority, or report URL. A missed
 wake is repaired by scheduled reconciliation. The Tavernary import workflow
-exposes `TAVERNARY_ENRICHMENT_API_URL`, `TAVERNARY_ENRICHMENT_API_KEY`, and
-`TAVERNARY_ENRICHMENT_MODEL` only to its synthesis step.
+exposes `UTILITY_API_ENDPOINT`, `UTILITY_API_KEY`, `UTILITY_MODEL`,
+`TAVERNARY_ENRICHMENT_API_URL`, `TAVERNARY_ENRICHMENT_API_KEY`, and
+`TAVERNARY_ENRICHMENT_MODEL` only to its synthesis step. The utility provider
+creates the first structured result. Luna receives only a malformed or
+schema-invalid utility response plus its schema and sanitized validation paths;
+raw TavernKeeper reports and their synthesis prompt are never sent to the
+repair provider.
 
 Tavernary staff can run the protected targeted-scan Action with one GitHub URL
 already backing an eligible catalog project. The action refreshes and deploys

@@ -75,9 +75,6 @@ jobs:
       ISSUE_NUMBER: ${{ inputs.transaction_issue_number }}
       PULL_NUMBER: ${{ inputs.transaction_pull_number }}
       MERGE_SHA: ${{ inputs.merge_sha }}
-      TAVERNARY_ENRICHMENT_API_URL: ${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}
-      TAVERNARY_ENRICHMENT_API_KEY: ${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}
-      TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}
     steps:
       - name: Check out exact published state
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -102,11 +99,19 @@ jobs:
       - name: Run advisory evidence review
         id: review
         shell: bash
+        env:
+          UTILITY_API_ENDPOINT: ${{ secrets.UTILITY_API_ENDPOINT }}
+          UTILITY_API_KEY: ${{ secrets.UTILITY_API_KEY }}
+          UTILITY_MODEL: ${{ secrets.UTILITY_MODEL }}
+          TAVERNARY_ENRICHMENT_API_URL: ${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}
+          TAVERNARY_ENRICHMENT_API_KEY: ${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}
+          TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}
         run: |
           set -euo pipefail
           node --input-type=module <<'NODE'
           import fs from "node:fs";
           import { CATALOG_POLICY_VERSION } from "./src/features/catalog/catalog-policy.mjs";
+          import { modelProviderOptionsFromEnvironment } from "./scripts/catalog/model-provider-configuration.mjs";
           import { createCatalogPolicyReviewProvider } from "./scripts/moderation/catalog-policy-review-provider.mjs";
           import { reviewCatalogPolicy } from "./scripts/moderation/review-catalog-policy.mjs";
           const project = JSON.parse(
@@ -127,11 +132,9 @@ jobs:
             : null;
           let provider;
           try {
-            provider = createCatalogPolicyReviewProvider({
-              apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
-              apiKey: process.env.TAVERNARY_ENRICHMENT_API_KEY,
-              model: process.env.TAVERNARY_ENRICHMENT_MODEL,
-            });
+            provider = createCatalogPolicyReviewProvider(
+              modelProviderOptionsFromEnvironment(),
+            );
           } catch {
             provider = {
               review: async () => {

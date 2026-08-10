@@ -114,12 +114,16 @@ test("enrichment delegates one durable rollout to the tested orchestrator", asyn
   );
   expect(rollout?.run?.trim()).toBe("npm run catalog:enrichment-rollout");
   expect(rollout?.env).toMatchObject({
+    UTILITY_API_ENDPOINT: "${{ secrets.UTILITY_API_ENDPOINT }}",
+    UTILITY_API_KEY: "${{ secrets.UTILITY_API_KEY }}",
+    UTILITY_MODEL: "${{ secrets.UTILITY_MODEL }}",
     TAVERNARY_ENRICHMENT_API_URL: "${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}",
     TAVERNARY_ENRICHMENT_API_KEY: "${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}",
     TAVERNARY_ENRICHMENT_MODEL: "${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}",
     GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
     GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
   });
+  expect(text.match(/secrets\.UTILITY_API_KEY/gu)).toHaveLength(1);
   expect(text.match(/secrets\.TAVERNARY_ENRICHMENT_API_KEY/gu)).toHaveLength(1);
   expect(reporter?.env).toEqual({
     GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
