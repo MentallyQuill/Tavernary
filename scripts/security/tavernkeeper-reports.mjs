@@ -526,6 +526,23 @@ function assertReportCoverage(report) {
       "TavernKeeper policy-4 report lacks JavaScript analysis coverage",
     );
   }
+  if (
+    javascript &&
+    Object.hasOwn(javascript, "warning_occurrences") !==
+      Object.hasOwn(javascript, "warning_families")
+  ) {
+    throw new Error(
+      "TavernKeeper JavaScript warning occurrence and family counts must appear together",
+    );
+  }
+  if (
+    javascript?.warning_occurrences !== undefined &&
+    javascript.warning_families > javascript.warning_occurrences
+  ) {
+    throw new Error(
+      "TavernKeeper JavaScript warning families cannot exceed warning occurrences",
+    );
+  }
   const incomplete = javascript?.status === "incomplete";
   const hasUnrecoveredJavascript =
     javascript?.unresolved.some(({ recovered }) => !recovered) ?? false;

@@ -581,6 +581,56 @@ describe("TavernKeeper V5 report import", () => {
     ).toThrow(/JavaScript .*coverage/u);
   });
 
+  test("accepts X-Ray warning-family coverage", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    report.coverage.javascript_analysis.warning_occurrences = 12;
+    report.coverage.javascript_analysis.warning_families = 3;
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(validateScanReport(rebound, validatedIndex.reports[0])).toEqual(
+      rebound,
+    );
+  });
+
+  test("rejects incomplete X-Ray warning-family coverage", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    report.coverage.javascript_analysis.warning_occurrences = 12;
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).toThrow(/warning.*counts.*together/iu);
+  });
+
+  test("rejects more X-Ray families than warning occurrences", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    report.coverage.javascript_analysis.warning_occurrences = 2;
+    report.coverage.javascript_analysis.warning_families = 3;
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).toThrow(/families.*exceed.*occurrences/iu);
+  });
+
   test("rejects complete JavaScript coverage with an unrecovered stage", async () => {
     const [fixtureIndex, baseReport] = await fixtures();
     const report = policy4Report(baseReport);
