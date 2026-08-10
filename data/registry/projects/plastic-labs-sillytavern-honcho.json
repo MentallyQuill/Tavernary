@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "plastic-labs-sillytavern-honcho",
+  "name": "sillytavern-honcho",
+  "kind": "extension",
+  "summary": "Provides persistent, personalized memory for SillyTavern AI characters through Honcho, helping conversations retain relevant character context across sessions.",
+  "metadata_status": "curated",
+  "source_id": "github-1162122304",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": ["maintain-long-term-memory", "persistent-state"],
+  "cataloged_at": "2026-08-10T17:32:09.748Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
