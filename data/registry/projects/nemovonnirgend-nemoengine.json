@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "nemovonnirgend-nemoengine",
+  "name": "NemoEngine",
+  "kind": "preset",
+  "summary": "NemoEngine provides modular presets for SillyTavern roleplay, shaping narration, character agency, style, and scene tracking while keeping prompt components inspectable and editable.",
+  "metadata_status": "curated",
+  "source_id": "github-988091598",
+  "frontends": ["sillytavern"],
+  "primary_function": "preset",
+  "tags": [
+    "guide-model-responses",
+    "modular-and-extensible",
+    "track-characters-and-world-state"
+  ],
+  "model_families": ["model-agnostic"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-08-10T17:50:17.293Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
