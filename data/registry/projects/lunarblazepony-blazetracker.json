@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "lunarblazepony-blazetracker",
+  "name": "BlazeTracker",
+  "kind": "extension",
+  "summary": "BlazeTracker is a SillyTavern extension that tracks time, weather, locations, characters, outfits, relationships, and story progression, then injects state into context for continuity.",
+  "metadata_status": "curated",
+  "source_id": "github-1137639007",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "guide-model-responses",
+    "preserve-story-continuity",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-08-10T17:35:51.380Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
