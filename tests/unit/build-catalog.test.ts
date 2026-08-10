@@ -292,7 +292,7 @@ test("builds sibling extension and preset cards from one source snapshot", async
           repository_id: source.repository_id,
           repository: source.repository,
           target_sha: snapshot.repository.head_sha,
-          scanner_policy_version: "4",
+          scanner_policy_version: "5",
           contextual_review_policy_version: "1",
           completed_at: "2026-07-31T12:05:00.000Z",
           assessed_at: "2026-07-31T12:06:00.000Z",
@@ -312,7 +312,7 @@ test("builds sibling extension and preset cards from one source snapshot", async
             interaction_chains: [],
           },
           report_url:
-            "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/4/1/",
+            "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/5/1/",
           history_url:
             "https://mentallyquill.github.io/TavernKeeper/reports/github/42/history/",
         },
@@ -366,7 +366,7 @@ test("builds sibling extension and preset cards from one source snapshot", async
     history: [
       expect.objectContaining({
         riskLevel: "low",
-        scannerPolicyVersion: "4",
+        scannerPolicyVersion: "5",
         headline: "Low concern",
       }),
     ],

@@ -27,6 +27,9 @@ const indexFixturePath = resolve(
 const reportFixturePath = resolve(
   "tests/fixtures/tavernkeeper/scan-report.v5.valid.json",
 );
+const policy5ReportFixturePath = resolve(
+  "tests/fixtures/tavernkeeper/scan-report.v5.policy5.valid.json",
+);
 const candidateId = "b".repeat(64);
 const evidenceId = "c".repeat(64);
 const registry = [
@@ -370,8 +373,58 @@ function secondReportFrom(reportInput: Record<string, any>) {
 }
 
 describe("TavernKeeper V5 report import", () => {
-  test("uses scanner policy 4 as active catalog evidence", () => {
-    expect(ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION).toBe("4");
+  test("accepts strict policy-5 triage provenance and rejects mismatches", async () => {
+    const [fixtureIndex] = await fixtures();
+    const fixture = JSON.parse(
+      await readFile(policy5ReportFixturePath, "utf8"),
+    );
+    const report = rebindReport(fixture);
+    const entry = projectIndexReport(report);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(validateScanReport(report, validatedIndex.reports[0])).toEqual(
+      report,
+    );
+
+    const invalidSource = clone(report);
+    invalidSource.assessments[0].assessment_source = "contextual-model";
+    const invalidTotal = clone(report);
+    invalidTotal.review_triage.candidates.total = 2;
+    const invalidReasons = clone(report);
+    invalidReasons.review_triage.reasons[0].count = 2;
+    const invalidUsage = clone(report);
+    invalidUsage.review_triage.model_budget.actual.input_tokens = 1;
+    const contextualWithoutReviewer = clone(report);
+    contextualWithoutReviewer.assessments[0].assessment_source =
+      "contextual-model";
+    contextualWithoutReviewer.review_triage.candidates = {
+      total: 1,
+      deterministic: 0,
+      contextual: 1,
+      reused_contextual: 0,
+    };
+    contextualWithoutReviewer.review_triage.cases.contextual = 1;
+    contextualWithoutReviewer.review_triage.model_budget.actual.fresh_behavior_cases = 1;
+
+    for (const invalid of [
+      invalidSource,
+      invalidTotal,
+      invalidReasons,
+      invalidUsage,
+      contextualWithoutReviewer,
+    ]) {
+      const rebound = rebindReport(invalid);
+      expect(() =>
+        validateScanReport(rebound, projectIndexReport(rebound)),
+      ).toThrow();
+    }
+  });
+
+  test("uses scanner policy 5 as active catalog evidence", () => {
+    expect(ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION).toBe("5");
   });
 
   test("accepts a policy-4 index and matching JavaScript coverage", async () => {
@@ -423,7 +476,7 @@ describe("TavernKeeper V5 report import", () => {
 
     expect(() =>
       validateScanReport(rebound, projectIndexReport(rebound)),
-    ).toThrow(/policy-4.*contract versions/iu);
+    ).toThrow(/(?:schema validation|policy-4.*contract versions)/iu);
   });
 
   test.each([
@@ -478,7 +531,7 @@ describe("TavernKeeper V5 report import", () => {
 
     expect(() =>
       validateScanReport(rebound, validatedIndex.reports[0]),
-    ).toThrow(/policy-3.*demonstrated-risk/iu);
+    ).toThrow(/(?:schema validation|policy-3.*demonstrated-risk)/iu);
   });
 
   test("keeps policy-1 and policy-2 reports compatible without risk exposure", async () => {
@@ -520,7 +573,7 @@ describe("TavernKeeper V5 report import", () => {
     ).toThrow(/legacy.*risk exposure/iu);
   });
 
-  test.each(["5", "999"])(
+  test.each(["6", "999"])(
     "rejects unsupported contextual policy %s on an immutable report",
     async (policy) => {
       const [index, baseReport] = await fixtures();
@@ -798,81 +851,6 @@ describe("TavernKeeper V5 report import", () => {
     expect(() =>
       validateScanReport(rebound, validatedIndex.reports[0]),
     ).toThrow(/metadata-only evidence limitation/iu);
-  });
-
-  test("accepts disclosed conservative model fallback coverage", async () => {
-    const [fixtureIndex, baseReport] = await fixtures();
-    const report = addExpectedCandidate(policy4Report(baseReport));
-    report.review_coverage = {
-      required: 1,
-      completed: 1,
-      model_completed: 0,
-      deterministic_fallback: 1,
-    };
-    report.assessments[0] = {
-      ...report.assessments[0],
-      disposition: "material_vulnerability",
-      impact: "medium",
-      exploitability: "plausible",
-      confidence: "low",
-      recommended_risk: "material",
-      technical_explanation:
-        "Contextual model assessment was unavailable within the bounded review window.",
-      layman_explanation:
-        "Automated contextual review could not resolve this scanner warning.",
-      developer_action: "Manually inspect the cited evidence before release.",
-    };
-    report.counts = {
-      ...report.counts,
-      disposition: {
-        expected_behavior: 0,
-        minor_weakness: 0,
-        material_vulnerability: 1,
-        credible_malicious_behavior: 0,
-      },
-      impact: { none: 0, low: 0, medium: 1, high: 0, critical: 0 },
-      exploitability: {
-        unlikely: 0,
-        plausible: 1,
-        readily_exploitable: 0,
-      },
-      confidence: { low: 1, medium: 0, high: 0 },
-      recommended_risk: { low: 0, material: 1, high: 0 },
-    };
-    report.limitations.push(
-      "One or more scanner candidates did not receive contextual model assessment within the bounded review window. They remain conservatively classified as material concerns and require manual inspection.",
-    );
-    const rebound = rebindReport(report);
-    const entry = projectIndexReport(rebound);
-    const validatedIndex = validateReportIndex(
-      { ...fixtureIndex, reports: [entry] },
-      registry,
-    );
-
-    expect(() =>
-      validateScanReport(rebound, validatedIndex.reports[0]),
-    ).not.toThrow();
-  });
-
-  test("rejects fallback coverage that is missing or presented as clean", async () => {
-    const [fixtureIndex, baseReport] = await fixtures();
-    const report = addExpectedCandidate(policy4Report(baseReport));
-    report.review_coverage = {
-      required: 1,
-      completed: 1,
-      model_completed: 0,
-      deterministic_fallback: 1,
-    };
-    const rebound = rebindReport(report);
-    const entry = projectIndexReport(rebound);
-    const validatedIndex = validateReportIndex(
-      { ...fixtureIndex, reports: [entry] },
-      registry,
-    );
-
-    expect(() =>
-      validateScanReport(rebound, validatedIndex.reports[0]),
-    ).toThrow(/fallback/iu);
   });
 
   test("rejects incomplete JavaScript coverage when every stage recovered", async () => {
@@ -1250,7 +1228,7 @@ describe("TavernKeeper V5 report import", () => {
     expect(outcome.import_state.quarantines).toEqual([]);
   });
 
-  test.each(["5", "999"])(
+  test.each(["6", "999"])(
     "rejects unsupported contextual policy %s before reconciliation routes work",
     async (policy) => {
       const root = await mkdtemp(

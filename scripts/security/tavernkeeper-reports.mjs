@@ -13,19 +13,23 @@ export const TAVERNKEEPER_ORIGIN = "https://mentallyquill.github.io";
 export const TAVERNKEEPER_REPORTS_PATH_PREFIX = "/TavernKeeper/reports/";
 export const TAVERNKEEPER_REPORT_INDEX_URL =
   "https://mentallyquill.github.io/TavernKeeper/reports/index.json";
-export const ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION = "4";
+export const ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION = "5";
 
 const digestPattern = /^[0-9a-f]{64}$/u;
 const fullShaPattern = /^[0-9a-f]{40}$/u;
 const versionPattern = /^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$/u;
-const supportedScannerPolicyVersions = new Set(["3", "4"]);
-const supportedContextualReviewPolicyVersions = new Set(["1", "2", "3", "4"]);
+const supportedScannerPolicyVersions = new Set(["3", "4", "5"]);
+const supportedContextualReviewPolicyVersions = new Set([
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+]);
 const incompleteJavascriptLimitation =
   "JavaScript analysis was incomplete, so this first-filter scan supports no clean conclusion about unobserved behavior.";
 const metadataOnlyEvidenceLimitation =
   "One or more scanner candidates refer to non-text artifacts. Their size, digest, and scanner metadata were verified, but raw contents were not provided to the contextual model.";
-const deterministicReviewFallbackLimitation =
-  "One or more scanner candidates did not receive contextual model assessment within the bounded review window. They remain conservatively classified as material concerns and require manual inspection.";
 const rfc3339DateTime =
   /^(?<year>\d{4})-(?<month>0[1-9]|1[0-2])-(?<day>0[1-9]|[12]\d|3[01])T(?<hour>[01]\d|2[0-3]):(?<minute>[0-5]\d):(?<second>[0-5]\d)(?:\.\d+)?Z$/u;
 
@@ -135,7 +139,7 @@ function assertSupportedContextualReviewPolicy(entry) {
 function assertContextualReviewPolicy(report) {
   assertSupportedContextualReviewPolicy(report);
   const items = [...report.assessments, ...report.observations];
-  const demonstratedRiskPolicy = ["3", "4"].includes(
+  const demonstratedRiskPolicy = ["3", "4", "5"].includes(
     report.contextual_review_policy_version,
   );
   if (!demonstratedRiskPolicy) {
@@ -146,10 +150,11 @@ function assertContextualReviewPolicy(report) {
     }
     return;
   }
-  const expectedPromptVersion =
-    report.contextual_review_policy_version === "4"
-      ? "contextual-review-v7"
-      : "contextual-review-v6";
+  const expectedPromptVersion = ["4", "5"].includes(
+    report.contextual_review_policy_version,
+  )
+    ? "contextual-review-v7"
+    : "contextual-review-v6";
   if (
     report.prompt_version !== expectedPromptVersion ||
     report.assessment_schema_version !== "contextual-assessment-v2"
@@ -237,7 +242,7 @@ function assertCanonicalIndexEntry(entry) {
     throw new Error("TavernKeeper report review coverage is incomplete");
   }
   if (
-    (entry.scanner_policy_version === "4" &&
+    (["4", "5"].includes(entry.scanner_policy_version) &&
       entry.coverage.javascript_analysis_status === "legacy") ||
     (entry.scanner_policy_version === "3" &&
       entry.coverage.javascript_analysis_status !== "legacy")
@@ -459,7 +464,131 @@ const originTools = {
   "javascript-analysis": "javascript-analysis",
 };
 
+function assertPolicy5Triage(report) {
+  const scannerPolicy5 = report.scanner_policy_version === "5";
+  const contextualPolicy5 = report.contextual_review_policy_version === "5";
+  if (scannerPolicy5 !== contextualPolicy5) {
+    throw new Error(
+      "TavernKeeper scanner and contextual policy-5 versions do not match",
+    );
+  }
+  if (!scannerPolicy5) {
+    if (
+      report.review_triage !== undefined ||
+      report.assessments.some(
+        (assessment) =>
+          Object.hasOwn(assessment, "assessment_source") ||
+          Object.hasOwn(assessment, "triage_reason_code"),
+      )
+    ) {
+      throw new Error(
+        "TavernKeeper historical report contains policy-5 triage provenance",
+      );
+    }
+    return;
+  }
+  if (
+    report.rule_catalog_version !== "2" ||
+    report.prompt_version !== "contextual-review-v7" ||
+    report.assessment_schema_version !== "contextual-assessment-v2" ||
+    report.review_triage?.policy_version !== "1" ||
+    report.candidates.some(
+      (candidate) => candidate.execution_scope === undefined,
+    )
+  ) {
+    throw new Error("TavernKeeper policy-5 report identity is invalid");
+  }
+
+  const triage = report.review_triage;
+  const reasonCounts = new Map();
+  let deterministic = 0;
+  let contextual = 0;
+  for (const assessment of report.assessments) {
+    if (assessment.assessment_source === "deterministic-policy") {
+      deterministic += 1;
+    } else if (assessment.assessment_source === "contextual-model") {
+      contextual += 1;
+    } else {
+      throw new Error("TavernKeeper policy-5 assessment source is invalid");
+    }
+    if (
+      typeof assessment.triage_reason_code !== "string" ||
+      !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(assessment.triage_reason_code)
+    ) {
+      throw new Error("TavernKeeper policy-5 triage reason is invalid");
+    }
+    reasonCounts.set(
+      assessment.triage_reason_code,
+      (reasonCounts.get(assessment.triage_reason_code) ?? 0) + 1,
+    );
+  }
+  const expectedReasons = [...reasonCounts]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([reason_code, count]) => ({ reason_code, count }));
+  const reusedCandidates = report.review_reuse?.candidates.reused ?? 0;
+  const reusedCases = report.review_reuse?.groups.reused ?? 0;
+  const batches = report.review_batches ?? [];
+  const actual = triage.model_budget.actual;
+  const configured = triage.model_budget.configured;
+  const estimatedInputTokens = batches.reduce(
+    (total, batch) => total + (batch.estimated_input_tokens ?? 0),
+    0,
+  );
+
+  if (
+    triage.candidates.total !== report.candidates.length ||
+    triage.candidates.deterministic + triage.candidates.contextual !==
+      triage.candidates.total ||
+    triage.candidates.deterministic !== deterministic ||
+    triage.candidates.contextual !== contextual ||
+    triage.candidates.reused_contextual !== reusedCandidates ||
+    triage.candidates.reused_contextual > triage.candidates.contextual
+  ) {
+    throw new Error("TavernKeeper policy-5 candidate triage is inconsistent");
+  }
+  if (
+    triage.cases.contextual > triage.cases.total ||
+    triage.cases.reused_contextual > triage.cases.contextual ||
+    triage.cases.reused_contextual !== reusedCases ||
+    (triage.candidates.total > 0 && triage.cases.total === 0)
+  ) {
+    throw new Error(
+      "TavernKeeper policy-5 behavior-case triage is inconsistent",
+    );
+  }
+  if (JSON.stringify(triage.reasons) !== JSON.stringify(expectedReasons)) {
+    throw new Error("TavernKeeper policy-5 triage reasons are inconsistent");
+  }
+  if (
+    actual.fresh_behavior_cases !==
+      triage.cases.contextual - triage.cases.reused_contextual ||
+    actual.provider_calls !== batches.length ||
+    actual.estimated_input_tokens !== estimatedInputTokens ||
+    actual.input_tokens !== report.review_usage.input_tokens ||
+    actual.output_tokens !== report.review_usage.output_tokens ||
+    actual.fresh_behavior_cases > configured.max_fresh_behavior_cases ||
+    actual.provider_calls > configured.max_provider_calls ||
+    actual.estimated_input_tokens > configured.max_estimated_input_tokens ||
+    actual.input_tokens > configured.max_actual_input_tokens ||
+    actual.output_tokens > configured.max_actual_output_tokens
+  ) {
+    throw new Error("TavernKeeper policy-5 model budget is inconsistent");
+  }
+  if (
+    (contextual > 0 || actual.provider_calls > 0) &&
+    report.contextual_reviewer === undefined
+  ) {
+    throw new Error("TavernKeeper contextual candidates lack a reviewer");
+  }
+  if (contextual === 0 && report.observations.length > 0) {
+    throw new Error(
+      "TavernKeeper all-deterministic report contains model observations",
+    );
+  }
+}
+
 function assertReportCoverage(report) {
+  assertPolicy5Triage(report);
   const evidenceValidation = report.coverage.evidence_validation;
   const metadataOnlyEvidence =
     evidenceValidation.status === "completed-with-limitations";
@@ -475,33 +604,6 @@ function assertReportCoverage(report) {
           evidenceValidation.validated_candidates))
   ) {
     throw new Error("TavernKeeper report review coverage is incomplete");
-  }
-  const modelCompleted = report.review_coverage.model_completed;
-  const deterministicFallback = report.review_coverage.deterministic_fallback;
-  if (
-    (modelCompleted === undefined) !== (deterministicFallback === undefined) ||
-    (modelCompleted !== undefined &&
-      modelCompleted + deterministicFallback !==
-        report.review_coverage.completed)
-  ) {
-    throw new Error(
-      "TavernKeeper report model and fallback coverage is incomplete",
-    );
-  }
-  const conservativeFallbackAssessments = report.assessments.filter(
-    (assessment) =>
-      assessment.disposition === "material_vulnerability" &&
-      assessment.impact === "medium" &&
-      assessment.exploitability === "plausible" &&
-      assessment.confidence === "low" &&
-      assessment.recommended_risk === "material",
-  ).length;
-  if (
-    (deterministicFallback ?? 0) > conservativeFallbackAssessments ||
-    (deterministicFallback ?? 0) > 0 !==
-      report.limitations.includes(deterministicReviewFallbackLimitation)
-  ) {
-    throw new Error("TavernKeeper deterministic fallback coverage is invalid");
   }
   if (
     metadataOnlyEvidence !==
@@ -546,10 +648,14 @@ function assertReportCoverage(report) {
   }
   if (report.review_reuse) {
     const sourceIds = report.review_reuse.source_report_ids;
+    const expectedReusableCandidates =
+      report.contextual_review_policy_version === "5"
+        ? report.review_triage.candidates.contextual
+        : report.candidates.length;
     if (
       report.review_reuse.candidates.fresh +
         report.review_reuse.candidates.reused !==
-        report.candidates.length ||
+        expectedReusableCandidates ||
       (report.review_reuse.groups.reused === 0) !== (sourceIds.length === 0) ||
       new Set(sourceIds).size !== sourceIds.length ||
       sourceIds.some(
@@ -560,7 +666,10 @@ function assertReportCoverage(report) {
     }
   }
   const javascript = report.coverage.javascript_analysis;
-  if (report.scanner_policy_version === "4" && javascript === undefined) {
+  if (
+    ["4", "5"].includes(report.scanner_policy_version) &&
+    javascript === undefined
+  ) {
     throw new Error(
       "TavernKeeper policy-4 report lacks JavaScript analysis coverage",
     );

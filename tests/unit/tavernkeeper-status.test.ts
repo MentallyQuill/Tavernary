@@ -31,7 +31,7 @@ function report(
     repository_id: source.repository_id,
     repository: source.repository,
     target_sha: currentSha,
-    scanner_policy_version: "4",
+    scanner_policy_version: "5",
     contextual_review_policy_version: "1",
     completed_at: "2026-07-31T12:05:00.000Z",
     assessed_at: "2026-07-31T12:06:00.000Z",
@@ -41,7 +41,7 @@ function report(
     assessment_source: "model",
     report_url:
       "https://mentallyquill.github.io/TavernKeeper/reports/github/42/" +
-      `${currentSha}/4/${"c".repeat(64)}/`,
+      `${currentSha}/5/${"c".repeat(64)}/`,
     assessment: {
       risk_level: "low",
       headline: "Low concern",

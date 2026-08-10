@@ -156,7 +156,7 @@ function reportMatchesSource(
     report.source_id === source.id &&
     report.repository === source.repository &&
     report.provider === "github" &&
-    ["3", ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION].includes(
+    ["3", "4", ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION].includes(
       report.scanner_policy_version,
     )
   );
