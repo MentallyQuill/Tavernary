@@ -2,6 +2,7 @@ import { afterEach, expect, test, vi } from "vitest";
 
 import {
   ENRICHMENT_TIMEOUT_MS,
+  MAX_PROVIDER_RESPONSE_BYTES,
   createEnrichmentProvider,
   parseProviderMessage,
   validateProviderConfiguration,
@@ -549,6 +550,24 @@ function utilityProviderOptions(fetchImpl: typeof fetch) {
   };
 }
 
+test("returns schema-valid utility JSON without calling Luna", async () => {
+  const urls: string[] = [];
+  const provider = createEnrichmentProvider(
+    utilityProviderOptions(async (url) => {
+      urls.push(String(url));
+      return modelResponse(utilityModel, {
+        content: JSON.stringify(output),
+      });
+    }),
+  );
+
+  await expect(provider.generate(input)).resolves.toMatchObject({
+    output,
+    metadata: { requestedModel: utilityModel },
+  });
+  expect(urls).toEqual([utilityUrl]);
+});
+
 test("repairs malformed utility JSON once without sending original source context", async () => {
   const requests: Array<{ url: string; body: Record<string, any> }> = [];
   const markedInput = {
@@ -638,20 +657,48 @@ test("repairs schema-invalid utility JSON before returning it", async () => {
   expect(urls).toEqual([utilityUrl, repairUrl]);
 });
 
-test("preserves the primary invalid-response diagnostic when Luna repair fails", async () => {
+test("repairs a non-object utility JSON value", async () => {
   const urls: string[] = [];
   const provider = createEnrichmentProvider(
     utilityProviderOptions(async (url) => {
       urls.push(String(url));
       return String(url) === utilityUrl
+        ? modelResponse(utilityModel, { content: "[]" })
+        : modelResponse(repairModel, {
+            content: JSON.stringify(output),
+          });
+    }),
+  );
+
+  await expect(provider.generate(input)).resolves.toMatchObject({
+    output,
+    metadata: {
+      jsonRepair: {
+        diagnosticCode: "json-not-object",
+        succeeded: true,
+      },
+    },
+  });
+  expect(urls).toEqual([utilityUrl, repairUrl]);
+});
+
+test("preserves the primary invalid-response diagnostic when Luna repair fails", async () => {
+  const urls: string[] = [];
+  const times = [1_000, 1_250, 2_000, 2_250];
+  const provider = createEnrichmentProvider({
+    ...utilityProviderOptions(async (url) => {
+      urls.push(String(url));
+      return String(url) === utilityUrl
         ? modelResponse(utilityModel, { content: "{not-json" })
         : modelResponse(repairModel, { content: "still not JSON" });
     }),
-  );
+    now: () => times.shift() ?? 2_250,
+  });
 
   await expect(provider.generate(input)).rejects.toMatchObject({
     code: "provider-response-invalid",
     diagnosticCode: "json-invalid",
+    latencyMs: 250,
   });
   expect(urls).toEqual([utilityUrl, repairUrl]);
 });
@@ -691,6 +738,46 @@ test("does not attach damaged schema-invalid output to a thrown error", async ()
   expect(JSON.stringify(error)).not.toContain("PRIVATE DAMAGED OUTPUT MARKER");
 });
 
+test.each([
+  [
+    "HTTP failure",
+    () => new Response("private repair failure", { status: 500 }),
+  ],
+  [
+    "model mismatch",
+    () =>
+      modelResponse("unexpected-repair-model", {
+        content: JSON.stringify(output),
+      }),
+  ],
+  [
+    "schema-invalid JSON",
+    () =>
+      modelResponse(repairModel, {
+        content: JSON.stringify({ summary: output.summary }),
+      }),
+  ],
+] as const)(
+  "preserves the primary error and stops after one repair on %s",
+  async (_name, repairResponse) => {
+    const urls: string[] = [];
+    const provider = createEnrichmentProvider(
+      utilityProviderOptions(async (url) => {
+        urls.push(String(url));
+        return String(url) === utilityUrl
+          ? modelResponse(utilityModel, { content: "{not-json" })
+          : repairResponse();
+      }),
+    );
+
+    await expect(provider.generate(input)).rejects.toMatchObject({
+      code: "provider-response-invalid",
+      diagnosticCode: "json-invalid",
+    });
+    expect(urls).toEqual([utilityUrl, repairUrl]);
+  },
+);
+
 test("rejects invalid repair configuration before calling either provider", () => {
   expect(() =>
     createEnrichmentProvider({
@@ -724,6 +811,94 @@ test("rejects an oversized primary envelope without invoking Luna", async () => 
   expect(urls).toEqual([utilityUrl]);
 });
 
+test("stops reading a chunked primary response at the byte limit", async () => {
+  let canceled = false;
+  let pulls = 0;
+  const body = new ReadableStream<Uint8Array>(
+    {
+      pull(controller) {
+        pulls += 1;
+        if (pulls === 1) {
+          controller.enqueue(new Uint8Array(MAX_PROVIDER_RESPONSE_BYTES));
+        } else if (pulls === 2) {
+          controller.enqueue(new Uint8Array(1));
+        } else {
+          controller.error(new Error("reader continued beyond byte limit"));
+        }
+      },
+      cancel() {
+        canceled = true;
+      },
+    },
+    { highWaterMark: 0 },
+  );
+  const provider = createEnrichmentProvider(
+    utilityProviderOptions(async () => new Response(body, { status: 200 })),
+  );
+
+  await expect(provider.generate(input)).rejects.toMatchObject({
+    code: "provider-response-invalid",
+    diagnosticCode: "response-too-large",
+  });
+  expect(canceled).toBe(true);
+  expect(pulls).toBe(2);
+});
+
+test("stops reading a chunked provider error body at the byte limit", async () => {
+  let canceled = false;
+  let pulls = 0;
+  const body = new ReadableStream<Uint8Array>(
+    {
+      pull(controller) {
+        pulls += 1;
+        if (pulls === 1) {
+          controller.enqueue(new Uint8Array(MAX_PROVIDER_RESPONSE_BYTES));
+        } else if (pulls === 2) {
+          controller.enqueue(new Uint8Array(1));
+        } else {
+          controller.error(new Error("reader continued beyond byte limit"));
+        }
+      },
+      cancel() {
+        canceled = true;
+      },
+    },
+    { highWaterMark: 0 },
+  );
+  const provider = createEnrichmentProvider(
+    utilityProviderOptions(async () => new Response(body, { status: 400 })),
+  );
+
+  await expect(provider.generate(input)).rejects.toMatchObject({
+    code: "provider-request-failed",
+  });
+  expect(canceled).toBe(true);
+  expect(pulls).toBe(2);
+});
+
+test("normalizes a response body that stalls until timeout", async () => {
+  vi.useFakeTimers();
+  const provider = createEnrichmentProvider(
+    utilityProviderOptions(async (_url, init) => {
+      const body = new ReadableStream<Uint8Array>({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{"model":'));
+          init?.signal?.addEventListener("abort", () => {
+            controller.error(new DOMException("aborted", "AbortError"));
+          });
+        },
+      });
+      return new Response(body, { status: 200 });
+    }),
+  );
+
+  const rejection = expect(provider.generate(input)).rejects.toMatchObject({
+    code: "provider-timeout",
+  });
+  await vi.advanceTimersByTimeAsync(ENRICHMENT_TIMEOUT_MS);
+  await rejection;
+});
+
 test.each([
   [
     "missing content",
@@ -740,6 +915,14 @@ test.each([
     "provider-response-invalid",
   ],
   [
+    "unsafe content parts",
+    () =>
+      modelResponse(utilityModel, {
+        content: [{ type: "image", image_url: "private" }],
+      }),
+    "provider-response-invalid",
+  ],
+  [
     "model mismatch",
     () =>
       modelResponse("unexpected-model", { content: JSON.stringify(output) }),
@@ -749,6 +932,16 @@ test.each([
     "rate limit",
     () => new Response("private provider body", { status: 429 }),
     "provider-rate-limited",
+  ],
+  [
+    "authentication failure",
+    () => new Response("private provider body", { status: 401 }),
+    "provider-authentication-failed",
+  ],
+  [
+    "server failure",
+    () => new Response("private provider body", { status: 500 }),
+    "provider-server-error",
   ],
 ] as const)(
   "does not invoke Luna for an ineligible %s failure",
@@ -765,6 +958,43 @@ test.each([
     expect(urls).toEqual([utilityUrl]);
   },
 );
+
+test("does not invoke Luna after a utility network failure", async () => {
+  const urls: string[] = [];
+  const provider = createEnrichmentProvider(
+    utilityProviderOptions(async (url) => {
+      urls.push(String(url));
+      throw new Error("network unavailable");
+    }),
+  );
+
+  await expect(provider.generate(input)).rejects.toMatchObject({
+    code: "provider-network-error",
+  });
+  expect(urls).toEqual([utilityUrl]);
+});
+
+test("does not invoke Luna after a utility timeout", async () => {
+  vi.useFakeTimers();
+  const urls: string[] = [];
+  const provider = createEnrichmentProvider(
+    utilityProviderOptions(async (url, init) => {
+      urls.push(String(url));
+      return new Promise((_resolve, reject) => {
+        init?.signal?.addEventListener("abort", () => {
+          reject(new DOMException("aborted", "AbortError"));
+        });
+      });
+    }),
+  );
+
+  const rejection = expect(provider.generate(input)).rejects.toMatchObject({
+    code: "provider-timeout",
+  });
+  await vi.advanceTimersByTimeAsync(ENRICHMENT_TIMEOUT_MS);
+  await rejection;
+  expect(urls).toEqual([utilityUrl]);
+});
 
 test("keeps schema-valid semantic repairs on the utility provider", async () => {
   const urls: string[] = [];

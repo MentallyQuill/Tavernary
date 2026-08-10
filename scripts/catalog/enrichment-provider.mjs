@@ -227,19 +227,35 @@ function safeDiagnosticToken(value) {
     : null;
 }
 
-async function statusError(response) {
+async function statusError(response, maximumBytes) {
   const { status } = response;
-  if (status === 429)
+  if (status === 429) {
+    await cancelResponseBody(response);
     return new EnrichmentProviderError("provider-rate-limited");
+  }
   if (status === 401 || status === 403) {
+    await cancelResponseBody(response);
     return new EnrichmentProviderError("provider-authentication-failed");
   }
   if (status >= 500) {
+    await cancelResponseBody(response);
     return new EnrichmentProviderError("provider-server-error");
   }
   let diagnosticCode = null;
+  let serialized;
   try {
-    const payload = await response.json();
+    serialized = await boundedResponseText(response, maximumBytes);
+  } catch (error) {
+    if (
+      error instanceof EnrichmentProviderError &&
+      error.diagnosticCode === "response-too-large"
+    ) {
+      return new EnrichmentProviderError("provider-request-failed");
+    }
+    throw error;
+  }
+  try {
+    const payload = JSON.parse(serialized);
     const code = safeDiagnosticToken(payload?.error?.code);
     const parameter = safeDiagnosticToken(payload?.error?.param);
     diagnosticCode = [code, parameter].filter(Boolean).join(":") || null;
@@ -253,15 +269,52 @@ function byteLength(value) {
   return new TextEncoder().encode(value).byteLength;
 }
 
-async function boundedResponsePayload(response, maximumBytes) {
-  const declaredLength = Number(response.headers.get("content-length"));
+async function cancelResponseBody(response) {
+  try {
+    await response.body?.cancel();
+  } catch {
+    // Preserve the original bounded-response diagnostic.
+  }
+}
+
+async function boundedResponseText(response, maximumBytes) {
+  const declaredHeader = response.headers.get("content-length");
+  const declaredLength =
+    declaredHeader === null ? null : Number(declaredHeader);
   if (Number.isFinite(declaredLength) && declaredLength > maximumBytes) {
+    await cancelResponseBody(response);
     throw invalidResponse("response-too-large");
   }
-  const serialized = await response.text();
-  if (byteLength(serialized) > maximumBytes) {
-    throw invalidResponse("response-too-large");
+
+  const reader = response.body?.getReader();
+  if (!reader) return "";
+  const decoder = new TextDecoder();
+  let serialized = "";
+  let totalBytes = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      totalBytes += value.byteLength;
+      if (totalBytes > maximumBytes) {
+        try {
+          await reader.cancel();
+        } catch {
+          // Preserve the original bounded-response diagnostic.
+        }
+        throw invalidResponse("response-too-large");
+      }
+      serialized += decoder.decode(value, { stream: true });
+    }
+    serialized += decoder.decode();
+    return serialized;
+  } finally {
+    reader.releaseLock();
   }
+}
+
+async function boundedResponsePayload(response, maximumBytes) {
+  const serialized = await boundedResponseText(response, maximumBytes);
   try {
     return JSON.parse(serialized);
   } catch {
@@ -302,7 +355,9 @@ async function requestProviderEnvelope({
       );
     }
 
-    if (!response.ok) throw await statusError(response);
+    if (!response.ok) {
+      throw await statusError(response, maximumResponseBytes);
+    }
     const payload = await boundedResponsePayload(
       response,
       maximumResponseBytes,
@@ -321,10 +376,20 @@ async function requestProviderEnvelope({
       },
     };
   } catch (error) {
-    if (error instanceof EnrichmentProviderError && error.latencyMs === null) {
-      error.latencyMs = Math.max(0, now() - startedAt);
+    const controlledError =
+      error instanceof EnrichmentProviderError
+        ? error
+        : new EnrichmentProviderError(
+            controller.signal.aborted
+              ? "provider-timeout"
+              : "provider-network-error",
+            null,
+            { timeoutMs },
+          );
+    if (controlledError.latencyMs === null) {
+      controlledError.latencyMs = Math.max(0, now() - startedAt);
     }
-    throw error;
+    throw controlledError;
   } finally {
     clearTimeout(timeout);
   }
@@ -429,6 +494,12 @@ export function createStructuredProviderTransport(options) {
           metadata: primary.metadata,
         };
       } catch (primaryError) {
+        if (
+          primaryError instanceof EnrichmentProviderError &&
+          primaryError.latencyMs === null
+        ) {
+          primaryError.latencyMs = primary.metadata.latencyMs;
+        }
         const primaryMessage = primary.payload?.choices?.[0]?.message;
         const damagedText = damagedTextFrom(primaryMessage);
         if (
