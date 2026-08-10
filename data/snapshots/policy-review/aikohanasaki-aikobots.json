@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "aikohanasaki-aikobots",
+  "source_id": "github-998992781",
+  "source_identity": "github:aikohanasaki/aikobots",
+  "evidence_fingerprint": "15c29cfa6e404c04d5e4dac02d0f1c5dfb66f6566e9bb2e15cf9311ffef08bb8",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-10T09:10:13.622Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-10T09:10:13.622Z"
+  },
+  "maintenance_issue_number": null
+}
