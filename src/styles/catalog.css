@@ -197,7 +197,7 @@
   gap: 10px;
   border: 1px solid var(--color-control-border);
   border-radius: 8px;
-  padding: 0 13px;
+  padding: 0 9px 0 13px;
   background: var(--color-control-bg);
   transition:
     border-color 150ms ease,
@@ -256,17 +256,18 @@
   position: relative;
   display: grid;
   flex: none;
+  margin-inline: -4px;
   place-items: center;
 }
 
 .search-help-trigger {
   position: relative;
   display: grid;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border: 0;
   border-radius: 50%;
-  padding: 5px;
+  padding: 3px;
   color: var(--color-text-muted);
   background: transparent;
   cursor: pointer;
@@ -1898,7 +1899,7 @@ body.sheet-open {
 
   .search-help-trigger::before {
     position: absolute;
-    inset: -8px;
+    inset: -10px;
     content: "";
   }
 }

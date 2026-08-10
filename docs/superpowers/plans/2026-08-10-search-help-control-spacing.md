@@ -26,24 +26,24 @@
 - Consumes: existing `.site-search`, `.search-help`, and `.search-help-trigger` selectors
 - Produces: a 9px right inset, 6px slash/help gap, and centered 24px visible help surface
 
-- [ ] **Step 1: Write the failing browser geometry test**
+- [x] **Step 1: Write the failing browser geometry test**
 
 Extend the existing main-search test to assert the approved literal geometry and icon center alignment from real browser bounding boxes.
 
-- [ ] **Step 2: Run the focused browser test to verify it fails**
+- [x] **Step 2: Run the focused browser test to verify it fails**
 
 Run: `npm.cmd run test:e2e -- tests/e2e/catalog.spec.ts --grep "uses one focus boundary"`
 
 Expected: FAIL because the current help trigger is 28px, the slash/help gap is 10px, and the right inset is 13px.
 
-- [ ] **Step 3: Implement the minimal CSS change**
+- [x] **Step 3: Implement the minimal CSS change**
 
-Use asymmetric search padding, a negative inline-start margin on `.search-help`, and a 24px square trigger with 3px padding. Increase the coarse-pointer pseudo-element inset to 10px so the effective target remains 44px.
+Use asymmetric search padding, negative inline margins on `.search-help`, and a 24px square trigger with 3px padding. Increase the coarse-pointer pseudo-element inset to 10px so the effective target remains 44px.
 
-- [ ] **Step 4: Run focused and full verification**
+- [x] **Step 4: Run focused and full verification**
 
 Run the focused desktop test, relevant mobile/search-help tests, `npm.cmd run check`, and rendered desktop/mobile visual QA.
 
-- [ ] **Step 5: Commit and publish**
+- [x] **Step 5: Commit and publish**
 
 Commit the tested CSS and regression coverage, push `codex/tighten-search-help-controls`, open a ready PR, wait for required checks, and merge it.
