@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "virgilianshailer-lorebook-creator",
+  "source_id": "github-1248273779",
+  "source_identity": "github:virgilianshailer/lorebook-creator",
+  "evidence_fingerprint": "6d0609dad2f8fb492ae3c10055411a00e1a94e3a864a3c0a6ac761927b6cf473",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-10T09:05:39.587Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-10T09:05:39.587Z"
+  },
+  "maintenance_issue_number": null
+}
