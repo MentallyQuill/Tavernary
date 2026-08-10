@@ -347,20 +347,6 @@
   margin-top: 10px;
 }
 
-@media (pointer: coarse) {
-  .search-help-trigger::before {
-    position: absolute;
-    inset: -8px;
-    content: "";
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .search-help-popover {
-    transition: none;
-  }
-}
-
 .header-actions {
   display: flex;
   align-items: center;
@@ -1909,11 +1895,18 @@ body.sheet-open {
     inset: -14px;
     content: "";
   }
+
+  .search-help-trigger::before {
+    position: absolute;
+    inset: -8px;
+    content: "";
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .tavernkeeper-scan-indicator-trigger,
-  .tavernkeeper-popover {
+  .tavernkeeper-popover,
+  .search-help-popover {
     transition: none;
   }
 }
