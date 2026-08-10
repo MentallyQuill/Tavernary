@@ -1,0 +1,57 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1137639007",
+  "repository": {
+    "id": 1137639007,
+    "owner": "lunarblazepony",
+    "name": "BlazeTracker",
+    "url": "https://github.com/lunarblazepony/BlazeTracker",
+    "description": "A SillyTavern extension that uses LLM analysis to track and maintain scene state across roleplay conversations. Helps AI models stay consistent with physical positions, outfits, time of day, mood, and narrative tension.",
+    "default_branch": "master",
+    "head_sha": "00d8d49c92b1ffa7bf26d4d32b534b14b5cae12e",
+    "head_committed_at": "2026-03-23T22:59:58.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-01-19T16:24:31.000Z",
+    "size_kb": 24095
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-03-23T23:00:00.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-10T17:35:51.380Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "00d8d49c92b1ffa7bf26d4d32b534b14b5cae12e"
+  },
+  "community": {
+    "stars_count": 12,
+    "forks_count": 2,
+    "watchers_count": 0,
+    "aggregate": 14
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-10T17:35:51.380Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "lunarblazepony", "type": "User", "provider": "github" },
+      { "login": "github-actions[bot]", "type": "Bot", "provider": "github" },
+      { "login": "CasualAutopsy", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-10T17:35:51.380Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
