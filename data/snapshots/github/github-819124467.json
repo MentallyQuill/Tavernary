@@ -1,0 +1,49 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-819124467",
+  "repository": {
+    "id": 819124467,
+    "owner": "LenAnderson",
+    "name": "SillyTavern-MessageVariables",
+    "url": "https://github.com/LenAnderson/SillyTavern-MessageVariables",
+    "description": "Variables specific to a message and swipe.",
+    "default_branch": "master",
+    "head_sha": "a7d5bb556b3243e79decf49ef96234f71757cb98",
+    "head_committed_at": "2024-07-19T22:01:22.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2024-06-23T21:04:57.000Z",
+    "size_kb": 3
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-10T17:40:08.900Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "a7d5bb556b3243e79decf49ef96234f71757cb98"
+  },
+  "community": {
+    "stars_count": 6,
+    "forks_count": 1,
+    "watchers_count": 1,
+    "aggregate": 8
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-08-10T17:40:08.900Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-10T17:40:08.900Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

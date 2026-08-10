@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "lenanderson-sillytavern-messagevariables",
+  "name": "SillyTavern-MessageVariables",
+  "kind": "extension",
+  "summary": "SillyTavern-MessageVariables adds message- and swipe-specific variables, then copies them into chat variables for use across the conversation.",
+  "metadata_status": "curated",
+  "source_id": "github-819124467",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["track-characters-and-world-state"],
+  "cataloged_at": "2026-08-10T17:40:08.900Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
