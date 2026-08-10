@@ -81,10 +81,10 @@
   .site-search {
     grid-area: search;
     grid-column: 1 / -1;
-    width: 100%;
+    width: calc(100vw - 26px);
   }
 
-  .site-search kbd {
+  .site-search > kbd {
     display: none;
   }
 

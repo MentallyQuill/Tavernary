@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
+import { SearchHelp } from "@/features/search/components/search-help";
 import { KoFiSupport } from "@/features/catalog/components/kofi-support";
 
 export function SiteHeader({
@@ -36,10 +37,13 @@ export function SiteHeader({
           <span className="brand-tagline">Where AI roleplay tools gather</span>
         </span>
       </Link>
-      <label className="site-search">
+      <div className="site-search" role="search">
         <CategoryIcon name="search" />
-        <span className="visually-hidden">Search projects</span>
+        <label className="visually-hidden" htmlFor="catalog-search">
+          Search projects
+        </label>
         <input
+          id="catalog-search"
           ref={searchRef}
           type="search"
           value={search}
@@ -48,7 +52,8 @@ export function SiteHeader({
           aria-label="Search projects"
         />
         <kbd>/</kbd>
-      </label>
+        <SearchHelp />
+      </div>
       <nav className="header-actions" aria-label="Site actions">
         <a className="top-link about-link" href="./about/">
           About

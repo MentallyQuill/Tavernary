@@ -241,7 +241,7 @@
   color: var(--color-control-placeholder);
 }
 
-.site-search kbd {
+.site-search > kbd {
   border: 1px solid var(--color-border-default);
   border-radius: 4px;
   padding: 3px 6px;
@@ -250,6 +250,115 @@
   font-family: inherit;
   font-size: 10px;
   line-height: 1.3;
+}
+
+.search-help {
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+}
+
+.search-help-trigger {
+  position: relative;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  padding: 5px;
+  color: var(--color-text-muted);
+  background: transparent;
+  cursor: pointer;
+  place-items: center;
+}
+
+.search-help-trigger:hover,
+.search-help-trigger[aria-expanded="true"] {
+  color: var(--color-text-primary);
+  background: var(--color-bg-surface-active);
+}
+
+.search-help-trigger:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.search-help-trigger svg {
+  width: 18px;
+  height: 18px;
+}
+
+.search-help-popover {
+  position: fixed;
+  z-index: 30;
+  width: min(320px, calc(100vw - 16px));
+  box-sizing: border-box;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 8px;
+  padding: 14px;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-surface);
+  box-shadow: var(--shadow-overlay);
+  font-size: 12px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.search-help-popover h2,
+.search-help-popover p,
+.search-help-popover ul {
+  margin: 0;
+}
+
+.search-help-popover h2 {
+  color: var(--color-text-primary);
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.search-help-popover ul {
+  display: grid;
+  gap: 7px;
+  margin-top: 11px;
+  padding: 0;
+  list-style: none;
+}
+
+.search-help-popover li {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.search-help-popover code,
+.search-help-popover kbd {
+  border: 1px solid var(--color-border-default);
+  border-radius: 4px;
+  padding: 1px 4px;
+  color: var(--color-text-primary);
+  background: var(--color-bg-canvas);
+  font: inherit;
+  font-weight: 700;
+}
+
+.search-help-popover p {
+  margin-top: 10px;
+}
+
+@media (pointer: coarse) {
+  .search-help-trigger::before {
+    position: absolute;
+    inset: -8px;
+    content: "";
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-help-popover {
+    transition: none;
+  }
 }
 
 .header-actions {
