@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "zeroxjason-sillytavern-chatrenamer",
+  "name": "SillyTavern-ChatRenamer",
+  "kind": "extension",
+  "summary": "SillyTavern-ChatRenamer automatically names each new chat with its character, active model, and timestamp, making model-testing conversations easy to identify at a glance.",
+  "metadata_status": "curated",
+  "source_id": "github-1312920117",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["organize-chats-and-messages"],
+  "cataloged_at": "2026-08-10T18:09:06.411Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
