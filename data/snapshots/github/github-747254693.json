@@ -1,0 +1,52 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-747254693",
+  "repository": {
+    "id": 747254693,
+    "owner": "LenAnderson",
+    "name": "SillyTavern-LALib",
+    "url": "https://github.com/LenAnderson/SillyTavern-LALib",
+    "description": "Library of helpful STScript commands for SillyTavern.",
+    "default_branch": "master",
+    "head_sha": "6715da13bd27d53bab2eaf5a2eb2509825723718",
+    "head_committed_at": "2025-05-31T18:21:19.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2024-01-23T15:18:53.000Z",
+    "size_kb": 1057
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-10T17:45:24.647Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "6715da13bd27d53bab2eaf5a2eb2509825723718"
+  },
+  "community": {
+    "stars_count": 100,
+    "forks_count": 16,
+    "watchers_count": 2,
+    "aggregate": 118
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-08-10T17:45:24.647Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "LenAnderson", "type": "User", "provider": "github" },
+      { "login": "kaldigo", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-10T17:45:24.647Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
