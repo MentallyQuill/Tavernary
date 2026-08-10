@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "lenanderson-sillytavern-triggercards",
+  "name": "SillyTavern-TriggerCards",
+  "kind": "extension",
+  "summary": "Displays small interactive portraits of all group chat members above the chat input bar, giving group chats a compact visual way to select participants.",
+  "metadata_status": "curated",
+  "source_id": "github-736459676",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["add-visual-immersion", "run-group-roleplay"],
+  "cataloged_at": "2026-08-10T18:04:15.163Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
