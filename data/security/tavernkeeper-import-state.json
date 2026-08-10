@@ -1,5 +1,54 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-08-10T17:34:22.482Z",
-  "quarantines": []
+  "updated_at": "2026-08-10T19:41:12.411Z",
+  "quarantines": [
+    {
+      "report_id": "47f775088cd5a6d0af0ed7e1d692b8fa8a9d87557fb37f8698ac9d71fb27e60a",
+      "report_digest": "47f775088cd5a6d0af0ed7e1d692b8fa8a9d87557fb37f8698ac9d71fb27e60a",
+      "repository_id": 1273112032,
+      "repository": "MentallyQuill/Directive",
+      "target_sha": "0ec4a12066584c54157ea81f56f1073a00bcdf94",
+      "synthesis_policy_version": "5",
+      "diagnostic": "provider-authentication-failed",
+      "first_failed_at": "2026-08-10T19:41:12.411Z",
+      "last_failed_at": "2026-08-10T19:41:12.411Z",
+      "attempts": 1
+    },
+    {
+      "report_id": "9cf398d2c18a934c07a466c79172d458e5a8e416c90652d2b3dd08450a6ed2cf",
+      "report_digest": "9cf398d2c18a934c07a466c79172d458e5a8e416c90652d2b3dd08450a6ed2cf",
+      "repository_id": 1305919833,
+      "repository": "N0819/Sonder_Engine",
+      "target_sha": "b2cd5ec6d21b218c60cd316156ef673303027a5d",
+      "synthesis_policy_version": "5",
+      "diagnostic": "provider-authentication-failed",
+      "first_failed_at": "2026-08-10T19:41:12.411Z",
+      "last_failed_at": "2026-08-10T19:41:12.411Z",
+      "attempts": 1
+    },
+    {
+      "report_id": "a735972dc52a551c82e3f306615029c285a6277f2bf54d4ab911cc725397a3bb",
+      "report_digest": "a735972dc52a551c82e3f306615029c285a6277f2bf54d4ab911cc725397a3bb",
+      "repository_id": 692674090,
+      "repository": "vegu-ai/talemate",
+      "target_sha": "c12a82930e913816fdac21aedada1962ac45c3d7",
+      "synthesis_policy_version": "5",
+      "diagnostic": "provider-authentication-failed",
+      "first_failed_at": "2026-08-10T19:41:12.411Z",
+      "last_failed_at": "2026-08-10T19:41:12.411Z",
+      "attempts": 1
+    },
+    {
+      "report_id": "c5623675a3b3d0bc18126139ba05f7b6d45e2cdfb177395afad3385520b20789",
+      "report_digest": "c5623675a3b3d0bc18126139ba05f7b6d45e2cdfb177395afad3385520b20789",
+      "repository_id": 1294619050,
+      "repository": "lsennn/Deus-ex-machina",
+      "target_sha": "15b1512d2ba44cc19eb860e5dc8247286dd78a77",
+      "synthesis_policy_version": "5",
+      "diagnostic": "provider-authentication-failed",
+      "first_failed_at": "2026-08-10T19:41:12.411Z",
+      "last_failed_at": "2026-08-10T19:41:12.411Z",
+      "attempts": 1
+    }
+  ]
 }
