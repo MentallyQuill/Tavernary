@@ -664,6 +664,76 @@ describe("TavernKeeper V5 report import", () => {
     ).toThrow(/families.*exceed.*occurrences/iu);
   });
 
+  test("accepts review batch and reuse telemetry", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    report.review_batches = [];
+    report.review_reuse = {
+      groups: { fresh: 0, reused: 0 },
+      candidates: { fresh: 0, reused: 0 },
+      source_report_ids: [],
+    };
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(validateScanReport(rebound, validatedIndex.reports[0])).toEqual(
+      rebound,
+    );
+  });
+
+  test("rejects review batch usage that disagrees with totals", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    report.review_batches = [
+      {
+        kind: "contextual_review",
+        attempt: 1,
+        group_count: 1,
+        candidate_count: 1,
+        estimated_input_tokens: 1,
+        over_budget: false,
+        input_tokens: 1,
+        output_tokens: 0,
+        cache_read_tokens: 0,
+        reasoning_tokens: 0,
+      },
+    ];
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).toThrow(/batch usage.*totals/iu);
+  });
+
+  test("rejects inconsistent review reuse provenance", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    report.review_reuse = {
+      groups: { fresh: 1, reused: 0 },
+      candidates: { fresh: 1, reused: 0 },
+      source_report_ids: [],
+    };
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).toThrow(/reuse provenance/iu);
+  });
+
   test("rejects complete JavaScript coverage with an unrecovered stage", async () => {
     const [fixtureIndex, baseReport] = await fixtures();
     const report = policy4Report(baseReport);

@@ -527,6 +527,38 @@ function assertReportCoverage(report) {
       "TavernKeeper report candidate lacks completed tool coverage",
     );
   }
+  if (
+    report.review_batches &&
+    [
+      "input_tokens",
+      "output_tokens",
+      "cache_read_tokens",
+      "reasoning_tokens",
+    ].some(
+      (field) =>
+        report.review_batches.reduce((sum, batch) => sum + batch[field], 0) !==
+        report.review_usage[field],
+    )
+  ) {
+    throw new Error(
+      "TavernKeeper review batch usage does not reconcile with its totals",
+    );
+  }
+  if (report.review_reuse) {
+    const sourceIds = report.review_reuse.source_report_ids;
+    if (
+      report.review_reuse.candidates.fresh +
+        report.review_reuse.candidates.reused !==
+        report.candidates.length ||
+      (report.review_reuse.groups.reused === 0) !== (sourceIds.length === 0) ||
+      new Set(sourceIds).size !== sourceIds.length ||
+      sourceIds.some(
+        (sourceId, index) => index > 0 && sourceIds[index - 1] >= sourceId,
+      )
+    ) {
+      throw new Error("TavernKeeper review reuse provenance is inconsistent");
+    }
+  }
   const javascript = report.coverage.javascript_analysis;
   if (report.scanner_policy_version === "4" && javascript === undefined) {
     throw new Error(
