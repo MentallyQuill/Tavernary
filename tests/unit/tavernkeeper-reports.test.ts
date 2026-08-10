@@ -287,6 +287,14 @@ function policy3ExposureReport(reportInput: Record<string, any>) {
   return report;
 }
 
+function policy4ExposureReport(reportInput: Record<string, any>) {
+  const report = policy3ExposureReport(reportInput);
+  report.contextual_review_policy_version = "4";
+  report.prompt_version = "contextual-review-v7";
+  report.assessment_schema_version = "contextual-assessment-v2";
+  return rebindReport(report);
+}
+
 function policy3ImmediateDangerReport(reportInput: Record<string, any>) {
   const report = addImmediateDangerCandidate(policy4Report(reportInput));
   report.contextual_review_policy_version = "3";
@@ -393,6 +401,31 @@ describe("TavernKeeper V5 report import", () => {
     );
   });
 
+  test("accepts policy-4 demonstrated-risk reports", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4ExposureReport(baseReport);
+    const entry = projectIndexReport(report);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(validateScanReport(report, validatedIndex.reports[0])).toEqual(
+      report,
+    );
+  });
+
+  test("rejects policy-4 reports bound to the policy-3 prompt", async () => {
+    const [, baseReport] = await fixtures();
+    const report = policy4ExposureReport(baseReport);
+    report.prompt_version = "contextual-review-v6";
+    const rebound = rebindReport(report);
+
+    expect(() =>
+      validateScanReport(rebound, projectIndexReport(rebound)),
+    ).toThrow(/policy-4.*contract versions/iu);
+  });
+
   test.each([
     [
       "missing assessment exposure",
@@ -487,7 +520,7 @@ describe("TavernKeeper V5 report import", () => {
     ).toThrow(/legacy.*risk exposure/iu);
   });
 
-  test.each(["4", "999"])(
+  test.each(["5", "999"])(
     "rejects unsupported contextual policy %s on an immutable report",
     async (policy) => {
       const [index, baseReport] = await fixtures();
@@ -1147,7 +1180,7 @@ describe("TavernKeeper V5 report import", () => {
     expect(outcome.import_state.quarantines).toEqual([]);
   });
 
-  test.each(["4", "999"])(
+  test.each(["5", "999"])(
     "rejects unsupported contextual policy %s before reconciliation routes work",
     async (policy) => {
       const root = await mkdtemp(
