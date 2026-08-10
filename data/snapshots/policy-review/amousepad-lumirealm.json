@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "amousepad-lumirealm",
+  "source_id": "github-1226998015",
+  "source_identity": "github:amousepad/lumirealm",
+  "evidence_fingerprint": "fab328ce92f607a39950af615c5e35d7e51401117135c331d93f5b8bf58ea2e4",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-10T09:05:11.713Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-10T09:05:11.713Z"
+  },
+  "maintenance_issue_number": null
+}
