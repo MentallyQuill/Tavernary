@@ -1,19 +1,7 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-08-10T19:48:14.166Z",
+  "updated_at": "2026-08-10T23:14:33.620Z",
   "quarantines": [
-    {
-      "report_id": "47f775088cd5a6d0af0ed7e1d692b8fa8a9d87557fb37f8698ac9d71fb27e60a",
-      "report_digest": "47f775088cd5a6d0af0ed7e1d692b8fa8a9d87557fb37f8698ac9d71fb27e60a",
-      "repository_id": 1273112032,
-      "repository": "MentallyQuill/Directive",
-      "target_sha": "0ec4a12066584c54157ea81f56f1073a00bcdf94",
-      "synthesis_policy_version": "5",
-      "diagnostic": "provider-authentication-failed",
-      "first_failed_at": "2026-08-10T19:41:12.411Z",
-      "last_failed_at": "2026-08-10T19:41:12.411Z",
-      "attempts": 1
-    },
     {
       "report_id": "9cf398d2c18a934c07a466c79172d458e5a8e416c90652d2b3dd08450a6ed2cf",
       "report_digest": "9cf398d2c18a934c07a466c79172d458e5a8e416c90652d2b3dd08450a6ed2cf",
