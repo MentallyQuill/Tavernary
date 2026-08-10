@@ -415,6 +415,26 @@ describe("TavernKeeper V5 report import", () => {
     );
   });
 
+  test("accepts policy-4 review reuse metadata", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4ExposureReport(baseReport);
+    report.review_reuse = {
+      groups: { fresh: 1, reused: 0 },
+      candidates: { fresh: 1, reused: 0 },
+      source_report_ids: [],
+    };
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(validateScanReport(rebound, validatedIndex.reports[0])).toEqual(
+      rebound,
+    );
+  });
+
   test("rejects policy-4 reports bound to the policy-3 prompt", async () => {
     const [, baseReport] = await fixtures();
     const report = policy4ExposureReport(baseReport);

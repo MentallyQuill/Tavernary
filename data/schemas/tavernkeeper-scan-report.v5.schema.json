@@ -115,6 +115,52 @@
       ],
       "additionalProperties": false
     },
+    "review_reuse": {
+      "type": "object",
+      "properties": {
+        "groups": {
+          "type": "object",
+          "properties": {
+            "fresh": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "reused": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": ["fresh", "reused"],
+          "additionalProperties": false
+        },
+        "candidates": {
+          "type": "object",
+          "properties": {
+            "fresh": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "reused": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": ["fresh", "reused"],
+          "additionalProperties": false
+        },
+        "source_report_ids": {
+          "maxItems": 10000,
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      },
+      "required": ["groups", "candidates", "source_report_ids"],
+      "additionalProperties": false
+    },
     "history": {
       "type": "object",
       "properties": {
