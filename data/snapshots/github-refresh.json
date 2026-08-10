@@ -1,34 +1,34 @@
 {
   "schema_version": 3,
   "mode": "project",
-  "started_at": "2026-08-10T22:52:49.599Z",
-  "completed_at": "2026-08-10T22:52:50.352Z",
+  "started_at": "2026-08-10T23:21:40.261Z",
+  "completed_at": "2026-08-10T23:21:46.366Z",
   "counts": {
     "total": 1,
     "checked": 1,
     "changed": 1,
-    "unchanged": 1,
+    "unchanged": 0,
     "provisional": 1,
     "degraded": 0,
     "unavailable": 0,
     "failed": 0,
     "compared": 0,
     "baseline": 0,
-    "fallback": 0
+    "fallback": 1
   },
   "api": {
     "graphql_requests": 1,
     "graphql_points": 1,
-    "graphql_remaining": 4998,
-    "rest_requests": 1
+    "graphql_remaining": 4991,
+    "rest_requests": 18
   },
   "providers": {
     "github": {
       "checked": 1,
       "changed": 1,
       "failed": 0,
-      "requests": 2,
-      "remaining": 4998
+      "requests": 19,
+      "remaining": 4991
     },
     "codeberg": {
       "checked": 0,
@@ -38,12 +38,12 @@
       "remaining": null
     }
   },
-  "duration_ms": 753,
+  "duration_ms": 6105,
   "source_timings": [
     {
-      "source_id": "github-1254077407",
-      "outcome": "unchanged",
-      "duration_ms": 1,
+      "source_id": "github-1273112032",
+      "outcome": "fallback",
+      "duration_ms": 5383,
       "error_code": null
     }
   ],
