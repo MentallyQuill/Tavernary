@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "b4bysw0rld-sillytavern-typefacer",
+  "source_id": "github-1105308117",
+  "source_identity": "github:b4bysw0rld/sillytavern-typefacer",
+  "evidence_fingerprint": "0cc286c97ad1081af46e307eb35a4c9939c8a358a054f82fadcbe34cef5006a5",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-10T09:02:08.839Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-10T09:02:08.839Z"
+  },
+  "maintenance_issue_number": null
+}
