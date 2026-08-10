@@ -26659,18 +26659,18 @@
         "tools_completed": 7,
         "tools_not_applicable": 0,
         "evidence_validated": 39,
+        "metadata_only_candidates": 0,
         "review_required": 39,
         "review_completed": 39,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1257302750/17148f5b60d13e1f2f7b901c99a57fa99cff866a/3/8d21c8e1bc3a7d0136fe4a811fc49cea98bfdc80cfcf8df7738b9f8e89231e93/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1257302750/history/",
       "assessed_at": "2026-08-08T16:29:15.284Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [
           "04ce55efc1a28c40b5919750968de4cf34decf557f12189c2caf6e6fb5b965ab",
@@ -26768,18 +26768,18 @@
         "tools_completed": 6,
         "tools_not_applicable": 1,
         "evidence_validated": 38,
+        "metadata_only_candidates": 0,
         "review_required": 38,
         "review_completed": 38,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1289035231/2fa4ba417f2dea1fd775afcb8f1709194f14b6fc/3/338e30eaeff375e336a505fed013c2b83c1541eb0b025464cb476f0103ec3536/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1289035231/history/",
       "assessed_at": "2026-08-08T16:54:11.768Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [
           "057a5278afcaea24d72050ce1988dbf705d4a8869a192264158e367556359133",
@@ -27008,18 +27008,18 @@
         "tools_completed": 6,
         "tools_not_applicable": 1,
         "evidence_validated": 18,
+        "metadata_only_candidates": 0,
         "review_required": 18,
         "review_completed": 18,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1160848402/fa1d9a1d7c8cac6953ee6cb8df64a9599dfdadb1/3/ee6af84c0f9c7c4582bfb1eec978c759a0e82f027396cebc40025a430d968731/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1160848402/history/",
       "assessed_at": "2026-08-08T15:57:00.753Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [
           "2af75b980c72ba07c81194251a8f311f55e2fc45e5e7e681d66339af047fe645",
@@ -27470,59 +27470,47 @@
         "tools_completed": 7,
         "tools_not_applicable": 0,
         "evidence_validated": 20,
+        "metadata_only_candidates": 0,
         "review_required": 20,
         "review_completed": 20,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1164267316/e3a2678c4293baea97d195c4dc5cceb4db2810ca/3/b0d950be568c38e90e856a889632e9584c544f6cf0a5a030c1bc25c0b4200ef2/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1164267316/history/",
-      "assessed_at": "2026-08-08T16:03:34.254Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "assessed_at": "2026-08-10T21:21:48.307Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 18,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
         "cited_finding_ids": [
-          "7b46ec349d03aa1adbaa5f0cb58ae7d604d4578ab09f37d76f9aadc758109e83",
-          "b580fd95bda55a84170e560df2a5297b13f759f3e8e7dd2bc986217826cc17a3",
-          "c02090c223aaf1b7a1086680181475c679fe3604eecf8a452e3697a7e2836f8e",
-          "f0e8931d6c7e65e0b51435de3123eb9739db7551debc42771f54f6099efafd2d",
-          "bf19707de51a727f81898ac485fb0965c026454b16a231799ff3a751de7708e5",
           "01b1f68b0199c5feec91c271a2da21fbaae549bdf187cc8c7deacc70c2314d9d",
           "0aae4fdcbf773b9397a31ce2136704609f1f026eb9a0a165c78240c9748816f9",
           "20af77b3d98402df55f51f04cbd3f51c87cc7c1c5a51d20def6637f39f3f17b8",
           "2860a7013834a7aad6111703527bafe54c7a5f10bafa4c8b0e0b6096aa1a2d7c",
           "3974c605f6a6cebc5d04d6add6d411b492a8762ff2196b0201523092e0447436",
           "5fd8216377419dbdc06e6101361f55d5146f52597d0a1ba76d815b065cfa46c9",
+          "7b46ec349d03aa1adbaa5f0cb58ae7d604d4578ab09f37d76f9aadc758109e83",
           "929ad38359f054047d64186cc3a0e7d8b16233bcf5ffbbb65a17f4429d914a91",
           "97f90b74e00dd5db861ad64e0fc4edcba0afe0e907c0bf5342e5cba2a6dcc198",
+          "b580fd95bda55a84170e560df2a5297b13f759f3e8e7dd2bc986217826cc17a3",
+          "bf19707de51a727f81898ac485fb0965c026454b16a231799ff3a751de7708e5",
+          "c02090c223aaf1b7a1086680181475c679fe3604eecf8a452e3697a7e2836f8e",
           "c736d64961219271e769ec63311962c2c021b7eb7a9ea6daf41cf1306aa91135",
           "cf5cdf2e5374dc77f2ae839c6131032fbd4a7a73d1f7725d92c890d972df0061",
           "e032d7d7170ed911f5d27b8f940b74776869969932aae2ded70e4bd06180e525",
+          "f0e8931d6c7e65e0b51435de3123eb9739db7551debc42771f54f6099efafd2d",
           "f800558f2fcdd8831289a8e327ec3bc5e7101b4a032c75fecff8e5ae34e771bf",
           "f97958491922ce26d56aa35d818246a096224b0f90fae80193d5f01195ae8c07"
         ],
-        "headline": "Material security concerns from outdated dependencies, but no sign of malicious behavior",
-        "high_danger": 0,
-        "interaction_chains": [
-          {
-            "explanation": "Several vulnerable libraries are used in a connector that receives Discord messages and runs a bridge server. Crafted messages or requests could disrupt the bridge, while one web-request issue could expose sensitive data after an unsafe redirect. Exploitation appears plausible for the service-disruption issues and unlikely for the redirect scenario, so updating dependencies is recommended.",
-            "finding_ids": [
-              "7b46ec349d03aa1adbaa5f0cb58ae7d604d4578ab09f37d76f9aadc758109e83",
-              "b580fd95bda55a84170e560df2a5297b13f759f3e8e7dd2bc986217826cc17a3",
-              "c02090c223aaf1b7a1086680181475c679fe3604eecf8a452e3697a7e2836f8e",
-              "f0e8931d6c7e65e0b51435de3123eb9739db7551debc42771f54f6099efafd2d",
-              "bf19707de51a727f81898ac485fb0965c026454b16a231799ff3a751de7708e5"
-            ],
-            "resulting_risk": "material"
-          }
-        ],
-        "malicious_evidence": "No credible evidence of API-key theft, phishing, trojan delivery, harmful payloads, or bot infection was found. The detected Discord IDs are documented placeholders in example configuration, not active credentials.",
-        "material_concerns": 5,
-        "minor_cautions": 13,
-        "risk_level": "material",
-        "summary": "This project appears to be a good-faith Discord connector, but its dependencies include several known vulnerabilities. The most likely impact is interruption or freezing of the bridge after specially crafted messages or requests; a separate HTTP-client issue could expose sensitive information if an unsafe redirect occurs, though that scenario is unlikely in normal operator-controlled use. Workflow pinning and other tooling issues are minor cautions. Update the affected dependencies and review or"
+        "interaction_chains": []
       }
     },
     {
@@ -27586,18 +27574,18 @@
         "tools_completed": 7,
         "tools_not_applicable": 0,
         "evidence_validated": 18,
+        "metadata_only_candidates": 0,
         "review_required": 18,
         "review_completed": 18,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1208471920/f5d4b1eb3a5cc49aedf2de242f873aa206262f08/3/1cd2946b0b3ac28afa5b7e71df9364a4256bad55d0620e50c0d2b294ffe2335c/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1208471920/history/",
       "assessed_at": "2026-08-08T16:10:28.258Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [
           "000192e612cc3de4282c7ab587838f715e41e6a9fd303f20f2d003cd38648159",
