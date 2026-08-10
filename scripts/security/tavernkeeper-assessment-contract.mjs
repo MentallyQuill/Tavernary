@@ -107,6 +107,14 @@ function validateIds(value, { minimum = 0, maximum = 256 } = {}) {
   );
 }
 
+function validateCandidateUniverse(value) {
+  return (
+    Array.isArray(value) &&
+    new Set(value).size === value.length &&
+    value.every((id) => typeof id === "string" && digestPattern.test(id))
+  );
+}
+
 const assessmentKeys = [
   "risk_level",
   "headline",
@@ -383,7 +391,7 @@ function requiredCitations(report) {
 
 export function tavernKeeperAssessmentRequirements(report) {
   const allowedCandidateIds = [...knownCandidateIds(report)].sort();
-  if (!validateIds(allowedCandidateIds)) {
+  if (!validateCandidateUniverse(allowedCandidateIds)) {
     throw new Error("TavernKeeper candidate identities are invalid");
   }
   const requiredCandidateIds = [...requiredCitations(report)].sort();
