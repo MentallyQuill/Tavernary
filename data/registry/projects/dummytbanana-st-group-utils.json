@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "dummytbanana-st-group-utils",
+  "name": "st-group-utils",
+  "kind": "extension",
+  "summary": "SillyTavern group utilities add other characters' key descriptions and personalities to the prompt through configurable system notes, giving the AI group-chat context.",
+  "metadata_status": "curated",
+  "source_id": "github-861668394",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": ["guide-model-responses", "run-group-roleplay"],
+  "cataloged_at": "2026-08-10T17:53:39.995Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
