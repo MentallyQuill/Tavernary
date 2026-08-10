@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "samueras-guidedgenerations-extension",
+  "source_id": "github-957795776",
+  "source_identity": "github:samueras/guidedgenerations-extension",
+  "evidence_fingerprint": "145ba35eb50ae33fba412d3606d7bd951e9a255a6eb82ac4da4fc89a20cb7d66",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-10T09:09:41.036Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-10T09:09:41.036Z"
+  },
+  "maintenance_issue_number": null
+}
