@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "bronya-rand-garden-of-recollection",
+  "name": "Garden-Of-Recollection",
+  "kind": "extension",
+  "summary": "Visit past character and group chats in SillyTavern, or create new ones using weighted randomness that favors older or never-used characters.",
+  "metadata_status": "curated",
+  "source_id": "github-1006298514",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "manage-characters-and-personas",
+    "organize-chats-and-messages",
+    "run-group-roleplay"
+  ],
+  "cataloged_at": "2026-08-10T18:04:15.680Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
