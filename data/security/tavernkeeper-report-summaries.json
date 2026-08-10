@@ -14853,18 +14853,18 @@
         "tools_completed": 4,
         "tools_not_applicable": 3,
         "evidence_validated": 0,
+        "metadata_only_candidates": 0,
         "review_required": 0,
         "review_completed": 0,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1305892185/3c16657331d2eac0c158006aa4d78c7a1fa57306/3/29dd71513be6fd0f40a0088ed00f155654e9c0683bfc00711df07061bf9446a5/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1305892185/history/",
       "assessed_at": "2026-08-05T10:27:31.912Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -14938,19 +14938,26 @@
         "tools_completed": 5,
         "tools_not_applicable": 2,
         "evidence_validated": 34,
+        "metadata_only_candidates": 0,
         "review_required": 34,
         "review_completed": 34,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1239116905/e2ac6706289728b1834f38b9c75471f06e902bc3/3/7d3168528629e2b1b24dd61c8707c341c9bc3f0502502ee23f755e8cf05c41de/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1239116905/history/",
-      "assessed_at": "2026-08-05T09:24:21.071Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "assessed_at": "2026-08-10T23:27:17.087Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 25,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
         "cited_finding_ids": [
           "14fe6947767c4eb5ba42b019d76bc4f9815c4306f90534e5a8348fc95f122e3b",
           "1e8e6f2635f54584ad62cad2a06796dbd3ed8ec5f3b591b6b3663974873a4106",
@@ -14977,48 +14984,7 @@
           "f5fc5fba4555952398b475f24c80edec9cc9f346b41d5127c7000bc3aa25b5ff",
           "f67cb03d84ee97f876eec6d8c1cec29e94c1585b3f5ca24229c00ccae6bae637"
         ],
-        "headline": "Material caution: update the project's dependencies before relying on it",
-        "high_danger": 0,
-        "interaction_chains": [
-          {
-            "explanation": "Several serious dependency vulnerabilities are present together in a locally run tool that handles data and makes web requests. Local-only operation reduces exposure, but the dependencies should be updated to patched versions.",
-            "finding_ids": [
-              "14fe6947767c4eb5ba42b019d76bc4f9815c4306f90534e5a8348fc95f122e3b",
-              "1e8e6f2635f54584ad62cad2a06796dbd3ed8ec5f3b591b6b3663974873a4106",
-              "6fde0179a2dd70003d5398e42912762dd8ecf7bb4516ae3aa18921ebaf809651",
-              "713d1d0684bf6b7318f45f29e85fd57e915525c8d66dc9e89606dc3192b9967d",
-              "8b309b56951e1cc3d992efa4cec29b37168d9f5e088de8a454e02c17da5dcbf5"
-            ],
-            "resulting_risk": "material"
-          },
-          {
-            "explanation": "The project also has multiple lower-severity dependency advisories. Their practical impact is limited by the local setup, but collectively they indicate that a dependency refresh and lockfile regeneration are overdue.",
-            "finding_ids": [
-              "2165c4a1b34123dbdfdbe1ae1f0a77e9cf3d928093ad5dba30db4d43749f86ac",
-              "2cababeca47bc15afdf432f4f2b24c345152c42997f38397938a1f161436d1fb",
-              "3b839c620ce08c04df06046b0e6899d09a2fe079ec2d440dd636b6694e91719f",
-              "4297048ab250f047cafb64186d0ea254c4722eb6a379b7650a2005df2fc23501",
-              "464f739f4e2e9db6d2bafcf31465862de457e3557459335f8fa427ae2856ea9f",
-              "5439a179c422b69c5101d08f72c42a4b3c66a37367d5d223e9d2c0c1abcbee69",
-              "702e2cd4b7cf2841d19598ecc7b5348a6c2659f2a8ccb8530925a7f315f4f8a8",
-              "77e99ec74782bdfd6a109adfca7b57d769801dee4ea4a1ae83e77279b765649d",
-              "924ae7b950d6f378214e795ff718782a21e25c59672dcdc575d4191f43e33ae2",
-              "92c9a23bfe0a19e7b8ad887750e309b305c94304d747339f9f60fc4ec11384a9",
-              "acb3ea3317e1036ac0c5e83eace8622867bd23efbdd2b3eb96a16b52325bda68",
-              "c58ee372c7053a14cbc1437d2e0c9d47193d2f324295e81246421704d8d087f2",
-              "cdbccbf1335ebfced318ebdbf3fe9c02a187eb70731464197c2f1c465353bd16",
-              "e225409f5137fc992b4227b83f343401ef76d29c648c115e10c8768baebc6dcf",
-              "e421c561ca9df82883445193eb261ef3d3be9f082a96812178a663d6fa21662d",
-              "e49d3ed0ea09663b04fbbc657657bc50ca8231f2cd2595ad39ca5f2c82c27996"
-            ],
-            "resulting_risk": "material"
-          }
-        ],
-        "malicious_evidence": "No credible malicious behavior was validated. The reviewed credential-related code serves local files or returns configuration status without exposing secrets, and the auto-start and command execution findings were confirmed as user-controlled, purpose-specific behavior. This review cannot prove the",
-        "material_concerns": 5,
-        "minor_cautions": 20,
-        "risk_level": "material",
-        "summary": "The project appears to be a good-faith local tool, not a key stealer or trojan. However, five dependency findings are material vulnerabilities, with additional lower-severity advisories. Update the affected packages and regenerate the lockfile before treating the project as fully up to date. Ordinary local file serving, fixed version checks, and clearly disclosed optional auto-start behavior are not considered malicious."
+        "interaction_chains": []
       }
     },
     {
@@ -15082,18 +15048,18 @@
         "tools_completed": 5,
         "tools_not_applicable": 2,
         "evidence_validated": 30,
+        "metadata_only_candidates": 0,
         "review_required": 30,
         "review_completed": 30,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1114617526/b08838e9ebb0c51d16ce25d490959f992108df32/3/edec52a68ab13b884769335464f92e50a7e1a7121b528d4e5f4efd6a1c0451ba/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1114617526/history/",
       "assessed_at": "2026-08-05T07:19:35.906Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [
           "0a8447d0767a1afb00c05158daed5d8e6638693dc34080464e5c3b5c06bee959",
@@ -15283,18 +15249,18 @@
         "tools_completed": 5,
         "tools_not_applicable": 2,
         "evidence_validated": 0,
+        "metadata_only_candidates": 0,
         "review_required": 0,
         "review_completed": 0,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1220910140/7ddbed80f95754cae1f86d4218018a99b616969d/3/745263af6e3416d13aa57d5663d4dfb062f1c4579fb2b0d197016ad84a57455e/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1220910140/history/",
       "assessed_at": "2026-08-05T08:59:34.284Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -15368,18 +15334,18 @@
         "tools_completed": 5,
         "tools_not_applicable": 2,
         "evidence_validated": 1,
+        "metadata_only_candidates": 0,
         "review_required": 1,
         "review_completed": 1,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1111731551/328afdd9894d5b155878622b2db715453676721a/3/b3955226d60fef5defeb3d793d55f7cbb45dd850f7c0855a0cd0c44df51bd2ee/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1111731551/history/",
       "assessed_at": "2026-08-05T07:13:15.295Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [
           "da1ec93110e4a102c4d23eeac8609de90e77c50382d88e9527ca5eb66dd15387"
