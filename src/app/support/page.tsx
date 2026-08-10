@@ -49,28 +49,28 @@ export default function SupportPage() {
             <div className="support-target-heading">
               <h2 id="monthly-target">Monthly operating target</h2>
               <strong className="support-target-value">$12/month</strong>
-            </div>
-            <a
-              className="support-kofi-link"
-              href={kofiProfileUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              <svg
-                className="support-kofi-icon"
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.9"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+              <a
+                className="support-kofi-link"
+                href={kofiProfileUrl}
+                target="_blank"
+                rel="noreferrer noopener"
               >
-                <path d="M4 8h13v6.5A4.5 4.5 0 0 1 12.5 19h-4A4.5 4.5 0 0 1 4 14.5V8Z" />
-                <path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17M8 5.5c0-1 1-1 1-2M12 5.5c0-1 1-1 1-2" />
-              </svg>
-              <span>Support on Ko-fi</span>
-            </a>
+                <svg
+                  className="support-kofi-icon"
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.9"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M4 8h13v6.5A4.5 4.5 0 0 1 12.5 19h-4A4.5 4.5 0 0 1 4 14.5V8Z" />
+                  <path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17M8 5.5c0-1 1-1 1-2M12 5.5c0-1 1-1 1-2" />
+                </svg>
+                <span>Support on Ko-fi</span>
+              </a>
+            </div>
             <p>
               Donations first cover Tavernary&apos;s operating costs for the
               current month. Anything above the current month&apos;s costs
