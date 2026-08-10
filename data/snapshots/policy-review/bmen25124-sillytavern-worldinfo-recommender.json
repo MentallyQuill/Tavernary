@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "bmen25124-sillytavern-worldinfo-recommender",
+  "source_id": "github-953212287",
+  "source_identity": "github:bmen25124/sillytavern-worldinfo-recommender",
+  "evidence_fingerprint": "c4068c06e9b9bb6bfe026ca8e997edd8580e4a4548efce18de3a690645bd1063",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-10T17:05:36.804Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-10T17:05:36.804Z"
+  },
+  "maintenance_issue_number": null
+}
