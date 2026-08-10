@@ -1,0 +1,53 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1162122304",
+  "repository": {
+    "id": 1162122304,
+    "owner": "plastic-labs",
+    "name": "sillytavern-honcho",
+    "url": "https://github.com/plastic-labs/sillytavern-honcho",
+    "description": "Honcho Integration for AI Chat Application Silly Tavern",
+    "default_branch": "main",
+    "head_sha": "1e2a5739d0e196b9f36b0dd712d3680ff251a7ac",
+    "head_committed_at": "2026-05-11T14:15:19.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-02-19T22:27:32.000Z",
+    "size_kb": 165
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-10T17:32:09.748Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "1e2a5739d0e196b9f36b0dd712d3680ff251a7ac"
+  },
+  "community": {
+    "stars_count": 7,
+    "forks_count": 1,
+    "watchers_count": 0,
+    "aggregate": 8
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-08-10T17:32:09.748Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "erosika", "type": "User", "provider": "github" },
+      { "login": "lowyelling", "type": "User", "provider": "github" },
+      { "login": "VVoruganti", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-10T17:32:09.748Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
