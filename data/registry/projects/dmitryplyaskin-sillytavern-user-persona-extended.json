@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "dmitryplyaskin-sillytavern-user-persona-extended",
+  "name": "SillyTavern-User-Persona-Extended",
+  "kind": "extension",
+  "summary": "Add multiple toggleable context blocks to SillyTavern personas, stored per persona and injected after the main description for richer character context without interface clutter.",
+  "metadata_status": "curated",
+  "source_id": "github-1087049931",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": ["guide-model-responses", "manage-characters-and-personas"],
+  "cataloged_at": "2026-08-10T17:28:41.941Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
