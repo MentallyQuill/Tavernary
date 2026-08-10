@@ -333,13 +333,40 @@ test("uses one focus boundary for the main search", async ({ page }) => {
 
   const shortcut = page.locator(".site-search > kbd");
   const help = page.getByRole("button", { name: "Search help" });
+  const helpIcon = help.locator('[data-icon="search-help"]');
   await expect(shortcut).toBeVisible();
   await expect(help).toBeVisible();
+  await expect(helpIcon).toBeVisible();
+  const searchBox = await page.locator(".site-search").boundingBox();
   const shortcutBox = await shortcut.boundingBox();
   const helpBox = await help.boundingBox();
+  const helpIconBox = await helpIcon.boundingBox();
+  expect(searchBox).not.toBeNull();
   expect(shortcutBox).not.toBeNull();
   expect(helpBox).not.toBeNull();
-  expect(helpBox!.x).toBeGreaterThan(shortcutBox!.x);
+  expect(helpIconBox).not.toBeNull();
+  expect(helpBox!.width).toBeCloseTo(24, 0);
+  expect(helpBox!.height).toBeCloseTo(24, 0);
+  expect(
+    helpBox!.x - (shortcutBox!.x + shortcutBox!.width),
+  ).toBeLessThanOrEqual(6);
+  expect(
+    searchBox!.x + searchBox!.width - (helpBox!.x + helpBox!.width),
+  ).toBeLessThanOrEqual(10);
+  expect(
+    Math.abs(
+      helpBox!.x +
+        helpBox!.width / 2 -
+        (helpIconBox!.x + helpIconBox!.width / 2),
+    ),
+  ).toBeLessThanOrEqual(0.5);
+  expect(
+    Math.abs(
+      helpBox!.y +
+        helpBox!.height / 2 -
+        (helpIconBox!.y + helpIconBox!.height / 2),
+    ),
+  ).toBeLessThanOrEqual(0.5);
 
   await help.click();
   await expect(
