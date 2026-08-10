@@ -72,7 +72,7 @@ test("links to the transparent support page beside Submit Project", async ({
 
   const submit = page.getByRole("link", { name: "Submit Project" });
   const support = page.getByRole("link", {
-    name: "Support Tavernary on Ko-fi",
+    name: "Buy Me a Ko-Fi",
   });
   const [submitBox, supportBox] = await Promise.all([
     submit.boundingBox(),
@@ -87,8 +87,30 @@ test("links to the transparent support page beside Submit Project", async ({
 
   await support.hover();
   await expect(
-    page.getByRole("tooltip", { name: "Support Tavernary on Ko-fi" }),
+    page.getByRole("tooltip", { name: "Buy Me a Ko-Fi" }),
   ).toBeVisible();
+  const supportHover = await support.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      color: style.color,
+      backgroundColor: style.backgroundColor,
+      borderTopColor: style.borderTopColor,
+      boxShadow: style.boxShadow,
+      transform: style.transform,
+    };
+  });
+  await submit.hover();
+  const submitHover = await submit.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      color: style.color,
+      backgroundColor: style.backgroundColor,
+      borderTopColor: style.borderTopColor,
+      boxShadow: style.boxShadow,
+      transform: style.transform,
+    };
+  });
+  expect(supportHover).toEqual(submitHover);
 
   await support.click();
   await expect(

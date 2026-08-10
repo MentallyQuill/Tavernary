@@ -418,12 +418,11 @@
 
 .header-actions .kofi-support-trigger:hover,
 .header-actions .kofi-support-trigger:focus-visible {
-  border-color: var(--color-action-primary-hover);
+  color: var(--color-action-primary-text);
   background: var(--color-action-primary-hover);
 }
 
 .header-actions .kofi-support-trigger:active {
-  border-color: var(--color-action-primary-pressed);
   background: var(--color-action-primary-pressed);
 }
 

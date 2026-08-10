@@ -21,10 +21,10 @@ test("links the header support action to Tavernary's transparency page", () => {
   render(<KoFiSupport />);
 
   const support = screen.getByRole("link", {
-    name: "Support Tavernary on Ko-fi",
+    name: "Buy Me a Ko-Fi",
   });
   expect(support).toHaveAttribute("href", "/support");
-  expect(support).toHaveTextContent("Support Tavernary");
+  expect(support).toHaveTextContent("Buy Me a Ko-Fi");
   expect(support.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
   expect(screen.queryByRole("button")).toBeNull();
   expect(screen.queryByRole("dialog")).toBeNull();
@@ -35,11 +35,11 @@ test("uses Tavernary's shared desktop tooltip", async () => {
   render(<KoFiSupport />);
 
   const support = screen.getByRole("link", {
-    name: "Support Tavernary on Ko-fi",
+    name: "Buy Me a Ko-Fi",
   });
   await user.hover(support);
 
   expect(
-    screen.getByRole("tooltip", { name: "Support Tavernary on Ko-fi" }),
+    screen.getByRole("tooltip", { name: "Buy Me a Ko-Fi" }),
   ).toBeInTheDocument();
 });
