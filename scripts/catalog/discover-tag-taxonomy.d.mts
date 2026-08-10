@@ -67,13 +67,14 @@ export interface TaxonomyCorpus {
   evidenceBySource: Map<string, TaxonomySourceEvidence>;
 }
 
-export function createTaxonomyDiscoveryProvider(options: {
-  apiUrl: string;
-  apiKey: string;
-  model: string;
-  fetchImpl?: typeof fetch;
-  timeoutMs?: number;
-}): TaxonomyDiscoveryProvider;
+export function createTaxonomyDiscoveryProvider(
+  options: ProviderConfiguration & {
+    jsonRepair?: ProviderConfiguration;
+    fetchImpl?: typeof fetch;
+    timeoutMs?: number;
+    now?: () => number;
+  },
+): TaxonomyDiscoveryProvider;
 
 export function normalizeTagCandidateId(value: string): string;
 
@@ -108,3 +109,4 @@ export function runTagTaxonomyDiscoveryCli(
     logger?: { log(message: string): void };
   },
 ): Promise<TagCandidateReport>;
+import type { ProviderConfiguration } from "./enrichment-provider.mjs";

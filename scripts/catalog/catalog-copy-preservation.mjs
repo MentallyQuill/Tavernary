@@ -5,6 +5,7 @@ import {
   providerCopyReviewDiagnostic,
 } from "./catalog-copy-diagnostic.mjs";
 import { createCatalogCopyProvider } from "./catalog-copy-provider.mjs";
+import { modelProviderOptionsFromEnvironment } from "./model-provider-configuration.mjs";
 
 const trustedAuthorities = new Set(["repository-owner", "tavernary-staff"]);
 
@@ -22,9 +23,7 @@ function unavailableCopyReview(submittedSummary, diagnostic) {
 
 async function defaultCopySummary(input) {
   const provider = createCatalogCopyProvider({
-    apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
-    apiKey: process.env.TAVERNARY_ENRICHMENT_API_KEY,
-    model: process.env.TAVERNARY_ENRICHMENT_MODEL,
+    ...modelProviderOptionsFromEnvironment(),
   });
   const generated = await provider.generate({
     mode: "preserve",

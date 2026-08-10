@@ -148,7 +148,7 @@ function validateFullReportForPlanning(fullReport) {
 
 export async function runPlannerCli(options = {}) {
   const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
-  const model = options.model ?? process.env.TAVERNARY_ENRICHMENT_MODEL;
+  const model = options.model ?? process.env.UTILITY_MODEL;
   const selectionMode =
     options.selectionMode ?? process.env.ENRICHMENT_SELECTION_MODE ?? "pending";
   if (typeof model !== "string" || model.length === 0 || /\s/u.test(model)) {
