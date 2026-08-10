@@ -3,14 +3,14 @@
   "records": [
     {
       "kind": "estimate",
-      "periodStart": "2026-07-01T00:00:00.000Z",
-      "periodEnd": "2026-08-01T00:00:00.000Z",
-      "generatedAt": "2026-08-09T00:00:00.000Z",
-      "inputTokens": 40500000,
+      "periodStart": "2026-08-01T00:00:00.000Z",
+      "periodEnd": "2026-09-01T00:00:00.000Z",
+      "generatedAt": "2026-08-10T00:00:00.000Z",
+      "inputTokens": 144000000,
       "cachedInputTokens": null,
-      "outputTokens": 4500000,
+      "outputTokens": 16000000,
       "requests": 4000,
-      "costUsd": 13.5,
+      "costUsd": 48,
       "currency": "usd"
     }
   ]
