@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "selinawynters-ops-st-toasttome",
+  "name": "ST---ToastTome",
+  "kind": "extension",
+  "summary": "Toast Tome replaces SillyTavern’s default toast layer with a searchable grimoire-styled history popup, offering severity filters, suppression, persistent logs, copying, and export.",
+  "metadata_status": "curated",
+  "source_id": "github-1328729525",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "customize-the-interface",
+    "mobile-friendly",
+    "organize-chats-and-messages",
+    "persistent-state"
+  ],
+  "cataloged_at": "2026-08-10T15:52:34.332Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
