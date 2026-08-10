@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "dmitryplyaskin-sillytavern-persona-management-extended",
+  "name": "SillyTavern-Persona-Management-Extended",
+  "kind": "extension",
+  "summary": "Persona Management Extended upgrades SillyTavern’s Persona Management with an optional Advanced mode for expanded persona management capabilities.",
+  "metadata_status": "curated",
+  "source_id": "github-1130337079",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": ["manage-characters-and-personas"],
+  "cataloged_at": "2026-08-10T17:24:05.744Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
