@@ -1,0 +1,51 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1006298514",
+  "repository": {
+    "id": 1006298514,
+    "owner": "Bronya-Rand",
+    "name": "Garden-Of-Recollection",
+    "url": "https://github.com/Bronya-Rand/Garden-Of-Recollection",
+    "description": "A SillyTavern extension that collects all your characters and group chats and transports you back in time.",
+    "default_branch": "master",
+    "head_sha": "e2aff86a580cbb9f05cab5483791362f2c5901a2",
+    "head_committed_at": "2025-07-09T18:09:08.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-06-22T00:07:15.000Z",
+    "size_kb": 160
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-10T18:04:15.680Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "e2aff86a580cbb9f05cab5483791362f2c5901a2"
+  },
+  "community": {
+    "stars_count": 10,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 10
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-08-10T18:04:15.680Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "Bronya-Rand", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-10T18:04:15.680Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
