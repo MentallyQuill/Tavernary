@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "bobthebinchicken-ultimate-persona",
+  "name": "Ultimate-Persona",
+  "kind": "extension",
+  "summary": "Ultimate Persona generates rich personas and plot hooks for SillyTavern, using pre-existing character cards to shape characters that match your roleplay.",
+  "metadata_status": "curated",
+  "source_id": "github-1111275760",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": [
+    "create-character-cards",
+    "manage-characters-and-personas",
+    "plan-stories-and-scenes"
+  ],
+  "cataloged_at": "2026-08-10T17:24:20.383Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
