@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "lenanderson-sillytavern-messagevariables",
+  "source_id": "github-819124467",
+  "source_identity": "github:lenanderson/sillytavern-messagevariables",
+  "evidence_fingerprint": "9be72a2c8bd066d0d70738165040126ca2b605dca2e147338b29f5b6f6a10578",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-10T17:43:12.586Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-10T17:43:12.586Z"
+  },
+  "maintenance_issue_number": null
+}
