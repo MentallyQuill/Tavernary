@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "zaakh-sillytavern-ztracker",
+  "name": "SillyTavern-zTracker",
+  "kind": "extension",
+  "summary": "SillyTavern-zTracker generates structured trackers for chat state, scenes, and characters, then injects saved snapshots into later prompts to support continuity.",
+  "metadata_status": "curated",
+  "source_id": "github-1138762188",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": ["track-characters-and-world-state"],
+  "cataloged_at": "2026-08-10T17:32:34.633Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

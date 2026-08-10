@@ -1,0 +1,94 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1138762188",
+  "repository": {
+    "id": 1138762188,
+    "owner": "Zaakh",
+    "name": "SillyTavern-zTracker",
+    "url": "https://github.com/Zaakh/SillyTavern-zTracker",
+    "description": "A SillyTavern extension that tracking stats with LLMs",
+    "default_branch": "main",
+    "head_sha": "91cb3bc7178ae1615cc335ceda1ca983446e7616",
+    "head_committed_at": "2026-08-10T14:19:34.000Z",
+    "archived": false,
+    "fork": true,
+    "parent": {
+      "id": 1024412582,
+      "owner": "bmen25124",
+      "name": "SillyTavern-WTracker",
+      "url": "https://github.com/bmen25124/SillyTavern-WTracker"
+    },
+    "created_at": "2026-01-21T04:48:00.000Z",
+    "size_kb": 13206
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-10T14:13:17.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-08-10",
+        "latest_at": "2026-08-10T14:13:17.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-07T12:56:02.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-27T13:58:30.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-06-29T14:02:49.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-26T11:21:09.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-19T15:06:57.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-11T22:00:54.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-10T17:32:34.633Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "91cb3bc7178ae1615cc335ceda1ca983446e7616"
+  },
+  "community": {
+    "stars_count": 8,
+    "forks_count": 1,
+    "watchers_count": 0,
+    "aggregate": 9
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-10T17:32:34.633Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "0cyris", "type": "User", "provider": "github" }],
+    "method": "merged-pull-requests",
+    "baseline_completed_at": "2026-08-10T17:32:34.633Z",
+    "scan": null,
+    "refreshed_at": "2026-08-10T17:32:34.633Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
