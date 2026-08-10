@@ -9,21 +9,21 @@
     "url": "https://github.com/Chechelpo/Simulith",
     "description": "LLM frontend for simulating worlds.",
     "default_branch": "master",
-    "head_sha": "b6610aa9adaf96096ff56ebcdbfbb7d4f20739ac",
-    "head_committed_at": "2026-08-09T03:49:06.000Z",
+    "head_sha": "b7f60995467eaf2117f54fd58f40a79959804a30",
+    "head_committed_at": "2026-08-09T19:40:45.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-25T22:33:39.000Z",
-    "size_kb": 17549
+    "size_kb": 17570
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-09T03:49:06.000Z",
+    "latest_source_activity_at": "2026-08-09T19:40:45.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-03",
-        "latest_at": "2026-08-09T03:49:06.000Z",
+        "latest_at": "2026-08-09T19:40:45.000Z",
         "precision": "exact"
       },
       {
@@ -70,11 +70,6 @@
         "week_start": "2026-06-01",
         "latest_at": "2026-06-07T22:01:09.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-18",
-        "latest_at": "2026-05-21T01:10:32.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
@@ -82,7 +77,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-09T08:04:15.301Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "b6610aa9adaf96096ff56ebcdbfbb7d4f20739ac"
+    "evidence_head_sha": "b7f60995467eaf2117f54fd58f40a79959804a30"
   },
   "community": {
     "stars_count": 8,
@@ -95,7 +90,7 @@
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-08-09T08:04:15.301Z",
+  "refreshed_at": "2026-08-10T08:53:26.617Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -105,7 +100,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-09T08:04:15.301Z",
+    "refreshed_at": "2026-08-10T08:53:26.617Z",
     "stale_since": null
   }
 }

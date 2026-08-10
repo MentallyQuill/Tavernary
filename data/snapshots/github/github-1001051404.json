@@ -9,21 +9,21 @@
     "url": "https://github.com/aikohanasaki/SillyTavern-MemoryBooks",
     "description": "Saves SillyTavern chat memories to lorebooks",
     "default_branch": "main",
-    "head_sha": "c6a7cf452c1b90f9a66c37973b35509f1792d942",
-    "head_committed_at": "2026-08-09T05:28:57.000Z",
+    "head_sha": "35821fe4750c6bb465f8bec9df6110c1f8654a99",
+    "head_committed_at": "2026-08-09T21:08:25.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-06-12T18:30:31.000Z",
-    "size_kb": 17066
+    "size_kb": 18759
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-09T05:28:57.000Z",
+    "latest_source_activity_at": "2026-08-09T21:08:25.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-03",
-        "latest_at": "2026-08-09T05:28:57.000Z",
+        "latest_at": "2026-08-09T21:08:25.000Z",
         "precision": "exact"
       },
       {
@@ -75,11 +75,6 @@
         "week_start": "2026-05-25",
         "latest_at": "2026-05-31T15:57:50.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-18",
-        "latest_at": "2026-05-21T04:18:34.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
@@ -87,7 +82,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-08T08:02:47.675Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "c6a7cf452c1b90f9a66c37973b35509f1792d942"
+    "evidence_head_sha": "35821fe4750c6bb465f8bec9df6110c1f8654a99"
   },
   "community": {
     "stars_count": 274,
@@ -100,7 +95,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-09T08:04:15.301Z",
+  "refreshed_at": "2026-08-10T08:53:26.617Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -113,7 +108,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-09T08:04:15.301Z",
+    "refreshed_at": "2026-08-10T08:53:26.617Z",
     "stale_since": null
   }
 }
