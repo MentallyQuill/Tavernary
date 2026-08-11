@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "skirianov-sidecar-ai",
+  "name": "sidecar-ai",
+  "kind": "extension",
+  "summary": "A SillyTavern extension that runs extra AI tasks alongside the main roleplay conversation, using cheaper models for commentary, relationship tracking, and meta-analysis while a primary model handles roleplay.",
+  "metadata_status": "curated",
+  "source_id": "github-1117596524",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [
+    "background-operation",
+    "route-tasks-across-models",
+    "secondary-model",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-08-11T03:52:04.985Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
