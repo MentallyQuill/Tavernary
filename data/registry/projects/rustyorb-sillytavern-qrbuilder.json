@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "rustyorb-sillytavern-qrbuilder",
+  "name": "SillyTavern-QRBuilder",
+  "kind": "extension",
+  "summary": "AI-powered STscript Quick Reply builder for SillyTavern that generates, edits, and exports QR scripts from natural-language descriptions using an LLM.",
+  "metadata_status": "curated",
+  "source_id": "github-1203878678",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["build-extensions-and-scripts"],
+  "cataloged_at": "2026-08-11T04:37:27.298Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
