@@ -1,0 +1,55 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1065981948",
+  "repository": {
+    "id": 1065981948,
+    "owner": "unkarelian",
+    "name": "timeline-memory",
+    "url": "https://github.com/unkarelian/timeline-memory",
+    "description": "A tool-call based memory system for SillyTavern",
+    "default_branch": "master",
+    "head_sha": "2d7193cb82ecc22ee67c8ef57334c7b962a87f9e",
+    "head_committed_at": "2025-12-30T23:35:17.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-09-28T20:21:57.000Z",
+    "size_kb": 8584
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-11T03:32:23.952Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "2d7193cb82ecc22ee67c8ef57334c7b962a87f9e"
+  },
+  "community": {
+    "stars_count": 40,
+    "forks_count": 3,
+    "watchers_count": 0,
+    "aggregate": 43
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-11T03:32:23.952Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "unkarelian", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-11T03:32:23.952Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
