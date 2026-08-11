@@ -266,6 +266,12 @@ export async function draftProjectRecord(input) {
       typeof input.enrichment.message === "string"
         ? input.enrichment.message.trim()
         : "";
+    const diagnosticCode =
+      input.enrichment?.status === "failed" &&
+      input.enrichment.code === "provider-authentication-failed" &&
+      ["http-401", "http-403"].includes(input.enrichment.diagnosticCode)
+        ? input.enrichment.diagnosticCode
+        : null;
     throw Object.assign(
       new Error(
         `Validated catalog copy is required before this project can be drafted${
@@ -278,6 +284,7 @@ export async function draftProjectRecord(input) {
           typeof input.enrichment.code === "string"
             ? input.enrichment.code
             : "catalog-copy-required",
+        ...(diagnosticCode ? { diagnosticCode } : {}),
       },
     );
   }
