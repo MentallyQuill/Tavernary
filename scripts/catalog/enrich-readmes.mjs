@@ -395,7 +395,15 @@ function validateOutput(output, record, vocabularies, providerInput) {
         return "Summary must not contain URLs or domain-style links. If a dotted brand or project name resembles a domain, refer to the project generically instead.";
       }
       if (error.includes("evidence")) {
-        return "Include compact source evidence references.";
+        return "Include compact source evidence references. Return every evidence reference as a non-empty single-line string of 160 characters or fewer inside summary.evidence or tags[].evidence; do not return evidence objects.";
+      }
+      if (
+        error.includes("copy") ||
+        error.startsWith("accepted-") ||
+        error.startsWith("light edits") ||
+        error.startsWith("policy rewrites")
+      ) {
+        return 'Use result "accepted-unchanged" with change_reasons [] and policy_signal "none" when synthesis needs no catalog-policy edit. For "accepted-with-light-edits", return one or more allowed light change reasons ("emoji-removed", "whitespace-normalized", "punctuation-corrected", or "obvious-spelling-corrected") and policy_signal "none". For "accepted-with-policy-rewrite", return one or more policy reasons ("graphic-wording-neutralized", "slur-removed", or "discriminatory-framing-neutralized") and policy_signal "catalog-policy-rewrite".';
       }
       if (
         error.includes("tags") ||
