@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "sillytavern-sillytavern-timelines",
+  "name": "SillyTavern-Timelines",
+  "kind": "extension",
+  "summary": "SillyTavern extension for timeline-based navigation of chat histories, showing all character chats as an acyclic graph with swoop fulltext search, swipe access, and branching from any node or swipe.",
+  "metadata_status": "curated",
+  "source_id": "github-672419159",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["organize-chats-and-messages"],
+  "cataloged_at": "2026-08-11T04:41:44.502Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
