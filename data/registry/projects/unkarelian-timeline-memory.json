@@ -3,7 +3,7 @@
   "id": "unkarelian-timeline-memory",
   "name": "timeline-memory",
   "kind": "extension",
-  "summary": "timeline-memory is a SillyTavern extension creating a timeline of summarized chat chapters with AI arc detection, context retrieval, lorebook management, and agentic tool-based querying (README Features).",
+  "summary": "Timeline Memory is a SillyTavern extension that creates a timeline of summarized chat chapters with AI arc detection, context retrieval, lorebook management, and agentic tool-based querying.",
   "metadata_status": "curated",
   "source_id": "github-1065981948",
   "frontends": ["sillytavern"],
