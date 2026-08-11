@@ -1,19 +1,7 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-08-10T23:14:33.620Z",
+  "updated_at": "2026-08-11T05:03:37.941Z",
   "quarantines": [
-    {
-      "report_id": "9cf398d2c18a934c07a466c79172d458e5a8e416c90652d2b3dd08450a6ed2cf",
-      "report_digest": "9cf398d2c18a934c07a466c79172d458e5a8e416c90652d2b3dd08450a6ed2cf",
-      "repository_id": 1305919833,
-      "repository": "N0819/Sonder_Engine",
-      "target_sha": "b2cd5ec6d21b218c60cd316156ef673303027a5d",
-      "synthesis_policy_version": "5",
-      "diagnostic": "provider-authentication-failed",
-      "first_failed_at": "2026-08-10T19:41:12.411Z",
-      "last_failed_at": "2026-08-10T19:41:12.411Z",
-      "attempts": 1
-    },
     {
       "report_id": "a735972dc52a551c82e3f306615029c285a6277f2bf54d4ab911cc725397a3bb",
       "report_digest": "a735972dc52a551c82e3f306615029c285a6277f2bf54d4ab911cc725397a3bb",

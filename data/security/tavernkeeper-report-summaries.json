@@ -37899,19 +37899,14 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1305919833/b2cd5ec6d21b218c60cd316156ef673303027a5d/4/9cf398d2c18a934c07a466c79172d458e5a8e416c90652d2b3dd08450a6ed2cf/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1305919833/history/",
-      "assessed_at": "2026-08-10T19:41:12.411Z",
+      "assessed_at": "2026-08-11T05:03:53.352Z",
       "synthesis_policy_version": "5",
-      "synthesis_model": "deterministic-policy-v5",
+      "synthesis_model": "zai-org/glm-5.2:thinking",
       "danger_basis": "none",
-      "assessment_source": "deterministic_fallback",
+      "assessment_source": "model",
       "assessment": {
+        "summary": "Sonder_Engine is a SillyTavern community project that was reviewed at a specific code snapshot. No malicious behavior, harmful payloads, or exploitable vulnerabilities were found. The validated findings are limited to minor CI workflow hygiene issues — GitHub Actions referenced by version tags rather than pinned to specific commit hashes — which carry very low practical risk for a project that only runs tests in CI. A scanner flag about obfuscated JavaScript was reviewed and turned out to be a误报",
         "risk_level": "low",
-        "headline": "Low concern",
-        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
-        "minor_cautions": 6,
-        "material_concerns": 0,
-        "high_danger": 0,
-        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
         "cited_finding_ids": [
           "000192e612cc3de4282c7ab587838f715e41e6a9fd303f20f2d003cd38648159",
           "37599e4304f2e03dd2b6bbcc575bd8749b86faf56b47eb332d67f5b6f3238709",
@@ -37920,7 +37915,12 @@
           "a4d7d658d90cea537d053dba3c7f9e8cbb5c64875de9060314ecd47fbc511c5e",
           "d863dba22b28321095cffc2290bcb5ce67add04773df34202a425c3e7f63a866"
         ],
-        "interaction_chains": []
+        "minor_cautions": 6,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "interaction_chains": [],
+        "headline": "No malicious or harmful behavior found. Six minor CI hygiene notes about unpinned GitHub Action tags",
+        "malicious_evidence": "none detected. No API-key phishing, data exfiltration, trojan payloads, or bot-infection behavior was found in the reviewed snapshot. All validated findings are either false-positive scanner alerts or low-impact CI workflow hygiene issues with no demonstrated exploit path against users of the SillyT"
       }
     },
     {
