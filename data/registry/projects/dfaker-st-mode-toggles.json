@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "dfaker-st-mode-toggles",
+  "name": "st-mode-toggles",
+  "kind": "extension",
+  "summary": "SillyTavern extension adding a microchip menu of toggleable modes that prepend meta-lines to your next user message, steering model responses into chosen vibes with custom modes and probabilistic scheduling per README.",
+  "metadata_status": "curated",
+  "source_id": "github-1039962099",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "automate-roleplay-workflows",
+    "customize-the-interface",
+    "guide-model-responses",
+    "increase-narrative-variety"
+  ],
+  "cataloged_at": "2026-08-11T04:31:35.076Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

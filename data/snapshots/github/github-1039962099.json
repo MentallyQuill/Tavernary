@@ -1,0 +1,53 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1039962099",
+  "repository": {
+    "id": 1039962099,
+    "owner": "dfaker",
+    "name": "st-mode-toggles",
+    "url": "https://github.com/dfaker/st-mode-toggles",
+    "description": "Clickable cinematic “mode” toggles for SillyTavern that prepend flavorful meta-directives to your prompt and add a floating microchip menu to flip vibes on the fly.",
+    "default_branch": "main",
+    "head_sha": "96fa0602f53b65b1645c7404a93338c14c088edd",
+    "head_committed_at": "2025-09-02T19:15:42.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-08-18T08:49:01.000Z",
+    "size_kb": 197
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-11T04:31:35.076Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "96fa0602f53b65b1645c7404a93338c14c088edd"
+  },
+  "community": {
+    "stars_count": 20,
+    "forks_count": 1,
+    "watchers_count": 0,
+    "aggregate": 21
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-11T04:31:35.076Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "dfaker", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-11T04:31:35.076Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
