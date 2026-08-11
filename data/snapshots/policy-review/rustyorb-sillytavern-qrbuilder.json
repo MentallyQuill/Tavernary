@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "rustyorb-sillytavern-qrbuilder",
+  "source_id": "github-1203878678",
+  "source_identity": "github:rustyorb/sillytavern-qrbuilder",
+  "evidence_fingerprint": "2df1cf8502a5225f84968989034c9c0aa390ebd6cf465408d6b6d92cde621215",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-11T04:41:04.061Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-11T04:41:04.061Z"
+  },
+  "maintenance_issue_number": null
+}
