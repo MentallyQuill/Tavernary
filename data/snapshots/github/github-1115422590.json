@@ -1,0 +1,55 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1115422590",
+  "repository": {
+    "id": 1115422590,
+    "owner": "unkarelian",
+    "name": "openvault",
+    "url": "https://github.com/unkarelian/openvault",
+    "description": "Free and Open Source character memory",
+    "default_branch": "master",
+    "head_sha": "7138733193407de4e70e297a056fccff4eb1be1c",
+    "head_committed_at": "2025-12-22T10:53:34.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-12-12T20:57:08.000Z",
+    "size_kb": 237
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-11T03:28:08.788Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "7138733193407de4e70e297a056fccff4eb1be1c"
+  },
+  "community": {
+    "stars_count": 41,
+    "forks_count": 11,
+    "watchers_count": 0,
+    "aggregate": 52
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-11T03:28:08.788Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "unkarelian", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-11T03:28:08.788Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
