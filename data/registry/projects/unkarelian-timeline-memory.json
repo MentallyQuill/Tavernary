@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "unkarelian-timeline-memory",
+  "name": "timeline-memory",
+  "kind": "extension",
+  "summary": "Timeline Memory is a SillyTavern extension that creates a timeline of summarized chat chapters with AI arc detection, context retrieval, lorebook management, and agentic tool-based querying.",
+  "metadata_status": "curated",
+  "source_id": "github-1065981948",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "agentic-tool-use",
+    "maintain-long-term-memory",
+    "manage-context-limits",
+    "manage-lorebooks",
+    "preserve-story-continuity",
+    "retrieve-relevant-context"
+  ],
+  "cataloged_at": "2026-08-11T03:32:23.952Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
