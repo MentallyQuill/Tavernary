@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "alphonsos88k-ste-summary-editor",
+  "name": "ste_summary_editor",
+  "kind": "extension",
+  "summary": "A SillyTavern extension for ingesting, organising, and exporting numbered story summaries with arc grouping, gap detection, causal linking, content editing, and visual timeline/location tools.",
+  "metadata_status": "curated",
+  "source_id": "github-1211103921",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "manage-context-limits",
+    "move-and-back-up-data",
+    "preserve-story-continuity"
+  ],
+  "cataloged_at": "2026-08-11T04:23:07.472Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

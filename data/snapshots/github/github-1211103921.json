@@ -1,0 +1,62 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1211103921",
+  "repository": {
+    "id": 1211103921,
+    "owner": "Alphonsos88k",
+    "name": "ste_summary_editor",
+    "url": "https://github.com/Alphonsos88k/ste_summary_editor",
+    "description": "Extension built for extensive summary editing, and injection into built in databank used with RAG on the sillytavern frontend web application. ",
+    "default_branch": "main",
+    "head_sha": "ca952cff8d36cabb95037a4c91c66831ad52b4e4",
+    "head_committed_at": "2026-05-31T07:25:30.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-04-15T04:23:40.000Z",
+    "size_kb": 1518
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-05-31T07:25:30.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-31T07:25:30.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-05-31T07:25:35.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-11T04:23:07.472Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "ca952cff8d36cabb95037a4c91c66831ad52b4e4"
+  },
+  "community": {
+    "stars_count": 2,
+    "forks_count": 0,
+    "watchers_count": 1,
+    "aggregate": 3
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-11T04:23:07.472Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "Alphonsos88k", "type": "User", "provider": "github" },
+      { "login": "semantic-release-bot", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-11T04:23:07.472Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
