@@ -754,8 +754,11 @@ test.each([
         canceled = true;
       },
     });
+    const getReader = vi.spyOn(body, "getReader");
+    const response = new Response(body, { status });
+    const readText = vi.spyOn(response, "text");
     const provider = createEnrichmentProvider(
-      utilityProviderOptions(async () => new Response(body, { status })),
+      utilityProviderOptions(async () => response),
     );
 
     let error: unknown;
@@ -770,6 +773,9 @@ test.each([
       diagnosticCode,
     });
     expect(canceled).toBe(true);
+    expect(getReader).not.toHaveBeenCalled();
+    expect(readText).not.toHaveBeenCalled();
+    expect(String(error)).not.toContain(privateMarker);
     expect(JSON.stringify(error)).not.toContain(privateMarker);
   },
 );
