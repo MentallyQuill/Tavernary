@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sillytavern-sillytavern-timelines",
+  "source_id": "github-672419159",
+  "source_identity": "github:sillytavern/sillytavern-timelines",
+  "evidence_fingerprint": "93769e4052cf35b3a8bae1e2287a043d7a00a6833ff8d66930fe82038b429b0a",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-11T04:45:37.633Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-11T04:45:37.633Z"
+  },
+  "maintenance_issue_number": null
+}
