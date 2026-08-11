@@ -37992,21 +37992,21 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1294619050/15b1512d2ba44cc19eb860e5dc8247286dd78a77/4/c5623675a3b3d0bc18126139ba05f7b6d45e2cdfb177395afad3385520b20789/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1294619050/history/",
-      "assessed_at": "2026-08-10T19:41:12.411Z",
+      "assessed_at": "2026-08-11T05:18:05.613Z",
       "synthesis_policy_version": "5",
-      "synthesis_model": "deterministic-policy-v5",
+      "synthesis_model": "zai-org/glm-5.2:thinking",
       "danger_basis": "none",
-      "assessment_source": "deterministic_fallback",
+      "assessment_source": "model",
       "assessment": {
+        "summary": "No malicious behavior, exploitable vulnerabilities, or material concerns were demonstrated in this project. The review found no code candidates requiring assessment, and no scanner or contextual findings were triggered. Ordinary SillyTavern extension behavior was not present in a way that required evaluation. As with any advisory review, this cannot prove the complete absence of unknown behavior.",
         "risk_level": "low",
-        "headline": "Low concern",
-        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
         "minor_cautions": 0,
         "material_concerns": 0,
         "high_danger": 0,
-        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
+        "interaction_chains": [],
         "cited_finding_ids": [],
-        "interaction_chains": []
+        "malicious_evidence": "none",
+        "headline": "Clean — no demonstrated issues"
       }
     },
     {
