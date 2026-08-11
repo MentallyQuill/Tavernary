@@ -235,7 +235,10 @@ async function statusError(response, maximumBytes) {
   }
   if (status === 401 || status === 403) {
     await cancelResponseBody(response);
-    return new EnrichmentProviderError("provider-authentication-failed");
+    return new EnrichmentProviderError(
+      "provider-authentication-failed",
+      `http-${status}`,
+    );
   }
   if (status >= 500) {
     await cancelResponseBody(response);

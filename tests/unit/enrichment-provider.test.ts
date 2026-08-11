@@ -739,6 +739,42 @@ test("does not attach damaged schema-invalid output to a thrown error", async ()
 });
 
 test.each([
+  [401, "http-401"],
+  [403, "http-403"],
+] as const)(
+  "records HTTP %i without reading the authentication response body",
+  async (status, diagnosticCode) => {
+    const privateMarker = `PRIVATE AUTHENTICATION BODY ${status}`;
+    let canceled = false;
+    const body = new ReadableStream<Uint8Array>({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode(privateMarker));
+      },
+      cancel() {
+        canceled = true;
+      },
+    });
+    const provider = createEnrichmentProvider(
+      utilityProviderOptions(async () => new Response(body, { status })),
+    );
+
+    let error: unknown;
+    try {
+      await provider.generate(input);
+    } catch (caught) {
+      error = caught;
+    }
+
+    expect(error).toMatchObject({
+      code: "provider-authentication-failed",
+      diagnosticCode,
+    });
+    expect(canceled).toBe(true);
+    expect(JSON.stringify(error)).not.toContain(privateMarker);
+  },
+);
+
+test.each([
   [
     "HTTP failure",
     () => new Response("private repair failure", { status: 500 }),
