@@ -3,7 +3,7 @@
   "id": "virtaava-sillytavern-woven-imprint",
   "name": "sillytavern-woven-imprint",
   "kind": "extension",
-  "summary": "Persistent memory and relationship tracking for SillyTavern characters via woven-imprint. Characters remember past conversations, form opinions, and develop evolving relationships across days or weeks. (README)",
+  "summary": "Persistent memory and relationship tracking for SillyTavern characters via woven-imprint. Characters remember past conversations, form opinions, and develop evolving relationships across days or weeks.",
   "metadata_status": "curated",
   "source_id": "github-1186518647",
   "frontends": ["sillytavern"],
