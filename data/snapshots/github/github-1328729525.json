@@ -37,12 +37,13 @@
   "community": {
     "stars_count": 1,
     "forks_count": 0,
-    "watchers_count": 1,
-    "aggregate": 2
+    "watchers_count": 2,
+    "aggregate": 3
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-10T15:52:34.332Z",
+  "refreshed_at": "2026-08-11T08:16:27.105Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "selinawynters-ops", "type": "User", "provider": "github" }
@@ -50,8 +51,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-10T15:52:34.332Z",
+    "refreshed_at": "2026-08-11T08:16:27.105Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

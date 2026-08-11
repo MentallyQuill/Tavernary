@@ -39,15 +39,15 @@
     "spdx_id": "Apache-2.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-11T03:45:01.501Z",
+  "refreshed_at": "2026-08-11T08:16:27.105Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "virtaava", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-11T03:45:01.501Z",
+    "refreshed_at": "2026-08-11T08:16:27.105Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

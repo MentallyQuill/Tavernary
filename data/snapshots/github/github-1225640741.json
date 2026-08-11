@@ -9,18 +9,23 @@
     "url": "https://github.com/ZDOSt/Story-Engine",
     "description": null,
     "default_branch": "main",
-    "head_sha": "3bab20b97b719445b32c68e39b6ec3fe3ae50623",
-    "head_committed_at": "2026-08-08T14:45:14.000Z",
+    "head_sha": "717bacfb3abd895f2234b616afa7e94c43b704a8",
+    "head_committed_at": "2026-08-11T04:37:11.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-30T13:40:09.000Z",
-    "size_kb": 7496
+    "size_kb": 8873
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-08T14:45:14.000Z",
+    "latest_source_activity_at": "2026-08-11T04:37:11.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-10",
+        "latest_at": "2026-08-11T04:37:11.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-03",
         "latest_at": "2026-08-08T14:45:14.000Z",
@@ -75,19 +80,14 @@
         "week_start": "2026-05-25",
         "latest_at": "2026-05-31T04:32:56.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-18",
-        "latest_at": "2026-05-24T18:53:20.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-03T10:52:31.892Z",
+    "baseline_completed_at": "2026-08-11T08:16:27.105Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "3bab20b97b719445b32c68e39b6ec3fe3ae50623"
+    "evidence_head_sha": "717bacfb3abd895f2234b616afa7e94c43b704a8"
   },
   "community": {
     "stars_count": 8,
@@ -96,7 +96,7 @@
     "aggregate": 8
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-10T08:53:26.617Z",
+  "refreshed_at": "2026-08-11T08:16:27.105Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -104,7 +104,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-10T08:53:26.617Z",
+    "refreshed_at": "2026-08-11T08:16:27.105Z",
     "stale_since": null
   }
 }

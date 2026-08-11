@@ -9,21 +9,21 @@
     "url": "https://github.com/ddkhan24/hordestudio",
     "description": "SillyTavern-style character creation + AI Dungeon-style persistent worlds + a detailed virtual companion simulator, packaged as a creator-focused local web application.",
     "default_branch": "main",
-    "head_sha": "4caa11441c9a3a13e5556e47f50c8d82e30e837a",
-    "head_committed_at": "2026-08-10T01:14:51.000Z",
+    "head_sha": "b44cf070a1259deee8a38c7e73d938cf170d1c63",
+    "head_committed_at": "2026-08-10T23:39:56.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-31T12:09:50.000Z",
-    "size_kb": 16649
+    "size_kb": 17508
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-10T00:36:03.000Z",
+    "latest_source_activity_at": "2026-08-10T23:39:56.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-10T00:36:03.000Z",
+        "latest_at": "2026-08-10T23:39:56.000Z",
         "precision": "exact"
       },
       {
@@ -38,28 +38,31 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-10T00:36:40.000Z",
+    "latest_release_at": "2026-08-10T18:38:47.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-10T08:53:26.617Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "4caa11441c9a3a13e5556e47f50c8d82e30e837a"
+    "evidence_head_sha": "b44cf070a1259deee8a38c7e73d938cf170d1c63"
   },
   "community": {
-    "stars_count": 21,
-    "forks_count": 3,
+    "stars_count": 30,
+    "forks_count": 4,
     "watchers_count": 3,
-    "aggregate": 27
+    "aggregate": 37
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-10T08:53:26.617Z",
+  "refreshed_at": "2026-08-11T08:16:27.105Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "ddkhan24", "type": "User", "provider": "github" }],
+    "accounts": [
+      { "login": "ddkhan24", "type": "User", "provider": "github" },
+      { "login": "nmorgowicz", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-10T08:53:26.617Z",
+    "refreshed_at": "2026-08-11T08:16:27.105Z",
     "stale_since": null
   }
 }

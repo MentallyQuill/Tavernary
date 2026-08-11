@@ -37,24 +37,12 @@
         "precision": "exact"
       }
     ],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      true,
-      false,
-      false,
-      false,
-      true,
-      true,
-      false,
-      false,
-      false
-    ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
-    "baseline_attempts": 0
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-11T08:16:27.105Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "2ad9d9e480f537ecf7d7f8add53f79ae25a27faf"
   },
   "community": {
     "stars_count": 171,
@@ -63,8 +51,9 @@
     "aggregate": 190
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-10T17:50:17.293Z",
+  "refreshed_at": "2026-08-11T08:16:27.105Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "NemoVonNirgend", "type": "User", "provider": "github" },
@@ -73,23 +62,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-10T17:50:17.293Z",
+    "refreshed_at": "2026-08-11T08:16:27.105Z",
     "stale_since": null
-  },
-  "activity_scan": {
-    "head_sha": "2ad9d9e480f537ecf7d7f8add53f79ae25a27faf",
-    "cutoff_at": "2026-05-02T17:50:17.293Z",
-    "next_page": 1,
-    "next_index": 6,
-    "resolved_weeks": ["2026-06-15", "2026-07-13", "2026-07-20"],
-    "pending_commit": {
-      "sha": "5ba1c5863a6355ad946788dc7debf06a64ac8fcd",
-      "committed_at": "2026-05-24T05:38:03.000Z",
-      "parent_count": 1,
-      "next_file_page": 4,
-      "source_path_seen": false,
-      "substantive_patch_seen": true,
-      "patch_incomplete": false
-    }
   }
 }

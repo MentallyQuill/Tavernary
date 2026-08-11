@@ -9,21 +9,26 @@
     "url": "https://github.com/brasen56/merged_world_tracker",
     "description": null,
     "default_branch": "main",
-    "head_sha": "b7637c9fa2aa092e7a4106405ffd037b4703d17c",
-    "head_committed_at": "2026-08-05T20:32:44.000Z",
+    "head_sha": "3070611a3a3364fdd784717c270a7cc367bd7f53",
+    "head_committed_at": "2026-08-10T22:52:19.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-02T00:29:40.000Z",
-    "size_kb": 2072
+    "size_kb": 2157
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-05T20:32:44.000Z",
+    "latest_source_activity_at": "2026-08-10T22:52:19.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-08-10",
+        "latest_at": "2026-08-10T22:52:19.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-08-03",
-        "latest_at": "2026-08-05T20:32:44.000Z",
+        "latest_at": "2026-08-09T15:51:33.000Z",
         "precision": "exact"
       },
       {
@@ -75,9 +80,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-04T10:01:46.256Z",
+    "baseline_completed_at": "2026-08-11T08:16:27.105Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "b7637c9fa2aa092e7a4106405ffd037b4703d17c"
+    "evidence_head_sha": "3070611a3a3364fdd784717c270a7cc367bd7f53"
   },
   "community": {
     "stars_count": 7,
@@ -90,7 +95,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-10T08:53:26.617Z",
+  "refreshed_at": "2026-08-11T08:16:27.105Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -98,7 +103,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-10T08:53:26.617Z",
+    "refreshed_at": "2026-08-11T08:16:27.105Z",
     "stale_since": null
   }
 }

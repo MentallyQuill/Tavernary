@@ -9,18 +9,23 @@
     "url": "https://github.com/platberlitz/sillytavern-image-gen",
     "description": "SillyTavern extension for AI image generation with multiple backend support",
     "default_branch": "main",
-    "head_sha": "c956e685a158242c87763f2fb236967d33f406cc",
-    "head_committed_at": "2026-08-04T23:29:31.000Z",
+    "head_sha": "59a58f66bae5812772cbd23c85e933a28f06e8d3",
+    "head_committed_at": "2026-08-10T08:17:33.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-12T06:21:59.000Z",
-    "size_kb": 3542
+    "size_kb": 3616
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-04T23:15:02.000Z",
+    "latest_source_activity_at": "2026-08-10T08:13:02.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-10",
+        "latest_at": "2026-08-10T08:13:02.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-03",
         "latest_at": "2026-08-04T23:15:02.000Z",
@@ -70,9 +75,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-05T10:00:04.864Z",
+    "baseline_completed_at": "2026-08-11T08:16:27.105Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "c956e685a158242c87763f2fb236967d33f406cc"
+    "evidence_head_sha": "59a58f66bae5812772cbd23c85e933a28f06e8d3"
   },
   "community": {
     "stars_count": 29,
@@ -85,7 +90,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-10T08:53:26.617Z",
+  "refreshed_at": "2026-08-11T08:16:27.105Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -98,7 +103,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-10T08:53:26.617Z",
+    "refreshed_at": "2026-08-11T08:16:27.105Z",
     "stale_since": null
   }
 }

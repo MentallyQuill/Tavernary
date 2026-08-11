@@ -35,8 +35,9 @@
     "aggregate": 10
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-10T18:04:15.680Z",
+  "refreshed_at": "2026-08-11T08:16:27.105Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "Bronya-Rand", "type": "User", "provider": "github" }
@@ -44,8 +45,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-10T18:04:15.680Z",
+    "refreshed_at": "2026-08-11T08:16:27.105Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

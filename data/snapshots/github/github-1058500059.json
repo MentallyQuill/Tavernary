@@ -39,15 +39,15 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-10T17:20:00.361Z",
+  "refreshed_at": "2026-08-11T08:16:27.105Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "welvet", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-10T17:20:00.361Z",
+    "refreshed_at": "2026-08-11T08:16:27.105Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }
