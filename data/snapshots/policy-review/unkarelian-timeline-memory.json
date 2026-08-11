@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "unkarelian-timeline-memory",
+  "source_id": "github-1065981948",
+  "source_identity": "github:unkarelian/timeline-memory",
+  "evidence_fingerprint": "7f858630bed510f6624c731ef4dd287f209e73830861af2684f86aac80d43939",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-11T03:41:29.175Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-11T03:41:29.175Z"
+  },
+  "maintenance_issue_number": null
+}
