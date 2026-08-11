@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "pavorlov-sillytavern-interactive-map",
+  "name": "SillyTavern-Interactive-Map",
+  "kind": "extension",
+  "summary": "SillyTavern extension that adds interactive maps with clickable zones, sound accompaniment, and image and video display, giving users creative freedom to build immersive location-based scenes.",
+  "metadata_status": "curated",
+  "source_id": "github-1112944532",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "add-music-and-audio",
+    "add-visual-immersion",
+    "manage-maps-and-locations"
+  ],
+  "cataloged_at": "2026-08-11T04:45:59.590Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
