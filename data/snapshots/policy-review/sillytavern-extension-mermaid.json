@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sillytavern-extension-mermaid",
+  "source_id": "github-850754623",
+  "source_identity": "github:sillytavern/extension-mermaid",
+  "evidence_fingerprint": "87e38b80b338a10edac37553f4dc8b93d2fbd21a799a674dca86760a3e2d3b2d",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-11T08:32:45.034Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-11T08:32:45.034Z"
+  },
+  "maintenance_issue_number": null
+}
