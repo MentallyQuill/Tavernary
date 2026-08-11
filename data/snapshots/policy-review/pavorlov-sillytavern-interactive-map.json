@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "pavorlov-sillytavern-interactive-map",
+  "source_id": "github-1112944532",
+  "source_identity": "github:pavorlov/sillytavern-interactive-map",
+  "evidence_fingerprint": "7f2a574cf74cae7c0cc3a4873f98347812635775c398247be04c76d87b9fd7ab",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-11T04:50:22.493Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-11T04:50:22.493Z"
+  },
+  "maintenance_issue_number": null
+}
