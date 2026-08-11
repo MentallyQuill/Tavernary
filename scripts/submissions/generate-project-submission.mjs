@@ -948,6 +948,8 @@ export async function prepareProjectSubmissionDraft({
     enrichment = {
       status: "failed",
       code: error.code ?? "enrichment-failed",
+      diagnosticCode:
+        typeof error.diagnosticCode === "string" ? error.diagnosticCode : null,
       message: error.message,
     };
   }

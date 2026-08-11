@@ -508,6 +508,7 @@ test("reports why required catalog copy could not be validated", async () => {
     enrichment: {
       status: "failed",
       code: "provider-timeout",
+      diagnosticCode: "PRIVATE PROVIDER DETAIL",
       message: "The enrichment provider timed out.",
     },
     copyRequired: true,
@@ -519,6 +520,8 @@ test("reports why required catalog copy could not be validated", async () => {
     message:
       "Validated catalog copy is required before this project can be drafted: The enrichment provider timed out.",
   });
+  expect(error).not.toHaveProperty("diagnosticCode");
+  expect(String(error)).not.toContain("PRIVATE PROVIDER DETAIL");
 });
 
 test("drafts external presets with manual source policy", async () => {

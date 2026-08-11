@@ -58,6 +58,7 @@ export type DraftEnrichment =
   | {
       status: "failed";
       code: string;
+      diagnosticCode?: string | null;
       message: string;
     }
   | null;

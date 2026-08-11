@@ -746,6 +746,40 @@ test("routes unavailable verified-owner copy review to manual publication", asyn
   expect(draft.publicationMode).toBe("manual");
 });
 
+test.each([["http-401"], ["http-403"]] as const)(
+  "preserves safe provider diagnostic %s when required automatic copy fails",
+  async (diagnosticCode) => {
+    const enrich = vi.fn(async () => {
+      throw new EnrichmentProviderError(
+        "provider-authentication-failed",
+        diagnosticCode,
+      );
+    });
+
+    await expect(
+      prepareProjectSubmissionDraft(
+        repositorySubmissionFixture({
+          user: { id: 23, login: "Contributor" },
+          ownerId: 11,
+          metadata: {
+            summary: { mode: "automatic" },
+            tags: { mode: "automatic" },
+          },
+          enrich,
+          copySummary: vi.fn(async () => {
+            throw new Error("Automatic copy must not use manual copy review.");
+          }),
+        }),
+      ),
+    ).rejects.toMatchObject({
+      code: "provider-authentication-failed",
+      diagnosticCode,
+      message:
+        "Validated catalog copy is required before this project can be drafted: The enrichment provider rejected authentication.",
+    });
+  },
+);
+
 test("discards community manual metadata before synthesized enrichment", async () => {
   const enrich = vi.fn(async () => ({
     status: "curated",
