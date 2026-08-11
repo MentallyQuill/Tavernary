@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "chemiguel23-memorymesh",
+  "name": "MemoryMesh",
+  "kind": "extension",
+  "summary": "MemoryMesh is a local knowledge graph server using MCP to provide structured memory persistence for AI models, focused on text-based RPGs and interactive storytelling for consistent memory across conversations.",
+  "metadata_status": "curated",
+  "source_id": "github-899286181",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "local-first",
+    "maintain-long-term-memory",
+    "persistent-state",
+    "preserve-story-continuity",
+    "self-hosted"
+  ],
+  "cataloged_at": "2026-08-11T03:41:48.023Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

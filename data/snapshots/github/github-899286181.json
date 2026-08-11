@@ -1,0 +1,58 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-899286181",
+  "repository": {
+    "id": 899286181,
+    "owner": "CheMiguel23",
+    "name": "MemoryMesh",
+    "url": "https://github.com/CheMiguel23/MemoryMesh",
+    "description": "A knowledge graph server that uses the Model Context Protocol (MCP) to provide structured memory persistence for AI models.",
+    "default_branch": "main",
+    "head_sha": "531580d2dcc99a87e499d6821b33bfaa191e63a5",
+    "head_committed_at": "2026-01-17T17:55:34.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2024-12-06T00:50:19.000Z",
+    "size_kb": 569
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-11T03:41:48.023Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "531580d2dcc99a87e499d6821b33bfaa191e63a5"
+  },
+  "community": {
+    "stars_count": 350,
+    "forks_count": 50,
+    "watchers_count": 4,
+    "aggregate": 404
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-11T03:41:48.023Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "CheMiguel23", "type": "User", "provider": "github" },
+      { "login": "claude", "type": "User", "provider": "github" },
+      { "login": "calclavia", "type": "User", "provider": "github" },
+      { "login": "punkpeye", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-11T03:41:48.023Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
