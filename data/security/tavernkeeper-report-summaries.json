@@ -37677,19 +37677,17 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1287253091/1865d561a12f680e48048a2b68f4ef204759ad40/4/eccc6db94904a1a5d0797b5d0810e0fb8d7f7284493c87fbda2eb8bb6aa77c8e/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1287253091/history/",
-      "assessed_at": "2026-08-10T19:48:14.166Z",
+      "assessed_at": "2026-08-11T05:24:16.732Z",
       "synthesis_policy_version": "5",
-      "synthesis_model": "deterministic-policy-v5",
+      "synthesis_model": "zai-org/glm-5.2:thinking",
       "danger_basis": "none",
-      "assessment_source": "deterministic_fallback",
+      "assessment_source": "model",
       "assessment": {
         "risk_level": "low",
-        "headline": "Low concern",
-        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "summary": "This SillyTavern extension passed review with no demonstrated malicious behavior, no material vulnerabilities, and no high-danger findings. All 30 validated cautions are low-impact: dependency advisories recorded in the lockfile that are not shown to be reachable by users, a documentation install instruction that pipes a remote installer to shell, CI workflow actions pinned to moving labels, local developer hooks that inherit the full environment, and a few regex patterns flagged by scanners but",
         "minor_cautions": 30,
         "material_concerns": 0,
         "high_danger": 0,
-        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
         "cited_finding_ids": [
           "05b78cce528734f997ff540bec206338a0c09d32391b2a9c4cfa0bef3469ad24",
           "0ca3e531215f615add5880ce2ad46c003f4f64ffce004ba15db53b3ad0f087d0",
@@ -37722,7 +37720,9 @@
           "fd3e6994b5830015a294312ec9734cf0a1eb5d6e22266f4a842ebc049334b2e8",
           "ffdc69933a9fa8a6e1da77b5e7313223b46011d7767c94b5c45d738f8470cda0"
         ],
-        "interaction_chains": []
+        "interaction_chains": [],
+        "malicious_evidence": "No malicious or compromised behavior was demonstrated. The extension does not exfiltrate credentials, download and execute payloads, or conceal network activity. Scanner signals for data-exfiltration, serialize-environment, and download-to-execution were reviewed in context and classified as normal,",
+        "headline": "No malicious behavior found; minor dependency and tooling weaknesses only"
       }
     },
     {
