@@ -11884,18 +11884,18 @@
         "tools_completed": 6,
         "tools_not_applicable": 1,
         "evidence_validated": 5,
+        "metadata_only_candidates": 0,
         "review_required": 5,
         "review_completed": 5,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1248993662/a3f0778f58a4ab0193facc91b9e2bbc556bfcfa3/3/c87045731680bb67399dde1cfb4975d9c3429d20a0d58a4395ee9a4d50540b16/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1248993662/history/",
       "assessed_at": "2026-08-05T09:31:20.173Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [
           "cd8865121e6cdd7a7ba8570b5a1bec9536028900063e0494c731825e64e47e21"
@@ -11971,18 +11971,18 @@
         "tools_completed": 4,
         "tools_not_applicable": 3,
         "evidence_validated": 0,
+        "metadata_only_candidates": 0,
         "review_required": 0,
         "review_completed": 0,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1310212816/8ea2a917f1ef3a38682671e155cef4250c945628/3/9f467738dd9f9ac15c34760b1f4aa99665c750cd9ad3ecfc60359e0d3d3b17a4/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1310212816/history/",
       "assessed_at": "2026-08-05T10:34:13.188Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -12056,19 +12056,26 @@
         "tools_completed": 6,
         "tools_not_applicable": 1,
         "evidence_validated": 8,
+        "metadata_only_candidates": 0,
         "review_required": 8,
         "review_completed": 8,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1205995441/0538b853ad4a388455dc8df55296cee047e4f5c0/3/cc751fea68678f7aecc5c060fedf227b05867533175b78fcaf3acf1d7fae9ddd/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1205995441/history/",
-      "assessed_at": "2026-08-05T08:40:23.746Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "assessed_at": "2026-08-11T00:18:57.172Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 8,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
         "cited_finding_ids": [
           "11cc889293f4562ffcfffa043f2010370c2ddbad4e92355f3a422817edd47e0e",
           "206c141fb8a91388e2b2fef2c07f9faac93d50df8e04bcda3912228ada9aee0d",
@@ -12079,25 +12086,7 @@
           "f4fc7e9d1ce00ff6f18b9aefca714fccb8bb142451325b77beda031ce4c868e9",
           "f6f349d73f6daa82441d23a1255acf4ee84997db2b56f7a454f6d62b60918eeb"
         ],
-        "headline": "Material dependency concerns, but no signs of malicious behavior",
-        "high_danger": 0,
-        "interaction_chains": [
-          {
-            "explanation": "Several known vulnerabilities affect development dependencies. They are assessed as unlikely to affect installed users directly, but plausible exploitation could compromise the developer’s build environment if left unpatched.",
-            "finding_ids": [
-              "206c141fb8a91388e2b2fef2c07f9faac93d50df8e04bcda3912228ada9aee0d",
-              "d3bbf36162298230363a090810982ae42fb860a9d02568b65c74ec52ab5f0641",
-              "eec4fae1d00c5b8bbef2e80d2052fcec60ba579839f04954eaded97444fe7c9c",
-              "f4fc7e9d1ce00ff6f18b9aefca714fccb8bb142451325b77beda031ce4c868e9"
-            ],
-            "resulting_risk": "material"
-          }
-        ],
-        "malicious_evidence": "No credible malicious behavior was identified. The validated findings concern known vulnerabilities in development tools, not API-key theft, phishing, trojans, harmful payloads, or bot infection.",
-        "material_concerns": 4,
-        "minor_cautions": 4,
-        "risk_level": "material",
-        "summary": "The project has four material and four minor dependency weaknesses, all involving development tooling. These issues are not assessed as malicious and are unlikely to affect ordinary users of the finished extension, but the serious items could expose the developer’s build environment. Updating affected dependencies and rebuilding is recommended."
+        "interaction_chains": []
       }
     },
     {
@@ -12246,18 +12235,18 @@
         "tools_completed": 4,
         "tools_not_applicable": 3,
         "evidence_validated": 10,
+        "metadata_only_candidates": 0,
         "review_required": 10,
         "review_completed": 10,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1132779410/d7d17addf01db615a65bc0834cf5a223fd792583/3/79f999e1316d516459b43385ecc8556de1ddc5cd2e806ca392174ab67e6cfbba/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1132779410/history/",
       "assessed_at": "2026-08-05T07:44:13.971Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [
           "08633dadb41ec10441cbc0c27a7a375a6249210cceefc9c3e3444e9def7548a4",
@@ -12342,18 +12331,18 @@
         "tools_completed": 4,
         "tools_not_applicable": 3,
         "evidence_validated": 0,
+        "metadata_only_candidates": 0,
         "review_required": 0,
         "review_completed": 0,
-        "javascript_analysis_status": "legacy",
-        "metadata_only_candidates": 0
+        "javascript_analysis_status": "legacy"
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1179684706/93a08b9ba00559f2f4455f92586bec731b1cafe8/3/665ad37df1fabe7cb9bada35415fae235219901c7147de8186d9b80a9235662c/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1179684706/history/",
       "assessed_at": "2026-08-05T08:15:48.395Z",
-      "synthesis_policy_version": "4",
-      "synthesis_model": "gpt-5.6-luna",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
-      "assessment_source": "model",
+      "assessment_source": "deterministic_regrade",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
