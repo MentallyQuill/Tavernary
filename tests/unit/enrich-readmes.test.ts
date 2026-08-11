@@ -667,6 +667,49 @@ test("restates structured field shapes when repairing primitive output", async (
   );
 });
 
+test("restates evidence and copy metadata shapes during validation repair", async () => {
+  const validOutput = outputFor({
+    requestedFields: ["summary", "tags"],
+    allowedTags: vocabularies.tags,
+  });
+  const invalidOutput = {
+    ...validOutput,
+    summary: {
+      value: summary,
+      evidence: [{ section: "README" }],
+    },
+    result: "accepted-with-light-edits",
+    change_reasons: ["rewritten"],
+  } as unknown as ReturnType<typeof outputFor>;
+  const generate = vi.fn(async (_input: ProviderInput) => ({
+    output: generate.mock.calls.length === 1 ? invalidOutput : validOutput,
+    metadata: providerMetadata,
+  }));
+
+  await enrichRecord(
+    record,
+    sourceRecord,
+    snapshot,
+    { generate },
+    {
+      vocabularies,
+      loadSource: async () => readySource(),
+      maxProviderAttempts: 2,
+    },
+  );
+
+  const repairMessage = generate.mock.calls[1]?.[0].repair?.message;
+  expect(repairMessage).toContain(
+    "Return every evidence reference as a non-empty single-line string",
+  );
+  expect(repairMessage).toContain(
+    'Use result "accepted-unchanged" with change_reasons [] and policy_signal "none"',
+  );
+  expect(repairMessage).toContain(
+    'For "accepted-with-light-edits", return one or more allowed light change reasons',
+  );
+});
+
 test("gives a usable repair when a dotted brand looks like a link", async () => {
   const validOutput = outputFor({
     requestedFields: ["summary", "tags"],
