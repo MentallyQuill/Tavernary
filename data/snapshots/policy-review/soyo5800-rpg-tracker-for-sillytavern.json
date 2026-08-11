@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "soyo5800-rpg-tracker-for-sillytavern",
+  "source_id": "github-1281058203",
+  "source_identity": "github:soyo5800/rpg-tracker-for-sillytavern",
+  "evidence_fingerprint": "1a8a726951ea637b2cf1fec5fd16ecac41bc558808acdb2145082e51db97e233",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-11T08:30:35.491Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-11T08:30:35.491Z"
+  },
+  "maintenance_issue_number": null
+}
