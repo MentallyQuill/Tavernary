@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "maxime-fleury-st-card-editor",
+  "source_id": "github-1300836750",
+  "source_identity": "github:maxime-fleury/st-cardeditor",
+  "evidence_fingerprint": "0468260a40927803b12a4cdc5395f2261dd881656295e44d949683b6addb8571",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-12T08:56:24.568Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-12T08:56:24.568Z"
+  },
+  "maintenance_issue_number": null
+}
