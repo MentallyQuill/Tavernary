@@ -3,14 +3,14 @@
   "project_id": "datadeletionaza-sillytavern-smartbackgrounds",
   "source_id": "github-1312041003",
   "source_identity": "github:datadeletionaza/sillytavern-smartbackgrounds",
-  "evidence_fingerprint": "e70dd54274031d1f237ebe987fec07f194349e5345905f4117d8abe81974eb5f",
+  "evidence_fingerprint": "53bc590240bdf6b1fd8f04234a2d3871f3b7b077e22ce68dd37c6c8da8fe2f58",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-08T02:26:55.449Z",
+  "reviewed_at": "2026-08-12T08:57:16.306Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-08T02:26:55.449Z"
+    "attempts": 2,
+    "last_failure_at": "2026-08-12T08:57:16.306Z"
   },
   "maintenance_issue_number": null
 }
