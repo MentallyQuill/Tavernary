@@ -70,17 +70,17 @@
     "evidence_head_sha": "91cb3bc7178ae1615cc335ceda1ca983446e7616"
   },
   "community": {
-    "stars_count": 8,
+    "stars_count": 9,
     "forks_count": 1,
     "watchers_count": 0,
-    "aggregate": 9
+    "aggregate": 10
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-11T08:16:27.105Z",
+  "refreshed_at": "2026-08-12T08:41:42.763Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -88,7 +88,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-08-10T17:32:34.633Z",
     "scan": null,
-    "refreshed_at": "2026-08-11T08:16:27.105Z",
+    "refreshed_at": "2026-08-12T08:41:42.763Z",
     "stale_since": null
   }
 }

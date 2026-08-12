@@ -9,21 +9,21 @@
     "url": "https://github.com/ZDOSt/Story-Engine",
     "description": null,
     "default_branch": "main",
-    "head_sha": "717bacfb3abd895f2234b616afa7e94c43b704a8",
-    "head_committed_at": "2026-08-11T04:37:11.000Z",
+    "head_sha": "7a90c65276ddbce355ea5c5eba213509e08494f4",
+    "head_committed_at": "2026-08-11T22:20:34.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-30T13:40:09.000Z",
-    "size_kb": 8873
+    "size_kb": 9948
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-11T04:37:11.000Z",
+    "latest_source_activity_at": "2026-08-11T22:20:34.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-11T04:37:11.000Z",
+        "latest_at": "2026-08-11T22:20:34.000Z",
         "precision": "exact"
       },
       {
@@ -87,7 +87,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-11T08:16:27.105Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "717bacfb3abd895f2234b616afa7e94c43b704a8"
+    "evidence_head_sha": "7a90c65276ddbce355ea5c5eba213509e08494f4"
   },
   "community": {
     "stars_count": 8,
@@ -96,7 +96,7 @@
     "aggregate": 8
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-11T08:16:27.105Z",
+  "refreshed_at": "2026-08-12T08:41:42.763Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -104,7 +104,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-11T08:16:27.105Z",
+    "refreshed_at": "2026-08-12T08:41:42.763Z",
     "stale_since": null
   }
 }

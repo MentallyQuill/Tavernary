@@ -20,7 +20,7 @@
       "url": "https://github.com/Lodactio/Extension-Summaryception"
     },
     "created_at": "2026-07-02T14:13:57.000Z",
-    "size_kb": 1611
+    "size_kb": 1821
   },
   "source_health": "healthy",
   "activity": {
@@ -80,17 +80,17 @@
     "evidence_head_sha": "1865d561a12f680e48048a2b68f4ef204759ad40"
   },
   "community": {
-    "stars_count": 20,
+    "stars_count": 21,
     "forks_count": 1,
     "watchers_count": 2,
-    "aggregate": 23
+    "aggregate": 24
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-11T08:16:27.105Z",
+  "refreshed_at": "2026-08-12T08:41:42.763Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -98,7 +98,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T15:17:57.249Z",
     "scan": null,
-    "refreshed_at": "2026-08-11T08:16:27.105Z",
+    "refreshed_at": "2026-08-12T08:41:42.763Z",
     "stale_since": null
   }
 }
