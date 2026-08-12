@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "j3tze-st-tag-pilot",
+  "source_id": "github-1158753341",
+  "source_identity": "github:j3tze/st-tag-pilot",
+  "evidence_fingerprint": "355b4202d9476abb38bd521ec0a3b5d36a39ed6f66c234156c44656f83d64365",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-12T08:52:28.421Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-12T08:52:28.421Z"
+  },
+  "maintenance_issue_number": null
+}
