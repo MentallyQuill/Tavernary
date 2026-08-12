@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "ikarusv-ikarusautoimage",
+  "source_id": "github-1191978638",
+  "source_identity": "github:ikarusv/ikarusautoimage",
+  "evidence_fingerprint": "5379e22ec356e95f8bb95fbf7168a0e719877b92d2203899fa5f6eac4e93a6c0",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-12T08:53:15.784Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-12T08:53:15.784Z"
+  },
+  "maintenance_issue_number": null
+}
