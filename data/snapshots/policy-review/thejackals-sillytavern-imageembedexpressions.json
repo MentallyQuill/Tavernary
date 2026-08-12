@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "thejackals-sillytavern-imageembedexpressions",
+  "source_id": "github-1111731551",
+  "source_identity": "github:thejackals/sillytavern-imageembedexpressions",
+  "evidence_fingerprint": "c806f704918d34b081d59b7694e4e2b7ad6d44f3538f4d554ebc8ee1f5ca9ef0",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-12T08:51:06.763Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-12T08:51:06.763Z"
+  },
+  "maintenance_issue_number": null
+}
