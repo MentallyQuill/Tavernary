@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sammcheese-sillytavern-discordia",
+  "source_id": "github-1104616181",
+  "source_identity": "github:sammcheese/sillytavern-discordia",
+  "evidence_fingerprint": "6e2ae5b275c37c9a8ba96f164288e5c544b93bdc47a4dd2c2621aa4b0f6f228e",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-13T08:55:27.607Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-13T08:55:27.607Z"
+  },
+  "maintenance_issue_number": null
+}
