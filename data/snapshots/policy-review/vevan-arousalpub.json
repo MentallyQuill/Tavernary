@@ -3,14 +3,14 @@
   "project_id": "vevan-arousalpub",
   "source_id": "github-1248993662",
   "source_identity": "github:vevan/arousalpub",
-  "evidence_fingerprint": "222c54b1a8791d3be52ff2bfd883213215b181bcf1671bb0a0732582cc2a86d7",
+  "evidence_fingerprint": "dd59c06da1bae5e31ba273d67ad553490e7281217ec8224d68ebc9ea8f0cda41",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-05T11:11:45.552Z",
+  "reviewed_at": "2026-08-13T08:59:15.555Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-05T11:11:45.552Z"
+    "attempts": 2,
+    "last_failure_at": "2026-08-13T08:59:15.555Z"
   },
   "maintenance_issue_number": null
 }
