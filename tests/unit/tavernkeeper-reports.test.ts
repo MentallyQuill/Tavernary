@@ -524,6 +524,16 @@ describe("TavernKeeper V5 report import", () => {
     expect(validateScanReport(report, projectIndexReport(report))).toEqual(
       report,
     );
+
+    const legacyReport = clone(report);
+    delete legacyReport.review_triage.model_budget.review_protocol_version;
+    const reboundLegacyReport = rebindReport(legacyReport);
+    expect(() =>
+      validateScanReport(
+        reboundLegacyReport,
+        projectIndexReport(reboundLegacyReport),
+      ),
+    ).toThrow("TavernKeeper policy-5 model budget is inconsistent");
   });
 
   test("uses scanner policy 5 as active catalog evidence", () => {
