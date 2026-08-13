@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mekineer-com-openalma",
+  "source_id": "github-1190054879",
+  "source_identity": "github:mekineer-com/openalma",
+  "evidence_fingerprint": "171d2a1e9e6a7dd2c2e11e02a18ec76ed826e4d6887da898d6b088dce2579548",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-13T08:57:27.993Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-13T08:57:27.993Z"
+  },
+  "maintenance_issue_number": null
+}
