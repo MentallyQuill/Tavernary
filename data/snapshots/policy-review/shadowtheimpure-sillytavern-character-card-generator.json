@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "shadowtheimpure-sillytavern-character-card-generator",
+  "source_id": "github-1309139949",
+  "source_identity": "github:shadowtheimpure/sillytavern-character-card-generator",
+  "evidence_fingerprint": "c619efd5e6de58cb1e67b46619841405e92e6b06f96a15dc9ed2cab9371ab9c3",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-13T09:00:59.230Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-13T09:00:59.230Z"
+  },
+  "maintenance_issue_number": null
+}
