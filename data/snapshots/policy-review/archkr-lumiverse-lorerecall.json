@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "archkr-lumiverse-lorerecall",
+  "source_id": "github-1213004871",
+  "source_identity": "github:archkr/lumiverse-lorerecall",
+  "evidence_fingerprint": "573e8f606947b6e971714c611ac79031e0a86aa1e442a1cb0da035d4a9df5532",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-13T08:58:03.369Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-13T08:58:03.369Z"
+  },
+  "maintenance_issue_number": null
+}
