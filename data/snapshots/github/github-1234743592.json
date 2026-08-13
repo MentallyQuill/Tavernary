@@ -7,7 +7,7 @@
     "owner": "cfigure",
     "name": "Lumiverse-Shutter",
     "url": "https://github.com/cfigure/Lumiverse-Shutter",
-    "description": null,
+    "description": "A Lumiverse extension for quick-access and automated native ImageGen workflows, inline image controls, generation history, prompt tools, and optional image layout controls.",
     "default_branch": "main",
     "head_sha": "f76ab246f266e80c1b46efaadfb189398d53d417",
     "head_committed_at": "2026-07-28T17:41:50.000Z",
@@ -80,7 +80,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-12T08:41:42.763Z",
+  "refreshed_at": "2026-08-13T08:46:08.331Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -88,7 +88,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-12T08:41:42.763Z",
+    "refreshed_at": "2026-08-13T08:46:08.331Z",
     "stale_since": null
   }
 }

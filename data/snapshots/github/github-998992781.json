@@ -9,8 +9,8 @@
     "url": "https://github.com/aikohanasaki/Aikobots",
     "description": "Aikobots fork of ST",
     "default_branch": "v5",
-    "head_sha": "d03125778ac3235967a1bf56d5f34c3195773145",
-    "head_committed_at": "2026-08-11T23:47:55.000Z",
+    "head_sha": "b4b75ef942fef8a0b02bca6b48320d785083144a",
+    "head_committed_at": "2026-08-13T00:14:28.000Z",
     "archived": false,
     "fork": true,
     "parent": {
@@ -20,15 +20,15 @@
       "url": "https://github.com/SillyTavern/SillyTavern"
     },
     "created_at": "2025-06-09T15:14:49.000Z",
-    "size_kb": 252723
+    "size_kb": 255513
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-11T23:47:55.000Z",
+    "latest_source_activity_at": "2026-08-13T00:14:28.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-11T23:47:55.000Z",
+        "latest_at": "2026-08-13T00:14:28.000Z",
         "precision": "exact"
       },
       {
@@ -92,7 +92,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-11T08:16:27.105Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "d03125778ac3235967a1bf56d5f34c3195773145"
+    "evidence_head_sha": "b4b75ef942fef8a0b02bca6b48320d785083144a"
   },
   "community": {
     "stars_count": 18,
@@ -105,7 +105,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-12T08:41:42.763Z",
+  "refreshed_at": "2026-08-13T08:46:08.331Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -116,7 +116,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T05:14:36.020Z",
     "scan": null,
-    "refreshed_at": "2026-08-12T08:41:42.763Z",
+    "refreshed_at": "2026-08-13T08:46:08.331Z",
     "stale_since": null
   }
 }

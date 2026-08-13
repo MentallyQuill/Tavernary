@@ -7,7 +7,7 @@
     "owner": "cfigure",
     "name": "Lumiverse-prompt-viewer",
     "url": "https://github.com/cfigure/Lumiverse-prompt-viewer",
-    "description": null,
+    "description": "Prompt Viewer is a Spindle extension for Lumiverse that captures and displays the assembled prompt used by real generations and Dry Runs.",
     "default_branch": "main",
     "head_sha": "5371791661804c2d90a3b3560f0db72ca1530e97",
     "head_committed_at": "2026-07-24T23:28:28.000Z",
@@ -54,14 +54,14 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-12T08:41:42.763Z",
+  "refreshed_at": "2026-08-13T08:46:08.331Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "cfigure", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-12T08:41:42.763Z",
+    "refreshed_at": "2026-08-13T08:46:08.331Z",
     "stale_since": null
   }
 }

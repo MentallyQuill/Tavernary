@@ -9,21 +9,21 @@
     "url": "https://github.com/N0819/Sonder_Engine",
     "description": "An engine for creating coherent fiction with LLMs",
     "default_branch": "main",
-    "head_sha": "eb73043a7d0f0ab97be7fd2a86bdc8f076bda1f1",
-    "head_committed_at": "2026-08-12T08:02:59.000Z",
+    "head_sha": "38106860c4e1d3bca8e6062790a5eaea23de517b",
+    "head_committed_at": "2026-08-12T18:26:37.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-19T17:55:36.000Z",
-    "size_kb": 40014
+    "size_kb": 45499
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-12T08:02:59.000Z",
+    "latest_source_activity_at": "2026-08-12T18:26:37.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-12T08:02:59.000Z",
+        "latest_at": "2026-08-12T18:26:37.000Z",
         "precision": "exact"
       },
       {
@@ -48,24 +48,24 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-12T05:29:05.000Z",
+    "latest_release_at": "2026-08-12T18:26:56.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-11T08:16:27.105Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "eb73043a7d0f0ab97be7fd2a86bdc8f076bda1f1"
+    "evidence_head_sha": "38106860c4e1d3bca8e6062790a5eaea23de517b"
   },
   "community": {
-    "stars_count": 54,
+    "stars_count": 55,
     "forks_count": 5,
     "watchers_count": 2,
-    "aggregate": 61
+    "aggregate": 62
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-12T08:41:42.763Z",
+  "refreshed_at": "2026-08-13T08:46:08.331Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -76,7 +76,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-12T08:41:42.763Z",
+    "refreshed_at": "2026-08-13T08:46:08.331Z",
     "stale_since": null
   }
 }

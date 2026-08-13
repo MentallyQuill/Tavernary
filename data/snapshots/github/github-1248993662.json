@@ -9,13 +9,13 @@
     "url": "https://github.com/vevan/arousalPub",
     "description": "LLM RP client",
     "default_branch": "main",
-    "head_sha": "18a3b23dd795179fbbacd055dea0eeab0d8fba96",
-    "head_committed_at": "2026-08-12T02:26:27.000Z",
+    "head_sha": "877a0505a262ae70b8ea03c13df5eccbd3aeaa05",
+    "head_committed_at": "2026-08-13T01:38:08.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-25T08:43:02.000Z",
-    "size_kb": 12167
+    "size_kb": 12282
   },
   "source_health": "healthy",
   "activity": {
@@ -87,20 +87,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-11T08:16:27.105Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "18a3b23dd795179fbbacd055dea0eeab0d8fba96"
+    "evidence_head_sha": "877a0505a262ae70b8ea03c13df5eccbd3aeaa05"
   },
   "community": {
-    "stars_count": 6,
+    "stars_count": 7,
     "forks_count": 1,
     "watchers_count": 0,
-    "aggregate": 7
+    "aggregate": 8
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-12T08:41:42.763Z",
+  "refreshed_at": "2026-08-13T08:46:08.331Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -108,7 +108,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-12T08:41:42.763Z",
+    "refreshed_at": "2026-08-13T08:46:08.331Z",
     "stale_since": null
   }
 }

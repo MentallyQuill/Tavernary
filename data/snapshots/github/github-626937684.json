@@ -9,21 +9,21 @@
     "url": "https://github.com/kwaroran/Risuai",
     "description": "Make your own story. User-friendly software for LLM roleplaying",
     "default_branch": "main",
-    "head_sha": "72ce721878d65b09baf4339638dfd221d1788261",
-    "head_committed_at": "2026-08-10T13:10:35.000Z",
+    "head_sha": "0551d283faeba6e73899b01dd85ea38307b24699",
+    "head_committed_at": "2026-08-13T01:02:08.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2023-04-12T13:08:52.000Z",
-    "size_kb": 77545
+    "size_kb": 77566
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-10T13:10:35.000Z",
+    "latest_source_activity_at": "2026-08-13T01:02:08.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-10T13:10:35.000Z",
+        "latest_at": "2026-08-13T01:02:08.000Z",
         "precision": "exact"
       },
       {
@@ -87,20 +87,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-10T08:53:26.617Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "72ce721878d65b09baf4339638dfd221d1788261"
+    "evidence_head_sha": "0551d283faeba6e73899b01dd85ea38307b24699"
   },
   "community": {
-    "stars_count": 1599,
-    "forks_count": 339,
+    "stars_count": 1604,
+    "forks_count": 340,
     "watchers_count": 23,
-    "aggregate": 1961
+    "aggregate": 1967
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-12T08:41:42.763Z",
+  "refreshed_at": "2026-08-13T08:46:08.331Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -136,6 +136,7 @@
       { "login": "Lenu-noipe", "type": "User", "provider": "github" },
       { "login": "gwahak10", "type": "User", "provider": "github" },
       { "login": "ModMapper", "type": "User", "provider": "github" },
+      { "login": "claude", "type": "User", "provider": "github" },
       { "login": "mounta11n", "type": "User", "provider": "github" },
       { "login": "IHaBiS02", "type": "User", "provider": "github" },
       { "login": "escap-ade", "type": "User", "provider": "github" },
@@ -177,20 +178,19 @@
       { "login": "broot5", "type": "User", "provider": "github" },
       { "login": "ak45231-cyber", "type": "User", "provider": "github" },
       { "login": "Yvonne-Aizawa", "type": "User", "provider": "github" },
-      { "login": "claude", "type": "User", "provider": "github" },
+      { "login": "EugenesDad", "type": "User", "provider": "github" },
       { "login": "SeA-luby", "type": "User", "provider": "github" },
       { "login": "rndka9-alt", "type": "User", "provider": "github" },
       { "login": "LI-NA", "type": "User", "provider": "github" },
       { "login": "kurohomeless", "type": "User", "provider": "github" },
       { "login": "Kuiprux", "type": "User", "provider": "github" },
       { "login": "jgreiner1024", "type": "User", "provider": "github" },
-      { "login": "G4tsby", "type": "User", "provider": "github" },
-      { "login": "EugenesDad", "type": "User", "provider": "github" }
+      { "login": "G4tsby", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-12T08:41:42.763Z",
+    "refreshed_at": "2026-08-13T08:46:08.331Z",
     "stale_since": null
   }
 }

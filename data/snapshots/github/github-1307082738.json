@@ -9,13 +9,13 @@
     "url": "https://github.com/Jeka201216/Silly-Map",
     "description": "A D&D-style interactive map extension for SillyTavern designed for better roleplay visualization.",
     "default_branch": "main",
-    "head_sha": "a632eb82abb94afad9b40468d426c0abf753cf7f",
-    "head_committed_at": "2026-08-09T22:27:29.000Z",
+    "head_sha": "a75a9b4394729a5ebcbc5d6eb2f56f8d18e8ed4a",
+    "head_committed_at": "2026-07-27T00:12:54.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-20T23:11:29.000Z",
-    "size_kb": 5479
+    "size_kb": 5472
   },
   "source_health": "healthy",
   "activity": {
@@ -35,33 +35,34 @@
     "provisional_weeks": null,
     "latest_release_at": "2026-07-20T23:16:22.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-10T08:53:26.617Z",
+    "baseline_completed_at": "2026-08-13T08:46:08.331Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "a632eb82abb94afad9b40468d426c0abf753cf7f"
+    "evidence_head_sha": "a75a9b4394729a5ebcbc5d6eb2f56f8d18e8ed4a"
   },
   "community": {
-    "stars_count": 14,
+    "stars_count": 15,
     "forks_count": 2,
     "watchers_count": 0,
-    "aggregate": 16
+    "aggregate": 17
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-12T08:41:42.763Z",
+  "refreshed_at": "2026-08-13T08:46:08.331Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
     "accounts": [
+      { "login": "jeremybox", "type": "User", "provider": "github" },
       { "login": "Jeka201216", "type": "User", "provider": "github" },
       { "login": "YevheniiYeremenko", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-12T08:41:42.763Z",
+    "refreshed_at": "2026-08-13T08:46:08.331Z",
     "stale_since": null
   }
 }

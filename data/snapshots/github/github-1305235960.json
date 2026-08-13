@@ -9,21 +9,21 @@
     "url": "https://github.com/Coneja-Chibi/Hoplight",
     "description": "The local-first studio for AI-roleplay content. Characters, lorebooks, personas, presets; one canonical model, exported to any platform.",
     "default_branch": "Mainstage",
-    "head_sha": "e79d1ebe1132f49e2da4ce854dbd67cef5b60ba4",
-    "head_committed_at": "2026-08-11T12:35:20.000Z",
+    "head_sha": "90b8b13856db3c8c78adaba313c9b9d4b884d252",
+    "head_committed_at": "2026-08-13T04:52:43.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-18T21:26:28.000Z",
-    "size_kb": 37680
+    "size_kb": 40544
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-11T12:35:20.000Z",
+    "latest_source_activity_at": "2026-08-13T04:52:43.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-11T12:35:20.000Z",
+        "latest_at": "2026-08-13T04:52:43.000Z",
         "precision": "exact"
       },
       {
@@ -58,11 +58,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-11T12:40:26.000Z",
+    "latest_release_at": "2026-08-13T04:58:07.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-11T08:16:27.105Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "e79d1ebe1132f49e2da4ce854dbd67cef5b60ba4"
+    "evidence_head_sha": "90b8b13856db3c8c78adaba313c9b9d4b884d252"
   },
   "community": {
     "stars_count": 23,
@@ -75,7 +75,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-12T08:41:42.763Z",
+  "refreshed_at": "2026-08-13T08:46:08.331Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -89,7 +89,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-12T08:41:42.763Z",
+    "refreshed_at": "2026-08-13T08:46:08.331Z",
     "stale_since": null
   }
 }

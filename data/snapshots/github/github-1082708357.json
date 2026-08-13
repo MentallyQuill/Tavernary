@@ -9,21 +9,21 @@
     "url": "https://github.com/MaxiPawlowski/story-orchestrator",
     "description": null,
     "default_branch": "master",
-    "head_sha": "3725fded22d3d82cc4f9a3de49794fa3b63df473",
-    "head_committed_at": "2026-08-12T05:16:46.000Z",
+    "head_sha": "6076a7ba6c34d0c4baa48340cc64b96555f2e7f8",
+    "head_committed_at": "2026-08-12T10:14:51.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-10-24T16:38:09.000Z",
-    "size_kb": 7544
+    "size_kb": 8101
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-12T05:16:46.000Z",
+    "latest_source_activity_at": "2026-08-12T10:14:51.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-12T05:16:46.000Z",
+        "latest_at": "2026-08-12T10:14:51.000Z",
         "precision": "exact"
       },
       {
@@ -47,7 +47,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-12T08:41:42.763Z",
     "baseline_attempts": 1,
-    "evidence_head_sha": "3725fded22d3d82cc4f9a3de49794fa3b63df473"
+    "evidence_head_sha": "6076a7ba6c34d0c4baa48340cc64b96555f2e7f8"
   },
   "community": {
     "stars_count": 4,
@@ -60,8 +60,9 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-12T08:41:42.763Z",
+  "refreshed_at": "2026-08-13T08:46:08.331Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "MaxiPawlowski", "type": "User", "provider": "github" }
@@ -69,8 +70,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-12T08:41:42.763Z",
+    "refreshed_at": "2026-08-13T08:46:08.331Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }
