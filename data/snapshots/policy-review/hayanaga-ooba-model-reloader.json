@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "hayanaga-ooba-model-reloader",
+  "source_id": "github-1146891697",
+  "source_identity": "github:hayanaga/ooba-model-reloader",
+  "evidence_fingerprint": "a2dec4c85c09f8a134f93643983b3348fc62ff3fd8b8fe6e7d8ce114d04891e5",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-13T08:56:49.445Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-13T08:56:49.445Z"
+  },
+  "maintenance_issue_number": null
+}
