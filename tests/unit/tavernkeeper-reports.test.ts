@@ -423,6 +423,109 @@ describe("TavernKeeper V5 report import", () => {
     }
   });
 
+  test("accepts protocol-2 aggregate review totals above per-wave caps", async () => {
+    const fixture = JSON.parse(
+      await readFile(policy5ReportFixturePath, "utf8"),
+    );
+    const candidates = Array.from({ length: 13 }, (_, index) => ({
+      ...clone(fixture.candidates[0]),
+      candidate_id: (index + 1).toString(16).padStart(64, "0"),
+      evidence_id: (index + 101).toString(16).padStart(64, "0"),
+    }));
+    const assessments = candidates.map((candidate) => ({
+      ...clone(fixture.assessments[0]),
+      candidate_id: candidate.candidate_id,
+      evidence_ids: [candidate.evidence_id],
+      assessment_source: "contextual-model",
+    }));
+    const reviewBatches = Array.from({ length: 7 }, (_, index) => ({
+      kind: "contextual_review",
+      attempt: 1,
+      group_count: index === 6 ? 1 : 2,
+      candidate_count: index === 6 ? 1 : 2,
+      estimated_input_tokens: 30_000,
+      over_budget: false,
+      input_tokens: 40_000,
+      output_tokens: 6_000,
+      cache_read_tokens: 0,
+      reasoning_tokens: 0,
+    }));
+    const report = rebindReport({
+      ...fixture,
+      contextual_reviewer: {
+        provider: "provider.example",
+        model: "configured/model",
+      },
+      review_usage: {
+        input_tokens: 280_000,
+        output_tokens: 42_000,
+        cache_read_tokens: 0,
+        reasoning_tokens: 0,
+      },
+      review_batches: reviewBatches,
+      review_triage: {
+        ...fixture.review_triage,
+        candidates: {
+          total: 13,
+          deterministic: 0,
+          contextual: 13,
+          reused_contextual: 0,
+        },
+        cases: { total: 13, contextual: 13, reused_contextual: 0 },
+        reasons: [{ reason_code: "owned-structured-weakness", count: 13 }],
+        model_budget: {
+          review_protocol_version: 2,
+          configured: fixture.review_triage.model_budget.configured,
+          actual: {
+            fresh_behavior_cases: 13,
+            provider_calls: 7,
+            estimated_input_tokens: 210_000,
+            input_tokens: 280_000,
+            output_tokens: 42_000,
+          },
+        },
+      },
+      coverage: {
+        ...fixture.coverage,
+        javascript_analysis: {
+          ...fixture.coverage.javascript_analysis,
+          candidates: 13,
+        },
+        evidence_validation: {
+          ...fixture.coverage.evidence_validation,
+          validated_candidates: 13,
+        },
+      },
+      review_coverage: { required: 13, completed: 13 },
+      candidates,
+      assessments,
+      counts: {
+        candidates: 13,
+        assessments: 13,
+        observations: 0,
+        items: 13,
+        disposition: {
+          expected_behavior: 0,
+          minor_weakness: 0,
+          material_vulnerability: 13,
+          credible_malicious_behavior: 0,
+        },
+        impact: { none: 0, low: 13, medium: 0, high: 0, critical: 0 },
+        exploitability: {
+          unlikely: 0,
+          plausible: 13,
+          readily_exploitable: 0,
+        },
+        confidence: { low: 0, medium: 0, high: 13 },
+        recommended_risk: { low: 13, material: 0, high: 0 },
+      },
+    });
+
+    expect(validateScanReport(report, projectIndexReport(report))).toEqual(
+      report,
+    );
+  });
+
   test("uses scanner policy 5 as active catalog evidence", () => {
     expect(ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION).toBe("5");
   });

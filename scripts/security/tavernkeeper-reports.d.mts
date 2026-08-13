@@ -149,6 +149,7 @@ export interface TavernKeeperScanReportV5 {
     };
     reasons: Array<{ reason_code: string; count: number }>;
     model_budget: {
+      review_protocol_version?: 2;
       configured: {
         max_fresh_behavior_cases: 12;
         max_provider_calls: 6;
