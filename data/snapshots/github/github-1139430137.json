@@ -9,18 +9,23 @@
     "url": "https://github.com/Sillyanonymous/SillyTavern-CharacterLibrary",
     "description": "A powerful SillyTavern extension for discovering, organizing, and managing your character library with a modern glassmorphic interface.",
     "default_branch": "main",
-    "head_sha": "965f6417dbe84b201cb74deea49aa371549fd0a6",
-    "head_committed_at": "2026-08-08T17:24:30.000Z",
+    "head_sha": "70ff25474f77516ffc81ebd22fa8a2e37a9b7b4b",
+    "head_committed_at": "2026-08-13T13:58:34.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-22T00:21:33.000Z",
-    "size_kb": 4331
+    "size_kb": 4576
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-08T17:24:30.000Z",
+    "latest_source_activity_at": "2026-08-13T13:58:34.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-10",
+        "latest_at": "2026-08-13T13:58:34.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-03",
         "latest_at": "2026-08-08T17:24:30.000Z",
@@ -55,19 +60,14 @@
         "week_start": "2026-05-25",
         "latest_at": "2026-05-27T14:29:33.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-18",
-        "latest_at": "2026-05-22T08:28:04.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-07T20:13:42.000Z",
+    "latest_release_at": "2026-08-13T14:02:15.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-07T08:32:22.684Z",
+    "baseline_completed_at": "2026-08-14T08:40:01.431Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "965f6417dbe84b201cb74deea49aa371549fd0a6"
+    "evidence_head_sha": "70ff25474f77516ffc81ebd22fa8a2e37a9b7b4b"
   },
   "community": {
     "stars_count": 108,
@@ -80,7 +80,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-13T08:46:08.331Z",
+  "refreshed_at": "2026-08-14T08:40:01.431Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -92,7 +92,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-13T08:46:08.331Z",
+    "refreshed_at": "2026-08-14T08:40:01.431Z",
     "stale_since": null
   }
 }
