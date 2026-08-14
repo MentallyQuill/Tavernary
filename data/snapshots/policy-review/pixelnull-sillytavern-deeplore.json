@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "pixelnull-sillytavern-deeplore",
+  "source_id": "github-1160700573",
+  "source_identity": "github:pixelnull/sillytavern-deeplore",
+  "evidence_fingerprint": "b26de0ad5aa540bda1b856caa729b364a63737bf2a7d3712782ad2570548fb05",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-14T08:50:05.692Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-14T08:50:05.692Z"
+  },
+  "maintenance_issue_number": null
+}
