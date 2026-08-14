@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "jschm42-taleweaver",
+  "source_id": "github-1208471920",
+  "source_identity": "github:jschm42/taleweaver",
+  "evidence_fingerprint": "790c1f22c2c4beee9c4d9863ce3b52fdbc658dd265970a4f0442fb2d75ff48e6",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-14T08:51:00.413Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-14T08:51:00.413Z"
+  },
+  "maintenance_issue_number": null
+}
