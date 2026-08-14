@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mentallyquill-saga",
+  "source_id": "github-1258773435",
+  "source_identity": "github:mentallyquill/saga",
+  "evidence_fingerprint": "8d1d21f64443da03d9c59acffc040483cfccb794f9ef5737f22f1881f5bd32f6",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-14T08:52:32.151Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-14T08:52:32.151Z"
+  },
+  "maintenance_issue_number": null
+}
