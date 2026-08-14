@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sigmareaver-rooms",
+  "source_id": "github-1310166835",
+  "source_identity": "github:sigmareaver/rooms",
+  "evidence_fingerprint": "aebeb88e752ea07abd649970f0cfd7eaac2c2bf5c62a0accc1eb4d60d13d7438",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-14T08:54:03.748Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-14T08:54:03.748Z"
+  },
+  "maintenance_issue_number": null
+}
