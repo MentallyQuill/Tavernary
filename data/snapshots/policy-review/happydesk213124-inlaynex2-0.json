@@ -3,14 +3,14 @@
   "project_id": "happydesk213124-inlaynex2-0",
   "source_id": "github-1323292424",
   "source_identity": "github:happydesk213124/inlaynex2.0",
-  "evidence_fingerprint": "31ca547490ae0a8bcef7b77446d891bad190fee7288245d54d91de07f46c4d68",
+  "evidence_fingerprint": "69261dd88faf7e077caed5efc1f58aceb8f36f2a7780136559d456020339fd50",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-13T09:01:42.064Z",
+  "reviewed_at": "2026-08-15T08:03:27.515Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-13T09:01:42.064Z"
+    "attempts": 3,
+    "last_failure_at": "2026-08-15T08:03:27.515Z"
   },
   "maintenance_issue_number": null
 }
