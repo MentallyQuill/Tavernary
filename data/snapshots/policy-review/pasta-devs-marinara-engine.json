@@ -3,14 +3,14 @@
   "project_id": "pasta-devs-marinara-engine",
   "source_id": "github-1172690270",
   "source_identity": "github:pasta-devs/marinara-engine",
-  "evidence_fingerprint": "aa37a3f1f8308f515947384aaf319220ed39463fc421050e27458532f23fa093",
+  "evidence_fingerprint": "82b62b5b35a79f04549cc8b7a76c60475432e9ac78424fc59fbf1cf4c20db5f2",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-10T09:03:31.391Z",
+  "reviewed_at": "2026-08-15T07:58:31.269Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-10T09:03:31.391Z"
+    "attempts": 2,
+    "last_failure_at": "2026-08-15T07:58:31.269Z"
   },
   "maintenance_issue_number": null
 }
