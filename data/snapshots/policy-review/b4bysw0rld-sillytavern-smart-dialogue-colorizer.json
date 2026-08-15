@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "b4bysw0rld-sillytavern-smart-dialogue-colorizer",
+  "source_id": "github-1081942864",
+  "source_identity": "github:b4bysw0rld/sillytavern-smart-dialogue-colorizer",
+  "evidence_fingerprint": "2d722dd6c104074570eb0ab98b86f1a5d1d3d3b0814f0e7ea78c51cc31c87eb5",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-15T07:56:29.844Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-15T07:56:29.844Z"
+  },
+  "maintenance_issue_number": null
+}
