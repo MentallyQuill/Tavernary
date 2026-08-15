@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "zompiexx-st-hands-free-voice",
+  "source_id": "github-1128225923",
+  "source_identity": "github:zompiexx/st-hands-free-voice",
+  "evidence_fingerprint": "2454f154ae68faa2c31ebc6bb81733361d5198083f88d7bd7f4f211fb7e9e2e5",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-15T07:57:35.071Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-15T07:57:35.071Z"
+  },
+  "maintenance_issue_number": null
+}
