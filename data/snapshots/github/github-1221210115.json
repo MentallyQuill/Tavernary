@@ -9,21 +9,21 @@
     "url": "https://github.com/Chechelpo/Simulith",
     "description": "LLM frontend for simulating worlds.",
     "default_branch": "master",
-    "head_sha": "ae8d46ed8dda37ca67de6e15eb1bf358720b297f",
-    "head_committed_at": "2026-08-13T22:24:28.000Z",
+    "head_sha": "e40b882ed450c2a88cb694c72ada25b7878ab666",
+    "head_committed_at": "2026-08-14T20:55:56.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-25T22:33:39.000Z",
-    "size_kb": 17744
+    "size_kb": 17783
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-13T22:24:28.000Z",
+    "latest_source_activity_at": "2026-08-14T20:55:56.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-13T22:24:28.000Z",
+        "latest_at": "2026-08-14T20:55:56.000Z",
         "precision": "exact"
       },
       {
@@ -82,7 +82,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-14T08:40:01.431Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "ae8d46ed8dda37ca67de6e15eb1bf358720b297f"
+    "evidence_head_sha": "e40b882ed450c2a88cb694c72ada25b7878ab666"
   },
   "community": {
     "stars_count": 8,
@@ -95,7 +95,7 @@
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-08-14T08:40:01.431Z",
+  "refreshed_at": "2026-08-15T07:47:08.002Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -105,7 +105,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-14T08:40:01.431Z",
+    "refreshed_at": "2026-08-15T07:47:08.002Z",
     "stale_since": null
   }
 }

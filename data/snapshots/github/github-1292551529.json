@@ -9,18 +9,23 @@
     "url": "https://github.com/86482t/SillyTavern-Personage",
     "description": "Extension to sets persona's age",
     "default_branch": "main",
-    "head_sha": "c6a64171558c5b6e17ea2b72ce69158921a81f9f",
-    "head_committed_at": "2026-08-06T17:54:40.000Z",
+    "head_sha": "0013fd75a3176569ff1e48e4b538319220afcafe",
+    "head_committed_at": "2026-08-14T11:45:03.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-07T16:08:24.000Z",
-    "size_kb": 56
+    "size_kb": 60
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-06T17:54:40.000Z",
+    "latest_source_activity_at": "2026-08-14T11:45:03.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-10",
+        "latest_at": "2026-08-14T11:45:03.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-03",
         "latest_at": "2026-08-06T17:54:40.000Z",
@@ -35,9 +40,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-07T23:59:20.593Z",
+    "baseline_completed_at": "2026-08-15T07:47:08.002Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "c6a64171558c5b6e17ea2b72ce69158921a81f9f"
+    "evidence_head_sha": "0013fd75a3176569ff1e48e4b538319220afcafe"
   },
   "community": {
     "stars_count": 1,
@@ -50,7 +55,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-14T08:40:01.431Z",
+  "refreshed_at": "2026-08-15T07:47:08.002Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -58,7 +63,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-14T08:40:01.431Z",
+    "refreshed_at": "2026-08-15T07:47:08.002Z",
     "stale_since": null
   }
 }

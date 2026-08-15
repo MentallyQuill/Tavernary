@@ -9,21 +9,21 @@
     "url": "https://github.com/Mignon-UI/Mignon-UI",
     "description": "A beautiful, offline-first local AI roleplay frontend built with Tauri and React. Chat with multiple local (Ollama, Kobold.cpp) or cloud models in dynamic room lobbies.",
     "default_branch": "main",
-    "head_sha": "5a93bf2644d921adcc90525529184b18c58f0913",
-    "head_committed_at": "2026-08-13T17:38:11.000Z",
+    "head_sha": "2983adcf593157c2b00d9455288a527b61789867",
+    "head_committed_at": "2026-08-14T17:05:23.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-04T14:00:55.000Z",
-    "size_kb": 5951
+    "size_kb": 12980
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-13T17:38:11.000Z",
+    "latest_source_activity_at": "2026-08-14T17:05:23.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-13T17:38:11.000Z",
+        "latest_at": "2026-08-14T17:05:23.000Z",
         "precision": "exact"
       },
       {
@@ -62,7 +62,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-14T08:40:01.431Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "5a93bf2644d921adcc90525529184b18c58f0913"
+    "evidence_head_sha": "2983adcf593157c2b00d9455288a527b61789867"
   },
   "community": {
     "stars_count": 6,
@@ -75,7 +75,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-14T08:40:01.431Z",
+  "refreshed_at": "2026-08-15T07:47:08.002Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -85,7 +85,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-14T08:40:01.431Z",
+    "refreshed_at": "2026-08-15T07:47:08.002Z",
     "stale_since": null
   }
 }
