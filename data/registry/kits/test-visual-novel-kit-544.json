@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "id": "test-visual-novel-kit-544",
+  "status": "published",
+  "title": "Test Visual Novel Kit.",
+  "description": "Trying out these sort of AI driven chatbots/roleplay bots.",
+  "author": {
+    "github_user_id": 317143944,
+    "login": "Test-Crash-Dummy"
+  },
+  "source_issue_number": 544,
+  "project_ids": [
+    "sillytavern-sillytavern",
+    "manjove1-forged-by-primus-portfolio",
+    "mezi99-sillytavern-internalstates"
+  ],
+  "published_at": "2026-08-15T00:48:01.283Z",
+  "updated_at": "2026-08-15T00:48:01.283Z"
+}
