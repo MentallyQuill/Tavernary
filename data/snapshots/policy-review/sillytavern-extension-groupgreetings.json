@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sillytavern-extension-groupgreetings",
+  "source_id": "github-772263541",
+  "source_identity": "github:sillytavern/extension-groupgreetings",
+  "evidence_fingerprint": "da13b90f4302b50c75b1c91452570329b40400c56d021aa50b9d97441ed798a5",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-15T08:03:58.174Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-15T08:03:58.174Z"
+  },
+  "maintenance_issue_number": null
+}
