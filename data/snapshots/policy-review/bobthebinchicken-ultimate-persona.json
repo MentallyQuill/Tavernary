@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "bobthebinchicken-ultimate-persona",
+  "source_id": "github-1111275760",
+  "source_identity": "github:bobthebinchicken/ultimate-persona",
+  "evidence_fingerprint": "a4b27c3a31eed297ba749cffb5f5e3b292994eb84318699facf680cc8a2ee35f",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-15T07:57:01.551Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-15T07:57:01.551Z"
+  },
+  "maintenance_issue_number": null
+}
