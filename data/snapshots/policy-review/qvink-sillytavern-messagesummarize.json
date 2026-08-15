@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "qvink-sillytavern-messagesummarize",
+  "source_id": "github-901076086",
+  "source_identity": "github:qvink/sillytavern-messagesummarize",
+  "evidence_fingerprint": "8676e123b39404a13433b8752d92c7331f2f51a3715838b95e5c57e993e4d951",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-15T08:04:24.940Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-15T08:04:24.940Z"
+  },
+  "maintenance_issue_number": null
+}
