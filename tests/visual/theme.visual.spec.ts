@@ -36,6 +36,7 @@ const graphiteTeal = {
   disabledText: "rgb(95, 107, 114)",
   surface: "rgb(24, 34, 40)",
   surfaceHover: "rgb(34, 49, 56)",
+  textPrimary: "rgb(230, 237, 243)",
   activityCurrent: "rgb(45, 212, 191)",
   activityRecent: "rgb(130, 144, 153)",
   activityDormant: "rgb(95, 107, 114)",
@@ -66,6 +67,24 @@ const graphiteTeal = {
 
 async function expectStyle(locator: Locator, property: string, value: string) {
   await expect(locator).toHaveCSS(property, value);
+}
+
+async function expectColorChannels(
+  locator: Locator,
+  expected: readonly [number, number, number],
+) {
+  const color = await locator.evaluate(
+    (element) => getComputedStyle(element).color,
+  );
+  const channels =
+    color
+      .match(/\d*\.?\d+/gu)
+      ?.slice(0, 3)
+      .map(Number) ?? [];
+  const normalized = color.startsWith("color(srgb")
+    ? channels.map((channel) => Math.round(channel * 255))
+    : channels;
+  expect(normalized).toEqual(expected);
 }
 
 async function waitForCatalogHydration(page: Page) {
@@ -747,6 +766,8 @@ test("cards, Kits, metadata, and statuses retain their semantic color families",
       "position: fixed; top: 80px; left: 16px; z-index: 1000";
     fixture.innerHTML = `
       <span class="activity-weeks"><i class="active"></i><i class="recent"></i><i></i></span>
+      <span class="commit-age" data-recency="current" style="--commit-freshness: 100%">Today</span>
+      <span class="commit-age" data-recency="stale" style="--commit-freshness: 0%">1mo ago</span>
       <div class="dual-range-track" style="--range-start: 20%; --range-end: 80%"><input type="range" /></div>
       <button class="project-kit-control"><span class="project-kit-control-face"></span></button>
       <button class="kit-builder-remove"><span></span></button>
@@ -767,11 +788,7 @@ test("cards, Kits, metadata, and statuses retain their semantic color families",
 
   const fixture = page.locator('[data-theme-test="task-three-semantics"]');
   const weeks = fixture.locator(".activity-weeks i");
-  await expectStyle(
-    weeks.nth(0),
-    "background-color",
-    graphiteTeal.activityCurrent,
-  );
+  await expectStyle(weeks.nth(0), "background-color", graphiteTeal.textPrimary);
   await expectStyle(
     weeks.nth(1),
     "background-color",
@@ -781,6 +798,14 @@ test("cards, Kits, metadata, and statuses retain their semantic color families",
     weeks.nth(2),
     "background-color",
     graphiteTeal.activityDormant,
+  );
+  await expectColorChannels(
+    fixture.locator('[data-recency="current"]'),
+    [230, 237, 243],
+  );
+  await expectColorChannels(
+    fixture.locator('[data-recency="stale"]'),
+    [130, 144, 153],
   );
   await expectStyle(
     fixture.locator(".dual-range-track"),

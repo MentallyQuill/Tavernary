@@ -585,7 +585,10 @@ describe("catalog visual alignment", () => {
       /\.card-identity\s*\{[^}]*color:\s*var\(--kind-color\)/s,
     );
     expect(css).toMatch(
-      /\.activity-weeks i\.active\s*\{[^}]*background:\s*var\(--color-activity-current\)/s,
+      /\.activity-weeks i\.active\s*\{[^}]*background:\s*var\(--color-text-primary\)/s,
+    );
+    expect(css).toMatch(
+      /\.commit-age\s*\{[^}]*color:\s*color-mix\([\s\S]*?var\(--color-text-primary\) var\(--commit-freshness\),[\s\S]*?var\(--color-activity-recent\)/s,
     );
     expect(css).toMatch(
       /\.license-osi-approved\s*\{[^}]*color:\s*var\(--color-license-open\)/s,

@@ -325,10 +325,7 @@ export function ProjectCard({
                   ariaLabel={activityLabel ?? undefined}
                   className={`activity-score evidence-${evidenceStatus}`}
                 >
-                  <b>
-                    {evidenceStatus === "provisional" ? "~" : ""}
-                    {activeWeeks12}/12
-                  </b>
+                  <b>Activity</b>
                   <ActivitySparkline weeks={weeklyActivity} />
                 </Tooltip>
                 {latestSourceActivityAt ? (
