@@ -15,15 +15,15 @@
     "fork": false,
     "parent": null,
     "created_at": "2026-03-04T15:37:29.000Z",
-    "size_kb": 264099
+    "size_kb": 266286
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-14T03:05:08.000Z",
+    "latest_source_activity_at": "2026-08-14T10:57:47.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-14T03:05:08.000Z",
+        "latest_at": "2026-08-14T10:57:47.000Z",
         "precision": "exact"
       },
       {
@@ -82,27 +82,54 @@
         "precision": "exact"
       }
     ],
-    "provisional_weeks": null,
+    "provisional_weeks": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
     "latest_release_at": "2026-08-14T04:04:35.000Z",
-    "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-15T07:47:08.002Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
     "baseline_attempts": 3,
     "evidence_head_sha": "b50a007e665ff81845228c7db9d1e32e9c4dc3a2"
   },
   "community": {
-    "stars_count": 571,
-    "forks_count": 153,
+    "stars_count": 572,
+    "forks_count": 158,
     "watchers_count": 9,
-    "aggregate": 733
+    "aggregate": 739
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-15T07:47:08.002Z",
+  "refreshed_at": "2026-08-16T07:48:28.140Z",
   "stale_since": null,
-  "activity_scan": null,
+  "activity_scan": {
+    "head_sha": "266d3e1dfd441ec854fdf5a40305799baa04dd9c",
+    "cutoff_at": "2026-05-08T07:48:28.140Z",
+    "next_page": 26,
+    "next_index": 0,
+    "resolved_weeks": [
+      "2026-07-06",
+      "2026-07-13",
+      "2026-07-20",
+      "2026-07-27",
+      "2026-08-03",
+      "2026-08-10"
+    ],
+    "pending_commit": null
+  },
   "contributors": {
     "accounts": [
       { "login": "SpicyMarinara", "type": "User", "provider": "github" },
@@ -169,7 +196,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-15T07:47:08.002Z",
+    "refreshed_at": "2026-08-16T07:48:28.140Z",
     "stale_since": null
   }
 }

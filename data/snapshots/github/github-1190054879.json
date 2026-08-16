@@ -9,18 +9,23 @@
     "url": "https://github.com/mekineer-com/OpenAlma",
     "description": "OpenAlma — AI companion memory, local-first",
     "default_branch": "main",
-    "head_sha": "bcdc12d83746dddb639bb77d94008eebff24ed90",
-    "head_committed_at": "2026-08-12T04:32:40.000Z",
+    "head_sha": "c699384c0b418c18932b7451f7797627c895573c",
+    "head_committed_at": "2026-08-13T08:33:43.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-23T23:32:48.000Z",
-    "size_kb": 331
+    "size_kb": 350
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-13T22:20:08.000Z",
+    "latest_source_activity_at": "2026-08-13T08:33:43.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-10",
+        "latest_at": "2026-08-13T08:33:43.000Z",
+        "precision": "interval"
+      },
       {
         "week_start": "2026-07-13",
         "latest_at": "2026-07-13T22:20:08.000Z",
@@ -67,7 +72,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-12T08:41:42.763Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "bcdc12d83746dddb639bb77d94008eebff24ed90"
+    "evidence_head_sha": "c699384c0b418c18932b7451f7797627c895573c"
   },
   "community": {
     "stars_count": 6,
@@ -80,7 +85,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-15T07:47:08.002Z",
+  "refreshed_at": "2026-08-16T07:48:28.140Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -91,7 +96,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-15T07:47:08.002Z",
+    "refreshed_at": "2026-08-16T07:48:28.140Z",
     "stale_since": null
   }
 }

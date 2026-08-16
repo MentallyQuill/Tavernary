@@ -9,18 +9,23 @@
     "url": "https://github.com/NemoVonNirgend/NemoEngine",
     "description": "A achieve of my SillyTavern Preset.",
     "default_branch": "main",
-    "head_sha": "2ad9d9e480f537ecf7d7f8add53f79ae25a27faf",
-    "head_committed_at": "2026-07-24T05:44:55.000Z",
+    "head_sha": "5d44302ee220b7fe04ab75a1a2e2174c39e447aa",
+    "head_committed_at": "2026-08-16T04:46:28.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-05-22T03:32:50.000Z",
-    "size_kb": 12289
+    "size_kb": 13762
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-24T05:44:55.000Z",
+    "latest_source_activity_at": "2026-08-16T04:46:28.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-10",
+        "latest_at": "2026-08-16T04:46:28.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-20",
         "latest_at": "2026-07-24T05:44:55.000Z",
@@ -37,23 +42,51 @@
         "precision": "exact"
       }
     ],
-    "provisional_weeks": null,
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      true,
+      false,
+      false,
+      true
+    ],
     "latest_release_at": null,
-    "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-11T08:16:27.105Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
     "baseline_attempts": 0,
     "evidence_head_sha": "2ad9d9e480f537ecf7d7f8add53f79ae25a27faf"
   },
   "community": {
-    "stars_count": 173,
-    "forks_count": 11,
+    "stars_count": 171,
+    "forks_count": 12,
     "watchers_count": 8,
-    "aggregate": 192
+    "aggregate": 191
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-15T07:47:08.002Z",
+  "refreshed_at": "2026-08-16T07:48:28.140Z",
   "stale_since": null,
-  "activity_scan": null,
+  "activity_scan": {
+    "head_sha": "5d44302ee220b7fe04ab75a1a2e2174c39e447aa",
+    "cutoff_at": "2026-05-08T07:48:28.140Z",
+    "next_page": 1,
+    "next_index": 24,
+    "resolved_weeks": ["2026-06-15", "2026-07-13", "2026-07-20", "2026-08-10"],
+    "pending_commit": {
+      "sha": "5ba1c5863a6355ad946788dc7debf06a64ac8fcd",
+      "committed_at": "2026-05-24T05:38:03.000Z",
+      "parent_count": 1,
+      "next_file_page": 4,
+      "source_path_seen": false,
+      "substantive_patch_seen": true,
+      "patch_incomplete": false
+    }
+  },
   "contributors": {
     "accounts": [
       { "login": "NemoVonNirgend", "type": "User", "provider": "github" },
@@ -62,7 +95,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-15T07:47:08.002Z",
+    "refreshed_at": "2026-08-16T07:48:28.140Z",
     "stale_since": null
   }
 }

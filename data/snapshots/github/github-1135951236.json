@@ -9,18 +9,23 @@
     "url": "https://github.com/LithiumWaves/danganronpa-sillytavern",
     "description": "A total conversion extension for SillyTavern that recreates the Danganronpa games core gameplay. Play through investigations, Class Trials and more!",
     "default_branch": "main",
-    "head_sha": "b1ee009db819b52caea78478372627d91528886b",
-    "head_committed_at": "2026-06-29T21:12:34.000Z",
+    "head_sha": "d565554d0d101f60a3ae383bd346f74e77afd65b",
+    "head_committed_at": "2026-08-15T17:45:16.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-16T20:35:35.000Z",
-    "size_kb": 235584
+    "size_kb": 236754
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-06-29T21:12:34.000Z",
+    "latest_source_activity_at": "2026-08-15T17:45:16.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-10",
+        "latest_at": "2026-08-15T17:45:16.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-06-29",
         "latest_at": "2026-06-29T21:12:34.000Z",
@@ -55,8 +60,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T03:20:38.748Z",
-    "baseline_attempts": 1
+    "baseline_completed_at": "2026-08-16T07:48:28.140Z",
+    "baseline_attempts": 1,
+    "evidence_head_sha": "d565554d0d101f60a3ae383bd346f74e77afd65b"
   },
   "community": {
     "stars_count": 7,
@@ -65,17 +71,19 @@
     "aggregate": 8
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-15T07:47:08.002Z",
+  "refreshed_at": "2026-08-16T07:48:28.140Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
       { "login": "LithiumWaves", "type": "User", "provider": "github" },
-      { "login": "adaptajoe", "type": "User", "provider": "github" }
+      { "login": "adaptajoe", "type": "User", "provider": "github" },
+      { "login": "cursoragent", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-15T07:47:08.002Z",
+    "refreshed_at": "2026-08-16T07:48:28.140Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }

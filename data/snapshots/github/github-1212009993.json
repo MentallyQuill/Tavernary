@@ -9,21 +9,21 @@
     "url": "https://github.com/MultihogAurelius/SillyTavern-MultihogDnDFramework",
     "description": "Started off as a humble \"RPG State Tracker\" but has since expanded into a more ambitious game engine, simulation system, and modular RPG platform where you can even make your own RPGs with their own systems and game logic. By default, ships with a \"hardcore\" setup that can best be described as simulation autism. Actions have consequences.",
     "default_branch": "main",
-    "head_sha": "74c3f6b14b83bd84bae85cac2ef432944e232927",
-    "head_committed_at": "2026-08-15T00:34:16.000Z",
+    "head_sha": "2fbe49f261faa160e5bc8eb52a33996693b3cd2e",
+    "head_committed_at": "2026-08-15T23:57:08.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-16T01:18:13.000Z",
-    "size_kb": 18498
+    "size_kb": 19946
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-15T00:34:16.000Z",
+    "latest_source_activity_at": "2026-08-15T23:57:08.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-15T00:34:16.000Z",
+        "latest_at": "2026-08-15T23:57:08.000Z",
         "precision": "exact"
       },
       {
@@ -78,24 +78,24 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-14T18:37:34.000Z",
+    "latest_release_at": "2026-08-15T20:58:16.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-11T08:16:27.105Z",
+    "baseline_completed_at": "2026-08-16T07:48:28.140Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "74c3f6b14b83bd84bae85cac2ef432944e232927"
+    "evidence_head_sha": "2fbe49f261faa160e5bc8eb52a33996693b3cd2e"
   },
   "community": {
-    "stars_count": 68,
+    "stars_count": 69,
     "forks_count": 14,
     "watchers_count": 0,
-    "aggregate": 82
+    "aggregate": 83
   },
   "license": {
     "status": "osi-approved",
-    "spdx_id": "MIT",
+    "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-15T07:47:08.002Z",
+  "refreshed_at": "2026-08-16T07:48:28.140Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -110,7 +110,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-15T07:47:08.002Z",
+    "refreshed_at": "2026-08-16T07:48:28.140Z",
     "stale_since": null
   }
 }

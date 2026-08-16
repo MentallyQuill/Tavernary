@@ -9,21 +9,36 @@
     "url": "https://github.com/j-dandelion/Lumiverse-Canvas",
     "description": "Spindle extension for Lumiverse that adds convenient tweaks and features to enhance the UI. Aimed at deeper customization and quality-of-life improvements.",
     "default_branch": "main",
-    "head_sha": "d63f5f053aa40bd3be0fe5f83d8d3fff4dc6d552",
-    "head_committed_at": "2026-07-15T22:08:09.000Z",
+    "head_sha": "63ada6a5b1abed969a71becbada4d14bac100b82",
+    "head_committed_at": "2026-08-16T04:24:26.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-01T09:15:47.000Z",
-    "size_kb": 1860
+    "size_kb": 2590
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-15T22:08:09.000Z",
+    "latest_source_activity_at": "2026-08-16T04:24:26.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-08-10",
+        "latest_at": "2026-08-16T04:24:26.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-08-01T02:37:01.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-25T12:33:05.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-07-13",
-        "latest_at": "2026-07-15T22:08:09.000Z",
+        "latest_at": "2026-07-19T22:19:40.000Z",
         "precision": "exact"
       },
       {
@@ -65,9 +80,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T14:40:11.455Z",
+    "baseline_completed_at": "2026-08-16T07:48:28.140Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "d63f5f053aa40bd3be0fe5f83d8d3fff4dc6d552"
+    "evidence_head_sha": "63ada6a5b1abed969a71becbada4d14bac100b82"
   },
   "community": {
     "stars_count": 3,
@@ -76,7 +91,7 @@
     "aggregate": 3
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-15T07:47:08.002Z",
+  "refreshed_at": "2026-08-16T07:48:28.140Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -88,7 +103,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-15T07:47:08.002Z",
+    "refreshed_at": "2026-08-16T07:48:28.140Z",
     "stale_since": null
   }
 }
