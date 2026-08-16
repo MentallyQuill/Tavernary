@@ -23,9 +23,11 @@
 **Files:**
 - Modify: `tests/unit/project-card.test.tsx`
 - Modify: `tests/unit/visual-alignment-contract.test.ts`
+- Modify: `tests/unit/palette-audit.test.ts`
 - Modify: `tests/visual/theme.visual.spec.ts`
 - Modify: `tests/visual/catalog.visual.spec.ts`
 - Modify: `tests/e2e/catalog.spec.ts`
+- Modify: `scripts/audit-palette.mjs`
 - Modify: `src/features/catalog/components/project-card.tsx`
 - Modify: `src/styles/catalog.css`
 
@@ -56,12 +58,16 @@ expect(css).toMatch(
 );
 ```
 
+Change the palette-audit behavior test so the only permitted commit-age mix
+starts at `--color-text-primary` and still ends at
+`--color-activity-recent`.
+
 - [ ] **Step 2: Run the focused unit tests and verify RED**
 
 Run:
 
 ```powershell
-npm.cmd test -- tests/unit/project-card.test.tsx tests/unit/visual-alignment-contract.test.ts
+npm.cmd test -- tests/unit/project-card.test.tsx tests/unit/visual-alignment-contract.test.ts tests/unit/palette-audit.test.ts
 ```
 
 Expected: FAIL because the card still renders `5/12`, active bars still use `--color-activity-current`, and recency still starts from `--color-activity-current`.
@@ -90,6 +96,9 @@ Use the established neutral tokens in `catalog.css`:
 }
 ```
 
+Update `APPROVED_COLOR_MIX` in `scripts/audit-palette.mjs` to allow the same
+`--color-text-primary` to `--color-activity-recent` expression.
+
 Do not change `.evidence-provisional .activity-weeks i.active`, which must continue overriding active bars with neutral gray.
 
 - [ ] **Step 4: Run the focused unit tests and verify GREEN**
@@ -97,7 +106,7 @@ Do not change `.evidence-provisional .activity-weeks i.active`, which must conti
 Run:
 
 ```powershell
-npm.cmd test -- tests/unit/project-card.test.tsx tests/unit/visual-alignment-contract.test.ts
+npm.cmd test -- tests/unit/project-card.test.tsx tests/unit/visual-alignment-contract.test.ts tests/unit/palette-audit.test.ts
 ```
 
 Expected: both files PASS with no warnings.
@@ -157,7 +166,7 @@ Expected: formatting, lint, palette audit, catalog validation/build, security va
 - [ ] **Step 8: Commit the implementation**
 
 ```powershell
-git add src/features/catalog/components/project-card.tsx src/styles/catalog.css tests/unit/project-card.test.tsx tests/unit/visual-alignment-contract.test.ts tests/visual/theme.visual.spec.ts tests/visual/catalog.visual.spec.ts tests/e2e/catalog.spec.ts
+git add src/features/catalog/components/project-card.tsx src/styles/catalog.css scripts/audit-palette.mjs tests/unit/project-card.test.tsx tests/unit/visual-alignment-contract.test.ts tests/unit/palette-audit.test.ts tests/visual/theme.visual.spec.ts tests/visual/catalog.visual.spec.ts tests/e2e/catalog.spec.ts
 git commit -m "fix(ui): neutralize activity signal"
 ```
 
