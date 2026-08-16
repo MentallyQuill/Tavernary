@@ -1723,6 +1723,7 @@ test("keeps repository activity facts visible on mobile cards", async ({
   await expect(card.locator(".community")).toBeVisible();
   await expect(card.locator(".repository-size")).toBeVisible();
   await expect(card.locator(".activity-weeks")).toBeVisible();
+  await expect(card.locator(".activity-score > b")).toHaveText("Activity");
 });
 
 test("matches the approved tablet and mobile breakpoints", async ({ page }) => {

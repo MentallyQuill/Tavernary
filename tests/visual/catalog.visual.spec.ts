@@ -65,10 +65,10 @@ async function stabilizeRelationshipActivityAge(page: Page) {
   const activityCounts = page.locator(".relationship-pair .activity-score > b");
   await expect(activityCounts).toHaveCount(2);
   await activityCounts.nth(0).evaluate((label) => {
-    label.textContent = "1/12";
+    label.textContent = "Activity";
   });
   await activityCounts.nth(1).evaluate((label) => {
-    label.textContent = "12/12";
+    label.textContent = "Activity";
   });
 
   const activityWeeks = page.locator(".relationship-pair .activity-weeks");

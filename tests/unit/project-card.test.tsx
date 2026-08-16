@@ -670,7 +670,8 @@ describe("project card", () => {
       />,
     );
 
-    expect(screen.getByText("5/12")).toBeInTheDocument();
+    expect(screen.getByText("Activity")).toBeInTheDocument();
+    expect(screen.queryByText("5/12")).not.toBeInTheDocument();
     expect(
       screen.getByLabelText("Source activity in 5 of the last 12 weeks"),
     ).toBeInTheDocument();
@@ -710,7 +711,8 @@ describe("project card", () => {
       />,
     );
 
-    expect(screen.getByText("~3/12")).toBeInTheDocument();
+    expect(screen.getByText("Activity")).toBeInTheDocument();
+    expect(screen.queryByText("~3/12")).not.toBeInTheDocument();
     expect(
       screen.getByLabelText(
         "Approximate activity in 3 of the last 12 weeks; baseline pending",
@@ -732,7 +734,8 @@ describe("project card", () => {
       />,
     );
 
-    expect(screen.getByText("3/12")).toBeInTheDocument();
+    expect(screen.getByText("Activity")).toBeInTheDocument();
+    expect(screen.queryByText("3/12")).not.toBeInTheDocument();
     expect(
       screen.getByLabelText(
         "Source activity in 3 of the last 12 weeks; activity evidence is incomplete",
@@ -783,7 +786,8 @@ describe("project card", () => {
       />,
     );
 
-    expect(screen.getByText("0/12")).toBeInTheDocument();
+    expect(screen.getByText("Activity")).toBeInTheDocument();
+    expect(screen.queryByText("0/12")).not.toBeInTheDocument();
     expect(screen.getByText("Quiet")).toBeVisible();
     expect(
       screen.getByLabelText("No source activity in the last 12 weeks"),
@@ -1114,7 +1118,8 @@ describe("project card", () => {
     );
 
     expect(screen.getByText("Source pending")).toBeInTheDocument();
-    expect(screen.getByText("~4/12")).toBeInTheDocument();
+    expect(screen.getByText("Activity")).toBeInTheDocument();
+    expect(screen.queryByText("~4/12")).not.toBeInTheDocument();
     expect(screen.getByText("13")).toBeInTheDocument();
     expect(screen.getByText("100 KB repo")).toBeInTheDocument();
     expect(
@@ -1137,7 +1142,8 @@ describe("project card", () => {
     );
 
     expect(screen.getByText("Source stale")).toBeInTheDocument();
-    expect(screen.getByText("4/12")).toBeInTheDocument();
+    expect(screen.getByText("Activity")).toBeInTheDocument();
+    expect(screen.queryByText("4/12")).not.toBeInTheDocument();
     expect(screen.getByText("13")).toBeInTheDocument();
     expect(screen.getByText("100 KB repo")).toBeInTheDocument();
   });

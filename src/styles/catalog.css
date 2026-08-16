@@ -1281,7 +1281,7 @@ body.sheet-open {
 }
 
 .activity-weeks i.active {
-  background: var(--color-activity-current);
+  background: var(--color-text-primary);
 }
 
 .activity-weeks i.recent {
@@ -1302,7 +1302,7 @@ body.sheet-open {
   grid-row: 1;
   color: color-mix(
     in srgb,
-    var(--color-activity-current) var(--commit-freshness),
+    var(--color-text-primary) var(--commit-freshness),
     var(--color-activity-recent)
   );
   font-weight: 700;

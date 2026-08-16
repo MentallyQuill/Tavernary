@@ -25,7 +25,7 @@ test("accepts the exact Graphite Teal palette", () => {
 
 test("allows only the approved activity interpolation", () => {
   const approved =
-    ".commit-age{color:color-mix(in srgb,var(--color-activity-current) var(--commit-freshness),var(--color-activity-recent))}";
+    ".commit-age{color:color-mix(in srgb,var(--color-text-primary) var(--commit-freshness),var(--color-activity-recent))}";
   expect(auditSource("src/styles/catalog.css", approved)).toEqual([]);
   expect(
     auditSource(

@@ -88,7 +88,7 @@ const REPOSITORY_ROOT = import.meta.url.startsWith("file:")
   ? resolve(fileURLToPath(import.meta.url), "..", "..")
   : process.cwd();
 const ALLOWED_COLOR_MIX =
-  /color-mix\(\s*in\s+srgb\s*,\s*var\(\s*--color-activity-current\s*\)\s+var\(\s*--commit-freshness\s*\)\s*,\s*var\(\s*--color-activity-recent\s*\)\s*\)/gi;
+  /color-mix\(\s*in\s+srgb\s*,\s*var\(\s*--color-text-primary\s*\)\s+var\(\s*--commit-freshness\s*\)\s*,\s*var\(\s*--color-activity-recent\s*\)\s*\)/gi;
 const NEUTRAL_KEYWORDS = new Set(["transparent", "currentcolor", "inherit"]);
 const NAMED_COLORS = Object.keys(colorNames).sort(
   (left, right) => right.length - left.length,
