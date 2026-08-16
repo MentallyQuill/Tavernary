@@ -3,14 +3,14 @@
   "project_id": "mentallyquill-recursion",
   "source_id": "github-1285208664",
   "source_identity": "github:mentallyquill/recursion",
-  "evidence_fingerprint": "a362d3e9cb1c058f9b11e031c2a43283fc4dba76bdb988d1a0d438724f9e0082",
+  "evidence_fingerprint": "f74f79495619d76a7c4e354df98c3f53550373b59feb022213371a40ac2fb1e6",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-09T08:33:48.329Z",
+  "reviewed_at": "2026-08-16T08:02:08.978Z",
   "retry": {
-    "attempts": 23,
-    "last_failure_at": "2026-08-09T08:33:48.329Z"
+    "attempts": 24,
+    "last_failure_at": "2026-08-16T08:02:08.978Z"
   },
   "maintenance_issue_number": null
 }
