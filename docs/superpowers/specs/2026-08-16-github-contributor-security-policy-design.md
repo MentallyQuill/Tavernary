@@ -42,9 +42,9 @@ permissions:
   permissions.
 
 The App's private key is stored only as the protected `publisher` environment
-secret `TAVERNARY_PUBLISHER_APP_PRIVATE_KEY`; its App ID is the environment
-variable `TAVERNARY_PUBLISHER_APP_ID`. The environment permits deployments only
-from the `main` branch.
+secret `TAVERNARY_PUBLISHER_APP_PRIVATE_KEY`; its GitHub-recommended Client ID
+is the environment variable `TAVERNARY_PUBLISHER_CLIENT_ID`. The environment
+permits deployments only from the `main` branch.
 
 Each job that can push `HEAD:main` must:
 
@@ -74,6 +74,7 @@ This boundary covers direct writers and the durable enrichment orchestrator:
 - `enrich-catalog.yml`;
 - `import-tavernkeeper-reports.yml`;
 - `publish-openai-usage.yml`;
+- `publisher-verification.yml`;
 - `refresh-catalog.yml`;
 - `review-catalog-policy.yml`.
 
@@ -153,7 +154,7 @@ change.
 1. Add a failing workflow-policy test, migrate all eight Tavernary publishers,
    and prove the focused and full repository gates pass.
 2. Register and install the private App, create its protected environment, and
-   store the App ID and private key without exposing the key.
+   store the Client ID and private key without exposing the key.
 3. Merge Tavernary's workflow and CODEOWNERS change, then merge TavernKeeper's
    CODEOWNERS change.
 4. Update both default-branch rulesets in place, preserving existing integration
@@ -163,9 +164,9 @@ change.
 6. Confirm only `main` is protected, required check provenance is exact, the App
    is installed only on Tavernary, and no feature-branch creation restriction
    exists.
-7. Dispatch a bounded Publisher operation that is safe when no content changes
-   are pending, and verify the privileged job obtains its environment and runs
-   without a ruleset or credential failure.
+7. Dispatch the input-free Publisher verification workflow, verify its harmless
+   empty commit reaches protected `main`, and confirm the short-lived token is
+   revoked during job cleanup.
 
 If a required check is absent or publication is blocked, restore the captured
 pre-change ruleset payload and diagnose the exact check or App identity before

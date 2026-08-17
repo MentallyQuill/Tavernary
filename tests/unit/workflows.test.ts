@@ -33,6 +33,7 @@ const protectedPublisherJobs = {
   "enrich-catalog": "enrich",
   "import-tavernkeeper-reports": "import",
   "publish-openai-usage": "publish",
+  "publisher-verification": "verify",
   "refresh-catalog": "refresh",
   "review-catalog-policy": "review",
 } as const;
@@ -41,6 +42,8 @@ const publisherActorExpression =
   "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID";
 
 const expectedPublisherConditions = {
+  "publisher-verification":
+    "github.ref == 'refs/heads/main' && github.actor_id == 2625904",
   "review-catalog-policy":
     "github.event_name == 'workflow_dispatch' && " +
     "github.ref == 'refs/heads/main' && " +
@@ -169,6 +172,7 @@ test("uses category-prefixed workflow display names", async () => {
     "deploy-pages": "Site: Deploy to GitHub Pages",
     "targeted-tavernkeeper-scan": "Security: Run targeted TavernKeeper scan",
     "publish-openai-usage": "Support transparency: Publish OpenAI usage",
+    "publisher-verification": "Security: Verify Tavernary Publisher",
   } as const;
 
   for (const [file, expectedName] of Object.entries(expectedNames)) {
@@ -204,6 +208,7 @@ test("identifies the object and action in every workflow run name", async () => 
     "deploy-pages": ["Site:", "Deploy"],
     "targeted-tavernkeeper-scan": ["Security:", "Scan"],
     "publish-openai-usage": ["Support:", "Publish prior-month usage"],
+    "publisher-verification": ["Security:", "Verify Publisher write lane"],
   } as const;
 
   for (const [file, expectedParts] of Object.entries(expectedRunNameParts)) {
@@ -237,6 +242,7 @@ test("pins every first-party action to its resolved commit", async () => {
     "apply-kit-withdrawal",
     "targeted-tavernkeeper-scan",
     "publish-openai-usage",
+    "publisher-verification",
     "review-catalog-policy",
   ]) {
     for (const step of allSteps(await workflow(name))) {
@@ -312,6 +318,55 @@ test("limits every main publisher to the protected Publisher App", async () => {
       "${{ steps.publisher-token.outputs.token }}",
     );
   }
+});
+
+test("keeps Publisher verification owner-only and content-neutral", async () => {
+  const document = await workflow("publisher-verification");
+  const job = document.jobs.verify;
+  const token = job.steps.find((step: WorkflowStep) =>
+    step.uses?.startsWith("actions/create-github-app-token@"),
+  );
+  const checkout = job.steps.find((step: WorkflowStep) =>
+    step.uses?.startsWith("actions/checkout@"),
+  );
+  const push = job.steps.find((step: WorkflowStep) =>
+    step.run?.includes("git push origin HEAD:main"),
+  );
+
+  expect(document.on).toEqual({ workflow_dispatch: null });
+  expect(document.permissions).toEqual({ contents: "read" });
+  expect(document.concurrency).toEqual({
+    group: "tavernary-publisher-verification",
+    "cancel-in-progress": false,
+  });
+  expect(job.environment).toBe("publisher");
+  expect(job.permissions).toEqual({ contents: "read" });
+  expect(job.if).toBe(
+    "github.ref == 'refs/heads/main' && github.actor_id == 2625904",
+  );
+  expect(token).toMatchObject({
+    id: "publisher-token",
+    uses: `actions/create-github-app-token@${pinnedActions["actions/create-github-app-token"]}`,
+    with: {
+      "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
+      "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
+      owner: "MentallyQuill",
+      repositories: "Tavernary",
+      "permission-contents": "write",
+    },
+  });
+  expect(checkout).toMatchObject({
+    uses: `actions/checkout@${pinnedActions["actions/checkout"]}`,
+    with: {
+      ref: "main",
+      "fetch-depth": 0,
+      token: "${{ steps.publisher-token.outputs.token }}",
+    },
+  });
+  expect(push?.run).toContain("git commit --allow-empty");
+  expect(push?.run).toContain("git rebase --keep-empty origin/main");
+  expect(push?.run).toContain("git push origin HEAD:main");
+  expect(push?.run).not.toMatch(/--force|push\s+origin\s+\+HEAD/iu);
 });
 
 test("uses the Publisher App identity for every protected workflow dispatch", async () => {
