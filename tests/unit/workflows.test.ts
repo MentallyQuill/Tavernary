@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 import { expect, test } from "vitest";
@@ -25,6 +25,17 @@ const modelProviderEnvironment = {
 } as const;
 
 const modelProviderEnvironmentKeys = Object.keys(modelProviderEnvironment);
+
+const protectedPublisherJobs = {
+  "apply-kit-submission": "publish",
+  "apply-kit-withdrawal": "withdraw",
+  "backfill-repository-identities": "backfill",
+  "enrich-catalog": "enrich",
+  "import-tavernkeeper-reports": "import",
+  "publish-openai-usage": "publish",
+  "refresh-catalog": "refresh",
+  "review-catalog-policy": "review",
+} as const;
 
 function exposesModelProviderEnvironment(step: {
   env?: Record<string, string>;
@@ -154,6 +165,66 @@ test("pins every first-party action to its resolved commit", async () => {
   }
 });
 
+test("limits every main publisher to the protected Publisher App", async () => {
+  const discoveredPublishers: string[] = [];
+  for (const file of await readdir(workflowDirectory)) {
+    if (!file.endsWith(".yml")) continue;
+    const source = await readFile(resolve(workflowDirectory, file), "utf8");
+    if (
+      source.includes("git push origin HEAD:main") ||
+      source.includes("catalog:enrichment-rollout")
+    ) {
+      discoveredPublishers.push(file.replace(/\.yml$/u, ""));
+    }
+  }
+
+  expect(discoveredPublishers.sort()).toEqual(
+    Object.keys(protectedPublisherJobs).sort(),
+  );
+
+  for (const [name, jobName] of Object.entries(protectedPublisherJobs)) {
+    const document = (await workflow(name)) as {
+      permissions: Record<string, string>;
+      jobs: Record<
+        string,
+        {
+          environment?: string;
+          if?: string;
+          steps: Array<{
+            id?: string;
+            uses?: string;
+            with?: Record<string, string>;
+          }>;
+        }
+      >;
+    };
+    const job = document.jobs[jobName];
+    const publisherToken = job.steps.find((step) =>
+      step.uses?.startsWith("actions/create-github-app-token@"),
+    );
+    const checkout = job.steps.find((step) =>
+      step.uses?.startsWith("actions/checkout@"),
+    );
+
+    expect(document.permissions.contents, name).toBe("read");
+    expect(job.environment, name).toBe("publisher");
+    expect(job.if, name).toContain("github.ref == 'refs/heads/main'");
+    expect(job.if, name).toContain("github.actor_id == 2625904");
+    expect(job.if, name).toContain("github.actor_id == 41898282");
+    expect(publisherToken, name).toMatchObject({
+      id: "publisher-token",
+      with: {
+        "app-id": "${{ vars.TAVERNARY_PUBLISHER_APP_ID }}",
+        "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
+        "permission-contents": "write",
+      },
+    });
+    expect(checkout?.with?.token, name).toBe(
+      "${{ steps.publisher-token.outputs.token }}",
+    );
+  }
+});
+
 test("targeted TavernKeeper scans are actor-gated and accept only an exact repository URL", async () => {
   const targeted = await workflow("targeted-tavernkeeper-scan");
   const source = await readFile(
@@ -230,7 +301,7 @@ test("publishes Kits only by manual dispatch and serializes registry writes", as
   expect(withdrawal.on.issues).toBeUndefined();
   for (const document of [publication, withdrawal]) {
     expect(document.permissions).toEqual({
-      contents: "write",
+      contents: "read",
       issues: "write",
       actions: "write",
     });
@@ -646,7 +717,7 @@ test("reconciles reports independently and wakes TavernKeeper only after a chang
   ).toMatchObject({ required: false, type: "string" });
   expect(reportImport.permissions).toEqual({
     actions: "write",
-    contents: "write",
+    contents: "read",
     issues: "write",
   });
   expect(deploy.jobs["wake-tavernkeeper"].needs).toEqual(["build", "deploy"]);
@@ -824,7 +895,7 @@ test("refreshes snapshots daily without granting production-record writes", asyn
   );
 
   expect(refresh.permissions).toEqual({
-    contents: "write",
+    contents: "read",
     actions: "write",
     issues: "read",
   });
@@ -917,7 +988,7 @@ test("runs enrichment through one tested durable orchestrator", async () => {
     default: "pending",
   });
   expect(enrich.permissions).toEqual({
-    contents: "write",
+    contents: "read",
     actions: "write",
     issues: "write",
   });
@@ -1689,7 +1760,7 @@ test("publishes only scoped aggregate OpenAI usage each month", async () => {
   expect(publication.on.schedule).toEqual([{ cron: "23 7 2 * *" }]);
   expect(publication.on.workflow_dispatch).toBeNull();
   expect(publication.permissions).toEqual({
-    contents: "write",
+    contents: "read",
     actions: "write",
   });
   expect(checkout?.with).toMatchObject({ ref: "main", "fetch-depth": 0 });

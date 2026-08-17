@@ -10,7 +10,7 @@ on:
         required: false
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: catalog-refresh
@@ -18,13 +18,26 @@ concurrency:
 
 jobs:
   backfill:
-    if: github.ref == 'refs/heads/main'
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name != 'workflow_dispatch' ||
+      github.actor_id == 2625904 ||
+      github.actor_id == 41898282)
     runs-on: ubuntu-latest
+    environment: publisher
     steps:
+      - name: Create Tavernary Publisher token
+        id: publisher-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ vars.TAVERNARY_PUBLISHER_APP_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-contents: write
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
+          token: ${{ steps.publisher-token.outputs.token }}
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:

@@ -5,11 +5,11 @@
 
 ## Goal
 
-Give trusted contributors a safe lane to create and push feature branches while
+Give trusted Write contributors a same-repository feature-branch lane while
 requiring every change to `main` to pass repository checks and receive approval
 from `MentallyQuill`. Preserve Codex administration through the GitHub CLI
-identity `MentallyQuill` without permitting direct pushes, force-pushes, or
-deletion of `main`.
+identity `MentallyQuill`, and preserve narrowly scoped publication automation
+without granting ordinary GitHub Actions a protected-branch bypass.
 
 ## Authority Model
 
@@ -17,15 +17,59 @@ deletion of `main`.
   reviews, merges, and incident recovery.
 - Trusted contributors receive Write access. They may create and update feature
   branches and open pull requests, but may not update `main` directly.
-- `MentallyQuill` receives a ruleset bypass with mode `pull_request`. This
-  permits owner-authored pull requests to merge without an unavailable second
-  reviewer while retaining a pull request and audit trail.
+- `MentallyQuill` receives a ruleset bypass with mode `pull_request`. Owner work
+  still uses a pull request and audit trail, but does not require an unavailable
+  second reviewer.
 - Codex uses the authenticated GitHub CLI identity `MentallyQuill` and retains
-  the complete branch, pull request, review, merge, and repository-settings
-  workflow through that identity.
-- No contributor, workflow, or app receives a new broad bypass.
-- TavernKeeper's existing Publisher integration bypass remains unchanged so
-  its validated report-publication path continues to function.
+  branch, pull request, review, merge, and repository-settings access through
+  that identity.
+- The shared GitHub Actions integration does not receive a bypass. A contributor
+  must not be able to turn a branch workflow into a protected-branch writer.
+- TavernKeeper's existing Publisher integration bypass remains unchanged.
+- Tavernary receives a separate private Publisher GitHub App installed only on
+  `MentallyQuill/Tavernary`. Only that App receives an `always` bypass.
+
+## Tavernary Publisher App
+
+The Publisher is an unlisted, account-owned GitHub App with no server, callback,
+or webhook. It is installed only on Tavernary and has these repository
+permissions:
+
+- Contents: Read and write;
+- Metadata: Read-only, as required by GitHub;
+- no Actions, Issues, Pull requests, Administration, Workflows, or organization
+  permissions.
+
+The App's private key is stored only as the protected `publisher` environment
+secret `TAVERNARY_PUBLISHER_APP_PRIVATE_KEY`; its App ID is the environment
+variable `TAVERNARY_PUBLISHER_APP_ID`. The environment permits deployments only
+from the `main` branch.
+
+Each job that can push `HEAD:main` must:
+
+- reference the `publisher` environment;
+- keep ordinary `GITHUB_TOKEN` contents permission at Read;
+- generate a short-lived installation token with the full-SHA-pinned
+  `actions/create-github-app-token` action;
+- use that token for checkout and Git publication;
+- retain ordinary `GITHUB_TOKEN` permissions only for non-content operations
+  such as Issues or Actions dispatches;
+- reject a manual dispatch unless the actor is `MentallyQuill` or a trusted
+  repository workflow acting as `github-actions[bot]`.
+
+This boundary covers direct writers and the durable enrichment orchestrator:
+
+- `apply-kit-submission.yml`;
+- `apply-kit-withdrawal.yml`;
+- `backfill-repository-identities.yml`;
+- `enrich-catalog.yml`;
+- `import-tavernkeeper-reports.yml`;
+- `publish-openai-usage.yml`;
+- `refresh-catalog.yml`;
+- `review-catalog-policy.yml`.
+
+Repository tests enumerate this set so a future ordinary-token `main` writer
+fails CI.
 
 ## Repository-Owned Review
 
@@ -35,10 +79,8 @@ Add `.github/CODEOWNERS` to each repository with:
 * @MentallyQuill
 ```
 
-The default-branch ruleset will require code-owner review. This makes approval
-by `MentallyQuill` mandatory for contributor pull requests even if more Write
-collaborators are added later. The wildcard also protects changes to
-`.github/CODEOWNERS` and workflow files.
+The default-branch ruleset requires code-owner review. The wildcard protects
+all paths, including CODEOWNERS and workflow files.
 
 ## Default-Branch Rulesets
 
@@ -47,109 +89,76 @@ unprotected and writable by trusted contributors.
 
 Both rulesets enforce:
 
-- deletion protection;
-- non-fast-forward and force-push protection;
+- deletion and non-fast-forward protection;
 - a pull request before merge;
-- one approving review;
-- code-owner review;
-- dismissal of stale approvals after reviewable commits are pushed;
+- one approving code-owner review;
+- stale-review dismissal after reviewable commits;
 - approval of the most recent reviewable push by someone other than its author;
 - resolution of all review conversations;
 - strict required status checks against the latest `main`;
 - `MentallyQuill` user ID `2625904` as a `pull_request`-only bypass actor.
 
-Tavernary requires these GitHub Actions checks:
+Tavernary requires `verify` and `visual`, keeps merge, squash, and rebase, and
+adds the Tavernary Publisher integration as its sole `always` bypass. A skipped
+`visual` job remains an accepted successful conclusion for content-only work.
 
-- `verify`
-- `visual`
+TavernKeeper requires `check` and `scanner-toolchain`, remains merge-only, and
+preserves Publisher Integration ID `4457566` with `always` bypass.
 
-The `visual` job is present and successful for full changes and present with a
-successful skipped conclusion for content-only changes. Preserve Tavernary's
-currently enabled merge methods: merge, squash, and rebase.
+All required checks are bound to GitHub Actions Integration ID `15368`.
 
-TavernKeeper requires these GitHub Actions checks:
-
-- `check`
-- `scanner-toolchain`
-
-Preserve TavernKeeper's merge-only ruleset and the existing Integration actor
-ID `4457566` with `always` bypass mode for the TavernKeeper Publisher.
-
-## GitHub Actions Policy
+## Repository Actions Policy
 
 Apply these repository-level settings to both repositories:
 
-- keep Actions enabled;
-- allow GitHub-owned actions only;
+- keep Actions enabled and allow GitHub-owned actions only;
 - keep default `GITHUB_TOKEN` workflow permissions at Read;
 - prevent workflows from creating or approving pull request reviews;
 - require workflow approval for all external fork contributors;
 - automatically delete head branches after pull requests merge.
 
-The live workflow audit found no `pull_request_target` triggers. Pull-request
-validation uses read-only repository contents. Every external action reference
-is under `actions/*` and pinned to a full commit SHA, so restricting Actions to
-GitHub-owned actions preserves the current workflows. Tavernary does not use
-its currently enabled workflow review-approval permission.
-
-Fork workflow approval applies to external fork contributors. A trusted Write
-collaborator working on a same-repository feature branch may run the read-only
-pull-request checks normally.
+The workflow audit found no `pull_request_target` triggers. Pull-request
+validation uses read-only contents, and all external action references are
+SHA-pinned `actions/*` dependencies. A trusted Write collaborator's same-repo
+pull-request checks therefore run normally, while untrusted fork workflows
+require approval.
 
 ## Existing Security Controls
 
-Retain and verify the controls already enabled on both repositories:
+Retain and verify public visibility, fork support, secret scanning,
+secret-scanning push protection, Read default workflow permissions, and
+immutable action pins. Dependabot security updates, signed-commit requirements,
+release/tag rules, and feature-branch naming restrictions are outside this
+change.
 
-- public visibility and fork support;
-- secret scanning;
-- secret-scanning push protection;
-- repository default workflow permissions set to Read;
-- actions pinned to immutable commit SHAs.
+## Rollout and Verification
 
-Dependabot security updates, additional secret-pattern scanning, signed-commit
-requirements, release/tag rules, and restrictions on feature-branch creation
-are outside this change. They are not required to establish the approved
-contributor lane and could add unrelated maintenance or compatibility costs.
+1. Add a failing workflow-policy test, migrate all eight Tavernary publishers,
+   and prove the focused and full repository gates pass.
+2. Register and install the private App, create its protected environment, and
+   store the App ID and private key without exposing the key.
+3. Merge Tavernary's workflow and CODEOWNERS change, then merge TavernKeeper's
+   CODEOWNERS change.
+4. Update both default-branch rulesets in place, preserving existing integration
+   bypasses and adding only the approved owner and Publisher actors.
+5. Harden Actions and branch-cleanup settings, then re-read every setting from
+   GitHub.
+6. Confirm only `main` is protected, required check provenance is exact, the App
+   is installed only on Tavernary, and no feature-branch creation restriction
+   exists.
+7. Dispatch a bounded Publisher operation that is safe when no content changes
+   are pending, and verify the privileged job obtains its environment and runs
+   without a ruleset or credential failure.
 
-## Rollout
-
-1. Create the CODEOWNERS change on a feature branch in each repository and
-   merge it before requiring code-owner review.
-2. Update each existing default-branch ruleset in one request, preserving its
-   existing target and integration bypasses while adding the approved review,
-   check, and owner-bypass settings.
-3. Harden repository Actions permissions and enable automatic merged-branch
-   cleanup.
-4. Re-read every setting through the GitHub API.
-5. Confirm the required check contexts exist on recent pull-request heads and
-   confirm both default branches report protected.
-
-## Verification
-
-The completed policy must prove all of the following from live GitHub state:
-
-- both rulesets are active and target only the default branch;
-- contributor updates to `main` require a pull request, current owner approval,
-  resolved conversations, and all repository-specific checks;
-- `MentallyQuill` has only pull-request-mode bypass authority;
-- the TavernKeeper Publisher retains its existing integration bypass;
-- feature branches are not covered by a creation restriction;
-- Actions are limited to GitHub-owned actions with Read default permissions;
-- workflow PR review approval is disabled;
-- every external fork contributor requires workflow approval;
-- secret scanning and push protection remain enabled;
-- the current workflow action references remain compatible with the restricted
-  Actions policy.
-
-If a required check is absent from new pull requests or a Publisher operation
-is blocked, restore the immediately preceding ruleset payload, then diagnose
-the exact check or app identity before attempting another update.
+If a required check is absent or publication is blocked, restore the captured
+pre-change ruleset payload and diagnose the exact check or App identity before
+another update.
 
 ## Non-Goals
 
 - Contributors are not forced to work from forks.
 - Feature branches are not globally protected or name-restricted.
 - `MentallyQuill` does not receive an `always` bypass.
-- Codex does not receive a separate account, token, or app exemption.
-- This policy does not alter application code, publication semantics, workflow
-  triggers, secrets, or repository visibility.
+- Codex does not receive a separate identity or credential.
+- The Publisher App does not merge pull requests, edit workflows, administer
+  repositories, or access TavernKeeper.

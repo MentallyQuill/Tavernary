@@ -24,7 +24,7 @@ on:
     - cron: "43 5 * * *"
 
 permissions:
-  contents: write
+  contents: read
   issues: write
   pull-requests: read
   actions: write
@@ -67,8 +67,13 @@ jobs:
           done < "${RUNNER_TEMP}/policy-review-retries.tsv"
 
   review:
-    if: github.event_name == 'workflow_dispatch'
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/main' &&
+      (github.actor_id == 2625904 ||
+      github.actor_id == 41898282)
     runs-on: ubuntu-latest
+    environment: publisher
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PROJECT_ID: ${{ inputs.project_id }}
@@ -76,11 +81,19 @@ jobs:
       PULL_NUMBER: ${{ inputs.transaction_pull_number }}
       MERGE_SHA: ${{ inputs.merge_sha }}
     steps:
+      - name: Create Tavernary Publisher token
+        id: publisher-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ vars.TAVERNARY_PUBLISHER_APP_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-contents: write
       - name: Check out exact published state
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: ${{ inputs.merge_sha }}
           fetch-depth: 0
+          token: ${{ steps.publisher-token.outputs.token }}
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
