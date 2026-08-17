@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "lenanderson-sillytavern-custommodels",
+  "source_id": "github-885667005",
+  "source_identity": "github:lenanderson/sillytavern-custommodels",
+  "evidence_fingerprint": "a80ffc0b6727fcc53ea8902cdd7cf867fc5309af0c8ca3e99774a81d8fbbec7d",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-17T02:24:37.939Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-17T02:24:37.939Z"
+  },
+  "maintenance_issue_number": null
+}
