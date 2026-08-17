@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "mokimoko-sillytavern-wordcount",
+  "name": "SillyTavern-WordCount",
+  "kind": "extension",
+  "summary": "A small SillyTavern extension that displays a widget calculating a chat's word count; clicking cycles between word and token counts, and /wc or /wordcount toggles visibility. Per README.",
+  "metadata_status": "curated",
+  "source_id": "github-1244233593",
+  "frontends": ["sillytavern", "tauritavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["monitor-token-usage-and-cost"],
+  "cataloged_at": "2026-08-17T02:12:13.442Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
