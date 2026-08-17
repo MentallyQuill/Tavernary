@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "lenanderson-sillytavern-custommodels",
+  "name": "SillyTavern-CustomModels",
+  "kind": "extension",
+  "summary": "SillyTavern-CustomModels adds custom model names to OpenAI, Claude, and Google/Gemini connections in SillyTavern, letting users target models beyond the built-in provider lists.",
+  "metadata_status": "curated",
+  "source_id": "github-885667005",
+  "frontends": ["sillytavern"],
+  "primary_function": "developer-infrastructure",
+  "tags": ["model-agnostic"],
+  "cataloged_at": "2026-08-17T02:21:04.998Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
