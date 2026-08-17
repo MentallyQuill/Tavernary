@@ -1,0 +1,30 @@
+{
+  "schema_version": 6,
+  "id": "doolijb-serene-pub",
+  "name": "serene-pub",
+  "kind": "frontend",
+  "summary": "Beginner-friendly roleplay for long-term stories — solo or with friends in real time. Low clutter, low stress. Local-first, and it manages your AI backend for you. Windows, Linux, Mac & Android.",
+  "metadata_status": "curated",
+  "source_id": "github-997815977",
+  "frontends": ["serene-pub"],
+  "primary_function": "frontend",
+  "tags": [
+    "local-first",
+    "mobile-friendly",
+    "model-agnostic",
+    "multi-user",
+    "self-hosted",
+    "semantic-retrieval"
+  ],
+  "cataloged_at": "2026-08-17T02:24:52.888Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "manual", "note": "Verified repository owner selection." }
+  }
+}
