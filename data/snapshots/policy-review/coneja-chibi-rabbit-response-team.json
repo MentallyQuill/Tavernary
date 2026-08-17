@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "coneja-chibi-rabbit-response-team",
+  "source_id": "github-1081026644",
+  "source_identity": "github:coneja-chibi/rabbit-response-team",
+  "evidence_fingerprint": "ed7827725ff34ade63fc94b6de8e817f2bae5cb5fdc58b514717565e96072e8e",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-17T08:12:44.191Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-17T08:12:44.191Z"
+  },
+  "maintenance_issue_number": null
+}
