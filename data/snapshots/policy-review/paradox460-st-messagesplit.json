@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "paradox460-st-messagesplit",
+  "source_id": "github-1274936565",
+  "source_identity": "github:paradox460/st-messagesplit",
+  "evidence_fingerprint": "0bcc86b3f0861c9802888345223689c94b4c945399a2b99494e55d59ac32e325",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-17T08:17:27.827Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-17T08:17:27.827Z"
+  },
+  "maintenance_issue_number": null
+}
