@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "chaaruze-sillytavern-too-many-chats",
+  "source_id": "github-1136090339",
+  "source_identity": "github:chaaruze/sillytavern-too-many-chats",
+  "evidence_fingerprint": "93cd4cadc3d0041063e4803f98641f692bae3599ff53352daca601b0610e25b2",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-17T08:14:12.508Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-17T08:14:12.508Z"
+  },
+  "maintenance_issue_number": null
+}
