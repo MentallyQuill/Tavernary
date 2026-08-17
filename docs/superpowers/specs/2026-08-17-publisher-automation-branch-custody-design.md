@@ -34,6 +34,12 @@ Contents-write Publisher installation token, and gives that token only to
 `actions/checkout` for persisted Git credentials. Root `GITHUB_TOKEN` Contents
 permission is reduced from Write to Read.
 
+Generation jobs accept dispatches only from `MentallyQuill` or the unique
+Tavernary Publisher bot. The trusted automatic chain uses Actions-only Publisher
+tokens for `admit-issue.yml` -> project triage -> project generation. Manual
+admission reruns are owner-only. The shared `github-actions[bot]` identity is
+never accepted by a Publisher-credentialed triage or generation job.
+
 The Publisher private key remains available only through the environment whose
 sole deployment branch policy is `main`. It is not copied into repository
 secrets and the environment is not widened to `refs/pull/*/merge`.
@@ -41,10 +47,17 @@ secrets and the environment is not widened to `refs/pull/*/merge`.
 ## Lifecycle cleanup
 
 Closed-PR lifecycle workflows must not access Publisher credentials from a
-pull-request ref. They continue to process issue state with ordinary
-`GITHUB_TOKEN`, then dispatch a dedicated cleanup workflow on `main`.
+pull-request merge ref. They continue to process issue state with ordinary
+`GITHUB_TOKEN` and never mutate generated refs.
 
-The cleanup workflow re-reads the closed pull request and current branch ref. It
+A dedicated `pull_request_target` cleanup workflow runs trusted default-branch
+code for closed pull requests targeting `main`. It never checks out or executes
+the pull-request head. Because `pull_request_target` uses the base ref, the
+main-only Publisher environment remains available without widening its branch
+policy. Manual cleanup dispatch is restricted to `MentallyQuill` on `main`.
+
+The cleanup workflow re-reads the repository default branch, closed pull
+request, and current branch ref. It
 deletes only when all of these values match:
 
 - the branch exactly matches `automation/project-submission-<positive integer>`
@@ -56,7 +69,9 @@ deletes only when all of these values match:
 
 A missing or moved branch is a successful no-op. Only the final delete call uses
 the Publisher token. Deletion uses Git's exact-SHA `--force-with-lease` form, so
-the remote rejects the delete atomically if the ref moves after validation.
+the remote rejects the delete atomically if the ref moves after validation. Only
+an HTTP 404 ref read is treated as absent; authentication, rate-limit, and server
+errors fail the cleanup before token minting.
 
 ## Branch ruleset
 

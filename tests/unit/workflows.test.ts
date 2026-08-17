@@ -156,6 +156,8 @@ test("uses category-prefixed workflow display names", async () => {
       "Project owner requests: Create review PR",
     "project-owner-request-lifecycle":
       "Project owner requests: Process review result",
+    "generated-project-branch-cleanup":
+      "Security: Clean generated project branch",
     "retry-frontend-dependencies":
       "Project submissions: Retry frontend dependencies",
     "retry-project-submission-enrichment":
@@ -173,6 +175,8 @@ test("uses category-prefixed workflow display names", async () => {
     "targeted-tavernkeeper-scan": "Security: Run targeted TavernKeeper scan",
     "publish-openai-usage": "Support transparency: Publish OpenAI usage",
     "publisher-verification": "Security: Verify Tavernary Publisher",
+    "publisher-automation-branch-verification":
+      "Security: Verify Publisher automation branches",
   } as const;
 
   for (const [file, expectedName] of Object.entries(expectedNames)) {
@@ -189,6 +193,7 @@ test("identifies the object and action in every workflow run name", async () => 
     "triage-project-owner-request": ["Owner request #", "Validate authority"],
     "generate-project-owner-request": ["Owner request #", "Create review PR"],
     "project-owner-request-lifecycle": ["Owner review PR #", "Process result"],
+    "generated-project-branch-cleanup": ["Generated branch cleanup for PR #"],
     "retry-frontend-dependencies": [
       "Project submissions:",
       "Retry merged frontend dependencies",
@@ -209,6 +214,10 @@ test("identifies the object and action in every workflow run name", async () => 
     "targeted-tavernkeeper-scan": ["Security:", "Scan"],
     "publish-openai-usage": ["Support:", "Publish prior-month usage"],
     "publisher-verification": ["Security:", "Verify Publisher write lane"],
+    "publisher-automation-branch-verification": [
+      "Security:",
+      "Verify Publisher branch custody",
+    ],
   } as const;
 
   for (const [file, expectedParts] of Object.entries(expectedRunNameParts)) {
@@ -220,31 +229,10 @@ test("identifies the object and action in every workflow run name", async () => 
 });
 
 test("pins every first-party action to its resolved commit", async () => {
-  for (const name of [
-    "ci",
-    "deploy-pages",
-    "import-tavernkeeper-reports",
-    "refresh-catalog",
-    "enrich-catalog",
-    "backfill-repository-identities",
-    "admit-issue",
-    "triage-submission",
-    "generate-project-submission",
-    "project-submission-lifecycle",
-    "triage-project-owner-request",
-    "generate-project-owner-request",
-    "project-owner-request-lifecycle",
-    "retry-frontend-dependencies",
-    "retry-project-submission-enrichment",
-    "triage-kit-submission",
-    "triage-help-request",
-    "apply-kit-submission",
-    "apply-kit-withdrawal",
-    "targeted-tavernkeeper-scan",
-    "publish-openai-usage",
-    "publisher-verification",
-    "review-catalog-policy",
-  ]) {
+  const names = (await readdir(workflowDirectory))
+    .filter((name) => /\.ya?ml$/u.test(name))
+    .map((name) => name.replace(/\.ya?ml$/u, ""));
+  for (const name of names) {
     for (const step of allSteps(await workflow(name))) {
       if (!step.uses?.startsWith("actions/")) continue;
       const [action, sha] = step.uses.split("@");
@@ -1328,7 +1316,6 @@ test("triage dispatches admitted projects without repository write access", asyn
   expect(triage.permissions).toEqual({
     contents: "read",
     issues: "write",
-    actions: "write",
   });
   expect(triage.concurrency["cancel-in-progress"]).toBe(true);
   expect(triage.concurrency.group).toContain("${{ inputs.issue_number }}");
@@ -1659,7 +1646,6 @@ test("triages owner requests through a read-only repository gate", async () => {
   expect(triage.permissions).toEqual({
     contents: "read",
     issues: "write",
-    actions: "write",
   });
   expect(triage.concurrency).toEqual({
     group: "project-owner-triage-${{ inputs.issue_number }}",
@@ -1872,7 +1858,6 @@ test("handles owner closure from default-branch code and exact head state", asyn
     contents: "read",
     issues: "write",
     "pull-requests": "read",
-    actions: "write",
   });
   expect(lifecycle.concurrency).toEqual({
     group:

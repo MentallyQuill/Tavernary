@@ -16,7 +16,6 @@ permissions:
   contents: read
   issues: write
   pull-requests: read
-  actions: write
 
 concurrency:
   group: project-owner-lifecycle-${{ inputs.pull_number || github.event.pull_request.number }}
@@ -156,16 +155,3 @@ jobs:
               -f state=closed \
               -f state_reason=not_planned
           fi
-      - name: Queue exact owner request branch cleanup
-        if: steps.plan.outputs.action != 'ignore'
-        shell: bash
-        env:
-          BRANCH: ${{ steps.plan.outputs.branch }}
-          EXPECTED_SHA: ${{ steps.plan.outputs.head_sha }}
-        run: |
-          set -euo pipefail
-          gh workflow run generated-project-branch-cleanup.yml \
-            --ref "${{ github.event.repository.default_branch || 'main' }}" \
-            -f pull_number="$PULL_NUMBER" \
-            -f expected_branch="$BRANCH" \
-            -f expected_head_sha="$EXPECTED_SHA"

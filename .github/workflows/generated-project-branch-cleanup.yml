@@ -1,7 +1,12 @@
 name: "Security: Clean generated project branch"
-run-name: "Generated branch cleanup for PR #${{ inputs.pull_number }}"
+run-name: "Generated branch cleanup for PR #${{ inputs.pull_number || github.event.pull_request.number }}"
 
 on:
+  pull_request_target:
+    branches:
+      - main
+    types:
+      - closed
   workflow_dispatch:
     inputs:
       pull_number:
@@ -22,19 +27,30 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: generated-project-branch-cleanup-${{ inputs.expected_branch }}
+  group: generated-project-branch-cleanup-${{ inputs.expected_branch || github.event.pull_request.head.ref }}
   cancel-in-progress: false
 
 jobs:
   cleanup:
-    if: github.ref == 'refs/heads/main'
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (
+        (
+          github.event_name == 'pull_request_target' &&
+          (
+            startsWith(github.event.pull_request.head.ref, 'automation/project-submission-') ||
+            startsWith(github.event.pull_request.head.ref, 'automation/project-owner-request-')
+          )
+        ) ||
+        (github.event_name == 'workflow_dispatch' && github.actor_id == 2625904)
+      )
     runs-on: ubuntu-latest
     environment: publisher
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      PULL_NUMBER: ${{ inputs.pull_number }}
-      EXPECTED_BRANCH: ${{ inputs.expected_branch }}
-      EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+      PULL_NUMBER: ${{ inputs.pull_number || github.event.pull_request.number }}
+      EXPECTED_BRANCH: ${{ inputs.expected_branch || github.event.pull_request.head.ref }}
+      EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha || github.event.pull_request.head.sha }}
     steps:
       - name: Check out trusted cleanup code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -51,9 +67,11 @@ jobs:
         run: |
           set -euo pipefail
           pull_path="${RUNNER_TEMP}/generated-branch-cleanup-pull.json"
+          repository_path="${RUNNER_TEMP}/generated-branch-cleanup-repository.json"
           validated_branch_path="${RUNNER_TEMP}/generated-branch-cleanup-branch.txt"
           current_sha_path="${RUNNER_TEMP}/generated-branch-cleanup-current-sha.txt"
           plan_path="${RUNNER_TEMP}/generated-branch-cleanup-plan.json"
+          gh api "repos/${GITHUB_REPOSITORY}" > "$repository_path"
           gh api "repos/${GITHUB_REPOSITORY}/pulls/${PULL_NUMBER}" > "$pull_path"
           node --input-type=module <<'NODE'
           import fs from "node:fs";
@@ -62,9 +80,15 @@ jobs:
           const pull = JSON.parse(
             fs.readFileSync(`${process.env.RUNNER_TEMP}/generated-branch-cleanup-pull.json`, "utf8"),
           );
+          const repository = JSON.parse(
+            fs.readFileSync(`${process.env.RUNNER_TEMP}/generated-branch-cleanup-repository.json`, "utf8"),
+          );
+          if (`refs/heads/${repository.default_branch}` !== process.env.GITHUB_REF) {
+            throw new Error("Cleanup is not running from the current default branch.");
+          }
           const validation = planGeneratedProjectBranchCleanup({
             repository: process.env.GITHUB_REPOSITORY,
-            defaultBranch: process.env.GITHUB_REF_NAME,
+            defaultBranch: repository.default_branch,
             pullNumber: Number(process.env.PULL_NUMBER),
             expectedBranch: process.env.EXPECTED_BRANCH,
             expectedHeadSha: process.env.EXPECTED_HEAD_SHA,
@@ -77,9 +101,17 @@ jobs:
           );
           NODE
           branch="$(cat "$validated_branch_path")"
-          current_sha="$(gh api \
+          ref_error_path="${RUNNER_TEMP}/generated-branch-cleanup-ref-error.txt"
+          if current_sha="$(gh api \
             "repos/${GITHUB_REPOSITORY}/git/ref/heads/${branch}" \
-            --jq '.object.sha' 2>/dev/null || true)"
+            --jq '.object.sha' 2> "$ref_error_path")"; then
+            :
+          elif grep -Fq "(HTTP 404)" "$ref_error_path"; then
+            current_sha=""
+          else
+            cat "$ref_error_path" >&2
+            exit 1
+          fi
           printf '%s' "$current_sha" > "$current_sha_path"
           node --input-type=module <<'NODE'
           import fs from "node:fs";
@@ -88,13 +120,16 @@ jobs:
           const pull = JSON.parse(
             fs.readFileSync(`${process.env.RUNNER_TEMP}/generated-branch-cleanup-pull.json`, "utf8"),
           );
+          const repository = JSON.parse(
+            fs.readFileSync(`${process.env.RUNNER_TEMP}/generated-branch-cleanup-repository.json`, "utf8"),
+          );
           const currentHeadSha = fs.readFileSync(
             `${process.env.RUNNER_TEMP}/generated-branch-cleanup-current-sha.txt`,
             "utf8",
           );
           const plan = planGeneratedProjectBranchCleanup({
             repository: process.env.GITHUB_REPOSITORY,
-            defaultBranch: process.env.GITHUB_REF_NAME,
+            defaultBranch: repository.default_branch,
             pullNumber: Number(process.env.PULL_NUMBER),
             expectedBranch: process.env.EXPECTED_BRANCH,
             expectedHeadSha: process.env.EXPECTED_HEAD_SHA,

@@ -12,7 +12,6 @@ on:
 permissions:
   contents: read
   issues: write
-  actions: write
 
 concurrency:
   group: project-owner-triage-${{ inputs.issue_number }}
@@ -20,7 +19,12 @@ concurrency:
 
 jobs:
   validate:
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.actor_id == 2625904 ||
+       github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)
     runs-on: ubuntu-latest
+    environment: publisher
     steps:
       - name: Check out default branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -194,10 +198,20 @@ jobs:
             `admitted=${decision.status === "admitted"}\nissue_number=${issueNumber}\n`,
           );
           NODE
+      - name: Create Tavernary Publisher dispatch token
+        id: publisher-dispatch-token
+        if: steps.triage.outputs.admitted == 'true'
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          owner: MentallyQuill
+          repositories: Tavernary
+          permission-actions: write
       - name: Generate admitted owner request
         if: steps.triage.outputs.admitted == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.publisher-dispatch-token.outputs.token }}
           ISSUE_NUMBER: ${{ inputs.issue_number }}
         run: >
           gh workflow run generate-project-owner-request.yml

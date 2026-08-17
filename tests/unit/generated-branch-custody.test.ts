@@ -11,6 +11,10 @@ const headSha = "a".repeat(40);
 const workflowDirectory = resolve(".github/workflows");
 const publisherTokenAction =
   "actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1";
+const publisherCallerCondition =
+  "github.ref == 'refs/heads/main' && " +
+  "(github.actor_id == 2625904 || " +
+  "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)";
 
 type WorkflowStep = {
   id?: string;
@@ -26,6 +30,10 @@ async function workflow(name: string) {
   return parse(
     await readFile(resolve(workflowDirectory, `${name}.yml`), "utf8"),
   );
+}
+
+function normalizedExpression(value: string | undefined) {
+  return value?.replace(/\s+/gu, " ").trim();
 }
 
 function pull(overrides: Record<string, unknown> = {}) {
@@ -225,6 +233,7 @@ describe("generated project branch workflow custody", () => {
     async (name) => {
       const document = await workflow(name);
       const job = document.jobs.generate as {
+        if?: string;
         environment?: string;
         env?: Record<string, string>;
         steps: WorkflowStep[];
@@ -244,6 +253,7 @@ describe("generated project branch workflow custody", () => {
         "pull-requests": "write",
         actions: "write",
       });
+      expect(normalizedExpression(job.if)).toBe(publisherCallerCondition);
       expect(job.environment).toBe("publisher");
       expect(job.env?.GH_TOKEN).toBe("${{ secrets.GITHUB_TOKEN }}");
       expect(token).toMatchObject({
@@ -275,29 +285,28 @@ describe("generated project branch workflow custody", () => {
   test.each([
     "project-submission-lifecycle",
     "project-owner-request-lifecycle",
-  ])("queues exact-state App cleanup from %s", async (name) => {
-    const document = await workflow(name);
-    const source = await readFile(
-      resolve(workflowDirectory, `${name}.yml`),
-      "utf8",
-    );
+  ])(
+    "leaves generated ref cleanup to trusted default-branch code in %s",
+    async (name) => {
+      const document = await workflow(name);
+      const source = await readFile(
+        resolve(workflowDirectory, `${name}.yml`),
+        "utf8",
+      );
 
-    expect(document.permissions).toMatchObject({
-      contents: "read",
-      issues: "write",
-      "pull-requests": "read",
-      actions: "write",
-    });
-    expect(source).toContain(
-      "gh workflow run generated-project-branch-cleanup.yml",
-    );
-    expect(source).toContain('-f pull_number="$PULL_NUMBER"');
-    expect(source).toContain('-f expected_branch="$BRANCH"');
-    expect(source).toContain('-f expected_head_sha="$EXPECTED_SHA"');
-    expect(source).not.toContain("git/refs/heads/${BRANCH}");
-    expect(source).not.toContain("--method DELETE");
-    expect(source).not.toContain("TAVERNARY_PUBLISHER_APP_PRIVATE_KEY");
-  });
+      expect(document.permissions).toMatchObject({
+        contents: "read",
+        issues: "write",
+        "pull-requests": "read",
+      });
+      expect(source).not.toContain(
+        "gh workflow run generated-project-branch-cleanup.yml",
+      );
+      expect(source).not.toContain("git/refs/heads/${BRANCH}");
+      expect(source).not.toContain("--method DELETE");
+      expect(source).not.toContain("TAVERNARY_PUBLISHER_APP_PRIVATE_KEY");
+    },
+  );
 
   test("deletes a revalidated generated ref only with the Publisher token", async () => {
     const document = await workflow("generated-project-branch-cleanup");
@@ -320,7 +329,14 @@ describe("generated project branch workflow custody", () => {
       "utf8",
     );
 
-    expect(Object.keys(document.on)).toEqual(["workflow_dispatch"]);
+    expect(Object.keys(document.on)).toEqual([
+      "pull_request_target",
+      "workflow_dispatch",
+    ]);
+    expect(document.on.pull_request_target).toEqual({
+      branches: ["main"],
+      types: ["closed"],
+    });
     expect(document.on.workflow_dispatch.inputs).toEqual({
       pull_number: {
         description: "Closed generated pull request number",
@@ -342,11 +358,25 @@ describe("generated project branch workflow custody", () => {
       contents: "read",
       "pull-requests": "read",
     });
-    expect(job.if).toBe("github.ref == 'refs/heads/main'");
+    expect(job.if).toContain("github.event_name == 'pull_request_target'");
+    expect(job.if).toContain("github.event_name == 'workflow_dispatch'");
+    expect(job.if).toContain("github.actor_id == 2625904");
+    expect(job.if).toContain(
+      "startsWith(github.event.pull_request.head.ref, 'automation/project-submission-')",
+    );
+    expect(job.if).toContain(
+      "startsWith(github.event.pull_request.head.ref, 'automation/project-owner-request-')",
+    );
     expect(job.environment).toBe("publisher");
     expect(job.env?.GH_TOKEN).toBe("${{ secrets.GITHUB_TOKEN }}");
     expect(plan?.run).toContain("generated-branch-custody.mjs");
     expect(plan?.run).toContain("planGeneratedProjectBranchCleanup");
+    expect(plan?.run).toContain("default_branch");
+    expect(plan?.run).toContain("(HTTP 404)");
+    expect(plan?.run).not.toContain("2>/dev/null || true");
+    expect(plan?.run).not.toContain(
+      "defaultBranch: process.env.GITHUB_REF_NAME",
+    );
     expect(token).toMatchObject({
       uses: publisherTokenAction,
       with: {
@@ -421,5 +451,67 @@ describe("generated project branch workflow custody", () => {
     expect(
       continuousIntegration.jobs["dispatch-project-publication"].if,
     ).toContain("github.ref_name != 'automation/project-submission-0'");
+  });
+
+  test.each([
+    ["triage-submission", "generate-project-submission.yml"],
+    ["triage-project-owner-request", "generate-project-owner-request.yml"],
+  ])(
+    "permits only owner or Publisher dispatch through %s",
+    async (name, target) => {
+      const document = await workflow(name);
+      const job = document.jobs.validate as {
+        if?: string;
+        environment?: string;
+        steps: WorkflowStep[];
+      };
+      const token = job.steps.find(
+        (step) => step.id === "publisher-dispatch-token",
+      );
+      const dispatch = job.steps.find((step) => step.run?.includes(target));
+
+      expect(normalizedExpression(job.if)).toBe(publisherCallerCondition);
+      expect(job.environment).toBe("publisher");
+      expect(token).toMatchObject({
+        uses: publisherTokenAction,
+        with: {
+          "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
+          "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
+          "permission-actions": "write",
+        },
+      });
+      expect(dispatch?.env?.GH_TOKEN).toBe(
+        "${{ steps.publisher-dispatch-token.outputs.token }}",
+      );
+    },
+  );
+
+  test("admits public issue events but reserves manual Publisher dispatch for the owner", async () => {
+    const document = await workflow("admit-issue");
+    const job = document.jobs.admit as {
+      if?: string;
+      steps: WorkflowStep[];
+    };
+    const token = job.steps.find(
+      (step) => step.id === "publisher-dispatch-token",
+    );
+
+    expect(job.if).toBe(
+      "github.ref == 'refs/heads/main' && " +
+        "(github.event_name != 'workflow_dispatch' || github.actor_id == 2625904)",
+    );
+    expect(token?.if).toContain("steps.admission.outputs.route == 'project'");
+    expect(token?.if).toContain(
+      "steps.admission.outputs.route == 'project-owner'",
+    );
+    for (const target of [
+      "triage-submission.yml",
+      "triage-project-owner-request.yml",
+    ]) {
+      const dispatch = job.steps.find((step) => step.run?.includes(target));
+      expect(dispatch?.env?.GH_TOKEN).toBe(
+        "${{ steps.publisher-dispatch-token.outputs.token }}",
+      );
+    }
   });
 });

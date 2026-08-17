@@ -135,11 +135,14 @@ Apply these repository-level settings to both repositories:
 - require workflow approval for all external fork contributors;
 - automatically delete head branches after pull requests merge.
 
-The workflow audit found no `pull_request_target` triggers. Pull-request
-validation uses read-only contents, and all external action references are
-SHA-pinned `actions/*` dependencies. A trusted Write collaborator's same-repo
-pull-request checks therefore run normally, while untrusted fork workflows
-require approval.
+The sole `pull_request_target` trigger is the generated-project branch cleanup
+workflow. It runs trusted default-branch code for closed PRs, never checks out or
+executes pull-request head code, revalidates exact same-repository PR/ref state,
+and uses the Publisher token only for an atomic exact-SHA delete. Other
+pull-request validation uses read-only contents, and all external action
+references are SHA-pinned `actions/*` dependencies. A trusted Write
+collaborator's same-repository pull-request checks therefore run normally, while
+untrusted fork workflows require approval.
 
 ## Existing Security Controls
 

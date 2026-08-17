@@ -4,7 +4,7 @@
 
 **Goal:** Give the Tavernary Publisher App exclusive custody of generated project-review branches without restricting ordinary contributor branches.
 
-**Architecture:** Main-only generation jobs persist a short-lived Publisher token as their Git credential while ordinary `GITHUB_TOKEN` remains limited to non-content APIs. Closed-PR jobs queue a separate main-only cleanup workflow that revalidates exact PR and ref state before deleting with the App. A narrowly targeted live ruleset then restricts both generated namespaces to the Publisher integration.
+**Architecture:** Main-only generation jobs persist a short-lived Publisher token as their Git credential while ordinary `GITHUB_TOKEN` remains limited to non-content APIs. Admission and triage use Actions-only Publisher tokens, and every privileged target accepts only the owner or Publisher actor. A trusted `pull_request_target` cleanup workflow revalidates exact repository, PR, and ref state before deleting with the App. A narrowly targeted live ruleset then restricts both generated namespaces to the Publisher integration.
 
 **Tech Stack:** GitHub Actions YAML, `actions/create-github-app-token`, Node.js 24 ESM, Vitest, GitHub REST API, GitHub rulesets, GitHub CLI.
 
@@ -77,6 +77,9 @@ Expected: PASS.
 **Files:**
 - Modify: `.github/workflows/generate-project-submission.yml`
 - Modify: `.github/workflows/generate-project-owner-request.yml`
+- Modify: `.github/workflows/admit-issue.yml`
+- Modify: `.github/workflows/triage-submission.yml`
+- Modify: `.github/workflows/triage-project-owner-request.yml`
 - Modify: `.github/workflows/project-submission-lifecycle.yml`
 - Modify: `.github/workflows/project-owner-request-lifecycle.yml`
 - Create: `.github/workflows/generated-project-branch-cleanup.yml`
@@ -84,16 +87,20 @@ Expected: PASS.
 
 **Interfaces:**
 - Consumes: the existing main-only `publisher` environment and App credentials.
-- Produces: App-authenticated Git branch pushes and exact-state cleanup dispatches.
+- Produces: App-authenticated Git branch pushes, App-authenticated trusted dispatches, and exact-state cleanup.
 
 - [ ] **Step 1: Add failing parsed-workflow contracts**
 
-Require both generators to use environment `publisher`, root Contents Read,
+Require both generators to accept only `MentallyQuill` or the Publisher actor,
+use environment `publisher`, root Contents Read,
 the pinned Publisher token action with Contents Write, and App-token checkout
 credentials while retaining ordinary `GH_TOKEN` for Issues/PR/Actions calls.
-Require both lifecycle workflows to queue the cleanup workflow instead of
-deleting refs. Require cleanup to run only from `main`, use the Publisher
-environment, call the planner, and expose the App token only to the delete step.
+Require admission and triage to dispatch privileged targets with Actions-only
+Publisher tokens and reject shared Actions callers. Require lifecycle workflows
+to leave ref cleanup to trusted default-branch code. Require cleanup to run from
+`main` via `pull_request_target` or an owner-only manual dispatch, use the
+Publisher environment, call the planner, and expose the App token only to the
+delete step.
 
 - [ ] **Step 2: Run the focused workflow test and observe Red**
 
@@ -110,11 +117,12 @@ set the job environment to `publisher`, reduce root Contents to Read, and use th
 
 - [ ] **Step 4: Implement main-only App cleanup**
 
-Replace direct lifecycle deletion with `gh workflow run
-generated-project-branch-cleanup.yml --ref main` and exact pull/branch/SHA
-inputs. The cleanup workflow re-fetches PR/ref state, invokes the planner, mints
-the Publisher token only after a `delete` plan, and performs one exact-SHA
-`--force-with-lease` ref delete.
+Remove ref mutation from lifecycle jobs. The cleanup workflow runs trusted
+default-branch code on closed `pull_request_target` events, re-fetches the
+repository default branch plus PR/ref state, invokes the planner, mints the
+Publisher token only after a `delete` plan, and performs one exact-SHA
+`--force-with-lease` ref delete. Only HTTP 404 is an absent ref; other API errors
+fail closed.
 
 - [ ] **Step 5: Run focused tests and observe Green**
 
