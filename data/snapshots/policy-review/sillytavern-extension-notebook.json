@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sillytavern-extension-notebook",
+  "source_id": "github-794692686",
+  "source_identity": "github:sillytavern/extension-notebook",
+  "evidence_fingerprint": "7c6f61b282378081bf0a2767a5c53e2908bba926e0394f819362d752ceb47de3",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-17T08:19:50.832Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-17T08:19:50.832Z"
+  },
+  "maintenance_issue_number": null
+}
