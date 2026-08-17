@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { resolve } from "node:path";
 
 import { describe, expect, test } from "vitest";
@@ -377,6 +377,18 @@ describe("generated project branch workflow custody", () => {
     expect(plan?.run).not.toContain(
       "defaultBranch: process.env.GITHUB_REF_NAME",
     );
+    const tokenIndex = job.steps.indexOf(token as WorkflowStep);
+    const trustedCheckouts = job.steps
+      .slice(0, tokenIndex)
+      .filter((step) => step.uses?.startsWith("actions/checkout@"));
+    expect(tokenIndex).toBeGreaterThan(job.steps.indexOf(plan as WorkflowStep));
+    expect(trustedCheckouts).not.toHaveLength(0);
+    for (const checkout of trustedCheckouts) {
+      expect(checkout.with?.ref).toBe("main");
+      expect(JSON.stringify(checkout.with)).not.toContain(
+        "github.event.pull_request.head",
+      );
+    }
     expect(token).toMatchObject({
       uses: publisherTokenAction,
       with: {
@@ -453,35 +465,71 @@ describe("generated project branch workflow custody", () => {
     ).toContain("github.ref_name != 'automation/project-submission-0'");
   });
 
-  test.each([
-    ["triage-submission", "generate-project-submission.yml"],
-    ["triage-project-owner-request", "generate-project-owner-request.yml"],
-  ])(
-    "permits only owner or Publisher dispatch through %s",
-    async (name, target) => {
-      const document = await workflow(name);
-      const job = document.jobs.validate as {
-        if?: string;
-        environment?: string;
-        steps: WorkflowStep[];
-      };
-      const token = job.steps.find(
-        (step) => step.id === "publisher-dispatch-token",
-      );
-      const dispatch = job.steps.find((step) => step.run?.includes(target));
+  test("dispatches every privileged generator with a Publisher token", async () => {
+    const workflowNames = (await readdir(workflowDirectory))
+      .filter((name) => /\.ya?ml$/u.test(name))
+      .map((name) => name.replace(/\.ya?ml$/u, ""));
+    const privilegedTargets = [
+      "generate-project-submission.yml",
+      "generate-project-owner-request.yml",
+    ];
+    const callers: string[] = [];
 
-      expect(normalizedExpression(job.if)).toBe(publisherCallerCondition);
-      expect(job.environment).toBe("publisher");
-      expect(token).toMatchObject({
-        uses: publisherTokenAction,
-        with: {
-          "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
-          "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
-          "permission-actions": "write",
-        },
-      });
-      expect(dispatch?.env?.GH_TOKEN).toBe(
-        "${{ steps.publisher-dispatch-token.outputs.token }}",
+    for (const name of workflowNames) {
+      const document = await workflow(name);
+      for (const [jobName, rawJob] of Object.entries(document.jobs ?? {})) {
+        const job = rawJob as {
+          environment?: string;
+          steps?: WorkflowStep[];
+        };
+        for (const [stepIndex, step] of (job.steps ?? []).entries()) {
+          const targets = privilegedTargets.filter((candidate) =>
+            step.run?.includes(`gh workflow run ${candidate}`),
+          );
+          if (targets.length === 0) continue;
+
+          const tokenReference = step.env?.GH_TOKEN?.match(
+            /^\$\{\{ steps\.([a-z0-9-]+)\.outputs\.token \}\}$/u,
+          )?.[1];
+          const tokenIndex = (job.steps ?? []).findIndex(
+            (candidate) => candidate.id === tokenReference,
+          );
+          const token = job.steps?.[tokenIndex];
+
+          expect(job.environment).toBe("publisher");
+          expect(tokenReference).toBeTruthy();
+          expect(tokenIndex).toBeGreaterThanOrEqual(0);
+          expect(tokenIndex).toBeLessThan(stepIndex);
+          expect(token).toMatchObject({
+            uses: publisherTokenAction,
+            with: {
+              "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
+              "private-key":
+                "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
+              "permission-actions": "write",
+            },
+          });
+          for (const target of targets) {
+            callers.push(`${name}:${jobName}:${target}`);
+          }
+        }
+      }
+    }
+
+    expect(callers.sort()).toEqual([
+      "publish-project-transaction:publish:generate-project-owner-request.yml",
+      "publish-project-transaction:publish:generate-project-submission.yml",
+      "triage-project-owner-request:validate:generate-project-owner-request.yml",
+      "triage-submission:validate:generate-project-submission.yml",
+    ]);
+  });
+
+  test.each(["triage-submission", "triage-project-owner-request"])(
+    "permits only owner or Publisher callers into %s",
+    async (name) => {
+      const document = await workflow(name);
+      expect(normalizedExpression(document.jobs.validate.if)).toBe(
+        publisherCallerCondition,
       );
     },
   );

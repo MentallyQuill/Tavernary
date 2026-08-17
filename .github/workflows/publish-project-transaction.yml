@@ -300,10 +300,19 @@ jobs:
             `## Project publication\n\nAction: \`${plan.action}\`\n\nReason: \`${plan.reasonCode ?? "validated"}\`\n`,
           );
           NODE
+      - name: Create Tavernary Publisher regeneration token
+        id: publisher-regeneration-token
+        if: steps.plan.outputs.action == 'regenerate'
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-actions: write
       - name: Regenerate stale transaction
         if: steps.plan.outputs.action == 'regenerate'
         shell: bash
         env:
+          GH_TOKEN: ${{ steps.publisher-regeneration-token.outputs.token }}
           PRODUCER: ${{ steps.state.outputs.producer }}
           ISSUE_NUMBER: ${{ steps.state.outputs.issue_number }}
         run: |
