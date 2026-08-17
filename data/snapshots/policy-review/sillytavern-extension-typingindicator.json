@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sillytavern-extension-typingindicator",
+  "source_id": "github-925891884",
+  "source_identity": "github:sillytavern/extension-typingindicator",
+  "evidence_fingerprint": "f150e0ee29a4de10aaf8516316a4cc68e42a1b9d2db71b011de7e04ce8f4ad03",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-17T08:20:57.138Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-17T08:20:57.138Z"
+  },
+  "maintenance_issue_number": null
+}
