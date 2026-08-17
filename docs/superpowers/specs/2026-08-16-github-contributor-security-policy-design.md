@@ -151,7 +151,7 @@ change.
 
 ## Rollout and Verification
 
-1. Add a failing workflow-policy test, migrate all eight Tavernary publishers,
+1. Add a failing workflow-policy test, migrate all nine Tavernary publishers,
    and prove the focused and full repository gates pass.
 2. Register and install the private App, create its protected environment, and
    store the Client ID and private key without exposing the key.
