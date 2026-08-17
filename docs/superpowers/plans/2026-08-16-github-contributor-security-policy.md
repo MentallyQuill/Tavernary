@@ -33,7 +33,7 @@ from fresh API responses.
 - [ ] Require each publisher job to use environment `publisher`.
 - [ ] Change workflow-level contents permission from Write to Read.
 - [ ] Add a full-SHA-pinned `actions/create-github-app-token` step with
-  `TAVERNARY_PUBLISHER_APP_ID` and `TAVERNARY_PUBLISHER_APP_PRIVATE_KEY`.
+  `TAVERNARY_PUBLISHER_CLIENT_ID` and `TAVERNARY_PUBLISHER_APP_PRIVATE_KEY`.
 - [ ] Use the App token for checkout and publication while retaining ordinary
   tokens only for Issues and Actions APIs.
 - [ ] Gate manual privileged dispatches to user ID `2625904` or the trusted
@@ -56,7 +56,7 @@ from fresh API responses.
 - [ ] Install it only on `MentallyQuill/Tavernary` and capture its Integration ID.
 - [ ] Create environment `publisher` with a custom deployment branch policy for
   exactly `main`.
-- [ ] Store App ID as `TAVERNARY_PUBLISHER_APP_ID` and private key as
+- [ ] Store Client ID as `TAVERNARY_PUBLISHER_CLIENT_ID` and private key as
   `TAVERNARY_PUBLISHER_APP_PRIVATE_KEY` in that environment.
 - [ ] Store the App bot user ID as repository variable
   `TAVERNARY_PUBLISHER_BOT_ID` for target-workflow actor checks.
@@ -89,7 +89,7 @@ from fresh API responses.
   access, CODEOWNERS, security analysis, environment policy, App installation,
   and check provenance.
 - [ ] Confirm only `main` is protected and feature branches remain creatable.
-- [ ] Run a bounded no-change Publisher workflow and verify App authentication,
-  protected-environment access, and ruleset compatibility.
+- [ ] Run `publisher-verification.yml`, verify its empty App-authenticated commit
+  reaches protected `main`, and confirm token revocation during cleanup.
 - [ ] Record final PR URLs, merge commits, workflow run, ruleset IDs, and clean
   local branch state.

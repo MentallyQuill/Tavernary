@@ -1,0 +1,55 @@
+name: "Security: Verify Tavernary Publisher"
+run-name: "Security: Verify Publisher write lane #${{ github.run_number }}"
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tavernary-publisher-verification
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: >-
+      github.ref == 'refs/heads/main' && github.actor_id == 2625904
+    runs-on: ubuntu-latest
+    environment: publisher
+    permissions:
+      contents: read
+    steps:
+      - name: Create Tavernary Publisher token
+        id: publisher-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          owner: MentallyQuill
+          repositories: Tavernary
+          permission-contents: write
+      - name: Check out trusted Tavernary main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ steps.publisher-token.outputs.token }}
+      - name: Commit Publisher verification
+        shell: bash
+        run: |
+          git config user.name "Tavernary Publisher"
+          git config user.email "tavernary-publisher[bot]@users.noreply.github.com"
+          git commit --allow-empty -m "chore(security): verify Publisher write lane"
+          for attempt in 1 2 3; do
+            if git fetch origin main &&
+              git rebase --keep-empty origin/main; then
+              if git push origin HEAD:main; then
+                exit 0
+              fi
+            fi
+            git rebase --abort || true
+            if (( attempt == 3 )); then
+              exit 1
+            fi
+          done
