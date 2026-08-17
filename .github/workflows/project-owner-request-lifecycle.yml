@@ -13,9 +13,10 @@ on:
         type: number
 
 permissions:
-  contents: write
+  contents: read
   issues: write
   pull-requests: read
+  actions: write
 
 concurrency:
   group: project-owner-lifecycle-${{ inputs.pull_number || github.event.pull_request.number }}
@@ -83,7 +84,7 @@ jobs:
               `action=${plan.action}`,
               `issue_number=${plan.issueNumber ?? ""}`,
               `branch=${plan.deleteBranch ?? ""}`,
-              `head_sha=${process.env.CLOSED_PR_HEAD_SHA}`,
+              `head_sha=${pull.head.sha}`,
               `pr_number=${pull.number}`,
               `pr_url=${pull.html_url}`,
             ].join("\n") + "\n",
@@ -155,7 +156,7 @@ jobs:
               -f state=closed \
               -f state_reason=not_planned
           fi
-      - name: Delete unchanged owner request branch
+      - name: Queue exact owner request branch cleanup
         if: steps.plan.outputs.action != 'ignore'
         shell: bash
         env:
@@ -163,12 +164,8 @@ jobs:
           EXPECTED_SHA: ${{ steps.plan.outputs.head_sha }}
         run: |
           set -euo pipefail
-          current_sha="$(gh api \
-            "repos/${GITHUB_REPOSITORY}/git/ref/heads/${BRANCH}" \
-            --jq '.object.sha' 2>/dev/null || true)"
-          if [[ -n "$current_sha" && "$current_sha" == "$EXPECTED_SHA" ]]; then
-            gh api --method DELETE \
-              "repos/${GITHUB_REPOSITORY}/git/refs/heads/${BRANCH}"
-          else
-            echo "Owner request branch moved after PR closure; leaving it intact."
-          fi
+          gh workflow run generated-project-branch-cleanup.yml \
+            --ref "${{ github.event.repository.default_branch || 'main' }}" \
+            -f pull_number="$PULL_NUMBER" \
+            -f expected_branch="$BRANCH" \
+            -f expected_head_sha="$EXPECTED_SHA"

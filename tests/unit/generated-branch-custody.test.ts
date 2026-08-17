@@ -1,9 +1,32 @@
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
+
 import { describe, expect, test } from "vitest";
+import { parse } from "yaml";
 
 import { planGeneratedProjectBranchCleanup } from "../../scripts/security/generated-branch-custody.mjs";
 
 const repository = "MentallyQuill/Tavernary";
 const headSha = "a".repeat(40);
+const workflowDirectory = resolve(".github/workflows");
+const publisherTokenAction =
+  "actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1";
+
+type WorkflowStep = {
+  id?: string;
+  if?: string;
+  name?: string;
+  uses?: string;
+  run?: string;
+  env?: Record<string, string>;
+  with?: Record<string, string>;
+};
+
+async function workflow(name: string) {
+  return parse(
+    await readFile(resolve(workflowDirectory, `${name}.yml`), "utf8"),
+  );
+}
 
 function pull(overrides: Record<string, unknown> = {}) {
   return {
@@ -193,5 +216,210 @@ describe("generated project branch cleanup", () => {
         input({ currentHeadSha: `${headSha};echo unsafe` }),
       ),
     ).toThrow("current head SHA");
+  });
+});
+
+describe("generated project branch workflow custody", () => {
+  test.each(["generate-project-submission", "generate-project-owner-request"])(
+    "uses the Publisher App as the persisted Git writer in %s",
+    async (name) => {
+      const document = await workflow(name);
+      const job = document.jobs.generate as {
+        environment?: string;
+        env?: Record<string, string>;
+        steps: WorkflowStep[];
+      };
+      const token = job.steps.find((step) => step.id === "publisher-token");
+      const checkout = job.steps.find((step) =>
+        step.uses?.startsWith("actions/checkout@"),
+      );
+      const source = await readFile(
+        resolve(workflowDirectory, `${name}.yml`),
+        "utf8",
+      );
+
+      expect(document.permissions).toEqual({
+        contents: "read",
+        issues: "write",
+        "pull-requests": "write",
+        actions: "write",
+      });
+      expect(job.environment).toBe("publisher");
+      expect(job.env?.GH_TOKEN).toBe("${{ secrets.GITHUB_TOKEN }}");
+      expect(token).toMatchObject({
+        uses: publisherTokenAction,
+        with: {
+          "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
+          "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
+          owner: "MentallyQuill",
+          repositories: "Tavernary",
+          "permission-contents": "write",
+        },
+      });
+      expect(checkout?.with?.token).toBe(
+        "${{ steps.publisher-token.outputs.token }}",
+      );
+      expect(job.steps.indexOf(token as WorkflowStep)).toBeLessThan(
+        job.steps.indexOf(checkout as WorkflowStep),
+      );
+      expect(source).toContain('git config user.name "Tavernary Publisher"');
+      expect(source).toContain(
+        'git config user.email "tavernary-publisher[bot]@users.noreply.github.com"',
+      );
+      expect(source).not.toContain(
+        'git config user.name "github-actions[bot]"',
+      );
+    },
+  );
+
+  test.each([
+    "project-submission-lifecycle",
+    "project-owner-request-lifecycle",
+  ])("queues exact-state App cleanup from %s", async (name) => {
+    const document = await workflow(name);
+    const source = await readFile(
+      resolve(workflowDirectory, `${name}.yml`),
+      "utf8",
+    );
+
+    expect(document.permissions).toMatchObject({
+      contents: "read",
+      issues: "write",
+      "pull-requests": "read",
+      actions: "write",
+    });
+    expect(source).toContain(
+      "gh workflow run generated-project-branch-cleanup.yml",
+    );
+    expect(source).toContain('-f pull_number="$PULL_NUMBER"');
+    expect(source).toContain('-f expected_branch="$BRANCH"');
+    expect(source).toContain('-f expected_head_sha="$EXPECTED_SHA"');
+    expect(source).not.toContain("git/refs/heads/${BRANCH}");
+    expect(source).not.toContain("--method DELETE");
+    expect(source).not.toContain("TAVERNARY_PUBLISHER_APP_PRIVATE_KEY");
+  });
+
+  test("deletes a revalidated generated ref only with the Publisher token", async () => {
+    const document = await workflow("generated-project-branch-cleanup");
+    const job = document.jobs.cleanup as {
+      if?: string;
+      environment?: string;
+      env?: Record<string, string>;
+      steps: WorkflowStep[];
+    };
+    const plan = job.steps.find((step) => step.id === "plan");
+    const token = job.steps.find((step) => step.id === "publisher-token");
+    const publisherCheckout = job.steps.find(
+      (step) => step.name === "Install Publisher branch credential",
+    );
+    const deletion = job.steps.find(
+      (step) => step.name === "Delete exact generated branch",
+    );
+    const source = await readFile(
+      resolve(workflowDirectory, "generated-project-branch-cleanup.yml"),
+      "utf8",
+    );
+
+    expect(Object.keys(document.on)).toEqual(["workflow_dispatch"]);
+    expect(document.on.workflow_dispatch.inputs).toEqual({
+      pull_number: {
+        description: "Closed generated pull request number",
+        required: true,
+        type: "number",
+      },
+      expected_branch: {
+        description: "Exact generated branch to clean up",
+        required: true,
+        type: "string",
+      },
+      expected_head_sha: {
+        description: "Exact closed pull request head SHA",
+        required: true,
+        type: "string",
+      },
+    });
+    expect(document.permissions).toEqual({
+      contents: "read",
+      "pull-requests": "read",
+    });
+    expect(job.if).toBe("github.ref == 'refs/heads/main'");
+    expect(job.environment).toBe("publisher");
+    expect(job.env?.GH_TOKEN).toBe("${{ secrets.GITHUB_TOKEN }}");
+    expect(plan?.run).toContain("generated-branch-custody.mjs");
+    expect(plan?.run).toContain("planGeneratedProjectBranchCleanup");
+    expect(token).toMatchObject({
+      uses: publisherTokenAction,
+      with: {
+        "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
+        "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
+        owner: "MentallyQuill",
+        repositories: "Tavernary",
+        "permission-contents": "write",
+      },
+    });
+    expect(token?.if).toBe("steps.plan.outputs.action == 'delete'");
+    expect(publisherCheckout).toMatchObject({
+      if: "steps.plan.outputs.action == 'delete'",
+      with: { token: "${{ steps.publisher-token.outputs.token }}" },
+    });
+    expect(deletion).toMatchObject({
+      if: "steps.plan.outputs.action == 'delete'",
+    });
+    expect(deletion?.run).toContain(
+      'git push --force-with-lease="refs/heads/$BRANCH:$EXPECTED_SHA"',
+    );
+    expect(deletion?.run).toContain('origin ":refs/heads/$BRANCH"');
+    expect(deletion?.env).not.toHaveProperty("GH_TOKEN");
+    expect(source.match(/TAVERNARY_PUBLISHER_APP_PRIVATE_KEY/gu)).toHaveLength(
+      1,
+    );
+  });
+
+  test("reserves an App-owned create-update-delete branch canary", async () => {
+    const document = await workflow("publisher-automation-branch-verification");
+    const job = document.jobs.verify as {
+      if?: string;
+      environment?: string;
+      steps: WorkflowStep[];
+    };
+    const token = job.steps.find((step) => step.id === "publisher-token");
+    const verify = job.steps.find(
+      (step) => step.name === "Verify Publisher automation branch custody",
+    );
+
+    expect(document.on.workflow_dispatch).toBeNull();
+    expect(document.permissions).toEqual({ contents: "read" });
+    expect(job.if).toBe(
+      "github.ref == 'refs/heads/main' && github.actor_id == 2625904",
+    );
+    expect(job.environment).toBe("publisher");
+    expect(token).toMatchObject({
+      uses: publisherTokenAction,
+      with: {
+        "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
+        "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
+        owner: "MentallyQuill",
+        repositories: "Tavernary",
+        "permission-contents": "write",
+      },
+    });
+    expect(verify?.env).toEqual({
+      GH_TOKEN: "${{ steps.publisher-token.outputs.token }}",
+    });
+    expect(verify?.run).toContain("branch=automation/project-submission-0");
+    expect(verify?.run).toContain("trap cleanup EXIT");
+    expect(verify?.run).toContain("/git/commits");
+    expect(verify?.run).toContain("--method POST");
+    expect(verify?.run).toContain("--method PATCH");
+    expect(verify?.run).toContain("-F force=false");
+    expect(verify?.run).toContain("published_sha");
+    expect(verify?.run).toContain("--method DELETE");
+  });
+
+  test("never auto-publishes the reserved branch canary", async () => {
+    const continuousIntegration = await workflow("ci");
+    expect(
+      continuousIntegration.jobs["dispatch-project-publication"].if,
+    ).toContain("github.ref_name != 'automation/project-submission-0'");
   });
 });

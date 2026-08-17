@@ -55,7 +55,8 @@ deletes only when all of these values match:
 - the current branch ref still equals that exact SHA.
 
 A missing or moved branch is a successful no-op. Only the final delete call uses
-the Publisher token.
+the Publisher token. Deletion uses Git's exact-SHA `--force-with-lease` form, so
+the remote rejects the delete atomically if the ref moves after validation.
 
 ## Branch ruleset
 
@@ -99,4 +100,3 @@ Workflow authentication lands and passes before the ruleset is created. If the
 App canary fails after activation, disable only the new automation-branch
 ruleset, diagnose the exact App token or ref operation, and leave the existing
 `main` ruleset intact. Never broaden the bypass to GitHub Actions as a shortcut.
-

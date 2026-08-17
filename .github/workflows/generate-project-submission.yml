@@ -15,7 +15,7 @@ on:
         default: false
 
 permissions:
-  contents: write
+  contents: read
   issues: write
   pull-requests: write
   actions: write
@@ -28,16 +28,27 @@ jobs:
   generate:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    environment: publisher
     env:
       ISSUE_NUMBER: ${{ inputs.issue_number }}
       FORCE_REGENERATION: ${{ inputs.force_regeneration }}
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - name: Create Tavernary Publisher branch token
+        id: publisher-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          owner: MentallyQuill
+          repositories: Tavernary
+          permission-contents: write
       - name: Check out full main history
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
           ref: main
+          token: ${{ steps.publisher-token.outputs.token }}
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
@@ -115,8 +126,8 @@ jobs:
         run: |
           set -euo pipefail
           git fetch origin main
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "Tavernary Publisher"
+          git config user.email "tavernary-publisher[bot]@users.noreply.github.com"
           if [[ -n "$PR_NUMBER" && -n "$REMOTE_SHA" && -n "$MARKER_SHA" ]]; then
             node scripts/submissions/reset-project-submission-branch.mjs --branch "$BRANCH"
             while IFS= read -r generated_path; do

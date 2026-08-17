@@ -126,6 +126,7 @@ jobs:
     if: >-
       always() &&
       github.event_name == 'workflow_dispatch' &&
+      github.ref_name != 'automation/project-submission-0' &&
       (startsWith(github.ref_name, 'automation/project-submission-') ||
        startsWith(github.ref_name, 'automation/project-owner-request-')) &&
       needs.verify.result == 'success' &&

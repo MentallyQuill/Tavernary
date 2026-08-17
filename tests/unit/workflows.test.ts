@@ -1444,7 +1444,7 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
   );
 
   expect(generation.permissions).toEqual({
-    contents: "write",
+    contents: "read",
     issues: "write",
     "pull-requests": "write",
     actions: "write",
@@ -1474,12 +1474,12 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
   expect(source).toContain(
     'node scripts/submissions/reset-project-submission-branch.mjs --branch "$BRANCH"',
   );
-  expect(source).toContain('git config user.name "github-actions[bot]"');
+  expect(source).toContain('git config user.name "Tavernary Publisher"');
   expect(source).toContain(
-    'git config user.email "41898282+github-actions[bot]@users.noreply.github.com"',
+    'git config user.email "tavernary-publisher[bot]@users.noreply.github.com"',
   );
   expect(
-    source.indexOf('git config user.name "github-actions[bot]"'),
+    source.indexOf('git config user.name "Tavernary Publisher"'),
   ).toBeLessThan(
     source.indexOf(
       "node scripts/submissions/reset-project-submission-branch.mjs",
@@ -1608,7 +1608,7 @@ test("handles submission closure from default-branch code only", async () => {
 
   expect(lifecycle.on.pull_request.types).toEqual(["closed"]);
   expect(lifecycle.permissions).toEqual({
-    contents: "write",
+    contents: "read",
     issues: "write",
     "pull-requests": "read",
     actions: "write",
@@ -1727,7 +1727,7 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   );
 
   expect(generation.permissions).toEqual({
-    contents: "write",
+    contents: "read",
     issues: "write",
     "pull-requests": "write",
     actions: "write",
@@ -1869,9 +1869,10 @@ test("handles owner closure from default-branch code and exact head state", asyn
 
   expect(lifecycle.on.pull_request.types).toEqual(["closed"]);
   expect(lifecycle.permissions).toEqual({
-    contents: "write",
+    contents: "read",
     issues: "write",
     "pull-requests": "read",
+    actions: "write",
   });
   expect(lifecycle.concurrency).toEqual({
     group:

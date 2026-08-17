@@ -1,0 +1,145 @@
+name: "Security: Clean generated project branch"
+run-name: "Generated branch cleanup for PR #${{ inputs.pull_number }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      pull_number:
+        description: Closed generated pull request number
+        required: true
+        type: number
+      expected_branch:
+        description: Exact generated branch to clean up
+        required: true
+        type: string
+      expected_head_sha:
+        description: Exact closed pull request head SHA
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: generated-project-branch-cleanup-${{ inputs.expected_branch }}
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: publisher
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PULL_NUMBER: ${{ inputs.pull_number }}
+      EXPECTED_BRANCH: ${{ inputs.expected_branch }}
+      EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+    steps:
+      - name: Check out trusted cleanup code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+      - name: Revalidate closed pull request and branch head
+        id: plan
+        shell: bash
+        run: |
+          set -euo pipefail
+          pull_path="${RUNNER_TEMP}/generated-branch-cleanup-pull.json"
+          validated_branch_path="${RUNNER_TEMP}/generated-branch-cleanup-branch.txt"
+          current_sha_path="${RUNNER_TEMP}/generated-branch-cleanup-current-sha.txt"
+          plan_path="${RUNNER_TEMP}/generated-branch-cleanup-plan.json"
+          gh api "repos/${GITHUB_REPOSITORY}/pulls/${PULL_NUMBER}" > "$pull_path"
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          import { planGeneratedProjectBranchCleanup } from "./scripts/security/generated-branch-custody.mjs";
+
+          const pull = JSON.parse(
+            fs.readFileSync(`${process.env.RUNNER_TEMP}/generated-branch-cleanup-pull.json`, "utf8"),
+          );
+          const validation = planGeneratedProjectBranchCleanup({
+            repository: process.env.GITHUB_REPOSITORY,
+            defaultBranch: process.env.GITHUB_REF_NAME,
+            pullNumber: Number(process.env.PULL_NUMBER),
+            expectedBranch: process.env.EXPECTED_BRANCH,
+            expectedHeadSha: process.env.EXPECTED_HEAD_SHA,
+            currentHeadSha: null,
+            pull,
+          });
+          fs.writeFileSync(
+            `${process.env.RUNNER_TEMP}/generated-branch-cleanup-branch.txt`,
+            validation.branch,
+          );
+          NODE
+          branch="$(cat "$validated_branch_path")"
+          current_sha="$(gh api \
+            "repos/${GITHUB_REPOSITORY}/git/ref/heads/${branch}" \
+            --jq '.object.sha' 2>/dev/null || true)"
+          printf '%s' "$current_sha" > "$current_sha_path"
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          import { planGeneratedProjectBranchCleanup } from "./scripts/security/generated-branch-custody.mjs";
+
+          const pull = JSON.parse(
+            fs.readFileSync(`${process.env.RUNNER_TEMP}/generated-branch-cleanup-pull.json`, "utf8"),
+          );
+          const currentHeadSha = fs.readFileSync(
+            `${process.env.RUNNER_TEMP}/generated-branch-cleanup-current-sha.txt`,
+            "utf8",
+          );
+          const plan = planGeneratedProjectBranchCleanup({
+            repository: process.env.GITHUB_REPOSITORY,
+            defaultBranch: process.env.GITHUB_REF_NAME,
+            pullNumber: Number(process.env.PULL_NUMBER),
+            expectedBranch: process.env.EXPECTED_BRANCH,
+            expectedHeadSha: process.env.EXPECTED_HEAD_SHA,
+            currentHeadSha,
+            pull,
+          });
+          fs.writeFileSync(
+            `${process.env.RUNNER_TEMP}/generated-branch-cleanup-plan.json`,
+            JSON.stringify(plan),
+          );
+          fs.appendFileSync(
+            process.env.GITHUB_OUTPUT,
+            [
+              `action=${plan.action}`,
+              `branch=${plan.branch}`,
+              `expected_head_sha=${plan.expectedHeadSha}`,
+            ].join("\n") + "\n",
+          );
+          NODE
+          cat "$plan_path"
+      - name: Create Tavernary Publisher branch token
+        id: publisher-token
+        if: steps.plan.outputs.action == 'delete'
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          owner: MentallyQuill
+          repositories: Tavernary
+          permission-contents: write
+      - name: Install Publisher branch credential
+        if: steps.plan.outputs.action == 'delete'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          fetch-depth: 1
+          clean: false
+          token: ${{ steps.publisher-token.outputs.token }}
+      - name: Delete exact generated branch
+        if: steps.plan.outputs.action == 'delete'
+        shell: bash
+        env:
+          BRANCH: ${{ steps.plan.outputs.branch }}
+          EXPECTED_SHA: ${{ steps.plan.outputs.expected_head_sha }}
+        run: |
+          set -euo pipefail
+          git push --force-with-lease="refs/heads/$BRANCH:$EXPECTED_SHA" \
+            origin ":refs/heads/$BRANCH"

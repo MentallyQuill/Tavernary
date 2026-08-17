@@ -113,7 +113,8 @@ set the job environment to `publisher`, reduce root Contents to Read, and use th
 Replace direct lifecycle deletion with `gh workflow run
 generated-project-branch-cleanup.yml --ref main` and exact pull/branch/SHA
 inputs. The cleanup workflow re-fetches PR/ref state, invokes the planner, mints
-the Publisher token only after a `delete` plan, and performs one exact ref delete.
+the Publisher token only after a `delete` plan, and performs one exact-SHA
+`--force-with-lease` ref delete.
 
 - [ ] **Step 5: Run focused tests and observe Green**
 
@@ -227,4 +228,3 @@ Verify Tavernary's new ruleset target/rules/bypass, unchanged `main` ruleset,
 ordinary feature-branch freedom, pending automation branch coverage, main-only
 Publisher environment, and absent reserved canary ref. Verify TavernKeeper has
 only its existing `main` ruleset and no generated automation branches.
-

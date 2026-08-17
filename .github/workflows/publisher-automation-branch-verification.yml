@@ -1,0 +1,77 @@
+name: "Security: Verify Publisher automation branches"
+run-name: "Security: Verify Publisher branch custody #${{ github.run_number }}"
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tavernary-publisher-automation-branch-verification
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: >-
+      github.ref == 'refs/heads/main' && github.actor_id == 2625904
+    runs-on: ubuntu-latest
+    environment: publisher
+    steps:
+      - name: Create Tavernary Publisher branch token
+        id: publisher-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          owner: MentallyQuill
+          repositories: Tavernary
+          permission-contents: write
+      - name: Verify Publisher automation branch custody
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.publisher-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          branch=automation/project-submission-0
+          ref_read_endpoint="repos/${GITHUB_REPOSITORY}/git/ref/heads/${branch}"
+          ref_write_endpoint="repos/${GITHUB_REPOSITORY}/git/refs/heads/${branch}"
+          cleanup() {
+            gh api --method DELETE "$ref_write_endpoint" > /dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+          cleanup
+
+          main_sha="$(gh api "repos/${GITHUB_REPOSITORY}/commits/main" --jq '.sha')"
+          tree_sha="$(gh api \
+            "repos/${GITHUB_REPOSITORY}/git/commits/${main_sha}" \
+            --jq '.tree.sha')"
+          commit_path="${RUNNER_TEMP}/publisher-branch-canary-commit.json"
+          jq -n \
+            --arg message "chore(security): verify Publisher branch custody" \
+            --arg tree "$tree_sha" \
+            --arg parent "$main_sha" \
+            '{message: $message, tree: $tree, parents: [$parent]}' \
+            > "$commit_path"
+          canary_sha="$(gh api --method POST \
+            "repos/${GITHUB_REPOSITORY}/git/commits" \
+            --input "$commit_path" --jq '.sha')"
+
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
+            -f ref="refs/heads/$branch" \
+            -f sha="$main_sha" > /dev/null
+          gh api --method PATCH "$ref_write_endpoint" \
+            -f sha="$canary_sha" \
+            -F force=false > /dev/null
+          published_sha="$(gh api "$ref_read_endpoint" --jq '.object.sha')"
+          if [[ "$published_sha" != "$canary_sha" ]]; then
+            echo "::error::Publisher canary branch did not reach the expected SHA."
+            exit 1
+          fi
+
+          gh api --method DELETE "$ref_write_endpoint"
+          trap - EXIT
+          if gh api "$ref_read_endpoint" > /dev/null 2>&1; then
+            echo "::error::Publisher canary branch still exists after deletion."
+            exit 1
+          fi
