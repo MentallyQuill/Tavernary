@@ -22,6 +22,7 @@ jobs:
   request:
     if: ${{ github.run_attempt == 1 }}
     runs-on: ubuntu-latest
+    environment: publisher
     steps:
       - name: Check out trusted Tavernary main
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -47,10 +48,17 @@ jobs:
           request="$(node scripts/security/resolve-tavernkeeper-scan-request.mjs)"
           echo "source_id=$(jq -r '.sourceId' <<< "$request")" >> "$GITHUB_OUTPUT"
           echo "repository_id=$(jq -r '.repositoryId' <<< "$request")" >> "$GITHUB_OUTPUT"
+      - name: Create Tavernary Publisher dispatch token
+        id: publisher-dispatch-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ vars.TAVERNARY_PUBLISHER_APP_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-actions: write
       - name: Dispatch project refresh
         id: refresh
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.publisher-dispatch-token.outputs.token }}
           SOURCE_ID: ${{ steps.resolve.outputs.source_id }}
         shell: bash
         run: |

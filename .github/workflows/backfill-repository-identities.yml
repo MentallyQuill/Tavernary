@@ -22,7 +22,7 @@ jobs:
       github.ref == 'refs/heads/main' &&
       (github.event_name != 'workflow_dispatch' ||
       github.actor_id == 2625904 ||
-      github.actor_id == 41898282)
+      github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)
     runs-on: ubuntu-latest
     environment: publisher
     steps:

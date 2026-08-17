@@ -37,7 +37,13 @@ from fresh API responses.
 - [ ] Use the App token for checkout and publication while retaining ordinary
   tokens only for Issues and Actions APIs.
 - [ ] Gate manual privileged dispatches to user ID `2625904` or the trusted
-  repository automation actor ID `41898282`.
+  Tavernary Publisher actor; permit the scoped TavernKeeper wake App only for
+  report imports.
+- [ ] Convert every protected internal workflow dispatch to an Actions-scoped
+  Publisher App token from the main-only environment; never trust the shared
+  `github-actions[bot]` actor.
+- [ ] Verify advisory checkout SHAs are exact PR merge commits when applicable
+  and are always reachable from `main` before minting a privileged token.
 - [ ] Add `.github/CODEOWNERS` with `* @MentallyQuill`.
 - [ ] Run focused workflow tests, content checks, full checks, and `git diff
   --check`; commit only after all pass.
@@ -45,12 +51,15 @@ from fresh API responses.
 ## Task 2: Provision the Tavernary Publisher
 
 - [ ] Register the private account-owned `Tavernary Publisher` App with Contents
-  Read/Write, Metadata Read, no webhooks, and no other permissions.
+  Read/Write, Actions Read/Write, Metadata Read, no webhooks, and no other
+  permissions.
 - [ ] Install it only on `MentallyQuill/Tavernary` and capture its Integration ID.
 - [ ] Create environment `publisher` with a custom deployment branch policy for
   exactly `main`.
 - [ ] Store App ID as `TAVERNARY_PUBLISHER_APP_ID` and private key as
   `TAVERNARY_PUBLISHER_APP_PRIVATE_KEY` in that environment.
+- [ ] Store the App bot user ID as repository variable
+  `TAVERNARY_PUBLISHER_BOT_ID` for target-workflow actor checks.
 - [ ] Verify the installation, environment policy, variable, and secret metadata;
   securely remove the local private-key file.
 

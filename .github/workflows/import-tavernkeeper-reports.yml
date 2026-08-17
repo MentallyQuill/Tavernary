@@ -30,7 +30,8 @@ jobs:
       github.ref == 'refs/heads/main' &&
       (github.event_name != 'workflow_dispatch' ||
       github.actor_id == 2625904 ||
-      github.actor_id == 41898282)
+      github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID ||
+      github.actor_id == 311860138)
     runs-on: ubuntu-latest
     environment: publisher
     outputs:
@@ -209,11 +210,19 @@ jobs:
     needs: import
     if: ${{ always() && needs.import.result == 'success' && needs.import.outputs.remaining != '0' && inputs.retry_report_digest == '' }}
     runs-on: ubuntu-latest
+    environment: publisher
     permissions:
       actions: write
       contents: read
     steps:
+      - name: Create Tavernary Publisher dispatch token
+        id: publisher-dispatch-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ vars.TAVERNARY_PUBLISHER_APP_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-actions: write
       - name: Continue due report imports independently of deployment
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.publisher-dispatch-token.outputs.token }}
         run: gh workflow run import-tavernkeeper-reports.yml --repo "$GITHUB_REPOSITORY" --ref main

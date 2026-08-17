@@ -37,6 +37,9 @@ const protectedPublisherJobs = {
   "review-catalog-policy": "review",
 } as const;
 
+const publisherActorExpression =
+  "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID";
+
 function exposesModelProviderEnvironment(step: {
   env?: Record<string, string>;
 }) {
@@ -155,6 +158,8 @@ test("pins every first-party action to its resolved commit", async () => {
     "apply-kit-submission",
     "apply-kit-withdrawal",
     "targeted-tavernkeeper-scan",
+    "publish-openai-usage",
+    "review-catalog-policy",
   ]) {
     for (const step of allSteps(await workflow(name))) {
       if (!step.uses?.startsWith("actions/")) continue;
@@ -168,13 +173,14 @@ test("pins every first-party action to its resolved commit", async () => {
 test("limits every main publisher to the protected Publisher App", async () => {
   const discoveredPublishers: string[] = [];
   for (const file of await readdir(workflowDirectory)) {
-    if (!file.endsWith(".yml")) continue;
+    if (!/\.ya?ml$/u.test(file)) continue;
     const source = await readFile(resolve(workflowDirectory, file), "utf8");
     if (
-      source.includes("git push origin HEAD:main") ||
+      /git\s+push[^\n]*(?:HEAD:main|refs\/heads\/main)/u.test(source) ||
+      /git\/refs\/heads\/main/u.test(source) ||
       source.includes("catalog:enrichment-rollout")
     ) {
-      discoveredPublishers.push(file.replace(/\.yml$/u, ""));
+      discoveredPublishers.push(file.replace(/\.ya?ml$/u, ""));
     }
   }
 
@@ -190,6 +196,7 @@ test("limits every main publisher to the protected Publisher App", async () => {
         {
           environment?: string;
           if?: string;
+          permissions?: Record<string, string>;
           steps: Array<{
             id?: string;
             uses?: string;
@@ -210,7 +217,15 @@ test("limits every main publisher to the protected Publisher App", async () => {
     expect(job.environment, name).toBe("publisher");
     expect(job.if, name).toContain("github.ref == 'refs/heads/main'");
     expect(job.if, name).toContain("github.actor_id == 2625904");
-    expect(job.if, name).toContain("github.actor_id == 41898282");
+    expect(job.if, name).toContain(publisherActorExpression);
+    expect(job.if, name).not.toContain("github.actor_id == 41898282");
+    if (name === "import-tavernkeeper-reports") {
+      expect(job.if, name).toContain("github.actor_id == 311860138");
+    }
+    expect(job.permissions?.contents, name).not.toBe("write");
+    expect(publisherToken?.uses, name).toBe(
+      `actions/create-github-app-token@${pinnedActions["actions/create-github-app-token"]}`,
+    );
     expect(publisherToken, name).toMatchObject({
       id: "publisher-token",
       with: {
@@ -223,6 +238,99 @@ test("limits every main publisher to the protected Publisher App", async () => {
       "${{ steps.publisher-token.outputs.token }}",
     );
   }
+});
+
+test("uses the Publisher App identity for every protected workflow dispatch", async () => {
+  const protectedTargets = new Set(
+    Object.keys(protectedPublisherJobs).map((name) => `${name}.yml`),
+  );
+  const dispatches: string[] = [];
+
+  for (const file of await readdir(workflowDirectory)) {
+    if (!/\.ya?ml$/u.test(file)) continue;
+    const document = parse(
+      await readFile(resolve(workflowDirectory, file), "utf8"),
+    ) as {
+      jobs: Record<
+        string,
+        {
+          environment?: string;
+          steps?: Array<{
+            id?: string;
+            uses?: string;
+            run?: string;
+            env?: Record<string, string>;
+            with?: Record<string, string>;
+          }>;
+        }
+      >;
+    };
+
+    for (const [jobName, job] of Object.entries(document.jobs)) {
+      for (const step of job.steps ?? []) {
+        const targets = [
+          ...(step.run ?? "").matchAll(/gh workflow run ([^\s\\]+)/gu),
+        ]
+          .map((match) => match[1])
+          .filter((target) => protectedTargets.has(target));
+        for (const target of targets) {
+          dispatches.push(`${file}:${jobName}->${target}`);
+          expect(job.environment, `${file}:${jobName}`).toBe("publisher");
+          const tokenExpression = step.env?.GH_TOKEN;
+          const tokenId = tokenExpression?.match(
+            /^\$\{\{ steps\.([a-z0-9-]+)\.outputs\.token \}\}$/u,
+          )?.[1];
+          expect(tokenId, `${file}:${jobName}->${target}`).toBeTruthy();
+          const tokenStep = job.steps?.find(({ id }) => id === tokenId);
+          expect(tokenStep?.uses, `${file}:${jobName}->${target}`).toBe(
+            `actions/create-github-app-token@${pinnedActions["actions/create-github-app-token"]}`,
+          );
+          expect(
+            tokenStep?.with?.["permission-actions"],
+            `${file}:${jobName}->${target}`,
+          ).toBe("write");
+        }
+      }
+    }
+  }
+
+  expect(dispatches.sort()).toEqual(
+    [
+      "admit-issue.yml:admit->apply-kit-withdrawal.yml",
+      "import-tavernkeeper-reports.yml:continue->import-tavernkeeper-reports.yml",
+      "publish-project-transaction.yml:publish->review-catalog-policy.yml",
+      "refresh-catalog.yml:refresh->review-catalog-policy.yml",
+      "review-catalog-policy.yml:retry->review-catalog-policy.yml",
+      "targeted-tavernkeeper-scan.yml:request->refresh-catalog.yml",
+      "triage-kit-submission.yml:validate->apply-kit-submission.yml",
+    ].sort(),
+  );
+});
+
+test("verifies advisory checkout SHAs against main before minting a Publisher token", async () => {
+  const document = await workflow("review-catalog-policy");
+  const steps = document.jobs.review.steps as Array<{
+    name?: string;
+    run?: string;
+  }>;
+  const verifyIndex = steps.findIndex(
+    ({ name }) => name === "Verify exact published state",
+  );
+  const tokenIndex = steps.findIndex(
+    ({ name }) => name === "Create Tavernary Publisher token",
+  );
+  const checkoutIndex = steps.findIndex(
+    ({ name }) => name === "Check out exact published state",
+  );
+  const verification = steps[verifyIndex]?.run ?? "";
+
+  expect(verifyIndex).toBeGreaterThanOrEqual(0);
+  expect(verifyIndex).toBeLessThan(tokenIndex);
+  expect(tokenIndex).toBeLessThan(checkoutIndex);
+  expect(verification).toContain("pulls/$PULL_NUMBER");
+  expect(verification).toContain("compare/${MERGE_SHA}...main");
+  expect(verification).toContain('"ahead"');
+  expect(verification).toContain('"identical"');
 });
 
 test("targeted TavernKeeper scans are actor-gated and accept only an exact repository URL", async () => {
