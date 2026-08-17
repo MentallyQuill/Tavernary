@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "mokimoko-sillytavern-storymanager",
+  "name": "SillyTavern-StoryManager",
+  "kind": "extension",
+  "summary": "Story Manager organizes roleplay chats into Storylines grouped into Books, so users browse chats as a library instead of a flat list. It reads existing chats and characters and works standalone. (README: Story Manager)",
+  "metadata_status": "curated",
+  "source_id": "github-1275428438",
+  "frontends": ["sillytavern", "tauritavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["organize-chats-and-messages"],
+  "cataloged_at": "2026-08-17T02:08:02.161Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
