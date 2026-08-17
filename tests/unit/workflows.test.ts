@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 import { expect, test } from "vitest";
@@ -26,6 +26,39 @@ const modelProviderEnvironment = {
 
 const modelProviderEnvironmentKeys = Object.keys(modelProviderEnvironment);
 
+const protectedPublisherJobs = {
+  "apply-kit-submission": "publish",
+  "apply-kit-withdrawal": "withdraw",
+  "backfill-repository-identities": "backfill",
+  "enrich-catalog": "enrich",
+  "import-tavernkeeper-reports": "import",
+  "publish-openai-usage": "publish",
+  "refresh-catalog": "refresh",
+  "review-catalog-policy": "review",
+} as const;
+
+const publisherActorExpression =
+  "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID";
+
+const expectedPublisherConditions = {
+  "review-catalog-policy":
+    "github.event_name == 'workflow_dispatch' && " +
+    "github.ref == 'refs/heads/main' && " +
+    "(github.actor_id == 2625904 || " +
+    `${publisherActorExpression})`,
+  "import-tavernkeeper-reports":
+    "github.ref == 'refs/heads/main' && " +
+    "(github.event_name != 'workflow_dispatch' || " +
+    "github.actor_id == 2625904 || " +
+    `${publisherActorExpression} || ` +
+    "github.actor_id == 311860138)",
+  default:
+    "github.ref == 'refs/heads/main' && " +
+    "(github.event_name != 'workflow_dispatch' || " +
+    "github.actor_id == 2625904 || " +
+    `${publisherActorExpression})`,
+} as const;
+
 function exposesModelProviderEnvironment(step: {
   env?: Record<string, string>;
 }) {
@@ -46,6 +79,65 @@ function allSteps(document: Record<string, unknown>) {
     { steps?: Array<{ uses?: string; run?: string }> }
   >;
   return Object.values(jobs).flatMap((job) => job.steps ?? []);
+}
+
+type WorkflowStep = {
+  id?: string;
+  uses?: string;
+  run?: string;
+  env?: Record<string, string>;
+  with?: Record<string, string>;
+};
+
+function shellCommands(source = "") {
+  return source
+    .replace(/\\\r?\n\s*/gu, " ")
+    .split(/\r?\n/u)
+    .map((line) => line.replace(/\s+/gu, " ").trim())
+    .filter(Boolean);
+}
+
+function stepWritesMain(step: WorkflowStep) {
+  if (step.run?.includes("catalog:enrichment-rollout")) return true;
+
+  return shellCommands(step.run).some((command) => {
+    const pushesMain =
+      /\bgit\s+push\b/u.test(command) &&
+      /(?:^|\s|["'])(?:\+)?(?:[^:\s"']*:)?(?:refs\/heads\/)?main(?:\s|$|["';])/u.test(
+        command,
+      );
+    const updatesMainRef =
+      /\/git\/refs\/heads\/main\b/u.test(command) ||
+      /\/git\/refs\b.*\bref=(?:["'])?refs\/heads\/main\b/u.test(command) ||
+      /\bupdateRef\b.*refs\/heads\/main\b/u.test(command);
+    const writesMainContents =
+      /\/contents\/\S+/u.test(command) &&
+      /\bbranch=(?:["'])?main\b/u.test(command);
+    return pushesMain || updatesMainRef || writesMainContents;
+  });
+}
+
+function workflowDispatchTargets(step: WorkflowStep) {
+  const candidates: string[] = [];
+  const command = shellCommands(step.run).join(" ");
+  for (const match of command.matchAll(
+    /\bgh\s+workflow\s+run\s+(?:"([^"]+)"|'([^']+)'|([^\s\\]+))/gu,
+  )) {
+    candidates.push(match[1] ?? match[2] ?? match[3]);
+  }
+  for (const match of command.matchAll(
+    /\/actions\/workflows\/([^/\s"'?]+)\/dispatches\b/gu,
+  )) {
+    candidates.push(match[1]);
+  }
+  if (step.uses && /workflow[-_]dispatch/iu.test(step.uses)) {
+    candidates.push(
+      ...Object.values(step.with ?? {}).filter((value) =>
+        /\.ya?ml$/u.test(value),
+      ),
+    );
+  }
+  return [...new Set(candidates)];
 }
 
 test("uses category-prefixed workflow display names", async () => {
@@ -144,6 +236,8 @@ test("pins every first-party action to its resolved commit", async () => {
     "apply-kit-submission",
     "apply-kit-withdrawal",
     "targeted-tavernkeeper-scan",
+    "publish-openai-usage",
+    "review-catalog-policy",
   ]) {
     for (const step of allSteps(await workflow(name))) {
       if (!step.uses?.startsWith("actions/")) continue;
@@ -152,6 +246,209 @@ test("pins every first-party action to its resolved commit", async () => {
       expect(sha).toMatch(/^[a-f0-9]{40}$/);
     }
   }
+});
+
+test("limits every main publisher to the protected Publisher App", async () => {
+  const discoveredPublishers: string[] = [];
+  for (const file of await readdir(workflowDirectory)) {
+    if (!/\.ya?ml$/u.test(file)) continue;
+    const document = parse(
+      await readFile(resolve(workflowDirectory, file), "utf8"),
+    ) as Record<string, unknown>;
+    if (allSteps(document).some((step) => stepWritesMain(step))) {
+      discoveredPublishers.push(file.replace(/\.ya?ml$/u, ""));
+    }
+  }
+
+  expect(discoveredPublishers.sort()).toEqual(
+    Object.keys(protectedPublisherJobs).sort(),
+  );
+
+  for (const [name, jobName] of Object.entries(protectedPublisherJobs)) {
+    const document = (await workflow(name)) as {
+      permissions: Record<string, string>;
+      jobs: Record<
+        string,
+        {
+          environment?: string;
+          if?: string;
+          permissions?: Record<string, string>;
+          steps: Array<{
+            id?: string;
+            uses?: string;
+            with?: Record<string, string>;
+          }>;
+        }
+      >;
+    };
+    const job = document.jobs[jobName];
+    const publisherToken = job.steps.find((step) =>
+      step.uses?.startsWith("actions/create-github-app-token@"),
+    );
+    const checkout = job.steps.find((step) =>
+      step.uses?.startsWith("actions/checkout@"),
+    );
+
+    expect(document.permissions.contents, name).toBe("read");
+    expect(job.environment, name).toBe("publisher");
+    expect(job.if?.replace(/\s+/gu, " ").trim(), name).toBe(
+      expectedPublisherConditions[
+        name as keyof typeof expectedPublisherConditions
+      ] ?? expectedPublisherConditions.default,
+    );
+    expect(job.permissions?.contents, name).not.toBe("write");
+    expect(publisherToken?.uses, name).toBe(
+      `actions/create-github-app-token@${pinnedActions["actions/create-github-app-token"]}`,
+    );
+    expect(publisherToken, name).toMatchObject({
+      id: "publisher-token",
+      with: {
+        "app-id": "${{ vars.TAVERNARY_PUBLISHER_APP_ID }}",
+        "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
+        "permission-contents": "write",
+      },
+    });
+    expect(checkout?.with?.token, name).toBe(
+      "${{ steps.publisher-token.outputs.token }}",
+    );
+  }
+});
+
+test("uses the Publisher App identity for every protected workflow dispatch", async () => {
+  const protectedTargets = new Set(
+    Object.keys(protectedPublisherJobs).map((name) => `${name}.yml`),
+  );
+  const dispatches: string[] = [];
+
+  for (const file of await readdir(workflowDirectory)) {
+    if (!/\.ya?ml$/u.test(file)) continue;
+    const document = parse(
+      await readFile(resolve(workflowDirectory, file), "utf8"),
+    ) as {
+      jobs: Record<
+        string,
+        {
+          environment?: string;
+          steps?: Array<{
+            id?: string;
+            uses?: string;
+            run?: string;
+            env?: Record<string, string>;
+            with?: Record<string, string>;
+          }>;
+        }
+      >;
+    };
+
+    for (const [jobName, job] of Object.entries(document.jobs)) {
+      for (const step of job.steps ?? []) {
+        const targets = workflowDispatchTargets(step);
+        for (const target of targets) {
+          expect(target, `${file}:${jobName}`).toMatch(
+            /^[A-Za-z0-9._-]+\.ya?ml$/u,
+          );
+          if (!protectedTargets.has(target)) continue;
+          dispatches.push(`${file}:${jobName}->${target}`);
+          expect(job.environment, `${file}:${jobName}`).toBe("publisher");
+          const tokenExpression = step.env?.GH_TOKEN;
+          const tokenId = tokenExpression?.match(
+            /^\$\{\{ steps\.([a-z0-9-]+)\.outputs\.token \}\}$/u,
+          )?.[1];
+          expect(tokenId, `${file}:${jobName}->${target}`).toBeTruthy();
+          const tokenStep = job.steps?.find(({ id }) => id === tokenId);
+          expect(tokenStep?.uses, `${file}:${jobName}->${target}`).toBe(
+            `actions/create-github-app-token@${pinnedActions["actions/create-github-app-token"]}`,
+          );
+          expect(
+            tokenStep?.with?.["permission-actions"],
+            `${file}:${jobName}->${target}`,
+          ).toBe("write");
+        }
+      }
+    }
+  }
+
+  expect(dispatches.sort()).toEqual(
+    [
+      "admit-issue.yml:admit->apply-kit-withdrawal.yml",
+      "import-tavernkeeper-reports.yml:continue->import-tavernkeeper-reports.yml",
+      "publish-project-transaction.yml:publish->review-catalog-policy.yml",
+      "refresh-catalog.yml:refresh->review-catalog-policy.yml",
+      "review-catalog-policy.yml:retry->review-catalog-policy.yml",
+      "targeted-tavernkeeper-scan.yml:request->refresh-catalog.yml",
+      "triage-kit-submission.yml:validate->apply-kit-submission.yml",
+    ].sort(),
+  );
+});
+
+test.each([
+  "git push origin main",
+  "git push origin main:main",
+  "git push origin feature:main",
+  "git push origin +HEAD:main",
+  "git push origin :main",
+  "git push origin HEAD:refs/heads/main",
+  "git push origin \\" + "\n    HEAD:main",
+  "gh api --method PATCH repos/example/project/git/refs/heads/main",
+  "gh api --method POST repos/example/project/git/refs -f ref=refs/heads/main",
+  "gh api --method PUT repos/example/project/contents/file -f branch=main",
+  'gh api graphql -f query="mutation { updateRef(ref: \\"refs/heads/main\\") }"',
+])("detects direct main writer escape form: %s", (run) => {
+  expect(stepWritesMain({ run })).toBe(true);
+});
+
+test.each([
+  {
+    run: "gh api --method POST repos/example/project/actions/workflows/refresh-catalog.yml/dispatches -f ref=main",
+  },
+  {
+    run: 'curl -X POST "https://api.github.com/repos/example/project/actions/workflows/refresh-catalog.yml/dispatches"',
+  },
+  {
+    uses: "example/workflow-dispatch@0123456789012345678901234567890123456789",
+    with: { workflow: "refresh-catalog.yml" },
+  },
+])("detects protected dispatch escape form: %#", (step) => {
+  expect(
+    workflowDispatchTargets(step).filter(
+      (target) => target === "refresh-catalog.yml",
+    ),
+  ).toEqual(["refresh-catalog.yml"]);
+});
+
+test.each([
+  'gh workflow run "$WORKFLOW"',
+  "gh api --method POST repos/example/project/actions/workflows/12345/dispatches -f ref=main",
+])("rejects nonliteral workflow dispatch target: %s", (run) => {
+  for (const target of workflowDispatchTargets({ run })) {
+    expect(target).not.toMatch(/^[A-Za-z0-9._-]+\.ya?ml$/u);
+  }
+});
+
+test("verifies advisory checkout SHAs against main before minting a Publisher token", async () => {
+  const document = await workflow("review-catalog-policy");
+  const steps = document.jobs.review.steps as Array<{
+    name?: string;
+    run?: string;
+  }>;
+  const verifyIndex = steps.findIndex(
+    ({ name }) => name === "Verify exact published state",
+  );
+  const tokenIndex = steps.findIndex(
+    ({ name }) => name === "Create Tavernary Publisher token",
+  );
+  const checkoutIndex = steps.findIndex(
+    ({ name }) => name === "Check out exact published state",
+  );
+  const verification = steps[verifyIndex]?.run ?? "";
+
+  expect(verifyIndex).toBeGreaterThanOrEqual(0);
+  expect(verifyIndex).toBeLessThan(tokenIndex);
+  expect(tokenIndex).toBeLessThan(checkoutIndex);
+  expect(verification).toContain("pulls/$PULL_NUMBER");
+  expect(verification).toContain("compare/${MERGE_SHA}...main");
+  expect(verification).toContain('"ahead"');
+  expect(verification).toContain('"identical"');
 });
 
 test("targeted TavernKeeper scans are actor-gated and accept only an exact repository URL", async () => {
@@ -230,7 +527,7 @@ test("publishes Kits only by manual dispatch and serializes registry writes", as
   expect(withdrawal.on.issues).toBeUndefined();
   for (const document of [publication, withdrawal]) {
     expect(document.permissions).toEqual({
-      contents: "write",
+      contents: "read",
       issues: "write",
       actions: "write",
     });
@@ -646,7 +943,7 @@ test("reconciles reports independently and wakes TavernKeeper only after a chang
   ).toMatchObject({ required: false, type: "string" });
   expect(reportImport.permissions).toEqual({
     actions: "write",
-    contents: "write",
+    contents: "read",
     issues: "write",
   });
   expect(deploy.jobs["wake-tavernkeeper"].needs).toEqual(["build", "deploy"]);
@@ -824,7 +1121,7 @@ test("refreshes snapshots daily without granting production-record writes", asyn
   );
 
   expect(refresh.permissions).toEqual({
-    contents: "write",
+    contents: "read",
     actions: "write",
     issues: "read",
   });
@@ -917,7 +1214,7 @@ test("runs enrichment through one tested durable orchestrator", async () => {
     default: "pending",
   });
   expect(enrich.permissions).toEqual({
-    contents: "write",
+    contents: "read",
     actions: "write",
     issues: "write",
   });
@@ -1689,7 +1986,7 @@ test("publishes only scoped aggregate OpenAI usage each month", async () => {
   expect(publication.on.schedule).toEqual([{ cron: "23 7 2 * *" }]);
   expect(publication.on.workflow_dispatch).toBeNull();
   expect(publication.permissions).toEqual({
-    contents: "write",
+    contents: "read",
     actions: "write",
   });
   expect(checkout?.with).toMatchObject({ ref: "main", "fetch-depth": 0 });

@@ -17,7 +17,7 @@ on:
 
 permissions:
   actions: write
-  contents: write
+  contents: read
   issues: write
 
 concurrency:
@@ -26,8 +26,14 @@ concurrency:
 
 jobs:
   import:
-    if: github.event_name == 'schedule' || github.ref == 'refs/heads/main'
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name != 'workflow_dispatch' ||
+      github.actor_id == 2625904 ||
+      github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID ||
+      github.actor_id == 311860138)
     runs-on: ubuntu-latest
+    environment: publisher
     outputs:
       changed: ${{ steps.commit.outputs.changed }}
       sha: ${{ steps.commit.outputs.sha }}
@@ -35,11 +41,19 @@ jobs:
       quarantined: ${{ steps.import.outputs.quarantined }}
       remaining: ${{ steps.import.outputs.remaining }}
     steps:
+      - name: Create Tavernary Publisher token
+        id: publisher-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ vars.TAVERNARY_PUBLISHER_APP_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-contents: write
       - name: Check out main
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
           ref: main
+          token: ${{ steps.publisher-token.outputs.token }}
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
@@ -196,11 +210,19 @@ jobs:
     needs: import
     if: ${{ always() && needs.import.result == 'success' && needs.import.outputs.remaining != '0' && inputs.retry_report_digest == '' }}
     runs-on: ubuntu-latest
+    environment: publisher
     permissions:
       actions: write
       contents: read
     steps:
+      - name: Create Tavernary Publisher dispatch token
+        id: publisher-dispatch-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ vars.TAVERNARY_PUBLISHER_APP_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-actions: write
       - name: Continue due report imports independently of deployment
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.publisher-dispatch-token.outputs.token }}
         run: gh workflow run import-tavernkeeper-reports.yml --repo "$GITHUB_REPOSITORY" --ref main

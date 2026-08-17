@@ -44,9 +44,12 @@ test("validates before commit and deploys only after a committed change", async 
 test("rebases with bounded retries and never force-pushes", async () => {
   const source = await readFile(refreshPath, "utf8");
 
+  expect(source).toContain("github.ref == 'refs/heads/main'");
+  expect(source).toContain("github.actor_id == 2625904");
   expect(source).toContain(
-    "if: github.event_name == 'schedule' || github.ref == 'refs/heads/main'",
+    "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID",
   );
+  expect(source).not.toContain("github.actor_id == 41898282");
   expect(source).toContain("fetch-depth: 0");
   expect(source).toContain("for attempt in 1 2 3");
   expect(source).toContain("git fetch origin main");

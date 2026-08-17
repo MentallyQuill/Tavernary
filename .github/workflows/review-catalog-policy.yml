@@ -24,7 +24,7 @@ on:
     - cron: "43 5 * * *"
 
 permissions:
-  contents: write
+  contents: read
   issues: write
   pull-requests: read
   actions: write
@@ -37,11 +37,20 @@ jobs:
   retry:
     if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    environment: publisher
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Create Tavernary Publisher dispatch token
+        id: publisher-dispatch-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ vars.TAVERNARY_PUBLISHER_APP_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-actions: write
+          permission-contents: read
       - name: Dispatch unavailable advisory states
+        env:
+          GH_TOKEN: ${{ steps.publisher-dispatch-token.outputs.token }}
         shell: bash
         run: |
           set -euo pipefail
@@ -67,8 +76,13 @@ jobs:
           done < "${RUNNER_TEMP}/policy-review-retries.tsv"
 
   review:
-    if: github.event_name == 'workflow_dispatch'
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/main' &&
+      (github.actor_id == 2625904 ||
+      github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)
     runs-on: ubuntu-latest
+    environment: publisher
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PROJECT_ID: ${{ inputs.project_id }}
@@ -76,11 +90,41 @@ jobs:
       PULL_NUMBER: ${{ inputs.transaction_pull_number }}
       MERGE_SHA: ${{ inputs.merge_sha }}
     steps:
+      - name: Verify exact published state
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! "$MERGE_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "merge_sha must be an exact lowercase commit SHA." >&2
+            exit 1
+          fi
+
+          if (( PULL_NUMBER > 0 )); then
+            expected_merge_sha="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/$PULL_NUMBER" --jq '.merge_commit_sha // empty')"
+            if [[ "$MERGE_SHA" != "$expected_merge_sha" ]]; then
+              echo "merge_sha does not match pull request #$PULL_NUMBER." >&2
+              exit 1
+            fi
+          fi
+
+          relation="$(gh api "repos/${GITHUB_REPOSITORY}/compare/${MERGE_SHA}...main" --jq '.status')"
+          if [[ "$relation" != "ahead" && "$relation" != "identical" ]]; then
+            echo "merge_sha is not an ancestor of current main." >&2
+            exit 1
+          fi
+      - name: Create Tavernary Publisher token
+        id: publisher-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ vars.TAVERNARY_PUBLISHER_APP_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-contents: write
       - name: Check out exact published state
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: ${{ inputs.merge_sha }}
           fetch-depth: 0
+          token: ${{ steps.publisher-token.outputs.token }}
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:

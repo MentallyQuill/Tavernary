@@ -26,6 +26,7 @@ concurrency:
 jobs:
   admit:
     runs-on: ubuntu-latest
+    environment: publisher
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -66,6 +67,16 @@ jobs:
           -f issue_number="${{ steps.admission.outputs.issue_number }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Tavernary Publisher dispatch token
+        id: publisher-dispatch-token
+        if: >-
+          steps.admission.outputs.admitted == 'true' &&
+          steps.admission.outputs.route == 'kit-withdrawal'
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ vars.TAVERNARY_PUBLISHER_APP_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-actions: write
       - name: Dispatch Kit withdrawal
         if: >-
           steps.admission.outputs.admitted == 'true' &&
@@ -75,7 +86,7 @@ jobs:
           --ref main
           -f issue_number="${{ steps.admission.outputs.issue_number }}"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.publisher-dispatch-token.outputs.token }}
       - name: Dispatch project owner request triage
         if: >-
           steps.admission.outputs.admitted == 'true' &&
