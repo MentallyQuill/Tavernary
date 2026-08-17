@@ -9,26 +9,26 @@
     "url": "https://github.com/Noineri/vibe_tavern",
     "description": "A modern, local-first AI roleplay platform",
     "default_branch": "dev",
-    "head_sha": "84407556c2026399b31c0b3dd8cb6d190558dd1b",
-    "head_committed_at": "2026-08-12T21:11:52.000Z",
+    "head_sha": "b159a42dbc484712785c6cf259b5c68d08c0ceba",
+    "head_committed_at": "2026-08-16T22:26:15.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-23T07:45:41.000Z",
-    "size_kb": 43026
+    "size_kb": 41792
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-12T21:11:52.000Z",
+    "latest_source_activity_at": "2026-08-16T22:26:15.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-12T21:11:52.000Z",
+        "latest_at": "2026-08-16T22:26:15.000Z",
         "precision": "exact"
       },
       {
         "week_start": "2026-08-03",
-        "latest_at": "2026-08-08T16:16:01.000Z",
+        "latest_at": "2026-08-09T18:36:02.000Z",
         "precision": "exact"
       },
       {
@@ -75,32 +75,27 @@
         "week_start": "2026-06-01",
         "latest_at": "2026-06-07T20:11:15.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-25",
-        "latest_at": "2026-05-31T23:47:15.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-08-08T16:25:49.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-11T08:16:27.105Z",
+    "baseline_completed_at": "2026-08-17T08:03:17.174Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "84407556c2026399b31c0b3dd8cb6d190558dd1b"
+    "evidence_head_sha": "b159a42dbc484712785c6cf259b5c68d08c0ceba"
   },
   "community": {
-    "stars_count": 15,
+    "stars_count": 16,
     "forks_count": 1,
     "watchers_count": 0,
-    "aggregate": 16
+    "aggregate": 17
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-16T07:48:28.140Z",
+  "refreshed_at": "2026-08-17T08:03:17.174Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -112,7 +107,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-16T07:48:28.140Z",
+    "refreshed_at": "2026-08-17T08:03:17.174Z",
     "stale_since": null
   }
 }

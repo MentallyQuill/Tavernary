@@ -35,8 +35,9 @@
     "aggregate": 170
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-17T02:21:04.998Z",
+  "refreshed_at": "2026-08-17T08:03:17.174Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "LenAnderson", "type": "User", "provider": "github" }
@@ -44,8 +45,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-17T02:21:04.998Z",
+    "refreshed_at": "2026-08-17T08:03:17.174Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

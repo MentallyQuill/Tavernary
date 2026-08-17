@@ -9,21 +9,26 @@
     "url": "https://github.com/starlitcode/Lumiverse-Auto-Retry",
     "description": "Retries AI replies that fail, come back empty, stall, or get cut off, so you are not the one pressing regenerate. A Lumiverse Spindle extension.",
     "default_branch": "stable",
-    "head_sha": "5b92d8aac3203d7634945b70e31972f1de44394f",
-    "head_committed_at": "2026-08-16T02:24:14.000Z",
+    "head_sha": "b76509e1d9a7fbd2ef846091498e46d130dce45a",
+    "head_committed_at": "2026-08-17T03:45:55.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-08T17:04:25.000Z",
-    "size_kb": 9475
+    "size_kb": 14687
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-16T02:24:14.000Z",
+    "latest_source_activity_at": "2026-08-17T03:42:36.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-17T03:42:36.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-16T02:24:14.000Z",
+        "latest_at": "2026-08-16T23:31:50.000Z",
         "precision": "exact"
       },
       {
@@ -70,9 +75,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-11T08:16:27.105Z",
+    "baseline_completed_at": "2026-08-17T08:03:17.174Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "5b92d8aac3203d7634945b70e31972f1de44394f"
+    "evidence_head_sha": "b76509e1d9a7fbd2ef846091498e46d130dce45a"
   },
   "community": {
     "stars_count": 2,
@@ -85,7 +90,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-16T07:48:28.140Z",
+  "refreshed_at": "2026-08-17T08:03:17.174Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -96,7 +101,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-16T07:48:28.140Z",
+    "refreshed_at": "2026-08-17T08:03:17.174Z",
     "stale_since": null
   }
 }

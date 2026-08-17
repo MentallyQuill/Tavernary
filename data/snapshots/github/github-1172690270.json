@@ -15,7 +15,7 @@
     "fork": false,
     "parent": null,
     "created_at": "2026-03-04T15:37:29.000Z",
-    "size_kb": 266286
+    "size_kb": 268108
   },
   "source_health": "healthy",
   "activity": {
@@ -75,61 +75,29 @@
         "week_start": "2026-06-01",
         "latest_at": "2026-06-07T20:08:53.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-25",
-        "latest_at": "2026-05-27T01:58:25.000Z",
-        "precision": "exact"
       }
     ],
-    "provisional_weeks": [
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true
-    ],
+    "provisional_weeks": null,
     "latest_release_at": "2026-08-14T04:04:35.000Z",
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-17T08:03:17.174Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "b50a007e665ff81845228c7db9d1e32e9c4dc3a2"
+    "evidence_head_sha": "266d3e1dfd441ec854fdf5a40305799baa04dd9c"
   },
   "community": {
-    "stars_count": 572,
-    "forks_count": 158,
+    "stars_count": 578,
+    "forks_count": 160,
     "watchers_count": 9,
-    "aggregate": 739
+    "aggregate": 747
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-16T07:48:28.140Z",
+  "refreshed_at": "2026-08-17T08:03:17.174Z",
   "stale_since": null,
-  "activity_scan": {
-    "head_sha": "266d3e1dfd441ec854fdf5a40305799baa04dd9c",
-    "cutoff_at": "2026-05-08T07:48:28.140Z",
-    "next_page": 26,
-    "next_index": 0,
-    "resolved_weeks": [
-      "2026-07-06",
-      "2026-07-13",
-      "2026-07-20",
-      "2026-07-27",
-      "2026-08-03",
-      "2026-08-10"
-    ],
-    "pending_commit": null
-  },
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "SpicyMarinara", "type": "User", "provider": "github" },
@@ -196,7 +164,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-16T07:48:28.140Z",
+    "refreshed_at": "2026-08-17T08:03:17.174Z",
     "stale_since": null
   }
 }

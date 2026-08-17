@@ -9,18 +9,28 @@
     "url": "https://github.com/Lodactio/Extension-Summaryception",
     "description": "Sillytavern memory plug-in",
     "default_branch": "main",
-    "head_sha": "c67626ab83ee86ec1be4f55b9b3d1d19adb79999",
-    "head_committed_at": "2026-07-16T20:20:06.000Z",
+    "head_sha": "a0733b99922f53b26cd3203ae0ad4a8f01ecbdb3",
+    "head_committed_at": "2026-08-17T04:35:43.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-08T08:14:54.000Z",
-    "size_kb": 87
+    "size_kb": 83
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-16T20:20:06.000Z",
+    "latest_source_activity_at": "2026-08-17T04:31:14.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-17T04:31:14.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-08-01T05:22:38.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-13",
         "latest_at": "2026-07-16T20:20:06.000Z",
@@ -30,49 +40,40 @@
         "week_start": "2026-06-01",
         "latest_at": "2026-06-07T18:14:48.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-25",
-        "latest_at": "2026-05-25T18:00:19.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-18",
-        "latest_at": "2026-05-20T02:45:16.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-27T22:03:20.782Z",
+    "baseline_completed_at": "2026-08-17T08:03:17.174Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "c67626ab83ee86ec1be4f55b9b3d1d19adb79999"
+    "evidence_head_sha": "a0733b99922f53b26cd3203ae0ad4a8f01ecbdb3"
   },
   "community": {
-    "stars_count": 136,
-    "forks_count": 21,
+    "stars_count": 137,
+    "forks_count": 22,
     "watchers_count": 1,
-    "aggregate": 158
+    "aggregate": 160
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-16T07:48:28.140Z",
+  "refreshed_at": "2026-08-17T08:03:17.174Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "Lodactio", "type": "User", "provider": "github" },
       { "login": "Copilot", "type": "Bot", "provider": "github" },
-      { "login": "Ryah", "type": "User", "provider": "github" }
+      { "login": "Ryah", "type": "User", "provider": "github" },
+      { "login": "rohal12", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-16T07:48:28.140Z",
+    "refreshed_at": "2026-08-17T08:03:17.174Z",
     "stale_since": null
   }
 }

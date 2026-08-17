@@ -9,18 +9,23 @@
     "url": "https://github.com/aelfwyne/Lore-Library-Lite",
     "description": "A fork of the Lore Library feature from Doom's Enhancement Suite.",
     "default_branch": "main",
-    "head_sha": "3ac47abf65ba576423e2743f1cca73af101bbdc2",
-    "head_committed_at": "2026-08-03T00:00:56.000Z",
+    "head_sha": "4941e3da71d1108b0db7bcf999f345212f799ac0",
+    "head_committed_at": "2026-08-16T20:24:10.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-26T21:24:49.000Z",
-    "size_kb": 274
+    "size_kb": 359
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-01T23:00:56.000Z",
+    "latest_source_activity_at": "2026-08-16T20:24:10.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-10",
+        "latest_at": "2026-08-16T20:24:10.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-27",
         "latest_at": "2026-08-01T23:00:56.000Z",
@@ -35,9 +40,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-03T10:52:31.892Z",
+    "baseline_completed_at": "2026-08-17T08:03:17.174Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "3ac47abf65ba576423e2743f1cca73af101bbdc2"
+    "evidence_head_sha": "4941e3da71d1108b0db7bcf999f345212f799ac0"
   },
   "community": {
     "stars_count": 3,
@@ -50,7 +55,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-16T07:48:28.140Z",
+  "refreshed_at": "2026-08-17T08:03:17.174Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -58,7 +63,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-16T07:48:28.140Z",
+    "refreshed_at": "2026-08-17T08:03:17.174Z",
     "stale_since": null
   }
 }

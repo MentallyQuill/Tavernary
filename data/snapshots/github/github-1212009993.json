@@ -7,23 +7,28 @@
     "owner": "MultihogAurelius",
     "name": "SillyTavern-MultihogDnDFramework",
     "url": "https://github.com/MultihogAurelius/SillyTavern-MultihogDnDFramework",
-    "description": "Started off as a humble \"RPG State Tracker\" but has since expanded into a more ambitious game engine, simulation system, and modular RPG platform where you can even make your own RPGs with their own systems and game logic. By default, ships with a \"hardcore\" setup that can best be described as simulation autism. Actions have consequences.",
+    "description": "Started off as a humble \"RPG State Tracker\" but has since expanded into a more ambitious game engine, simulation system, and modular RPG platform where you can even make your own RPGs with their own systems and game logic. The framework is committed to absolute simulation autism. The world must function even without your inputs.",
     "default_branch": "main",
-    "head_sha": "2fbe49f261faa160e5bc8eb52a33996693b3cd2e",
-    "head_committed_at": "2026-08-15T23:57:08.000Z",
+    "head_sha": "211b53f9f6cbe2ad6ea8606ace49f6a57299c8ec",
+    "head_committed_at": "2026-08-17T01:31:04.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-16T01:18:13.000Z",
-    "size_kb": 19946
+    "size_kb": 22061
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-15T23:57:08.000Z",
+    "latest_source_activity_at": "2026-08-17T01:31:04.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-17T01:31:04.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-15T23:57:08.000Z",
+        "latest_at": "2026-08-16T23:26:33.000Z",
         "precision": "exact"
       },
       {
@@ -78,24 +83,24 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-15T20:58:16.000Z",
+    "latest_release_at": "2026-08-17T01:38:24.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-16T07:48:28.140Z",
+    "baseline_completed_at": "2026-08-17T08:03:17.174Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "2fbe49f261faa160e5bc8eb52a33996693b3cd2e"
+    "evidence_head_sha": "211b53f9f6cbe2ad6ea8606ace49f6a57299c8ec"
   },
   "community": {
-    "stars_count": 69,
+    "stars_count": 70,
     "forks_count": 14,
     "watchers_count": 0,
-    "aggregate": 83
+    "aggregate": 84
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-16T07:48:28.140Z",
+  "refreshed_at": "2026-08-17T08:03:17.174Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -110,7 +115,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-16T07:48:28.140Z",
+    "refreshed_at": "2026-08-17T08:03:17.174Z",
     "stale_since": null
   }
 }

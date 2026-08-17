@@ -28,24 +28,24 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stars_count": 9,
+    "stars_count": 10,
     "forks_count": 1,
     "watchers_count": 2,
-    "aggregate": 12
+    "aggregate": 13
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-16T07:48:28.140Z",
+  "refreshed_at": "2026-08-17T08:03:17.174Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "qvink", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-16T07:48:28.140Z",
+    "refreshed_at": "2026-08-17T08:03:17.174Z",
     "stale_since": null
   }
 }
