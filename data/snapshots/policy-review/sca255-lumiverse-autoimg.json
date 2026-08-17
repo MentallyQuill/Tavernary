@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sca255-lumiverse-autoimg",
+  "source_id": "github-1289855929",
+  "source_identity": "github:sca255/lumiverse-autoimg",
+  "evidence_fingerprint": "65d7f999184da75b79f0c79244473ca3150eacef70e705989b2ee3108b1d36a7",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-17T08:18:02.943Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-17T08:18:02.943Z"
+  },
+  "maintenance_issue_number": null
+}
