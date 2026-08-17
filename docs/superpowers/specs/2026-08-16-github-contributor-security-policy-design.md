@@ -36,8 +36,9 @@ or webhook. It is installed only on Tavernary and has these repository
 permissions:
 
 - Contents: Read and write;
+- Actions: Read and write, used only to dispatch protected publisher workflows;
 - Metadata: Read-only, as required by GitHub;
-- no Actions, Issues, Pull requests, Administration, Workflows, or organization
+- no Issues, Pull requests, Administration, Workflows, or organization
   permissions.
 
 The App's private key is stored only as the protected `publisher` environment
@@ -54,8 +55,16 @@ Each job that can push `HEAD:main` must:
 - use that token for checkout and Git publication;
 - retain ordinary `GITHUB_TOKEN` permissions only for non-content operations
   such as Issues or Actions dispatches;
-- reject a manual dispatch unless the actor is `MentallyQuill` or a trusted
-  repository workflow acting as `github-actions[bot]`.
+- reject a manual dispatch unless the actor is `MentallyQuill`, the unique
+  Tavernary Publisher App, or, for report import only, the existing scoped
+  TavernKeeper wake App.
+
+Trusted main-branch workflows that dispatch a protected publisher also reference
+the `publisher` environment and mint an Actions-only App token for that dispatch.
+The target therefore sees the unique Publisher App actor, never the shared
+`github-actions[bot]` identity that contributor branch workflows can also use.
+The environment branch policy prevents a feature-branch workflow from obtaining
+the App credential.
 
 This boundary covers direct writers and the durable enrichment orchestrator:
 
@@ -69,7 +78,15 @@ This boundary covers direct writers and the durable enrichment orchestrator:
 - `review-catalog-policy.yml`.
 
 Repository tests enumerate this set so a future ordinary-token `main` writer
-fails CI.
+fails CI. They also enumerate every internal dispatch to these workflows,
+require exact App-action pins, scan both YAML extensions and multiple direct
+`main` write forms, and reject job-level contents-write overrides.
+
+`review-catalog-policy.yml` validates its requested SHA before minting an App
+token or checking out code. A transaction PR must supply its exact GitHub merge
+commit, and every supplied SHA must be identical to or an ancestor of current
+`main`. This prevents caller-controlled branch code from running with Publisher
+credentials.
 
 ## Repository-Owned Review
 

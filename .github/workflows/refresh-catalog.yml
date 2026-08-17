@@ -47,7 +47,7 @@ jobs:
       github.ref == 'refs/heads/main' &&
       (github.event_name != 'workflow_dispatch' ||
       github.actor_id == 2625904 ||
-      github.actor_id == 41898282)
+      github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)
     runs-on: ubuntu-latest
     environment: publisher
     steps:
@@ -57,6 +57,7 @@ jobs:
         with:
           app-id: ${{ vars.TAVERNARY_PUBLISHER_APP_ID }}
           private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-actions: write
           permission-contents: write
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -143,7 +144,7 @@ jobs:
       - name: Dispatch advisory review for refreshed evidence
         if: steps.commit.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.publisher-token.outputs.token }}
           MERGE_SHA: ${{ steps.commit.outputs.head_sha }}
         shell: bash
         run: |
