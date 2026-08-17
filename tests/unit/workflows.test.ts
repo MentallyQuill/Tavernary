@@ -303,7 +303,7 @@ test("limits every main publisher to the protected Publisher App", async () => {
     expect(publisherToken, name).toMatchObject({
       id: "publisher-token",
       with: {
-        "app-id": "${{ vars.TAVERNARY_PUBLISHER_APP_ID }}",
+        "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
         "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
         "permission-contents": "write",
       },

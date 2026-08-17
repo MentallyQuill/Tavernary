@@ -44,7 +44,7 @@ jobs:
         id: publisher-dispatch-token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
-          app-id: ${{ vars.TAVERNARY_PUBLISHER_APP_ID }}
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
           private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
           permission-actions: write
           permission-contents: read
@@ -116,7 +116,7 @@ jobs:
         id: publisher-token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
-          app-id: ${{ vars.TAVERNARY_PUBLISHER_APP_ID }}
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
           private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
           permission-contents: write
       - name: Check out exact published state
