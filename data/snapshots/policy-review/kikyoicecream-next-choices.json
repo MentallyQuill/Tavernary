@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "kikyoicecream-next-choices",
+  "source_id": "github-1305892185",
+  "source_identity": "github:kikyoicecream/next-choices",
+  "evidence_fingerprint": "463b2b38625ba047ecf22374df79ac3fbda7c965aad3eb6f256eea04819e64e6",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-17T08:18:35.111Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-17T08:18:35.111Z"
+  },
+  "maintenance_issue_number": null
+}
