@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mokimoko-sillytavern-wordcount",
+  "source_id": "github-1244233593",
+  "source_identity": "github:mokimoko/sillytavern-wordcount",
+  "evidence_fingerprint": "2483fafe0624a9418fae149ec9c386b26472fdb6892a7bb5510324e4d8266e9e",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-17T02:16:38.165Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-17T02:16:38.165Z"
+  },
+  "maintenance_issue_number": null
+}
