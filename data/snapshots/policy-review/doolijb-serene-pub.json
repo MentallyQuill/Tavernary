@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "doolijb-serene-pub",
+  "source_id": "github-997815977",
+  "source_identity": "github:doolijb/serene-pub",
+  "evidence_fingerprint": "da26ac61e33143fdd7e84ce7599b45f1e0cc77782850c6494c8ce62c260cd600",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-17T02:28:03.020Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-17T02:28:03.020Z"
+  },
+  "maintenance_issue_number": null
+}
