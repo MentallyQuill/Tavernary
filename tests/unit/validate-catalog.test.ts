@@ -158,6 +158,34 @@ function validateCatalog(options?: Parameters<typeof validateCatalogRaw>[0]) {
 }
 
 describe("catalog validation", () => {
+  test("rejects install evidence that does not match the current repository head", async () => {
+    const result = await validateCatalog({
+      records: [validRecordV6],
+      sources: [validSourceV1],
+      snapshots: [validSnapshotV4],
+      installEvidence: [
+        {
+          schema_version: 1,
+          source_id: validSourceV1.id,
+          head_sha: "b".repeat(40),
+          observed_at: "2026-08-18T12:00:00.000Z",
+          status: "verified",
+          manifest_path: "manifest.json",
+          folder_name: "valid-extension",
+          manifest: {
+            display_name: "Valid Extension",
+            key: "valid-extension",
+            minimum_client_version: null,
+          },
+        },
+      ],
+    });
+
+    expect(result.errors).toContain(
+      `${validSourceV1.id}: install evidence head does not match repository snapshot`,
+    );
+  });
+
   test("accepts optional curated project aliases", async () => {
     const result = await validateCatalog({
       records: [

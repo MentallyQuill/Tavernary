@@ -354,6 +354,24 @@ export class CodebergRepositoryProvider {
     );
     return response.data;
   }
+
+  async readRootFile(input) {
+    if (!/^[^/\\]+$/u.test(input.path)) {
+      throw new Error("Codeberg root file path must contain one safe segment.");
+    }
+    try {
+      const { data } = await this.request(
+        `/repos/${repositoryPath(input.repository)}/contents/${encodeURIComponent(input.path)}?ref=${encodeURIComponent(input.ref)}`,
+      );
+      const content = decodeContent(data);
+      return content === null
+        ? null
+        : { path: data.path ?? input.path, content, encoding: "utf8" };
+    } catch (error) {
+      if (error?.status === 404) return null;
+      throw error;
+    }
+  }
 }
 
 export async function runCodebergSmoke(repository, options = {}) {

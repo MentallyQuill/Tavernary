@@ -163,6 +163,7 @@ export async function validateCatalog(options = {}) {
     schema,
     sourceSchema,
     snapshotSchema,
+    installEvidenceSchema,
     refreshManifestSchema,
     frontendVocabulary,
     functionVocabulary,
@@ -176,6 +177,7 @@ export async function validateCatalog(options = {}) {
     readJson("data/schemas/project.schema.json"),
     readJson("data/schemas/source.schema.json"),
     readJson("data/schemas/repository-snapshot.schema.json"),
+    readJson("data/schemas/extension-install-evidence.schema.json"),
     readJson("data/schemas/github-refresh.schema.json"),
     readJson("data/vocabularies/frontends.json"),
     readJson("data/vocabularies/primary-functions.json"),
@@ -207,6 +209,7 @@ export async function validateCatalog(options = {}) {
   const validateRecord = ajv.compile(schema);
   const validateSource = ajv.compile(sourceSchema);
   const validateSnapshot = ajv.compile(snapshotSchema);
+  const validateInstallEvidence = ajv.compile(installEvidenceSchema);
   const validateRefreshManifest = ajv.compile(refreshManifestSchema);
   const validateTagVocabularySchema = ajv.compile(tagVocabularySchema);
   const validateTrustedEditors = ajv.compile(trustedEditorSchema);
@@ -217,6 +220,9 @@ export async function validateCatalog(options = {}) {
     (options.records ? [] : await loadJsonDirectory("data/registry/sources"));
   const snapshots =
     options.snapshots ?? (options.records ? [] : await loadSnapshots());
+  const installEvidence =
+    options.installEvidence ??
+    (options.records ? [] : await loadJsonDirectory("data/snapshots/install"));
   const refreshManifest =
     options.refreshManifest ?? (await loadRefreshManifest());
   const kitRecords =
@@ -475,6 +481,46 @@ export async function validateCatalog(options = {}) {
     }
   }
 
+  const installEvidenceVersions = new Set(
+    installEvidence.map(({ schema_version: version }) => version),
+  );
+  if (installEvidenceVersions.size > 1) {
+    errors.push(
+      "catalog: mixed install evidence schema versions are not allowed",
+    );
+  }
+  const evidenceSourceIds = new Set();
+  const snapshotsBySourceId = new Map(
+    snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
+  );
+  for (const evidence of installEvidence) {
+    const sourceId = evidence.source_id ?? "<unknown>";
+    if (evidenceSourceIds.has(sourceId)) {
+      errors.push(`${sourceId}: duplicate install evidence`);
+    }
+    evidenceSourceIds.add(sourceId);
+    if (!validateInstallEvidence(evidence)) {
+      errors.push(
+        ...validateInstallEvidence.errors.map((error) =>
+          schemaError({ id: sourceId }, error),
+        ),
+      );
+    }
+    if (evidence.status === "verified" && !sourceRecordsById.has(sourceId)) {
+      errors.push(
+        `${sourceId}: verified install evidence has no source record`,
+      );
+    }
+    const snapshot = snapshotsBySourceId.get(sourceId);
+    if (!snapshot) {
+      errors.push(`${sourceId}: install evidence has no repository snapshot`);
+    } else if (snapshot.repository?.head_sha !== evidence.head_sha) {
+      errors.push(
+        `${sourceId}: install evidence head does not match repository snapshot`,
+      );
+    }
+  }
+
   errors.push(
     ...(await validateKitData({
       kitRecords,
@@ -487,6 +533,7 @@ export async function validateCatalog(options = {}) {
   return {
     projectCount: records.length,
     snapshotCount: snapshots.length,
+    installEvidenceCount: installEvidence.length,
     kitCount: kitRecords.length,
     kitSnapshotCount: supportSnapshots.length,
     errors,

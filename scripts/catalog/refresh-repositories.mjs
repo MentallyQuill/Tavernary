@@ -1,10 +1,19 @@
-import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import {
+  mkdir,
+  readFile,
+  readdir,
+  rename,
+  rm,
+  writeFile,
+} from "node:fs/promises";
+import { randomUUID } from "node:crypto";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { format } from "prettier";
 
 import { buildCatalog } from "./build.mjs";
+import { refreshExtensionInstallEvidence } from "./extension-install-evidence.mjs";
 import { buildRefreshManifest } from "./github-refresh-manifest.mjs";
 import { repositoryProvider } from "./repository-provider.mjs";
 import {
@@ -43,9 +52,10 @@ async function readDirectory(path) {
 }
 
 async function readInputs() {
-  const [records, projects] = await Promise.all([
+  const [records, projects, installEvidence] = await Promise.all([
     readDirectory(resolve(rootDirectory, "data/registry/sources")),
     readDirectory(resolve(rootDirectory, "data/registry/projects")),
+    readDirectory(resolve(rootDirectory, "data/snapshots/install")),
   ]);
   const snapshots = (
     await Promise.all(
@@ -60,7 +70,7 @@ async function readInputs() {
   } catch (error) {
     if (error.code !== "ENOENT") throw error;
   }
-  return { records, projects, snapshots, previousManifest };
+  return { records, projects, snapshots, installEvidence, previousManifest };
 }
 
 function automaticRecords(records) {
@@ -274,7 +284,7 @@ async function refreshCodebergGroup(provider, records, snapshots, now) {
 }
 
 export async function publishRepositoryCandidates(
-  { changedSnapshots, manifest },
+  { changedSnapshots, changedInstallEvidence = [], manifest },
   options = {},
 ) {
   const write = options.writeFile ?? writeFile;
@@ -299,6 +309,33 @@ export async function publishRepositoryCandidates(
     await format(JSON.stringify(manifest), { parser: "json" }),
     "utf8",
   );
+  await publishInstallEvidence(changedInstallEvidence, options);
+}
+
+async function publishInstallEvidence(changedEvidence, options = {}) {
+  const write = options.writeFile ?? writeFile;
+  const move = options.rename ?? rename;
+  const remove = options.rm ?? rm;
+  const directory = resolve(
+    options.rootDirectory ?? rootDirectory,
+    "data/snapshots/install",
+  );
+  await mkdir(directory, { recursive: true });
+  for (const evidence of changedEvidence) {
+    const destination = resolve(directory, `${evidence.source_id}.json`);
+    const temporary = `${destination}.tmp-${randomUUID()}`;
+    try {
+      await write(
+        temporary,
+        await format(JSON.stringify(evidence), { parser: "json" }),
+        "utf8",
+      );
+      await move(temporary, destination);
+    } catch (error) {
+      await remove(temporary, { force: true });
+      throw error;
+    }
+  }
 }
 
 export async function runRepositoryRefresh(options = {}) {
@@ -314,6 +351,8 @@ export async function runRepositoryRefresh(options = {}) {
     records: options.records ?? canonicalInputs.records,
     projects: options.projects ?? canonicalInputs?.projects ?? [],
     snapshots: options.snapshots ?? canonicalInputs.snapshots,
+    installEvidence:
+      options.installEvidence ?? canonicalInputs?.installEvidence ?? [],
     previousManifest:
       options.previousManifest ?? canonicalInputs?.previousManifest ?? null,
   };
@@ -425,12 +464,32 @@ export async function runRepositoryRefresh(options = {}) {
   const changedSnapshots = finalSnapshots.filter((snapshot) =>
     changed(snapshot, previousById.get(snapshot.source_id)),
   );
+  const evidenceProviders = {};
+  for (const providerName of ["github", "codeberg"]) {
+    if (selectedByProvider.get(providerName).length > 0) {
+      evidenceProviders[providerName] =
+        options.providers?.[providerName] ??
+        repositoryProvider(providerName, options.clients);
+    }
+  }
+  const evidenceRefresh = await (
+    options.refreshInstallEvidence ?? refreshExtensionInstallEvidence
+  )({
+    projects: inputs.projects,
+    sources: inputs.records,
+    snapshots: finalSnapshots,
+    previousEvidence: inputs.installEvidence,
+    sourceIds: selected.map((record) => record.id),
+    providers: evidenceProviders,
+    observedAt: completedAt,
+  });
 
   if (options.write !== false) {
     const validation = await (options.validateCandidates ?? validateCatalog)({
       records: inputs.projects,
       sources: inputs.records,
       snapshots: finalSnapshots,
+      installEvidence: evidenceRefresh.evidence,
       refreshManifest: manifest,
     });
     if (validation?.errors?.length > 0) {
@@ -443,14 +502,23 @@ export async function runRepositoryRefresh(options = {}) {
       records: inputs.projects,
       sources: inputs.records,
       snapshots: finalSnapshots,
+      installEvidence: evidenceRefresh.evidence,
       refreshManifest: manifest,
     });
     await (options.publish ?? publishRepositoryCandidates)({
       changedSnapshots,
+      changedInstallEvidence: evidenceRefresh.changedEvidence,
       manifest,
     });
   }
-  return { selected, snapshots: finalSnapshots, changedSnapshots, manifest };
+  return {
+    selected,
+    snapshots: finalSnapshots,
+    changedSnapshots,
+    installEvidence: evidenceRefresh.evidence,
+    changedInstallEvidence: evidenceRefresh.changedEvidence,
+    manifest,
+  };
 }
 
 function argument(name, fallback = null) {

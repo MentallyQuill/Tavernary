@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tavernary.org/schemas/extension-install-evidence.schema.json",
+  "title": "Tavernary SillyTavern extension install evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "source_id",
+    "head_sha",
+    "observed_at",
+    "status"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "source_id": { "type": "string", "minLength": 1 },
+    "head_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "observed_at": { "type": "string", "format": "date-time" },
+    "status": { "enum": ["verified", "unavailable"] },
+    "manifest_path": { "const": "manifest.json" },
+    "folder_name": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]+$",
+      "not": { "enum": [".", ".."] }
+    },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["display_name", "key", "minimum_client_version"],
+      "properties": {
+        "display_name": { "type": "string", "minLength": 1 },
+        "key": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
+        "minimum_client_version": {
+          "anyOf": [{ "type": "string" }, { "type": "null" }]
+        }
+      }
+    },
+    "reason": {
+      "enum": [
+        "manifest-not-at-root",
+        "manifest-not-found",
+        "invalid-manifest",
+        "invalid-repository",
+        "fetch-failed"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "verified" } } },
+      "then": {
+        "required": ["manifest_path", "folder_name", "manifest"],
+        "not": { "required": ["reason"] }
+      },
+      "else": {
+        "required": ["reason"],
+        "not": {
+          "anyOf": [
+            { "required": ["manifest_path"] },
+            { "required": ["folder_name"] },
+            { "required": ["manifest"] }
+          ]
+        }
+      }
+    }
+  ]
+}
