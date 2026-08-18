@@ -884,9 +884,16 @@ describe("catalog query URLs", () => {
   test("discards invalid URL values", () => {
     expect(
       parseCatalogQuery(
-        "?view=broken&sort=nope&density=huge&kind=port&frontend=unknown&license=free",
+        "?view=broken&sort=nope&density=huge&kind=port&frontend=Unsafe_ID&license=free",
       ),
     ).toEqual(DEFAULT_QUERY);
+  });
+
+  test("preserves syntactically valid future frontend filters without a copied vocabulary", () => {
+    expect(parseCatalogQuery("?frontend=future-frontend").frontends).toEqual([
+      "future-frontend",
+    ]);
+    expect(parseCatalogQuery("?frontend=Unsafe_ID").frontends).toEqual([]);
   });
 
   test("discards the removed Uncategorized category from stale and generated URLs", () => {

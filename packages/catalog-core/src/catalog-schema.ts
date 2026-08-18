@@ -20,9 +20,7 @@ ajv.addFormat("safe-http-url", {
 });
 ajv.addFormat("safe-navigation-url", {
   type: "string",
-  validate: (value: string) =>
-    isSafeHttpUrl(value) ||
-    (value.startsWith("/") && !value.startsWith("//") && !hasControl(value)),
+  validate: (value: string) => isSafeNavigationUrl(value),
 });
 const validateCatalog = ajv.compile(catalogV7Schema);
 
@@ -135,6 +133,24 @@ function isSafeHttpUrl(value: string): boolean {
       url.password.length === 0 &&
       url.hostname.length > 0
     );
+  } catch {
+    return false;
+  }
+}
+
+function isSafeNavigationUrl(value: string): boolean {
+  if (isSafeHttpUrl(value)) return true;
+  if (
+    !value.startsWith("/") ||
+    value.startsWith("//") ||
+    value.includes("\\") ||
+    hasControl(value)
+  ) {
+    return false;
+  }
+  try {
+    const base = new URL("https://tavernary.invalid/");
+    return new URL(value, base).origin === base.origin;
   } catch {
     return false;
   }

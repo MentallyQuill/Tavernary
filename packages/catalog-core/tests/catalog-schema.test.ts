@@ -109,3 +109,22 @@ it.each([
     expect(() => parseCatalogV7(value)).toThrow(CatalogValidationError);
   },
 );
+
+it("rejects a backslash-relative navigation URL that resolves off origin", async () => {
+  const value = structuredClone(
+    (await fixture("catalog-v7-valid")) as {
+      projects: Array<Record<string, unknown>>;
+    },
+  );
+  value.projects[0]!.tavernKeeper = {
+    state: "gray",
+    riskLevel: null,
+    freshness: "unassessed",
+    currentSha: null,
+    report: null,
+    history: [],
+    historyUrl: "/\\evil.example/x",
+  };
+
+  expect(() => parseCatalogV7(value)).toThrow(CatalogValidationError);
+});

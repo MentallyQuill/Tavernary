@@ -1,4 +1,3 @@
-import frontendVocabulary from "./frontends.json";
 import {
   DEFAULT_KIT_BROWSE_SORT,
   DEFAULT_KIT_QUERY,
@@ -128,9 +127,6 @@ const validPurposes = new Set([
   "interface-workflow",
   "developer-infrastructure",
 ]);
-const validFrontends = new Set(
-  frontendVocabulary.frontends.map(({ id }) => id),
-);
 const validModelFamilies = new Set([
   "model-agnostic",
   "claude",
@@ -179,6 +175,12 @@ function oneOf<T extends string>(
 function manyOf<T extends string>(values: string[], valid: Set<T>): T[] {
   return [
     ...new Set(values.filter((value) => valid.has(value as T)) as T[]),
+  ].sort();
+}
+
+function frontendIds(values: string[]): string[] {
+  return [
+    ...new Set(values.filter((value) => projectIdPattern.test(value))),
   ].sort();
 }
 
@@ -239,7 +241,7 @@ export function parseCatalogQuery(
   const minProjects = parseRange("minProjects", DEFAULT_KIT_QUERY.minProjects);
   const maxProjects = parseRange("maxProjects", DEFAULT_KIT_QUERY.maxProjects);
   const parsedKitQuery: KitQuery = {
-    frontends: manyOf(parameters.getAll("frontend"), validFrontends),
+    frontends: frontendIds(parameters.getAll("frontend")),
     purposes: manyOf(parameters.getAll("purpose"), validPurposes),
     modelFamilies: manyOf(parameters.getAll("model"), validModelFamilies),
     includesProjectId: parameters.get("includes")?.trim() ?? "",
@@ -264,9 +266,7 @@ export function parseCatalogQuery(
       DEFAULT_QUERY.density,
     ),
     frontends:
-      mode === "projects"
-        ? manyOf(parameters.getAll("frontend"), validFrontends)
-        : [],
+      mode === "projects" ? frontendIds(parameters.getAll("frontend")) : [],
     kinds:
       mode === "projects" ? manyOf(parameters.getAll("kind"), validKinds) : [],
     tags:

@@ -117,3 +117,68 @@ it("fetches only active SillyTavern extension manifests at the snapshot head", a
     expect.objectContaining({ source_id: "github-42", status: "verified" }),
   ]);
 });
+
+it("refreshes verified evidence when a repository rename keeps the same head SHA", async () => {
+  const readRootFile = vi.fn().mockResolvedValue({
+    path: "manifest.json",
+    encoding: "utf8",
+    content: JSON.stringify({
+      display_name: "Renamed",
+      loading_order: 10,
+      js: "index.js",
+    }),
+  });
+  const result = await refreshExtensionInstallEvidence({
+    projects: [
+      {
+        source_id: "github-42",
+        kind: "extension",
+        frontends: ["sillytavern"],
+        listing_status: "active",
+      },
+    ],
+    sources: [
+      {
+        id: "github-42",
+        type: "github",
+        repository: "example/renamed",
+        status: "active",
+      },
+    ],
+    snapshots: [
+      {
+        provider: "github",
+        source_id: "github-42",
+        source_health: "healthy",
+        repository: {
+          url: "https://github.com/example/renamed",
+          default_branch: "main",
+          head_sha: "a".repeat(40),
+        },
+      },
+    ],
+    previousEvidence: [
+      {
+        schema_version: 1,
+        source_id: "github-42",
+        head_sha: "a".repeat(40),
+        observed_at: "2026-08-18T11:00:00.000Z",
+        status: "verified",
+        manifest_path: "manifest.json",
+        folder_name: "alpha",
+        manifest: {
+          display_name: "Alpha",
+          key: null,
+          minimum_client_version: null,
+        },
+      },
+    ],
+    providers: { github: { readRootFile } },
+    observedAt: "2026-08-18T12:00:00.000Z",
+  });
+
+  expect(readRootFile).toHaveBeenCalledOnce();
+  expect(result.evidence).toContainEqual(
+    expect.objectContaining({ source_id: "github-42", folder_name: "renamed" }),
+  );
+});

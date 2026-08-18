@@ -85,9 +85,12 @@ export async function refreshExtensionInstallEvidence(input) {
     }
 
     const previous = evidenceBySource.get(sourceId);
+    const currentFolderName = repositoryFolderName(snapshot.repository.url);
     if (
       previous?.head_sha === snapshot.repository.head_sha &&
-      previous.reason !== "fetch-failed"
+      previous.reason !== "fetch-failed" &&
+      (previous.status !== "verified" ||
+        previous.folder_name === currentFolderName)
     ) {
       continue;
     }
