@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { describe, expect, it } from "vitest";
 
@@ -9,7 +10,10 @@ import { parseInstallContract } from "../src/install-contract";
 async function fixture(name: string): Promise<unknown> {
   return JSON.parse(
     await readFile(
-      resolve(process.cwd(), `packages/catalog-core/fixtures/${name}.json`),
+      resolve(
+        dirname(fileURLToPath(import.meta.url)),
+        `../fixtures/${name}.json`,
+      ),
       "utf8",
     ),
   );
