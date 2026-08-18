@@ -335,11 +335,20 @@ jobs:
         if: steps.plan.outputs.action == 'await-maintainer'
         run: |
           echo "This combined add-card request passed validation. A Tavernary maintainer must review and merge the single PR; this run will not merge or close the source issue." >> "$GITHUB_STEP_SUMMARY"
+      - name: Create Tavernary Publisher merge token
+        id: publisher-merge-token
+        if: steps.plan.outputs.action == 'merge'
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-contents: write
       - name: Merge exact validated head
         id: merge
         if: steps.plan.outputs.action == 'merge'
         shell: bash
         env:
+          GH_TOKEN: ${{ steps.publisher-merge-token.outputs.token }}
           PULL_NUMBER: ${{ steps.state.outputs.pull_number }}
           EXPECTED_HEAD_SHA: ${{ steps.plan.outputs.expected_head_sha }}
         run: |

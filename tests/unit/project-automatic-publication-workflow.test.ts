@@ -73,6 +73,40 @@ test("publishes successful generated project transactions by exact SHA", async (
   expect(source).toContain("projects,");
 });
 
+test("merges validated project transactions with the Publisher App", async () => {
+  const workflow = parse(
+    await readFile(".github/workflows/publish-project-transaction.yml", "utf8"),
+  ) as any;
+  const steps = workflow.jobs.publish.steps as Array<{
+    id?: string;
+    if?: string;
+    name?: string;
+    uses?: string;
+    env?: Record<string, string>;
+    with?: Record<string, string>;
+  }>;
+  const token = steps.find((step) => step.id === "publisher-merge-token");
+  const merge = steps.find(
+    (step) => step.name === "Merge exact validated head",
+  );
+
+  expect(token).toMatchObject({
+    if: "steps.plan.outputs.action == 'merge'",
+    uses: "actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1",
+    with: {
+      "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
+      "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
+      "permission-contents": "write",
+    },
+  });
+  expect(steps.indexOf(token as (typeof steps)[number])).toBeLessThan(
+    steps.indexOf(merge as (typeof steps)[number]),
+  );
+  expect(merge?.env?.GH_TOKEN).toBe(
+    "${{ steps.publisher-merge-token.outputs.token }}",
+  );
+});
+
 test("explicitly hands successful generated CI to the publisher", async () => {
   const ci = parse(await readFile(".github/workflows/ci.yml", "utf8")) as any;
   const dispatch = ci.jobs["dispatch-project-publication"];
