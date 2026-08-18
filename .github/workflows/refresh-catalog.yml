@@ -110,7 +110,9 @@ jobs:
             > "${RUNNER_TEMP}/refreshed-policy-sources.txt" || true
           git add data/snapshots/github/*.json
           git add data/snapshots/codeberg/*.json
+          git add data/snapshots/install/*.json
           git add data/snapshots/github-refresh.json
+          git add public/catalog/tavernary-catalog.json
           if compgen -G "data/snapshots/github/kits/*.json" > /dev/null; then
             git add data/snapshots/github/kits/*.json
           fi
@@ -124,9 +126,14 @@ jobs:
           for attempt in 1 2 3; do
             if git fetch origin main &&
               git rebase origin/main; then
-              if npm run check &&
-                git push origin HEAD:main; then
-                break
+              if npm run check; then
+                git add public/catalog/tavernary-catalog.json
+                if ! git diff --cached --quiet; then
+                  git commit --amend --no-edit
+                fi
+                if git push origin HEAD:main; then
+                  break
+                fi
               fi
             fi
             conflicts="$(git diff --name-only --diff-filter=U)"

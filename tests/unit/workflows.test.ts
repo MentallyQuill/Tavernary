@@ -663,8 +663,30 @@ test("initializes Kit support before publishing the new registry record", async 
   });
   expect(support.env).not.toHaveProperty("REQUIRED_KIT_ISSUE_NUMBER");
   expect(commit?.run).toContain(
-    "git add data/registry/kits data/snapshots/github/kits",
+    "git add data/registry/kits data/snapshots/github/kits public/catalog/tavernary-catalog.json",
   );
+});
+
+test("publishes the canonical catalog after every rebased Kit mutation", async () => {
+  for (const name of ["apply-kit-submission", "apply-kit-withdrawal"]) {
+    const source = await readFile(
+      resolve(workflowDirectory, `${name}.yml`),
+      "utf8",
+    );
+    const rebase = source.indexOf("git rebase origin/main");
+    const rebuild = source.indexOf("npm run catalog:build", rebase);
+    const stage = source.indexOf(
+      "git add public/catalog/tavernary-catalog.json",
+      rebuild,
+    );
+    const push = source.indexOf("git push origin HEAD:main", stage);
+
+    expect(rebase).toBeGreaterThanOrEqual(0);
+    expect(rebuild).toBeGreaterThan(rebase);
+    expect(stage).toBeGreaterThan(rebuild);
+    expect(source.slice(stage, push)).toContain("git commit --amend --no-edit");
+    expect(push).toBeGreaterThan(stage);
+  }
 });
 
 test("rebases and revalidates Kit registry commits before pushing", async () => {
@@ -1206,6 +1228,8 @@ test("refreshes snapshots daily without granting production-record writes", asyn
   expect(source).toContain("data/snapshots/codeberg/*.json");
   expect(source).toContain("data/snapshots/github-refresh.json");
   expect(source).toContain("data/snapshots/github/kits/*.json");
+  expect(source).toContain("data/snapshots/install/*.json");
+  expect(source).toContain("public/catalog/tavernary-catalog.json");
   expect(source).toContain("refresh-reactions.mjs");
   expect(source).not.toMatch(/git add (?:data\/registry|data\/catalog)/);
   expect(source).not.toContain("git add src/generated/catalog.json");
@@ -1786,7 +1810,10 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   expect(source).toContain("login: report.actor_login");
   expect(source).not.toContain("verifiedOwnerLogin");
   expect(source).toContain("npm run check:content");
-  expect(source).toContain("git clean -fX -- src/generated/catalog.json");
+  expect(source).toContain(
+    "git restore -- public/catalog/tavernary-catalog.json",
+  );
+  expect(source).not.toContain("git clean -fX -- src/generated/catalog.json");
   expect(source).not.toContain("git checkout -- src/generated/catalog.json");
   expect(source).toContain("submission-pr-open");
   expect(source).toMatch(/labels\.includes\(["']submission-retryable["']\)/u);
