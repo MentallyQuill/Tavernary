@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "lukasstraub2-sillytavern-imagepdf",
+  "source_id": "github-1292206739",
+  "source_identity": "github:lukasstraub2/sillytavern-imagepdf",
+  "evidence_fingerprint": "af1c1a539ad1181d341f14d0f7c0e86f94d8152f05dffc4e123528f65010232d",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-18T08:12:22.127Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-18T08:12:22.127Z"
+  },
+  "maintenance_issue_number": null
+}
