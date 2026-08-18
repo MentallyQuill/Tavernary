@@ -50,6 +50,7 @@
     "check:content": "npm run format:check && npm run catalog:validate && npm run catalog:build && npm run test:content && npm run build && npm run verify:export"
   },
   "dependencies": {
+    "@tavernary/catalog-core": "file:packages/catalog-core",
     "@fontsource-variable/inter": "^5.3.0",
     "ajv": "^8.20.0",
     "minisearch": "^7.2.0",

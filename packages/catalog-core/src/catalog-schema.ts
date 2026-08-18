@@ -103,7 +103,7 @@ export function parseCatalogV7(value: unknown): CatalogV7 {
           });
         }
       }
-      projects.push(project as CatalogProjectV7);
+      projects.push(project as unknown as CatalogProjectV7);
     });
   }
 
@@ -114,7 +114,7 @@ export function parseCatalogV7(value: unknown): CatalogV7 {
     tagVocabulary: value.tagVocabulary as unknown[],
     projects,
     kits: value.kits as unknown[],
-  });
+  } as unknown as CatalogV7);
 }
 
 function isIsoDate(value: string): boolean {

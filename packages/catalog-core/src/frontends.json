@@ -1,0 +1,179 @@
+{
+  "frontends": [
+    {
+      "id": "agnai",
+      "label": "agnai",
+      "description": "Works with the agnai roleplay frontend."
+    },
+    {
+      "id": "ai-rpg",
+      "label": "AI RPG",
+      "description": "Works with the AI RPG roleplay frontend."
+    },
+    {
+      "id": "aikobots",
+      "label": "Aikobots",
+      "description": "Works with the Aikobots roleplay frontend."
+    },
+    {
+      "id": "alex-tavern",
+      "label": "alex-tavern",
+      "description": "Works with the alex-tavern roleplay frontend."
+    },
+    {
+      "id": "arousal-pub",
+      "label": "Arousal Pub",
+      "description": "Works with the Arousal Pub roleplay frontend."
+    },
+    {
+      "id": "aventuras",
+      "label": "Aventuras",
+      "description": "Works with the Aventuras roleplay frontend."
+    },
+    {
+      "id": "charon",
+      "label": "charon",
+      "description": "Works with the charon roleplay frontend."
+    },
+    {
+      "id": "focus",
+      "label": "Focus",
+      "description": "Works with the Focus roleplay frontend."
+    },
+    {
+      "id": "front-porch-ai",
+      "label": "front-porch-AI",
+      "description": "Works with the front-porch-AI roleplay frontend."
+    },
+    {
+      "id": "glaze",
+      "label": "Glaze",
+      "description": "Works with the Glaze roleplay frontend."
+    },
+    {
+      "id": "hordestudio",
+      "label": "hordestudio",
+      "description": "Works with the hordestudio roleplay frontend."
+    },
+    {
+      "id": "lumiverse",
+      "label": "Lumiverse",
+      "description": "Works with the Lumiverse roleplay frontend."
+    },
+    {
+      "id": "marinara-engine",
+      "label": "Marinara Engine",
+      "description": "Works with the Marinara Engine roleplay frontend."
+    },
+    {
+      "id": "mignon-ui",
+      "label": "Mignon-UI",
+      "description": "Works with the Mignon-UI roleplay frontend."
+    },
+    {
+      "id": "narrative-engine",
+      "label": "Narrative Engine",
+      "description": "Works with the Narrative Engine roleplay frontend."
+    },
+    {
+      "id": "neotavern-frontend",
+      "label": "NeoTavern-Frontend",
+      "description": "Works with the NeoTavern-Frontend roleplay frontend."
+    },
+    {
+      "id": "pocketrisu",
+      "label": "PocketRisu",
+      "description": "Works with the PocketRisu roleplay frontend."
+    },
+    {
+      "id": "pyre",
+      "label": "Pyre",
+      "description": "Works with the Pyre roleplay frontend."
+    },
+    {
+      "id": "quest-keeper",
+      "label": "Quest Keeper",
+      "description": "Works with the Quest Keeper roleplay frontend."
+    },
+    {
+      "id": "risuai",
+      "label": "RisuAI",
+      "description": "Works with the RisuAI roleplay frontend."
+    },
+    {
+      "id": "rpgraph",
+      "label": "RPGraph",
+      "description": "Works with the RPGraph roleplay frontend."
+    },
+    {
+      "id": "serene-pub",
+      "label": "serene-pub",
+      "description": "Works with the serene-pub roleplay frontend."
+    },
+    {
+      "id": "sillybunny-sillybunnyteam",
+      "label": "SillyBunny",
+      "description": "Works with the SillyBunny roleplay frontend."
+    },
+    {
+      "id": "sillytavern",
+      "label": "SillyTavern",
+      "description": "Works with the SillyTavern roleplay frontend."
+    },
+    {
+      "id": "simulith",
+      "label": "Simulith",
+      "description": "Works with the Simulith roleplay frontend."
+    },
+    {
+      "id": "sonder-engine",
+      "label": "Sonder Engine",
+      "description": "Works with the Sonder Engine roleplay frontend."
+    },
+    {
+      "id": "sweetrolllm",
+      "label": "SweetrollLM",
+      "description": "Works with the SweetrollLM roleplay frontend."
+    },
+    {
+      "id": "talemate",
+      "label": "talemate",
+      "description": "Works with the talemate roleplay frontend."
+    },
+    {
+      "id": "taleweaver",
+      "label": "TaleWeaver",
+      "description": "Works with the TaleWeaver roleplay frontend."
+    },
+    {
+      "id": "tauritavern",
+      "label": "TauriTavern",
+      "description": "Works with the TauriTavern roleplay frontend."
+    },
+    {
+      "id": "tavernai",
+      "label": "TavernAI",
+      "description": "Works with the TavernAI roleplay frontend."
+    },
+    {
+      "id": "tipsytavern",
+      "label": "TipsyTavern",
+      "description": "Works with the TipsyTavern roleplay frontend."
+    },
+    {
+      "id": "universal-immersion-engine-fugue",
+      "label": "Universal-Immersion-Engine-Fugue",
+      "description": "Works with the Universal-Immersion-Engine-Fugue roleplay frontend."
+    },
+    {
+      "id": "vibe-tavern",
+      "label": "vibe_tavern",
+      "description": "Works with the vibe_tavern roleplay frontend."
+    },
+    {
+      "id": "writers-guild",
+      "label": "writers-guild",
+      "description": "Works with the writers-guild roleplay frontend."
+    }
+  ]
+}
