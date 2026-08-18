@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1147155100",
+  "head_sha": "cd951d755d0fcdaa591af76117918d4e3744ccca",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "deep-swipe",
+  "manifest": {
+    "display_name": "Deep Swipe",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -4,7 +4,10 @@ import { fileURLToPath } from "node:url";
 
 import { expect, test } from "vitest";
 
-import { buildCatalog as buildCatalogRaw } from "../../scripts/catalog/build.mjs";
+import {
+  buildCatalog as buildCatalogRaw,
+  deriveInstallContract,
+} from "../../scripts/catalog/build.mjs";
 import { legacySourceId } from "../../src/features/catalog/source-record.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -219,6 +222,60 @@ const fixtureSnapshot = (overrides: Record<string, unknown> = {}) => ({
   ...overrides,
 });
 
+test.each([
+  ["preset", (input: any) => (input.record.kind = "preset")],
+  ["frontend", (input: any) => (input.record.kind = "frontend")],
+  ["other frontend", (input: any) => (input.record.frontends = ["risuai"])],
+  [
+    "inactive project",
+    (input: any) => (input.record.listing_status = "retired"),
+  ],
+  [
+    "unavailable source",
+    (input: any) => (input.snapshot.source_health = "unavailable"),
+  ],
+  [
+    "nested manifest",
+    (input: any) => (input.evidence.manifest_path = "extension/manifest.json"),
+  ],
+  [
+    "stale evidence",
+    (input: any) => (input.evidence.head_sha = "b".repeat(40)),
+  ],
+  [
+    "organization source",
+    (input: any) => (input.source.type = "github-organization"),
+  ],
+  ["URL source", (input: any) => (input.source.type = "url")],
+])("publishes no install contract for %s", (_label, mutate) => {
+  const input = {
+    record: {
+      kind: "extension",
+      frontends: ["sillytavern"],
+      listing_status: "active",
+    },
+    source: { type: "github", status: "active" },
+    snapshot: {
+      source_health: "healthy",
+      stale_since: null,
+      repository: {
+        url: "https://github.com/example/alpha",
+        name: "alpha",
+        head_sha: "a".repeat(40),
+        archived: false,
+      },
+    },
+    evidence: {
+      status: "verified",
+      head_sha: "a".repeat(40),
+      manifest_path: "manifest.json",
+      folder_name: "alpha",
+    },
+  };
+  mutate(input);
+  expect(deriveInstallContract(input)).toBeNull();
+});
+
 test("builds sibling extension and preset cards from one source snapshot", async () => {
   const source = {
     schema_version: 1,
@@ -280,6 +337,22 @@ test("builds sibling extension and preset cards from one source snapshot", async
     ],
     sources: [source],
     snapshots: [snapshot],
+    installEvidence: [
+      {
+        schema_version: 1,
+        source_id: source.id,
+        head_sha: snapshot.repository.head_sha,
+        observed_at: "2026-07-31T12:06:00.000Z",
+        status: "verified",
+        manifest_path: "manifest.json",
+        folder_name: "Megumin-Suite",
+        manifest: {
+          display_name: "Megumin Suite",
+          key: "megumin-suite",
+          minimum_client_version: null,
+        },
+      },
+    ],
     tavernKeeperReports: {
       schema_version: 5,
       generated_at: "2026-07-31T12:06:00.000Z",
@@ -328,6 +401,14 @@ test("builds sibling extension and preset cards from one source snapshot", async
     catalog.projects[1].canonicalUrl,
   );
   expect(catalog.projects[0].community).toEqual(catalog.projects[1].community);
+  expect(catalog.projects[0].install).toEqual({
+    kind: "sillytavern-extension-git",
+    repositoryUrl: "https://github.com/Arif-salah/Megumin-Suite.git",
+    branch: null,
+    manifestPath: "manifest.json",
+    folderName: "Megumin-Suite",
+  });
+  expect(catalog.projects[1].install).toBeNull();
   expect(catalog.projects[0].tags).toEqual([
     expect.objectContaining({
       id: "maintain-long-term-memory",
@@ -377,7 +458,7 @@ test("builds sibling extension and preset cards from one source snapshot", async
     freshness: "current",
     report: expect.objectContaining({ scannedSha: "a".repeat(40) }),
   });
-  expect(catalog.schemaVersion).toBe(6);
+  expect(catalog.schemaVersion).toBe(7);
   expect(
     catalog.tagVocabulary.find(({ id }) => id === "maintain-long-term-memory"),
   ).not.toHaveProperty("inclusion_guidance");
@@ -930,7 +1011,7 @@ test("publishes provider-qualified Codeberg evidence", async () => {
     snapshots: [snapshot],
   });
 
-  expect(catalog.schemaVersion).toBe(6);
+  expect(catalog.schemaVersion).toBe(7);
   expect(catalog.projects[0]).toMatchObject({
     canonicalUrl: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
     attribution: {
@@ -1157,7 +1238,7 @@ test("builds every eligible public card with consolidated manual sources", async
   const recursion = catalog.projects.find(
     ({ id }) => id === "mentallyquill-recursion",
   );
-  expect(catalog.schemaVersion).toBe(6);
+  expect(catalog.schemaVersion).toBe(7);
   expect(recursion?.activity.weeklyActivity).toHaveLength(12);
   expect(recursion?.activity.weeklyActivity?.filter(Boolean)).toHaveLength(
     recursion?.activity.activeWeeks12 ?? 0,
@@ -1277,7 +1358,7 @@ test("builds Kits from complete project records and nullable support", async () 
   });
 
   expect(catalog).toMatchObject({
-    schemaVersion: 6,
+    schemaVersion: 7,
     kits: [
       {
         id: "flagged-kit-42",

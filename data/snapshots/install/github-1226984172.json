@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1226984172",
+  "head_sha": "164ef300abfa9ed58b6232e6488cfdc56de0f2fe",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "IkarusCheckpoint",
+  "manifest": {
+    "display_name": "Ikarus Checkpoint",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

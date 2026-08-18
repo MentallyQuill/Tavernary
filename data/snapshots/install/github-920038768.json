@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-920038768",
+  "head_sha": "bf207fa1723bc39e19cc4aa530c30712c481b176",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Custom-Scenario",
+  "manifest": {
+    "display_name": "Custom Scenario",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

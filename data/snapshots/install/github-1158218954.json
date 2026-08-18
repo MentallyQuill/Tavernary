@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1158218954",
+  "head_sha": "7a8859897bbfc6f0781ac5eb2451bc607e2bab95",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Horae",
+  "manifest": {
+    "display_name": "Horae - 时光记忆",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

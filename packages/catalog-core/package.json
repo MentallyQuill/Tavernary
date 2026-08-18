@@ -1,0 +1,30 @@
+{
+  "name": "@tavernary/catalog-core",
+  "version": "7.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./activity": "./src/activity.ts",
+    "./catalog-license": "./src/catalog-license.ts",
+    "./catalog-tag-filter": "./src/catalog-tag-filter.ts",
+    "./catalog-types": "./src/catalog-types.ts",
+    "./install-contract": "./src/install-contract.ts",
+    "./kit-query": "./src/kit-query.ts",
+    "./kit-selectors": "./src/kit-selectors.ts",
+    "./kit-types": "./src/kit-types.ts",
+    "./preset-compatibility": "./src/preset-compatibility.ts",
+    "./project-query": "./src/project-query.ts",
+    "./project-search": "./src/project-search.ts",
+    "./project-selectors": "./src/project-selectors.ts",
+    "./search-normalization": "./src/search-normalization.ts",
+    "./search-types": "./src/search-types.ts",
+    "./tag-vocabulary": "./src/tag-vocabulary.ts",
+    "./tavernkeeper": "./src/tavernkeeper.ts"
+  },
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "minisearch": "^7.2.0"
+  }
+}

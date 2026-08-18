@@ -127,6 +127,15 @@ export interface RepositoryProvider {
     content: string;
     encoding: "base64";
   } | null>;
+  readRootFile(input: {
+    repository: string;
+    ref: string;
+    path: string;
+  }): Promise<{
+    path: string;
+    content: string;
+    encoding: "utf8";
+  } | null>;
 }
 
 export interface RepositoryProviderClients {

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1199215475",
+  "head_sha": "a20b0816c8986112e2b7f59707e3b6c8c7f5d1d5",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-MoreReasoning",
+  "manifest": {
+    "display_name": "MoreReasoning",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

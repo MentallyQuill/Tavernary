@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1292493965",
+  "head_sha": "c012a0f370569e5694436d52276d70ff6cb91427",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "TheLibrarian",
+  "manifest": {
+    "display_name": "The Librarian",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

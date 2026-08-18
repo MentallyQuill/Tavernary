@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-949189091",
+  "head_sha": "0510988bcce7ba4fdd1aed89c5b95fec3297e5ce",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "ST-SuperObjective",
+  "manifest": {
+    "display_name": "SuperObjective",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

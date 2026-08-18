@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1278555504",
+  "head_sha": "9ea4112b5331516bf73f9eece4c81db22611bf20",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Extension-NPC-Portait-Switcher",
+  "manifest": {
+    "display_name": "NPC Portrait Switcher",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

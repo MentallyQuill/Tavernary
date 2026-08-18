@@ -11,6 +11,7 @@ import { resolve } from "node:path";
 import { afterEach, describe, expect, test } from "vitest";
 
 import {
+  verifyCatalogStaticExport,
   verifyHelpStaticRoutes,
   verifyStaticExport,
   verifyTavernKeeperStaticExport,
@@ -88,6 +89,49 @@ function tavernKeeperExport(manifest: unknown) {
   return outputDirectory;
 }
 
+function catalogExport({
+  schemaVersion = 7,
+  outputBytes,
+  obsoleteOutput = false,
+  obsoleteSource = false,
+}: {
+  schemaVersion?: number;
+  outputBytes?: string;
+  obsoleteOutput?: boolean;
+  obsoleteSource?: boolean;
+} = {}) {
+  const fixtureRoot = mkdtempSync(
+    resolve(tmpdir(), "tavernary-catalog-export-"),
+  );
+  temporaryExports.push(fixtureRoot);
+  const publicDirectory = resolve(fixtureRoot, "public");
+  const outputDirectory = resolve(fixtureRoot, "out");
+  const sourceDirectory = resolve(fixtureRoot, "source");
+  const publicCatalogDirectory = resolve(publicDirectory, "catalog");
+  const outputCatalogDirectory = resolve(outputDirectory, "catalog");
+  mkdirSync(publicCatalogDirectory, { recursive: true });
+  mkdirSync(outputCatalogDirectory, { recursive: true });
+  mkdirSync(sourceDirectory, { recursive: true });
+  const bytes = `${JSON.stringify({ schemaVersion, projects: [] })}\n`;
+  writeFileSync(
+    resolve(publicCatalogDirectory, "tavernary-catalog.json"),
+    bytes,
+  );
+  writeFileSync(
+    resolve(outputCatalogDirectory, "tavernary-catalog.json"),
+    outputBytes ?? bytes,
+  );
+  if (obsoleteOutput) {
+    writeFileSync(resolve(outputDirectory, "catalog.json"), bytes);
+  }
+  if (obsoleteSource) {
+    const legacyDirectory = resolve(sourceDirectory, "src/generated");
+    mkdirSync(legacyDirectory, { recursive: true });
+    writeFileSync(resolve(legacyDirectory, "catalog.json"), bytes);
+  }
+  return { outputDirectory, publicDirectory, sourceDirectory };
+}
+
 function validTavernKeeperRepository(overrides: Record<string, unknown> = {}) {
   const repository = {
     source_id: "github-42",
@@ -122,6 +166,32 @@ function validTavernKeeperManifest(overrides: Record<string, unknown> = {}) {
 }
 
 describe("verifyStaticExport", () => {
+  test("requires one byte-identical schema-7 catalog asset", async () => {
+    const valid = catalogExport();
+    await expect(
+      verifyCatalogStaticExport(
+        valid.outputDirectory,
+        valid.publicDirectory,
+        valid.sourceDirectory,
+      ),
+    ).resolves.toBeUndefined();
+
+    for (const invalid of [
+      catalogExport({ outputBytes: '{"schemaVersion":7}\n' }),
+      catalogExport({ schemaVersion: 6 }),
+      catalogExport({ obsoleteOutput: true }),
+      catalogExport({ obsoleteSource: true }),
+    ]) {
+      await expect(
+        verifyCatalogStaticExport(
+          invalid.outputDirectory,
+          invalid.publicDirectory,
+          invalid.sourceDirectory,
+        ),
+      ).rejects.toThrow();
+    }
+  });
+
   test("documents and exposes the catalog search certification contract", () => {
     const packageJson = JSON.parse(readRepositoryFile("package.json")) as {
       scripts: Record<string, string>;

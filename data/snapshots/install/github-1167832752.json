@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1167832752",
+  "head_sha": "387e08efd3c9d47c2c0baeca4553fec96a402976",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "st-chat-finder",
+  "manifest": {
+    "display_name": "Chat Finder & Replacer",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

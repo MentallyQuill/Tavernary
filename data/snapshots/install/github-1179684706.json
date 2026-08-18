@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1179684706",
+  "head_sha": "93a08b9ba00559f2f4455f92586bec731b1cafe8",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Lorebook-Manager",
+  "manifest": {
+    "display_name": "Lorebook Manager",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

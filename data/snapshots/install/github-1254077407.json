@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1254077407",
+  "head_sha": "2d4f818c2ad5855b0faff387d88c3f64479865c6",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Wandlight",
+  "manifest": {
+    "display_name": "Wandlight",
+    "key": "wandlight",
+    "minimum_client_version": null
+  }
+}

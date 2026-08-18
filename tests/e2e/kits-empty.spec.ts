@@ -1,16 +1,12 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
-
 import { expect, test } from "@playwright/test";
 
-import { generatedProjectCount } from "../helpers/generated-catalog";
+import {
+  generatedCatalog,
+  generatedProjectCount,
+} from "../helpers/generated-catalog";
 import { sitePath } from "../helpers/site-path";
 
-const publishedKitCount = (
-  JSON.parse(
-    readFileSync(resolve(process.cwd(), "src/generated/catalog.json"), "utf8"),
-  ) as { kits: unknown[] }
-).kits.length;
+const publishedKitCount = generatedCatalog.kits.length;
 
 test("switches between projects and the published Kits catalog", async ({
   page,

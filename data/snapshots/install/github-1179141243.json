@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1179141243",
+  "head_sha": "fae29f2137b330d60368344a5f68997af0a00dd7",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Player2",
+  "manifest": {
+    "display_name": "Player2",
+    "key": null,
+    "minimum_client_version": "1.12.0"
+  }
+}

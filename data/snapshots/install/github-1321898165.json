@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1321898165",
+  "head_sha": "71cbcfdcd30d23a0b245722621a6e2539434bc93",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-DualModel-Engine",
+  "manifest": {
+    "display_name": "DualModel Engine",
+    "key": null,
+    "minimum_client_version": "1.18.0"
+  }
+}

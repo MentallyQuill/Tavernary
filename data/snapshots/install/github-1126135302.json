@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1126135302",
+  "head_sha": "7ae4b01598cb8cd6d5d2c6e5e8ea165cc1eb90d9",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Extension-TokenUsage",
+  "manifest": {
+    "display_name": "Token Usage Tracker",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

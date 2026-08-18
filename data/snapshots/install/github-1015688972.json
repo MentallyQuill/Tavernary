@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1015688972",
+  "head_sha": "91cb6afba44748d5ddb5e633f56583db8c7c9adc",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-WorldInfoLocks",
+  "manifest": {
+    "display_name": "World Info Locks",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

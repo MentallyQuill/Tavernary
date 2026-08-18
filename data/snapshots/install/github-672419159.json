@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-672419159",
+  "head_sha": "03f74342c86d2edaa5a1751b34f0c7113813db7d",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Timelines",
+  "manifest": {
+    "display_name": "Timelines",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

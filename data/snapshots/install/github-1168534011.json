@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1168534011",
+  "head_sha": "26c11ce9e3d623f74904bfa52cab707bb8e610ba",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-MultiPersonaComposer",
+  "manifest": {
+    "display_name": "Multi Persona Composer",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

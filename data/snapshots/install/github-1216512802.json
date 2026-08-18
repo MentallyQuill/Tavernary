@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1216512802",
+  "head_sha": "d64ccecdf5d8913ae9e914b772348a023223f712",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-mobilyze",
+  "manifest": {
+    "display_name": "Mobilyze",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

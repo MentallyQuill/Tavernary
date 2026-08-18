@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-957795776",
+  "head_sha": "64456d429bb67fd7a3f49e0bc4d88a7be53b51fb",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "GuidedGenerations-Extension",
+  "manifest": {
+    "display_name": "Guided Generations Extension",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

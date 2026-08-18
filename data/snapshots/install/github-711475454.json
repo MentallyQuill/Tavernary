@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-711475454",
+  "head_sha": "3d25ed605d2f1aa91ae52b68a94eb45d364481d4",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Map",
+  "manifest": {
+    "display_name": "Map Extension",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

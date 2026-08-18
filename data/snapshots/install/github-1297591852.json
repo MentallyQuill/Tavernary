@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1297591852",
+  "head_sha": "c2abfee703d4cac0c072cc622187f455b49611cc",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "innerVoice",
+  "manifest": {
+    "display_name": "Inner Voice",
+    "key": null,
+    "minimum_client_version": "1.12.0"
+  }
+}

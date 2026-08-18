@@ -91,6 +91,7 @@ function fixtureProject({
     primaryFunction,
     summary: `${name} summary`,
     canonicalUrl: `https://example.com/${id}`,
+    install: null,
     catalogedAt: "2026-07-01T00:00:00.000Z",
     catalogCohort: "standard",
     frontends: [],

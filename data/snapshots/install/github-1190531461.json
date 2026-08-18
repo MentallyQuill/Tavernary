@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1190531461",
+  "head_sha": "68d34b58a26e73ff8de013680d9bc57a11ca5906",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Scenarios-Extension",
+  "manifest": {
+    "display_name": "Scenarios Extention",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

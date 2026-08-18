@@ -24,6 +24,7 @@ function frontendCard(
     primaryFunction: "frontend",
     summary: `${name} summary`,
     canonicalUrl: `https://example.com/${frontendId}`,
+    install: null,
     catalogedAt: "2026-07-01T00:00:00Z",
     catalogCohort: "standard",
     frontends: [

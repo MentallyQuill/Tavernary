@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1276977142",
+  "head_sha": "55139230c3d9d411c3390beaaf94b326148f7c55",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Character-Continuity-Manager",
+  "manifest": {
+    "display_name": "Character Continuity Manager",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

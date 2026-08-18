@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1316434519",
+  "head_sha": "00ac549cabae583f7d02e23569103d734093916f",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-GFX-Repair",
+  "manifest": {
+    "display_name": "GFX & Details Repair",
+    "key": null,
+    "minimum_client_version": "1.18.0"
+  }
+}

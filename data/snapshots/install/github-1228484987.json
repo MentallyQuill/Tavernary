@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1228484987",
+  "head_sha": "5aa5631d31f1b8d9e0fff7da1b4e7a2b8ebe70f8",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-PicturePrompt",
+  "manifest": {
+    "display_name": "Picture Prompt",
+    "key": null,
+    "minimum_client_version": "1.14.0"
+  }
+}

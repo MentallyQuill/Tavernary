@@ -38,6 +38,7 @@ export interface GitHubRepositoryProviderClients {
     name: string;
   } | null>;
   readRootReadme?: RepositoryProvider["readRootReadme"];
+  readRootFile?: RepositoryProvider["readRootFile"];
 }
 
 export class GitHubRepositoryProvider implements RepositoryProvider {
@@ -54,4 +55,5 @@ export class GitHubRepositoryProvider implements RepositoryProvider {
     context: ContributorContext,
   ): Promise<ContributorCollection>;
   readRootReadme: RepositoryProvider["readRootReadme"];
+  readRootFile: RepositoryProvider["readRootFile"];
 }

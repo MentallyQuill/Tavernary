@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1258163299",
+  "head_sha": "0ceb804aaaeb40f6c8507e14ea383748ad57e103",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-MangaGenerator",
+  "manifest": {
+    "display_name": "MangaGenerator",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

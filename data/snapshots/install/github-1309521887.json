@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1309521887",
+  "head_sha": "62b9fcecc97e7594d89fd9f1fa2cc372d8a34271",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Inline-Generated-Media",
+  "manifest": {
+    "display_name": "Inline Generated Media",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

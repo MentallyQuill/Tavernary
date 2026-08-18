@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1186081011",
+  "head_sha": "a64812c5d4f7175224bd449f390addff39bfd7bc",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Canonize",
+  "manifest": {
+    "display_name": "Canonize",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

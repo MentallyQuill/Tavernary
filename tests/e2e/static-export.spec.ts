@@ -3,32 +3,22 @@ import { resolve } from "node:path";
 
 import { expect, test } from "@playwright/test";
 
-import { generatedProjectCount } from "../helpers/generated-catalog";
+import { parseCatalogV7 } from "../../packages/catalog-core/src/catalog-schema";
+import {
+  generatedCatalog,
+  generatedProjectCount,
+} from "../helpers/generated-catalog";
 import { sitePath } from "../helpers/site-path";
 
-const publishedKits = (
-  JSON.parse(
-    readFileSync(resolve(process.cwd(), "src/generated/catalog.json"), "utf8"),
-  ) as { kits: Array<{ title: string }> }
-).kits;
+const publishedKits = generatedCatalog.kits;
 const frontendVocabulary = JSON.parse(
   readFileSync(
     resolve(process.cwd(), "data/vocabularies/frontends.json"),
     "utf8",
   ),
 ) as { frontends: Array<{ label: string }> };
-const generatedCatalog = JSON.parse(
-  readFileSync(resolve(process.cwd(), "src/generated/catalog.json"), "utf8"),
-) as {
-  schemaVersion: number;
-  projects: Array<{
-    sourceStatus: string;
-    tavernKeeper: { state: string; freshness: string } | null;
-  }>;
-};
-
-test("exports the catalog schema-v6 scan-state contract", () => {
-  expect(generatedCatalog.schemaVersion).toBe(6);
+test("exports the catalog schema-v7 scan-state contract", () => {
+  expect(generatedCatalog.schemaVersion).toBe(7);
   expect(
     generatedCatalog.projects
       .filter(({ sourceStatus }) => sourceStatus === "manual")
@@ -51,6 +41,16 @@ test("serves the catalog from the configured base path", async ({ page }) => {
     generatedProjectCount,
   );
   await expect(page).not.toHaveTitle(/404/);
+});
+
+test("serves the canonical schema-7 catalog as JSON", async ({ page }) => {
+  const response = await page.request.get(
+    `${sitePath()}catalog/tavernary-catalog.json`,
+  );
+
+  expect(response.ok()).toBe(true);
+  expect(response.headers()["content-type"]).toContain("application/json");
+  expect(parseCatalogV7(await response.json())).toEqual(generatedCatalog);
 });
 
 test("exports the supplied Tavernary artwork", async ({ page }) => {

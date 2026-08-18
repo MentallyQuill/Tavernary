@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1275428438",
+  "head_sha": "153321363d3f1144fdd9e1561614177812d8b61e",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-StoryManager",
+  "manifest": {
+    "display_name": "Story Manager",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

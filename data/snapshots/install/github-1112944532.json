@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1112944532",
+  "head_sha": "6b7143c2fe12d97467f792d9aba5f69a703ad706",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Interactive-Map",
+  "manifest": {
+    "display_name": "🌍 Interactive maps",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

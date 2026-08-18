@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1311326828",
+  "head_sha": "3c8dda952435fbb0fbe4368494316524586251fe",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-ScrollToLast",
+  "manifest": {
+    "display_name": "Scroll To Last",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

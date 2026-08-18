@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-733163811",
+  "head_sha": "62e39827e666373369822fbbdd7c2599a19fafcb",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-LandingPage",
+  "manifest": {
+    "display_name": "Landing Page",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

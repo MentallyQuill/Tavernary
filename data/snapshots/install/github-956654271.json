@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-956654271",
+  "head_sha": "8ddf5ba08188fa8044469518d540c7dded4db701",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Character-Creator",
+  "manifest": {
+    "display_name": "Character Creator",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

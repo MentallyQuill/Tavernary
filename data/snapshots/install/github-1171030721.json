@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1171030721",
+  "head_sha": "a6b34a8cf7ed2a3e45eb9d637fa1c27abaed9d22",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "ComfyInject",
+  "manifest": {
+    "display_name": "ComfyInject",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

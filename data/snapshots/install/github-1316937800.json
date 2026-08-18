@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1316937800",
+  "head_sha": "bafe5234f8b2fe72c14481bde8f37a622c2bb5fc",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-ChromaticDialogue",
+  "manifest": {
+    "display_name": "Chromatic Dialogue",
+    "key": null,
+    "minimum_client_version": "1.18.0"
+  }
+}

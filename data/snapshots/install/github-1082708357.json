@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1082708357",
+  "head_sha": "6076a7ba6c34d0c4baa48340cc64b96555f2e7f8",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "story-orchestrator",
+  "manifest": {
+    "display_name": "Story Orchestrator",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

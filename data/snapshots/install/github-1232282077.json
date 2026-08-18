@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1232282077",
+  "head_sha": "595daa7404bb280de3f1aaeb52fb69060895b843",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-ClaudeSubscription",
+  "manifest": {
+    "display_name": "Claude Max",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

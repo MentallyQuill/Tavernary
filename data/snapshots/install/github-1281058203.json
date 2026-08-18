@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1281058203",
+  "head_sha": "d12091544034eebbc39a429154ba7c5aa76103a9",
+  "observed_at": "2026-08-18T19:13:32.479Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "rpg-tracker-for-sillytavern",
+  "manifest": {
+    "display_name": "RPG Tracker for SillyTavern",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

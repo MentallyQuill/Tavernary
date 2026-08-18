@@ -36,6 +36,7 @@ export class CodebergRepositoryProvider implements RepositoryProvider {
     context: ContributorContext,
   ): Promise<ContributorCollection>;
   readRootReadme: RepositoryProvider["readRootReadme"];
+  readRootFile: RepositoryProvider["readRootFile"];
 }
 
 export function runCodebergSmoke(

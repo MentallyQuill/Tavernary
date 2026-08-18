@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1054966103",
+  "head_sha": "145c273768bfaba437626c0178d8d8cad17db4df",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "CarrotKernel",
+  "manifest": {
+    "display_name": "CarrotKernel",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

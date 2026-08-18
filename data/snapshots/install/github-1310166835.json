@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1310166835",
+  "head_sha": "51718f8cbebd5df86d20f312309aaabb25ad42b3",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "rooms",
+  "manifest": {
+    "display_name": "Rooms",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

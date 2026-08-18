@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1111275760",
+  "head_sha": "43bd4d1fcbb618311b9996de5654f6b5392115f1",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Ultimate-Persona",
+  "manifest": {
+    "display_name": "Ultimate Persona",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

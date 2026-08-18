@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1319215459",
+  "head_sha": "77d0588f0fdf6812aa83f4cb5663564008a5fe73",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Story-Editor",
+  "manifest": {
+    "display_name": "Story Editor",
+    "key": null,
+    "minimum_client_version": "1.18.0"
+  }
+}

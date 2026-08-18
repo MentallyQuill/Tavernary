@@ -179,6 +179,7 @@ jobs:
         run: |
           npm run catalog:validate
           npm run catalog:build
+          git restore -- public/catalog/tavernary-catalog.json
       - name: Synchronize classification review notice
         shell: bash
         run: |

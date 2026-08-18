@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1305445141",
+  "head_sha": "b5451c69fcb874fc966fca549be812cfdb4f4fe4",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "datacat-sillytavern-browser",
+  "manifest": {
+    "display_name": "Datacat SillyTavern Browser",
+    "key": null,
+    "minimum_client_version": "1.12.12"
+  }
+}

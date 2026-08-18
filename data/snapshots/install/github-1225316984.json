@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1225316984",
+  "head_sha": "7d7970b4b55e99b81ab63a8edfae0ca707d9d85b",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "st-aspect-evolutia",
+  "manifest": {
+    "display_name": "Aspect: Evolutia",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

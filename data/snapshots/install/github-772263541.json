@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-772263541",
+  "head_sha": "52e74dd35dd6f1cfe7dbd9ce3b8b6c4a2ac1fba1",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Extension-GroupGreetings",
+  "manifest": {
+    "display_name": "Group Greetings",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

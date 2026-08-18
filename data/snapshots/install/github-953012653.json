@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-953012653",
+  "head_sha": "b40082351f9a42dc8e6ed82b7c7a05e41fa3e397",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-SimpleQRBarToggle",
+  "manifest": {
+    "display_name": "Simple QR Bar Toggle",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

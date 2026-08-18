@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-997100420",
+  "head_sha": "94c6e1dc72ff9801fdc901bf132996f853db7e2e",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "sillytavern-extension-tts-webui",
+  "manifest": {
+    "display_name": "TTS WebUI Adapter",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

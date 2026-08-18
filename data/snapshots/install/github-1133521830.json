@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1133521830",
+  "head_sha": "2aa76ffdcff4a99e59f1bfa83f909ac515731710",
+  "observed_at": "2026-08-18T19:13:32.479Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "sillytavern-character-colors",
+  "manifest": {
+    "display_name": "Dialogue Colors",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

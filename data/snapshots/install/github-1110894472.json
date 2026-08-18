@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1110894472",
+  "head_sha": "c3d0529a0665715a6202bab2f0701bf8cdda41d3",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "lorevault-extension",
+  "manifest": {
+    "display_name": "LoreVault",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

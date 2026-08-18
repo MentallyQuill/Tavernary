@@ -147,3 +147,34 @@ test("selects the existing GitHub contributor algorithm by fork status", async (
     ),
   ).resolves.toMatchObject({ method: "merged-pull-requests" });
 });
+
+test("reads a GitHub root file at the exact immutable head", async () => {
+  const fetchImpl = vi.fn().mockResolvedValue({
+    status: 200,
+    ok: true,
+    json: async () => ({
+      path: "manifest.json",
+      encoding: "base64",
+      content: Buffer.from('{"display_name":"Alpha"}').toString("base64"),
+    }),
+  });
+  const provider = repositoryProvider("github", {
+    github: { ...githubClients(), readRootReadme: undefined, fetchImpl },
+  });
+
+  await expect(
+    provider.readRootFile({
+      repository: "example/project",
+      ref: "a".repeat(40),
+      path: "manifest.json",
+    }),
+  ).resolves.toEqual({
+    path: "manifest.json",
+    content: '{"display_name":"Alpha"}',
+    encoding: "utf8",
+  });
+  expect(fetchImpl).toHaveBeenCalledWith(
+    expect.stringContaining(`/contents/manifest.json?ref=${"a".repeat(40)}`),
+    expect.any(Object),
+  );
+});

@@ -179,3 +179,29 @@ test("collects only linked Codeberg contributor accounts", async () => {
   expect(JSON.stringify(result)).not.toContain("Unlinked Author");
   expect(JSON.stringify(result)).not.toContain("private@example.test");
 });
+
+test("reads a Codeberg root file at the exact immutable head", async () => {
+  const request = vi.fn().mockResolvedValue({
+    data: {
+      path: "manifest.json",
+      encoding: "base64",
+      content: Buffer.from('{"display_name":"Alpha"}').toString("base64"),
+    },
+  });
+  const provider = new CodebergRepositoryProvider({ request });
+
+  await expect(
+    provider.readRootFile({
+      repository: record.repository,
+      ref: "a".repeat(40),
+      path: "manifest.json",
+    }),
+  ).resolves.toEqual({
+    path: "manifest.json",
+    content: '{"display_name":"Alpha"}',
+    encoding: "utf8",
+  });
+  expect(request).toHaveBeenCalledWith(
+    expect.stringContaining(`/contents/manifest.json?ref=${"a".repeat(40)}`),
+  );
+});

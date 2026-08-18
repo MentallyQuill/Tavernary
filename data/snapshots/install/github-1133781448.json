@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1133781448",
+  "head_sha": "f8eadedb124d41a54d84a40d1f84d1332ec4d2f0",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Pathweaver",
+  "manifest": {
+    "display_name": "Pathweaver",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

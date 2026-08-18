@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1081942864",
+  "head_sha": "3694c90b915a7afa2b1b0bdb95b0ebb2aeed48e7",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Smart-Dialogue-Colorizer",
+  "manifest": {
+    "display_name": "Smart Dialogue Colorizer",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1044610257",
+  "head_sha": "a76c788a3a7da179793d481a5494fe78d53611c8",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "st-char-powersearch",
+  "manifest": {
+    "display_name": "Character Powersearch",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

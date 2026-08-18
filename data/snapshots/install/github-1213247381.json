@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1213247381",
+  "head_sha": "a7d7456b50f8dba31ee787c7122cc4e5a15ac213",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "AutoBackgound",
+  "manifest": {
+    "display_name": "Auto Background",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

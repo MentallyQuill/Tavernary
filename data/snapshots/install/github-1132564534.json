@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1132564534",
+  "head_sha": "4b76345d38d595c2316d75e3c256a91212090c3b",
+  "observed_at": "2026-08-18T19:13:32.479Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "sillytavern-image-gen",
+  "manifest": {
+    "display_name": "Quick Image Gen",
+    "key": null,
+    "minimum_client_version": "1.14.0"
+  }
+}

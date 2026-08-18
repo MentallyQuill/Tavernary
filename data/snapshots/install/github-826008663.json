@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-826008663",
+  "head_sha": "fc972dd8e663c6e922d56f3dc756114e7f7f2434",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "ST-Extension-Lua",
+  "manifest": {
+    "display_name": "Lua Scripts",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

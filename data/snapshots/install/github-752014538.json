@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-752014538",
+  "head_sha": "d56a64c91d69f2ad990271a21b15b9a8a0e80c75",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Extension-Silence",
+  "manifest": {
+    "display_name": "Silence Player",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

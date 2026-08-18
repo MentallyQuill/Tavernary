@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1184263874",
+  "head_sha": "9b3a332ee9a7c71f2e080b690941b90b610f1544",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-SmartImport",
+  "manifest": {
+    "display_name": "Smart Import",
+    "key": null,
+    "minimum_client_version": "1.16.0"
+  }
+}

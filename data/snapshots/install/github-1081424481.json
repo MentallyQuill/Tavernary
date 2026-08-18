@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1081424481",
+  "head_sha": "4e4c3d0c6cf1bf2f4f5a3fa2c805221ddeccf197",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-ModelInjection",
+  "manifest": {
+    "display_name": "SillyTavern-ModelInjection",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

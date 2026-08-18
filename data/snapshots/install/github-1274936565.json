@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1274936565",
+  "head_sha": "2daade16f6408ca832a4af9efba907007de555fd",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "ST-MessageSplit",
+  "manifest": {
+    "display_name": "Message Split",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1120101080",
+  "head_sha": "ef8e1f899d9977cd4a814ac248a03f298391bc8e",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-MazeMaster",
+  "manifest": {
+    "display_name": "MazeMaster",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

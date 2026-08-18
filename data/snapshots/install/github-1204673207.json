@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1204673207",
+  "head_sha": "a0733b99922f53b26cd3203ae0ad4a8f01ecbdb3",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Extension-Summaryception",
+  "manifest": {
+    "display_name": "Summaryception",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

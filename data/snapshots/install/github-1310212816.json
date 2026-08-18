@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1310212816",
+  "head_sha": "8ea2a917f1ef3a38682671e155cef4250c945628",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "CrossRoads",
+  "manifest": {
+    "display_name": "Crossroads",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1138762188",
+  "head_sha": "91cb3bc7178ae1615cc335ceda1ca983446e7616",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-zTracker",
+  "manifest": {
+    "display_name": "zTracker",
+    "key": null,
+    "minimum_client_version": "1.17.0"
+  }
+}

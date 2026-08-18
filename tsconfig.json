@@ -19,7 +19,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@tavernary/catalog-core": ["./packages/catalog-core/src/index.ts"],
+      "@tavernary/catalog-core/*": ["./packages/catalog-core/src/*"]
     }
   },
   "include": [

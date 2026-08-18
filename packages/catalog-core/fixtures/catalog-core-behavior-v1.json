@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "queryCases": [
+    {
+      "name": "literal search input",
+      "input": "q=Memory+Tool+%2B+World",
+      "expectedSearch": "Memory Tool + World",
+      "expectedFrontends": [],
+      "expectedKinds": []
+    },
+    {
+      "name": "explicit frontend and kind filters",
+      "input": "frontend=sillytavern&kind=preset&kind=extension",
+      "expectedSearch": "",
+      "expectedFrontends": ["sillytavern"],
+      "expectedKinds": ["extension", "preset"]
+    }
+  ],
+  "searchCases": [
+    {
+      "name": "AND terms",
+      "query": "memory tool",
+      "expectedIds": ["alpha"]
+    },
+    {
+      "name": "plus union",
+      "query": "memory + world",
+      "expectedIds": ["alpha", "beta", "gamma"]
+    }
+  ],
+  "projectCases": [
+    {
+      "name": "alphabetical browse sort",
+      "input": "sort=alphabetical",
+      "expectedIds": ["alpha", "beta", "gamma"]
+    },
+    {
+      "name": "frontend kind and license filters",
+      "input": "frontend=sillytavern&kind=extension&license=open-source",
+      "expectedIds": ["alpha"]
+    },
+    {
+      "name": "activity filter",
+      "input": "development=active-month&sort=alphabetical",
+      "expectedIds": ["alpha", "gamma"]
+    },
+    {
+      "name": "relevance sort",
+      "input": "q=memory&sort=relevance",
+      "scores": { "alpha": 10, "gamma": 20 },
+      "expectedIds": ["gamma", "alpha"]
+    }
+  ],
+  "kitCases": [
+    {
+      "name": "frontend filter",
+      "input": "mode=kits&frontend=sillytavern&sort=alphabetical",
+      "expectedIds": ["kit-alpha"]
+    },
+    {
+      "name": "available components filter",
+      "input": "mode=kits&available=1&sort=alphabetical",
+      "expectedIds": ["kit-alpha"]
+    },
+    {
+      "name": "included project filter",
+      "input": "mode=kits&includes=gamma&sort=alphabetical",
+      "expectedIds": ["kit-beta"]
+    }
+  ],
+  "tavernKeeper": {
+    "expectedState": "orange",
+    "expectedFreshness": "current"
+  }
+}

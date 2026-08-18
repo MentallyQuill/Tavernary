@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1310625840",
+  "head_sha": "d80b3ae4cb584ad038f0f8314faa793fae65517b",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Voicebox-TTS",
+  "manifest": {
+    "display_name": "Voicebox TTS",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

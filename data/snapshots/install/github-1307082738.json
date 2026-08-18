@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1307082738",
+  "head_sha": "a75a9b4394729a5ebcbc5d6eb2f56f8d18e8ed4a",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Silly-Map",
+  "manifest": {
+    "display_name": "Silly Map",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

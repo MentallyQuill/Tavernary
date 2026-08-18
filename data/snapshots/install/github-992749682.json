@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-992749682",
+  "head_sha": "a427446a7625ca19606fedfdc39891e2e3f8f3d1",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-ChatCompletionTabs",
+  "manifest": {
+    "display_name": "Chat Completion Tabs",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

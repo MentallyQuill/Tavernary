@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-885667005",
+  "head_sha": "fa7fb185d1d6fb42987e402dee832a947f89597b",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-CustomModels",
+  "manifest": {
+    "display_name": "Custom Models",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -64,6 +64,7 @@ function project(
     primaryFunction: kind === "frontend" ? "frontend" : "generation-reasoning",
     summary: `${id} summary`,
     canonicalUrl: `https://example.com/${id}`,
+    install: null,
     catalogedAt: "2026-07-01T00:00:00.000Z",
     catalogCohort: "standard",
     frontends: [],

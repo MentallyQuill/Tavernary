@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1068908642",
+  "head_sha": "c0dca691da8d36e2e8b06565b8497ca775e8cfbe",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Pronouns",
+  "manifest": {
+    "display_name": "Pronouns",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

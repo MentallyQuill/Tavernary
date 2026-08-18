@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1295846426",
+  "head_sha": "f3d2c58437a4f2d3eb7183dc721d3fa8725b21ab",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavernExtension-RandomGreeting",
+  "manifest": {
+    "display_name": "Random Greeting",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

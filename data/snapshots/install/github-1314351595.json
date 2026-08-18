@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1314351595",
+  "head_sha": "6b6ad3f6aaaa8246f6ff4a81b3f2c220e035880f",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Backup-Cleaner-Silly-Tavern",
+  "manifest": {
+    "display_name": "Backup Cleaner",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

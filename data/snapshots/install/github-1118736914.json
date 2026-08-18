@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1118736914",
+  "head_sha": "e107581f304561a742c9dd109b472001bf1c888d",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "st-action-pickers",
+  "manifest": {
+    "display_name": "Sillytavern-Action-Pickers",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

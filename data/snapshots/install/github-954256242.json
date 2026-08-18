@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-954256242",
+  "head_sha": "4c7b006216f504ddc0c23d179391f40fbcdbd00f",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Sillytavern-Loretips",
+  "manifest": {
+    "display_name": "Lore Tips",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

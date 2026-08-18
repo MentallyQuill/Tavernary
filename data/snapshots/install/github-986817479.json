@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-986817479",
+  "head_sha": "d400239727429f0398fc1295ead29119fd17a280",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "ST-SamplerKillSwitches",
+  "manifest": {
+    "display_name": "Sampler Killswitches",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

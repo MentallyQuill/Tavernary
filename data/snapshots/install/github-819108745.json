@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-819108745",
+  "head_sha": "c169a3cacaefd032d2857417564e0330b516a1b3",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Extension-Weather",
+  "manifest": {
+    "display_name": "Weather",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

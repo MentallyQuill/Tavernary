@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-783765890",
+  "head_sha": "99b7e814a22bccc42b306dd85e8ee707789dd21b",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-WorldInfoPresets",
+  "manifest": {
+    "display_name": "WorldInfo Presets",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

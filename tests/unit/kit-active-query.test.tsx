@@ -21,6 +21,7 @@ const project: CatalogProject = {
   primaryFunction: "generation-reasoning",
   summary: "Routing",
   canonicalUrl: "https://example.com/routing",
+  install: null,
   catalogedAt: "2026-07-01T00:00:00.000Z",
   catalogCohort: "standard",
   frontends: [label("sillytavern")],

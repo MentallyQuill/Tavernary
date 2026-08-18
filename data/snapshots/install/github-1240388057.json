@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1240388057",
+  "head_sha": "290870688da47363a4705284ff404bb6d56c7e4d",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-EveryTextLineEditor",
+  "manifest": {
+    "display_name": "Every Text Line Editor",
+    "key": null,
+    "minimum_client_version": "1.12.0"
+  }
+}

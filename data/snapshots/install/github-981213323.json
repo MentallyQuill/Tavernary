@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-981213323",
+  "head_sha": "86e13a2aa589c6679a5658e665d9e8edff2b9f94",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "StatSuite",
+  "manifest": {
+    "display_name": "StatSuite",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

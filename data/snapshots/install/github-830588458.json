@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-830588458",
+  "head_sha": "019f5f53a6feb3eb9b8015136d175254954ba7c9",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "rewrite-extension",
+  "manifest": {
+    "display_name": "Rewrite Extension",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

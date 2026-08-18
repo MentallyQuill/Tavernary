@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1104616181",
+  "head_sha": "b8558fcd196714af823f604d4c30ed8f39d73acc",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Discordia",
+  "manifest": {
+    "display_name": "Discordia",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1195775310",
+  "head_sha": "e0b53cb7c1d71c06b244f9ba0335c985c2e36f18",
+  "observed_at": "2026-08-18T19:13:32.479Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Streamline",
+  "manifest": {
+    "display_name": "Streamline",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

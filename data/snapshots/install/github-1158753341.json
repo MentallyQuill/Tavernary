@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1158753341",
+  "head_sha": "6591bf181a567961ce333d53c714bcdf30b19056",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "ST-Tag-Pilot",
+  "manifest": {
+    "display_name": "Tag Pilot",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

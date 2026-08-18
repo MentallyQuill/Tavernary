@@ -11,6 +11,19 @@ function tokenFromEnvironment() {
   return process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "";
 }
 
+function decodeContent(value) {
+  if (value?.encoding !== "base64" || typeof value.content !== "string") {
+    return null;
+  }
+  try {
+    return Buffer.from(value.content.replace(/\s/gu, ""), "base64").toString(
+      "utf8",
+    );
+  } catch {
+    return null;
+  }
+}
+
 async function githubJson(path, options = {}) {
   const token = options.token ?? tokenFromEnvironment();
   const response = await (options.fetchImpl ?? fetch)(`${githubApi}${path}`, {
@@ -153,5 +166,24 @@ export class GitHubRepositoryProvider {
       `/repos/${encodeURIComponent(owner)}/${encodeURIComponent(name)}/readme?ref=${encodeURIComponent(input.ref)}`,
       { token: this.token, fetchImpl: this.fetchImpl },
     );
+  }
+
+  async readRootFile(input) {
+    if (this.clients.readRootFile) {
+      return this.clients.readRootFile(input);
+    }
+    if (!/^[^/\\]+$/u.test(input.path)) {
+      throw new Error("GitHub root file path must contain one safe segment.");
+    }
+    const [owner, name] = input.repository.split("/");
+    const result = await githubJson(
+      `/repos/${encodeURIComponent(owner)}/${encodeURIComponent(name)}/contents/${encodeURIComponent(input.path)}?ref=${encodeURIComponent(input.ref)}`,
+      { token: this.token, fetchImpl: this.fetchImpl },
+    );
+    if (result === null) return null;
+    const content = decodeContent(result);
+    return content === null
+      ? null
+      : { path: result.path ?? input.path, content, encoding: "utf8" };
   }
 }

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1194042343",
+  "head_sha": "aa017e07f92177616933e51c0c731b13c0432399",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Extension-QuietProfileSelector",
+  "manifest": {
+    "display_name": "Quiet Profile Selector",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

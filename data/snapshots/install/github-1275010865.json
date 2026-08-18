@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1275010865",
+  "head_sha": "a5bec9d8c3141e7a57f49acc94826adfd4646994",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Lore-Atlas",
+  "manifest": {
+    "display_name": "Lore Atlas",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

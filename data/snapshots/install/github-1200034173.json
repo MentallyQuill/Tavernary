@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1200034173",
+  "head_sha": "d392c4d32c786608419244deebf39ab51d00b813",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-PersonaTools",
+  "manifest": {
+    "display_name": "PersonaTools",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

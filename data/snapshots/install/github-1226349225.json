@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1226349225",
+  "head_sha": "886a0144ff8608aabcef4fe1b408a13260c1a730",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "VectFox",
+  "manifest": {
+    "display_name": "VectFox",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
