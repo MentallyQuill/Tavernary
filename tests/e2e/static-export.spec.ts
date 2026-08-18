@@ -3,31 +3,20 @@ import { resolve } from "node:path";
 
 import { expect, test } from "@playwright/test";
 
-import { generatedProjectCount } from "../helpers/generated-catalog";
+import {
+  generatedCatalog,
+  generatedProjectCount,
+} from "../helpers/generated-catalog";
 import { sitePath } from "../helpers/site-path";
 
-const publishedKits = (
-  JSON.parse(
-    readFileSync(resolve(process.cwd(), "src/generated/catalog.json"), "utf8"),
-  ) as { kits: Array<{ title: string }> }
-).kits;
+const publishedKits = generatedCatalog.kits;
 const frontendVocabulary = JSON.parse(
   readFileSync(
     resolve(process.cwd(), "data/vocabularies/frontends.json"),
     "utf8",
   ),
 ) as { frontends: Array<{ label: string }> };
-const generatedCatalog = JSON.parse(
-  readFileSync(resolve(process.cwd(), "src/generated/catalog.json"), "utf8"),
-) as {
-  schemaVersion: number;
-  projects: Array<{
-    sourceStatus: string;
-    tavernKeeper: { state: string; freshness: string } | null;
-  }>;
-};
-
-test("exports the catalog schema-v6 scan-state contract", () => {
+test("exports the catalog schema-v7 scan-state contract", () => {
   expect(generatedCatalog.schemaVersion).toBe(7);
   expect(
     generatedCatalog.projects

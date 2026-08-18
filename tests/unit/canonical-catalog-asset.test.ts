@@ -15,4 +15,21 @@ describe("canonical catalog asset", () => {
     expect(JSON.parse(publicBytes)).toEqual(loadCatalog());
     expect(JSON.parse(publicBytes).schemaVersion).toBe(7);
   });
+
+  it("keeps browser fixtures bound to the canonical public asset", async () => {
+    const fixtureSources = await Promise.all(
+      [
+        "tests/helpers/generated-catalog.ts",
+        "tests/e2e/static-export.spec.ts",
+        "tests/e2e/kits-empty.spec.ts",
+      ].map((path) => readFile(resolve(process.cwd(), path), "utf8")),
+    );
+
+    expect(fixtureSources.join("\n")).not.toContain(
+      "src/generated/catalog.json",
+    );
+    expect(fixtureSources[0]).toContain(
+      "public/catalog/tavernary-catalog.json",
+    );
+  });
 });
