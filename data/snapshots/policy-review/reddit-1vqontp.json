@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "reddit-1vqontp",
+  "source_id": "url-reddit-1vqontp",
+  "source_identity": "url:https://www.reddit.com/r/SillyTavernAI/comments/1vqontp/new_preset_writers_block_unlimited_framework_an/",
+  "evidence_fingerprint": "c88894f0f00227af5f096df65903dd4d8821dc9488d6dbe5b210651b0a04d5e1",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-18T05:35:04.780Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-18T05:35:04.780Z"
+  },
+  "maintenance_issue_number": null
+}
