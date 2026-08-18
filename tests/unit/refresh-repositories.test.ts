@@ -108,6 +108,98 @@ test("isolates provider records, failures, and request telemetry", async () => {
   });
 });
 
+test("seeds schema-complete activity for a first Codeberg snapshot", async () => {
+  const source = {
+    ...record("codeberg-2445404", "codeberg"),
+    repository: "targren/SwipeScrubber",
+    repository_id: 2445404,
+  };
+  const headSha = "1".repeat(40);
+
+  const result = await runRepositoryRefresh({
+    mode: "project",
+    sourceId: source.id,
+    records: [source],
+    snapshots: [],
+    now: "2026-08-18T03:00:00.000Z",
+    completedAt: "2026-08-18T03:00:01.000Z",
+    providers: {
+      codeberg: {
+        observe: vi.fn(async () => ({
+          observations: [
+            {
+              provider: "codeberg",
+              sourceId: source.id,
+              repository: {
+                id: 2445404,
+                owner: "targren",
+                name: "SwipeScrubber",
+                url: "https://codeberg.org/targren/SwipeScrubber",
+                description: null,
+                defaultBranch: "master",
+                headSha,
+                headCommittedAt: "2026-08-17T00:00:00.000Z",
+                archived: false,
+                fork: false,
+                parent: null,
+                createdAt: "2026-08-17T00:00:00.000Z",
+                sizeKb: 1,
+              },
+              community: {
+                starsCount: 0,
+                forksCount: 0,
+                watchersCount: 0,
+              },
+              latestReleaseAt: null,
+              coarseLicenseSpdxId: null,
+            },
+          ],
+          failures: [],
+          usage: { requestCount: 1, pointCost: 0, remainingPoints: null },
+        })),
+        inspectActivity: vi.fn(async ({ activity }) => ({
+          activity,
+          license: {
+            status: "osi-approved",
+            spdxId: "MIT",
+            sourcePath: "LICENSE.md",
+          },
+          requestCount: 0,
+        })),
+        collectContributors: vi.fn(async () => ({
+          accounts: [],
+          requestCount: 0,
+          method: "commit-and-merged-pull-request-authors",
+          baselineCompletedAt: "2026-08-18T03:00:00.000Z",
+          refreshedAt: "2026-08-18T03:00:00.000Z",
+          scan: null,
+        })),
+      },
+    },
+    write: false,
+  });
+
+  expect(result.snapshots).toEqual([
+    expect.objectContaining({
+      source_id: source.id,
+      activity: expect.objectContaining({
+        latest_source_activity_at: null,
+        source_weeks: [],
+        evidence_status: "provisional",
+        baseline_completed_at: null,
+        baseline_attempts: 0,
+        latest_release_at: null,
+        provisional_weeks: Array.from({ length: 12 }, () => false),
+      }),
+      license: {
+        status: "osi-approved",
+        spdx_id: "MIT",
+        source_path: "LICENSE.md",
+      },
+    }),
+  ]);
+});
+
 test("validates the complete source-backed catalog before publishing production refreshes", async () => {
   const sourceId = "github-1001051404";
   const publish = vi.fn(async () => undefined);

@@ -13,7 +13,11 @@ import {
   snapshotForFailure,
   runRefresh as runGitHubRefresh,
 } from "./refresh-github.mjs";
-import { snapshotFromObservation } from "./repository-snapshot.mjs";
+import {
+  normalizedLicense,
+  provisionalActivity,
+  snapshotFromObservation,
+} from "./repository-snapshot.mjs";
 import { validateCatalog } from "./validate.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -208,12 +212,7 @@ async function refreshCodebergGroup(provider, records, snapshots, now) {
         repository: record.repository,
         expectedHeadSha: observation.repository.headSha,
         now,
-        activity: previous?.activity ?? {
-          source_weeks: [],
-          evidence_status: "provisional",
-          evidence_head_sha: null,
-          baseline_attempts: 0,
-        },
+        activity: previous?.activity ?? provisionalActivity(),
         scan: previous?.activity_scan ?? null,
       });
       requests += activity.requestCount ?? 0;
@@ -239,6 +238,9 @@ async function refreshCodebergGroup(provider, records, snapshots, now) {
       });
       candidate.activity = activity.activity;
       candidate.activity.evidence_head_sha = observation.repository.headSha;
+      if (activity.license) {
+        candidate.license = normalizedLicense(activity.license);
+      }
       if (Object.hasOwn(activity, "scan")) {
         candidate.activity_scan = activity.scan;
       }
