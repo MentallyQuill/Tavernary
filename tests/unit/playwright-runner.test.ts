@@ -22,6 +22,7 @@ describe("Playwright runner safeguards", () => {
     )?.[1];
     expect(fixtureEntryBlock).toBeTruthy();
     expect(fixtureEntryBlock).not.toContain('"node_modules"');
+    expect(fixtureEntryBlock).toContain('"packages"');
     expect(source).toMatch(
       /symlink\([\s\S]*resolve\(rootDirectory, "node_modules"\)[\s\S]*resolve\(workspaceDirectory, "node_modules"\)/u,
     );

@@ -16,6 +16,7 @@ const fixtureEntries = [
   "config",
   "data",
   "public",
+  "packages",
   "scripts",
   "src",
   "next-env.d.ts",
