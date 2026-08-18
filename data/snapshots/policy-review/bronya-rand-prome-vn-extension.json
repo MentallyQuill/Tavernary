@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "bronya-rand-prome-vn-extension",
+  "source_id": "github-839083006",
+  "source_identity": "github:bronya-rand/prome-vn-extension",
+  "evidence_fingerprint": "1bcbaff3f77459ef7b0ffe44aea31b39e11ca3c870b63dd30b52338ad04467bf",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-18T08:14:38.302Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-18T08:14:38.302Z"
+  },
+  "maintenance_issue_number": null
+}

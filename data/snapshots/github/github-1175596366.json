@@ -9,21 +9,26 @@
     "url": "https://github.com/prolix-oc/Lumiverse",
     "description": "A self-host AI chat frontend with a rich ecosystem and heavy emphasis on optimization, built from the ground up in TypeScript + Bun.",
     "default_branch": "main",
-    "head_sha": "b93f40ebf5676e4a5539cf7aaf943924928cae86",
-    "head_committed_at": "2026-08-16T16:35:45.000Z",
+    "head_sha": "8fc5c4615acf3d22935f96b2f12b33a0b7c9aea8",
+    "head_committed_at": "2026-08-17T23:21:51.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-07T23:15:01.000Z",
-    "size_kb": 117720
+    "size_kb": 112461
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-16T16:24:29.000Z",
+    "latest_source_activity_at": "2026-08-17T23:20:56.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-17T23:20:56.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-16T16:24:29.000Z",
+        "latest_at": "2026-08-16T22:42:05.000Z",
         "precision": "exact"
       },
       {
@@ -78,24 +83,24 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-16T17:02:17.000Z",
+    "latest_release_at": "2026-08-18T00:23:47.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-17T08:03:17.174Z",
+    "baseline_completed_at": "2026-08-18T07:56:54.593Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "b93f40ebf5676e4a5539cf7aaf943924928cae86"
+    "evidence_head_sha": "8fc5c4615acf3d22935f96b2f12b33a0b7c9aea8"
   },
   "community": {
     "stars_count": 164,
-    "forks_count": 55,
+    "forks_count": 56,
     "watchers_count": 2,
-    "aggregate": 221
+    "aggregate": 222
   },
   "license": {
     "status": "proprietary",
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-08-17T08:03:17.174Z",
+  "refreshed_at": "2026-08-18T07:56:54.593Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -119,12 +124,13 @@
       { "login": "Copilot", "type": "Bot", "provider": "github" },
       { "login": "sneezejayhauser", "type": "User", "provider": "github" },
       { "login": "Plaguis", "type": "User", "provider": "github" },
+      { "login": "Tantoofaaz777", "type": "User", "provider": "github" },
       { "login": "aaron-j-reeves", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-17T08:03:17.174Z",
+    "refreshed_at": "2026-08-18T07:56:54.593Z",
     "stale_since": null
   }
 }
