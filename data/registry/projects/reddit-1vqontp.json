@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "reddit-1vqontp",
+  "name": "New Preset Writers Block Unlimited Framework An",
+  "kind": "preset",
+  "summary": "Writer's Block: Unlimited Framework is an experimental, extremely modular SillyTavern preset for co-writing and roleplay, letting users create their own style through configurable framework components.",
+  "metadata_status": "curated",
+  "source_id": "url-reddit-1vqontp",
+  "frontends": ["sillytavern"],
+  "primary_function": "preset",
+  "tags": [
+    "guide-model-responses",
+    "improve-writing-and-prose",
+    "modular-and-extensible"
+  ],
+  "model_families": ["model-agnostic"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-08-18T04:16:00.832Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
