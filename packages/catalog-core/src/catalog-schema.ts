@@ -1,20 +1,30 @@
+import Ajv, { type ErrorObject } from "ajv";
+import addFormats from "ajv-formats";
+
 import type {
   CatalogProjectV7,
   CatalogV7,
   CatalogValidationIssue,
 } from "./catalog-types";
+import { catalogV7Schema } from "./catalog-v7-schema";
 import {
   InstallContractValidationError,
   parseInstallContract,
 } from "./install-contract";
 
-const catalogKeys = [
-  "generatedAt",
-  "kits",
-  "projects",
-  "schemaVersion",
-  "tagVocabulary",
-].sort();
+const ajv = new Ajv({ allErrors: true, strict: false });
+addFormats(ajv);
+ajv.addFormat("safe-http-url", {
+  type: "string",
+  validate: (value: string) => isSafeHttpUrl(value),
+});
+ajv.addFormat("safe-navigation-url", {
+  type: "string",
+  validate: (value: string) =>
+    isSafeHttpUrl(value) ||
+    (value.startsWith("/") && !value.startsWith("//") && !hasControl(value)),
+});
+const validateCatalog = ajv.compile(catalogV7Schema);
 
 export class CatalogValidationError extends Error {
   readonly issues: CatalogValidationIssue[];
@@ -27,103 +37,112 @@ export class CatalogValidationError extends Error {
 }
 
 export function parseCatalogV7(value: unknown): CatalogV7 {
-  const issues: CatalogValidationIssue[] = [];
-  if (!isRecord(value)) {
-    throw new CatalogValidationError([
-      { path: "catalog", message: "Catalog must be an object." },
-    ]);
-  }
-  const keys = Object.keys(value).sort();
-  if (
-    keys.length !== catalogKeys.length ||
-    keys.some((key, index) => key !== catalogKeys[index])
-  ) {
-    issues.push({
-      path: "catalog",
-      message: "Catalog top-level keys do not match schema 7.",
-    });
-  }
-  if (value.schemaVersion !== 7) {
-    issues.push({
-      path: "schemaVersion",
-      message: "Expected schema version 7.",
-    });
-  }
-  if (typeof value.generatedAt !== "string" || !isIsoDate(value.generatedAt)) {
-    issues.push({ path: "generatedAt", message: "Expected an ISO date-time." });
-  }
-  if (!Array.isArray(value.tagVocabulary)) {
-    issues.push({ path: "tagVocabulary", message: "Expected an array." });
-  }
-  if (!Array.isArray(value.kits)) {
-    issues.push({ path: "kits", message: "Expected an array." });
+  if (!validateCatalog(value)) {
+    throw new CatalogValidationError(
+      (validateCatalog.errors ?? []).map(schemaIssue),
+    );
   }
 
-  const projects: CatalogProjectV7[] = [];
+  const issues: CatalogValidationIssue[] = [];
+  const projects = value.projects as CatalogProjectV7[];
   const projectIds = new Set<string>();
-  if (!Array.isArray(value.projects)) {
-    issues.push({ path: "projects", message: "Expected an array." });
-  } else {
-    value.projects.forEach((project, index) => {
-      const path = `projects[${index}]`;
-      if (!isRecord(project)) {
-        issues.push({ path, message: "Project must be an object." });
-        return;
-      }
-      if (typeof project.id !== "string" || project.id.length === 0) {
-        issues.push({ path: `${path}.id`, message: "Project ID is required." });
-      } else if (projectIds.has(project.id)) {
+  projects.forEach((project, index) => {
+    const path = `projects[${index}]`;
+    if (projectIds.has(project.id)) {
+      issues.push({
+        path: `${path}.id`,
+        message: "Project ID must be unique.",
+      });
+    } else {
+      projectIds.add(project.id);
+    }
+    if (project.install !== null) {
+      try {
+        parseInstallContract(project.install);
+      } catch (cause) {
+        const field =
+          cause instanceof InstallContractValidationError &&
+          cause.field !== "contract"
+            ? `.${cause.field}`
+            : "";
         issues.push({
-          path: `${path}.id`,
-          message: "Project ID must be unique.",
+          path: `${path}.install${field}`,
+          message:
+            cause instanceof Error
+              ? cause.message
+              : "Install contract is invalid.",
         });
-      } else {
-        projectIds.add(project.id);
       }
-      if (!("install" in project)) {
-        issues.push({
-          path: `${path}.install`,
-          message: "Install eligibility is required.",
-        });
-      } else if (project.install !== null) {
-        try {
-          parseInstallContract(project.install);
-        } catch (cause) {
-          const field =
-            cause instanceof InstallContractValidationError &&
-            cause.field !== "contract"
-              ? `.${cause.field}`
-              : "";
-          issues.push({
-            path: `${path}.install${field}`,
-            message:
-              cause instanceof Error
-                ? cause.message
-                : "Install contract is invalid.",
-          });
-        }
-      }
-      projects.push(project as unknown as CatalogProjectV7);
-    });
-  }
+    }
+  });
+
+  const kitIds = new Set<string>();
+  (value.kits as CatalogV7["kits"]).forEach((kit, index) => {
+    if (kitIds.has(kit.id)) {
+      issues.push({
+        path: `kits[${index}].id`,
+        message: "Kit ID must be unique.",
+      });
+    }
+    kitIds.add(kit.id);
+  });
+  const tagIds = new Set<string>();
+  (value.tagVocabulary as CatalogV7["tagVocabulary"]).forEach((tag, index) => {
+    if (tagIds.has(tag.id)) {
+      issues.push({
+        path: `tagVocabulary[${index}].id`,
+        message: "Tag ID must be unique.",
+      });
+    }
+    tagIds.add(tag.id);
+  });
 
   if (issues.length > 0) throw new CatalogValidationError(issues);
-  return structuredClone({
-    schemaVersion: 7,
-    generatedAt: value.generatedAt as string,
-    tagVocabulary: value.tagVocabulary as unknown[],
-    projects,
-    kits: value.kits as unknown[],
-  } as unknown as CatalogV7);
+  return structuredClone(value as CatalogV7);
 }
 
-function isIsoDate(value: string): boolean {
-  const timestamp = new Date(value);
-  return (
-    Number.isFinite(timestamp.getTime()) && timestamp.toISOString() === value
-  );
+function schemaIssue(error: ErrorObject): CatalogValidationIssue {
+  let path = pointerToPath(error.instancePath);
+  if (error.keyword === "required") {
+    const missing = String(error.params.missingProperty ?? "");
+    path = path === "catalog" ? missing : `${path}.${missing}`;
+  } else if (error.keyword === "additionalProperties") {
+    const unexpected = String(error.params.additionalProperty ?? "");
+    path = path === "catalog" ? unexpected : `${path}.${unexpected}`;
+  }
+  return { path, message: error.message ?? "Value is invalid." };
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
+function pointerToPath(pointer: string): string {
+  if (pointer.length === 0) return "catalog";
+  return pointer
+    .split("/")
+    .slice(1)
+    .reduce((path, rawSegment) => {
+      const segment = rawSegment.replace(/~1/gu, "/").replace(/~0/gu, "~");
+      if (/^\d+$/u.test(segment)) return `${path}[${segment}]`;
+      return path.length === 0 ? segment : `${path}.${segment}`;
+    }, "");
+}
+
+function isSafeHttpUrl(value: string): boolean {
+  if (hasControl(value)) return false;
+  try {
+    const url = new URL(value);
+    return (
+      (url.protocol === "https:" || url.protocol === "http:") &&
+      url.username.length === 0 &&
+      url.password.length === 0 &&
+      url.hostname.length > 0
+    );
+  } catch {
+    return false;
+  }
+}
+
+function hasControl(value: string): boolean {
+  return Array.from(value).some((character) => {
+    const codePoint = character.codePointAt(0) ?? 0;
+    return codePoint < 32 || (codePoint >= 127 && codePoint <= 159);
+  });
 }

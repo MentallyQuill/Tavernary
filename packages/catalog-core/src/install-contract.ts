@@ -68,13 +68,6 @@ function parseRepositoryUrl(value: unknown): string {
       "Repository URL is invalid.",
     );
   }
-  if (/%(?:2f|5c)/iu.test(value)) {
-    throw new InstallContractValidationError(
-      "repositoryUrl",
-      "Repository URL cannot contain encoded separators.",
-    );
-  }
-
   let url: URL;
   try {
     url = new URL(value);
@@ -103,16 +96,7 @@ function parseRepositoryUrl(value: unknown): string {
     );
   }
 
-  const rawPath = rawUrlPath(value);
-  let decodedPath: string;
-  try {
-    decodedPath = decodeURIComponent(rawPath);
-  } catch {
-    throw new InstallContractValidationError(
-      "repositoryUrl",
-      "Repository URL path encoding is invalid.",
-    );
-  }
+  const decodedPath = decodeRepositoryPath(rawUrlPath(value));
   const segments = decodedPath.split("/").filter(Boolean);
   if (
     !url.hostname ||
@@ -129,6 +113,39 @@ function parseRepositoryUrl(value: unknown): string {
   }
 
   return url.href;
+}
+
+function decodeRepositoryPath(rawPath: string): string {
+  let current = rawPath;
+  for (let depth = 0; depth < 8; depth += 1) {
+    if (/%(?:2f|5c)/iu.test(current)) {
+      throw new InstallContractValidationError(
+        "repositoryUrl",
+        "Repository URL cannot contain encoded separators.",
+      );
+    }
+    let next: string;
+    try {
+      next = decodeURIComponent(current);
+    } catch {
+      throw new InstallContractValidationError(
+        "repositoryUrl",
+        "Repository URL path encoding is invalid.",
+      );
+    }
+    if (containsControl(next)) {
+      throw new InstallContractValidationError(
+        "repositoryUrl",
+        "Repository URL path contains control characters.",
+      );
+    }
+    if (next === current) return next;
+    current = next;
+  }
+  throw new InstallContractValidationError(
+    "repositoryUrl",
+    "Repository URL path encoding is excessive.",
+  );
 }
 
 function parseBranch(value: unknown): string | null {

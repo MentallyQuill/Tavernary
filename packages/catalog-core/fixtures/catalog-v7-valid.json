@@ -5,6 +5,57 @@
   "projects": [
     {
       "id": "example-alpha",
+      "name": "Alpha",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "A harmless fixture extension.",
+      "canonicalUrl": "https://github.com/example/alpha",
+      "catalogedAt": "2026-08-18T12:00:00.000Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with SillyTavern."
+        }
+      ],
+      "tags": [],
+      "search": {
+        "title": ["Alpha"],
+        "aliases": [],
+        "source": ["example-alpha"],
+        "summary": ["A harmless fixture extension."],
+        "kind": ["extension"],
+        "primaryFunction": ["Interface and workflow"],
+        "tags": [],
+        "frontends": ["SillyTavern"],
+        "compatibility": [],
+        "maintainers": ["example"],
+        "relationships": []
+      },
+      "tavernKeeper": null,
+      "fork": null,
+      "attribution": null,
+      "activity": {
+        "latestSourceActivityAt": null,
+        "activeWeeks12": null,
+        "weeklyActivity": null,
+        "evidenceStatus": null,
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": null,
+      "repositorySizeKb": null,
+      "license": {
+        "status": "missing",
+        "label": "No license detected",
+        "tooltip": "No license was detected."
+      },
+      "preset": null,
+      "refreshedAt": null,
+      "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
         "repositoryUrl": "https://github.com/example/alpha.git",

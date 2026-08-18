@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 
 import { expect, test } from "@playwright/test";
 
+import { parseCatalogV7 } from "../../packages/catalog-core/src/catalog-schema";
 import {
   generatedCatalog,
   generatedProjectCount,
@@ -40,6 +41,16 @@ test("serves the catalog from the configured base path", async ({ page }) => {
     generatedProjectCount,
   );
   await expect(page).not.toHaveTitle(/404/);
+});
+
+test("serves the canonical schema-7 catalog as JSON", async ({ page }) => {
+  const response = await page.request.get(
+    `${sitePath()}catalog/tavernary-catalog.json`,
+  );
+
+  expect(response.ok()).toBe(true);
+  expect(response.headers()["content-type"]).toContain("application/json");
+  expect(parseCatalogV7(await response.json())).toEqual(generatedCatalog);
 });
 
 test("exports the supplied Tavernary artwork", async ({ page }) => {

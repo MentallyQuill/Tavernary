@@ -37,6 +37,19 @@ describe("parseInstallContract", () => {
     ["fragment", "https://github.com/example/alpha.git#readme", "alpha"],
     ["scheme", "file:///example/alpha.git", "alpha"],
     ["encoded separator", "https://github.com/example%2Falpha.git", "alpha"],
+    ["encoded control", "https://github.com/example/alpha%00.git", "alpha"],
+    ["encoded newline", "https://github.com/example/alpha%0A.git", "alpha"],
+    ["encoded delete", "https://github.com/example/alpha%7F.git", "alpha"],
+    [
+      "double-encoded separator",
+      "https://github.com/example%252Falpha.git",
+      "alpha",
+    ],
+    [
+      "double-encoded backslash",
+      "https://github.com/example%255Calpha.git",
+      "alpha",
+    ],
     ["unsafe folder", "https://github.com/example/alpha.git", "../alpha"],
   ])("rejects %s", (_label, repositoryUrl, folderName) => {
     expect(() =>
@@ -74,3 +87,21 @@ it("reports an invalid install URL at the public field path", async () => {
     ],
   });
 });
+
+it.each([
+  ["unsafe project URL", "canonicalUrl", "javascript:alert(1)"],
+  ["malformed search fields", "search", { title: "not-an-array" }],
+  ["unexpected project field", "unexpected", true],
+])(
+  "rejects %s before the catalog enters the cache",
+  async (_name, field, next) => {
+    const value = structuredClone(
+      (await fixture("catalog-v7-valid")) as {
+        projects: Array<Record<string, unknown>>;
+      },
+    );
+    value.projects[0]![field] = next;
+
+    expect(() => parseCatalogV7(value)).toThrow(CatalogValidationError);
+  },
+);
