@@ -22,6 +22,7 @@ function project(
     primaryFunction: "generation-reasoning",
     summary: `${id} summary`,
     canonicalUrl: `https://example.com/${id}`,
+    install: null,
     catalogedAt: "2026-07-01T00:00:00Z",
     catalogCohort: "standard",
     frontends: [

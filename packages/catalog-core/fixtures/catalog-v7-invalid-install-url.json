@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 7,
+  "generatedAt": "2026-08-18T12:00:00.000Z",
+  "tagVocabulary": [],
+  "projects": [
+    {
+      "id": "example-alpha",
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://user:secret@github.com/example/alpha.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "alpha"
+      }
+    }
+  ],
+  "kits": []
+}

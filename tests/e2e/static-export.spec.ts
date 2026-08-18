@@ -28,7 +28,7 @@ const generatedCatalog = JSON.parse(
 };
 
 test("exports the catalog schema-v6 scan-state contract", () => {
-  expect(generatedCatalog.schemaVersion).toBe(6);
+  expect(generatedCatalog.schemaVersion).toBe(7);
   expect(
     generatedCatalog.projects
       .filter(({ sourceStatus }) => sourceStatus === "manual")

@@ -1,5 +1,6 @@
 import type { CatalogSearchFields } from "@/features/search/search-types";
 import type { TavernKeeperCardStatus } from "@/features/catalog/tavernkeeper-status";
+import type { InstallContract } from "../../../packages/catalog-core/src/catalog-types";
 
 export type ProjectKind = "frontend" | "extension" | "preset";
 export type MetadataStatus = "provisional" | "curated";
@@ -106,10 +107,11 @@ export interface CatalogProject {
   } | null;
   refreshedAt: string | null;
   staleSince: string | null;
+  install: InstallContract | null;
 }
 
 export interface Catalog {
-  schemaVersion: 6;
+  schemaVersion: 7;
   generatedAt: string;
   tagVocabulary: CatalogTagDefinition[];
   projects: CatalogProject[];

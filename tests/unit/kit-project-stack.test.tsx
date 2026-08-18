@@ -23,6 +23,7 @@ function project({
     primaryFunction: "memory-retrieval",
     summary: `${name} summary`,
     canonicalUrl: `https://example.com/projects/${id}`,
+    install: null,
     catalogedAt: "2026-07-01T00:00:00.000Z",
     catalogCohort: "standard",
     frontends: [],

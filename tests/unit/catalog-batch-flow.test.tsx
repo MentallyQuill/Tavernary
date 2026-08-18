@@ -65,6 +65,7 @@ function project(): CatalogProject {
     primaryFunction: "memory-retrieval",
     summary: "Memory summary",
     canonicalUrl: "https://example.com/memory",
+    install: null,
     catalogedAt: "2026-07-01T00:00:00.000Z",
     catalogCohort: "standard",
     frontends: [],
@@ -91,7 +92,7 @@ function project(): CatalogProject {
 }
 
 const catalog: Catalog = {
-  schemaVersion: 6,
+  schemaVersion: 7,
   tagVocabulary: [],
   generatedAt: "2026-07-24T00:00:00.000Z",
   projects: [project()],

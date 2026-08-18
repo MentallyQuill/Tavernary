@@ -45,6 +45,7 @@ function project(
     primaryFunction: "generation-reasoning",
     summary: `${name} summary`,
     canonicalUrl: `https://example.com/${id}`,
+    install: null,
     catalogedAt: "2026-07-01T00:00:00Z",
     catalogCohort: "standard",
     frontends: [
@@ -108,7 +109,7 @@ const child = project("child", "Child", {
   },
 });
 const catalog: Catalog = {
-  schemaVersion: 6,
+  schemaVersion: 7,
   tagVocabulary: [],
   generatedAt: "2026-07-24T00:00:00Z",
   projects: [grandparent, parent, child],

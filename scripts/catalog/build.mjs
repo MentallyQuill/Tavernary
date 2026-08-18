@@ -2,6 +2,7 @@ import { mkdir, readFile, readdir, rename, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { parseInstallContract } from "../../packages/catalog-core/src/install-contract.ts";
 import { classificationError } from "../../src/features/catalog/primary-function-contract.mjs";
 import { effectiveListingState } from "../../src/features/catalog/listing-state.mjs";
 import { canonicalSourceUrl } from "../../src/features/catalog/source-record.mjs";
@@ -323,6 +324,7 @@ export async function buildCatalog(options = {}) {
     records,
     sources,
     snapshots,
+    installEvidence,
     refreshManifest,
     kitRecords,
     kitSnapshots,
@@ -346,6 +348,10 @@ export async function buildCatalog(options = {}) {
         readJsonDirectory("data/snapshots/github"),
         readOptionalJsonDirectory("data/snapshots/codeberg"),
       ]).then(([github, codeberg]) => [...github, ...codeberg]),
+    options.installEvidence ??
+      (options.records
+        ? []
+        : readOptionalJsonDirectory("data/snapshots/install")),
     options.refreshManifest ?? readJson("data/snapshots/github-refresh.json"),
     options.kitRecords ??
       (options.records ? [] : readJsonDirectory("data/registry/kits")),
@@ -398,6 +404,9 @@ export async function buildCatalog(options = {}) {
   );
   const snapshotsBySource = new Map(
     snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
+  );
+  const installEvidenceBySource = new Map(
+    installEvidence.map((evidence) => [evidence.source_id, evidence]),
   );
   const assessedTavernKeeperReports = tavernKeeperReports.reports ?? [];
   const preferredTavernKeeperReportIds =
@@ -482,12 +491,19 @@ export async function buildCatalog(options = {}) {
   projects = projects.map((project) => {
     const record = recordsByProject.get(project.id);
     const source = registry.sourcesById.get(record?.source_id);
+    const snapshot = snapshotsBySource.get(record?.source_id) ?? null;
+    const install = deriveInstallContract({
+      record,
+      source,
+      snapshot,
+      evidence: installEvidenceBySource.get(record?.source_id) ?? null,
+    });
     const fork = resolveForkRelationship({
-      snapshot: snapshotsBySource.get(record?.source_id) ?? null,
+      snapshot,
       sourcesByRepositoryKey: registry.sourcesByRepositoryKey,
       publicProjectsBySourceId,
     });
-    const completedProject = { ...project, fork };
+    const completedProject = { ...project, install, fork };
     return {
       ...completedProject,
       search: projectSearchFields({
@@ -651,7 +667,7 @@ export async function buildCatalog(options = {}) {
     })
     .sort((left, right) => left.id.localeCompare(right.id));
   const catalog = {
-    schemaVersion: 6,
+    schemaVersion: 7,
     generatedAt: generatedAtIso,
     tagVocabulary: publicTagVocabulary,
     projects,
@@ -681,6 +697,42 @@ export async function buildCatalog(options = {}) {
   }
 
   return catalog;
+}
+
+export function deriveInstallContract({ record, source, snapshot, evidence }) {
+  if (
+    record?.kind !== "extension" ||
+    !record.frontends?.includes("sillytavern") ||
+    record.listing_status !== "active" ||
+    (source?.type !== "github" && source?.type !== "codeberg") ||
+    source.status !== "active" ||
+    !snapshot ||
+    snapshot.source_health !== "healthy" ||
+    snapshot.stale_since !== null ||
+    snapshot.repository?.archived === true ||
+    evidence?.status !== "verified" ||
+    evidence.head_sha !== snapshot.repository?.head_sha ||
+    evidence.manifest_path !== "manifest.json" ||
+    evidence.folder_name !== snapshot.repository?.name
+  ) {
+    return null;
+  }
+
+  try {
+    const repositoryUrl = new URL(snapshot.repository.url);
+    repositoryUrl.pathname = `${repositoryUrl.pathname
+      .replace(/\/+$/u, "")
+      .replace(/\.git$/iu, "")}.git`;
+    return parseInstallContract({
+      kind: "sillytavern-extension-git",
+      repositoryUrl: repositoryUrl.href,
+      branch: null,
+      manifestPath: "manifest.json",
+      folderName: evidence.folder_name,
+    });
+  } catch {
+    return null;
+  }
 }
 
 async function main() {
