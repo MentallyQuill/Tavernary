@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1024412582",
+  "head_sha": "8a5e42e6cbea0b63ca0fb92b5ce52ec4a399012c",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-WTracker",
+  "manifest": {
+    "display_name": "WTracker",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

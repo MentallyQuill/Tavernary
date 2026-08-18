@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-856585955",
+  "head_sha": "1d70c49df54e26ea669759444b0c2a2a1e9c1cf4",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-SendButton",
+  "manifest": {
+    "display_name": "Send Button",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

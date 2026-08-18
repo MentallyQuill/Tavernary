@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1256518687",
+  "head_sha": "722c6f3a189d2b185016dbc78bf585c5fa8b6546",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "charSaver",
+  "manifest": {
+    "display_name": "Character Saver",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-999164615",
+  "head_sha": "18acf38cf170366cfa172611bd17e6ded9f02e5a",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "favorites-carousel",
+  "manifest": {
+    "display_name": "Favorites Carousel",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

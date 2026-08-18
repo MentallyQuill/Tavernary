@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1087458216",
+  "head_sha": "2052f747e7c59b4421d0a1e634e17bc1e4b2bac3",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-OutfitSwitch",
+  "manifest": {
+    "display_name": "Outfit Switcher",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

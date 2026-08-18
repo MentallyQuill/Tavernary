@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1263408079",
+  "head_sha": "43ee8b020ebbf7f3dba2127d25ea13f88ed1e328",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-SummaryN-ResizeChat",
+  "manifest": {
+    "display_name": "Summary & Resize Chat",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

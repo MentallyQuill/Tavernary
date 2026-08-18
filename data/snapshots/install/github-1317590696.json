@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1317590696",
+  "head_sha": "4b2120816b75c246a954230886ecb2723bda7d84",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "sillytavern-contextual-scene-painter",
+  "manifest": {
+    "display_name": "Contextual Scene Painter",
+    "key": null,
+    "minimum_client_version": "1.12.0"
+  }
+}

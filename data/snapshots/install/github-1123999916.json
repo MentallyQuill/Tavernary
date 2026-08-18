@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1123999916",
+  "head_sha": "90d6877dcdae9c42cb68b9ecc3bcffd89f8b4b0d",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "StoryMode",
+  "manifest": {
+    "display_name": "Story Mode",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

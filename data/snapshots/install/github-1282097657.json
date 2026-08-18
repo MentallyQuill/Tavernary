@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1282097657",
+  "head_sha": "426754c83cff7e6342dbd2d3e901f725e08937e8",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "dandeleon-multiverse",
+  "manifest": {
+    "display_name": "Dandeleon Multiverse",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

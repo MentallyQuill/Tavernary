@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1319768827",
+  "head_sha": "faa3d47c61d4269298fa06715410a99255a65ad7",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-ReplaceAll",
+  "manifest": {
+    "display_name": "Replace All (Chat Data Editor)",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

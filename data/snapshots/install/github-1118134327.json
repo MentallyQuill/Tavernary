@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1118134327",
+  "head_sha": "55faf8b69caa0c89edde210885d2f7fe070fb5de",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Context-Injection-RNG-for-DnD",
+  "manifest": {
+    "display_name": "Context Injection RNG",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

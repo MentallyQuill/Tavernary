@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-960096638",
+  "head_sha": "758aa6f60ab547cc399c33a4ee9c0a961603a9a1",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Extension-CustomSliders",
+  "manifest": {
+    "display_name": "Custom Sliders",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

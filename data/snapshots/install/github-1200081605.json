@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1200081605",
+  "head_sha": "194a011b6b4ecbc0cd347ae8b6e59a6c1a56021a",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Smart-Memory",
+  "manifest": {
+    "display_name": "Smart Memory",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1220986145",
+  "head_sha": "a88f10183155d028cfa4c32f4d06388d70262cfc",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Smart-Chat-Manager-Silly-Tavern",
+  "manifest": {
+    "display_name": "Smart Chat Manager",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

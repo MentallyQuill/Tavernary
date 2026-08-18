@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1135951236",
+  "head_sha": "d565554d0d101f60a3ae383bd346f74e77afd65b",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "danganronpa-sillytavern",
+  "manifest": {
+    "display_name": "Danganronpa Extension",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

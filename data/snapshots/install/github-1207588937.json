@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1207588937",
+  "head_sha": "bd0f2fea0c9b19c13bb8e0d5c1a2f4afc45e26dc",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Reviewer",
+  "manifest": {
+    "display_name": "Reviewer",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

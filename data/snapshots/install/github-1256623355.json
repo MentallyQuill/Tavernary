@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1256623355",
+  "head_sha": "5a74e6f780bee66925b60f25b38fbbd24e1e4cc8",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "merged_world_tracker",
+  "manifest": {
+    "display_name": "Merged World Tracker",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

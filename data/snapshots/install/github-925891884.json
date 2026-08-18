@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-925891884",
+  "head_sha": "3c5ef68e2c4bc4b152078965a153f12aa5aad513",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Extension-TypingIndicator",
+  "manifest": {
+    "display_name": "Typing Indicator",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

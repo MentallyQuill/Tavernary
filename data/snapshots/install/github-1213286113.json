@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1213286113",
+  "head_sha": "ab562b0326041424c41a035966bb8f48f5616632",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "AutoMusic",
+  "manifest": {
+    "display_name": "AutoMusic",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

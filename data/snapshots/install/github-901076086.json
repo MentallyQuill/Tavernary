@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-901076086",
+  "head_sha": "81b3326c1d81ea3411ab057280ecd5786fbe29a1",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-MessageSummarize",
+  "manifest": {
+    "display_name": "qvink_memory",
+    "key": null,
+    "minimum_client_version": "1.14.0"
+  }
+}

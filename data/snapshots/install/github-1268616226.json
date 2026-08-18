@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1268616226",
+  "head_sha": "6cd20be6c46dc9de3025726e7a333869493a0289",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "MemoryLoom",
+  "manifest": {
+    "display_name": "Memory Loom",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

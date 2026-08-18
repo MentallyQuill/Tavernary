@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1300808393",
+  "head_sha": "fd39db1be265dd01f0d1bd54febc38e869e4256c",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Character-Tools",
+  "manifest": {
+    "display_name": "Character Tools",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

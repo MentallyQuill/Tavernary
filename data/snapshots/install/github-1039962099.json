@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1039962099",
+  "head_sha": "96fa0602f53b65b1645c7404a93338c14c088edd",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "st-mode-toggles",
+  "manifest": {
+    "display_name": "Mode Toggles",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

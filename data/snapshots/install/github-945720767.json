@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-945720767",
+  "head_sha": "04fdfe4410d59534ab379e9741e1277a95f6d384",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-MCP-Client",
+  "manifest": {
+    "display_name": "MCP Client",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-983964699",
+  "head_sha": "9ab4153494b7e2f5aff60746fe55597979b2d3b1",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "NemoPresetExt",
+  "manifest": {
+    "display_name": "NemoPresetExt",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1105308117",
+  "head_sha": "2876e81f1230681922841377597e7b2f1f68b42d",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-TypefaceR",
+  "manifest": {
+    "display_name": "TypefaceR - Font Customizer",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

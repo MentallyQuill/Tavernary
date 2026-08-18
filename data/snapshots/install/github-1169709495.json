@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1169709495",
+  "head_sha": "35a7940f77691807be08c4e2e153118341a90c6e",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-EchoText",
+  "manifest": {
+    "display_name": "EchoText",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

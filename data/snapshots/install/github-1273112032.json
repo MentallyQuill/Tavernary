@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1273112032",
+  "head_sha": "e0bdcd1efb17640bebd9ab198a99923a7bd21ca8",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Directive",
+  "manifest": {
+    "display_name": "Directive",
+    "key": "directive",
+    "minimum_client_version": "1.12.0"
+  }
+}

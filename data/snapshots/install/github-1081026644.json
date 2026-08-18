@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1081026644",
+  "head_sha": "45097b492f80232aa9e78fd6a4feced1ba1b2df6",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Rabbit-Response-Team",
+  "manifest": {
+    "display_name": "Rabbit Response Team",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

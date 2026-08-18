@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-949765337",
+  "head_sha": "42c283b6630bfa5380918e00a9762e19881ee59b",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "ST-koboldcpp-loader-standalone",
+  "manifest": {
+    "display_name": "KoboldCPP .kcpps Loader Standalone",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

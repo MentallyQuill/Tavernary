@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-871361642",
+  "head_sha": "9b58956c8e5fe95598e5ad771bcb5c0f9de4fa09",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "st-stepped-thinking",
+  "manifest": {
+    "display_name": "Stepped Thinking",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

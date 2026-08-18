@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1069371232",
+  "head_sha": "982d840df7de4be031b1ddce06a3462ae506b596",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "ST-CharacterPreview",
+  "manifest": {
+    "display_name": "Character Details Popup",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1275541730",
+  "head_sha": "a8cf65851cff66926bbfe148563bf003bf0eec92",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "nutho_autocloser",
+  "manifest": {
+    "display_name": "Auto-Closer",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

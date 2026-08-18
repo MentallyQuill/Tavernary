@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1079428625",
+  "head_sha": "6b6439862f1d0c9a57feaa3c1fc215f1541b7b58",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Personas",
+  "manifest": {
+    "display_name": "Personas",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

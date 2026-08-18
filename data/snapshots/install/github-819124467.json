@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-819124467",
+  "head_sha": "a7d5bb556b3243e79decf49ef96234f71757cb98",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-MessageVariables",
+  "manifest": {
+    "display_name": "Message Variables",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

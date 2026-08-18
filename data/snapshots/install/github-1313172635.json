@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1313172635",
+  "head_sha": "4941e3da71d1108b0db7bcf999f345212f799ac0",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Lore-Library-Lite",
+  "manifest": {
+    "display_name": "Lore Library & Campaign Manager",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

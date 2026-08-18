@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1268540573",
+  "head_sha": "3c547c1120a3cd56af9006a80854ea845270838c",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-DirectCommand",
+  "manifest": {
+    "display_name": "DirectCommand",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

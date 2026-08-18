@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1225640741",
+  "head_sha": "d4f0ce9468d8164bc38f8e62e30ec65c3695658c",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Story-Engine",
+  "manifest": {
+    "display_name": "Story Engine",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

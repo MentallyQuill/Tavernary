@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1233011311",
+  "head_sha": "44239d3f71d5b3f3d9b0da29e5ed8c402bfa8c53",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "another-universe",
+  "manifest": {
+    "display_name": "Another Universe",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

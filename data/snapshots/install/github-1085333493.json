@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1085333493",
+  "head_sha": "3339e64f14e77f0cfb505d53d32de98ca11bc64a",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "VectHare",
+  "manifest": {
+    "display_name": "VectHare",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

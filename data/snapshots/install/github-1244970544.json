@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1244970544",
+  "head_sha": "267be002d4ede346a70d676c720298374eb72545",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-ReasoningProfiles",
+  "manifest": {
+    "display_name": "Reasoning Profiles",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1234094202",
+  "head_sha": "9cb45ce22aa8417de132fd574518071cd175ddbf",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "sillytavern-doglikeyou",
+  "manifest": {
+    "display_name": "🐶 小狗记住你 (DogLikeYou)",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

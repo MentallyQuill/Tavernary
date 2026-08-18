@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1303700120",
+  "head_sha": "5492153cecd8aece110dddceecdb69a7ebf62da1",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "STGroupResponderSelector",
+  "manifest": {
+    "display_name": "Group Responder Selector",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

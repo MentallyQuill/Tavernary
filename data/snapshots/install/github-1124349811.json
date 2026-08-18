@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1124349811",
+  "head_sha": "4e3968d31101c518f9aaa82fbbdd83e8fca0b220",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "context-image-generation",
+  "manifest": {
+    "display_name": "Context Image Generation 🍌",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

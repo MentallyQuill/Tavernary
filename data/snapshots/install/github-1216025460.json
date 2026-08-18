@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1216025460",
+  "head_sha": "801909b70c510dfab7268cdfef3bd7986f574d4d",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-STARmem",
+  "manifest": {
+    "display_name": "STARmem",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

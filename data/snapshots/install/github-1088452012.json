@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1088452012",
+  "head_sha": "0226317f01e6711bc14d39cab92cbeb15b4d1d7c",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "sillytavern-real-world-weather",
+  "manifest": {
+    "display_name": "Real-World Weather",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

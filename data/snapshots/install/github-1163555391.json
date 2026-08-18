@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1163555391",
+  "head_sha": "c534fa0969e449c364b85ab03f1aa00d607b11be",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Dooms-Enhancement-Suite",
+  "manifest": {
+    "display_name": "Doom's Enhancement Suite",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

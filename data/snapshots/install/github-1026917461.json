@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1026917461",
+  "head_sha": "657b8a89a49a388d5752693d51d2b7713ca26040",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Tracker",
+  "manifest": {
+    "display_name": "Tracker Enhanced",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

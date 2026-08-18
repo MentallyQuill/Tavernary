@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1164267316",
+  "head_sha": "e3a2678c4293baea97d195c4dc5cceb4db2810ca",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Discord-Connector",
+  "manifest": {
+    "display_name": "Discord Connector",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

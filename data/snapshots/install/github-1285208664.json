@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1285208664",
+  "head_sha": "bc2096d5fc4797379cc4ae5bdcc5fae93c95170c",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Recursion",
+  "manifest": {
+    "display_name": "Recursion",
+    "key": "recursion",
+    "minimum_client_version": "1.18.0"
+  }
+}

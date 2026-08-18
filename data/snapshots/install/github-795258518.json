@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-795258518",
+  "head_sha": "930be54913d90abd90ebd698ddd81affa924e2e1",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Extension-TopInfoBar",
+  "manifest": {
+    "display_name": "Chat Top Bar",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

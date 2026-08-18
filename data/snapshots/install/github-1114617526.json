@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1114617526",
+  "head_sha": "b08838e9ebb0c51d16ce25d490959f992108df32",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-LocalImage",
+  "manifest": {
+    "display_name": "Local Image",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

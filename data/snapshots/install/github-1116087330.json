@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1116087330",
+  "head_sha": "17ca911eeac55a0a50a15a1db65ce0b41d91d291",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "bf-ooc-injection",
+  "manifest": {
+    "display_name": "BF's Story Director",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

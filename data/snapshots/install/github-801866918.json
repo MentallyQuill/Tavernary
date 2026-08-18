@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-801866918",
+  "head_sha": "ff34ac37048964de41b077bdc3b6dd6bea37568b",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "STExtension-Snapshot",
+  "manifest": {
+    "display_name": "Snapshot",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

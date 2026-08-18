@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1160848402",
+  "head_sha": "fa1d9a1d7c8cac6953ee6cb8df64a9599dfdadb1",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "BetterSimTracker",
+  "manifest": {
+    "display_name": "BetterSimTracker",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -312,7 +312,7 @@ export async function publishRepositoryCandidates(
   await publishInstallEvidence(changedInstallEvidence, options);
 }
 
-async function publishInstallEvidence(changedEvidence, options = {}) {
+export async function publishInstallEvidence(changedEvidence, options = {}) {
   const write = options.writeFile ?? writeFile;
   const move = options.rename ?? rename;
   const remove = options.rm ?? rm;

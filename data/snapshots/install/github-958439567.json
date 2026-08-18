@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-958439567",
+  "head_sha": "68ff2113d6183073f2848dc0e7318df32bf0b65f",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-WI-Bulk-Mover",
+  "manifest": {
+    "display_name": "WI Bulk Mover",
+    "key": null,
+    "minimum_client_version": "1.12.14"
+  }
+}

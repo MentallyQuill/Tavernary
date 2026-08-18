@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1289162242",
+  "head_sha": "4f04c4f8868156ff49aa4df7419d50933d900a2e",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "css-default-scoped",
+  "manifest": {
+    "display_name": "CSS Default Scoped",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

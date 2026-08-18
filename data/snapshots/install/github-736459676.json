@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-736459676",
+  "head_sha": "44b0fc029315d678f186b0ae9cb35c915a32b0d3",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-TriggerCards",
+  "manifest": {
+    "display_name": "Trigger Cards",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

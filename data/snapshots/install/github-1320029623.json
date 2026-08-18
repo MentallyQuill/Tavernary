@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1320029623",
+  "head_sha": "8a9b070ce6b8c1267c27f2ec0b58a39fbd4a88a8",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-InternalStates",
+  "manifest": {
+    "display_name": "Internal States",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1312920117",
+  "head_sha": "9069eacc258bddd579bd8feb5ded209cbae4e742",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-ChatRenamer",
+  "manifest": {
+    "display_name": "Chat Renamer",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

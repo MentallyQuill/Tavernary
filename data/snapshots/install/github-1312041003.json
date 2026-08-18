@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1312041003",
+  "head_sha": "706d74defa9e4dcbf26bec38753f132be2815181",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-SmartBackgrounds",
+  "manifest": {
+    "display_name": "Smart Backgrounds / 智能背景",
+    "key": null,
+    "minimum_client_version": "1.18.0"
+  }
+}

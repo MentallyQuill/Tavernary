@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1143287385",
+  "head_sha": "e47202ecb020e6eb5388a84286ffbdc0650b12e1",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-CustomPreset",
+  "manifest": {
+    "display_name": "Custom Preset Manager",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

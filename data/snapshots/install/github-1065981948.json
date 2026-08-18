@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1065981948",
+  "head_sha": "2d7193cb82ecc22ee67c8ef57334c7b962a87f9e",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "timeline-memory",
+  "manifest": {
+    "display_name": "Timeline Memory",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

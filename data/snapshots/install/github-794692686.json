@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-794692686",
+  "head_sha": "4737cd36d5f53cacc76203dd6dbcb673bafe13b4",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Extension-Notebook",
+  "manifest": {
+    "display_name": "Notebook",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

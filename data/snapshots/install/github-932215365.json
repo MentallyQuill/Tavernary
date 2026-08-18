@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-932215365",
+  "head_sha": "f2d9ef8e7d6b4f924dd02a588d772e10439b06d4",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Mathcros",
+  "manifest": {
+    "display_name": "Mathcros",
+    "key": null,
+    "minimum_client_version": "1.15.0"
+  }
+}

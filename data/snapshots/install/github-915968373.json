@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-915968373",
+  "head_sha": "a001f9ebfcf2e41de1904e631d5884032b8b319b",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-CustomThemeStyleInputs",
+  "manifest": {
+    "display_name": "Custom Theme Style Inputs",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

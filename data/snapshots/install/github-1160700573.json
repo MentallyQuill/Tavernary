@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1160700573",
+  "head_sha": "dc2345afa5e580bc8a4df6a37b5774354f6c90ba",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "sillytavern-DeepLore",
+  "manifest": {
+    "display_name": "DeepLore (Obsidian required)",
+    "key": null,
+    "minimum_client_version": "1.12.14"
+  }
+}

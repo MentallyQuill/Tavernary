@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1135415804",
+  "head_sha": "c6bb84e64924d8a7a89c6289b996a11742d08a5a",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "ST-BasicSpotify",
+  "manifest": {
+    "display_name": "Basic Spotify Player",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

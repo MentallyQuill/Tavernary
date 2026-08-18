@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1131514178",
+  "head_sha": "a31eb3210a7eff6445a037bb9954780cd163006d",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Carmy-InfoBoard",
+  "manifest": {
+    "display_name": "InfoBoard Sidebar",
+    "key": null,
+    "minimum_client_version": "1.0.0"
+  }
+}

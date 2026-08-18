@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1001051404",
+  "head_sha": "2ea33800d62cfefa49af5bfcd56b4ff5947bed5e",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-MemoryBooks",
+  "manifest": {
+    "display_name": "Memory Books",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1195030528",
+  "head_sha": "0aeac04395724f93b813333bfd8a52520fb8588b",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Vistalyze",
+  "manifest": {
+    "display_name": "Vistalyze",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1248273779",
+  "head_sha": "d17c069e423ce014aeb687d5e8e3f0fcd2cb6df6",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "lorebook-creator",
+  "manifest": {
+    "display_name": "LoreBook Creator",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

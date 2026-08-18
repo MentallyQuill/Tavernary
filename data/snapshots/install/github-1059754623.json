@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1059754623",
+  "head_sha": "9243b9c1ab54269f830d79b1aa0af3052be6ef54",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-LorebookOrdering",
+  "manifest": {
+    "display_name": "Lorebook Ordering",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

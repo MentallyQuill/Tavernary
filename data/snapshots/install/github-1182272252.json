@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1182272252",
+  "head_sha": "01f868f7067cba7b61af016875d58144e3f31723",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Sillytavern-Another-Character-Library",
+  "manifest": {
+    "display_name": "Another Character Library",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

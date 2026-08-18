@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1035690744",
+  "head_sha": "6b390a294af977451d75877a6781d142023ba321",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-CharacterVisuals",
+  "manifest": {
+    "display_name": "Character Visuals",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

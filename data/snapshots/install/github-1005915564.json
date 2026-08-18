@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1005915564",
+  "head_sha": "140f57d2df733f284ecdb437a0f23cefd572d77f",
+  "observed_at": "2026-08-18T17:17:07.406Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Stat-us-Maximus",
+  "manifest": {
+    "display_name": "Stat-us Maximus",
+    "key": null,
+    "minimum_client_version": "1.17.0"
+  }
+}
