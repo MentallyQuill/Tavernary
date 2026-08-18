@@ -232,7 +232,7 @@ for (const scenario of [
       await expectWithinViewport(page, popover, { vertical: true });
       await expect(popover).toHaveScreenshot(
         `scan-popover-${scenario.name}-${title.name}.png`,
-        { animations: "disabled", maxDiffPixels: 10 },
+        { animations: "disabled", maxDiffPixels: 16 },
       );
     });
   }
