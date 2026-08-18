@@ -1,49 +1,49 @@
 {
   "schema_version": 3,
   "mode": "project",
-  "started_at": "2026-08-18T03:55:34.328Z",
-  "completed_at": "2026-08-18T03:55:44.142Z",
+  "started_at": "2026-08-18T04:03:38.393Z",
+  "completed_at": "2026-08-18T04:03:39.184Z",
   "counts": {
     "total": 1,
     "checked": 1,
     "changed": 1,
-    "unchanged": 0,
+    "unchanged": 1,
     "provisional": 0,
     "degraded": 0,
     "unavailable": 0,
     "failed": 0,
-    "compared": 1,
+    "compared": 0,
     "baseline": 0,
     "fallback": 0
   },
   "api": {
-    "graphql_requests": 0,
-    "graphql_points": 0,
-    "graphql_remaining": null,
-    "rest_requests": 20
+    "graphql_requests": 1,
+    "graphql_points": 1,
+    "graphql_remaining": 4989,
+    "rest_requests": 1
   },
   "providers": {
     "github": {
+      "checked": 1,
+      "changed": 1,
+      "failed": 0,
+      "requests": 2,
+      "remaining": 4989
+    },
+    "codeberg": {
       "checked": 0,
       "changed": 0,
       "failed": 0,
       "requests": 0,
       "remaining": null
-    },
-    "codeberg": {
-      "checked": 1,
-      "changed": 1,
-      "failed": 0,
-      "requests": 20,
-      "remaining": 1996
     }
   },
-  "duration_ms": 9814,
+  "duration_ms": 791,
   "source_timings": [
     {
-      "source_id": "codeberg-2445404",
-      "outcome": "compare-source",
-      "duration_ms": 7777,
+      "source_id": "github-1139430137",
+      "outcome": "unchanged",
+      "duration_ms": 1,
       "error_code": null
     }
   ],
