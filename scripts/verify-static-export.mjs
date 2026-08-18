@@ -161,12 +161,51 @@ export async function verifyTavernKeeperStaticExport(outputDirectory = "out") {
   }
 }
 
+export async function verifyCatalogStaticExport(
+  outputDirectory = "out",
+  publicDirectory = resolve(rootDirectory, "public"),
+  sourceRoot = rootDirectory,
+) {
+  const publicPath = resolve(publicDirectory, "catalog/tavernary-catalog.json");
+  const outputPath = resolve(outputDirectory, "catalog/tavernary-catalog.json");
+  const [publicBytes, outputBytes] = await Promise.all([
+    readFile(publicPath, "utf8"),
+    readFile(outputPath, "utf8"),
+  ]);
+  if (publicBytes !== outputBytes) {
+    throw new Error("Exported catalog bytes differ from the public catalog");
+  }
+
+  let catalog;
+  try {
+    catalog = JSON.parse(outputBytes);
+  } catch {
+    throw new Error("Exported catalog is not valid JSON");
+  }
+  if (catalog.schemaVersion !== 7) {
+    throw new Error("Exported catalog must use schema 7");
+  }
+
+  for (const obsoletePath of [
+    resolve(outputDirectory, "catalog.json"),
+    resolve(sourceRoot, "src/generated/catalog.json"),
+  ]) {
+    try {
+      await access(obsoletePath);
+    } catch {
+      continue;
+    }
+    throw new Error(`Obsolete catalog asset still exists: ${obsoletePath}`);
+  }
+}
+
 async function main() {
   await access("out/index.html");
   const html = await readFile("out/index.html", "utf8");
   verifyStaticExport(html, configuredBasePath());
   await verifyHelpStaticRoutes();
   await verifyTavernKeeperStaticExport();
+  await verifyCatalogStaticExport();
   console.log("Static export verified");
 }
 

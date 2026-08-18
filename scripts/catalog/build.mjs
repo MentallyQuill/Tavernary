@@ -21,7 +21,10 @@ import {
 } from "../security/tavernkeeper-targets.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
-const outputPath = resolve(rootDirectory, "src/generated/catalog.json");
+const outputPath = resolve(
+  rootDirectory,
+  "public/catalog/tavernary-catalog.json",
+);
 
 async function readJson(path) {
   return JSON.parse(await readFile(resolve(rootDirectory, path), "utf8"));

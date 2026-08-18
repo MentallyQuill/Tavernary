@@ -4,3 +4,8 @@ export function verifyHelpStaticRoutes(outputDirectory?: string): Promise<void>;
 export function verifyTavernKeeperStaticExport(
   outputDirectory?: string,
 ): Promise<void>;
+export function verifyCatalogStaticExport(
+  outputDirectory?: string,
+  publicDirectory?: string,
+  sourceRoot?: string,
+): Promise<void>;
