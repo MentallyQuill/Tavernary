@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { backfillExtensionInstallEvidence } from "../../scripts/catalog/backfill-extension-install-evidence.mjs";
 
 describe("backfillExtensionInstallEvidence", () => {
-  it("validates and builds all current-head evidence before publishing", async () => {
+  it("revalidates cached invalid manifests before publishing", async () => {
     const publish = vi.fn();
     const validate = vi.fn().mockResolvedValue({ errors: [] });
     const build = vi.fn().mockResolvedValue({});
@@ -40,7 +40,16 @@ describe("backfillExtensionInstallEvidence", () => {
             },
           },
         ],
-        installEvidence: [],
+        installEvidence: [
+          {
+            schema_version: 1,
+            source_id: "github-1",
+            head_sha: "a".repeat(40),
+            observed_at: "2026-08-17T12:00:00.000Z",
+            status: "unavailable",
+            reason: "invalid-manifest",
+          },
+        ],
       },
       providers: {
         github: {
@@ -48,7 +57,6 @@ describe("backfillExtensionInstallEvidence", () => {
             path: "manifest.json",
             content: JSON.stringify({
               display_name: "Alpha",
-              loading_order: 10,
               js: "index.js",
             }),
             encoding: "utf8",

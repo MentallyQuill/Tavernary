@@ -52,6 +52,7 @@ export function refreshExtensionInstallEvidence(input: {
   snapshots: Array<Record<string, any>>;
   previousEvidence?: ExtensionInstallEvidenceV1[];
   sourceIds?: string[];
+  retryReasons?: ReadonlySet<UnavailableExtensionInstallEvidence["reason"]>;
   providers: Partial<
     Record<
       "github" | "codeberg",

@@ -2,7 +2,13 @@
   "schema_version": 1,
   "source_id": "github-1218665690",
   "head_sha": "0fff51593aafc91298bca7dd81a804b01394568f",
-  "observed_at": "2026-08-18T17:17:07.406Z",
-  "status": "unavailable",
-  "reason": "invalid-manifest"
+  "observed_at": "2026-08-19T16:48:19.807Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "polyceph",
+  "manifest": {
+    "display_name": "Polyceph",
+    "key": null,
+    "minimum_client_version": null
+  }
 }

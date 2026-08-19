@@ -2,7 +2,13 @@
   "schema_version": 1,
   "source_id": "github-1283421850",
   "head_sha": "ef2a249ed582564be221c39875d34cf86290e11c",
-  "observed_at": "2026-08-18T17:17:07.406Z",
-  "status": "unavailable",
-  "reason": "invalid-manifest"
+  "observed_at": "2026-08-19T16:48:19.807Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "game-engine",
+  "manifest": {
+    "display_name": "Game Engine",
+    "key": null,
+    "minimum_client_version": null
+  }
 }

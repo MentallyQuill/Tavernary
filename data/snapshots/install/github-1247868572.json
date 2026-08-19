@@ -2,7 +2,13 @@
   "schema_version": 1,
   "source_id": "github-1247868572",
   "head_sha": "2c6b36a15ef753a80707ab8c1fb39486b471172a",
-  "observed_at": "2026-08-18T17:17:07.406Z",
-  "status": "unavailable",
-  "reason": "invalid-manifest"
+  "observed_at": "2026-08-19T16:48:19.807Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Token-and-Cost-Statistics",
+  "manifest": {
+    "display_name": "Kuro Token & Cost Analytics",
+    "key": null,
+    "minimum_client_version": "1.12.0"
+  }
 }
