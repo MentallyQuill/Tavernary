@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "supker-st-copilot",
+  "source_id": "github-1218157882",
+  "source_identity": "github:supker/st-copilot",
+  "evidence_fingerprint": "658e0047bba902bc73e5ed36af01814e1da5f52a04bdcfa427450d04e460b6b4",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-19T08:09:46.025Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-19T08:09:46.025Z"
+  },
+  "maintenance_issue_number": null
+}
