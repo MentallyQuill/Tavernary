@@ -55,6 +55,7 @@ export async function backfillExtensionInstallEvidence(options = {}) {
     sources: inputs.sources,
     snapshots: inputs.snapshots,
     previousEvidence: inputs.installEvidence,
+    retryReasons: new Set(["invalid-manifest"]),
     providers,
     observedAt: options.observedAt ?? new Date().toISOString(),
   });

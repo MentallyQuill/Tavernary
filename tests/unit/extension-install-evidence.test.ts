@@ -37,6 +37,44 @@ describe("deriveExtensionInstallEvidence", () => {
     });
   });
 
+  it("accepts a manifest without a loading order", () => {
+    expect(
+      deriveExtensionInstallEvidence({
+        sourceId: "github-42",
+        repository,
+        manifestPath: "manifest.json",
+        manifest: {
+          display_name: "Character Library",
+          js: "index.js",
+        },
+        observedAt: "2026-08-18T12:00:00.000Z",
+      }),
+    ).toMatchObject({
+      schema_version: 1,
+      source_id: "github-42",
+      head_sha: "a".repeat(40),
+      manifest_path: "manifest.json",
+      status: "verified",
+      folder_name: "alpha",
+    });
+  });
+
+  it("rejects a non-numeric loading order when present", () => {
+    expect(
+      deriveExtensionInstallEvidence({
+        sourceId: "github-42",
+        repository,
+        manifestPath: "manifest.json",
+        manifest: {
+          display_name: "Alpha",
+          loading_order: "first",
+          js: "index.js",
+        },
+        observedAt: "2026-08-18T12:00:00.000Z",
+      }),
+    ).toMatchObject({ status: "unavailable", reason: "invalid-manifest" });
+  });
+
   it.each([
     ["nested manifest", "extension/manifest.json", "manifest-not-at-root"],
     ["missing js", "manifest.json", "invalid-manifest"],

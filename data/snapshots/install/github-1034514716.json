@@ -2,7 +2,13 @@
   "schema_version": 1,
   "source_id": "github-1034514716",
   "head_sha": "b51fe2220d567c0845cd72d114bd312705a95f59",
-  "observed_at": "2026-08-18T17:17:07.406Z",
-  "status": "unavailable",
-  "reason": "invalid-manifest"
+  "observed_at": "2026-08-19T16:48:19.807Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Intiface_Central-Sillytavern-plugin",
+  "manifest": {
+    "display_name": "Intiface Central For Sillytavern",
+    "key": null,
+    "minimum_client_version": null
+  }
 }

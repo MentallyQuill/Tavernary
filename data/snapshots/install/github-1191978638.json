@@ -2,7 +2,13 @@
   "schema_version": 1,
   "source_id": "github-1191978638",
   "head_sha": "8df15490c26cb7cc29ac5f53fe4b57182065758c",
-  "observed_at": "2026-08-18T17:17:07.406Z",
-  "status": "unavailable",
-  "reason": "invalid-manifest"
+  "observed_at": "2026-08-19T16:48:19.807Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "IkarusAutoImage",
+  "manifest": {
+    "display_name": "Ikarus Auto Image",
+    "key": null,
+    "minimum_client_version": null
+  }
 }

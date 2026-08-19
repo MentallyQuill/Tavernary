@@ -20,7 +20,8 @@ export function deriveExtensionInstallEvidence(input) {
     !manifest ||
     typeof manifest.display_name !== "string" ||
     manifest.display_name.trim().length === 0 ||
-    !Number.isFinite(manifest.loading_order) ||
+    (manifest.loading_order !== undefined &&
+      !Number.isFinite(manifest.loading_order)) ||
     !hasEntry
   ) {
     return { ...base, status: "unavailable", reason: "invalid-manifest" };
@@ -86,8 +87,12 @@ export async function refreshExtensionInstallEvidence(input) {
 
     const previous = evidenceBySource.get(sourceId);
     const currentFolderName = repositoryFolderName(snapshot.repository.url);
+    const shouldRetryPrevious =
+      previous?.status === "unavailable" &&
+      input.retryReasons?.has(previous.reason);
     if (
       previous?.head_sha === snapshot.repository.head_sha &&
+      !shouldRetryPrevious &&
       previous.reason !== "fetch-failed" &&
       (previous.status !== "verified" ||
         previous.folder_name === currentFolderName)
