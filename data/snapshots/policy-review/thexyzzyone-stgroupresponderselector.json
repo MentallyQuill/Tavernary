@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "thexyzzyone-stgroupresponderselector",
+  "source_id": "github-1303700120",
+  "source_identity": "github:thexyzzyone/stgroupresponderselector",
+  "evidence_fingerprint": "fffbcfd30e45ff73876ecf7d3d85e388ef93442c9e8b852d750be5bbfcc9ca59",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-19T08:12:25.759Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-19T08:12:25.759Z"
+  },
+  "maintenance_issue_number": null
+}
