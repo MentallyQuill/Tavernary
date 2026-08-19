@@ -45,17 +45,17 @@
     "evidence_head_sha": "febe6180d69dd20e3b545ed837f3c58b13424324"
   },
   "community": {
-    "stars_count": 118,
+    "stars_count": 119,
     "forks_count": 25,
     "watchers_count": 3,
-    "aggregate": 146
+    "aggregate": 147
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-18T07:56:54.593Z",
+  "refreshed_at": "2026-08-19T07:56:49.599Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -70,7 +70,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-18T07:56:54.593Z",
+    "refreshed_at": "2026-08-19T07:56:49.599Z",
     "stale_since": null
   }
 }

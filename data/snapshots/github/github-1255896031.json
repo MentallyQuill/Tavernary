@@ -7,23 +7,23 @@
     "owner": "j-dandelion",
     "name": "Lumiverse-Canvas",
     "url": "https://github.com/j-dandelion/Lumiverse-Canvas",
-    "description": "Spindle extension for Lumiverse that adds convenient tweaks and features to enhance the UI. Aimed at deeper customization and quality-of-life improvements.",
+    "description": "Spindle extension for https://lumiverse.chat that adds convenient tweaks and features to enhance the UI. Aimed at deeper customization and quality-of-life improvements.",
     "default_branch": "main",
-    "head_sha": "f8036442601cd6bbe421e735255d75ea508494cb",
-    "head_committed_at": "2026-08-18T01:08:47.000Z",
+    "head_sha": "6dac7eaa6bfba04bb6b20dcfe245ee37eb5deca9",
+    "head_committed_at": "2026-08-19T05:33:36.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-01T09:15:47.000Z",
-    "size_kb": 2364
+    "size_kb": 2414
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-18T01:08:47.000Z",
+    "latest_source_activity_at": "2026-08-19T05:33:36.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-17",
-        "latest_at": "2026-08-18T01:08:47.000Z",
+        "latest_at": "2026-08-19T05:33:36.000Z",
         "precision": "exact"
       },
       {
@@ -82,7 +82,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-18T07:56:54.593Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "f8036442601cd6bbe421e735255d75ea508494cb"
+    "evidence_head_sha": "6dac7eaa6bfba04bb6b20dcfe245ee37eb5deca9"
   },
   "community": {
     "stars_count": 4,
@@ -91,7 +91,7 @@
     "aggregate": 4
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-18T07:56:54.593Z",
+  "refreshed_at": "2026-08-19T07:56:49.599Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -103,7 +103,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-18T07:56:54.593Z",
+    "refreshed_at": "2026-08-19T07:56:49.599Z",
     "stale_since": null
   }
 }

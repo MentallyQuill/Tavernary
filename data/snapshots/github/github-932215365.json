@@ -9,24 +9,30 @@
     "url": "https://github.com/leandrojofre/SillyTavern-Mathcros",
     "description": "Adds advanced math operations to SillyTavern through the macro system.",
     "default_branch": "release",
-    "head_sha": "f2d9ef8e7d6b4f924dd02a588d772e10439b06d4",
-    "head_committed_at": "2026-05-05T21:51:37.000Z",
+    "head_sha": "9c12b146ffefd726afcf43c3422cbfd1da5639da",
+    "head_committed_at": "2026-08-18T18:38:44.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-02-13T15:00:40.000Z",
-    "size_kb": 657
+    "size_kb": 659
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-05-05T21:50:43.000Z",
-    "source_weeks": [],
+    "latest_source_activity_at": "2026-08-18T18:29:50.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-18T18:29:50.000Z",
+        "precision": "exact"
+      }
+    ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-05-05T21:51:48.000Z",
+    "latest_release_at": "2026-08-18T18:38:57.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-29T22:02:06.912Z",
+    "baseline_completed_at": "2026-08-19T07:56:49.599Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "f2d9ef8e7d6b4f924dd02a588d772e10439b06d4"
+    "evidence_head_sha": "9c12b146ffefd726afcf43c3422cbfd1da5639da"
   },
   "community": {
     "stars_count": 1,
@@ -39,7 +45,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-18T07:56:54.593Z",
+  "refreshed_at": "2026-08-19T07:56:49.599Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -49,7 +55,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-18T07:56:54.593Z",
+    "refreshed_at": "2026-08-19T07:56:49.599Z",
     "stale_since": null
   }
 }

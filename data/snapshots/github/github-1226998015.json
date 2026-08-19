@@ -9,18 +9,23 @@
     "url": "https://github.com/AMousePad/LumiRealm",
     "description": "Putting RisuRealm in Lumiverse",
     "default_branch": "main",
-    "head_sha": "1d9200012c0efc14baf55278acfbfa44cc2af0d2",
-    "head_committed_at": "2026-08-16T18:01:48.000Z",
+    "head_sha": "346d68889cb0f569fda646337b3383cb0e76af63",
+    "head_committed_at": "2026-08-19T02:03:12.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-02T04:32:14.000Z",
-    "size_kb": 12302
+    "size_kb": 14764
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-16T17:45:04.000Z",
+    "latest_source_activity_at": "2026-08-19T02:03:12.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-19T02:03:12.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-10",
         "latest_at": "2026-08-16T17:45:04.000Z",
@@ -65,9 +70,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-17T08:03:17.174Z",
+    "baseline_completed_at": "2026-08-19T07:56:49.599Z",
     "baseline_attempts": 1,
-    "evidence_head_sha": "1d9200012c0efc14baf55278acfbfa44cc2af0d2"
+    "evidence_head_sha": "346d68889cb0f569fda646337b3383cb0e76af63"
   },
   "community": {
     "stars_count": 6,
@@ -80,17 +85,18 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-18T07:56:54.593Z",
+  "refreshed_at": "2026-08-19T07:56:49.599Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "AMousePad", "type": "User", "provider": "github" }
+      { "login": "AMousePad", "type": "User", "provider": "github" },
+      { "login": "prolix-oc", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-18T07:56:54.593Z",
+    "refreshed_at": "2026-08-19T07:56:49.599Z",
     "stale_since": null
   }
 }

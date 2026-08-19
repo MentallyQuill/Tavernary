@@ -9,21 +9,21 @@
     "url": "https://github.com/Noineri/vibe_tavern",
     "description": "A modern, local-first AI roleplay platform",
     "default_branch": "dev",
-    "head_sha": "f48b809253dd905ae163a3f126cd3d9d0e7d49bb",
-    "head_committed_at": "2026-08-17T16:30:18.000Z",
+    "head_sha": "c39deb9c37bef5cb6e0e863495e68e8bc644cb4a",
+    "head_committed_at": "2026-08-18T16:30:35.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-23T07:45:41.000Z",
-    "size_kb": 41831
+    "size_kb": 42062
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-17T16:18:37.000Z",
+    "latest_source_activity_at": "2026-08-18T16:30:35.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-17",
-        "latest_at": "2026-08-17T16:18:37.000Z",
+        "latest_at": "2026-08-18T16:30:35.000Z",
         "precision": "exact"
       },
       {
@@ -87,7 +87,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-18T07:56:54.593Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "f48b809253dd905ae163a3f126cd3d9d0e7d49bb"
+    "evidence_head_sha": "c39deb9c37bef5cb6e0e863495e68e8bc644cb4a"
   },
   "community": {
     "stars_count": 16,
@@ -100,7 +100,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-18T07:56:54.593Z",
+  "refreshed_at": "2026-08-19T07:56:49.599Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -112,7 +112,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-18T07:56:54.593Z",
+    "refreshed_at": "2026-08-19T07:56:49.599Z",
     "stale_since": null
   }
 }

@@ -9,24 +9,40 @@
     "url": "https://github.com/leandrojofre/SillyTavern-QOL",
     "description": "A SillyTavern estension that adds small QOL features.",
     "default_branch": "release",
-    "head_sha": "864b31cc33c35a28e3c04cbea7f14f9a34b52bbb",
-    "head_committed_at": "2026-05-05T21:39:01.000Z",
+    "head_sha": "5f458dd33b3460acb7e310ca022831dd6bb41352",
+    "head_committed_at": "2026-08-18T18:33:09.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2024-11-18T22:24:34.000Z",
-    "size_kb": 950
+    "size_kb": 971
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-05-05T21:38:22.000Z",
-    "source_weeks": [],
+    "latest_source_activity_at": "2026-08-18T17:17:36.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-18T17:17:36.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-07T03:02:32.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-08-01T01:01:51.000Z",
+        "precision": "exact"
+      }
+    ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-05-05T21:39:18.000Z",
+    "latest_release_at": "2026-08-18T18:33:20.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-07T02:43:52.152Z",
+    "baseline_completed_at": "2026-08-19T07:56:49.599Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "864b31cc33c35a28e3c04cbea7f14f9a34b52bbb"
+    "evidence_head_sha": "5f458dd33b3460acb7e310ca022831dd6bb41352"
   },
   "community": {
     "stars_count": 9,
@@ -39,7 +55,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-18T07:56:54.593Z",
+  "refreshed_at": "2026-08-19T07:56:49.599Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -50,7 +66,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-18T07:56:54.593Z",
+    "refreshed_at": "2026-08-19T07:56:49.599Z",
     "stale_since": null
   }
 }
