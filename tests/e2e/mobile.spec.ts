@@ -419,6 +419,7 @@ test("keeps Help controls and private reporting inside a 320px viewport", async 
     page.getByRole("link", { name: "Open private security reporting" }),
   ).toBeVisible();
   await page.getByRole("link", { name: "Report a website problem" }).click();
+  await expect(page).toHaveURL(/\/help\/report-website\/?(?:\?|$)/u);
   await expect(page.getByRole("button", { name: "Review request" })).toHaveCSS(
     "min-height",
     "44px",
