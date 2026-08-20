@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "rustyorb-preset-forge",
+  "name": "preset-forge",
+  "kind": "extension",
+  "summary": "PresetForge is a visual builder for SillyTavern preset kits that treats presets as programs with modules, variables, regexes, and automations. The LLM never writes JSON, so every export passes an independent validator.",
+  "metadata_status": "curated",
+  "source_id": "github-1338955728",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": [
+    "manage-prompts-and-presets",
+    "modular-and-extensible",
+    "visual-workflow"
+  ],
+  "cataloged_at": "2026-08-20T16:46:47.582Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
