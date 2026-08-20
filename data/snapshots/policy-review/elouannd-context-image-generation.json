@@ -7,10 +7,10 @@
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-03T11:02:22.530Z",
+  "reviewed_at": "2026-08-20T08:09:36.392Z",
   "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-08-03T11:02:22.530Z"
+    "attempts": 5,
+    "last_failure_at": "2026-08-20T08:09:36.392Z"
   },
   "maintenance_issue_number": null
 }
