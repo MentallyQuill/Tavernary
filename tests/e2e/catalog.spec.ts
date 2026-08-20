@@ -734,7 +734,7 @@ test("shares plus OR searches with normal clause behavior", async ({
   ).toBeVisible();
   await expect(
     page.getByRole("heading", {
-      name: "Extension-Summaryception",
+      name: "Summaryception",
       exact: true,
     }),
   ).toBeVisible();
@@ -748,7 +748,7 @@ test("shares plus OR searches with normal clause behavior", async ({
   ).toBeVisible();
   await expect(
     page.getByRole("heading", {
-      name: "Extension-Summaryception",
+      name: "Summaryception",
       exact: true,
     }),
   ).toBeVisible();
