@@ -1,104 +1,115 @@
 # Contribution overview
 
-There are several ways to help Tavernary. Choose the path that matches what
-you want to change; project submissions, website bugs, catalog maintenance,
-and code contributions follow different review paths.
+Thanks for helping Tavernary. The easiest way to contribute is to choose the
+smallest path that matches your goal. Tavernary keeps project data, website
+changes, Kits, and security reports on separate tracks so each one gets the
+right kind of review.
+
+## Choose a path
+
+| You want to… | Start here |
+| --- | --- |
+| Add a project | [Submit a project](/submit/project/) |
+| Fix a project card | [Report a project listing](/help/report-project/) |
+| Update your own project listing | [Manage your project listing](/help/manage-project/) |
+| Make or edit a Kit | [Open the Kit Builder](/?mode=kits) |
+| Report a Kit | [Report a Kit](/help/report-kit/) |
+| Report a site problem | [Report a website problem](/help/report-website/) |
+| Ask another Tavernary question | [Get other help](/help/other/) |
+| Change code, tests, or docs | Open a pull request in this repository |
+| Report a Tavernary security problem | Use the private path in [SECURITY.md](../../SECURITY.md) |
+
+![The Help hub routes different kinds of contributions](../assets/screenshots/help-hub.png)
 
 ## Add a project
 
-Use the site's **Submit Project** form. Tavernary prepares the authoritative
-manifest and opens GitHub only as the public review-and-create surface.
-Automation checks the submission shape, source eligibility, and
-obvious duplicates. A generated PR isolates the proposed files for CI and
-audit; valid transactions automatically publish by exact SHA without routine
-staff involvement.
+Use Tavernary's project form. It builds a structured review request and opens a
+GitHub Issue Form as a public review mirror. Automation checks the source and
+obvious duplicates, then prepares a pull request when the request is ready.
 
-See [what is Tavernary?](../guides/what-is-tavernary.md) for the current source
-rules. For issue routing and maintainer handoff details, see
-[submission and review](submission-and-review.md) and maintainer
-[operations runbook](../maintenance/operations-runbook.md).
+The source is still the important part. Frontends and Extensions need a public
+GitHub or Codeberg repository. System Presets may use another stable public
+HTTPS source page. Tavernary links to the source; it does not host the files.
 
-## Create or change a Kit
+Read [Submission and review](submission-and-review.md) for the complete flow.
 
-Kits are ordered collections of catalog projects assembled by the community.
-Drafts are built and reviewed in the in-browser Kit builder before Tavernary
-opens the GitHub review mirror. Valid Kits and edits publish automatically after triage and final
-revalidation; a pending or invalid edit does not replace the published Kit.
+External GitHub accounts may keep up to 10 open issues in Tavernary. The limit
+covers all public issue types; edits and comments do not use another slot.
+Closing an issue restores one slot immediately.
 
-For full Kit workflow details (submit/edit/report/withdraw constraints and
-author eligibility checks), see [Kit submission and moderation workflows](kits.md).
+The publication system automatically publishes valid create, card-edit, source-move,
+retire, restore, and source-delist changes after their checks pass. The PR
+remains the CI and audit transaction. Add-card batches still need maintainer
+approval.
 
-Begin Kit submissions, reports, and withdrawals in Tavernary.
-Do not edit generated Kit output by hand.
+## Manage a listing
 
-- Kit create/edit: `/?mode=kits`
-- Kit report: `/help/report-kit/`
-- Kit withdrawal: `/help/withdraw-kit/`
+The owner path is for the current personal GitHub owner of a verified
+repository, or for a reviewed Tavernary maintainer. Organization membership or
+a trusted association by itself does not grant authority.
 
-## Improve the site or tooling
+An admitted request creates a review branch named
+`automation/project-owner-request-<issue-number>`. The pull request is the
+audit and validation transaction. It may:
 
-Code, tests, documentation, catalog scripts, workflows, and styling changes
-belong in a pull request. Before starting, check the relevant architecture or
-operations document and preserve the boundary between:
+- edit one card;
+- **Add cards from this source**;
+- update a repository location after a rename or transfer;
+- **retire or restore a card**; or
+- **permanently delist a source**.
 
-- human-authored registry data;
-- machine-authored GitHub snapshots;
-- generated browser catalog data; and
-- the static site source and export.
+An Add cards from this source request contains **one to ten cards** and there
+can be only **one unresolved add-card request per source**. Retiring or
+restoring a card is reversible. To permanently delist a source means removing
+every associated card and stopping that source from returning through normal
+self-service.
 
-For setup and verification commands, see [development setup](development-setup.md).
+Cards and sources have different identities. A source owns the repository
+location, immutable provider ID, refresh policy, and snapshots. A card owns its
+title, kind, summary, tags, and listing state. A repository rename must update
+the source record without changing card IDs.
+
+## Make a Kit
+
+Kits are ordered collections of 3–50 published project cards. Build or edit one
+in Tavernary, review the draft, and submit it through the GitHub review mirror.
+Do not hand-edit generated Kit output. See [Kit submission and moderation](kits.md).
+
+## Improve the repository
+
+For code, tests, styling, catalog scripts, workflows, or documentation:
+
+1. Read the relevant architecture or operations page.
+2. Make a narrow, reviewable change.
+3. Keep human-authored records, machine snapshots, and generated catalog output
+   in their proper boundaries.
+4. Run the checks in [Development setup](development-setup.md).
+5. Open a pull request with the evidence a reviewer needs.
+
+Do not hand-edit `src/generated/catalog.json`. Use the catalog build scripts and
+inspect the generated diff instead.
 
 ## Report a problem
 
-Start from Tavernary's [Help hub](/help/) for a contextual, review-before-send
-path. The ordinary Help routes are public GitHub reports:
+The [Help hub](/help/) lets you review a report before it becomes a public
+GitHub issue. Ordinary reports must not contain secrets, credentials, or
+private personal information. Tavernary does not support third-party projects;
+send software-use questions to that project's own repository or support
+channel.
 
-- **Manage your project listing** (`/help/manage-project/`) for a verified
-  personal GitHub repository owner requesting an edit, same-repository source
-  move, or delist, and for reviewed Tavernary staff managing any card.
-- **Report a project listing** (`/help/report-project/`) for anyone reporting
-  incorrect, unsafe, rights, organization, or other listing concerns.
-- **Report a website problem** (`/help/report-website/`) for Tavernary runtime,
-  layout, accessibility, navigation, or handoff problems.
-- **Report a Kit** (`/help/report-kit/`) for a published Kit concern.
-- **Withdraw a Kit** (`/help/withdraw-kit/`) for a recorded Kit author.
-- **Get other help** (`/help/other/`) for a Tavernary question or request not
-  covered above.
+For a vulnerability in Tavernary, use the private
+`security/advisories/new` flow described in [SECURITY.md](../../SECURITY.md).
 
-The GitHub chooser links back to Tavernary intake. GitHub Issue Forms are
-review mirrors: create or cancel there, but return to the matching Tavernary
-form to make corrections and open a fresh review.
+The public Catalog Policy permits consensual adult content, kink, fetish
+content, and ordinary profanity. Use the listing report path when a published
+card appears to conflict with that policy.
 
-| Need | Use |
-| --- | --- |
-| Add a project | `/submit/project/` |
-| Correct factual catalog information | `/help/report-project/` |
-| Report a Tavernary website problem | `/help/report-website/` |
-| Report unsafe or problematic Kit content | `/help/report-kit/` |
-| Withdraw a Kit | `/help/withdraw-kit/` |
-| Ask for help or report another issue | `/help/other/` |
-| Report a security vulnerability | Private security path in `SECURITY.md` |
+## A few good habits
 
-Do not report a vulnerability publicly. Do not use Tavernary's issue forms to
-request support for an externally hosted project; use that project's own
-support channel instead.
-
-For a Tavernary vulnerability, use `/help/security/` or GitHub's private
-`security/advisories/new` flow. The security path intentionally has no public
-issue form.
-
-## Contribution expectations
-
-Contributions should be narrow, reviewable, and supported by the appropriate
-tests or validation commands. Avoid hand-editing generated files, adding
-unverified metadata, or changing public terminology without updating its
-source vocabulary and documentation.
-
-Tavernary's [licensing policy](../../LICENSING.md), [security policy](../../SECURITY.md),
-and [trademark policy](../../TRADEMARKS.md) apply to contributions.
-
-Verified owners and trusted Tavernary staff receive preservation-oriented
-summary handling. Community submissions use README evidence first. The
-[Catalog Policy](/catalog-policy/) permits consensual adult content and
-ordinary profanity; its automated evidence review is advisory and happens
-after publication.
+- Include a source link or other evidence.
+- Keep one issue focused on one goal.
+- Return to Tavernary to correct a review draft instead of editing the GitHub
+  mirror by hand.
+- Do not treat automated scan or policy information as an endorsement.
+- Use [Licensing](../../LICENSING.md) and [Trademark policy](../../TRADEMARKS.md)
+  as part of your contribution checklist.

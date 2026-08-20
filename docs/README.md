@@ -1,46 +1,55 @@
 # Tavernary documentation
 
-Tavernary is a static, GitHub-native catalog for discovering AI roleplay software.
-These docs explain the product, the repository, and contribution paths.
+Welcome! These pages explain Tavernary in plain language first. Start with a
+picture and a short guide, then open the more detailed pages when you want to
+learn more.
 
-## Start here
+## For players and visitors
 
-- [What is Tavernary?](guides/what-is-tavernary.md) - product purpose,
-  boundaries, and catalog terminology.
-- [Using the catalog](guides/using-the-catalog.md) - search, filters, activity
-  labels, and incomplete metadata.
-- [Contribution overview](contributing/contribution-overview.md) - choose the
-  right way to contribute.
-- [Kit submission and moderation workflows](contributing/kits.md) - community
-  collection curation rules.
-- [Development setup](contributing/development-setup.md) - run the site and
-  verification suites locally.
-- [System overview](architecture/system-overview.md) - architecture boundaries,
-  script roles, and data flow.
-- [Catalog lifecycle](architecture/catalog-lifecycle.md) - publication states,
-  source-health behavior, and recovery.
+- [What is Tavernary?](guides/what-is-tavernary.md) — the big picture and the
+  important boundaries.
+- [Getting started](guides/getting-started.md) — find your first project.
+- [Using the catalog](guides/using-the-catalog.md) — search, compare cards,
+  and understand the labels.
+- [Kits](guides/kits.md) — collect projects into a list you can revisit.
+- [Getting help](guides/getting-help.md) — report a problem or find the right
+  support place.
+- [Words to know](guides/words-to-know.md) — a tiny dictionary for Tavernary.
 
-## Documentation areas
+![A project search in the Tavernary catalog](assets/screenshots/search-and-filters.png)
 
-| Area | For | Contents |
-| --- | --- | --- |
-| [Guides](guides/) | Visitors and project authors | Product explanation, catalog use, and submissions |
-| [Contributing](contributing/) | Contributors and maintainers | Development, catalog, UI, docs, and Kit workflow work |
-| [Architecture](architecture/) | Developers | Data boundaries, refresh behavior, query model, build steps |
-| [Operations](maintenance/operations-runbook.md) | Maintainers | triage labels, refresh/enrich automation, kit publication, and moderation recovery |
-| [Historical operations plan](architecture/production-development-handoff.md) | Maintainers | original V1 implementation and rollout planning context |
-| [Reference](reference/) | Anyone needing exact definitions | Schemas, vocabularies, manifests, and status labels |
-| [Decisions](architecture/decision-log.md) | Maintainers and new contributors | Why major architecture, moderation, and automation boundaries exist |
+## For people who make projects
 
-Existing design specs and implementation plans remain under
-[`docs/superpowers/`](superpowers/) as historical project context.
+- [Contribution overview](contributing/contribution-overview.md) — choose the
+  right way to update a listing, report a problem, or submit a project.
+- [Submission and review](contributing/submission-and-review.md) — what happens
+  after a project is submitted.
+- [Kits: contributor rules](contributing/kits.md) — how community collections
+  are checked and published.
 
-The operations runbook is also the rollout authority for automatic project
-publication, the `PROJECT_AUTO_PUBLICATION_ENABLED` emergency switch,
-exact-SHA recovery, owner-delisting notices, and post-publication advisory
-review.
+## For contributors and maintainers
 
-## Repository-level policies
+- [Development setup](contributing/development-setup.md) — run the site and
+  verification checks locally.
+- [Architecture](architecture/system-overview.md) — how the static site and
+  catalog layers fit together.
+- [Catalog lifecycle](architecture/catalog-lifecycle.md) — publication states,
+  source health, and recovery.
+- [Operations runbook](maintenance/operations-runbook.md) — the exact
+  maintainer procedures.
+- [Reference](reference/) — schemas, vocabularies, manifests, and status
+  labels.
+- [Decision log](architecture/decision-log.md) — why important boundaries
+  exist.
+
+Technical pages use exact names and commands when precision matters. If a page
+starts feeling too technical, return to the player guides above; they are the
+best place to begin.
+
+Historical project plans and design notes remain under
+[`docs/superpowers/`](superpowers/).
+
+## Policies
 
 - [Licensing](../LICENSING.md)
 - [Security policy](../SECURITY.md)

@@ -1,257 +1,139 @@
-# Submission and automated publication flow
+# Submission and review
 
-All public intake begins in Tavernary. Tavernary generates the authoritative
-manifest and opens a structured GitHub Issue Form as a public review mirror;
-no form publishes records directly.
+This page explains what happens after you submit a project, request a listing
+change, or send a Kit for review. The short version is: Tavernary prepares the
+request, GitHub shows a public review mirror, and a validated transaction is
+what can publish.
 
-## Contribution routing
+## Start in Tavernary
 
-Use the narrowest Tavernary route:
+Use the narrowest route:
 
-- `/submit/project/` - new catalog entry requests.
-- `/help/report-project/` - corrections for existing catalog records.
-- `/help/report-website/` - search, filter, sorting, rendering, and copy issues.
-- `/?mode=kits` - new Kit creation or draft edit.
-- `/help/report-kit/` - unsafe, duplicate, misleading, or broken Kit concerns.
-- `/help/withdraw-kit/` - Kit author withdrawal requests.
-- `/help/other/` - non-critical support questions.
+- `/submit/project/` for a new project;
+- `/help/report-project/` for a project-card correction;
+- `/help/manage-project/` for a verified owner or reviewed maintainer;
+- `/?mode=kits` for a new Kit or Kit edit;
+- `/help/report-kit/` for a published Kit concern;
+- `/help/withdraw-kit/` for the recorded Kit author; and
+- `/help/other/` for another Tavernary question.
 
-Security issues are always handled via `SECURITY.md` private reporting and never
-through public issue forms.
+Security problems always use the private path in `SECURITY.md`, never a public
+issue form.
 
-## Help reports and project-owner requests
+## Public review mirrors
 
-The site Help hub (`/help/`) prepares public GitHub reports only after the
-visitor reviews the request. Its ordinary routes are `/help/manage-project/`,
-`/help/report-project/`, `/help/report-website/`, `/help/report-kit/`, and
-`/help/withdraw-kit/`, and `/help/other/`; `/help/security/` leads only to GitHub's private
-`security/advisories/new` flow. Do not put credentials, private personal data,
-or unreported Tavernary vulnerability details in an ordinary report.
+Tavernary creates an authoritative manifest before opening GitHub. The GitHub
+Issue Form is a review mirror, not a second editor. Read the preview before you
+create it. To make a correction, return to Tavernary and open a fresh review.
 
-`project-owner-request` accepts either the current personal GitHub owner of a
-listing's verified repository identity or a reviewed Tavernary staff actor.
-Staff authority comes from an immutable GitHub user ID in
-`data/maintenance/trusted-tavernary-editors.json` plus a current trusted
-repository association; association alone does not grant authority. Trusted
-staff may request edits for any card, including organization, external, and
-disabled records. Rights-holder requests from other actors remain
-human-reviewed `project-information` reports. No third-party project support is
-provided through Tavernary; refer users to that project's own channel.
+Ordinary issue text is public. Do not include credentials, private personal
+information, or private vulnerability details.
 
-An admitted owner request generates or safely updates
-`automation/project-owner-request-<issue-number>` and its transaction PR. The
-PR remains the CI and audit transaction, while valid requests publish
-automatically after exact-SHA validation. A rerun is safe only while
-marker-owned generated paths remain unchanged; a divergent branch is preserved
-and automation pauses that transaction.
+External GitHub accounts may keep up to 10 open issues in Tavernary. The limit
+covers all public issue types; edits and comments do not use another slot.
+Closing an issue restores one slot immediately.
 
-Catalog cards and repository sources have separate identities. A source owns
-the repository location, immutable provider identity, refresh policy, snapshot,
-and permanent delist state. Each card points to that source and owns its title,
-kind, summary, structured metadata, tags, and listing state. A repository rename
-or transfer therefore updates the source location without changing its source
-ID or any sibling card IDs.
+## Project submissions
 
-The owner editor supports six maintenance operations: edit one card; **Add cards
-from this source**; update the repository location; retire or restore a card;
-and permanently delist a source. Add-card requests contain one to ten cards in
-one atomic batch, with one unresolved add-card request per source. Every draft
-is editable and reviewed together; one invalid draft prevents a partial
-publication. Adding cards always requires maintainer approval, including for a
-verified repository owner.
+1. The form collects the source and the project kind. Only Extensions choose a
+   primary function; Frontends and System Presets receive their structural
+   values automatically.
+2. Tavernary checks the source URL, public-source rules, frontend vocabulary,
+   and obvious duplicate repository identity.
+3. A correctable problem stays open with `needs-information` and an explanation.
+   A clear duplicate is closed before a review pull request is created.
+4. A valid request creates one deterministic branch and one transaction PR.
+5. CI checks the proposed registry record, source facts, catalog build, and
+   browser export.
+6. The publisher checks the current issue, authority, source identity, base
+   commit, changed paths, and exact head SHA before merging.
+7. A merge publishes through the normal catalog and Pages path. Closing the PR
+   without merging declines the request.
 
-Retiring a card is ordinary reversible maintenance. It hides only that card and
-leaves its source and siblings intact. Permanent delist is repository-wide:
-permanent delist removes every associated card from the public catalog, pauses
-source refresh, and blocks that immutable repository identity from returning
-through self-service intake.
+The publication system automatically publishes valid create, card-edit, source-move,
+retire, restore, and source-delist changes after their checks pass. The PR
+remains the CI and audit transaction.
+PR remains the CI and audit transaction.
 
-## Open issue limit
+The submitted Extension category remains authoritative. An intake model may
+add a sanitized `classification-review` note, but it never changes
+`primary_function`.
 
-External GitHub accounts may keep up to 10 open issues in Tavernary at one
-time. The limit spans all public issue types; edits and comments do not consume
-additional slots. Closing an issue restores one slot immediately.
+Frontends and Extensions require a public GitHub or Codeberg repository. External
+System Presets use a stable public HTTPS page and paused automatic refresh.
 
-If an account already has 10 older open issues, Tavernary closes the newer issue
-with a neutral explanation. The author may close or resolve another issue and
-then reopen the limited issue. New and established GitHub accounts follow the
-same rule.
+The builder's frontend choices come from the current catalog. The submitted
+Extension primary function is authoritative; the intake model never changes
+the canonical `primary_function`.
 
-## What happens after submission
+The submitted Extension primary function is authoritative.
 
-### Projects
+## Owner listing requests
 
-1. The submitter uses Tavernary's static builder and reviews the current draft
-   before opening GitHub. The builder's frontend choices come from the current catalog rather
-   than a separately maintained dropdown. Only Extensions show the
-   primary-function dropdown: the submitted Extension primary function is authoritative.
-   Frontends receive `frontend` and System Presets receive `preset`
-   structurally. The card name is derived from the resolved source rather than
-   typed into the form.
-2. The version-4 manifest requests summary and tag handling independently.
-   Both default to automatic. Manual summary wording and up to six manual tags
-   are honored only for the verified personal repository owner or trusted
-   Tavernary staff; unauthorized values are discarded before model input,
-   reports, records, or pull requests.
-3. Automation normalizes the source, updates an automatically generated issue
-   title, checks URL and source eligibility, reconciles supported frontends,
-   probes public source facts, and checks duplicate URL/repository identity.
-4. An obvious duplicate is labeled and closed before a pull request is created.
-   A correctable problem remains open with `needs-information` and an exact
-   explanation.
-5. An admitted issue creates one deterministic branch and one generated
-   transaction
-   PR containing the proposed registry record, initial snapshot when available,
-   and any required frontend-vocabulary addition.
-6. Required CI validates the generated paths, source, catalog record, and
-   browser export. An intake model may
-   confirm the submitted category or add a sanitized `classification-review`
-   mismatch warning, but it never changes `primary_function`.
-7. `publish-project-transaction.yml` rechecks current issue input, authority,
-   source identity, record fingerprint, base SHA, and exact changed paths, then
-   merges only the exact CI-validated head SHA.
-8. Merging publishes through the normal catalog and Pages path. The PR's
-   `Closes #<issue-number>` link closes the intake issue.
-9. Closing a legacy or manually stopped generated PR without merging marks the issue
-   `submission-declined`, closes it as not planned, and safely removes the
-   unchanged automation branch.
+The current personal GitHub owner of a verified repository can request changes
+for that repository. Reviewed Tavernary owners, admins, and maintainers listed
+by immutable GitHub ID in `data/maintenance/trusted-tavernary-editors.json` can
+request changes for any card. A trusted repository association alone does not
+grant authority.
 
-If the submitted repository is a fork, Tavernary reviews its immediate
-upstream first. Automation reuses an existing open Project submission for that
-repository or creates a normal system-authored submission with explicit fork
-ancestry provenance. The downstream issue remains open with
-`waiting-on-fork-parent`; after the upstream merges or reaches a terminal
-declined/unavailable state, the retry workflow resumes the downstream review.
-This repeats root-to-leaf for a fork of a fork, one immediate parent at a time.
-A terminal upstream does not prevent the child from receiving its own review.
+The generated branch is named
+`automation/project-owner-request-<issue-number>`. The transaction can edit a
+card, move a source after a verified rename or transfer, retire or restore a
+card, or permanently delist a source.
+
+The owner editor supports **Add cards from this source** in an atomic batch of
+**one to ten cards**. There is **one unresolved add-card request per source**.
+Add-card batches still need maintainer approval.
+
+Retire or restore changes one card and can be reversed. To **permanently delist
+a source** is repository-wide: every associated card is removed from the public
+catalog, refresh pauses, and the immutable source identity cannot return by
+normal self-service.
+
+## Kits
+
+Kits contain 3–50 existing project cards. The builder serializes a stable JSON
+manifest and validates count, duplicates, ordering, authorship, and content
+rules. A valid create or edit can publish automatically after triage and final
+revalidation. The published Kit stays unchanged until those gates pass.
+
+Community support is derived from eligible `+1` reactions on the source issue.
+It is evidence of interest, not a rating or endorsement. A report uses
+`/help/report-kit/`; a recorded author uses `/help/withdraw-kit/`.
+
+## Metadata and safety boundaries
+
+Creator and owner authority affects which summary or tag fields may be manual.
+Community-submitted manual values are not trusted fallback text. Automatic
+enrichment can write only automatic summary and tag fields; it never changes
+the project's primary function.
+
+TavernKeeper scans and Catalog Policy signals are advisory. They help people
+notice questions after publication; they are not an approval stamp or an
+automatic decision that a project is good or bad.
+
+The Catalog Policy permits consensual adult content, kink, fetish content, and
+ordinary profanity. Its automated evidence review is advisory and
+post-publication. Verified-owner delisting is owner-facing permanent; any
+exceptional restoration is manual Tavernary staff maintenance.
+
+Catalog Policy is advisory and post-publication.
+Verified-owner delisting is owner-facing permanent.
+Exceptional restoration is manual Tavernary staff maintenance.
 
 The versioned Tavernary manifest in the source issue is the automation
-authority. Readable GitHub fields are review-only and may drift without
-changing the transaction. Corrections return to Tavernary and open a fresh
-GitHub review; generated PRs are not an invitation for routine staff copy
-edits.
+authority. Readable GitHub fields are a review mirror and do not replace the
+manifest.
 
-Implementation path:
+## Exact maintainer contracts
 
-- `01-project-submission.yml` requires the stable manifest and exposes readable
-  review fields only.
-- `triage-submission.yml` handles idempotent validation, title updates,
-  duplicate closure, and dispatch.
-- `generate-project-submission.yml` creates or updates
-  `automation/project-submission-<issue-number>` and its review PR.
-- `project-submission-lifecycle.yml` synchronizes merge or decline back to the
-  issue and deletes only the unchanged generated branch.
+Maintainers should use the [operations runbook](../maintenance/operations-runbook.md)
+for exact workflow names, recovery steps, and labels. In particular, the
+runbook remains authoritative for:
 
-Fork ancestry changes sequencing, not the validation boundary. Every generated
-upstream is a normal Project submission and transaction PR and uses the same
-automatic publication checks. Cycles and ancestry beyond 16 repositories stop at
-`needs-maintainer-review`.
-
-New triage rejects retired manifest version 3 and directs the submitter back to
-the current form. An issue already admitted before the cutover may be upgraded
-during generation so an in-flight review is not stranded.
-
-## Metadata authority and Catalog Policy
-
-For a verified personal GitHub repository owner or trusted Tavernary staff
-actor, explicit manual summary and tag requests become trusted field-level
-policy. Automatic summary generation reads the root README first and the
-repository description second. Automatic tag generation uses the controlled
-Goals and traits vocabulary and may return zero tags when evidence is
-insufficient. A community submitter's attempted manual summary or tags are
-discarded completely; they are not fallback evidence.
-
-The public Catalog Policy permits consensual adult content, kink, fetish
-content, and ordinary profanity. A separate model review is advisory and post-publication;
-it cannot block, remove, or reverse a listing. Community
-reports remain the primary enforcement-review path.
-
-Verified-owner delisting is owner-facing permanent for that repository.
-Internally supported exceptional restoration is available only through manual Tavernary staff maintenance;
-it is not a self-service resubmission path.
-
-Tavernary automatically publishes valid create, card-edit, source-move,
-retire, restore, and permanent-source-delist transactions. Add-card batches
-remain manually approved.
-The generated PR remains the CI and audit transaction.
-
-Frontends and Extensions require a public GitHub or Codeberg repository.
-The code must be visible without signing in, but an open-source license is not
-required. External System Presets remain manually curated and use paused source
-refresh. Duplicate repository identity is provider-local: a GitHub repository
-and a Codeberg repository are not treated as mirrors unless a maintainer curates
-that relationship. Arbitrary Forgejo and Gitea hosts are not accepted.
-Selecting **Other or not listed**
-intentionally pauses admission until that Frontend can be reconciled with the
-current catalog vocabulary.
-
-### Website issues
-
-The issue is triaged as a runtime/site issue, not as registry metadata. Standard
-PR workflow applies: changes in `src/`, `public/`, or test files, then verify
-through normal gates.
-
-### Kits
-
-- Kit creates, author-owned edits, and trusted Tavernary staff edits use
-  `05-kit-submission.yml`.
-- Kit submissions are prepared by the in-browser builder and serialized into a
-  stable JSON manifest on submit. The builder blocks severe language in the
-  title and description.
-- `triage-kit-submission.yml` validates the latest manifest, including the same
-  severe-language policy used by the Kit Builder.
-- A valid issue dispatches `apply-kit-submission.yml` automatically. The
-  publisher revalidates, writes the registry record, runs repository gates,
-  pushes `main`, requests exact-SHA Pages deployment, and closes the issue.
-- A correctable validation failure remains open with `needs-information`.
-  Return to the Kit builder, correct the retained draft, and open a fresh
-  GitHub review without consuming another issue slot.
-
-Trusted Kit edit authority is recorded as `tavernary-staff` only when the
-actor's immutable ID appears in
-`data/maintenance/trusted-tavernary-editors.json` and the refreshed issue still
-has a trusted association. The final apply workflow re-fetches and revalidates
-that actor. A staff edit preserves the canonical Kit author, source issue,
-`published_at`, Kit ID, and support snapshot identity; only editable content and
-`updated_at` change.
-
-The currently published Kit remains unchanged until every publication gate
-passes. Near-duplicate composition is a non-blocking warning; exact duplicate
-project sets remain invalid.
-Withdrawals begin at `/help/withdraw-kit/`, review through
-`07-kit-withdrawal.yml`, and are applied via
-`apply-kit-withdrawal.yml`; GitHub identity must match the recorded author.
-
-## Labels and maintainer actions
-
-Issue labels include both queue ownership (`project-submission`,
-`project-information`, `website-bug`, `kit-submission`, `kit-report`,
-`kit-withdrawal`) and automation state (`needs-information`,
-`kit-publication-ready`, `kit-published`, `waiting-on-fork-parent`,
-`needs-maintainer-review`, `submission-pr-open`, `submission-declined`).
-Project and valid Kit publication occur automatically after their respective
-authoritative validation gates.
-
-For full Kit maintainer constraints and safety paths, see
-[Kit submission and moderation](kits.md) and
-[`Kit maintenance`](../maintenance/kits.md).
-
-- Maintainers set card state with `listing_status` and
-  `listing_status_reason`; `metadata_status` remains card-owned.
-- Maintainers set source refresh and repository-wide lifecycle state in
-  `data/registry/sources/*.json`.
-- Repeated identity failures are resolved on the source record rather than
-  copied into every sibling card.
-
-See maintainer operating flow for exact sequencing in
-[`../maintenance/operations-runbook.md`](../maintenance/operations-runbook.md).
-
-## Practical review checklist
-
-- Keep contributions to one intent per issue.
-- Include evidence links (release notes, announcements, docs, changelog).
-- Do not bypass the Project transaction PR or the reviewed Kit safety-repair path.
-- Correct an automatically rejected Kit in Tavernary and open a fresh GitHub
-  review.
-- Keep generated artifacts deterministic and avoid hand-editing generated files
-  outside the approved scripts.
+- `unsupported-source` and `owner-request-invalid` failure reasons;
+- source-backed card maintenance and immutable provider IDs;
+- transaction **schema version 2**;
+- `migrate-source-registry-v1.mjs --write` and its dry-run/rollback contract;
+- exact-SHA publication; and
+- the rule that permanent source delisting affects every associated card.
