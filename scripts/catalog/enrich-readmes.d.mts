@@ -160,6 +160,7 @@ export function enrichRecord(
     vocabularies?: TagVocabulary;
     protectedTerms?: readonly string[];
     policyVersion?: string;
+    sleep?: (milliseconds: number) => Promise<void>;
     loadSource?: (
       record: RegistryRecord,
       source: SourceRecord,

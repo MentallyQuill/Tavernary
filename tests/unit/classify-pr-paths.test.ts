@@ -18,9 +18,6 @@ describe("pull request CI path classification", () => {
     "data/snapshots/codeberg/example-extension.json",
     "data/snapshots/github/kits/example-kit.json",
     "data/snapshots/github-refresh.json",
-    "data/vocabularies/frontends.json",
-    "data/vocabularies/model-families.json",
-    "data/vocabularies/completion-formats.json",
   ])("routes published content %s through focused CI", (path) => {
     expect(classifyPullRequestPaths([path])).toEqual({
       route: "content",
@@ -33,9 +30,23 @@ describe("pull request CI path classification", () => {
       classifyPullRequestPaths([
         "data/registry/projects/example.json",
         "data/snapshots/github/example.json",
-        "data/vocabularies/frontends.json",
       ]),
     ).toEqual({ route: "content", reason: "content-only" });
+  });
+
+  test.each([
+    "data/vocabularies/capabilities.json",
+    "data/vocabularies/completion-formats.json",
+    "data/vocabularies/frontends.json",
+    "data/vocabularies/model-families.json",
+    "data/vocabularies/primary-functions.json",
+    "data/vocabularies/tags.json",
+  ])("routes UI-facing vocabulary %s through full CI", (path) => {
+    expect(classifyPullRequestPaths([path])).toEqual({
+      route: "full",
+      reason: "full-path",
+      path,
+    });
   });
 
   test("routes exact owner-edit and owner-move paths through focused CI", () => {
