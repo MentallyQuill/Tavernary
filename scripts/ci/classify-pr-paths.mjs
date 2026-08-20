@@ -9,7 +9,6 @@ const contentPatterns = [
   /^data\/snapshots\/codeberg\/[^/]+\.json$/u,
   /^data\/snapshots\/github\/kits\/[^/]+\.json$/u,
   /^data\/snapshots\/github-refresh\.json$/u,
-  /^data\/vocabularies\/[^/]+\.json$/u,
 ];
 
 function normalizePath(path) {
