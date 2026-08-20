@@ -1,0 +1,62 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1230353014",
+  "repository": {
+    "id": 1230353014,
+    "owner": "hype-hosting",
+    "name": "SillyTavern-Roulette",
+    "url": "https://github.com/hype-hosting/SillyTavern-Roulette",
+    "description": "Mix models, parameters, and providers across a SillyTavern chat without ever clicking a switch.",
+    "default_branch": "main",
+    "head_sha": "25de9378bcac0470824a77d1d537e6b30042a2a2",
+    "head_committed_at": "2026-08-19T19:01:53.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-05-05T23:14:18.000Z",
+    "size_kb": 3337
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-19T18:59:44.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-19T18:59:44.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-08-19T19:05:11.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-20T16:15:49.017Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "25de9378bcac0470824a77d1d537e6b30042a2a2"
+  },
+  "community": {
+    "stars_count": 2,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 2
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-20T16:15:49.017Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "claude", "type": "User", "provider": "github" },
+      { "login": "hyperion-001", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-20T16:15:49.017Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
