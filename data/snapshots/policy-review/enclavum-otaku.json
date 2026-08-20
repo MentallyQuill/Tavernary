@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "enclavum-otaku",
+  "source_id": "github-1268160811",
+  "source_identity": "github:enclavum/otaku",
+  "evidence_fingerprint": "d90fc90329b05b502bd2f9fb68b3c06721fcf2e04f7a0fe4fcc3772d2bb93337",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-20T16:14:59.350Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-20T16:14:59.350Z"
+  },
+  "maintenance_issue_number": null
+}
