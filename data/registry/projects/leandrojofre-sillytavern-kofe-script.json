@@ -1,0 +1,23 @@
+{
+  "schema_version": 6,
+  "id": "leandrojofre-sillytavern-kofe-script",
+  "name": "SillyTavern-Kofe-Script",
+  "kind": "extension",
+  "summary": "The extension adds a library with several slash commands and macros for multiple general purposes. A QoL expansion to SillyTavern's scripting tools.",
+  "metadata_status": "curated",
+  "source_id": "github-990716565",
+  "frontends": ["sillytavern"],
+  "primary_function": "developer-infrastructure",
+  "tags": ["background-operation", "build-extensions-and-scripts"],
+  "cataloged_at": "2026-08-20T16:07:46.596Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "manual", "note": "Verified repository owner selection." }
+  }
+}
