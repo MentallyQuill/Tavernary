@@ -1,0 +1,30 @@
+{
+  "schema_version": 6,
+  "id": "enclavum-otaku",
+  "name": "otaku",
+  "kind": "frontend",
+  "summary": "Otaku is a terminal roleplay client. It needs no infrastructure (no Docker, no nodejs, etc.), installs in one command and requires minimal configuration.",
+  "metadata_status": "curated",
+  "source_id": "github-1268160811",
+  "frontends": ["otaku"],
+  "primary_function": "frontend",
+  "tags": [
+    "build-worlds-and-lore",
+    "edit-and-refine-messages",
+    "guide-model-responses",
+    "inspect-prompts-and-generations",
+    "maintain-long-term-memory",
+    "organize-chats-and-messages"
+  ],
+  "cataloged_at": "2026-08-20T16:11:49.503Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "manual", "note": "Verified repository owner selection." }
+  }
+}

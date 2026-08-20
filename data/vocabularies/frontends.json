@@ -81,6 +81,11 @@
       "description": "Works with the NeoTavern-Frontend roleplay frontend."
     },
     {
+      "id": "otaku",
+      "label": "otaku",
+      "description": "Works with the otaku roleplay frontend."
+    },
+    {
       "id": "pocketrisu",
       "label": "PocketRisu",
       "description": "Works with the PocketRisu roleplay frontend."
