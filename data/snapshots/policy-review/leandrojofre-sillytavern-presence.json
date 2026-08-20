@@ -3,14 +3,14 @@
   "project_id": "leandrojofre-sillytavern-presence",
   "source_id": "github-882467511",
   "source_identity": "github:leandrojofre/sillytavern-presence",
-  "evidence_fingerprint": "ee0a391d0babe8de4f4f0ed5b7d89c75f69e2619dfc18b07e6d878f8513a2073",
+  "evidence_fingerprint": "d755577bce2ff14363872606134f17870cfada89900e43f4532be302915a49b0",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-09T08:16:54.886Z",
+  "reviewed_at": "2026-08-20T08:15:44.712Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-09T08:16:54.886Z"
+    "attempts": 2,
+    "last_failure_at": "2026-08-20T08:15:44.712Z"
   },
   "maintenance_issue_number": null
 }
