@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "spicymarinara-rpg-companion-sillytavern",
+  "name": "rpg-companion-sillytavern",
+  "kind": "extension",
+  "summary": "RPG Companion extension for SillyTavern that automatically tracks character stats, scene info, and character thoughts in a customizable UI panel, with Together or Separate generation modes for context control.",
+  "metadata_status": "curated",
+  "source_id": "github-1075711284",
+  "frontends": ["sillybunny-sillybunnyteam", "sillytavern", "tauritavern"],
+  "primary_function": "rpg-systems",
+  "tags": [
+    "add-rpg-gameplay",
+    "automate-roleplay-workflows",
+    "customize-the-interface",
+    "guide-model-responses",
+    "manage-inventory-and-quests",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-08-20T17:48:49.887Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

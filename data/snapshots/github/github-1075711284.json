@@ -1,0 +1,81 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1075711284",
+  "repository": {
+    "id": 1075711284,
+    "owner": "SpicyMarinara",
+    "name": "rpg-companion-sillytavern",
+    "url": "https://github.com/SpicyMarinara/rpg-companion-sillytavern",
+    "description": "RPG Companion extension for SillyTavern - Track characters, quests, inventory, and game state with AI-generated content",
+    "default_branch": "main",
+    "head_sha": "e021946867b9a457a3f8b67c78642f9b92ebb90d",
+    "head_committed_at": "2026-07-05T10:21:00.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-10-13T22:09:16.000Z",
+    "size_kb": 1698
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-06-04T16:14:25.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-04T16:14:25.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-20T17:48:49.887Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "e021946867b9a457a3f8b67c78642f9b92ebb90d"
+  },
+  "community": {
+    "stars_count": 304,
+    "forks_count": 72,
+    "watchers_count": 6,
+    "aggregate": 382
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-20T17:48:49.887Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "SpicyMarinara", "type": "User", "provider": "github" },
+      { "login": "paperboygold", "type": "User", "provider": "github" },
+      { "login": "tomt610", "type": "User", "provider": "github" },
+      { "login": "munimunigamer", "type": "User", "provider": "github" },
+      { "login": "jlasz", "type": "User", "provider": "github" },
+      { "login": "Subarashimo", "type": "User", "provider": "github" },
+      { "login": "IDeathByte", "type": "User", "provider": "github" },
+      { "login": "DAurielS", "type": "User", "provider": "github" },
+      { "login": "lilminzyu", "type": "User", "provider": "github" },
+      { "login": "jakstein", "type": "User", "provider": "github" },
+      { "login": "claude", "type": "User", "provider": "github" },
+      { "login": "chungchandev", "type": "User", "provider": "github" },
+      { "login": "amauragis", "type": "User", "provider": "github" },
+      { "login": "joenunezb", "type": "User", "provider": "github" },
+      { "login": "Alamion", "type": "User", "provider": "github" },
+      { "login": "CristianAUnisa", "type": "User", "provider": "github" },
+      { "login": "Olaroll", "type": "User", "provider": "github" },
+      { "login": "dd178", "type": "User", "provider": "github" },
+      { "login": "devsorcer", "type": "User", "provider": "github" },
+      { "login": "AndHeDelivers", "type": "User", "provider": "github" },
+      { "login": "Korddie", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-20T17:48:49.887Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
