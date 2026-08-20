@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "sewerzone-sillytavern-sillytoast",
+  "name": "SillyTavern-SillyToast",
+  "kind": "extension",
+  "summary": "SillyTavern extension forked from ToastTome by DreamTavern, crediting the original ToastTome extension authors. README: \"Forked from ToastTome\" with a Features section.",
+  "metadata_status": "curated",
+  "source_id": "github-1334521822",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-08-20T17:19:55.117Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
