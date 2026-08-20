@@ -3,7 +3,7 @@
   "id": "spicymarinara-rpg-companion-sillytavern",
   "name": "rpg-companion-sillytavern",
   "kind": "extension",
-  "summary": "RPG Companion extension for SillyTavern that automatically tracks character stats, scene info, and character thoughts in a customizable UI panel, with Together or Separate generation modes for context control.",
+  "summary": "RPG Companion is a deprecated extension for SillyTavern-compatible frontends that tracks stats, scenes, and character thoughts. Its README points users to Marinara Engine and says community maintenance may continue.",
   "metadata_status": "curated",
   "source_id": "github-1075711284",
   "frontends": ["sillybunny-sillybunnyteam", "sillytavern", "tauritavern"],
