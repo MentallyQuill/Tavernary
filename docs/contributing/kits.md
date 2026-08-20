@@ -1,110 +1,79 @@
-# Kit submission and moderation workflows
+# Kit submission and moderation
 
-Kits are community-authored project collections. They are submitted and
-published through issue automation, not direct registry edits.
+A Kit is a community-made, ordered list of 3–50 published project cards. It
+is a collection of links and descriptions, not a package of copied files.
 
-## What is a Kit
+![Build a Kit from catalog projects](../assets/screenshots/kits-wide.png)
 
-- A Kit is a named ordered list of 3-50 published project IDs.
-- Community support feeds Trending; Tavernary does not assign editorial
-  endorsements.
-- Kits are stable JSON records in `data/registry/kits/*.json` after automated
-  publication.
+## Create a Kit
 
-## Submit a new Kit
+Use the in-browser Kit Builder, check the draft, and continue to the GitHub
+review mirror through `[Kit submission]` (`05-kit-submission.yml`). Do not edit
+generated Kit output by hand.
 
-Use the in-browser builder, review the draft in Tavernary, and continue to the
-GitHub review mirror:
+The builder and automation check:
 
-- `[Kit submission]` (`05-kit-submission.yml`)
+- a unique Kit ID;
+- 3–50 project IDs that all exist in the catalog;
+- title, description, and project order;
+- author identity and blocked-user rules;
+- the narrow severe-language policy; and
+- source-issue metadata.
 
-Kit submissions share Tavernary's repository-wide open-issue limit with every
-other public issue type. Editing an admitted Kit submission does not consume
-another slot.
+The builder checks the title and description for severe language before the
+review mirror opens, and triage checks the manifest again.
+Common profanity is not the target of the severe-language rule. The builder
+does not repeat a matched severe term in its error message.
 
-Required safety gates in the submission path:
+The public GitHub issue limit is a repository-wide open-issue limit that applies
+to Kits and every other public issue type.
+Editing an admitted request does not use another slot. A correctable failure
+stays open with `needs-information`; return to the retained Tavernary draft,
+correct it, and open a fresh review.
 
-- `id` uniqueness and duplicate-detection checks;
-- 3-50 project IDs and all IDs must exist in the catalog;
-- title/description/project ordering validation;
-- author identity and blocked-user checks;
-- severe-language checks for the title and description; and
-- source issue metadata capture.
+## How publication works
 
-The builder prevents submission when its title or description contains a term
-from Tavernary's narrow severe-language policy. Common profanity is not the
-target of this rule, and the matched term is not repeated in the error message.
+1. Tavernary serializes the draft into a stable JSON manifest.
+2. Kit triage validates the newest manifest.
+3. A valid issue dispatches the publisher automatically.
+4. The publisher validates again, updates the registry, runs repository gates,
+   pushes `main`, requests exact-SHA Pages deployment, and closes the issue.
 
-After GitHub admits the issue, Kit triage revalidates the latest manifest. A
-valid issue publishes automatically: the publisher validates again, updates
-the registry, runs repository gates, pushes `main`, requests deployment for the
-exact commit SHA, and closes the issue. A correctable failure remains open with
-`needs-information`; return to the retained Tavernary draft, correct it, and
-open a fresh GitHub review without consuming another issue slot.
+The currently published Kit does not change until every gate passes. A near
+duplicate is a warning; an exact duplicate project set is invalid.
 
-## Edit an existing Kit
+## Edit a Kit
 
-Use **Edit** on the published Kit in Tavernary. Tavernary prepares the same
-`05-kit-submission.yml` review mirror with operation `edit` and the stable Kit
-ID.
+Use **Edit** on the published Kit in Tavernary. The edit uses the same
+`05-kit-submission.yml` mirror and keeps the stable Kit ID.
 
-- The published Kit remains unchanged until server validation and publication
-  gates pass.
-- The Kit author's GitHub numeric identity may publish an edit. Reviewed
-  Tavernary staff listed by immutable ID in
-  `data/maintenance/trusted-tavernary-editors.json` may also edit any Kit when
-  the refreshed issue has a current trusted association.
-- Timestamps update only when canonical Kit content or the displayed author
-  login changes.
-- An unchanged retry is a no-op.
+The recorded Kit author's GitHub numeric identity may publish an edit. Reviewed
+Tavernary staff may edit any Kit when their immutable ID is listed in
+`data/maintenance/trusted-tavernary-editors.json` and the issue has a current
+trusted association. Association alone does not grant authority.
 
-A `tavernary-staff` edit preserves the original author, Kit ID, source issue,
-publication date, and support snapshot identity. It does not transfer
-authorship to the staff actor.
+A staff edit preserves the original author, Kit ID, source issue, publication
+date, and support snapshot identity. It changes only the approved content and
+`updated_at`. An unchanged retry does nothing.
 
-## Report unsafe or low-quality Kits
+## Report or withdraw a Kit
 
-Use the Help hub's **Report a Kit** route (`/help/report-kit/`) when the Kit is
-already published. It prepares the same public GitHub report for review; do not
-include secrets or private personal information. Make corrections in Tavernary
-and open a fresh review.
+Use **Report a Kit** at `/help/report-kit/` for a published Kit concern. Reports
+are public GitHub reviews, so never include secrets or private personal
+information. A report may lead to a status change, tombstone, or deletion after
+maintainer review.
 
-Use `/help/withdraw-kit/`, normally from the Kit panel's **Request
-withdrawal** action. Tavernary then opens:
+Use **Withdraw a Kit** at `/help/withdraw-kit/`, normally from the Kit panel.
+The `[Kit withdrawal]` (`07-kit-withdrawal.yml`) path requires the issue
+author's GitHub numeric identity to match the recorded Kit author. Withdrawal
+keeps the record history and sets `status: withdrawn` with a timestamp.
 
-- `[Kit report]` (`06-kit-report.yml`)
+## Moderation boundaries
 
-Common reasons:
+- Automated publication is not a Tavernary endorsement.
+- Community `+1` support is evidence of interest, not a rating.
+- Do not use a Kit as proof that every included project is safe or high quality.
+- Do not expose private issue details.
 
-- unsafe content,
-- duplicates with existing collections,
-- broken links or misleading descriptions,
-- spam behavior or unresolved moderation concerns.
-
-Reports go to maintainer triage and may result in unpublishing (`status` change),
-tombstone, or deletion depending on the risk level.
-
-## Withdraw a published Kit
-
-Use:
-
-- `[Kit withdrawal]` (`07-kit-withdrawal.yml`)
-
-Withdrawal requires the issue author GitHub numeric identity to match the Kit
-`author.github_user_id`.
-
-- Withdrawals do not delete the record history.
-- Withdrawn kits move to `status: withdrawn` with a recorded withdrawal timestamp.
-
-## Moderation expectations
-
-- Do not edit `data/registry/kits/*.json` directly.
-- Do not share private issue details publicly.
-- Do not use Kit links as proof-of-trust or endorsement.
-- Automated publication does not make a Kit an endorsement; community support
-  remains separate from safety.
-
-For maintainer-side actions, see:
-
-- [Kit maintenance](../maintenance/kits.md)
-- [Maintainer runbook](../maintenance/operations-runbook.md)
+For exact workflow recovery and maintainer actions, use [Kit maintenance](../maintenance/kits.md)
+and the [operations runbook](../maintenance/operations-runbook.md).
