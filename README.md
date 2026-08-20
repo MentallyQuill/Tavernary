@@ -1,275 +1,120 @@
 # Tavernary
 
-Tavernary is a search and discovery catalog for AI roleplay tools. It indexes
-public project information and links visitors to each creator's GitHub,
-Codeberg, or curated source page. Tavernary does not host, mirror, redistribute,
-or install cataloged project files.
+Tavernary is a living, searchable catalog of projects for AI roleplay. It
+helps you discover projects, understand what they do, and find the creator's
+source page.
 
-This repository contains the historical intake file, curated registry,
-generated repository snapshots, static Next.js site, submission forms, and the
-automation that publishes the catalog.
+![The Tavernary catalog on a wide screen](docs/assets/screenshots/catalog-wide.png)
 
-Read the [Tavernary documentation](docs/README.md) for the product overview,
-catalog guide, contribution paths, and local development setup.
+_The catalog is a map of projects. The project itself still lives with its
+creator._
 
-The canonical registry contains 309 project cards backed by 309 source
-records, with 307 cards currently published in the browser catalog. Repository
-enrichment and editorial review may improve summaries and Goals and traits
-tags without changing a card's primary function.
+## Start here
 
-## TavernKeeper advisory scans
+- [What is Tavernary?](docs/guides/what-is-tavernary.md) — a quick explanation
+  of the catalog and its boundaries.
+- [Getting started](docs/guides/getting-started.md) — find a project in a few
+  minutes.
+- [Using the catalog](docs/guides/using-the-catalog.md) — search, filters,
+  activity labels, and scan notes.
+- [Kits](docs/guides/kits.md) — browse and build helpful collections.
+- [Getting help](docs/guides/getting-help.md) — choose the right help path.
+- [Words to know](docs/guides/words-to-know.md) — friendly definitions for
+  catalog words.
 
-Tavernary can show a repository-level TavernKeeper scan indicator beside an
-eligible GitHub project title. It is advisory evidence for one exact commit,
-not a safety guarantee, certification, or moderation decision: scan results
-never hide, quarantine, reorder, or otherwise change a listing. See the
-[TavernKeeper integration](docs/tavernkeeper-integration.md) for the public
-contracts, trust boundary, recovery procedure, and owner appeal boundary.
+## What you can do here
 
-## Local development
+Tavernary is made for small, useful choices:
 
-Use Node.js 24 and install from the committed lockfile:
+1. Search for something you want to try.
+2. Compare the information shown on project cards.
+3. Open the creator's source page and read its instructions.
+4. Decide for yourself whether it is a good fit.
+5. Save projects into a Kit when you want a handy collection to revisit.
+
+On a phone, the same catalog fits into a smaller screen:
+
+![The Tavernary catalog on a phone](docs/assets/screenshots/catalog-phone.png)
+
+## A quick note about safety
+
+Some projects have TavernKeeper scan information. TavernKeeper combines
+deterministic open-source security tools with contextual review of the hits.
+That information is meant to help you ask better questions. It is not a
+guarantee, a safety certificate, or an endorsement.
+
+Read the project's own instructions and source before you install anything,
+run code, or give it access to personal information. Strong warning colors are
+used sparingly because a warning should mean “please look more closely,” not
+“this project is inconvenient.”
+
+## Bounding the Problem
+
+Tavernary is growing, but it is still small. Most people who use SillyTavern
+have never heard of it. With limited time and resources, the project needs a
+clear fence around its job. Without that fence, a catalog could slowly turn
+into an app store, code host, review board, support desk, or social network.
+
+The focused problem is simpler: help people find a project, understand what it
+does, compare the information available, and reach the creator's source.
+Tavernary is a living map of public project information. Tavernary Companion
+is a connected extension manager for people who want help managing extensions
+inside SillyTavern. Companion can make the next step easier, but Tavernary
+does not own every project in the catalog.
+
+This boundary also protects trust. A card may combine information written by a
+creator, facts observed from a repository, and explanations produced by
+Tavernary's tools. A scan can add useful evidence, but it cannot decide
+whether a project is “good.” If every ordinary issue receives a scary label,
+people stop noticing the cases that deserve real care. The goal is to show the
+evidence honestly and keep strong warnings meaningful.
+
+That gives Tavernary a direction: make discovery clearer, make evidence easier
+to understand, and help people choose their next step without pretending to
+speak for creators or solve every neighboring problem. If a feature belongs in
+Companion, GitHub, a creator's own repository, or another community space,
+Tavernary should let it stay there.
+
+### What Tavernary is not
+
+Tavernary is not a file host, registry, code host, marketplace, publishing
+platform, blog, forum, or social network. It does not copy project files,
+decide which projects are “good,” or replace a project's own support channel.
+
+## Help people make sense of the catalog
+
+The public guides live in [the documentation hub](docs/README.md). Contributors
+can start with the [contribution overview](docs/contributing/contribution-overview.md),
+and maintainers can use the [development setup](docs/contributing/development-setup.md)
+and [operations runbook](docs/maintenance/operations-runbook.md).
+
+## Run Tavernary locally
+
+This repository contains the catalog data, the static Next.js site, submission
+forms, and the automation that publishes the site. For technical setup and
+verification, use [Development setup](docs/contributing/development-setup.md).
+
+The **Submit Project** link opens Tavernary's static submission builder. It
+creates a review request; it does not host the submitted files. Frontends and
+Extensions require a public GitHub or Codeberg repository.
+
+Frontends and Extensions require a public GitHub or Codeberg repository.
+
+No account, database service, or
+runtime API is required to browse the catalog.
+
+The short version is:
 
 ```powershell
 npm ci
 npm run dev
 ```
 
-The primary verification commands are:
+The main verification command is:
 
 ```powershell
 npm run check
-npm run test:e2e
-npm run test:visual
 ```
 
-`npm run check` validates formatting, lint, palette policy, curated records,
-generated catalog data, TypeScript, unit tests, the production build, and the
-static export. The visual commands assert browser layout and geometry without
-committed screenshot baselines; locally generated Playwright snapshots are
-ignored.
-Playwright's first local run may also require:
-
-```powershell
-npx playwright install chromium
-```
-
-The Kit fixture proof is isolated from production catalog data:
-
-```powershell
-npm run build:test-kits
-npm run test:kits-e2e
-npm run test:kits-visual
-```
-
-The fixture builder leaves the deterministic Kit export in `out/` for the two
-browser suites and restores `src/generated/catalog.json` from the production
-registry before it exits.
-
-For contributor-oriented setup and verification guidance, see
-[docs/contributing/development-setup.md](docs/contributing/development-setup.md).
-
-## Catalog data
-
-Tavernary keeps four distinct layers:
-
-- indexed repositories and source pages are the external destinations linked by
-  each catalog card;
-- catalog data lives in-repo under `data/`;
-- site source lives under `src/`, `public/`, and `tests/`; and
-- hosting is the static export in `out/`, deployed by GitHub Pages.
-
-`data/catalog/projects.json` is the historical 213-row intake file. It is not a
-runtime input. Canonical catalog records live in `data/registry/projects/`, and
-source identity and lifecycle live in `data/registry/sources/`; source
-refreshes never edit project cards. Provider-derived facts live in
-`data/snapshots/github/` and `data/snapshots/codeberg/`, and
-`npm run catalog:build` joins registry records, snapshots, and controlled
-vocabularies into `src/generated/catalog.json`.
-`data/snapshots/github-refresh.json` is the legacy-named provider refresh
-manifest; it records aggregate and provider-isolated counts, API usage, timings,
-and the catalog-wide refresh timestamp for the latest completed run.
-
-Project records use schema version 6 and reference a source by stable
-`source_id`. Every card carries `metadata_status: "curated"` or
-`"provisional"`, zero to six controlled `tags`, and independent
-`metadata_policy.summary` and `metadata_policy.tags` modes. Repository source
-records use immutable provider repository IDs, so a repository rename updates
-one source record without changing card identity or sibling-card membership.
-
-Frontends and Extensions require a public GitHub or Codeberg repository.
-System Presets may use another stable public HTTPS page. Non-GitHub presets are
-manually processed once and use `refresh_policy: paused`. Tavern RPG Suite is
-the sole `github-organization` exception and also uses `refresh_policy: paused`.
-
-Recent Activity sorts by the latest qualifying source change or release.
-Sustained Activity sorts by the number of fixed UTC weeks with qualifying
-source activity, then recency. `N/12` means activity occurred in N of the
-current twelve Monday-based UTC weeks; it does not count or weight commits.
-The twelve graph ticks run oldest to newest. A complete baseline with no
-qualifying change reports no source activity in the last twelve weeks.
-
-Snapshotless published repository records stay visible. The site renders them as
-pending enrichment rather than as zero activity or verified missing metadata.
-Every record already has an authoritative category: Frontends use `frontend`,
-System Presets use `preset`, and Extensions use one of the six functional
-categories.
-
-## Refresh operations
-
-Refresh every automatic repository source:
-
-```powershell
-npm run catalog:refresh -- --mode incremental
-```
-
-Refresh one exact source, using its current evidence to decide whether a
-baseline is needed:
-
-```powershell
-npm run catalog:refresh -- --mode project --project-id mentallyquill-recursion
-```
-
-Process the next dynamically selected provisional baseline batch:
-
-```powershell
-npm run catalog:refresh -- --mode baseline --batch-size 12
-```
-
-Force one bounded Git inspection for diagnosis:
-
-```powershell
-npm run catalog:refresh -- --mode forensic --project-id mentallyquill-recursion
-```
-
-Backfill immutable repository IDs into provisional curated records after
-successful refreshes:
-
-```powershell
-npm run catalog:backfill-identities -- --write
-```
-
-Rebuild the browser catalog artifact explicitly:
-
-```powershell
-npm run catalog:build
-```
-
-The scheduled repository workflow runs incremental refreshes once daily. Normal
-incremental runs batch repository metadata, compare only changed heads, and
-clone only when a baseline or bounded fallback is required. Manual dispatch
-supports `incremental`, `baseline`, `project`, and `forensic`; `project_id` is
-required for the last two modes, while `batch_size` is bounded to 1-24.
-
-Every run validates the complete site before committing only
-the exact GitHub and Codeberg snapshot directories and the global refresh
-manifest. The action log
-ends with outcome counts and bounded per-project timings, so fallback clone
-time is visible. A successful snapshot commit explicitly dispatches Pages.
-Baseline runs continue only while the manifest reports provisional evidence;
-there is no index or fixed catalog-size ceiling.
-
-### Quarantine and recovery
-
-A repository-ID mismatch sets `source_health: identity-change` and removes the
-entry from the public build. Confirmed deleted or private repositories also
-stay out of the public build. Transient unavailable or rate-limited refreshes
-preserve the last known good facts and record staleness instead of unpublishing
-the project. Maintainers can also set `refresh_policy: paused` to stop automatic
-processing or change `visibility` to hide or disable a record.
-
-Before clearing a quarantine:
-
-1. Confirm the canonical repository and its provider-local immutable repository
-   ID.
-2. Correct the curated record only when the identity is verified.
-3. Run a single-project refresh.
-4. Run `npm run catalog:backfill-identities -- --write` if the refresh restored
-   a healthy repository identity.
-5. Run `npm run check`.
-6. Commit the curated correction and refreshed snapshot separately when both
-   changed.
-
-## Submissions and moderation
-
-The **Submit Project** link opens Tavernary's static submission builder. Its
-frontend choices come from the current catalog, and it prepares a structured
-GitHub issue with a stable manifest. The GitHub issue form is a review mirror:
-return to Tavernary to make changes, then create or cancel the prepared issue
-on GitHub. Only Extension submissions choose a primary function. That submitted
-Extension category is authoritative; Frontends and System Presets receive their
-structural values automatically. Intake may add a `classification-review`
-warning when source evidence suggests a mismatch, but the model never changes
-the submitted value.
-
-Automation normalizes the source, checks eligibility and obvious duplicates,
-and prepares admitted submissions as a generated pull request. Duplicates close
-before a PR is created, while correctable problems remain open with
-`needs-information`. The generated PR is the sole maintainer review: maintainers
-may correct the proposed registry record and snapshot directly, then merge to
-publish and close the issue. Closing that PR without merging declines the
-submission and applies `submission-declined`. No account, database service, or
-runtime API is involved.
-
-Frontend and Extension submissions require a public GitHub or Codeberg
-repository.
-External System Presets remain manually curated and publish with automatic
-refresh paused. See the
-[submission and review flow](docs/contributing/submission-and-review.md) and
-[maintainer runbook](docs/maintenance/operations-runbook.md) for the complete
-lifecycle and recovery procedure.
-
-Kits are community-authored, ordered collections of 3-50 catalog projects.
-The browser builder keeps drafts only in memory and hands a stable JSON
-manifest to GitHub. Valid new Kits and edits publish automatically after triage
-and a second validation in the apply workflow. Support is derived from eligible
-`+1` reactions on the Kit's source issue; it is catalog evidence rather than a
-user-rating system. Tavernary remains a static, build-time catalog with no
-accounts, database service, or runtime API.
-
-The [Help hub](/help/) is the contextual entry point for existing listings and
-site support. It offers five ordinary public paths: **Manage your project
-listing** (`/help/manage-project/`), **Report a project listing**
-(`/help/report-project/`), **Report a website problem**
-(`/help/report-website/`), **Report a Kit** (`/help/report-kit/`), and **Get
-other help** (`/help/other/`). Ordinary report text is public on GitHub, so it
-must not include secrets or private personal information. Tavernary does not
-provide support for third-party projects; use the listed project's own
-repository or support channel.
-
-A verified personal GitHub repository owner can use the automated owner path
-for that repository. Reviewed Tavernary owners, admins, and maintainers listed
-by immutable GitHub ID in
-`data/maintenance/trusted-tavernary-editors.json` may use the same reviewed
-request for any card. A current trusted repository association is also
-required; association alone does not grant authority. Automation creates
-`automation/project-owner-request-<issue-number>` and a generated review PR.
-Merging publishes the reviewed change; closing the PR without merge declines
-it. Each summary or tag field may remain automatic or switch independently to
-manual, while a classification-only edit preserves both metadata policies.
-The same reviewed form can add up to ten distinct cards from one existing
-source in a single request.
-`refresh_policy` controls repository evidence collection, while
-the two `metadata_policy` fields control model-written summary and tags;
-neither allows enrichment to change `primary_function`.
-
-For a Tavernary vulnerability, use the private security route
-`/help/security/` or GitHub's private form at
-`https://github.com/MentallyQuill/Tavernary/security/advisories/new`, never a
-public issue.
-
-See the [contribution overview](docs/contributing/contribution-overview.md) for
-issue-form routing and contribution boundaries.
-
-## GitHub Pages
-
-Repository settings must use **GitHub Actions** as the Pages source. The
-`Deploy Pages` workflow validates the project, builds the static export with
-the repository base path, uploads `out/`, and deploys the `github-pages`
-environment. It can be dispatched manually for recovery.
-
-The first public URL is the GitHub Pages project URL. The planned primary
-domain is `tavernary.org`; adding it will require the Pages custom-domain and
-DNS configuration, plus a committed `CNAME` if appropriate. Forwarding
-`tavernary.net` to `tavernary.org` is external to this repository and must be
-configured with the domain or DNS provider.
+The site is static and GitHub-native. It links to projects hosted by their
+creators; it does not host or redistribute their files.
