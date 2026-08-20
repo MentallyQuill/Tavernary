@@ -590,6 +590,20 @@ test("plans one manual PR transaction for a multi-card source batch", () => {
     planOwnerPrUpdate({
       report,
       repository: "Tavernary/Tavernary",
+      remoteHeadSha: "f".repeat(40),
+      existingMarker: null,
+      generatedContentChanged: true,
+      allowOrphanRecovery: true,
+      pulls: [],
+    }),
+  ).toEqual({
+    action: "update",
+    replacePaths: report.generated_paths,
+  });
+  expect(
+    planOwnerPrUpdate({
+      report,
+      repository: "Tavernary/Tavernary",
       remoteHeadSha: "a".repeat(40),
       existingMarker: { kind: "project-owner", marker: addTransaction },
       generatedContentChanged: true,
