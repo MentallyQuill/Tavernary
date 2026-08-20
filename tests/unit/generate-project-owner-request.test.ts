@@ -493,7 +493,7 @@ test("replays one validated automatic metadata result without calling the provid
   manifest.proposed = {
     ...editable("Original summary.", {
       summaryMode: "automatic",
-      tagMode: "automatic",
+      tagMode: "manual",
     }),
     name: "Alpha Renamed",
   };
@@ -504,7 +504,6 @@ test("replays one validated automatic metadata result without calling the provid
         "Alpha provides a source-grounded workflow for repository automation and keeps catalog metadata aligned with its documented behavior.",
       evidence: ["readme:4-10"],
     },
-    tags: [{ id: "automation", evidence: ["readme:12-18"] }],
     result: "accepted-unchanged",
     change_reasons: [],
     policy_signal: "none",
@@ -896,6 +895,57 @@ test("preserves a manual summary and generates only automatic tags", async () =>
       requested_fields: ["tags"],
     }),
   ]);
+});
+
+test("preserves unchanged automatic metadata during a name-only edit", async () => {
+  const manifest = editManifest();
+  manifest.original = {
+    kind: "extension",
+    ...editable("Original summary.", {
+      summaryMode: "automatic",
+      tagMode: "automatic",
+    }),
+  };
+  manifest.proposed = editable("Original summary.", {
+    summaryMode: "automatic",
+    tagMode: "automatic",
+  });
+  manifest.proposed.name = "Renamed Alpha";
+  const fixture = harness(manifest);
+  const copySummary = vi.fn();
+  const enrichMetadata = vi.fn();
+  const loadEnrichmentSource = vi.fn();
+
+  const generated = await generate(fixture, {
+    copySummary,
+    enrichMetadata,
+    loadEnrichmentSource,
+  });
+  const written = JSON.parse(fixture.storage.get(projectPath) ?? "");
+
+  expect(copySummary).not.toHaveBeenCalled();
+  expect(enrichMetadata).not.toHaveBeenCalled();
+  expect(loadEnrichmentSource).not.toHaveBeenCalled();
+  expect(written).toMatchObject({
+    name: "Renamed Alpha",
+    summary: "Original summary.",
+    tags: ["automation"],
+    metadata_policy: {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    },
+  });
+  expect(generated.report).toMatchObject({
+    copy_results: [],
+    metadata_results: [],
+    resolved_metadata: {
+      "owner-alpha": {
+        summary: "Original summary.",
+        tags: ["automation"],
+      },
+    },
+  });
+  expect(generated.report).not.toHaveProperty("copy_mode");
 });
 
 test("generates an automatic summary without changing manual tags", async () => {
