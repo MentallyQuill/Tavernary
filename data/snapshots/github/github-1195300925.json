@@ -9,21 +9,21 @@
     "url": "https://github.com/hydall/Glaze",
     "description": "Glaze is a local, novice-friendly AI roleplay chat client for mobile devices. Works with any OpenAI-compatible (Chat Completion) LLM provider.",
     "default_branch": "stable",
-    "head_sha": "cd47fd31feccf86411e7481a2e6cbf52e72050da",
-    "head_committed_at": "2026-08-18T22:39:05.000Z",
+    "head_sha": "97fe21606470707c5866053feb6d99130f53ef8e",
+    "head_committed_at": "2026-08-19T15:12:29.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-29T13:58:23.000Z",
-    "size_kb": 97678
+    "size_kb": 97807
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-18T22:39:05.000Z",
+    "latest_source_activity_at": "2026-08-19T15:12:29.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-17",
-        "latest_at": "2026-08-18T22:39:05.000Z",
+        "latest_at": "2026-08-19T15:12:29.000Z",
         "precision": "exact"
       },
       {
@@ -82,7 +82,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-19T07:56:49.599Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "cd47fd31feccf86411e7481a2e6cbf52e72050da"
+    "evidence_head_sha": "97fe21606470707c5866053feb6d99130f53ef8e"
   },
   "community": {
     "stars_count": 18,
@@ -95,7 +95,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-19T07:56:49.599Z",
+  "refreshed_at": "2026-08-20T07:59:41.713Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -108,7 +108,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-19T07:56:49.599Z",
+    "refreshed_at": "2026-08-20T07:59:41.713Z",
     "stale_since": null
   }
 }

@@ -9,18 +9,23 @@
     "url": "https://github.com/mokimoko/SillyTavern-StoryManager",
     "description": "a SillyTavern extension that helps with the management of multiple chat files in the same storyline or universe",
     "default_branch": "main",
-    "head_sha": "153321363d3f1144fdd9e1561614177812d8b61e",
-    "head_committed_at": "2026-08-13T15:26:06.000Z",
+    "head_sha": "ef925f313effdaddd927867f3a39c2030b1fd82a",
+    "head_committed_at": "2026-08-19T19:17:31.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-20T17:14:40.000Z",
-    "size_kb": 234
+    "size_kb": 282
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-13T15:26:06.000Z",
+    "latest_source_activity_at": "2026-08-19T19:17:31.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-19T19:17:31.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-10",
         "latest_at": "2026-08-13T15:26:06.000Z",
@@ -50,18 +55,18 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-17T02:08:02.161Z",
+    "baseline_completed_at": "2026-08-20T07:59:41.713Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "153321363d3f1144fdd9e1561614177812d8b61e"
+    "evidence_head_sha": "ef925f313effdaddd927867f3a39c2030b1fd82a"
   },
   "community": {
-    "stars_count": 2,
+    "stars_count": 3,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 2
+    "aggregate": 3
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-19T07:56:49.599Z",
+  "refreshed_at": "2026-08-20T07:59:41.713Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -69,7 +74,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-19T07:56:49.599Z",
+    "refreshed_at": "2026-08-20T07:59:41.713Z",
     "stale_since": null
   }
 }

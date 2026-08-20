@@ -9,13 +9,13 @@
     "url": "https://github.com/mekineer-com/OpenAlma",
     "description": "OpenAlma — AI companion memory, local-first",
     "default_branch": "main",
-    "head_sha": "c699384c0b418c18932b7451f7797627c895573c",
-    "head_committed_at": "2026-08-13T08:33:43.000Z",
+    "head_sha": "b5bec1961eb9b411d092f9d18b0352cded2ca387",
+    "head_committed_at": "2026-08-19T23:59:26.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-23T23:32:48.000Z",
-    "size_kb": 350
+    "size_kb": 364
   },
   "source_health": "healthy",
   "activity": {
@@ -24,7 +24,7 @@
       {
         "week_start": "2026-08-10",
         "latest_at": "2026-08-13T08:33:43.000Z",
-        "precision": "interval"
+        "precision": "exact"
       },
       {
         "week_start": "2026-07-13",
@@ -60,19 +60,14 @@
         "week_start": "2026-06-01",
         "latest_at": "2026-06-05T22:03:47.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-25",
-        "latest_at": "2026-05-31T08:45:43.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-12T08:41:42.763Z",
+    "baseline_completed_at": "2026-08-20T07:59:41.713Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "c699384c0b418c18932b7451f7797627c895573c"
+    "evidence_head_sha": "b5bec1961eb9b411d092f9d18b0352cded2ca387"
   },
   "community": {
     "stars_count": 7,
@@ -85,7 +80,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-19T07:56:49.599Z",
+  "refreshed_at": "2026-08-20T07:59:41.713Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -96,7 +91,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-19T07:56:49.599Z",
+    "refreshed_at": "2026-08-20T07:59:41.713Z",
     "stale_since": null
   }
 }

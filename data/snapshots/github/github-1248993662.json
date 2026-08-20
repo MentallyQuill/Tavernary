@@ -9,21 +9,21 @@
     "url": "https://github.com/vevan/arousalPub",
     "description": "LLM RP client",
     "default_branch": "main",
-    "head_sha": "82f860f4102a96be6d6b22a0ab8b951913042f66",
-    "head_committed_at": "2026-08-19T05:34:30.000Z",
+    "head_sha": "37acfc2ea2df353181db7958a20a047b88affb8e",
+    "head_committed_at": "2026-08-20T00:27:08.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-25T08:43:02.000Z",
-    "size_kb": 13227
+    "size_kb": 11928
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-19T05:34:30.000Z",
+    "latest_source_activity_at": "2026-08-20T00:27:08.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-17",
-        "latest_at": "2026-08-19T05:34:30.000Z",
+        "latest_at": "2026-08-20T00:27:08.000Z",
         "precision": "exact"
       },
       {
@@ -87,7 +87,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-19T07:56:49.599Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "82f860f4102a96be6d6b22a0ab8b951913042f66"
+    "evidence_head_sha": "37acfc2ea2df353181db7958a20a047b88affb8e"
   },
   "community": {
     "stars_count": 7,
@@ -100,7 +100,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-19T07:56:49.599Z",
+  "refreshed_at": "2026-08-20T07:59:41.713Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -108,7 +108,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-19T07:56:49.599Z",
+    "refreshed_at": "2026-08-20T07:59:41.713Z",
     "stale_since": null
   }
 }

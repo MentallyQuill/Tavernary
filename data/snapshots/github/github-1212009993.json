@@ -9,21 +9,21 @@
     "url": "https://github.com/MultihogAurelius/SillyTavern-MultihogDnDFramework",
     "description": "Started off as a humble \"RPG State Tracker\" but has since expanded into a more ambitious game engine, simulation system, and modular RPG platform where you can even make your own RPGs with their own systems and game logic. The framework is committed to absolute simulation autism. The world must function even without your inputs.",
     "default_branch": "main",
-    "head_sha": "dedde82bda67dbacb8ab56420f4c2c85d1577051",
-    "head_committed_at": "2026-08-19T00:03:35.000Z",
+    "head_sha": "3392e898eed06f76be47cda8a4c4e7d6de73d874",
+    "head_committed_at": "2026-08-19T21:56:14.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-16T01:18:13.000Z",
-    "size_kb": 27334
+    "size_kb": 28782
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-19T00:03:35.000Z",
+    "latest_source_activity_at": "2026-08-19T21:56:14.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-17",
-        "latest_at": "2026-08-19T00:03:35.000Z",
+        "latest_at": "2026-08-19T21:56:14.000Z",
         "precision": "exact"
       },
       {
@@ -87,20 +87,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-17T08:03:17.174Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "dedde82bda67dbacb8ab56420f4c2c85d1577051"
+    "evidence_head_sha": "3392e898eed06f76be47cda8a4c4e7d6de73d874"
   },
   "community": {
-    "stars_count": 72,
+    "stars_count": 73,
     "forks_count": 14,
     "watchers_count": 0,
-    "aggregate": 86
+    "aggregate": 87
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-19T07:56:49.599Z",
+  "refreshed_at": "2026-08-20T07:59:41.713Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -115,7 +115,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-19T07:56:49.599Z",
+    "refreshed_at": "2026-08-20T07:59:41.713Z",
     "stale_since": null
   }
 }
