@@ -11,6 +11,7 @@ import {
   selectEnrichmentRecords,
   writeEnrichedRecord,
 } from "../../scripts/catalog/enrich-readmes.mjs";
+import { EnrichmentProviderError } from "../../scripts/catalog/enrichment-provider.mjs";
 import { tagVocabularyHash } from "../../scripts/catalog/tag-vocabulary.mjs";
 
 const summary =
@@ -204,6 +205,33 @@ test("passes requested fields, README-first evidence, and classifier vocabulary 
     "submissionDescription",
   );
   expect(generate.mock.calls[0][0]).not.toHaveProperty("capabilities");
+});
+
+test("retries a transient provider timeout before validating submission copy", async () => {
+  const sleep = vi.fn(async (_milliseconds: number) => undefined);
+  const generate = vi
+    .fn()
+    .mockRejectedValueOnce(new EnrichmentProviderError("provider-timeout"))
+    .mockImplementation(async (input) => ({
+      output: outputFor(input),
+      metadata: providerMetadata,
+    }));
+
+  const output = await enrichRecord(
+    record,
+    sourceRecord,
+    snapshot,
+    { generate },
+    {
+      vocabularies,
+      loadSource: async () => readySource(),
+      sleep,
+    },
+  );
+
+  expect(output).toEqual(outputFor(generate.mock.calls[1][0]));
+  expect(generate).toHaveBeenCalledTimes(2);
+  expect(sleep).toHaveBeenCalledWith(5_000);
 });
 
 test("keeps a manual summary while refreshing automatic tags", async () => {

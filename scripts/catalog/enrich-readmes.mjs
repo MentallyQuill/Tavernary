@@ -1,6 +1,10 @@
 import { loadEnrichmentSource } from "./enrichment-source.mjs";
 import { validateEnrichmentOutput } from "./enrichment-contract.mjs";
-import { generateValidatedEnrichment } from "./enrichment-attempts.mjs";
+import {
+  generateValidatedEnrichment,
+  generateWithTransientProviderRetries,
+  TRANSIENT_PROVIDER_RETRY_DELAYS_MS,
+} from "./enrichment-attempts.mjs";
 import {
   GENERATED_SUMMARY_MAX_LENGTH,
   GENERATED_SUMMARY_MIN_LENGTH,
@@ -144,7 +148,12 @@ export async function enrichRecord(
   const generated = await generateValidatedEnrichment({
     initialInput: input,
     maxAttempts: options.maxProviderAttempts ?? 1,
-    generate: (providerInput) => provider.generate(providerInput),
+    generate: (providerInput) =>
+      generateWithTransientProviderRetries({
+        input: providerInput,
+        generate: (candidate) => provider.generate(candidate),
+        sleep: options.sleep,
+      }),
     validate: validateCandidate,
     repair: validationRepairInput,
   });
@@ -909,28 +918,16 @@ const preflightVocabulary = {
   tags: preflightInput.allowedTags,
 };
 
-export const PREFLIGHT_RETRY_DELAYS_MS = [5_000, 15_000, 30_000];
+export const PREFLIGHT_RETRY_DELAYS_MS = TRANSIENT_PROVIDER_RETRY_DELAYS_MS;
 export const MODEL_RATE_LIMIT_BACKOFF_DELAYS_MS = [5_000, 15_000, 30_000];
 
-const transientPreflightCodes = new Set([
-  "provider-timeout",
-  "provider-network-error",
-  "provider-rate-limited",
-  "provider-server-error",
-]);
-
 async function generatePreflight(provider, input, sleep) {
-  for (let attempt = 0; ; attempt += 1) {
-    try {
-      return await provider.generate(input);
-    } catch (error) {
-      const delay = PREFLIGHT_RETRY_DELAYS_MS[attempt];
-      if (!transientPreflightCodes.has(error?.code) || delay === undefined) {
-        throw error;
-      }
-      await sleep(delay);
-    }
-  }
+  return generateWithTransientProviderRetries({
+    input,
+    generate: (candidate) => provider.generate(candidate),
+    sleep,
+    retryDelays: PREFLIGHT_RETRY_DELAYS_MS,
+  });
 }
 
 async function runPreflight(provider, sleep) {

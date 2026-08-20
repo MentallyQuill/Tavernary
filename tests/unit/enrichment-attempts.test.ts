@@ -1,6 +1,10 @@
 import { expect, test, vi } from "vitest";
 
-import { generateValidatedEnrichment } from "../../scripts/catalog/enrichment-attempts.mjs";
+import {
+  generateValidatedEnrichment,
+  generateWithTransientProviderRetries,
+} from "../../scripts/catalog/enrichment-attempts.mjs";
+import { EnrichmentProviderError } from "../../scripts/catalog/enrichment-provider.mjs";
 
 test("returns the first valid response within the attempt budget", async () => {
   const generate = vi
@@ -95,4 +99,66 @@ test("does not retry a thrown provider failure", async () => {
     }),
   ).rejects.toMatchObject({ code: "provider-timeout" });
   expect(generate).toHaveBeenCalledOnce();
+});
+
+test.each([
+  "provider-timeout",
+  "provider-network-error",
+  "provider-rate-limited",
+  "provider-server-error",
+] as const)("retries transient %s failures", async (code) => {
+  const sleep = vi.fn(async (_milliseconds: number) => undefined);
+  const generate = vi
+    .fn()
+    .mockRejectedValueOnce(new EnrichmentProviderError(code))
+    .mockResolvedValue({ output: { value: "good" }, metadata: {} });
+
+  await expect(
+    generateWithTransientProviderRetries({
+      input: { value: "request" },
+      generate,
+      sleep,
+    }),
+  ).resolves.toMatchObject({ output: { value: "good" } });
+
+  expect(generate).toHaveBeenCalledTimes(2);
+  expect(sleep).toHaveBeenCalledWith(5_000);
+});
+
+test("exhausts four transient attempts with bounded backoff", async () => {
+  const sleep = vi.fn(async (_milliseconds: number) => undefined);
+  const generate = vi.fn(async () => {
+    throw new EnrichmentProviderError("provider-timeout");
+  });
+
+  await expect(
+    generateWithTransientProviderRetries({
+      input: { value: "request" },
+      generate,
+      sleep,
+    }),
+  ).rejects.toMatchObject({ code: "provider-timeout" });
+
+  expect(generate).toHaveBeenCalledTimes(4);
+  expect(sleep.mock.calls.map(([milliseconds]) => milliseconds)).toEqual([
+    5_000, 15_000, 30_000,
+  ]);
+});
+
+test("does not retry definitive provider failures", async () => {
+  const sleep = vi.fn(async (_milliseconds: number) => undefined);
+  const generate = vi.fn(async () => {
+    throw new EnrichmentProviderError("provider-authentication-failed");
+  });
+
+  await expect(
+    generateWithTransientProviderRetries({
+      input: { value: "request" },
+      generate,
+      sleep,
+    }),
+  ).rejects.toMatchObject({ code: "provider-authentication-failed" });
+
+  expect(generate).toHaveBeenCalledOnce();
+  expect(sleep).not.toHaveBeenCalled();
 });
