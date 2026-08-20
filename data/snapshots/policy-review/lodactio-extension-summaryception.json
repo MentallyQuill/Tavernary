@@ -3,14 +3,14 @@
   "project_id": "lodactio-extension-summaryception",
   "source_id": "github-1204673207",
   "source_identity": "github:lodactio/extension-summaryception",
-  "evidence_fingerprint": "214fa1b8a6b6eea81c7902d6afd8ead42df821edd0b5c587f6c3e5a7d82a3934",
+  "evidence_fingerprint": "821f82ac3722bde27bb66948a2d2dd50add42ef6509af13af4a01cf2f1947cca",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-02T09:34:50.324Z",
+  "reviewed_at": "2026-08-20T19:43:25.481Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-02T09:34:50.324Z"
+    "attempts": 2,
+    "last_failure_at": "2026-08-20T19:43:25.481Z"
   },
   "maintenance_issue_number": null
 }
