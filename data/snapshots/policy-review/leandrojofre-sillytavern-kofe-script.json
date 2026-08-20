@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "leandrojofre-sillytavern-kofe-script",
+  "source_id": "github-990716565",
+  "source_identity": "github:leandrojofre/sillytavern-kofe-script",
+  "evidence_fingerprint": "d28059fad1bfba033c34e8ed3a017752889013ab8114f37292d53bb7b0209542",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-20T16:11:04.687Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-20T16:11:04.687Z"
+  },
+  "maintenance_issue_number": null
+}
