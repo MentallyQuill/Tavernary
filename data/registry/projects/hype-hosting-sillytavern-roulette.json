@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "hype-hosting-sillytavern-roulette",
+  "name": "SillyTavern-Roulette",
+  "kind": "extension",
+  "summary": "SillyTavern-Roulette rotates connection profiles sequentially or by weighted random during chat, mixing models, parameters, and providers without manual switching. A pinned dot bar shows the live slot per README.",
+  "metadata_status": "curated",
+  "source_id": "github-1230353014",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["automate-roleplay-workflows", "route-tasks-across-models"],
+  "cataloged_at": "2026-08-20T16:15:49.017Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
