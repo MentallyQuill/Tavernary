@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "spicymarinara-rpg-companion-sillytavern",
+  "source_id": "github-1075711284",
+  "source_identity": "github:spicymarinara/rpg-companion-sillytavern",
+  "evidence_fingerprint": "9bee4d30fc807ac169e77cd0e4de8ce4dac3f8a6483ff9cc7bde6e26a4349393",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-20T17:52:17.926Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-20T17:52:17.926Z"
+  },
+  "maintenance_issue_number": null
+}
