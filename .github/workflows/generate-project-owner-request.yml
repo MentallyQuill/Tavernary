@@ -460,6 +460,7 @@ jobs:
             repository: process.env.GITHUB_REPOSITORY,
             remoteHeadSha: process.env.REMOTE_SHA || null,
             existingMarker: marker ? { kind: "project-owner", marker } : null,
+            allowOrphanRecovery: !existingPull && Boolean(process.env.REMOTE_SHA),
             generatedContentChanged: process.env.CHANGED === "true",
             pulls,
           });

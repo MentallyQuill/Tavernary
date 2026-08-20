@@ -1800,6 +1800,7 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   expect(source).toContain(
     "Reclaiming issue-owned orphan branch at exact remote SHA",
   );
+  expect(source).toContain("allowOrphanRecovery: !existingPull");
   expect(source).not.toContain(
     "Owner request branch exists without an open marked PR.",
   );

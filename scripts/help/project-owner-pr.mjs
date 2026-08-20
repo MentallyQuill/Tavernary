@@ -8,6 +8,7 @@ import {
 } from "../publication/project-publication-transaction.mjs";
 
 const markerStart = "<!-- tavernary-project-owner-pr";
+const SHA1_PATTERN = /^[a-f0-9]{40}$/u;
 const PROJECT_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const LOGIN_PATTERN = /^(?!-)[A-Za-z0-9-]{1,39}(?<!-)$/u;
 const OPERATIONS = new Set(["edit-card", "move-source", "delist"]);
@@ -566,6 +567,14 @@ function planSourceAwareOwnerPrUpdate(input) {
   }
   if (input.remoteHeadSha === null) {
     return { action: "create", replacePaths: [...expected.generated_paths] };
+  }
+  if (
+    input.allowOrphanRecovery === true &&
+    input.existingMarker === null &&
+    SHA1_PATTERN.test(input.remoteHeadSha)
+  ) {
+    if (!input.generatedContentChanged) return { action: "noop" };
+    return { action: "update", replacePaths: [...expected.generated_paths] };
   }
   const existing = input.existingMarker?.marker;
   if (

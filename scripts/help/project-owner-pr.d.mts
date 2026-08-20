@@ -150,6 +150,7 @@ export function planOwnerPrUpdate(input: {
       }
     | { kind: "project-submission"; marker: Record<string, unknown> }
     | null;
+  allowOrphanRecovery?: boolean;
   generatedContentChanged: boolean;
   pulls?: any[];
 }): OwnerPrUpdatePlan;
