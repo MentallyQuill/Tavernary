@@ -369,16 +369,13 @@ jobs:
             echo "head_sha=$head_sha"
             echo "project_id=$PROJECT_ID"
           } >> "$GITHUB_OUTPUT"
-      - name: Create or update maintainer review PR
+      - name: Prepare maintainer review PR
         if: steps.commit.outputs.changed == 'true' || steps.state.outputs.pr_number != ''
         shell: bash
         env:
-          BRANCH: ${{ steps.state.outputs.branch }}
           HEAD_SHA: ${{ steps.commit.outputs.head_sha }}
           REMOTE_SHA: ${{ steps.state.outputs.remote_sha }}
-          PR_NUMBER: ${{ steps.state.outputs.pr_number }}
           PROJECT_ID: ${{ steps.commit.outputs.project_id }}
-          GH_TOKEN: ${{ steps.publisher-token.outputs.token }}
         run: |
           set -euo pipefail
           node --input-type=module -e "
@@ -419,7 +416,6 @@ jobs:
             });
             fs.writeFileSync(process.env.RUNNER_TEMP + '/project-submission-pr.md', body);
           "
-          title="[Project submission] ${PROJECT_ID}"
           # Refresh and revalidate issue before PR mutation.
           gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" \
             > "${RUNNER_TEMP}/project-submission-issue.json"
@@ -435,11 +431,27 @@ jobs:
               throw new Error('Submission issue is no longer admitted.');
             }
           " "${RUNNER_TEMP}/project-submission-issue.json"
+      - name: Create or update maintainer review PR
+        if: steps.commit.outputs.changed == 'true' || steps.state.outputs.pr_number != ''
+        shell: bash
+        env:
+          BRANCH: ${{ steps.state.outputs.branch }}
+          PR_NUMBER: ${{ steps.state.outputs.pr_number }}
+          PROJECT_ID: ${{ steps.commit.outputs.project_id }}
+          GH_TOKEN: ${{ steps.publisher-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          title="[Project submission] ${PROJECT_ID}"
           if [[ -n "$PR_NUMBER" ]]; then
             gh pr edit "$PR_NUMBER" --title "$title" --body-file "${RUNNER_TEMP}/project-submission-pr.md"
           else
             gh pr create --base main --head "$BRANCH" --title "$title" --body-file "${RUNNER_TEMP}/project-submission-pr.md"
           fi
+      - name: Synchronize submission issue review state
+        if: steps.commit.outputs.changed == 'true' || steps.state.outputs.pr_number != ''
+        shell: bash
+        run: |
+          set -euo pipefail
           # Refresh and revalidate issue before labeling.
           gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" \
             > "${RUNNER_TEMP}/project-submission-issue.json"

@@ -279,6 +279,17 @@ describe("generated project branch workflow custody", () => {
       expect(reviewPullRequest?.env?.GH_TOKEN).toBe(
         "${{ steps.publisher-token.outputs.token }}",
       );
+      expect(
+        job.steps.filter(
+          (step) =>
+            step.env?.GH_TOKEN === "${{ steps.publisher-token.outputs.token }}",
+        ),
+      ).toEqual([reviewPullRequest]);
+      expect(reviewPullRequest?.run).toContain("gh pr create");
+      expect(reviewPullRequest?.run).not.toContain("gh api");
+      expect(reviewPullRequest?.run).not.toContain(
+        "repos/${GITHUB_REPOSITORY}/issues/",
+      );
       expect(job.steps.indexOf(token as WorkflowStep)).toBeLessThan(
         job.steps.indexOf(reviewPullRequest as WorkflowStep),
       );
