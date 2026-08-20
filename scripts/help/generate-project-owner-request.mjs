@@ -415,6 +415,21 @@ function proposedMetadataByProjectId(decision) {
   );
 }
 
+function ownerMetadataFieldsToGenerate(record, request) {
+  const automaticFields = metadataFieldsToGenerate(record);
+  if (!request || request.isNew) return automaticFields;
+
+  const metadataChanged =
+    request.original.summary !== request.proposed.summary ||
+    request.original.metadata.summary.mode !==
+      request.proposed.metadata.summary.mode ||
+    JSON.stringify(request.original.tags) !==
+      JSON.stringify(request.proposed.tags) ||
+    request.original.metadata.tags.mode !== request.proposed.metadata.tags.mode;
+
+  return metadataChanged ? automaticFields : [];
+}
+
 function ownerProtectedTerms(final, record, submittedSummary = "") {
   const repositoryParts =
     typeof final.source.repository === "string"
@@ -555,7 +570,7 @@ async function resolveOwnerMetadata(input, final, snapshot, catalogedAt) {
     if (!request) {
       throw new Error(`Owner metadata request is missing for ${record.id}.`);
     }
-    const requestedFields = metadataFieldsToGenerate(record);
+    const requestedFields = ownerMetadataFieldsToGenerate(record, request);
     let summary = request.proposed.summary;
     let tags = structuredClone(request.proposed.tags);
 
@@ -934,8 +949,11 @@ export async function generateProjectOwnerRequest(input) {
     final.priorContents.set(snapshotRecord.path, snapshotRecord.contents);
   }
   const metadataCandidates = ownerMetadataCandidates(final, catalogedAt);
+  const proposedMetadata = proposedMetadataByProjectId(final.decision);
   const needsAutomaticMetadata = metadataCandidates.some(
-    (record) => metadataFieldsToGenerate(record).length > 0,
+    (record) =>
+      ownerMetadataFieldsToGenerate(record, proposedMetadata.get(record.id))
+        .length > 0,
   );
   const metadataSnapshotRecord =
     !input.validatedReport &&
