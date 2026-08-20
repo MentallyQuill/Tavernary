@@ -229,7 +229,7 @@ describe("generated project branch cleanup", () => {
 
 describe("generated project branch workflow custody", () => {
   test.each(["generate-project-submission", "generate-project-owner-request"])(
-    "uses the Publisher App as the persisted Git writer in %s",
+    "uses the Publisher App as the Git writer and review PR author in %s",
     async (name) => {
       const document = await workflow(name);
       const job = document.jobs.generate as {
@@ -241,6 +241,9 @@ describe("generated project branch workflow custody", () => {
       const token = job.steps.find((step) => step.id === "publisher-token");
       const checkout = job.steps.find((step) =>
         step.uses?.startsWith("actions/checkout@"),
+      );
+      const reviewPullRequest = job.steps.find((step) =>
+        step.name?.startsWith("Create or update"),
       );
       const source = await readFile(
         resolve(workflowDirectory, `${name}.yml`),
@@ -264,6 +267,7 @@ describe("generated project branch workflow custody", () => {
           owner: "MentallyQuill",
           repositories: "Tavernary",
           "permission-contents": "write",
+          "permission-pull-requests": "write",
         },
       });
       expect(checkout?.with?.token).toBe(
@@ -271,6 +275,23 @@ describe("generated project branch workflow custody", () => {
       );
       expect(job.steps.indexOf(token as WorkflowStep)).toBeLessThan(
         job.steps.indexOf(checkout as WorkflowStep),
+      );
+      expect(reviewPullRequest?.env?.GH_TOKEN).toBe(
+        "${{ steps.publisher-token.outputs.token }}",
+      );
+      expect(
+        job.steps.filter(
+          (step) =>
+            step.env?.GH_TOKEN === "${{ steps.publisher-token.outputs.token }}",
+        ),
+      ).toEqual([reviewPullRequest]);
+      expect(reviewPullRequest?.run).toContain("gh pr create");
+      expect(reviewPullRequest?.run).not.toContain("gh api");
+      expect(reviewPullRequest?.run).not.toContain(
+        "repos/${GITHUB_REPOSITORY}/issues/",
+      );
+      expect(job.steps.indexOf(token as WorkflowStep)).toBeLessThan(
+        job.steps.indexOf(reviewPullRequest as WorkflowStep),
       );
       expect(source).toContain('git config user.name "Tavernary Publisher"');
       expect(source).toContain(
