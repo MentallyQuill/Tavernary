@@ -35,6 +35,10 @@ test("publishes successful generated project transactions by exact SHA", async (
   expect(source).toContain("projectFingerprints");
   expect(source).toContain("sourceFingerprint");
   expect(source).toContain('import tags from "./data/vocabularies/tags.json"');
+  expect(source).toContain(
+    'import { tagVocabularyHash } from "./scripts/catalog/tag-vocabulary.mjs"',
+  );
+  expect(source).toContain("tagVocabularyHash: tagVocabularyHash(tags)");
   expect(source).not.toContain(
     'import capabilities from "./data/vocabularies/capabilities.json"',
   );

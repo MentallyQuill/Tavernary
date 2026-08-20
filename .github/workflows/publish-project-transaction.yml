@@ -167,6 +167,7 @@ jobs:
           import tags from "./data/vocabularies/tags.json" with { type: "json" };
           import modelFamilies from "./data/vocabularies/model-families.json" with { type: "json" };
           import completionFormats from "./data/vocabularies/completion-formats.json" with { type: "json" };
+          import { tagVocabularyHash } from "./scripts/catalog/tag-vocabulary.mjs";
           import { normalizeProjectOwnerManifest } from "./src/features/help/project-owner-manifest.mjs";
           import {
             fingerprintProjectRecord,
@@ -232,6 +233,7 @@ jobs:
                   frontends: frontends.frontends,
                   primaryFunctions: primaryFunctions.primary_functions,
                   tags: tags.tags,
+                  tagVocabularyHash: tagVocabularyHash(tags),
                   modelFamilies: modelFamilies.model_families,
                   completionFormats: completionFormats.completion_formats,
                   source,

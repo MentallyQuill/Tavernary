@@ -150,8 +150,9 @@ jobs:
           git config user.email "tavernary-publisher[bot]@users.noreply.github.com"
           if [[ -n "$PR_NUMBER" ]]; then
             git fetch origin "refs/heads/$BRANCH:refs/remotes/origin/$BRANCH"
-            git checkout -B "$BRANCH" "origin/$BRANCH"
-            git rebase origin/main
+          fi
+          git checkout -B "$BRANCH" origin/main
+          if [[ -n "$PR_NUMBER" ]]; then
             while IFS= read -r generated_path; do
               [[ -z "$generated_path" ]] && continue
               case "$generated_path" in
@@ -167,8 +168,6 @@ jobs:
                 rm -f -- "$generated_path"
               fi
             done < "${RUNNER_TEMP}/previous-owner-paths.txt"
-          else
-            git checkout -B "$BRANCH" origin/main
           fi
           node scripts/help/generate-project-owner-request.mjs \
             --issue-number "$ISSUE_NUMBER" \
