@@ -1726,7 +1726,11 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   ) as { with?: { "fetch-depth"?: number; ref?: string } } | undefined;
   const generationJob = generation.jobs.generate as {
     env?: Record<string, string>;
-    steps: Array<{ name?: string; env?: Record<string, string> }>;
+    steps: Array<{
+      name?: string;
+      env?: Record<string, string>;
+      run?: string;
+    }>;
   };
   const modelStep = generationJob.steps.find(
     (step) => step.name === "Generate from latest main and issue state",
@@ -1797,6 +1801,8 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   expect(source).not.toContain('gh pr list --state open --head "$branch"');
   expect(source).toContain("git push --force-with-lease=");
   expect(source).not.toMatch(/git push (?:--force|-f)(?!-with-lease)/);
+  expect(modelStep?.run).not.toContain("git rebase origin/main");
+  expect(modelStep?.run).toContain('git checkout -B "$BRANCH" origin/main');
   expect(source).toContain(
     "Reclaiming issue-owned orphan branch at exact remote SHA",
   );
