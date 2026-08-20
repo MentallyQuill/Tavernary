@@ -833,7 +833,21 @@ describe("TavernKeeper V5 report import", () => {
   test("accepts review batch and reuse telemetry", async () => {
     const [fixtureIndex, baseReport] = await fixtures();
     const report = policy4Report(baseReport);
-    report.review_batches = [];
+    report.review_batches = [
+      {
+        kind: "contextual_review",
+        attempt: 2,
+        group_count: 1,
+        candidate_count: 1,
+        estimated_input_tokens: null,
+        over_budget: false,
+        input_tokens: 0,
+        output_tokens: 0,
+        cache_read_tokens: 0,
+        reasoning_tokens: 0,
+        retry_reason: "assessment_technical_explanation",
+      },
+    ];
     report.review_reuse = {
       groups: { fresh: 0, reused: 0 },
       candidates: { fresh: 0, reused: 0 },
@@ -849,6 +863,36 @@ describe("TavernKeeper V5 report import", () => {
     expect(validateScanReport(rebound, validatedIndex.reports[0])).toEqual(
       rebound,
     );
+  });
+
+  test("rejects an unknown review batch retry reason", async () => {
+    const [fixtureIndex, baseReport] = await fixtures();
+    const report = policy4Report(baseReport);
+    report.review_batches = [
+      {
+        kind: "contextual_review",
+        attempt: 2,
+        group_count: 1,
+        candidate_count: 1,
+        estimated_input_tokens: null,
+        over_budget: false,
+        input_tokens: 0,
+        output_tokens: 0,
+        cache_read_tokens: 0,
+        reasoning_tokens: 0,
+        retry_reason: "unrecognized_retry_reason",
+      },
+    ];
+    const rebound = rebindReport(report);
+    const entry = projectIndexReport(rebound);
+    const validatedIndex = validateReportIndex(
+      { ...fixtureIndex, reports: [entry] },
+      registry,
+    );
+
+    expect(() =>
+      validateScanReport(rebound, validatedIndex.reports[0]),
+    ).toThrow(/schema validation failed/iu);
   });
 
   test("rejects review batch usage that disagrees with totals", async () => {

@@ -70,7 +70,7 @@ test("declines an unmerged marked owner PR", () => {
   });
 });
 
-test("cleans owner queue labels after a merged marked PR", () => {
+test("closes the owner issue after a merged marked PR", () => {
   expect(planProjectOwnerClosure(closure({ merged: true }))).toEqual({
     action: "merged",
     issueNumber: 123,
@@ -82,7 +82,7 @@ test("cleans owner queue labels after a merged marked PR", () => {
       "submission-pr-open",
     ],
     deleteBranch: "automation/project-owner-request-123",
-    closeReason: null,
+    closeReason: "completed",
   });
 });
 

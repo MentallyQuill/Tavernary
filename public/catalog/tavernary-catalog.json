@@ -24973,6 +24973,176 @@
       }
     },
     {
+      "id": "enclavum-otaku",
+      "name": "otaku",
+      "kind": "frontend",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": "Otaku is a terminal roleplay client. It needs no infrastructure (no Docker, no nodejs, etc.), installs in one command and requires minimal configuration.",
+      "canonicalUrl": "https://github.com/enclavum/otaku",
+      "catalogedAt": "2026-08-20T16:11:49.503Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "otaku",
+          "label": "otaku",
+          "description": "Works with the otaku roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "build-worlds-and-lore",
+          "label": "Build worlds and lore",
+          "description": "Create fictional settings, lore, locations, factions, or other world material.",
+          "facet": "goal"
+        },
+        {
+          "id": "edit-and-refine-messages",
+          "label": "Edit and refine messages",
+          "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
+          "facet": "goal"
+        },
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
+          "facet": "goal"
+        },
+        {
+          "id": "inspect-prompts-and-generations",
+          "label": "Inspect prompts and generations",
+          "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+          "facet": "goal"
+        },
+        {
+          "id": "maintain-long-term-memory",
+          "label": "Maintain long-term memory",
+          "description": "Preserve and recall important information across long chats or separate sessions.",
+          "facet": "goal"
+        },
+        {
+          "id": "organize-chats-and-messages",
+          "label": "Organize chats and messages",
+          "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "e843e30553f69f6cd4d226e9fe4d2b7a67ddc1e9",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "enclavum"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-17T05:35:42.000Z",
+        "activeWeeks12": 5,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          true,
+          true,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-08-17T11:11:12.000Z",
+      "community": {
+        "stars": 25,
+        "forks": 1,
+        "watchers": 1,
+        "aggregate": 27
+      },
+      "repositorySizeKb": 7478,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-20T16:11:49.503Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "otaku"
+        ],
+        "aliases": [],
+        "source": [
+          "enclavum-otaku",
+          "github-1268160811",
+          "enclavum/otaku",
+          "https://github.com/enclavum/otaku"
+        ],
+        "summary": [
+          "Otaku is a terminal roleplay client. It needs no infrastructure (no Docker, no nodejs, etc.), installs in one command and requires minimal configuration."
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [
+          "Build worlds and lore",
+          "worldbuilding",
+          "character worldbuilding",
+          "lore creation",
+          "setting design",
+          "Edit and refine messages",
+          "message rewriting",
+          "chat editing",
+          "response refinement",
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control",
+          "Inspect prompts and generations",
+          "prompt inspection",
+          "generation diagnostics",
+          "review validation",
+          "request debugging",
+          "Maintain long-term memory",
+          "durable memory",
+          "persistent memory",
+          "remember across chats",
+          "Organize chats and messages",
+          "chat organization",
+          "message bookmarks",
+          "conversation search"
+        ],
+        "frontends": [
+          "otaku"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "enclavum"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "enerccio-sillytavern-autosummary",
       "name": "SillyTavern-AutoSummary",
       "kind": "extension",
@@ -33755,6 +33925,148 @@
       }
     },
     {
+      "id": "hype-hosting-sillytavern-roulette",
+      "name": "SillyTavern-Roulette",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "SillyTavern-Roulette rotates connection profiles sequentially or by weighted random during chat, mixing models, parameters, and providers without manual switching. A pinned dot bar shows the live slot per README.",
+      "canonicalUrl": "https://github.com/hype-hosting/SillyTavern-Roulette",
+      "catalogedAt": "2026-08-20T16:15:49.017Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "automate-roleplay-workflows",
+          "label": "Automate roleplay workflows",
+          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
+          "facet": "goal"
+        },
+        {
+          "id": "route-tasks-across-models",
+          "label": "Route tasks across models",
+          "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "25de9378bcac0470824a77d1d537e6b30042a2a2",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "hype-hosting"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "claude",
+            "botOrAi": true
+          },
+          {
+            "provider": "github",
+            "login": "hyperion-001",
+            "botOrAi": false
+          }
+        ],
+        "humanContributorCount": 1,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-19T18:59:44.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-08-19T19:05:11.000Z",
+      "community": {
+        "stars": 2,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 2
+      },
+      "repositorySizeKb": 3337,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-20T16:15:49.017Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-Roulette"
+        ],
+        "aliases": [],
+        "source": [
+          "hype-hosting-sillytavern-roulette",
+          "github-1230353014",
+          "hype-hosting/SillyTavern-Roulette",
+          "https://github.com/hype-hosting/SillyTavern-Roulette"
+        ],
+        "summary": [
+          "SillyTavern-Roulette rotates connection profiles sequentially or by weighted random during chat, mixing models, parameters, and providers without manual switching. A pinned dot bar shows the live slot per README."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Automate roleplay workflows",
+          "automation",
+          "workflow automation",
+          "task automation",
+          "triggered actions",
+          "Route tasks across models",
+          "model routing",
+          "task routing",
+          "connection routing"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "hype-hosting",
+          "claude",
+          "hyperion-001"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "i5031337-sillytavern-contextual-scene-painter",
       "name": "sillytavern-contextual-scene-painter",
       "kind": "extension",
@@ -42266,6 +42578,134 @@
       }
     },
     {
+      "id": "leandrojofre-sillytavern-kofe-script",
+      "name": "SillyTavern-Kofe-Script",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "developer-infrastructure",
+      "summary": "The extension adds a library with several slash commands and macros for multiple general purposes. A QoL expansion to SillyTavern's scripting tools.",
+      "canonicalUrl": "https://github.com/leandrojofre/SillyTavern-Kofe-Script",
+      "catalogedAt": "2026-08-20T16:07:46.596Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "background-operation",
+          "label": "Background operation",
+          "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
+          "facet": "trait"
+        },
+        {
+          "id": "build-extensions-and-scripts",
+          "label": "Build extensions and scripts",
+          "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "dd75fc66d6f1adf268f8d8b8ff319456968de610",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "leandrojofre"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-20T15:35:16.000Z",
+        "activeWeeks12": 6,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          false,
+          true,
+          true,
+          false,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-08-20T15:35:53.000Z",
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 544,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-20T16:07:46.596Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-Kofe-Script"
+        ],
+        "aliases": [],
+        "source": [
+          "leandrojofre-sillytavern-kofe-script",
+          "github-990716565",
+          "leandrojofre/SillyTavern-Kofe-Script",
+          "https://github.com/leandrojofre/SillyTavern-Kofe-Script"
+        ],
+        "summary": [
+          "The extension adds a library with several slash commands and macros for multiple general purposes. A QoL expansion to SillyTavern's scripting tools."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Developer infrastructure"
+        ],
+        "tags": [
+          "Background operation",
+          "asynchronous processing",
+          "quiet generation",
+          "background tasks",
+          "Build extensions and scripts",
+          "extension development",
+          "custom scripting",
+          "plugin development"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "leandrojofre"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "leandrojofre-sillytavern-mathcros",
       "name": "SillyTavern-Mathcros",
       "kind": "extension",
@@ -46215,7 +46655,7 @@
     },
     {
       "id": "lodactio-extension-summaryception",
-      "name": "Extension-Summaryception",
+      "name": "Summaryception",
       "kind": "extension",
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
@@ -46402,7 +46842,7 @@
       "fork": null,
       "search": {
         "title": [
-          "Extension-Summaryception"
+          "Summaryception"
         ],
         "aliases": [],
         "source": [
@@ -69248,6 +69688,145 @@
       }
     },
     {
+      "id": "rustyorb-preset-forge",
+      "name": "preset-forge",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "character-worldbuilding",
+      "summary": "PresetForge is a visual builder for SillyTavern preset kits that treats presets as programs with modules, variables, regexes, and automations. The LLM never writes JSON, so every export passes an independent validator.",
+      "canonicalUrl": "https://github.com/rustyorb/preset-forge",
+      "catalogedAt": "2026-08-20T16:46:47.582Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "manage-prompts-and-presets",
+          "label": "Manage prompts and presets",
+          "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
+          "facet": "goal"
+        },
+        {
+          "id": "modular-and-extensible",
+          "label": "Modular and extensible",
+          "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
+          "facet": "trait"
+        },
+        {
+          "id": "visual-workflow",
+          "label": "Visual workflow",
+          "description": "Uses nodes, diagrams, canvases, maps, or drag-and-drop builders to define behavior.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "de2a08a5f6181c7344bbdb5daa2fe95e2341c359",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "rustyorb"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-20T13:51:07.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 1,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 1
+      },
+      "repositorySizeKb": 206,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-20T16:46:47.582Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "preset-forge"
+        ],
+        "aliases": [],
+        "source": [
+          "rustyorb-preset-forge",
+          "github-1338955728",
+          "rustyorb/preset-forge",
+          "https://github.com/rustyorb/preset-forge"
+        ],
+        "summary": [
+          "PresetForge is a visual builder for SillyTavern preset kits that treats presets as programs with modules, variables, regexes, and automations. The LLM never writes JSON, so every export passes an independent validator."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Character and worldbuilding"
+        ],
+        "tags": [
+          "Manage prompts and presets",
+          "prompt management",
+          "prompt engineering",
+          "preset organization",
+          "template management",
+          "Modular and extensible",
+          "plugin architecture",
+          "modular design",
+          "extensible system",
+          "Visual workflow",
+          "node editor",
+          "flowchart builder",
+          "graphical workflow"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "rustyorb"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "rustyorb-sillytavern-qrbuilder",
       "name": "SillyTavern-QRBuilder",
       "kind": "extension",
@@ -72696,6 +73275,112 @@
         "maintainers": [
           "SenriYuki",
           "baibai-git"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "sewerzone-sillytavern-sillytoast",
+      "name": "SillyTavern-SillyToast",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "SillyTavern extension forked from ToastTome by DreamTavern, crediting the original ToastTome extension authors. README: \"Forked from ToastTome\" with a Features section.",
+      "canonicalUrl": "https://github.com/sewerzone/SillyTavern-SillyToast",
+      "catalogedAt": "2026-08-20T17:19:55.117Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "1bceed6afb0c48c21d0311b86450ed8861314876",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "sewerzone"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-20T16:14:03.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 1,
+        "forks": 0,
+        "watchers": 1,
+        "aggregate": 2
+      },
+      "repositorySizeKb": 319,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-20T17:19:55.117Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-SillyToast"
+        ],
+        "aliases": [],
+        "source": [
+          "sewerzone-sillytavern-sillytoast",
+          "github-1334521822",
+          "sewerzone/SillyTavern-SillyToast",
+          "https://github.com/sewerzone/SillyTavern-SillyToast"
+        ],
+        "summary": [
+          "SillyTavern extension forked from ToastTome by DreamTavern, crediting the original ToastTome extension authors. README: \"Forked from ToastTome\" with a Features section."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "sewerzone"
         ],
         "relationships": []
       }
@@ -81745,6 +82430,308 @@
       }
     },
     {
+      "id": "spicymarinara-rpg-companion-sillytavern",
+      "name": "rpg-companion-sillytavern",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "rpg-systems",
+      "summary": "RPG Companion is a deprecated extension for SillyTavern-compatible frontends that tracks stats, scenes, and character thoughts. Its README points users to Marinara Engine and says community maintenance may continue.",
+      "canonicalUrl": "https://github.com/SpicyMarinara/rpg-companion-sillytavern",
+      "catalogedAt": "2026-08-20T17:48:49.887Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillybunny-sillybunnyteam",
+          "label": "SillyBunny",
+          "description": "Works with the SillyBunny roleplay frontend."
+        },
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        },
+        {
+          "id": "tauritavern",
+          "label": "TauriTavern",
+          "description": "Works with the TauriTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-rpg-gameplay",
+          "label": "Add RPG gameplay",
+          "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
+          "facet": "goal"
+        },
+        {
+          "id": "automate-roleplay-workflows",
+          "label": "Automate roleplay workflows",
+          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
+          "facet": "goal"
+        },
+        {
+          "id": "customize-the-interface",
+          "label": "Customize the interface",
+          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-inventory-and-quests",
+          "label": "Manage inventory and quests",
+          "description": "Track equipment, items, objectives, quests, or progression records.",
+          "facet": "goal"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "e021946867b9a457a3f8b67c78642f9b92ebb90d",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "SpicyMarinara"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "paperboygold",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "tomt610",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "munimunigamer",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "jlasz",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Subarashimo",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "IDeathByte",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "DAurielS",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "lilminzyu",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "jakstein",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "claude",
+            "botOrAi": true
+          },
+          {
+            "provider": "github",
+            "login": "chungchandev",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "amauragis",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "joenunezb",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Alamion",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "CristianAUnisa",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Olaroll",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "dd178",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "devsorcer",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "AndHeDelivers",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Korddie",
+            "botOrAi": false
+          }
+        ],
+        "humanContributorCount": 19,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-06-04T16:14:25.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 304,
+        "forks": 72,
+        "watchers": 6,
+        "aggregate": 382
+      },
+      "repositorySizeKb": 1698,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-20T17:48:49.887Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "rpg-companion-sillytavern"
+        ],
+        "aliases": [],
+        "source": [
+          "spicymarinara-rpg-companion-sillytavern",
+          "github-1075711284",
+          "SpicyMarinara/rpg-companion-sillytavern",
+          "https://github.com/SpicyMarinara/rpg-companion-sillytavern"
+        ],
+        "summary": [
+          "RPG Companion is a deprecated extension for SillyTavern-compatible frontends that tracks stats, scenes, and character thoughts. Its README points users to Marinara Engine and says community maintenance may continue."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "RPG systems and suites"
+        ],
+        "tags": [
+          "Add RPG gameplay",
+          "tabletop mechanics",
+          "game master tools",
+          "RPG systems",
+          "Automate roleplay workflows",
+          "automation",
+          "workflow automation",
+          "task automation",
+          "triggered actions",
+          "Customize the interface",
+          "interface theming",
+          "layout customization",
+          "UI personalization",
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control",
+          "Manage inventory and quests",
+          "quest tracking",
+          "inventory management",
+          "equipment tracking",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "SillyBunny",
+          "SillyTavern",
+          "TauriTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "SpicyMarinara",
+          "paperboygold",
+          "tomt610",
+          "munimunigamer",
+          "jlasz",
+          "Subarashimo",
+          "IDeathByte",
+          "DAurielS",
+          "lilminzyu",
+          "jakstein",
+          "claude",
+          "chungchandev",
+          "amauragis",
+          "joenunezb",
+          "Alamion",
+          "CristianAUnisa",
+          "Olaroll",
+          "dd178",
+          "devsorcer",
+          "AndHeDelivers",
+          "Korddie"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "spicymarinara-sillytavern-lovense",
       "name": "SillyTavern Lovense",
       "kind": "extension",
@@ -88291,7 +89278,7 @@
         "folderName": "Extension-Summaryception"
       },
       "fork": {
-        "parentName": "Extension-Summaryception",
+        "parentName": "Summaryception",
         "parentProjectId": "lodactio-extension-summaryception",
         "parentUrl": null,
         "status": "published"
@@ -88338,7 +89325,7 @@
           "vadash"
         ],
         "relationships": [
-          "Extension-Summaryception",
+          "Summaryception",
           "lodactio-extension-summaryception"
         ]
       }
