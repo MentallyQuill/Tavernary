@@ -1129,6 +1129,12 @@ test("redispatches Pages without gating the next due import", async () => {
     reportValidate,
   );
 
+  expect(commitSource).toContain(
+    "git add -- data/security/tavernkeeper-report-summaries.json data/security/tavernkeeper-import-state.json public/catalog/tavernary-catalog.json",
+  );
+  expect(commitSource).toContain(
+    "git diff --cached --quiet -- data/security/tavernkeeper-report-summaries.json data/security/tavernkeeper-import-state.json public/catalog/tavernary-catalog.json",
+  );
   expect(noDiffStart).toBeGreaterThanOrEqual(0);
   expect(noDiffSource).toContain("git fetch --no-tags origin main");
   expect(noDiffSource).toContain("git merge --ff-only origin/main");
