@@ -114,7 +114,7 @@ jobs:
             echo "branch=$branch"
             echo "remote_sha=$remote_sha"
           } >> "$GITHUB_OUTPUT"
-      - name: Refuse unowned or maintainer-diverged branches
+      - name: Protect marked owner branches
         shell: bash
         env:
           PR_NUMBER: ${{ steps.state.outputs.pr_number }}
@@ -122,9 +122,8 @@ jobs:
           REMOTE_SHA: ${{ steps.state.outputs.remote_sha }}
         run: |
           set -euo pipefail
-          if [[ -n "$REMOTE_SHA" && -z "$PR_NUMBER" ]]; then
-            echo "::error::Owner request branch exists without an open marked PR."
-            exit 1
+          if [[ -z "$PR_NUMBER" && -n "$REMOTE_SHA" ]]; then
+            echo "::notice::Reclaiming issue-owned orphan branch at exact remote SHA $REMOTE_SHA."
           fi
           if [[ -n "$PR_NUMBER" &&
                 ( -z "$REMOTE_SHA" || -z "$MARKER_SHA" ||

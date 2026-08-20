@@ -1797,6 +1797,15 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   expect(source).not.toContain('gh pr list --state open --head "$branch"');
   expect(source).toContain("git push --force-with-lease=");
   expect(source).not.toMatch(/git push (?:--force|-f)(?!-with-lease)/);
+  expect(source).toContain(
+    "Reclaiming issue-owned orphan branch at exact remote SHA",
+  );
+  expect(source).not.toContain(
+    "Owner request branch exists without an open marked PR.",
+  );
+  expect(source).toMatch(
+    /if \[\[ -n "\$PR_NUMBER" &&[\s\S]*"\$REMOTE_SHA" != "\$MARKER_SHA"/u,
+  );
   expect(source).toContain("feat(catalog): apply owner request #");
   expect(source).toContain("npm run catalog:validate");
   expect(source).toContain("npm run catalog:build");
