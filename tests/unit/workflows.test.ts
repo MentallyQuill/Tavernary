@@ -1922,6 +1922,9 @@ test("handles owner closure from default-branch code and exact head state", asyn
   expect(source).toContain("event.repository.default_branch");
   expect(source).toContain("state_reason");
   expect(source).toContain("gh api --method PUT");
+  expect(source).toContain('`close_reason=${plan.closeReason ?? ""}`');
+  expect(source).toContain('if [[ -n "$CLOSE_REASON" ]]');
+  expect(source).toContain('-f state_reason="$CLOSE_REASON"');
   expect(source).toContain("tavernary-project-owner-declined-pr:");
   expect(source).toContain("gh label create submission-declined");
   expect(source).not.toContain("github.event.pull_request.head.ref }}");

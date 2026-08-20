@@ -32,7 +32,7 @@ export function planProjectOwnerClosure(input) {
       action: "merged",
       ...common,
       addLabels: [],
-      closeReason: null,
+      closeReason: "completed",
     };
   }
   return {
