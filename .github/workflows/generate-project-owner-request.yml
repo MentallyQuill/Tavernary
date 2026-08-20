@@ -46,6 +46,7 @@ jobs:
           owner: MentallyQuill
           repositories: Tavernary
           permission-contents: write
+          permission-pull-requests: write
       - name: Check out full current main
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -512,6 +513,7 @@ jobs:
           PR_NUMBER: ${{ steps.state.outputs.pr_number }}
           PROJECT_LABEL: ${{ steps.paths.outputs.project_label }}
           REMOTE_SHA: ${{ steps.state.outputs.remote_sha }}
+          GH_TOKEN: ${{ steps.publisher-token.outputs.token }}
         run: |
           set -euo pipefail
           node --input-type=module <<'NODE'
