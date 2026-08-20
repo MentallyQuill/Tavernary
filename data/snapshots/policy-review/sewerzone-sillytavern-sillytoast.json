@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sewerzone-sillytavern-sillytoast",
+  "source_id": "github-1334521822",
+  "source_identity": "github:sewerzone/sillytavern-sillytoast",
+  "evidence_fingerprint": "146dabbdf4799455a82c449cab5670c85b6c6e041548023166e272b4b7a0397d",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-20T17:23:13.348Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-20T17:23:13.348Z"
+  },
+  "maintenance_issue_number": null
+}
