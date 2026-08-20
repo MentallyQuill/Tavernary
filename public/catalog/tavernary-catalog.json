@@ -100725,7 +100725,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-20T08:01:24.640Z",
+      "supportRefreshedAt": "2026-08-20T11:26:01.243Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -104942,7 +104942,7 @@
       ],
       "supporterCount": 2,
       "trendingScore": 1.1783042980435545,
-      "supportRefreshedAt": "2026-08-20T08:01:24.640Z",
+      "supportRefreshedAt": "2026-08-20T11:26:01.243Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -105009,6 +105009,3201 @@
           "aikohanasaki-sillytavern-bookmarks",
           "aikohanasaki-sillytavern-worldinfolocks",
           "aikohanasaki-sillytavern-lorebookordering"
+        ]
+      }
+    },
+    {
+      "id": "burpp-570",
+      "title": "burpp",
+      "description": "just me for me a beginner",
+      "author": {
+        "githubUserId": 319005979,
+        "login": "lennazaire-ui"
+      },
+      "sourceIssueNumber": 570,
+      "sourceIssueUrl": "https://github.com/MentallyQuill/Tavernary/issues/570",
+      "publishedAt": "2026-08-20T11:26:01.191Z",
+      "updatedAt": "2026-08-20T11:26:01.191Z",
+      "frontends": [
+        {
+          "id": "sillybunny-sillybunnyteam",
+          "label": "SillyBunny",
+          "description": "Works with the SillyBunny roleplay frontend."
+        }
+      ],
+      "purposes": [
+        {
+          "id": "preset",
+          "label": "System Preset",
+          "description": "A reusable System Preset with a structural Preset classification."
+        },
+        {
+          "id": "interface-workflow",
+          "label": "Interface and workflow",
+          "description": "Improves user-facing navigation, presentation, editing, productivity, accessibility, or media interaction."
+        }
+      ],
+      "modelFamilies": [
+        {
+          "id": "glm",
+          "label": "GLM",
+          "description": "Designed for GLM-family models."
+        },
+        {
+          "id": "model-agnostic",
+          "label": "Model-Agnostic",
+          "description": "Designed to work across model families."
+        },
+        {
+          "id": "gemini",
+          "label": "Gemini",
+          "description": "Designed for Google Gemini models."
+        },
+        {
+          "id": "kimi",
+          "label": "Kimi",
+          "description": "Designed for Kimi models."
+        },
+        {
+          "id": "gemma",
+          "label": "Gemma",
+          "description": "Designed for Google Gemma models."
+        },
+        {
+          "id": "claude",
+          "label": "Claude",
+          "description": "Designed for Anthropic Claude models."
+        },
+        {
+          "id": "deepseek",
+          "label": "DeepSeek",
+          "description": "Designed for DeepSeek models."
+        },
+        {
+          "id": "minimax",
+          "label": "MiniMax",
+          "description": "Designed for MiniMax models."
+        }
+      ],
+      "components": [
+        {
+          "projectId": "sillybunnyteam-sillybunny",
+          "name": "SillyBunny",
+          "kind": "frontend",
+          "primaryFunction": "frontend",
+          "availability": "available",
+          "unavailableReason": null,
+          "canonicalUrl": "https://github.com/SillyBunnyTeam/SillyBunny",
+          "project": {
+            "id": "sillybunnyteam-sillybunny",
+            "name": "SillyBunny",
+            "kind": "frontend",
+            "metadataStatus": "curated",
+            "sourceStatus": "healthy",
+            "primaryFunction": "frontend",
+            "summary": "SillyBunny is a SillyTavern fork with a cleaner graphical shell UI, Bun backend, built-in tutorials, presets, extensions, and an agentic quick-start dashboard.",
+            "canonicalUrl": "https://github.com/SillyBunnyTeam/SillyBunny",
+            "catalogedAt": "2026-08-02T02:49:06.399Z",
+            "catalogCohort": "standard",
+            "frontends": [
+              {
+                "id": "sillybunny-sillybunnyteam",
+                "label": "SillyBunny",
+                "description": "Works with the SillyBunny roleplay frontend."
+              }
+            ],
+            "tags": [
+              {
+                "id": "agentic-tool-use",
+                "label": "Agentic tool use",
+                "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
+                "facet": "trait"
+              },
+              {
+                "id": "customize-the-interface",
+                "label": "Customize the interface",
+                "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-prompts-and-presets",
+                "label": "Manage prompts and presets",
+                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
+                "facet": "goal"
+              },
+              {
+                "id": "mobile-friendly",
+                "label": "Mobile-friendly",
+                "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
+                "facet": "trait"
+              },
+              {
+                "id": "modular-and-extensible",
+                "label": "Modular and extensible",
+                "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
+                "facet": "trait"
+              }
+            ],
+            "tavernKeeper": {
+              "state": "gray",
+              "riskLevel": null,
+              "freshness": "unassessed",
+              "currentSha": "3021edcae1a5212a9f828e051d46e7945c7e4fec",
+              "report": null,
+              "history": [],
+              "historyUrl": null
+            },
+            "attribution": {
+              "owner": {
+                "provider": "github",
+                "login": "SillyBunnyTeam"
+              },
+              "contributors": [
+                {
+                  "provider": "github",
+                  "login": "Cohee1207",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Wolfsblvt",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "web-flow",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "platberlitz",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "TheLonelyDevil9",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "RossAscends",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "github-actions[bot]",
+                  "botOrAi": true
+                },
+                {
+                  "provider": "github",
+                  "login": "valadaptive",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Geechan",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Tony-sama",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "WolframRavenwolf",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "cunnymessiah",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "kingbri1",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "city-unit",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "GiveMeSomeUsername",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "RivelleDays",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "RealBeepMcJeep",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "bmen25124",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "BPplays",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Technologicat",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Dakraid",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "cloak1505",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "steve02081504",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "DonMoralez",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "artisticMink",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "BismuthGlass",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Bronya-Rand",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Succubyss",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "deffcolony",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "qvink",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Yokayo",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "DeclineThyself",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "kallewoof",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "50h100a",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "joenunezb",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "PasserDreamer",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Copilot",
+                  "botOrAi": true
+                },
+                {
+                  "provider": "github",
+                  "login": "Tosd0",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "AAbushady",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "M0ch0",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "HiroseKoichi",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Erquint",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "kalomaze",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "mweldon",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "AlpinDale",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Vibecoder9000",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "AotianNeo",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "aisu-wata0",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "equal-l2",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "d-ber",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "splitclover",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Risenafis",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "DreamGenX",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "leandrojofre",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "majick",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "WBlair1",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "QuantumEntangledAndy",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "NiklasWilson",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "DarokCx",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "ThisIsPIRI",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "berbant",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "erew123",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "awaae001",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Eradev",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "tgies",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "InspectorCaracal",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "v3ucn",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "pyrater",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Spappz",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "deciare",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "daswer123",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "DAurielS",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "timerender",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Reithan",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "StageDog",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "dependabot[bot]",
+                  "botOrAi": true
+                },
+                {
+                  "provider": "github",
+                  "login": "kwaroran",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "sasha0552",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "nyxkrage",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Zhen-Bo",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "pcpthm",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Samueras",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "edk208",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "IceFog72",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Beinsezii",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "imesha10",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "underscorex86",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "XXpE3",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "vitorfdl",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Touch-Night",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "AlexVeeBee",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "zgce",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "valden80",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "invisietch",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "xz-dev",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "DocShotgun",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "ayancey",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "subzero5544",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Memerlin",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "khanonnie",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "LumiWasTaken",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "h-a-s-k",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Xrystallized",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "IkariDevGIT",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Esalarc",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "tincansimagine",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "smirgol",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "DeathStalker471",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Ph0rk0z",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "isaac-mcfadyen",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "SolidSnacke",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "snowby666",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "ptm0000",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "lucyknada",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "johnbenac",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "sakhavhyand",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "BahamutRU",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "YunZLu",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "blueswolf",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "docfail",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "mightytribble",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "wrvsrx",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "zerofata",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Jasonnor",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "fizzAI",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Boof2015",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "CasualAutopsy",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Deathspike",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "eugencowie",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "FriedCaper",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "SSJGabraham",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "yar3333",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Therosin",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "SpicyMarinara",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "octo-patch",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "m-petra-fn",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "LenAnderson",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Hydroerotic",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "GregW6",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Vhallo",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "augusteo",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "ZhenyaPav",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "anmelus",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "buzz",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "caesarw",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "cloudskytian",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "dllt98",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "drake1138",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "error-usernotavailable",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "bal-spec",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "gd1551",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "P3il4",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "gakada",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Kas1o",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Ivruix",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "my-alt-acct",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "oobabooga",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "ouoertheo",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "parsedone",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "henk717",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "powercaller",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Christoph-D",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "qHiyokop",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Pardeshx",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "uberubert",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "wickedcode01",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "yuaiccc",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "A1KESH1",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Brioch",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "BooleanWhale",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "andrempiva",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "bubfix",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "AyeeMinerva",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "cxmplex",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "chungchandev",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "AliceRabbit",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "CoryG89",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "dvejmz",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Hakirus",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Finadil",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "eltociear",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Scarlet-t",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "KTibow",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "KhreedAI",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "rsxdalv",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "SammCheese",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "iarna",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "AzureKarasuba",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "PeterDaveHello",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Pavdig",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "paniphons",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "NijikaMyWaifu",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Ni-co-la-s",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "NearEDGE",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "mschienbein",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Miiiikachu",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Meus-Artis",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "toby3d",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "racinmat",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Kristyku",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Zhongyi-Lu",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "aalizelau",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "adventchilde",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "aikitoria",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "axAilotl",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "allen9441",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "allo-",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "anachronous",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "ashishch432",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "blackmesataiwan",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "bumprat",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "ceruleandeep",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "cierru",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "closuretxt",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "coffeegrind123",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "crsp6447",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "02loka",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "annoawesome",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Ristellise",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "egirlmilkers",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "UrBoiTom",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Spacellary",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "SrJuggernaut",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Stagnating",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Reisenbug",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "stevelittlefish",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "TanJeeSchuan",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Teashrock",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "tensornull",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Trahloc",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Surye",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "wbruna",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "WanderingMouse",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "X00LA",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "YKDZ",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "yarathenomad",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "mashwell",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "mrguymiah",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "nfuller286",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "nonenothingnada",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "omahs",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "pandora-s-git",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "poipoi300",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "san-tian",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "shanmaocc",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "shifusen329",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "sirius422",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "megagarf",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "test157t",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "thecaptain789",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "theo77186",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "theunstableman",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "toastli",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "yokuminto",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "zeroDtree",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "zhongerxll",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "daiaji",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "duncannah",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "epyllia",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "cuteanon",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "ershang-fireworks",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "evpeople",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "fathom0324",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "f-eg",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "felger1115",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "guoql666",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "gwentman",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "hexa4ce",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "huisman",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "issues-opener",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "kashmirmydon",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "kilonova1832",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "kir-gadjello",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "kokansei",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "leopardracer",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "dylenyedc",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "DN2331",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Dalethium",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "witten",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Dclef",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "dfaker",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "akvadrako",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "D1m7asis",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Doa86",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "EX3-0",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Ecalose",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Enerccio",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "EugeoSynthesisThirtyTwo",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Fensterbank",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Fyphen1223",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "GERNOMA",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "GentleBurr",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "GhostXia",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "GoldenglowMeow",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Goshe-nite",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "9nbf7c4q6b-lgtm",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "AeonBlack",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Ahbahl",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "alekslt",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "alexdenton123",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "V13Axel",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "alicat22",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "MindsMaster",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "soyangel",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "pAnhTri",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "AphidGit",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Autumnlight02",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "BlueprintCoding",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "BrendanMcCauley",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "CaseyHaralson",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "chrisbennight",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "kaiser-chris",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Claude",
+                  "botOrAi": true
+                },
+                {
+                  "provider": "github",
+                  "login": "Crush0",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "MakksSh",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "malformed-c",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Mijyuoon",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "NicodeSS",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "nbrown725",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "NodudeWasTaken",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "sakalond",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "xavisavvy",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "qychen2001",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Quairon-Nailo",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Radovenchyk",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "digiwombat",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Rawi1005",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "rwflan",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "rigbyb",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "rdeforest",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Roland4396",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Sanitised",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "SenatusSPQR1",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Halsey1006",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "hcsum",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Hime-Hina",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Huge",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "dopp1e",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Jay4242",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "paradox460",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "jenrzzz",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "johnflux",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "LuminousPath",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "dz114879",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "KaraKaraWitch",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "KegaPlayer",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Kexus",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "LammyShark",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "pi6am",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "madobeichika",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "maeeeeee",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "plumface-gcc",
+                  "botOrAi": false
+                }
+              ],
+              "humanContributorCount": 348,
+              "status": "current"
+            },
+            "activity": {
+              "latestSourceActivityAt": "2026-08-05T23:54:28.000Z",
+              "activeWeeks12": 10,
+              "weeklyActivity": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                false,
+                false
+              ],
+              "evidenceStatus": "complete",
+              "dormant": false
+            },
+            "latestReleaseAt": "2026-08-06T01:09:40.000Z",
+            "community": {
+              "stars": 102,
+              "forks": 13,
+              "watchers": 4,
+              "aggregate": 119
+            },
+            "repositorySizeKb": 323911,
+            "license": {
+              "status": "osi-approved",
+              "label": "AGPL-3.0",
+              "tooltip": "OSI-approved license detected in the repository root."
+            },
+            "preset": null,
+            "refreshedAt": "2026-08-20T07:59:41.713Z",
+            "staleSince": null,
+            "install": null,
+            "fork": null,
+            "search": {
+              "title": [
+                "SillyBunny"
+              ],
+              "aliases": [],
+              "source": [
+                "sillybunnyteam-sillybunny",
+                "github-1201800372",
+                "SillyBunnyTeam/SillyBunny",
+                "https://github.com/SillyBunnyTeam/SillyBunny"
+              ],
+              "summary": [
+                "SillyBunny is a SillyTavern fork with a cleaner graphical shell UI, Bun backend, built-in tutorials, presets, extensions, and an agentic quick-start dashboard."
+              ],
+              "kind": [
+                "frontend"
+              ],
+              "primaryFunction": [
+                "Frontend"
+              ],
+              "tags": [
+                "Agentic tool use",
+                "tool calling",
+                "AI agents",
+                "agent mode",
+                "Customize the interface",
+                "interface theming",
+                "layout customization",
+                "UI personalization",
+                "Manage prompts and presets",
+                "prompt management",
+                "prompt engineering",
+                "preset organization",
+                "template management",
+                "Mobile-friendly",
+                "mobile support",
+                "phone friendly",
+                "responsive mobile UI",
+                "Modular and extensible",
+                "plugin architecture",
+                "modular design",
+                "extensible system"
+              ],
+              "frontends": [
+                "SillyBunny"
+              ],
+              "compatibility": [],
+              "maintainers": [
+                "SillyBunnyTeam",
+                "Cohee1207",
+                "Wolfsblvt",
+                "web-flow",
+                "platberlitz",
+                "TheLonelyDevil9",
+                "RossAscends",
+                "github-actions[bot]",
+                "valadaptive",
+                "Geechan",
+                "Tony-sama",
+                "WolframRavenwolf",
+                "cunnymessiah",
+                "kingbri1",
+                "city-unit",
+                "GiveMeSomeUsername",
+                "RivelleDays",
+                "RealBeepMcJeep",
+                "bmen25124",
+                "BPplays",
+                "Technologicat",
+                "Dakraid",
+                "cloak1505",
+                "steve02081504",
+                "DonMoralez",
+                "artisticMink",
+                "BismuthGlass",
+                "Bronya-Rand",
+                "Succubyss",
+                "deffcolony",
+                "qvink",
+                "Yokayo",
+                "DeclineThyself",
+                "kallewoof",
+                "50h100a",
+                "joenunezb",
+                "PasserDreamer",
+                "Copilot",
+                "Tosd0",
+                "AAbushady",
+                "M0ch0",
+                "HiroseKoichi",
+                "Erquint",
+                "kalomaze",
+                "mweldon",
+                "AlpinDale",
+                "Vibecoder9000",
+                "AotianNeo",
+                "aisu-wata0",
+                "equal-l2",
+                "d-ber",
+                "splitclover",
+                "Risenafis",
+                "DreamGenX",
+                "leandrojofre",
+                "majick",
+                "WBlair1",
+                "QuantumEntangledAndy",
+                "NiklasWilson",
+                "DarokCx",
+                "ThisIsPIRI",
+                "berbant",
+                "erew123",
+                "awaae001",
+                "Eradev",
+                "tgies",
+                "InspectorCaracal",
+                "v3ucn",
+                "pyrater",
+                "Spappz",
+                "deciare",
+                "daswer123",
+                "DAurielS",
+                "timerender",
+                "Reithan",
+                "StageDog",
+                "dependabot[bot]",
+                "kwaroran",
+                "sasha0552",
+                "nyxkrage",
+                "Zhen-Bo",
+                "pcpthm",
+                "Samueras",
+                "edk208",
+                "IceFog72",
+                "Beinsezii",
+                "imesha10",
+                "underscorex86",
+                "XXpE3",
+                "vitorfdl",
+                "Touch-Night",
+                "AlexVeeBee",
+                "zgce",
+                "valden80",
+                "invisietch",
+                "xz-dev",
+                "DocShotgun",
+                "ayancey",
+                "subzero5544",
+                "Memerlin",
+                "khanonnie",
+                "LumiWasTaken",
+                "h-a-s-k",
+                "Xrystallized",
+                "IkariDevGIT",
+                "Esalarc",
+                "tincansimagine",
+                "smirgol",
+                "DeathStalker471",
+                "Ph0rk0z",
+                "isaac-mcfadyen",
+                "SolidSnacke",
+                "snowby666",
+                "ptm0000",
+                "lucyknada",
+                "johnbenac",
+                "sakhavhyand",
+                "BahamutRU",
+                "YunZLu",
+                "blueswolf",
+                "docfail",
+                "mightytribble",
+                "wrvsrx",
+                "zerofata",
+                "Jasonnor",
+                "fizzAI",
+                "Boof2015",
+                "CasualAutopsy",
+                "Deathspike",
+                "eugencowie",
+                "FriedCaper",
+                "SSJGabraham",
+                "yar3333",
+                "Therosin",
+                "SpicyMarinara",
+                "octo-patch",
+                "m-petra-fn",
+                "LenAnderson",
+                "Hydroerotic",
+                "GregW6",
+                "Vhallo",
+                "augusteo",
+                "ZhenyaPav",
+                "anmelus",
+                "buzz",
+                "caesarw",
+                "cloudskytian",
+                "dllt98",
+                "drake1138",
+                "error-usernotavailable",
+                "bal-spec",
+                "gd1551",
+                "P3il4",
+                "gakada",
+                "Kas1o",
+                "Ivruix",
+                "my-alt-acct",
+                "oobabooga",
+                "ouoertheo",
+                "parsedone",
+                "henk717",
+                "powercaller",
+                "Christoph-D",
+                "qHiyokop",
+                "Pardeshx",
+                "uberubert",
+                "wickedcode01",
+                "yuaiccc",
+                "A1KESH1",
+                "Brioch",
+                "BooleanWhale",
+                "andrempiva",
+                "bubfix",
+                "AyeeMinerva",
+                "cxmplex",
+                "chungchandev",
+                "AliceRabbit",
+                "CoryG89",
+                "dvejmz",
+                "Hakirus",
+                "Finadil",
+                "eltociear",
+                "Scarlet-t",
+                "KTibow",
+                "KhreedAI",
+                "rsxdalv",
+                "SammCheese",
+                "iarna",
+                "AzureKarasuba",
+                "PeterDaveHello",
+                "Pavdig",
+                "paniphons",
+                "NijikaMyWaifu",
+                "Ni-co-la-s",
+                "NearEDGE",
+                "mschienbein",
+                "Miiiikachu",
+                "Meus-Artis",
+                "toby3d",
+                "racinmat",
+                "Kristyku",
+                "Zhongyi-Lu",
+                "aalizelau",
+                "adventchilde",
+                "aikitoria",
+                "axAilotl",
+                "allen9441",
+                "allo-",
+                "anachronous",
+                "ashishch432",
+                "blackmesataiwan",
+                "bumprat",
+                "ceruleandeep",
+                "cierru",
+                "closuretxt",
+                "coffeegrind123",
+                "crsp6447",
+                "02loka",
+                "annoawesome",
+                "Ristellise",
+                "egirlmilkers",
+                "UrBoiTom",
+                "Spacellary",
+                "SrJuggernaut",
+                "Stagnating",
+                "Reisenbug",
+                "stevelittlefish",
+                "TanJeeSchuan",
+                "Teashrock",
+                "tensornull",
+                "Trahloc",
+                "Surye",
+                "wbruna",
+                "WanderingMouse",
+                "X00LA",
+                "YKDZ",
+                "yarathenomad",
+                "mashwell",
+                "mrguymiah",
+                "nfuller286",
+                "nonenothingnada",
+                "omahs",
+                "pandora-s-git",
+                "poipoi300",
+                "san-tian",
+                "shanmaocc",
+                "shifusen329",
+                "sirius422",
+                "megagarf",
+                "test157t",
+                "thecaptain789",
+                "theo77186",
+                "theunstableman",
+                "toastli",
+                "yokuminto",
+                "zeroDtree",
+                "zhongerxll",
+                "daiaji",
+                "duncannah",
+                "epyllia",
+                "cuteanon",
+                "ershang-fireworks",
+                "evpeople",
+                "fathom0324",
+                "f-eg",
+                "felger1115",
+                "guoql666",
+                "gwentman",
+                "hexa4ce",
+                "huisman",
+                "issues-opener",
+                "kashmirmydon",
+                "kilonova1832",
+                "kir-gadjello",
+                "kokansei",
+                "leopardracer",
+                "dylenyedc",
+                "DN2331",
+                "Dalethium",
+                "witten",
+                "Dclef",
+                "dfaker",
+                "akvadrako",
+                "D1m7asis",
+                "Doa86",
+                "EX3-0",
+                "Ecalose",
+                "Enerccio",
+                "EugeoSynthesisThirtyTwo",
+                "Fensterbank",
+                "Fyphen1223",
+                "GERNOMA",
+                "GentleBurr",
+                "GhostXia",
+                "GoldenglowMeow",
+                "Goshe-nite",
+                "9nbf7c4q6b-lgtm",
+                "AeonBlack",
+                "Ahbahl",
+                "alekslt",
+                "alexdenton123",
+                "V13Axel",
+                "alicat22",
+                "MindsMaster",
+                "soyangel",
+                "pAnhTri",
+                "AphidGit",
+                "Autumnlight02",
+                "BlueprintCoding",
+                "BrendanMcCauley",
+                "CaseyHaralson",
+                "chrisbennight",
+                "kaiser-chris",
+                "Claude",
+                "Crush0",
+                "MakksSh",
+                "malformed-c",
+                "Mijyuoon",
+                "NicodeSS",
+                "nbrown725",
+                "NodudeWasTaken",
+                "sakalond",
+                "xavisavvy",
+                "qychen2001",
+                "Quairon-Nailo",
+                "Radovenchyk",
+                "digiwombat",
+                "Rawi1005",
+                "rwflan",
+                "rigbyb",
+                "rdeforest",
+                "Roland4396",
+                "Sanitised",
+                "SenatusSPQR1",
+                "Halsey1006",
+                "hcsum",
+                "Hime-Hina",
+                "Huge",
+                "dopp1e",
+                "Jay4242",
+                "paradox460",
+                "jenrzzz",
+                "johnflux",
+                "LuminousPath",
+                "dz114879",
+                "KaraKaraWitch",
+                "KegaPlayer",
+                "Kexus",
+                "LammyShark",
+                "pi6am",
+                "madobeichika",
+                "maeeeeee",
+                "plumface-gcc"
+              ],
+              "relationships": []
+            }
+          }
+        },
+        {
+          "projectId": "ryah-st-freaky-d20-preset",
+          "name": "Freaky FrankenSIM",
+          "kind": "preset",
+          "primaryFunction": "preset",
+          "availability": "available",
+          "unavailableReason": null,
+          "canonicalUrl": "https://github.com/Ryah/ST-Freaky-D20-Preset",
+          "project": {
+            "id": "ryah-st-freaky-d20-preset",
+            "name": "Freaky FrankenSIM",
+            "kind": "preset",
+            "metadataStatus": "curated",
+            "sourceStatus": "healthy",
+            "primaryFunction": "preset",
+            "summary": "The Official Slow-Burn MAX++ Version of Freaky Frankenstein. Utilizes ARC Engine for pacing and plot, Chekhov's Gun for narrative debt, VERY in-depth relationship tracking and NPC emotion calculation",
+            "canonicalUrl": "https://github.com/Ryah/ST-Freaky-D20-Preset",
+            "catalogedAt": "2026-07-28T04:01:50.555Z",
+            "catalogCohort": "standard",
+            "frontends": [
+              {
+                "id": "sillytavern",
+                "label": "SillyTavern",
+                "description": "Works with the SillyTavern roleplay frontend."
+              },
+              {
+                "id": "lumiverse",
+                "label": "Lumiverse",
+                "description": "Works with the Lumiverse roleplay frontend."
+              }
+            ],
+            "tags": [
+              {
+                "id": "plan-stories-and-scenes",
+                "label": "Plan stories and scenes",
+                "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
+                "facet": "goal"
+              },
+              {
+                "id": "improve-writing-and-prose",
+                "label": "Improve writing and prose",
+                "description": "Strengthen prose, dialogue, style, pacing, subtext, or general writing quality.",
+                "facet": "goal"
+              },
+              {
+                "id": "track-characters-and-world-state",
+                "label": "Track characters and world state",
+                "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+                "facet": "goal"
+              },
+              {
+                "id": "rules-driven",
+                "label": "Rules-driven",
+                "description": "Uses explicit rules, schemas, calculations, or deterministic mechanics to constrain behavior.",
+                "facet": "trait"
+              },
+              {
+                "id": "model-agnostic",
+                "label": "Model-agnostic",
+                "description": "Works across a broad range of model providers rather than requiring one model family.",
+                "facet": "trait"
+              },
+              {
+                "id": "add-rpg-gameplay",
+                "label": "Add RPG gameplay",
+                "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
+                "facet": "goal"
+              }
+            ],
+            "tavernKeeper": {
+              "state": "teal",
+              "riskLevel": "low",
+              "freshness": "stale",
+              "currentSha": "87a8e50c002770b4ce0ca4ba1525888414ac2b8c",
+              "report": {
+                "reportId": "c29b6f66370fcae05cb1c7804bc0c3e1cf38b345b7313c5d411cc8d965d4c325",
+                "riskLevel": "low",
+                "headline": "No validated security concerns identified",
+                "summary": "The validated review found no material vulnerabilities, minor weaknesses, or credible malicious behavior. The project is assessed as low risk based on the available evidence.",
+                "minorCautions": 0,
+                "materialConcerns": 0,
+                "highDanger": 0,
+                "maliciousEvidence": "No validated evidence of malicious behavior was identified. This review cannot prove the absence of unknown behavior.",
+                "citedFindingIds": [],
+                "scannedSha": "1688d84e01a8577d7caeae270f427ee7e88c2482",
+                "treeUrl": "https://github.com/Ryah/ST-Freaky-D20-Preset/tree/1688d84e01a8577d7caeae270f427ee7e88c2482",
+                "scannedAt": "2026-08-05T17:59:14.049Z",
+                "assessedAt": "2026-08-05T18:00:58.840Z",
+                "scannerPolicyVersion": "3",
+                "contextualReviewPolicyVersion": "2",
+                "synthesisPolicyVersion": "5",
+                "synthesisModel": "deterministic-policy-v5",
+                "dangerBasis": "none",
+                "assessmentSource": "deterministic_regrade",
+                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1239724267/1688d84e01a8577d7caeae270f427ee7e88c2482/3/c29b6f66370fcae05cb1c7804bc0c3e1cf38b345b7313c5d411cc8d965d4c325/",
+                "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1239724267/history/"
+              },
+              "history": [
+                {
+                  "reportId": "c29b6f66370fcae05cb1c7804bc0c3e1cf38b345b7313c5d411cc8d965d4c325",
+                  "riskLevel": "low",
+                  "headline": "No validated security concerns identified",
+                  "summary": "The validated review found no material vulnerabilities, minor weaknesses, or credible malicious behavior. The project is assessed as low risk based on the available evidence.",
+                  "minorCautions": 0,
+                  "materialConcerns": 0,
+                  "highDanger": 0,
+                  "maliciousEvidence": "No validated evidence of malicious behavior was identified. This review cannot prove the absence of unknown behavior.",
+                  "citedFindingIds": [],
+                  "scannedSha": "1688d84e01a8577d7caeae270f427ee7e88c2482",
+                  "treeUrl": "https://github.com/Ryah/ST-Freaky-D20-Preset/tree/1688d84e01a8577d7caeae270f427ee7e88c2482",
+                  "scannedAt": "2026-08-05T17:59:14.049Z",
+                  "assessedAt": "2026-08-05T18:00:58.840Z",
+                  "scannerPolicyVersion": "3",
+                  "contextualReviewPolicyVersion": "2",
+                  "synthesisPolicyVersion": "5",
+                  "synthesisModel": "deterministic-policy-v5",
+                  "dangerBasis": "none",
+                  "assessmentSource": "deterministic_regrade",
+                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1239724267/1688d84e01a8577d7caeae270f427ee7e88c2482/3/c29b6f66370fcae05cb1c7804bc0c3e1cf38b345b7313c5d411cc8d965d4c325/",
+                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1239724267/history/"
+                }
+              ],
+              "historyUrl": "/security/tavernkeeper/history/github-1239724267/"
+            },
+            "attribution": {
+              "owner": {
+                "provider": "github",
+                "login": "Ryah"
+              },
+              "contributors": [
+                {
+                  "provider": "github",
+                  "login": "elana-voss",
+                  "botOrAi": false
+                }
+              ],
+              "humanContributorCount": 1,
+              "status": "current"
+            },
+            "activity": {
+              "latestSourceActivityAt": "2026-08-18T19:33:01.000Z",
+              "activeWeeks12": 3,
+              "weeklyActivity": [
+                false,
+                false,
+                true,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true
+              ],
+              "evidenceStatus": "complete",
+              "dormant": false
+            },
+            "latestReleaseAt": "2026-08-18T19:34:04.000Z",
+            "community": {
+              "stars": 32,
+              "forks": 0,
+              "watchers": 3,
+              "aggregate": 35
+            },
+            "repositorySizeKb": 976,
+            "license": {
+              "status": "missing",
+              "label": "Missing",
+              "tooltip": "No license file was found in the repository root."
+            },
+            "preset": {
+              "version": null,
+              "publishedAt": null,
+              "artifactSizeBytes": null,
+              "modelFamilies": [
+                {
+                  "id": "glm",
+                  "label": "GLM",
+                  "description": "Designed for GLM-family models."
+                },
+                {
+                  "id": "model-agnostic",
+                  "label": "Model-Agnostic",
+                  "description": "Designed to work across model families."
+                },
+                {
+                  "id": "gemini",
+                  "label": "Gemini",
+                  "description": "Designed for Google Gemini models."
+                },
+                {
+                  "id": "kimi",
+                  "label": "Kimi",
+                  "description": "Designed for Kimi models."
+                },
+                {
+                  "id": "gemma",
+                  "label": "Gemma",
+                  "description": "Designed for Google Gemma models."
+                },
+                {
+                  "id": "claude",
+                  "label": "Claude",
+                  "description": "Designed for Anthropic Claude models."
+                },
+                {
+                  "id": "deepseek",
+                  "label": "DeepSeek",
+                  "description": "Designed for DeepSeek models."
+                },
+                {
+                  "id": "minimax",
+                  "label": "MiniMax",
+                  "description": "Designed for MiniMax models."
+                }
+              ],
+              "completionFormats": [
+                {
+                  "id": "chat-completion",
+                  "label": "Chat Completion",
+                  "description": "Uses role-based chat messages."
+                }
+              ]
+            },
+            "refreshedAt": "2026-08-20T07:59:41.713Z",
+            "staleSince": null,
+            "install": null,
+            "fork": null,
+            "search": {
+              "title": [
+                "Freaky FrankenSIM"
+              ],
+              "aliases": [],
+              "source": [
+                "ryah-st-freaky-d20-preset",
+                "github-1239724267",
+                "Ryah/ST-Freaky-D20-Preset",
+                "https://github.com/Ryah/ST-Freaky-D20-Preset"
+              ],
+              "summary": [
+                "The Official Slow-Burn MAX++ Version of Freaky Frankenstein. Utilizes ARC Engine for pacing and plot, Chekhov's Gun for narrative debt, VERY in-depth relationship tracking and NPC emotion calculation"
+              ],
+              "kind": [
+                "preset"
+              ],
+              "primaryFunction": [
+                "System Preset"
+              ],
+              "tags": [
+                "Plan stories and scenes",
+                "story planning",
+                "plot direction",
+                "scene planning",
+                "Improve writing and prose",
+                "writing assistance",
+                "prose improvement",
+                "co-writing",
+                "Track characters and world state",
+                "state tracking",
+                "stat trackers",
+                "world state tracking",
+                "Rules-driven",
+                "deterministic mechanics",
+                "rule based",
+                "schema driven",
+                "Model-agnostic",
+                "bring your own model",
+                "BYOM",
+                "provider independent",
+                "Add RPG gameplay",
+                "tabletop mechanics",
+                "game master tools",
+                "RPG systems"
+              ],
+              "frontends": [
+                "SillyTavern",
+                "Lumiverse"
+              ],
+              "compatibility": [
+                "GLM",
+                "ChatGLM",
+                "Zhipu",
+                "Model-Agnostic",
+                "universal",
+                "any model",
+                "Gemini",
+                "Google Gemini",
+                "Kimi",
+                "Moonshot",
+                "Moonshot AI",
+                "Gemma",
+                "Google Gemma",
+                "Claude",
+                "Anthropic",
+                "Opus",
+                "Sonnet",
+                "Haiku",
+                "DeepSeek",
+                "MiniMax",
+                "Chat Completion"
+              ],
+              "maintainers": [
+                "Ryah",
+                "elana-voss"
+              ],
+              "relationships": []
+            }
+          }
+        },
+        {
+          "projectId": "leandrojofre-sillytavern-qol",
+          "name": "SillyTavern-QOL",
+          "kind": "extension",
+          "primaryFunction": "interface-workflow",
+          "availability": "available",
+          "unavailableReason": null,
+          "canonicalUrl": "https://github.com/leandrojofre/SillyTavern-QOL",
+          "project": {
+            "id": "leandrojofre-sillytavern-qol",
+            "name": "SillyTavern-QOL",
+            "kind": "extension",
+            "metadataStatus": "curated",
+            "sourceStatus": "healthy",
+            "primaryFunction": "interface-workflow",
+            "summary": "An estension that adds small QOL features for SillyTavern.",
+            "canonicalUrl": "https://github.com/leandrojofre/SillyTavern-QOL",
+            "catalogedAt": "2026-08-07T02:43:52.152Z",
+            "catalogCohort": "standard",
+            "frontends": [
+              {
+                "id": "sillytavern",
+                "label": "SillyTavern",
+                "description": "Works with the SillyTavern roleplay frontend."
+              }
+            ],
+            "tags": [
+              {
+                "id": "automate-roleplay-workflows",
+                "label": "Automate roleplay workflows",
+                "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
+                "facet": "goal"
+              },
+              {
+                "id": "inspect-prompts-and-generations",
+                "label": "Inspect prompts and generations",
+                "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-prompts-and-presets",
+                "label": "Manage prompts and presets",
+                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
+                "facet": "goal"
+              }
+            ],
+            "tavernKeeper": {
+              "state": "teal",
+              "riskLevel": "low",
+              "freshness": "stale",
+              "currentSha": "5f458dd33b3460acb7e310ca022831dd6bb41352",
+              "report": {
+                "reportId": "daf0eed172943ea7d291df1268a91708c94bd9e201e10348d54924f44fdccfe9",
+                "riskLevel": "low",
+                "headline": "Low risk: minor release-workflow security weaknesses",
+                "summary": "The project appears low risk for users. Its release workflow uses some unpinned or archived actions and handles a temporary GitHub token in an unnecessarily exposed way. These are maintenance and build-process weaknesses, not problems with the installed extension. The maintainers should pin actions to fixed commits, replace the archived action, and avoid writing the token to a plaintext file.",
+                "minorCautions": 5,
+                "materialConcerns": 0,
+                "highDanger": 0,
+                "maliciousEvidence": "No credible malicious behavior was validated. The findings concern only the project's GitHub release workflow and do not indicate API-key theft, harmful payloads, or risk to extension users.",
+                "citedFindingIds": [
+                  "1125c7c351b6452dc82bd60edab80d47f285b41e36387ea38be90749ad23d0ae",
+                  "963e8fa2ad9955ad67395542ca859e92e389a4c257d6f2be702e0d2f522e8119",
+                  "b04d1bca5969bd3ff14007cb6ebff0bbc5f67f355a6c4ae9a2237a7f8fc76bee",
+                  "fe6c7e343f01890721bf0213f5f767c603b2894888ccf08721b7883941a2ed26"
+                ],
+                "scannedSha": "864b31cc33c35a28e3c04cbea7f14f9a34b52bbb",
+                "treeUrl": "https://github.com/leandrojofre/SillyTavern-QOL/tree/864b31cc33c35a28e3c04cbea7f14f9a34b52bbb",
+                "scannedAt": "2026-08-07T03:11:46.416Z",
+                "assessedAt": "2026-08-08T15:38:27.608Z",
+                "scannerPolicyVersion": "3",
+                "contextualReviewPolicyVersion": "2",
+                "synthesisPolicyVersion": "5",
+                "synthesisModel": "deterministic-policy-v5",
+                "dangerBasis": "none",
+                "assessmentSource": "deterministic_regrade",
+                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/890621890/864b31cc33c35a28e3c04cbea7f14f9a34b52bbb/3/daf0eed172943ea7d291df1268a91708c94bd9e201e10348d54924f44fdccfe9/",
+                "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/890621890/history/"
+              },
+              "history": [
+                {
+                  "reportId": "daf0eed172943ea7d291df1268a91708c94bd9e201e10348d54924f44fdccfe9",
+                  "riskLevel": "low",
+                  "headline": "Low risk: minor release-workflow security weaknesses",
+                  "summary": "The project appears low risk for users. Its release workflow uses some unpinned or archived actions and handles a temporary GitHub token in an unnecessarily exposed way. These are maintenance and build-process weaknesses, not problems with the installed extension. The maintainers should pin actions to fixed commits, replace the archived action, and avoid writing the token to a plaintext file.",
+                  "minorCautions": 5,
+                  "materialConcerns": 0,
+                  "highDanger": 0,
+                  "maliciousEvidence": "No credible malicious behavior was validated. The findings concern only the project's GitHub release workflow and do not indicate API-key theft, harmful payloads, or risk to extension users.",
+                  "citedFindingIds": [
+                    "1125c7c351b6452dc82bd60edab80d47f285b41e36387ea38be90749ad23d0ae",
+                    "963e8fa2ad9955ad67395542ca859e92e389a4c257d6f2be702e0d2f522e8119",
+                    "b04d1bca5969bd3ff14007cb6ebff0bbc5f67f355a6c4ae9a2237a7f8fc76bee",
+                    "fe6c7e343f01890721bf0213f5f767c603b2894888ccf08721b7883941a2ed26"
+                  ],
+                  "scannedSha": "864b31cc33c35a28e3c04cbea7f14f9a34b52bbb",
+                  "treeUrl": "https://github.com/leandrojofre/SillyTavern-QOL/tree/864b31cc33c35a28e3c04cbea7f14f9a34b52bbb",
+                  "scannedAt": "2026-08-07T03:11:46.416Z",
+                  "assessedAt": "2026-08-08T15:38:27.608Z",
+                  "scannerPolicyVersion": "3",
+                  "contextualReviewPolicyVersion": "2",
+                  "synthesisPolicyVersion": "5",
+                  "synthesisModel": "deterministic-policy-v5",
+                  "dangerBasis": "none",
+                  "assessmentSource": "deterministic_regrade",
+                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/890621890/864b31cc33c35a28e3c04cbea7f14f9a34b52bbb/3/daf0eed172943ea7d291df1268a91708c94bd9e201e10348d54924f44fdccfe9/",
+                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/890621890/history/"
+                }
+              ],
+              "historyUrl": "/security/tavernkeeper/history/github-890621890/"
+            },
+            "attribution": {
+              "owner": {
+                "provider": "github",
+                "login": "leandrojofre"
+              },
+              "contributors": [
+                {
+                  "provider": "github",
+                  "login": "city-unit",
+                  "botOrAi": false
+                }
+              ],
+              "humanContributorCount": 1,
+              "status": "current"
+            },
+            "activity": {
+              "latestSourceActivityAt": "2026-08-18T17:17:36.000Z",
+              "activeWeeks12": 3,
+              "weeklyActivity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                false,
+                true
+              ],
+              "evidenceStatus": "complete",
+              "dormant": false
+            },
+            "latestReleaseAt": "2026-08-18T18:33:20.000Z",
+            "community": {
+              "stars": 9,
+              "forks": 0,
+              "watchers": 0,
+              "aggregate": 9
+            },
+            "repositorySizeKb": 971,
+            "license": {
+              "status": "osi-approved",
+              "label": "AGPL-3.0",
+              "tooltip": "OSI-approved license detected in the repository root."
+            },
+            "preset": null,
+            "refreshedAt": "2026-08-20T07:59:41.713Z",
+            "staleSince": null,
+            "install": {
+              "kind": "sillytavern-extension-git",
+              "repositoryUrl": "https://github.com/leandrojofre/SillyTavern-QOL.git",
+              "branch": null,
+              "manifestPath": "manifest.json",
+              "folderName": "SillyTavern-QOL"
+            },
+            "fork": null,
+            "search": {
+              "title": [
+                "SillyTavern-QOL"
+              ],
+              "aliases": [],
+              "source": [
+                "leandrojofre-sillytavern-qol",
+                "github-890621890",
+                "leandrojofre/SillyTavern-QOL",
+                "https://github.com/leandrojofre/SillyTavern-QOL"
+              ],
+              "summary": [
+                "An estension that adds small QOL features for SillyTavern."
+              ],
+              "kind": [
+                "extension"
+              ],
+              "primaryFunction": [
+                "Interface and workflow"
+              ],
+              "tags": [
+                "Automate roleplay workflows",
+                "automation",
+                "workflow automation",
+                "task automation",
+                "triggered actions",
+                "Inspect prompts and generations",
+                "prompt inspection",
+                "generation diagnostics",
+                "review validation",
+                "request debugging",
+                "Manage prompts and presets",
+                "prompt management",
+                "prompt engineering",
+                "preset organization",
+                "template management"
+              ],
+              "frontends": [
+                "SillyTavern"
+              ],
+              "compatibility": [],
+              "maintainers": [
+                "leandrojofre",
+                "city-unit"
+              ],
+              "relationships": []
+            }
+          }
+        },
+        {
+          "projectId": "i5031337-sillytavern-contextual-scene-painter",
+          "name": "sillytavern-contextual-scene-painter",
+          "kind": "extension",
+          "primaryFunction": "interface-workflow",
+          "availability": "available",
+          "unavailableReason": null,
+          "canonicalUrl": "https://github.com/i5031337/sillytavern-contextual-scene-painter",
+          "project": {
+            "id": "i5031337-sillytavern-contextual-scene-painter",
+            "name": "sillytavern-contextual-scene-painter",
+            "kind": "extension",
+            "metadataStatus": "curated",
+            "sourceStatus": "healthy",
+            "primaryFunction": "interface-workflow",
+            "summary": "Contextual Scene Painter analyzes SillyTavern chat history and optional character, persona, or World Info details to synthesize context-aware AI image prompts on the fly.",
+            "canonicalUrl": "https://github.com/i5031337/sillytavern-contextual-scene-painter",
+            "catalogedAt": "2026-07-31T06:37:18.761Z",
+            "catalogCohort": "standard",
+            "frontends": [
+              {
+                "id": "sillytavern",
+                "label": "SillyTavern",
+                "description": "Works with the SillyTavern roleplay frontend."
+              }
+            ],
+            "tags": [
+              {
+                "id": "generate-images",
+                "label": "Generate images",
+                "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
+                "facet": "goal"
+              },
+              {
+                "id": "retrieve-relevant-context",
+                "label": "Retrieve relevant context",
+                "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
+                "facet": "goal"
+              }
+            ],
+            "tavernKeeper": {
+              "state": "teal",
+              "riskLevel": "low",
+              "freshness": "stale",
+              "currentSha": "2c3cd30fb53def280ccb90db5a8a7959cfb043fa",
+              "report": {
+                "reportId": "7fcac710621e82e6f3dd93b8827c61d251d6ecf28fdcbf5973e7362c4039d398",
+                "riskLevel": "low",
+                "headline": "No validated security concerns found",
+                "summary": "The validated review found no security findings requiring concern. The project is assessed as low risk based on the available evidence.",
+                "minorCautions": 0,
+                "materialConcerns": 0,
+                "highDanger": 0,
+                "maliciousEvidence": "No validated evidence of malicious behavior, API-key theft, harmful payloads, or trojan delivery was identified. This review cannot prove the absence of unknown behavior.",
+                "citedFindingIds": [],
+                "scannedSha": "4b2120816b75c246a954230886ecb2723bda7d84",
+                "treeUrl": "https://github.com/i5031337/sillytavern-contextual-scene-painter/tree/4b2120816b75c246a954230886ecb2723bda7d84",
+                "scannedAt": "2026-08-06T11:49:16.636Z",
+                "assessedAt": "2026-08-08T17:26:02.750Z",
+                "scannerPolicyVersion": "3",
+                "contextualReviewPolicyVersion": "2",
+                "synthesisPolicyVersion": "5",
+                "synthesisModel": "deterministic-policy-v5",
+                "dangerBasis": "none",
+                "assessmentSource": "deterministic_regrade",
+                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/4b2120816b75c246a954230886ecb2723bda7d84/3/7fcac710621e82e6f3dd93b8827c61d251d6ecf28fdcbf5973e7362c4039d398/",
+                "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/history/"
+              },
+              "history": [
+                {
+                  "reportId": "5718e8004b7d1705fa443b7166f6a01f3863fa903b549606c79016cca0ca6b48",
+                  "riskLevel": "low",
+                  "headline": "No validated security concerns found",
+                  "summary": "The reviewed project is assessed as low risk based on the available validated evidence. No material vulnerabilities, minor security weaknesses, or high-danger behaviors were identified.",
+                  "minorCautions": 0,
+                  "materialConcerns": 0,
+                  "highDanger": 0,
+                  "maliciousEvidence": "No validated evidence of malicious behavior was identified in the reviewed commit. This review cannot prove the absence of unknown behavior.",
+                  "citedFindingIds": [],
+                  "scannedSha": "ff08bde02845793cf91999c1df5c8578ff55de7c",
+                  "treeUrl": "https://github.com/i5031337/sillytavern-contextual-scene-painter/tree/ff08bde02845793cf91999c1df5c8578ff55de7c",
+                  "scannedAt": "2026-08-04T23:47:55.754Z",
+                  "assessedAt": "2026-08-05T10:46:40.558Z",
+                  "scannerPolicyVersion": "3",
+                  "contextualReviewPolicyVersion": "1",
+                  "synthesisPolicyVersion": "4",
+                  "synthesisModel": "gpt-5.6-luna",
+                  "dangerBasis": "none",
+                  "assessmentSource": "model",
+                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/ff08bde02845793cf91999c1df5c8578ff55de7c/3/5718e8004b7d1705fa443b7166f6a01f3863fa903b549606c79016cca0ca6b48/",
+                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/history/"
+                },
+                {
+                  "reportId": "51879ceb7131742ffe51cbe68887026d97b5fbb42d68c8dd2d165f9d9e01eaf5",
+                  "riskLevel": "low",
+                  "headline": "No validated security concerns found",
+                  "summary": "The validated review found no security findings for this project at the assessed commit. It appears low risk based on the available evidence.",
+                  "minorCautions": 0,
+                  "materialConcerns": 0,
+                  "highDanger": 0,
+                  "maliciousEvidence": "No validated evidence of malicious behavior, API-key theft, harmful payloads, or bot infection was identified. This review cannot prove the absence of unknown behavior.",
+                  "citedFindingIds": [],
+                  "scannedSha": "a5debeccd99f2db2da9116532bc4e73300a60378",
+                  "treeUrl": "https://github.com/i5031337/sillytavern-contextual-scene-painter/tree/a5debeccd99f2db2da9116532bc4e73300a60378",
+                  "scannedAt": "2026-08-05T20:41:27.996Z",
+                  "assessedAt": "2026-08-05T20:52:42.635Z",
+                  "scannerPolicyVersion": "3",
+                  "contextualReviewPolicyVersion": "2",
+                  "synthesisPolicyVersion": "4",
+                  "synthesisModel": "gpt-5.6-luna",
+                  "dangerBasis": "none",
+                  "assessmentSource": "model",
+                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/a5debeccd99f2db2da9116532bc4e73300a60378/3/51879ceb7131742ffe51cbe68887026d97b5fbb42d68c8dd2d165f9d9e01eaf5/",
+                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/history/"
+                },
+                {
+                  "reportId": "7fcac710621e82e6f3dd93b8827c61d251d6ecf28fdcbf5973e7362c4039d398",
+                  "riskLevel": "low",
+                  "headline": "No validated security concerns found",
+                  "summary": "The validated review found no security findings requiring concern. The project is assessed as low risk based on the available evidence.",
+                  "minorCautions": 0,
+                  "materialConcerns": 0,
+                  "highDanger": 0,
+                  "maliciousEvidence": "No validated evidence of malicious behavior, API-key theft, harmful payloads, or trojan delivery was identified. This review cannot prove the absence of unknown behavior.",
+                  "citedFindingIds": [],
+                  "scannedSha": "4b2120816b75c246a954230886ecb2723bda7d84",
+                  "treeUrl": "https://github.com/i5031337/sillytavern-contextual-scene-painter/tree/4b2120816b75c246a954230886ecb2723bda7d84",
+                  "scannedAt": "2026-08-06T11:49:16.636Z",
+                  "assessedAt": "2026-08-08T17:26:02.750Z",
+                  "scannerPolicyVersion": "3",
+                  "contextualReviewPolicyVersion": "2",
+                  "synthesisPolicyVersion": "5",
+                  "synthesisModel": "deterministic-policy-v5",
+                  "dangerBasis": "none",
+                  "assessmentSource": "deterministic_regrade",
+                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/4b2120816b75c246a954230886ecb2723bda7d84/3/7fcac710621e82e6f3dd93b8827c61d251d6ecf28fdcbf5973e7362c4039d398/",
+                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/history/"
+                }
+              ],
+              "historyUrl": "/security/tavernkeeper/history/github-1317590696/"
+            },
+            "attribution": {
+              "owner": {
+                "provider": "github",
+                "login": "i5031337"
+              },
+              "contributors": [],
+              "humanContributorCount": 0,
+              "status": "current"
+            },
+            "activity": {
+              "latestSourceActivityAt": "2026-08-18T18:38:50.000Z",
+              "activeWeeks12": 3,
+              "weeklyActivity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                false,
+                true
+              ],
+              "evidenceStatus": "complete",
+              "dormant": false
+            },
+            "latestReleaseAt": null,
+            "community": {
+              "stars": 6,
+              "forks": 0,
+              "watchers": 0,
+              "aggregate": 6
+            },
+            "repositorySizeKb": 210,
+            "license": {
+              "status": "osi-approved",
+              "label": "MIT",
+              "tooltip": "OSI-approved license detected in the repository root."
+            },
+            "preset": null,
+            "refreshedAt": "2026-08-20T07:59:41.713Z",
+            "staleSince": null,
+            "install": {
+              "kind": "sillytavern-extension-git",
+              "repositoryUrl": "https://github.com/i5031337/sillytavern-contextual-scene-painter.git",
+              "branch": null,
+              "manifestPath": "manifest.json",
+              "folderName": "sillytavern-contextual-scene-painter"
+            },
+            "fork": null,
+            "search": {
+              "title": [
+                "sillytavern-contextual-scene-painter"
+              ],
+              "aliases": [],
+              "source": [
+                "i5031337-sillytavern-contextual-scene-painter",
+                "github-1317590696",
+                "i5031337/sillytavern-contextual-scene-painter",
+                "https://github.com/i5031337/sillytavern-contextual-scene-painter"
+              ],
+              "summary": [
+                "Contextual Scene Painter analyzes SillyTavern chat history and optional character, persona, or World Info details to synthesize context-aware AI image prompts on the fly."
+              ],
+              "kind": [
+                "extension"
+              ],
+              "primaryFunction": [
+                "Interface and workflow"
+              ],
+              "tags": [
+                "Generate images",
+                "image generation",
+                "AI art generation",
+                "scene illustration",
+                "picture generation",
+                "Retrieve relevant context",
+                "context retrieval",
+                "relevant recall",
+                "knowledge retrieval"
+              ],
+              "frontends": [
+                "SillyTavern"
+              ],
+              "compatibility": [],
+              "maintainers": [
+                "i5031337"
+              ],
+              "relationships": []
+            }
+          }
+        }
+      ],
+      "supporterCount": 0,
+      "trendingScore": 0,
+      "supportRefreshedAt": "2026-08-20T11:26:01.243Z",
+      "supportStale": false,
+      "flaggedProjectCount": 0,
+      "search": {
+        "title": [
+          "burpp"
+        ],
+        "aliases": [
+          "SillyBunny",
+          "Freaky FrankenSIM",
+          "SillyTavern-QOL",
+          "sillytavern-contextual-scene-painter"
+        ],
+        "source": [
+          "burpp-570",
+          "https://github.com/MentallyQuill/Tavernary/issues/570"
+        ],
+        "summary": [
+          "just me for me a beginner"
+        ],
+        "kind": [
+          "kit"
+        ],
+        "primaryFunction": [
+          "System Preset",
+          "Interface and workflow"
+        ],
+        "tags": [
+          "System Preset",
+          "Interface and workflow"
+        ],
+        "frontends": [
+          "SillyBunny"
+        ],
+        "compatibility": [
+          "GLM",
+          "ChatGLM",
+          "Zhipu",
+          "Model-Agnostic",
+          "universal",
+          "any model",
+          "Gemini",
+          "Google Gemini",
+          "Kimi",
+          "Moonshot",
+          "Moonshot AI",
+          "Gemma",
+          "Google Gemma",
+          "Claude",
+          "Anthropic",
+          "Opus",
+          "Sonnet",
+          "Haiku",
+          "DeepSeek",
+          "MiniMax"
+        ],
+        "maintainers": [
+          "lennazaire-ui"
+        ],
+        "relationships": [
+          "SillyBunny",
+          "Freaky FrankenSIM",
+          "SillyTavern-QOL",
+          "sillytavern-contextual-scene-painter",
+          "sillybunnyteam-sillybunny",
+          "ryah-st-freaky-d20-preset",
+          "leandrojofre-sillytavern-qol",
+          "i5031337-sillytavern-contextual-scene-painter"
         ]
       }
     },
@@ -108717,7 +111912,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-20T08:01:24.640Z",
+      "supportRefreshedAt": "2026-08-20T11:26:01.243Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -110772,7 +113967,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-20T08:01:24.640Z",
+      "supportRefreshedAt": "2026-08-20T11:26:01.243Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -114813,7 +118008,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-20T08:01:24.640Z",
+      "supportRefreshedAt": "2026-08-20T11:26:01.243Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -118136,7 +121331,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-20T08:01:24.640Z",
+      "supportRefreshedAt": "2026-08-20T11:26:01.243Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -123648,7 +126843,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-20T08:01:24.640Z",
+      "supportRefreshedAt": "2026-08-20T11:26:01.243Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -126456,7 +129651,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-20T08:01:24.640Z",
+      "supportRefreshedAt": "2026-08-20T11:26:01.243Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -129775,7 +132970,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-20T08:01:24.640Z",
+      "supportRefreshedAt": "2026-08-20T11:26:01.243Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -133228,7 +136423,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-20T08:01:24.640Z",
+      "supportRefreshedAt": "2026-08-20T11:26:01.243Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -136087,7 +139282,7 @@
       ],
       "supporterCount": 1,
       "trendingScore": 0.5808182173215944,
-      "supportRefreshedAt": "2026-08-20T08:01:24.640Z",
+      "supportRefreshedAt": "2026-08-20T11:26:01.243Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
