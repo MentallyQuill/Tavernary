@@ -3,14 +3,14 @@
   "project_id": "remixcamera-remix-camera-sillytavern-companion-images",
   "source_id": "github-1265967518",
   "source_identity": "github:remixcamera/remix-camera-sillytavern-companion-images",
-  "evidence_fingerprint": "fe2893208b43db020fbc485966eb59288fadcdab6429fb3511de6e986a97dbd7",
+  "evidence_fingerprint": "1665cddfcfdcaf7e8256072dd755d8e0f37e3c1b2c19e7c17730e4bf53cbca3b",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-08T08:14:06.288Z",
+  "reviewed_at": "2026-08-21T08:14:52.139Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-08T08:14:06.288Z"
+    "attempts": 3,
+    "last_failure_at": "2026-08-21T08:14:52.139Z"
   },
   "maintenance_issue_number": null
 }
