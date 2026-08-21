@@ -62854,6 +62854,164 @@
       }
     },
     {
+      "id": "patcireamo-chungushub",
+      "name": "ChungusHub",
+      "kind": "frontend",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": "ChungusHub is a local-first, privacy-focused LLM roleplay frontend using SillyTavern formats. Chats branch as trees so edits and regenerations preserve history; a story map aids navigation.",
+      "canonicalUrl": "https://github.com/patcireamo/ChungusHub",
+      "catalogedAt": "2026-08-21T02:38:49.672Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "chungushub",
+          "label": "ChungusHub",
+          "description": "Works with the ChungusHub roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "local-first",
+          "label": "Local-first",
+          "description": "Keeps its primary data and workflow on the user's own device.",
+          "facet": "trait"
+        },
+        {
+          "id": "manage-character-libraries",
+          "label": "Manage character libraries",
+          "description": "Discover, search, browse, categorize, import, or maintain collections of character cards.",
+          "facet": "goal"
+        },
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+          "facet": "trait"
+        },
+        {
+          "id": "organize-chats-and-messages",
+          "label": "Organize chats and messages",
+          "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
+          "facet": "goal"
+        },
+        {
+          "id": "privacy-focused",
+          "label": "Privacy-focused",
+          "description": "Explicitly minimizes data exposure or gives users strong control over sensitive data.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "83c63a0fdd705cd7cd1507c1724b864113e06b00",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "patcireamo"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-19T13:50:50.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-08-19T14:04:20.000Z",
+      "community": {
+        "stars": 12,
+        "forks": 0,
+        "watchers": 2,
+        "aggregate": 14
+      },
+      "repositorySizeKb": 52964,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-21T02:38:49.672Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "ChungusHub"
+        ],
+        "aliases": [],
+        "source": [
+          "patcireamo-chungushub",
+          "github-1339530018",
+          "patcireamo/ChungusHub",
+          "https://github.com/patcireamo/ChungusHub"
+        ],
+        "summary": [
+          "ChungusHub is a local-first, privacy-focused LLM roleplay frontend using SillyTavern formats. Chats branch as trees so edits and regenerations preserve history; a story map aids navigation."
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [
+          "Local-first",
+          "stored locally",
+          "on-device data",
+          "local data ownership",
+          "Manage character libraries",
+          "character browsing",
+          "card library",
+          "character discovery",
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay",
+          "Organize chats and messages",
+          "chat organization",
+          "message bookmarks",
+          "conversation search",
+          "Privacy-focused",
+          "private by design",
+          "privacy preserving",
+          "data stays private"
+        ],
+        "frontends": [
+          "ChungusHub"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "patcireamo"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "pavorlov-sillytavern-interactive-map",
       "name": "SillyTavern-Interactive-Map",
       "kind": "extension",
