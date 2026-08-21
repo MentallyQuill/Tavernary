@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "shin-f-world-info-gallery",
+  "source_id": "github-1341130248",
+  "source_identity": "github:shin-f/world-info-gallery",
+  "evidence_fingerprint": "3fd694606f6b8caba57e19b98a31256a8cb9218e7739e59ab3325b492069db7c",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-21T01:11:56.085Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-21T01:11:56.085Z"
+  },
+  "maintenance_issue_number": null
+}
