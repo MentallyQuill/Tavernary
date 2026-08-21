@@ -9,8 +9,8 @@
     "url": "https://github.com/happydesk213124/inlaynex2.0",
     "description": "Inlay Nexus 2.0 - RisuAI LLM tagging + NovelAI overlay plugin",
     "default_branch": "main",
-    "head_sha": "038b80959ba9488c0b2942401aee8977f059cff2",
-    "head_committed_at": "2026-08-19T11:36:10.000Z",
+    "head_sha": "a5e7a2fbf15bfbc5c3d5e38e97deeb631904041f",
+    "head_committed_at": "2026-08-21T07:18:02.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
@@ -19,11 +19,11 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-19T11:36:10.000Z",
+    "latest_source_activity_at": "2026-08-21T07:18:02.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-17",
-        "latest_at": "2026-08-19T11:36:10.000Z",
+        "latest_at": "2026-08-21T07:18:02.000Z",
         "precision": "exact"
       },
       {
@@ -42,7 +42,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-18T07:56:54.593Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "038b80959ba9488c0b2942401aee8977f059cff2"
+    "evidence_head_sha": "a5e7a2fbf15bfbc5c3d5e38e97deeb631904041f"
   },
   "community": {
     "stars_count": 0,
@@ -51,7 +51,7 @@
     "aggregate": 0
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-20T07:59:41.713Z",
+  "refreshed_at": "2026-08-21T08:00:43.648Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -61,7 +61,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-20T07:59:41.713Z",
+    "refreshed_at": "2026-08-21T08:00:43.648Z",
     "stale_since": null
   }
 }

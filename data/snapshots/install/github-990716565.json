@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-990716565",
+  "head_sha": "dd75fc66d6f1adf268f8d8b8ff319456968de610",
+  "observed_at": "2026-08-21T08:02:25.266Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Kofe-Script",
+  "manifest": {
+    "display_name": "SillyTavern-Kofe-Script",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

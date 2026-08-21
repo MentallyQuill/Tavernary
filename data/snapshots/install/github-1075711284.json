@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1075711284",
+  "head_sha": "e021946867b9a457a3f8b67c78642f9b92ebb90d",
+  "observed_at": "2026-08-21T08:02:25.266Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "rpg-companion-sillytavern",
+  "manifest": {
+    "display_name": "RPG Companion",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
