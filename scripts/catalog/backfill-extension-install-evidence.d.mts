@@ -7,6 +7,7 @@ export function backfillExtensionInstallEvidence(options?: {
     snapshots: Array<Record<string, unknown>>;
     installEvidence: ExtensionInstallEvidenceV1[];
   };
+  sourceIds?: string[];
   providers?: Record<string, unknown>;
   observedAt?: string;
   validate?: (input: Record<string, unknown>) => Promise<{ errors: string[] }>;
@@ -17,3 +18,7 @@ export function backfillExtensionInstallEvidence(options?: {
   verified: number;
   unavailable: number;
 }>;
+
+export function parseBackfillExtensionInstallEvidenceCli(argv: string[]): {
+  sourceIds: string[];
+};

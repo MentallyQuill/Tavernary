@@ -1454,10 +1454,13 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
   );
   const generationJob = generation.jobs.generate as {
     env?: Record<string, string>;
-    steps: Array<{ name?: string; env?: Record<string, string> }>;
+    steps: Array<{ name?: string; env?: Record<string, string>; run?: string }>;
   };
   const modelStep = generationJob.steps.find(
     (step) => step.name === "Regenerate declared project files",
+  );
+  const installEvidenceStep = generationJob.steps.find(
+    (step) => step.name === "Generate install evidence",
   );
 
   expect(generation.permissions).toEqual({
@@ -1519,6 +1522,22 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
   expect(branchReset).toBeLessThan(markerCleanup);
   expect(source).toContain("Refusing unsafe generated path");
   expect(source).toContain("Prepare generated path set");
+  expect(installEvidenceStep?.run).toContain(
+    "npm run catalog:install-evidence:backfill",
+  );
+  expect(installEvidenceStep?.run).toContain('--source-id "$source_id"');
+  expect(source).toContain(
+    'generated_paths+=("data/snapshots/install/${source_id}.json")',
+  );
+  expect(
+    generationJob.steps.findIndex(
+      (step) => step.name === "Generate install evidence",
+    ),
+  ).toBeLessThan(
+    generationJob.steps.findIndex(
+      (step) => step.name === "Validate proposed catalog and card",
+    ),
+  );
   expect(source).toContain("Reject conflicting open submission paths");
   expect(source).toContain("findSubmissionPathCollision");
   expect(source).toContain("planClassificationReviewNotice");
