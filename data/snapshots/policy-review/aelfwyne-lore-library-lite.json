@@ -3,14 +3,14 @@
   "project_id": "aelfwyne-lore-library-lite",
   "source_id": "github-1313172635",
   "source_identity": "github:aelfwyne/lore-library-lite",
-  "evidence_fingerprint": "d5ee9a01db85bd417f1159a03be701467e6ceef4e4a3f5dc72cb277e09ef0f98",
+  "evidence_fingerprint": "bc1f92655f51ce14dbae142a21f6496b703f1c47ce96c6812a831168ded6bceb",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-05T11:13:19.262Z",
+  "reviewed_at": "2026-08-21T08:16:29.939Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-05T11:13:19.262Z"
+    "attempts": 3,
+    "last_failure_at": "2026-08-21T08:16:29.939Z"
   },
   "maintenance_issue_number": null
 }
