@@ -1,4 +1,6 @@
+import { readFileSync } from "node:fs";
 import { access } from "node:fs/promises";
+import { resolve } from "node:path";
 
 import { expect, test } from "@playwright/test";
 
@@ -11,6 +13,12 @@ import {
 import { sitePath } from "../helpers/site-path";
 
 const projectId = "mentallyquill-directive";
+const frontendVocabulary = JSON.parse(
+  readFileSync(
+    resolve(process.cwd(), "data/vocabularies/frontends.json"),
+    "utf8",
+  ),
+) as { frontends: Array<{ label: string }> };
 
 test("reviews one owner card edit and hands the complete manifest to GitHub", async ({
   page,
@@ -101,6 +109,46 @@ test("keeps owner wording while removing emoji and linking the policy", async ({
   await expect(
     page.getByRole("link", { name: "Catalog Policy" }),
   ).toHaveAttribute("href", /\/catalog-policy\/?$/u);
+});
+
+test("keeps every current frontend inside the owner grid as vocabulary grows", async ({
+  page,
+}) => {
+  for (const viewport of [
+    { width: 1440, height: 1000 },
+    { width: 320, height: 720 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto(sitePath(`/help/manage-project/?project=${projectId}`));
+    await page.getByRole("radio", { name: "Edit card details" }).check();
+
+    const group = page.getByRole("group", { name: "Supported frontends" });
+    const choices = group.locator(":scope > .help-choice");
+    await expect(choices).toHaveCount(frontendVocabulary.frontends.length);
+    for (const { label } of frontendVocabulary.frontends) {
+      await expect(group.getByLabel(label, { exact: true })).toBeVisible();
+    }
+
+    const layout = await group.evaluate((element) => {
+      const groupRect = element.getBoundingClientRect();
+      const outside = [...element.querySelectorAll(":scope > .help-choice")]
+        .map((choice) => choice.getBoundingClientRect())
+        .filter(
+          (rect) =>
+            rect.left < groupRect.left || rect.right > groupRect.right + 0.5,
+        ).length;
+      return {
+        outside,
+        scrollWidth: element.scrollWidth,
+        clientWidth: element.clientWidth,
+        pageOverflow: document.documentElement.scrollWidth - window.innerWidth,
+      };
+    });
+
+    expect(layout.outside).toBe(0);
+    expect(layout.scrollWidth).toBeLessThanOrEqual(layout.clientWidth);
+    expect(layout.pageOverflow).toBeLessThanOrEqual(0);
+  }
 });
 
 test("requires the typed repository before handing off a permanent source delist", async ({

@@ -94,6 +94,52 @@ async function waitForCatalogHydration(page: Page) {
   );
 }
 
+const ownerFrontendVisualFixture = [
+  "SillyTavern",
+  "RisuAI",
+  "Agnai",
+  "KoboldAI Lite",
+  "DreamGen",
+  "Miku",
+  "A deliberately long frontend name",
+] as const;
+
+async function stabilizeOwnerFrontendVisualFixture(page: Page) {
+  const group = page.getByRole("group", { name: "Supported frontends" });
+  const choices = group.locator(":scope > .help-choice");
+  await expect(choices.first()).toBeVisible();
+
+  await choices.evaluateAll((elements, labels) => {
+    const group = elements[0]?.parentElement;
+    const prototype = elements[0];
+    if (!group || !prototype) {
+      throw new Error("The owner frontend choice group is unavailable.");
+    }
+
+    // Reproduce one vocabulary addition before replacing mutable catalog data
+    // with the stable fixture used by the screenshot contract.
+    const simulatedVocabularyGrowth = prototype.cloneNode(true) as HTMLElement;
+    const simulatedLabel = simulatedVocabularyGrowth.querySelector("span");
+    if (simulatedLabel) simulatedLabel.textContent = "New frontend";
+    group.append(simulatedVocabularyGrowth);
+
+    for (const element of group.querySelectorAll(":scope > .help-choice")) {
+      element.remove();
+    }
+    for (const [index, label] of labels.entries()) {
+      const choice = prototype.cloneNode(true) as HTMLElement;
+      const input = choice.querySelector("input");
+      const text = choice.querySelector("span");
+      if (!(input instanceof HTMLInputElement) || !text) {
+        throw new Error("The owner frontend choice markup changed.");
+      }
+      input.checked = index === 0;
+      text.textContent = label;
+      group.append(choice);
+    }
+  }, ownerFrontendVisualFixture);
+}
+
 test("desktop catalog applies graphite surfaces and teal interaction roles", async ({
   page,
 }) => {
@@ -1067,6 +1113,7 @@ test("captures the complete guided Help surface on Windows", async ({
   await page
     .getByRole("textbox", { name: "Summary", exact: true })
     .fill("x".repeat(219));
+  await stabilizeOwnerFrontendVisualFixture(page);
   await expect(page.locator(".help-content")).toHaveScreenshot(
     "help-owner-near-limit.png",
     { maxDiffPixels: 3000 },
