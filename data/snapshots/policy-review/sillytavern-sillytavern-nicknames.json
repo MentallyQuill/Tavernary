@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sillytavern-sillytavern-nicknames",
+  "source_id": "github-936859577",
+  "source_identity": "github:sillytavern/sillytavern-nicknames",
+  "evidence_fingerprint": "9e7266f9f4d1f9cfe6eadbe5f456c5e21af9bac5d1e4b1027e3cc95f0cd07e3e",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-21T08:18:19.770Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-21T08:18:19.770Z"
+  },
+  "maintenance_issue_number": null
+}
