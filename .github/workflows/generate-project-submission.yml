@@ -137,7 +137,7 @@ jobs:
             while IFS= read -r generated_path; do
               [[ -z "$generated_path" ]] && continue
               case "$generated_path" in
-                data/registry/projects/*.json|data/registry/sources/*.json|data/snapshots/github/*.json|data/snapshots/codeberg/*.json|data/vocabularies/frontends.json) ;;
+                data/registry/projects/*.json|data/registry/sources/*.json|data/snapshots/github/*.json|data/snapshots/codeberg/*.json|data/snapshots/install/*.json|data/vocabularies/frontends.json) ;;
                 *)
                   echo "::error::Refusing unsafe generated path: $generated_path"
                   exit 1
@@ -158,6 +158,12 @@ jobs:
             --report-path "${RUNNER_TEMP}/admission-report.json" \
             --retry-state-path "${RUNNER_TEMP}/project-submission-retry-state.json" \
             --failure-diagnostic-path "${RUNNER_TEMP}/project-submission-generation-failure.json"
+      - name: Generate install evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_id="$(node -p "JSON.parse(require('fs').readFileSync(process.env.RUNNER_TEMP + '/admission-report.json','utf8')).source_id")"
+          npm run catalog:install-evidence:backfill -- --source-id "$source_id"
       - name: Summarize copy review diagnostic
         shell: bash
         run: |
@@ -294,13 +300,16 @@ jobs:
           if [[ -n "$source_provider" && -f "data/snapshots/${source_provider}/${source_id}.json" ]]; then
             generated_paths+=("data/snapshots/${source_provider}/${source_id}.json")
           fi
+          if [[ -f "data/snapshots/install/${source_id}.json" ]]; then
+            generated_paths+=("data/snapshots/install/${source_id}.json")
+          fi
           if [[ -n "$(git status --porcelain -- data/vocabularies/frontends.json)" ]]; then
             generated_paths+=("data/vocabularies/frontends.json")
           fi
           while IFS= read -r previous_path; do
             [[ -z "$previous_path" ]] && continue
             case "$previous_path" in
-              data/registry/projects/*.json|data/registry/sources/*.json|data/snapshots/github/*.json|data/snapshots/codeberg/*.json|data/vocabularies/frontends.json)
+              data/registry/projects/*.json|data/registry/sources/*.json|data/snapshots/github/*.json|data/snapshots/codeberg/*.json|data/snapshots/install/*.json|data/vocabularies/frontends.json)
                 generated_paths+=("$previous_path")
                 ;;
               *)

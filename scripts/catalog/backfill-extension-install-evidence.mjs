@@ -55,6 +55,7 @@ export async function backfillExtensionInstallEvidence(options = {}) {
     sources: inputs.sources,
     snapshots: inputs.snapshots,
     previousEvidence: inputs.installEvidence,
+    ...(options.sourceIds ? { sourceIds: options.sourceIds } : {}),
     retryReasons: new Set(["invalid-manifest"]),
     providers,
     observedAt: options.observedAt ?? new Date().toISOString(),
@@ -90,8 +91,26 @@ export async function backfillExtensionInstallEvidence(options = {}) {
   };
 }
 
+export function parseBackfillExtensionInstallEvidenceCli(argv) {
+  const sourceIds = [];
+  for (let index = 0; index < argv.length; index += 2) {
+    const name = argv[index];
+    const value = argv[index + 1];
+    if (name !== "--source-id" || !value) {
+      throw new Error(`Unknown or incomplete option: ${name ?? "missing"}.`);
+    }
+    sourceIds.push(value);
+  }
+  return { sourceIds: [...new Set(sourceIds)] };
+}
+
 async function main() {
-  const result = await backfillExtensionInstallEvidence();
+  const { sourceIds } = parseBackfillExtensionInstallEvidenceCli(
+    process.argv.slice(2),
+  );
+  const result = await backfillExtensionInstallEvidence(
+    sourceIds.length > 0 ? { sourceIds } : {},
+  );
   console.log(
     `Install evidence backfill complete: ${result.verified} verified, ${result.unavailable} unavailable, ${result.changed} changed`,
   );

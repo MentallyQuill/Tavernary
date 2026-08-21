@@ -34594,7 +34594,13 @@
       "preset": null,
       "refreshedAt": "2026-08-20T16:15:49.017Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/hype-hosting/SillyTavern-Roulette.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-Roulette"
+      },
       "fork": null,
       "search": {
         "title": [
@@ -43467,7 +43473,13 @@
       "preset": null,
       "refreshedAt": "2026-08-20T16:07:46.596Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/leandrojofre/SillyTavern-Kofe-Script.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-Kofe-Script"
+      },
       "fork": null,
       "search": {
         "title": [
@@ -75294,7 +75306,13 @@
       "preset": null,
       "refreshedAt": "2026-08-20T17:19:55.117Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/sewerzone/SillyTavern-SillyToast.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-SillyToast"
+      },
       "fork": null,
       "search": {
         "title": [
@@ -75658,7 +75676,13 @@
       "preset": null,
       "refreshedAt": "2026-08-21T01:07:30.482Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Shin-F/world-info-gallery.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "world-info-gallery"
+      },
       "fork": null,
       "search": {
         "title": [
@@ -84776,7 +84800,13 @@
       "preset": null,
       "refreshedAt": "2026-08-20T17:48:49.887Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/SpicyMarinara/rpg-companion-sillytavern.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "rpg-companion-sillytavern"
+      },
       "fork": null,
       "search": {
         "title": [
