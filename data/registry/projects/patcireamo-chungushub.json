@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "patcireamo-chungushub",
+  "name": "ChungusHub",
+  "kind": "frontend",
+  "summary": "ChungusHub is a local-first, privacy-focused LLM roleplay frontend using SillyTavern formats. Chats branch as trees so edits and regenerations preserve history; a story map aids navigation.",
+  "metadata_status": "curated",
+  "source_id": "github-1339530018",
+  "frontends": ["chungushub"],
+  "primary_function": "frontend",
+  "tags": [
+    "local-first",
+    "manage-character-libraries",
+    "non-destructive",
+    "organize-chats-and-messages",
+    "privacy-focused"
+  ],
+  "cataloged_at": "2026-08-21T02:38:49.672Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
