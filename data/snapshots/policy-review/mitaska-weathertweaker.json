@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mitaska-weathertweaker",
+  "source_id": "github-1239088102",
+  "source_identity": "github:mitaska/weathertweaker",
+  "evidence_fingerprint": "63a7e4f0e6c3eddc8a4a8027db4f5ed087ed444de1d2301ac3a08b7e0168e8dc",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-21T08:14:01.851Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-21T08:14:01.851Z"
+  },
+  "maintenance_issue_number": null
+}
