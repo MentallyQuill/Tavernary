@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "spicymarinara-sillytavern-lovense",
+  "source_id": "github-1096087307",
+  "source_identity": "github:spicymarinara/sillytavern-lovense",
+  "evidence_fingerprint": "ddae2083a1ead9c559a52499ee2182234c6bf53409c02f162f2adc17d0da7151",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-21T08:10:31.369Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-21T08:10:31.369Z"
+  },
+  "maintenance_issue_number": null
+}
