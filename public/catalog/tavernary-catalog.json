@@ -75237,6 +75237,144 @@
       }
     },
     {
+      "id": "shin-f-world-info-gallery",
+      "name": "world-info-gallery",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "A gallery-first browser and editor for SillyTavern World Info/Lorebooks, opening the World Info tab as a visual library with covers, folders, classification, and in-place editing; the native editor stays one click away.",
+      "canonicalUrl": "https://github.com/Shin-F/world-info-gallery",
+      "catalogedAt": "2026-08-21T01:07:30.482Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "customize-the-interface",
+          "label": "Customize the interface",
+          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-lorebooks",
+          "label": "Manage lorebooks",
+          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+          "facet": "goal"
+        },
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "be4b0be471cf394b865e4b519013be0e67e7696b",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Shin-F"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-21T00:35:38.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 5931,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-21T01:07:30.482Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "world-info-gallery"
+        ],
+        "aliases": [],
+        "source": [
+          "shin-f-world-info-gallery",
+          "github-1341130248",
+          "Shin-F/world-info-gallery",
+          "https://github.com/Shin-F/world-info-gallery"
+        ],
+        "summary": [
+          "A gallery-first browser and editor for SillyTavern World Info/Lorebooks, opening the World Info tab as a visual library with covers, folders, classification, and in-place editing; the native editor stays one click away."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Customize the interface",
+          "interface theming",
+          "layout customization",
+          "UI personalization",
+          "Manage lorebooks",
+          "World Info management",
+          "worldbook organization",
+          "loredeck management",
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Shin-F"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "sigmareaver-rooms",
       "name": "Rooms",
       "kind": "extension",
