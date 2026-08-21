@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "platberlitz-sd-proxy",
+  "source_id": "github-1132779410",
+  "source_identity": "github:platberlitz/sd-proxy",
+  "evidence_fingerprint": "582ebdd6987455e177e8d4fe89fbed2c55a48f329ac13eeb344c60d3b3ee1f2d",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-21T08:11:12.963Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-21T08:11:12.963Z"
+  },
+  "maintenance_issue_number": null
+}
