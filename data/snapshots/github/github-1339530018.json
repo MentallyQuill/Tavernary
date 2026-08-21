@@ -35,18 +35,19 @@
     "evidence_head_sha": "83c63a0fdd705cd7cd1507c1724b864113e06b00"
   },
   "community": {
-    "stars_count": 12,
+    "stars_count": 15,
     "forks_count": 0,
     "watchers_count": 2,
-    "aggregate": 14
+    "aggregate": 17
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-21T02:38:49.672Z",
+  "refreshed_at": "2026-08-21T08:00:43.648Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "patcireamo", "type": "User", "provider": "github" }
@@ -54,8 +55,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-21T02:38:49.672Z",
+    "refreshed_at": "2026-08-21T08:00:43.648Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

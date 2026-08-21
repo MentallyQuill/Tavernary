@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "morgoookru-st-chat-finder",
+  "source_id": "github-1167832752",
+  "source_identity": "github:morgoookru/st-chat-finder",
+  "evidence_fingerprint": "54ce6234dd1dc714db8087532aae968367b8b43611a19637e82e3b880ab35720",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-21T08:12:00.800Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-21T08:12:00.800Z"
+  },
+  "maintenance_issue_number": null
+}

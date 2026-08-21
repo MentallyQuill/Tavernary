@@ -3,14 +3,14 @@
   "project_id": "aikohanasaki-aikobots",
   "source_id": "github-998992781",
   "source_identity": "github:aikohanasaki/aikobots",
-  "evidence_fingerprint": "96614d99ea259f45e5bb747d0ff49d94d11c1a75ad1dca67408af4446c5ad192",
+  "evidence_fingerprint": "14ae65137ed5685d8085b19fea92e1b4b775efe33bc987d333b5c47bd2eb71e0",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-19T08:15:11.238Z",
+  "reviewed_at": "2026-08-21T08:18:54.734Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-19T08:15:11.238Z"
+    "attempts": 3,
+    "last_failure_at": "2026-08-21T08:18:54.734Z"
   },
   "maintenance_issue_number": null
 }

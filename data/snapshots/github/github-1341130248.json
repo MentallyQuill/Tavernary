@@ -35,25 +35,25 @@
     "evidence_head_sha": "be4b0be471cf394b865e4b519013be0e67e7696b"
   },
   "community": {
-    "stars_count": 0,
+    "stars_count": 1,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 0
+    "aggregate": 1
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-21T01:07:30.482Z",
+  "refreshed_at": "2026-08-21T08:00:43.648Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "Shin-F", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-21T01:07:30.482Z",
+    "refreshed_at": "2026-08-21T08:00:43.648Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

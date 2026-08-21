@@ -50,8 +50,9 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-20T17:19:55.117Z",
+  "refreshed_at": "2026-08-21T08:00:43.648Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "sewerzone", "type": "User", "provider": "github" }
@@ -59,8 +60,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-20T17:19:55.117Z",
+    "refreshed_at": "2026-08-21T08:00:43.648Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

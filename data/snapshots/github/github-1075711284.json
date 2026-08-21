@@ -35,18 +35,19 @@
     "evidence_head_sha": "e021946867b9a457a3f8b67c78642f9b92ebb90d"
   },
   "community": {
-    "stars_count": 304,
+    "stars_count": 305,
     "forks_count": 72,
     "watchers_count": 6,
-    "aggregate": 382
+    "aggregate": 383
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-20T17:48:49.887Z",
+  "refreshed_at": "2026-08-21T08:00:43.648Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "SpicyMarinara", "type": "User", "provider": "github" },
@@ -74,8 +75,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-20T17:48:49.887Z",
+    "refreshed_at": "2026-08-21T08:00:43.648Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }
