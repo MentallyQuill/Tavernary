@@ -13,6 +13,8 @@ export type TavernKeeperVisualState =
   "teal" | "orange" | "red" | "gray" | "unsupported";
 export type TavernKeeperFreshness =
   "current" | "stale" | "unavailable" | "unassessed" | "unsupported";
+export type TavernKeeperJavaScriptAnalysisStatus =
+  "complete" | "incomplete" | "legacy";
 
 export interface TavernKeeperFinalAssessment {
   risk_level: TavernKeeperRiskLevel;
@@ -45,6 +47,9 @@ export interface TavernKeeperAssessedReport {
   synthesis_model: string;
   danger_basis: TavernKeeperDangerBasis;
   assessment_source: TavernKeeperAssessmentSource;
+  coverage: {
+    javascript_analysis_status: TavernKeeperJavaScriptAnalysisStatus;
+  };
   report_url: string;
   history_url?: string;
   assessment: TavernKeeperFinalAssessment;
@@ -70,6 +75,7 @@ export interface TavernKeeperReportSummary {
   synthesisModel: string;
   dangerBasis: TavernKeeperDangerBasis;
   assessmentSource: TavernKeeperAssessmentSource;
+  javascriptAnalysisStatus: TavernKeeperJavaScriptAnalysisStatus | null;
   reportUrl: string;
   technicalHistoryUrl: string | null;
 }
@@ -197,6 +203,7 @@ function summarize(
     synthesisModel: report.synthesis_model,
     dangerBasis: report.danger_basis,
     assessmentSource: report.assessment_source,
+    javascriptAnalysisStatus: report.coverage.javascript_analysis_status,
     reportUrl: report.report_url,
     technicalHistoryUrl: report.history_url ?? null,
   };

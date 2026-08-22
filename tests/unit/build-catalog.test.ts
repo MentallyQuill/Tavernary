@@ -7,6 +7,7 @@ import { expect, test } from "vitest";
 import {
   buildCatalog as buildCatalogRaw,
   deriveInstallContract,
+  projectCatalogV7,
 } from "../../scripts/catalog/build.mjs";
 import { legacySourceId } from "../../src/features/catalog/source-record.mjs";
 
@@ -371,6 +372,9 @@ test("builds sibling extension and preset cards from one source snapshot", async
           assessed_at: "2026-07-31T12:06:00.000Z",
           synthesis_policy_version: "1",
           synthesis_model: "gpt-5.6-luna",
+          danger_basis: "none",
+          assessment_source: "model",
+          coverage: { javascript_analysis_status: "incomplete" },
           assessment: {
             risk_level: "low",
             headline: "Low concern",
@@ -449,6 +453,7 @@ test("builds sibling extension and preset cards from one source snapshot", async
         riskLevel: "low",
         scannerPolicyVersion: "5",
         headline: "Low concern",
+        javascriptAnalysisStatus: "incomplete",
       }),
     ],
   });
@@ -458,7 +463,15 @@ test("builds sibling extension and preset cards from one source snapshot", async
     freshness: "current",
     report: expect.objectContaining({ scannedSha: "a".repeat(40) }),
   });
-  expect(catalog.schemaVersion).toBe(7);
+  expect(catalog.schemaVersion).toBe(8);
+  const legacyCatalog = projectCatalogV7(catalog);
+  expect(legacyCatalog.schemaVersion).toBe(7);
+  expect(legacyCatalog.projects[0].tavernKeeper?.report).not.toHaveProperty(
+    "javascriptAnalysisStatus",
+  );
+  expect(catalog.projects[0].tavernKeeper?.report).toMatchObject({
+    javascriptAnalysisStatus: "incomplete",
+  });
   expect(
     catalog.tagVocabulary.find(({ id }) => id === "maintain-long-term-memory"),
   ).not.toHaveProperty("inclusion_guidance");
@@ -1011,7 +1024,7 @@ test("publishes provider-qualified Codeberg evidence", async () => {
     snapshots: [snapshot],
   });
 
-  expect(catalog.schemaVersion).toBe(7);
+  expect(catalog.schemaVersion).toBe(8);
   expect(catalog.projects[0]).toMatchObject({
     canonicalUrl: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
     attribution: {
@@ -1238,7 +1251,7 @@ test("builds every eligible public card with consolidated manual sources", async
   const recursion = catalog.projects.find(
     ({ id }) => id === "mentallyquill-recursion",
   );
-  expect(catalog.schemaVersion).toBe(7);
+  expect(catalog.schemaVersion).toBe(8);
   expect(recursion?.activity.weeklyActivity).toHaveLength(12);
   expect(recursion?.activity.weeklyActivity?.filter(Boolean)).toHaveLength(
     recursion?.activity.activeWeeks12 ?? 0,
@@ -1358,7 +1371,7 @@ test("builds Kits from complete project records and nullable support", async () 
   });
 
   expect(catalog).toMatchObject({
-    schemaVersion: 7,
+    schemaVersion: 8,
     kits: [
       {
         id: "flagged-kit-42",

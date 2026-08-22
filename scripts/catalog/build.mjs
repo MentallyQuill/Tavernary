@@ -25,6 +25,10 @@ const outputPath = resolve(
   rootDirectory,
   "public/catalog/tavernary-catalog.json",
 );
+const outputV8Path = resolve(
+  rootDirectory,
+  "public/catalog/tavernary-catalog-v8.json",
+);
 
 async function readJson(path) {
   return JSON.parse(await readFile(resolve(rootDirectory, path), "utf8"));
@@ -670,7 +674,7 @@ export async function buildCatalog(options = {}) {
     })
     .sort((left, right) => left.id.localeCompare(right.id));
   const catalog = {
-    schemaVersion: 7,
+    schemaVersion: 8,
     generatedAt: generatedAtIso,
     tagVocabulary: publicTagVocabulary,
     projects,
@@ -680,9 +684,10 @@ export async function buildCatalog(options = {}) {
   if (options.write !== false) {
     const rankedProjectIds = popularityRankedProjectIds(projects);
     await mkdir(dirname(outputPath), { recursive: true });
-    const temporaryPath = `${outputPath}.tmp`;
-    await writeFile(temporaryPath, `${JSON.stringify(catalog, null, 2)}\n`);
-    await rename(temporaryPath, outputPath);
+    await Promise.all([
+      writeCatalogArtifact(outputPath, projectCatalogV7(catalog)),
+      writeCatalogArtifact(outputV8Path, catalog),
+    ]);
     await writeTavernKeeperTargets(
       buildTavernKeeperTargets({
         contractVersion: tavernKeeperContract.target_manifest_schema_version,
@@ -700,6 +705,34 @@ export async function buildCatalog(options = {}) {
   }
 
   return catalog;
+}
+
+async function writeCatalogArtifact(path, catalog) {
+  const temporaryPath = `${path}.tmp`;
+  await writeFile(temporaryPath, `${JSON.stringify(catalog, null, 2)}\n`);
+  await rename(temporaryPath, path);
+}
+
+export function projectCatalogV7(catalog) {
+  const legacy = structuredClone(catalog);
+  legacy.schemaVersion = 7;
+  const projects = [
+    ...legacy.projects,
+    ...legacy.kits.flatMap((kit) =>
+      kit.components.flatMap((component) =>
+        component.project ? [component.project] : [],
+      ),
+    ),
+  ];
+  for (const project of projects) {
+    const status = project.tavernKeeper;
+    if (!status) continue;
+    if (status.report) delete status.report.javascriptAnalysisStatus;
+    for (const report of status.history) {
+      delete report.javascriptAnalysisStatus;
+    }
+  }
+  return legacy;
 }
 
 export function deriveInstallContract({ record, source, snapshot, evidence }) {

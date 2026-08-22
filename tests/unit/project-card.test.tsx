@@ -146,6 +146,7 @@ describe("project card", () => {
               riskLevel: "low",
               dangerBasis: "none",
               assessmentSource: "model",
+              javascriptAnalysisStatus: "complete",
               headline: "Low concern",
               summary:
                 "The reviewed behavior matches the extension's stated purpose.",

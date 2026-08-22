@@ -144,6 +144,14 @@ async function fixtureReports() {
       history_url:
         `https://mentallyquill.github.io/TavernKeeper/reports/github/` +
         `${source.repository_id}/history/`,
+      coverage: {
+        javascript_analysis_status:
+          ordinal === 13
+            ? "incomplete"
+            : ordinal === 30
+              ? "legacy"
+              : "complete",
+      },
     };
   }
 

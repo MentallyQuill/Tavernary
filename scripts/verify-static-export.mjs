@@ -166,24 +166,31 @@ export async function verifyCatalogStaticExport(
   publicDirectory = resolve(rootDirectory, "public"),
   sourceRoot = rootDirectory,
 ) {
-  const publicPath = resolve(publicDirectory, "catalog/tavernary-catalog.json");
-  const outputPath = resolve(outputDirectory, "catalog/tavernary-catalog.json");
-  const [publicBytes, outputBytes] = await Promise.all([
-    readFile(publicPath, "utf8"),
-    readFile(outputPath, "utf8"),
-  ]);
-  if (publicBytes !== outputBytes) {
-    throw new Error("Exported catalog bytes differ from the public catalog");
-  }
+  for (const [filename, schemaVersion] of [
+    ["tavernary-catalog.json", 7],
+    ["tavernary-catalog-v8.json", 8],
+  ]) {
+    const publicPath = resolve(publicDirectory, "catalog", filename);
+    const outputPath = resolve(outputDirectory, "catalog", filename);
+    const [publicBytes, outputBytes] = await Promise.all([
+      readFile(publicPath, "utf8"),
+      readFile(outputPath, "utf8"),
+    ]);
+    if (publicBytes !== outputBytes) {
+      throw new Error(
+        `Exported ${filename} bytes differ from the public catalog`,
+      );
+    }
 
-  let catalog;
-  try {
-    catalog = JSON.parse(outputBytes);
-  } catch {
-    throw new Error("Exported catalog is not valid JSON");
-  }
-  if (catalog.schemaVersion !== 7) {
-    throw new Error("Exported catalog must use schema 7");
+    let catalog;
+    try {
+      catalog = JSON.parse(outputBytes);
+    } catch {
+      throw new Error(`Exported ${filename} is not valid JSON`);
+    }
+    if (catalog.schemaVersion !== schemaVersion) {
+      throw new Error(`Exported ${filename} must use schema ${schemaVersion}`);
+    }
   }
 
   for (const obsoletePath of [
