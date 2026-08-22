@@ -1,6 +1,6 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-08-22T19:17:23.332Z",
+  "generated_at": "2026-08-22T19:23:51.800Z",
   "preferred_report_ids": [
     "3bff93b3cf0db3dff26f35d3f03806424a61d75a341f74fcdcad8e5eb6f3fd5b",
     "8585ad6405b32aa3c434a6dd81257f60a384ad8dea5df02ad5211a3f1f5768cf",
@@ -207,13 +207,13 @@
     "88a59bde084212f7c793131a2035df54096a5f1c5a14bc8feee791cbe3ccb29d",
     "91a85c267d8d99018164bcb50f14810186dc8685b4ed29426914da2810608564",
     "9732c9584df4149a2ccfa1187a6a2aa8eb7fcf1d3b6a24b80573410f54655a12",
-    "c8411ee6bb8a8aec6d73834d59c29e7d0aed179d4f9420ab6decd1d0ff710875",
+    "45b4b4223daa30846eb249fb12b3c73db0e408fa55a8d27f1ef1415ce848a195",
     "cd3fa35c96f4cd0d9f9c8618726fd38536aab74d07aead43d953309449f9b535",
     "2901788c80b4ab754f03fb5aa4c9eb0052c2feaf2189d696f684148834ea8195",
     "d3471e393f567abd586763b04fd8ff973940d3fe09b5245c569186898b63f6a6",
     "68b212d4502350c7022aa8e1b41a9dec4da9f0165679bbf2f22b53895461d43a",
     "6ffe4ff591b39be598d803449088fb38aadf17f45288a34e8470cf35e4bc13cb",
-    "11bb7a8944a10300674fca92e966cc13bd9fe2b2893183a8b0a402d36b562d10",
+    "16a90774195b450cad2830cb7dd5d873d86f318c54531658de166be94e5668fb",
     "2e60ad58af53f5daf05b74e6577544f839671eaf71e1e8c4abf4333c47da66b4",
     "394cf60061b093503ddbbbbc99b7f2905553d6f60ea86e626a609bc9e7f52078",
     "d64bd12fc70b062f4d4356b2e560e7d7aacc52c371fecb8a4ba2a25357827a1f",
@@ -52568,6 +52568,205 @@
           "1df2aee5724705aea80196d90ff746c931aa33b42282b7cbfd475efc8ff102f5",
           "a659a8e104b6e9eee74ddaaa8f0eb055a802f9e50ba92083f50333caa909f2b4",
           "d6138f4b6b6ac9ed4ec47284ed33589b6a62a1f69d7cc3cff0585237f7ff3b7b"
+        ],
+        "interaction_chains": []
+      }
+    },
+    {
+      "report_id": "16a90774195b450cad2830cb7dd5d873d86f318c54531658de166be94e5668fb",
+      "report_digest": "16a90774195b450cad2830cb7dd5d873d86f318c54531658de166be94e5668fb",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "5",
+      "rule_catalog_version": "2",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "5",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v7",
+      "assessment_schema_version": "contextual-assessment-v2",
+      "source_id": "github-1195775310",
+      "provider": "github",
+      "repository_id": 1195775310,
+      "repository": "Hapsburgtopquark388/SillyTavern-Streamline",
+      "target_sha": "b088fa903acf6d257052f387e9ef081f3da8b6f7",
+      "completed_at": "2026-08-22T19:19:34.957Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 3,
+        "assessments": 3,
+        "observations": 0,
+        "items": 3,
+        "disposition": {
+          "expected_behavior": 2,
+          "minor_weakness": 1,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 2,
+          "low": 1,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 2,
+          "plausible": 1,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 1,
+          "high": 2
+        },
+        "recommended_risk": {
+          "low": 3,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 14,
+        "inventory_files": 9,
+        "inventory_bytes": 713861,
+        "tools_completed": 6,
+        "tools_not_applicable": 2,
+        "evidence_validated": 3,
+        "metadata_only_candidates": 0,
+        "review_required": 3,
+        "review_completed": 3,
+        "javascript_analysis_status": "complete"
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1195775310/b088fa903acf6d257052f387e9ef081f3da8b6f7/5/16a90774195b450cad2830cb7dd5d873d86f318c54531658de166be94e5668fb/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1195775310/history/",
+      "assessed_at": "2026-08-22T19:26:07.728Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
+      "danger_basis": "none",
+      "assessment_source": "deterministic_regrade",
+      "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 1,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
+        "cited_finding_ids": [
+          "ec909913ddd26b953a0c7e5a2f02084a9a6e4d58a66a8669a466353571459aa1"
+        ],
+        "interaction_chains": []
+      }
+    },
+    {
+      "report_id": "45b4b4223daa30846eb249fb12b3c73db0e408fa55a8d27f1ef1415ce848a195",
+      "report_digest": "45b4b4223daa30846eb249fb12b3c73db0e408fa55a8d27f1ef1415ce848a195",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "5",
+      "rule_catalog_version": "2",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "5",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v7",
+      "assessment_schema_version": "contextual-assessment-v2",
+      "source_id": "github-1190054879",
+      "provider": "github",
+      "repository_id": 1190054879,
+      "repository": "mekineer-com/OpenAlma",
+      "target_sha": "e77de98dfdb49c423fff5b95aef2d757710a9252",
+      "completed_at": "2026-08-22T19:22:48.968Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 26,
+        "assessments": 26,
+        "observations": 0,
+        "items": 26,
+        "disposition": {
+          "expected_behavior": 0,
+          "minor_weakness": 0,
+          "material_vulnerability": 26,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 0,
+          "low": 3,
+          "medium": 19,
+          "high": 4,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 26,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 0,
+          "high": 26
+        },
+        "recommended_risk": {
+          "low": 26,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 1,
+        "inventory_files": 31,
+        "inventory_bytes": 207922,
+        "tools_completed": 7,
+        "tools_not_applicable": 1,
+        "evidence_validated": 26,
+        "metadata_only_candidates": 0,
+        "review_required": 26,
+        "review_completed": 26,
+        "javascript_analysis_status": "complete"
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1190054879/e77de98dfdb49c423fff5b95aef2d757710a9252/5/45b4b4223daa30846eb249fb12b3c73db0e408fa55a8d27f1ef1415ce848a195/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1190054879/history/",
+      "assessed_at": "2026-08-22T19:26:07.728Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
+      "danger_basis": "none",
+      "assessment_source": "deterministic_regrade",
+      "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 26,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
+        "cited_finding_ids": [
+          "08248ea6e25763dd5379ff1638b557657508a6d106180f9838a9eefbde6651e4",
+          "0c4b7dd632280ad74a9ce51e14bd61325c30da06be05e715b63a3622236c1e41",
+          "1476a69676f8325dadc00c7e7b9e9ac516cb9c8e5e88a50ee84ff4466812dcc3",
+          "20bd306d4dfde893957f3051a1dbc5b435e866793064c3e74808abb93b18f7a2",
+          "21eeff77555309cc955a4e108a004f11119f5eb993d8eca88db22e383a270054",
+          "3c8e91a65d04a66fe9fc08116d443cedbddf94239e62706bb77cfe1dacfea8cd",
+          "42853ecc4141b5a328e2d7986f6bb4503bb20f9be9c51e12a7f508c32801ef47",
+          "595e20df37df4b4d50794b450e33cf8c5cb8f4fcbec55f902611b9494c150a97",
+          "5fb3626a2c148fc57bb72f8454a9397be92a0792cf23bfeca2f356ccae0f67fe",
+          "691b61adbb58369b9029ea56623a35573d050b61297636d163423339636693db",
+          "7eff8f69ff7ba148a948583819ff0e529da52c266340abfef0073017341c5e06",
+          "83d0c382f9b13030663c27cdb17f5806db2ccc4cf10520db12784f198d2ea0d1",
+          "90ea055ceae6cf3b32ab7b984e7b50b1c4716274f3e9c494f0829404be30c34a",
+          "955577860db136f52866e4128d269b4ba7f63f354bcb455c4701c61305282df8",
+          "9be500f761d0bb927bfab930761bba31eb7a881ee45cb6b7ada419a31caebd27",
+          "a03d1bc37e50721e88c86109cb10730166ad6f44e579ba7f76cf2154ee560630",
+          "a97174a84aaea43440865ffded4a2b8c83e2f2a5afd33ca5d8623a22839589c7",
+          "afa2f58df3fa2c2d2a8554d6acd0d20d160f055a46779e8c753fdc2cfa83e4f7",
+          "c24080356f6eab7be7c155d5c8142273f1e2efbab59ef9fedd34e54cf6bffdff",
+          "d30ab1c82c7e83009c024dd05f8a5d706c0058e5f9c208b5448576d5934ed8ec",
+          "d57b67cf39a57ef6bd2383012dcbbc17f711b18537523bd6fcf77a03d7d9a2df",
+          "ea330d57d17cb34c94abeab41bb5e45c379169cba082dfb96c43073d5302664e",
+          "edfc42bef2cd54b09149c3908455093213a9f76fee0fc9ba854aa50b59903f80",
+          "f0856a17d25932996f5ea818ccf7865f1c6bb6519afeed0a5d2d35db9abe07ed",
+          "f6ca74d68e5d02f624e3ba0f53ab2751fc9b51c1516c8f80fa40210c8d78c621",
+          "f73307ad3b986ed5fd2186f56d03f85ad50e30d8518c2b6b31de0d1a248ec954"
         ],
         "interaction_chains": []
       }
