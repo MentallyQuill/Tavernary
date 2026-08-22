@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "rossascends-st-samplerkillswitches",
+  "source_id": "github-986817479",
+  "source_identity": "github:rossascends/st-samplerkillswitches",
+  "evidence_fingerprint": "8c3fcac695b3b78ccb3331c54195e388405694d9b9f06db0ede7d8f4185112d4",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-22T08:07:55.183Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-22T08:07:55.183Z"
+  },
+  "maintenance_issue_number": null
+}
