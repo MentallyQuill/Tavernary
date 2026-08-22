@@ -24,7 +24,9 @@ export function configuredBasePath(environment = process.env) {
     repositoryName.length > 0 &&
     !repositoryName.endsWith(".github.io");
 
-  return environment.TAVERNARY_BASE_PATH ?? (projectPage ? `/${repositoryName}` : "");
+  return (
+    environment.TAVERNARY_BASE_PATH ?? (projectPage ? `/${repositoryName}` : "")
+  );
 }
 
 export function verifyStaticExport(html, basePath = "") {
@@ -47,10 +49,15 @@ export function verifyStaticExport(html, basePath = "") {
   }
 
   if (!basePath) {
-    const rootAsset = html.includes('href="/_next/') || html.includes('src="/_next/');
-    const prefixedAsset = /(?:href|src)="\/(?!_next\/)[^"]+\/_next\//.test(html);
+    const rootAsset =
+      html.includes('href="/_next/') || html.includes('src="/_next/');
+    const prefixedAsset = /(?:href|src)="\/(?!_next\/)[^"]+\/_next\//.test(
+      html,
+    );
     if (!rootAsset || prefixedAsset) {
-      throw new Error("Static export does not contain root-relative Next.js asset URLs");
+      throw new Error(
+        "Static export does not contain root-relative Next.js asset URLs",
+      );
     }
     return;
   }
@@ -60,8 +67,13 @@ export function verifyStaticExport(html, basePath = "") {
   }
 
   const prefixedAsset = `${basePath}/_next/`;
-  if (!html.includes(`href="${prefixedAsset}`) && !html.includes(`src="${prefixedAsset}`)) {
-    throw new Error("Static export does not contain Next.js assets for the configured base path");
+  if (
+    !html.includes(`href="${prefixedAsset}`) &&
+    !html.includes(`src="${prefixedAsset}`)
+  ) {
+    throw new Error(
+      "Static export does not contain Next.js assets for the configured base path",
+    );
   }
 }
 
@@ -80,20 +92,27 @@ export async function verifyHelpStaticRoutes(outputDirectory = "out") {
     await access(resolve(outputDirectory, route, "index.html"));
   }
 
-  const securityHtml = await readFile(resolve(outputDirectory, "help/security/index.html"), "utf8");
+  const securityHtml = await readFile(
+    resolve(outputDirectory, "help/security/index.html"),
+    "utf8",
+  );
   if (securityHtml.includes("/issues/new")) {
-    throw new Error("Private security export must not contain a public issue form");
+    throw new Error(
+      "Private security export must not contain a public issue form",
+    );
   }
 }
 
 export async function verifyTavernKeeperStaticExport(outputDirectory = "out") {
   const [manifest, contract] = await Promise.all([
-    readFile(resolve(outputDirectory, "security/tavernkeeper-targets.json"), "utf8").then(
-      (contents) => JSON.parse(contents),
-    ),
-    readFile(resolve(rootDirectory, "config/tavernkeeper-contract.json"), "utf8").then((contents) =>
-      JSON.parse(contents),
-    ),
+    readFile(
+      resolve(outputDirectory, "security/tavernkeeper-targets.json"),
+      "utf8",
+    ).then((contents) => JSON.parse(contents)),
+    readFile(
+      resolve(rootDirectory, "config/tavernkeeper-contract.json"),
+      "utf8",
+    ).then((contents) => JSON.parse(contents)),
   ]);
   const version = contract.target_manifest_schema_version;
   if (version !== 1 && version !== 2 && version !== 3)
@@ -116,7 +135,9 @@ export async function verifyTavernKeeperStaticExport(outputDirectory = "out") {
   if (!validate(manifest)) {
     throw new Error(
       `TavernKeeper target manifest is invalid: ${validate.errors
-        ?.map(({ instancePath, message }) => `${instancePath || "/"} ${message}`)
+        ?.map(
+          ({ instancePath, message }) => `${instancePath || "/"} ${message}`,
+        )
         .join(", ")}`,
     );
   }
@@ -125,7 +146,9 @@ export async function verifyTavernKeeperStaticExport(outputDirectory = "out") {
       ({ catalog_priority }) => catalog_priority.popularity_rank,
     );
     if (new Set(ranks).size !== ranks.length)
-      throw new Error("TavernKeeper target manifest is invalid: popularity ranks must be unique");
+      throw new Error(
+        "TavernKeeper target manifest is invalid: popularity ranks must be unique",
+      );
     if (
       manifest.repositories.some(
         ({ catalog_priority }) =>
@@ -154,7 +177,9 @@ export async function verifyCatalogStaticExport(
       readFile(outputPath, "utf8"),
     ]);
     if (publicBytes !== outputBytes) {
-      throw new Error(`Exported ${filename} bytes differ from the public catalog`);
+      throw new Error(
+        `Exported ${filename} bytes differ from the public catalog`,
+      );
     }
 
     let catalog;
@@ -191,6 +216,9 @@ async function main() {
   console.log("Static export verified");
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
   await main();
 }

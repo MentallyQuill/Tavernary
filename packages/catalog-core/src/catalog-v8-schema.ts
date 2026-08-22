@@ -27,7 +27,9 @@ interface MutableCatalogSchema {
   };
 }
 
-const schema = structuredClone(catalogV7Schema) as unknown as MutableCatalogSchema;
+const schema = structuredClone(
+  catalogV7Schema,
+) as unknown as MutableCatalogSchema;
 schema.$id = "https://tavernary.org/schemas/catalog-v8.json";
 schema.properties.schemaVersion.const = 8;
 

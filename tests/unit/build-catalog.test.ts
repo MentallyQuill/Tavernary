@@ -15,9 +15,13 @@ const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 
 async function readJsonDirectory<T>(relativePath: string): Promise<T[]> {
   const directory = resolve(rootDirectory, relativePath);
-  const files = (await readdir(directory)).filter((file) => file.endsWith(".json")).sort();
+  const files = (await readdir(directory))
+    .filter((file) => file.endsWith(".json"))
+    .sort();
   return Promise.all(
-    files.map(async (file) => JSON.parse(await readFile(resolve(directory, file), "utf8"))),
+    files.map(async (file) =>
+      JSON.parse(await readFile(resolve(directory, file), "utf8")),
+    ),
   );
 }
 
@@ -30,18 +34,26 @@ function countBy<T>(items: T[], selector: (item: T) => string) {
   return Object.fromEntries(counts);
 }
 
-async function buildCatalog(options: Parameters<typeof buildCatalogRaw>[0] = {}) {
+async function buildCatalog(
+  options: Parameters<typeof buildCatalogRaw>[0] = {},
+) {
   const records = (options.records ?? []) as Array<Record<string, any>>;
-  const legacyRecords = records.filter(({ schema_version }) => schema_version !== 6);
+  const legacyRecords = records.filter(
+    ({ schema_version }) => schema_version !== 6,
+  );
   if (legacyRecords.length === 0) return buildCatalogRaw(options);
 
   const sourceIdByProjectId = new Map<string, string>();
   const sourcesById = new Map<string, Record<string, unknown>>();
   const projects = records.map((record) => {
     if (record.schema_version === 6) return record;
-    const sourceId = legacySourceId(record as Parameters<typeof legacySourceId>[0]);
+    const sourceId = legacySourceId(
+      record as Parameters<typeof legacySourceId>[0],
+    );
     sourceIdByProjectId.set(record.id, sourceId);
-    const removed = record.visibility === "disabled" && record.visibility_reason === "removed";
+    const removed =
+      record.visibility === "disabled" &&
+      record.visibility_reason === "removed";
     sourcesById.set(sourceId, {
       schema_version: 1,
       id: sourceId,
@@ -72,7 +84,9 @@ async function buildCatalog(options: Parameters<typeof buildCatalogRaw>[0] = {})
             ? "retired"
             : "active",
       listing_status_reason:
-        record.visibility === "published" || removed ? null : record.visibility_reason,
+        record.visibility === "published" || removed
+          ? null
+          : record.visibility_reason,
       metadata_policy: {
         summary:
           enrichmentPolicy === "manual"
@@ -82,9 +96,15 @@ async function buildCatalog(options: Parameters<typeof buildCatalogRaw>[0] = {})
       },
     };
   });
-  const snapshots = ((options.snapshots ?? []) as Array<Record<string, any>>).map((snapshot) => {
+  const snapshots = (
+    (options.snapshots ?? []) as Array<Record<string, any>>
+  ).map((snapshot) => {
     if (snapshot.schema_version === 4) return snapshot;
-    const { project_id: projectId, schema_version: _schemaVersion, ...facts } = snapshot;
+    const {
+      project_id: projectId,
+      schema_version: _schemaVersion,
+      ...facts
+    } = snapshot;
     return {
       ...facts,
       schema_version: 4,
@@ -120,7 +140,11 @@ const fixtureProject = (overrides: Record<string, unknown> = {}) => {
     },
     frontends: ["sillytavern"],
     primary_function:
-      kind === "frontend" ? "frontend" : kind === "preset" ? "preset" : "generation-reasoning",
+      kind === "frontend"
+        ? "frontend"
+        : kind === "preset"
+          ? "preset"
+          : "generation-reasoning",
     capabilities: [],
     cataloged_at: "2026-07-23T00:00:00Z",
     catalog_cohort: "seed",
@@ -165,7 +189,20 @@ const fixtureSnapshot = (overrides: Record<string, unknown> = {}) => ({
   activity: {
     latest_source_activity_at: "2026-07-23T00:00:00.000Z",
     source_weeks: [],
-    provisional_weeks: [true, true, true, true, true, true, true, true, true, true, true, true],
+    provisional_weeks: [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+    ],
     latest_release_at: "2026-07-23T00:00:00.000Z",
     evidence_status: "provisional",
     baseline_completed_at: null,
@@ -190,11 +227,26 @@ test.each([
   ["preset", (input: any) => (input.record.kind = "preset")],
   ["frontend", (input: any) => (input.record.kind = "frontend")],
   ["other frontend", (input: any) => (input.record.frontends = ["risuai"])],
-  ["inactive project", (input: any) => (input.record.listing_status = "retired")],
-  ["unavailable source", (input: any) => (input.snapshot.source_health = "unavailable")],
-  ["nested manifest", (input: any) => (input.evidence.manifest_path = "extension/manifest.json")],
-  ["stale evidence", (input: any) => (input.evidence.head_sha = "b".repeat(40))],
-  ["organization source", (input: any) => (input.source.type = "github-organization")],
+  [
+    "inactive project",
+    (input: any) => (input.record.listing_status = "retired"),
+  ],
+  [
+    "unavailable source",
+    (input: any) => (input.snapshot.source_health = "unavailable"),
+  ],
+  [
+    "nested manifest",
+    (input: any) => (input.evidence.manifest_path = "extension/manifest.json"),
+  ],
+  [
+    "stale evidence",
+    (input: any) => (input.evidence.head_sha = "b".repeat(40)),
+  ],
+  [
+    "organization source",
+    (input: any) => (input.source.type = "github-organization"),
+  ],
   ["URL source", (input: any) => (input.source.type = "url")],
 ])("publishes no install contract for %s", (_label, mutate) => {
   const input = {
@@ -247,7 +299,8 @@ test("builds sibling extension and preset cards from one source snapshot", async
     metadata_status: "curated",
     frontends: ["sillytavern"],
     primary_function: kind === "preset" ? "preset" : "interface-workflow",
-    tags: kind === "preset" ? ["model-agnostic"] : ["maintain-long-term-memory"],
+    tags:
+      kind === "preset" ? ["model-agnostic"] : ["maintain-long-term-memory"],
     ...(kind === "preset"
       ? {
           model_families: ["claude"],
@@ -325,24 +378,32 @@ test("builds sibling extension and preset cards from one source snapshot", async
           assessment: {
             risk_level: "low",
             headline: "Low concern",
-            summary: "The reviewed behavior matches the extension's stated purpose.",
+            summary:
+              "The reviewed behavior matches the extension's stated purpose.",
             minor_cautions: 0,
             material_concerns: 0,
             high_danger: 0,
-            malicious_evidence: "No evidence of malicious behavior was identified.",
+            malicious_evidence:
+              "No evidence of malicious behavior was identified.",
             cited_finding_ids: [],
             interaction_chains: [],
           },
           report_url:
             "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/5/1/",
-          history_url: "https://mentallyquill.github.io/TavernKeeper/reports/github/42/history/",
+          history_url:
+            "https://mentallyquill.github.io/TavernKeeper/reports/github/42/history/",
         },
       ],
     },
   });
 
-  expect(catalog.projects.map(({ id }) => id)).toEqual(["megumin-extension", "megumin-preset"]);
-  expect(catalog.projects[0].canonicalUrl).toBe(catalog.projects[1].canonicalUrl);
+  expect(catalog.projects.map(({ id }) => id)).toEqual([
+    "megumin-extension",
+    "megumin-preset",
+  ]);
+  expect(catalog.projects[0].canonicalUrl).toBe(
+    catalog.projects[1].canonicalUrl,
+  );
   expect(catalog.projects[0].community).toEqual(catalog.projects[1].community);
   expect(catalog.projects[0].install).toEqual({
     kind: "sillytavern-extension-git",
@@ -360,18 +421,29 @@ test("builds sibling extension and preset cards from one source snapshot", async
     }),
   ]);
   expect(catalog.projects[0]).not.toHaveProperty("capabilities");
-  expect(catalog.projects[0]).not.toHaveProperty(["searchable", "Text"].join(""));
+  expect(catalog.projects[0]).not.toHaveProperty(
+    ["searchable", "Text"].join(""),
+  );
   expect(catalog.projects[0].search).toMatchObject({
     title: ["megumin-extension"],
     aliases: ["Memory Companion"],
-    source: expect.arrayContaining(["megumin-extension", "github-42", "Arif-salah/Megumin-Suite"]),
+    source: expect.arrayContaining([
+      "megumin-extension",
+      "github-42",
+      "Arif-salah/Megumin-Suite",
+    ]),
     kind: ["extension"],
     primaryFunction: expect.arrayContaining(["Interface and workflow"]),
-    tags: expect.arrayContaining(["Maintain long-term memory", "persistent memory"]),
+    tags: expect.arrayContaining([
+      "Maintain long-term memory",
+      "persistent memory",
+    ]),
     frontends: expect.arrayContaining(["SillyTavern"]),
     maintainers: expect.arrayContaining(["Arif-salah"]),
   });
-  expect(JSON.stringify(catalog.projects[0].search)).not.toContain("[object Object]");
+  expect(JSON.stringify(catalog.projects[0].search)).not.toContain(
+    "[object Object]",
+  );
   expect(catalog.projects[0].tavernKeeper).toMatchObject({
     state: "teal",
     riskLevel: "low",
@@ -403,7 +475,9 @@ test("builds sibling extension and preset cards from one source snapshot", async
   expect(
     catalog.tagVocabulary.find(({ id }) => id === "maintain-long-term-memory"),
   ).not.toHaveProperty("inclusion_guidance");
-  expect(JSON.stringify(catalog.tagVocabulary)).not.toContain("exclusion_guidance");
+  expect(JSON.stringify(catalog.tagVocabulary)).not.toContain(
+    "exclusion_guidance",
+  );
 });
 
 test("derives temporary browser activity from version two evidence", async () => {
@@ -804,7 +878,9 @@ test("keeps a disabled fork parent name without exposing a link or coordinates",
     parentUrl: null,
     status: "unavailable",
   });
-  expect(JSON.stringify(relationship)).not.toMatch(/private-owner|github\.com|9001/);
+  expect(JSON.stringify(relationship)).not.toMatch(
+    /private-owner|github\.com|9001/,
+  );
 });
 
 test("keeps unknown fork provenance name-only and emits null for non-forks", async () => {
@@ -1086,10 +1162,14 @@ test("builds every eligible public card with consolidated manual sources", async
       type: string;
       status: string;
     }>("data/registry/sources"),
-    readJsonDirectory<{ source_id: string; source_health: string }>("data/snapshots/github"),
+    readJsonDirectory<{ source_id: string; source_health: string }>(
+      "data/snapshots/github",
+    ),
   ]);
   const sourcesById = new Map(sources.map((source) => [source.id, source]));
-  const snapshotsBySource = new Map(snapshots.map((snapshot) => [snapshot.source_id, snapshot]));
+  const snapshotsBySource = new Map(
+    snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
+  );
   const hiddenSourceStates = new Set(["identity-change", "deleted", "private"]);
   const expectedProjectIds = records
     .filter((record) => {
@@ -1099,7 +1179,9 @@ test("builds every eligible public card with consolidated manual sources", async
         record.listing_status === "active" &&
         source?.status === "active" &&
         !(snapshot && hiddenSourceStates.has(snapshot.source_health)) &&
-        (source?.type !== "url" || record.kind === "preset" || record.kind === "frontend")
+        (source?.type !== "url" ||
+          record.kind === "preset" ||
+          record.kind === "frontend")
       );
     })
     .map(({ id }) => id)
@@ -1112,19 +1194,29 @@ test("builds every eligible public card with consolidated manual sources", async
     ),
   ).toBe(true);
   expect(
-    catalog.projects.filter((project) => project.metadataStatus === "curated").length,
+    catalog.projects.filter((project) => project.metadataStatus === "curated")
+      .length,
   ).toBeGreaterThanOrEqual(5);
-  expect(catalog.projects.map((project) => project.id)).toContain("purrfect-logic-4-max-mini");
+  expect(catalog.projects.map((project) => project.id)).toContain(
+    "purrfect-logic-4-max-mini",
+  );
   expect(catalog.projects.map(({ id }) => id)).toEqual(
     [...catalog.projects.map(({ id }) => id)].sort(),
   );
-  const sourceStatuses = countBy(catalog.projects, (project) => project.sourceStatus);
+  const sourceStatuses = countBy(
+    catalog.projects,
+    (project) => project.sourceStatus,
+  );
   const supportedSourceStatuses = ["healthy", "manual", "pending", "stale"];
   expect(
-    Object.keys(sourceStatuses).every((status) => supportedSourceStatuses.includes(status)),
+    Object.keys(sourceStatuses).every((status) =>
+      supportedSourceStatuses.includes(status),
+    ),
   ).toBe(true);
   expect(
-    (sourceStatuses.healthy ?? 0) + (sourceStatuses.pending ?? 0) + (sourceStatuses.stale ?? 0),
+    (sourceStatuses.healthy ?? 0) +
+      (sourceStatuses.pending ?? 0) +
+      (sourceStatuses.stale ?? 0),
   ).toBe(catalog.projects.length - (sourceStatuses.manual ?? 0));
   expect(sourceStatuses.healthy ?? 0).toBeGreaterThanOrEqual(4);
   expect(catalog.projects.map(({ id }) => id)).not.toEqual(
@@ -1135,14 +1227,18 @@ test("builds every eligible public card with consolidated manual sources", async
     ]),
   );
   expect(
-    catalog.projects.find(({ id }) => id === "village-maker-google-drive-prompt"),
+    catalog.projects.find(
+      ({ id }) => id === "village-maker-google-drive-prompt",
+    ),
   ).toMatchObject({
     canonicalUrl:
       "https://www.reddit.com/r/SillyTavernAI/comments/1v3rfm4/village_maker_v10_dating_sim_cards_thornbeck/",
     metadataStatus: "curated",
     primaryFunction: "preset",
   });
-  expect(catalog.projects.find(({ id }) => id === "tavern-rpg-suite")).toMatchObject({
+  expect(
+    catalog.projects.find(({ id }) => id === "tavern-rpg-suite"),
+  ).toMatchObject({
     canonicalUrl: "https://github.com/tavern-rpg-suite",
     metadataStatus: "curated",
     primaryFunction: "rpg-systems",
@@ -1152,7 +1248,9 @@ test("builds every eligible public card with consolidated manual sources", async
       .filter((project) => project.metadataStatus === "curated")
       .every((project) => project.primaryFunction !== "uncategorized"),
   ).toBe(true);
-  const recursion = catalog.projects.find(({ id }) => id === "mentallyquill-recursion");
+  const recursion = catalog.projects.find(
+    ({ id }) => id === "mentallyquill-recursion",
+  );
   expect(catalog.schemaVersion).toBe(8);
   expect(recursion?.activity.weeklyActivity).toHaveLength(12);
   expect(recursion?.activity.weeklyActivity?.filter(Boolean)).toHaveLength(
@@ -1163,7 +1261,10 @@ test("builds every eligible public card with consolidated manual sources", async
       (recursion?.community?.forks ?? 0) +
       (recursion?.community?.watchers ?? 0),
   );
-  const labels = catalog.projects.flatMap((project) => [...project.frontends, ...project.tags]);
+  const labels = catalog.projects.flatMap((project) => [
+    ...project.frontends,
+    ...project.tags,
+  ]);
   expect(labels.length).toBeGreaterThan(0);
   expect(labels.every(({ description }) => description.length > 0)).toBe(true);
   expect(labels.find(({ id }) => id === "sillytavern")?.description).toBe(
@@ -1292,7 +1393,8 @@ test("builds Kits from complete project records and nullable support", async () 
       {
         id: "story-kit-41",
         sourceIssueNumber: 41,
-        sourceIssueUrl: "https://github.com/fixture-owner/fixture-repository/issues/41",
+        sourceIssueUrl:
+          "https://github.com/fixture-owner/fixture-repository/issues/41",
         frontends: [expect.objectContaining({ id: "sillytavern" })],
         modelFamilies: [expect.objectContaining({ id: "claude" })],
         purposes: [

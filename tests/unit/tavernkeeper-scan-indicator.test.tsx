@@ -1,6 +1,13 @@
 import { readFileSync } from "node:fs";
 
-import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import postcss, { type AtRule, type Rule } from "postcss";
 import { afterEach, describe, expect, test, vi } from "vitest";
@@ -11,21 +18,26 @@ import type {
   TavernKeeperReportSummary,
 } from "@/features/catalog/tavernkeeper-status";
 
-function scanReport(overrides: Partial<TavernKeeperReportSummary> = {}): TavernKeeperReportSummary {
+function scanReport(
+  overrides: Partial<TavernKeeperReportSummary> = {},
+): TavernKeeperReportSummary {
   return {
     reportId: "report-1",
     riskLevel: "high",
     headline: "Immediate danger",
     dangerBasis: "malicious_or_compromised",
     assessmentSource: "model",
-    summary: "The combined reviewed behavior could expose credentials to an untrusted endpoint.",
+    summary:
+      "The combined reviewed behavior could expose credentials to an untrusted endpoint.",
     minorCautions: 1,
     materialConcerns: 2,
     highDanger: 1,
-    maliciousEvidence: "The review found evidence consistent with credential theft.",
+    maliciousEvidence:
+      "The review found evidence consistent with credential theft.",
     citedFindingIds: ["a".repeat(64)],
     scannedSha: "abc1234def5678abc1234def5678abc1234def5678",
-    treeUrl: "https://github.com/owner/repository/tree/abc1234def5678abc1234def5678abc1234def5678",
+    treeUrl:
+      "https://github.com/owner/repository/tree/abc1234def5678abc1234def5678abc1234def5678",
     scannedAt: "2026-07-31T12:00:00.000Z",
     assessedAt: "2026-07-31T12:05:00.000Z",
     scannerPolicyVersion: "2",
@@ -127,7 +139,9 @@ describe("TavernKeeperScanIndicator", () => {
     });
     expect(panel).toHaveTextContent("Immediate danger");
     expect(panel).toHaveTextContent("Danger basis");
-    expect(panel).toHaveTextContent("Credible malicious or compromised behavior");
+    expect(panel).toHaveTextContent(
+      "Credible malicious or compromised behavior",
+    );
     expect(panel).toHaveTextContent("current");
     expect(panel).toHaveTextContent(redReport.summary);
     expect(panel).toHaveTextContent("1 minor caution");
@@ -140,23 +154,30 @@ describe("TavernKeeperScanIndicator", () => {
     expect(sourceTreeLink).toHaveTextContent(redReport.scannedSha.slice(0, 7));
     expect(sourceTreeLink).toHaveAttribute("href", redReport.treeUrl);
     expect(sourceTreeLink).toHaveAttribute("target", "_blank");
-    expect(sourceTreeLink).toHaveAttribute("rel", expect.stringContaining("noopener"));
-    expect(within(panel).getByRole("link", { name: "View full report" })).toHaveAttribute(
-      "href",
-      redStatus.report?.reportUrl,
+    expect(sourceTreeLink).toHaveAttribute(
+      "rel",
+      expect.stringContaining("noopener"),
     );
-    expect(within(panel).getByRole("link", { name: "View scan history" })).toHaveAttribute(
-      "href",
-      redStatus.historyUrl?.replace(/\/$/u, ""),
-    );
+    expect(
+      within(panel).getByRole("link", { name: "View full report" }),
+    ).toHaveAttribute("href", redStatus.report?.reportUrl);
+    expect(
+      within(panel).getByRole("link", { name: "View scan history" }),
+    ).toHaveAttribute("href", redStatus.historyUrl?.replace(/\/$/u, ""));
     expect(
       within(panel).queryByRole("group", {
         name: "Recent TavernKeeper scan history",
       }),
     ).not.toBeInTheDocument();
-    expect(panel).not.toHaveTextContent(/Gitleaks|OpenGrep|policy|coverage|excluded/u);
-    expect(panel).not.toHaveTextContent(/\b(?:safe|trusted|verified|protected|certified)\b/iu);
-    expect(container.querySelector('svg[data-icon="scan-fill"]')).toBeInTheDocument();
+    expect(panel).not.toHaveTextContent(
+      /Gitleaks|OpenGrep|policy|coverage|excluded/u,
+    );
+    expect(panel).not.toHaveTextContent(
+      /\b(?:safe|trusted|verified|protected|certified)\b/iu,
+    );
+    expect(
+      container.querySelector('svg[data-icon="scan-fill"]'),
+    ).toBeInTheDocument();
   });
 
   test("distinguishes vulnerability danger from malicious behavior", () => {
@@ -175,8 +196,12 @@ describe("TavernKeeperScanIndicator", () => {
     fireEvent.click(screen.getByRole("button"));
 
     const panel = screen.getByRole("dialog");
-    expect(panel).toHaveTextContent("Critical, readily exploitable vulnerability");
-    expect(panel).not.toHaveTextContent("Credible malicious or compromised behavior");
+    expect(panel).toHaveTextContent(
+      "Critical, readily exploitable vulnerability",
+    );
+    expect(panel).not.toHaveTextContent(
+      "Credible malicious or compromised behavior",
+    );
   });
 
   test.each([
@@ -233,7 +258,9 @@ describe("TavernKeeperScanIndicator", () => {
 
       fireEvent.click(screen.getByRole("button"));
 
-      const conciseSummary = screen.getByRole("dialog").querySelector(".tavernkeeper-summary");
+      const conciseSummary = screen
+        .getByRole("dialog")
+        .querySelector(".tavernkeeper-summary");
       expect(conciseSummary).toHaveTextContent(expected);
       expect(conciseSummary).not.toHaveTextContent(/[0-9a-f]{64}/iu);
       expect(conciseSummary).not.toHaveTextContent(/cite/iu);
@@ -251,15 +278,25 @@ describe("TavernKeeperScanIndicator", () => {
       `${tealReport.summary} This assessment covers an older commit. An updated scan is pending.`,
     ],
     [pendingStatus, "This project hasn't been scanned by TavernKeeper."],
-    [unsupportedStatus, "TavernKeeper scanning is not supported for this project's source."],
-  ])("uses approved concise copy without certification language", (status, copy) => {
-    render(<TavernKeeperScanIndicator projectId="copy-check" status={status} />);
-    fireEvent.click(screen.getByRole("button"));
+    [
+      unsupportedStatus,
+      "TavernKeeper scanning is not supported for this project's source.",
+    ],
+  ])(
+    "uses approved concise copy without certification language",
+    (status, copy) => {
+      render(
+        <TavernKeeperScanIndicator projectId="copy-check" status={status} />,
+      );
+      fireEvent.click(screen.getByRole("button"));
 
-    const panel = screen.getByRole("dialog");
-    expect(panel).toHaveTextContent(copy);
-    expect(panel).not.toHaveTextContent(/\b(?:safe|trusted|verified|protected|certified)\b/iu);
-  });
+      const panel = screen.getByRole("dialog");
+      expect(panel).toHaveTextContent(copy);
+      expect(panel).not.toHaveTextContent(
+        /\b(?:safe|trusted|verified|protected|certified)\b/iu,
+      );
+    },
+  );
 
   test("keeps stale risk color and uses the supplied clock SVG", () => {
     render(
@@ -273,7 +310,9 @@ describe("TavernKeeperScanIndicator", () => {
       name: "TavernKeeper scan: Low concern; stale assessment.",
     });
     expect(trigger).toHaveClass("tavernkeeper-scan-indicator-teal");
-    const clock = trigger.querySelector('svg.tavernkeeper-freshness-clock[data-icon="clock"]');
+    const clock = trigger.querySelector(
+      'svg.tavernkeeper-freshness-clock[data-icon="clock"]',
+    );
     expect(clock).toBeInTheDocument();
     expect(clock?.querySelector("path")).toHaveAttribute(
       "d",
@@ -342,7 +381,9 @@ describe("TavernKeeperScanIndicator", () => {
   });
 
   test("shows zero concern counts without technical scanner rows", () => {
-    render(<TavernKeeperScanIndicator projectId="directive" status={tealStatus} />);
+    render(
+      <TavernKeeperScanIndicator projectId="directive" status={tealStatus} />,
+    );
 
     fireEvent.click(
       screen.getByRole("button", {
@@ -351,14 +392,16 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     expect(screen.getByRole("dialog")).toHaveTextContent(tealReport.summary);
-    expect(document.querySelector(".tavernkeeper-assessment-counts")).toHaveTextContent(
-      "0 minor cautions",
-    );
+    expect(
+      document.querySelector(".tavernkeeper-assessment-counts"),
+    ).toHaveTextContent("0 minor cautions");
   });
 
   test("keeps the popover open while the pointer moves from trigger to panel", () => {
     vi.useFakeTimers();
-    render(<TavernKeeperScanIndicator projectId="directive" status={redStatus} />);
+    render(
+      <TavernKeeperScanIndicator projectId="directive" status={redStatus} />,
+    );
 
     const trigger = screen.getByRole("button", {
       name: /TavernKeeper scan: Immediate danger; current/u,
@@ -374,7 +417,9 @@ describe("TavernKeeperScanIndicator", () => {
   });
 
   test("opens for mouse hover but ignores touch pointer entry", () => {
-    render(<TavernKeeperScanIndicator projectId="directive" status={redStatus} />);
+    render(
+      <TavernKeeperScanIndicator projectId="directive" status={redStatus} />,
+    );
 
     const trigger = screen.getByRole("button", {
       name: /TavernKeeper scan: Immediate danger; current/u,
@@ -388,7 +433,9 @@ describe("TavernKeeperScanIndicator", () => {
 
   test("closes 150 milliseconds after the pointer exits", () => {
     vi.useFakeTimers();
-    render(<TavernKeeperScanIndicator projectId="directive" status={redStatus} />);
+    render(
+      <TavernKeeperScanIndicator projectId="directive" status={redStatus} />,
+    );
 
     const trigger = screen.getByRole("button", {
       name: /TavernKeeper scan: Immediate danger; current/u,
@@ -407,13 +454,17 @@ describe("TavernKeeperScanIndicator", () => {
     let panelRect = rectangle(0, 0, 390, 100);
     vi.spyOn(window, "innerWidth", "get").mockReturnValue(400);
     vi.spyOn(window, "innerHeight", "get").mockReturnValue(700);
-    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function (
-      this: HTMLElement,
-    ) {
-      return this.classList.contains("tavernkeeper-popover") ? panelRect : triggerRect;
-    });
+    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(
+      function (this: HTMLElement) {
+        return this.classList.contains("tavernkeeper-popover")
+          ? panelRect
+          : triggerRect;
+      },
+    );
 
-    render(<TavernKeeperScanIndicator projectId="directive" status={redStatus} />);
+    render(
+      <TavernKeeperScanIndicator projectId="directive" status={redStatus} />,
+    );
     fireEvent.click(
       screen.getByRole("button", {
         name: /TavernKeeper scan: Immediate danger; current/u,
@@ -433,7 +484,9 @@ describe("TavernKeeperScanIndicator", () => {
   });
 
   test("keeps the popover open while focus moves within it and closes on focus exit", () => {
-    render(<TavernKeeperScanIndicator projectId="directive" status={redStatus} />);
+    render(
+      <TavernKeeperScanIndicator projectId="directive" status={redStatus} />,
+    );
 
     const trigger = screen.getByRole("button", {
       name: /TavernKeeper scan: Immediate danger; current/u,
@@ -474,13 +527,19 @@ describe("TavernKeeperScanIndicator", () => {
     ).toHaveFocus();
 
     await user.tab();
-    expect(screen.getByRole("link", { name: "View full report" })).toHaveFocus();
+    expect(
+      screen.getByRole("link", { name: "View full report" }),
+    ).toHaveFocus();
 
     await user.tab();
-    expect(screen.getByRole("link", { name: "View scan history" })).toHaveFocus();
+    expect(
+      screen.getByRole("link", { name: "View scan history" }),
+    ).toHaveFocus();
 
     await user.tab({ shift: true });
-    expect(screen.getByRole("link", { name: "View full report" })).toHaveFocus();
+    expect(
+      screen.getByRole("link", { name: "View full report" }),
+    ).toHaveFocus();
 
     await user.tab({ shift: true });
     expect(
@@ -499,7 +558,9 @@ describe("TavernKeeperScanIndicator", () => {
       </>,
     );
     await user.tab();
-    expect(screen.getByRole("button", { name: "Outside app control" })).toHaveFocus();
+    expect(
+      screen.getByRole("button", { name: "Outside app control" }),
+    ).toHaveFocus();
   });
 
   test("adds no closed-state document listeners, portals, tooltips, or history bodies per card", () => {
@@ -507,16 +568,26 @@ describe("TavernKeeperScanIndicator", () => {
     const { container } = render(
       <>
         {Array.from({ length: 100 }, (_, index) => (
-          <TavernKeeperScanIndicator key={index} projectId={`closed-${index}`} status={redStatus} />
+          <TavernKeeperScanIndicator
+            key={index}
+            projectId={`closed-${index}`}
+            status={redStatus}
+          />
         ))}
       </>,
     );
 
     expect(container.querySelectorAll(".tavernkeeper-popover")).toHaveLength(0);
-    expect(container.querySelectorAll(".tavernkeeper-history-strip")).toHaveLength(0);
+    expect(
+      container.querySelectorAll(".tavernkeeper-history-strip"),
+    ).toHaveLength(0);
     expect(container.querySelectorAll(".tooltip-anchor")).toHaveLength(0);
-    expect(container.querySelectorAll('svg[data-icon="scan-fill"]')).toHaveLength(100);
-    for (const trigger of container.querySelectorAll(".tavernkeeper-scan-indicator-trigger")) {
+    expect(
+      container.querySelectorAll('svg[data-icon="scan-fill"]'),
+    ).toHaveLength(100);
+    for (const trigger of container.querySelectorAll(
+      ".tavernkeeper-scan-indicator-trigger",
+    )) {
       expect(trigger.querySelectorAll("*").length).toBeLessThanOrEqual(2);
     }
     expect(
@@ -527,7 +598,9 @@ describe("TavernKeeperScanIndicator", () => {
   });
 
   test("closes on Escape and an outside pointer press", () => {
-    render(<TavernKeeperScanIndicator projectId="directive" status={redStatus} />);
+    render(
+      <TavernKeeperScanIndicator projectId="directive" status={redStatus} />,
+    );
 
     const trigger = screen.getByRole("button", {
       name: /TavernKeeper scan: Immediate danger; current/u,
@@ -567,7 +640,9 @@ describe("TavernKeeperScanIndicator", () => {
   });
 
   test("removes scan-indicator transitions for reduced motion", () => {
-    const stylesheet = postcss.parse(readFileSync("src/styles/catalog.css", "utf8"));
+    const stylesheet = postcss.parse(
+      readFileSync("src/styles/catalog.css", "utf8"),
+    );
     const reducedMotionRule = stylesheet.nodes.find(
       (rule): rule is AtRule =>
         rule.type === "atrule" &&
@@ -576,13 +651,15 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     expect(reducedMotionRule).toBeDefined();
-    if (!reducedMotionRule) throw new Error("Reduced-motion media rule missing.");
+    if (!reducedMotionRule)
+      throw new Error("Reduced-motion media rule missing.");
     const transitionRule = reducedMotionRule.nodes?.find(
       (rule): rule is Rule =>
         rule.type === "rule" && rule.selector.includes(".tavernkeeper-popover"),
     );
     expect(transitionRule).toBeDefined();
-    if (!transitionRule) throw new Error("Reduced-motion transition rule missing.");
+    if (!transitionRule)
+      throw new Error("Reduced-motion transition rule missing.");
     expect(
       transitionRule.nodes?.some(
         (declaration) =>
@@ -594,9 +671,12 @@ describe("TavernKeeperScanIndicator", () => {
   });
 
   test("wraps unforeseen long summary tokens within the popover", () => {
-    const stylesheet = postcss.parse(readFileSync("src/styles/catalog.css", "utf8"));
+    const stylesheet = postcss.parse(
+      readFileSync("src/styles/catalog.css", "utf8"),
+    );
     const summaryRule = stylesheet.nodes.find(
-      (rule): rule is Rule => rule.type === "rule" && rule.selector === ".tavernkeeper-summary",
+      (rule): rule is Rule =>
+        rule.type === "rule" && rule.selector === ".tavernkeeper-summary",
     );
 
     expect(summaryRule).toBeDefined();
@@ -611,7 +691,9 @@ describe("TavernKeeperScanIndicator", () => {
   });
 
   test("keeps decorative hover fine-pointer-only and exposes a 44px coarse hit target", () => {
-    const stylesheet = postcss.parse(readFileSync("src/styles/catalog.css", "utf8"));
+    const stylesheet = postcss.parse(
+      readFileSync("src/styles/catalog.css", "utf8"),
+    );
     const fineHover = stylesheet.nodes.find(
       (rule): rule is AtRule =>
         rule.type === "atrule" &&
@@ -628,7 +710,9 @@ describe("TavernKeeperScanIndicator", () => {
 
     const coarsePointer = stylesheet.nodes.find(
       (rule): rule is AtRule =>
-        rule.type === "atrule" && rule.name === "media" && rule.params === "(pointer: coarse)",
+        rule.type === "atrule" &&
+        rule.name === "media" &&
+        rule.params === "(pointer: coarse)",
     );
     const hitTarget = coarsePointer?.nodes?.find(
       (rule): rule is Rule =>

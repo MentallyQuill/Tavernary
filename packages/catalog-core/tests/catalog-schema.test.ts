@@ -4,13 +4,20 @@ import { fileURLToPath } from "node:url";
 
 import { describe, expect, it } from "vitest";
 
-import { CatalogValidationError, parseCatalogV7, parseCatalogV8 } from "../src/catalog-schema";
+import {
+  CatalogValidationError,
+  parseCatalogV7,
+  parseCatalogV8,
+} from "../src/catalog-schema";
 import { parseInstallContract } from "../src/install-contract";
 
 async function fixture(name: string): Promise<unknown> {
   return JSON.parse(
     await readFile(
-      resolve(dirname(fileURLToPath(import.meta.url)), `../fixtures/${name}.json`),
+      resolve(
+        dirname(fileURLToPath(import.meta.url)),
+        `../fixtures/${name}.json`,
+      ),
       "utf8",
     ),
   );
@@ -29,7 +36,11 @@ describe("parseInstallContract", () => {
   });
 
   it.each([
-    ["credentials", "https://user:secret@github.com/example/alpha.git", "alpha"],
+    [
+      "credentials",
+      "https://user:secret@github.com/example/alpha.git",
+      "alpha",
+    ],
     ["query", "https://github.com/example/alpha.git?ref=main", "alpha"],
     ["fragment", "https://github.com/example/alpha.git#readme", "alpha"],
     ["scheme", "file:///example/alpha.git", "alpha"],
@@ -37,8 +48,16 @@ describe("parseInstallContract", () => {
     ["encoded control", "https://github.com/example/alpha%00.git", "alpha"],
     ["encoded newline", "https://github.com/example/alpha%0A.git", "alpha"],
     ["encoded delete", "https://github.com/example/alpha%7F.git", "alpha"],
-    ["double-encoded separator", "https://github.com/example%252Falpha.git", "alpha"],
-    ["double-encoded backslash", "https://github.com/example%255Calpha.git", "alpha"],
+    [
+      "double-encoded separator",
+      "https://github.com/example%252Falpha.git",
+      "alpha",
+    ],
+    [
+      "double-encoded backslash",
+      "https://github.com/example%255Calpha.git",
+      "alpha",
+    ],
     ["unsafe folder", "https://github.com/example/alpha.git", "../alpha"],
   ])("rejects %s", (_label, repositoryUrl, folderName) => {
     expect(() =>
@@ -157,9 +176,9 @@ it("requires and preserves JavaScript analysis coverage in schema 8", async () =
     javascriptAnalysisStatus: "incomplete",
   });
   await expect(
-    Promise.resolve(catalogWithReport({ includeCoverage: false, schemaVersion: 8 })).then(
-      (missing) => parseCatalogV8(missing),
-    ),
+    Promise.resolve(
+      catalogWithReport({ includeCoverage: false, schemaVersion: 8 }),
+    ).then((missing) => parseCatalogV8(missing)),
   ).rejects.toThrow(CatalogValidationError);
 });
 
@@ -168,9 +187,11 @@ it("normalizes schema-7 report coverage to unavailable without accepting the v8 
     includeCoverage: false,
     schemaVersion: 7,
   });
-  expect(parseCatalogV7(value).projects[0]!.tavernKeeper?.report).toMatchObject({
-    javascriptAnalysisStatus: null,
-  });
+  expect(parseCatalogV7(value).projects[0]!.tavernKeeper?.report).toMatchObject(
+    {
+      javascriptAnalysisStatus: null,
+    },
+  );
 
   const invalid = await catalogWithReport({
     includeCoverage: true,
@@ -209,7 +230,9 @@ it("reports an invalid install URL at the public field path", async () => {
 
   expect(error).toBeInstanceOf(CatalogValidationError);
   expect(error).toMatchObject({
-    issues: [expect.objectContaining({ path: "projects[0].install.repositoryUrl" })],
+    issues: [
+      expect.objectContaining({ path: "projects[0].install.repositoryUrl" }),
+    ],
   });
 });
 
@@ -217,16 +240,19 @@ it.each([
   ["unsafe project URL", "canonicalUrl", "javascript:alert(1)"],
   ["malformed search fields", "search", { title: "not-an-array" }],
   ["unexpected project field", "unexpected", true],
-])("rejects %s before the catalog enters the cache", async (_name, field, next) => {
-  const value = structuredClone(
-    (await fixture("catalog-v7-valid")) as {
-      projects: Array<Record<string, unknown>>;
-    },
-  );
-  value.projects[0]![field] = next;
+])(
+  "rejects %s before the catalog enters the cache",
+  async (_name, field, next) => {
+    const value = structuredClone(
+      (await fixture("catalog-v7-valid")) as {
+        projects: Array<Record<string, unknown>>;
+      },
+    );
+    value.projects[0]![field] = next;
 
-  expect(() => parseCatalogV7(value)).toThrow(CatalogValidationError);
-});
+    expect(() => parseCatalogV7(value)).toThrow(CatalogValidationError);
+  },
+);
 
 it("rejects a backslash-relative navigation URL that resolves off origin", async () => {
   const value = structuredClone(
