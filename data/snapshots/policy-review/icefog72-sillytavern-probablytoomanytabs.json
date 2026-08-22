@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "icefog72-sillytavern-probablytoomanytabs",
+  "source_id": "github-1065878471",
+  "source_identity": "github:icefog72/sillytavern-probablytoomanytabs",
+  "evidence_fingerprint": "31ba4691844c681a14735133aea1afd3091e8520b11197c64de35c4132b33958",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-22T07:58:39.376Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-22T07:58:39.376Z"
+  },
+  "maintenance_issue_number": null
+}
