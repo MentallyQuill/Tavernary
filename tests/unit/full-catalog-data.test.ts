@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, test } from "vitest";
 
 import { buildCatalog } from "../../scripts/catalog/build.mjs";
-import { parseCatalogV7 } from "../../packages/catalog-core/src/catalog-schema";
+import { parseCatalogV8 } from "../../packages/catalog-core/src/catalog-schema";
 import { validateEnrichmentOutput } from "../../scripts/catalog/enrichment-contract.mjs";
 import { classificationError } from "../../src/features/catalog/primary-function-contract.mjs";
 
@@ -421,9 +421,9 @@ describe("full catalog data", () => {
     }>("data/registry/kits");
     const catalog = await buildCatalog({ write: false });
 
-    expect(parseCatalogV7(catalog)).toEqual(catalog);
+    expect(parseCatalogV8(catalog)).toEqual(catalog);
 
-    expect(catalog.schemaVersion).toBe(7);
+    expect(catalog.schemaVersion).toBe(8);
     for (const project of catalog.projects) {
       const record = projectsById.get(project.id);
       const source = record ? sourcesById.get(record.source_id) : undefined;

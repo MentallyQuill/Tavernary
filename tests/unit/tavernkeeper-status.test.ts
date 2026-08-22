@@ -39,6 +39,7 @@ function report(
     synthesis_model: "gpt-5.6-luna",
     danger_basis: "none",
     assessment_source: "model",
+    coverage: { javascript_analysis_status: "complete" },
     report_url:
       "https://mentallyquill.github.io/TavernKeeper/reports/github/42/" +
       `${currentSha}/5/${"c".repeat(64)}/`,
@@ -76,6 +77,21 @@ describe("deriveTavernKeeperCardStatus", () => {
       derive(report({ assessment_source: "deterministic_regrade" })),
     ).toMatchObject({
       report: { assessmentSource: "deterministic_regrade" },
+    });
+  });
+
+  test("projects JavaScript analysis coverage independently from risk", () => {
+    expect(
+      derive(
+        report({ coverage: { javascript_analysis_status: "incomplete" } }),
+      ),
+    ).toMatchObject({
+      state: "teal",
+      riskLevel: "low",
+      report: { javascriptAnalysisStatus: "incomplete" },
+      history: [
+        expect.objectContaining({ javascriptAnalysisStatus: "incomplete" }),
+      ],
     });
   });
 

@@ -1,4 +1,7 @@
-import type { Catalog } from "../../src/features/catalog/catalog-types.ts";
+import type {
+  Catalog,
+  CatalogV7,
+} from "../../src/features/catalog/catalog-types.ts";
 
 export interface BuildCatalogOptions {
   write?: boolean;
@@ -16,6 +19,7 @@ export interface BuildCatalogOptions {
 }
 
 export function buildCatalog(options?: BuildCatalogOptions): Promise<Catalog>;
+export function projectCatalogV7(catalog: Catalog): CatalogV7;
 export function deriveInstallContract(input: {
   record: any;
   source: any;

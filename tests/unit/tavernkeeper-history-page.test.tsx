@@ -41,6 +41,9 @@ function report(
       interaction_chains: [],
     },
     ...overrides,
+    coverage: overrides.coverage ?? {
+      javascript_analysis_status: "complete",
+    },
   };
 }
 

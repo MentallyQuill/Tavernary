@@ -4,9 +4,11 @@ import addFormats from "ajv-formats";
 import type {
   CatalogProjectV7,
   CatalogV7,
+  CatalogV8,
   CatalogValidationIssue,
 } from "./catalog-types";
 import { catalogV7Schema } from "./catalog-v7-schema";
+import { catalogV8Schema } from "./catalog-v8-schema";
 import {
   InstallContractValidationError,
   parseInstallContract,
@@ -22,25 +24,63 @@ ajv.addFormat("safe-navigation-url", {
   type: "string",
   validate: (value: string) => isSafeNavigationUrl(value),
 });
-const validateCatalog = ajv.compile(catalogV7Schema);
+const validateCatalogV7 = ajv.compile(catalogV7Schema);
+const validateCatalogV8 = ajv.compile(catalogV8Schema);
 
 export class CatalogValidationError extends Error {
   readonly issues: CatalogValidationIssue[];
 
-  constructor(issues: CatalogValidationIssue[]) {
-    super(`Catalog schema 7 validation failed with ${issues.length} issue(s).`);
+  constructor(issues: CatalogValidationIssue[], schemaVersion = 7) {
+    super(
+      `Catalog schema ${schemaVersion} validation failed with ${issues.length} issue(s).`,
+    );
     this.name = "CatalogValidationError";
     this.issues = structuredClone(issues);
   }
 }
 
 export function parseCatalogV7(value: unknown): CatalogV7 {
-  if (!validateCatalog(value)) {
+  if (!validateCatalogV7(value)) {
     throw new CatalogValidationError(
-      (validateCatalog.errors ?? []).map(schemaIssue),
+      (validateCatalogV7.errors ?? []).map(schemaIssue),
     );
   }
 
+  const catalog = validateSemantics(value as CatalogV7, 7);
+  const projects = [
+    ...catalog.projects,
+    ...catalog.kits.flatMap((kit) =>
+      kit.components.flatMap((component) =>
+        component.project ? [component.project] : [],
+      ),
+    ),
+  ];
+  for (const project of projects) {
+    if (!project.tavernKeeper) continue;
+    if (project.tavernKeeper.report) {
+      project.tavernKeeper.report.javascriptAnalysisStatus = null;
+    }
+    for (const report of project.tavernKeeper.history) {
+      report.javascriptAnalysisStatus = null;
+    }
+  }
+  return catalog;
+}
+
+export function parseCatalogV8(value: unknown): CatalogV8 {
+  if (!validateCatalogV8(value)) {
+    throw new CatalogValidationError(
+      (validateCatalogV8.errors ?? []).map(schemaIssue),
+      8,
+    );
+  }
+  return validateSemantics(value as CatalogV8, 8);
+}
+
+function validateSemantics<T extends CatalogV7 | CatalogV8>(
+  value: T,
+  schemaVersion: 7 | 8,
+): T {
   const issues: CatalogValidationIssue[] = [];
   const projects = value.projects as CatalogProjectV7[];
   const projectIds = new Set<string>();
@@ -75,7 +115,7 @@ export function parseCatalogV7(value: unknown): CatalogV7 {
   });
 
   const kitIds = new Set<string>();
-  (value.kits as CatalogV7["kits"]).forEach((kit, index) => {
+  value.kits.forEach((kit, index) => {
     if (kitIds.has(kit.id)) {
       issues.push({
         path: `kits[${index}].id`,
@@ -85,7 +125,7 @@ export function parseCatalogV7(value: unknown): CatalogV7 {
     kitIds.add(kit.id);
   });
   const tagIds = new Set<string>();
-  (value.tagVocabulary as CatalogV7["tagVocabulary"]).forEach((tag, index) => {
+  value.tagVocabulary.forEach((tag, index) => {
     if (tagIds.has(tag.id)) {
       issues.push({
         path: `tagVocabulary[${index}].id`,
@@ -95,8 +135,10 @@ export function parseCatalogV7(value: unknown): CatalogV7 {
     tagIds.add(tag.id);
   });
 
-  if (issues.length > 0) throw new CatalogValidationError(issues);
-  return structuredClone(value as CatalogV7);
+  if (issues.length > 0) {
+    throw new CatalogValidationError(issues, schemaVersion);
+  }
+  return structuredClone(value);
 }
 
 function schemaIssue(error: ErrorObject): CatalogValidationIssue {

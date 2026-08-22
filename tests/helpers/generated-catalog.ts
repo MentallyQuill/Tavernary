@@ -43,11 +43,11 @@ interface GeneratedCatalogKit {
 
 export const generatedCatalog = JSON.parse(
   readFileSync(
-    resolve(process.cwd(), "public/catalog/tavernary-catalog.json"),
+    resolve(process.cwd(), "public/catalog/tavernary-catalog-v8.json"),
     "utf8",
   ),
 ) as {
-  schemaVersion: 7;
+  schemaVersion: 8;
   generatedAt: string;
   tagVocabulary: Array<{
     id: string;

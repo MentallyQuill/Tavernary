@@ -90,13 +90,17 @@ function tavernKeeperExport(manifest: unknown) {
 }
 
 function catalogExport({
-  schemaVersion = 7,
-  outputBytes,
+  v7OutputBytes,
+  v7SchemaVersion = 7,
+  v8OutputBytes,
+  v8SchemaVersion = 8,
   obsoleteOutput = false,
   obsoleteSource = false,
 }: {
-  schemaVersion?: number;
-  outputBytes?: string;
+  v7OutputBytes?: string;
+  v7SchemaVersion?: number;
+  v8OutputBytes?: string;
+  v8SchemaVersion?: number;
   obsoleteOutput?: boolean;
   obsoleteSource?: boolean;
 } = {}) {
@@ -112,22 +116,31 @@ function catalogExport({
   mkdirSync(publicCatalogDirectory, { recursive: true });
   mkdirSync(outputCatalogDirectory, { recursive: true });
   mkdirSync(sourceDirectory, { recursive: true });
-  const bytes = `${JSON.stringify({ schemaVersion, projects: [] })}\n`;
+  const v7Bytes = `${JSON.stringify({ schemaVersion: v7SchemaVersion, projects: [] })}\n`;
+  const v8Bytes = `${JSON.stringify({ schemaVersion: v8SchemaVersion, projects: [] })}\n`;
   writeFileSync(
     resolve(publicCatalogDirectory, "tavernary-catalog.json"),
-    bytes,
+    v7Bytes,
   );
   writeFileSync(
     resolve(outputCatalogDirectory, "tavernary-catalog.json"),
-    outputBytes ?? bytes,
+    v7OutputBytes ?? v7Bytes,
+  );
+  writeFileSync(
+    resolve(publicCatalogDirectory, "tavernary-catalog-v8.json"),
+    v8Bytes,
+  );
+  writeFileSync(
+    resolve(outputCatalogDirectory, "tavernary-catalog-v8.json"),
+    v8OutputBytes ?? v8Bytes,
   );
   if (obsoleteOutput) {
-    writeFileSync(resolve(outputDirectory, "catalog.json"), bytes);
+    writeFileSync(resolve(outputDirectory, "catalog.json"), v7Bytes);
   }
   if (obsoleteSource) {
     const legacyDirectory = resolve(sourceDirectory, "src/generated");
     mkdirSync(legacyDirectory, { recursive: true });
-    writeFileSync(resolve(legacyDirectory, "catalog.json"), bytes);
+    writeFileSync(resolve(legacyDirectory, "catalog.json"), v7Bytes);
   }
   return { outputDirectory, publicDirectory, sourceDirectory };
 }
@@ -166,7 +179,7 @@ function validTavernKeeperManifest(overrides: Record<string, unknown> = {}) {
 }
 
 describe("verifyStaticExport", () => {
-  test("requires one byte-identical schema-7 catalog asset", async () => {
+  test("requires byte-identical schema-7 and schema-8 catalog assets", async () => {
     const valid = catalogExport();
     await expect(
       verifyCatalogStaticExport(
@@ -177,8 +190,10 @@ describe("verifyStaticExport", () => {
     ).resolves.toBeUndefined();
 
     for (const invalid of [
-      catalogExport({ outputBytes: '{"schemaVersion":7}\n' }),
-      catalogExport({ schemaVersion: 6 }),
+      catalogExport({ v7OutputBytes: '{"schemaVersion":7}\n' }),
+      catalogExport({ v8OutputBytes: '{"schemaVersion":8}\n' }),
+      catalogExport({ v7SchemaVersion: 6 }),
+      catalogExport({ v8SchemaVersion: 7 }),
       catalogExport({ obsoleteOutput: true }),
       catalogExport({ obsoleteSource: true }),
     ]) {

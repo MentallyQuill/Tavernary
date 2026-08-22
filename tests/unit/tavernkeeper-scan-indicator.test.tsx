@@ -47,6 +47,8 @@ function scanReport(
     reportUrl: "https://example.test/reports/directive",
     technicalHistoryUrl: "https://example.test/reports/directive/history",
     ...overrides,
+    javascriptAnalysisStatus:
+      overrides.javascriptAnalysisStatus ?? "complete",
   };
 }
 

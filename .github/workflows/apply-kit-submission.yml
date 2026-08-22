@@ -72,7 +72,7 @@ jobs:
         shell: bash
         run: |
           wrote_commit=false
-          git add data/registry/kits data/snapshots/github/kits public/catalog/tavernary-catalog.json
+          git add data/registry/kits data/snapshots/github/kits public/catalog/tavernary-catalog.json public/catalog/tavernary-catalog-v8.json
           if ! git diff --cached --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -83,7 +83,7 @@ jobs:
             if git fetch origin main &&
               git rebase origin/main; then
               if npm run catalog:validate && npm run catalog:build && npm test; then
-                git add public/catalog/tavernary-catalog.json
+                git add public/catalog/tavernary-catalog.json public/catalog/tavernary-catalog-v8.json
                 if ! git diff --cached --quiet; then
                   if [[ "$wrote_commit" == "true" ]]; then
                     git commit --amend --no-edit

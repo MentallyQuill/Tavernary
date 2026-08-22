@@ -8,12 +8,12 @@ import { loadCatalog } from "../../src/lib/catalog/load-catalog";
 describe("canonical catalog asset", () => {
   it("loads the exact public catalog bytes used by Pages", async () => {
     const publicBytes = await readFile(
-      resolve(process.cwd(), "public/catalog/tavernary-catalog.json"),
+      resolve(process.cwd(), "public/catalog/tavernary-catalog-v8.json"),
       "utf8",
     );
 
     expect(JSON.parse(publicBytes)).toEqual(loadCatalog());
-    expect(JSON.parse(publicBytes).schemaVersion).toBe(7);
+    expect(JSON.parse(publicBytes).schemaVersion).toBe(8);
   });
 
   it("keeps browser fixtures bound to the canonical public asset", async () => {
@@ -29,7 +29,7 @@ describe("canonical catalog asset", () => {
       "src/generated/catalog.json",
     );
     expect(fixtureSources[0]).toContain(
-      "public/catalog/tavernary-catalog.json",
+      "public/catalog/tavernary-catalog-v8.json",
     );
   });
 });

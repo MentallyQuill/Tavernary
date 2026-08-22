@@ -271,7 +271,7 @@ jobs:
             tests/unit/project-owner-pr.test.ts \
             tests/unit/project-owner-lifecycle.test.ts
           npm run check:content
-          git restore -- public/catalog/tavernary-catalog.json
+          git restore -- public/catalog/tavernary-catalog.json public/catalog/tavernary-catalog-v8.json
           {
             git diff --no-renames --name-only -z
             git ls-files --others --exclude-standard -z

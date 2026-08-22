@@ -102,8 +102,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git add -- data/security/tavernkeeper-report-summaries.json data/security/tavernkeeper-import-state.json public/catalog/tavernary-catalog.json
-          if git diff --cached --quiet -- data/security/tavernkeeper-report-summaries.json data/security/tavernkeeper-import-state.json public/catalog/tavernary-catalog.json; then
+          git add -- data/security/tavernkeeper-report-summaries.json data/security/tavernkeeper-import-state.json public/catalog/tavernary-catalog.json public/catalog/tavernary-catalog-v8.json
+          if git diff --cached --quiet -- data/security/tavernkeeper-report-summaries.json data/security/tavernkeeper-import-state.json public/catalog/tavernary-catalog.json public/catalog/tavernary-catalog-v8.json; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             git fetch --no-tags origin main
             git merge --ff-only origin/main

@@ -119,7 +119,7 @@ export interface CatalogProject {
 }
 
 export interface Catalog {
-  schemaVersion: 7;
+  schemaVersion: 7 | 8;
   generatedAt: string;
   tagVocabulary: CatalogTagDefinition[];
   projects: CatalogProject[];
@@ -127,7 +127,8 @@ export interface Catalog {
 }
 
 export type CatalogProjectV7 = CatalogProject;
-export type CatalogV7 = Catalog;
+export type CatalogV7 = Catalog & { schemaVersion: 7 };
+export type CatalogV8 = Catalog & { schemaVersion: 8 };
 
 export interface CatalogValidationIssue {
   path: string;

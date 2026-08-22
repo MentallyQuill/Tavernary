@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 
 import { expect, test } from "@playwright/test";
 
-import { parseCatalogV7 } from "../../packages/catalog-core/src/catalog-schema";
+import { parseCatalogV8 } from "../../packages/catalog-core/src/catalog-schema";
 import {
   generatedCatalog,
   generatedProjectCount,
@@ -17,8 +17,8 @@ const frontendVocabulary = JSON.parse(
     "utf8",
   ),
 ) as { frontends: Array<{ label: string }> };
-test("exports the catalog schema-v7 scan-state contract", () => {
-  expect(generatedCatalog.schemaVersion).toBe(7);
+test("exports the catalog schema-v8 scan-state contract", () => {
+  expect(generatedCatalog.schemaVersion).toBe(8);
   expect(
     generatedCatalog.projects
       .filter(({ sourceStatus }) => sourceStatus === "manual")
@@ -43,14 +43,14 @@ test("serves the catalog from the configured base path", async ({ page }) => {
   await expect(page).not.toHaveTitle(/404/);
 });
 
-test("serves the canonical schema-7 catalog as JSON", async ({ page }) => {
+test("serves the canonical schema-8 catalog as JSON", async ({ page }) => {
   const response = await page.request.get(
-    `${sitePath()}catalog/tavernary-catalog.json`,
+    `${sitePath()}catalog/tavernary-catalog-v8.json`,
   );
 
   expect(response.ok()).toBe(true);
   expect(response.headers()["content-type"]).toContain("application/json");
-  expect(parseCatalogV7(await response.json())).toEqual(generatedCatalog);
+  expect(parseCatalogV8(await response.json())).toEqual(generatedCatalog);
 });
 
 test("exports the supplied Tavernary artwork", async ({ page }) => {

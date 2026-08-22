@@ -313,6 +313,7 @@ describe("CatalogCore contract", () => {
           synthesis_model: "fixture",
           danger_basis: "none",
           assessment_source: "model",
+          coverage: { javascript_analysis_status: "complete" },
           report_url: "https://example.com/report",
           assessment: {
             risk_level: "material",
