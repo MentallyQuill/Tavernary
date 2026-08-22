@@ -9,18 +9,23 @@
     "url": "https://github.com/IceFog72/SillyTavern-ProbablyTooManyTabs",
     "description": null,
     "default_branch": "main",
-    "head_sha": "52a7461aedfce272a5ee93d57356f3cf3bb8bb61",
-    "head_committed_at": "2026-07-08T15:31:28.000Z",
+    "head_sha": "32d6b0df70f558d4806eeefa06c91b0a0da0c789",
+    "head_committed_at": "2026-08-22T01:45:04.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-09-28T15:59:05.000Z",
-    "size_kb": 1368
+    "size_kb": 1424
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-08T15:31:28.000Z",
+    "latest_source_activity_at": "2026-08-22T01:45:04.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-22T01:45:04.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-06",
         "latest_at": "2026-07-08T15:31:28.000Z",
@@ -45,33 +50,14 @@
         "week_start": "2026-06-01",
         "latest_at": "2026-06-02T01:21:25.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-25",
-        "latest_at": "2026-05-28T05:07:25.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-18",
-        "latest_at": "2026-05-24T03:11:46.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-11",
-        "latest_at": "2026-05-17T23:15:17.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-04",
-        "latest_at": "2026-05-09T18:38:20.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T02:56:16.026Z",
-    "baseline_attempts": 0
+    "baseline_completed_at": "2026-08-22T07:48:57.629Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "32d6b0df70f558d4806eeefa06c91b0a0da0c789"
   },
   "community": {
     "stars_count": 55,
@@ -84,7 +70,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-21T08:00:43.648Z",
+  "refreshed_at": "2026-08-22T07:48:57.629Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -94,7 +80,8 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-21T08:00:43.648Z",
+    "refreshed_at": "2026-08-22T07:48:57.629Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }
