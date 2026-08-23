@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "archkr-sillytavern-outfitswitch",
+  "source_id": "github-1087458216",
+  "source_identity": "github:archkr/sillytavern-outfitswitch",
+  "evidence_fingerprint": "e62eee685a9b8e1fce5245ed3dee1be20c93cbf5ceb0aa91ee6191e8b58e3fa2",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-23T07:58:47.868Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-23T07:58:47.868Z"
+  },
+  "maintenance_issue_number": null
+}
