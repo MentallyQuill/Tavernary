@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "keepsanity-sillytavern-atelier",
+  "name": "SillyTavern-Atelier",
+  "kind": "extension",
+  "summary": "A ComfyUI image studio for SillyTavern that generates pictures from scene, character, or freeform prompts, with prompts written by a separate connection profile so roleplay and image generation use different backends.",
+  "metadata_status": "curated",
+  "source_id": "github-1327848464",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "add-visual-immersion",
+    "generate-images",
+    "route-tasks-across-models",
+    "secondary-model"
+  ],
+  "cataloged_at": "2026-08-23T13:59:21.248Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
