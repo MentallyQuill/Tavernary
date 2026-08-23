@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "keepsanity-sillytavern-atelier",
+  "source_id": "github-1327848464",
+  "source_identity": "github:keepsanity/sillytavern-atelier",
+  "evidence_fingerprint": "0a97516255226aa89da2cf94bc691b587be2f35395d756057c0586a905931033",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-23T14:14:50.402Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-23T14:14:50.402Z"
+  },
+  "maintenance_issue_number": null
+}
