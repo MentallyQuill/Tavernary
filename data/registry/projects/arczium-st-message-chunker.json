@@ -1,0 +1,23 @@
+{
+  "schema_version": 6,
+  "id": "arczium-st-message-chunker",
+  "name": "ST-Message-Chunker",
+  "kind": "extension",
+  "summary": "A SillyTavern extension that manages chat context length by removing older messages in bulk chunks to maximize prompt-cache hits. Truncation is non-destructive, preserving Vector Storage, Summarization, and Lorebooks.",
+  "metadata_status": "curated",
+  "source_id": "github-1339644218",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": ["manage-context-limits", "non-destructive"],
+  "cataloged_at": "2026-08-23T14:17:37.983Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Trusted Tavernary editor selection."
+    },
+    "tags": { "mode": "manual", "note": "Trusted Tavernary editor selection." }
+  }
+}
