@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "virgilianshailer-story-tracker",
+  "name": "story-tracker",
+  "kind": "extension",
+  "summary": "A SillyTavern extension that automatically tracks time, date, location, weather, character positions, outfits, and recent events in roleplay. It uses the LLM to analyze chat and maintain narrative consistency.",
+  "metadata_status": "curated",
+  "source_id": "github-1213366855",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": ["preserve-story-continuity", "track-characters-and-world-state"],
+  "cataloged_at": "2026-08-23T13:57:43.297Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
