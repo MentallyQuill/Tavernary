@@ -1,0 +1,62 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1336934111",
+  "repository": {
+    "id": 1336934111,
+    "owner": "Maxwell5600",
+    "name": "Persona-Library",
+    "url": "https://github.com/Maxwell5600/Persona-Library",
+    "description": "Silly Tavern Extension ",
+    "default_branch": "main",
+    "head_sha": "6b8b6ec0313ff74a93e09e0227829c22e1a3c71c",
+    "head_committed_at": "2026-08-23T03:10:41.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-08-17T09:14:36.000Z",
+    "size_kb": 265
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-23T02:20:58.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-23T02:20:58.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-08-18T02:12:21.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-23T15:07:45.558Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "6b8b6ec0313ff74a93e09e0227829c22e1a3c71c"
+  },
+  "community": {
+    "stars_count": 1,
+    "forks_count": 2,
+    "watchers_count": 1,
+    "aggregate": 4
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "Unlicense",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-23T15:07:45.558Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "Maxwell5600", "type": "User", "provider": "github" },
+      { "login": "Targren", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-23T15:07:45.558Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

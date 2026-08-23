@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "maxwell5600-persona-library",
+  "name": "Persona-Library",
+  "kind": "extension",
+  "summary": "A SillyTavern extension replacing the native Persona Management panel with a full-bleed image grid and detail view to browse, create, edit, and organize personas, with a live Preview tab showing exact prompt injection.",
+  "metadata_status": "curated",
+  "source_id": "github-1336934111",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "customize-the-interface",
+    "inspect-prompts-and-generations",
+    "manage-character-libraries",
+    "manage-characters-and-personas"
+  ],
+  "cataloged_at": "2026-08-23T15:07:45.558Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
