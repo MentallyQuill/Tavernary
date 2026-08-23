@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "hornysilicon-charsaver",
+  "source_id": "github-1256518687",
+  "source_identity": "github:hornysilicon/charsaver",
+  "evidence_fingerprint": "6b0debd8ac9b3b141e5fffd1411d15efd9d15cb3ea63d16d8be9d768593e6de7",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-23T08:02:22.957Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-23T08:02:22.957Z"
+  },
+  "maintenance_issue_number": null
+}
