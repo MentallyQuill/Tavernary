@@ -52897,6 +52897,168 @@
       }
     },
     {
+      "id": "maxwell5600-persona-library",
+      "name": "Persona-Library",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "A SillyTavern extension replacing the native Persona Management panel with a full-bleed image grid and detail view to browse, create, edit, and organize personas, with a live Preview tab showing exact prompt injection.",
+      "canonicalUrl": "https://github.com/Maxwell5600/Persona-Library",
+      "catalogedAt": "2026-08-23T15:07:45.558Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "customize-the-interface",
+          "label": "Customize the interface",
+          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "inspect-prompts-and-generations",
+          "label": "Inspect prompts and generations",
+          "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-character-libraries",
+          "label": "Manage character libraries",
+          "description": "Discover, search, browse, categorize, import, or maintain collections of character cards.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-characters-and-personas",
+          "label": "Manage characters and personas",
+          "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "6b8b6ec0313ff74a93e09e0227829c22e1a3c71c",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Maxwell5600"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "Targren",
+            "botOrAi": false
+          }
+        ],
+        "humanContributorCount": 1,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-23T02:20:58.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-08-18T02:12:21.000Z",
+      "community": {
+        "stars": 1,
+        "forks": 2,
+        "watchers": 1,
+        "aggregate": 4
+      },
+      "repositorySizeKb": 265,
+      "license": {
+        "status": "osi-approved",
+        "label": "Unlicense",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-23T15:07:45.558Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Maxwell5600/Persona-Library.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "Persona-Library"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "Persona-Library"
+        ],
+        "aliases": [],
+        "source": [
+          "maxwell5600-persona-library",
+          "github-1336934111",
+          "Maxwell5600/Persona-Library",
+          "https://github.com/Maxwell5600/Persona-Library"
+        ],
+        "summary": [
+          "A SillyTavern extension replacing the native Persona Management panel with a full-bleed image grid and detail view to browse, create, edit, and organize personas, with a live Preview tab showing exact prompt injection."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Customize the interface",
+          "interface theming",
+          "layout customization",
+          "UI personalization",
+          "Inspect prompts and generations",
+          "prompt inspection",
+          "generation diagnostics",
+          "review validation",
+          "request debugging",
+          "Manage character libraries",
+          "character browsing",
+          "card library",
+          "character discovery",
+          "Manage characters and personas",
+          "persona management",
+          "character management",
+          "identity management"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Maxwell5600",
+          "Targren"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "mechamarmot-sillytavern-localimage",
       "name": "SillyTavern LocalImage",
       "kind": "extension",
