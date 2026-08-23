@@ -7931,6 +7931,140 @@
       }
     },
     {
+      "id": "arczium-st-message-chunker",
+      "name": "ST-Message-Chunker",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "memory-retrieval",
+      "summary": "A SillyTavern extension that manages chat context length by removing older messages in bulk chunks to maximize prompt-cache hits. Truncation is non-destructive, preserving Vector Storage, Summarization, and Lorebooks.",
+      "canonicalUrl": "https://github.com/Arczium/ST-Message-Chunker",
+      "catalogedAt": "2026-08-23T14:17:37.983Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "manage-context-limits",
+          "label": "Manage context limits",
+          "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
+          "facet": "goal"
+        },
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "c27364d06d77ecd5f7511de3e23df3af57cd7edc",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Arczium"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-23T05:46:51.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 9,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-23T14:17:37.983Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Arczium/ST-Message-Chunker.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "ST-Message-Chunker"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "ST-Message-Chunker"
+        ],
+        "aliases": [],
+        "source": [
+          "arczium-st-message-chunker",
+          "github-1339644218",
+          "Arczium/ST-Message-Chunker",
+          "https://github.com/Arczium/ST-Message-Chunker"
+        ],
+        "summary": [
+          "A SillyTavern extension that manages chat context length by removing older messages in bulk chunks to maximize prompt-cache hits. Truncation is non-destructive, preserving Vector Storage, Summarization, and Lorebooks."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Memory and retrieval"
+        ],
+        "tags": [
+          "Manage context limits",
+          "context compression",
+          "context window management",
+          "token budgeting",
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Arczium"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "arif-salah-image-gen-kazuma",
       "name": "Image-gen-kazuma",
       "kind": "extension",
@@ -21196,6 +21330,130 @@
       }
     },
     {
+      "id": "dampfinchen-chunk-dropper-for-sillytavern",
+      "name": "Chunk-Dropper-for-SillyTavern",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "memory-retrieval",
+      "summary": "An alpha SillyTavern extension that drops older messages in large chunks near the context limit to reduce prompt reprocessing. Context compaction works, but currently needs extra reprocessing and testing.",
+      "canonicalUrl": "https://github.com/Dampfinchen/Chunk-Dropper-for-SillyTavern",
+      "catalogedAt": "2026-08-23T14:16:22.095Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "manage-context-limits",
+          "label": "Manage context limits",
+          "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "77c160cecc14f94d7fdab0fd1580b8374779d4e9",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Dampfinchen"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": null,
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": true
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 1,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 1
+      },
+      "repositorySizeKb": 33,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-23T14:16:22.095Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Dampfinchen/Chunk-Dropper-for-SillyTavern.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "Chunk-Dropper-for-SillyTavern"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "Chunk-Dropper-for-SillyTavern"
+        ],
+        "aliases": [],
+        "source": [
+          "dampfinchen-chunk-dropper-for-sillytavern",
+          "github-1207091736",
+          "Dampfinchen/Chunk-Dropper-for-SillyTavern",
+          "https://github.com/Dampfinchen/Chunk-Dropper-for-SillyTavern"
+        ],
+        "summary": [
+          "An alpha SillyTavern extension that drops older messages in large chunks near the context limit to reduce prompt reprocessing. Context compaction works, but currently needs extra reprocessing and testing."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Memory and retrieval"
+        ],
+        "tags": [
+          "Manage context limits",
+          "context compression",
+          "context window management",
+          "token budgeting"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Dampfinchen"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "dan0dandeleon11-dandeleon-multiverse",
       "name": "dandeleon-multiverse",
       "kind": "extension",
@@ -23810,6 +24068,140 @@
         "compatibility": [],
         "maintainers": [
           "dfaker"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "diamond-shark-art-sillytavern-impersonationcarousel",
+      "name": "SillyTavern-ImpersonationCarousel",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "Companion extension for Guided Generations adding a swipe-style carousel to SillyTavern impersonation drafts, with separate alternatives per person and on-demand new options without adding metadata to the chat.",
+      "canonicalUrl": "https://github.com/Diamond-Shark-art/SillyTavern-ImpersonationCarousel",
+      "catalogedAt": "2026-08-23T14:38:30.302Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "edit-and-refine-messages",
+          "label": "Edit and refine messages",
+          "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
+          "facet": "goal"
+        },
+        {
+          "id": "increase-narrative-variety",
+          "label": "Increase narrative variety",
+          "description": "Reduce repetition and introduce fresh actions, beats, twists, or response patterns.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "54eac1c6cb3f2e3c2b2d454867e524e0f489fdb6",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Diamond-Shark-art"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-08T13:41:33.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 21,
+      "license": {
+        "status": "osi-approved",
+        "label": "GPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-23T14:38:30.302Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Diamond-Shark-art/SillyTavern-ImpersonationCarousel.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-ImpersonationCarousel"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-ImpersonationCarousel"
+        ],
+        "aliases": [],
+        "source": [
+          "diamond-shark-art-sillytavern-impersonationcarousel",
+          "github-1327772222",
+          "Diamond-Shark-art/SillyTavern-ImpersonationCarousel",
+          "https://github.com/Diamond-Shark-art/SillyTavern-ImpersonationCarousel"
+        ],
+        "summary": [
+          "Companion extension for Guided Generations adding a swipe-style carousel to SillyTavern impersonation drafts, with separate alternatives per person and on-demand new options without adding metadata to the chat."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Edit and refine messages",
+          "message rewriting",
+          "chat editing",
+          "response refinement",
+          "Increase narrative variety",
+          "prevent repetition",
+          "plot variety",
+          "response diversity"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Diamond-Shark-art"
         ],
         "relationships": []
       }
@@ -40949,6 +41341,161 @@
           "Cohee1207",
           "CasualAutopsy",
           "Oninaig"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "keepsanity-sillytavern-atelier",
+      "name": "SillyTavern-Atelier",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "A ComfyUI image studio for SillyTavern that generates pictures from scene, character, or freeform prompts, with prompts written by a separate connection profile so roleplay and image generation use different backends.",
+      "canonicalUrl": "https://github.com/keepsanity/SillyTavern-Atelier",
+      "catalogedAt": "2026-08-23T13:59:21.248Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "generate-images",
+          "label": "Generate images",
+          "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
+          "facet": "goal"
+        },
+        {
+          "id": "route-tasks-across-models",
+          "label": "Route tasks across models",
+          "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
+          "facet": "goal"
+        },
+        {
+          "id": "secondary-model",
+          "label": "Secondary-model workflow",
+          "description": "Delegates supporting tasks to a separately configured model or connection.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "11b86fa68169fed4069cc2d625c8d9f0b5282ad0",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "keepsanity"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-08T14:42:05.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 42,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-23T13:59:21.248Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/keepsanity/SillyTavern-Atelier.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-Atelier"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-Atelier"
+        ],
+        "aliases": [],
+        "source": [
+          "keepsanity-sillytavern-atelier",
+          "github-1327848464",
+          "keepsanity/SillyTavern-Atelier",
+          "https://github.com/keepsanity/SillyTavern-Atelier"
+        ],
+        "summary": [
+          "A ComfyUI image studio for SillyTavern that generates pictures from scene, character, or freeform prompts, with prompts written by a separate connection profile so roleplay and image generation use different backends."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals",
+          "Generate images",
+          "image generation",
+          "AI art generation",
+          "scene illustration",
+          "picture generation",
+          "Route tasks across models",
+          "model routing",
+          "task routing",
+          "connection routing",
+          "Secondary-model workflow",
+          "helper model",
+          "auxiliary model",
+          "separate connection profile"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "keepsanity"
         ],
         "relationships": []
       }
@@ -88570,6 +89117,157 @@
       }
     },
     {
+      "id": "tavern-rpg-suite-tavern-doors",
+      "name": "Tavern-Doors",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "memory-retrieval",
+      "summary": "A SillyTavern extension that lets you select any part of your roleplay, fold it into a compact factual summary, and keep that summary where the original messages were—nothing deleted, nothing automatic.",
+      "canonicalUrl": "https://github.com/tavern-rpg-suite/Tavern-Doors",
+      "catalogedAt": "2026-08-23T14:20:54.705Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "manage-context-limits",
+          "label": "Manage context limits",
+          "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
+          "facet": "goal"
+        },
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+          "facet": "trait"
+        },
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "7108d049b4b99fd8837f36f2f8243965a3c77f34",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "tavern-rpg-suite"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "Arkana8",
+            "botOrAi": false
+          }
+        ],
+        "humanContributorCount": 1,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-08T09:12:47.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 1,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 1
+      },
+      "repositorySizeKb": 49,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-23T14:20:54.705Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/tavern-rpg-suite/Tavern-Doors.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "Tavern-Doors"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "Tavern-Doors"
+        ],
+        "aliases": [],
+        "source": [
+          "tavern-rpg-suite-tavern-doors",
+          "github-1327581386",
+          "tavern-rpg-suite/Tavern-Doors",
+          "https://github.com/tavern-rpg-suite/Tavern-Doors"
+        ],
+        "summary": [
+          "A SillyTavern extension that lets you select any part of your roleplay, fold it into a compact factual summary, and keep that summary where the original messages were—nothing deleted, nothing automatic."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Memory and retrieval"
+        ],
+        "tags": [
+          "Manage context limits",
+          "context compression",
+          "context window management",
+          "token budgeting",
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "tavern-rpg-suite",
+          "Arkana8"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "tavernai-tavernai",
       "name": "TavernAI",
       "kind": "frontend",
@@ -95269,6 +95967,140 @@
           "asynchronous processing",
           "quiet generation",
           "background tasks"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "virgilianshailer"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "virgilianshailer-story-tracker",
+      "name": "story-tracker",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "memory-retrieval",
+      "summary": "A SillyTavern extension that automatically tracks time, date, location, weather, character positions, outfits, and recent events in roleplay. It uses the LLM to analyze chat and maintain narrative consistency.",
+      "canonicalUrl": "https://github.com/virgilianshailer/story-tracker",
+      "catalogedAt": "2026-08-23T13:57:43.297Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "254f8471ca90de8ab42167f26ddab4306ff38253",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "virgilianshailer"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-08T14:33:39.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 9,
+        "forks": 0,
+        "watchers": 1,
+        "aggregate": 10
+      },
+      "repositorySizeKb": 34,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-23T13:57:43.297Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/virgilianshailer/story-tracker.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "story-tracker"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "story-tracker"
+        ],
+        "aliases": [],
+        "source": [
+          "virgilianshailer-story-tracker",
+          "github-1213366855",
+          "virgilianshailer/story-tracker",
+          "https://github.com/virgilianshailer/story-tracker"
+        ],
+        "summary": [
+          "A SillyTavern extension that automatically tracks time, date, location, weather, character positions, outfits, and recent events in roleplay. It uses the LLM to analyze chat and maintain narrative consistency."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Memory and retrieval"
+        ],
+        "tags": [
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
         ],
         "frontends": [
           "SillyTavern"
