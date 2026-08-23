@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1213366855",
+  "head_sha": "254f8471ca90de8ab42167f26ddab4306ff38253",
+  "observed_at": "2026-08-23T13:57:58.836Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "story-tracker",
+  "manifest": {
+    "display_name": "Story Tracker",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
