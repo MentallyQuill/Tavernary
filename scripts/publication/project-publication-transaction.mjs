@@ -262,11 +262,15 @@ function derivedPaths(transaction) {
   );
   const sourcePath = `data/registry/sources/${transaction.source_id}.json`;
   const snapshotPath = repositorySnapshotPath(transaction.source_id);
+  const installSnapshotPath = `data/snapshots/install/${transaction.source_id}.json`;
   if (transaction.operation === "create") {
     return [
       ...cardPaths,
       sourcePath,
       ...(snapshotPath ? [snapshotPath] : []),
+      ...(transaction.generated_paths.includes(installSnapshotPath)
+        ? [installSnapshotPath]
+        : []),
       ...(transaction.generated_paths.includes(
         "data/vocabularies/frontends.json",
       )
