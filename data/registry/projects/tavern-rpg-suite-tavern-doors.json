@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "tavern-rpg-suite-tavern-doors",
+  "name": "Tavern-Doors",
+  "kind": "extension",
+  "summary": "A SillyTavern extension that lets you select any part of your roleplay, fold it into a compact factual summary, and keep that summary where the original messages were—nothing deleted, nothing automatic.",
+  "metadata_status": "curated",
+  "source_id": "github-1327581386",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "manage-context-limits",
+    "non-destructive",
+    "preserve-story-continuity"
+  ],
+  "cataloged_at": "2026-08-23T14:20:54.705Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
