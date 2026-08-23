@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "diamond-shark-art-sillytavern-impersonationcarousel",
+  "source_id": "github-1327772222",
+  "source_identity": "github:diamond-shark-art/sillytavern-impersonationcarousel",
+  "evidence_fingerprint": "a4f7e7f50493376816c7851f94e17c9193554f8018fab24ca55073b2713d0dc2",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-23T15:03:26.125Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-23T15:03:26.125Z"
+  },
+  "maintenance_issue_number": null
+}
