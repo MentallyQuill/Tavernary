@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "diamond-shark-art-sillytavern-impersonationcarousel",
+  "name": "SillyTavern-ImpersonationCarousel",
+  "kind": "extension",
+  "summary": "Companion extension for Guided Generations adding a swipe-style carousel to SillyTavern impersonation drafts, with separate alternatives per person and on-demand new options without adding metadata to the chat.",
+  "metadata_status": "curated",
+  "source_id": "github-1327772222",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["edit-and-refine-messages", "increase-narrative-variety"],
+  "cataloged_at": "2026-08-23T14:38:30.302Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
