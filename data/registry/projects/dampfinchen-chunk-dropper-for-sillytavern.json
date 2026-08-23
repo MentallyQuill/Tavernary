@@ -1,0 +1,23 @@
+{
+  "schema_version": 6,
+  "id": "dampfinchen-chunk-dropper-for-sillytavern",
+  "name": "Chunk-Dropper-for-SillyTavern",
+  "kind": "extension",
+  "summary": "An alpha SillyTavern extension that drops older messages in large chunks near the context limit to reduce prompt reprocessing. Context compaction works, but currently needs extra reprocessing and testing.",
+  "metadata_status": "curated",
+  "source_id": "github-1207091736",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": ["manage-context-limits"],
+  "cataloged_at": "2026-08-23T14:16:22.095Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Trusted Tavernary editor selection."
+    },
+    "tags": { "mode": "manual", "note": "Trusted Tavernary editor selection." }
+  }
+}

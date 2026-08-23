@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1207091736",
+  "head_sha": "77c160cecc14f94d7fdab0fd1580b8374779d4e9",
+  "observed_at": "2026-08-23T14:16:27.540Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Chunk-Dropper-for-SillyTavern",
+  "manifest": {
+    "display_name": "Chunk-Dropper-for-SillyTavern",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
