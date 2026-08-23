@@ -61,6 +61,21 @@ test("accepts a source/card/snapshot create transaction with exact paths", () =>
   );
 });
 
+test("accepts source-bound install evidence in a create transaction", () => {
+  const generatedPaths = [
+    "data/registry/projects/owner-project.json",
+    "data/registry/sources/github-42.json",
+    "data/snapshots/github/github-42.json",
+    "data/snapshots/install/github-42.json",
+  ];
+
+  const transaction = createProjectPublicationTransaction(
+    createInput({ generated_paths: generatedPaths }),
+  );
+
+  expect(expectedTransactionPaths(transaction)).toEqual(generatedPaths);
+});
+
 test("accepts verified-owner manual create fallback without fabricated copy", () => {
   const transaction = createProjectPublicationTransaction(
     createInput({
