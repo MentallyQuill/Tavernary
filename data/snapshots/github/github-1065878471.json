@@ -9,21 +9,21 @@
     "url": "https://github.com/IceFog72/SillyTavern-ProbablyTooManyTabs",
     "description": null,
     "default_branch": "main",
-    "head_sha": "32d6b0df70f558d4806eeefa06c91b0a0da0c789",
-    "head_committed_at": "2026-08-22T01:45:04.000Z",
+    "head_sha": "b0f7c50d17feda4eae614d01b98cca1f4db76cfb",
+    "head_committed_at": "2026-08-22T19:47:06.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-09-28T15:59:05.000Z",
-    "size_kb": 1424
+    "size_kb": 1425
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-22T01:45:04.000Z",
+    "latest_source_activity_at": "2026-08-22T19:47:06.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-17",
-        "latest_at": "2026-08-22T01:45:04.000Z",
+        "latest_at": "2026-08-22T19:47:06.000Z",
         "precision": "exact"
       },
       {
@@ -57,7 +57,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-22T07:48:57.629Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "32d6b0df70f558d4806eeefa06c91b0a0da0c789"
+    "evidence_head_sha": "b0f7c50d17feda4eae614d01b98cca1f4db76cfb"
   },
   "community": {
     "stars_count": 55,
@@ -70,8 +70,9 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-22T07:48:57.629Z",
+  "refreshed_at": "2026-08-23T07:49:50.356Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "IceFog72", "type": "User", "provider": "github" },
@@ -80,8 +81,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-22T07:48:57.629Z",
+    "refreshed_at": "2026-08-23T07:49:50.356Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

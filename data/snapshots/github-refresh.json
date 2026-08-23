@@ -1,33 +1,33 @@
 {
   "schema_version": 3,
   "mode": "incremental",
-  "started_at": "2026-08-22T07:48:57.505Z",
-  "completed_at": "2026-08-22T07:50:40.670Z",
+  "started_at": "2026-08-23T07:49:50.223Z",
+  "completed_at": "2026-08-23T07:51:19.360Z",
   "counts": {
     "total": 251,
     "checked": 251,
     "changed": 251,
-    "unchanged": 242,
+    "unchanged": 239,
     "provisional": 0,
     "degraded": 0,
     "unavailable": 0,
     "failed": 0,
-    "compared": 6,
+    "compared": 11,
     "baseline": 0,
-    "fallback": 3
+    "fallback": 1
   },
   "api": {
     "graphql_requests": 18,
     "graphql_points": 18,
     "graphql_remaining": 4982,
-    "rest_requests": 529
+    "rest_requests": 515
   },
   "providers": {
     "github": {
       "checked": 250,
       "changed": 250,
       "failed": 0,
-      "requests": 528,
+      "requests": 514,
       "remaining": 4982
     },
     "codeberg": {
@@ -38,18 +38,18 @@
       "remaining": 1999
     }
   },
-  "duration_ms": 103165,
+  "duration_ms": 89137,
   "source_timings": [
     {
       "source_id": "codeberg-2445404",
       "outcome": "compare-source",
-      "duration_ms": 8899,
+      "duration_ms": 6065,
       "error_code": null
     },
     {
       "source_id": "github-1001051404",
       "outcome": "compare-source",
-      "duration_ms": 451,
+      "duration_ms": 530,
       "error_code": null
     },
     {
@@ -91,7 +91,7 @@
     {
       "source_id": "github-1034514716",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -109,7 +109,7 @@
     {
       "source_id": "github-1035690744",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -187,7 +187,7 @@
     {
       "source_id": "github-1063754811",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -204,8 +204,8 @@
     },
     {
       "source_id": "github-1065878471",
-      "outcome": "fallback",
-      "duration_ms": 12884,
+      "outcome": "compare-source",
+      "duration_ms": 396,
       "error_code": null
     },
     {
@@ -385,7 +385,7 @@
     {
       "source_id": "github-1110894472",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -427,7 +427,7 @@
     {
       "source_id": "github-1114224048",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -529,7 +529,7 @@
     {
       "source_id": "github-1128074609",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -564,8 +564,8 @@
     },
     {
       "source_id": "github-1132564534",
-      "outcome": "unchanged",
-      "duration_ms": 0,
+      "outcome": "compare-source",
+      "duration_ms": 245,
       "error_code": null
     },
     {
@@ -582,8 +582,8 @@
     },
     {
       "source_id": "github-1133521830",
-      "outcome": "unchanged",
-      "duration_ms": 0,
+      "outcome": "compare-source",
+      "duration_ms": 345,
       "error_code": null
     },
     {
@@ -607,7 +607,7 @@
     {
       "source_id": "github-1135979547",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -637,7 +637,7 @@
     {
       "source_id": "github-1139430137",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -781,13 +781,13 @@
     {
       "source_id": "github-1170213715",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
       "source_id": "github-1171030721",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -858,8 +858,8 @@
     },
     {
       "source_id": "github-1183860600",
-      "outcome": "fallback",
-      "duration_ms": 12563,
+      "outcome": "unchanged",
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -889,7 +889,7 @@
     {
       "source_id": "github-1186518647",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -954,8 +954,8 @@
     },
     {
       "source_id": "github-1195300925",
-      "outcome": "unchanged",
-      "duration_ms": 1,
+      "outcome": "compare-excluded",
+      "duration_ms": 410,
       "error_code": null
     },
     {
@@ -972,8 +972,8 @@
     },
     {
       "source_id": "github-1199215475",
-      "outcome": "fallback",
-      "duration_ms": 12199,
+      "outcome": "unchanged",
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -985,13 +985,13 @@
     {
       "source_id": "github-1200081605",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
       "source_id": "github-1201800372",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1033,7 +1033,7 @@
     {
       "source_id": "github-1207588937",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1057,7 +1057,7 @@
     {
       "source_id": "github-1212009993",
       "outcome": "compare-source",
-      "duration_ms": 432,
+      "duration_ms": 572,
       "error_code": null
     },
     {
@@ -1105,7 +1105,7 @@
     {
       "source_id": "github-1216523143",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1123,13 +1123,13 @@
     {
       "source_id": "github-1218770712",
       "outcome": "compare-source",
-      "duration_ms": 827,
+      "duration_ms": 359,
       "error_code": null
     },
     {
       "source_id": "github-1219416060",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1159,7 +1159,7 @@
     {
       "source_id": "github-1221210115",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1200,14 +1200,14 @@
     },
     {
       "source_id": "github-1225640741",
-      "outcome": "compare-source",
-      "duration_ms": 504,
+      "outcome": "unchanged",
+      "duration_ms": 0,
       "error_code": null
     },
     {
       "source_id": "github-1225767064",
-      "outcome": "unchanged",
-      "duration_ms": 1,
+      "outcome": "fallback",
+      "duration_ms": 11100,
       "error_code": null
     },
     {
@@ -1225,7 +1225,7 @@
     {
       "source_id": "github-1226998015",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1338,14 +1338,14 @@
     },
     {
       "source_id": "github-1244970544",
-      "outcome": "unchanged",
-      "duration_ms": 0,
+      "outcome": "compare-source",
+      "duration_ms": 329,
       "error_code": null
     },
     {
       "source_id": "github-1245539495",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1387,7 +1387,7 @@
     {
       "source_id": "github-1248993662",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1434,8 +1434,8 @@
     },
     {
       "source_id": "github-1256623355",
-      "outcome": "unchanged",
-      "duration_ms": 0,
+      "outcome": "compare-source",
+      "duration_ms": 455,
       "error_code": null
     },
     {
@@ -1471,13 +1471,13 @@
     {
       "source_id": "github-1263145747",
       "outcome": "compare-source",
-      "duration_ms": 455,
+      "duration_ms": 501,
       "error_code": null
     },
     {
       "source_id": "github-1263408079",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1513,7 +1513,7 @@
     {
       "source_id": "github-1267774290",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {

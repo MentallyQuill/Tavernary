@@ -9,21 +9,21 @@
     "url": "https://github.com/CalamitousFelicitousness/SillyTavern-ReasoningProfiles",
     "description": "SillyTavern third-party extension that injects per-provider reasoning/thinking parameters into chat completion requests.",
     "default_branch": "main",
-    "head_sha": "135fdf575fdb3902b1879368ccff0eec85b29dfd",
-    "head_committed_at": "2026-08-19T02:46:07.000Z",
+    "head_sha": "786a9e6edad8ad25cbf7709e21a60fb5bbc2c027",
+    "head_committed_at": "2026-08-22T23:10:30.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-20T19:28:54.000Z",
-    "size_kb": 67
+    "size_kb": 86
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-19T02:46:07.000Z",
+    "latest_source_activity_at": "2026-08-22T23:10:30.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-17",
-        "latest_at": "2026-08-19T02:46:07.000Z",
+        "latest_at": "2026-08-22T23:10:30.000Z",
         "precision": "exact"
       },
       {
@@ -42,20 +42,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-19T07:56:49.599Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "135fdf575fdb3902b1879368ccff0eec85b29dfd"
+    "evidence_head_sha": "786a9e6edad8ad25cbf7709e21a60fb5bbc2c027"
   },
   "community": {
-    "stars_count": 2,
+    "stars_count": 3,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 2
+    "aggregate": 3
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-22T07:48:57.629Z",
+  "refreshed_at": "2026-08-23T07:49:50.356Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -69,7 +69,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-22T07:48:57.629Z",
+    "refreshed_at": "2026-08-23T07:49:50.356Z",
     "stale_since": null
   }
 }

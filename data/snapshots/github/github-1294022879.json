@@ -15,7 +15,7 @@
     "fork": false,
     "parent": null,
     "created_at": "2026-07-08T18:09:20.000Z",
-    "size_kb": 1493
+    "size_kb": 1819
   },
   "source_health": "healthy",
   "activity": {
@@ -45,7 +45,7 @@
     "aggregate": 3
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-22T07:48:57.629Z",
+  "refreshed_at": "2026-08-23T07:49:50.356Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -55,7 +55,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-22T07:48:57.629Z",
+    "refreshed_at": "2026-08-23T07:49:50.356Z",
     "stale_since": null
   }
 }
