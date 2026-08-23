@@ -1,0 +1,59 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1339644218",
+  "repository": {
+    "id": 1339644218,
+    "owner": "Arczium",
+    "name": "ST-Message-Chunker",
+    "url": "https://github.com/Arczium/ST-Message-Chunker",
+    "description": "A SillyTavern extension to increase the prompt cache hit rate when reaching a rolling or full context window.",
+    "default_branch": "main",
+    "head_sha": "c27364d06d77ecd5f7511de3e23df3af57cd7edc",
+    "head_committed_at": "2026-08-23T05:46:51.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-08-19T13:54:35.000Z",
+    "size_kb": 9
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-23T05:46:51.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-23T05:46:51.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-23T14:17:37.983Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "c27364d06d77ecd5f7511de3e23df3af57cd7edc"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-23T14:17:37.983Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "Arczium", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-23T14:17:37.983Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

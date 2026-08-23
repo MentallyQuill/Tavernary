@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1339644218",
+  "head_sha": "c27364d06d77ecd5f7511de3e23df3af57cd7edc",
+  "observed_at": "2026-08-23T14:17:46.723Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "ST-Message-Chunker",
+  "manifest": {
+    "display_name": "Message Chunker",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
