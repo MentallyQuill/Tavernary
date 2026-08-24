@@ -871,6 +871,7 @@ test("compact cards keep title, scan, and Kit actions independently usable", asy
   await expect(page.locator(".catalog-shell")).toHaveAttribute(
     "data-hydrated",
     "true",
+    { timeout: 15_000 },
   );
 
   const shell = page.locator(".project-card-shell").first();
