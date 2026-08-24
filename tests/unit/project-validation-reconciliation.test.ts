@@ -198,6 +198,46 @@ test("blocks an exhausted Publisher", () => {
   });
 });
 
+test("blocks newer exhausted Publisher attempts before retrying an older generation failure", () => {
+  expect(
+    planProjectValidationReconciliation(
+      input({
+        validationRuns: [
+          run(1, "success", {
+            created_at: new Date(NOW - 60_000).toISOString(),
+            updated_at: new Date(NOW - 60_000).toISOString(),
+          }),
+        ],
+        generationRuns: [
+          run(2, "failure", {
+            created_at: new Date(NOW - 40_000).toISOString(),
+            updated_at: new Date(NOW - 40_000).toISOString(),
+          }),
+        ],
+        publicationRuns: [
+          run(3, "failure", {
+            created_at: new Date(NOW - 30_000).toISOString(),
+            updated_at: new Date(NOW - 30_000).toISOString(),
+          }),
+          run(4, "failure", {
+            created_at: new Date(NOW - 20_000).toISOString(),
+            updated_at: new Date(NOW - 20_000).toISOString(),
+          }),
+          run(5, "failure", {
+            created_at: new Date(NOW - 10_000).toISOString(),
+            updated_at: new Date(NOW - 10_000).toISOString(),
+          }),
+        ],
+      }),
+    ),
+  ).toMatchObject({
+    action: "block",
+    state: "publication-blocked",
+    attempts: 3,
+    run: { id: 5 },
+  });
+});
+
 test("regenerates an unchanged automatic PR after a successful Publisher grace", () => {
   expect(
     planProjectValidationReconciliation(

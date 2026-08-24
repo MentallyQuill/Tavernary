@@ -134,14 +134,21 @@ export function planProjectValidationReconciliation(input) {
   const activeGeneration = activeRun(generations);
   const generationFailures = completedFailureAttempts(generations);
   const latestGeneration = generations[0];
+  const generationIsLatestRecoveryAttempt =
+    Boolean(latestGeneration) &&
+    (!latestPublication ||
+      createdAt(latestGeneration) >= createdAt(latestPublication));
 
   if (activePublication) {
     return action("wait", "publishing", publicationFailures, activePublication);
   }
-  if (activeGeneration) {
+  if (activeGeneration && generationIsLatestRecoveryAttempt) {
     return action("wait", "regenerating", generationFailures, activeGeneration);
   }
-  if (latestGeneration?.conclusion !== "success" && latestGeneration) {
+  if (
+    generationIsLatestRecoveryAttempt &&
+    latestGeneration.conclusion !== "success"
+  ) {
     if (generationFailures >= PROJECT_VALIDATION_RETRY_LIMIT) {
       return action(
         "block",
@@ -158,7 +165,10 @@ export function planProjectValidationReconciliation(input) {
       { validationRunId: latestValidation.id },
     );
   }
-  if (latestGeneration?.conclusion === "success") {
+  if (
+    generationIsLatestRecoveryAttempt &&
+    latestGeneration.conclusion === "success"
+  ) {
     const generationAttempts = totalAttempts(generations);
     if (
       !afterGrace(
