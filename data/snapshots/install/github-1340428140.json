@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1340428140",
+  "head_sha": "7afe0a45b214eb68514f104666a62191a1f6b4f9",
+  "observed_at": "2026-08-24T19:10:48.926Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-LorebookAtlas",
+  "manifest": {
+    "display_name": "Lorebook Atlas",
+    "key": null,
+    "minimum_client_version": "1.18.0"
+  }
+}

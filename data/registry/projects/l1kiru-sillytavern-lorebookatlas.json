@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "l1kiru-sillytavern-lorebookatlas",
+  "name": "SillyTavern-LorebookAtlas",
+  "kind": "extension",
+  "summary": "A SillyTavern extension for working with large lorebooks: attach images to World Info entries, group entries into nested lists for filtered navigation, and archive lorebooks with images as .zip for backup and transfer.",
+  "metadata_status": "curated",
+  "source_id": "github-1340428140",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": [
+    "add-visual-immersion",
+    "local-first",
+    "manage-lorebooks",
+    "move-and-back-up-data"
+  ],
+  "cataloged_at": "2026-08-24T19:10:03.393Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
