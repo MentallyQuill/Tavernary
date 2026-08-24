@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "p08dev-sillytavern-chatmood",
+  "source_id": "github-1339877178",
+  "source_identity": "github:p08dev/sillytavern-chatmood",
+  "evidence_fingerprint": "c51e277057680acb17c2471c82f208bccfeedfc5fd8be9efb8c23b13d3797ed7",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-24T10:24:36.736Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-24T10:24:36.736Z"
+  },
+  "maintenance_issue_number": null
+}
