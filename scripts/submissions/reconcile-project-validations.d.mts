@@ -34,7 +34,8 @@ export type ReconciliationResult =
       state: ProjectValidationState;
       attempts: number;
       runId: ProjectValidationRun["id"] | null;
-      outcome: "applied" | "observed";
+      outcome: "applied" | "observed" | "superseded";
+      projectionError?: string;
     }
   | {
       pullNumber: number;

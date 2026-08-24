@@ -246,6 +246,39 @@ function runFixture({
   };
 }
 
+function statusFixture({
+  id,
+  context = "tavernary/publication-validation",
+  state = "pending",
+  description = "Exact-head validation is queued.",
+  targetUrl = null,
+}: {
+  id: number;
+  context?: string;
+  state?: string;
+  description?: string;
+  targetUrl?: string | null;
+}) {
+  return {
+    id,
+    node_id: `STATUS_${id}`,
+    url: `https://api.github.com/repos/${REPOSITORY}/statuses/${HEAD_SHA}`,
+    state,
+    description,
+    target_url: targetUrl,
+    context,
+    created_at: new Date(NOW - id * 100).toISOString(),
+    updated_at: new Date(NOW - id * 100).toISOString(),
+    creator: {
+      login: "tavernary-controller[bot]",
+      id: 77,
+      node_id: "BOT_77",
+      type: "Bot",
+      site_admin: false,
+    },
+  };
+}
+
 class FakeGitHub {
   pulls: Pull[];
   pullPages: Pull[][] | null = null;
@@ -254,10 +287,38 @@ class FakeGitHub {
   issues = new Map<number, ReturnType<typeof issueFixture>>();
   comments = new Map<number, JsonObject[]>();
   labels = new Map<string, JsonObject>();
+  statuses = new Map<string, JsonObject[]>();
   validationPages = new Map<string, WorkflowRun[][]>();
   publicationPages: WorkflowRun[][] = [[]];
   failures = new Map<string, Error & { status?: number }>();
   requests: Array<{ method: string; path: string; body?: JsonObject }> = [];
+  onRequest:
+    | ((request: { method: string; path: string; count: number }) => void)
+    | null = null;
+  requestCounts = new Map<string, number>();
+  beforeIssueLabelMutation:
+    ((issue: ReturnType<typeof issueFixture>) => void) | null = null;
+  authenticatedUser = {
+    login: "tavernary-controller[bot]",
+    id: 77,
+    node_id: "BOT_77",
+    type: "Bot",
+    site_admin: false,
+    name: "Tavernary Controller",
+    company: null,
+    blog: "",
+    location: null,
+    email: null,
+    hireable: null,
+    bio: null,
+    twitter_username: null,
+    public_repos: 0,
+    public_gists: 0,
+    followers: 0,
+    following: 0,
+    created_at: "2026-01-01T00:00:00.000Z",
+    updated_at: "2026-08-23T00:00:00.000Z",
+  };
 
   constructor(pulls: Pull[]) {
     this.pulls = pulls;
@@ -305,6 +366,10 @@ class FakeGitHub {
         ? (JSON.parse(options.body) as JsonObject)
         : undefined;
     this.requests.push({ method, path, ...(body ? { body } : {}) });
+    const requestKey = `${method} ${path}`;
+    const count = (this.requestCounts.get(requestKey) ?? 0) + 1;
+    this.requestCounts.set(requestKey, count);
+    this.onRequest?.({ method, path, count });
     const failure = this.failures.get(`${method} ${path}`);
     if (failure) throw failure;
 
@@ -312,6 +377,9 @@ class FakeGitHub {
     const pathname = url.pathname;
     const page = Number(url.searchParams.get("page") ?? "1");
 
+    if (method === "GET" && pathname === "/user") {
+      return this.authenticatedUser;
+    }
     if (method === "GET" && pathname === `/repos/${REPOSITORY}`) {
       return {
         id: 99,
@@ -390,16 +458,57 @@ class FakeGitHub {
     const issueLabelsMatch = pathname.match(
       new RegExp(`^/repos/${REPOSITORY}/issues/(\\d+)/labels$`, "u"),
     );
-    if (method === "PUT" && issueLabelsMatch) {
+    if ((method === "PUT" || method === "POST") && issueLabelsMatch) {
       const issue = this.issues.get(Number(issueLabelsMatch[1]));
       if (!issue) throw new Error(`Missing issue ${issueLabelsMatch[1]}`);
-      issue.labels = (body?.labels as string[]).map((name, index) => ({
-        id: 100 + index,
-        node_id: `L_${100 + index}`,
-        name,
-        color: "ededed",
-      }));
+      if (this.beforeIssueLabelMutation) {
+        const mutate = this.beforeIssueLabelMutation;
+        this.beforeIssueLabelMutation = null;
+        mutate(issue);
+      }
+      const names = body?.labels as string[];
+      if (method === "PUT") {
+        issue.labels = names.map((name, index) => ({
+          id: 100 + index,
+          node_id: `L_${100 + index}`,
+          name,
+          color: "ededed",
+        }));
+      } else {
+        for (const name of names) {
+          if (issue.labels.some((label) => label.name === name)) continue;
+          issue.labels.push({
+            id: 100 + issue.labels.length,
+            node_id: `L_${100 + issue.labels.length}`,
+            name,
+            color: "ededed",
+          });
+        }
+      }
       return issue.labels;
+    }
+    const issueLabelMatch = pathname.match(
+      new RegExp(`^/repos/${REPOSITORY}/issues/(\\d+)/labels/(.+)$`, "u"),
+    );
+    if (method === "DELETE" && issueLabelMatch) {
+      const issue = this.issues.get(Number(issueLabelMatch[1]));
+      if (!issue) throw new Error(`Missing issue ${issueLabelMatch[1]}`);
+      if (this.beforeIssueLabelMutation) {
+        const mutate = this.beforeIssueLabelMutation;
+        this.beforeIssueLabelMutation = null;
+        mutate(issue);
+      }
+      const name = decodeURIComponent(issueLabelMatch[2]);
+      const index = issue.labels.findIndex((label) => label.name === name);
+      if (index < 0) {
+        const error = new Error(`Missing issue label ${name}`) as Error & {
+          status?: number;
+        };
+        error.status = 404;
+        throw error;
+      }
+      issue.labels.splice(index, 1);
+      return null;
     }
     const commentsMatch = pathname.match(
       new RegExp(`^/repos/${REPOSITORY}/issues/(\\d+)/comments$`, "u"),
@@ -412,7 +521,14 @@ class FakeGitHub {
     if (method === "POST" && commentsMatch) {
       const number = Number(commentsMatch[1]);
       const comments = this.comments.get(number) ?? [];
-      const comment = { id: 50_000 + comments.length, ...body };
+      const comment = {
+        id: 50_000 + comments.length,
+        node_id: `IC_${50_000 + comments.length}`,
+        user: this.authenticatedUser,
+        created_at: new Date(NOW).toISOString(),
+        updated_at: new Date(NOW).toISOString(),
+        ...body,
+      };
       comments.push(comment);
       this.comments.set(number, comments);
       return comment;
@@ -431,11 +547,31 @@ class FakeGitHub {
         }
       }
     }
+    const statusesMatch = pathname.match(
+      new RegExp(`^/repos/${REPOSITORY}/commits/([a-f0-9]{40})/statuses$`, "u"),
+    );
+    if (method === "GET" && statusesMatch) {
+      const statuses = this.statuses.get(statusesMatch[1]) ?? [];
+      const start = (page - 1) * 100;
+      return statuses.slice(start, start + 100);
+    }
     if (
       method === "POST" &&
       pathname.startsWith(`/repos/${REPOSITORY}/statuses/`)
     ) {
-      return { id: 70_000, ...body };
+      const headSha = pathname.slice(pathname.lastIndexOf("/") + 1);
+      const statuses = this.statuses.get(headSha) ?? [];
+      const status = statusFixture({
+        id: 70_000 + statuses.length,
+        context: String(body?.context),
+        state: String(body?.state),
+        description: String(body?.description),
+        targetUrl:
+          typeof body?.target_url === "string" ? body.target_url : null,
+      });
+      statuses.unshift(status);
+      this.statuses.set(headSha, statuses);
+      return status;
     }
     if (
       method === "POST" &&
@@ -478,6 +614,58 @@ test("dispatches exact-head validation when the automatic PR has no run", async 
   });
 });
 
+test("does not dispatch validation when a late current-head CI run appears", async () => {
+  const pull = pullFixture();
+  const fake = new FakeGitHub([pull]);
+  const inventoryPath = `/repos/${REPOSITORY}/actions/workflows/ci.yml/runs?branch=${encodeURIComponent(pull.head.ref)}&event=workflow_dispatch&per_page=100&page=1`;
+  fake.validationPages.set(pull.head.ref, [[]]);
+  fake.onRequest = ({ method, path, count }) => {
+    if (method === "GET" && path === inventoryPath && count === 2) {
+      fake.validationPages.set(pull.head.ref, [
+        [runFixture({ id: 2, conclusion: null })],
+      ]);
+    }
+  };
+
+  const summary = await reconcile(fake);
+
+  expect(fake.requestCounts.get(`GET ${inventoryPath}`)).toBe(2);
+  expect(summary.results[0]).toMatchObject({
+    action: "wait",
+    state: "validating",
+    outcome: "superseded",
+  });
+  expect(
+    fake.requests.some(
+      ({ method, path }) =>
+        method === "POST" && path.endsWith("/ci.yml/dispatches"),
+    ),
+  ).toBe(false);
+});
+
+test("a state projection failure does not prevent safe validation recovery", async () => {
+  const pull = pullFixture();
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [[]]);
+  fake.failures.set(
+    `POST /repos/${REPOSITORY}/issues/620/comments`,
+    new Error("Comment projection unavailable"),
+  );
+
+  const summary = await reconcile(fake);
+
+  expect(fake.requests).toContainEqual({
+    method: "POST",
+    path: `/repos/${REPOSITORY}/actions/workflows/ci.yml/dispatches`,
+    body: { ref: pull.head.ref },
+  });
+  expect(summary.results[0]).toMatchObject({
+    action: "validate",
+    outcome: "applied",
+    projectionError: "Comment projection unavailable",
+  });
+});
+
 test("projects retry state and dispatches another current-head validation", async () => {
   const pull = pullFixture();
   const fake = new FakeGitHub([pull]);
@@ -488,14 +676,10 @@ test("projects retry state and dispatches another current-head validation", asyn
   await reconcile(fake);
 
   expect(fake.requests).toContainEqual({
-    method: "PUT",
+    method: "POST",
     path: `/repos/${REPOSITORY}/issues/620/labels`,
     body: {
-      labels: [
-        "issue-admitted",
-        "project-submission",
-        "submission-validation-retrying",
-      ],
+      labels: ["submission-validation-retrying"],
     },
   });
   expect(fake.requests).toContainEqual(
@@ -530,6 +714,85 @@ test("projects retry state and dispatches another current-head validation", asyn
   ).toBe(false);
 });
 
+test("does not post an identical exact-context status on repeat reconciliation", async () => {
+  const pull = pullFixture();
+  const activeValidation = runFixture({ id: 61, conclusion: null });
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [[activeValidation]]);
+
+  await reconcile(fake);
+  const controllerStatus = fake.statuses.get(HEAD_SHA)?.[0];
+  expect(controllerStatus).toBeDefined();
+  fake.statuses.set(HEAD_SHA, [
+    ...Array.from({ length: 100 }, (_, index) =>
+      statusFixture({
+        id: 80_000 + index,
+        context: `unrelated/check-${index}`,
+        description: `Unrelated status ${index}`,
+      }),
+    ),
+    controllerStatus!,
+  ]);
+
+  await reconcile(fake);
+
+  expect(
+    fake.requests.filter(
+      ({ method, path }) =>
+        method === "POST" &&
+        path === `/repos/${REPOSITORY}/statuses/${HEAD_SHA}`,
+    ),
+  ).toHaveLength(1);
+  expect(fake.requests).toContainEqual({
+    method: "GET",
+    path: `/repos/${REPOSITORY}/commits/${HEAD_SHA}/statuses?per_page=100&page=2`,
+  });
+});
+
+test("preserves a foreign spoofed marker and creates a controller-owned comment", async () => {
+  const pull = pullFixture();
+  const activeValidation = runFixture({ id: 62, conclusion: null });
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [[activeValidation]]);
+  fake.comments.set(620, [
+    {
+      id: 12_345,
+      node_id: "IC_SPOOF",
+      body: `${PROJECT_VALIDATION_STATE_MARKER}\n{"schema_version":1}\n-->\nSpoofed state`,
+      user: {
+        login: "submitter",
+        id: 1,
+        node_id: "U_1",
+        type: "User",
+        site_admin: false,
+      },
+      created_at: new Date(NOW - 30_000).toISOString(),
+      updated_at: new Date(NOW - 30_000).toISOString(),
+      html_url: `https://github.com/${REPOSITORY}/issues/620#issuecomment-12345`,
+    },
+  ]);
+
+  await reconcile(fake);
+
+  expect(fake.requestCounts.get("GET /user")).toBe(1);
+  expect(fake.requests).not.toContainEqual(
+    expect.objectContaining({
+      method: "PATCH",
+      path: `/repos/${REPOSITORY}/issues/comments/12345`,
+    }),
+  );
+  expect(fake.requests).toContainEqual(
+    expect.objectContaining({
+      method: "POST",
+      path: `/repos/${REPOSITORY}/issues/620/comments`,
+      body: expect.objectContaining({
+        body: expect.stringContaining(PROJECT_VALIDATION_STATE_MARKER),
+      }),
+    }),
+  );
+  expect(fake.comments.get(620)?.[0]?.body).toContain("Spoofed state");
+});
+
 test("blocks exhausted validation attempts without another dispatch", async () => {
   const pull = pullFixture();
   const fake = new FakeGitHub([pull]);
@@ -550,14 +813,10 @@ test("blocks exhausted validation attempts without another dispatch", async () =
     outcome: "applied",
   });
   expect(fake.requests).toContainEqual({
-    method: "PUT",
+    method: "POST",
     path: `/repos/${REPOSITORY}/issues/620/labels`,
     body: {
-      labels: [
-        "issue-admitted",
-        "project-submission",
-        "submission-validation-blocked",
-      ],
+      labels: ["submission-validation-blocked"],
     },
   });
   expect(fake.requests).toContainEqual(
@@ -576,6 +835,57 @@ test("blocks exhausted validation attempts without another dispatch", async () =
         method === "POST" && path.endsWith("/ci.yml/dispatches"),
     ),
   ).toBe(false);
+});
+
+test("mutates only owned labels and preserves concurrent foreign label changes", async () => {
+  const pull = pullFixture();
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [
+    [
+      runFixture({ id: 14, conclusion: "failure" }),
+      runFixture({ id: 15, conclusion: "cancelled" }),
+      runFixture({ id: 16, conclusion: "timed_out" }),
+    ],
+  ]);
+  fake.beforeIssueLabelMutation = (issue) => {
+    issue.labels = issue.labels.filter(
+      ({ name }) => name !== "project-submission",
+    );
+    issue.labels.push({
+      id: 90,
+      node_id: "L_90",
+      name: "concurrent-review",
+      color: "5319e7",
+    });
+  };
+
+  await reconcile(fake);
+
+  const firstLabelMutations = fake.requests.filter(
+    ({ method, path }) =>
+      method !== "GET" && path.includes(`/issues/620/labels`),
+  );
+  expect(firstLabelMutations).toEqual([
+    {
+      method: "POST",
+      path: `/repos/${REPOSITORY}/issues/620/labels`,
+      body: { labels: ["submission-validation-blocked"] },
+    },
+  ]);
+  expect(fake.issues.get(620)?.labels.map(({ name }) => name)).toEqual([
+    "issue-admitted",
+    "concurrent-review",
+    "submission-validation-blocked",
+  ]);
+
+  await reconcile(fake);
+
+  expect(
+    fake.requests.filter(
+      ({ method, path }) =>
+        method !== "GET" && path.includes(`/issues/620/labels`),
+    ),
+  ).toHaveLength(firstLabelMutations.length);
 });
 
 test("repairs a missing Publisher handoff after the success grace period", async () => {
@@ -598,6 +908,52 @@ test("repairs a missing Publisher handoff after the success grace period", async
     path: `/repos/${REPOSITORY}/actions/workflows/publish-project-transaction.yml/dispatches`,
     body: { ref: "main", inputs: { validation_run_id: "21" } },
   });
+});
+
+test("does not dispatch publication when a late Publisher run appears", async () => {
+  const pull = pullFixture();
+  const validation = runFixture({
+    id: 24,
+    conclusion: "success",
+    updatedAt: new Date(
+      NOW - PROJECT_VALIDATION_HANDOFF_GRACE_MS - 1,
+    ).toISOString(),
+  });
+  const publisherPath = `/repos/${REPOSITORY}/actions/workflows/publish-project-transaction.yml/runs?event=workflow_dispatch&per_page=100&page=1`;
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [[validation]]);
+  fake.onRequest = ({ method, path, count }) => {
+    if (method === "GET" && path === publisherPath && count === 2) {
+      fake.publicationPages = [
+        [
+          runFixture({
+            id: 25,
+            conclusion: null,
+            workflow: "publish-project-transaction.yml",
+            displayTitle: "Project publication for validation #24",
+            headSha: "f".repeat(40),
+            headBranch: "main",
+          }),
+        ],
+      ];
+    }
+  };
+
+  const summary = await reconcile(fake);
+
+  expect(fake.requestCounts.get(`GET ${publisherPath}`)).toBe(2);
+  expect(summary.results[0]).toMatchObject({
+    action: "wait",
+    state: "publishing",
+    outcome: "superseded",
+  });
+  expect(
+    fake.requests.some(
+      ({ method, path }) =>
+        method === "POST" &&
+        path.endsWith("/publish-project-transaction.yml/dispatches"),
+    ),
+  ).toBe(false);
 });
 
 test("reruns failed Publisher jobs below the per-head attempt limit", async () => {
@@ -626,6 +982,51 @@ test("reruns failed Publisher jobs below the per-head attempt limit", async () =
     method: "POST",
     path: `/repos/${REPOSITORY}/actions/runs/32/rerun-failed-jobs`,
   });
+});
+
+test("does not rerun Publisher when a late active attempt appears", async () => {
+  const pull = pullFixture();
+  const validation = runFixture({ id: 34, conclusion: "success" });
+  const failedPublisher = runFixture({
+    id: 35,
+    conclusion: "failure",
+    workflow: "publish-project-transaction.yml",
+    displayTitle: "Project publication for validation #34",
+    headSha: "f".repeat(40),
+    headBranch: "main",
+  });
+  const activePublisher = runFixture({
+    id: 36,
+    conclusion: null,
+    workflow: "publish-project-transaction.yml",
+    displayTitle: "Project publication for validation #34",
+    headSha: "f".repeat(40),
+    headBranch: "main",
+    createdAt: new Date(NOW - 1_000).toISOString(),
+  });
+  const publisherPath = `/repos/${REPOSITORY}/actions/workflows/publish-project-transaction.yml/runs?event=workflow_dispatch&per_page=100&page=1`;
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [[validation]]);
+  fake.publicationPages = [[failedPublisher]];
+  fake.onRequest = ({ method, path, count }) => {
+    if (method === "GET" && path === publisherPath && count === 2) {
+      fake.publicationPages = [[failedPublisher, activePublisher]];
+    }
+  };
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results[0]).toMatchObject({
+    action: "wait",
+    state: "publishing",
+    outcome: "superseded",
+  });
+  expect(
+    fake.requests.some(
+      ({ method, path }) =>
+        method === "POST" && path.endsWith("/rerun-failed-jobs"),
+    ),
+  ).toBe(false);
 });
 
 test("dispatches regeneration for a stale automatic transaction", async () => {
@@ -658,6 +1059,56 @@ test("dispatches regeneration for a stale automatic transaction", async () => {
       inputs: { issue_number: "620", force_regeneration: "false" },
     },
   });
+});
+
+test("does not regenerate when a late Publisher attempt appears", async () => {
+  const old = new Date(
+    NOW - PROJECT_VALIDATION_REGENERATION_GRACE_MS - 1,
+  ).toISOString();
+  const pull = pullFixture({ updatedAt: old });
+  const validation = runFixture({ id: 44, conclusion: "success" });
+  const completedPublisher = runFixture({
+    id: 45,
+    conclusion: "success",
+    workflow: "publish-project-transaction.yml",
+    displayTitle: "Project publication for validation #44",
+    headSha: "f".repeat(40),
+    headBranch: "main",
+    updatedAt: old,
+  });
+  const activePublisher = runFixture({
+    id: 46,
+    conclusion: null,
+    workflow: "publish-project-transaction.yml",
+    displayTitle: "Project publication for validation #44",
+    headSha: "f".repeat(40),
+    headBranch: "main",
+    createdAt: new Date(NOW - 1_000).toISOString(),
+  });
+  const publisherPath = `/repos/${REPOSITORY}/actions/workflows/publish-project-transaction.yml/runs?event=workflow_dispatch&per_page=100&page=1`;
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [[validation]]);
+  fake.publicationPages = [[completedPublisher]];
+  fake.onRequest = ({ method, path, count }) => {
+    if (method === "GET" && path === publisherPath && count === 2) {
+      fake.publicationPages = [[completedPublisher, activePublisher]];
+    }
+  };
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results[0]).toMatchObject({
+    action: "wait",
+    state: "publishing",
+    outcome: "superseded",
+  });
+  expect(
+    fake.requests.some(
+      ({ method, path }) =>
+        method === "POST" &&
+        path.endsWith("/generate-project-submission.yml/dispatches"),
+    ),
+  ).toBe(false);
 });
 
 test("ignores manual, malformed, fork-owned, changed-head, and closed PRs", async () => {

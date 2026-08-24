@@ -44,13 +44,6 @@ function labelNames(labels) {
     .filter((label) => typeof label === "string" && label.length > 0);
 }
 
-function sameArray(left, right) {
-  return (
-    left.length === right.length &&
-    left.every((value, index) => value === right[index])
-  );
-}
-
 function expectedBranch(transaction) {
   if (transaction.producer === "project-submission") {
     return `automation/project-submission-${transaction.issue_number}`;
@@ -169,6 +162,34 @@ function associatedPublicationRuns(runs, validation, headSha) {
     });
 }
 
+async function loadReconciliationPlan({
+  repository,
+  pull,
+  transaction,
+  request,
+  nowMs,
+  loadPublicationRuns,
+}) {
+  const validationRuns = await listValidationRuns(repository, pull, request);
+  const successfulValidation = latestRun(validationRuns);
+  let publicationRuns = [];
+  if (successfulValidation?.conclusion === "success") {
+    publicationRuns = associatedPublicationRuns(
+      await loadPublicationRuns(),
+      successfulValidation,
+      pull.head.sha,
+    );
+  }
+  return planProjectValidationReconciliation({
+    transaction,
+    headSha: pull.head.sha,
+    validationRuns,
+    publicationRuns,
+    nowMs,
+    pull,
+  });
+}
+
 function sameLivePull(expected, live) {
   return (
     live?.state === "open" &&
@@ -226,19 +247,62 @@ async function listIssueComments(repository, issueNumber, request) {
   }
 }
 
-function desiredIssueLabels(issue, plan) {
-  const retained = labelNames(issue?.labels).filter(
-    (label) => !PROJECT_VALIDATION_OWNED_LABELS.includes(label),
-  );
+async function listCommitStatuses(repository, headSha, request) {
+  const statuses = [];
+  for (let page = 1; ; page += 1) {
+    const batch = await request(
+      `/repos/${repository}/commits/${headSha}/statuses?per_page=100&page=${page}`,
+    );
+    if (!Array.isArray(batch)) {
+      throw new Error("GitHub returned an invalid commit status inventory.");
+    }
+    statuses.push(...batch);
+    if (batch.length < 100) return statuses;
+  }
+}
+
+function desiredOwnedLabels(plan) {
+  const desired = new Set();
   if (plan.action === "block") {
-    retained.push("submission-validation-blocked");
+    desired.add("submission-validation-blocked");
   } else if (
     plan.state === "retrying-validation" ||
     plan.state === "retrying-publication"
   ) {
-    retained.push("submission-validation-retrying");
+    desired.add("submission-validation-retrying");
   }
-  return [...new Set(retained)];
+  return desired;
+}
+
+async function reconcileOwnedLabels({
+  repository,
+  pull,
+  issueNumber,
+  issue,
+  plan,
+  request,
+}) {
+  const current = new Set(labelNames(issue?.labels));
+  const desired = desiredOwnedLabels(plan);
+  for (const label of PROJECT_VALIDATION_OWNED_LABELS) {
+    if (desired.has(label) && !current.has(label)) {
+      await guardCandidate(repository, pull, request);
+      await request(`/repos/${repository}/issues/${issueNumber}/labels`, {
+        method: "POST",
+        body: JSON.stringify({ labels: [label] }),
+      });
+    } else if (!desired.has(label) && current.has(label)) {
+      await guardCandidate(repository, pull, request);
+      try {
+        await request(
+          `/repos/${repository}/issues/${issueNumber}/labels/${encodeURIComponent(label)}`,
+          { method: "DELETE" },
+        );
+      } catch (error) {
+        if (error?.status !== 404) throw error;
+      }
+    }
+  }
 }
 
 function statusProjection(plan) {
@@ -266,23 +330,39 @@ function statusProjection(plan) {
   };
 }
 
-async function projectState({ repository, pull, transaction, plan, request }) {
-  const [issue, comments] = await Promise.all([
+function sameStatusProjection(status, projection) {
+  return (
+    status?.context === projection.context &&
+    status?.state === projection.state &&
+    status?.description === projection.description &&
+    (status?.target_url ?? null) === (projection.target_url ?? null)
+  );
+}
+
+async function projectState({
+  repository,
+  pull,
+  transaction,
+  plan,
+  request,
+  loadAuthenticatedActor,
+}) {
+  const [issue, comments, authenticatedActor] = await Promise.all([
     request(`/repos/${repository}/issues/${transaction.issue_number}`),
     listIssueComments(repository, transaction.issue_number, request),
+    loadAuthenticatedActor(),
   ]);
-  const currentLabels = labelNames(issue?.labels);
-  const nextLabels = desiredIssueLabels(issue, plan);
-  if (!sameArray(currentLabels, nextLabels)) {
-    await guardCandidate(repository, pull, request);
-    await request(
-      `/repos/${repository}/issues/${transaction.issue_number}/labels`,
-      {
-        method: "PUT",
-        body: JSON.stringify({ labels: nextLabels }),
-      },
-    );
+  if (!Number.isSafeInteger(authenticatedActor?.id)) {
+    throw new Error("GitHub returned no authenticated controller identity.");
   }
+  await reconcileOwnedLabels({
+    repository,
+    pull,
+    issueNumber: transaction.issue_number,
+    issue,
+    plan,
+    request,
+  });
 
   const body = projectValidationStateComment({
     state: plan.state,
@@ -290,8 +370,10 @@ async function projectState({ repository, pull, transaction, plan, request }) {
     attempts: plan.attempts,
     run: plan.run,
   });
-  const existing = comments.find((comment) =>
-    String(comment?.body ?? "").includes(PROJECT_VALIDATION_STATE_MARKER),
+  const existing = comments.find(
+    (comment) =>
+      comment?.user?.id === authenticatedActor.id &&
+      String(comment?.body ?? "").includes(PROJECT_VALIDATION_STATE_MARKER),
   );
   if (existing?.body !== body) {
     await guardCandidate(repository, pull, request);
@@ -311,35 +393,75 @@ async function projectState({ repository, pull, transaction, plan, request }) {
     }
   }
 
-  await guardCandidate(repository, pull, request);
-  await request(`/repos/${repository}/statuses/${pull.head.sha}`, {
-    method: "POST",
-    body: JSON.stringify(statusProjection(plan)),
-  });
+  const projection = statusProjection(plan);
+  const statuses = await listCommitStatuses(repository, pull.head.sha, request);
+  const latestOwnedStatus = statuses.find(
+    (status) => status?.context === STATUS_CONTEXT,
+  );
+  if (!sameStatusProjection(latestOwnedStatus, projection)) {
+    await guardCandidate(repository, pull, request);
+    await request(`/repos/${repository}/statuses/${pull.head.sha}`, {
+      method: "POST",
+      body: JSON.stringify(projection),
+    });
+  }
 }
 
-async function applyPlan({
+async function replanAndApply({
   repository,
   defaultBranch,
   pull,
   transaction,
   plan,
   request,
+  nowMs,
 }) {
+  if (
+    ![
+      "validate",
+      "retry-validation",
+      "publish",
+      "retry-publication",
+      "regenerate",
+    ].includes(plan.action)
+  ) {
+    return { plan, applied: false, superseded: false };
+  }
+  const currentPlan = await loadReconciliationPlan({
+    repository,
+    pull,
+    transaction,
+    request,
+    nowMs,
+    loadPublicationRuns: () =>
+      listWorkflowRuns(
+        repository,
+        "publish-project-transaction.yml",
+        "event=workflow_dispatch",
+        request,
+      ),
+  });
+  if (currentPlan.action !== plan.action) {
+    return { plan: currentPlan, applied: false, superseded: true };
+  }
+
   let path;
   let body;
-  if (plan.action === "validate" || plan.action === "retry-validation") {
+  if (
+    currentPlan.action === "validate" ||
+    currentPlan.action === "retry-validation"
+  ) {
     path = `/repos/${repository}/actions/workflows/ci.yml/dispatches`;
     body = { ref: pull.head.ref };
-  } else if (plan.action === "publish") {
+  } else if (currentPlan.action === "publish") {
     path = `/repos/${repository}/actions/workflows/publish-project-transaction.yml/dispatches`;
     body = {
       ref: defaultBranch,
-      inputs: { validation_run_id: String(plan.run.id) },
+      inputs: { validation_run_id: String(currentPlan.run.id) },
     };
-  } else if (plan.action === "retry-publication") {
-    path = `/repos/${repository}/actions/runs/${plan.run.id}/rerun-failed-jobs`;
-  } else if (plan.action === "regenerate") {
+  } else if (currentPlan.action === "retry-publication") {
+    path = `/repos/${repository}/actions/runs/${currentPlan.run.id}/rerun-failed-jobs`;
+  } else if (currentPlan.action === "regenerate") {
     const workflow =
       transaction.producer === "project-submission"
         ? "generate-project-submission.yml"
@@ -353,14 +475,14 @@ async function applyPlan({
       },
     };
   } else {
-    return false;
+    return { plan: currentPlan, applied: false, superseded: true };
   }
   await guardCandidate(repository, pull, request);
   await request(path, {
     method: "POST",
     ...(body ? { body: JSON.stringify(body) } : {}),
   });
-  return true;
+  return { plan: currentPlan, applied: true, superseded: false };
 }
 
 export async function reconcileProjectValidations({
@@ -386,6 +508,11 @@ export async function reconcileProjectValidations({
   const results = [];
   let labelsReady = false;
   let publicationRunsPromise;
+  let authenticatedActorPromise;
+  const loadAuthenticatedActor = () => {
+    authenticatedActorPromise ??= request("/user");
+    return authenticatedActorPromise;
+  };
 
   for (const pull of pulls) {
     const candidate = candidateFromPull(pull, repository, defaultBranch);
@@ -399,33 +526,21 @@ export async function reconcileProjectValidations({
     }
     const transaction = candidate.transaction;
     try {
-      const validationRuns = await listValidationRuns(
+      const plan = await loadReconciliationPlan({
         repository,
         pull,
-        request,
-      );
-      const successfulValidation = latestRun(validationRuns);
-      let publicationRuns = [];
-      if (successfulValidation?.conclusion === "success") {
-        publicationRunsPromise ??= listWorkflowRuns(
-          repository,
-          "publish-project-transaction.yml",
-          "event=workflow_dispatch",
-          request,
-        );
-        publicationRuns = associatedPublicationRuns(
-          await publicationRunsPromise,
-          successfulValidation,
-          pull.head.sha,
-        );
-      }
-      const plan = planProjectValidationReconciliation({
         transaction,
-        headSha: pull.head.sha,
-        validationRuns,
-        publicationRuns,
+        request,
         nowMs,
-        pull,
+        loadPublicationRuns: () => {
+          publicationRunsPromise ??= listWorkflowRuns(
+            repository,
+            "publish-project-transaction.yml",
+            "event=workflow_dispatch",
+            request,
+          );
+          return publicationRunsPromise;
+        },
       });
       if (plan.action === "ignore") {
         results.push({
@@ -437,35 +552,48 @@ export async function reconcileProjectValidations({
         continue;
       }
 
-      await guardCandidate(repository, pull, request);
-      if (!labelsReady) {
-        await ensureOwnedLabels(repository, request);
-        labelsReady = true;
-      }
-      await projectState({
-        repository,
-        pull,
-        transaction,
-        plan,
-        request,
-      });
-      const applied = await applyPlan({
+      const application = await replanAndApply({
         repository,
         defaultBranch,
         pull,
         transaction,
         plan,
         request,
+        nowMs,
       });
+      const currentPlan = application.plan;
+      let projectionError;
+      try {
+        await guardCandidate(repository, pull, request);
+        if (!labelsReady) {
+          await ensureOwnedLabels(repository, request);
+          labelsReady = true;
+        }
+        await projectState({
+          repository,
+          pull,
+          transaction,
+          plan: currentPlan,
+          request,
+          loadAuthenticatedActor,
+        });
+      } catch (error) {
+        projectionError = errorMessage(error);
+      }
       results.push({
         pullNumber: pull.number,
         issueNumber: transaction.issue_number,
         headSha: pull.head.sha,
-        action: plan.action,
-        state: plan.state,
-        attempts: plan.attempts,
-        runId: plan.run?.id ?? null,
-        outcome: applied || plan.action === "block" ? "applied" : "observed",
+        action: currentPlan.action,
+        state: currentPlan.state,
+        attempts: currentPlan.attempts,
+        runId: currentPlan.run?.id ?? null,
+        outcome: application.superseded
+          ? "superseded"
+          : application.applied || currentPlan.action === "block"
+            ? "applied"
+            : "observed",
+        ...(projectionError ? { projectionError } : {}),
       });
     } catch (error) {
       if (error instanceof StaleCandidateError) {
