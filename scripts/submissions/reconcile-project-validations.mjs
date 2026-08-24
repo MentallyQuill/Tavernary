@@ -29,9 +29,10 @@ const OWNED_LABEL_DEFINITIONS = {
 };
 
 class StaleCandidateError extends Error {
-  constructor() {
+  constructor(reason = "changed-head") {
     super("Pull request state changed during reconciliation.");
     this.name = "StaleCandidateError";
+    this.reason = reason;
   }
 }
 
@@ -55,7 +56,7 @@ function expectedBranch(transaction) {
   return null;
 }
 
-function candidateFromPull(pull, repository, defaultBranch) {
+function candidateFromPull(pull, repository, defaultBranch, publisherActorId) {
   if (pull?.state !== "open") return { reason: "closed" };
   if (
     typeof pull?.head?.ref !== "string" ||
@@ -72,6 +73,9 @@ function candidateFromPull(pull, repository, defaultBranch) {
     return { reason: "fork-owned" };
   }
   if (pull.base.ref !== defaultBranch) return { reason: "wrong-base" };
+  if (pull.user?.id !== publisherActorId || pull.user?.type !== "Bot") {
+    return { reason: "untrusted-publisher-author" };
+  }
   const transaction = parseProjectPublicationTransaction(pull.body ?? "");
   if (!transaction) return { reason: "malformed-transaction" };
   if (transaction.publication_mode !== "automatic") {
@@ -84,6 +88,27 @@ function candidateFromPull(pull, repository, defaultBranch) {
     return { reason: "changed-head" };
   }
   return { transaction };
+}
+
+function issueAuthorityReason(issue, transaction) {
+  if (issue?.number !== transaction.issue_number || issue?.state !== "open") {
+    return "issue-closed";
+  }
+  if (
+    issue.user?.id !== transaction.actor.id ||
+    issue.user?.type !== transaction.actor.type ||
+    issue.user?.login?.toLowerCase() !== transaction.actor.login.toLowerCase()
+  ) {
+    return "issue-actor-mismatch";
+  }
+  const labels = labelNames(issue.labels);
+  if (!labels.includes("issue-admitted")) {
+    return "issue-no-longer-admitted";
+  }
+  if (!labels.includes(transaction.producer)) {
+    return "issue-route-mismatch";
+  }
+  return null;
 }
 
 async function listOpenPulls(repository, request) {
@@ -132,35 +157,79 @@ async function listValidationRuns(repository, pull, request) {
   );
 }
 
-function latestRun(runs) {
-  return [...runs].sort(
-    (left, right) =>
-      Date.parse(right?.created_at ?? "") - Date.parse(left?.created_at ?? ""),
-  )[0];
-}
-
-function associatedPublicationRuns(runs, validation, headSha) {
-  if (validation?.conclusion !== "success") return [];
-  const displayTitle = `Project publication for validation #${validation.id}`;
+function associatedPublicationRuns(runs, validations, headSha) {
+  const displayTitles = new Set(
+    validations
+      .filter((validation) => validation?.conclusion === "success")
+      .map(
+        (validation) => `Project publication for validation #${validation.id}`,
+      ),
+  );
+  if (displayTitles.size === 0) return [];
   return runs
     .filter(
       (run) =>
         run?.event === "workflow_dispatch" &&
         run.path === ".github/workflows/publish-project-transaction.yml" &&
-        run.display_title === displayTitle,
+        displayTitles.has(run.display_title),
     )
-    .flatMap((run) => {
-      const attempts = Math.min(
-        PROJECT_VALIDATION_RETRY_LIMIT,
-        Number.isInteger(run.run_attempt) && run.run_attempt > 0
-          ? run.run_attempt
-          : 1,
-      );
-      return Array.from({ length: attempts }, () => ({
-        ...run,
-        head_sha: headSha,
-      }));
-    });
+    .map((run) => ({ ...run, head_sha: headSha }));
+}
+
+function runCreatedAt(run) {
+  const milliseconds = Date.parse(run?.created_at ?? "");
+  return Number.isFinite(milliseconds) ? milliseconds : 0;
+}
+
+function generationWorkflow(transaction) {
+  if (transaction.producer === "project-submission") {
+    return {
+      file: "generate-project-submission.yml",
+      name: "Project submissions: Create review PR",
+      displayTitle: `Project #${transaction.issue_number}: Create review PR`,
+    };
+  }
+  return {
+    file: "generate-project-owner-request.yml",
+    name: "Project owner requests: Create review PR",
+    displayTitle: `Owner request #${transaction.issue_number}: Create review PR`,
+  };
+}
+
+async function listGenerationRuns(
+  repository,
+  transaction,
+  publisherActorId,
+  request,
+) {
+  const workflow = generationWorkflow(transaction);
+  const runs = await listWorkflowRuns(
+    repository,
+    workflow.file,
+    "event=workflow_dispatch",
+    request,
+  );
+  return runs.filter(
+    (run) =>
+      run?.name === workflow.name &&
+      run?.path === `.github/workflows/${workflow.file}` &&
+      run?.event === "workflow_dispatch" &&
+      run?.display_title === workflow.displayTitle &&
+      run?.actor?.id === publisherActorId &&
+      run?.actor?.type === "Bot",
+  );
+}
+
+function associatedGenerationRuns(runs, publicationRuns, headSha) {
+  const successfulPublications = publicationRuns
+    .filter((run) => run?.conclusion === "success")
+    .sort((left, right) => runCreatedAt(left) - runCreatedAt(right));
+  const anchor = successfulPublications[0];
+  if (!anchor) return [];
+  const anchorCreatedAt = runCreatedAt(anchor);
+  return runs
+    .filter((run) => runCreatedAt(run) >= anchorCreatedAt)
+    .map((run) => ({ ...run, head_sha: headSha }));
 }
 
 async function loadReconciliationPlan({
@@ -170,22 +239,36 @@ async function loadReconciliationPlan({
   request,
   nowMs,
   loadPublicationRuns,
+  publisherActorId,
 }) {
   const validationRuns = await listValidationRuns(repository, pull, request);
-  const successfulValidation = latestRun(validationRuns);
+  const successfulValidations = validationRuns.filter(
+    (run) => run?.conclusion === "success",
+  );
   let publicationRuns = [];
-  if (successfulValidation?.conclusion === "success") {
+  if (successfulValidations.length > 0) {
     publicationRuns = associatedPublicationRuns(
       await loadPublicationRuns(),
-      successfulValidation,
+      successfulValidations,
       pull.head.sha,
     );
   }
+  const generationRuns = associatedGenerationRuns(
+    await listGenerationRuns(
+      repository,
+      transaction,
+      publisherActorId,
+      request,
+    ),
+    publicationRuns,
+    pull.head.sha,
+  );
   return planProjectValidationReconciliation({
     transaction,
     headSha: pull.head.sha,
     validationRuns,
     publicationRuns,
+    generationRuns,
     nowMs,
     pull,
   });
@@ -202,9 +285,46 @@ function sameLivePull(expected, live) {
   );
 }
 
-async function guardCandidate(repository, pull, request) {
-  const live = await request(`/repos/${repository}/pulls/${pull.number}`);
+async function loadLiveCandidate({
+  repository,
+  defaultBranch,
+  pull,
+  transaction,
+  publisherActorId,
+  request,
+}) {
+  const livePull = await request(`/repos/${repository}/pulls/${pull.number}`);
+  if (!sameLivePull(pull, livePull)) throw new StaleCandidateError();
+  const liveCandidate = candidateFromPull(
+    livePull,
+    repository,
+    defaultBranch,
+    publisherActorId,
+  );
+  if (!liveCandidate.transaction) {
+    throw new StaleCandidateError(liveCandidate.reason);
+  }
+  if (
+    JSON.stringify(liveCandidate.transaction) !== JSON.stringify(transaction)
+  ) {
+    throw new StaleCandidateError("transaction-changed");
+  }
+  const issue = await request(
+    `/repos/${repository}/issues/${transaction.issue_number}`,
+  );
+  const issueReason = issueAuthorityReason(issue, transaction);
+  if (issueReason) throw new StaleCandidateError(issueReason);
+  return { pull: livePull, transaction: liveCandidate.transaction };
+}
+
+async function guardCandidate(repository, pull, transaction, request) {
+  const [live, issue] = await Promise.all([
+    request(`/repos/${repository}/pulls/${pull.number}`),
+    request(`/repos/${repository}/issues/${transaction.issue_number}`),
+  ]);
   if (!sameLivePull(pull, live)) throw new StaleCandidateError();
+  const issueReason = issueAuthorityReason(issue, transaction);
+  if (issueReason) throw new StaleCandidateError(issueReason);
 }
 
 async function ensureOwnedLabels(repository, request) {
@@ -268,7 +388,8 @@ function desiredOwnedLabels(plan) {
     desired.add("submission-validation-blocked");
   } else if (
     plan.state === "retrying-validation" ||
-    plan.state === "retrying-publication"
+    plan.state === "retrying-publication" ||
+    plan.state === "retrying-regeneration"
   ) {
     desired.add("submission-validation-retrying");
   }
@@ -278,6 +399,7 @@ function desiredOwnedLabels(plan) {
 async function reconcileOwnedLabels({
   repository,
   pull,
+  transaction,
   issueNumber,
   issue,
   plan,
@@ -287,13 +409,13 @@ async function reconcileOwnedLabels({
   const desired = desiredOwnedLabels(plan);
   for (const label of PROJECT_VALIDATION_OWNED_LABELS) {
     if (desired.has(label) && !current.has(label)) {
-      await guardCandidate(repository, pull, request);
+      await guardCandidate(repository, pull, transaction, request);
       await request(`/repos/${repository}/issues/${issueNumber}/labels`, {
         method: "POST",
         body: JSON.stringify({ labels: [label] }),
       });
     } else if (!desired.has(label) && current.has(label)) {
-      await guardCandidate(repository, pull, request);
+      await guardCandidate(repository, pull, transaction, request);
       try {
         await request(
           `/repos/${repository}/issues/${issueNumber}/labels/${encodeURIComponent(label)}`,
@@ -316,6 +438,8 @@ function statusProjection(plan) {
     "retrying-publication": `Retrying Publisher jobs (${plan.attempts} of ${PROJECT_VALIDATION_RETRY_LIMIT}).`,
     "publication-blocked": "Publisher attempts are exhausted.",
     regenerating: "Regenerating the stale automatic transaction.",
+    "retrying-regeneration": `Retrying stale transaction regeneration (${plan.attempts} of ${PROJECT_VALIDATION_RETRY_LIMIT}).`,
+    "regeneration-blocked": "Transaction regeneration attempts are exhausted.",
     published: "Publisher completed this exact generated head.",
   };
   return {
@@ -359,6 +483,7 @@ async function projectState({
   await reconcileOwnedLabels({
     repository,
     pull,
+    transaction,
     issueNumber: transaction.issue_number,
     issue,
     plan,
@@ -377,7 +502,7 @@ async function projectState({
       String(comment?.body ?? "").includes(PROJECT_VALIDATION_STATE_MARKER),
   );
   if (existing?.body !== body) {
-    await guardCandidate(repository, pull, request);
+    await guardCandidate(repository, pull, transaction, request);
     if (existing) {
       await request(`/repos/${repository}/issues/comments/${existing.id}`, {
         method: "PATCH",
@@ -400,7 +525,7 @@ async function projectState({
     (status) => status?.context === STATUS_CONTEXT,
   );
   if (!sameStatusProjection(latestOwnedStatus, projection)) {
-    await guardCandidate(repository, pull, request);
+    await guardCandidate(repository, pull, transaction, request);
     await request(`/repos/${repository}/statuses/${pull.head.sha}`, {
       method: "POST",
       body: JSON.stringify(projection),
@@ -416,6 +541,7 @@ async function replanAndApply({
   plan,
   request,
   nowMs,
+  publisherActorId,
 }) {
   if (
     ![
@@ -428,10 +554,18 @@ async function replanAndApply({
   ) {
     return { plan, applied: false, superseded: false };
   }
-  const currentPlan = await loadReconciliationPlan({
+  const liveCandidate = await loadLiveCandidate({
     repository,
+    defaultBranch,
     pull,
     transaction,
+    publisherActorId,
+    request,
+  });
+  const currentPlan = await loadReconciliationPlan({
+    repository,
+    pull: liveCandidate.pull,
+    transaction: liveCandidate.transaction,
     request,
     nowMs,
     loadPublicationRuns: () =>
@@ -441,6 +575,7 @@ async function replanAndApply({
         "event=workflow_dispatch",
         request,
       ),
+    publisherActorId,
   });
   if (currentPlan.action !== plan.action) {
     return { plan: currentPlan, applied: false, superseded: true };
@@ -463,22 +598,15 @@ async function replanAndApply({
   } else if (currentPlan.action === "retry-publication") {
     path = `/repos/${repository}/actions/runs/${currentPlan.run.id}/rerun-failed-jobs`;
   } else if (currentPlan.action === "regenerate") {
-    const workflow =
-      transaction.producer === "project-submission"
-        ? "generate-project-submission.yml"
-        : "generate-project-owner-request.yml";
-    path = `/repos/${repository}/actions/workflows/${workflow}/dispatches`;
+    path = `/repos/${repository}/actions/workflows/publish-project-transaction.yml/dispatches`;
     body = {
       ref: defaultBranch,
-      inputs: {
-        issue_number: String(transaction.issue_number),
-        force_regeneration: "false",
-      },
+      inputs: { validation_run_id: String(currentPlan.validationRunId) },
     };
   } else {
     return { plan: currentPlan, applied: false, superseded: true };
   }
-  await guardCandidate(repository, pull, request);
+  await guardCandidate(repository, pull, transaction, request);
   await request(path, {
     method: "POST",
     ...(body ? { body: JSON.stringify(body) } : {}),
@@ -490,6 +618,7 @@ export async function reconcileProjectValidations({
   repository,
   request,
   nowMs,
+  publisherActorId,
 }) {
   if (
     typeof repository !== "string" ||
@@ -499,6 +628,9 @@ export async function reconcileProjectValidations({
   }
   if (typeof request !== "function") {
     throw new Error("Project validation reconciliation needs request.");
+  }
+  if (!Number.isSafeInteger(publisherActorId) || publisherActorId < 1) {
+    throw new Error("A numeric Publisher bot actor ID is required.");
   }
   const repositoryState = await request(`/repos/${repository}`);
   const defaultBranch = repositoryState?.default_branch;
@@ -518,7 +650,12 @@ export async function reconcileProjectValidations({
   };
 
   for (const pull of pulls) {
-    const candidate = candidateFromPull(pull, repository, defaultBranch);
+    const candidate = candidateFromPull(
+      pull,
+      repository,
+      defaultBranch,
+      publisherActorId,
+    );
     if (!candidate.transaction) {
       results.push({
         pullNumber: pull?.number ?? null,
@@ -529,6 +666,19 @@ export async function reconcileProjectValidations({
     }
     const transaction = candidate.transaction;
     try {
+      const issue = await request(
+        `/repos/${repository}/issues/${transaction.issue_number}`,
+      );
+      const issueReason = issueAuthorityReason(issue, transaction);
+      if (issueReason) {
+        results.push({
+          pullNumber: pull.number,
+          issueNumber: transaction.issue_number,
+          action: "ignore",
+          reason: issueReason,
+        });
+        continue;
+      }
       const plan = await loadReconciliationPlan({
         repository,
         pull,
@@ -544,6 +694,7 @@ export async function reconcileProjectValidations({
           );
           return publicationRunsPromise;
         },
+        publisherActorId,
       });
       if (plan.action === "ignore") {
         results.push({
@@ -563,11 +714,12 @@ export async function reconcileProjectValidations({
         plan,
         request,
         nowMs,
+        publisherActorId,
       });
       const currentPlan = application.plan;
       let projectionError;
       try {
-        await guardCandidate(repository, pull, request);
+        await guardCandidate(repository, pull, transaction, request);
         if (!labelsReady) {
           await ensureOwnedLabels(repository, request);
           labelsReady = true;
@@ -605,6 +757,7 @@ export async function reconcileProjectValidations({
           issueNumber: transaction.issue_number,
           action: "ignore",
           outcome: "stale",
+          reason: error.reason,
         });
       } else {
         results.push({
@@ -648,17 +801,48 @@ async function githubRequest(path, options = {}) {
   return response.status === 204 ? null : response.json();
 }
 
-async function main() {
-  const repository = process.env.GITHUB_REPOSITORY ?? "";
-  if (!process.env.GITHUB_TOKEN && !process.env.GH_TOKEN) {
+function publisherActorIdFromEnv(env) {
+  const configured = env.TAVERNARY_PUBLISHER_BOT_ID ?? "";
+  if (!/^[1-9]\d*$/u.test(configured)) {
+    throw new Error(
+      "TAVERNARY_PUBLISHER_BOT_ID must be a positive numeric bot ID.",
+    );
+  }
+  const publisherActorId = Number(configured);
+  if (!Number.isSafeInteger(publisherActorId)) {
+    throw new Error(
+      "TAVERNARY_PUBLISHER_BOT_ID must be a positive numeric bot ID.",
+    );
+  }
+  return publisherActorId;
+}
+
+export async function runReconcileProjectValidationsCli({
+  env = process.env,
+  request = githubRequest,
+  nowMs = Date.now(),
+  write = (output) => console.log(output),
+} = {}) {
+  if (!env.GITHUB_TOKEN && !env.GH_TOKEN) {
     throw new Error("GITHUB_TOKEN or GH_TOKEN is required.");
   }
+  const publisherActorId = publisherActorIdFromEnv(env);
   const summary = await reconcileProjectValidations({
-    repository,
-    request: githubRequest,
-    nowMs: Date.now(),
+    repository: env.GITHUB_REPOSITORY ?? "",
+    request,
+    nowMs,
+    publisherActorId,
   });
-  console.log(JSON.stringify(summary, null, 2));
+  write(JSON.stringify(summary, null, 2));
+  return summary.results.some(
+    (result) => result.action === "error" || "projectionError" in result,
+  )
+    ? 1
+    : 0;
+}
+
+async function main() {
+  process.exitCode = await runReconcileProjectValidationsCli();
 }
 
 if (

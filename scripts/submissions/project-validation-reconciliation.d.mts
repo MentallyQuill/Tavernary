@@ -5,6 +5,7 @@ export type ProjectValidationRun = {
   head_sha?: string;
   status?: string;
   conclusion?: string | null;
+  run_attempt?: number;
   created_at?: string;
   updated_at?: string;
   html_url?: string;
@@ -19,6 +20,8 @@ export type ProjectValidationState =
   | "retrying-publication"
   | "publication-blocked"
   | "regenerating"
+  | "retrying-regeneration"
+  | "regeneration-blocked"
   | "published";
 
 export type ProjectValidationPlan =
@@ -35,6 +38,7 @@ export type ProjectValidationPlan =
       state: ProjectValidationState;
       attempts: number;
       run: ProjectValidationRun | null;
+      validationRunId?: number;
     };
 
 export const PROJECT_VALIDATION_RETRY_LIMIT: number;
@@ -48,6 +52,7 @@ export function planProjectValidationReconciliation(input: {
   headSha: string;
   validationRuns: ProjectValidationRun[];
   publicationRuns: ProjectValidationRun[];
+  generationRuns?: ProjectValidationRun[];
   nowMs: number;
   pull?: { updated_at?: string };
 }): ProjectValidationPlan;

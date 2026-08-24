@@ -42,6 +42,7 @@ export type ReconciliationResult =
       issueNumber: number;
       action: "ignore";
       outcome: "stale";
+      reason: string;
     }
   | {
       pullNumber: number;
@@ -61,4 +62,12 @@ export function reconcileProjectValidations(input: {
   repository: string;
   request: GitHubRequest;
   nowMs: number;
+  publisherActorId: number;
 }): Promise<ReconciliationSummary>;
+
+export function runReconcileProjectValidationsCli(input?: {
+  env?: Record<string, string | undefined>;
+  request?: GitHubRequest;
+  nowMs?: number;
+  write?: (output: string) => void;
+}): Promise<number>;

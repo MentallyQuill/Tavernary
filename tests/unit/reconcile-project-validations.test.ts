@@ -1,6 +1,9 @@
 import { expect, test } from "vitest";
 
-import { reconcileProjectValidations } from "../../scripts/submissions/reconcile-project-validations.mjs";
+import {
+  reconcileProjectValidations,
+  runReconcileProjectValidationsCli,
+} from "../../scripts/submissions/reconcile-project-validations.mjs";
 import {
   createProjectPublicationTransaction,
   PROJECT_PUBLICATION_TRANSACTION_MARKER,
@@ -15,6 +18,7 @@ const REPOSITORY = "MentallyQuill/Tavernary";
 const HEAD_SHA = "c".repeat(40);
 const NEXT_HEAD_SHA = "e".repeat(40);
 const OLD_HEAD_SHA = "d".repeat(40);
+const PUBLISHER_ACTOR_ID = 41_982_982;
 const NOW = Date.parse("2026-08-23T12:00:00.000Z");
 
 type JsonObject = Record<string, unknown>;
@@ -77,6 +81,8 @@ function pullFixture({
   body,
   publicationMode = "automatic",
   updatedAt = new Date(NOW).toISOString(),
+  pullAuthorId = PUBLISHER_ACTOR_ID,
+  pullAuthorType = "Bot",
 }: {
   number?: number;
   state?: "open" | "closed";
@@ -88,6 +94,8 @@ function pullFixture({
   body?: string;
   publicationMode?: "automatic" | "manual";
   updatedAt?: string;
+  pullAuthorId?: number;
+  pullAuthorType?: "Bot" | "User";
 } = {}) {
   const transaction = transactionFixture({
     issueNumber: number,
@@ -113,9 +121,9 @@ function pullFixture({
     merge_commit_sha: null,
     user: {
       login: "github-actions[bot]",
-      id: 41_982_982,
+      id: pullAuthorId,
       node_id: "BOT_1",
-      type: "Bot",
+      type: pullAuthorType,
       site_admin: false,
     },
     head: {
@@ -202,9 +210,11 @@ function runFixture({
   status = conclusion === null ? "in_progress" : "completed",
   createdAt = new Date(NOW - id * 1_000).toISOString(),
   updatedAt = createdAt,
-  displayTitle = `Site: Validate ${headBranch}`,
+  displayTitle,
   workflow = "ci.yml",
   runAttempt = 1,
+  actorId = PUBLISHER_ACTOR_ID,
+  actorType = "Bot",
 }: {
   id: number;
   headSha?: string;
@@ -214,35 +224,64 @@ function runFixture({
   createdAt?: string;
   updatedAt?: string;
   displayTitle?: string;
-  workflow?: "ci.yml" | "publish-project-transaction.yml";
+  workflow?:
+    | "ci.yml"
+    | "publish-project-transaction.yml"
+    | "generate-project-submission.yml"
+    | "generate-project-owner-request.yml";
   runAttempt?: number;
+  actorId?: number;
+  actorType?: "Bot" | "User";
 }) {
   const publication = workflow === "publish-project-transaction.yml";
+  const submissionGeneration = workflow === "generate-project-submission.yml";
+  const ownerGeneration = workflow === "generate-project-owner-request.yml";
+  const workflowName = publication
+    ? "Projects: Publish validated transaction"
+    : submissionGeneration
+      ? "Project submissions: Create review PR"
+      : ownerGeneration
+        ? "Project owner requests: Create review PR"
+        : "Site: Validate changes";
+  const defaultDisplayTitle = submissionGeneration
+    ? "Project #620: Create review PR"
+    : ownerGeneration
+      ? "Owner request #620: Create review PR"
+      : `Site: Validate ${headBranch}`;
   return {
     id,
     node_id: `WFR_${id}`,
-    name: publication
-      ? "Projects: Publish validated transaction"
-      : "Site: Validate changes",
+    name: workflowName,
     path: `.github/workflows/${workflow}`,
-    display_title: displayTitle,
+    display_title: displayTitle ?? defaultDisplayTitle,
     run_number: id,
     event: "workflow_dispatch",
     status,
     conclusion,
-    workflow_id: publication ? 202 : 101,
+    workflow_id: publication
+      ? 202
+      : submissionGeneration
+        ? 301
+        : ownerGeneration
+          ? 302
+          : 101,
     check_suite_id: id + 10_000,
     check_suite_node_id: `CS_${id}`,
     head_branch: headBranch,
     head_sha: headSha,
     run_attempt: runAttempt,
+    actor: {
+      login: actorType === "Bot" ? "tavernary-publisher[bot]" : "maintainer",
+      id: actorId,
+      type: actorType,
+    },
     created_at: createdAt,
     updated_at: updatedAt,
     html_url: `https://github.com/${REPOSITORY}/actions/runs/${id}`,
     url: `https://api.github.com/repos/${REPOSITORY}/actions/runs/${id}`,
     jobs_url: `https://api.github.com/repos/${REPOSITORY}/actions/runs/${id}/jobs`,
     rerun_url: `https://api.github.com/repos/${REPOSITORY}/actions/runs/${id}/rerun`,
-    workflow_url: `https://api.github.com/repos/${REPOSITORY}/actions/workflows/${publication ? 202 : 101}`,
+    workflow_url: `https://api.github.com/repos/${REPOSITORY}/actions/workflows/${publication ? 202 : submissionGeneration ? 301 : ownerGeneration ? 302 : 101}`,
   };
 }
 
@@ -285,11 +324,13 @@ class FakeGitHub {
   livePulls = new Map<number, Pull>();
   livePullReads = new Map<number, Pull[]>();
   issues = new Map<number, ReturnType<typeof issueFixture>>();
+  liveIssueReads = new Map<number, ReturnType<typeof issueFixture>[]>();
   comments = new Map<number, JsonObject[]>();
   labels = new Map<string, JsonObject>();
   statuses = new Map<string, JsonObject[]>();
   validationPages = new Map<string, WorkflowRun[][]>();
   publicationPages: WorkflowRun[][] = [[]];
+  generationPages = new Map<string, WorkflowRun[][]>();
   failures = new Map<string, Error & { status?: number }>();
   requests: Array<{ method: string; path: string; body?: JsonObject }> = [];
   onRequest:
@@ -419,6 +460,19 @@ class FakeGitHub {
           (this.validationPages.get(branch) ?? [[]])[page - 1] ?? [],
       };
     }
+    const generationRunsMatch = pathname.match(
+      new RegExp(
+        `^/repos/${REPOSITORY}/actions/workflows/(generate-project-(?:submission|owner-request)\\.yml)/runs$`,
+        "u",
+      ),
+    );
+    if (method === "GET" && generationRunsMatch) {
+      const pages = this.generationPages.get(generationRunsMatch[1]) ?? [[]];
+      return {
+        total_count: pages.flat().length,
+        workflow_runs: pages[page - 1] ?? [],
+      };
+    }
     if (
       method === "GET" &&
       pathname ===
@@ -455,7 +509,10 @@ class FakeGitHub {
       new RegExp(`^/repos/${REPOSITORY}/issues/(\\d+)$`, "u"),
     );
     if (method === "GET" && issueMatch) {
-      const issue = this.issues.get(Number(issueMatch[1]));
+      const number = Number(issueMatch[1]);
+      const reads = this.liveIssueReads.get(number);
+      if (reads?.length) return reads.shift();
+      const issue = this.issues.get(number);
       if (issue) return issue;
     }
     const issueLabelsMatch = pathname.match(
@@ -592,8 +649,180 @@ async function reconcile(fake: FakeGitHub) {
     repository: REPOSITORY,
     request: fake.request,
     nowMs: NOW,
+    publisherActorId: PUBLISHER_ACTOR_ID,
   });
 }
+
+test("ignores a generated PR created by a different actor ID", async () => {
+  const fake = new FakeGitHub([
+    pullFixture({ pullAuthorId: PUBLISHER_ACTOR_ID + 1 }),
+  ]);
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results).toEqual([
+    {
+      pullNumber: 620,
+      action: "ignore",
+      reason: "untrusted-publisher-author",
+    },
+  ]);
+  expect(fake.mutationRequests()).toEqual([]);
+});
+
+test("ignores a generated PR whose configured actor is not a Bot", async () => {
+  const fake = new FakeGitHub([pullFixture({ pullAuthorType: "User" })]);
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results).toEqual([
+    {
+      pullNumber: 620,
+      action: "ignore",
+      reason: "untrusted-publisher-author",
+    },
+  ]);
+  expect(fake.mutationRequests()).toEqual([]);
+});
+
+test("requires a positive numeric Publisher actor ID", async () => {
+  const fake = new FakeGitHub([pullFixture()]);
+
+  await expect(
+    reconcileProjectValidations({
+      repository: REPOSITORY,
+      request: fake.request,
+      nowMs: NOW,
+      publisherActorId: Number.NaN,
+    }),
+  ).rejects.toThrow("A numeric Publisher bot actor ID is required.");
+  expect(fake.requests).toEqual([]);
+});
+
+test("ignores a transaction whose source issue is closed before planning", async () => {
+  const pull = pullFixture();
+  const fake = new FakeGitHub([pull]);
+  fake.issues.get(620)!.state = "closed";
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results).toEqual([
+    {
+      pullNumber: 620,
+      issueNumber: 620,
+      action: "ignore",
+      reason: "issue-closed",
+    },
+  ]);
+  expect(fake.mutationRequests()).toEqual([]);
+  expect(
+    fake.requests.some(({ path }) => path.includes("/actions/workflows/")),
+  ).toBe(false);
+});
+
+test("ignores a transaction whose source issue author ID changed", async () => {
+  const fake = new FakeGitHub([pullFixture()]);
+  fake.issues.get(620)!.user.id = 2;
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results[0]).toEqual({
+    pullNumber: 620,
+    issueNumber: 620,
+    action: "ignore",
+    reason: "issue-actor-mismatch",
+  });
+  expect(fake.mutationRequests()).toEqual([]);
+});
+
+test("ignores a transaction whose source issue author type changed", async () => {
+  const fake = new FakeGitHub([pullFixture()]);
+  fake.issues.get(620)!.user.type = "Bot";
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results[0]).toMatchObject({
+    action: "ignore",
+    reason: "issue-actor-mismatch",
+  });
+  expect(fake.mutationRequests()).toEqual([]);
+});
+
+test("ignores a transaction whose source issue author login changed", async () => {
+  const fake = new FakeGitHub([pullFixture()]);
+  fake.issues.get(620)!.user.login = "renamed-submitter";
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results[0]).toMatchObject({
+    action: "ignore",
+    reason: "issue-actor-mismatch",
+  });
+  expect(fake.mutationRequests()).toEqual([]);
+});
+
+test("ignores a transaction whose source issue admission was revoked", async () => {
+  const fake = new FakeGitHub([pullFixture()]);
+  fake.issues.get(620)!.labels = fake.issues
+    .get(620)!
+    .labels.filter(({ name }) => name !== "issue-admitted");
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results[0]).toMatchObject({
+    action: "ignore",
+    reason: "issue-no-longer-admitted",
+  });
+  expect(fake.mutationRequests()).toEqual([]);
+});
+
+test("ignores a transaction whose source issue route no longer matches", async () => {
+  const fake = new FakeGitHub([pullFixture()]);
+  const issue = fake.issues.get(620)!;
+  issue.labels = issue.labels.filter(
+    ({ name }) => name !== "project-submission",
+  );
+  issue.labels.push({
+    id: 3,
+    node_id: "L_3",
+    name: "project-owner-request",
+    color: "5319e7",
+  });
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results[0]).toMatchObject({
+    action: "ignore",
+    reason: "issue-route-mismatch",
+  });
+  expect(fake.mutationRequests()).toEqual([]);
+});
+
+test("rechecks source issue admission immediately before dispatch", async () => {
+  const pull = pullFixture();
+  const admitted = issueFixture();
+  const revoked = issueFixture();
+  revoked.labels = revoked.labels.filter(
+    ({ name }) => name !== "issue-admitted",
+  );
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [[]]);
+  fake.liveIssueReads.set(620, [admitted, revoked]);
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results[0]).toMatchObject({
+    action: "ignore",
+    outcome: "stale",
+    reason: "issue-no-longer-admitted",
+  });
+  expect(fake.mutationRequests()).toEqual([]);
+  expect(
+    fake.requestCounts.get(
+      `GET /repos/${REPOSITORY}/actions/workflows/ci.yml/runs?branch=${encodeURIComponent(pull.head.ref)}&event=workflow_dispatch&per_page=100&page=1`,
+    ),
+  ).toBe(1);
+});
 
 test("dispatches exact-head validation when the automatic PR has no run", async () => {
   const pull = pullFixture();
@@ -870,6 +1099,28 @@ test("blocks exhausted validation attempts without another dispatch", async () =
   ).toBe(false);
 });
 
+test("counts every completed validation run_attempt toward the head budget", async () => {
+  const pull = pullFixture();
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [
+    [runFixture({ id: 17, conclusion: "failure", runAttempt: 3 })],
+  ]);
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results[0]).toMatchObject({
+    action: "block",
+    state: "validation-blocked",
+    attempts: 3,
+  });
+  expect(
+    fake.requests.some(
+      ({ method, path }) =>
+        method === "POST" && path.endsWith("/ci.yml/dispatches"),
+    ),
+  ).toBe(false);
+});
+
 test("mutates only owned labels and preserves concurrent foreign label changes", async () => {
   const pull = pullFixture();
   const fake = new FakeGitHub([pull]);
@@ -989,6 +1240,47 @@ test("does not dispatch publication when a late Publisher run appears", async ()
   ).toBe(false);
 });
 
+test("aggregates Publisher runs for every successful validation on the head", async () => {
+  const pull = pullFixture();
+  const olderValidation = runFixture({
+    id: 26,
+    conclusion: "success",
+    createdAt: new Date(NOW - 20 * 60_000).toISOString(),
+    updatedAt: new Date(NOW - 20 * 60_000).toISOString(),
+  });
+  const newerValidation = runFixture({
+    id: 27,
+    conclusion: "success",
+    createdAt: new Date(NOW - 10 * 60_000).toISOString(),
+    updatedAt: new Date(NOW - 10 * 60_000).toISOString(),
+  });
+  const activePublisher = runFixture({
+    id: 28,
+    conclusion: null,
+    workflow: "publish-project-transaction.yml",
+    displayTitle: "Project publication for validation #26",
+    headSha: "f".repeat(40),
+    headBranch: "main",
+  });
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [[newerValidation, olderValidation]]);
+  fake.publicationPages = [[activePublisher]];
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results[0]).toMatchObject({
+    action: "wait",
+    state: "publishing",
+  });
+  expect(
+    fake.requests.some(
+      ({ method, path }) =>
+        method === "POST" &&
+        path.endsWith("/publish-project-transaction.yml/dispatches"),
+    ),
+  ).toBe(false);
+});
+
 test("reruns failed Publisher jobs below the per-head attempt limit", async () => {
   const pull = pullFixture();
   const validation = runFixture({ id: 31, conclusion: "success" });
@@ -1062,7 +1354,7 @@ test("does not rerun Publisher when a late active attempt appears", async () => 
   ).toBe(false);
 });
 
-test("dispatches regeneration for a stale automatic transaction", async () => {
+test("routes stale regeneration through Publisher for the exact validation", async () => {
   const old = new Date(
     NOW - PROJECT_VALIDATION_REGENERATION_GRACE_MS - 1,
   ).toISOString();
@@ -1086,12 +1378,315 @@ test("dispatches regeneration for a stale automatic transaction", async () => {
   expect(summary.results[0]).toMatchObject({ action: "regenerate" });
   expect(fake.requests).toContainEqual({
     method: "POST",
-    path: `/repos/${REPOSITORY}/actions/workflows/generate-project-submission.yml/dispatches`,
+    path: `/repos/${REPOSITORY}/actions/workflows/publish-project-transaction.yml/dispatches`,
     body: {
       ref: "main",
-      inputs: { issue_number: "620", force_regeneration: "false" },
+      inputs: { validation_run_id: "41" },
     },
   });
+  expect(
+    fake.requests.some(
+      ({ method, path }) =>
+        method === "POST" &&
+        path.includes("/actions/workflows/generate-project-submission.yml/"),
+    ),
+  ).toBe(false);
+});
+
+test("waits while a Publisher-launched generation run is active", async () => {
+  const old = new Date(
+    NOW - PROJECT_VALIDATION_REGENERATION_GRACE_MS - 1,
+  ).toISOString();
+  const pull = pullFixture({ updatedAt: old });
+  const validation = runFixture({ id: 47, conclusion: "success" });
+  const publisher = runFixture({
+    id: 48,
+    conclusion: "success",
+    workflow: "publish-project-transaction.yml",
+    displayTitle: "Project publication for validation #47",
+    headSha: "f".repeat(40),
+    headBranch: "main",
+    createdAt: new Date(NOW - 20 * 60_000).toISOString(),
+    updatedAt: old,
+  });
+  const generation = runFixture({
+    id: 49,
+    conclusion: null,
+    workflow: "generate-project-submission.yml",
+    headSha: "f".repeat(40),
+    headBranch: "main",
+    createdAt: new Date(NOW - 10 * 60_000).toISOString(),
+  });
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [[validation]]);
+  fake.publicationPages = [[publisher]];
+  fake.generationPages.set("generate-project-submission.yml", [[generation]]);
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results[0]).toMatchObject({
+    action: "wait",
+    state: "regenerating",
+    runId: 49,
+  });
+  expect(
+    fake.requests.some(
+      ({ method, path }) =>
+        method === "POST" &&
+        path.endsWith("/publish-project-transaction.yml/dispatches"),
+    ),
+  ).toBe(false);
+});
+
+test("late-action replanning refreshes generation runs before dispatch", async () => {
+  const old = new Date(
+    NOW - PROJECT_VALIDATION_REGENERATION_GRACE_MS - 1,
+  ).toISOString();
+  const pull = pullFixture({ updatedAt: old });
+  const validation = runFixture({ id: 61, conclusion: "success" });
+  const publisher = runFixture({
+    id: 62,
+    conclusion: "success",
+    workflow: "publish-project-transaction.yml",
+    displayTitle: "Project publication for validation #61",
+    headSha: "f".repeat(40),
+    headBranch: "main",
+    createdAt: new Date(NOW - 20 * 60_000).toISOString(),
+    updatedAt: old,
+  });
+  const generation = runFixture({
+    id: 63,
+    conclusion: null,
+    workflow: "generate-project-submission.yml",
+    headSha: "f".repeat(40),
+    headBranch: "main",
+    createdAt: new Date(NOW - 10 * 60_000).toISOString(),
+  });
+  const generationPath = `/repos/${REPOSITORY}/actions/workflows/generate-project-submission.yml/runs?event=workflow_dispatch&per_page=100&page=1`;
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [[validation]]);
+  fake.publicationPages = [[publisher]];
+  fake.generationPages.set("generate-project-submission.yml", [[]]);
+  fake.onRequest = ({ method, path, count }) => {
+    if (method === "GET" && path === generationPath && count === 2) {
+      fake.generationPages.set("generate-project-submission.yml", [
+        [generation],
+      ]);
+    }
+  };
+
+  const summary = await reconcile(fake);
+
+  expect(fake.requestCounts.get(`GET ${generationPath}`)).toBe(2);
+  expect(summary.results[0]).toMatchObject({
+    action: "wait",
+    state: "regenerating",
+    outcome: "superseded",
+    runId: 63,
+  });
+  expect(
+    fake.requests.some(
+      ({ method, path }) =>
+        method === "POST" &&
+        path.endsWith("/publish-project-transaction.yml/dispatches"),
+    ),
+  ).toBe(false);
+});
+
+test("ignores generation runs outside the exact Publisher issue boundary", async () => {
+  const old = new Date(
+    NOW - PROJECT_VALIDATION_REGENERATION_GRACE_MS - 1,
+  ).toISOString();
+  const pull = pullFixture({ updatedAt: old });
+  const validation = runFixture({ id: 64, conclusion: "success" });
+  const publisherCreatedAt = new Date(NOW - 30 * 60_000).toISOString();
+  const publisher = runFixture({
+    id: 65,
+    conclusion: "success",
+    workflow: "publish-project-transaction.yml",
+    displayTitle: "Project publication for validation #64",
+    headSha: "f".repeat(40),
+    headBranch: "main",
+    createdAt: publisherCreatedAt,
+    updatedAt: old,
+  });
+  const exact = runFixture({
+    id: 66,
+    conclusion: null,
+    workflow: "generate-project-submission.yml",
+    headSha: "f".repeat(40),
+    headBranch: "main",
+    createdAt: new Date(NOW - 10 * 60_000).toISOString(),
+  });
+  const untrusted = [
+    { ...exact, id: 67, name: "Wrong workflow" },
+    { ...exact, id: 68, path: ".github/workflows/other.yml" },
+    { ...exact, id: 69, event: "workflow_run" },
+    { ...exact, id: 70, display_title: "Project #621: Create review PR" },
+    { ...exact, id: 71, actor: { ...exact.actor, id: PUBLISHER_ACTOR_ID + 1 } },
+    {
+      ...exact,
+      id: 72,
+      actor: { ...exact.actor, type: "User" as const },
+    },
+    {
+      ...exact,
+      id: 73,
+      created_at: new Date(NOW - 40 * 60_000).toISOString(),
+    },
+  ];
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [[validation]]);
+  fake.publicationPages = [[publisher]];
+  fake.generationPages.set("generate-project-submission.yml", [untrusted]);
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results[0]).toMatchObject({ action: "regenerate" });
+  expect(fake.requests).toContainEqual({
+    method: "POST",
+    path: `/repos/${REPOSITORY}/actions/workflows/publish-project-transaction.yml/dispatches`,
+    body: { ref: "main", inputs: { validation_run_id: "64" } },
+  });
+});
+
+test("retries a failed generation through Publisher below the head budget", async () => {
+  const old = new Date(
+    NOW - PROJECT_VALIDATION_REGENERATION_GRACE_MS - 1,
+  ).toISOString();
+  const pull = pullFixture({ updatedAt: old });
+  const validation = runFixture({ id: 50, conclusion: "success" });
+  const publisher = runFixture({
+    id: 51,
+    conclusion: "success",
+    workflow: "publish-project-transaction.yml",
+    displayTitle: "Project publication for validation #50",
+    headSha: "f".repeat(40),
+    headBranch: "main",
+    createdAt: new Date(NOW - 20 * 60_000).toISOString(),
+    updatedAt: old,
+  });
+  const generation = runFixture({
+    id: 52,
+    conclusion: "failure",
+    workflow: "generate-project-submission.yml",
+    headSha: "f".repeat(40),
+    headBranch: "main",
+    createdAt: new Date(NOW - 10 * 60_000).toISOString(),
+  });
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [[validation]]);
+  fake.publicationPages = [[publisher]];
+  fake.generationPages.set("generate-project-submission.yml", [[generation]]);
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results[0]).toMatchObject({
+    action: "regenerate",
+    state: "retrying-regeneration",
+    attempts: 1,
+    runId: 52,
+  });
+  expect(fake.requests).toContainEqual({
+    method: "POST",
+    path: `/repos/${REPOSITORY}/actions/workflows/publish-project-transaction.yml/dispatches`,
+    body: { ref: "main", inputs: { validation_run_id: "50" } },
+  });
+});
+
+test("blocks after three failed generation runs for the current head", async () => {
+  const old = new Date(
+    NOW - PROJECT_VALIDATION_REGENERATION_GRACE_MS - 1,
+  ).toISOString();
+  const pull = pullFixture({ updatedAt: old });
+  const validation = runFixture({ id: 53, conclusion: "success" });
+  const publisher = runFixture({
+    id: 54,
+    conclusion: "success",
+    workflow: "publish-project-transaction.yml",
+    displayTitle: "Project publication for validation #53",
+    headSha: "f".repeat(40),
+    headBranch: "main",
+    createdAt: new Date(NOW - 30 * 60_000).toISOString(),
+    updatedAt: old,
+  });
+  const generations = [55, 56, 57].map((id, index) =>
+    runFixture({
+      id,
+      conclusion: "failure",
+      workflow: "generate-project-submission.yml",
+      headSha: "f".repeat(40),
+      headBranch: "main",
+      createdAt: new Date(NOW - (10 - index) * 60_000).toISOString(),
+    }),
+  );
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [[validation]]);
+  fake.publicationPages = [[publisher]];
+  fake.generationPages.set("generate-project-submission.yml", [generations]);
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results[0]).toMatchObject({
+    action: "block",
+    state: "regeneration-blocked",
+    attempts: 3,
+    runId: 57,
+  });
+  expect(
+    fake.requests.some(
+      ({ method, path }) =>
+        method === "POST" &&
+        path.endsWith("/publish-project-transaction.yml/dispatches"),
+    ),
+  ).toBe(false);
+});
+
+test("blocks a successful generation that leaves the old head unchanged", async () => {
+  const old = new Date(
+    NOW - PROJECT_VALIDATION_REGENERATION_GRACE_MS - 1,
+  ).toISOString();
+  const pull = pullFixture({ updatedAt: old });
+  const validation = runFixture({ id: 58, conclusion: "success" });
+  const publisher = runFixture({
+    id: 59,
+    conclusion: "success",
+    workflow: "publish-project-transaction.yml",
+    displayTitle: "Project publication for validation #58",
+    headSha: "f".repeat(40),
+    headBranch: "main",
+    createdAt: new Date(NOW - 30 * 60_000).toISOString(),
+    updatedAt: old,
+  });
+  const generation = runFixture({
+    id: 60,
+    conclusion: "success",
+    workflow: "generate-project-submission.yml",
+    headSha: "f".repeat(40),
+    headBranch: "main",
+    createdAt: new Date(NOW - 20 * 60_000).toISOString(),
+    updatedAt: old,
+  });
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [[validation]]);
+  fake.publicationPages = [[publisher]];
+  fake.generationPages.set("generate-project-submission.yml", [[generation]]);
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results[0]).toMatchObject({
+    action: "block",
+    state: "regeneration-blocked",
+    attempts: 1,
+    runId: 60,
+  });
+  expect(
+    fake.requests.some(
+      ({ method, path }) =>
+        method === "POST" &&
+        path.endsWith("/publish-project-transaction.yml/dispatches"),
+    ),
+  ).toBe(false);
 });
 
 test("does not regenerate when a late Publisher attempt appears", async () => {
@@ -1165,7 +1760,7 @@ test("ignores manual, malformed, fork-owned, changed-head, and closed PRs", asyn
   expect(fake.mutationRequests()).toEqual([]);
 });
 
-test("paginates pull, validation, and Publisher run inventories completely", async () => {
+test("paginates pull, validation, Publisher, and generation inventories", async () => {
   const fillerPulls = Array.from({ length: 100 }, (_, index) =>
     pullFixture({
       number: 800 + index,
@@ -1205,10 +1800,24 @@ test("paginates pull, validation, and Publisher run inventories completely", asy
     headSha: "f".repeat(40),
     headBranch: "main",
   });
+  const unrelatedGenerations = Array.from({ length: 100 }, (_, index) =>
+    runFixture({
+      id: 4_000 + index,
+      conclusion: "success",
+      workflow: "generate-project-submission.yml",
+      displayTitle: `Project #${5_000 + index}: Create review PR`,
+      headSha: "f".repeat(40),
+      headBranch: "main",
+    }),
+  );
   const fake = new FakeGitHub([...fillerPulls, pull]);
   fake.pullPages = [fillerPulls, [pull]];
   fake.validationPages.set(branch, [oldHeadRuns, [validation]]);
   fake.publicationPages = [unrelatedPublishers, [publisher]];
+  fake.generationPages.set("generate-project-submission.yml", [
+    unrelatedGenerations,
+    [],
+  ]);
 
   const summary = await reconcile(fake);
 
@@ -1227,6 +1836,10 @@ test("paginates pull, validation, and Publisher run inventories completely", asy
   expect(fake.requests).toContainEqual({
     method: "GET",
     path: `/repos/${REPOSITORY}/actions/workflows/publish-project-transaction.yml/runs?event=workflow_dispatch&per_page=100&page=2`,
+  });
+  expect(fake.requests).toContainEqual({
+    method: "GET",
+    path: `/repos/${REPOSITORY}/actions/workflows/generate-project-submission.yml/runs?event=workflow_dispatch&per_page=100&page=2`,
   });
 });
 
@@ -1293,4 +1906,80 @@ test("one candidate error does not abort unrelated reconciliation", async () => 
       outcome: "applied",
     }),
   );
+});
+
+test("CLI requires TAVERNARY_PUBLISHER_BOT_ID before inventory", async () => {
+  const fake = new FakeGitHub([pullFixture()]);
+
+  await expect(
+    runReconcileProjectValidationsCli({
+      env: {
+        GITHUB_REPOSITORY: REPOSITORY,
+        GITHUB_TOKEN: "test-token",
+      },
+      request: fake.request,
+      nowMs: NOW,
+      write: () => undefined,
+    }),
+  ).rejects.toThrow(
+    "TAVERNARY_PUBLISHER_BOT_ID must be a positive numeric bot ID.",
+  );
+  expect(fake.requests).toEqual([]);
+});
+
+test("CLI finishes every candidate and exits nonzero after an action error", async () => {
+  const broken = pullFixture({ number: 950 });
+  const healthy = pullFixture({ number: 951 });
+  const fake = new FakeGitHub([broken, healthy]);
+  const brokenPath = `/repos/${REPOSITORY}/actions/workflows/ci.yml/runs?branch=${encodeURIComponent(broken.head.ref)}&event=workflow_dispatch&per_page=100&page=1`;
+  fake.failures.set(`GET ${brokenPath}`, new Error("Actions unavailable"));
+  fake.validationPages.set(healthy.head.ref, [[]]);
+  const output: string[] = [];
+
+  const exitCode = await runReconcileProjectValidationsCli({
+    env: {
+      GITHUB_REPOSITORY: REPOSITORY,
+      GITHUB_TOKEN: "test-token",
+      TAVERNARY_PUBLISHER_BOT_ID: String(PUBLISHER_ACTOR_ID),
+    },
+    request: fake.request,
+    nowMs: NOW,
+    write: (value) => output.push(value),
+  });
+
+  expect(exitCode).toBe(1);
+  expect(JSON.parse(output[0]).results).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({ pullNumber: 950, action: "error" }),
+      expect.objectContaining({ pullNumber: 951, action: "validate" }),
+    ]),
+  );
+  expect(fake.requests).toContainEqual({
+    method: "POST",
+    path: `/repos/${REPOSITORY}/actions/workflows/ci.yml/dispatches`,
+    body: { ref: healthy.head.ref },
+  });
+});
+
+test("CLI exits nonzero after a required state projection fails", async () => {
+  const pull = pullFixture();
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [[]]);
+  fake.failures.set(
+    `POST /repos/${REPOSITORY}/issues/620/comments`,
+    new Error("Comment projection unavailable"),
+  );
+
+  const exitCode = await runReconcileProjectValidationsCli({
+    env: {
+      GITHUB_REPOSITORY: REPOSITORY,
+      GITHUB_TOKEN: "test-token",
+      TAVERNARY_PUBLISHER_BOT_ID: String(PUBLISHER_ACTOR_ID),
+    },
+    request: fake.request,
+    nowMs: NOW,
+    write: () => undefined,
+  });
+
+  expect(exitCode).toBe(1);
 });

@@ -184,6 +184,14 @@ test("uses category-prefixed workflow display names", async () => {
   }
 });
 
+test("passes the configured Publisher bot ID to validation reconciliation", async () => {
+  const document = await workflow("reconcile-project-validations");
+
+  expect(document.jobs.reconcile.env).toMatchObject({
+    TAVERNARY_PUBLISHER_BOT_ID: "${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}",
+  });
+});
+
 test("identifies the object and action in every workflow run name", async () => {
   const expectedRunNameParts = {
     "admit-issue": ["Issue #", "Check submission eligibility"],

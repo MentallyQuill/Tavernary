@@ -51,10 +51,30 @@ function activeRun(runs) {
   );
 }
 
-function failedRuns(runs) {
-  return runs.filter(
-    (run) =>
-      TERMINAL_CONCLUSIONS.has(run?.conclusion) && run.conclusion !== "success",
+function completedFailureAttempts(runs) {
+  return runs.reduce((attempts, run) => {
+    const runAttempt =
+      Number.isSafeInteger(run?.run_attempt) && run.run_attempt > 0
+        ? run.run_attempt
+        : 1;
+    if (
+      ACTIVE_STATUSES.has(run?.status) ||
+      !TERMINAL_CONCLUSIONS.has(run?.conclusion)
+    ) {
+      return attempts + Math.max(0, runAttempt - 1);
+    }
+    return run.conclusion === "success" ? attempts : attempts + runAttempt;
+  }, 0);
+}
+
+function totalAttempts(runs) {
+  return runs.reduce(
+    (attempts, run) =>
+      attempts +
+      (Number.isSafeInteger(run?.run_attempt) && run.run_attempt > 0
+        ? run.run_attempt
+        : 1),
+    0,
   );
 }
 
@@ -80,48 +100,85 @@ export function planProjectValidationReconciliation(input) {
   const nowMs = Number.isFinite(input?.nowMs) ? input.nowMs : Date.now();
   const validations = currentHeadRuns(input?.validationRuns, headSha);
   const activeValidation = activeRun(validations);
-  const validationFailures = failedRuns(validations);
+  const validationFailures = completedFailureAttempts(validations);
   const latestValidation = validations[0];
 
   if (!latestValidation) {
     return action("validate", "validating", 0, null);
   }
   if (activeValidation) {
-    return action(
-      "wait",
-      "validating",
-      validationFailures.length,
-      activeValidation,
-    );
+    return action("wait", "validating", validationFailures, activeValidation);
   }
   if (latestValidation.conclusion !== "success") {
-    if (validationFailures.length >= PROJECT_VALIDATION_RETRY_LIMIT) {
+    if (validationFailures >= PROJECT_VALIDATION_RETRY_LIMIT) {
       return action(
         "block",
         "validation-blocked",
-        validationFailures.length,
+        validationFailures,
         latestValidation,
       );
     }
     return action(
       "retry-validation",
       "retrying-validation",
-      validationFailures.length,
+      validationFailures,
       latestValidation,
     );
   }
 
   const publications = currentHeadRuns(input?.publicationRuns, headSha);
   const activePublication = activeRun(publications);
-  const publicationFailures = failedRuns(publications);
+  const publicationFailures = completedFailureAttempts(publications);
   const latestPublication = publications[0];
+  const generations = currentHeadRuns(input?.generationRuns, headSha);
+  const activeGeneration = activeRun(generations);
+  const generationFailures = completedFailureAttempts(generations);
+  const latestGeneration = generations[0];
 
   if (activePublication) {
+    return action("wait", "publishing", publicationFailures, activePublication);
+  }
+  if (activeGeneration) {
+    return action("wait", "regenerating", generationFailures, activeGeneration);
+  }
+  if (latestGeneration?.conclusion !== "success" && latestGeneration) {
+    if (generationFailures >= PROJECT_VALIDATION_RETRY_LIMIT) {
+      return action(
+        "block",
+        "regeneration-blocked",
+        generationFailures,
+        latestGeneration,
+      );
+    }
     return action(
-      "wait",
-      "publishing",
-      publicationFailures.length,
-      activePublication,
+      "regenerate",
+      "retrying-regeneration",
+      generationFailures,
+      latestGeneration,
+      { validationRunId: latestValidation.id },
+    );
+  }
+  if (latestGeneration?.conclusion === "success") {
+    const generationAttempts = totalAttempts(generations);
+    if (
+      !afterGrace(
+        nowMs,
+        latestGeneration,
+        PROJECT_VALIDATION_REGENERATION_GRACE_MS,
+      )
+    ) {
+      return action(
+        "wait",
+        "regenerating",
+        generationAttempts,
+        latestGeneration,
+      );
+    }
+    return action(
+      "block",
+      "regeneration-blocked",
+      generationAttempts,
+      latestGeneration,
     );
   }
   if (!latestPublication) {
@@ -133,18 +190,18 @@ export function planProjectValidationReconciliation(input) {
     return action("publish", "publishing", 1, latestValidation);
   }
   if (latestPublication.conclusion !== "success") {
-    if (publicationFailures.length >= PROJECT_VALIDATION_RETRY_LIMIT) {
+    if (publicationFailures >= PROJECT_VALIDATION_RETRY_LIMIT) {
       return action(
         "block",
         "publication-blocked",
-        publicationFailures.length,
+        publicationFailures,
         latestPublication,
       );
     }
     return action(
       "retry-publication",
       "retrying-publication",
-      publicationFailures.length,
+      publicationFailures,
       latestPublication,
     );
   }
@@ -156,7 +213,9 @@ export function planProjectValidationReconciliation(input) {
     ) &&
     afterGrace(nowMs, input?.pull, PROJECT_VALIDATION_REGENERATION_GRACE_MS)
   ) {
-    return action("regenerate", "regenerating", 1, latestPublication);
+    return action("regenerate", "regenerating", 1, latestPublication, {
+      validationRunId: latestValidation.id,
+    });
   }
   return action("wait", "published", 1, latestPublication);
 }
@@ -177,6 +236,9 @@ function humanText(state, attempts, run) {
     "publication-blocked":
       "Publication attempts are exhausted and require intervention.",
     regenerating: "Tavernary will regenerate this stale automatic transaction.",
+    "retrying-regeneration": `Tavernary will retry regeneration (attempt ${attempts} of ${PROJECT_VALIDATION_RETRY_LIMIT}).`,
+    "regeneration-blocked":
+      "Regeneration attempts are exhausted and require intervention.",
     published:
       "Publisher completed; Tavernary is waiting for the issue lifecycle to close.",
   };
