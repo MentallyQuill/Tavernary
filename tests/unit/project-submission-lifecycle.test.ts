@@ -1,3 +1,6 @@
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
+
 import { expect, test } from "vitest";
 
 import { planProjectSubmissionClosure } from "../../scripts/submissions/project-submission-lifecycle.mjs";
@@ -59,6 +62,8 @@ test("declines a marked generated PR closed without merge", () => {
       "needs-maintainer-review",
       "submission-pr-open",
       "submission-retryable",
+      "submission-validation-retrying",
+      "submission-validation-blocked",
     ],
     closeReason: "not_planned",
     deleteBranch: "automation/project-submission-123",
@@ -83,6 +88,8 @@ test("cleans labels and branch after a merged generated PR", () => {
       "needs-maintainer-review",
       "submission-pr-open",
       "submission-retryable",
+      "submission-validation-retrying",
+      "submission-validation-blocked",
     ],
     closeReason: "completed",
     deleteBranch: "automation/project-submission-123",
@@ -124,6 +131,23 @@ test("ignores a fork branch impersonating generated submission state", () => {
       body: markedBody(123),
     }),
   ).toEqual({ action: "ignore" });
+});
+
+test("projects terminal state only onto the immutable Actions marker", async () => {
+  const source = await readFile(
+    resolve(".github/workflows/project-submission-lifecycle.yml"),
+    "utf8",
+  );
+
+  expect(source).toContain('gh api "/users/github-actions%5Bbot%5D"');
+  expect(source).toContain("comment.user?.id === botId");
+  expect(source).toContain("tavernary-project-validation-state");
+  expect(source).toMatch(
+    /const terminalState =\s+process\.env\.ACTION === "merged" \? "merged" : "declined"/u,
+  );
+  expect(source).toContain("status: terminalState");
+  expect(source).toContain("existing && existing.body !== body");
+  expect(source).toContain("gh api --method PATCH");
 });
 
 export { markedBody };

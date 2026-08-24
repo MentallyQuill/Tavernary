@@ -7,6 +7,8 @@ const removableLabels = [
   "needs-maintainer-review",
   "submission-pr-open",
   "submission-retryable",
+  "submission-validation-retrying",
+  "submission-validation-blocked",
 ];
 
 export function planProjectSubmissionClosure(input) {

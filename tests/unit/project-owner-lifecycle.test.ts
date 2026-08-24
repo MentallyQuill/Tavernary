@@ -1,3 +1,6 @@
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
+
 import { expect, test } from "vitest";
 
 import { planProjectOwnerClosure } from "../../scripts/help/project-owner-lifecycle.mjs";
@@ -64,6 +67,8 @@ test("declines an unmerged marked owner PR", () => {
       "needs-maintainer-review",
       "submission-retryable",
       "submission-pr-open",
+      "submission-validation-retrying",
+      "submission-validation-blocked",
     ],
     deleteBranch: "automation/project-owner-request-123",
     closeReason: "not_planned",
@@ -80,6 +85,8 @@ test("closes the owner issue after a merged marked PR", () => {
       "needs-maintainer-review",
       "submission-retryable",
       "submission-pr-open",
+      "submission-validation-retrying",
+      "submission-validation-blocked",
     ],
     deleteBranch: "automation/project-owner-request-123",
     closeReason: "completed",
@@ -136,4 +143,21 @@ test("fails closed on a schema-version-1 generated owner PR", () => {
   expect(planProjectOwnerClosure(closure({ body: legacy }))).toEqual({
     action: "ignore",
   });
+});
+
+test("projects terminal state only onto the immutable Actions marker", async () => {
+  const source = await readFile(
+    resolve(".github/workflows/project-owner-request-lifecycle.yml"),
+    "utf8",
+  );
+
+  expect(source).toContain('gh api "/users/github-actions%5Bbot%5D"');
+  expect(source).toContain("comment.user?.id === botId");
+  expect(source).toContain("tavernary-project-validation-state");
+  expect(source).toMatch(
+    /const terminalState =\s+process\.env\.ACTION === "merged" \? "merged" : "declined"/u,
+  );
+  expect(source).toContain("status: terminalState");
+  expect(source).toContain("existing && existing.body !== body");
+  expect(source).toContain("gh api --method PATCH");
 });

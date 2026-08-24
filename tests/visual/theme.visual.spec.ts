@@ -471,7 +471,11 @@ test("project review handoff statuses use distinct semantic families", async ({
   await page
     .getByRole("textbox", { name: "Project URL" })
     .fill("https://github.com/example/frontend");
-  await page.getByLabel("SillyTavern").check();
+  const sillyTavernCheckboxes = page
+    .getByRole("group", { name: "Available frontends" })
+    .getByRole("checkbox", { name: "SillyTavern", exact: true });
+  await expect(sillyTavernCheckboxes).toHaveCount(2);
+  await sillyTavernCheckboxes.first().check();
   await page.getByRole("button", { name: "Review submission" }).click();
   await page.getByRole("button", { name: "Continue on GitHub" }).click();
 
