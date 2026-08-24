@@ -1,0 +1,59 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1327833509",
+  "repository": {
+    "id": 1327833509,
+    "owner": "mokimoko",
+    "name": "SillyTavern-ChatBlockCleaner",
+    "url": "https://github.com/mokimoko/SillyTavern-ChatBlockCleaner",
+    "description": "an extension for SillyTavern that can remove structured XML blocks, such as those used by popular trackers, from chat files.",
+    "default_branch": "main",
+    "head_sha": "b44068bb845c4a486a1c277511c4e0eaaadae547",
+    "head_committed_at": "2026-08-08T14:25:53.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-08-08T14:26:01.000Z",
+    "size_kb": 4
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-08T14:25:53.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-08T14:25:53.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-24T09:11:43.585Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "b44068bb845c4a486a1c277511c4e0eaaadae547"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-24T09:11:43.585Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "mokimoko", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-24T09:11:43.585Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
