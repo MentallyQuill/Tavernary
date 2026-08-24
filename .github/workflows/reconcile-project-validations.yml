@@ -33,14 +33,14 @@ jobs:
         github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)) ||
       (github.event_name == 'workflow_run' &&
        github.event.workflow_run.head_repository.full_name == github.repository &&
-       ((github.event.workflow_run.name == 'Site: Validate changes' &&
+       ((github.event.workflow_run.path == '.github/workflows/ci.yml' &&
          github.event.workflow_run.head_branch != 'automation/project-submission-0' &&
          (startsWith(github.event.workflow_run.head_branch, 'automation/project-submission-') ||
           startsWith(github.event.workflow_run.head_branch, 'automation/project-owner-request-'))) ||
         (github.event.workflow_run.head_branch == 'main' &&
-         (github.event.workflow_run.name == 'Projects: Publish validated transaction' ||
-          github.event.workflow_run.name == 'Project submissions: Create review PR' ||
-          github.event.workflow_run.name == 'Project owner requests: Create review PR'))))
+         (github.event.workflow_run.path == '.github/workflows/publish-project-transaction.yml' ||
+          github.event.workflow_run.path == '.github/workflows/generate-project-submission.yml' ||
+          github.event.workflow_run.path == '.github/workflows/generate-project-owner-request.yml'))))
     runs-on: ubuntu-latest
     env:
       TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
