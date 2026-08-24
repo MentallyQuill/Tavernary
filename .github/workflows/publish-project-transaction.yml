@@ -86,6 +86,7 @@ jobs:
         id: state
         shell: bash
         env:
+          PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
           RUN_HEAD_SHA: ${{ steps.validation.outputs.head_sha }}
           RUN_HEAD_BRANCH: ${{ steps.validation.outputs.head_branch }}
         run: |
@@ -110,6 +111,18 @@ jobs:
           );
           if (pulls.length !== 1) {
             throw new Error("Expected exactly one open PR for the generated branch.");
+          }
+          const configuredPublisherBotId = process.env.PUBLISHER_BOT_ID ?? "";
+          if (!/^[1-9]\d*$/u.test(configuredPublisherBotId)) {
+            throw new Error("TAVERNARY_PUBLISHER_BOT_ID must be a numeric bot ID.");
+          }
+          const publisherBotId = Number(configuredPublisherBotId);
+          if (
+            !Number.isSafeInteger(publisherBotId) ||
+            pulls[0].user?.id !== publisherBotId ||
+            pulls[0].user?.type !== "Bot"
+          ) {
+            throw new Error("Generated PR is not owned by the configured Publisher bot.");
           }
           const transaction = parseProjectPublicationTransaction(pulls[0].body ?? "");
           if (!transaction) {
