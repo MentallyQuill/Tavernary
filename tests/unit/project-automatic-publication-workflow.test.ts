@@ -60,14 +60,18 @@ test("reconciles generated validation runs from trusted main code", async () => 
     "startsWith(github.event.workflow_run.head_branch, 'automation/project-owner-request-')",
   );
   expect(reconcile.if).toContain(
-    "github.event.workflow_run.name == 'Projects: Publish validated transaction'",
+    "github.event.workflow_run.path == '.github/workflows/ci.yml'",
   );
   expect(reconcile.if).toContain(
-    "github.event.workflow_run.name == 'Project submissions: Create review PR'",
+    "github.event.workflow_run.path == '.github/workflows/publish-project-transaction.yml'",
   );
   expect(reconcile.if).toContain(
-    "github.event.workflow_run.name == 'Project owner requests: Create review PR'",
+    "github.event.workflow_run.path == '.github/workflows/generate-project-submission.yml'",
   );
+  expect(reconcile.if).toContain(
+    "github.event.workflow_run.path == '.github/workflows/generate-project-owner-request.yml'",
+  );
+  expect(reconcile.if).not.toContain("github.event.workflow_run.name");
   expect(reconcile.if).toContain(
     "github.event.workflow_run.head_branch == 'main'",
   );

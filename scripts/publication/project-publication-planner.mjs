@@ -6,9 +6,11 @@ const generatedBranches = [
 ];
 
 const safeConcurrentDataPaths = [
+  /^data\/registry\/kits\/[^/]+\.json$/u,
   /^data\/registry\/projects\/[^/]+\.json$/u,
   /^data\/registry\/sources\/[^/]+\.json$/u,
   /^data\/snapshots\/(?:codeberg|github|install)\/[^/]+\.json$/u,
+  /^data\/snapshots\/github\/kits\/[^/]+\.json$/u,
   /^data\/security\/tavernkeeper-report-summaries\.json$/u,
   /^public\/catalog\/tavernary-catalog(?:-v8)?\.json$/u,
 ];
