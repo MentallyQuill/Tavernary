@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "keepsanity-sillytavern-simulationmanager",
+  "source_id": "github-1186224999",
+  "source_identity": "github:keepsanity/sillytavern-simulationmanager",
+  "evidence_fingerprint": "1c6d7c0933d6184069405af4d7fb337ea947f27e888cf568306e92f449f8175d",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-24T11:41:46.668Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-24T11:41:46.668Z"
+  },
+  "maintenance_issue_number": null
+}
