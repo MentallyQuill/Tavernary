@@ -164,6 +164,7 @@ jobs:
           ACTIONS_BOT_ID="$actions_bot_id" \
             node --input-type=module <<'NODE'
           import fs from "node:fs";
+          import { terminalProjectValidationComment } from "./scripts/help/project-owner-lifecycle.mjs";
 
           const marker = "<!-- tavernary-project-validation-state";
           const comments = JSON.parse(
@@ -180,31 +181,12 @@ jobs:
           );
           if (!existing) process.exit(0);
 
-          const prior = String(existing.body ?? "");
-          const markerPayload = prior
-            .slice(prior.indexOf(marker) + marker.length)
-            .split("\\n-->\\n", 1)[0]
-            .trim();
-          let previousState = {};
-          try {
-            previousState = JSON.parse(markerPayload);
-          } catch {}
-          const terminalState =
-            process.env.ACTION === "merged" ? "merged" : "declined";
-          const body = `${marker}\n${JSON.stringify({
-            schema_version: 1,
-            status: terminalState,
-            head_sha: process.env.HEAD_SHA,
-            attempts: Number.isSafeInteger(previousState.attempts)
-              ? previousState.attempts
-              : 0,
-            run_id: previousState.run_id ?? null,
-          })}\n-->\n${
-            terminalState === "merged"
-              ? "Tavernary completed this generated transaction."
-              : "Tavernary declined this generated transaction."
-          }`;
-          if (existing && existing.body !== body) {
+          const body = terminalProjectValidationComment({
+            existingBody: existing.body,
+            action: process.env.ACTION,
+            headSha: process.env.HEAD_SHA,
+          });
+          if (body !== null) {
             fs.writeFileSync(
               `${process.env.RUNNER_TEMP}/project-owner-terminal-comment.json`,
               JSON.stringify({ body }),
