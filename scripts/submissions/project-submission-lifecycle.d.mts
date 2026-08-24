@@ -17,3 +17,9 @@ export function planProjectSubmissionClosure(input: {
   baseRepository: string;
   body: string | null;
 }): SubmissionClosurePlan;
+
+export function terminalProjectValidationComment(input: {
+  existingBody: string | null | undefined;
+  action: "merged" | "decline";
+  headSha: string;
+}): string | null;

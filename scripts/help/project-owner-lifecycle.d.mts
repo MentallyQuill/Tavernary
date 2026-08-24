@@ -19,3 +19,9 @@ export function planProjectOwnerClosure(input: {
   headSha: string;
   body: string | null;
 }): ProjectOwnerClosurePlan;
+
+export function terminalProjectValidationComment(input: {
+  existingBody: string | null | undefined;
+  action: "merged" | "decline";
+  headSha: string;
+}): string | null;
