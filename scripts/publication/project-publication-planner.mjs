@@ -5,6 +5,28 @@ const generatedBranches = [
   ["project-owner-request", "automation/project-owner-request-"],
 ];
 
+const safeConcurrentDataPaths = [
+  /^data\/registry\/projects\/[^/]+\.json$/u,
+  /^data\/registry\/sources\/[^/]+\.json$/u,
+  /^data\/snapshots\/(?:codeberg|github|install)\/[^/]+\.json$/u,
+  /^data\/security\/tavernkeeper-report-summaries\.json$/u,
+  /^public\/catalog\/tavernary-catalog(?:-v8)?\.json$/u,
+];
+
+export function isSafeProjectPublicationBaseDrift(input) {
+  const generatedPaths = new Set(input?.transaction?.generated_paths ?? []);
+  const changedPaths = input?.changedPaths;
+  return (
+    Array.isArray(changedPaths) &&
+    changedPaths.every(
+      (path) =>
+        typeof path === "string" &&
+        !generatedPaths.has(path) &&
+        safeConcurrentDataPaths.some((pattern) => pattern.test(path)),
+    )
+  );
+}
+
 function labels(issue) {
   return new Set(
     (issue?.labels ?? [])
@@ -120,7 +142,10 @@ export function planProjectPublication(input) {
   ) {
     return regenerate(transaction, "source-fingerprint-stale");
   }
-  if (input.current.mainSha !== transaction.base_sha) {
+  if (
+    input.current.mainSha !== transaction.base_sha &&
+    input.current.baseDriftSafe !== true
+  ) {
     return regenerate(transaction, "base-behind-main");
   }
   if (transaction.publication_mode === "manual") {
