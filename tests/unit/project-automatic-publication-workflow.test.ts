@@ -3,6 +3,77 @@ import { readFile } from "node:fs/promises";
 import { expect, test } from "vitest";
 import { parse } from "yaml";
 
+test("reconciles generated validation runs from trusted main code", async () => {
+  const source = await readFile(
+    ".github/workflows/reconcile-project-validations.yml",
+    "utf8",
+  );
+  const workflow = parse(source) as any;
+  const reconcile = workflow.jobs.reconcile;
+  const steps = reconcile.steps as Array<{
+    env?: Record<string, string>;
+    uses?: string;
+    run?: string;
+    with?: Record<string, string | number>;
+  }>;
+  const checkout = steps.find((step) =>
+    step.uses?.startsWith("actions/checkout@"),
+  );
+  const setupNode = steps.find((step) =>
+    step.uses?.startsWith("actions/setup-node@"),
+  );
+
+  expect(workflow.name).toBe("Submissions: Reconcile project validations");
+  expect(workflow.on).toEqual({
+    workflow_run: {
+      workflows: ["Site: Validate changes"],
+      types: ["completed"],
+    },
+    schedule: [{ cron: "7,22,37,52 * * * *" }],
+    workflow_dispatch: null,
+  });
+  expect(workflow.permissions).toEqual({
+    actions: "write",
+    issues: "write",
+    "pull-requests": "read",
+    statuses: "write",
+    contents: "read",
+  });
+  expect(workflow.concurrency).toEqual({
+    group: "project-validation-reconciliation",
+    "cancel-in-progress": false,
+  });
+  expect(reconcile.if).toContain("github.event_name == 'schedule'");
+  expect(reconcile.if).toContain("github.event_name == 'workflow_run'");
+  expect(reconcile.if).toContain(
+    "github.event.workflow_run.head_repository.full_name == github.repository",
+  );
+  expect(reconcile.if).toContain(
+    "startsWith(github.event.workflow_run.head_branch, 'automation/project-submission-')",
+  );
+  expect(reconcile.if).toContain(
+    "startsWith(github.event.workflow_run.head_branch, 'automation/project-owner-request-')",
+  );
+  expect(reconcile.if).toContain("github.event_name == 'workflow_dispatch'");
+  expect(reconcile.if).toContain("github.actor_id == 2625904");
+  expect(reconcile.if).toContain(
+    "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID",
+  );
+  expect(reconcile.if).not.toContain("243524590");
+  expect(checkout?.with?.ref).toBe("main");
+  expect(setupNode?.with?.["node-version"]).toBe(24);
+  expect(steps).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({
+        env: { GITHUB_TOKEN: "${{ github.token }}" },
+        run: "npm run submissions:reconcile-validations",
+      }),
+    ]),
+  );
+  expect(source).not.toMatch(/\bnpm (?:ci|install)\b/u);
+  expect(source).not.toContain("secrets.");
+});
+
 test("publishes successful generated project transactions by exact SHA", async () => {
   const source = await readFile(
     ".github/workflows/publish-project-transaction.yml",
@@ -75,6 +146,100 @@ test("publishes successful generated project transactions by exact SHA", async (
   );
   expect(source).toContain("source,");
   expect(source).toContain("projects,");
+});
+
+test("rejects generated pull requests outside Publisher custody before planning", async () => {
+  const workflow = parse(
+    await readFile(".github/workflows/publish-project-transaction.yml", "utf8"),
+  ) as any;
+  const steps = workflow.jobs.publish.steps as Array<{
+    env?: Record<string, string>;
+    id?: string;
+    name?: string;
+    run?: string;
+  }>;
+  const state = steps.find((step) => step.id === "state");
+  const plan = steps.find((step) => step.id === "plan");
+  const regenerationToken = steps.find(
+    (step) => step.id === "publisher-regeneration-token",
+  );
+  const mergeToken = steps.find((step) => step.id === "publisher-merge-token");
+
+  expect(state?.env).toMatchObject({
+    PUBLISHER_BOT_ID: "${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}",
+  });
+  expect(state?.run).toContain(
+    'const configuredPublisherBotId = process.env.PUBLISHER_BOT_ID ?? "";',
+  );
+  expect(state?.run).toContain(
+    "if (!/^[1-9]\\d*$/u.test(configuredPublisherBotId))",
+  );
+  expect(state?.run).toContain("!Number.isSafeInteger(publisherBotId)");
+  expect(state?.run).toContain("pulls[0].user?.id !== publisherBotId");
+  expect(state?.run).toContain('pulls[0].user?.type !== "Bot"');
+  expect(steps.indexOf(state as (typeof steps)[number])).toBeLessThan(
+    steps.indexOf(plan as (typeof steps)[number]),
+  );
+  expect(steps.indexOf(state as (typeof steps)[number])).toBeLessThan(
+    steps.indexOf(regenerationToken as (typeof steps)[number]),
+  );
+  expect(steps.indexOf(state as (typeof steps)[number])).toBeLessThan(
+    steps.indexOf(mergeToken as (typeof steps)[number]),
+  );
+});
+
+test("regenerates stale transactions with Publisher identity", async () => {
+  const workflow = parse(
+    await readFile(".github/workflows/publish-project-transaction.yml", "utf8"),
+  ) as any;
+  const steps = workflow.jobs.publish.steps as Array<{
+    env?: Record<string, string>;
+    id?: string;
+    if?: string;
+    name?: string;
+    uses?: string;
+    with?: Record<string, string>;
+  }>;
+  const token = steps.find(
+    (step) => step.id === "publisher-regeneration-token",
+  );
+  const regenerate = steps.find(
+    (step) => step.name === "Regenerate stale transaction",
+  );
+
+  expect(token).toMatchObject({
+    if: "steps.plan.outputs.action == 'regenerate'",
+    uses: "actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1",
+    with: {
+      "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
+      "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
+      "permission-actions": "write",
+    },
+  });
+  expect(regenerate).toMatchObject({
+    if: "steps.plan.outputs.action == 'regenerate'",
+    env: {
+      GH_TOKEN: "${{ steps.publisher-regeneration-token.outputs.token }}",
+      PRODUCER: "${{ steps.state.outputs.producer }}",
+      ISSUE_NUMBER: "${{ steps.state.outputs.issue_number }}",
+    },
+  });
+  expect(steps.indexOf(token as (typeof steps)[number])).toBeLessThan(
+    steps.indexOf(regenerate as (typeof steps)[number]),
+  );
+
+  for (const generator of [
+    "generate-project-submission",
+    "generate-project-owner-request",
+  ]) {
+    const generated = parse(
+      await readFile(`.github/workflows/${generator}.yml`, "utf8"),
+    ) as any;
+    expect(generated.jobs.generate.if).toContain("github.actor_id == 2625904");
+    expect(generated.jobs.generate.if).toContain(
+      "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID",
+    );
+  }
 });
 
 test("merges validated project transactions with the Publisher App", async () => {

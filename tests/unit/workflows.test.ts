@@ -184,6 +184,14 @@ test("uses category-prefixed workflow display names", async () => {
   }
 });
 
+test("passes the configured Publisher bot ID to validation reconciliation", async () => {
+  const document = await workflow("reconcile-project-validations");
+
+  expect(document.jobs.reconcile.env).toMatchObject({
+    TAVERNARY_PUBLISHER_BOT_ID: "${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}",
+  });
+});
+
 test("identifies the object and action in every workflow run name", async () => {
   const expectedRunNameParts = {
     "admit-issue": ["Issue #", "Check submission eligibility"],
@@ -819,8 +827,21 @@ test("keeps one read-only CI workflow with a stable verify job", async () => {
 });
 
 test("classifies pull request and dispatched branch diffs fail closed", async () => {
+  const ci = await workflow("ci");
   const source = await readFile(resolve(workflowDirectory, "ci.yml"), "utf8");
+  const route = ci.jobs.verify.steps.find(
+    (step: WorkflowStep) => step.id === "route",
+  ) as WorkflowStep;
 
+  expect(route.env?.PR_HEAD_REF).toBe(
+    "${{ github.event.pull_request.head.ref }}",
+  );
+  expect(route.run).toMatch(
+    /if \[\[ "\$EVENT_NAME" == "pull_request" &&\s+"\$PR_HEAD_REPOSITORY" == "\$GITHUB_REPOSITORY" &&\s+"\$PR_HEAD_REF" == automation\/project-submission-\* \]\]; then\s+route="content"/u,
+  );
+  expect(route.run).toMatch(
+    /elif \[\[ "\$EVENT_NAME" == "workflow_dispatch" &&\s+\("\$GITHUB_REF_NAME" == automation\/project-submission-\* \|\|\s+"\$GITHUB_REF_NAME" == automation\/project-owner-request-\*\) \]\]; then\s+:/u,
+  );
   expect(source).toContain("github.event.pull_request.base.sha");
   expect(source).toContain("github.event.pull_request.head.sha");
   expect(source).toContain("git merge-base origin/main HEAD");
@@ -832,6 +853,21 @@ test("classifies pull request and dispatched branch diffs fail closed", async ()
     "utf8",
   );
   expect(classifier).toContain("^data\\/registry\\/sources\\/[^/]+\\.json$");
+});
+
+test("keeps fork-spoofed generated pull requests on the full route", async () => {
+  const ci = await workflow("ci");
+  const route = ci.jobs.verify.steps.find(
+    (step: WorkflowStep) => step.id === "route",
+  ) as WorkflowStep;
+
+  expect(route.env?.PR_HEAD_REPOSITORY).toBe(
+    "${{ github.event.pull_request.head.repo.full_name }}",
+  );
+  expect(route.run).toContain('route="full"');
+  expect(route.run).toMatch(
+    /"\$PR_HEAD_REPOSITORY" == "\$GITHUB_REPOSITORY" &&\s+"\$PR_HEAD_REF" == automation\/project-submission-\*/u,
+  );
 });
 
 test("runs mutually selected content and full Linux stacks", async () => {

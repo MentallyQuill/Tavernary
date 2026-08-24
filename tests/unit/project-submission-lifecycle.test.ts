@@ -1,6 +1,12 @@
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
+
 import { expect, test } from "vitest";
 
-import { planProjectSubmissionClosure } from "../../scripts/submissions/project-submission-lifecycle.mjs";
+import {
+  planProjectSubmissionClosure,
+  terminalProjectValidationComment,
+} from "../../scripts/submissions/project-submission-lifecycle.mjs";
 import {
   createProjectPublicationTransaction,
   PROJECT_PUBLICATION_TRANSACTION_MARKER,
@@ -59,6 +65,8 @@ test("declines a marked generated PR closed without merge", () => {
       "needs-maintainer-review",
       "submission-pr-open",
       "submission-retryable",
+      "submission-validation-retrying",
+      "submission-validation-blocked",
     ],
     closeReason: "not_planned",
     deleteBranch: "automation/project-submission-123",
@@ -83,6 +91,8 @@ test("cleans labels and branch after a merged generated PR", () => {
       "needs-maintainer-review",
       "submission-pr-open",
       "submission-retryable",
+      "submission-validation-retrying",
+      "submission-validation-blocked",
     ],
     closeReason: "completed",
     deleteBranch: "automation/project-submission-123",
@@ -124,6 +134,53 @@ test("ignores a fork branch impersonating generated submission state", () => {
       body: markedBody(123),
     }),
   ).toEqual({ action: "ignore" });
+});
+
+test("projects terminal state only onto the immutable Actions marker", async () => {
+  const source = await readFile(
+    resolve(".github/workflows/project-submission-lifecycle.yml"),
+    "utf8",
+  );
+
+  expect(source).toContain('gh api "/users/github-actions%5Bbot%5D"');
+  expect(source).toContain("comment.user?.id === botId");
+  expect(source).toContain("tavernary-project-validation-state");
+  expect(source).toContain("terminalProjectValidationComment");
+  expect(source).toContain("const body = terminalProjectValidationComment({");
+  expect(source).toContain("if (body !== null)");
+  expect(source).toContain("gh api --method PATCH");
+});
+
+test("preserves terminal submission marker history and skips an identical retry", () => {
+  const current = [
+    "<!-- tavernary-project-validation-state",
+    JSON.stringify({
+      schema_version: 1,
+      status: "published",
+      head_sha: "a".repeat(40),
+      attempts: 3,
+      run_id: 987,
+    }),
+    "-->",
+    "Publisher completed; Tavernary is waiting for the issue lifecycle to close.",
+  ].join("\n");
+
+  const terminal = terminalProjectValidationComment({
+    existingBody: current,
+    action: "decline",
+    headSha: "a".repeat(40),
+  });
+
+  expect(terminal).toContain('"status":"declined"');
+  expect(terminal).toContain('"attempts":3');
+  expect(terminal).toContain('"run_id":987');
+  expect(
+    terminalProjectValidationComment({
+      existingBody: terminal,
+      action: "decline",
+      headSha: "a".repeat(40),
+    }),
+  ).toBeNull();
 });
 
 export { markedBody };

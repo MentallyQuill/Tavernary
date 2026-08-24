@@ -38,6 +38,8 @@ jobs:
         env:
           EVENT_NAME: ${{ github.event_name }}
           PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          PR_HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
           PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           set -u
@@ -46,24 +48,34 @@ jobs:
           base_sha=""
           head_sha=""
 
-          if [[ "$EVENT_NAME" == "pull_request" ]]; then
-            base_sha="$PR_BASE_SHA"
-            head_sha="$PR_HEAD_SHA"
-          elif git fetch origin main &&
-            base_sha="$(git merge-base origin/main HEAD)" &&
-            head_sha="$(git rev-parse HEAD)"; then
+          if [[ "$EVENT_NAME" == "pull_request" &&
+            "$PR_HEAD_REPOSITORY" == "$GITHUB_REPOSITORY" &&
+            "$PR_HEAD_REF" == automation/project-submission-* ]]; then
+            route="content"
+          elif [[ "$EVENT_NAME" == "workflow_dispatch" &&
+            ("$GITHUB_REF_NAME" == automation/project-submission-* ||
+             "$GITHUB_REF_NAME" == automation/project-owner-request-*) ]]; then
             :
-          fi
+          else
+            if [[ "$EVENT_NAME" == "pull_request" ]]; then
+              base_sha="$PR_BASE_SHA"
+              head_sha="$PR_HEAD_SHA"
+            elif git fetch origin main &&
+              base_sha="$(git merge-base origin/main HEAD)" &&
+              head_sha="$(git rev-parse HEAD)"; then
+              :
+            fi
 
-          if [[ -n "$base_sha" && -n "$head_sha" ]] &&
-            git cat-file -e "${base_sha}^{commit}" &&
-            git cat-file -e "${head_sha}^{commit}" &&
-            git diff --no-renames --name-only -z "$base_sha" "$head_sha" > "$paths_file"; then
-            classified="$(
-              node scripts/ci/classify-pr-paths.mjs --paths-file "$paths_file"
-            )" || classified="full"
-            if [[ "$classified" == "content" || "$classified" == "full" ]]; then
-              route="$classified"
+            if [[ -n "$base_sha" && -n "$head_sha" ]] &&
+              git cat-file -e "${base_sha}^{commit}" &&
+              git cat-file -e "${head_sha}^{commit}" &&
+              git diff --no-renames --name-only -z "$base_sha" "$head_sha" > "$paths_file"; then
+              classified="$(
+                node scripts/ci/classify-pr-paths.mjs --paths-file "$paths_file"
+              )" || classified="full"
+              if [[ "$classified" == "content" || "$classified" == "full" ]]; then
+                route="$classified"
+              fi
             fi
           fi
 

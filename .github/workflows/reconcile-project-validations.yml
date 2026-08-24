@@ -1,0 +1,50 @@
+name: "Submissions: Reconcile project validations"
+
+on:
+  workflow_run:
+    workflows:
+      - "Site: Validate changes"
+    types:
+      - completed
+  schedule:
+    - cron: "7,22,37,52 * * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  issues: write
+  pull-requests: read
+  statuses: write
+  contents: read
+
+concurrency:
+  group: project-validation-reconciliation
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    if: >-
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_dispatch' &&
+       (github.actor_id == 2625904 ||
+        github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)) ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.head_repository.full_name == github.repository &&
+       (startsWith(github.event.workflow_run.head_branch, 'automation/project-submission-') ||
+        startsWith(github.event.workflow_run.head_branch, 'automation/project-owner-request-')))
+    runs-on: ubuntu-latest
+    env:
+      TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
+    steps:
+      - name: Check out trusted default branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+      - name: Reconcile generated project validations
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run submissions:reconcile-validations

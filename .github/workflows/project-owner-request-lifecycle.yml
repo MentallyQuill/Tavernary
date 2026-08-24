@@ -97,6 +97,7 @@ jobs:
           ACTION: ${{ steps.plan.outputs.action }}
           ISSUE_NUMBER: ${{ steps.plan.outputs.issue_number }}
           CLOSE_REASON: ${{ steps.plan.outputs.close_reason }}
+          HEAD_SHA: ${{ steps.plan.outputs.head_sha }}
           PR_NUMBER: ${{ steps.plan.outputs.pr_number }}
           PR_URL: ${{ steps.plan.outputs.pr_url }}
         run: |
@@ -152,6 +153,55 @@ jobs:
                 "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/comments" \
                 --input "$comment_path"
             fi
+          fi
+          actions_bot_id="$(gh api "/users/github-actions%5Bbot%5D" --jq '.id')"
+          comments_path="${RUNNER_TEMP}/project-owner-lifecycle-comments.json"
+          terminal_comment_path="${RUNNER_TEMP}/project-owner-terminal-comment.json"
+          terminal_comment_id_path="${RUNNER_TEMP}/project-owner-terminal-comment-id"
+          gh api --paginate --slurp \
+            "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/comments?per_page=100" \
+            > "$comments_path"
+          ACTIONS_BOT_ID="$actions_bot_id" \
+            node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          import { terminalProjectValidationComment } from "./scripts/help/project-owner-lifecycle.mjs";
+
+          const marker = "<!-- tavernary-project-validation-state";
+          const comments = JSON.parse(
+            fs.readFileSync(
+              `${process.env.RUNNER_TEMP}/project-owner-lifecycle-comments.json`,
+              "utf8",
+            ),
+          ).flat();
+          const botId = Number(process.env.ACTIONS_BOT_ID);
+          const existing = comments.find(
+            (comment) =>
+              comment.user?.id === botId &&
+              String(comment.body ?? "").includes(marker),
+          );
+          if (!existing) process.exit(0);
+
+          const body = terminalProjectValidationComment({
+            existingBody: existing.body,
+            action: process.env.ACTION,
+            headSha: process.env.HEAD_SHA,
+          });
+          if (body !== null) {
+            fs.writeFileSync(
+              `${process.env.RUNNER_TEMP}/project-owner-terminal-comment.json`,
+              JSON.stringify({ body }),
+            );
+            fs.writeFileSync(
+              `${process.env.RUNNER_TEMP}/project-owner-terminal-comment-id`,
+              String(existing.id),
+            );
+          }
+          NODE
+          if [[ -s "$terminal_comment_path" ]]; then
+            terminal_comment_id="$(cat "$terminal_comment_id_path")"
+            gh api --method PATCH \
+              "repos/${GITHUB_REPOSITORY}/issues/comments/${terminal_comment_id}" \
+              --input "$terminal_comment_path"
           fi
           if [[ -n "$CLOSE_REASON" ]]; then
             gh api --method PATCH \

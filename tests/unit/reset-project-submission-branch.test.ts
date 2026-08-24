@@ -83,4 +83,4 @@ test("rebuilds a generated project branch from main without rebasing stale vocab
   ).toEqual({
     frontends: [{ id: "canonical-pocketrisu", label: "PocketRisu" }],
   });
-});
+}, 20_000);

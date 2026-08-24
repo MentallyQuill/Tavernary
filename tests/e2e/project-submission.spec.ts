@@ -142,7 +142,9 @@ test("reviews six progressive manual tags at 320px and regenerates the current m
   await expect(page.getByLabel("Project Type")).toHaveValue("extension");
   await page.getByLabel("Primary function").click();
   await page.getByRole("option", { name: /Memory and retrieval/u }).click();
-  await page.getByLabel("SillyTavern").check();
+  await page
+    .getByRole("checkbox", { name: "SillyTavern", exact: true })
+    .check();
   await page.getByLabel("Description choice").click();
   await page
     .getByRole("option", { name: /Write the description myself/u })
@@ -264,9 +266,13 @@ test("selects multiple current frontends for an Extension", async ({
   await page
     .getByRole("combobox", { name: "Search supported frontends" })
     .fill("Silly");
-  await expect(page.getByLabel("SillyTavern")).toBeVisible();
+  await expect(
+    page.getByRole("checkbox", { name: "SillyTavern", exact: true }),
+  ).toBeVisible();
   await expect(page.getByLabel("Lumiverse")).toHaveCount(0);
-  await page.getByLabel("SillyTavern").check();
+  await page
+    .getByRole("checkbox", { name: "SillyTavern", exact: true })
+    .check();
   await page
     .getByRole("combobox", { name: "Search supported frontends" })
     .fill("");
@@ -443,7 +449,9 @@ test("opens a reviewable GitHub issue containing the stable manifest", async ({
   await page
     .getByLabel("Project URL")
     .fill("https://codeberg.org/targren/Lumiverse-SwipeScrubber");
-  await page.getByLabel("SillyTavern").check();
+  await page
+    .getByRole("checkbox", { name: "SillyTavern", exact: true })
+    .check();
   await page.getByRole("button", { name: "Review submission" }).click();
   await expect(page.getByText("Extension")).toBeVisible();
   await expect(page.getByText("Interface and workflow")).toBeVisible();

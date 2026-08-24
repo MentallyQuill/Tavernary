@@ -32,6 +32,33 @@ async function expectWithinViewport(page: Page, locator: Locator) {
   expect(box!.y + box!.height).toBeLessThanOrEqual(viewport!.height + 1);
 }
 
+async function expectCardControlTooltipReady(tooltip: Locator) {
+  await expect(tooltip).toBeVisible();
+  await expect
+    .poll(async () => {
+      const style = await tooltip.evaluate((element) => {
+        const computed = getComputedStyle(element);
+        return {
+          fontSize: computed.fontSize,
+          hasPadding: [
+            computed.paddingTop,
+            computed.paddingRight,
+            computed.paddingBottom,
+            computed.paddingLeft,
+          ].some((padding) => Number.parseFloat(padding) > 0),
+          position: computed.position,
+        };
+      });
+      return { visible: await tooltip.isVisible(), ...style };
+    })
+    .toEqual({
+      fontSize: "9px",
+      hasPadding: true,
+      position: "fixed",
+      visible: true,
+    });
+}
+
 test("desktop Kit workspace and catalog do not overlap", async ({ page }) => {
   await openKits(page, { width: 1440, height: 1000 });
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();
@@ -174,7 +201,7 @@ test("Kit card Copy link hover has a deterministic tooltip treatment", async ({
   const tooltip = page.getByRole("tooltip", {
     name: "Copy a direct link to this Kit",
   });
-  await expect(tooltip).toBeVisible();
+  await expectCardControlTooltipReady(tooltip);
   await expect(tooltip).toHaveScreenshot("kit-card-copy-hover.png", {
     animations: "disabled",
   });
@@ -191,7 +218,7 @@ test("Kit card Report hover has a deterministic tooltip treatment", async ({
     name: "Report this Kit",
     exact: true,
   });
-  await expect(tooltip).toBeVisible();
+  await expectCardControlTooltipReady(tooltip);
   await expect(tooltip).toHaveScreenshot("kit-card-report-hover.png", {
     animations: "disabled",
   });
@@ -205,7 +232,7 @@ test("Kit card Upvote on GitHub hover matches the card-control treatment", async
   const card = page.getByRole("article", { name: "Alpha Kit" });
   await card.getByRole("link", { name: "Upvote on GitHub" }).hover();
   const tooltip = page.getByRole("tooltip", { name: "Upvote on GitHub" });
-  await expect(tooltip).toBeVisible();
+  await expectCardControlTooltipReady(tooltip);
   await expect(tooltip).toHaveScreenshot("kit-card-upvote-hover.png", {
     animations: "disabled",
   });
