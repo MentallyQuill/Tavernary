@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1339877178",
+  "head_sha": "863f73503f0afb07c15864fb12bc1f9bff9b8275",
+  "observed_at": "2026-08-24T10:07:02.671Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-ChatMood",
+  "manifest": {
+    "display_name": "ChatMood",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
