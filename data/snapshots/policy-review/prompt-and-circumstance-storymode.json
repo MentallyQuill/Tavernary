@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "prompt-and-circumstance-storymode",
+  "source_id": "github-1123999916",
+  "source_identity": "github:prompt-and-circumstance/storymode",
+  "evidence_fingerprint": "32fed23ce88bb026123880ee895645a11c24e00a048dd395f690db273f997517",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-24T08:16:52.376Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-24T08:16:52.376Z"
+  },
+  "maintenance_issue_number": null
+}
