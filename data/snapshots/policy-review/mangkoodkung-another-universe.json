@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mangkoodkung-another-universe",
+  "source_id": "github-1233011311",
+  "source_identity": "github:mangkoodkung/another-universe",
+  "evidence_fingerprint": "4ef783b3db8e49cb0856aac317140b31e6ff3dfd86117d9e127de9fe670056d7",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-24T08:19:40.344Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-24T08:19:40.344Z"
+  },
+  "maintenance_issue_number": null
+}
