@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "its-a-unixsystem-sillytavern-msgcompact",
+  "source_id": "github-1340852606",
+  "source_identity": "github:its-a-unixsystem/sillytavern-msgcompact",
+  "evidence_fingerprint": "50d10b25d8058852a6bf91022d47c86eaac8d901bb690d778f3437940ce8e910",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-24T10:00:28.907Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-24T10:00:28.907Z"
+  },
+  "maintenance_issue_number": null
+}
