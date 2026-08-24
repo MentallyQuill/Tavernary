@@ -1,6 +1,6 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-08-24T13:33:46.763Z",
+  "generated_at": "2026-08-24T13:59:29.252Z",
   "preferred_report_ids": [
     "8610809db5601bbf121569743b3b11becc4b94ad00ec196e452c281aa3f6d28f",
     "8585ad6405b32aa3c434a6dd81257f60a384ad8dea5df02ad5211a3f1f5768cf",
@@ -317,7 +317,7 @@
     "d6ee947d17a8829cbabe51e0006dfcad208a8bc8ac58a2c6dc594d96a33544f9",
     "44ec32492901b15056b1c98a5d58999341839c02456c950fec89921f67639dfa",
     "d4f9643196a40f2b5c689a6845a490c6c3f505f1be9d66012c34f6855caff656",
-    "60d90b7a0b42702999b45927d088b48c33df8c52d78431a0ea295937e290169c",
+    "f20c54e0ba07182316ed0dc2e81cff1f1807f5ec62f84599ad15fc0183942946",
     "2a511bea59df5249581059edca314fe4c615a373436843e810d60486806ac7cd",
     "b44b2669ee85c76089f161fc4e8fe2e01bdf6bbf35405348ecc7026308fc4ec2",
     "6e706fdab725b3eee0c1bed3fb020142fb7852bc9cd634778a1ac099eddfc83a",
@@ -346,7 +346,7 @@
     "909fc486c895edaf1ece10241b269f4cd3650c41ee1229c537a6ff42eb3cbc45",
     "025a841558b0a3b831c3edb441e3b63e55f39a68ded587f1cd0404de4b493f7d",
     "55da58ddbcc75821ce92d53337a7f5f198ea4d6ff4d4de0749df9135c514d24f",
-    "6fbd6031a59b95a1b93faa2ca078781f7749abaee712424b8fbf5591a1807ccb",
+    "35f8217741988b1313315c39349f4283ab84e8aa4f69e08dab966bf874e46756",
     "7c2c271d6799afadec99dccd859ed57a120ad5e6791d1df62a5cec3551fd2001",
     "455473566de9dc37ce87d562fac8eb08b00627b313219fc283d4f9e881a5d157",
     "90e4a54d47483b9a857f0a82c31746234f0e3c0b6547216e75290b85d37eb065",
@@ -68793,6 +68793,178 @@
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1028124712/8f34af01af1bd242d9af8f645e870df13275c8d9/5/ca4e0979b4f186bd8f8813b7da36c92c4e60ca7aafb82fb1555a7c5ce0070940/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1028124712/history/",
       "assessed_at": "2026-08-24T13:56:21.196Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
+      "danger_basis": "none",
+      "assessment_source": "deterministic_regrade",
+      "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 0,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
+        "cited_finding_ids": [],
+        "interaction_chains": []
+      }
+    },
+    {
+      "report_id": "35f8217741988b1313315c39349f4283ab84e8aa4f69e08dab966bf874e46756",
+      "report_digest": "35f8217741988b1313315c39349f4283ab84e8aa4f69e08dab966bf874e46756",
+      "report_version": 2,
+      "supersedes_report_id": "6fbd6031a59b95a1b93faa2ca078781f7749abaee712424b8fbf5591a1807ccb",
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "5",
+      "rule_catalog_version": "2",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "5",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v7",
+      "assessment_schema_version": "contextual-assessment-v2",
+      "source_id": "github-1294022879",
+      "provider": "github",
+      "repository_id": 1294022879,
+      "repository": "japolino/inlay-illustrator",
+      "target_sha": "d757aa9d876a806775f4ca4cacf69ff4f53f4df5",
+      "completed_at": "2026-08-24T13:34:43.702Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 1,
+        "assessments": 1,
+        "observations": 0,
+        "items": 1,
+        "disposition": {
+          "expected_behavior": 0,
+          "minor_weakness": 1,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 0,
+          "low": 1,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 1,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 1,
+          "high": 0
+        },
+        "recommended_risk": {
+          "low": 1,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 64,
+        "inventory_bytes": 713647,
+        "tools_completed": 6,
+        "tools_not_applicable": 2,
+        "evidence_validated": 1,
+        "metadata_only_candidates": 0,
+        "review_required": 1,
+        "review_completed": 1,
+        "javascript_analysis_status": "incomplete"
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1294022879/d757aa9d876a806775f4ca4cacf69ff4f53f4df5/5/35f8217741988b1313315c39349f4283ab84e8aa4f69e08dab966bf874e46756/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1294022879/history/",
+      "assessed_at": "2026-08-24T14:03:27.934Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
+      "danger_basis": "none",
+      "assessment_source": "deterministic_regrade",
+      "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 1,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
+        "cited_finding_ids": [
+          "90ed227d474c46a086ab06e1cde5fb0d49810ba92e356bd81f7716fa9b7252c2"
+        ],
+        "interaction_chains": []
+      }
+    },
+    {
+      "report_id": "f20c54e0ba07182316ed0dc2e81cff1f1807f5ec62f84599ad15fc0183942946",
+      "report_digest": "f20c54e0ba07182316ed0dc2e81cff1f1807f5ec62f84599ad15fc0183942946",
+      "report_version": 2,
+      "supersedes_report_id": "60d90b7a0b42702999b45927d088b48c33df8c52d78431a0ea295937e290169c",
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "5",
+      "rule_catalog_version": "2",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "5",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v7",
+      "assessment_schema_version": "contextual-assessment-v2",
+      "source_id": "github-1275010865",
+      "provider": "github",
+      "repository_id": 1275010865,
+      "repository": "Q-atastrophe/Lore-Atlas",
+      "target_sha": "a5bec9d8c3141e7a57f49acc94826adfd4646994",
+      "completed_at": "2026-08-24T13:58:58.885Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 0,
+        "assessments": 0,
+        "observations": 0,
+        "items": 0,
+        "disposition": {
+          "expected_behavior": 0,
+          "minor_weakness": 0,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 0,
+          "low": 0,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 0,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 0,
+          "high": 0
+        },
+        "recommended_risk": {
+          "low": 0,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 31,
+        "inventory_bytes": 305714,
+        "tools_completed": 5,
+        "tools_not_applicable": 3,
+        "evidence_validated": 0,
+        "metadata_only_candidates": 0,
+        "review_required": 0,
+        "review_completed": 0,
+        "javascript_analysis_status": "complete"
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1275010865/a5bec9d8c3141e7a57f49acc94826adfd4646994/5/f20c54e0ba07182316ed0dc2e81cff1f1807f5ec62f84599ad15fc0183942946/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1275010865/history/",
+      "assessed_at": "2026-08-24T14:03:27.934Z",
       "synthesis_policy_version": "5",
       "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
