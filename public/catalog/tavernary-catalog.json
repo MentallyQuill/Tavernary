@@ -1,6 +1,6 @@
 {
   "schemaVersion": 7,
-  "generatedAt": "2026-08-23T07:51:19.360Z",
+  "generatedAt": "2026-08-24T04:00:16.285Z",
   "tagVocabulary": [
     {
       "id": "maintain-long-term-memory",
@@ -1009,8 +1009,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false
         ],
@@ -1214,10 +1214,10 @@
           false,
           false,
           false,
-          false,
           true,
           false,
           true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -1444,13 +1444,13 @@
           false,
           false,
           false,
-          false,
           true,
           false,
           false,
           false,
           true,
           true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -1624,13 +1624,13 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-07-01T00:05:34.000Z",
-        "activeWeeks12": 3,
+        "activeWeeks12": 2,
         "weeklyActivity": [
-          true,
           false,
           false,
           true,
           true,
+          false,
           false,
           false,
           false,
@@ -1818,8 +1818,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -2023,11 +2023,11 @@
           false,
           false,
           false,
-          false,
           true,
           true,
           false,
           true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -2236,12 +2236,12 @@
           false,
           false,
           false,
-          false,
           true,
           true,
           false,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -2586,10 +2586,10 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-06-13T11:58:57.000Z",
-        "activeWeeks12": 2,
+        "activeWeeks12": 1,
         "weeklyActivity": [
           true,
-          true,
+          false,
           false,
           false,
           false,
@@ -2775,7 +2775,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-23T05:09:17.000Z",
-        "activeWeeks12": 12,
+        "activeWeeks12": 11,
         "weeklyActivity": [
           true,
           true,
@@ -2788,7 +2788,7 @@
           true,
           true,
           true,
-          true
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -3991,7 +3991,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-23T01:09:17.000Z",
-        "activeWeeks12": 12,
+        "activeWeeks12": 11,
         "weeklyActivity": [
           true,
           true,
@@ -4004,7 +4004,7 @@
           true,
           true,
           true,
-          true
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -4362,10 +4362,10 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-06-11T17:36:56.000Z",
-        "activeWeeks12": 2,
+        "activeWeeks12": 1,
         "weeklyActivity": [
           true,
-          true,
+          false,
           false,
           false,
           false,
@@ -4738,9 +4738,9 @@
         "latestSourceActivityAt": "2026-06-19T10:32:27.000Z",
         "activeWeeks12": 2,
         "weeklyActivity": [
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false,
@@ -4978,12 +4978,12 @@
           false,
           false,
           false,
+          true,
+          true,
+          true,
+          true,
+          true,
           false,
-          true,
-          true,
-          true,
-          true,
-          true,
           false,
           false
         ],
@@ -5158,8 +5158,8 @@
         "latestSourceActivityAt": "2026-06-10T01:57:00.000Z",
         "activeWeeks12": 1,
         "weeklyActivity": [
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -5663,12 +5663,12 @@
         "activeWeeks12": 3,
         "weeklyActivity": [
           false,
-          false,
           true,
           false,
           false,
           true,
           true,
+          false,
           false,
           false,
           false,
@@ -5901,8 +5901,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -6022,12 +6022,11 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-19T08:28:55.000Z",
-        "activeWeeks12": 6,
+        "activeWeeks12": 5,
         "weeklyActivity": [
           true,
           true,
           true,
-          true,
           false,
           false,
           false,
@@ -6035,7 +6034,8 @@
           true,
           false,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -6204,12 +6204,11 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-20T05:42:02.000Z",
-        "activeWeeks12": 9,
+        "activeWeeks12": 8,
         "weeklyActivity": [
           true,
           true,
           true,
-          true,
           false,
           true,
           true,
@@ -6217,7 +6216,8 @@
           true,
           false,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -6406,10 +6406,9 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-19T23:01:18.000Z",
-        "activeWeeks12": 9,
+        "activeWeeks12": 8,
         "weeklyActivity": [
           true,
-          true,
           false,
           true,
           true,
@@ -6419,7 +6418,8 @@
           true,
           false,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -6543,12 +6543,12 @@
         "latestSourceActivityAt": "2026-07-06T17:40:15.000Z",
         "activeWeeks12": 2,
         "weeklyActivity": [
-          false,
           true,
           false,
           false,
           false,
           true,
+          false,
           false,
           false,
           false,
@@ -6742,11 +6742,11 @@
           false,
           false,
           false,
+          true,
+          true,
+          true,
+          true,
           false,
-          true,
-          true,
-          true,
-          true,
           false,
           false
         ],
@@ -6913,8 +6913,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -7082,12 +7082,12 @@
         "weeklyActivity": [
           false,
           false,
+          true,
+          true,
+          true,
+          true,
+          true,
           false,
-          true,
-          true,
-          true,
-          true,
-          true,
           false,
           false,
           false,
@@ -7265,10 +7265,10 @@
           false,
           false,
           false,
+          true,
+          true,
+          true,
           false,
-          true,
-          true,
-          true,
           false,
           false,
           false,
@@ -7922,8 +7922,8 @@
           false,
           false,
           false,
-          false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -8372,7 +8372,6 @@
         "activeWeeks12": 4,
         "weeklyActivity": [
           false,
-          false,
           true,
           false,
           true,
@@ -8380,6 +8379,7 @@
           false,
           true,
           true,
+          false,
           false,
           false,
           false
@@ -8981,7 +8981,6 @@
         "latestSourceActivityAt": "2026-08-16T07:27:47.000Z",
         "activeWeeks12": 6,
         "weeklyActivity": [
-          false,
           true,
           true,
           false,
@@ -8992,6 +8991,7 @@
           false,
           true,
           true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -9004,14 +9004,14 @@
         "watchers": 13,
         "aggregate": 233
       },
-      "repositorySizeKb": 46644,
+      "repositorySizeKb": 46637,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-08-23T07:49:50.356Z",
+      "refreshedAt": "2026-08-24T04:00:15.489Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -10147,9 +10147,9 @@
           false,
           false,
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false
@@ -10335,9 +10335,9 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-06-02T08:13:33.000Z",
-        "activeWeeks12": 1,
+        "activeWeeks12": 0,
         "weeklyActivity": [
-          true,
+          false,
           false,
           false,
           false,
@@ -10563,7 +10563,6 @@
         "weeklyActivity": [
           false,
           false,
-          false,
           true,
           true,
           false,
@@ -10571,6 +10570,7 @@
           false,
           false,
           true,
+          false,
           false,
           false
         ],
@@ -10822,7 +10822,6 @@
         "activeWeeks12": 3,
         "weeklyActivity": [
           false,
-          false,
           true,
           true,
           false,
@@ -10831,6 +10830,7 @@
           false,
           false,
           true,
+          false,
           false,
           false
         ],
@@ -11265,8 +11265,8 @@
         "latestSourceActivityAt": "2026-06-09T02:36:29.000Z",
         "activeWeeks12": 1,
         "weeklyActivity": [
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -11686,8 +11686,8 @@
         "latestSourceActivityAt": "2026-06-09T01:32:07.000Z",
         "activeWeeks12": 1,
         "weeklyActivity": [
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -11949,12 +11949,12 @@
         "latestSourceActivityAt": "2026-07-08T10:02:42.000Z",
         "activeWeeks12": 2,
         "weeklyActivity": [
-          false,
           true,
           false,
           false,
           false,
           true,
+          false,
           false,
           false,
           false,
@@ -12278,8 +12278,8 @@
         "latestSourceActivityAt": "2026-06-09T01:43:33.000Z",
         "activeWeeks12": 1,
         "weeklyActivity": [
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -12627,8 +12627,8 @@
         "latestSourceActivityAt": "2026-06-09T12:27:03.000Z",
         "activeWeeks12": 1,
         "weeklyActivity": [
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -12911,8 +12911,8 @@
         "latestSourceActivityAt": "2026-06-09T01:03:27.000Z",
         "activeWeeks12": 1,
         "weeklyActivity": [
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -13196,8 +13196,8 @@
         "latestSourceActivityAt": "2026-06-08T23:03:27.000Z",
         "activeWeeks12": 1,
         "weeklyActivity": [
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -13685,7 +13685,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-22T16:28:50.000Z",
-        "activeWeeks12": 12,
+        "activeWeeks12": 11,
         "weeklyActivity": [
           true,
           true,
@@ -13698,7 +13698,7 @@
           true,
           true,
           true,
-          true
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -14487,12 +14487,12 @@
           false,
           false,
           false,
-          false,
           true,
           true,
           false,
           true,
           true,
+          false,
           false,
           false,
           false
@@ -14708,13 +14708,13 @@
           false,
           false,
           false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
           false,
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
           false,
           false
         ],
@@ -14925,12 +14925,12 @@
           false,
           false,
           false,
-          false,
           true,
           true,
           false,
           true,
           true,
+          false,
           false,
           false,
           false
@@ -15157,11 +15157,11 @@
           false,
           false,
           false,
-          false,
           true,
           true,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -15327,9 +15327,9 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-06-02T18:59:21.000Z",
-        "activeWeeks12": 1,
+        "activeWeeks12": 0,
         "weeklyActivity": [
-          true,
+          false,
           false,
           false,
           false,
@@ -15714,7 +15714,6 @@
         "latestSourceActivityAt": "2026-08-14T17:19:06.000Z",
         "activeWeeks12": 8,
         "weeklyActivity": [
-          false,
           true,
           true,
           false,
@@ -15725,6 +15724,7 @@
           true,
           true,
           true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -15905,11 +15905,11 @@
           false,
           false,
           false,
-          false,
           true,
           false,
           false,
           true,
+          false,
           false,
           false,
           false,
@@ -16079,7 +16079,6 @@
         "latestSourceActivityAt": "2026-07-28T16:57:43.000Z",
         "activeWeeks12": 5,
         "weeklyActivity": [
-          false,
           true,
           true,
           false,
@@ -16088,6 +16087,7 @@
           false,
           true,
           true,
+          false,
           false,
           false,
           false
@@ -16271,8 +16271,8 @@
         "latestSourceActivityAt": "2026-06-09T15:33:19.000Z",
         "activeWeeks12": 1,
         "weeklyActivity": [
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -17588,7 +17588,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-17T20:05:36.000Z",
-        "activeWeeks12": 12,
+        "activeWeeks12": 11,
         "weeklyActivity": [
           true,
           true,
@@ -17601,7 +17601,7 @@
           true,
           true,
           true,
-          true
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -18789,8 +18789,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false
@@ -19162,9 +19162,9 @@
           false,
           false,
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false
@@ -19321,14 +19321,14 @@
           false,
           false,
           false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
           false,
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
           false
         ],
         "evidenceStatus": "complete",
@@ -19514,8 +19514,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false
@@ -19707,8 +19707,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false
@@ -20022,13 +20022,13 @@
           false,
           false,
           false,
-          false,
           true,
           false,
           true,
           true,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -20400,8 +20400,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false
@@ -20593,8 +20593,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false
@@ -20795,15 +20795,15 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-07-15T03:16:20.000Z",
-        "activeWeeks12": 4,
+        "activeWeeks12": 3,
         "weeklyActivity": [
           true,
-          true,
           false,
           false,
           false,
           true,
           true,
+          false,
           false,
           false,
           false,
@@ -21362,10 +21362,10 @@
         "weeklyActivity": [
           false,
           false,
+          true,
+          true,
+          true,
           false,
-          true,
-          true,
-          true,
           false,
           false,
           false,
@@ -21645,7 +21645,6 @@
         "latestSourceActivityAt": "2026-07-30T21:14:50.000Z",
         "activeWeeks12": 5,
         "weeklyActivity": [
-          false,
           true,
           false,
           false,
@@ -21654,6 +21653,7 @@
           true,
           false,
           true,
+          false,
           false,
           false,
           false
@@ -21859,7 +21859,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-13T00:38:33.000Z",
-        "activeWeeks12": 11,
+        "activeWeeks12": 10,
         "weeklyActivity": [
           true,
           true,
@@ -21871,7 +21871,7 @@
           true,
           true,
           true,
-          true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -22102,11 +22102,11 @@
           false,
           false,
           false,
-          false,
           true,
           false,
           false,
           true,
+          false,
           false,
           false
         ],
@@ -22302,10 +22302,10 @@
           false,
           false,
           false,
-          false,
           true,
           false,
           true,
+          false,
           false,
           false
         ],
@@ -22639,11 +22639,11 @@
           false,
           false,
           false,
-          false,
           true,
           true,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -23017,15 +23017,15 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-07-17T12:11:45.000Z",
-        "activeWeeks12": 6,
+        "activeWeeks12": 5,
         "weeklyActivity": [
-          true,
           true,
           true,
           false,
           true,
           true,
           true,
+          false,
           false,
           false,
           false,
@@ -23889,8 +23889,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false
         ],
@@ -24068,8 +24068,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false
@@ -24689,7 +24689,6 @@
         "activeWeeks12": 8,
         "weeklyActivity": [
           false,
-          false,
           true,
           true,
           false,
@@ -24699,7 +24698,8 @@
           true,
           false,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -25510,10 +25510,10 @@
           false,
           false,
           false,
-          false,
           true,
           false,
           true,
+          false,
           false,
           false,
           false
@@ -25694,8 +25694,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false
@@ -25891,14 +25891,14 @@
           false,
           false,
           false,
-          false,
           true,
           false,
           false,
           true,
           true,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -26121,10 +26121,10 @@
           false,
           false,
           false,
-          false,
           true,
           false,
           true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -26314,9 +26314,9 @@
         "latestSourceActivityAt": "2026-06-18T06:04:14.000Z",
         "activeWeeks12": 2,
         "weeklyActivity": [
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false,
@@ -26507,12 +26507,12 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-06-23T21:13:36.000Z",
-        "activeWeeks12": 3,
+        "activeWeeks12": 2,
         "weeklyActivity": [
-          true,
           true,
           false,
           true,
+          false,
           false,
           false,
           false,
@@ -26712,9 +26712,9 @@
         "activeWeeks12": 2,
         "weeklyActivity": [
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false,
@@ -26907,10 +26907,9 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-07-28T17:23:31.000Z",
-        "activeWeeks12": 3,
+        "activeWeeks12": 2,
         "weeklyActivity": [
           true,
-          true,
           false,
           false,
           false,
@@ -26918,6 +26917,7 @@
           false,
           false,
           true,
+          false,
           false,
           false,
           false
@@ -27316,9 +27316,8 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-15T12:41:51.000Z",
-        "activeWeeks12": 6,
+        "activeWeeks12": 5,
         "weeklyActivity": [
-          true,
           false,
           true,
           true,
@@ -27329,6 +27328,7 @@
           true,
           false,
           true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -27497,10 +27497,9 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-07-28T17:23:32.000Z",
-        "activeWeeks12": 6,
+        "activeWeeks12": 5,
         "weeklyActivity": [
           true,
-          true,
           false,
           true,
           true,
@@ -27508,6 +27507,7 @@
           false,
           false,
           true,
+          false,
           false,
           false,
           false
@@ -27689,11 +27689,11 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-06-21T20:22:25.000Z",
-        "activeWeeks12": 3,
+        "activeWeeks12": 2,
         "weeklyActivity": [
           true,
           true,
-          true,
+          false,
           false,
           false,
           false,
@@ -28131,11 +28131,11 @@
         "latestSourceActivityAt": "2026-07-03T21:06:58.000Z",
         "activeWeeks12": 2,
         "weeklyActivity": [
-          false,
           true,
           false,
           false,
           true,
+          false,
           false,
           false,
           false,
@@ -28490,8 +28490,8 @@
         "activeWeeks12": 1,
         "weeklyActivity": [
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -29079,7 +29079,6 @@
         "latestSourceActivityAt": "2026-08-03T03:18:23.000Z",
         "activeWeeks12": 5,
         "weeklyActivity": [
-          false,
           true,
           true,
           false,
@@ -29089,6 +29088,7 @@
           true,
           false,
           true,
+          false,
           false,
           false
         ],
@@ -29287,8 +29287,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -30518,12 +30518,12 @@
           false,
           false,
           false,
+          true,
+          true,
+          true,
+          true,
+          true,
           false,
-          true,
-          true,
-          true,
-          true,
-          true,
           false
         ],
         "evidenceStatus": "complete",
@@ -30900,8 +30900,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -31075,9 +31075,9 @@
           false,
           false,
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false,
@@ -31501,11 +31501,11 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-06-21T13:44:22.000Z",
-        "activeWeeks12": 3,
+        "activeWeeks12": 2,
         "weeklyActivity": [
           true,
           true,
-          true,
+          false,
           false,
           false,
           false,
@@ -32041,8 +32041,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -32275,10 +32275,10 @@
           false,
           false,
           false,
-          false,
           true,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -33106,8 +33106,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -33487,8 +33487,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -33678,8 +33678,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -33865,8 +33865,8 @@
         "latestSourceActivityAt": "2026-06-13T04:04:41.000Z",
         "activeWeeks12": 1,
         "weeklyActivity": [
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -34250,11 +34250,11 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-06-18T22:21:45.000Z",
-        "activeWeeks12": 2,
+        "activeWeeks12": 1,
         "weeklyActivity": [
-          true,
           false,
           true,
+          false,
           false,
           false,
           false,
@@ -34457,8 +34457,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -34648,9 +34648,9 @@
           false,
           false,
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false
@@ -34814,7 +34814,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-19T15:12:29.000Z",
-        "activeWeeks12": 11,
+        "activeWeeks12": 10,
         "weeklyActivity": [
           true,
           true,
@@ -34825,9 +34825,9 @@
           true,
           true,
           true,
-          true,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -35041,8 +35041,8 @@
           false,
           false,
           false,
-          false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -35290,11 +35290,11 @@
           false,
           false,
           false,
-          false,
           true,
           true,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -36020,11 +36020,11 @@
           false,
           false,
           false,
-          false,
           true,
           false,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -36238,9 +36238,8 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-22T19:47:06.000Z",
-        "activeWeeks12": 6,
+        "activeWeeks12": 5,
         "weeklyActivity": [
-          true,
           false,
           true,
           true,
@@ -36251,7 +36250,8 @@
           false,
           false,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -36849,12 +36849,12 @@
           false,
           false,
           false,
-          false,
           true,
           true,
           false,
           true,
           true,
+          false,
           false,
           false
         ],
@@ -37436,8 +37436,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false
@@ -37649,9 +37649,8 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-19T05:33:36.000Z",
-        "activeWeeks12": 11,
+        "activeWeeks12": 10,
         "weeklyActivity": [
-          true,
           true,
           true,
           true,
@@ -37662,7 +37661,8 @@
           true,
           false,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -38025,8 +38025,8 @@
         "weeklyActivity": [
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -38379,9 +38379,9 @@
           false,
           false,
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false,
@@ -38630,9 +38630,9 @@
           false,
           false,
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false
@@ -38833,9 +38833,9 @@
           false,
           false,
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false
@@ -39040,12 +39040,12 @@
           false,
           false,
           false,
+          true,
+          true,
+          true,
+          true,
+          true,
           false,
-          true,
-          true,
-          true,
-          true,
-          true,
           false,
           false,
           false
@@ -39226,8 +39226,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false
@@ -39448,13 +39448,13 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-07-03T08:15:58.000Z",
-        "activeWeeks12": 5,
+        "activeWeeks12": 4,
         "weeklyActivity": [
           true,
           true,
           true,
           true,
-          true,
+          false,
           false,
           false,
           false,
@@ -39978,7 +39978,6 @@
         "latestSourceActivityAt": "2026-08-14T08:07:57.000Z",
         "activeWeeks12": 3,
         "weeklyActivity": [
-          false,
           true,
           false,
           false,
@@ -39989,6 +39988,7 @@
           false,
           false,
           true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -40991,8 +40991,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false
         ],
@@ -41166,7 +41166,6 @@
         "latestSourceActivityAt": "2026-08-05T00:29:30.000Z",
         "activeWeeks12": 5,
         "weeklyActivity": [
-          false,
           true,
           false,
           false,
@@ -41176,6 +41175,7 @@
           true,
           true,
           true,
+          false,
           false,
           false
         ],
@@ -41359,7 +41359,6 @@
         "weeklyActivity": [
           false,
           false,
-          false,
           true,
           false,
           false,
@@ -41368,7 +41367,8 @@
           false,
           false,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -41552,9 +41552,9 @@
           false,
           false,
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false,
@@ -41755,10 +41755,10 @@
           false,
           false,
           false,
+          true,
+          true,
+          true,
           false,
-          true,
-          true,
-          true,
           false,
           false,
           false,
@@ -41929,7 +41929,6 @@
         "latestSourceActivityAt": "2026-07-26T13:23:23.000Z",
         "activeWeeks12": 3,
         "weeklyActivity": [
-          false,
           true,
           false,
           false,
@@ -41937,6 +41936,7 @@
           true,
           false,
           true,
+          false,
           false,
           false,
           false,
@@ -42226,7 +42226,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-05T23:34:51.000Z",
-        "activeWeeks12": 10,
+        "activeWeeks12": 9,
         "weeklyActivity": [
           true,
           true,
@@ -42237,7 +42237,7 @@
           true,
           true,
           true,
-          true,
+          false,
           false,
           false
         ],
@@ -42990,7 +42990,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-22T21:07:00.000Z",
-        "activeWeeks12": 12,
+        "activeWeeks12": 11,
         "weeklyActivity": [
           true,
           true,
@@ -43003,7 +43003,7 @@
           true,
           true,
           true,
-          true
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -43724,14 +43724,14 @@
           false,
           false,
           false,
-          false,
           true,
           true,
           false,
           false,
           false,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -44125,7 +44125,6 @@
           false,
           false,
           false,
-          false,
           true,
           true,
           false,
@@ -44133,7 +44132,8 @@
           true,
           false,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -44362,8 +44362,8 @@
           false,
           false,
           false,
-          false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -44578,9 +44578,8 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-18T17:05:13.000Z",
-        "activeWeeks12": 5,
+        "activeWeeks12": 4,
         "weeklyActivity": [
-          true,
           false,
           false,
           false,
@@ -44591,7 +44590,8 @@
           false,
           true,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -44826,11 +44826,11 @@
           false,
           false,
           false,
-          false,
           true,
           true,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -45056,7 +45056,6 @@
           false,
           false,
           false,
-          false,
           true,
           false,
           true,
@@ -45064,6 +45063,7 @@
           true,
           true,
           true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -48058,7 +48058,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-16T06:38:25.000Z",
-        "activeWeeks12": 11,
+        "activeWeeks12": 10,
         "weeklyActivity": [
           true,
           true,
@@ -48070,7 +48070,7 @@
           true,
           true,
           true,
-          true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -48228,19 +48228,19 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-15T17:45:16.000Z",
-        "activeWeeks12": 6,
+        "activeWeeks12": 5,
         "weeklyActivity": [
           true,
           true,
           true,
           true,
-          true,
           false,
           false,
           false,
           false,
           false,
           true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -48480,9 +48480,8 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-17T04:31:14.000Z",
-        "activeWeeks12": 4,
+        "activeWeeks12": 3,
         "weeklyActivity": [
-          true,
           false,
           false,
           false,
@@ -48493,7 +48492,8 @@
           true,
           false,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -49209,11 +49209,11 @@
           false,
           false,
           false,
-          false,
           true,
           false,
           false,
           true,
+          false,
           false,
           false,
           false
@@ -49433,9 +49433,9 @@
         "latestSourceActivityAt": "2026-06-15T16:50:38.000Z",
         "activeWeeks12": 2,
         "weeklyActivity": [
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false,
@@ -49628,8 +49628,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -49806,8 +49806,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -49980,9 +49980,9 @@
           false,
           false,
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false,
@@ -50599,7 +50599,6 @@
         "activeWeeks12": 7,
         "weeklyActivity": [
           false,
-          false,
           true,
           true,
           true,
@@ -50608,6 +50607,7 @@
           true,
           true,
           true,
+          false,
           false,
           false
         ],
@@ -50786,8 +50786,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -51194,8 +51194,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -52211,13 +52211,13 @@
           false,
           false,
           false,
-          false,
           true,
           false,
           true,
           false,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -52802,9 +52802,8 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-12T10:14:51.000Z",
-        "activeWeeks12": 4,
+        "activeWeeks12": 3,
         "weeklyActivity": [
-          true,
           false,
           false,
           false,
@@ -52815,6 +52814,7 @@
           false,
           false,
           true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -52978,8 +52978,8 @@
           false,
           false,
           false,
-          false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -54228,7 +54228,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-13T08:33:43.000Z",
-        "activeWeeks12": 8,
+        "activeWeeks12": 7,
         "weeklyActivity": [
           true,
           true,
@@ -54236,11 +54236,11 @@
           true,
           true,
           true,
-          true,
           false,
           false,
           false,
           true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -54506,7 +54506,6 @@
         "activeWeeks12": 9,
         "weeklyActivity": [
           false,
-          false,
           true,
           true,
           true,
@@ -54516,7 +54515,8 @@
           true,
           true,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -54775,13 +54775,13 @@
           false,
           false,
           false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
           false,
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
           false,
           false
         ],
@@ -54994,15 +54994,15 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-07-17T22:48:19.000Z",
-        "activeWeeks12": 6,
+        "activeWeeks12": 5,
         "weeklyActivity": [
-          true,
           true,
           true,
           false,
           true,
           true,
           true,
+          false,
           false,
           false,
           false,
@@ -55440,9 +55440,9 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-06-03T16:50:04.000Z",
-        "activeWeeks12": 1,
+        "activeWeeks12": 0,
         "weeklyActivity": [
-          true,
+          false,
           false,
           false,
           false,
@@ -55645,9 +55645,9 @@
           false,
           false,
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false
         ],
@@ -55804,19 +55804,19 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-16T06:41:08.000Z",
-        "activeWeeks12": 7,
+        "activeWeeks12": 6,
         "weeklyActivity": [
           true,
           true,
           true,
           true,
           true,
-          true,
           false,
           false,
           false,
           false,
           true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -55964,10 +55964,10 @@
         "activeWeeks12": 3,
         "weeklyActivity": [
           false,
+          true,
+          true,
+          true,
           false,
-          true,
-          true,
-          true,
           false,
           false,
           false,
@@ -56152,9 +56152,9 @@
         "weeklyActivity": [
           false,
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false,
@@ -57032,14 +57032,14 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-07-07T02:58:16.000Z",
-        "activeWeeks12": 5,
+        "activeWeeks12": 4,
         "weeklyActivity": [
-          true,
           true,
           true,
           false,
           true,
           true,
+          false,
           false,
           false,
           false,
@@ -57221,12 +57221,12 @@
         "latestSourceActivityAt": "2026-07-07T01:34:23.000Z",
         "activeWeeks12": 4,
         "weeklyActivity": [
-          false,
           true,
           true,
           false,
           true,
           true,
+          false,
           false,
           false,
           false,
@@ -57451,7 +57451,6 @@
         "latestSourceActivityAt": "2026-08-09T20:14:00.000Z",
         "activeWeeks12": 6,
         "weeklyActivity": [
-          false,
           true,
           false,
           true,
@@ -57461,6 +57460,7 @@
           false,
           false,
           true,
+          false,
           false,
           false
         ],
@@ -57644,7 +57644,6 @@
         "activeWeeks12": 6,
         "weeklyActivity": [
           false,
-          false,
           true,
           true,
           true,
@@ -57654,7 +57653,8 @@
           false,
           false,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -57819,8 +57819,8 @@
         "latestSourceActivityAt": "2026-06-11T05:05:15.000Z",
         "activeWeeks12": 1,
         "weeklyActivity": [
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -58188,8 +58188,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -58575,7 +58575,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-22T23:12:03.000Z",
-        "activeWeeks12": 12,
+        "activeWeeks12": 11,
         "weeklyActivity": [
           true,
           true,
@@ -58588,7 +58588,7 @@
           true,
           true,
           true,
-          true
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -58774,8 +58774,8 @@
         "latestSourceActivityAt": "2026-06-12T21:08:29.000Z",
         "activeWeeks12": 1,
         "weeklyActivity": [
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -58954,8 +58954,8 @@
         "latestSourceActivityAt": "2026-06-12T21:16:40.000Z",
         "activeWeeks12": 1,
         "weeklyActivity": [
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -59139,8 +59139,8 @@
         "latestSourceActivityAt": "2026-06-12T21:11:22.000Z",
         "activeWeeks12": 1,
         "weeklyActivity": [
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -59330,8 +59330,8 @@
         "latestSourceActivityAt": "2026-06-12T21:12:56.000Z",
         "activeWeeks12": 1,
         "weeklyActivity": [
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -59541,8 +59541,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -59916,13 +59916,13 @@
           false,
           false,
           false,
-          false,
           true,
           true,
           true,
           true,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -60101,7 +60101,6 @@
         "activeWeeks12": 4,
         "weeklyActivity": [
           false,
-          false,
           true,
           false,
           true,
@@ -60109,6 +60108,7 @@
           true,
           false,
           true,
+          false,
           false,
           false,
           false
@@ -60503,7 +60503,6 @@
         "activeWeeks12": 5,
         "weeklyActivity": [
           false,
-          false,
           true,
           false,
           false,
@@ -60513,7 +60512,8 @@
           false,
           false,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -60788,7 +60788,6 @@
         "activeWeeks12": 5,
         "weeklyActivity": [
           false,
-          false,
           true,
           false,
           false,
@@ -60797,6 +60796,7 @@
           true,
           true,
           true,
+          false,
           false,
           false
         ],
@@ -61396,9 +61396,8 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-03T18:33:46.000Z",
-        "activeWeeks12": 9,
+        "activeWeeks12": 8,
         "weeklyActivity": [
-          true,
           true,
           true,
           true,
@@ -61408,6 +61407,7 @@
           true,
           true,
           true,
+          false,
           false,
           false
         ],
@@ -61749,7 +61749,6 @@
         "weeklyActivity": [
           false,
           false,
-          false,
           true,
           true,
           true,
@@ -61757,6 +61756,7 @@
           true,
           false,
           true,
+          false,
           false,
           false
         ],
@@ -61945,8 +61945,8 @@
         "weeklyActivity": [
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -62364,7 +62364,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-23T07:04:23.000Z",
-        "activeWeeks12": 12,
+        "activeWeeks12": 11,
         "weeklyActivity": [
           true,
           true,
@@ -62377,7 +62377,7 @@
           true,
           true,
           true,
-          true
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -62747,11 +62747,11 @@
           false,
           false,
           false,
-          false,
           true,
           true,
           false,
           true,
+          false,
           false,
           false,
           false
@@ -63166,9 +63166,9 @@
         "activeWeeks12": 2,
         "weeklyActivity": [
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false,
@@ -63646,7 +63646,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-18T20:39:56.000Z",
-        "activeWeeks12": 12,
+        "activeWeeks12": 11,
         "weeklyActivity": [
           true,
           true,
@@ -63659,7 +63659,7 @@
           true,
           true,
           true,
-          true
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -64012,8 +64012,8 @@
           false,
           false,
           false,
-          false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -64563,8 +64563,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false
@@ -64845,13 +64845,13 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-07-04T09:08:50.000Z",
-        "activeWeeks12": 4,
+        "activeWeeks12": 3,
         "weeklyActivity": [
-          true,
           false,
           true,
           true,
           true,
+          false,
           false,
           false,
           false,
@@ -65303,8 +65303,8 @@
           false,
           false,
           false,
-          false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -65676,7 +65676,6 @@
         "latestSourceActivityAt": "2026-08-23T03:49:26.000Z",
         "activeWeeks12": 10,
         "weeklyActivity": [
-          false,
           true,
           true,
           true,
@@ -65687,7 +65686,8 @@
           true,
           true,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -65975,7 +65975,6 @@
         "latestSourceActivityAt": "2026-08-23T06:26:43.000Z",
         "activeWeeks12": 10,
         "weeklyActivity": [
-          false,
           true,
           true,
           true,
@@ -65986,7 +65985,8 @@
           true,
           true,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -66526,11 +66526,10 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-22T06:32:40.000Z",
-        "activeWeeks12": 8,
+        "activeWeeks12": 7,
         "weeklyActivity": [
           true,
           true,
-          true,
           false,
           false,
           false,
@@ -66539,7 +66538,8 @@
           true,
           false,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -66865,7 +66865,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-17T23:20:56.000Z",
-        "activeWeeks12": 12,
+        "activeWeeks12": 11,
         "weeklyActivity": [
           true,
           true,
@@ -66878,7 +66878,7 @@
           true,
           true,
           true,
-          true
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -67182,7 +67182,6 @@
         "activeWeeks12": 6,
         "weeklyActivity": [
           false,
-          false,
           true,
           true,
           false,
@@ -67192,7 +67191,8 @@
           false,
           false,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -67391,12 +67391,12 @@
           false,
           false,
           false,
-          false,
           true,
           true,
           true,
           false,
           true,
+          false,
           false,
           false
         ],
@@ -68725,9 +68725,9 @@
         "activeWeeks12": 2,
         "weeklyActivity": [
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false,
@@ -69501,8 +69501,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -69930,8 +69930,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -70784,7 +70784,6 @@
         "latestSourceActivityAt": "2026-08-15T03:49:43.000Z",
         "activeWeeks12": 5,
         "weeklyActivity": [
-          false,
           true,
           true,
           false,
@@ -70795,6 +70794,7 @@
           false,
           true,
           true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -70974,14 +70974,14 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-07-12T23:24:28.000Z",
-        "activeWeeks12": 6,
+        "activeWeeks12": 5,
         "weeklyActivity": [
           true,
           true,
           true,
           true,
           true,
-          true,
+          false,
           false,
           false,
           false,
@@ -71163,9 +71163,9 @@
         "weeklyActivity": [
           false,
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false,
@@ -71599,8 +71599,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -71935,9 +71935,9 @@
           false,
           false,
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false
         ],
         "evidenceStatus": "complete",
@@ -72613,8 +72613,8 @@
           false,
           false,
           false,
-          false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -73039,7 +73039,6 @@
         "activeWeeks12": 3,
         "weeklyActivity": [
           false,
-          false,
           true,
           true,
           false,
@@ -73049,7 +73048,8 @@
           false,
           false,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -73445,7 +73445,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-16T00:42:26.000Z",
-        "activeWeeks12": 11,
+        "activeWeeks12": 10,
         "weeklyActivity": [
           true,
           true,
@@ -73457,7 +73457,7 @@
           true,
           true,
           true,
-          true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -73849,9 +73849,8 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-04T02:40:30.000Z",
-        "activeWeeks12": 9,
+        "activeWeeks12": 8,
         "weeklyActivity": [
-          true,
           true,
           true,
           true,
@@ -73861,6 +73860,7 @@
           true,
           false,
           true,
+          false,
           false,
           false
         ],
@@ -74075,12 +74075,12 @@
         "weeklyActivity": [
           false,
           false,
-          false,
           true,
           true,
           true,
           false,
           true,
+          false,
           false,
           false,
           false,
@@ -74638,8 +74638,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -74827,9 +74827,9 @@
           false,
           false,
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false,
@@ -74993,9 +74993,9 @@
           false,
           false,
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false
@@ -75162,15 +75162,15 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-07-17T21:51:13.000Z",
-        "activeWeeks12": 2,
+        "activeWeeks12": 1,
         "weeklyActivity": [
-          true,
           false,
           false,
           false,
           false,
           false,
           true,
+          false,
           false,
           false,
           false,
@@ -75368,8 +75368,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false
         ],
@@ -75844,13 +75844,13 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-07-02T15:34:33.000Z",
-        "activeWeeks12": 3,
+        "activeWeeks12": 2,
         "weeklyActivity": [
           true,
-          true,
           false,
           false,
           true,
+          false,
           false,
           false,
           false,
@@ -76071,9 +76071,9 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-06-07T01:00:56.000Z",
-        "activeWeeks12": 1,
+        "activeWeeks12": 0,
         "weeklyActivity": [
-          true,
+          false,
           false,
           false,
           false,
@@ -76258,9 +76258,9 @@
           false,
           false,
           false,
-          false,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -76440,8 +76440,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -76652,8 +76652,8 @@
           false,
           false,
           false,
-          false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -76838,8 +76838,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -77056,10 +77056,9 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-13T13:58:34.000Z",
-        "activeWeeks12": 7,
+        "activeWeeks12": 6,
         "weeklyActivity": [
           true,
-          true,
           false,
           true,
           false,
@@ -77069,6 +77068,7 @@
           false,
           true,
           true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -77238,15 +77238,15 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-07-13T13:23:31.000Z",
-        "activeWeeks12": 3,
+        "activeWeeks12": 2,
         "weeklyActivity": [
           true,
-          true,
           false,
           false,
           false,
           false,
           true,
+          false,
           false,
           false,
           false,
@@ -79151,7 +79151,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-05T23:54:28.000Z",
-        "activeWeeks12": 10,
+        "activeWeeks12": 9,
         "weeklyActivity": [
           true,
           true,
@@ -79162,7 +79162,7 @@
           true,
           true,
           true,
-          true,
+          false,
           false,
           false
         ],
@@ -83210,8 +83210,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -84899,8 +84899,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false
         ],
@@ -85079,8 +85079,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -85273,7 +85273,6 @@
         "weeklyActivity": [
           false,
           false,
-          false,
           true,
           true,
           true,
@@ -85282,7 +85281,8 @@
           false,
           false,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -85764,9 +85764,9 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-06-04T16:14:25.000Z",
-        "activeWeeks12": 1,
+        "activeWeeks12": 0,
         "weeklyActivity": [
-          true,
+          false,
           false,
           false,
           false,
@@ -85993,8 +85993,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -86798,7 +86798,6 @@
         "latestSourceActivityAt": "2026-08-23T01:39:07.000Z",
         "activeWeeks12": 10,
         "weeklyActivity": [
-          false,
           true,
           true,
           true,
@@ -86809,7 +86808,8 @@
           true,
           true,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -87326,8 +87326,8 @@
         "activeWeeks12": 1,
         "weeklyActivity": [
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -87533,8 +87533,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -87743,13 +87743,13 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-07-02T20:55:23.000Z",
-        "activeWeeks12": 4,
+        "activeWeeks12": 3,
         "weeklyActivity": [
-          true,
           true,
           true,
           false,
           true,
+          false,
           false,
           false,
           false,
@@ -87887,12 +87887,12 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-06-26T14:29:24.000Z",
-        "activeWeeks12": 3,
+        "activeWeeks12": 2,
         "weeklyActivity": [
-          true,
           true,
           false,
           true,
+          false,
           false,
           false,
           false,
@@ -88077,8 +88077,8 @@
         "latestSourceActivityAt": "2026-06-10T04:06:09.000Z",
         "activeWeeks12": 1,
         "weeklyActivity": [
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -88213,9 +88213,8 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-17T18:35:37.000Z",
-        "activeWeeks12": 7,
+        "activeWeeks12": 6,
         "weeklyActivity": [
-          true,
           false,
           false,
           true,
@@ -88226,7 +88225,8 @@
           true,
           true,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -88509,8 +88509,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false
         ],
@@ -88751,13 +88751,13 @@
         "activeWeeks12": 4,
         "weeklyActivity": [
           false,
-          false,
           true,
           true,
           false,
           true,
           false,
           true,
+          false,
           false,
           false,
           false,
@@ -89054,11 +89054,11 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-06-21T19:47:40.000Z",
-        "activeWeeks12": 3,
+        "activeWeeks12": 2,
         "weeklyActivity": [
           true,
           true,
-          true,
+          false,
           false,
           false,
           false,
@@ -89306,8 +89306,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false
@@ -89493,10 +89493,10 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-06-14T06:00:18.000Z",
-        "activeWeeks12": 2,
+        "activeWeeks12": 1,
         "weeklyActivity": [
           true,
-          true,
+          false,
           false,
           false,
           false,
@@ -89881,10 +89881,10 @@
         "latestSourceActivityAt": "2026-06-22T11:17:40.000Z",
         "activeWeeks12": 2,
         "weeklyActivity": [
-          false,
           true,
           false,
           true,
+          false,
           false,
           false,
           false,
@@ -90223,8 +90223,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -90404,9 +90404,9 @@
           false,
           false,
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false,
@@ -92309,14 +92309,14 @@
           false,
           false,
           false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
           false,
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
           false
         ],
         "evidenceStatus": "complete",
@@ -92637,9 +92637,8 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-22T16:37:16.000Z",
-        "activeWeeks12": 9,
+        "activeWeeks12": 8,
         "weeklyActivity": [
-          true,
           false,
           false,
           false,
@@ -92650,7 +92649,8 @@
           true,
           true,
           true,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -92883,12 +92883,12 @@
         "weeklyActivity": [
           false,
           false,
+          true,
+          true,
+          true,
+          true,
+          true,
           false,
-          true,
-          true,
-          true,
-          true,
-          true,
           false,
           false,
           false,
@@ -93533,8 +93533,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -93788,7 +93788,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-20T08:49:54.000Z",
-        "activeWeeks12": 12,
+        "activeWeeks12": 11,
         "weeklyActivity": [
           true,
           true,
@@ -93801,7 +93801,7 @@
           true,
           true,
           true,
-          true
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -93983,7 +93983,6 @@
         "activeWeeks12": 3,
         "weeklyActivity": [
           false,
-          false,
           true,
           false,
           false,
@@ -93993,6 +93992,7 @@
           false,
           false,
           true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -94934,8 +94934,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false
         ],
@@ -95145,8 +95145,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false
         ],
@@ -95289,8 +95289,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false
         ],
@@ -95655,13 +95655,13 @@
         "latestSourceActivityAt": "2026-07-13T08:56:29.000Z",
         "activeWeeks12": 4,
         "weeklyActivity": [
-          false,
           true,
           true,
           true,
           false,
           false,
           true,
+          false,
           false,
           false,
           false,
@@ -95830,8 +95830,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -96393,14 +96393,14 @@
           false,
           false,
           false,
-          false,
           true,
           false,
           false,
           false,
           false,
           false,
-          true
+          true,
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -96603,8 +96603,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -96849,7 +96849,6 @@
         "latestSourceActivityAt": "2026-07-30T11:41:57.000Z",
         "activeWeeks12": 6,
         "weeklyActivity": [
-          false,
           true,
           true,
           false,
@@ -96858,6 +96857,7 @@
           true,
           false,
           true,
+          false,
           false,
           false,
           false
@@ -97229,8 +97229,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false
@@ -97432,9 +97432,9 @@
         "weeklyActivity": [
           false,
           false,
+          true,
+          true,
           false,
-          true,
-          true,
           false,
           false,
           false,
@@ -97650,7 +97650,6 @@
         "latestSourceActivityAt": "2026-07-29T12:49:12.000Z",
         "activeWeeks12": 4,
         "weeklyActivity": [
-          false,
           true,
           false,
           false,
@@ -97659,6 +97658,7 @@
           false,
           true,
           true,
+          false,
           false,
           false,
           false
@@ -97865,8 +97865,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false
@@ -98053,8 +98053,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -98431,8 +98431,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -98731,7 +98731,6 @@
         "latestSourceActivityAt": "2026-08-10T14:13:17.000Z",
         "activeWeeks12": 7,
         "weeklyActivity": [
-          false,
           true,
           true,
           true,
@@ -98742,6 +98741,7 @@
           true,
           true,
           true,
+          false,
           false
         ],
         "evidenceStatus": "complete",
@@ -98930,8 +98930,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false
         ],
@@ -99113,14 +99113,14 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-07-10T11:14:11.000Z",
-        "activeWeeks12": 5,
+        "activeWeeks12": 4,
         "weeklyActivity": [
-          true,
           true,
           true,
           false,
           true,
           true,
+          false,
           false,
           false,
           false,
@@ -99307,8 +99307,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false,
@@ -99518,11 +99518,11 @@
         "latestSourceActivityAt": "2026-07-01T09:29:56.000Z",
         "activeWeeks12": 4,
         "weeklyActivity": [
+          true,
+          true,
+          true,
+          true,
           false,
-          true,
-          true,
-          true,
-          true,
           false,
           false,
           false,
@@ -99711,12 +99711,12 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-06-24T23:19:39.000Z",
-        "activeWeeks12": 4,
+        "activeWeeks12": 3,
         "weeklyActivity": [
           true,
           true,
           true,
-          true,
+          false,
           false,
           false,
           false,
@@ -100161,7 +100161,7 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-21T19:13:34.000Z",
-        "activeWeeks12": 12,
+        "activeWeeks12": 11,
         "weeklyActivity": [
           true,
           true,
@@ -100174,7 +100174,7 @@
           true,
           true,
           true,
-          true
+          false
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -100369,8 +100369,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false
@@ -100925,8 +100925,8 @@
           false,
           false,
           false,
-          false,
           true,
+          false,
           false,
           false,
           false
@@ -103275,8 +103275,8 @@
                 false,
                 false,
                 false,
-                false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -103966,7 +103966,7 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-08-23T01:09:17.000Z",
-              "activeWeeks12": 12,
+              "activeWeeks12": 11,
               "weeklyActivity": [
                 true,
                 true,
@@ -103979,7 +103979,7 @@
                 true,
                 true,
                 true,
-                true
+                false
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -104289,13 +104289,13 @@
                 false,
                 false,
                 false,
-                false,
                 true,
                 false,
                 true,
                 true,
                 false,
-                true
+                true,
+                false
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -104754,13 +104754,13 @@
                 false,
                 false,
                 false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
                 false,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
                 false,
                 false
               ],
@@ -105504,7 +105504,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-23T07:51:21.504Z",
+      "supportRefreshedAt": "2026-08-24T04:00:16.588Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -107426,8 +107426,8 @@
                 false,
                 false,
                 false,
-                false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -108117,7 +108117,7 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-08-23T01:09:17.000Z",
-              "activeWeeks12": 12,
+              "activeWeeks12": 11,
               "weeklyActivity": [
                 true,
                 true,
@@ -108130,7 +108130,7 @@
                 true,
                 true,
                 true,
-                true
+                false
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -108506,10 +108506,10 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-06-11T17:36:56.000Z",
-              "activeWeeks12": 2,
+              "activeWeeks12": 1,
               "weeklyActivity": [
                 true,
-                true,
+                false,
                 false,
                 false,
                 false,
@@ -109747,8 +109747,8 @@
         }
       ],
       "supporterCount": 2,
-      "trendingScore": 1.0995742338311725,
-      "supportRefreshedAt": "2026-08-23T07:51:21.504Z",
+      "trendingScore": 1.0784505909217437,
+      "supportRefreshedAt": "2026-08-24T04:00:16.588Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -111731,7 +111731,7 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-08-05T23:54:28.000Z",
-              "activeWeeks12": 10,
+              "activeWeeks12": 9,
               "weeklyActivity": [
                 true,
                 true,
@@ -111742,7 +111742,7 @@
                 true,
                 true,
                 true,
-                true,
+                false,
                 false,
                 false
               ],
@@ -112340,7 +112340,6 @@
               "activeWeeks12": 3,
               "weeklyActivity": [
                 false,
-                false,
                 true,
                 true,
                 false,
@@ -112350,7 +112349,8 @@
                 false,
                 false,
                 false,
-                true
+                true,
+                false
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -112672,11 +112672,11 @@
                 false,
                 false,
                 false,
-                false,
                 true,
                 true,
                 false,
-                true
+                true,
+                false
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -112938,11 +112938,11 @@
                 false,
                 false,
                 false,
-                false,
                 true,
                 true,
                 false,
-                true
+                true,
+                false
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -113016,7 +113016,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-23T07:51:21.504Z",
+      "supportRefreshedAt": "2026-08-24T04:00:16.588Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -114956,8 +114956,8 @@
                 false,
                 false,
                 false,
-                false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -115762,7 +115762,7 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-08-21T19:13:34.000Z",
-              "activeWeeks12": 12,
+              "activeWeeks12": 11,
               "weeklyActivity": [
                 true,
                 true,
@@ -115775,7 +115775,7 @@
                 true,
                 true,
                 true,
-                true
+                false
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -116074,7 +116074,6 @@
               "activeWeeks12": 6,
               "weeklyActivity": [
                 false,
-                false,
                 true,
                 true,
                 false,
@@ -116084,7 +116083,8 @@
                 false,
                 false,
                 true,
-                true
+                true,
+                false
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -116381,13 +116381,13 @@
                 false,
                 false,
                 false,
-                false,
                 true,
                 false,
                 true,
                 true,
                 false,
-                true
+                true,
+                false
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -116921,7 +116921,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-23T07:51:21.504Z",
+      "supportRefreshedAt": "2026-08-24T04:00:16.588Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -117141,7 +117141,7 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-08-23T05:09:17.000Z",
-              "activeWeeks12": 12,
+              "activeWeeks12": 11,
               "weeklyActivity": [
                 true,
                 true,
@@ -117154,7 +117154,7 @@
                 true,
                 true,
                 true,
-                true
+                false
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -117482,7 +117482,7 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-08-23T01:09:17.000Z",
-              "activeWeeks12": 12,
+              "activeWeeks12": 11,
               "weeklyActivity": [
                 true,
                 true,
@@ -117495,7 +117495,7 @@
                 true,
                 true,
                 true,
-                true
+                false
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -117729,10 +117729,9 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-08-13T13:58:34.000Z",
-              "activeWeeks12": 7,
+              "activeWeeks12": 6,
               "weeklyActivity": [
                 true,
-                true,
                 false,
                 true,
                 false,
@@ -117742,6 +117741,7 @@
                 false,
                 true,
                 true,
+                false,
                 false
               ],
               "evidenceStatus": "complete",
@@ -117906,14 +117906,14 @@
                 false,
                 false,
                 false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
                 false,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
                 false
               ],
               "evidenceStatus": "complete",
@@ -118210,7 +118210,7 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-08-22T16:28:50.000Z",
-              "activeWeeks12": 12,
+              "activeWeeks12": 11,
               "weeklyActivity": [
                 true,
                 true,
@@ -118223,7 +118223,7 @@
                 true,
                 true,
                 true,
-                true
+                false
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -118724,7 +118724,6 @@
               "activeWeeks12": 3,
               "weeklyActivity": [
                 false,
-                false,
                 true,
                 true,
                 false,
@@ -118734,7 +118733,8 @@
                 false,
                 false,
                 false,
-                true
+                true,
+                false
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -119057,7 +119057,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-23T07:51:21.504Z",
+      "supportRefreshedAt": "2026-08-24T04:00:16.588Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -121008,8 +121008,8 @@
                 false,
                 false,
                 false,
-                false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -121595,8 +121595,8 @@
                 false,
                 false,
                 false,
-                false,
                 true,
+                false,
                 false,
                 false
               ],
@@ -121865,8 +121865,8 @@
               "latestSourceActivityAt": "2026-06-09T02:36:29.000Z",
               "activeWeeks12": 1,
               "weeklyActivity": [
-                false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -122092,10 +122092,9 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-08-13T13:58:34.000Z",
-              "activeWeeks12": 7,
+              "activeWeeks12": 6,
               "weeklyActivity": [
                 true,
-                true,
                 false,
                 true,
                 false,
@@ -122105,6 +122104,7 @@
                 false,
                 true,
                 true,
+                false,
                 false
               ],
               "evidenceStatus": "complete",
@@ -122545,7 +122545,6 @@
               "activeWeeks12": 4,
               "weeklyActivity": [
                 false,
-                false,
                 true,
                 false,
                 true,
@@ -122553,6 +122552,7 @@
                 false,
                 true,
                 true,
+                false,
                 false,
                 false,
                 false
@@ -122752,15 +122752,15 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-07-13T13:23:31.000Z",
-              "activeWeeks12": 3,
+              "activeWeeks12": 2,
               "weeklyActivity": [
                 true,
-                true,
                 false,
                 false,
                 false,
                 false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -123018,8 +123018,8 @@
                 false,
                 false,
                 false,
-                false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -123098,7 +123098,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-23T07:51:21.504Z",
+      "supportRefreshedAt": "2026-08-24T04:00:16.588Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -125050,8 +125050,8 @@
                 false,
                 false,
                 false,
-                false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -125627,15 +125627,15 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-07-17T22:48:19.000Z",
-              "activeWeeks12": 6,
+              "activeWeeks12": 5,
               "weeklyActivity": [
-                true,
                 true,
                 true,
                 false,
                 true,
                 true,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -125899,13 +125899,13 @@
                 false,
                 false,
                 false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
                 false,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
                 false,
                 false
               ],
@@ -126360,9 +126360,9 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-06-03T16:50:04.000Z",
-              "activeWeeks12": 1,
+              "activeWeeks12": 0,
               "weeklyActivity": [
-                true,
+                false,
                 false,
                 false,
                 false,
@@ -126456,7 +126456,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-23T07:51:21.504Z",
+      "supportRefreshedAt": "2026-08-24T04:00:16.588Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -128400,8 +128400,8 @@
                 false,
                 false,
                 false,
-                false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -129115,13 +129115,13 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-07-02T15:34:33.000Z",
-              "activeWeeks12": 3,
+              "activeWeeks12": 2,
               "weeklyActivity": [
                 true,
-                true,
                 false,
                 false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -129388,9 +129388,9 @@
                 false,
                 false,
                 false,
+                true,
+                true,
                 false,
-                true,
-                true,
                 false,
                 false,
                 false
@@ -130524,7 +130524,6 @@
               "activeWeeks12": 4,
               "weeklyActivity": [
                 false,
-                false,
                 true,
                 false,
                 true,
@@ -130532,6 +130531,7 @@
                 false,
                 true,
                 true,
+                false,
                 false,
                 false,
                 false
@@ -130981,13 +130981,13 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-07-02T20:55:23.000Z",
-              "activeWeeks12": 4,
+              "activeWeeks12": 3,
               "weeklyActivity": [
-                true,
                 true,
                 true,
                 false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -131270,8 +131270,8 @@
               "latestSourceActivityAt": "2026-06-08T23:03:27.000Z",
               "activeWeeks12": 1,
               "weeklyActivity": [
-                false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -131565,8 +131565,8 @@
               "latestSourceActivityAt": "2026-06-09T01:32:07.000Z",
               "activeWeeks12": 1,
               "weeklyActivity": [
-                false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -131870,7 +131870,6 @@
               "latestSourceActivityAt": "2026-08-23T06:26:43.000Z",
               "activeWeeks12": 10,
               "weeklyActivity": [
-                false,
                 true,
                 true,
                 true,
@@ -131881,7 +131880,8 @@
                 true,
                 true,
                 true,
-                true
+                true,
+                false
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -131968,7 +131968,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-23T07:51:21.504Z",
+      "supportRefreshedAt": "2026-08-24T04:00:16.588Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -133906,8 +133906,8 @@
                 false,
                 false,
                 false,
-                false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -134488,8 +134488,8 @@
                 false,
                 false,
                 false,
-                false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -134695,9 +134695,9 @@
                 false,
                 false,
                 false,
+                true,
+                true,
                 false,
-                true,
-                true,
                 false,
                 false
               ],
@@ -134776,7 +134776,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-23T07:51:21.504Z",
+      "supportRefreshedAt": "2026-08-24T04:00:16.588Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -136685,8 +136685,8 @@
                 false,
                 false,
                 false,
-                false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -137491,7 +137491,7 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-08-21T19:13:34.000Z",
-              "activeWeeks12": 12,
+              "activeWeeks12": 11,
               "weeklyActivity": [
                 true,
                 true,
@@ -137504,7 +137504,7 @@
                 true,
                 true,
                 true,
-                true
+                false
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -137842,7 +137842,7 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-08-23T01:09:17.000Z",
-              "activeWeeks12": 12,
+              "activeWeeks12": 11,
               "weeklyActivity": [
                 true,
                 true,
@@ -137855,7 +137855,7 @@
                 true,
                 true,
                 true,
-                true
+                false
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -138188,7 +138188,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-23T07:51:21.504Z",
+      "supportRefreshedAt": "2026-08-24T04:00:16.588Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -140099,8 +140099,8 @@
                 false,
                 false,
                 false,
-                false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -140892,8 +140892,8 @@
                 false,
                 false,
                 false,
-                false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -141314,15 +141314,15 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-07-17T22:48:19.000Z",
-              "activeWeeks12": 6,
+              "activeWeeks12": 5,
               "weeklyActivity": [
-                true,
                 true,
                 true,
                 false,
                 true,
                 true,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -141555,8 +141555,8 @@
                 false,
                 false,
                 false,
-                false,
                 true,
+                false,
                 false,
                 false
               ],
@@ -141641,7 +141641,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-08-23T07:51:21.504Z",
+      "supportRefreshedAt": "2026-08-24T04:00:16.588Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -143582,8 +143582,8 @@
                 false,
                 false,
                 false,
-                false,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -144407,15 +144407,15 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-07-17T22:48:19.000Z",
-              "activeWeeks12": 6,
+              "activeWeeks12": 5,
               "weeklyActivity": [
-                true,
                 true,
                 true,
                 false,
                 true,
                 true,
                 true,
+                false,
                 false,
                 false,
                 false,
@@ -144499,8 +144499,8 @@
         }
       ],
       "supporterCount": 1,
-      "trendingScore": 0.542010028620784,
-      "supportRefreshedAt": "2026-08-23T07:51:21.504Z",
+      "trendingScore": 0.5315976108452029,
+      "supportRefreshedAt": "2026-08-24T04:00:16.588Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
