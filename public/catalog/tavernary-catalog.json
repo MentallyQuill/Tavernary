@@ -58609,6 +58609,140 @@
       }
     },
     {
+      "id": "mokimoko-sillytavern-chatblockcleaner",
+      "name": "SillyTavern-ChatBlockCleaner",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "A SillyTavern extension that removes tagged XML blocks and their contents from chats. Users can scan for matches, export a cleaned TXT copy without changing the original, or permanently remove blocks from the saved chat.",
+      "canonicalUrl": "https://github.com/mokimoko/SillyTavern-ChatBlockCleaner",
+      "catalogedAt": "2026-08-24T09:11:43.585Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "edit-and-refine-messages",
+          "label": "Edit and refine messages",
+          "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
+          "facet": "goal"
+        },
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "b44068bb845c4a486a1c277511c4e0eaaadae547",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "mokimoko"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-08T14:25:53.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 4,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-24T09:11:43.585Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/mokimoko/SillyTavern-ChatBlockCleaner.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-ChatBlockCleaner"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-ChatBlockCleaner"
+        ],
+        "aliases": [],
+        "source": [
+          "mokimoko-sillytavern-chatblockcleaner",
+          "github-1327833509",
+          "mokimoko/SillyTavern-ChatBlockCleaner",
+          "https://github.com/mokimoko/SillyTavern-ChatBlockCleaner"
+        ],
+        "summary": [
+          "A SillyTavern extension that removes tagged XML blocks and their contents from chats. Users can scan for matches, export a cleaned TXT copy without changing the original, or permanently remove blocks from the saved chat."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Edit and refine messages",
+          "message rewriting",
+          "chat editing",
+          "response refinement",
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "mokimoko"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "mokimoko-sillytavern-dynamicaudioredux",
       "name": "SillyTavern DynamicAudioRedux",
       "kind": "extension",
