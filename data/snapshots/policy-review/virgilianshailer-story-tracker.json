@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "virgilianshailer-story-tracker",
+  "source_id": "github-1213366855",
+  "source_identity": "github:virgilianshailer/story-tracker",
+  "evidence_fingerprint": "8d0a68e0fa4347d3404c02d296fdc5708c9a75a37323db6c79a2d815a0931e90",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-24T08:18:58.414Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-24T08:18:58.414Z"
+  },
+  "maintenance_issue_number": null
+}
