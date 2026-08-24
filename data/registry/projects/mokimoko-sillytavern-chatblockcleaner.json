@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "mokimoko-sillytavern-chatblockcleaner",
+  "name": "SillyTavern-ChatBlockCleaner",
+  "kind": "extension",
+  "summary": "A SillyTavern extension that removes tagged XML blocks and their contents from chats. Users can scan for matches, export a cleaned TXT copy without changing the original, or permanently remove blocks from the saved chat.",
+  "metadata_status": "curated",
+  "source_id": "github-1327833509",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["edit-and-refine-messages", "non-destructive"],
+  "cataloged_at": "2026-08-24T09:11:43.585Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
