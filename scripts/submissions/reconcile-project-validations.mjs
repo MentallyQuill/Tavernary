@@ -15,6 +15,18 @@ const GENERATED_BRANCH_PREFIXES = [
   "automation/project-submission-",
   "automation/project-owner-request-",
 ];
+const PUBLICATION_MUTATION_ACTIONS = new Set([
+  "publish",
+  "retry-publication",
+  "regenerate",
+]);
+const ACTIVE_WORKFLOW_RUN_STATUSES = new Set([
+  "queued",
+  "in_progress",
+  "pending",
+  "requested",
+  "waiting",
+]);
 const OWNED_LABEL_DEFINITIONS = {
   "submission-validation-retrying": {
     color: "fbca04",
@@ -40,6 +52,22 @@ function errorMessage(error) {
   return error instanceof Error ? error.message : String(error);
 }
 
+function isActiveWorkflowRun(run) {
+  return (
+    ACTIVE_WORKFLOW_RUN_STATUSES.has(run?.status) || run?.conclusion == null
+  );
+}
+
+function publicationQueuedPlan(plan) {
+  return {
+    action: "wait",
+    state: "publication-queued",
+    attempts: plan.attempts,
+    run: null,
+    queuedAction: plan.action,
+  };
+}
+
 function labelNames(labels) {
   return (Array.isArray(labels) ? labels : [])
     .map((label) => (typeof label === "string" ? label : label?.name))
@@ -58,6 +86,9 @@ function expectedBranch(transaction) {
 
 function candidateFromPull(pull, repository, defaultBranch, publisherActorId) {
   if (pull?.state !== "open") return { reason: "closed" };
+  if (pull?.head?.ref === "automation/project-submission-0") {
+    return { reason: "reserved-canary" };
+  }
   if (
     typeof pull?.head?.ref !== "string" ||
     !GENERATED_BRANCH_PREFIXES.some((prefix) =>
@@ -434,8 +465,10 @@ function statusProjection(plan) {
     "retrying-validation": `Retrying exact-head validation (${plan.attempts} of ${PROJECT_VALIDATION_RETRY_LIMIT}).`,
     "validation-blocked": "Exact-head validation attempts are exhausted.",
     handoff: "Exact-head validation passed; awaiting Publisher.",
+    "publication-queued":
+      "Exact-head validation passed; queued behind the active Publisher run.",
     publishing: "Publishing the validated project transaction.",
-    "retrying-publication": `Retrying Publisher jobs (${plan.attempts} of ${PROJECT_VALIDATION_RETRY_LIMIT}).`,
+    "retrying-publication": `Re-dispatching Publisher (${plan.attempts} of ${PROJECT_VALIDATION_RETRY_LIMIT}).`,
     "publication-blocked": "Publisher attempts are exhausted.",
     regenerating: "Regenerating the stale automatic transaction.",
     "retrying-regeneration": `Retrying stale transaction regeneration (${plan.attempts} of ${PROJECT_VALIDATION_RETRY_LIMIT}).`,
@@ -542,6 +575,7 @@ async function replanAndApply({
   request,
   nowMs,
   publisherActorId,
+  publicationSlotClaimed,
 }) {
   if (
     ![
@@ -562,23 +596,44 @@ async function replanAndApply({
     publisherActorId,
     request,
   });
+  let livePublicationRunsPromise;
   const currentPlan = await loadReconciliationPlan({
     repository,
     pull: liveCandidate.pull,
     transaction: liveCandidate.transaction,
     request,
     nowMs,
-    loadPublicationRuns: () =>
-      listWorkflowRuns(
+    loadPublicationRuns: () => {
+      livePublicationRunsPromise ??= listWorkflowRuns(
         repository,
         "publish-project-transaction.yml",
         "event=workflow_dispatch",
         request,
-      ),
+      );
+      return livePublicationRunsPromise;
+    },
     publisherActorId,
   });
   if (currentPlan.action !== plan.action) {
     return { plan: currentPlan, applied: false, superseded: true };
+  }
+  if (PUBLICATION_MUTATION_ACTIONS.has(currentPlan.action)) {
+    livePublicationRunsPromise ??= listWorkflowRuns(
+      repository,
+      "publish-project-transaction.yml",
+      "event=workflow_dispatch",
+      request,
+    );
+    const globalPublisherActive = (await livePublicationRunsPromise).some(
+      isActiveWorkflowRun,
+    );
+    if (publicationSlotClaimed || globalPublisherActive) {
+      return {
+        plan: publicationQueuedPlan(currentPlan),
+        applied: false,
+        superseded: false,
+      };
+    }
   }
 
   let path;
@@ -596,7 +651,11 @@ async function replanAndApply({
       inputs: { validation_run_id: String(currentPlan.run.id) },
     };
   } else if (currentPlan.action === "retry-publication") {
-    path = `/repos/${repository}/actions/runs/${currentPlan.run.id}/rerun-failed-jobs`;
+    path = `/repos/${repository}/actions/workflows/publish-project-transaction.yml/dispatches`;
+    body = {
+      ref: defaultBranch,
+      inputs: { validation_run_id: String(currentPlan.validationRunId) },
+    };
   } else if (currentPlan.action === "regenerate") {
     path = `/repos/${repository}/actions/workflows/publish-project-transaction.yml/dispatches`;
     body = {
@@ -641,6 +700,7 @@ export async function reconcileProjectValidations({
   const results = [];
   let labelsReady = false;
   let publicationRunsPromise;
+  let publicationSlotClaimed = false;
   let authenticatedActorPromise;
   const loadAuthenticatedActor = () => {
     authenticatedActorPromise ??= request(
@@ -715,7 +775,14 @@ export async function reconcileProjectValidations({
         request,
         nowMs,
         publisherActorId,
+        publicationSlotClaimed,
       });
+      if (
+        application.applied &&
+        PUBLICATION_MUTATION_ACTIONS.has(application.plan.action)
+      ) {
+        publicationSlotClaimed = true;
+      }
       const currentPlan = application.plan;
       let projectionError;
       try {

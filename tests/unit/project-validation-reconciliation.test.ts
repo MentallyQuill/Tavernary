@@ -1,7 +1,6 @@
 import { expect, test } from "vitest";
 
 import {
-  PROJECT_VALIDATION_HANDOFF_GRACE_MS,
   PROJECT_VALIDATION_REGENERATION_GRACE_MS,
   PROJECT_VALIDATION_RETRY_LIMIT,
   projectValidationStateComment,
@@ -130,29 +129,13 @@ test("orders exact-head validations strictly by creation time", () => {
         ],
       }),
     ),
-  ).toMatchObject({ action: "wait", state: "handoff", attempts: 1 });
+  ).toMatchObject({ action: "publish", state: "publishing", attempts: 1 });
 });
 
-test("waits for the normal Publisher handoff grace", () => {
+test("publishes a successful validation without a handoff delay", () => {
   expect(
     planProjectValidationReconciliation(
       input({ validationRuns: [run(1, "success")] }),
-    ),
-  ).toMatchObject({ action: "wait", state: "handoff", attempts: 1 });
-});
-
-test("publishes a successful validation after handoff grace", () => {
-  expect(
-    planProjectValidationReconciliation(
-      input({
-        validationRuns: [
-          run(1, "success", {
-            updated_at: new Date(
-              NOW - PROJECT_VALIDATION_HANDOFF_GRACE_MS - 1,
-            ).toISOString(),
-          }),
-        ],
-      }),
     ),
   ).toMatchObject({ action: "publish", attempts: 1 });
 });
@@ -176,7 +159,11 @@ test("retries a failed Publisher below three attempts", () => {
         publicationRuns: [run(2, "failure"), run(3, "failure")],
       }),
     ),
-  ).toMatchObject({ action: "retry-publication", attempts: 2 });
+  ).toMatchObject({
+    action: "retry-publication",
+    attempts: 2,
+    validationRunId: 1,
+  });
 });
 
 test("blocks an exhausted Publisher", () => {

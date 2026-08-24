@@ -480,10 +480,10 @@ describe("generated project branch workflow custody", () => {
   });
 
   test("never auto-publishes the reserved branch canary", async () => {
-    const continuousIntegration = await workflow("ci");
-    expect(
-      continuousIntegration.jobs["dispatch-project-publication"].if,
-    ).toContain("github.ref_name != 'automation/project-submission-0'");
+    const reconciliation = await workflow("reconcile-project-validations");
+    expect(reconciliation.jobs.reconcile.if).toContain(
+      "github.event.workflow_run.head_branch != 'automation/project-submission-0'",
+    );
   });
 
   test("dispatches every privileged generator with a Publisher token", async () => {

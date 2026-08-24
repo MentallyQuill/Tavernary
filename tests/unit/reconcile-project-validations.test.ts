@@ -9,7 +9,6 @@ import {
   PROJECT_PUBLICATION_TRANSACTION_MARKER,
 } from "../../scripts/publication/project-publication-transaction.mjs";
 import {
-  PROJECT_VALIDATION_HANDOFF_GRACE_MS,
   PROJECT_VALIDATION_REGENERATION_GRACE_MS,
   PROJECT_VALIDATION_STATE_MARKER,
 } from "../../scripts/submissions/project-validation-reconciliation.mjs";
@@ -670,6 +669,23 @@ test("ignores a generated PR created by a different actor ID", async () => {
   expect(fake.mutationRequests()).toEqual([]);
 });
 
+test("ignores the reserved generated-branch custody canary", async () => {
+  const fake = new FakeGitHub([
+    pullFixture({ number: 999, headRef: "automation/project-submission-0" }),
+  ]);
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results).toEqual([
+    {
+      pullNumber: 999,
+      action: "ignore",
+      reason: "reserved-canary",
+    },
+  ]);
+  expect(fake.mutationRequests()).toEqual([]);
+});
+
 test("ignores a generated PR whose configured actor is not a Bot", async () => {
   const fake = new FakeGitHub([pullFixture({ pullAuthorType: "User" })]);
 
@@ -1172,14 +1188,11 @@ test("mutates only owned labels and preserves concurrent foreign label changes",
   ).toHaveLength(firstLabelMutations.length);
 });
 
-test("repairs a missing Publisher handoff after the success grace period", async () => {
+test("hands a successful validation to Publisher immediately", async () => {
   const pull = pullFixture();
   const validation = runFixture({
     id: 21,
     conclusion: "success",
-    updatedAt: new Date(
-      NOW - PROJECT_VALIDATION_HANDOFF_GRACE_MS - 1,
-    ).toISOString(),
   });
   const fake = new FakeGitHub([pull]);
   fake.validationPages.set(pull.head.ref, [[validation]]);
@@ -1199,9 +1212,6 @@ test("does not dispatch publication when a late Publisher run appears", async ()
   const validation = runFixture({
     id: 24,
     conclusion: "success",
-    updatedAt: new Date(
-      NOW - PROJECT_VALIDATION_HANDOFF_GRACE_MS - 1,
-    ).toISOString(),
   });
   const publisherPath = `/repos/${REPOSITORY}/actions/workflows/publish-project-transaction.yml/runs?event=workflow_dispatch&per_page=100&page=1`;
   const fake = new FakeGitHub([pull]);
@@ -1281,32 +1291,110 @@ test("aggregates Publisher runs for every successful validation on the head", as
   ).toBe(false);
 });
 
-test("reruns failed Publisher jobs below the per-head attempt limit", async () => {
+test.each(["failure", "cancelled"])(
+  "re-dispatches a %s Publisher from the exact validation",
+  async (conclusion) => {
+    const pull = pullFixture();
+    const validation = runFixture({ id: 31, conclusion: "success" });
+    const publisher = runFixture({
+      id: 32,
+      conclusion,
+      workflow: "publish-project-transaction.yml",
+      displayTitle: "Project publication for validation #31",
+      headSha: "f".repeat(40),
+      headBranch: "main",
+      runAttempt: 2,
+    });
+    const fake = new FakeGitHub([pull]);
+    fake.validationPages.set(pull.head.ref, [[validation]]);
+    fake.publicationPages = [[publisher]];
+
+    const summary = await reconcile(fake);
+
+    expect(summary.results[0]).toMatchObject({
+      action: "retry-publication",
+      attempts: 2,
+    });
+    expect(fake.requests).toContainEqual({
+      method: "POST",
+      path: `/repos/${REPOSITORY}/actions/workflows/publish-project-transaction.yml/dispatches`,
+      body: { ref: "main", inputs: { validation_run_id: "31" } },
+    });
+  },
+);
+
+test("queues publication while another project Publisher run is active", async () => {
   const pull = pullFixture();
-  const validation = runFixture({ id: 31, conclusion: "success" });
-  const publisher = runFixture({
-    id: 32,
-    conclusion: "failure",
+  const validation = runFixture({ id: 37, conclusion: "success" });
+  const otherPublisher = runFixture({
+    id: 38,
+    conclusion: null,
     workflow: "publish-project-transaction.yml",
-    displayTitle: "Project publication for validation #31",
+    displayTitle: "Project publication for validation #999",
     headSha: "f".repeat(40),
     headBranch: "main",
-    runAttempt: 2,
   });
   const fake = new FakeGitHub([pull]);
   fake.validationPages.set(pull.head.ref, [[validation]]);
-  fake.publicationPages = [[publisher]];
+  fake.publicationPages = [[otherPublisher]];
 
   const summary = await reconcile(fake);
 
   expect(summary.results[0]).toMatchObject({
-    action: "retry-publication",
-    attempts: 2,
+    action: "wait",
+    state: "publication-queued",
+    outcome: "observed",
   });
-  expect(fake.requests).toContainEqual({
-    method: "POST",
-    path: `/repos/${REPOSITORY}/actions/runs/32/rerun-failed-jobs`,
+  expect(
+    fake.requests.some(
+      ({ method, path }) =>
+        method === "POST" &&
+        path.endsWith("/publish-project-transaction.yml/dispatches"),
+    ),
+  ).toBe(false);
+});
+
+test("dispatches at most one Publisher mutation per reconciliation pass", async () => {
+  const first = pullFixture({ number: 620 });
+  const second = pullFixture({
+    number: 621,
+    headSha: NEXT_HEAD_SHA,
+    transactionHeadSha: NEXT_HEAD_SHA,
   });
+  const fake = new FakeGitHub([first, second]);
+  fake.validationPages.set(first.head.ref, [
+    [runFixture({ id: 39, conclusion: "success" })],
+  ]);
+  fake.validationPages.set(second.head.ref, [
+    [
+      runFixture({
+        id: 40,
+        conclusion: "success",
+        headSha: NEXT_HEAD_SHA,
+        headBranch: second.head.ref,
+      }),
+    ],
+  ]);
+
+  const summary = await reconcile(fake);
+
+  expect(summary.results).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({ pullNumber: 620, action: "publish" }),
+      expect.objectContaining({
+        pullNumber: 621,
+        action: "wait",
+        state: "publication-queued",
+      }),
+    ]),
+  );
+  expect(
+    fake.requests.filter(
+      ({ method, path }) =>
+        method === "POST" &&
+        path.endsWith("/publish-project-transaction.yml/dispatches"),
+    ),
+  ).toHaveLength(1);
 });
 
 test("does not rerun Publisher when a late active attempt appears", async () => {
@@ -1349,7 +1437,8 @@ test("does not rerun Publisher when a late active attempt appears", async () => 
   expect(
     fake.requests.some(
       ({ method, path }) =>
-        method === "POST" && path.endsWith("/rerun-failed-jobs"),
+        method === "POST" &&
+        path.endsWith("/publish-project-transaction.yml/dispatches"),
     ),
   ).toBe(false);
 });
