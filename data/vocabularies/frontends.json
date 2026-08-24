@@ -131,6 +131,11 @@
       "description": "Works with the SillyTavern roleplay frontend."
     },
     {
+      "id": "sillytavern-astraprojecta",
+      "label": "SillyTavern-AstraProjecta",
+      "description": "Works with the SillyTavern-AstraProjecta roleplay frontend."
+    },
+    {
       "id": "simulith",
       "label": "Simulith",
       "description": "Works with the Simulith roleplay frontend."
