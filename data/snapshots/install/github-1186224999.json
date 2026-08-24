@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1186224999",
+  "head_sha": "e0678becc695dc3a8e389f3875ac788df587902b",
+  "observed_at": "2026-08-24T11:22:23.575Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-SimulationManager",
+  "manifest": {
+    "display_name": "Simulation Manager",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
