@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "l1kiru-sillytavern-lorebookatlas",
+  "source_id": "github-1340428140",
+  "source_identity": "github:l1kiru/sillytavern-lorebookatlas",
+  "evidence_fingerprint": "e8c34c45ef893d679c64d80105b4db639653afeac3e8587f686a869843ea2fd9",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-24T19:26:40.116Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-24T19:26:40.116Z"
+  },
+  "maintenance_issue_number": null
+}
