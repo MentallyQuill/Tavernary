@@ -157,7 +157,7 @@ function responseSchema(input) {
     type: "array",
     minItems: 1,
     maxItems: 8,
-    items: { type: "string" },
+    items: { type: "string", minLength: 1, maxLength: 160 },
   };
   const required = [
     ...requestedFields,

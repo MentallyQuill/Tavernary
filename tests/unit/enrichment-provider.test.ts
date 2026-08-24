@@ -208,6 +208,13 @@ test("sends the exact model, hardened prompt, requested fields, and strict schem
   });
   expect(schema.properties.summary.properties.evidence.items).toEqual({
     type: "string",
+    minLength: 1,
+    maxLength: 160,
+  });
+  expect(schema.properties.tags.items.properties.evidence.items).toEqual({
+    type: "string",
+    minLength: 1,
+    maxLength: 160,
   });
   expect(JSON.stringify(schema)).not.toContain('"uniqueItems"');
   expect(schema.properties.tags.items.properties.id.enum).toEqual([
