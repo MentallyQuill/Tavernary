@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "zapoverde-sillytavern-canonize",
+  "source_id": "github-1186081011",
+  "source_identity": "github:zapoverde/sillytavern-canonize",
+  "evidence_fingerprint": "8dae399bf644a8460700e1aae64a5ff53ca4a78497bb025863bcff720f1238fe",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-24T08:18:17.447Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-24T08:18:17.447Z"
+  },
+  "maintenance_issue_number": null
+}
