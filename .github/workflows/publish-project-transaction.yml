@@ -77,7 +77,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: ${{ github.event.repository.default_branch }}
-          fetch-depth: 1
+          fetch-depth: 0
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
@@ -171,8 +171,23 @@ jobs:
           RUN_HEAD_BRANCH: ${{ steps.validation.outputs.head_branch }}
         run: |
           set -euo pipefail
-          main_sha="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${{ github.event.repository.default_branch }}" --jq '.sha')"
-          CURRENT_MAIN_SHA="$main_sha" node --input-type=module <<'NODE'
+          git fetch --no-tags origin "${{ github.event.repository.default_branch }}"
+          git checkout --detach "origin/${{ github.event.repository.default_branch }}"
+          main_sha="$(git rev-parse HEAD)"
+          base_sha="$(node -p "JSON.parse(require('fs').readFileSync('${RUNNER_TEMP}/project-publication-transaction.json','utf8')).base_sha")"
+          base_drift_raw="${RUNNER_TEMP}/project-publication-base-drift-paths.nul"
+          base_drift_json="${RUNNER_TEMP}/project-publication-base-drift-paths.json"
+          base_is_ancestor=false
+          : > "$base_drift_raw"
+          if git merge-base --is-ancestor "$base_sha" "$main_sha"; then
+            base_is_ancestor=true
+            git diff --name-only -z "$base_sha" "$main_sha" > "$base_drift_raw"
+          fi
+          node -e "const fs=require('fs'); const paths=fs.readFileSync(process.argv[1]).toString('utf8').split('\\0').filter(Boolean); fs.writeFileSync(process.argv[2],JSON.stringify(paths))" \
+            "$base_drift_raw" "$base_drift_json"
+          CURRENT_MAIN_SHA="$main_sha" \
+            BASE_IS_ANCESTOR="$base_is_ancestor" \
+            node --input-type=module <<'NODE'
           import fs from "node:fs";
           import trustedEditors from "./data/maintenance/trusted-tavernary-editors.json" with { type: "json" };
           import frontends from "./data/vocabularies/frontends.json" with { type: "json" };
@@ -188,7 +203,10 @@ jobs:
           } from "./src/features/help/project-owner-record.mjs";
           import { verifyTrustedEditor } from "./scripts/maintenance/trusted-editor-authority.mjs";
           import { parseProjectSubmissionIssue } from "./scripts/submissions/parse-project-submission.mjs";
-          import { planProjectPublication } from "./scripts/publication/project-publication-planner.mjs";
+          import {
+            isSafeProjectPublicationBaseDrift,
+            planProjectPublication,
+          } from "./scripts/publication/project-publication-planner.mjs";
           import { fingerprintProjectPublicationInput } from "./scripts/publication/project-publication-transaction.mjs";
 
           const read = (name) => JSON.parse(
@@ -200,6 +218,8 @@ jobs:
           const repository = read("project-publication-source-repository.json");
           const filePages = read("project-publication-files.json");
           const changedPaths = filePages.flat().map(({ filename }) => filename);
+          const baseChangedPaths = read("project-publication-base-drift-paths.json");
+          const baseIsAncestor = process.env.BASE_IS_ANCESTOR === "true";
           const sourcePath =
             `data/registry/sources/${transaction.source_id}.json`;
           const source = fs.existsSync(sourcePath)
@@ -294,6 +314,12 @@ jobs:
             changedPaths,
             current: {
               mainSha: process.env.CURRENT_MAIN_SHA,
+              baseDriftSafe:
+                baseIsAncestor &&
+                isSafeProjectPublicationBaseDrift({
+                  transaction,
+                  changedPaths: baseChangedPaths,
+                }),
               inputDigest,
               projectFingerprints,
               sourceFingerprint,

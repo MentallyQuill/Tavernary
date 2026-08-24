@@ -148,6 +148,34 @@ test("publishes successful generated project transactions by exact SHA", async (
   expect(source).toContain("projects,");
 });
 
+test("accepts only trusted concurrent data drift from main", async () => {
+  const workflow = parse(
+    await readFile(".github/workflows/publish-project-transaction.yml", "utf8"),
+  ) as any;
+  const steps = workflow.jobs.publish.steps as Array<{
+    id?: string;
+    name?: string;
+    run?: string;
+    with?: Record<string, unknown>;
+  }>;
+  const checkout = steps.find(
+    (step) => step.name === "Check out current default-branch publisher",
+  );
+  const plan = steps.find((step) => step.id === "plan");
+
+  expect(checkout?.with?.["fetch-depth"]).toBe(0);
+  expect(plan?.run).toContain(
+    'git merge-base --is-ancestor "$base_sha" "$main_sha"',
+  );
+  expect(plan?.run).toContain(
+    'git diff --name-only -z "$base_sha" "$main_sha"',
+  );
+  expect(plan?.run).toContain("isSafeProjectPublicationBaseDrift");
+  expect(plan?.run).toMatch(
+    /baseDriftSafe:\s*baseIsAncestor &&\s*isSafeProjectPublicationBaseDrift/u,
+  );
+});
+
 test("rejects generated pull requests outside Publisher custody before planning", async () => {
   const workflow = parse(
     await readFile(".github/workflows/publish-project-transaction.yml", "utf8"),

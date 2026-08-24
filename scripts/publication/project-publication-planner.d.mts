@@ -36,3 +36,8 @@ export type ProjectPublicationPlan =
 export function planProjectPublication(
   input: Record<string, any>,
 ): ProjectPublicationPlan;
+
+export function isSafeProjectPublicationBaseDrift(input: {
+  transaction: ProjectPublicationTransaction;
+  changedPaths: string[];
+}): boolean;

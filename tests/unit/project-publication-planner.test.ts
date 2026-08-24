@@ -1,6 +1,9 @@
 import { expect, test } from "vitest";
 
-import { planProjectPublication } from "../../scripts/publication/project-publication-planner.mjs";
+import {
+  isSafeProjectPublicationBaseDrift,
+  planProjectPublication,
+} from "../../scripts/publication/project-publication-planner.mjs";
 import { createProjectPublicationTransaction } from "../../scripts/publication/project-publication-transaction.mjs";
 
 const headSha = "c".repeat(40);
@@ -69,6 +72,7 @@ function input(overrides: Record<string, unknown> = {}) {
     changedPaths: transaction.generated_paths,
     current: {
       mainSha: baseSha,
+      baseDriftSafe: true,
       inputDigest: transaction.input_digest,
       projectFingerprints: {},
       sourceFingerprint: null,
@@ -89,6 +93,20 @@ test("merges a successful exact generated transaction", () => {
     projectIds: ["owner-project"],
     sourceId: "github-42",
   });
+});
+
+test("merges when main advances without touching generated transaction paths", () => {
+  expect(
+    planProjectPublication(
+      input({
+        current: {
+          ...input().current,
+          mainSha: "e".repeat(40),
+          baseDriftSafe: true,
+        },
+      }),
+    ),
+  ).toMatchObject({ action: "merge", pullNumber: 73 });
 });
 
 test.each([undefined, false])("pauses when the switch is %s", (enabled) => {
@@ -134,7 +152,7 @@ test("retries unsuccessful or pending mergeability checks", () => {
 
 test.each([
   ["input-digest-stale", { inputDigest: "d".repeat(64) }],
-  ["base-behind-main", { mainSha: "e".repeat(40) }],
+  ["base-behind-main", { mainSha: "e".repeat(40), baseDriftSafe: false }],
   [
     "project-fingerprint-stale",
     { projectFingerprints: { "owner-project": "f".repeat(64) } },
@@ -194,6 +212,41 @@ test.each([
     producer: "project-owner-request",
     issueNumber: 72,
   });
+});
+
+test("allows only disjoint generated data and report artifacts as safe base drift", () => {
+  expect(
+    isSafeProjectPublicationBaseDrift({
+      transaction,
+      changedPaths: [
+        "data/registry/projects/another-project.json",
+        "data/registry/sources/github-99.json",
+        "data/snapshots/github/github-99.json",
+        "data/snapshots/install/github-99.json",
+        "data/security/tavernkeeper-report-summaries.json",
+        "public/catalog/tavernary-catalog-v8.json",
+        "public/catalog/tavernary-catalog.json",
+      ],
+    }),
+  ).toBe(true);
+  expect(
+    isSafeProjectPublicationBaseDrift({
+      transaction,
+      changedPaths: [transaction.generated_paths[0]],
+    }),
+  ).toBe(false);
+  expect(
+    isSafeProjectPublicationBaseDrift({
+      transaction,
+      changedPaths: [".github/workflows/ci.yml"],
+    }),
+  ).toBe(false);
+  expect(
+    isSafeProjectPublicationBaseDrift({
+      transaction,
+      changedPaths: ["data/vocabularies/frontends.json"],
+    }),
+  ).toBe(false);
 });
 
 test("holds a valid manual transaction for deliberate maintainer approval", () => {
