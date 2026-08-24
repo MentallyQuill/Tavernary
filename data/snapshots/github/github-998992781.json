@@ -9,8 +9,8 @@
     "url": "https://github.com/aikohanasaki/Aikobots",
     "description": "Aikobots fork of ST",
     "default_branch": "v5",
-    "head_sha": "63ee1572b74f0d9b6e668a3db5b7c2b70d9c436f",
-    "head_committed_at": "2026-08-23T05:09:17.000Z",
+    "head_sha": "9d77709f412cc8eb2e3715136328b820efb9b57e",
+    "head_committed_at": "2026-08-24T05:59:03.000Z",
     "archived": false,
     "fork": true,
     "parent": {
@@ -20,15 +20,20 @@
       "url": "https://github.com/SillyTavern/SillyTavern"
     },
     "created_at": "2025-06-09T15:14:49.000Z",
-    "size_kb": 257290
+    "size_kb": 258320
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-23T05:09:17.000Z",
+    "latest_source_activity_at": "2026-08-24T05:59:03.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-24T05:59:03.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-08-17",
-        "latest_at": "2026-08-23T05:09:17.000Z",
+        "latest_at": "2026-08-23T19:01:29.000Z",
         "precision": "exact"
       },
       {
@@ -80,19 +85,14 @@
         "week_start": "2026-06-08",
         "latest_at": "2026-06-14T05:43:49.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-01",
-        "latest_at": "2026-06-07T03:20:05.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-17T08:03:17.174Z",
+    "baseline_completed_at": "2026-08-24T08:06:42.542Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "63ee1572b74f0d9b6e668a3db5b7c2b70d9c436f"
+    "evidence_head_sha": "9d77709f412cc8eb2e3715136328b820efb9b57e"
   },
   "community": {
     "stars_count": 18,
@@ -105,7 +105,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-23T07:49:50.356Z",
+  "refreshed_at": "2026-08-24T08:06:42.542Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -116,7 +116,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T05:14:36.020Z",
     "scan": null,
-    "refreshed_at": "2026-08-23T07:49:50.356Z",
+    "refreshed_at": "2026-08-24T08:06:42.542Z",
     "stale_since": null
   }
 }

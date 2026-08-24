@@ -9,21 +9,21 @@
     "url": "https://github.com/ddkhan24/hordestudio",
     "description": "SillyTavern-style character creation + AI Dungeon-style persistent worlds + a detailed virtual companion simulator, packaged as a creator-focused local web application.",
     "default_branch": "main",
-    "head_sha": "9ded90a8b0b5895e7df4280e13dd8e149abbe4fe",
-    "head_committed_at": "2026-08-22T22:20:37.000Z",
+    "head_sha": "b49444406c3d6685e0b71b13ff90628ac0dbbcf2",
+    "head_committed_at": "2026-08-23T17:50:09.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-31T12:09:50.000Z",
-    "size_kb": 31047
+    "size_kb": 48074
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-22T22:20:37.000Z",
+    "latest_source_activity_at": "2026-08-23T17:50:09.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-17",
-        "latest_at": "2026-08-22T22:20:37.000Z",
+        "latest_at": "2026-08-23T17:50:09.000Z",
         "precision": "exact"
       },
       {
@@ -43,20 +43,20 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-22T22:20:57.000Z",
+    "latest_release_at": "2026-08-23T13:01:34.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-23T07:49:50.356Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "9ded90a8b0b5895e7df4280e13dd8e149abbe4fe"
+    "evidence_head_sha": "b49444406c3d6685e0b71b13ff90628ac0dbbcf2"
   },
   "community": {
-    "stars_count": 37,
+    "stars_count": 39,
     "forks_count": 6,
     "watchers_count": 4,
-    "aggregate": 47
+    "aggregate": 49
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-23T07:49:50.356Z",
+  "refreshed_at": "2026-08-24T08:06:42.542Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -67,7 +67,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-23T07:49:50.356Z",
+    "refreshed_at": "2026-08-24T08:06:42.542Z",
     "stale_since": null
   }
 }

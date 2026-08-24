@@ -35,25 +35,25 @@
     "evidence_head_sha": "c27364d06d77ecd5f7511de3e23df3af57cd7edc"
   },
   "community": {
-    "stars_count": 0,
+    "stars_count": 3,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 0
+    "aggregate": 3
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-23T14:17:37.983Z",
+  "refreshed_at": "2026-08-24T08:06:42.542Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "Arczium", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-23T14:17:37.983Z",
+    "refreshed_at": "2026-08-24T08:06:42.542Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

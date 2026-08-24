@@ -35,8 +35,9 @@
     "aggregate": 1
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-23T14:16:22.095Z",
+  "refreshed_at": "2026-08-24T08:06:42.542Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "Dampfinchen", "type": "User", "provider": "github" }
@@ -44,8 +45,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-23T14:16:22.095Z",
+    "refreshed_at": "2026-08-24T08:06:42.542Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

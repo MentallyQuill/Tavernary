@@ -9,18 +9,23 @@
     "url": "https://github.com/bal-spec/sillytavern-character-memory",
     "description": "SillyTavern extension that automatically extracts structured character memories from chat and stores them in the Data Bank for vector-based retrieval at generation time",
     "default_branch": "master",
-    "head_sha": "37b21025e120acfbe1dcdeaa8becb05efe7188b4",
-    "head_committed_at": "2026-08-01T07:05:50.000Z",
+    "head_sha": "35fcf22bf0a5b4273fd19e06a2ff82d0ed520ab3",
+    "head_committed_at": "2026-08-24T04:08:02.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-02-14T02:08:33.000Z",
-    "size_kb": 16579
+    "size_kb": 16777
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-01T07:05:50.000Z",
+    "latest_source_activity_at": "2026-08-07T11:07:24.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-07T11:07:24.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-27",
         "latest_at": "2026-08-01T07:05:50.000Z",
@@ -35,9 +40,9 @@
     "provisional_weeks": null,
     "latest_release_at": "2026-08-01T07:08:08.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-31T10:00:47.215Z",
+    "baseline_completed_at": "2026-08-24T08:06:42.542Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "37b21025e120acfbe1dcdeaa8becb05efe7188b4"
+    "evidence_head_sha": "35fcf22bf0a5b4273fd19e06a2ff82d0ed520ab3"
   },
   "community": {
     "stars_count": 69,
@@ -46,18 +51,19 @@
     "aggregate": 78
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-23T07:49:50.356Z",
+  "refreshed_at": "2026-08-24T08:06:42.542Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "bal-spec", "type": "User", "provider": "github" },
-      { "login": "Echo-Storm", "type": "User", "provider": "github" }
+      { "login": "Echo-Storm", "type": "User", "provider": "github" },
+      { "login": "thexyzzyone", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-23T07:49:50.356Z",
+    "refreshed_at": "2026-08-24T08:06:42.542Z",
     "stale_since": null
   }
 }

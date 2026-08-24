@@ -9,18 +9,23 @@
     "url": "https://github.com/TavernAI/TavernAI",
     "description": "An AI roleplay chat platform with the most advanced prompting system",
     "default_branch": "main",
-    "head_sha": "c8046ded82aa07978f83fe3acd18fa4ab266b125",
-    "head_committed_at": "2026-08-14T16:50:16.000Z",
+    "head_sha": "4cac448eab3dd4432a077506a85646b96f3111d9",
+    "head_committed_at": "2026-08-24T07:51:28.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-16T19:18:48.000Z",
-    "size_kb": 10019
+    "size_kb": 10029
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-24T18:44:04.000Z",
+    "latest_source_activity_at": "2026-08-24T07:45:23.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-24T07:45:23.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-20",
         "latest_at": "2026-07-24T18:44:04.000Z",
@@ -42,23 +47,43 @@
         "precision": "exact"
       }
     ],
-    "provisional_weeks": null,
-    "latest_release_at": "2026-08-14T16:49:45.000Z",
-    "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-15T07:47:08.002Z",
+    "provisional_weeks": [
+      false,
+      true,
+      true,
+      false,
+      true,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      true
+    ],
+    "latest_release_at": "2026-08-23T13:04:25.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
     "baseline_attempts": 0,
     "evidence_head_sha": "c8046ded82aa07978f83fe3acd18fa4ab266b125"
   },
   "community": {
-    "stars_count": 58,
+    "stars_count": 59,
     "forks_count": 10,
     "watchers_count": 0,
-    "aggregate": 68
+    "aggregate": 69
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-23T07:49:50.356Z",
+  "refreshed_at": "2026-08-24T08:06:42.542Z",
   "stale_since": null,
-  "activity_scan": null,
+  "activity_scan": {
+    "head_sha": "4cac448eab3dd4432a077506a85646b96f3111d9",
+    "cutoff_at": "2026-05-16T08:06:42.542Z",
+    "next_page": 1,
+    "next_index": 63,
+    "resolved_weeks": ["2026-06-22", "2026-07-06", "2026-07-20", "2026-08-24"],
+    "pending_commit": null
+  },
   "contributors": {
     "accounts": [
       { "login": "TavernAI", "type": "User", "provider": "github" },
@@ -68,7 +93,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-23T07:49:50.356Z",
+    "refreshed_at": "2026-08-24T08:06:42.542Z",
     "stale_since": null
   }
 }
