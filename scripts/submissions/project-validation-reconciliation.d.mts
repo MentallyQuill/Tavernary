@@ -16,6 +16,7 @@ export type ProjectValidationState =
   | "retrying-validation"
   | "validation-blocked"
   | "handoff"
+  | "publication-queued"
   | "publishing"
   | "retrying-publication"
   | "publication-blocked"
@@ -39,10 +40,10 @@ export type ProjectValidationPlan =
       attempts: number;
       run: ProjectValidationRun | null;
       validationRunId?: number;
+      queuedAction?: "publish" | "retry-publication" | "regenerate";
     };
 
 export const PROJECT_VALIDATION_RETRY_LIMIT: number;
-export const PROJECT_VALIDATION_HANDOFF_GRACE_MS: number;
 export const PROJECT_VALIDATION_REGENERATION_GRACE_MS: number;
 export const PROJECT_VALIDATION_OWNED_LABELS: readonly [string, string];
 export const PROJECT_VALIDATION_STATE_MARKER: string;

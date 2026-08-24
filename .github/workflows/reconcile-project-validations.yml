@@ -4,6 +4,9 @@ on:
   workflow_run:
     workflows:
       - "Site: Validate changes"
+      - "Projects: Publish validated transaction"
+      - "Project submissions: Create review PR"
+      - "Project owner requests: Create review PR"
     types:
       - completed
   schedule:
@@ -30,8 +33,14 @@ jobs:
         github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)) ||
       (github.event_name == 'workflow_run' &&
        github.event.workflow_run.head_repository.full_name == github.repository &&
-       (startsWith(github.event.workflow_run.head_branch, 'automation/project-submission-') ||
-        startsWith(github.event.workflow_run.head_branch, 'automation/project-owner-request-')))
+       ((github.event.workflow_run.name == 'Site: Validate changes' &&
+         github.event.workflow_run.head_branch != 'automation/project-submission-0' &&
+         (startsWith(github.event.workflow_run.head_branch, 'automation/project-submission-') ||
+          startsWith(github.event.workflow_run.head_branch, 'automation/project-owner-request-'))) ||
+        (github.event.workflow_run.head_branch == 'main' &&
+         (github.event.workflow_run.name == 'Projects: Publish validated transaction' ||
+          github.event.workflow_run.name == 'Project submissions: Create review PR' ||
+          github.event.workflow_run.name == 'Project owner requests: Create review PR'))))
     runs-on: ubuntu-latest
     env:
       TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}

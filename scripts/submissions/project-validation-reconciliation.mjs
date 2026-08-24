@@ -1,5 +1,4 @@
 export const PROJECT_VALIDATION_RETRY_LIMIT = 3;
-export const PROJECT_VALIDATION_HANDOFF_GRACE_MS = 5 * 60_000;
 export const PROJECT_VALIDATION_REGENERATION_GRACE_MS = 15 * 60_000;
 export const PROJECT_VALIDATION_OWNED_LABELS = [
   "submission-validation-retrying",
@@ -192,11 +191,6 @@ export function planProjectValidationReconciliation(input) {
     );
   }
   if (!latestPublication) {
-    if (
-      !afterGrace(nowMs, latestValidation, PROJECT_VALIDATION_HANDOFF_GRACE_MS)
-    ) {
-      return action("wait", "handoff", 1, latestValidation);
-    }
     return action("publish", "publishing", 1, latestValidation);
   }
   if (latestPublication.conclusion !== "success") {
@@ -213,6 +207,7 @@ export function planProjectValidationReconciliation(input) {
       "retrying-publication",
       publicationFailures,
       latestPublication,
+      { validationRunId: latestValidation.id },
     );
   }
   if (
@@ -241,6 +236,8 @@ function humanText(state, attempts, run) {
       "Validation attempts are exhausted and require intervention.",
     handoff:
       "Validation passed; Tavernary is waiting for the normal Publisher handoff.",
+    "publication-queued":
+      "Validation passed; Tavernary queued this transaction behind the active Publisher run.",
     publishing: "Tavernary is publishing this validated transaction.",
     "retrying-publication": `Tavernary will retry publication (attempt ${attempts} of ${PROJECT_VALIDATION_RETRY_LIMIT}).`,
     "publication-blocked":

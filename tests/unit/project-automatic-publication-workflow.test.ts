@@ -26,7 +26,12 @@ test("reconciles generated validation runs from trusted main code", async () => 
   expect(workflow.name).toBe("Submissions: Reconcile project validations");
   expect(workflow.on).toEqual({
     workflow_run: {
-      workflows: ["Site: Validate changes"],
+      workflows: [
+        "Site: Validate changes",
+        "Projects: Publish validated transaction",
+        "Project submissions: Create review PR",
+        "Project owner requests: Create review PR",
+      ],
       types: ["completed"],
     },
     schedule: [{ cron: "7,22,37,52 * * * *" }],
@@ -53,6 +58,21 @@ test("reconciles generated validation runs from trusted main code", async () => 
   );
   expect(reconcile.if).toContain(
     "startsWith(github.event.workflow_run.head_branch, 'automation/project-owner-request-')",
+  );
+  expect(reconcile.if).toContain(
+    "github.event.workflow_run.name == 'Projects: Publish validated transaction'",
+  );
+  expect(reconcile.if).toContain(
+    "github.event.workflow_run.name == 'Project submissions: Create review PR'",
+  );
+  expect(reconcile.if).toContain(
+    "github.event.workflow_run.name == 'Project owner requests: Create review PR'",
+  );
+  expect(reconcile.if).toContain(
+    "github.event.workflow_run.head_branch == 'main'",
+  );
+  expect(reconcile.if).toContain(
+    "github.event.workflow_run.head_branch != 'automation/project-submission-0'",
   );
   expect(reconcile.if).toContain("github.event_name == 'workflow_dispatch'");
   expect(reconcile.if).toContain("github.actor_id == 2625904");
@@ -304,32 +324,17 @@ test("merges validated project transactions with the Publisher App", async () =>
   );
 });
 
-test("explicitly hands successful generated CI to the publisher", async () => {
+test("hands successful generated CI to the serialized reconciler", async () => {
   const ci = parse(await readFile(".github/workflows/ci.yml", "utf8")) as any;
-  const dispatch = ci.jobs["dispatch-project-publication"];
+  expect(ci.jobs).not.toHaveProperty("dispatch-project-publication");
 
-  expect(dispatch.needs).toEqual(["verify", "visual"]);
-  expect(dispatch.permissions).toEqual({
-    actions: "write",
-    contents: "read",
-  });
-  expect(dispatch.if).toContain("always()");
-  expect(dispatch.if).toContain("github.event_name == 'workflow_dispatch'");
-  expect(dispatch.if).toContain(
-    "startsWith(github.ref_name, 'automation/project-submission-')",
+  const reconciliationSource = await readFile(
+    ".github/workflows/reconcile-project-validations.yml",
+    "utf8",
   );
-  expect(dispatch.if).toContain(
-    "startsWith(github.ref_name, 'automation/project-owner-request-')",
-  );
-  expect(dispatch.if).toContain("needs.verify.result == 'success'");
-  expect(dispatch.if).toContain("needs.visual.result == 'success'");
-  expect(dispatch.if).toContain("needs.visual.result == 'skipped'");
-  expect(dispatch.steps[0].run).toContain(
-    "gh workflow run publish-project-transaction.yml",
-  );
-  expect(dispatch.steps[0].run).toContain('--repo "$GITHUB_REPOSITORY"');
-  expect(dispatch.steps[0].run).toContain(
-    '-f validation_run_id="$GITHUB_RUN_ID"',
+  const reconciliation = parse(reconciliationSource) as any;
+  expect(reconciliation.on.workflow_run.workflows).toContain(
+    "Site: Validate changes",
   );
 
   const publisherSource = await readFile(

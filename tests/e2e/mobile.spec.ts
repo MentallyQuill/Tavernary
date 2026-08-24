@@ -425,10 +425,13 @@ test("keeps Help controls and private reporting inside a 320px viewport", async 
     "44px",
   );
 
-  const overflow = await page.evaluate(
-    () => document.documentElement.scrollWidth - window.innerWidth,
-  );
-  expect(overflow).toBeLessThanOrEqual(0);
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => document.documentElement.scrollWidth - window.innerWidth,
+      ),
+    )
+    .toBeLessThanOrEqual(0);
 });
 
 test("keeps the owner project selector usable at 320px", async ({ page }) => {
