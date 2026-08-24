@@ -46782,6 +46782,160 @@
       }
     },
     {
+      "id": "l1kiru-sillytavern-lorebookatlas",
+      "name": "SillyTavern-LorebookAtlas",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "character-worldbuilding",
+      "summary": "A SillyTavern extension for working with large lorebooks: attach images to World Info entries, group entries into nested lists for filtered navigation, and archive lorebooks with images as .zip for backup and transfer.",
+      "canonicalUrl": "https://github.com/l1kiru/SillyTavern-LorebookAtlas",
+      "catalogedAt": "2026-08-24T19:10:03.393Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "local-first",
+          "label": "Local-first",
+          "description": "Keeps its primary data and workflow on the user's own device.",
+          "facet": "trait"
+        },
+        {
+          "id": "manage-lorebooks",
+          "label": "Manage lorebooks",
+          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+          "facet": "goal"
+        },
+        {
+          "id": "move-and-back-up-data",
+          "label": "Move and back up data",
+          "description": "Import, export, synchronize, migrate, restore, or back up roleplay data.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "7afe0a45b214eb68514f104666a62191a1f6b4f9",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "l1kiru"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-20T13:05:15.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 324,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-24T19:10:03.393Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/l1kiru/SillyTavern-LorebookAtlas.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-LorebookAtlas"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-LorebookAtlas"
+        ],
+        "aliases": [],
+        "source": [
+          "l1kiru-sillytavern-lorebookatlas",
+          "github-1340428140",
+          "l1kiru/SillyTavern-LorebookAtlas",
+          "https://github.com/l1kiru/SillyTavern-LorebookAtlas"
+        ],
+        "summary": [
+          "A SillyTavern extension for working with large lorebooks: attach images to World Info entries, group entries into nested lists for filtered navigation, and archive lorebooks with images as .zip for backup and transfer."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Character and worldbuilding"
+        ],
+        "tags": [
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals",
+          "Local-first",
+          "stored locally",
+          "on-device data",
+          "local data ownership",
+          "Manage lorebooks",
+          "World Info management",
+          "worldbook organization",
+          "loredeck management",
+          "Move and back up data",
+          "data portability",
+          "backup and restore",
+          "import and export"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "l1kiru"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "lackyas-sillytavern-presence",
       "name": "SillyTavern-Presence",
       "kind": "extension",
