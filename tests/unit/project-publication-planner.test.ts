@@ -221,8 +221,10 @@ test("allows only disjoint generated data and report artifacts as safe base drif
       changedPaths: [
         "data/registry/projects/another-project.json",
         "data/registry/sources/github-99.json",
+        "data/registry/kits/another-kit.json",
         "data/snapshots/github/github-99.json",
         "data/snapshots/install/github-99.json",
+        "data/snapshots/github/kits/another-kit.json",
         "data/security/tavernkeeper-report-summaries.json",
         "public/catalog/tavernary-catalog-v8.json",
         "public/catalog/tavernary-catalog.json",
