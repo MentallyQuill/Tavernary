@@ -299,9 +299,9 @@ class FakeGitHub {
   beforeIssueLabelMutation:
     ((issue: ReturnType<typeof issueFixture>) => void) | null = null;
   authenticatedUser = {
-    login: "tavernary-controller[bot]",
-    id: 77,
-    node_id: "BOT_77",
+    login: "github-actions[bot]",
+    id: 41_982_982,
+    node_id: "BOT_41892982",
     type: "Bot",
     site_admin: false,
     name: "Tavernary Controller",
@@ -377,6 +377,9 @@ class FakeGitHub {
     const pathname = url.pathname;
     const page = Number(url.searchParams.get("page") ?? "1");
 
+    if (method === "GET" && pathname === "/users/github-actions%5Bbot%5D") {
+      return this.authenticatedUser;
+    }
     if (method === "GET" && pathname === "/user") {
       return this.authenticatedUser;
     }
@@ -774,7 +777,8 @@ test("preserves a foreign spoofed marker and creates a controller-owned comment"
 
   await reconcile(fake);
 
-  expect(fake.requestCounts.get("GET /user")).toBe(1);
+  expect(fake.requestCounts.get("GET /users/github-actions%5Bbot%5D")).toBe(1);
+  expect(fake.requestCounts.get("GET /user")).toBeUndefined();
   expect(fake.requests).not.toContainEqual(
     expect.objectContaining({
       method: "PATCH",
@@ -791,6 +795,35 @@ test("preserves a foreign spoofed marker and creates a controller-owned comment"
     }),
   );
   expect(fake.comments.get(620)?.[0]?.body).toContain("Spoofed state");
+});
+
+test("caches the installation-token-supported Actions bot identity lookup", async () => {
+  const first = pullFixture({ number: 623 });
+  const second = pullFixture({ number: 624 });
+  const fake = new FakeGitHub([first, second]);
+  fake.validationPages.set(first.head.ref, [
+    [
+      runFixture({
+        id: 63,
+        conclusion: null,
+        headBranch: first.head.ref,
+      }),
+    ],
+  ]);
+  fake.validationPages.set(second.head.ref, [
+    [
+      runFixture({
+        id: 64,
+        conclusion: null,
+        headBranch: second.head.ref,
+      }),
+    ],
+  ]);
+
+  await reconcile(fake);
+
+  expect(fake.requestCounts.get("GET /users/github-actions%5Bbot%5D")).toBe(1);
+  expect(fake.requestCounts.get("GET /user")).toBeUndefined();
 });
 
 test("blocks exhausted validation attempts without another dispatch", async () => {

@@ -10,6 +10,7 @@ import {
 } from "./project-validation-reconciliation.mjs";
 
 const STATUS_CONTEXT = "tavernary/publication-validation";
+const CONTROLLER_COMMENT_AUTHOR_LOGIN = "github-actions[bot]";
 const GENERATED_BRANCH_PREFIXES = [
   "automation/project-submission-",
   "automation/project-owner-request-",
@@ -510,7 +511,9 @@ export async function reconcileProjectValidations({
   let publicationRunsPromise;
   let authenticatedActorPromise;
   const loadAuthenticatedActor = () => {
-    authenticatedActorPromise ??= request("/user");
+    authenticatedActorPromise ??= request(
+      `/users/${encodeURIComponent(CONTROLLER_COMMENT_AUTHOR_LOGIN)}`,
+    );
     return authenticatedActorPromise;
   };
 
