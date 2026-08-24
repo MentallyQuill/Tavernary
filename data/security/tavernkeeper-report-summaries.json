@@ -1,6 +1,6 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-08-24T05:54:49.577Z",
+  "generated_at": "2026-08-24T06:14:10.083Z",
   "preferred_report_ids": [
     "8610809db5601bbf121569743b3b11becc4b94ad00ec196e452c281aa3f6d28f",
     "8585ad6405b32aa3c434a6dd81257f60a384ad8dea5df02ad5211a3f1f5768cf",
@@ -121,7 +121,7 @@
     "49fd3fdcec63beefbd74608b4cfa076e9b308fdf83ac9b19be88c717b3af9a32",
     "37a6215a33157a60d496ef143a11084522c1b59f255b463c847cd7efb940b108",
     "7688c48e3a33b1c258611bceb394bede4a79649c73522b57f3b7d7feff63d7be",
-    "b457348995b2d4826c102a5d1aec31e8f8ab6fab0216e9510936022efe796e60",
+    "c236331c0129449fb486a34ee1ef6f048aacecb94d08e1268c67ca9b0cacc272",
     "9991340d52305c54f1b29750848c92b112a39f52cf3a3775a83f755ef2ce7f38",
     "cc2259b1a2792bb870e90bdf943f58d8ee12bb7410b34c4247abcbbb636e9dcd",
     "448c86729997f86fdcd95319f12db9bba1ad696389bfcd3a370703b419fd63f6",
@@ -55014,6 +55014,91 @@
           "f117284b6a918a700f924b122c85a691fbad1dc80668d05bea856efa7fd652f3",
           "fc1776ffef2430bf18882e7f20b1fec4fb480fb85ed02b818ac3c3953c75dd6c"
         ],
+        "interaction_chains": []
+      }
+    },
+    {
+      "report_id": "c236331c0129449fb486a34ee1ef6f048aacecb94d08e1268c67ca9b0cacc272",
+      "report_digest": "c236331c0129449fb486a34ee1ef6f048aacecb94d08e1268c67ca9b0cacc272",
+      "report_version": 3,
+      "supersedes_report_id": "b457348995b2d4826c102a5d1aec31e8f8ab6fab0216e9510936022efe796e60",
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "5",
+      "rule_catalog_version": "2",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "5",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v7",
+      "assessment_schema_version": "contextual-assessment-v2",
+      "source_id": "github-1100996755",
+      "provider": "github",
+      "repository_id": 1100996755,
+      "repository": "Zorgonatis/Stabs-EDH",
+      "target_sha": "1d4bf8eebb60f5bc11222983cb0d7fccf6843b97",
+      "completed_at": "2026-08-24T06:13:18.443Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 0,
+        "assessments": 0,
+        "observations": 0,
+        "items": 0,
+        "disposition": {
+          "expected_behavior": 0,
+          "minor_weakness": 0,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 0,
+          "low": 0,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 0,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 0,
+          "high": 0
+        },
+        "recommended_risk": {
+          "low": 0,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 73,
+        "inventory_bytes": 22443221,
+        "tools_completed": 6,
+        "tools_not_applicable": 2,
+        "evidence_validated": 0,
+        "metadata_only_candidates": 0,
+        "review_required": 0,
+        "review_completed": 0,
+        "javascript_analysis_status": "complete"
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1100996755/1d4bf8eebb60f5bc11222983cb0d7fccf6843b97/5/c236331c0129449fb486a34ee1ef6f048aacecb94d08e1268c67ca9b0cacc272/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1100996755/history/",
+      "assessed_at": "2026-08-24T06:15:31.481Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
+      "danger_basis": "none",
+      "assessment_source": "deterministic_regrade",
+      "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 0,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
+        "cited_finding_ids": [],
         "interaction_chains": []
       }
     }
