@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mokimoko-sillytavern-chatblockcleaner",
+  "source_id": "github-1327833509",
+  "source_identity": "github:mokimoko/sillytavern-chatblockcleaner",
+  "evidence_fingerprint": "7860c3d6ad63dd010bf845b75a86105ed7b558b01dac8a2b9a4e8ce54ee977ed",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-24T09:24:17.367Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-24T09:24:17.367Z"
+  },
+  "maintenance_issue_number": null
+}
