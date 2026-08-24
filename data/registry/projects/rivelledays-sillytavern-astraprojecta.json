@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "rivelledays-sillytavern-astraprojecta",
+  "name": "SillyTavern-AstraProjecta",
+  "kind": "frontend",
+  "summary": "AstraProjecta is a mobile-first UI extension for SillyTavern giving the frontend a cleaner, modern look while SillyTavern runs underneath. Desktop support is planned once the mobile core is stable.",
+  "metadata_status": "curated",
+  "source_id": "github-1265351175",
+  "frontends": ["sillytavern-astraprojecta"],
+  "primary_function": "frontend",
+  "tags": ["customize-the-interface", "mobile-friendly"],
+  "cataloged_at": "2026-08-24T08:55:42.736Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

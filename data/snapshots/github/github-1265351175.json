@@ -1,0 +1,81 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1265351175",
+  "repository": {
+    "id": 1265351175,
+    "owner": "RivelleDays",
+    "name": "SillyTavern-AstraProjecta",
+    "url": "https://github.com/RivelleDays/SillyTavern-AstraProjecta",
+    "description": "A SillyTavern frontend redesign (Alpha) aiming for a modern, coherent, cross-device UI/UX.",
+    "default_branch": "main",
+    "head_sha": "e7ab01f8e61008ea59da695cc5ab8e33824899e2",
+    "head_committed_at": "2026-07-11T17:27:23.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-06-10T17:37:57.000Z",
+    "size_kb": 19344
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-11T17:25:47.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-11T17:25:47.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-04T23:50:47.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-28T20:06:15.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-16T12:42:47.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-13T16:45:06.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-24T08:55:42.736Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "e7ab01f8e61008ea59da695cc5ab8e33824899e2"
+  },
+  "community": {
+    "stars_count": 22,
+    "forks_count": 1,
+    "watchers_count": 1,
+    "aggregate": 24
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE.txt"
+  },
+  "refreshed_at": "2026-08-24T08:55:42.736Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "RivelleDays", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-24T08:55:42.736Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
