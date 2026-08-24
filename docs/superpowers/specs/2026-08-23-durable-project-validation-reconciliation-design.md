@@ -9,7 +9,7 @@ The current pipeline also launches a full pull-request validation and a full exa
 ## Goals
 
 - Every automatic generated project transaction eventually reaches one explicit state: validating, retrying, publishing, blocked with a diagnostic, or published.
-- GitHub remains the authoritative queue. Recovery derives state from the current PR head, signed transaction marker, Actions runs, and issue lifecycle rather than a mutable repository queue file.
+- GitHub remains the authoritative queue. Recovery derives state from the current Publisher-authored PR head, schema-2 transaction marker, Actions runs, and issue lifecycle rather than a mutable repository queue file.
 - A failed or missing exact-head validation is retried automatically up to a bounded limit for that exact head.
 - A successful validation is handed to Publisher exactly once when possible and safely reconciled when the original handoff is missing or failed.
 - A stale transaction can regenerate and re-enter validation without manual dispatch.
@@ -32,23 +32,25 @@ The current pipeline also launches a full pull-request validation and a full exa
 A new reconciliation module enumerates open PRs whose head branch begins with `automation/project-submission-` or `automation/project-owner-request-`. A candidate is eligible only when all of the following are true:
 
 - the PR head repository is Tavernary itself;
+- the PR author is the configured Tavernary Publisher App bot by immutable numeric ID and Bot type;
 - the PR base is the default branch;
 - the PR body contains a valid schema-2 project publication transaction;
-- the transaction's generated branch, head SHA, and issue identity match live GitHub state; and
+- the transaction's generated branch and head SHA match live GitHub state;
+- the source issue remains open and admitted on the producer-specific route, and its immutable author identity matches the transaction actor; and
 - the transaction uses automatic publication.
 
-For each eligible current head, the controller loads exact-head `Site: Validate changes` runs whose event is `workflow_dispatch`, plus Publisher runs associated with the successful validation run ID. It produces exactly one action:
+For each eligible current head, the controller loads exact-head `Site: Validate changes` runs whose event is `workflow_dispatch`, Publisher runs associated with every successful validation run ID for that head, and issue-scoped regeneration runs launched by Publisher. It produces exactly one action:
 
 - `wait`: an exact validation or Publisher run is queued or running;
 - `validate`: no exact validation exists for the current head;
 - `retry-validation`: the current head has fewer than three completed unsuccessful exact validations;
 - `publish`: the current head has a successful validation, the normal CI handoff grace period has elapsed, and no Publisher run exists;
 - `retry-publication`: Publisher failed transiently and its run attempt is below three;
-- `regenerate`: Publisher previously completed without closing an automatic PR and the current branch remains stale after the grace period;
-- `block`: three validation or publication attempts for the current head have completed unsuccessfully; or
+- `regenerate`: Publisher previously completed without closing an automatic PR, no issue-scoped regeneration is active, and the current branch remains stale after the grace period;
+- `block`: three validation, publication, or regeneration attempts for the current head have completed unsuccessfully; or
 - `ignore`: the PR is manual, untrusted, malformed, closed, or no longer matches its transaction.
 
-Attempts are scoped to the current head SHA. Regeneration creates a new head and therefore a new bounded recovery cycle.
+Attempts count GitHub Actions `run_attempt` values and are scoped to the current head SHA. Newer Publisher failures take precedence over older generation failures. Regeneration is requested through the Publisher workflow, which revalidates the transaction and uses its App token to dispatch the generator; the new generated head starts a fresh bounded recovery cycle.
 
 ### Triggering and concurrency
 
@@ -58,7 +60,7 @@ The controller runs from trusted default-branch code through:
 - a staggered 15-minute schedule; and
 - owner/Publisher-only manual dispatch.
 
-The workflow has one non-cancelling repository-wide reconciliation concurrency group. Before every mutation, the CLI re-reads the PR and refuses to act if its head or state changed. Dispatches remain idempotent under overlapping workflow-run and scheduled wakeups.
+The workflow has one non-cancelling repository-wide reconciliation concurrency group. Before every action, the CLI re-reads the PR, source issue authority, validation runs, Publisher runs, and regeneration runs. It refuses to act if mutable trust state changed. Dispatches remain idempotent under overlapping workflow-run and scheduled wakeups, and a completed scan exits nonzero after reporting any candidate or required-projection error.
 
 ### Observability
 
@@ -68,6 +70,8 @@ The controller owns two labels:
 - `submission-validation-blocked`: bounded automatic attempts are exhausted and the latest exact run requires intervention.
 
 It maintains one issue comment with a machine-readable marker containing schema version, current head SHA, state, attempt count, and validation or publication run ID. The human-facing text links the exact run and says what Tavernary will do next. Head changes replace the projected state rather than stacking comments.
+
+Terminal submission and owner-request lifecycle workflows remove reconciliation-owned labels and update only the Actions-bot-owned marker comment to a merged or declined terminal state. Foreign marker comments and retry history are preserved.
 
 The controller also writes a commit status named `tavernary/publication-validation` so the generated PR shows the authoritative exact-head state even though publication is intentionally decoupled from pull-request permissions.
 
@@ -89,12 +93,12 @@ The existing CI success handoff remains the fast path. Reconciliation waits five
 - Reconciliation code is checked out from `main` and never from a generated branch.
 - `workflow_run` does not execute contributor-controlled code with write permissions.
 - The controller can dispatch existing trusted workflows, update issue projections, and write commit status; it cannot push generated content or merge directly.
-- Only `publish-project-transaction.yml` retains Publisher merge authority and revalidates the transaction, actor, source identity, current inputs, changed paths, and exact validated head.
+- Only `publish-project-transaction.yml` retains Publisher merge and regeneration authority and revalidates Publisher PR authorship, the transaction actor, source identity, current inputs, changed paths, and exact validated head.
 - Manual transactions remain awaiting maintainer action and are never converted to automatic mode by reconciliation.
 
 ## Verification
 
-- Unit tests cover every planner action, attempt reset on head change, malformed/untrusted PR rejection, handoff grace, and mutation-time stale-head refusal.
+- Unit tests cover every planner action, `run_attempt` accounting, attempt reset on head change, multiple validation-to-Publisher paths, active/failed generation, malformed or foreign-authored PR rejection, revoked issue authority, handoff grace, and mutation-time stale-state refusal.
 - Workflow contract tests cover triggers, permissions, concurrency, trusted checkout, and absence of secrets on PR validation.
 - Regression coverage reproduces the overlapping frontend name, unstyled tooltip readiness, controlled runner slowdown, and slow Git fixtures.
 - The complete static/unit/build gate and focused Playwright suites must pass before merge.

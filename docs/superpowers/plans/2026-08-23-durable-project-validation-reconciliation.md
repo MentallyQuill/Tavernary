@@ -281,6 +281,8 @@ git commit -m "test: stabilize publication gates"
 
 ### Task 5: Full verification and review
 
+Final review also requires Publisher-authored PR custody, live source-issue authority, `run_attempt` and multi-validation accounting, Publisher-routed regeneration with issue-scoped in-flight discovery, nonzero CLI failure signaling, terminal lifecycle cleanup, and exact overlap coverage in the visual submission handoff.
+
 **Files:**
 
 - Modify only files required by review findings.
