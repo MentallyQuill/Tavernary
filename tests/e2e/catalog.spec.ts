@@ -788,7 +788,7 @@ test("searches Kits by noncontiguous structured fields", async ({ page }) => {
   ).toBeVisible();
 
   const search = page.getByRole("searchbox", { name: "Search projects" });
-  await search.pressSequentially("aiko loadout");
+  await search.fill("aiko loadout");
 
   await expect(
     page.getByRole("heading", { name: kitCountLabel(1) }),
@@ -800,7 +800,7 @@ test("searches Kits by noncontiguous structured fields", async ({ page }) => {
   const kitSort = page.getByRole("combobox", { name: "Sort Kits" });
   await expect(kitSort).toHaveValue("relevance");
   await kitSort.selectOption("newest");
-  await search.pressSequentially(" memorybooks");
+  await search.fill("aiko loadout memorybooks");
   await expect(kitSort).toHaveValue("relevance");
 
   await search.fill("");
