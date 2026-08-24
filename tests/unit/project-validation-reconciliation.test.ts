@@ -114,6 +114,25 @@ test("blocks after three failed exact-head validations", () => {
   });
 });
 
+test("orders exact-head validations strictly by creation time", () => {
+  expect(
+    planProjectValidationReconciliation(
+      input({
+        validationRuns: [
+          run(1, "failure", {
+            created_at: new Date(NOW - 10_000).toISOString(),
+            updated_at: new Date(NOW).toISOString(),
+          }),
+          run(2, "success", {
+            created_at: new Date(NOW - 1_000).toISOString(),
+            updated_at: new Date(NOW - 1_000).toISOString(),
+          }),
+        ],
+      }),
+    ),
+  ).toMatchObject({ action: "wait", state: "handoff", attempts: 1 });
+});
+
 test("waits for the normal Publisher handoff grace", () => {
   expect(
     planProjectValidationReconciliation(
@@ -191,9 +210,35 @@ test("regenerates an unchanged automatic PR after a successful Publisher grace",
             ).toISOString(),
           }),
         ],
+        pull: {
+          updated_at: new Date(
+            NOW - PROJECT_VALIDATION_REGENERATION_GRACE_MS - 1,
+          ).toISOString(),
+        },
       }),
     ),
   ).toMatchObject({ action: "regenerate", attempts: 1 });
+});
+
+test("waits when a successful Publisher has a recently updated automatic PR", () => {
+  expect(
+    planProjectValidationReconciliation(
+      input({
+        validationRuns: [run(1, "success")],
+        publicationRuns: [
+          run(2, "success", {
+            created_at: new Date(
+              NOW - PROJECT_VALIDATION_REGENERATION_GRACE_MS - 1,
+            ).toISOString(),
+            updated_at: new Date(
+              NOW - PROJECT_VALIDATION_REGENERATION_GRACE_MS - 1,
+            ).toISOString(),
+          }),
+        ],
+        pull: { updated_at: new Date(NOW).toISOString() },
+      }),
+    ),
+  ).toMatchObject({ action: "wait", state: "published", attempts: 1 });
 });
 
 test("ignores manual transactions and old-head attempts", () => {

@@ -32,10 +32,15 @@ function timestamp(run) {
   return Number.isFinite(milliseconds) ? milliseconds : 0;
 }
 
+function createdAt(run) {
+  const milliseconds = Date.parse(run?.created_at ?? "");
+  return Number.isFinite(milliseconds) ? milliseconds : 0;
+}
+
 function currentHeadRuns(runs, headSha) {
   return (Array.isArray(runs) ? runs : [])
     .filter((run) => run?.head_sha === headSha)
-    .sort((left, right) => timestamp(right) - timestamp(left));
+    .sort((left, right) => createdAt(right) - createdAt(left));
 }
 
 function activeRun(runs) {
@@ -148,7 +153,8 @@ export function planProjectValidationReconciliation(input) {
       nowMs,
       latestPublication,
       PROJECT_VALIDATION_REGENERATION_GRACE_MS,
-    )
+    ) &&
+    afterGrace(nowMs, input?.pull, PROJECT_VALIDATION_REGENERATION_GRACE_MS)
   ) {
     return action("regenerate", "regenerating", 1, latestPublication);
   }
