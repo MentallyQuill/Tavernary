@@ -26,8 +26,10 @@ jobs:
     if: >-
       github.event_name == 'schedule' ||
       (github.event_name == 'workflow_dispatch' &&
-       (github.actor_id == 2625904 || github.actor_id == 243524590)) ||
+       (github.actor_id == 2625904 ||
+        github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)) ||
       (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.head_repository.full_name == github.repository &&
        (startsWith(github.event.workflow_run.head_branch, 'automation/project-submission-') ||
         startsWith(github.event.workflow_run.head_branch, 'automation/project-owner-request-')))
     runs-on: ubuntu-latest

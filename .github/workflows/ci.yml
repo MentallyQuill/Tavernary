@@ -39,6 +39,7 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
           PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
           PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          PR_HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
           PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           set -u
@@ -48,6 +49,7 @@ jobs:
           head_sha=""
 
           if [[ "$EVENT_NAME" == "pull_request" &&
+            "$PR_HEAD_REPOSITORY" == "$GITHUB_REPOSITORY" &&
             "$PR_HEAD_REF" == automation/project-submission-* ]]; then
             route="content"
           elif [[ "$EVENT_NAME" == "workflow_dispatch" &&

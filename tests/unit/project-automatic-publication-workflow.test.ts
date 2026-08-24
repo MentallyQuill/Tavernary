@@ -46,6 +46,9 @@ test("reconciles generated validation runs from trusted main code", async () => 
   expect(reconcile.if).toContain("github.event_name == 'schedule'");
   expect(reconcile.if).toContain("github.event_name == 'workflow_run'");
   expect(reconcile.if).toContain(
+    "github.event.workflow_run.head_repository.full_name == github.repository",
+  );
+  expect(reconcile.if).toContain(
     "startsWith(github.event.workflow_run.head_branch, 'automation/project-submission-')",
   );
   expect(reconcile.if).toContain(
@@ -53,7 +56,10 @@ test("reconciles generated validation runs from trusted main code", async () => 
   );
   expect(reconcile.if).toContain("github.event_name == 'workflow_dispatch'");
   expect(reconcile.if).toContain("github.actor_id == 2625904");
-  expect(reconcile.if).toContain("github.actor_id == 243524590");
+  expect(reconcile.if).toContain(
+    "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID",
+  );
+  expect(reconcile.if).not.toContain("243524590");
   expect(checkout?.with?.ref).toBe("main");
   expect(setupNode?.with?.["node-version"]).toBe(24);
   expect(steps).toEqual(
