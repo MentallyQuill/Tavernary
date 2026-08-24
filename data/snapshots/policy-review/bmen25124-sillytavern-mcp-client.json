@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "bmen25124-sillytavern-mcp-client",
+  "source_id": "github-945720767",
+  "source_identity": "github:bmen25124/sillytavern-mcp-client",
+  "evidence_fingerprint": "d8ac3afb038142ea9248530fb1b97ae838c4e2f9dffbeba5c9230b3e0f28c32d",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-24T08:23:47.559Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-24T08:23:47.559Z"
+  },
+  "maintenance_issue_number": null
+}
