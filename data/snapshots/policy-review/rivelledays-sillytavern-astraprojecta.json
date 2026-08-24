@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "rivelledays-sillytavern-astraprojecta",
+  "source_id": "github-1265351175",
+  "source_identity": "github:rivelledays/sillytavern-astraprojecta",
+  "evidence_fingerprint": "94c0e52e02038f513ec079c56c3d03e2d8e312f5d499bd01427cce4385f0c1f1",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-24T09:11:27.226Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-24T09:11:27.226Z"
+  },
+  "maintenance_issue_number": null
+}
