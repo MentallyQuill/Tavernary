@@ -3,6 +3,71 @@ import { readFile } from "node:fs/promises";
 import { expect, test } from "vitest";
 import { parse } from "yaml";
 
+test("reconciles generated validation runs from trusted main code", async () => {
+  const source = await readFile(
+    ".github/workflows/reconcile-project-validations.yml",
+    "utf8",
+  );
+  const workflow = parse(source) as any;
+  const reconcile = workflow.jobs.reconcile;
+  const steps = reconcile.steps as Array<{
+    env?: Record<string, string>;
+    uses?: string;
+    run?: string;
+    with?: Record<string, string | number>;
+  }>;
+  const checkout = steps.find((step) =>
+    step.uses?.startsWith("actions/checkout@"),
+  );
+  const setupNode = steps.find((step) =>
+    step.uses?.startsWith("actions/setup-node@"),
+  );
+
+  expect(workflow.name).toBe("Submissions: Reconcile project validations");
+  expect(workflow.on).toEqual({
+    workflow_run: {
+      workflows: ["Site: Validate changes"],
+      types: ["completed"],
+    },
+    schedule: [{ cron: "7,22,37,52 * * * *" }],
+    workflow_dispatch: null,
+  });
+  expect(workflow.permissions).toEqual({
+    actions: "write",
+    issues: "write",
+    "pull-requests": "read",
+    statuses: "write",
+    contents: "read",
+  });
+  expect(workflow.concurrency).toEqual({
+    group: "project-validation-reconciliation",
+    "cancel-in-progress": false,
+  });
+  expect(reconcile.if).toContain("github.event_name == 'schedule'");
+  expect(reconcile.if).toContain("github.event_name == 'workflow_run'");
+  expect(reconcile.if).toContain(
+    "startsWith(github.event.workflow_run.head_branch, 'automation/project-submission-')",
+  );
+  expect(reconcile.if).toContain(
+    "startsWith(github.event.workflow_run.head_branch, 'automation/project-owner-request-')",
+  );
+  expect(reconcile.if).toContain("github.event_name == 'workflow_dispatch'");
+  expect(reconcile.if).toContain("github.actor_id == 2625904");
+  expect(reconcile.if).toContain("github.actor_id == 243524590");
+  expect(checkout?.with?.ref).toBe("main");
+  expect(setupNode?.with?.["node-version"]).toBe(24);
+  expect(steps).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({
+        env: { GITHUB_TOKEN: "${{ github.token }}" },
+        run: "npm run submissions:reconcile-validations",
+      }),
+    ]),
+  );
+  expect(source).not.toMatch(/\bnpm (?:ci|install)\b/u);
+  expect(source).not.toContain("secrets.");
+});
+
 test("publishes successful generated project transactions by exact SHA", async () => {
   const source = await readFile(
     ".github/workflows/publish-project-transaction.yml",
