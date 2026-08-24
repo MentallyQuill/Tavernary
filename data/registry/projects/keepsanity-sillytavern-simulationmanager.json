@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "keepsanity-sillytavern-simulationmanager",
+  "name": "SillyTavern-SimulationManager",
+  "kind": "extension",
+  "summary": "A SillyTavern extension for running side-generation simulations as what-if branches from a chat snapshot without altering the real chat; supports steering, translation, lorebook entries, and prompt inspection. (README)",
+  "metadata_status": "curated",
+  "source_id": "github-1186224999",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [
+    "guide-model-responses",
+    "inspect-prompts-and-generations",
+    "manage-lorebooks",
+    "manage-prompts-and-presets",
+    "non-destructive",
+    "translate-roleplay-content"
+  ],
+  "cataloged_at": "2026-08-24T11:20:40.990Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
