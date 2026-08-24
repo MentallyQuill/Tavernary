@@ -1,8 +1,8 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-08-24T05:03:05.869Z",
+  "generated_at": "2026-08-24T05:39:05.751Z",
   "preferred_report_ids": [
-    "3bff93b3cf0db3dff26f35d3f03806424a61d75a341f74fcdcad8e5eb6f3fd5b",
+    "8610809db5601bbf121569743b3b11becc4b94ad00ec196e452c281aa3f6d28f",
     "8585ad6405b32aa3c434a6dd81257f60a384ad8dea5df02ad5211a3f1f5768cf",
     "a09120867995ba186db654617ffd6ee040c89b272e35e1c6147ad404f9f9c5a8",
     "d8e41c0adbde80852a0215b70121c8ab2419213698ca94f2d3c2e8662d4112bc",
@@ -54315,6 +54315,117 @@
           "fbb7786bc09deeb5529531b10f49c13bea70f7473dea83ad382f35ff2209ccc8",
           "fd3e6994b5830015a294312ec9734cf0a1eb5d6e22266f4a842ebc049334b2e8",
           "ffdc69933a9fa8a6e1da77b5e7313223b46011d7767c94b5c45d738f8470cda0"
+        ],
+        "interaction_chains": []
+      }
+    },
+    {
+      "report_id": "8610809db5601bbf121569743b3b11becc4b94ad00ec196e452c281aa3f6d28f",
+      "report_digest": "8610809db5601bbf121569743b3b11becc4b94ad00ec196e452c281aa3f6d28f",
+      "report_version": 3,
+      "supersedes_report_id": "3bff93b3cf0db3dff26f35d3f03806424a61d75a341f74fcdcad8e5eb6f3fd5b",
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "5",
+      "rule_catalog_version": "2",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "5",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v7",
+      "assessment_schema_version": "contextual-assessment-v2",
+      "source_id": "github-26291683",
+      "provider": "github",
+      "repository_id": 26291683,
+      "repository": "twitter/twemoji",
+      "target_sha": "bad3bceeafc901ace42a3dfe0421db6388daafb9",
+      "completed_at": "2026-08-24T05:38:14.434Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 30,
+        "assessments": 30,
+        "observations": 0,
+        "items": 30,
+        "disposition": {
+          "expected_behavior": 5,
+          "minor_weakness": 0,
+          "material_vulnerability": 25,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 5,
+          "low": 1,
+          "medium": 7,
+          "high": 13,
+          "critical": 4
+        },
+        "exploitability": {
+          "unlikely": 30,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 0,
+          "high": 30
+        },
+        "recommended_risk": {
+          "low": 30,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 7406,
+        "inventory_bytes": 12393412,
+        "tools_completed": 7,
+        "tools_not_applicable": 1,
+        "evidence_validated": 30,
+        "metadata_only_candidates": 0,
+        "review_required": 30,
+        "review_completed": 30,
+        "javascript_analysis_status": "incomplete"
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/26291683/bad3bceeafc901ace42a3dfe0421db6388daafb9/5/8610809db5601bbf121569743b3b11becc4b94ad00ec196e452c281aa3f6d28f/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/26291683/history/",
+      "assessed_at": "2026-08-24T05:40:30.715Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
+      "danger_basis": "none",
+      "assessment_source": "deterministic_regrade",
+      "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 25,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
+        "cited_finding_ids": [
+          "0fa73868c2a39bab620c4814a95dcef969d248a4acd40d197ff9e97bc31512cb",
+          "15f904abca6122ca4e86195078a0e382aeea093756d944f8f2a1daeaacc950e1",
+          "22e738db03efff75569ad013125f9b8dc0a998cce38219efddba70285860d7c4",
+          "2a2a1aa978bff7f899d652fd53ee036a0dba75edc34d683388cbd4339174377f",
+          "488ecf9893cd050aae3bfd5f9dfc0338dc7fd0813b1e9572ece537e85109cca8",
+          "4bde2cecef53534c5085818928777d672baa9aa95d5e9179b91257f36c244692",
+          "54c384a3ea659359f4df596708e3c7d07925f57a5d474f8d5ab2fe7fabb6a3f6",
+          "5a4ab0aacecb8122e592b8f3eab46ebd58dbcf1a07a30eb4ad367eda6d2d7f8d",
+          "5d5212382735a0bf51e29968e7ebaa9b09366664987f05e339f66957dba1dc50",
+          "607206d02f075ee3a5024bf2ca996c1d2c3b38a8738b418e2a9a5527d3bab389",
+          "60c2b40389a65b0a4606be8168e707b36f81e96963796d752a67eb197c62e2f2",
+          "735eba3490e37c72bca0686dcb75583e76a771d5d87f8fefa4d04219ba5080e2",
+          "7fc197e4f4fea4600321ecc97e602bb01cfbe0088783cfb3e3193f91267259c3",
+          "7ff00372f01be756bde84fd14afe8e919a754261a1b4cc93ed824ec4ef7ec14e",
+          "84d163ebc90de705ad743a8bb976214d0f7891d254bf23a3962208722921812c",
+          "9480987b9af56a7a393456ca642888547d18d9765b67178428fecc3d4977a206",
+          "952175a1114834803d4751bc0234c64c767f798ee6a22154667a15c226665612",
+          "a1436aac675fe2bb85b8c42663193e14fcc7b9834f345404d2a0744f86f843f5",
+          "a4d3cc6d5020409c14f59a912fcbe2f46c67ad80ba5c0533d5cda980ef5eb3b9",
+          "a954400c1e89abbf1a0681cbf68e67117475967756acb6c320431a4b5cd066c3",
+          "b60ef2acbba2c0b7fb4f244874ebb4ed49b681ef62976d46fc13f3c3e7147b39",
+          "b7ce1a5b7fb1d4969d635cd727b25a3609302a92c1745b817157b0be795cabe5",
+          "ba5654774d5a9d0b7fb51ef8c2f7b05e59a882aa212527c7b4af58f01046cbd6",
+          "d2227508ffda888540a3ef9c3c2616f856ee9fcebfe131cfa2db84238e4be341",
+          "ed8b917957add71417964996a0452a0bd117aa27e46a36bbb9cc8f093d27cc8c"
         ],
         "interaction_chains": []
       }
