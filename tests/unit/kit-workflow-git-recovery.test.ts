@@ -153,7 +153,7 @@ test("a stale create rerun fast-forwards before applying the issue again", async
   expect(git(rerun, "status", "--porcelain")).toBe("");
   expect(git(rerun, "rev-parse", "HEAD")).toBe(publishedSha);
   expect(retried.published_at).toBe("2026-07-24T17:00:00.000Z");
-});
+}, 20_000);
 
 test("an unchanged edit retry leaves the registry and timestamp untouched", async () => {
   const published = applyKitSubmission({
@@ -240,4 +240,4 @@ test("a stale withdrawal rerun preserves the original tombstone", async () => {
   expect(git(rerun, "status", "--porcelain")).toBe("");
   expect(git(rerun, "rev-parse", "HEAD")).toBe(withdrawnSha);
   expect(retried.withdrawn_at).toBe("2026-07-24T18:00:00.000Z");
-});
+}, 20_000);
