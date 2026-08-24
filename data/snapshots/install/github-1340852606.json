@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1340852606",
+  "head_sha": "9ed526cb5cee8c10ca07fdfc266bfba43a42d739",
+  "observed_at": "2026-08-24T09:46:15.230Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-msgcompact",
+  "manifest": {
+    "display_name": "Message Compact",
+    "key": null,
+    "minimum_client_version": "1.13.0"
+  }
+}

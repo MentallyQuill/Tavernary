@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "its-a-unixsystem-sillytavern-msgcompact",
+  "name": "SillyTavern-msgcompact",
+  "kind": "extension",
+  "summary": "SillyTavern extension that asks the LLM to rewrite individual chat messages with fewer tokens while preserving events, actions, and dialogue. Compactions replace originals in future prompts; originals are never modified.",
+  "metadata_status": "curated",
+  "source_id": "github-1340852606",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "edit-and-refine-messages",
+    "manage-context-limits",
+    "non-destructive"
+  ],
+  "cataloged_at": "2026-08-24T09:44:37.425Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
