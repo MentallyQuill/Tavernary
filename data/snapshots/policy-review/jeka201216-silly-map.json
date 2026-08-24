@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "jeka201216-silly-map",
+  "source_id": "github-1307082738",
+  "source_identity": "github:jeka201216/silly-map",
+  "evidence_fingerprint": "06a602c5637dbdc931e45f739a8d59f1997b719c8a6e98fe111c1c57b4a870df",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-24T08:22:23.404Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-24T08:22:23.404Z"
+  },
+  "maintenance_issue_number": null
+}
