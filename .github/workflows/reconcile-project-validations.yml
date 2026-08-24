@@ -12,6 +12,11 @@ on:
   schedule:
     - cron: "7,22,37,52 * * * *"
   workflow_dispatch:
+    inputs:
+      validation_run_id:
+        description: "Completed generated validation run to reconcile"
+        required: false
+        type: string
 
 permissions:
   actions: write
@@ -30,7 +35,9 @@ jobs:
       github.event_name == 'schedule' ||
       (github.event_name == 'workflow_dispatch' &&
        (github.actor_id == 2625904 ||
-        github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)) ||
+        github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID ||
+        (github.actor == 'github-actions[bot]' &&
+         inputs.validation_run_id != ''))) ||
       (github.event_name == 'workflow_run' &&
        github.event.workflow_run.head_repository.full_name == github.repository &&
        ((github.event.workflow_run.path == '.github/workflows/ci.yml' &&
@@ -53,6 +60,14 @@ jobs:
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 24
+      - name: Await dispatched validation completion
+        if: github.event_name == 'workflow_dispatch' && inputs.validation_run_id != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VALIDATION_RUN_ID: ${{ inputs.validation_run_id }}
+        run: >-
+          gh run watch "$VALIDATION_RUN_ID" --repo "$GITHUB_REPOSITORY"
+          --interval 5 --exit-status
       - name: Reconcile generated project validations
         env:
           GITHUB_TOKEN: ${{ github.token }}

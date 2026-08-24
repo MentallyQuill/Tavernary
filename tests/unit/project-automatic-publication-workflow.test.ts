@@ -35,7 +35,15 @@ test("reconciles generated validation runs from trusted main code", async () => 
       types: ["completed"],
     },
     schedule: [{ cron: "7,22,37,52 * * * *" }],
-    workflow_dispatch: null,
+    workflow_dispatch: {
+      inputs: {
+        validation_run_id: {
+          description: "Completed generated validation run to reconcile",
+          required: false,
+          type: "string",
+        },
+      },
+    },
   });
   expect(workflow.permissions).toEqual({
     actions: "write",
@@ -86,6 +94,19 @@ test("reconciles generated validation runs from trusted main code", async () => 
   expect(reconcile.if).not.toContain("243524590");
   expect(checkout?.with?.ref).toBe("main");
   expect(setupNode?.with?.["node-version"]).toBe(24);
+  expect(steps).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({
+        name: "Await dispatched validation completion",
+        if: expect.stringContaining("inputs.validation_run_id != ''"),
+        env: {
+          GH_TOKEN: "${{ github.token }}",
+          VALIDATION_RUN_ID: "${{ inputs.validation_run_id }}",
+        },
+        run: expect.stringContaining('gh run watch "$VALIDATION_RUN_ID"'),
+      }),
+    ]),
+  );
   expect(steps).toEqual(
     expect.arrayContaining([
       expect.objectContaining({
@@ -331,6 +352,34 @@ test("merges validated project transactions with the Publisher App", async () =>
 test("hands successful generated CI to the serialized reconciler", async () => {
   const ci = parse(await readFile(".github/workflows/ci.yml", "utf8")) as any;
   expect(ci.jobs).not.toHaveProperty("dispatch-project-publication");
+
+  const handoff = ci.jobs["reconcile-generated-validation"];
+  expect(handoff.needs).toEqual(["verify", "visual"]);
+  expect(handoff.if).toContain("github.event_name == 'workflow_dispatch'");
+  expect(handoff.if).toContain(
+    "startsWith(github.ref_name, 'automation/project-submission-')",
+  );
+  expect(handoff.if).toContain(
+    "startsWith(github.ref_name, 'automation/project-owner-request-')",
+  );
+  expect(handoff.if).toContain("needs.verify.result == 'success'");
+  expect(handoff.if).toContain("needs.visual.result == 'success'");
+  expect(handoff.permissions).toEqual({
+    actions: "write",
+    contents: "read",
+  });
+  expect(handoff.steps).toEqual([
+    expect.objectContaining({
+      env: { GH_TOKEN: "${{ github.token }}" },
+      run: expect.stringContaining(
+        "gh workflow run reconcile-project-validations.yml",
+      ),
+    }),
+  ]);
+  expect(handoff.steps[0].run).toContain("--ref main");
+  expect(handoff.steps[0].run).toContain(
+    '-f validation_run_id="$GITHUB_RUN_ID"',
+  );
 
   const reconciliationSource = await readFile(
     ".github/workflows/reconcile-project-validations.yml",
