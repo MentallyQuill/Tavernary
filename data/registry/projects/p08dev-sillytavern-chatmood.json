@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "p08dev-sillytavern-chatmood",
+  "name": "SillyTavern-ChatMood",
+  "kind": "extension",
+  "summary": "A persistent, per-chat emotional state tracker for SillyTavern that evolves a 9-axis Plutchik mood from the conversation and feeds it back into the prompt, so a character's tone shifts with how the chat has gone.",
+  "metadata_status": "curated",
+  "source_id": "github-1339877178",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "guide-model-responses",
+    "multilingual",
+    "persistent-state",
+    "run-group-roleplay",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-08-24T10:06:24.122Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
