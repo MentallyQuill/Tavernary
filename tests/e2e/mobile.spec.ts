@@ -426,11 +426,21 @@ test("keeps Help controls and private reporting inside a 320px viewport", async 
   );
 
   await expect
-    .poll(() =>
-      page.evaluate(
-        () => document.documentElement.scrollWidth - window.innerWidth,
-      ),
-    )
+    .poll(async () => {
+      try {
+        return await page.evaluate(
+          () => document.documentElement.scrollWidth - window.innerWidth,
+        );
+      } catch (error) {
+        if (
+          error instanceof Error &&
+          error.message.includes("Execution context was destroyed")
+        ) {
+          return Number.POSITIVE_INFINITY;
+        }
+        throw error;
+      }
+    })
     .toBeLessThanOrEqual(0);
 });
 
