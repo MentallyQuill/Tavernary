@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "cha1latte-marinara-custom-conversation-bg",
+  "source_id": "github-1220967746",
+  "source_identity": "github:cha1latte/marinara-custom-conversation-bg",
+  "evidence_fingerprint": "89798b187c7760adab76b233a4b832384e2fa17bba9ee773ff145cbe31c702f7",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-25T08:13:19.595Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-25T08:13:19.595Z"
+  },
+  "maintenance_issue_number": null
+}
