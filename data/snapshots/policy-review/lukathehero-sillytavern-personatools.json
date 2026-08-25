@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "lukathehero-sillytavern-personatools",
+  "source_id": "github-1200034173",
+  "source_identity": "github:lukathehero/sillytavern-personatools",
+  "evidence_fingerprint": "a59e9602e352ae60c8e717ba05083465a545652532657e8094ceb810658252df",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-25T08:12:36.123Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-25T08:12:36.123Z"
+  },
+  "maintenance_issue_number": null
+}
