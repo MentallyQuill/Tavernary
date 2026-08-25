@@ -9,18 +9,23 @@
     "url": "https://github.com/kwaroran/Risuai",
     "description": "Make your own story. User-friendly software for LLM roleplaying",
     "default_branch": "main",
-    "head_sha": "f4290c6cc8765c8bfe53e925471df658d3dabcc1",
-    "head_committed_at": "2026-08-22T21:07:00.000Z",
+    "head_sha": "c0ed1026de4b06a1c4600b79c789fea0616c297c",
+    "head_committed_at": "2026-08-24T22:20:02.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2023-04-12T13:08:52.000Z",
-    "size_kb": 77655
+    "size_kb": 77597
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-22T21:07:00.000Z",
+    "latest_source_activity_at": "2026-08-24T22:20:02.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-24T22:20:02.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-17",
         "latest_at": "2026-08-22T21:07:00.000Z",
@@ -75,32 +80,27 @@
         "week_start": "2026-06-08",
         "latest_at": "2026-06-12T14:40:44.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-01",
-        "latest_at": "2026-06-07T14:12:27.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-07-29T07:31:36.000Z",
+    "latest_release_at": "2026-08-24T22:19:26.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-22T07:48:57.629Z",
+    "baseline_completed_at": "2026-08-25T08:02:02.541Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "f4290c6cc8765c8bfe53e925471df658d3dabcc1"
+    "evidence_head_sha": "c0ed1026de4b06a1c4600b79c789fea0616c297c"
   },
   "community": {
-    "stars_count": 1626,
-    "forks_count": 340,
+    "stars_count": 1627,
+    "forks_count": 342,
     "watchers_count": 23,
-    "aggregate": 1989
+    "aggregate": 1992
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-24T08:06:42.542Z",
+  "refreshed_at": "2026-08-25T08:02:02.541Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -190,7 +190,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-24T08:06:42.542Z",
+    "refreshed_at": "2026-08-25T08:02:02.541Z",
     "stale_since": null
   }
 }

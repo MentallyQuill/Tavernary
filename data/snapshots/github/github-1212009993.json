@@ -9,21 +9,21 @@
     "url": "https://github.com/MultihogAurelius/SillyTavern-MultihogDnDFramework",
     "description": "Started off as a humble \"RPG State Tracker\" but has since expanded into a more ambitious game engine, simulation system, and modular RPG platform where you can even make your own RPGs with their own systems and game logic. The framework is committed to absolute simulation autism. The world must function even without your inputs.",
     "default_branch": "main",
-    "head_sha": "b15d805b92fe34c84d8893779c53846622891c52",
-    "head_committed_at": "2026-08-24T01:30:53.000Z",
+    "head_sha": "6fda451eabe7d5f77db47376cdfbe788448f8aa9",
+    "head_committed_at": "2026-08-25T02:23:16.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-16T01:18:13.000Z",
-    "size_kb": 13556
+    "size_kb": 9630
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-24T01:30:53.000Z",
+    "latest_source_activity_at": "2026-08-25T02:23:16.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-24",
-        "latest_at": "2026-08-24T01:30:53.000Z",
+        "latest_at": "2026-08-25T02:23:16.000Z",
         "precision": "exact"
       },
       {
@@ -83,11 +83,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-23T21:40:08.000Z",
+    "latest_release_at": "2026-08-24T23:35:07.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-24T08:06:42.542Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "b15d805b92fe34c84d8893779c53846622891c52"
+    "evidence_head_sha": "6fda451eabe7d5f77db47376cdfbe788448f8aa9"
   },
   "community": {
     "stars_count": 73,
@@ -100,7 +100,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-24T08:06:42.542Z",
+  "refreshed_at": "2026-08-25T08:02:02.541Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -115,7 +115,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-24T08:06:42.542Z",
+    "refreshed_at": "2026-08-25T08:02:02.541Z",
     "stale_since": null
   }
 }
