@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "splitclover-rewrite-extension",
+  "source_id": "github-830588458",
+  "source_identity": "github:splitclover/rewrite-extension",
+  "evidence_fingerprint": "91e17e88bc85889a2a8baa3d30db8e9a0be318f2152f8fdb94ea6560c6ba0717",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-25T08:18:16.283Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-25T08:18:16.283Z"
+  },
+  "maintenance_issue_number": null
+}
