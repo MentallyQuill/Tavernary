@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "cfigure-lumiverse-shutter",
+  "source_id": "github-1234743592",
+  "source_identity": "github:cfigure/lumiverse-shutter",
+  "evidence_fingerprint": "82aa5a73f21939a91220083fd31df691d7c3841c1f28fda0f6a12a9223dfa9bd",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-26T08:15:44.197Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-26T08:15:44.197Z"
+  },
+  "maintenance_issue_number": null
+}
