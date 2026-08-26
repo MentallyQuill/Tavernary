@@ -95504,10 +95504,10 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "14809604817b632810903afcf44d0db07608fb12",
         "report": {
-          "reportId": "8138976b2f5333713d52f7e250092dd09f0ba36c3cf626bdccb8f8b4e4456ad3",
+          "reportId": "1f0e16bb61e34a766f31a69c93fdb79617c38ab2cf1d38108cfca1785da1da93",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -95516,20 +95516,20 @@
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
           "citedFindingIds": [
-            "b2e2e88782e021a7e8825dfd9b90faa4f876ae8daf6ec98d5cdb6f9af233b80f",
-            "b7d69e3c8da09e20e7bb40967c46ff30438cfea8b50d9d6618818cd9c37d8d1f"
+            "78c8cccc796e915fbca6875aaff0fb08e3b82b3cc945c7a03dd1e6a5938246b2",
+            "d823342fa12e36d2d293f00411c02dd6c5ccb65cecbd5db493335e98e29217e7"
           ],
           "scannedSha": "14809604817b632810903afcf44d0db07608fb12",
           "treeUrl": "https://github.com/Supker/ST-Copilot/tree/14809604817b632810903afcf44d0db07608fb12",
-          "scannedAt": "2026-08-09T16:25:49.929Z",
-          "assessedAt": "2026-08-10T19:48:14.166Z",
-          "scannerPolicyVersion": "4",
-          "contextualReviewPolicyVersion": "2",
+          "scannedAt": "2026-08-26T23:06:18.147Z",
+          "assessedAt": "2026-08-26T23:08:51.121Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
           "synthesisModel": "deterministic-policy-v5",
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1218157882/14809604817b632810903afcf44d0db07608fb12/4/8138976b2f5333713d52f7e250092dd09f0ba36c3cf626bdccb8f8b4e4456ad3/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1218157882/14809604817b632810903afcf44d0db07608fb12/5/1f0e16bb61e34a766f31a69c93fdb79617c38ab2cf1d38108cfca1785da1da93/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1218157882/history/"
         },
         "history": [
@@ -95580,6 +95580,32 @@
             "dangerBasis": "none",
             "assessmentSource": "deterministic_regrade",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1218157882/14809604817b632810903afcf44d0db07608fb12/4/8138976b2f5333713d52f7e250092dd09f0ba36c3cf626bdccb8f8b4e4456ad3/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1218157882/history/"
+          },
+          {
+            "reportId": "1f0e16bb61e34a766f31a69c93fdb79617c38ab2cf1d38108cfca1785da1da93",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 2,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "78c8cccc796e915fbca6875aaff0fb08e3b82b3cc945c7a03dd1e6a5938246b2",
+              "d823342fa12e36d2d293f00411c02dd6c5ccb65cecbd5db493335e98e29217e7"
+            ],
+            "scannedSha": "14809604817b632810903afcf44d0db07608fb12",
+            "treeUrl": "https://github.com/Supker/ST-Copilot/tree/14809604817b632810903afcf44d0db07608fb12",
+            "scannedAt": "2026-08-26T23:06:18.147Z",
+            "assessedAt": "2026-08-26T23:08:51.121Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1218157882/14809604817b632810903afcf44d0db07608fb12/5/1f0e16bb61e34a766f31a69c93fdb79617c38ab2cf1d38108cfca1785da1da93/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1218157882/history/"
           }
         ],
@@ -150226,10 +150252,10 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "stale",
+              "freshness": "current",
               "currentSha": "14809604817b632810903afcf44d0db07608fb12",
               "report": {
-                "reportId": "8138976b2f5333713d52f7e250092dd09f0ba36c3cf626bdccb8f8b4e4456ad3",
+                "reportId": "1f0e16bb61e34a766f31a69c93fdb79617c38ab2cf1d38108cfca1785da1da93",
                 "riskLevel": "low",
                 "headline": "Low concern",
                 "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -150238,20 +150264,20 @@
                 "highDanger": 0,
                 "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
                 "citedFindingIds": [
-                  "b2e2e88782e021a7e8825dfd9b90faa4f876ae8daf6ec98d5cdb6f9af233b80f",
-                  "b7d69e3c8da09e20e7bb40967c46ff30438cfea8b50d9d6618818cd9c37d8d1f"
+                  "78c8cccc796e915fbca6875aaff0fb08e3b82b3cc945c7a03dd1e6a5938246b2",
+                  "d823342fa12e36d2d293f00411c02dd6c5ccb65cecbd5db493335e98e29217e7"
                 ],
                 "scannedSha": "14809604817b632810903afcf44d0db07608fb12",
                 "treeUrl": "https://github.com/Supker/ST-Copilot/tree/14809604817b632810903afcf44d0db07608fb12",
-                "scannedAt": "2026-08-09T16:25:49.929Z",
-                "assessedAt": "2026-08-10T19:48:14.166Z",
-                "scannerPolicyVersion": "4",
-                "contextualReviewPolicyVersion": "2",
+                "scannedAt": "2026-08-26T23:06:18.147Z",
+                "assessedAt": "2026-08-26T23:08:51.121Z",
+                "scannerPolicyVersion": "5",
+                "contextualReviewPolicyVersion": "5",
                 "synthesisPolicyVersion": "5",
                 "synthesisModel": "deterministic-policy-v5",
                 "dangerBasis": "none",
                 "assessmentSource": "deterministic_regrade",
-                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1218157882/14809604817b632810903afcf44d0db07608fb12/4/8138976b2f5333713d52f7e250092dd09f0ba36c3cf626bdccb8f8b4e4456ad3/",
+                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1218157882/14809604817b632810903afcf44d0db07608fb12/5/1f0e16bb61e34a766f31a69c93fdb79617c38ab2cf1d38108cfca1785da1da93/",
                 "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1218157882/history/"
               },
               "history": [
@@ -150302,6 +150328,32 @@
                   "dangerBasis": "none",
                   "assessmentSource": "deterministic_regrade",
                   "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1218157882/14809604817b632810903afcf44d0db07608fb12/4/8138976b2f5333713d52f7e250092dd09f0ba36c3cf626bdccb8f8b4e4456ad3/",
+                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1218157882/history/"
+                },
+                {
+                  "reportId": "1f0e16bb61e34a766f31a69c93fdb79617c38ab2cf1d38108cfca1785da1da93",
+                  "riskLevel": "low",
+                  "headline": "Low concern",
+                  "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+                  "minorCautions": 2,
+                  "materialConcerns": 0,
+                  "highDanger": 0,
+                  "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+                  "citedFindingIds": [
+                    "78c8cccc796e915fbca6875aaff0fb08e3b82b3cc945c7a03dd1e6a5938246b2",
+                    "d823342fa12e36d2d293f00411c02dd6c5ccb65cecbd5db493335e98e29217e7"
+                  ],
+                  "scannedSha": "14809604817b632810903afcf44d0db07608fb12",
+                  "treeUrl": "https://github.com/Supker/ST-Copilot/tree/14809604817b632810903afcf44d0db07608fb12",
+                  "scannedAt": "2026-08-26T23:06:18.147Z",
+                  "assessedAt": "2026-08-26T23:08:51.121Z",
+                  "scannerPolicyVersion": "5",
+                  "contextualReviewPolicyVersion": "5",
+                  "synthesisPolicyVersion": "5",
+                  "synthesisModel": "deterministic-policy-v5",
+                  "dangerBasis": "none",
+                  "assessmentSource": "deterministic_regrade",
+                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1218157882/14809604817b632810903afcf44d0db07608fb12/5/1f0e16bb61e34a766f31a69c93fdb79617c38ab2cf1d38108cfca1785da1da93/",
                   "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1218157882/history/"
                 }
               ],
