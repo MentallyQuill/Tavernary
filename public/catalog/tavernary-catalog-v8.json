@@ -46577,13 +46577,71 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "7afe0a45b214eb68514f104666a62191a1f6b4f9",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "2ed11e6e9eb0592d5f1450f7a75bf840ceeb57e0185628389e64c420ba0d4186",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 4,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "72484c6e8e8d51696e42a5038b454c513da346f79ef557f0c24db3eefd2e68f3",
+            "7e6ec8fb70e2a68052c34a3d7d7b1a8b011698553c48df62ec39943af8ee0bbd",
+            "817962172966e2e2adae88040c785386dcfaeb3717f1feb8d7b5f1be23d08f6c",
+            "cef063e24672a717652b8ac33af23d6a04d1009c2bd06f733f5d6d8e9e5015cb"
+          ],
+          "scannedSha": "7afe0a45b214eb68514f104666a62191a1f6b4f9",
+          "treeUrl": "https://github.com/l1kiru/SillyTavern-LorebookAtlas/tree/7afe0a45b214eb68514f104666a62191a1f6b4f9",
+          "scannedAt": "2026-08-26T19:02:51.605Z",
+          "assessedAt": "2026-08-26T19:06:00.775Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "javascriptAnalysisStatus": "complete",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1340428140/7afe0a45b214eb68514f104666a62191a1f6b4f9/5/2ed11e6e9eb0592d5f1450f7a75bf840ceeb57e0185628389e64c420ba0d4186/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1340428140/history/"
+        },
+        "history": [
+          {
+            "reportId": "2ed11e6e9eb0592d5f1450f7a75bf840ceeb57e0185628389e64c420ba0d4186",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 4,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "72484c6e8e8d51696e42a5038b454c513da346f79ef557f0c24db3eefd2e68f3",
+              "7e6ec8fb70e2a68052c34a3d7d7b1a8b011698553c48df62ec39943af8ee0bbd",
+              "817962172966e2e2adae88040c785386dcfaeb3717f1feb8d7b5f1be23d08f6c",
+              "cef063e24672a717652b8ac33af23d6a04d1009c2bd06f733f5d6d8e9e5015cb"
+            ],
+            "scannedSha": "7afe0a45b214eb68514f104666a62191a1f6b4f9",
+            "treeUrl": "https://github.com/l1kiru/SillyTavern-LorebookAtlas/tree/7afe0a45b214eb68514f104666a62191a1f6b4f9",
+            "scannedAt": "2026-08-26T19:02:51.605Z",
+            "assessedAt": "2026-08-26T19:06:00.775Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1340428140/7afe0a45b214eb68514f104666a62191a1f6b4f9/5/2ed11e6e9eb0592d5f1450f7a75bf840ceeb57e0185628389e64c420ba0d4186/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1340428140/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1340428140/"
       },
       "attribution": {
         "owner": {
