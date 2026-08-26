@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "plastic-labs-sillytavern-honcho",
+  "source_id": "github-1162122304",
+  "source_identity": "github:plastic-labs/sillytavern-honcho",
+  "evidence_fingerprint": "42d200ee98297876c11684d99f3ba06c58b5df811d94c3cf24eb5824d8b68a91",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-26T08:13:38.014Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-26T08:13:38.014Z"
+  },
+  "maintenance_issue_number": null
+}
