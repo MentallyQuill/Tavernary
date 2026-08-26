@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "tavern-rpg-suite-tavern-doors",
+  "source_id": "github-1327581386",
+  "source_identity": "github:tavern-rpg-suite/tavern-doors",
+  "evidence_fingerprint": "5326447e53c4c5ee513e6750c32b5d8aef1c05df856b2f509b3e73baa190b0e0",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-26T08:19:06.719Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-26T08:19:06.719Z"
+  },
+  "maintenance_issue_number": null
+}
