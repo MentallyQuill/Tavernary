@@ -9,21 +9,31 @@
     "url": "https://github.com/linux4life1/front-porch-AI",
     "description": "Local-first AI character chat & roleplay for Windows/macOS/Linux — a living Realism Engine, built-in TTS & image generation, and The Stoop community character hub. Fully offline by default, open-source (AGPL-3.0). A home for Backyard AI refugees.",
     "default_branch": "main",
-    "head_sha": "76c4ca72341e671d8797beb956888e0d08fd4493",
-    "head_committed_at": "2026-08-16T06:38:25.000Z",
+    "head_sha": "fd0a586a2c58838766b017e29944eb9b2e950227",
+    "head_committed_at": "2026-08-26T06:05:03.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-02-15T02:01:28.000Z",
-    "size_kb": 93499
+    "size_kb": 93822
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-16T06:38:25.000Z",
+    "latest_source_activity_at": "2026-08-26T04:50:38.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-26T04:50:38.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-23T16:49:42.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-16T06:38:25.000Z",
+        "latest_at": "2026-08-16T18:56:41.000Z",
         "precision": "exact"
       },
       {
@@ -70,24 +80,14 @@
         "week_start": "2026-06-08",
         "latest_at": "2026-06-14T18:30:41.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-01",
-        "latest_at": "2026-06-07T18:31:55.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-25",
-        "latest_at": "2026-05-31T18:57:16.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-16T04:51:09.000Z",
+    "latest_release_at": "2026-08-26T06:49:32.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-16T07:48:28.140Z",
+    "baseline_completed_at": "2026-08-26T08:03:17.367Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "76c4ca72341e671d8797beb956888e0d08fd4493"
+    "evidence_head_sha": "fd0a586a2c58838766b017e29944eb9b2e950227"
   },
   "community": {
     "stars_count": 63,
@@ -100,7 +100,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-25T08:02:02.541Z",
+  "refreshed_at": "2026-08-26T08:03:17.367Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -118,7 +118,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-25T08:02:02.541Z",
+    "refreshed_at": "2026-08-26T08:03:17.367Z",
     "stale_since": null
   }
 }

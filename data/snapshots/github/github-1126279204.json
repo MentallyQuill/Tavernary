@@ -9,18 +9,23 @@
     "url": "https://github.com/AventurasTeam/Aventuras",
     "description": "A frontend for LLM-based text adventure",
     "default_branch": "master",
-    "head_sha": "8ae0d79a0df0745be3594fa5affcc98dd02c5a75",
-    "head_committed_at": "2026-08-16T07:27:47.000Z",
+    "head_sha": "ec5da7cdf3b0fc7764277d8ad7ed6e5358a7d211",
+    "head_committed_at": "2026-08-25T20:07:10.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-01T15:03:20.000Z",
-    "size_kb": 46670
+    "size_kb": 46690
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-16T07:27:47.000Z",
+    "latest_source_activity_at": "2026-08-25T20:07:10.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-25T20:07:10.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-10",
         "latest_at": "2026-08-16T07:27:47.000Z",
@@ -50,19 +55,14 @@
         "week_start": "2026-06-08",
         "latest_at": "2026-06-11T13:21:41.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-25",
-        "latest_at": "2026-05-27T21:57:07.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-08-08T21:01:42.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-12T08:41:42.763Z",
+    "baseline_completed_at": "2026-08-26T08:03:17.367Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "8ae0d79a0df0745be3594fa5affcc98dd02c5a75"
+    "evidence_head_sha": "ec5da7cdf3b0fc7764277d8ad7ed6e5358a7d211"
   },
   "community": {
     "stars_count": 187,
@@ -75,7 +75,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-08-25T08:02:02.541Z",
+  "refreshed_at": "2026-08-26T08:03:17.367Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -95,7 +95,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-25T08:02:02.541Z",
+    "refreshed_at": "2026-08-26T08:03:17.367Z",
     "stale_since": null
   }
 }

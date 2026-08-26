@@ -9,13 +9,13 @@
     "url": "https://github.com/Ryah/ST-Freaky-D20-Preset",
     "description": "Ever wanted to roll a critical failure when taking off your pants? Well, now you can.",
     "default_branch": "main",
-    "head_sha": "b75dbe9a6b065d6eaba83d55995cfa16213674d1",
-    "head_committed_at": "2026-08-25T03:25:02.000Z",
+    "head_sha": "438a1ef30ff542dfdeb891acd7e5a0c4ed08db57",
+    "head_committed_at": "2026-08-25T20:17:27.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-15T11:27:46.000Z",
-    "size_kb": 1017
+    "size_kb": 1047
   },
   "source_health": "healthy",
   "activity": {
@@ -42,7 +42,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-25T08:02:02.541Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "b75dbe9a6b065d6eaba83d55995cfa16213674d1"
+    "evidence_head_sha": "438a1ef30ff542dfdeb891acd7e5a0c4ed08db57"
   },
   "community": {
     "stars_count": 34,
@@ -51,7 +51,7 @@
     "aggregate": 38
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-25T08:02:02.541Z",
+  "refreshed_at": "2026-08-26T08:03:17.367Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -62,7 +62,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-25T08:02:02.541Z",
+    "refreshed_at": "2026-08-26T08:03:17.367Z",
     "stale_since": null
   }
 }

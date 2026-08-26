@@ -9,21 +9,21 @@
     "url": "https://github.com/patcireamo/ChungusHub",
     "description": "ChungusHub is a local-first, privacy-focused LLM frontend for roleplay.",
     "default_branch": "main",
-    "head_sha": "84af8922c4b766d14f72ea289d0fa845d603aab8",
-    "head_committed_at": "2026-08-24T16:16:13.000Z",
+    "head_sha": "d4120ea096e35f971131c506c387250bb160f0a8",
+    "head_committed_at": "2026-08-25T17:54:12.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-08-19T12:01:11.000Z",
-    "size_kb": 52984
+    "size_kb": 53432
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-24T16:16:13.000Z",
+    "latest_source_activity_at": "2026-08-25T17:54:12.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-24",
-        "latest_at": "2026-08-24T16:16:13.000Z",
+        "latest_at": "2026-08-25T17:54:12.000Z",
         "precision": "exact"
       },
       {
@@ -37,20 +37,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-25T08:02:02.541Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "84af8922c4b766d14f72ea289d0fa845d603aab8"
+    "evidence_head_sha": "d4120ea096e35f971131c506c387250bb160f0a8"
   },
   "community": {
     "stars_count": 32,
     "forks_count": 2,
-    "watchers_count": 4,
-    "aggregate": 38
+    "watchers_count": 5,
+    "aggregate": 39
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-25T08:02:02.541Z",
+  "refreshed_at": "2026-08-26T08:03:17.367Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -60,7 +60,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-25T08:02:02.541Z",
+    "refreshed_at": "2026-08-26T08:03:17.367Z",
     "stale_since": null
   }
 }

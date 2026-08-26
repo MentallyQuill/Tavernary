@@ -9,18 +9,23 @@
     "url": "https://github.com/hydall/Glaze",
     "description": "Glaze is a local, novice-friendly AI roleplay chat client for mobile devices. Works with any OpenAI-compatible (Chat Completion) LLM provider.",
     "default_branch": "stable",
-    "head_sha": "e9c689c5b9723b6c1aad5ca728efa16ff285b594",
-    "head_committed_at": "2026-08-22T15:26:41.000Z",
+    "head_sha": "8a36462014f08e1e6ec11b0111e407c0160583c9",
+    "head_committed_at": "2026-08-25T11:31:03.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-29T13:58:23.000Z",
-    "size_kb": 97737
+    "size_kb": 98258
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-19T15:12:29.000Z",
+    "latest_source_activity_at": "2026-08-25T11:31:03.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-25T11:31:03.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-17",
         "latest_at": "2026-08-19T15:12:29.000Z",
@@ -70,19 +75,14 @@
         "week_start": "2026-06-08",
         "latest_at": "2026-06-14T21:43:13.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-01",
-        "latest_at": "2026-06-07T20:44:02.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-08-07T10:48:58.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-19T07:56:49.599Z",
+    "baseline_completed_at": "2026-08-26T08:03:17.367Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "e9c689c5b9723b6c1aad5ca728efa16ff285b594"
+    "evidence_head_sha": "8a36462014f08e1e6ec11b0111e407c0160583c9"
   },
   "community": {
     "stars_count": 23,
@@ -95,7 +95,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-25T08:02:02.541Z",
+  "refreshed_at": "2026-08-26T08:03:17.367Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -108,7 +108,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-25T08:02:02.541Z",
+    "refreshed_at": "2026-08-26T08:03:17.367Z",
     "stale_since": null
   }
 }
