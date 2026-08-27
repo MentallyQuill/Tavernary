@@ -393,45 +393,6 @@
   background: var(--color-action-primary-pressed);
 }
 
-.kofi-support-tooltip {
-  display: inline-flex;
-}
-
-.header-actions .kofi-support-trigger {
-  display: inline-flex;
-  width: auto;
-  height: 34px;
-  min-height: 34px;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  border: 1px solid var(--color-action-primary-bg);
-  border-radius: 6px;
-  padding: 0 11px;
-  color: var(--color-action-primary-text);
-  background: var(--color-action-primary-bg);
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.header-actions .kofi-support-trigger:hover,
-.header-actions .kofi-support-trigger:focus-visible {
-  color: var(--color-action-primary-text);
-  background: var(--color-action-primary-hover);
-}
-
-.header-actions .kofi-support-trigger:active {
-  background: var(--color-action-primary-pressed);
-}
-
-.kofi-support-icon {
-  width: 18px;
-  height: 18px;
-  flex: 0 0 auto;
-}
-
 body.sheet-open {
   overflow: hidden;
 }

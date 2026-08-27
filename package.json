@@ -41,7 +41,6 @@
     "catalog:tags:backfill": "node scripts/catalog/backfill-project-tags.mjs",
     "security:import-reports": "node scripts/security/import-tavernkeeper-reports.mjs",
     "security:validate-reports": "node scripts/security/validate-tavernkeeper-reports.mjs",
-    "support:refresh-usage": "node scripts/support/refresh-openai-usage.mjs",
     "submissions:backfill-forks": "node scripts/submissions/backfill-fork-dependencies.mjs",
     "submissions:reconcile-validations": "node scripts/submissions/reconcile-project-validations.mjs",
     "submissions:reconcile-kits": "node scripts/submissions/kit-submission-reconciliation.mjs --repo MentallyQuill/Tavernary",
