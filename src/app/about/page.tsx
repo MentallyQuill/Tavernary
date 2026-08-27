@@ -141,23 +141,6 @@ export default function AboutPage() {
           </p>
         </section>
 
-        <section id="sustainability-support">
-          <h2>Sustainability and support</h2>
-          <p>
-            Tavernary currently asks for $12 per month as a simple
-            community-funding goal toward operating costs, led by the model use
-            behind security scanning, update reassessment, and new-project
-            intake. Tavernary&apos;s owner intends to cover costs above it for
-            now. Donations cover the current month first; anything above that
-            rolls forward to future Tavernary operating costs.
-          </p>
-          <p>
-            <Link href="/support/">See Tavernary&apos;s costs and usage</Link>,
-            how the numbers are calculated, and why the current automation model
-            was selected.
-          </p>
-        </section>
-
         <section id="reporting-removal">
           <h2>Reporting and removal</h2>
           <p>

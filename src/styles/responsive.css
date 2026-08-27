@@ -60,24 +60,6 @@
     padding-inline: 8px;
   }
 
-  .header-actions .kofi-support-trigger {
-    width: 34px;
-    min-width: 34px;
-    height: 34px;
-    min-height: 34px;
-    padding: 0;
-  }
-
-  .kofi-support-label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
   .site-search {
     grid-area: search;
     grid-column: 1 / -1;

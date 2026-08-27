@@ -32,7 +32,6 @@ const protectedPublisherJobs = {
   "backfill-repository-identities": "backfill",
   "enrich-catalog": "enrich",
   "import-tavernkeeper-reports": "import",
-  "publish-openai-usage": "publish",
   "publisher-verification": "verify",
   "refresh-catalog": "refresh",
   "review-catalog-policy": "review",
@@ -173,7 +172,6 @@ test("uses category-prefixed workflow display names", async () => {
     ci: "Site: Validate changes",
     "deploy-pages": "Site: Deploy to GitHub Pages",
     "targeted-tavernkeeper-scan": "Security: Run targeted TavernKeeper scan",
-    "publish-openai-usage": "Support transparency: Publish OpenAI usage",
     "publisher-verification": "Security: Verify Tavernary Publisher",
     "publisher-automation-branch-verification":
       "Security: Verify Publisher automation branches",
@@ -220,7 +218,6 @@ test("identifies the object and action in every workflow run name", async () => 
     ci: ["Site:", "Validate"],
     "deploy-pages": ["Site:", "Deploy"],
     "targeted-tavernkeeper-scan": ["Security:", "Scan"],
-    "publish-openai-usage": ["Support:", "Publish prior-month usage"],
     "publisher-verification": ["Security:", "Verify Publisher write lane"],
     "publisher-automation-branch-verification": [
       "Security:",
@@ -2118,35 +2115,8 @@ test("groups coupled dependency updates into coherent pull requests", async () =
   expect(actions?.groups?.actions.patterns).toEqual(["*"]);
 });
 
-test("publishes only scoped aggregate OpenAI usage each month", async () => {
-  const publication = await workflow("publish-openai-usage");
-  const source = await readFile(
-    resolve(workflowDirectory, "publish-openai-usage.yml"),
-    "utf8",
+test("does not schedule the retired support usage publication", async () => {
+  expect(await readdir(workflowDirectory)).not.toContain(
+    "publish-openai-usage.yml",
   );
-  const steps = allSteps(publication);
-  const checkout = steps.find((step) =>
-    step.uses?.startsWith("actions/checkout@"),
-  ) as { with?: { ref?: string; "fetch-depth"?: number } } | undefined;
-  const refresh = steps.find(
-    (step) => step.run === "npm run support:refresh-usage",
-  ) as { env?: Record<string, string> } | undefined;
-
-  expect(publication.on.schedule).toEqual([{ cron: "23 7 2 * *" }]);
-  expect(publication.on.workflow_dispatch).toBeNull();
-  expect(publication.permissions).toEqual({
-    contents: "read",
-    actions: "write",
-  });
-  expect(checkout?.with).toMatchObject({ ref: "main", "fetch-depth": 0 });
-  expect(refresh?.env).toEqual({
-    OPENAI_ADMIN_KEY: "${{ secrets.OPENAI_ADMIN_KEY }}",
-    OPENAI_PROJECT_ID: "${{ secrets.OPENAI_PROJECT_ID }}",
-  });
-  expect(source).toContain("npm ci");
-  expect(source).toContain("npm run check");
-  expect(source).toContain("git add -- data/support/monthly-usage.json");
-  expect(source).not.toMatch(/git add[^\n]*(?:scripts\/|\.github\/|src\/)/u);
-  expect(source).toContain("git push origin HEAD:main");
-  expect(source).toContain("gh workflow run deploy-pages.yml");
 });

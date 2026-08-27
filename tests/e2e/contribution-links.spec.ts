@@ -46,6 +46,9 @@ test("keeps responsive header help and utility actions available", async ({
   await expect(about).toBeVisible();
   await expect(help).toBeVisible();
   await expect(submit).toBeVisible();
+  await expect(
+    siteActions.getByRole("link", { name: /ko-fi|donat/i }),
+  ).toHaveCount(0);
 
   await page.setViewportSize({ width: 900, height: 900 });
   await expect(about).toBeVisible();
@@ -62,111 +65,4 @@ test("keeps responsive header help and utility actions available", async ({
   expect(helpBox).not.toBeNull();
   expect(submitBox).not.toBeNull();
   expect(helpBox!.x + helpBox!.width).toBeLessThanOrEqual(submitBox!.x);
-});
-
-test("links to the transparent support page beside Submit Project", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto(sitePath());
-
-  const submit = page.getByRole("link", { name: "Submit Project" });
-  const support = page.getByRole("link", {
-    name: "Buy Me a Ko-Fi",
-  });
-  const [submitBox, supportBox] = await Promise.all([
-    submit.boundingBox(),
-    support.boundingBox(),
-  ]);
-  expect(submitBox).not.toBeNull();
-  expect(supportBox).not.toBeNull();
-  expect(supportBox!.x).toBeGreaterThanOrEqual(submitBox!.x + submitBox!.width);
-  expect(supportBox!.height).toBe(submitBox!.height);
-  await expect(support).toHaveCSS("color", "rgb(22, 16, 8)");
-  await expect(submit).toHaveCSS("color", "rgb(22, 16, 8)");
-
-  await support.hover();
-  await expect(
-    page.getByRole("tooltip", { name: "Buy Me a Ko-Fi" }),
-  ).toBeVisible();
-  const supportHover = await support.evaluate((element) => {
-    const style = getComputedStyle(element);
-    return {
-      color: style.color,
-      backgroundColor: style.backgroundColor,
-      borderTopColor: style.borderTopColor,
-      boxShadow: style.boxShadow,
-      transform: style.transform,
-    };
-  });
-  await submit.hover();
-  const submitHover = await submit.evaluate((element) => {
-    const style = getComputedStyle(element);
-    return {
-      color: style.color,
-      backgroundColor: style.backgroundColor,
-      borderTopColor: style.borderTopColor,
-      boxShadow: style.boxShadow,
-      transform: style.transform,
-    };
-  });
-  expect(supportHover).toEqual(submitHover);
-
-  await support.click();
-  await expect(
-    page.getByRole("heading", { name: "Support Tavernary", exact: true }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: "Contribute through Ko-fi" }),
-  ).toHaveCount(0);
-  const upkeep = page.locator(".support-target");
-  const supportOnKofi = upkeep.getByRole("link", {
-    name: "Support on Ko-fi",
-  });
-  await expect(supportOnKofi).toBeVisible();
-  await expect(supportOnKofi).toHaveAttribute(
-    "href",
-    "https://ko-fi.com/mentallyquill",
-  );
-  await expect(supportOnKofi).toHaveCSS("color", "rgb(22, 16, 8)");
-  const targetHeading = upkeep.getByRole("heading", {
-    name: "Monthly operating target",
-  });
-  const targetValue = upkeep.getByText("$12/month", { exact: true });
-  const [targetHeadingBox, targetValueBox, supportOnKofiBox] =
-    await Promise.all([
-      targetHeading.boundingBox(),
-      targetValue.boundingBox(),
-      supportOnKofi.boundingBox(),
-    ]);
-  expect(targetHeadingBox).not.toBeNull();
-  expect(targetValueBox).not.toBeNull();
-  expect(supportOnKofiBox).not.toBeNull();
-  expect(targetValueBox!.x).toBeGreaterThanOrEqual(
-    targetHeadingBox!.x + targetHeadingBox!.width,
-  );
-  expect(supportOnKofiBox!.x).toBeGreaterThanOrEqual(
-    targetValueBox!.x + targetValueBox!.width,
-  );
-  const targetCenterY = targetHeadingBox!.y + targetHeadingBox!.height / 2;
-  expect(
-    Math.abs(targetValueBox!.y + targetValueBox!.height / 2 - targetCenterY),
-  ).toBeLessThanOrEqual(2);
-  expect(
-    Math.abs(
-      supportOnKofiBox!.y + supportOnKofiBox!.height / 2 - targetCenterY,
-    ),
-  ).toBeLessThanOrEqual(2);
-  await expect(upkeep).toHaveCSS("padding-left", "24px");
-  await expect(upkeep).toHaveCSS("padding-right", "24px");
-  await expect(upkeep).toHaveCSS("border-top-color", "rgb(43, 58, 64)");
-  await expect(upkeep).toHaveCSS("border-left-color", "rgb(225, 138, 36)");
-  await expect(upkeep).toHaveCSS("border-left-width", "3px");
-});
-
-test("does not expose a separate recent-support feed", async ({ page }) => {
-  await page.goto(sitePath());
-  await expect(page.getByText("Recent support on Ko-fi")).toHaveCount(0);
-  await page.goto(sitePath("/support/"));
-  await expect(page.getByText("Recent support on Ko-fi")).toHaveCount(0);
 });

@@ -45,6 +45,9 @@ test("matches the approved mobile header hierarchy", async ({ page }) => {
   await expect(actions).toContainText("Help");
   await expect(actions.getByRole("link", { name: "About" })).toBeHidden();
   await expect(actions.getByRole("link", { name: "Help" })).toBeVisible();
+  await expect(actions.getByRole("link", { name: /ko-fi|donat/i })).toHaveCount(
+    0,
+  );
 
   const browse = page.getByRole("button", { name: "Browse categories" });
   await expect(browse).toContainText("All Projects");
@@ -61,24 +64,6 @@ test("matches the approved mobile header hierarchy", async ({ page }) => {
   ).toBeVisible();
 
   const submit = page.getByRole("link", { name: "Submit Project" });
-  const support = page.getByRole("link", {
-    name: "Buy Me a Ko-Fi",
-  });
-  await expect(support).toBeVisible();
-  await expect(support.locator(".kofi-support-label")).toHaveCSS(
-    "width",
-    "1px",
-  );
-  const supportBox = await support.boundingBox();
-  const submitBox = await submit.boundingBox();
-  expect(supportBox).not.toBeNull();
-  expect(submitBox).not.toBeNull();
-  expect(supportBox!.width).toBe(34);
-  expect(supportBox!.height).toBe(34);
-  expect(supportBox!.x).toBeGreaterThanOrEqual(submitBox!.x + submitBox!.width);
-  expect
-    .soft(supportBox!.x - (submitBox!.x + submitBox!.width))
-    .toBeLessThanOrEqual(4);
   expect(
     await submit.evaluate((element) => element.getBoundingClientRect().height),
   ).toBeLessThan(40);
@@ -103,55 +88,6 @@ test("keeps search help available within the mobile viewport", async ({
   expect(box).not.toBeNull();
   expect(box!.x).toBeGreaterThanOrEqual(8);
   expect(box!.x + box!.width).toBeLessThanOrEqual(382);
-});
-
-test("keeps the mobile support action inside a 412px viewport", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 412, height: 915 });
-  await page.goto(sitePath());
-
-  const support = page.getByRole("link", {
-    name: "Buy Me a Ko-Fi",
-  });
-  const supportBox = await support.boundingBox();
-  expect(supportBox).not.toBeNull();
-  expect(supportBox!.width).toBe(34);
-  expect(supportBox!.height).toBe(34);
-  expect(supportBox!.x + supportBox!.width).toBeLessThanOrEqual(412);
-});
-
-test("opens the Tavernary support page from a 320px viewport", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 320, height: 700 });
-  await page.goto(sitePath());
-  await page.getByRole("link", { name: "Buy Me a Ko-Fi" }).click();
-
-  await expect(
-    page.getByRole("heading", { name: "Support Tavernary", exact: true }),
-  ).toBeVisible();
-
-  const supportOnKofi = page
-    .locator(".support-target")
-    .getByRole("link", { name: "Support on Ko-fi" });
-  await expect(supportOnKofi).toBeVisible();
-  await expect(supportOnKofi).toHaveAttribute(
-    "href",
-    "https://ko-fi.com/mentallyquill",
-  );
-
-  const supportOnKofiBox = await supportOnKofi.boundingBox();
-  expect(supportOnKofiBox).not.toBeNull();
-  expect(supportOnKofiBox!.x).toBeGreaterThanOrEqual(0);
-  expect(supportOnKofiBox!.x + supportOnKofiBox!.width).toBeLessThanOrEqual(
-    320,
-  );
-  expect(
-    await page.evaluate(
-      () => document.documentElement.scrollWidth - window.innerWidth,
-    ),
-  ).toBeLessThanOrEqual(0);
 });
 
 test("uses mobile browse and filter sheets without page overflow", async ({
