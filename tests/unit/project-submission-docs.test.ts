@@ -42,19 +42,19 @@ test("documents project submission automation and recovery controls", async () =
     "Automation creates but never approves its own PR",
   );
   expect(contributorGuide).toContain(
-    "automatically publishes valid create, card-edit, source-move",
+    "A request appears in the catalog only after all required checks pass.",
   );
-  expect(contributorGuide).toContain("PR remains the CI and audit transaction");
   expect(contributorGuide).toContain("consensual adult content");
   expect(contributorGuide).toContain("ordinary profanity");
-  expect(contributorGuide).toContain("advisory and post-publication");
-  expect(contributorGuide).toContain("owner-facing permanent");
-  expect(contributorGuide).toContain("manual Tavernary staff maintenance");
+  expect(contributorGuide).toMatch(/advisory and\s+post-publication/u);
+  expect(contributorGuide).toContain(
+    "Verified-owner delisting is permanent for that source.",
+  );
   expect(contributorGuide).toContain(
     "builder's frontend choices come from the current catalog",
   );
   expect(contributorGuide).toMatch(
-    /The versioned Tavernary manifest in the source issue is the automation\s+authority\./u,
+    /Manual summary and tag choices are used only after GitHub verifies repository\s+ownership\./u,
   );
   expect(lifecycle).toContain(
     "Closing the generated PR without\n   merge declines the submission",
@@ -73,10 +73,13 @@ test("documents project submission automation and recovery controls", async () =
   );
   expect(runbook).toContain("providers.codeberg");
   expect(lifecycle).toContain("data/snapshots/codeberg/*.json");
-  expect(contributorGuide).toContain(
-    "submitted Extension primary function is authoritative",
+  expect(contributorGuide).toMatch(
+    /primary\s+function selected in the form remains the submitted category/u,
   );
   expect(issueForm).toMatch(/Maximum 220\s+characters\./u);
+  expect(issueForm).toMatch(
+    /GitHub verifies the submitter as the personal\s+repository owner/u,
+  );
   expect(lifecycle).toContain(
     "Frontends always use `frontend`; System Presets always use `preset`",
   );

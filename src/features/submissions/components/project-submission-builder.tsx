@@ -53,7 +53,7 @@ const summaryChoices = [
   {
     id: "manual",
     label: "Write the description myself",
-    description: "Available to the verified repository owner or Tavernary.",
+    description: "Available after GitHub verifies repository ownership.",
   },
 ];
 
@@ -67,7 +67,7 @@ const tagChoices = [
   {
     id: "manual",
     label: "Set tags myself",
-    description: "Available to the verified repository owner or Tavernary.",
+    description: "Available after GitHub verifies repository ownership.",
   },
 ];
 
@@ -381,9 +381,7 @@ export function ProjectSubmissionBuilder({
   async function openReview() {
     const manifest = buildManifest();
     if (!manifest) {
-      throw new Error(
-        "The project submission changed and needs another Tavernary review.",
-      );
+      throw new Error("The project submission changed. Review it again.");
     }
     setReviewManifest(manifest);
     return openProjectSubmission(projectSubmissionUrl, manifest);
@@ -392,9 +390,7 @@ export function ProjectSubmissionBuilder({
   async function copyReviewUrl() {
     const manifest = buildManifest();
     if (!manifest) {
-      throw new Error(
-        "The project submission changed and needs another Tavernary review.",
-      );
+      throw new Error("The project submission changed. Review it again.");
     }
     setReviewManifest(manifest);
     return copyProjectSubmissionUrl(projectSubmissionUrl, manifest);
@@ -452,8 +448,8 @@ export function ProjectSubmissionBuilder({
         title="Review your project submission"
         introduction={
           <p>
-            Tavernary will use this manifest as the authoritative submission.
-            GitHub will open next as a readable review and issue-creation step.
+            This manifest is the complete submission. GitHub opens next so you
+            can check the readable fields and create or cancel the issue.
           </p>
         }
         returnFocusId="project-type"
@@ -603,9 +599,9 @@ export function ProjectSubmissionBuilder({
           onChange={(value) => setSummaryMode(value as "automatic" | "manual")}
         />
         <p className="submission-hint" id="project-description-authority">
-          Only the verified repository owner or Tavernary can set this
-          description. If you are not the owner, leave this set to Let TavernAI
-          write the description; any description you enter will be ignored.
+          GitHub verifies repository ownership after submission. If you are not
+          the owner, leave this set to Let TavernAI write the description; any
+          description you enter will be ignored.
         </p>
         {summaryMode === "automatic" ? (
           <p className="submission-hint">
@@ -666,9 +662,9 @@ export function ProjectSubmissionBuilder({
           onChange={(value) => setTagMode(value as "automatic" | "manual")}
         />
         <p className="submission-hint">
-          Only the verified repository owner or Tavernary can set these tags. If
-          you are not the owner, leave this set to Let Tavernary select tags;
-          any tags you select will be ignored.
+          GitHub verifies repository ownership after submission. If you are not
+          the owner, leave this set to Let Tavernary select tags; any tags you
+          select will be ignored.
         </p>
         {tagMode === "manual" ? (
           <div className="submission-field">

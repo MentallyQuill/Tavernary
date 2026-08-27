@@ -119,8 +119,7 @@ export function ProjectReportForm({
     const nextErrors: string[] = [];
     if (!selected) nextErrors.push("Select a listed project.");
     if (!category) nextErrors.push("Choose what is wrong.");
-    if (!report.trim())
-      nextErrors.push("Describe what Tavernary should review.");
+    if (!report.trim()) nextErrors.push("Describe the listing concern.");
     if (report.length > 3_000)
       nextErrors.push("Your report must be 3,000 characters or fewer.");
     if (requestedOutcome.length > 1_000)
@@ -176,7 +175,7 @@ export function ProjectReportForm({
             label: "Category",
             value: displayProjectReportCategory(category),
           },
-          { label: "What Tavernary should review", value: payload.report },
+          { label: "Listing concern", value: payload.report },
           {
             label: "Requested outcome",
             value: payload.requested_outcome ?? "",
@@ -255,13 +254,13 @@ export function ProjectReportForm({
       </HelpSelectField>
       <HelpTextArea
         id="project-report"
-        label="What should Tavernary review?"
+        label="What is the listing concern?"
         value={report}
         maxLength={3_000}
         onChange={(event) => setReport(event.target.value)}
         error={errors.find(
           (error) =>
-            error.includes("Describe what Tavernary should review") ||
+            error.includes("Describe the listing concern") ||
             error.includes("report must be"),
         )}
         hint="Everything you submit will be public on GitHub. Do not include secrets or private personal information."

@@ -200,7 +200,7 @@ test("retains a constrained Kit report and regenerates current details", async (
   );
   await user.click(screen.getByLabelText("Extension Alpha"));
   await user.type(
-    screen.getByLabelText("What should Tavernary review?"),
+    screen.getByLabelText("What is the Kit concern?"),
     "This Kit fails after the extension loads.",
   );
   await user.click(screen.getByRole("button", { name: "Review request" }));
@@ -229,7 +229,7 @@ test("retains a constrained Kit report and regenerates current details", async (
   await user.click(
     await screen.findByRole("button", { name: "Back and edit" }),
   );
-  const details = screen.getByLabelText("What should Tavernary review?");
+  const details = screen.getByLabelText("What is the Kit concern?");
   expect(details).toHaveValue("This Kit fails after the extension loads.");
   await user.clear(details);
   await user.type(details, "This Kit fails when the preset loads.");

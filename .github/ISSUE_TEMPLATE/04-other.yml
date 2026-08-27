@@ -27,7 +27,7 @@ body:
     id: description
     attributes:
       label: Description
-      description: Explain what you want the Tavernary maintainers to know.
+      description: Explain your question, concern, or request.
     validations:
       required: false
   - type: input

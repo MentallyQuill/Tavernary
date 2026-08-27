@@ -330,7 +330,7 @@ test("takes a Kit report from source control through validation, review, cancel,
     .getByRole("checkbox", { name: "SillyTavern", exact: true })
     .check();
   await page
-    .getByLabel("What should Tavernary review?")
+    .getByLabel("What is the Kit concern?")
     .fill("The Kit needs a compatibility review.");
   await page.getByRole("button", { name: "Review request" }).click();
   await expect(
@@ -340,7 +340,7 @@ test("takes a Kit report from source control through validation, review, cancel,
   await expect(
     page.getByRole("checkbox", { name: "SillyTavern", exact: true }),
   ).toBeChecked();
-  await expect(page.getByLabel("What should Tavernary review?")).toHaveValue(
+  await expect(page.getByLabel("What is the Kit concern?")).toHaveValue(
     "The Kit needs a compatibility review.",
   );
 

@@ -48,7 +48,7 @@ test("reviews one owner card edit and hands the complete manifest to GitHub", as
 
   await expect(
     page.getByText(
-      "GitHub will verify either current personal-owner authority or reviewed Tavernary authority.",
+      "GitHub checks whether the request is eligible after you continue.",
     ),
   ).toBeVisible();
   await page.getByRole("button", { name: "Continue on GitHub" }).click();
@@ -331,7 +331,7 @@ test("keeps a ten-card owner batch usable at 320px through popup recovery", asyn
   expect(reviews).toHaveLength(2);
   expect(
     new URL(reviews[1]!).searchParams.get("owner-request-manifest"),
-  ).toContain("Paste the copied Tavernary owner request manifest");
+  ).toContain("Paste the copied owner-request manifest");
   const manifest = JSON.parse((await copiedGitHubManifest(page)) ?? "");
   expect(manifest.operation).toBe("add-cards");
   expect(manifest.proposed_cards).toHaveLength(10);

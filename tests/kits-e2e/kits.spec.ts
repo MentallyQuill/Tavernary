@@ -1124,7 +1124,7 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
   await page.getByLabel("What is wrong?").selectOption("compatibility-problem");
   await page.getByLabel("Fixture Frontend").check();
   await page
-    .getByLabel("What should Tavernary review?")
+    .getByLabel("What is the Kit concern?")
     .fill("The Kit fails after the frontend is selected.");
   await page.getByRole("button", { name: "Review request" }).click();
   await page.getByRole("button", { name: "Continue on GitHub" }).click();

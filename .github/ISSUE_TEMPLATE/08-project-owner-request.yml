@@ -9,7 +9,7 @@ body:
       value: |
         Tavernary prepared this review. Check the values, then create or cancel the issue. To make changes, return to https://tavernary.org/help/manage-project/ and open a fresh GitHub review. The generated manifest is the automation payload; the readable fields are review-only.
 
-        This issue will be public. Do not include secrets, passwords, API keys, private personal information, or unpublished security details. GitHub automation verifies the issue author as either the current personal repository owner or a reviewed Tavernary owner, admin, or maintainer. Non-GitHub listings can only be changed by reviewed Tavernary staff; owners should include public proof or use the Help request flow for staff review.
+        This issue will be public. Do not include secrets, passwords, API keys, private personal information, or unpublished security details. For a GitHub repository, use the personal account that owns the repository. For an organization-owned repository, external source, or other listing concern, use Report a project listing and include public proof when relevant.
   - type: input
     id: request-type
     attributes:
@@ -53,11 +53,11 @@ body:
       label: Proposed summary
       description: >-
         Used only for a card-details edit. Plain text, 220 characters maximum.
-        Tavernary preserves owner and authorized staff wording whenever
-        possible. Mature and consensual adult themes are permitted, but content
-        promoting hatred or discrimination, sexual exploitation of minors, or
-        other material prohibited by Tavernary's Catalog Policy is not.
-        Ordinary profanity is permitted. Read the policy:
+        Eligible manual wording is preserved whenever possible. Mature and
+        consensual adult themes are permitted, but content promoting hatred or
+        discrimination, sexual exploitation of minors, or other material
+        prohibited by Tavernary's Catalog Policy is not. Ordinary profanity is
+        permitted. Read the policy:
         https://mentallyquill.github.io/Tavernary/catalog-policy/
     validations:
       required: false

@@ -40,7 +40,7 @@ test("publishes the guided Help routes and owner workflow vocabulary", () => {
   }
 });
 
-test("documents both personal-owner and reviewed Tavernary staff management", () => {
+test("documents repository-owner management and the general report path", () => {
   render(AboutPage());
 
   expect(
@@ -49,27 +49,25 @@ test("documents both personal-owner and reviewed Tavernary staff management", ()
   expect(
     screen.getByRole("heading", { name: "Reporting and removal" })
       .parentElement,
-  ).toHaveTextContent(/Tavernary's owner.*any card/i);
+  ).toHaveTextContent(/organization-owned repositories.*listing problems/i);
 });
 
-test("documents immutable trusted-editor authority instead of association alone", () => {
-  const documentationCorpus = documentationPaths
-    .map((path) => readFileSync(resolve(process.cwd(), path), "utf8"))
-    .join("\n");
+test("keeps immutable trusted-editor authority in internal operations docs", () => {
+  const operationsRunbook = readFileSync(
+    resolve(process.cwd(), "docs/maintenance/operations-runbook.md"),
+    "utf8",
+  );
   const actionGuide = readFileSync(
     resolve(process.cwd(), "docs/maintenance/github-actions-user-guides.md"),
     "utf8",
   );
+  const operationsCorpus = `${operationsRunbook}\n${actionGuide}`;
 
-  expect(`${documentationCorpus}\n${actionGuide}`).toContain(
+  expect(operationsCorpus).toContain(
     "data/maintenance/trusted-tavernary-editors.json",
   );
-  expect(`${documentationCorpus}\n${actionGuide}`).toMatch(
-    /immutable GitHub (?:user )?ID/i,
-  );
-  expect(`${documentationCorpus}\n${actionGuide}`).toMatch(
-    /association alone.*does not/i,
-  );
+  expect(operationsCorpus).toMatch(/immutable GitHub (?:user )?ID/i);
+  expect(operationsCorpus).toMatch(/association alone.*does not/i);
 });
 
 test("documents the runtime owner failure codes without invented aliases", () => {

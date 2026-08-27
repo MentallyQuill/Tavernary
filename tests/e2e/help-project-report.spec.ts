@@ -27,7 +27,7 @@ test("preselects a listed project and hands a correction to GitHub for review", 
   );
   await page.getByLabel("What is wrong?").selectOption("incorrect-information");
   await page
-    .getByLabel("What should Tavernary review?")
+    .getByLabel("What is the listing concern?")
     .fill("The displayed project summary needs correction.");
   await page.getByRole("button", { name: "Review request" }).click();
 

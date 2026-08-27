@@ -7,8 +7,8 @@ project-listing questions separate from website problems and security reports.
 
 ## Choose a path
 
-- **Manage your project listing** — for a verified owner or reviewed Tavernary
-  maintainer who needs to update a listing.
+- **Manage your project listing** — for a verified repository owner who needs
+  to update their listing.
 - **Report a project listing** — for incorrect, unsafe, broken, or rights-related
   information on a project card.
 - **Report a website problem** — for a broken page, search issue, layout bug,
@@ -38,9 +38,8 @@ not put vulnerability details in a public issue.
 
 ## What happens next
 
-Tavernary uses GitHub as a public review mirror. Automation checks the request,
-and a maintainer or the normal publication workflow handles the next step. A
-report is not an automatic takedown, and a submission is not an automatic
-endorsement.
+Tavernary uses GitHub for public requests. The issue shows the request status
+and any next step. A report is not an automatic takedown, and a submission is
+not an automatic endorsement.
 
 For contributor details, see [Contribution overview](../contributing/contribution-overview.md).
