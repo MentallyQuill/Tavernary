@@ -3,14 +3,14 @@
   "project_id": "ryah-st-freaky-d20-preset",
   "source_id": "github-1239724267",
   "source_identity": "github:ryah/st-freaky-d20-preset",
-  "evidence_fingerprint": "d7933ffebc526098fab3a132b0db554712046a61dee39db7bc8bb7cd6353cfc5",
+  "evidence_fingerprint": "256a6944bbfc42d0f7c5692fd6adaa17a06788ade34861d44f0131ec5d066086",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-19T08:10:35.701Z",
+  "reviewed_at": "2026-08-27T18:33:02.051Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-19T08:10:35.701Z"
+    "attempts": 3,
+    "last_failure_at": "2026-08-27T18:33:02.051Z"
   },
   "maintenance_issue_number": null
 }
