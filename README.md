@@ -84,9 +84,8 @@ decide which projects are “good,” or replace a project's own support channel
 ## Help people make sense of the catalog
 
 The public guides live in [the documentation hub](docs/README.md). Contributors
-can start with the [contribution overview](docs/contributing/contribution-overview.md),
-and maintainers can use the [development setup](docs/contributing/development-setup.md)
-and [operations runbook](docs/maintenance/operations-runbook.md).
+can start with the [contribution overview](docs/contributing/contribution-overview.md)
+and [development setup](docs/contributing/development-setup.md).
 
 ## Run Tavernary locally
 

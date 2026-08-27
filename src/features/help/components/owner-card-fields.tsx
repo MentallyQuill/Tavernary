@@ -208,9 +208,7 @@ export function OwnerCardFields({
         <option value="automatic">
           Let Tavernary write automatically (default)
         </option>
-        <option value="manual">
-          Use this summary as owner/editor-authored
-        </option>
+        <option value="manual">Use this summary</option>
       </HelpSelectField>
 
       <HelpChoiceGroup
@@ -295,7 +293,7 @@ export function OwnerCardFields({
         <option value="automatic">
           Let Tavernary select automatically (default)
         </option>
-        <option value="manual">Use these tags as owner/editor-authored</option>
+        <option value="manual">Use these tags</option>
       </HelpSelectField>
 
       {card.kind === "preset" ? (

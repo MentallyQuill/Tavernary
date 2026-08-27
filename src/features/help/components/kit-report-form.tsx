@@ -143,8 +143,7 @@ export function KitReportForm({
     if (category === "duplicate-kit" && !otherKit) {
       nextErrors.push("Select the other published Kit.");
     }
-    if (!details.trim())
-      nextErrors.push("Describe what Tavernary should review.");
+    if (!details.trim()) nextErrors.push("Describe the Kit concern.");
     if (details.length > 3_000) {
       nextErrors.push("Your details must be 3,000 characters or fewer.");
     }
@@ -214,7 +213,7 @@ export function KitReportForm({
                 .map((project) => project.name)
                 .join(", ") ?? "",
           },
-          { label: "What Tavernary should review", value: payload.details },
+          { label: "Kit concern", value: payload.details },
           {
             label: "Public supporting evidence",
             value: payload.evidence ?? "",
@@ -343,12 +342,12 @@ export function KitReportForm({
       ) : null}
       <HelpTextArea
         id="kit-details"
-        label="What should Tavernary review?"
+        label="What is the Kit concern?"
         value={details}
         maxLength={3_000}
         onChange={(event) => setDetails(event.target.value)}
         error={errors.find((error) =>
-          error.includes("Describe what Tavernary"),
+          error.includes("Describe the Kit concern"),
         )}
         hint="Everything you submit will be public on GitHub. Do not include secrets or private personal information."
         count={`${details.length}/3000`}

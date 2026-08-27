@@ -1044,7 +1044,7 @@ test("guided Help states retain the approved graphite and teal treatment", async
   );
   await page.getByLabel("What is wrong?").selectOption("incorrect-information");
   await expectStyle(
-    page.getByLabel("What should Tavernary review?"),
+    page.getByLabel("What is the listing concern?"),
     "background-color",
     graphiteTeal.controlBackground,
   );

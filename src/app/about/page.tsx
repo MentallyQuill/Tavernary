@@ -149,9 +149,8 @@ export default function AboutPage() {
               Manage your project listing
             </Link>{" "}
             to request a card edit, a move of the same repository, or a delist.
-            Tavernary&apos;s owner may use that reviewed request for any card.
-            Other organization maintainers and rights holders use a
-            human-reviewed public report through{" "}
+            For organization-owned repositories, rights concerns, and other
+            listing problems, use{" "}
             <Link href="/help/report-project/">Report a project listing</Link>.
           </p>
           <p>
@@ -166,9 +165,8 @@ export default function AboutPage() {
           <p>
             Security vulnerabilities should be reported through the
             repository&apos;s
-            <a href={securityUrl}> private security path</a>. Tavernary may
-            correct, hide, pause, or remove a listing while a report is
-            reviewed.
+            <a href={securityUrl}> private security path</a>. A listing report
+            may result in a correction, warning, pause, or removal.
           </p>
         </section>
 
@@ -182,9 +180,8 @@ export default function AboutPage() {
           </p>
           <p>
             Project names, trademarks, content, and files remain the property of
-            their respective owners. Tavernary may update or remove catalog
-            entries when information changes, a rights holder requests a
-            correction, or a listing is reported as unsafe or abusive.
+            their respective owners. Catalog entries may change when source
+            information changes or when a reported problem is resolved.
           </p>
         </section>
 

@@ -45,13 +45,13 @@ body:
       label: Short Description
       description: >-
         Readable owner-authored description when the manifest selects manual
-        wording. Maximum 220 characters. Manual wording is honored only for the verified personal
-        repository owner or trusted Tavernary staff. Keep the description
-        suitable for a public project catalog. Mature and consensual adult
-        themes are permitted, but content promoting hatred or discrimination,
-        sexual exploitation of minors, or other material prohibited by
-        Tavernary's Catalog Policy is not. Ordinary profanity is permitted.
-        Read the policy:
+        wording. Maximum 220 characters. Manual wording is used only after
+        GitHub verifies the submitter as the personal repository owner. Keep
+        the description suitable for a public project catalog. Mature and
+        consensual adult themes are permitted, but content promoting hatred or
+        discrimination, sexual exploitation of minors, or other material
+        prohibited by Tavernary's Catalog Policy is not. Ordinary profanity is
+        permitted. Read the policy:
         https://mentallyquill.github.io/Tavernary/catalog-policy/
     validations:
       required: false
@@ -109,7 +109,10 @@ body:
     id: other-model-family
     attributes:
       label: Other model family
-      description: System Presets only. A maintainer must reconcile this value before publication.
+      description: >-
+        System Presets only. Use this when the model family is not listed;
+        publication pauses until the value can be matched to the catalog
+        vocabulary.
     validations:
       required: false
   - type: textarea

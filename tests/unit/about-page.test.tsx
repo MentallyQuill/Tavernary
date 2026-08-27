@@ -61,10 +61,10 @@ test("explains safety, reporting, and legal information on About", () => {
   expect(
     screen.getByText(/a verified personal GitHub owner/i),
   ).toBeInTheDocument();
-  expect(screen.getByText(/Tavernary's owner.*any card/i)).toBeInTheDocument();
   expect(
-    screen.getByText(
-      /other organization maintainers and rights holders.*public report/i,
-    ),
+    screen.getByText(/organization-owned repositories.*listing problems/iu),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(/listing report may result in.*correction.*removal/iu),
   ).toBeInTheDocument();
 });

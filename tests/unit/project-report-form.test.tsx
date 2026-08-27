@@ -81,7 +81,7 @@ test("keeps unlisted URLs out of the report payload", async () => {
     "incorrect-information",
   );
   await user.type(
-    screen.getByLabelText("What should Tavernary review?"),
+    screen.getByLabelText("What is the listing concern?"),
     "The card needs correction.",
   );
   await user.click(screen.getByRole("button", { name: "Review request" }));
@@ -107,7 +107,7 @@ test("connects every oversized project-report value to its field", async () => {
     screen.getByLabelText("What is wrong?"),
     "incorrect-information",
   );
-  fireEvent.change(screen.getByLabelText("What should Tavernary review?"), {
+  fireEvent.change(screen.getByLabelText("What is the listing concern?"), {
     target: { value: "r".repeat(3_001) },
   });
   fireEvent.change(screen.getByLabelText("What outcome are you requesting?"), {
@@ -119,7 +119,7 @@ test("connects every oversized project-report value to its field", async () => {
   await user.click(screen.getByRole("button", { name: "Review request" }));
 
   for (const field of [
-    screen.getByLabelText("What should Tavernary review?"),
+    screen.getByLabelText("What is the listing concern?"),
     screen.getByLabelText("What outcome are you requesting?"),
     screen.getByLabelText("Public supporting evidence"),
   ]) {
@@ -150,7 +150,7 @@ test("retains project report state and regenerates the manifest after editing", 
     "incorrect-information",
   );
   await user.type(
-    screen.getByLabelText("What should Tavernary review?"),
+    screen.getByLabelText("What is the listing concern?"),
     "The listed frontend is outdated.",
   );
   await user.type(
@@ -204,7 +204,7 @@ test("retains project report state and regenerates the manifest after editing", 
   await user.click(
     await screen.findByRole("button", { name: "Back and edit" }),
   );
-  const report = screen.getByLabelText("What should Tavernary review?");
+  const report = screen.getByLabelText("What is the listing concern?");
   expect(report).toHaveValue("The listed frontend is outdated.");
   await user.clear(report);
   await user.type(report, "The project name is outdated.");

@@ -95,11 +95,12 @@ test("documents trusted Kit edits without replacing canonical provenance", async
     readFile("docs/contributing/submission-and-review.md", "utf8"),
     readFile("docs/maintenance/github-actions-user-guides.md", "utf8"),
   ]);
-  const corpus = `${maintenance}\n${submissionFlow}\n${actionGuide}`;
+  const corpus = `${maintenance}\n${actionGuide}`;
 
   expect(corpus).toContain("tavernary-staff");
   expect(corpus).toContain("data/maintenance/trusted-tavernary-editors.json");
   expect(corpus).toMatch(/staff edit.*preserves.*author/i);
   expect(corpus).toMatch(/source issue.*published_at.*support snapshot/is);
   expect(corpus).toMatch(/valid issue dispatches.*automatically/is);
+  expect(submissionFlow).not.toMatch(/Tavernary staff|staff maintenance/iu);
 });

@@ -282,7 +282,7 @@ function policyStatement(
   project: OwnerProjectOption,
 ) {
   if (manifest.operation === "add-cards") {
-    return "Tavernary reviews and approves the complete card batch together.";
+    return "Every card in this batch is submitted as one request.";
   }
   if (manifest.operation === "retire-card") {
     return `Retiring ${project.name} is reversible and affects only this card.`;
@@ -447,7 +447,7 @@ export function ProjectOwnerBuilder({
     if (selected && availableOperations.length === 0) {
       nextErrors.push(
         selected.ineligibilityReason ??
-          "This source cannot use owner maintenance.",
+          "This listing cannot use the repository-owner form.",
       );
     }
     if (!operation) nextErrors.push("Choose an owner request type.");
@@ -498,7 +498,7 @@ export function ProjectOwnerBuilder({
         ["explanation", explanation.trim()],
       ],
       pasteInstruction:
-        "Paste the copied Tavernary owner request manifest into this field.",
+        "Paste the copied owner-request manifest into this field.",
     });
   }
 
@@ -506,8 +506,7 @@ export function ProjectOwnerBuilder({
     return (
       <>
         <p className="help-hint">
-          GitHub will verify either current personal-owner authority or reviewed
-          Tavernary authority.
+          GitHub checks whether the request is eligible after you continue.
         </p>
         <p className="owner-policy-statement">
           {policyStatement(reviewManifest, selected)}
@@ -549,10 +548,7 @@ export function ProjectOwnerBuilder({
         }}
       >
         <p className="help-hint">
-          GitHub verifies current personal repository ownership after
-          submission. Tavernary&apos;s owner may submit reviewed maintenance
-          requests for any active listing, including listings from other
-          sources.
+          GitHub checks whether the request is eligible after submission.
         </p>
         <HelpErrorSummary errors={errors} />
         <ProjectPicker
@@ -568,8 +564,8 @@ export function ProjectOwnerBuilder({
             {selected.sourceType !== "github" &&
             selected.sourceState.status === "active" ? (
               <p>
-                If you own this listing, use the help request below so proof of
-                ownership can be reviewed before making changes.
+                If you own this listing, include public proof of ownership in
+                the report below.
               </p>
             ) : null}
             <Link href={`/help/report-project?project=${selected.id}`}>

@@ -27,16 +27,12 @@ learn more.
 - [Kits: contributor rules](contributing/kits.md) — how community collections
   are checked and published.
 
-## For contributors and maintainers
+## For contributors
 
 - [Development setup](contributing/development-setup.md) — run the site and
   verification checks locally.
 - [Architecture](architecture/system-overview.md) — how the static site and
   catalog layers fit together.
-- [Catalog lifecycle](architecture/catalog-lifecycle.md) — publication states,
-  source health, and recovery.
-- [Operations runbook](maintenance/operations-runbook.md) — the exact
-  maintainer procedures.
 - [Reference](reference/) — schemas, vocabularies, manifests, and status
   labels.
 - [Decision log](architecture/decision-log.md) — why important boundaries

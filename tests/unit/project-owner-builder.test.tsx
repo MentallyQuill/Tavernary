@@ -299,7 +299,7 @@ test("clones one complete card without cloning metadata provenance", async () =>
 
   expect(
     screen.getByText(
-      "You may propose up to 10 cards from this GitHub repository in one request. Only one unresolved add-card request may exist for the repository at a time. Tavernary reviews the complete batch together.",
+      "You may propose up to 10 cards from this GitHub repository in one request. Only one unresolved add-card request may exist for the repository at a time. Every card is submitted as one batch.",
     ),
   ).toBeVisible();
   expect(screen.getByLabelText("Card 1 display name")).toHaveValue("Alpha");

@@ -36,9 +36,8 @@ export default async function ManageProjectPage() {
             location, or permanently delist the repository source.
           </p>
           <p>
-            Tavernary&apos;s owner can use this workflow for any catalog record.
-            Other organization, external-source, and listing concerns can be
-            reviewed through{" "}
+            For organization-owned repositories, external sources, or any other
+            listing concern, use{" "}
             <Link href="/help/report-project/">Report a project listing</Link>.
           </p>
         </>

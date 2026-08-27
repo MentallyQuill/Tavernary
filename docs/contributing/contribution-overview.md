@@ -37,20 +37,17 @@ External GitHub accounts may keep up to 10 open issues in Tavernary. The limit
 covers all public issue types; edits and comments do not use another slot.
 Closing an issue restores one slot immediately.
 
-The publication system automatically publishes valid create, card-edit, source-move,
-retire, restore, and source-delist changes after their checks pass. The PR
-remains the CI and audit transaction. Add-card batches still need maintainer
-approval.
+Validated requests appear in the catalog after their checks pass. An **Add
+cards from this source** request is handled as one batch; individual cards do
+not appear before the complete batch is accepted.
 
 ## Manage a listing
 
 The owner path is for the current personal GitHub owner of a verified
-repository, or for a reviewed Tavernary maintainer. Organization membership or
-a trusted association by itself does not grant authority.
+repository. For an organization-owned repository, external source, or other
+listing concern, use [Report a project listing](/help/report-project/).
 
-An admitted request creates a review branch named
-`automation/project-owner-request-<issue-number>`. The pull request is the
-audit and validation transaction. It may:
+The owner form can:
 
 - edit one card;
 - **Add cards from this source**;
@@ -73,18 +70,18 @@ the source record without changing card IDs.
 
 Kits are ordered collections of 3–50 published project cards. Build or edit one
 in Tavernary, review the draft, and submit it through the GitHub review mirror.
-Do not hand-edit generated Kit output. See [Kit submission and moderation](kits.md).
+Do not hand-edit generated Kit output. See the [Kit contributor guide](kits.md).
 
 ## Improve the repository
 
 For code, tests, styling, catalog scripts, workflows, or documentation:
 
-1. Read the relevant architecture or operations page.
+1. Read the relevant project documentation.
 2. Make a narrow, reviewable change.
 3. Keep human-authored records, machine snapshots, and generated catalog output
    in their proper boundaries.
 4. Run the checks in [Development setup](development-setup.md).
-5. Open a pull request with the evidence a reviewer needs.
+5. Open a pull request that explains what changed and how it was verified.
 
 Do not hand-edit `src/generated/catalog.json`. Use the catalog build scripts and
 inspect the generated diff instead.
