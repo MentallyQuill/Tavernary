@@ -3,14 +3,14 @@
   "project_id": "platberlitz-sillytavern-image-gen",
   "source_id": "github-1132564534",
   "source_identity": "github:platberlitz/sillytavern-image-gen",
-  "evidence_fingerprint": "95a65f0e7dbc03286ce940771213e2a33c75e8e027e9c4b5270d85391d5968b0",
+  "evidence_fingerprint": "3c7cf365c59409052de3ee40c86f5cfa42bb80fe56be83237ad952d258fcc3fb",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-14T08:49:36.046Z",
+  "reviewed_at": "2026-08-27T18:29:47.738Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-14T08:49:36.046Z"
+    "attempts": 2,
+    "last_failure_at": "2026-08-27T18:29:47.738Z"
   },
   "maintenance_issue_number": null
 }
