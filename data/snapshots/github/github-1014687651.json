@@ -39,8 +39,9 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-27T11:22:13.706Z",
+  "refreshed_at": "2026-08-27T18:19:19.306Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "p-e-w", "type": "User", "provider": "github" },
@@ -52,8 +53,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-27T11:22:13.706Z",
+    "refreshed_at": "2026-08-27T18:19:19.306Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

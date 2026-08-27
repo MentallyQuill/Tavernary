@@ -9,21 +9,21 @@
     "url": "https://github.com/starlitcode/Lumiverse-Auto-Retry",
     "description": "Retries AI replies that fail, come back empty, stall, or get cut off, so you are not the one pressing regenerate. A Lumiverse Spindle extension.",
     "default_branch": "stable",
-    "head_sha": "00b6add32e41b20efc5de8afbe5bd68ab1eab646",
-    "head_committed_at": "2026-08-26T05:42:40.000Z",
+    "head_sha": "b05feb7b7dba9b971f2a086ba6101558d63bf473",
+    "head_committed_at": "2026-08-27T11:15:51.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-08T17:04:25.000Z",
-    "size_kb": 16215
+    "size_kb": 16849
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-26T05:42:40.000Z",
+    "latest_source_activity_at": "2026-08-27T11:15:51.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-24",
-        "latest_at": "2026-08-26T05:42:40.000Z",
+        "latest_at": "2026-08-27T11:15:51.000Z",
         "precision": "exact"
       },
       {
@@ -82,7 +82,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-24T08:06:42.542Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "00b6add32e41b20efc5de8afbe5bd68ab1eab646"
+    "evidence_head_sha": "b05feb7b7dba9b971f2a086ba6101558d63bf473"
   },
   "community": {
     "stars_count": 2,
@@ -95,7 +95,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-26T08:03:17.367Z",
+  "refreshed_at": "2026-08-27T18:19:19.306Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -106,7 +106,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-26T08:03:17.367Z",
+    "refreshed_at": "2026-08-27T18:19:19.306Z",
     "stale_since": null
   }
 }

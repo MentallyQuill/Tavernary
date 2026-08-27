@@ -66,16 +66,16 @@
   },
   "community": {
     "stars_count": 10,
-    "forks_count": 2,
+    "forks_count": 3,
     "watchers_count": 1,
-    "aggregate": 13
+    "aggregate": 14
   },
   "license": {
     "status": "proprietary",
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-08-26T08:03:17.367Z",
+  "refreshed_at": "2026-08-27T18:19:19.306Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -86,7 +86,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-26T08:03:17.367Z",
+    "refreshed_at": "2026-08-27T18:19:19.306Z",
     "stale_since": null
   }
 }

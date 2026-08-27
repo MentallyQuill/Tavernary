@@ -9,18 +9,33 @@
     "url": "https://github.com/keepsanity/SillyTavern-CustomPreset",
     "description": null,
     "default_branch": "main",
-    "head_sha": "e47202ecb020e6eb5388a84286ffbdc0650b12e1",
-    "head_committed_at": "2026-08-05T00:29:30.000Z",
+    "head_sha": "cf44faac64d3ada184489423cc2b1ca0a39aac9c",
+    "head_committed_at": "2026-08-27T13:29:07.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-27T11:51:33.000Z",
-    "size_kb": 489
+    "size_kb": 522
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-05T00:29:30.000Z",
+    "latest_source_activity_at": "2026-08-27T13:29:07.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-27T13:29:07.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-22T03:51:51.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-10",
+        "latest_at": "2026-08-11T13:07:51.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-03",
         "latest_at": "2026-08-05T00:29:30.000Z",
@@ -50,9 +65,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-05T15:25:13.536Z",
+    "baseline_completed_at": "2026-08-27T18:19:19.306Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "e47202ecb020e6eb5388a84286ffbdc0650b12e1"
+    "evidence_head_sha": "cf44faac64d3ada184489423cc2b1ca0a39aac9c"
   },
   "community": {
     "stars_count": 0,
@@ -65,7 +80,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-26T08:03:17.367Z",
+  "refreshed_at": "2026-08-27T18:19:19.306Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -75,7 +90,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-26T08:03:17.367Z",
+    "refreshed_at": "2026-08-27T18:19:19.306Z",
     "stale_since": null
   }
 }

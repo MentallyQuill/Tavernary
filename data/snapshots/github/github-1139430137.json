@@ -9,18 +9,23 @@
     "url": "https://github.com/Sillyanonymous/SillyTavern-CharacterLibrary",
     "description": "A powerful SillyTavern extension for discovering, organizing, and managing your character library with a modern glassmorphic interface.",
     "default_branch": "main",
-    "head_sha": "70ff25474f77516ffc81ebd22fa8a2e37a9b7b4b",
-    "head_committed_at": "2026-08-13T13:58:34.000Z",
+    "head_sha": "bc317b7f94ba7eb8832aa44024a936717a11e7a6",
+    "head_committed_at": "2026-08-26T21:21:57.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-22T00:21:33.000Z",
-    "size_kb": 4576
+    "size_kb": 4626
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-13T13:58:34.000Z",
+    "latest_source_activity_at": "2026-08-26T21:21:57.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-26T21:21:57.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-10",
         "latest_at": "2026-08-13T13:58:34.000Z",
@@ -50,28 +55,18 @@
         "week_start": "2026-06-08",
         "latest_at": "2026-06-14T21:26:08.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-01",
-        "latest_at": "2026-06-01T19:09:13.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-25",
-        "latest_at": "2026-05-27T14:29:33.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-08-13T14:02:15.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-14T08:40:01.431Z",
+    "baseline_completed_at": "2026-08-27T18:19:19.306Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "70ff25474f77516ffc81ebd22fa8a2e37a9b7b4b"
+    "evidence_head_sha": "bc317b7f94ba7eb8832aa44024a936717a11e7a6"
   },
   "community": {
-    "stars_count": 117,
-    "forks_count": 23,
+    "stars_count": 118,
+    "forks_count": 22,
     "watchers_count": 3,
     "aggregate": 143
   },
@@ -80,7 +75,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-26T08:03:17.367Z",
+  "refreshed_at": "2026-08-27T18:19:19.306Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -92,7 +87,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-26T08:03:17.367Z",
+    "refreshed_at": "2026-08-27T18:19:19.306Z",
     "stale_since": null
   }
 }
