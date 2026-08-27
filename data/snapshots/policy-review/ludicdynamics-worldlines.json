@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "ludicdynamics-worldlines",
+  "source_id": "github-1207534658",
+  "source_identity": "github:ludicdynamics/worldlines",
+  "evidence_fingerprint": "185216b040c2cc51a6e84b5ccbbc009be480af3f6b933163c271ba3b0653a963",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-27T12:07:08.469Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-27T12:07:08.469Z"
+  },
+  "maintenance_issue_number": null
+}
