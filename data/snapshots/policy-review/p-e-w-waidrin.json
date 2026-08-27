@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "p-e-w-waidrin",
+  "source_id": "github-1014687651",
+  "source_identity": "github:p-e-w/waidrin",
+  "evidence_fingerprint": "cc6092ee7201a9f8951e48b4fd6941139ba63420372123e4d37c68076e2ceb2b",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-27T11:37:52.337Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-27T11:37:52.337Z"
+  },
+  "maintenance_issue_number": null
+}
