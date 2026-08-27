@@ -32570,6 +32570,182 @@
       }
     },
     {
+      "id": "felixchaos-rpg-roleplay-platform",
+      "name": "rpg-roleplay-platform",
+      "kind": "frontend",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": "Self-hostable LLM RPG engine that converts any novel into a playable world, combining a general RPG backend with a React frontend so arbitrary novels serve as interactive roleplay scripts.",
+      "canonicalUrl": "https://github.com/felixchaos/rpg-roleplay-platform",
+      "catalogedAt": "2026-08-27T07:40:08.103Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "rpg-roleplay-platform",
+          "label": "rpg-roleplay-platform",
+          "description": "Works with the rpg-roleplay-platform roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-rpg-gameplay",
+          "label": "Add RPG gameplay",
+          "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
+          "facet": "goal"
+        },
+        {
+          "id": "build-worlds-and-lore",
+          "label": "Build worlds and lore",
+          "description": "Create fictional settings, lore, locations, factions, or other world material.",
+          "facet": "goal"
+        },
+        {
+          "id": "self-hosted",
+          "label": "Self-hosted",
+          "description": "Runs as infrastructure that users deploy and operate themselves.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "3c4426d2982603f2c3422c16df74bb834c32adf3",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "felixchaos"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "github-actions[bot]",
+            "botOrAi": true
+          },
+          {
+            "provider": "github",
+            "login": "claude",
+            "botOrAi": true
+          },
+          {
+            "provider": "github",
+            "login": "dragonjay-lyj",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "dependabot[bot]",
+            "botOrAi": true
+          },
+          {
+            "provider": "github",
+            "login": "xingzhiyou",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "QvqvxOQPHuM2KrdKgeDcKGioRIuoneL3weLaA8f",
+            "botOrAi": false
+          }
+        ],
+        "humanContributorCount": 3,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-27T06:28:14.000Z",
+        "activeWeeks12": 12,
+        "weeklyActivity": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-08-27T01:47:22.000Z",
+      "community": {
+        "stars": 64,
+        "forks": 9,
+        "watchers": 3,
+        "aggregate": 76
+      },
+      "repositorySizeKb": 17962,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-27T07:40:08.103Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "rpg-roleplay-platform"
+        ],
+        "aliases": [],
+        "source": [
+          "felixchaos-rpg-roleplay-platform",
+          "github-1252271768",
+          "felixchaos/rpg-roleplay-platform",
+          "https://github.com/felixchaos/rpg-roleplay-platform"
+        ],
+        "summary": [
+          "Self-hostable LLM RPG engine that converts any novel into a playable world, combining a general RPG backend with a React frontend so arbitrary novels serve as interactive roleplay scripts."
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [
+          "Add RPG gameplay",
+          "tabletop mechanics",
+          "game master tools",
+          "RPG systems",
+          "Build worlds and lore",
+          "worldbuilding",
+          "character worldbuilding",
+          "lore creation",
+          "setting design",
+          "Self-hosted",
+          "self-hostable",
+          "run your own server",
+          "local deployment"
+        ],
+        "frontends": [
+          "rpg-roleplay-platform"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "felixchaos",
+          "github-actions[bot]",
+          "claude",
+          "dragonjay-lyj",
+          "dependabot[bot]",
+          "xingzhiyou",
+          "QvqvxOQPHuM2KrdKgeDcKGioRIuoneL3weLaA8f"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "flaxify-st-hands-free-voice",
       "name": "ST Hands-Free Voice",
       "kind": "extension",
