@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "p-e-w-waidrin",
+  "name": "waidrin",
+  "kind": "frontend",
+  "summary": "Waidrin is an LLM-powered RPG engine that uses a JSON schema-constrained state machine to dynamically create and track locations and characters, producing structured narrative events with AI-generated artwork.",
+  "metadata_status": "curated",
+  "source_id": "github-1014687651",
+  "frontends": ["waidrin"],
+  "primary_function": "frontend",
+  "tags": [
+    "add-rpg-gameplay",
+    "add-visual-immersion",
+    "build-worlds-and-lore",
+    "generate-images",
+    "rules-driven",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-08-27T11:22:13.706Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
