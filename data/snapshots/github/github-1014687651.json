@@ -1,0 +1,59 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1014687651",
+  "repository": {
+    "id": 1014687651,
+    "owner": "p-e-w",
+    "name": "waidrin",
+    "url": "https://github.com/p-e-w/waidrin",
+    "description": "Next-generation AI roleplay system",
+    "default_branch": "master",
+    "head_sha": "117178731ed544fc75ef3738a52a8773a0218e23",
+    "head_committed_at": "2025-09-06T11:30:41.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-07-06T08:00:02.000Z",
+    "size_kb": 15855
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-27T11:22:13.706Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "117178731ed544fc75ef3738a52a8773a0218e23"
+  },
+  "community": {
+    "stars_count": 376,
+    "forks_count": 52,
+    "watchers_count": 20,
+    "aggregate": 448
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-27T11:22:13.706Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "p-e-w", "type": "User", "provider": "github" },
+      { "login": "Piktrip", "type": "User", "provider": "github" },
+      { "login": "Targren", "type": "User", "provider": "github" },
+      { "login": "bubbltaco", "type": "User", "provider": "github" },
+      { "login": "dependabot[bot]", "type": "Bot", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-27T11:22:13.706Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
