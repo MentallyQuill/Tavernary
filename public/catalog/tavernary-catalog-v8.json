@@ -70606,6 +70606,375 @@
       }
     },
     {
+      "id": "p-e-w-waidrin",
+      "name": "waidrin",
+      "kind": "frontend",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": "Waidrin is an LLM-powered RPG engine that uses a JSON schema-constrained state machine to dynamically create and track locations and characters, producing structured narrative events with AI-generated artwork.",
+      "canonicalUrl": "https://github.com/p-e-w/waidrin",
+      "catalogedAt": "2026-08-27T11:22:13.706Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "waidrin",
+          "label": "waidrin",
+          "description": "Works with the waidrin roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-rpg-gameplay",
+          "label": "Add RPG gameplay",
+          "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
+          "facet": "goal"
+        },
+        {
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "build-worlds-and-lore",
+          "label": "Build worlds and lore",
+          "description": "Create fictional settings, lore, locations, factions, or other world material.",
+          "facet": "goal"
+        },
+        {
+          "id": "generate-images",
+          "label": "Generate images",
+          "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
+          "facet": "goal"
+        },
+        {
+          "id": "rules-driven",
+          "label": "Rules-driven",
+          "description": "Uses explicit rules, schemas, calculations, or deterministic mechanics to constrain behavior.",
+          "facet": "trait"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "117178731ed544fc75ef3738a52a8773a0218e23",
+        "report": {
+          "reportId": "97e355155f4d74263c9c855d210d082f575993642bdf3b73c089f7610c342566",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 62,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "035812cd404827ba627f220a82ef271d5113f5f93494f6857b828e7bd8439d7e",
+            "06796b71bf612cf9f111a5c1a888e5e419d942b5099c7881507faf2401d0a5ca",
+            "077ff02235297f3ad2386bcb522ce1c50731d3f61a750294fef864e19845b087",
+            "1051884ff60a056be08c6f5573a09b325bd1200f7998afd503f00e60a6662da1",
+            "168d3affaf30e627799d7c5c10c1b7fa3835e64b35b41bb7efb538163f26bdc1",
+            "182d5c4254db966536d8e1962458a20e7a40f9f8e699c1c1fe60db73bfafe3f1",
+            "192a627097745e71bb9c5b3066cd4e68dda40f52362667a68d52788b5c87544f",
+            "1e25abe44f3ad0f6024cea10fd47fcf2742fce60a00229cf022e557e0d3ab8f0",
+            "2327da6a607d51c7078ae83c5e5d7c85789e3e9afdd0f91d238bafffa25d833d",
+            "26a4a98dc5c53c3091498c89995fd5103d66f611d341d155854d50b43664525f",
+            "271450420940fcce1de2fd3dcee03bcce7aa8e5b57510ffd76872e911f93e4fa",
+            "2a9df5c8ad3d19bb65c009614107593522f6e714482c35a5f39657508d546071",
+            "2b00572a16638735abee0c7496dc84ce6da17ac5b32ca4a964a61fff4bc0dd1d",
+            "2e63c20c2a9a14f4762d7d4697dc4f8f0ad799c10da4801a38ff5402108efaf0",
+            "2fd7771e590224fd150f915606cdbb0966809b550bc99ca12cc670de125b4857",
+            "375da5ef39c09a698a2337a31e2fd84f18ccadf90ce3a6aed0613574e0764c63",
+            "3abd4340294ea8d6904caa905fdf759e20ebc5cd826a9dc92257202d55e7099a",
+            "4028c1e920168a9cd1558aa26a53a5500fe2ea661172643a462f3f14a4cde157",
+            "42a0a6c409c34647d5ce4fabd767ccc0f5f11cdcc952cda1bf36bc72552b8eb3",
+            "45cca38e30714f2139bf9a5a740380c057f2816012f5f6eec3ad9237dca0fed9",
+            "486218ff4aa7e7a9defb535b47963bac3180d2bfb3cb065436c238bfc13f3b1a",
+            "488158474e42c1125a02ce4f7ab8f717d61e388187779853888dd7761ee0fabd",
+            "4e41642cbe66bdf845ee1974d6e0269f1a97c781af87a89dcae102b75b633002",
+            "5523e4c0a4cb090e33d526be2a825081bfa97516bb5afceaaf495decdcc056b4",
+            "59099b1880e3ece677a2acb44b4cfb433bffb3d2f77d207fb24328e5ee06c55c",
+            "65f99d5916c7632d7e06aff7ed2c125c1cf76741c8154b70a670a43aacdf7d5d",
+            "678f3c2d254e6d7ae63a7cf6c660d441d93123d3bcbd5fa1ac11456ca3ca0f4a",
+            "6c899effebec5022e615ac313c59fc803e84c9c5c8005d451eb32543a85096f1",
+            "6c90610a7876ffdd86f77b6bd6c3a0d7fb49c9d85b86df8c26ff5d556773c280",
+            "718e7cad12003511a952b8ca76e4df9478775f4935797dba470520ca83562ac4",
+            "72bcb34cf1ffe7ab2596587ecaf9075094a17670bdad7df554f03ea09f9d0bcd",
+            "75addc5ac434465237c0ec64916c2cf4e0f9c62e939d94902703d5ca9db1f0fc",
+            "791d6aaf591f9fb9cc071da0ac012e073791bd10d45b30091426b9a5cf747016",
+            "848b1eeebef223ac3ceaf33063098c3d4914eb00748abd786f3b5baa794c9ccf",
+            "84da932b59e2817a7984c67f83b6908b4424dda5d55bf4ee50c499c0acf41c22",
+            "89ca82ae16ffbac2246d0d12fd0676fc0538e71e093c5cb6ff3f68ca66d69301",
+            "8b05867f78de9ac39c4da1a6a8d875725ea93ae0473eb1e8b7b526adb166ac12",
+            "918a097e6c736636627342fc5686dd4dd3bdb7743afb9a925158d674fb74e863",
+            "a53c3792eb2d750f5ef77a239a1e228975e1050efce2a80f9d254e5854fd5633",
+            "a82daf57080a0d86354f1b21be456f2de82636abd5b6fab76c83a02d244f4133",
+            "a865839cf654abbbd515cf9083d52a8aa9ebb7b823da6566b98754c1298ea2bd",
+            "af3c7c067975bfd3b55a570d4598417415acf8c9ff1d8c3c5e2263dd84c546f5",
+            "b7dbbafc4284486bad3a7560b056183f03a2795ba62d05535cfd3f32f68705d2",
+            "babaee77faa8578c78249da6bf1d1cf4c696bbc96c21d4c31fe6336ab2cc5d8c",
+            "bfe8a7184b0118b377b7980ee9e954deb5d38a13cb1a6ccbea987838319d4279",
+            "c1330f228ebb999a0b3518d5e861f7a036dc82731bcb63b584e3911784966f77",
+            "c2ff4957efce170daf238cabc2ee805fd8f101dad82d61432860152def84ad28",
+            "c658c362ef6c130dde65e5c903b1237227eab2a09804093394eab6b00ad96464",
+            "caa7f52aaad7aa54236dbbd4b4de2c1288ba9192f2269c517a48bc63b451807b",
+            "d499c0b7c0b8ebef2628a4dfd79a3dc2e7cd9c43bdc0f4133b305db7f6b9e440",
+            "e1411a07b19deb996ad14166eed93db8baed90388c936443a2a45398b17f840e",
+            "e15a9083597dac4a1cac16ba5d5aab28608caa9bcbbb26919f8a54a08ed44270",
+            "e4c60f22f2c80753adb51bedbcb260f68ac33f3bd910bc74f0d45d54562e1391",
+            "e62b1e20a724d36b53ddefe16ea124ecdc284d9f05cc13986924b49b3268a6dd",
+            "e9e4cdc3d18b25bc5cb753391fa1edfb759f6f5f85bcc59ff01b55dc4ef31411",
+            "eaf302faef53c443adcba52cb3f9c6919bb9469142c6f4653b26acd85940f9b0",
+            "ef396f8a03c656930b1704b446bf21be91ed1190e7821f39598f0a574bee67e4",
+            "f2bc2784dcf64106316944589a260dc1fe02f327044687ad65ed9ed173c3c455",
+            "fb838d60bab3cfef320e292e7d4089d17f942012904c005621700e1b6274f718",
+            "fc3dd5a6a375d2b3239c06f6b59e07a9d56eea82b9c531eeff06b80423e4b128",
+            "fd4151fbd00e7ecc6f4a50495076effbef468b485bd025a0b77ac6662c72e7ba",
+            "ff4b41428311726eb1a47a84f75f4283efabf237dffb347aaab647aaf9ba9320"
+          ],
+          "scannedSha": "117178731ed544fc75ef3738a52a8773a0218e23",
+          "treeUrl": "https://github.com/p-e-w/waidrin/tree/117178731ed544fc75ef3738a52a8773a0218e23",
+          "scannedAt": "2026-08-27T11:47:11.947Z",
+          "assessedAt": "2026-08-27T11:49:18.600Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "javascriptAnalysisStatus": "incomplete",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1014687651/117178731ed544fc75ef3738a52a8773a0218e23/5/97e355155f4d74263c9c855d210d082f575993642bdf3b73c089f7610c342566/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1014687651/history/"
+        },
+        "history": [
+          {
+            "reportId": "97e355155f4d74263c9c855d210d082f575993642bdf3b73c089f7610c342566",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 62,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "035812cd404827ba627f220a82ef271d5113f5f93494f6857b828e7bd8439d7e",
+              "06796b71bf612cf9f111a5c1a888e5e419d942b5099c7881507faf2401d0a5ca",
+              "077ff02235297f3ad2386bcb522ce1c50731d3f61a750294fef864e19845b087",
+              "1051884ff60a056be08c6f5573a09b325bd1200f7998afd503f00e60a6662da1",
+              "168d3affaf30e627799d7c5c10c1b7fa3835e64b35b41bb7efb538163f26bdc1",
+              "182d5c4254db966536d8e1962458a20e7a40f9f8e699c1c1fe60db73bfafe3f1",
+              "192a627097745e71bb9c5b3066cd4e68dda40f52362667a68d52788b5c87544f",
+              "1e25abe44f3ad0f6024cea10fd47fcf2742fce60a00229cf022e557e0d3ab8f0",
+              "2327da6a607d51c7078ae83c5e5d7c85789e3e9afdd0f91d238bafffa25d833d",
+              "26a4a98dc5c53c3091498c89995fd5103d66f611d341d155854d50b43664525f",
+              "271450420940fcce1de2fd3dcee03bcce7aa8e5b57510ffd76872e911f93e4fa",
+              "2a9df5c8ad3d19bb65c009614107593522f6e714482c35a5f39657508d546071",
+              "2b00572a16638735abee0c7496dc84ce6da17ac5b32ca4a964a61fff4bc0dd1d",
+              "2e63c20c2a9a14f4762d7d4697dc4f8f0ad799c10da4801a38ff5402108efaf0",
+              "2fd7771e590224fd150f915606cdbb0966809b550bc99ca12cc670de125b4857",
+              "375da5ef39c09a698a2337a31e2fd84f18ccadf90ce3a6aed0613574e0764c63",
+              "3abd4340294ea8d6904caa905fdf759e20ebc5cd826a9dc92257202d55e7099a",
+              "4028c1e920168a9cd1558aa26a53a5500fe2ea661172643a462f3f14a4cde157",
+              "42a0a6c409c34647d5ce4fabd767ccc0f5f11cdcc952cda1bf36bc72552b8eb3",
+              "45cca38e30714f2139bf9a5a740380c057f2816012f5f6eec3ad9237dca0fed9",
+              "486218ff4aa7e7a9defb535b47963bac3180d2bfb3cb065436c238bfc13f3b1a",
+              "488158474e42c1125a02ce4f7ab8f717d61e388187779853888dd7761ee0fabd",
+              "4e41642cbe66bdf845ee1974d6e0269f1a97c781af87a89dcae102b75b633002",
+              "5523e4c0a4cb090e33d526be2a825081bfa97516bb5afceaaf495decdcc056b4",
+              "59099b1880e3ece677a2acb44b4cfb433bffb3d2f77d207fb24328e5ee06c55c",
+              "65f99d5916c7632d7e06aff7ed2c125c1cf76741c8154b70a670a43aacdf7d5d",
+              "678f3c2d254e6d7ae63a7cf6c660d441d93123d3bcbd5fa1ac11456ca3ca0f4a",
+              "6c899effebec5022e615ac313c59fc803e84c9c5c8005d451eb32543a85096f1",
+              "6c90610a7876ffdd86f77b6bd6c3a0d7fb49c9d85b86df8c26ff5d556773c280",
+              "718e7cad12003511a952b8ca76e4df9478775f4935797dba470520ca83562ac4",
+              "72bcb34cf1ffe7ab2596587ecaf9075094a17670bdad7df554f03ea09f9d0bcd",
+              "75addc5ac434465237c0ec64916c2cf4e0f9c62e939d94902703d5ca9db1f0fc",
+              "791d6aaf591f9fb9cc071da0ac012e073791bd10d45b30091426b9a5cf747016",
+              "848b1eeebef223ac3ceaf33063098c3d4914eb00748abd786f3b5baa794c9ccf",
+              "84da932b59e2817a7984c67f83b6908b4424dda5d55bf4ee50c499c0acf41c22",
+              "89ca82ae16ffbac2246d0d12fd0676fc0538e71e093c5cb6ff3f68ca66d69301",
+              "8b05867f78de9ac39c4da1a6a8d875725ea93ae0473eb1e8b7b526adb166ac12",
+              "918a097e6c736636627342fc5686dd4dd3bdb7743afb9a925158d674fb74e863",
+              "a53c3792eb2d750f5ef77a239a1e228975e1050efce2a80f9d254e5854fd5633",
+              "a82daf57080a0d86354f1b21be456f2de82636abd5b6fab76c83a02d244f4133",
+              "a865839cf654abbbd515cf9083d52a8aa9ebb7b823da6566b98754c1298ea2bd",
+              "af3c7c067975bfd3b55a570d4598417415acf8c9ff1d8c3c5e2263dd84c546f5",
+              "b7dbbafc4284486bad3a7560b056183f03a2795ba62d05535cfd3f32f68705d2",
+              "babaee77faa8578c78249da6bf1d1cf4c696bbc96c21d4c31fe6336ab2cc5d8c",
+              "bfe8a7184b0118b377b7980ee9e954deb5d38a13cb1a6ccbea987838319d4279",
+              "c1330f228ebb999a0b3518d5e861f7a036dc82731bcb63b584e3911784966f77",
+              "c2ff4957efce170daf238cabc2ee805fd8f101dad82d61432860152def84ad28",
+              "c658c362ef6c130dde65e5c903b1237227eab2a09804093394eab6b00ad96464",
+              "caa7f52aaad7aa54236dbbd4b4de2c1288ba9192f2269c517a48bc63b451807b",
+              "d499c0b7c0b8ebef2628a4dfd79a3dc2e7cd9c43bdc0f4133b305db7f6b9e440",
+              "e1411a07b19deb996ad14166eed93db8baed90388c936443a2a45398b17f840e",
+              "e15a9083597dac4a1cac16ba5d5aab28608caa9bcbbb26919f8a54a08ed44270",
+              "e4c60f22f2c80753adb51bedbcb260f68ac33f3bd910bc74f0d45d54562e1391",
+              "e62b1e20a724d36b53ddefe16ea124ecdc284d9f05cc13986924b49b3268a6dd",
+              "e9e4cdc3d18b25bc5cb753391fa1edfb759f6f5f85bcc59ff01b55dc4ef31411",
+              "eaf302faef53c443adcba52cb3f9c6919bb9469142c6f4653b26acd85940f9b0",
+              "ef396f8a03c656930b1704b446bf21be91ed1190e7821f39598f0a574bee67e4",
+              "f2bc2784dcf64106316944589a260dc1fe02f327044687ad65ed9ed173c3c455",
+              "fb838d60bab3cfef320e292e7d4089d17f942012904c005621700e1b6274f718",
+              "fc3dd5a6a375d2b3239c06f6b59e07a9d56eea82b9c531eeff06b80423e4b128",
+              "fd4151fbd00e7ecc6f4a50495076effbef468b485bd025a0b77ac6662c72e7ba",
+              "ff4b41428311726eb1a47a84f75f4283efabf237dffb347aaab647aaf9ba9320"
+            ],
+            "scannedSha": "117178731ed544fc75ef3738a52a8773a0218e23",
+            "treeUrl": "https://github.com/p-e-w/waidrin/tree/117178731ed544fc75ef3738a52a8773a0218e23",
+            "scannedAt": "2026-08-27T11:47:11.947Z",
+            "assessedAt": "2026-08-27T11:49:18.600Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "incomplete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1014687651/117178731ed544fc75ef3738a52a8773a0218e23/5/97e355155f4d74263c9c855d210d082f575993642bdf3b73c089f7610c342566/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1014687651/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1014687651/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "p-e-w"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "Piktrip",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Targren",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "bubbltaco",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "dependabot[bot]",
+            "botOrAi": true
+          }
+        ],
+        "humanContributorCount": 3,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": null,
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": true
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 376,
+        "forks": 52,
+        "watchers": 20,
+        "aggregate": 448
+      },
+      "repositorySizeKb": 15855,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-27T11:22:13.706Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "waidrin"
+        ],
+        "aliases": [],
+        "source": [
+          "p-e-w-waidrin",
+          "github-1014687651",
+          "p-e-w/waidrin",
+          "https://github.com/p-e-w/waidrin"
+        ],
+        "summary": [
+          "Waidrin is an LLM-powered RPG engine that uses a JSON schema-constrained state machine to dynamically create and track locations and characters, producing structured narrative events with AI-generated artwork."
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [
+          "Add RPG gameplay",
+          "tabletop mechanics",
+          "game master tools",
+          "RPG systems",
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals",
+          "Build worlds and lore",
+          "worldbuilding",
+          "character worldbuilding",
+          "lore creation",
+          "setting design",
+          "Generate images",
+          "image generation",
+          "AI art generation",
+          "scene illustration",
+          "picture generation",
+          "Rules-driven",
+          "deterministic mechanics",
+          "rule based",
+          "schema driven",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "waidrin"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "p-e-w",
+          "Piktrip",
+          "Targren",
+          "bubbltaco",
+          "dependabot[bot]"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "p08dev-sillytavern-chatmood",
       "name": "SillyTavern-ChatMood",
       "kind": "extension",
