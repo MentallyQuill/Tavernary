@@ -121,6 +121,11 @@
       "description": "Works with the RPGraph roleplay frontend."
     },
     {
+      "id": "ryokanapp",
+      "label": "RyokanApp",
+      "description": "Works with the RyokanApp roleplay frontend."
+    },
+    {
       "id": "serene-pub",
       "label": "serene-pub",
       "description": "Works with the serene-pub roleplay frontend."

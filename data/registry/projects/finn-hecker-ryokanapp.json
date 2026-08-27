@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "finn-hecker-ryokanapp",
+  "name": "RyokanApp",
+  "kind": "frontend",
+  "summary": "RyokanApp is an immersive, local-first AI roleplay frontend built for atmosphere using Rust, Tauri v2, and Svelte 5, offering native ultra-lightweight operation on Windows.",
+  "metadata_status": "curated",
+  "source_id": "github-1152199549",
+  "frontends": ["ryokanapp"],
+  "primary_function": "frontend",
+  "tags": ["local-first"],
+  "cataloged_at": "2026-08-27T11:03:18.517Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
