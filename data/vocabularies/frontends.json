@@ -201,6 +201,11 @@
       "description": "Works with the waidrin roleplay frontend."
     },
     {
+      "id": "worldlines",
+      "label": "WorldLines",
+      "description": "Works with the WorldLines roleplay frontend."
+    },
+    {
       "id": "writers-guild",
       "label": "writers-guild",
       "description": "Works with the writers-guild roleplay frontend."

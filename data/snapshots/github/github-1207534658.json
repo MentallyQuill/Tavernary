@@ -1,0 +1,96 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1207534658",
+  "repository": {
+    "id": 1207534658,
+    "owner": "LudicDynamics",
+    "name": "WorldLines",
+    "url": "https://github.com/LudicDynamics/WorldLines",
+    "description": "Agents for Role Play. Agents for Game. Agents as a Game. An orchestrator-agents engine for living worlds — file-backed, event-sourced.",
+    "default_branch": "main",
+    "head_sha": "111bfac75fa6aed46fb7b407bc544b872ca41e81",
+    "head_committed_at": "2026-08-26T17:55:31.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-04-11T04:01:50.000Z",
+    "size_kb": 88877
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-26T17:37:13.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-26T17:37:13.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-22T16:07:59.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-10",
+        "latest_at": "2026-08-11T18:34:51.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-26T09:17:57.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-04T15:13:41.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-27T16:00:13.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-16T16:07:27.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T19:34:08.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-08-13T17:12:15.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-27T11:52:03.116Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "111bfac75fa6aed46fb7b407bc544b872ca41e81"
+  },
+  "community": {
+    "stars_count": 68,
+    "forks_count": 5,
+    "watchers_count": 0,
+    "aggregate": 73
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-27T11:52:03.116Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "nikoloside", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-27T11:52:03.116Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

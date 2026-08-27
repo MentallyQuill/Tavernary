@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "ludicdynamics-worldlines",
+  "name": "WorldLines",
+  "kind": "frontend",
+  "summary": "WorldLines is a multi-agent simulation engine for role-play where a world-agent orchestrates soul-agents, each with a private mind, memory, and agenda. Users join a real-time living world through an avatar terminal.",
+  "metadata_status": "curated",
+  "source_id": "github-1207534658",
+  "frontends": ["worldlines"],
+  "primary_function": "frontend",
+  "tags": [
+    "agentic-tool-use",
+    "build-worlds-and-lore",
+    "maintain-long-term-memory",
+    "persistent-state",
+    "run-group-roleplay",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-08-27T11:52:03.116Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
