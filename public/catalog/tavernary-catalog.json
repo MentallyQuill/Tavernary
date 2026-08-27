@@ -54725,6 +54725,182 @@
       }
     },
     {
+      "id": "ludicdynamics-worldlines",
+      "name": "WorldLines",
+      "kind": "frontend",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": "WorldLines is a multi-agent simulation engine for role-play where a world-agent orchestrates soul-agents, each with a private mind, memory, and agenda. Users join a real-time living world through an avatar terminal.",
+      "canonicalUrl": "https://github.com/LudicDynamics/WorldLines",
+      "catalogedAt": "2026-08-27T11:52:03.116Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "worldlines",
+          "label": "WorldLines",
+          "description": "Works with the WorldLines roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "agentic-tool-use",
+          "label": "Agentic tool use",
+          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
+          "facet": "trait"
+        },
+        {
+          "id": "build-worlds-and-lore",
+          "label": "Build worlds and lore",
+          "description": "Create fictional settings, lore, locations, factions, or other world material.",
+          "facet": "goal"
+        },
+        {
+          "id": "maintain-long-term-memory",
+          "label": "Maintain long-term memory",
+          "description": "Preserve and recall important information across long chats or separate sessions.",
+          "facet": "goal"
+        },
+        {
+          "id": "persistent-state",
+          "label": "Persistent state",
+          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
+          "facet": "trait"
+        },
+        {
+          "id": "run-group-roleplay",
+          "label": "Run group roleplay",
+          "description": "Coordinate scenes involving several AI characters in the same conversation.",
+          "facet": "goal"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "111bfac75fa6aed46fb7b407bc544b872ca41e81",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "LudicDynamics"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "nikoloside",
+            "botOrAi": false
+          }
+        ],
+        "humanContributorCount": 1,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-26T17:37:13.000Z",
+        "activeWeeks12": 8,
+        "weeklyActivity": [
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          true,
+          false,
+          false,
+          true,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-08-13T17:12:15.000Z",
+      "community": {
+        "stars": 68,
+        "forks": 5,
+        "watchers": 0,
+        "aggregate": 73
+      },
+      "repositorySizeKb": 88877,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-08-27T11:52:03.116Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "WorldLines"
+        ],
+        "aliases": [],
+        "source": [
+          "ludicdynamics-worldlines",
+          "github-1207534658",
+          "LudicDynamics/WorldLines",
+          "https://github.com/LudicDynamics/WorldLines"
+        ],
+        "summary": [
+          "WorldLines is a multi-agent simulation engine for role-play where a world-agent orchestrates soul-agents, each with a private mind, memory, and agenda. Users join a real-time living world through an avatar terminal."
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [
+          "Agentic tool use",
+          "tool calling",
+          "AI agents",
+          "agent mode",
+          "Build worlds and lore",
+          "worldbuilding",
+          "character worldbuilding",
+          "lore creation",
+          "setting design",
+          "Maintain long-term memory",
+          "durable memory",
+          "persistent memory",
+          "remember across chats",
+          "Persistent state",
+          "durable state",
+          "state persistence",
+          "cross-session state",
+          "Run group roleplay",
+          "multi-character roleplay",
+          "group chats",
+          "ensemble scenes",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "WorldLines"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "LudicDynamics",
+          "nikoloside"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "luisbrandao-sillytavern-tracker",
       "name": "SillyTavern Tracker",
       "kind": "extension",
