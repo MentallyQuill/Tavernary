@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "finn-hecker-ryokanapp",
+  "source_id": "github-1152199549",
+  "source_identity": "github:finn-hecker/ryokanapp",
+  "evidence_fingerprint": "2f2e34d61ba299d41b34842b7ba6d0e9814a48e553ea48c91ef57c6410e41476",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-27T11:20:07.152Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-27T11:20:07.152Z"
+  },
+  "maintenance_issue_number": null
+}
