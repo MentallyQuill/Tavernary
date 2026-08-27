@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "felixchaos-rpg-roleplay-platform",
+  "name": "rpg-roleplay-platform",
+  "kind": "frontend",
+  "summary": "Self-hostable LLM RPG engine that converts any novel into a playable world, combining a general RPG backend with a React frontend so arbitrary novels serve as interactive roleplay scripts.",
+  "metadata_status": "curated",
+  "source_id": "github-1252271768",
+  "frontends": ["rpg-roleplay-platform"],
+  "primary_function": "frontend",
+  "tags": ["add-rpg-gameplay", "build-worlds-and-lore", "self-hosted"],
+  "cataloged_at": "2026-08-27T07:40:08.103Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

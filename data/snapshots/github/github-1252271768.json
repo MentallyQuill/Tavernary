@@ -1,0 +1,126 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1252271768",
+  "repository": {
+    "id": 1252271768,
+    "owner": "felixchaos",
+    "name": "rpg-roleplay-platform",
+    "url": "https://github.com/felixchaos/rpg-roleplay-platform",
+    "description": "通用 RPG 后端 + React 前端,支持任意小说作为剧本载体",
+    "default_branch": "main",
+    "head_sha": "3c4426d2982603f2c3422c16df74bb834c32adf3",
+    "head_committed_at": "2026-08-27T06:28:14.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-05-28T11:02:12.000Z",
+    "size_kb": 17962
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-27T06:28:14.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-27T06:28:14.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-20T03:46:26.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-10",
+        "latest_at": "2026-08-13T06:09:10.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-05T14:53:53.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-08-01T16:47:50.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-26T14:57:58.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-17T18:43:31.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-11T19:15:32.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-05T19:13:45.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-28T16:52:22.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-21T10:42:42.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T17:16:55.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-08-27T01:47:22.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-27T07:40:08.103Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "3c4426d2982603f2c3422c16df74bb834c32adf3"
+  },
+  "community": {
+    "stars_count": 64,
+    "forks_count": 9,
+    "watchers_count": 3,
+    "aggregate": 76
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-27T07:40:08.103Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "github-actions[bot]", "type": "Bot", "provider": "github" },
+      { "login": "claude", "type": "User", "provider": "github" },
+      { "login": "felixchaos", "type": "User", "provider": "github" },
+      { "login": "dragonjay-lyj", "type": "User", "provider": "github" },
+      { "login": "dependabot[bot]", "type": "Bot", "provider": "github" },
+      { "login": "xingzhiyou", "type": "User", "provider": "github" },
+      {
+        "login": "QvqvxOQPHuM2KrdKgeDcKGioRIuoneL3weLaA8f",
+        "type": "Mannequin",
+        "provider": "github"
+      }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-27T07:40:08.103Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
