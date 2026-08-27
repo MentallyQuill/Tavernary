@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "archkr-lumiverse-lumimind",
+  "source_id": "github-1303183395",
+  "source_identity": "github:archkr/lumiverse-lumimind",
+  "evidence_fingerprint": "4b10c347760a8c6184640ad9d6a4bd19e82655bc525b604b5823f4c0f056d4e9",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-27T18:35:27.667Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-27T18:35:27.667Z"
+  },
+  "maintenance_issue_number": null
+}
