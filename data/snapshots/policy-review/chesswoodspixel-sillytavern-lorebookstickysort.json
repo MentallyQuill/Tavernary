@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "chesswoodspixel-sillytavern-lorebookstickysort",
+  "source_id": "github-1095739220",
+  "source_identity": "github:chesswoodspixel/sillytavern-lorebookstickysort",
+  "evidence_fingerprint": "c8dad24a8fbcf707ae8f492bb693382d482ab46e7aac325556b98941e9339f27",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-28T19:37:55.602Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-28T19:37:55.602Z"
+  },
+  "maintenance_issue_number": null
+}
