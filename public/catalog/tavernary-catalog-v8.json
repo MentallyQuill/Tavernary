@@ -19348,10 +19348,10 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "ed30705786095ee28463cf6c9c3123ca208ffec1",
         "report": {
-          "reportId": "1a811c17b4e31a77e07ca8d696f861e7931420fd7f5b3de6f63e355e805cebd1",
+          "reportId": "dfec76c93e448257d2397bbc9b4ab1a0e868725ba7c7500a21b4bbaf1dc26b3d",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -19367,10 +19367,10 @@
             "dd33bcca955d86d74922957c3a5cb372af66baa2df4dec6c71324ccccd8bd947",
             "efae71b9a520edca8fd096370dfcb77c09cd5b4aad6e93e2472e8dc018cd5e55"
           ],
-          "scannedSha": "44538179ddf4e9acd9b96f10bc50d5896ae95db4",
-          "treeUrl": "https://github.com/Chechelpo/Simulith/tree/44538179ddf4e9acd9b96f10bc50d5896ae95db4",
-          "scannedAt": "2026-08-20T20:49:10.347Z",
-          "assessedAt": "2026-08-20T20:52:47.702Z",
+          "scannedSha": "ed30705786095ee28463cf6c9c3123ca208ffec1",
+          "treeUrl": "https://github.com/Chechelpo/Simulith/tree/ed30705786095ee28463cf6c9c3123ca208ffec1",
+          "scannedAt": "2026-08-28T19:42:15.543Z",
+          "assessedAt": "2026-08-28T19:51:30.320Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
@@ -19378,7 +19378,7 @@
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
           "javascriptAnalysisStatus": "incomplete",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1221210115/44538179ddf4e9acd9b96f10bc50d5896ae95db4/5/1a811c17b4e31a77e07ca8d696f861e7931420fd7f5b3de6f63e355e805cebd1/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1221210115/ed30705786095ee28463cf6c9c3123ca208ffec1/5/dfec76c93e448257d2397bbc9b4ab1a0e868725ba7c7500a21b4bbaf1dc26b3d/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1221210115/history/"
         },
         "history": [
@@ -19498,6 +19498,37 @@
             "assessmentSource": "deterministic_regrade",
             "javascriptAnalysisStatus": "incomplete",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1221210115/44538179ddf4e9acd9b96f10bc50d5896ae95db4/5/1a811c17b4e31a77e07ca8d696f861e7931420fd7f5b3de6f63e355e805cebd1/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1221210115/history/"
+          },
+          {
+            "reportId": "dfec76c93e448257d2397bbc9b4ab1a0e868725ba7c7500a21b4bbaf1dc26b3d",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 6,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "175c63d25942055200b41a5dbf8c0e0ebe5c47ff5453d402a2925398473c3640",
+              "331b5a12733f38bc46f6deb123ad4c6be65a7583f725abf95399644e4d2908a3",
+              "5c883d2140507219a9cc367cf743a3254adb5364b866c15a86b879dbbcf2c5de",
+              "7e5d873b98753dc0f3d18f34066e30fd9a09167daf9a37e6fa5af205eda4f0cd",
+              "dd33bcca955d86d74922957c3a5cb372af66baa2df4dec6c71324ccccd8bd947",
+              "efae71b9a520edca8fd096370dfcb77c09cd5b4aad6e93e2472e8dc018cd5e55"
+            ],
+            "scannedSha": "ed30705786095ee28463cf6c9c3123ca208ffec1",
+            "treeUrl": "https://github.com/Chechelpo/Simulith/tree/ed30705786095ee28463cf6c9c3123ca208ffec1",
+            "scannedAt": "2026-08-28T19:42:15.543Z",
+            "assessedAt": "2026-08-28T19:51:30.320Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "incomplete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1221210115/ed30705786095ee28463cf6c9c3123ca208ffec1/5/dfec76c93e448257d2397bbc9b4ab1a0e868725ba7c7500a21b4bbaf1dc26b3d/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1221210115/history/"
           }
         ],
