@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mkrrussell0411-star-character-stats-extension",
+  "source_id": "github-1158773851",
+  "source_identity": "github:mkrrussell0411-star/character-stats-extension",
+  "evidence_fingerprint": "467a4fecb630c3da577f4477f07a3b8a454709fff42c8163f2adfa268f9bdc98",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-28T19:39:26.578Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-28T19:39:26.578Z"
+  },
+  "maintenance_issue_number": null
+}
