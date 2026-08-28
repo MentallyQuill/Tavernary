@@ -9,21 +9,21 @@
     "url": "https://github.com/felixchaos/rpg-roleplay-platform",
     "description": "通用 RPG 后端 + React 前端,支持任意小说作为剧本载体",
     "default_branch": "main",
-    "head_sha": "5b5895c87279069c266bacf1b6f62e7fe5d1147a",
-    "head_committed_at": "2026-08-27T09:24:04.000Z",
+    "head_sha": "f8a15039f70581065e8822a9429131fc5a0363b9",
+    "head_committed_at": "2026-08-28T16:50:31.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-28T11:02:12.000Z",
-    "size_kb": 18084
+    "size_kb": 18228
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-27T09:24:04.000Z",
+    "latest_source_activity_at": "2026-08-28T16:50:31.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-24",
-        "latest_at": "2026-08-27T09:24:04.000Z",
+        "latest_at": "2026-08-28T16:50:31.000Z",
         "precision": "exact"
       },
       {
@@ -83,24 +83,24 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-27T08:28:12.000Z",
+    "latest_release_at": "2026-08-28T17:02:52.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-27T07:40:08.103Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "5b5895c87279069c266bacf1b6f62e7fe5d1147a"
+    "evidence_head_sha": "f8a15039f70581065e8822a9429131fc5a0363b9"
   },
   "community": {
-    "stars_count": 64,
+    "stars_count": 67,
     "forks_count": 9,
     "watchers_count": 3,
-    "aggregate": 76
+    "aggregate": 79
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-27T18:19:19.306Z",
+  "refreshed_at": "2026-08-28T19:28:33.238Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -120,7 +120,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-27T18:19:19.306Z",
+    "refreshed_at": "2026-08-28T19:28:33.238Z",
     "stale_since": null
   }
 }

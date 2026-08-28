@@ -9,18 +9,23 @@
     "url": "https://github.com/Chechelpo/Simulith",
     "description": "LLM frontend for simulating worlds.",
     "default_branch": "master",
-    "head_sha": "44538179ddf4e9acd9b96f10bc50d5896ae95db4",
-    "head_committed_at": "2026-08-17T20:05:36.000Z",
+    "head_sha": "ed30705786095ee28463cf6c9c3123ca208ffec1",
+    "head_committed_at": "2026-08-28T15:39:32.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-25T22:33:39.000Z",
-    "size_kb": 17813
+    "size_kb": 17819
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-17T20:05:36.000Z",
+    "latest_source_activity_at": "2026-08-28T15:39:32.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-28T15:39:32.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-17",
         "latest_at": "2026-08-17T20:05:36.000Z",
@@ -75,19 +80,14 @@
         "week_start": "2026-06-08",
         "latest_at": "2026-06-12T22:20:20.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-01",
-        "latest_at": "2026-06-07T22:01:09.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-18T07:56:54.593Z",
+    "baseline_completed_at": "2026-08-28T19:28:33.238Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "44538179ddf4e9acd9b96f10bc50d5896ae95db4"
+    "evidence_head_sha": "ed30705786095ee28463cf6c9c3123ca208ffec1"
   },
   "community": {
     "stars_count": 8,
@@ -100,7 +100,7 @@
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-08-27T18:19:19.306Z",
+  "refreshed_at": "2026-08-28T19:28:33.238Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -110,7 +110,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-27T18:19:19.306Z",
+    "refreshed_at": "2026-08-28T19:28:33.238Z",
     "stale_since": null
   }
 }

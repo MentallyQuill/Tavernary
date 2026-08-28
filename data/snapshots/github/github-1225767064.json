@@ -9,21 +9,21 @@
     "url": "https://github.com/Kenhito/Marinara-RPG-Extension",
     "description": "Extension and documentation to allow basic ruleset editing inside the Marinara Engine GM Mode.",
     "default_branch": "main",
-    "head_sha": "b42fc855ce4f98ee9068d26a9f33336375feb609",
-    "head_committed_at": "2026-08-25T21:37:46.000Z",
+    "head_sha": "590991dd00b81e52c56dea2133e18f6d4379aee1",
+    "head_committed_at": "2026-08-28T00:58:20.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-30T16:06:20.000Z",
-    "size_kb": 28069
+    "size_kb": 31590
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-25T21:37:46.000Z",
+    "latest_source_activity_at": "2026-08-28T00:58:20.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-24",
-        "latest_at": "2026-08-25T21:37:46.000Z",
+        "latest_at": "2026-08-28T00:58:20.000Z",
         "precision": "exact"
       },
       {
@@ -43,11 +43,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-25T21:29:01.000Z",
+    "latest_release_at": "2026-08-28T00:58:28.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-25T08:02:02.541Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "b42fc855ce4f98ee9068d26a9f33336375feb609"
+    "evidence_head_sha": "590991dd00b81e52c56dea2133e18f6d4379aee1"
   },
   "community": {
     "stars_count": 5,
@@ -60,7 +60,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-27T18:19:19.306Z",
+  "refreshed_at": "2026-08-28T19:28:33.238Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -68,7 +68,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-27T18:19:19.306Z",
+    "refreshed_at": "2026-08-28T19:28:33.238Z",
     "stale_since": null
   }
 }

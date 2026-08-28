@@ -9,18 +9,23 @@
     "url": "https://github.com/lsennn/Deus-ex-machina",
     "description": "A feature-rich, beginner-friendly, contextually dynamic, truly modular SillyTavern preset focused on collaborative story writing.",
     "default_branch": "main",
-    "head_sha": "44687137fa8192901975626b4b4a6dfbbcb35dc0",
-    "head_committed_at": "2026-08-26T20:56:34.000Z",
+    "head_sha": "6c577b6951758cdb709711f6d0854e65c6fe802f",
+    "head_committed_at": "2026-08-28T18:28:06.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-09T04:14:22.000Z",
-    "size_kb": 5187
+    "size_kb": 8552
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-01T15:51:26.000Z",
+    "latest_source_activity_at": "2026-08-28T18:28:06.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-28T18:28:06.000Z",
+        "precision": "interval"
+      },
       {
         "week_start": "2026-07-27",
         "latest_at": "2026-08-01T15:51:26.000Z",
@@ -33,11 +38,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-01T15:47:58.000Z",
+    "latest_release_at": "2026-08-28T18:13:04.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-27T18:19:19.306Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "44687137fa8192901975626b4b4a6dfbbcb35dc0"
+    "evidence_head_sha": "6c577b6951758cdb709711f6d0854e65c6fe802f"
   },
   "community": {
     "stars_count": 18,
@@ -50,7 +55,7 @@
     "spdx_id": null,
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-27T18:19:19.306Z",
+  "refreshed_at": "2026-08-28T19:28:33.238Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -58,7 +63,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-27T18:19:19.306Z",
+    "refreshed_at": "2026-08-28T19:28:33.238Z",
     "stale_since": null
   }
 }

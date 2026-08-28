@@ -34,17 +34,17 @@
     "baseline_attempts": 1
   },
   "community": {
-    "stars_count": 32727,
-    "forks_count": 6176,
-    "watchers_count": 156,
-    "aggregate": 39059
+    "stars_count": 32763,
+    "forks_count": 6185,
+    "watchers_count": 155,
+    "aggregate": 39103
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-27T18:19:19.306Z",
+  "refreshed_at": "2026-08-28T19:28:33.238Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -213,7 +213,7 @@
       { "login": "Pardeshx", "type": "User", "provider": "github" },
       { "login": "uberubert", "type": "User", "provider": "github" },
       { "login": "wickedcode01", "type": "User", "provider": "github" },
-      { "login": "yuaiccc", "type": "User", "provider": "github" },
+      { "login": "junshanxu", "type": "User", "provider": "github" },
       { "login": "A1KESH1", "type": "User", "provider": "github" },
       { "login": "Brioch", "type": "User", "provider": "github" },
       { "login": "BooleanWhale", "type": "User", "provider": "github" },
@@ -407,7 +407,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-27T18:19:19.306Z",
+    "refreshed_at": "2026-08-28T19:28:33.238Z",
     "stale_since": null
   }
 }
