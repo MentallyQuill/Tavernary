@@ -3,14 +3,14 @@
   "project_id": "starlitcode-lumiverse-auto-retry",
   "source_id": "github-1263145747",
   "source_identity": "github:starlitcode/lumiverse-auto-retry",
-  "evidence_fingerprint": "6e5d1f187d08f14fd84d185e788d6410a5b350e26a0b8b4eedc4e40050209a2a",
+  "evidence_fingerprint": "f5377ba54ac4c894b9ef8a1fda8afa9a28c98a6fba07b03cf735580a5316e324",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-09T11:50:12.731Z",
+  "reviewed_at": "2026-08-28T19:42:49.989Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-09T11:50:12.731Z"
+    "attempts": 2,
+    "last_failure_at": "2026-08-28T19:42:49.989Z"
   },
   "maintenance_issue_number": null
 }
