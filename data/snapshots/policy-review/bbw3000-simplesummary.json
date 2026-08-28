@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "bbw3000-simplesummary",
+  "source_id": "github-1224601278",
+  "source_identity": "github:bbw3000/simplesummary",
+  "evidence_fingerprint": "5fd7f4bf0fc33c23fb5263e4b355925a8d4442d928bcea7309cba432e7bfe54c",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-28T19:41:34.286Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-28T19:41:34.286Z"
+  },
+  "maintenance_issue_number": null
+}
