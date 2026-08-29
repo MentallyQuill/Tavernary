@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "j-dandelion-lumiverse-canvas",
+  "source_id": "github-1255896031",
+  "source_identity": "github:j-dandelion/lumiverse-canvas",
+  "evidence_fingerprint": "884e6344c5e029777d2b198d742fb0e079cd87e6a8fa5994a111ccf5bb20c4e3",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-29T13:25:10.759Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-29T13:25:10.759Z"
+  },
+  "maintenance_issue_number": null
+}
