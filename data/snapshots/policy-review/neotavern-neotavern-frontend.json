@@ -3,14 +3,14 @@
   "project_id": "neotavern-neotavern-frontend",
   "source_id": "github-1095193888",
   "source_identity": "github:neotavern/neotavern-frontend",
-  "evidence_fingerprint": "38deda01bcdfffac98c442389fd44a0c123c2b1d40ba172dabd3258aaaf1042b",
+  "evidence_fingerprint": "5c51a57c35a74907b8885109671e888e5946e1c2e30eaf9af5966a63aafb7141",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-07T23:57:18.384Z",
+  "reviewed_at": "2026-08-29T13:20:52.786Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-07T23:57:18.384Z"
+    "attempts": 2,
+    "last_failure_at": "2026-08-29T13:20:52.786Z"
   },
   "maintenance_issue_number": null
 }
