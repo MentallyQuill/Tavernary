@@ -3,14 +3,14 @@
   "project_id": "roderickwqz-sillytavern-dualmodel-engine",
   "source_id": "github-1321898165",
   "source_identity": "github:roderickwqz/sillytavern-dualmodel-engine",
-  "evidence_fingerprint": "9500bcc6eacb031a89b7bb5c03c4c9cb055af352f076a7bbe0603dfa6b928569",
+  "evidence_fingerprint": "7ae8b8afd76a846f6dba9a46069110219b95817351df5aeadf4c6446aa8b8356",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-08T02:21:15.584Z",
+  "reviewed_at": "2026-08-29T13:27:26.150Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-08T02:21:15.584Z"
+    "attempts": 2,
+    "last_failure_at": "2026-08-29T13:27:26.150Z"
   },
   "maintenance_issue_number": null
 }
