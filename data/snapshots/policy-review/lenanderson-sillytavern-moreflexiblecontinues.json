@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "lenanderson-sillytavern-moreflexiblecontinues",
+  "source_id": "github-732793067",
+  "source_identity": "github:lenanderson/sillytavern-moreflexiblecontinues",
+  "evidence_fingerprint": "763c9b7911d6fd12bcf9210e9ba62887baad8e8d4fafaeb488e0a9d9465b47b3",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-29T13:28:04.348Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-29T13:28:04.348Z"
+  },
+  "maintenance_issue_number": null
+}
