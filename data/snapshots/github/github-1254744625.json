@@ -9,18 +9,23 @@
     "url": "https://github.com/cspiritsong/STLorebookManipulator",
     "description": "SillyTavern extension for safely rewriting and pruning lorebook entries with LLM-powered suggestions, highlighted diff preview, and backup history",
     "default_branch": "master",
-    "head_sha": "4603b7cd354ad992480f0dce99c029528ec44116",
-    "head_committed_at": "2026-07-15T03:16:20.000Z",
+    "head_sha": "3c711cd24ceba4a4afd097cd872c8ce867e57486",
+    "head_committed_at": "2026-08-29T00:34:59.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-31T00:29:17.000Z",
-    "size_kb": 460
+    "size_kb": 565
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-15T03:16:20.000Z",
+    "latest_source_activity_at": "2026-08-29T00:34:59.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-29T00:34:59.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-13",
         "latest_at": "2026-07-15T03:16:20.000Z",
@@ -35,24 +40,14 @@
         "week_start": "2026-06-08",
         "latest_at": "2026-06-08T12:06:21.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-01",
-        "latest_at": "2026-06-06T20:52:00.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-25",
-        "latest_at": "2026-05-31T23:43:10.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-06-01T13:16:08.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-06T02:57:23.179Z",
+    "baseline_completed_at": "2026-08-29T13:11:47.248Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "4603b7cd354ad992480f0dce99c029528ec44116"
+    "evidence_head_sha": "3c711cd24ceba4a4afd097cd872c8ce867e57486"
   },
   "community": {
     "stars_count": 1,
@@ -65,7 +60,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-28T19:28:33.238Z",
+  "refreshed_at": "2026-08-29T13:11:47.248Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -76,7 +71,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-28T19:28:33.238Z",
+    "refreshed_at": "2026-08-29T13:11:47.248Z",
     "stale_since": null
   }
 }

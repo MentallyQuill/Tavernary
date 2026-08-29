@@ -9,18 +9,23 @@
     "url": "https://github.com/lazuli-s/SillyTavern-WorldInfoDrawer",
     "description": "A fork of LenAnderson's WorldInfoDrawer extension for SillyTavern. This version keeps the lorebook editing experience while adding quality-of-life tweaks to make organizing World Info entries faster and less error-prone.",
     "default_branch": "main",
-    "head_sha": "f762089d766005efdf52f7a63cf644929ef3d81d",
-    "head_committed_at": "2026-08-19T01:15:31.000Z",
+    "head_sha": "72af626df2cdbc3dd801740bb756fd4d4abcd28a",
+    "head_committed_at": "2026-08-29T04:26:37.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-12-11T04:31:25.000Z",
-    "size_kb": 20773
+    "size_kb": 20893
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-19T01:15:31.000Z",
+    "latest_source_activity_at": "2026-08-29T04:26:37.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-29T04:26:37.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-17",
         "latest_at": "2026-08-19T01:15:31.000Z",
@@ -40,9 +45,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-18T07:56:54.593Z",
+    "baseline_completed_at": "2026-08-29T13:11:47.248Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "f762089d766005efdf52f7a63cf644929ef3d81d"
+    "evidence_head_sha": "72af626df2cdbc3dd801740bb756fd4d4abcd28a"
   },
   "community": {
     "stars_count": 19,
@@ -51,7 +56,7 @@
     "aggregate": 22
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-28T19:28:33.238Z",
+  "refreshed_at": "2026-08-29T13:11:47.248Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -65,7 +70,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-28T19:28:33.238Z",
+    "refreshed_at": "2026-08-29T13:11:47.248Z",
     "stale_since": null
   }
 }

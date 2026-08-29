@@ -9,21 +9,21 @@
     "url": "https://github.com/keepsanity/SillyTavern-CustomPreset",
     "description": null,
     "default_branch": "main",
-    "head_sha": "cf44faac64d3ada184489423cc2b1ca0a39aac9c",
-    "head_committed_at": "2026-08-27T13:29:07.000Z",
+    "head_sha": "23977169502d51cf559402e099a9f35cf2908b29",
+    "head_committed_at": "2026-08-29T06:23:55.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-27T11:51:33.000Z",
-    "size_kb": 522
+    "size_kb": 523
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-27T13:29:07.000Z",
+    "latest_source_activity_at": "2026-08-29T06:23:55.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-24",
-        "latest_at": "2026-08-27T13:29:07.000Z",
+        "latest_at": "2026-08-29T06:23:55.000Z",
         "precision": "exact"
       },
       {
@@ -67,7 +67,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-27T18:19:19.306Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "cf44faac64d3ada184489423cc2b1ca0a39aac9c"
+    "evidence_head_sha": "23977169502d51cf559402e099a9f35cf2908b29"
   },
   "community": {
     "stars_count": 0,
@@ -80,7 +80,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-28T19:28:33.238Z",
+  "refreshed_at": "2026-08-29T13:11:47.248Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -90,7 +90,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-28T19:28:33.238Z",
+    "refreshed_at": "2026-08-29T13:11:47.248Z",
     "stale_since": null
   }
 }
