@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "id": "mike-s-simple-setup-655",
+  "status": "published",
+  "title": "Mike's simple setup",
+  "description": "I just wanted a lightweight setup for longform roleplays.",
+  "author": {
+    "github_user_id": 252512351,
+    "login": "mikejenkinson-gif"
+  },
+  "source_issue_number": 655,
+  "project_ids": [
+    "sillytavern-sillytavern",
+    "vadash-extension-summaryception",
+    "mattjaybe-sillytavern-pathweaver",
+    "sillytavern-extension-topinfobar",
+    "bmen25124-sillytavern-roadway",
+    "supker-st-copilot",
+    "sillytavern-extension-typingindicator",
+    "bmen25124-sillytavern-wtracker",
+    "platberlitz-sillytavern-character-colors",
+    "lsennn-deus-ex-machina"
+  ],
+  "published_at": "2026-08-29T18:08:37.137Z",
+  "updated_at": "2026-08-29T18:08:37.137Z"
+}
