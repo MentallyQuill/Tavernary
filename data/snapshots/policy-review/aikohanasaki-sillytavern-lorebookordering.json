@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "aikohanasaki-sillytavern-lorebookordering",
+  "source_id": "github-1059754623",
+  "source_identity": "github:aikohanasaki/sillytavern-lorebookordering",
+  "evidence_fingerprint": "1ccf6f23928f0d9c15989d3730f49f5ffcd7d40ba1bbe64cebc3535a6942c04d",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-29T13:20:08.592Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-29T13:20:08.592Z"
+  },
+  "maintenance_issue_number": null
+}
