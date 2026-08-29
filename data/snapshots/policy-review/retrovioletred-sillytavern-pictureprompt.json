@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "retrovioletred-sillytavern-pictureprompt",
+  "source_id": "github-1228484987",
+  "source_identity": "github:retrovioletred/sillytavern-pictureprompt",
+  "evidence_fingerprint": "66a2f2e43b8eecf70c1a9ca61fbc7a3f9cb8f794d6a32bc270311fd636da47f9",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-29T13:24:25.886Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-29T13:24:25.886Z"
+  },
+  "maintenance_issue_number": null
+}
