@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "aikohanasaki-sillytavern-generationlocks",
+  "source_id": "github-1068235084",
+  "source_identity": "github:aikohanasaki/sillytavern-generationlocks",
+  "evidence_fingerprint": "88d491f3ec83bdd9a96212834291d97cd110c10bccdbbdea2ce6288f2f5f3315",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-30T13:08:14.096Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-30T13:08:14.096Z"
+  },
+  "maintenance_issue_number": null
+}
