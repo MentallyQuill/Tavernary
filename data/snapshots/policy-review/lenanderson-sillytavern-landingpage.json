@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "lenanderson-sillytavern-landingpage",
+  "source_id": "github-733163811",
+  "source_identity": "github:lenanderson/sillytavern-landingpage",
+  "evidence_fingerprint": "41c2cd4e99f96e066dabb8a4a25ee72af672ec44ec509143311f1713d3697c8a",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-30T13:16:58.240Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-30T13:16:58.240Z"
+  },
+  "maintenance_issue_number": null
+}
