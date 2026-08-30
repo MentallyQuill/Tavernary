@@ -9,18 +9,28 @@
     "url": "https://github.com/keepsanity/SillyTavern-Atelier",
     "description": null,
     "default_branch": "main",
-    "head_sha": "11b86fa68169fed4069cc2d625c8d9f0b5282ad0",
-    "head_committed_at": "2026-08-08T14:42:05.000Z",
+    "head_sha": "3b619468db24123b8e7707fc574b5979c311d63c",
+    "head_committed_at": "2026-08-30T05:30:13.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-08-08T14:40:34.000Z",
-    "size_kb": 69
+    "size_kb": 87
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-08T14:42:05.000Z",
+    "latest_source_activity_at": "2026-08-30T05:30:13.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-30T05:30:13.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-21T16:29:29.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-03",
         "latest_at": "2026-08-08T14:42:05.000Z",
@@ -30,9 +40,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-23T13:59:21.248Z",
+    "baseline_completed_at": "2026-08-30T12:58:27.843Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "11b86fa68169fed4069cc2d625c8d9f0b5282ad0"
+    "evidence_head_sha": "3b619468db24123b8e7707fc574b5979c311d63c"
   },
   "community": {
     "stars_count": 0,
@@ -45,7 +55,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-29T13:11:47.248Z",
+  "refreshed_at": "2026-08-30T12:58:27.843Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -55,7 +65,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-29T13:11:47.248Z",
+    "refreshed_at": "2026-08-30T12:58:27.843Z",
     "stale_since": null
   }
 }

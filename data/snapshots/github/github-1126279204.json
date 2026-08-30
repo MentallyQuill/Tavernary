@@ -9,21 +9,21 @@
     "url": "https://github.com/AventurasTeam/Aventuras",
     "description": "A frontend for LLM-based text adventure",
     "default_branch": "master",
-    "head_sha": "444f5d89a937d57ced00be82b696321ae8f180bd",
-    "head_committed_at": "2026-08-27T00:45:30.000Z",
+    "head_sha": "f214b1908763cbf52c602f93dc1d59c3f8ca2ec4",
+    "head_committed_at": "2026-08-30T01:52:01.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-01T15:03:20.000Z",
-    "size_kb": 47120
+    "size_kb": 47266
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-27T00:45:30.000Z",
+    "latest_source_activity_at": "2026-08-30T01:52:01.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-24",
-        "latest_at": "2026-08-27T00:45:30.000Z",
+        "latest_at": "2026-08-30T01:52:01.000Z",
         "precision": "exact"
       },
       {
@@ -62,7 +62,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-26T08:03:17.367Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "444f5d89a937d57ced00be82b696321ae8f180bd"
+    "evidence_head_sha": "f214b1908763cbf52c602f93dc1d59c3f8ca2ec4"
   },
   "community": {
     "stars_count": 188,
@@ -75,7 +75,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-08-29T13:11:47.248Z",
+  "refreshed_at": "2026-08-30T12:58:27.843Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -86,16 +86,16 @@
       { "login": "a-frazier", "type": "User", "provider": "github" },
       { "login": "Pento95", "type": "User", "provider": "github" },
       { "login": "Javedz678", "type": "User", "provider": "github" },
+      { "login": "collegatore", "type": "User", "provider": "github" },
       { "login": "Fensterbank", "type": "User", "provider": "github" },
       { "login": "surfacecoaster", "type": "User", "provider": "github" },
-      { "login": "collegatore", "type": "User", "provider": "github" },
       { "login": "EventideMiles", "type": "User", "provider": "github" },
       { "login": "vire70", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-29T13:11:47.248Z",
+    "refreshed_at": "2026-08-30T12:58:27.843Z",
     "stale_since": null
   }
 }

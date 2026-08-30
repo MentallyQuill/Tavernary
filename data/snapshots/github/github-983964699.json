@@ -9,18 +9,23 @@
     "url": "https://github.com/NemoVonNirgend/NemoPresetExt",
     "description": "A Sillytavern extension for creating drop downs for ChatCompletion presets.",
     "default_branch": "main",
-    "head_sha": "9ab4153494b7e2f5aff60746fe55597979b2d3b1",
-    "head_committed_at": "2026-08-07T03:14:46.000Z",
+    "head_sha": "9c1230b8ad776015fb2faaf31e6474eade8e5a0b",
+    "head_committed_at": "2026-08-29T21:06:26.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-05-15T07:28:20.000Z",
-    "size_kb": 17894
+    "size_kb": 17928
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-07T03:13:07.000Z",
+    "latest_source_activity_at": "2026-08-29T21:01:01.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-29T21:01:01.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-03",
         "latest_at": "2026-08-07T03:13:07.000Z",
@@ -45,19 +50,14 @@
         "week_start": "2026-06-15",
         "latest_at": "2026-06-16T02:16:11.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-18",
-        "latest_at": "2026-05-23T02:12:32.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-07T08:32:22.684Z",
+    "baseline_completed_at": "2026-08-30T12:58:27.843Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "9ab4153494b7e2f5aff60746fe55597979b2d3b1"
+    "evidence_head_sha": "9c1230b8ad776015fb2faaf31e6474eade8e5a0b"
   },
   "community": {
     "stars_count": 92,
@@ -66,7 +66,7 @@
     "aggregate": 109
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-29T13:11:47.248Z",
+  "refreshed_at": "2026-08-30T12:58:27.843Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -79,7 +79,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-29T13:11:47.248Z",
+    "refreshed_at": "2026-08-30T12:58:27.843Z",
     "stale_since": null
   }
 }

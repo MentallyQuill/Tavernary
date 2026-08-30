@@ -9,18 +9,23 @@
     "url": "https://github.com/Vibecoder9000/Extension-TokenUsage",
     "description": "A SillyTavern extension that tracks and visualizes token usage for your chats.",
     "default_branch": "master",
-    "head_sha": "7ae4b01598cb8cd6d5d2c6e5e8ea165cc1eb90d9",
-    "head_committed_at": "2026-08-15T05:21:25.000Z",
+    "head_sha": "aa40c45d1c4cf45d17b13bede80253063a4be9fa",
+    "head_committed_at": "2026-08-30T06:02:15.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-01T07:38:31.000Z",
-    "size_kb": 731
+    "size_kb": 760
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-15T05:21:25.000Z",
+    "latest_source_activity_at": "2026-08-30T06:02:15.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-30T06:02:15.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-10",
         "latest_at": "2026-08-15T05:21:25.000Z",
@@ -40,9 +45,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-15T07:47:08.002Z",
+    "baseline_completed_at": "2026-08-30T12:58:27.843Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "7ae4b01598cb8cd6d5d2c6e5e8ea165cc1eb90d9"
+    "evidence_head_sha": "aa40c45d1c4cf45d17b13bede80253063a4be9fa"
   },
   "community": {
     "stars_count": 11,
@@ -55,7 +60,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-29T13:11:47.248Z",
+  "refreshed_at": "2026-08-30T12:58:27.843Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -66,7 +71,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-29T13:11:47.248Z",
+    "refreshed_at": "2026-08-30T12:58:27.843Z",
     "stale_since": null
   }
 }

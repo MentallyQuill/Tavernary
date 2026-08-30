@@ -9,13 +9,13 @@
     "url": "https://github.com/tavern-rpg-suite/Tavern-Doors",
     "description": "Old scenes, seen from further away.",
     "default_branch": "main",
-    "head_sha": "7108d049b4b99fd8837f36f2f8243965a3c77f34",
-    "head_committed_at": "2026-08-08T09:13:43.000Z",
+    "head_sha": "c56e07bbe11097c8bce2e2bbbf6770820bc64f05",
+    "head_committed_at": "2026-08-30T04:05:03.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-08-08T09:00:05.000Z",
-    "size_kb": 49
+    "size_kb": 52
   },
   "source_health": "healthy",
   "activity": {
@@ -30,9 +30,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-23T14:20:54.705Z",
+    "baseline_completed_at": "2026-08-30T12:58:27.843Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "7108d049b4b99fd8837f36f2f8243965a3c77f34"
+    "evidence_head_sha": "c56e07bbe11097c8bce2e2bbbf6770820bc64f05"
   },
   "community": {
     "stars_count": 1,
@@ -45,7 +45,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-29T13:11:47.248Z",
+  "refreshed_at": "2026-08-30T12:58:27.843Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -53,7 +53,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-29T13:11:47.248Z",
+    "refreshed_at": "2026-08-30T12:58:27.843Z",
     "stale_since": null
   }
 }
