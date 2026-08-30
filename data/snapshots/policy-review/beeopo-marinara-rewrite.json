@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "beeopo-marinara-rewrite",
+  "source_id": "github-1275807674",
+  "source_identity": "github:beeopo/marinara-rewrite",
+  "evidence_fingerprint": "3641690d7ef3a3ba78d5647507a993da882cdcffdca143426a03455eeb08fbe3",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-30T13:14:14.634Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-30T13:14:14.634Z"
+  },
+  "maintenance_issue_number": null
+}
