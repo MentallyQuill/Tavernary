@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "enerccio-sillytavern-persistentitemizedprompts",
+  "source_id": "github-1211877451",
+  "source_identity": "github:enerccio/sillytavern-persistentitemizedprompts",
+  "evidence_fingerprint": "16bf79def6469f22b05d1fcf9cfed24809cbbeefad09ebc1d247dc64b971f148",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-31T15:22:10.930Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-31T15:22:10.930Z"
+  },
+  "maintenance_issue_number": null
+}
