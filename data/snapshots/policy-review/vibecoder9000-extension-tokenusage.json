@@ -3,14 +3,14 @@
   "project_id": "vibecoder9000-extension-tokenusage",
   "source_id": "github-1126135302",
   "source_identity": "github:vibecoder9000/extension-tokenusage",
-  "evidence_fingerprint": "309cb391577385ec21743687bf682084c6a3a387a91916c69915a18f731e3657",
+  "evidence_fingerprint": "482eccd0465346e4444b7c35359bbc12445781a3defb19815f8b708d3f4d275a",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-29T13:21:36.552Z",
+  "reviewed_at": "2026-08-31T15:19:55.888Z",
   "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-08-29T13:21:36.552Z"
+    "attempts": 5,
+    "last_failure_at": "2026-08-31T15:19:55.888Z"
   },
   "maintenance_issue_number": null
 }
