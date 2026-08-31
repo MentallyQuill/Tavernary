@@ -9,18 +9,23 @@
     "url": "https://github.com/AventurasTeam/Aventuras",
     "description": "A frontend for LLM-based text adventure",
     "default_branch": "master",
-    "head_sha": "f214b1908763cbf52c602f93dc1d59c3f8ca2ec4",
-    "head_committed_at": "2026-08-30T01:52:01.000Z",
+    "head_sha": "2e7cad85989b8b8014d1ba2e24b908f0a0fa0c83",
+    "head_committed_at": "2026-08-31T00:03:40.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-01T15:03:20.000Z",
-    "size_kb": 47266
+    "size_kb": 47286
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-30T01:52:01.000Z",
+    "latest_source_activity_at": "2026-08-31T00:03:40.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-08-31T00:03:40.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-24",
         "latest_at": "2026-08-30T01:52:01.000Z",
@@ -50,32 +55,27 @@
         "week_start": "2026-06-15",
         "latest_at": "2026-06-15T16:39:47.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-11T13:21:41.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-08-08T21:01:42.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-26T08:03:17.367Z",
+    "baseline_completed_at": "2026-08-31T15:10:24.882Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "f214b1908763cbf52c602f93dc1d59c3f8ca2ec4"
+    "evidence_head_sha": "2e7cad85989b8b8014d1ba2e24b908f0a0fa0c83"
   },
   "community": {
-    "stars_count": 188,
+    "stars_count": 189,
     "forks_count": 34,
     "watchers_count": 13,
-    "aggregate": 235
+    "aggregate": 236
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-08-30T12:58:27.843Z",
+  "refreshed_at": "2026-08-31T15:10:24.882Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -90,12 +90,13 @@
       { "login": "Fensterbank", "type": "User", "provider": "github" },
       { "login": "surfacecoaster", "type": "User", "provider": "github" },
       { "login": "EventideMiles", "type": "User", "provider": "github" },
+      { "login": "Selene29", "type": "User", "provider": "github" },
       { "login": "vire70", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-30T12:58:27.843Z",
+    "refreshed_at": "2026-08-31T15:10:24.882Z",
     "stale_since": null
   }
 }

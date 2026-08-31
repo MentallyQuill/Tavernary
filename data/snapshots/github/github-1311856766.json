@@ -9,8 +9,8 @@
     "url": "https://github.com/selinawynters-ops/ParamSentinel",
     "description": "extension that auto-disables sampler parameters (`temperature`, `top_p`, penalties, `logit_bias`, `reasoning_effort`, etc.) that your currently selected model doesn't actually support. ",
     "default_branch": "main",
-    "head_sha": "eb848ced8be1686086098eeb04fa88bd4a9ae596",
-    "head_committed_at": "2026-07-31T03:53:13.000Z",
+    "head_sha": "8b5eb44685c406f588576489b196a1c7699d283c",
+    "head_committed_at": "2026-08-31T14:58:52.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
@@ -19,8 +19,13 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-31T03:53:13.000Z",
+    "latest_source_activity_at": "2026-08-31T14:58:52.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-08-31T14:58:52.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-27",
         "latest_at": "2026-07-31T03:53:13.000Z",
@@ -35,9 +40,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-31T10:00:47.215Z",
+    "baseline_completed_at": "2026-08-31T15:10:24.882Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "eb848ced8be1686086098eeb04fa88bd4a9ae596"
+    "evidence_head_sha": "8b5eb44685c406f588576489b196a1c7699d283c"
   },
   "community": {
     "stars_count": 3,
@@ -50,7 +55,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-30T12:58:27.843Z",
+  "refreshed_at": "2026-08-31T15:10:24.882Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -60,7 +65,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-30T12:58:27.843Z",
+    "refreshed_at": "2026-08-31T15:10:24.882Z",
     "stale_since": null
   }
 }

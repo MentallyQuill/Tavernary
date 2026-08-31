@@ -55,7 +55,7 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-30T12:58:27.698Z",
+    "baseline_completed_at": "2026-08-31T15:10:24.782Z",
     "baseline_attempts": 0,
     "evidence_head_sha": "02c732e720db666d33c462b498729328594385e8"
   },
@@ -70,7 +70,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-08-30T12:58:27.698Z",
+  "refreshed_at": "2026-08-31T15:10:24.782Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -78,9 +78,9 @@
       { "provider": "codeberg", "login": "targren", "type": "User" }
     ],
     "method": "commit-and-merged-pull-request-authors",
-    "baseline_completed_at": "2026-08-30T12:58:27.698Z",
+    "baseline_completed_at": "2026-08-31T15:10:24.782Z",
     "scan": null,
-    "refreshed_at": "2026-08-30T12:58:27.698Z",
+    "refreshed_at": "2026-08-31T15:10:24.782Z",
     "stale_since": null
   }
 }

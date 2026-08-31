@@ -9,18 +9,23 @@
     "url": "https://github.com/AMousePad/LumiAgent",
     "description": "A capable helper for your Lumiverse",
     "default_branch": "main",
-    "head_sha": "79645c8a4e77501a710b695930938bb310a900af",
-    "head_committed_at": "2026-08-28T08:29:38.000Z",
+    "head_sha": "7d610ccf1dc2a204ec44a1c7c1be8e01b0414975",
+    "head_committed_at": "2026-08-31T09:18:00.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-11T06:53:01.000Z",
-    "size_kb": 18729
+    "size_kb": 18730
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-28T08:29:38.000Z",
+    "latest_source_activity_at": "2026-08-31T09:18:00.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-08-31T09:18:00.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-24",
         "latest_at": "2026-08-28T08:29:38.000Z",
@@ -45,19 +50,14 @@
         "week_start": "2026-06-15",
         "latest_at": "2026-06-21T23:11:34.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-13T13:32:26.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-27T18:19:19.306Z",
+    "baseline_completed_at": "2026-08-31T15:10:24.882Z",
     "baseline_attempts": 1,
-    "evidence_head_sha": "79645c8a4e77501a710b695930938bb310a900af"
+    "evidence_head_sha": "7d610ccf1dc2a204ec44a1c7c1be8e01b0414975"
   },
   "community": {
     "stars_count": 9,
@@ -70,7 +70,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENCE"
   },
-  "refreshed_at": "2026-08-30T12:58:27.843Z",
+  "refreshed_at": "2026-08-31T15:10:24.882Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -80,7 +80,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-30T12:58:27.843Z",
+    "refreshed_at": "2026-08-31T15:10:24.882Z",
     "stale_since": null
   }
 }

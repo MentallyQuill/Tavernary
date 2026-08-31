@@ -9,18 +9,23 @@
     "url": "https://github.com/leandrojofre/SillyTavern-Stat-us-Maximus",
     "description": "Add custom status trackers to your chats",
     "default_branch": "release",
-    "head_sha": "1d3301ac533327b3e1ef0aa654859b461274c85b",
-    "head_committed_at": "2026-08-25T05:34:22.000Z",
+    "head_sha": "1ce335e52922b5a3654f6aae1bbb9946e91bffd9",
+    "head_committed_at": "2026-08-31T06:49:37.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-06-21T04:43:25.000Z",
-    "size_kb": 1178
+    "size_kb": 1198
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-25T05:32:25.000Z",
+    "latest_source_activity_at": "2026-08-31T06:49:02.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-08-31T06:49:02.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-24",
         "latest_at": "2026-08-25T05:32:25.000Z",
@@ -63,11 +68,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-25T05:34:35.000Z",
+    "latest_release_at": "2026-08-31T06:49:49.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-25T08:02:02.541Z",
+    "baseline_completed_at": "2026-08-31T15:10:24.882Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "1d3301ac533327b3e1ef0aa654859b461274c85b"
+    "evidence_head_sha": "1ce335e52922b5a3654f6aae1bbb9946e91bffd9"
   },
   "community": {
     "stars_count": 10,
@@ -80,7 +85,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-30T12:58:27.843Z",
+  "refreshed_at": "2026-08-31T15:10:24.882Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -90,7 +95,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-30T12:58:27.843Z",
+    "refreshed_at": "2026-08-31T15:10:24.882Z",
     "stale_since": null
   }
 }

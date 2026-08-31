@@ -20,7 +20,7 @@
       "url": "https://github.com/Coneja-Chibi/VectHare"
     },
     "created_at": "2026-05-01T09:26:16.000Z",
-    "size_kb": 9970
+    "size_kb": 9127
   },
   "source_health": "healthy",
   "activity": {
@@ -105,7 +105,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-30T12:58:27.843Z",
+  "refreshed_at": "2026-08-31T15:10:24.882Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -116,7 +116,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T16:20:49.192Z",
     "scan": null,
-    "refreshed_at": "2026-08-30T12:58:27.843Z",
+    "refreshed_at": "2026-08-31T15:10:24.882Z",
     "stale_since": null
   }
 }

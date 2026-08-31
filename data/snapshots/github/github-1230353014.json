@@ -9,18 +9,23 @@
     "url": "https://github.com/hype-hosting/SillyTavern-Roulette",
     "description": "Mix models, parameters, and providers across a SillyTavern chat without ever clicking a switch.",
     "default_branch": "main",
-    "head_sha": "25de9378bcac0470824a77d1d537e6b30042a2a2",
-    "head_committed_at": "2026-08-19T19:01:53.000Z",
+    "head_sha": "3740cf228e1f8e6e6171501cf230885ad9a7e21f",
+    "head_committed_at": "2026-08-30T21:10:25.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-05T23:14:18.000Z",
-    "size_kb": 3337
+    "size_kb": 3388
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-19T18:59:44.000Z",
+    "latest_source_activity_at": "2026-08-30T21:07:26.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-30T21:07:26.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-17",
         "latest_at": "2026-08-19T18:59:44.000Z",
@@ -28,11 +33,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-19T19:05:11.000Z",
+    "latest_release_at": "2026-08-30T21:15:02.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-20T16:15:49.017Z",
+    "baseline_completed_at": "2026-08-31T15:10:24.882Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "25de9378bcac0470824a77d1d537e6b30042a2a2"
+    "evidence_head_sha": "3740cf228e1f8e6e6171501cf230885ad9a7e21f"
   },
   "community": {
     "stars_count": 2,
@@ -45,7 +50,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-30T12:58:27.843Z",
+  "refreshed_at": "2026-08-31T15:10:24.882Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -56,7 +61,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-30T12:58:27.843Z",
+    "refreshed_at": "2026-08-31T15:10:24.882Z",
     "stale_since": null
   }
 }

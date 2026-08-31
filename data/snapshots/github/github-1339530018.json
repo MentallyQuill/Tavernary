@@ -9,21 +9,26 @@
     "url": "https://github.com/patcireamo/ChungusHub",
     "description": "ChungusHub is a local-first, privacy-focused LLM frontend for roleplay.",
     "default_branch": "main",
-    "head_sha": "f7fb226adab077ecb226722bdc9a3b818d6f6430",
-    "head_committed_at": "2026-08-29T11:12:24.000Z",
+    "head_sha": "47e763269eb2f0a483aaa6b2acf6185efd8c8f63",
+    "head_committed_at": "2026-08-31T05:51:39.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-08-19T12:01:11.000Z",
-    "size_kb": 53154
+    "size_kb": 53675
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-29T11:12:24.000Z",
+    "latest_source_activity_at": "2026-08-31T05:51:39.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-08-31T05:51:39.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-08-24",
-        "latest_at": "2026-08-29T11:12:24.000Z",
+        "latest_at": "2026-08-30T22:21:27.000Z",
         "precision": "exact"
       },
       {
@@ -35,22 +40,22 @@
     "provisional_weeks": null,
     "latest_release_at": "2026-08-19T14:04:20.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-25T08:02:02.541Z",
+    "baseline_completed_at": "2026-08-31T15:10:24.882Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "f7fb226adab077ecb226722bdc9a3b818d6f6430"
+    "evidence_head_sha": "47e763269eb2f0a483aaa6b2acf6185efd8c8f63"
   },
   "community": {
-    "stars_count": 36,
+    "stars_count": 37,
     "forks_count": 3,
     "watchers_count": 5,
-    "aggregate": 44
+    "aggregate": 45
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-30T12:58:27.843Z",
+  "refreshed_at": "2026-08-31T15:10:24.882Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -61,7 +66,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-30T12:58:27.843Z",
+    "refreshed_at": "2026-08-31T15:10:24.882Z",
     "stale_since": null
   }
 }
