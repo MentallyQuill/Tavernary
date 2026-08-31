@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sillytavern-extension-topinfobar",
+  "source_id": "github-795258518",
+  "source_identity": "github:sillytavern/extension-topinfobar",
+  "evidence_fingerprint": "b68b1d21dc525a49cfe4744e73128e06a02eb00acf9e9d36b29119ea3ea2b950",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-31T15:27:58.634Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-31T15:27:58.634Z"
+  },
+  "maintenance_issue_number": null
+}
