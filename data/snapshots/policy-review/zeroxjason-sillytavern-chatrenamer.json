@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "zeroxjason-sillytavern-chatrenamer",
+  "source_id": "github-1312920117",
+  "source_identity": "github:zeroxjason/sillytavern-chatrenamer",
+  "evidence_fingerprint": "695dc3a714c7d2061c7033be18c54b17b51f6f14eaac06a54c7911e10555abe2",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-31T15:26:28.486Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-31T15:26:28.486Z"
+  },
+  "maintenance_issue_number": null
+}
