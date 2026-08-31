@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "zapoverde-sillytavern-triggeryze",
+  "source_id": "github-1268032451",
+  "source_identity": "github:zapoverde/sillytavern-triggeryze",
+  "evidence_fingerprint": "c3eb34b3bb017b448a95b0cc9b3c03620e5072332e95b3a5d8ffbd3ba3906693",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-31T15:24:23.768Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-31T15:24:23.768Z"
+  },
+  "maintenance_issue_number": null
+}
