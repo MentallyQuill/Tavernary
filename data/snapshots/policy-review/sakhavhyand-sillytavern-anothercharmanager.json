@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sakhavhyand-sillytavern-anothercharmanager",
+  "source_id": "github-732327589",
+  "source_identity": "github:sakhavhyand/sillytavern-anothercharmanager",
+  "evidence_fingerprint": "b145597d349892a70fc3dc1ca0e8b39641686c2e0ffd753321341f6f52a25354",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-01T12:53:58.734Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-01T12:53:58.734Z"
+  },
+  "maintenance_issue_number": null
+}
