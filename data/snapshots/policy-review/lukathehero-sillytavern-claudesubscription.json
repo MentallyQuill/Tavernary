@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "lukathehero-sillytavern-claudesubscription",
+  "source_id": "github-1232282077",
+  "source_identity": "github:lukathehero/sillytavern-claudesubscription",
+  "evidence_fingerprint": "838feddd855cfdd301fa81ffec37d1b37acff13c13c84bc0b075de1820275dde",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-01T12:49:35.248Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-01T12:49:35.248Z"
+  },
+  "maintenance_issue_number": null
+}
