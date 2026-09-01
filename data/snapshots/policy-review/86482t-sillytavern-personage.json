@@ -3,14 +3,14 @@
   "project_id": "86482t-sillytavern-personage",
   "source_id": "github-1292551529",
   "source_identity": "github:86482t/sillytavern-personage",
-  "evidence_fingerprint": "bd4cc6e3b05f40943bca766be310cea2350b9b604cfc1e577f764c04067b3ce6",
+  "evidence_fingerprint": "37ef6f37720f99d60afbb2d79fb48da2d619426cc59377310c9a4c1b48e4314a",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-10T09:07:11.517Z",
+  "reviewed_at": "2026-09-01T12:51:50.802Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-10T09:07:11.517Z"
+    "attempts": 3,
+    "last_failure_at": "2026-09-01T12:51:50.802Z"
   },
   "maintenance_issue_number": null
 }
