@@ -9,21 +9,21 @@
     "url": "https://github.com/PocketRisu/PocketRisu",
     "description": "Self-hosted AI roleplay chat platform you run on your PC or personal server, forked from Risuai",
     "default_branch": "main",
-    "head_sha": "b8bbcbe065755379d33f74d6ad16a36d634917c1",
-    "head_committed_at": "2026-08-31T10:30:25.000Z",
+    "head_sha": "278251f85a19bfdfd4cf3faae780e62682878f9e",
+    "head_committed_at": "2026-09-01T06:36:34.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-17T02:40:46.000Z",
-    "size_kb": 82566
+    "size_kb": 81911
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-31T10:30:25.000Z",
+    "latest_source_activity_at": "2026-09-01T06:36:34.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-31",
-        "latest_at": "2026-08-31T10:30:25.000Z",
+        "latest_at": "2026-09-01T06:36:34.000Z",
         "precision": "exact"
       },
       {
@@ -63,24 +63,24 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-31T10:46:30.000Z",
+    "latest_release_at": "2026-09-01T06:51:24.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-31T15:10:24.882Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "b8bbcbe065755379d33f74d6ad16a36d634917c1"
+    "evidence_head_sha": "278251f85a19bfdfd4cf3faae780e62682878f9e"
   },
   "community": {
-    "stars_count": 315,
+    "stars_count": 321,
     "forks_count": 61,
     "watchers_count": 2,
-    "aggregate": 378
+    "aggregate": 384
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-31T15:10:24.882Z",
+  "refreshed_at": "2026-09-01T12:37:05.520Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -169,7 +169,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-31T15:10:24.882Z",
+    "refreshed_at": "2026-09-01T12:37:05.520Z",
     "stale_since": null
   }
 }

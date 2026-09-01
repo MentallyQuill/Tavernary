@@ -9,18 +9,23 @@
     "url": "https://github.com/doolijb/serene-pub",
     "description": "Clean and intuitive LLM roleplay client",
     "default_branch": "main",
-    "head_sha": "5ab20b383019e4af7856ccc6f551b02e47e57004",
-    "head_committed_at": "2026-08-18T12:45:55.000Z",
+    "head_sha": "f8be0fba5dacc6ab68a9dd3668e4454afabed16d",
+    "head_committed_at": "2026-08-31T17:21:36.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-06-07T08:41:43.000Z",
-    "size_kb": 130452
+    "size_kb": 130495
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-18T12:32:55.000Z",
+    "latest_source_activity_at": "2026-08-31T16:49:06.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-08-31T16:49:06.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-17",
         "latest_at": "2026-08-18T12:32:55.000Z",
@@ -63,11 +68,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-18T12:45:13.000Z",
+    "latest_release_at": "2026-08-31T16:53:58.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-19T07:56:49.599Z",
+    "baseline_completed_at": "2026-09-01T12:37:05.520Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "5ab20b383019e4af7856ccc6f551b02e47e57004"
+    "evidence_head_sha": "f8be0fba5dacc6ab68a9dd3668e4454afabed16d"
   },
   "community": {
     "stars_count": 189,
@@ -80,7 +85,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-31T15:10:24.882Z",
+  "refreshed_at": "2026-09-01T12:37:05.520Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -92,7 +97,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-31T15:10:24.882Z",
+    "refreshed_at": "2026-09-01T12:37:05.520Z",
     "stale_since": null
   }
 }

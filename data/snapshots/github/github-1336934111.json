@@ -9,18 +9,28 @@
     "url": "https://github.com/Maxwell5600/Persona-Library",
     "description": "Silly Tavern Extension ",
     "default_branch": "main",
-    "head_sha": "6b8b6ec0313ff74a93e09e0227829c22e1a3c71c",
-    "head_committed_at": "2026-08-23T03:10:41.000Z",
+    "head_sha": "d97e241e166e51d17fa7f1aa25601bdbcddf19c6",
+    "head_committed_at": "2026-09-01T08:39:47.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-08-17T09:14:36.000Z",
-    "size_kb": 265
+    "size_kb": 317
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-23T02:20:58.000Z",
+    "latest_source_activity_at": "2026-09-01T08:39:47.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-09-01T08:39:47.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-26T18:02:14.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-17",
         "latest_at": "2026-08-23T02:20:58.000Z",
@@ -30,9 +40,9 @@
     "provisional_weeks": null,
     "latest_release_at": "2026-08-18T02:12:21.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-23T15:07:45.558Z",
+    "baseline_completed_at": "2026-09-01T12:37:05.520Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "6b8b6ec0313ff74a93e09e0227829c22e1a3c71c"
+    "evidence_head_sha": "d97e241e166e51d17fa7f1aa25601bdbcddf19c6"
   },
   "community": {
     "stars_count": 1,
@@ -45,7 +55,7 @@
     "spdx_id": "Unlicense",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-31T15:10:24.882Z",
+  "refreshed_at": "2026-09-01T12:37:05.520Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -56,7 +66,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-31T15:10:24.882Z",
+    "refreshed_at": "2026-09-01T12:37:05.520Z",
     "stale_since": null
   }
 }
