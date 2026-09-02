@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "amousepad-lumibooks",
+  "source_id": "github-1248922425",
+  "source_identity": "github:amousepad/lumibooks",
+  "evidence_fingerprint": "289d9c4f6251c2cc389404f16f5f3c6d30d8e416a79f2d507a200cf852ef781b",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-02T12:24:54.507Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-02T12:24:54.507Z"
+  },
+  "maintenance_issue_number": null
+}
