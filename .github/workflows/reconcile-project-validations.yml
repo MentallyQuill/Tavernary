@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
     inputs:
       validation_run_id:
-        description: "Completed generated validation run to reconcile"
+        description: "Generated validation run to await and reconcile"
         required: false
         type: string
 
@@ -67,7 +67,7 @@ jobs:
           VALIDATION_RUN_ID: ${{ inputs.validation_run_id }}
         run: >-
           gh run watch "$VALIDATION_RUN_ID" --repo "$GITHUB_REPOSITORY"
-          --interval 5 --exit-status
+          --interval 5
       - name: Reconcile generated project validations
         env:
           GITHUB_TOKEN: ${{ github.token }}

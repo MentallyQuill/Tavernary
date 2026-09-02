@@ -12,6 +12,7 @@ test("reconciles generated validation runs from trusted main code", async () => 
   const reconcile = workflow.jobs.reconcile;
   const steps = reconcile.steps as Array<{
     env?: Record<string, string>;
+    name?: string;
     uses?: string;
     run?: string;
     with?: Record<string, string | number>;
@@ -38,7 +39,7 @@ test("reconciles generated validation runs from trusted main code", async () => 
     workflow_dispatch: {
       inputs: {
         validation_run_id: {
-          description: "Completed generated validation run to reconcile",
+          description: "Generated validation run to await and reconcile",
           required: false,
           type: "string",
         },
@@ -107,6 +108,10 @@ test("reconciles generated validation runs from trusted main code", async () => 
       }),
     ]),
   );
+  const waitForValidation = steps.find(
+    (step) => step.name === "Await dispatched validation completion",
+  );
+  expect(waitForValidation?.run).not.toContain("--exit-status");
   expect(steps).toEqual(
     expect.arrayContaining([
       expect.objectContaining({
@@ -349,7 +354,7 @@ test("merges validated project transactions with the Publisher App", async () =>
   );
 });
 
-test("hands successful generated CI to the serialized reconciler", async () => {
+test("hands every generated CI outcome to the serialized reconciler", async () => {
   const ci = parse(await readFile(".github/workflows/ci.yml", "utf8")) as any;
   expect(ci.jobs).not.toHaveProperty("dispatch-project-publication");
 
@@ -362,8 +367,9 @@ test("hands successful generated CI to the serialized reconciler", async () => {
   expect(handoff.if).toContain(
     "startsWith(github.ref_name, 'automation/project-owner-request-')",
   );
-  expect(handoff.if).toContain("needs.verify.result == 'success'");
-  expect(handoff.if).toContain("needs.visual.result == 'success'");
+  expect(handoff.if).toContain("always()");
+  expect(handoff.if).not.toContain("needs.verify.result == 'success'");
+  expect(handoff.if).not.toContain("needs.visual.result == 'success'");
   expect(handoff.permissions).toEqual({
     actions: "write",
     contents: "read",

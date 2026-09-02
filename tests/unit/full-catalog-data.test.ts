@@ -345,6 +345,33 @@ describe("full catalog data", () => {
     );
   });
 
+  test("keeps the misclassified Twemoji source tombstoned without rewriting Kit history", async () => {
+    const { sourcesById } = await loadProductionData();
+    const catalog = await buildCatalog({ write: false });
+
+    expect(sourcesById.get("github-26291683")).toMatchObject({
+      status: "delisted",
+      status_reason: "removed",
+      refresh_policy: "paused",
+    });
+    expect(catalog.projects.map(({ id }) => id)).not.toContain(
+      "twitter-twemoji",
+    );
+
+    for (const kitId of ["232-153", "test-135"]) {
+      const twemoji = catalog.kits
+        .find(({ id }) => id === kitId)
+        ?.components.find(({ projectId }) => projectId === "twitter-twemoji");
+      expect(twemoji, kitId).toMatchObject({
+        projectId: "twitter-twemoji",
+        availability: "flagged",
+        unavailableReason: "removed",
+        canonicalUrl: null,
+        project: null,
+      });
+    }
+  });
+
   test("preserves known trusted manual summaries without coupling tag policy", async () => {
     const { projectsById } = await loadProductionData();
     const expectedManualSummaryIds = [
