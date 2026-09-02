@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "mokimoko-sillytavern-uibedazzler",
+  "name": "SillyTavern-UIBedazzler",
+  "kind": "extension",
+  "summary": "UI Bedazzler is a SillyTavern extension that redesigns some UI elements and adds new ones to refresh the default interface look. It is probably not compatible with most other UI extensions.",
+  "metadata_status": "curated",
+  "source_id": "github-1241909047",
+  "frontends": ["sillytavern", "tauritavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["customize-the-interface"],
+  "cataloged_at": "2026-09-02T22:00:21.637Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

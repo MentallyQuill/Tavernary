@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1241909047",
+  "head_sha": "9a8f395335841011d0e31174c658dfb28d96477c",
+  "observed_at": "2026-09-02T22:00:33.000Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-UIBedazzler",
+  "manifest": {
+    "display_name": "UI Bedazzler",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
