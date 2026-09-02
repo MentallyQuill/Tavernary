@@ -3,14 +3,14 @@
   "project_id": "enerccio-sillytavern-autosummary",
   "source_id": "github-1268541624",
   "source_identity": "github:enerccio/sillytavern-autosummary",
-  "evidence_fingerprint": "0ac91b1d85d7c7c6836e9e0b56c9ae6153c21e8099935fb6efcf37807ebbf09b",
+  "evidence_fingerprint": "2430ea552e2dec655504b7ad01a0721242504aab31d076e1e66277126e443b9e",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-04T10:14:35.913Z",
+  "reviewed_at": "2026-09-02T12:25:34.847Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-04T10:14:35.913Z"
+    "attempts": 3,
+    "last_failure_at": "2026-09-02T12:25:34.847Z"
   },
   "maintenance_issue_number": null
 }
