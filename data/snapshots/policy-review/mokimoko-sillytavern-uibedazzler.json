@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mokimoko-sillytavern-uibedazzler",
+  "source_id": "github-1241909047",
+  "source_identity": "github:mokimoko/sillytavern-uibedazzler",
+  "evidence_fingerprint": "fdd6a2d19323434f14d65f95a388638af966944f9d832d455cf692426be06d02",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-02T22:18:21.454Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-02T22:18:21.454Z"
+  },
+  "maintenance_issue_number": null
+}
