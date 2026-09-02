@@ -138,9 +138,7 @@ jobs:
       always() &&
       github.event_name == 'workflow_dispatch' &&
       (startsWith(github.ref_name, 'automation/project-submission-') ||
-       startsWith(github.ref_name, 'automation/project-owner-request-')) &&
-      needs.verify.result == 'success' &&
-      needs.visual.result == 'success'
+       startsWith(github.ref_name, 'automation/project-owner-request-'))
     permissions:
       actions: write
       contents: read
