@@ -9,18 +9,23 @@
     "url": "https://github.com/mokimoko/SillyTavern-StoryManager",
     "description": "a SillyTavern extension that helps with the management of multiple chat files in the same storyline or universe",
     "default_branch": "main",
-    "head_sha": "ef925f313effdaddd927867f3a39c2030b1fd82a",
-    "head_committed_at": "2026-08-19T19:17:31.000Z",
+    "head_sha": "ba639959060537a2eb75cc80610f8e8d2ce77e9d",
+    "head_committed_at": "2026-09-01T17:13:57.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-20T17:14:40.000Z",
-    "size_kb": 282
+    "size_kb": 288
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-19T19:17:31.000Z",
+    "latest_source_activity_at": "2026-09-01T17:13:57.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-09-01T17:13:57.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-17",
         "latest_at": "2026-08-19T19:17:31.000Z",
@@ -55,9 +60,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-20T07:59:41.713Z",
+    "baseline_completed_at": "2026-09-02T12:09:05.030Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "ef925f313effdaddd927867f3a39c2030b1fd82a"
+    "evidence_head_sha": "ba639959060537a2eb75cc80610f8e8d2ce77e9d"
   },
   "community": {
     "stars_count": 3,
@@ -66,7 +71,7 @@
     "aggregate": 3
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-01T12:37:05.520Z",
+  "refreshed_at": "2026-09-02T12:09:05.030Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -74,7 +79,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-01T12:37:05.520Z",
+    "refreshed_at": "2026-09-02T12:09:05.030Z",
     "stale_since": null
   }
 }

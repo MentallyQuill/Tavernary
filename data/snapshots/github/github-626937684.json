@@ -9,21 +9,21 @@
     "url": "https://github.com/kwaroran/Risuai",
     "description": "Make your own story. User-friendly software for LLM roleplaying",
     "default_branch": "main",
-    "head_sha": "9d31f8f48a4c7588070588b1e45ee246b950aa07",
-    "head_committed_at": "2026-09-01T02:24:11.000Z",
+    "head_sha": "754af0ba5d546db9a8cc0c2676ba4c2693f3f72d",
+    "head_committed_at": "2026-09-02T11:12:26.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2023-04-12T13:08:52.000Z",
-    "size_kb": 77166
+    "size_kb": 77167
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-01T02:24:11.000Z",
+    "latest_source_activity_at": "2026-09-02T11:12:26.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-31",
-        "latest_at": "2026-09-01T02:24:11.000Z",
+        "latest_at": "2026-09-02T11:12:26.000Z",
         "precision": "interval"
       },
       {
@@ -87,20 +87,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-31T15:10:24.882Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "9d31f8f48a4c7588070588b1e45ee246b950aa07"
+    "evidence_head_sha": "754af0ba5d546db9a8cc0c2676ba4c2693f3f72d"
   },
   "community": {
-    "stars_count": 1643,
+    "stars_count": 1646,
     "forks_count": 342,
     "watchers_count": 24,
-    "aggregate": 2009
+    "aggregate": 2012
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-01T12:37:05.520Z",
+  "refreshed_at": "2026-09-02T12:09:05.030Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -136,13 +136,13 @@
       { "login": "asm6788", "type": "User", "provider": "github" },
       { "login": "sunho", "type": "User", "provider": "github" },
       { "login": "ModMapper", "type": "User", "provider": "github" },
+      { "login": "seto-sama", "type": "User", "provider": "github" },
       { "login": "claude", "type": "User", "provider": "github" },
       { "login": "mounta11n", "type": "User", "provider": "github" },
       { "login": "IHaBiS02", "type": "User", "provider": "github" },
       { "login": "escap-ade", "type": "User", "provider": "github" },
       { "login": "drPpZero", "type": "User", "provider": "github" },
       { "login": "concertypin", "type": "User", "provider": "github" },
-      { "login": "seto-sama", "type": "User", "provider": "github" },
       { "login": "heavycaffeiner", "type": "User", "provider": "github" },
       { "login": "nbsp1221", "type": "User", "provider": "github" },
       { "login": "HopeJourney", "type": "User", "provider": "github" },
@@ -192,7 +192,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-01T12:37:05.520Z",
+    "refreshed_at": "2026-09-02T12:09:05.030Z",
     "stale_since": null
   }
 }

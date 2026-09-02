@@ -9,21 +9,21 @@
     "url": "https://github.com/Sillyanonymous/SillyTavern-CharacterLibrary",
     "description": "A powerful SillyTavern extension for discovering, organizing, and managing your character library with a modern glassmorphic interface.",
     "default_branch": "main",
-    "head_sha": "23ba100c26273546b37b5a7d31eb15ee17b090ff",
-    "head_committed_at": "2026-08-31T21:15:09.000Z",
+    "head_sha": "5c99e79ebc42b34ab65e89c553577d118b8e6de5",
+    "head_committed_at": "2026-09-02T09:05:56.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-22T00:21:33.000Z",
-    "size_kb": 4577
+    "size_kb": 4581
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-31T21:15:09.000Z",
+    "latest_source_activity_at": "2026-09-02T09:05:56.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-31",
-        "latest_at": "2026-08-31T21:15:09.000Z",
+        "latest_at": "2026-09-02T09:05:56.000Z",
         "precision": "exact"
       },
       {
@@ -62,7 +62,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-01T12:37:05.520Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "23ba100c26273546b37b5a7d31eb15ee17b090ff"
+    "evidence_head_sha": "5c99e79ebc42b34ab65e89c553577d118b8e6de5"
   },
   "community": {
     "stars_count": 122,
@@ -75,7 +75,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-01T12:37:05.520Z",
+  "refreshed_at": "2026-09-02T12:09:05.030Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -87,7 +87,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-01T12:37:05.520Z",
+    "refreshed_at": "2026-09-02T12:09:05.030Z",
     "stale_since": null
   }
 }

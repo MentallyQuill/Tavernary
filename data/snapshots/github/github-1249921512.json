@@ -9,18 +9,23 @@
     "url": "https://github.com/mokimoko/SillyTavern-DynamicAudioRedux",
     "description": "based on the original Dynamic Audio extension by the SillyTavern team — rebuilt around a single tabbed modal, AI tagging, and smarter playlist tools",
     "default_branch": "main",
-    "head_sha": "1c2802f0dc98e4774f4b25519787ab372fec4a1f",
-    "head_committed_at": "2026-08-28T02:53:52.000Z",
+    "head_sha": "de9b4421672a976febf86dfd6cf0ad83025acf78",
+    "head_committed_at": "2026-09-01T17:12:50.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-26T06:36:39.000Z",
-    "size_kb": 293
+    "size_kb": 294
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-28T02:53:52.000Z",
+    "latest_source_activity_at": "2026-09-01T17:12:50.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-09-01T17:12:50.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-24",
         "latest_at": "2026-08-28T02:53:52.000Z",
@@ -40,19 +45,14 @@
         "week_start": "2026-06-15",
         "latest_at": "2026-06-20T17:10:23.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-11T04:58:35.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-28T19:28:33.238Z",
+    "baseline_completed_at": "2026-09-02T12:09:05.030Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "1c2802f0dc98e4774f4b25519787ab372fec4a1f"
+    "evidence_head_sha": "de9b4421672a976febf86dfd6cf0ad83025acf78"
   },
   "community": {
     "stars_count": 1,
@@ -65,7 +65,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-01T12:37:05.520Z",
+  "refreshed_at": "2026-09-02T12:09:05.030Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -73,7 +73,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-01T12:37:05.520Z",
+    "refreshed_at": "2026-09-02T12:09:05.030Z",
     "stale_since": null
   }
 }

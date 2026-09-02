@@ -9,18 +9,23 @@
     "url": "https://github.com/mokimoko/SillyTavern-SimpleSummarizer",
     "description": "a chat summary extension for SillyTavern",
     "default_branch": "main",
-    "head_sha": "6f907c862878aa716dce74eee35b6080521e5f30",
-    "head_committed_at": "2026-08-09T20:14:00.000Z",
+    "head_sha": "9056179b8bc82a4839bea894018f1fcfa7c5e827",
+    "head_committed_at": "2026-09-01T17:13:44.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-20T00:39:28.000Z",
-    "size_kb": 226
+    "size_kb": 251
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-09T20:14:00.000Z",
+    "latest_source_activity_at": "2026-09-01T17:13:44.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-09-01T17:13:44.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-03",
         "latest_at": "2026-08-09T20:14:00.000Z",
@@ -45,24 +50,14 @@
         "week_start": "2026-06-22",
         "latest_at": "2026-06-22T02:25:13.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-11T05:49:49.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-25",
-        "latest_at": "2026-05-30T01:06:16.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-10T08:53:26.617Z",
+    "baseline_completed_at": "2026-09-02T12:09:05.030Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "6f907c862878aa716dce74eee35b6080521e5f30"
+    "evidence_head_sha": "9056179b8bc82a4839bea894018f1fcfa7c5e827"
   },
   "community": {
     "stars_count": 1,
@@ -75,7 +70,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-01T12:37:05.520Z",
+  "refreshed_at": "2026-09-02T12:09:05.030Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -86,7 +81,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-01T12:37:05.520Z",
+    "refreshed_at": "2026-09-02T12:09:05.030Z",
     "stale_since": null
   }
 }

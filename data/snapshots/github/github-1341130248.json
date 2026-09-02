@@ -9,13 +9,13 @@
     "url": "https://github.com/Shin-F/world-info-gallery",
     "description": "Extension for SillyTavern to convert the World Info tab into a gallery view.",
     "default_branch": "main",
-    "head_sha": "7e275755481e9eafaa9c35eedbecdfd6ece2899e",
-    "head_committed_at": "2026-08-26T02:49:22.000Z",
+    "head_sha": "b4b140f09c9f373b0f17986dc8b22e117e8ee5bb",
+    "head_committed_at": "2026-09-01T23:54:30.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-08-20T20:43:31.000Z",
-    "size_kb": 6250
+    "size_kb": 6255
   },
   "source_health": "healthy",
   "activity": {
@@ -35,9 +35,9 @@
     "provisional_weeks": null,
     "latest_release_at": "2026-08-24T03:47:23.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-24T08:06:42.542Z",
+    "baseline_completed_at": "2026-09-02T12:09:05.030Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "7e275755481e9eafaa9c35eedbecdfd6ece2899e"
+    "evidence_head_sha": "b4b140f09c9f373b0f17986dc8b22e117e8ee5bb"
   },
   "community": {
     "stars_count": 3,
@@ -50,7 +50,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-01T12:37:05.520Z",
+  "refreshed_at": "2026-09-02T12:09:05.030Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -58,7 +58,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-01T12:37:05.520Z",
+    "refreshed_at": "2026-09-02T12:09:05.030Z",
     "stale_since": null
   }
 }

@@ -17,7 +17,7 @@
     "created_at": "2026-08-02T09:50:10.000Z",
     "size_kb": 142
   },
-  "source_health": "healthy",
+  "source_health": "unavailable",
   "activity": {
     "latest_source_activity_at": "2026-08-03T09:42:20.000Z",
     "source_weeks": [
@@ -51,7 +51,7 @@
     "source_path": "LICENSE"
   },
   "refreshed_at": "2026-09-01T12:37:05.520Z",
-  "stale_since": null,
+  "stale_since": "2026-09-02T12:09:05.030Z",
   "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "Mezi99", "type": "User", "provider": "github" }],
