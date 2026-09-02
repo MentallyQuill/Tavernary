@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "p-e-w-sorcery",
+  "source_id": "github-933528919",
+  "source_identity": "github:p-e-w/sorcery",
+  "evidence_fingerprint": "5a279ba5f97d18b66e21067b9b2c2a30209af92c55a1727cb10f893e147b4b04",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-02T12:29:47.736Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-02T12:29:47.736Z"
+  },
+  "maintenance_issue_number": null
+}
