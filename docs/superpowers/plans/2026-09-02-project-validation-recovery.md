@@ -63,38 +63,28 @@ Expected: all workflow contract tests pass.
 
 ---
 
-### Task 2: Stabilize the localized fork-relationship visual fixture
+### Task 2: Preserve the concurrently landed visual repair
 
 **Files:**
 
-- Modify: `tests/visual/catalog.visual.spec.ts`
-- Modify: `tests/visual/catalog.visual.spec.ts-snapshots/fork-relationship-desktop-standard-win32.png`
-- Modify: `tests/visual/catalog.visual.spec.ts-snapshots/fork-relationship-desktop-compact-win32.png`
-- Modify: `tests/visual/catalog.visual.spec.ts-snapshots/fork-relationship-mobile-win32.png`
+- Preserve from PR #661: `tests/visual/catalog.visual.spec.ts`
+- Preserve unchanged: the three `fork-relationship-*-win32.png` snapshots
 
-- [ ] **Step 1: Preserve RED evidence**
+- [x] **Step 1: Preserve RED evidence**
 
-Use the already-recorded clean-main `npm.cmd run test:visual` result: all three scenarios fail with 84 pixels and each diff highlights only `11d ago`. Do not change tolerance.
+The clean-main `npm.cmd run test:visual` result failed all three scenarios with 84 pixels around `11d ago`. Inspection of PR #661 established that the visible age was frozen while its `--commit-freshness` color input still depended on mutable snapshot dates.
 
-- [ ] **Step 2: Use a proven stable age glyph sequence**
+- [x] **Step 2: Integrate the narrower concurrent repair**
 
-Change the second fixture label from `11d ago` to `2d ago`. Add an assertion after stabilization that both labels have the exact fixture text, keeping semantic content coverage separate from pixels. Remove the stale hosted-difference comment but retain `maxDiffPixels: 20`.
+Merge current `main` containing PR #661. Resolve the helper in favor of its distinct `2d ago` and `11d ago` values plus deterministic `--commit-freshness` properties.
 
-- [ ] **Step 3: Refresh only the three controlled snapshots**
+- [x] **Step 3: Preserve the verified snapshot bytes**
 
-Run:
+Restore the three fork-relationship snapshots exactly from merged PR #661. Do not refresh them and do not change `maxDiffPixels`.
 
-```powershell
-npx.cmd playwright test --config playwright.config.ts --project=chromium tests/visual/catalog.visual.spec.ts --grep "fork relationship .* visual" --update-snapshots
-```
+- [x] **Step 4: Verify hosted GREEN**
 
-If the repository wrapper is required for the static export, set `PLAYWRIGHT_UPDATE_SNAPSHOTS=all`, run the focused visual test through the wrapper, and then remove the environment variable.
-
-Inspect all three new PNGs and confirm the only intended content change is the second age label.
-
-- [ ] **Step 4: Verify focused GREEN twice**
-
-Run the focused relationship visual test twice without snapshot update. Expected: all three scenarios pass both times.
+Confirm PR #661's full local visual gate and hosted Windows layout gate passed, then rerun the integrated branch's full visual checks after merging current `main`.
 
 ---
 
@@ -171,11 +161,11 @@ Expected: formatting, lint, palette, catalog, security, TypeScript, unit, build,
 
 - [ ] **Step 4: Inspect artifacts and diff**
 
-Verify only the intended three snapshots changed, Twemoji is absent from both generated public catalog versions, its two Kit components are unavailable, workflow permissions are unchanged, and `debug.log` has no test-generated additions. Review `git diff --check` and `git status --short`.
+Verify the three fork snapshots match current `main`, Twemoji is absent from both generated public catalog versions, its two Kit components are unavailable, workflow permissions are unchanged, and `debug.log` has no test-generated additions. Review `git diff --check` and `git status --short`.
 
 - [ ] **Step 5: Commit the repair**
 
-Stage only the workflow, registry source, generated catalogs, focused tests and snapshots, design, and plan. Commit with `fix(submissions): recover failed validation runs`.
+Stage only the workflow, registry source, generated catalogs, focused tests, design, and plan. Commit with `fix(submissions): recover failed validation runs`.
 
 ---
 

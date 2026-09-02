@@ -37,13 +37,16 @@ async function stabilizeRefreshLabel(page: Page) {
 async function stabilizeRelationshipActivityAge(page: Page) {
   const ages = page.locator(".relationship-pair .commit-age");
   await expect(ages).toHaveCount(2);
-  await ages.nth(0).evaluate((label) => {
+  const freshnessPercentForDays = (days: number) =>
+    `${Math.max(0, Math.min(100, 100 - (days / 30) * 100))}%`;
+  await ages.nth(0).evaluate((label, freshness) => {
     label.textContent = "2d ago";
-  });
-  await ages.nth(1).evaluate((label) => {
-    label.textContent = "2d ago";
-  });
-  await expect(ages).toHaveText(["2d ago", "2d ago"]);
+    label.style.setProperty("--commit-freshness", freshness);
+  }, freshnessPercentForDays(2));
+  await ages.nth(1).evaluate((label, freshness) => {
+    label.textContent = "11d ago";
+    label.style.setProperty("--commit-freshness", freshness);
+  }, freshnessPercentForDays(11));
 
   const communityTotals = page.locator(".relationship-pair .community b");
   await expect(communityTotals).toHaveCount(2);
@@ -407,6 +410,8 @@ for (const scenario of [
       `fork-relationship-${scenario.name}.png`,
       {
         animations: "disabled",
+        // Hosted Windows glyph rasterization can vary by 13 pixels while the
+        // relationship layout, dimensions, and content remain identical.
         maxDiffPixels: 20,
       },
     );
