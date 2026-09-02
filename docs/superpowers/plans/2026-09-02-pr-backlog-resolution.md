@@ -44,7 +44,7 @@
 
 ### Task 3: CI repair integration
 
-- [ ] Run `npm.cmd run check` and all browser gates used by the publication workflow.
+- [x] Run `npm.cmd run check` and all browser gates used by the publication workflow.
 - [ ] Review the complete branch diff against this plan.
 - [ ] Push a focused CI-stability PR, require current exact-head checks, merge it, and verify the merge-SHA Pages deployment.
 
