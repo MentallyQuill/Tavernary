@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "vadash-extension-summaryception",
+  "source_id": "github-1287253091",
+  "source_identity": "github:vadash/extension-summaryception",
+  "evidence_fingerprint": "7e38e0c6fca6dd73e0cb7331baec671a4d6f4c1ebf1705043876bac70c45c86e",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-02T12:26:16.559Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-02T12:26:16.559Z"
+  },
+  "maintenance_issue_number": null
+}
