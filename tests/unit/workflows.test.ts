@@ -2102,6 +2102,10 @@ test("groups coupled dependency updates into coherent pull requests", async () =
     updates: Array<{
       "package-ecosystem": string;
       groups?: Record<string, { patterns: string[] }>;
+      ignore?: Array<{
+        "dependency-name": string;
+        "update-types"?: string[];
+      }>;
     }>;
   };
   const npm = dependabot.updates.find(
@@ -2112,6 +2116,10 @@ test("groups coupled dependency updates into coherent pull requests", async () =
   );
 
   expect(npm?.groups?.react.patterns).toEqual(["react", "react-dom"]);
+  expect(npm?.ignore).toContainEqual({
+    "dependency-name": "eslint",
+    "update-types": ["version-update:semver-major"],
+  });
   expect(actions?.groups?.actions.patterns).toEqual(["*"]);
 });
 
