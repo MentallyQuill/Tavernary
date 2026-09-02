@@ -46584,10 +46584,10 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "23977169502d51cf559402e099a9f35cf2908b29",
         "report": {
-          "reportId": "d884a2cfaef03e0e59f90231fd694d1052623757b0679eab4fb1bfffdf351209",
+          "reportId": "84bd42c21d16013f0083b95ff99eb87410c3b6b797e4c9344ccb7e122caf6291",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -46596,10 +46596,10 @@
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
           "citedFindingIds": [],
-          "scannedSha": "e47202ecb020e6eb5388a84286ffbdc0650b12e1",
-          "treeUrl": "https://github.com/keepsanity/SillyTavern-CustomPreset/tree/e47202ecb020e6eb5388a84286ffbdc0650b12e1",
-          "scannedAt": "2026-08-26T22:25:21.296Z",
-          "assessedAt": "2026-08-26T22:28:20.696Z",
+          "scannedSha": "23977169502d51cf559402e099a9f35cf2908b29",
+          "treeUrl": "https://github.com/keepsanity/SillyTavern-CustomPreset/tree/23977169502d51cf559402e099a9f35cf2908b29",
+          "scannedAt": "2026-09-02T22:27:04.203Z",
+          "assessedAt": "2026-09-02T22:29:40.356Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
@@ -46607,7 +46607,7 @@
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
           "javascriptAnalysisStatus": "complete",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1143287385/e47202ecb020e6eb5388a84286ffbdc0650b12e1/5/d884a2cfaef03e0e59f90231fd694d1052623757b0679eab4fb1bfffdf351209/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1143287385/23977169502d51cf559402e099a9f35cf2908b29/5/84bd42c21d16013f0083b95ff99eb87410c3b6b797e4c9344ccb7e122caf6291/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1143287385/history/"
         },
         "history": [
@@ -46657,6 +46657,30 @@
             "assessmentSource": "deterministic_regrade",
             "javascriptAnalysisStatus": "complete",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1143287385/e47202ecb020e6eb5388a84286ffbdc0650b12e1/5/d884a2cfaef03e0e59f90231fd694d1052623757b0679eab4fb1bfffdf351209/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1143287385/history/"
+          },
+          {
+            "reportId": "84bd42c21d16013f0083b95ff99eb87410c3b6b797e4c9344ccb7e122caf6291",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "23977169502d51cf559402e099a9f35cf2908b29",
+            "treeUrl": "https://github.com/keepsanity/SillyTavern-CustomPreset/tree/23977169502d51cf559402e099a9f35cf2908b29",
+            "scannedAt": "2026-09-02T22:27:04.203Z",
+            "assessedAt": "2026-09-02T22:29:40.356Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1143287385/23977169502d51cf559402e099a9f35cf2908b29/5/84bd42c21d16013f0083b95ff99eb87410c3b6b797e4c9344ccb7e122caf6291/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1143287385/history/"
           }
         ],
@@ -65711,6 +65735,136 @@
           "chat organization",
           "message bookmarks",
           "conversation search"
+        ],
+        "frontends": [
+          "SillyTavern",
+          "TauriTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "mokimoko"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "mokimoko-sillytavern-uibedazzler",
+      "name": "SillyTavern-UIBedazzler",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "UI Bedazzler is a SillyTavern extension that redesigns some UI elements and adds new ones to refresh the default interface look. It is probably not compatible with most other UI extensions.",
+      "canonicalUrl": "https://github.com/mokimoko/SillyTavern-UIBedazzler",
+      "catalogedAt": "2026-09-02T22:00:21.637Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        },
+        {
+          "id": "tauritavern",
+          "label": "TauriTavern",
+          "description": "Works with the TauriTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "customize-the-interface",
+          "label": "Customize the interface",
+          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "9a8f395335841011d0e31174c658dfb28d96477c",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "mokimoko"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-01T20:28:07.000Z",
+        "activeWeeks12": 3,
+        "weeklyActivity": [
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 4,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 4
+      },
+      "repositorySizeKb": 1560,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-02T22:00:21.637Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/mokimoko/SillyTavern-UIBedazzler.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-UIBedazzler"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-UIBedazzler"
+        ],
+        "aliases": [],
+        "source": [
+          "mokimoko-sillytavern-uibedazzler",
+          "github-1241909047",
+          "mokimoko/SillyTavern-UIBedazzler",
+          "https://github.com/mokimoko/SillyTavern-UIBedazzler"
+        ],
+        "summary": [
+          "UI Bedazzler is a SillyTavern extension that redesigns some UI elements and adds new ones to refresh the default interface look. It is probably not compatible with most other UI extensions."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Customize the interface",
+          "interface theming",
+          "layout customization",
+          "UI personalization"
         ],
         "frontends": [
           "SillyTavern",
