@@ -65780,7 +65780,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "UI Bedazzler is a SillyTavern extension that redesigns some UI elements and adds new ones to refresh the default interface look. It is probably not compatible with most other UI extensions.",
+      "summary": "UI Bedazzler redesigns SillyTavern with chat and character styling, persona lore injection, variable inspection, and expanded character, World Info, and preset workspaces; it may conflict with other UI extensions.",
       "canonicalUrl": "https://github.com/mokimoko/SillyTavern-UIBedazzler",
       "catalogedAt": "2026-09-02T22:00:21.637Z",
       "catalogCohort": "standard",
@@ -65801,6 +65801,30 @@
           "id": "customize-the-interface",
           "label": "Customize the interface",
           "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-characters-and-personas",
+          "label": "Manage characters and personas",
+          "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-lorebooks",
+          "label": "Manage lorebooks",
+          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-prompts-and-presets",
+          "label": "Manage prompts and presets",
+          "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
+          "facet": "goal"
+        },
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
           "facet": "goal"
         }
       ],
@@ -65936,7 +65960,7 @@
           "https://github.com/mokimoko/SillyTavern-UIBedazzler"
         ],
         "summary": [
-          "UI Bedazzler is a SillyTavern extension that redesigns some UI elements and adds new ones to refresh the default interface look. It is probably not compatible with most other UI extensions."
+          "UI Bedazzler redesigns SillyTavern with chat and character styling, persona lore injection, variable inspection, and expanded character, World Info, and preset workspaces; it may conflict with other UI extensions."
         ],
         "kind": [
           "extension"
@@ -65948,7 +65972,24 @@
           "Customize the interface",
           "interface theming",
           "layout customization",
-          "UI personalization"
+          "UI personalization",
+          "Manage characters and personas",
+          "persona management",
+          "character management",
+          "identity management",
+          "Manage lorebooks",
+          "World Info management",
+          "worldbook organization",
+          "loredeck management",
+          "Manage prompts and presets",
+          "prompt management",
+          "prompt engineering",
+          "preset organization",
+          "template management",
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control"
         ],
         "frontends": [
           "SillyTavern",

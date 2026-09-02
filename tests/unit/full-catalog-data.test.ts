@@ -103,6 +103,32 @@ function countBy<T>(records: T[], selector: (record: T) => string) {
 }
 
 describe("full catalog data", () => {
+  test("keeps UI Bedazzler's documented workflows discoverable", async () => {
+    const { projectsById } = await loadProductionData();
+
+    expect(projectsById.get("mokimoko-sillytavern-uibedazzler")).toMatchObject({
+      summary:
+        "UI Bedazzler redesigns SillyTavern with chat and character styling, persona lore injection, variable inspection, and expanded character, World Info, and preset workspaces; it may conflict with other UI extensions.",
+      tags: [
+        "customize-the-interface",
+        "manage-characters-and-personas",
+        "manage-lorebooks",
+        "manage-prompts-and-presets",
+        "guide-model-responses",
+      ],
+      metadata_policy: {
+        summary: {
+          mode: "manual",
+          note: "Trusted Tavernary editor selection.",
+        },
+        tags: {
+          mode: "manual",
+          note: "Trusted Tavernary editor selection.",
+        },
+      },
+    });
+  });
+
   test("keeps SLAYImages classified as a SillyTavern extension", async () => {
     const { projectsById } = await loadProductionData();
     const catalog = await buildCatalog({ write: false });
