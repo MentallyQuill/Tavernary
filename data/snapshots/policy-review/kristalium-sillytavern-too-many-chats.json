@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "kristalium-sillytavern-too-many-chats",
+  "source_id": "github-1189308698",
+  "source_identity": "github:kristalium/sillytavern-too-many-chats",
+  "evidence_fingerprint": "a6e24a08de1d49b8bd5e9d40204f90ff311e577ea78d829b9bf3c677520dd004",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-02T12:22:45.415Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-02T12:22:45.415Z"
+  },
+  "maintenance_issue_number": null
+}
