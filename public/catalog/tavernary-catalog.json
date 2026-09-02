@@ -63981,10 +63981,10 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "de9b4421672a976febf86dfd6cf0ad83025acf78",
         "report": {
-          "reportId": "22826e276f0d974cafb183ac02c7aa21b2de427083b9f967b396a64c89af8aa4",
+          "reportId": "a007977fa871ea6c4057108950185c427b132302b92d6038b47ee996402b4162",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -63995,17 +63995,17 @@
           "citedFindingIds": [
             "4e673580ba3b0d333e7a33aa897e56eba47864dd0ce0380e4093b1207c7c2984"
           ],
-          "scannedSha": "56663e0cd4f9e200e7caf2871fa1db09a61d6670",
-          "treeUrl": "https://github.com/mokimoko/SillyTavern-DynamicAudioRedux/tree/56663e0cd4f9e200e7caf2871fa1db09a61d6670",
-          "scannedAt": "2026-08-26T21:37:30.897Z",
-          "assessedAt": "2026-08-26T21:45:24.378Z",
+          "scannedSha": "de9b4421672a976febf86dfd6cf0ad83025acf78",
+          "treeUrl": "https://github.com/mokimoko/SillyTavern-DynamicAudioRedux/tree/de9b4421672a976febf86dfd6cf0ad83025acf78",
+          "scannedAt": "2026-09-02T21:40:02.423Z",
+          "assessedAt": "2026-09-02T21:42:11.420Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
           "synthesisModel": "deterministic-policy-v5",
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1249921512/56663e0cd4f9e200e7caf2871fa1db09a61d6670/5/22826e276f0d974cafb183ac02c7aa21b2de427083b9f967b396a64c89af8aa4/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1249921512/de9b4421672a976febf86dfd6cf0ad83025acf78/5/a007977fa871ea6c4057108950185c427b132302b92d6038b47ee996402b4162/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1249921512/history/"
         },
         "history": [
@@ -64055,6 +64055,31 @@
             "dangerBasis": "none",
             "assessmentSource": "deterministic_regrade",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1249921512/56663e0cd4f9e200e7caf2871fa1db09a61d6670/5/22826e276f0d974cafb183ac02c7aa21b2de427083b9f967b396a64c89af8aa4/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1249921512/history/"
+          },
+          {
+            "reportId": "a007977fa871ea6c4057108950185c427b132302b92d6038b47ee996402b4162",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 1,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "4e673580ba3b0d333e7a33aa897e56eba47864dd0ce0380e4093b1207c7c2984"
+            ],
+            "scannedSha": "de9b4421672a976febf86dfd6cf0ad83025acf78",
+            "treeUrl": "https://github.com/mokimoko/SillyTavern-DynamicAudioRedux/tree/de9b4421672a976febf86dfd6cf0ad83025acf78",
+            "scannedAt": "2026-09-02T21:40:02.423Z",
+            "assessedAt": "2026-09-02T21:42:11.420Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1249921512/de9b4421672a976febf86dfd6cf0ad83025acf78/5/a007977fa871ea6c4057108950185c427b132302b92d6038b47ee996402b4162/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1249921512/history/"
           }
         ],
@@ -137094,10 +137119,10 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "stale",
+              "freshness": "current",
               "currentSha": "de9b4421672a976febf86dfd6cf0ad83025acf78",
               "report": {
-                "reportId": "22826e276f0d974cafb183ac02c7aa21b2de427083b9f967b396a64c89af8aa4",
+                "reportId": "a007977fa871ea6c4057108950185c427b132302b92d6038b47ee996402b4162",
                 "riskLevel": "low",
                 "headline": "Low concern",
                 "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -137108,17 +137133,17 @@
                 "citedFindingIds": [
                   "4e673580ba3b0d333e7a33aa897e56eba47864dd0ce0380e4093b1207c7c2984"
                 ],
-                "scannedSha": "56663e0cd4f9e200e7caf2871fa1db09a61d6670",
-                "treeUrl": "https://github.com/mokimoko/SillyTavern-DynamicAudioRedux/tree/56663e0cd4f9e200e7caf2871fa1db09a61d6670",
-                "scannedAt": "2026-08-26T21:37:30.897Z",
-                "assessedAt": "2026-08-26T21:45:24.378Z",
+                "scannedSha": "de9b4421672a976febf86dfd6cf0ad83025acf78",
+                "treeUrl": "https://github.com/mokimoko/SillyTavern-DynamicAudioRedux/tree/de9b4421672a976febf86dfd6cf0ad83025acf78",
+                "scannedAt": "2026-09-02T21:40:02.423Z",
+                "assessedAt": "2026-09-02T21:42:11.420Z",
                 "scannerPolicyVersion": "5",
                 "contextualReviewPolicyVersion": "5",
                 "synthesisPolicyVersion": "5",
                 "synthesisModel": "deterministic-policy-v5",
                 "dangerBasis": "none",
                 "assessmentSource": "deterministic_regrade",
-                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1249921512/56663e0cd4f9e200e7caf2871fa1db09a61d6670/5/22826e276f0d974cafb183ac02c7aa21b2de427083b9f967b396a64c89af8aa4/",
+                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1249921512/de9b4421672a976febf86dfd6cf0ad83025acf78/5/a007977fa871ea6c4057108950185c427b132302b92d6038b47ee996402b4162/",
                 "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1249921512/history/"
               },
               "history": [
@@ -137168,6 +137193,31 @@
                   "dangerBasis": "none",
                   "assessmentSource": "deterministic_regrade",
                   "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1249921512/56663e0cd4f9e200e7caf2871fa1db09a61d6670/5/22826e276f0d974cafb183ac02c7aa21b2de427083b9f967b396a64c89af8aa4/",
+                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1249921512/history/"
+                },
+                {
+                  "reportId": "a007977fa871ea6c4057108950185c427b132302b92d6038b47ee996402b4162",
+                  "riskLevel": "low",
+                  "headline": "Low concern",
+                  "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+                  "minorCautions": 1,
+                  "materialConcerns": 0,
+                  "highDanger": 0,
+                  "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+                  "citedFindingIds": [
+                    "4e673580ba3b0d333e7a33aa897e56eba47864dd0ce0380e4093b1207c7c2984"
+                  ],
+                  "scannedSha": "de9b4421672a976febf86dfd6cf0ad83025acf78",
+                  "treeUrl": "https://github.com/mokimoko/SillyTavern-DynamicAudioRedux/tree/de9b4421672a976febf86dfd6cf0ad83025acf78",
+                  "scannedAt": "2026-09-02T21:40:02.423Z",
+                  "assessedAt": "2026-09-02T21:42:11.420Z",
+                  "scannerPolicyVersion": "5",
+                  "contextualReviewPolicyVersion": "5",
+                  "synthesisPolicyVersion": "5",
+                  "synthesisModel": "deterministic-policy-v5",
+                  "dangerBasis": "none",
+                  "assessmentSource": "deterministic_regrade",
+                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1249921512/de9b4421672a976febf86dfd6cf0ad83025acf78/5/a007977fa871ea6c4057108950185c427b132302b92d6038b47ee996402b4162/",
                   "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1249921512/history/"
                 }
               ],
