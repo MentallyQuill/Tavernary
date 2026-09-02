@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "shin-f-persona-multi-avatars",
+  "source_id": "github-1354125356",
+  "source_identity": "github:shin-f/persona-multi-avatars",
+  "evidence_fingerprint": "46633b2e5466cabb25de72204f63708df335d97f41de227b3fd99fd058249c86",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-02T22:42:20.223Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-02T22:42:20.223Z"
+  },
+  "maintenance_issue_number": null
+}
