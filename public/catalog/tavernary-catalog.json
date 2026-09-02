@@ -86390,6 +86390,206 @@
       }
     },
     {
+      "id": "shin-f-persona-multi-avatars",
+      "name": "Persona-Multi-Avatars",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "character-worldbuilding",
+      "summary": "A SillyTavern extension that gives a single Persona multiple avatars, automatically selecting the right one per character, chat, or message with per-message attribution and context-aware priority (README: Features).",
+      "canonicalUrl": "https://github.com/Shin-F/Persona-Multi-Avatars",
+      "catalogedAt": "2026-09-02T22:25:43.158Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-characters-and-personas",
+          "label": "Manage characters and personas",
+          "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+          "facet": "goal"
+        },
+        {
+          "id": "move-and-back-up-data",
+          "label": "Move and back up data",
+          "description": "Import, export, synchronize, migrate, restore, or back up roleplay data.",
+          "facet": "goal"
+        },
+        {
+          "id": "persistent-state",
+          "label": "Persistent state",
+          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "a6460efb1d63953089532ebc224e0777adbd8047",
+        "report": {
+          "reportId": "0f2c9976bd02aea9f9da2d0df0446ffc5038d7933142252165fd2ab666d53d8a",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "a6460efb1d63953089532ebc224e0777adbd8047",
+          "treeUrl": "https://github.com/Shin-F/Persona-Multi-Avatars/tree/a6460efb1d63953089532ebc224e0777adbd8047",
+          "scannedAt": "2026-09-02T22:49:13.003Z",
+          "assessedAt": "2026-09-02T22:52:12.474Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1354125356/a6460efb1d63953089532ebc224e0777adbd8047/5/0f2c9976bd02aea9f9da2d0df0446ffc5038d7933142252165fd2ab666d53d8a/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1354125356/history/"
+        },
+        "history": [
+          {
+            "reportId": "0f2c9976bd02aea9f9da2d0df0446ffc5038d7933142252165fd2ab666d53d8a",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "a6460efb1d63953089532ebc224e0777adbd8047",
+            "treeUrl": "https://github.com/Shin-F/Persona-Multi-Avatars/tree/a6460efb1d63953089532ebc224e0777adbd8047",
+            "scannedAt": "2026-09-02T22:49:13.003Z",
+            "assessedAt": "2026-09-02T22:52:12.474Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1354125356/a6460efb1d63953089532ebc224e0777adbd8047/5/0f2c9976bd02aea9f9da2d0df0446ffc5038d7933142252165fd2ab666d53d8a/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1354125356/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1354125356/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Shin-F"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-02T00:27:39.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 2158,
+      "license": {
+        "status": "osi-approved",
+        "label": "Unlicense",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-02T22:25:43.158Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Shin-F/Persona-Multi-Avatars.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "Persona-Multi-Avatars"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "Persona-Multi-Avatars"
+        ],
+        "aliases": [],
+        "source": [
+          "shin-f-persona-multi-avatars",
+          "github-1354125356",
+          "Shin-F/Persona-Multi-Avatars",
+          "https://github.com/Shin-F/Persona-Multi-Avatars"
+        ],
+        "summary": [
+          "A SillyTavern extension that gives a single Persona multiple avatars, automatically selecting the right one per character, chat, or message with per-message attribution and context-aware priority (README: Features)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Character and worldbuilding"
+        ],
+        "tags": [
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals",
+          "Manage characters and personas",
+          "persona management",
+          "character management",
+          "identity management",
+          "Move and back up data",
+          "data portability",
+          "backup and restore",
+          "import and export",
+          "Persistent state",
+          "durable state",
+          "state persistence",
+          "cross-session state"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Shin-F"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "shin-f-world-info-gallery",
       "name": "world-info-gallery",
       "kind": "extension",
