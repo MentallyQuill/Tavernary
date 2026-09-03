@@ -9,13 +9,13 @@
     "url": "https://github.com/PocketRisu/PocketRisu",
     "description": "Self-hosted AI roleplay chat platform you run on your PC or personal server, forked from Risuai",
     "default_branch": "main",
-    "head_sha": "278251f85a19bfdfd4cf3faae780e62682878f9e",
-    "head_committed_at": "2026-09-01T06:36:34.000Z",
+    "head_sha": "ca09a80746e74e5334145e5e78af47ce423e0eba",
+    "head_committed_at": "2026-09-03T04:24:55.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-17T02:40:46.000Z",
-    "size_kb": 81911
+    "size_kb": 82371
   },
   "source_health": "healthy",
   "activity": {
@@ -67,20 +67,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-31T15:10:24.882Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "278251f85a19bfdfd4cf3faae780e62682878f9e"
+    "evidence_head_sha": "ca09a80746e74e5334145e5e78af47ce423e0eba"
   },
   "community": {
-    "stars_count": 324,
+    "stars_count": 325,
     "forks_count": 61,
     "watchers_count": 2,
-    "aggregate": 387
+    "aggregate": 388
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-02T12:09:05.030Z",
+  "refreshed_at": "2026-09-03T12:08:28.703Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -169,7 +169,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-02T12:09:05.030Z",
+    "refreshed_at": "2026-09-03T12:08:28.703Z",
     "stale_since": null
   }
 }

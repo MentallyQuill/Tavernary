@@ -9,21 +9,21 @@
     "url": "https://github.com/MultihogAurelius/SillyTavern-MultihogDnDFramework",
     "description": "Started off as a humble \"RPG State Tracker\" but has since expanded into a more ambitious game engine, simulation system, and modular RPG platform where you can even make your own RPGs with their own systems and game logic. The framework is committed to absolute simulation autism. The world must function even without your inputs.",
     "default_branch": "main",
-    "head_sha": "dd3ef3c3bb90c35a95d5449289caeb2d7f320802",
-    "head_committed_at": "2026-09-01T17:08:37.000Z",
+    "head_sha": "4bd0df4b5f1b347818494683890fb67ed8f992d6",
+    "head_committed_at": "2026-09-02T13:40:46.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-16T01:18:13.000Z",
-    "size_kb": 9874
+    "size_kb": 10083
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-01T17:08:37.000Z",
+    "latest_source_activity_at": "2026-09-02T13:40:46.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-31",
-        "latest_at": "2026-09-01T17:08:37.000Z",
+        "latest_at": "2026-09-02T13:40:46.000Z",
         "precision": "exact"
       },
       {
@@ -87,7 +87,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-01T12:37:05.520Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "dd3ef3c3bb90c35a95d5449289caeb2d7f320802"
+    "evidence_head_sha": "4bd0df4b5f1b347818494683890fb67ed8f992d6"
   },
   "community": {
     "stars_count": 77,
@@ -100,7 +100,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-02T12:09:05.030Z",
+  "refreshed_at": "2026-09-03T12:08:28.703Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -116,7 +116,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-02T12:09:05.030Z",
+    "refreshed_at": "2026-09-03T12:08:28.703Z",
     "stale_since": null
   }
 }

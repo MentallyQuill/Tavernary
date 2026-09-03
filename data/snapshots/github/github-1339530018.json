@@ -9,21 +9,21 @@
     "url": "https://github.com/patcireamo/ChungusHub",
     "description": "ChungusHub is a local-first, privacy-focused LLM frontend for roleplay.",
     "default_branch": "main",
-    "head_sha": "feb892d41d581a17983de7c718320a689b011c85",
-    "head_committed_at": "2026-09-01T00:19:11.000Z",
+    "head_sha": "1b1a5bfae7c20a898686f9f9d9a3c75c1797b44e",
+    "head_committed_at": "2026-09-03T10:53:14.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-08-19T12:01:11.000Z",
-    "size_kb": 54501
+    "size_kb": 53493
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-01T00:19:11.000Z",
+    "latest_source_activity_at": "2026-09-03T10:53:14.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-31",
-        "latest_at": "2026-09-01T00:19:11.000Z",
+        "latest_at": "2026-09-03T10:53:14.000Z",
         "precision": "exact"
       },
       {
@@ -42,7 +42,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-31T15:10:24.882Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "feb892d41d581a17983de7c718320a689b011c85"
+    "evidence_head_sha": "1b1a5bfae7c20a898686f9f9d9a3c75c1797b44e"
   },
   "community": {
     "stars_count": 37,
@@ -55,7 +55,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-02T12:09:05.030Z",
+  "refreshed_at": "2026-09-03T12:08:28.703Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -66,7 +66,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-02T12:09:05.030Z",
+    "refreshed_at": "2026-09-03T12:08:28.703Z",
     "stale_since": null
   }
 }

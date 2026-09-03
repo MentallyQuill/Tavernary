@@ -45,15 +45,15 @@
     "spdx_id": "Unlicense",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-02T22:25:43.158Z",
+  "refreshed_at": "2026-09-03T12:08:28.703Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "Shin-F", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-02T22:25:43.158Z",
+    "refreshed_at": "2026-09-03T12:08:28.703Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

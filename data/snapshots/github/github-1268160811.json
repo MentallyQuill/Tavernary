@@ -7,7 +7,7 @@
     "owner": "enclavum",
     "name": "otaku",
     "url": "https://github.com/enclavum/otaku",
-    "description": "A roleplay terminal client — stories that branch and grow their own lore",
+    "description": "LLM frontend for roleplay",
     "default_branch": "main",
     "head_sha": "2753db27dddfcf3ff9ca1ac782b1dee8eef91c7b",
     "head_committed_at": "2026-09-02T11:50:19.000Z",
@@ -15,7 +15,7 @@
     "fork": false,
     "parent": null,
     "created_at": "2026-06-13T07:54:43.000Z",
-    "size_kb": 7478
+    "size_kb": 11658
   },
   "source_health": "healthy",
   "activity": {
@@ -65,17 +65,17 @@
     "evidence_head_sha": "2753db27dddfcf3ff9ca1ac782b1dee8eef91c7b"
   },
   "community": {
-    "stars_count": 27,
+    "stars_count": 34,
     "forks_count": 1,
     "watchers_count": 1,
-    "aggregate": 29
+    "aggregate": 36
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-02T12:09:05.030Z",
+  "refreshed_at": "2026-09-03T12:08:28.703Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -83,7 +83,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-02T12:09:05.030Z",
+    "refreshed_at": "2026-09-03T12:08:28.703Z",
     "stale_since": null
   }
 }

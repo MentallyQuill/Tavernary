@@ -47,19 +47,19 @@
   "community": {
     "stars_count": 4,
     "forks_count": 0,
-    "watchers_count": 0,
-    "aggregate": 4
+    "watchers_count": 1,
+    "aggregate": 5
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-02T22:00:21.637Z",
+  "refreshed_at": "2026-09-03T12:08:28.703Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "mokimoko", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-02T22:00:21.637Z",
+    "refreshed_at": "2026-09-03T12:08:28.703Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

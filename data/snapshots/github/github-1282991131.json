@@ -9,21 +9,26 @@
     "url": "https://github.com/M4Marvin/charon",
     "description": "My take on properly building an AI character chat app — combining features from Chub, SillyTavern, and everything else I always wanted. Self-hosted, branching conversations, character cards V2+V3, lorebooks, personas.",
     "default_branch": "main",
-    "head_sha": "0efd69ed6bd48f6f46a3825b173e0f5b8fe2fe14",
-    "head_committed_at": "2026-08-08T17:51:51.000Z",
+    "head_sha": "638a9cf1b6b819c610bee9fd0657f01c7992a8cd",
+    "head_committed_at": "2026-08-10T00:13:59.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-28T12:33:00.000Z",
-    "size_kb": 5283
+    "size_kb": 5358
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-08T17:51:51.000Z",
+    "latest_source_activity_at": "2026-08-10T00:13:59.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-08-10",
+        "latest_at": "2026-08-10T00:13:59.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-08-03",
-        "latest_at": "2026-08-08T17:51:51.000Z",
+        "latest_at": "2026-08-09T22:31:32.000Z",
         "precision": "exact"
       },
       {
@@ -60,9 +65,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-06T10:02:12.858Z",
+    "baseline_completed_at": "2026-09-03T12:08:28.703Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "0efd69ed6bd48f6f46a3825b173e0f5b8fe2fe14"
+    "evidence_head_sha": "638a9cf1b6b819c610bee9fd0657f01c7992a8cd"
   },
   "community": {
     "stars_count": 7,
@@ -75,7 +80,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-02T12:09:05.030Z",
+  "refreshed_at": "2026-09-03T12:08:28.703Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -83,7 +88,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-02T12:09:05.030Z",
+    "refreshed_at": "2026-09-03T12:08:28.703Z",
     "stale_since": null
   }
 }
