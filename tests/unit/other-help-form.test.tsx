@@ -30,7 +30,7 @@ test("routes specific requests before showing the other-help form", () => {
   ).toHaveAttribute("href", "/");
   expect(
     screen.getByRole("link", { name: /report it privately/i }),
-  ).toHaveAttribute("href", "/help/security");
+  ).toHaveAttribute("href", "/menu/security");
 });
 
 test("keeps an existing request link optional while clarifying its purpose", async () => {
@@ -119,7 +119,7 @@ test("retains Other Help values and regenerates the current manifest", async () 
   expect(JSON.parse(opened.searchParams.get("help-manifest") ?? "")).toEqual(
     expect.objectContaining({
       request_kind: "other-help",
-      origin: { page_url: "/help/other/", site_revision: "abc123" },
+      origin: { page_url: "/menu/other/", site_revision: "abc123" },
       payload: {
         category: "using-tavernary",
         subject: "Need help with Kits",

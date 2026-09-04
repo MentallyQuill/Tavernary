@@ -216,12 +216,12 @@ the manual catalog verification checklist below before committing.
 - `[Website bug]` belongs to app/code changes in source and PR workflow.
 - `[Other]` supports non-catalog escalations.
 
-## Help report triage and owner-listing recovery
+## Menu report triage and owner-listing recovery
 
-The Help hub has ordinary public routes: /help/manage-project/,
-/help/report-project/, /help/report-website/, /help/report-kit/, and
-/help/withdraw-kit/, and /help/other/. Their text is public GitHub issue content. The private
-/help/security/ route goes to security/advisories/new and must never be
+The Menu has ordinary public routes: /menu/manage-project/,
+/menu/report-project/, /menu/report-website/, /menu/report-kit/,
+/menu/withdraw-kit/, and /menu/other/. Their text is public GitHub issue content. The private
+/menu/security/ route goes to security/advisories/new and must never be
 replaced with an /issues/new form. Tavernary does not provide support for
 third-party projects; route those users to the listed project's own channel.
 

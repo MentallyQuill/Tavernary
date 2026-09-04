@@ -10,12 +10,12 @@ what can publish.
 Use the narrowest route:
 
 - `/submit/project/` for a new project;
-- `/help/report-project/` for a project-card correction;
-- `/help/manage-project/` for a verified repository owner;
+- `/menu/report-project/` for a project-card correction;
+- `/menu/manage-project/` for a verified repository owner;
 - `/?mode=kits` for a new Kit or Kit edit;
-- `/help/report-kit/` for a published Kit concern;
-- `/help/withdraw-kit/` for the recorded Kit author; and
-- `/help/other/` for another Tavernary question.
+- `/menu/report-kit/` for a published Kit concern;
+- `/menu/withdraw-kit/` for the recorded Kit author; and
+- `/menu/other/` for another Tavernary question.
 
 Security problems always use the private path in `SECURITY.md`, never a public
 issue form.
@@ -72,7 +72,7 @@ revalidation. The published Kit stays unchanged until those gates pass.
 
 Community support is derived from eligible `+1` reactions on the source issue.
 It is evidence of interest, not a rating or endorsement. A report uses
-`/help/report-kit/`; a recorded author uses `/help/withdraw-kit/`.
+`/menu/report-kit/`; a recorded author uses `/menu/withdraw-kit/`.
 
 ## Descriptions, tags, and safety
 

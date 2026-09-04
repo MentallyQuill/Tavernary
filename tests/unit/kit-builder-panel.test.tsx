@@ -849,7 +849,7 @@ describe("Kit Builder", () => {
     );
     expect(
       screen.getByRole("link", { name: "Request withdrawal" }),
-    ).toHaveAttribute("href", "/help/withdraw-kit?kit=story-kit-41");
+    ).toHaveAttribute("href", "/menu/withdraw-kit?kit=story-kit-41");
     expect(
       screen
         .getByRole("button", { name: "Duplicate" })
@@ -908,7 +908,7 @@ describe("Kit Builder", () => {
     expect(screen.queryByRole("textbox", { name: "Kit link" })).toBeNull();
     expect(screen.getByRole("link", { name: "Report Kit" })).toHaveAttribute(
       "href",
-      "/help/report-kit?kit=story-kit-41",
+      "/menu/report-kit?kit=story-kit-41",
     );
   });
 });

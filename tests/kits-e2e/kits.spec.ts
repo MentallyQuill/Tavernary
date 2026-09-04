@@ -1106,11 +1106,11 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
     page.getByRole("tooltip", { name: "Report this Kit" }),
   ).toBeVisible();
   await cardReportButton.click();
-  await expect(page).toHaveURL(/\/help\/report-kit\/?\?kit=alpha-kit-101/);
+  await expect(page).toHaveURL(/\/menu\/report-kit\/?\?kit=alpha-kit-101/);
   // The static test server does not resolve directory indexes without a
   // trailing slash, while Pages does. Reload the exported directory route to
   // verify the same contextual query hydrates the selected Kit.
-  await page.goto(sitePath("/help/report-kit/?kit=alpha-kit-101"));
+  await page.goto(sitePath("/menu/report-kit/?kit=alpha-kit-101"));
   await expect(page.getByLabel("Kit", { exact: true })).toHaveValue(
     "alpha-kit-101",
   );
@@ -1202,11 +1202,11 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
   const withdrawal = page.getByRole("link", { name: "Request withdrawal" });
   await expect(report).toHaveAttribute(
     "href",
-    sitePath("/help/report-kit/?kit=alpha-kit-101"),
+    sitePath("/menu/report-kit/?kit=alpha-kit-101"),
   );
   await expect(withdrawal).toHaveAttribute(
     "href",
-    sitePath("/help/withdraw-kit/?kit=alpha-kit-101"),
+    sitePath("/menu/withdraw-kit/?kit=alpha-kit-101"),
   );
 
   await page.getByRole("button", { name: "Open Flagged Stack" }).click();
@@ -1228,7 +1228,7 @@ test("routes Kit withdrawal through Tavernary with the current Kit selected", as
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();
   await page.getByRole("link", { name: "Request withdrawal" }).click();
 
-  await expect(page).toHaveURL(/\/help\/withdraw-kit\/?\?kit=alpha-kit-101$/u);
+  await expect(page).toHaveURL(/\/menu\/withdraw-kit\/?\?kit=alpha-kit-101$/u);
   await expect(
     page.getByRole("heading", { name: "Withdraw a Kit" }),
   ).toBeVisible();

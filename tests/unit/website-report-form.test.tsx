@@ -21,7 +21,7 @@ async function completeWebsiteReport(user: ReturnType<typeof userEvent.setup>) {
   );
   await user.type(
     screen.getByLabelText("What page has the problem?"),
-    "/help/",
+    "/menu/",
   );
   await user.type(
     screen.getByLabelText("What happens instead?"),
@@ -45,7 +45,7 @@ afterEach(() => {
 beforeEach(() => {
   search = "";
   vi.restoreAllMocks();
-  window.history.replaceState({}, "", "/help/report-website/");
+  window.history.replaceState({}, "", "/menu/report-website/");
 });
 
 test("routes feature ideas away from website bugs", () => {
@@ -53,7 +53,7 @@ test("routes feature ideas away from website bugs", () => {
 
   expect(
     screen.getByRole("link", { name: /suggest an improvement/i }),
-  ).toHaveAttribute("href", "/help/other");
+  ).toHaveAttribute("href", "/menu/other");
 });
 
 test("accepts only safe local website context from the query", () => {
@@ -127,12 +127,12 @@ test("retains website diagnostics and regenerates only current approved values",
     expect.objectContaining({
       request_kind: "website-bug",
       origin: {
-        page_url: "/help/report-website/",
+        page_url: "/menu/report-website/",
         site_revision: "abc123",
       },
       payload: expect.objectContaining({
         category: "accessibility",
-        page_url: "/help/",
+        page_url: "/menu/",
         browser: null,
         device: null,
       }),
@@ -157,7 +157,7 @@ test("retains website diagnostics and regenerates only current approved values",
   ).toMatchObject({
     payload: {
       category: "accessibility",
-      page_url: "/help/",
+      page_url: "/menu/",
       actual_behavior: "The focus ring is clipped.",
       expected_behavior: "Keyboard focus remains visible.",
     },
@@ -169,5 +169,5 @@ test("keeps security reporting on the private route", () => {
 
   expect(
     screen.getByRole("link", { name: /report it privately/i }),
-  ).toHaveAttribute("href", "/help/security");
+  ).toHaveAttribute("href", "/menu/security");
 });

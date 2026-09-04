@@ -29,7 +29,7 @@ const contracts = {
   },
   "02-project-information.yml": {
     name: "Report project information",
-    route: "https://tavernary.org/help/report-project/",
+    route: "https://tavernary.org/menu/report-project/",
     manifest: "help-manifest",
     ids: [
       "project",
@@ -42,7 +42,7 @@ const contracts = {
   },
   "03-website-bug.yml": {
     name: "Report a website bug",
-    route: "https://tavernary.org/help/report-website/",
+    route: "https://tavernary.org/menu/report-website/",
     manifest: "help-manifest",
     ids: [
       "category",
@@ -58,7 +58,7 @@ const contracts = {
   },
   "04-other.yml": {
     name: "Other",
-    route: "https://tavernary.org/help/other/",
+    route: "https://tavernary.org/menu/other/",
     manifest: "help-manifest",
     ids: [
       "category",
@@ -76,7 +76,7 @@ const contracts = {
   },
   "06-kit-report.yml": {
     name: "Report a Kit",
-    route: "https://tavernary.org/help/report-kit/",
+    route: "https://tavernary.org/menu/report-kit/",
     manifest: "help-manifest",
     ids: [
       "kit-id",
@@ -90,13 +90,13 @@ const contracts = {
   },
   "07-kit-withdrawal.yml": {
     name: "Withdraw a Kit",
-    route: "https://tavernary.org/help/withdraw-kit/",
+    route: "https://tavernary.org/menu/withdraw-kit/",
     manifest: "withdrawal-manifest",
     ids: ["kit-id", "share-url", "confirmation", "withdrawal-manifest"],
   },
   "08-project-owner-request.yml": {
-    name: "Manage a project listing",
-    route: "https://tavernary.org/help/manage-project/",
+    name: "Update or rename a project listing",
+    route: "https://tavernary.org/menu/manage-project/",
     manifest: "owner-request-manifest",
     ids: [
       "request-type",
@@ -243,8 +243,14 @@ test("routes the GitHub issue chooser back to every Tavernary intake", async () 
   expect(config.contact_links.map(({ url }) => url)).toEqual([
     "https://tavernary.org/submit/project/",
     "https://tavernary.org/?mode=kits",
-    "https://tavernary.org/help/manage-project/",
-    "https://tavernary.org/help/",
+    "https://tavernary.org/menu/manage-project/",
+    "https://tavernary.org/menu/",
+  ]);
+  expect(config.contact_links.map(({ name }) => name)).toEqual([
+    "Submit a project in Tavernary",
+    "Create or edit a Kit in Tavernary",
+    "Update or rename a project listing in Tavernary",
+    "Open the Tavernary Menu",
   ]);
   for (const link of config.contact_links) {
     expect(link.name).toEqual(expect.any(String));

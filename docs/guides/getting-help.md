@@ -1,14 +1,14 @@
 # Getting help
 
-The [Help hub](/help/) helps you send a question to the right place. It keeps
-project-listing questions separate from website problems and security reports.
+The [Menu](/menu/) gives you one place to browse Tavernary, manage projects and
+Kits, or send a question to the right place.
 
-![The Tavernary Help hub](../assets/screenshots/help-hub.png)
+![The Tavernary Menu](../assets/screenshots/menu-page.png)
 
 ## Choose a path
 
-- **Manage your project listing** — for a verified repository owner who needs
-  to update their listing.
+- **Update or rename your project listing** — for a verified repository owner
+  who needs to change their listing.
 - **Report a project listing** — for incorrect, unsafe, broken, or rights-related
   information on a project card.
 - **Report a website problem** — for a broken page, search issue, layout bug,
@@ -33,7 +33,7 @@ channel.
 ## Security problems
 
 If you found a security vulnerability in Tavernary itself, use the private
-[security help path](/help/security/) or the private GitHub security form. Do
+[private security path](/menu/security/) or the private GitHub security form. Do
 not put vulnerability details in a public issue.
 
 ## What happens next

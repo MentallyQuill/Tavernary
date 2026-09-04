@@ -173,7 +173,7 @@ export function KitReportForm({
         schema_version: 1,
         request_kind: "kit-report",
         origin: {
-          page_url: "/help/report-kit/",
+          page_url: "/menu/report-kit/",
           site_revision: siteRevision,
         },
         payload: payload satisfies KitReportPayload,
@@ -276,7 +276,7 @@ export function KitReportForm({
             <>
               Is the concern about the underlying project rather than this
               Kit&apos;s inclusion or presentation?{" "}
-              <Link href="/help/report-project/">
+              <Link href="/menu/report-project/">
                 Report the project listing instead
               </Link>
               .

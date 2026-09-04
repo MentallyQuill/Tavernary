@@ -2,7 +2,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
-import { mapKitWithdrawalOptions } from "@/app/help/withdraw-kit/page";
+import { mapKitWithdrawalOptions } from "@/app/menu/withdraw-kit/page";
 import {
   KitWithdrawalForm,
   type KitWithdrawalOption,

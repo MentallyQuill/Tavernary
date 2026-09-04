@@ -9,8 +9,8 @@ test("explains Tavernary and links to contribution flows", async ({ page }) => {
     page.getByRole("link", { name: "Submit Project" }),
   ).toHaveAttribute("href", /\/submit\/project\/$/);
   await expect(
-    page.getByRole("link", { name: "Help", exact: true }),
-  ).toHaveAttribute("href", /\/help\/$/);
+    page.getByRole("link", { name: "Menu", exact: true }),
+  ).toHaveAttribute("href", /\/menu\/$/);
 
   await page.getByRole("link", { name: "About" }).click();
   await expect(
@@ -27,24 +27,23 @@ test("explains Tavernary and links to contribution flows", async ({ page }) => {
   await expect(
     page.getByRole("link", { name: "Submit a project" }),
   ).toHaveAttribute("href", /\/submit\/project\/$/);
-  await expect(page.getByRole("link", { name: "Get help" })).toHaveAttribute(
-    "href",
-    /\/help\/$/,
-  );
+  await expect(
+    page.getByRole("link", { name: "Open the Menu" }),
+  ).toHaveAttribute("href", /\/menu\/$/);
 });
 
-test("keeps responsive header help and utility actions available", async ({
+test("keeps responsive header Menu and utility actions available", async ({
   page,
 }) => {
   const siteActions = page.getByRole("navigation", { name: "Site actions" });
   const about = siteActions.getByRole("link", { name: "About" });
-  const help = siteActions.getByRole("link", { name: "Help", exact: true });
+  const menu = siteActions.getByRole("link", { name: "Menu", exact: true });
   const submit = siteActions.getByRole("link", { name: "Submit Project" });
 
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(sitePath());
   await expect(about).toBeVisible();
-  await expect(help).toBeVisible();
+  await expect(menu).toBeVisible();
   await expect(submit).toBeVisible();
   await expect(
     siteActions.getByRole("link", { name: /ko-fi|donat/i }),
@@ -52,17 +51,17 @@ test("keeps responsive header help and utility actions available", async ({
 
   await page.setViewportSize({ width: 900, height: 900 });
   await expect(about).toBeVisible();
-  await expect(help).toBeVisible();
+  await expect(menu).toBeVisible();
   await expect(submit).toBeVisible();
 
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(about).toBeHidden();
-  await expect(help).toBeVisible();
+  await expect(menu).toBeVisible();
   await expect(submit).toBeVisible();
 
-  const helpBox = await help.boundingBox();
+  const menuBox = await menu.boundingBox();
   const submitBox = await submit.boundingBox();
-  expect(helpBox).not.toBeNull();
+  expect(menuBox).not.toBeNull();
   expect(submitBox).not.toBeNull();
-  expect(helpBox!.x + helpBox!.width).toBeLessThanOrEqual(submitBox!.x);
+  expect(menuBox!.x + menuBox!.width).toBeLessThanOrEqual(submitBox!.x);
 });

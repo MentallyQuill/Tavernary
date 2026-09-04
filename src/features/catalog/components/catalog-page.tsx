@@ -560,7 +560,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
       },
     }));
   const reportKit = (kitId: string) => {
-    router.push(`/help/report-kit/?kit=${encodeURIComponent(kitId)}`);
+    router.push(`/menu/report-kit/?kit=${encodeURIComponent(kitId)}`);
   };
 
   return (

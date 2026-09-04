@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { mapHelpProjectOptions } from "@/app/help/report-project/page";
+import { mapHelpProjectOptions } from "@/app/menu/report-project/page";
 import { catalogSearchFields } from "../helpers/catalog-search-fields";
 
 test("maps structured catalog search fields to public Help options", () => {

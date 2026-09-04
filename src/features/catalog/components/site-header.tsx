@@ -57,8 +57,8 @@ export function SiteHeader({
         <a className="top-link about-link" href="./about/">
           About
         </a>
-        <Link className="top-link help-link" href="/help/">
-          Help
+        <Link className="top-link menu-link" href="/menu/">
+          Menu
         </Link>
         <Link className="submit-link" href="/submit/project/">
           Submit Project

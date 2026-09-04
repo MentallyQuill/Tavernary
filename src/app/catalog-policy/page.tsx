@@ -64,7 +64,7 @@ export default function CatalogPolicyPage() {
           <p>
             A verified owner may permanently delist their project through the
             project-management workflow. Anyone can{" "}
-            <Link href="/help/report-project/">report a project listing</Link>{" "}
+            <Link href="/menu/report-project/">report a project listing</Link>{" "}
             that appears to conflict with this policy.
           </p>
         </section>

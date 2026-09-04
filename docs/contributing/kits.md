@@ -45,12 +45,12 @@ same Kit ID and original publication history.
 
 ## Report or withdraw a Kit
 
-Use **Report a Kit** at `/help/report-kit/` for a published Kit concern. Reports
+Use **Report a Kit** at `/menu/report-kit/` for a published Kit concern. Reports
 are public GitHub reviews, so never include secrets or private personal
 information. A report may lead to a status change, tombstone, or deletion after
 the reported concern is resolved.
 
-Use **Withdraw a Kit** at `/help/withdraw-kit/`, normally from the Kit panel.
+Use **Withdraw a Kit** at `/menu/withdraw-kit/`, normally from the Kit panel.
 The `[Kit withdrawal]` (`07-kit-withdrawal.yml`) path requires the issue
 author's GitHub numeric identity to match the recorded Kit author. Withdrawal
 keeps the record history and sets `status: withdrawn` with a timestamp.

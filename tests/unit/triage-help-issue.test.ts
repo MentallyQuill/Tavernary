@@ -210,7 +210,7 @@ test("posts one marker-owned correction comment for invalid manifest input", asy
     expect.objectContaining({
       method: "POST",
       body: expect.stringMatching(
-        /tavernary-help-triage[\s\S]+remains open[\s\S]+\/help\/report-website\//iu,
+        /tavernary-help-triage[\s\S]+remains open[\s\S]+\/menu\/report-website\//iu,
       ),
     }),
   );

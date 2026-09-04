@@ -6,7 +6,7 @@ import {
   KitReportForm,
   type HelpKitOption,
 } from "@/features/help/components/kit-report-form";
-import { mapHelpKitOptions } from "@/app/help/report-kit/page";
+import { mapHelpKitOptions } from "@/app/menu/report-kit/page";
 
 let search = "";
 
@@ -154,7 +154,7 @@ test("routes unsafe underlying-project concerns to project reporting", async () 
 
   expect(
     screen.getByRole("link", { name: "Report the project listing instead" }),
-  ).toHaveAttribute("href", "/help/report-project");
+  ).toHaveAttribute("href", "/menu/report-project");
 });
 
 test("keeps author editing and withdrawal guidance in existing Kit surfaces", () => {
@@ -218,7 +218,7 @@ test("retains a constrained Kit report and regenerates current details", async (
     JSON.parse(opened.searchParams.get("help-manifest") ?? ""),
   ).toMatchObject({
     request_kind: "kit-report",
-    origin: { page_url: "/help/report-kit/", site_revision: "abc123" },
+    origin: { page_url: "/menu/report-kit/", site_revision: "abc123" },
     payload: {
       kit_id: "alpha-kit",
       affected_project_ids: ["extension-alpha"],

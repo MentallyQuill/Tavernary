@@ -155,7 +155,7 @@ export function WebsiteReportForm({ siteRevision }: { siteRevision: string }) {
         schema_version: 1,
         request_kind: "website-bug",
         origin: {
-          page_url: "/help/report-website/",
+          page_url: "/menu/report-website/",
           site_revision: siteRevision,
         },
         payload,
@@ -214,8 +214,8 @@ export function WebsiteReportForm({ siteRevision }: { siteRevision: string }) {
       <HelpErrorSummary errors={errors} />
       <p className="help-hint">
         Have an idea for Tavernary?{" "}
-        <Link href="/help/other/">Suggest an improvement.</Link> A Tavernary
-        vulnerability? <Link href="/help/security/">Report it privately.</Link>
+        <Link href="/menu/other/">Suggest an improvement.</Link> A Tavernary
+        vulnerability? <Link href="/menu/security/">Report it privately.</Link>
       </p>
       <HelpSelectField
         id="website-category"

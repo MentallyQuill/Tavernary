@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Tavernary prepared this review. Check the values, then create or cancel the issue. To make changes, return to https://tavernary.org/help/report-project/ and open a fresh GitHub review. The generated manifest is the automation payload; the readable fields are review-only.
+        Tavernary prepared this review. Check the values, then create or cancel the issue. To make changes, return to https://tavernary.org/menu/report-project/ and open a fresh GitHub review. The generated manifest is the automation payload; the readable fields are review-only.
   - type: input
     id: project
     attributes:

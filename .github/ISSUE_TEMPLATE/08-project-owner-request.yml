@@ -1,4 +1,4 @@
-name: Manage a project listing
+name: Update or rename a project listing
 description: Begin in Tavernary to manage cards or sources, then review the owner request here.
 title: "[Project owner request]"
 labels:
@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Tavernary prepared this review. Check the values, then create or cancel the issue. To make changes, return to https://tavernary.org/help/manage-project/ and open a fresh GitHub review. The generated manifest is the automation payload; the readable fields are review-only.
+        Tavernary prepared this review. Check the values, then create or cancel the issue. To make changes, return to https://tavernary.org/menu/manage-project/ and open a fresh GitHub review. The generated manifest is the automation payload; the readable fields are review-only.
 
         This issue will be public. Do not include secrets, passwords, API keys, private personal information, or unpublished security details. For a GitHub repository, use the personal account that owns the repository. For an organization-owned repository, external source, or other listing concern, use Report a project listing and include public proof when relevant.
   - type: input

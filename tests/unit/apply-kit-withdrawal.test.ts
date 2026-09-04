@@ -147,7 +147,7 @@ test.each([
     status: "needs-information",
     errors: expect.any(Array),
     returnUrl: expect.stringMatching(
-      /^https:\/\/tavernary\.org\/help\/withdraw-kit\/(?:\?kit=story-kit-241)?$/u,
+      /^https:\/\/tavernary\.org\/menu\/withdraw-kit\/(?:\?kit=story-kit-241)?$/u,
     ),
   });
   expect(loadKit).not.toHaveBeenCalled();
@@ -166,7 +166,7 @@ test("keeps a non-author request open without writing", async () => {
   ).resolves.toEqual({
     status: "needs-information",
     errors: ["Only the Kit author may withdraw this Kit."],
-    returnUrl: "https://tavernary.org/help/withdraw-kit/?kit=story-kit-241",
+    returnUrl: "https://tavernary.org/menu/withdraw-kit/?kit=story-kit-241",
   });
   expect(writeKit).not.toHaveBeenCalled();
 });

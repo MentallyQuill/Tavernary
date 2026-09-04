@@ -48,9 +48,9 @@ rating, a quality score, or an official Tavernary endorsement.
 
 ## Report or withdraw a Kit
 
-- Use [Report a Kit](/help/report-kit/) when a published collection has a
+- Use [Report a Kit](/menu/report-kit/) when a published collection has a
   problem.
-- Use [Withdraw a Kit](/help/withdraw-kit/) when you are the recorded author
+- Use [Withdraw a Kit](/menu/withdraw-kit/) when you are the recorded author
   and want to remove your Kit.
 
 For the exact contributor rules, read [Kit submission and moderation](../contributing/kits.md).

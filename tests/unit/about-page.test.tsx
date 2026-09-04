@@ -48,9 +48,9 @@ test("explains safety, reporting, and legal information on About", () => {
       /red projects remain listed so the community can see the warning/i,
     ),
   ).toBeInTheDocument();
-  expect(screen.getByRole("link", { name: "Get help" })).toHaveAttribute(
+  expect(screen.getByRole("link", { name: "Open the Menu" })).toHaveAttribute(
     "href",
-    "/help",
+    "/menu",
   );
   expect(
     screen.getByRole("link", { name: "private security path" }),

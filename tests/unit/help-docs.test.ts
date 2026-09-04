@@ -20,14 +20,14 @@ afterEach(() => {
   cleanup();
 });
 
-test("publishes the guided Help routes and owner workflow vocabulary", () => {
+test("publishes the Menu routes and owner workflow vocabulary", () => {
   const documentationCorpus = documentationPaths
     .map((path) => readFileSync(resolve(process.cwd(), path), "utf8"))
     .join("\n");
 
   for (const phrase of [
-    "/help/",
-    "Manage your project listing",
+    "/menu/",
+    "Update or rename your project listing",
     "Report a project listing",
     "Report a website problem",
     "Report a Kit",
