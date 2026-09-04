@@ -9,8 +9,8 @@
     "url": "https://github.com/maxime-fleury/ST-cardEditor",
     "description": null,
     "default_branch": "master",
-    "head_sha": "98a76e83e7973342339ad3f4a1282b1993deb969",
-    "head_committed_at": "2026-09-02T09:59:53.000Z",
+    "head_sha": "57acdebacdbac1345ba21ce4bb3201ff34e36d7b",
+    "head_committed_at": "2026-09-04T11:58:23.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
@@ -19,8 +19,13 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-30T15:42:29.000Z",
+    "latest_source_activity_at": "2026-09-04T11:58:23.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-09-04T11:58:23.000Z",
+        "precision": "interval"
+      },
       {
         "week_start": "2026-08-24",
         "latest_at": "2026-08-30T15:42:29.000Z",
@@ -43,11 +48,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-30T15:44:08.000Z",
+    "latest_release_at": "2026-09-04T12:01:57.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-02T12:09:05.030Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "98a76e83e7973342339ad3f4a1282b1993deb969"
+    "evidence_head_sha": "57acdebacdbac1345ba21ce4bb3201ff34e36d7b"
   },
   "community": {
     "stars_count": 13,
@@ -60,7 +65,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-03T12:08:28.703Z",
+  "refreshed_at": "2026-09-04T12:09:57.911Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -73,7 +78,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-03T12:08:28.703Z",
+    "refreshed_at": "2026-09-04T12:09:57.911Z",
     "stale_since": null
   }
 }

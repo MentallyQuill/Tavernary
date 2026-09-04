@@ -9,18 +9,23 @@
     "url": "https://codeberg.org/targren/SwipeScrubber",
     "description": null,
     "default_branch": "master",
-    "head_sha": "02c732e720db666d33c462b498729328594385e8",
-    "head_committed_at": "2026-08-23T21:04:49.000Z",
+    "head_sha": "124729a95881a69cb548b2dba94d5214ff48e717",
+    "head_committed_at": "2026-09-03T14:02:24.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-08-17T18:30:39.000Z",
-    "size_kb": 125
+    "size_kb": 126
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-23T21:04:49.000Z",
+    "latest_source_activity_at": "2026-09-03T14:02:24.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-09-03T14:02:24.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-17",
         "latest_at": "2026-08-23T21:04:49.000Z",
@@ -55,9 +60,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-03T12:08:28.582Z",
+    "baseline_completed_at": "2026-09-04T12:09:57.760Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "02c732e720db666d33c462b498729328594385e8"
+    "evidence_head_sha": "124729a95881a69cb548b2dba94d5214ff48e717"
   },
   "community": {
     "stars_count": 0,
@@ -70,7 +75,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-09-03T12:08:28.582Z",
+  "refreshed_at": "2026-09-04T12:09:57.760Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -78,9 +83,9 @@
       { "provider": "codeberg", "login": "targren", "type": "User" }
     ],
     "method": "commit-and-merged-pull-request-authors",
-    "baseline_completed_at": "2026-09-03T12:08:28.582Z",
+    "baseline_completed_at": "2026-09-04T12:09:57.760Z",
     "scan": null,
-    "refreshed_at": "2026-09-03T12:08:28.582Z",
+    "refreshed_at": "2026-09-04T12:09:57.760Z",
     "stale_since": null
   }
 }

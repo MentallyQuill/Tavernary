@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "source_id": "github-1065878471",
-  "head_sha": "ec4afa47ce27a8eb1aba174e320b63371f13f567",
-  "observed_at": "2026-08-25T08:04:11.839Z",
+  "head_sha": "fe9e44b5467acc6a3cd1614ea901a1444d4231f3",
+  "observed_at": "2026-09-04T12:11:55.962Z",
   "status": "verified",
   "manifest_path": "manifest.json",
   "folder_name": "SillyTavern-ProbablyTooManyTabs",
   "manifest": {
-    "display_name": "ProbablyTooManyTabs (Fixed)",
+    "display_name": "ProbablyTooManyTabs",
     "key": null,
     "minimum_client_version": "1.18.0"
   }

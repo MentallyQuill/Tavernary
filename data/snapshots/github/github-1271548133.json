@@ -9,13 +9,13 @@
     "url": "https://github.com/TavernAI/TavernAI",
     "description": "An AI roleplay chat platform with the most advanced prompting system",
     "default_branch": "main",
-    "head_sha": "39d67fe75309eff32e8ff502aa0682ce0e35beb8",
-    "head_committed_at": "2026-08-28T15:37:04.000Z",
+    "head_sha": "3413f598fdd41235e0ed8aa0b48b63638c1aa880",
+    "head_committed_at": "2026-09-04T08:06:38.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-16T19:18:48.000Z",
-    "size_kb": 11204
+    "size_kb": 11213
   },
   "source_health": "healthy",
   "activity": {
@@ -47,23 +47,43 @@
         "precision": "exact"
       }
     ],
-    "provisional_weeks": null,
-    "latest_release_at": "2026-08-28T15:28:53.000Z",
-    "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-25T08:02:02.541Z",
+    "provisional_weeks": [
+      true,
+      true,
+      false,
+      true,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false
+    ],
+    "latest_release_at": "2026-09-04T08:05:13.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
     "baseline_attempts": 0,
     "evidence_head_sha": "39d67fe75309eff32e8ff502aa0682ce0e35beb8"
   },
   "community": {
-    "stars_count": 68,
-    "forks_count": 10,
+    "stars_count": 69,
+    "forks_count": 11,
     "watchers_count": 0,
-    "aggregate": 78
+    "aggregate": 80
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-03T12:08:28.703Z",
+  "refreshed_at": "2026-09-04T12:09:57.911Z",
   "stale_since": null,
-  "activity_scan": null,
+  "activity_scan": {
+    "head_sha": "3413f598fdd41235e0ed8aa0b48b63638c1aa880",
+    "cutoff_at": "2026-05-27T12:09:57.911Z",
+    "next_page": 1,
+    "next_index": 62,
+    "resolved_weeks": ["2026-06-22", "2026-07-06", "2026-07-20", "2026-08-24"],
+    "pending_commit": null
+  },
   "contributors": {
     "accounts": [
       { "login": "TavernAI", "type": "User", "provider": "github" },
@@ -73,7 +93,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-03T12:08:28.703Z",
+    "refreshed_at": "2026-09-04T12:09:57.911Z",
     "stale_since": null
   }
 }

@@ -9,18 +9,23 @@
     "url": "https://github.com/IceFog72/SillyTavern-ProbablyTooManyTabs",
     "description": null,
     "default_branch": "main",
-    "head_sha": "ec4afa47ce27a8eb1aba174e320b63371f13f567",
-    "head_committed_at": "2026-08-25T00:34:39.000Z",
+    "head_sha": "fe9e44b5467acc6a3cd1614ea901a1444d4231f3",
+    "head_committed_at": "2026-09-03T20:05:31.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-09-28T15:59:05.000Z",
-    "size_kb": 1435
+    "size_kb": 1436
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-25T00:34:39.000Z",
+    "latest_source_activity_at": "2026-09-03T20:05:31.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-09-03T20:05:31.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-24",
         "latest_at": "2026-08-25T00:34:39.000Z",
@@ -55,22 +60,22 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-25T08:02:02.541Z",
+    "baseline_completed_at": "2026-09-04T12:09:57.911Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "ec4afa47ce27a8eb1aba174e320b63371f13f567"
+    "evidence_head_sha": "fe9e44b5467acc6a3cd1614ea901a1444d4231f3"
   },
   "community": {
-    "stars_count": 55,
+    "stars_count": 54,
     "forks_count": 6,
     "watchers_count": 1,
-    "aggregate": 62
+    "aggregate": 61
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-03T12:08:28.703Z",
+  "refreshed_at": "2026-09-04T12:09:57.911Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -81,7 +86,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-03T12:08:28.703Z",
+    "refreshed_at": "2026-09-04T12:09:57.911Z",
     "stale_since": null
   }
 }

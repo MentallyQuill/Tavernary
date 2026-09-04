@@ -9,21 +9,21 @@
     "url": "https://github.com/enclavum/otaku",
     "description": "LLM frontend for roleplay",
     "default_branch": "main",
-    "head_sha": "2753db27dddfcf3ff9ca1ac782b1dee8eef91c7b",
-    "head_committed_at": "2026-09-02T11:50:19.000Z",
+    "head_sha": "7067675c0b36d28038063b65165b2c7234a92ab6",
+    "head_committed_at": "2026-09-03T12:35:10.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-13T07:54:43.000Z",
-    "size_kb": 11658
+    "size_kb": 11706
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-02T11:49:08.000Z",
+    "latest_source_activity_at": "2026-09-03T12:35:10.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-31",
-        "latest_at": "2026-09-02T11:49:08.000Z",
+        "latest_at": "2026-09-03T12:35:10.000Z",
         "precision": "exact"
       },
       {
@@ -58,24 +58,24 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-09-02T12:04:39.000Z",
+    "latest_release_at": "2026-09-03T12:41:29.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-02T12:09:05.030Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "2753db27dddfcf3ff9ca1ac782b1dee8eef91c7b"
+    "evidence_head_sha": "7067675c0b36d28038063b65165b2c7234a92ab6"
   },
   "community": {
-    "stars_count": 34,
+    "stars_count": 39,
     "forks_count": 1,
     "watchers_count": 1,
-    "aggregate": 36
+    "aggregate": 41
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-03T12:08:28.703Z",
+  "refreshed_at": "2026-09-04T12:09:57.911Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -83,7 +83,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-03T12:08:28.703Z",
+    "refreshed_at": "2026-09-04T12:09:57.911Z",
     "stale_since": null
   }
 }
