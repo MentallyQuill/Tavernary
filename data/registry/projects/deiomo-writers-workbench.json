@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "deiomo-writers-workbench",
+  "name": "Writers-Workbench",
+  "kind": "extension",
+  "summary": "Offline HTML builder for character cards and lorebooks for SillyTavern and other AI roleplay platforms, with templates for characters, scenarios, locations, factions, and concepts, plus markdown preview and export.",
+  "metadata_status": "curated",
+  "source_id": "github-1356360868",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": [
+    "build-worlds-and-lore",
+    "create-character-cards",
+    "local-first",
+    "manage-lorebooks",
+    "privacy-focused"
+  ],
+  "cataloged_at": "2026-09-04T03:11:43.224Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
