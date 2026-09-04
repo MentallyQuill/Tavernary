@@ -3,14 +3,14 @@
   "project_id": "jschm42-taleweaver",
   "source_id": "github-1208471920",
   "source_identity": "github:jschm42/taleweaver",
-  "evidence_fingerprint": "790c1f22c2c4beee9c4d9863ce3b52fdbc658dd265970a4f0442fb2d75ff48e6",
+  "evidence_fingerprint": "a576780d4b84bd34baab0a5ff98bc7c536fbad2a51a1f0184e5571bf6047b06e",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-23T08:01:06.766Z",
+  "reviewed_at": "2026-09-04T12:22:26.554Z",
   "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-08-23T08:01:06.766Z"
+    "attempts": 4,
+    "last_failure_at": "2026-09-04T12:22:26.554Z"
   },
   "maintenance_issue_number": null
 }
