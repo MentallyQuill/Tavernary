@@ -20,12 +20,12 @@ async function captureOpenedHelpUrl(page: import("@playwright/test").Page) {
 test("prepares a website report without collecting browser diagnostics", async ({
   page,
 }) => {
-  await access("out/help/report-website/index.html");
-  await page.goto(sitePath("/help/report-website/?from=%2Fhelp%2F"));
+  await access("out/menu/report-website/index.html");
+  await page.goto(sitePath("/menu/report-website/?from=%2Fmenu%2F"));
   await captureOpenedHelpUrl(page);
 
   await expect(page.getByLabel("What page has the problem?")).toHaveValue(
-    "/help/",
+    "/menu/",
   );
   await page
     .getByLabel("What kind of website problem is this?")
@@ -52,7 +52,7 @@ test("prepares a website report without collecting browser diagnostics", async (
   expect(manifest).toEqual(
     expect.objectContaining({
       request_kind: "website-bug",
-      payload: expect.objectContaining({ page_url: "/help/" }),
+      payload: expect.objectContaining({ page_url: "/menu/" }),
     }),
   );
   expect(manifest.payload).not.toHaveProperty("search");
@@ -62,8 +62,8 @@ test("prepares a website report without collecting browser diagnostics", async (
 test("routes specific requests away from Other Help and prepares the fallback", async ({
   page,
 }) => {
-  await access("out/help/other/index.html");
-  await page.goto(sitePath("/help/other/"));
+  await access("out/menu/other/index.html");
+  await page.goto(sitePath("/menu/other/"));
   await captureOpenedHelpUrl(page);
 
   await expect(
@@ -74,7 +74,7 @@ test("routes specific requests away from Other Help and prepares the fallback", 
   ).toHaveAttribute("href", sitePath("/?mode=kits"));
   await expect(
     page.getByRole("link", { name: /report it privately/i }),
-  ).toHaveAttribute("href", sitePath("/help/security/"));
+  ).toHaveAttribute("href", sitePath("/menu/security/"));
 
   await page
     .getByLabel("What do you need help with?")

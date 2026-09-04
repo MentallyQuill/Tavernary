@@ -630,7 +630,7 @@ test("gates Kit withdrawal writes behind manifest validation and synchronizes co
   }
   expect(source).toContain("tavernary-kit-withdrawal-correction");
   expect(source).toContain("needs-information");
-  expect(source).toContain("https://tavernary.org/help/withdraw-kit/");
+  expect(source).toContain("https://tavernary.org/menu/withdraw-kit/");
   expect(source).toContain("STATUS: ${{ steps.withdraw.outputs.status }}");
   expect(source).toContain('status === "needs-information"');
   expect(source).toContain("steps.withdraw.outputs.status == 'applied'");
@@ -1756,7 +1756,7 @@ test("triages owner requests through a read-only repository gate", async () => {
   expect(source).toContain('-f issue_number="$ISSUE_NUMBER"');
   expect(source).toContain("-f force_regeneration=false");
   expect(source).toContain("<!-- tavernary-owner-request-correction -->");
-  expect(source).toContain("/help/manage-project/");
+  expect(source).toContain("/menu/manage-project/");
   expect(source).toContain("Readable GitHub fields are review-only");
   expect(source).toContain("decision.message");
   expect(source).toContain("/comments?per_page=100");

@@ -12,7 +12,7 @@ import { afterEach, describe, expect, test } from "vitest";
 
 import {
   verifyCatalogStaticExport,
-  verifyHelpStaticRoutes,
+  verifyMenuStaticRoutes,
   verifyStaticExport,
   verifyTavernKeeperStaticExport,
 } from "../../scripts/verify-static-export.mjs";
@@ -45,33 +45,43 @@ afterEach(() => {
   }
 });
 
-function helpExport({
+function menuExport({
   omit,
   securityHtml = "<main>Private report</main>",
+  legacyHtml = '<main data-menu-legacy-redirect="true">Moving to Menu</main>',
 }: {
   omit?: string;
   securityHtml?: string;
+  legacyHtml?: string;
 } = {}) {
   const outputDirectory = mkdtempSync(
-    resolve(tmpdir(), "tavernary-help-export-"),
+    resolve(tmpdir(), "tavernary-menu-export-"),
   );
   temporaryExports.push(outputDirectory);
-  for (const route of [
-    "help",
-    "help/manage-project",
-    "help/report-project",
-    "help/report-website",
-    "help/report-kit",
-    "help/other",
-  ]) {
+  const subroutes = [
+    "manage-project",
+    "report-project",
+    "report-website",
+    "report-kit",
+    "withdraw-kit",
+    "other",
+    "security",
+  ];
+  for (const route of ["menu", ...subroutes.map((route) => `menu/${route}`)]) {
     if (route === omit) continue;
     const directory = resolve(outputDirectory, route);
     mkdirSync(directory, { recursive: true });
-    writeFileSync(resolve(directory, "index.html"), "<main>Help</main>");
+    writeFileSync(
+      resolve(directory, "index.html"),
+      route === "menu/security" ? securityHtml : "<main>Menu</main>",
+    );
   }
-  const securityDirectory = resolve(outputDirectory, "help/security");
-  mkdirSync(securityDirectory, { recursive: true });
-  writeFileSync(resolve(securityDirectory, "index.html"), securityHtml);
+  for (const route of ["help", ...subroutes.map((route) => `help/${route}`)]) {
+    if (route === omit) continue;
+    const directory = resolve(outputDirectory, route);
+    mkdirSync(directory, { recursive: true });
+    writeFileSync(resolve(directory, "index.html"), legacyHtml);
+  }
   return outputDirectory;
 }
 
@@ -303,16 +313,21 @@ describe("verifyStaticExport", () => {
     ).toThrow("intake-only metadata");
   });
 
-  test("requires the complete Help route inventory and keeps security private", async () => {
-    await expect(verifyHelpStaticRoutes(helpExport())).resolves.toBeUndefined();
+  test("requires canonical Menu routes, legacy forwards, and private security", async () => {
+    await expect(verifyMenuStaticRoutes(menuExport())).resolves.toBeUndefined();
     await expect(
-      verifyHelpStaticRoutes(helpExport({ omit: "help/report-kit" })),
-    ).rejects.toThrow(/help[\\/]report-kit[\\/]index.html/u);
+      verifyMenuStaticRoutes(menuExport({ omit: "menu/report-kit" })),
+    ).rejects.toThrow(/menu[\\/]report-kit[\\/]index.html/u);
     await expect(
-      verifyHelpStaticRoutes(
-        helpExport({ securityHtml: '<a href="/issues/new">Public issue</a>' }),
+      verifyMenuStaticRoutes(
+        menuExport({ securityHtml: '<a href="/issues/new">Public issue</a>' }),
       ),
     ).rejects.toThrow("public issue form");
+    await expect(
+      verifyMenuStaticRoutes(
+        menuExport({ legacyHtml: "<main>Old Help content</main>" }),
+      ),
+    ).rejects.toThrow("legacy Menu forward");
   });
 
   test("requires the exported TavernKeeper target manifest to exist and validate", async () => {

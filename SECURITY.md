@@ -2,7 +2,7 @@
 
 Please do not disclose a Tavernary security vulnerability in a public issue.
 
-Use Tavernary's private security route at `/help/security/`, which opens
+Use Tavernary's private security route at `/menu/security/`, which opens
 GitHub's private vulnerability reporting flow at
 `https://github.com/MentallyQuill/Tavernary/security/advisories/new`. Include
 the affected URL or workflow, a concise description, reproduction steps, and

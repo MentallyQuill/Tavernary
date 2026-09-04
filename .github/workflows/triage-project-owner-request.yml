@@ -148,7 +148,7 @@ jobs:
               decision.message,
               "",
               "Readable GitHub fields are review-only and are not the automation payload.",
-              "Return to https://tavernary.org/help/manage-project/, correct the request, and open a new GitHub review. This issue will remain open with `needs-information`.",
+              "Return to https://tavernary.org/menu/manage-project/, correct the request, and open a new GitHub review. This issue will remain open with `needs-information`.",
             ].join("\n");
             const current = correctionComments.shift();
             if (current) {

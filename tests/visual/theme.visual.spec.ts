@@ -307,7 +307,7 @@ test("top-bar utility links and primary catalog modes use theme white", async ({
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(sitePath());
 
-  for (const linkName of ["About", "Help"]) {
+  for (const linkName of ["About", "Menu"]) {
     const link = page.getByRole("link", { name: linkName, exact: true });
     await expectStyle(link, "color", graphiteTeal.secondaryText);
     await link.hover();
@@ -1023,24 +1023,24 @@ test("desktop primary and secondary controls expose their complete state familie
   await expectStyle(secondary, "background-color", graphiteTeal.secondaryHover);
 });
 
-test("guided Help states retain the approved graphite and teal treatment", async ({
+test("Menu states retain the approved graphite and teal treatment", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto(sitePath("/help/"));
+  await page.goto(sitePath("/menu/"));
   await expectStyle(
     page.locator(".help-page"),
     "background-color",
     graphiteTeal.canvas,
   );
   await expectStyle(
-    page.locator(".help-security-callout"),
+    page.locator(".menu-group").first().locator(".menu-item").first(),
     "border-top-color",
     graphiteTeal.controlFocus,
   );
 
   await page.goto(
-    sitePath("/help/report-project/?project=aikohanasaki-aikobots"),
+    sitePath("/menu/report-project/?project=aikohanasaki-aikobots"),
   );
   await page.getByLabel("What is wrong?").selectOption("incorrect-information");
   await expectStyle(
@@ -1050,7 +1050,7 @@ test("guided Help states retain the approved graphite and teal treatment", async
   );
 
   await page.goto(
-    sitePath("/help/manage-project/?project=mentallyquill-directive"),
+    sitePath("/menu/manage-project/?project=mentallyquill-directive"),
   );
   await page.getByRole("radio", { name: "Edit card details" }).check();
   await page.getByLabel("Summary policy").selectOption("manual");
@@ -1066,7 +1066,7 @@ test("guided Help states retain the approved graphite and teal treatment", async
     graphiteTeal.controlBackground,
   );
 
-  await page.goto(sitePath("/help/security/"));
+  await page.goto(sitePath("/menu/security/"));
   await expectStyle(
     page.locator(".help-security-actions a").first(),
     "border-top-color",
@@ -1074,29 +1074,27 @@ test("guided Help states retain the approved graphite and teal treatment", async
   );
 });
 
-test("captures the complete guided Help surface on Windows", async ({
-  page,
-}) => {
+test("captures the complete Menu surface on Windows", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto(sitePath("/help/"));
+  await page.goto(sitePath("/menu/"));
   await expect(page.locator(".help-content")).toHaveScreenshot(
-    "help-hub-desktop.png",
+    "menu-page-desktop.png",
   );
 
   await page.setViewportSize({ width: 320, height: 720 });
-  await page.goto(sitePath("/help/"));
+  await page.goto(sitePath("/menu/"));
   await expect(page.locator(".help-content")).toHaveScreenshot(
-    "help-hub-mobile.png",
+    "menu-page-mobile.png",
   );
 
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto(sitePath("/help/report-kit/?kit=aiko-s-loadout-30"));
+  await page.goto(sitePath("/menu/report-kit/?kit=aiko-s-loadout-30"));
   await page.getByLabel("What is wrong?").selectOption("compatibility-problem");
   await expect(page.locator(".help-content")).toHaveScreenshot(
     "help-kit-conditional-form.png",
   );
 
-  await page.goto(sitePath("/help/report-website/?from=%2Fhelp%2F"));
+  await page.goto(sitePath("/menu/report-website/?from=%2Fmenu%2F"));
   await page
     .getByLabel("What kind of website problem is this?")
     .selectOption("accessibility");
@@ -1104,14 +1102,14 @@ test("captures the complete guided Help surface on Windows", async ({
   await page.getByLabel("What should happen?").fill("Focus remains visible.");
   await page
     .getByLabel("How can the problem be reproduced?")
-    .fill("Open Help and press Tab.");
+    .fill("Open Menu and press Tab.");
   await page.getByRole("button", { name: "Review request" }).click();
   await expect(page.locator(".help-review")).toHaveScreenshot(
     "help-review-state.png",
   );
 
   await page.goto(
-    sitePath("/help/manage-project/?project=mentallyquill-directive"),
+    sitePath("/menu/manage-project/?project=mentallyquill-directive"),
   );
   await page.getByRole("radio", { name: "Edit card details" }).check();
   await page.getByLabel("Summary policy").selectOption("manual");
@@ -1124,7 +1122,7 @@ test("captures the complete guided Help surface on Windows", async ({
     { maxDiffPixels: 3000 },
   );
 
-  await page.goto(sitePath("/help/security/"));
+  await page.goto(sitePath("/menu/security/"));
   await expect(page.locator(".help-content")).toHaveScreenshot(
     "help-private-security.png",
   );

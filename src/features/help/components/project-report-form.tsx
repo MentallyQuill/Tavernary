@@ -146,7 +146,7 @@ export function ProjectReportForm({
         schema_version: 1,
         request_kind: "project-report",
         origin: {
-          page_url: "/help/report-project/",
+          page_url: "/menu/report-project/",
           site_revision: siteRevision,
         },
         payload: payload satisfies ProjectReportPayload,
@@ -205,9 +205,11 @@ export function ProjectReportForm({
       <HelpErrorSummary errors={errors} />
       <p className="help-hint">
         Are you an owner?{" "}
-        <Link href="/help/manage-project/">Manage your project listing.</Link> A
-        Tavernary vulnerability?{" "}
-        <Link href="/help/security/">Report it privately.</Link>
+        <Link href="/menu/manage-project/">
+          Update or rename your project listing.
+        </Link>{" "}
+        A Tavernary vulnerability?{" "}
+        <Link href="/menu/security/">Report it privately.</Link>
       </p>
       <HelpTextField
         id="project-search"

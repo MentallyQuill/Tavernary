@@ -77,29 +77,48 @@ export function verifyStaticExport(html, basePath = "") {
   }
 }
 
-const helpExportPaths = [
-  "help",
-  "help/manage-project",
-  "help/report-project",
-  "help/report-website",
-  "help/report-kit",
-  "help/other",
-  "help/security",
+const menuSubroutes = [
+  "manage-project",
+  "report-project",
+  "report-website",
+  "report-kit",
+  "withdraw-kit",
+  "other",
+  "security",
 ];
 
-export async function verifyHelpStaticRoutes(outputDirectory = "out") {
-  for (const route of helpExportPaths) {
+const menuExportPaths = [
+  "menu",
+  ...menuSubroutes.map((route) => `menu/${route}`),
+];
+const legacyHelpExportPaths = [
+  "help",
+  ...menuSubroutes.map((route) => `help/${route}`),
+];
+
+export async function verifyMenuStaticRoutes(outputDirectory = "out") {
+  for (const route of [...menuExportPaths, ...legacyHelpExportPaths]) {
     await access(resolve(outputDirectory, route, "index.html"));
   }
 
   const securityHtml = await readFile(
-    resolve(outputDirectory, "help/security/index.html"),
+    resolve(outputDirectory, "menu/security/index.html"),
     "utf8",
   );
   if (securityHtml.includes("/issues/new")) {
     throw new Error(
       "Private security export must not contain a public issue form",
     );
+  }
+
+  for (const route of legacyHelpExportPaths) {
+    const html = await readFile(
+      resolve(outputDirectory, route, "index.html"),
+      "utf8",
+    );
+    if (!html.includes('data-menu-legacy-redirect="true"')) {
+      throw new Error(`${route} must export a legacy Menu forward`);
+    }
   }
 }
 
@@ -210,7 +229,7 @@ async function main() {
   await access("out/index.html");
   const html = await readFile("out/index.html", "utf8");
   verifyStaticExport(html, configuredBasePath());
-  await verifyHelpStaticRoutes();
+  await verifyMenuStaticRoutes();
   await verifyTavernKeeperStaticExport();
   await verifyCatalogStaticExport();
   console.log("Static export verified");

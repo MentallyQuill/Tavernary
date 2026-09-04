@@ -568,7 +568,7 @@ export function ProjectOwnerBuilder({
                 the report below.
               </p>
             ) : null}
-            <Link href={`/help/report-project?project=${selected.id}`}>
+            <Link href={`/menu/report-project?project=${selected.id}`}>
               {selected.sourceType === "github"
                 ? "Report this listing instead"
                 : "Request a listing review"}

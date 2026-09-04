@@ -116,7 +116,7 @@ jobs:
               body: JSON.stringify({ labels: ["needs-information"] }),
             });
             const returnUrl = new URL(
-              "https://tavernary.org/help/withdraw-kit/",
+              "https://tavernary.org/menu/withdraw-kit/",
             );
             if (kitId) returnUrl.searchParams.set("kit", kitId);
             const body = [

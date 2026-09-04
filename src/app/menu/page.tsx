@@ -20,7 +20,8 @@ const menuGroups = [
       {
         href: "/?mode=kits",
         title: "Build or manage Kits",
-        description: "Create, inspect, duplicate, or edit a collection of projects.",
+        description:
+          "Create, inspect, duplicate, or edit a collection of projects.",
       },
       {
         href: "/menu/withdraw-kit/",
@@ -60,27 +61,31 @@ const menuGroups = [
       {
         href: "/menu/report-project/",
         title: "Report a project listing",
-        description: "Flag incorrect, unsafe, duplicate, or rights-related information.",
+        description:
+          "Flag incorrect, unsafe, duplicate, or rights-related information.",
       },
       {
         href: "/menu/report-kit/",
         title: "Report a Kit",
-        description: "Report a compatibility, safety, accuracy, or attribution concern.",
+        description:
+          "Report a compatibility, safety, accuracy, or attribution concern.",
       },
       {
         href: "/menu/report-website/",
         title: "Report a website problem",
-        description: "Tell us about a broken page, control, form, or interaction.",
+        description: "Report a broken page, control, form, or interaction.",
       },
       {
         href: "/menu/other/",
         title: "Ask a Tavernary question",
-        description: "Ask for help or suggest an improvement not covered elsewhere.",
+        description:
+          "Ask for help or suggest an improvement not covered elsewhere.",
       },
       {
         href: "/menu/security/",
         title: "Report a security issue privately",
-        description: "Use GitHub's private reporting flow for a Tavernary vulnerability.",
+        description:
+          "Use GitHub's private reporting flow for a Tavernary vulnerability.",
       },
     ],
   },
@@ -88,7 +93,8 @@ const menuGroups = [
 
 export const metadata = {
   title: "Menu | Tavernary",
-  description: "Browse Tavernary or choose a project, Kit, or reporting action.",
+  description:
+    "Browse Tavernary or choose a project, Kit, or reporting action.",
 };
 
 export default function MenuPage() {
@@ -97,7 +103,9 @@ export default function MenuPage() {
       kicker="Tavernary"
       title="Menu"
       lead={
-        <p>Browse Tavernary, manage your projects and Kits, or report a problem.</p>
+        <p>
+          Browse Tavernary, manage your projects and Kits, or report a problem.
+        </p>
       }
       backHref="/"
       backLabel="← Back to the catalog"

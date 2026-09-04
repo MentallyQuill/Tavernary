@@ -13,10 +13,10 @@ import { parseHelpIssue } from "./parse-help-issue.mjs";
 export const HELP_TRIAGE_MARKER = "<!-- tavernary-help-triage -->";
 
 const returnUrlByRoute = Object.freeze({
-  "project-report": "https://tavernary.org/help/report-project/",
-  "website-bug": "https://tavernary.org/help/report-website/",
-  "kit-report": "https://tavernary.org/help/report-kit/",
-  "other-help": "https://tavernary.org/help/other/",
+  "project-report": "https://tavernary.org/menu/report-project/",
+  "website-bug": "https://tavernary.org/menu/report-website/",
+  "kit-report": "https://tavernary.org/menu/report-kit/",
+  "other-help": "https://tavernary.org/menu/other/",
 });
 
 function labelNames(labels = []) {
@@ -41,7 +41,7 @@ function admittedHelpRoute(issue) {
 }
 
 function buildCorrectionComment(errors, route) {
-  const returnUrl = returnUrlByRoute[route] ?? "https://tavernary.org/help/";
+  const returnUrl = returnUrlByRoute[route] ?? "https://tavernary.org/menu/";
   return [
     HELP_TRIAGE_MARKER,
     "Tavernary could not validate this Help request:",

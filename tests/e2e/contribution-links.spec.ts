@@ -27,10 +27,9 @@ test("explains Tavernary and links to contribution flows", async ({ page }) => {
   await expect(
     page.getByRole("link", { name: "Submit a project" }),
   ).toHaveAttribute("href", /\/submit\/project\/$/);
-  await expect(page.getByRole("link", { name: "Get help" })).toHaveAttribute(
-    "href",
-    /\/help\/$/,
-  );
+  await expect(
+    page.getByRole("link", { name: "Open the Menu" }),
+  ).toHaveAttribute("href", /\/menu\/$/);
 });
 
 test("keeps responsive header Menu and utility actions available", async ({
@@ -60,9 +59,9 @@ test("keeps responsive header Menu and utility actions available", async ({
   await expect(menu).toBeVisible();
   await expect(submit).toBeVisible();
 
-  const helpBox = await menu.boundingBox();
+  const menuBox = await menu.boundingBox();
   const submitBox = await submit.boundingBox();
-  expect(helpBox).not.toBeNull();
+  expect(menuBox).not.toBeNull();
   expect(submitBox).not.toBeNull();
-  expect(helpBox!.x + helpBox!.width).toBeLessThanOrEqual(submitBox!.x);
+  expect(menuBox!.x + menuBox!.width).toBeLessThanOrEqual(submitBox!.x);
 });

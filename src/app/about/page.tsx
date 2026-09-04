@@ -145,13 +145,13 @@ export default function AboutPage() {
           <h2>Reporting and removal</h2>
           <p>
             A verified personal GitHub owner can use{" "}
-            <Link href="/help/manage-project/">
-              Manage your project listing
+            <Link href="/menu/manage-project/">
+              Update or rename your project listing
             </Link>{" "}
             to request a card edit, a move of the same repository, or a delist.
             For organization-owned repositories, rights concerns, and other
             listing problems, use{" "}
-            <Link href="/help/report-project/">Report a project listing</Link>.
+            <Link href="/menu/report-project/">Report a project listing</Link>.
           </p>
           <p>
             Users can report inaccurate, outdated, unsafe, malicious, or abusive
@@ -189,7 +189,7 @@ export default function AboutPage() {
           <Link className="primary-action" href="/submit/project/">
             Submit a project
           </Link>
-          <Link href="/help/">Get help</Link>
+          <Link href="/menu/">Open the Menu</Link>
         </div>
       </article>
     </main>

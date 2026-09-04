@@ -412,14 +412,14 @@ export function KitBuilderPanel({
                   <div className="kit-builder-panel-admin-actions">
                     <Link
                       className="control-secondary kit-preview-action"
-                      href={`/help/report-kit/?kit=${encodeURIComponent(kit.id)}`}
+                      href={`/menu/report-kit/?kit=${encodeURIComponent(kit.id)}`}
                     >
                       <KitPreviewActionIcon name="report" />
                       Report Kit
                     </Link>
                     <Link
                       className="control-secondary kit-preview-action kit-withdrawal-action"
-                      href={`/help/withdraw-kit/?kit=${encodeURIComponent(kit.id)}`}
+                      href={`/menu/withdraw-kit/?kit=${encodeURIComponent(kit.id)}`}
                     >
                       Request withdrawal
                     </Link>

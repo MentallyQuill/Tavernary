@@ -19,29 +19,44 @@ function currentPathname(page: import("@playwright/test").Page) {
   return new URL(page.url()).pathname.replace(/\/$/u, "");
 }
 
-test("routes header visitors through every Help path and back to the catalog", async ({
+test("forwards legacy Help URLs to the matching Menu URL", async ({ page }) => {
+  await page.goto(
+    sitePath("/help/report-project/?project=aikohanasaki-aikobots#details"),
+  );
+
+  await expect
+    .poll(() => {
+      const location = new URL(page.url());
+      return `${location.pathname}${location.search}${location.hash}`;
+    })
+    .toBe(
+      sitePath("/menu/report-project/?project=aikohanasaki-aikobots#details"),
+    );
+});
+
+test("routes header visitors through every Menu path and back to the Menu", async ({
   page,
 }) => {
   await page.goto(sitePath());
 
   const siteActions = page.getByRole("navigation", { name: "Site actions" });
-  await expect(siteActions.getByRole("link", { name: "Help" })).toHaveAttribute(
+  await expect(siteActions.getByRole("link", { name: "Menu" })).toHaveAttribute(
     "href",
-    sitePath("/help/"),
+    sitePath("/menu/"),
   );
   await expect(siteActions.locator('a[href*="github.com"]')).toHaveCount(0);
 
-  await siteActions.getByRole("link", { name: "Help" }).click();
+  await siteActions.getByRole("link", { name: "Menu" }).click();
   await expect(
-    page.getByRole("heading", { name: "Help", exact: true }),
+    page.getByRole("heading", { name: "Menu", exact: true }),
   ).toBeVisible();
 
   for (const [name, path] of [
-    ["Manage your project listing", "/help/manage-project/"],
-    ["Report a project listing", "/help/report-project/"],
-    ["Report a website problem", "/help/report-website/"],
-    ["Report a Kit", "/help/report-kit/"],
-    ["Get other help", "/help/other/"],
+    ["Update or rename your project listing", "/menu/manage-project/"],
+    ["Report a project listing", "/menu/report-project/"],
+    ["Report a website problem", "/menu/report-website/"],
+    ["Report a Kit", "/menu/report-kit/"],
+    ["Ask a Tavernary question", "/menu/other/"],
   ]) {
     await expect(page.getByRole("link", { name })).toHaveAttribute(
       "href",
@@ -51,15 +66,15 @@ test("routes header visitors through every Help path and back to the catalog", a
 
   await page.getByRole("link", { name: "Report a website problem" }).click();
   await expect(
-    page.getByRole("link", { name: "← Back to the catalog" }),
-  ).toHaveAttribute("href", sitePath("/"));
+    page.getByRole("link", { name: "← Back to Menu" }),
+  ).toHaveAttribute("href", sitePath("/menu/"));
 });
 
 test("falls back from invalid context and keeps keyboard errors discoverable", async ({
   page,
 }) => {
   await page.goto(
-    sitePath("/help/report-website/?from=https%3A%2F%2Fevil.example%2Fhelp"),
+    sitePath("/menu/report-website/?from=https%3A%2F%2Fevil.example%2Fmenu"),
   );
 
   await expect(page.getByLabel("What page has the problem?")).toHaveValue("");
@@ -77,7 +92,7 @@ test("falls back from invalid context and keeps keyboard errors discoverable", a
 test("preserves reviewed report state and cancels without opening GitHub", async ({
   page,
 }) => {
-  await page.goto(sitePath("/help/report-website/?from=%2Fhelp%2F"));
+  await page.goto(sitePath("/menu/report-website/?from=%2Fmenu%2F"));
   await interceptHelpWindow(page);
 
   await page
@@ -110,15 +125,15 @@ test("preserves reviewed report state and cancels without opening GitHub", async
   ).resolves.toBeUndefined();
 });
 
-test("uses contextual Help links and opens a reviewed request through the intended template", async ({
+test("uses contextual Menu links and opens a reviewed request through the intended template", async ({
   page,
 }) => {
-  await page.goto(sitePath("/help/other/"));
+  await page.goto(sitePath("/menu/other/"));
   await interceptHelpWindow(page);
 
   await expect(
     page.getByRole("link", { name: "Report it privately." }),
-  ).toHaveAttribute("href", sitePath("/help/security/"));
+  ).toHaveAttribute("href", sitePath("/menu/security/"));
   await page
     .getByLabel("What do you need help with?")
     .selectOption("using-tavernary");
@@ -141,7 +156,7 @@ test("keeps the private security route free of a public issue form at 320 px", a
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 720 });
-  await page.goto(sitePath("/help/security/"));
+  await page.goto(sitePath("/menu/security/"));
 
   await expect(
     page.getByRole("link", { name: "Open GitHub's private report form" }),
@@ -156,18 +171,18 @@ test("keeps the private security route free of a public issue form at 320 px", a
   expect(overflow).toBeLessThanOrEqual(0);
 });
 
-test("spaces every interactive Help form without mobile overflow", async ({
+test("spaces every interactive Menu form without mobile overflow", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 720 });
 
   for (const path of [
-    "/help/manage-project/",
-    "/help/report-project/",
-    "/help/report-website/",
-    "/help/report-kit/",
-    "/help/withdraw-kit/",
-    "/help/other/",
+    "/menu/manage-project/",
+    "/menu/report-project/",
+    "/menu/report-website/",
+    "/menu/report-kit/",
+    "/menu/withdraw-kit/",
+    "/menu/other/",
   ]) {
     await page.goto(sitePath(path));
 
@@ -206,7 +221,7 @@ test("spaces every interactive Help form without mobile overflow", async ({
 test("searches and selects owner projects in one responsive combobox", async ({
   page,
 }) => {
-  await page.goto(sitePath("/help/manage-project/"));
+  await page.goto(sitePath("/menu/manage-project/"));
   const picker = page.getByRole("combobox", { name: "Project" });
 
   await picker.click();
@@ -236,7 +251,7 @@ test("searches and selects owner projects in one responsive combobox", async ({
 });
 
 test("renders one clean Kit-author routing reminder", async ({ page }) => {
-  await page.goto(sitePath("/help/report-kit/"));
+  await page.goto(sitePath("/menu/report-kit/"));
 
   await expect(
     page.locator("p").filter({ hasText: "Are you the Kit author?" }),
@@ -244,18 +259,18 @@ test("renders one clean Kit-author routing reminder", async ({ page }) => {
   await expect(page.locator("body")).not.toContainText("â");
 });
 
-test("selects project reports through Help and preserves contextual Kit reports", async ({
+test("selects project reports through Menu and preserves contextual Kit reports", async ({
   page,
 }) => {
   await page.goto(sitePath());
   await page
     .getByRole("navigation", { name: "Site actions" })
-    .getByRole("link", { name: "Help" })
+    .getByRole("link", { name: "Menu" })
     .click();
   await page.getByRole("link", { name: "Report a project listing" }).click();
   await expect
     .poll(() => currentPathname(page))
-    .toBe(sitePath("/help/report-project"));
+    .toBe(sitePath("/menu/report-project"));
   await page
     .getByLabel("Project", { exact: true })
     .selectOption("aikohanasaki-aikobots");
@@ -268,7 +283,7 @@ test("selects project reports through Help and preserves contextual Kit reports"
   await kit.getByRole("button", { name: "Report Kit" }).click();
   await expect
     .poll(() => currentPathname(page))
-    .toBe(sitePath("/help/report-kit"));
+    .toBe(sitePath("/menu/report-kit"));
   await expect
     .poll(() => new URL(page.url()).searchParams.get("kit"))
     .toBe("aiko-s-loadout-30");
@@ -317,7 +332,7 @@ test("takes a Kit report from source control through validation, review, cancel,
     .click();
   await expect
     .poll(() => currentPathname(page))
-    .toBe(sitePath("/help/report-kit"));
+    .toBe(sitePath("/menu/report-kit"));
   await expect(page.getByLabel("What is wrong?")).toBeVisible();
   await interceptHelpWindow(page);
 
@@ -375,7 +390,7 @@ test("takes a Kit report from source control through validation, review, cancel,
 test("withdraws a selected Kit through Tavernary review and a versioned manifest", async ({
   page,
 }) => {
-  await page.goto(sitePath("/help/withdraw-kit/?kit=aiko-s-loadout-30"));
+  await page.goto(sitePath("/menu/withdraw-kit/?kit=aiko-s-loadout-30"));
   await interceptHelpWindow(page);
 
   await expect(page.getByLabel("Kit", { exact: true })).toHaveValue(
@@ -423,7 +438,7 @@ test("withdraws a selected Kit through Tavernary review and a versioned manifest
 test("covers conditional report branches and ignores unknown record context", async ({
   page,
 }) => {
-  await page.goto(sitePath("/help/report-project/?project=unknown-project"));
+  await page.goto(sitePath("/menu/report-project/?project=unknown-project"));
   await expect(page.getByLabel("Project", { exact: true })).toHaveValue("");
   for (const branch of [
     {
@@ -439,14 +454,14 @@ test("covers conditional report branches and ignores unknown record context", as
     await expect(page.getByText(branch.guidance)).toBeVisible();
   }
 
-  await page.goto(sitePath("/help/report-kit/?kit=unknown-kit"));
+  await page.goto(sitePath("/menu/report-kit/?kit=unknown-kit"));
   await expect(page.getByLabel("Kit", { exact: true })).toHaveValue("");
   await page.getByRole("button", { name: "Review request" }).click();
   await expect(page.locator(".help-error-summary")).toContainText(
     "Select a published Kit.",
   );
 
-  await page.goto(sitePath("/help/report-kit/?kit=aiko-s-loadout-30"));
+  await page.goto(sitePath("/menu/report-kit/?kit=aiko-s-loadout-30"));
   for (const branch of [
     {
       category: "compatibility-problem",
@@ -475,7 +490,7 @@ test("covers owner source-move and delist-source review branches", async ({
   page,
 }) => {
   await page.goto(
-    sitePath("/help/manage-project/?project=mentallyquill-directive"),
+    sitePath("/menu/manage-project/?project=mentallyquill-directive"),
   );
   await page.getByRole("radio", { name: "Update repository location" }).check();
   await page

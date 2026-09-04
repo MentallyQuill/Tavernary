@@ -132,11 +132,13 @@ test("links owners and Tavernary security reporters to the correct private paths
   renderProjectReport();
 
   expect(
-    screen.getByRole("link", { name: /manage your project listing/iu }),
-  ).toHaveAttribute("href", "/help/manage-project");
+    screen.getByRole("link", {
+      name: /update or rename your project listing/iu,
+    }),
+  ).toHaveAttribute("href", "/menu/manage-project");
   expect(
     screen.getByRole("link", { name: /report it privately/iu }),
-  ).toHaveAttribute("href", "/help/security");
+  ).toHaveAttribute("href", "/menu/security");
 });
 
 test("retains project report state and regenerates the manifest after editing", async () => {
@@ -189,7 +191,7 @@ test("retains project report state and regenerates the manifest after editing", 
   expect(JSON.parse(opened.searchParams.get("help-manifest") ?? "")).toEqual(
     expect.objectContaining({
       request_kind: "project-report",
-      origin: { page_url: "/help/report-project/", site_revision: "abc" },
+      origin: { page_url: "/menu/report-project/", site_revision: "abc" },
       payload: {
         project_id: "wandlight",
         canonical_source: "https://github.com/example/wandlight",

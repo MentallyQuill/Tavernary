@@ -23,8 +23,8 @@ const frontendVocabulary = JSON.parse(
 test("reviews one owner card edit and hands the complete manifest to GitHub", async ({
   page,
 }) => {
-  await access("out/help/manage-project/index.html");
-  await page.goto(sitePath(`/help/manage-project/?project=${projectId}`));
+  await access("out/menu/manage-project/index.html");
+  await page.goto(sitePath(`/menu/manage-project/?project=${projectId}`));
   await page.evaluate(() => {
     Object.defineProperty(window, "open", {
       configurable: true,
@@ -90,7 +90,7 @@ test("reviews one owner card edit and hands the complete manifest to GitHub", as
 test("keeps owner wording while removing emoji and linking the policy", async ({
   page,
 }) => {
-  await page.goto(sitePath(`/help/manage-project/?project=${projectId}`));
+  await page.goto(sitePath(`/menu/manage-project/?project=${projectId}`));
   await page.getByRole("radio", { name: "Edit card details" }).check();
   await page.getByLabel("Summary policy").selectOption("manual");
 
@@ -119,7 +119,7 @@ test("keeps every current frontend inside the owner grid as vocabulary grows", a
     { width: 320, height: 720 },
   ]) {
     await page.setViewportSize(viewport);
-    await page.goto(sitePath(`/help/manage-project/?project=${projectId}`));
+    await page.goto(sitePath(`/menu/manage-project/?project=${projectId}`));
     await page.getByRole("radio", { name: "Edit card details" }).check();
 
     const group = page.getByRole("group", { name: "Supported frontends" });
@@ -154,7 +154,7 @@ test("keeps every current frontend inside the owner grid as vocabulary grows", a
 test("requires the typed repository before handing off a permanent source delist", async ({
   page,
 }) => {
-  await page.goto(sitePath(`/help/manage-project/?project=${projectId}`));
+  await page.goto(sitePath(`/menu/manage-project/?project=${projectId}`));
   await page.evaluate(() => {
     Object.defineProperty(window, "open", {
       configurable: true,
@@ -218,7 +218,7 @@ test("requires the typed repository before handing off a permanent source delist
 test("offers maintenance and owner help for non-GitHub listings", async ({
   page,
 }) => {
-  await page.goto(sitePath("/help/manage-project/?project=tavern-rpg-suite"));
+  await page.goto(sitePath("/menu/manage-project/?project=tavern-rpg-suite"));
 
   await expect(
     page.getByText(/Only GitHub repository listings/iu),
@@ -227,7 +227,7 @@ test("offers maintenance and owner help for non-GitHub listings", async ({
     page.getByRole("link", { name: "Request a listing review" }),
   ).toHaveAttribute(
     "href",
-    /\/help\/report-project\/?\?project=tavern-rpg-suite$/u,
+    /\/menu\/report-project\/?\?project=tavern-rpg-suite$/u,
   );
   await expect(
     page.getByRole("radio", { name: "Edit card details" }),
@@ -237,7 +237,7 @@ test("offers maintenance and owner help for non-GitHub listings", async ({
 test("reviews an atomic add-card request with independent automatic metadata", async ({
   page,
 }) => {
-  await page.goto(sitePath(`/help/manage-project/?project=${projectId}`));
+  await page.goto(sitePath(`/menu/manage-project/?project=${projectId}`));
   await page.evaluate(() => {
     Object.defineProperty(window, "open", {
       configurable: true,
@@ -287,7 +287,7 @@ test("keeps a ten-card owner batch usable at 320px through popup recovery", asyn
 }) => {
   await installGitHubReviewRecorder(page, { blocked: true });
   await page.setViewportSize({ width: 320, height: 800 });
-  await page.goto(sitePath(`/help/manage-project/?project=${projectId}`));
+  await page.goto(sitePath(`/menu/manage-project/?project=${projectId}`));
   await page.getByRole("radio", { name: "Add cards from this source" }).check();
 
   await page.getByLabel("Card 1 display name").fill("Alpha Card 1");
@@ -341,7 +341,7 @@ test("keeps a ten-card owner batch usable at 320px through popup recovery", asyn
 test("falls back from an unknown owner project and requires a listed selection", async ({
   page,
 }) => {
-  await page.goto(sitePath("/help/manage-project/?project=unknown-project"));
+  await page.goto(sitePath("/menu/manage-project/?project=unknown-project"));
 
   const project = page.getByLabel("Project", { exact: true });
   await expect(project).toHaveValue("");

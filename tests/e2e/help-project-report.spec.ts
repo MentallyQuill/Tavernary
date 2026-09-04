@@ -10,8 +10,8 @@ const projectUrl = "https://github.com/aikohanasaki/Aikobots";
 test("preselects a listed project and hands a correction to GitHub for review", async ({
   page,
 }) => {
-  await access("out/help/report-project/index.html");
-  await page.goto(sitePath(`/help/report-project/?project=${projectId}`));
+  await access("out/menu/report-project/index.html");
+  await page.goto(sitePath(`/menu/report-project/?project=${projectId}`));
   await page.evaluate(() => {
     Object.defineProperty(window, "open", {
       configurable: true,

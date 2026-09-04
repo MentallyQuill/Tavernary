@@ -345,17 +345,17 @@ test("keeps search evidence and corrections inside a 320px viewport", async ({
   ).toBeLessThanOrEqual(0);
 });
 
-test("keeps Help controls and private reporting inside a 320px viewport", async ({
+test("keeps Menu controls and private reporting inside a 320px viewport", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 700 });
-  await page.goto(sitePath("/help/"));
+  await page.goto(sitePath("/menu/"));
 
   await expect(
-    page.getByRole("link", { name: "Open private security reporting" }),
+    page.getByRole("link", { name: "Report a security issue privately" }),
   ).toBeVisible();
   await page.getByRole("link", { name: "Report a website problem" }).click();
-  await expect(page).toHaveURL(/\/help\/report-website\/?(?:\?|$)/u);
+  await expect(page).toHaveURL(/\/menu\/report-website\/?(?:\?|$)/u);
   await expect(page.getByRole("button", { name: "Review request" })).toHaveCSS(
     "min-height",
     "44px",
@@ -383,7 +383,7 @@ test("keeps Help controls and private reporting inside a 320px viewport", async 
 test("keeps the owner project selector usable at 320px", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 700 });
   await page.goto(
-    sitePath("/help/manage-project/?project=mentallyquill-directive"),
+    sitePath("/menu/manage-project/?project=mentallyquill-directive"),
   );
 
   const project = page.getByLabel("Project", { exact: true });
@@ -405,7 +405,7 @@ test("renders affected Kit projects as compact touch-safe choices", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 700 });
-  await page.goto(sitePath("/help/report-kit/?kit=aiko-s-loadout-30"));
+  await page.goto(sitePath("/menu/report-kit/?kit=aiko-s-loadout-30"));
   await page.getByLabel("What is wrong?").selectOption("compatibility-problem");
 
   const choice = page

@@ -100,7 +100,7 @@ export function OtherHelpForm({ siteRevision }: { siteRevision: string }) {
       manifest: {
         schema_version: 1,
         request_kind: "other-help",
-        origin: { page_url: "/help/other/", site_revision: siteRevision },
+        origin: { page_url: "/menu/other/", site_revision: siteRevision },
         payload,
       },
       prefills: [
@@ -172,7 +172,7 @@ export function OtherHelpForm({ siteRevision }: { siteRevision: string }) {
         </p>
         <p>
           Reporting a Tavernary vulnerability?{" "}
-          <Link href="/help/security/">Report it privately.</Link>
+          <Link href="/menu/security/">Report it privately.</Link>
         </p>
       </section>
       <HelpSelectField

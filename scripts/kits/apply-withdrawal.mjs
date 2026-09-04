@@ -5,7 +5,7 @@ import { pathToFileURL } from "node:url";
 import { normalizeKitWithdrawalManifest } from "../../src/features/kits/kit-withdrawal-manifest.mjs";
 
 const WITHDRAWAL_MANIFEST_HEADING = "Kit withdrawal manifest";
-const WITHDRAWAL_RETURN_URL = "https://tavernary.org/help/withdraw-kit/";
+const WITHDRAWAL_RETURN_URL = "https://tavernary.org/menu/withdraw-kit/";
 const KIT_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 
 export function applyKitWithdrawal({ kit, actorId, now }) {

@@ -10,16 +10,16 @@ right kind of review.
 | You want to… | Start here |
 | --- | --- |
 | Add a project | [Submit a project](/submit/project/) |
-| Fix a project card | [Report a project listing](/help/report-project/) |
-| Update your own project listing | [Manage your project listing](/help/manage-project/) |
+| Fix a project card | [Report a project listing](/menu/report-project/) |
+| Update your own project listing | [Update or rename your project listing](/menu/manage-project/) |
 | Make or edit a Kit | [Open the Kit Builder](/?mode=kits) |
-| Report a Kit | [Report a Kit](/help/report-kit/) |
-| Report a site problem | [Report a website problem](/help/report-website/) |
-| Ask another Tavernary question | [Get other help](/help/other/) |
+| Report a Kit | [Report a Kit](/menu/report-kit/) |
+| Report a site problem | [Report a website problem](/menu/report-website/) |
+| Ask another Tavernary question | [Get other help](/menu/other/) |
 | Change code, tests, or docs | Open a pull request in this repository |
 | Report a Tavernary security problem | Use the private path in [SECURITY.md](../../SECURITY.md) |
 
-![The Help hub routes different kinds of contributions](../assets/screenshots/help-hub.png)
+![The Menu routes different kinds of contributions](../assets/screenshots/menu-page.png)
 
 ## Add a project
 
@@ -45,7 +45,7 @@ not appear before the complete batch is accepted.
 
 The owner path is for the current personal GitHub owner of a verified
 repository. For an organization-owned repository, external source, or other
-listing concern, use [Report a project listing](/help/report-project/).
+listing concern, use [Report a project listing](/menu/report-project/).
 
 The owner form can:
 
@@ -88,11 +88,11 @@ inspect the generated diff instead.
 
 ## Report a problem
 
-The [Help hub](/help/) lets you review a report before it becomes a public
-GitHub issue. Ordinary reports must not contain secrets, credentials, or
-private personal information. Tavernary does not support third-party projects;
-send software-use questions to that project's own repository or support
-channel.
+The [Menu](/menu/) takes you to the matching report form, where you can review a
+report before it becomes a public GitHub issue. Ordinary reports must not
+contain secrets, credentials, or private personal information. Tavernary does
+not support third-party projects; send software-use questions to that project's
+own repository or support channel.
 
 For a vulnerability in Tavernary, use the private
 `security/advisories/new` flow described in [SECURITY.md](../../SECURITY.md).
