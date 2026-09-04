@@ -48,11 +48,11 @@ afterEach(() => {
 function menuExport({
   omit,
   securityHtml = "<main>Private report</main>",
-  legacyHtml = '<main data-menu-legacy-redirect="true">Moving to Menu</main>',
+  legacyDestination,
 }: {
   omit?: string;
   securityHtml?: string;
-  legacyHtml?: string;
+  legacyDestination?: string;
 } = {}) {
   const outputDirectory = mkdtempSync(
     resolve(tmpdir(), "tavernary-menu-export-"),
@@ -80,7 +80,13 @@ function menuExport({
     if (route === omit) continue;
     const directory = resolve(outputDirectory, route);
     mkdirSync(directory, { recursive: true });
-    writeFileSync(resolve(directory, "index.html"), legacyHtml);
+    const suffix = route === "help" ? "" : `${route.slice("help/".length)}/`;
+    const expectedDestination = `/menu/${suffix}`;
+    const destination = legacyDestination ?? expectedDestination;
+    writeFileSync(
+      resolve(directory, "index.html"),
+      `<main data-menu-legacy-redirect="true" data-menu-destination="${destination}"><a href="${destination}">Open the Menu page</a></main>`,
+    );
   }
   return outputDirectory;
 }
@@ -324,10 +330,8 @@ describe("verifyStaticExport", () => {
       ),
     ).rejects.toThrow("public issue form");
     await expect(
-      verifyMenuStaticRoutes(
-        menuExport({ legacyHtml: "<main>Old Help content</main>" }),
-      ),
-    ).rejects.toThrow("legacy Menu forward");
+      verifyMenuStaticRoutes(menuExport({ legacyDestination: "/menu/" })),
+    ).rejects.toThrow("matching Menu destination");
   });
 
   test("requires the exported TavernKeeper target manifest to exist and validate", async () => {

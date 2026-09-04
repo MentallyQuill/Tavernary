@@ -24,10 +24,29 @@ test("presents the whole-site Menu with management first", () => {
   expect(taskLinks[0]).toHaveTextContent(
     "Update or rename your project listing",
   );
-  expect(taskLinks[0]).toHaveAttribute("href", "/menu/manage-project");
-  expect(
-    screen.getByRole("link", { name: /Report a security issue privately/ }),
-  ).toHaveAttribute("href", "/menu/security");
+  const expectedLinks = [
+    ["Update or rename your project listing", "/menu/manage-project"],
+    ["Submit a project", "/submit/project"],
+    ["Build or manage Kits", "/?mode=kits"],
+    ["Withdraw a published Kit", "/menu/withdraw-kit"],
+    ["Browse projects", "/"],
+    ["Browse Kits", "/?mode=kits"],
+    ["About Tavernary", "/about"],
+    ["Catalog Policy", "/catalog-policy"],
+    ["Report a project listing", "/menu/report-project"],
+    ["Report a Kit", "/menu/report-kit"],
+    ["Report a website problem", "/menu/report-website"],
+    ["Ask a Tavernary question", "/menu/other"],
+    ["Report a security issue privately", "/menu/security"],
+  ] as const;
+  expect(taskLinks).toHaveLength(expectedLinks.length);
+  for (const [name, href] of expectedLinks) {
+    const link = taskLinks.find(
+      (candidate) =>
+        candidate.querySelector(".menu-item-title")?.textContent === name,
+    );
+    expect(link).toHaveAttribute("href", href);
+  }
   expect(screen.queryByRole("link", { name: /Support Tavernary/i })).toBeNull();
 });
 

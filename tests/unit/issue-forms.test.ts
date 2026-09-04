@@ -246,6 +246,12 @@ test("routes the GitHub issue chooser back to every Tavernary intake", async () 
     "https://tavernary.org/menu/manage-project/",
     "https://tavernary.org/menu/",
   ]);
+  expect(config.contact_links.map(({ name }) => name)).toEqual([
+    "Submit a project in Tavernary",
+    "Create or edit a Kit in Tavernary",
+    "Update or rename a project listing in Tavernary",
+    "Open the Tavernary Menu",
+  ]);
   for (const link of config.contact_links) {
     expect(link.name).toEqual(expect.any(String));
     expect(link.name.length).toBeGreaterThan(0);

@@ -1,3 +1,5 @@
+import { LegacyMenuRedirect } from "@/features/menu/components/legacy-menu-redirect";
+
 export default function LegacyHelpPage() {
-  return null;
+  return <LegacyMenuRedirect destination="/menu/" />;
 }

@@ -96,7 +96,10 @@ const legacyHelpExportPaths = [
   ...menuSubroutes.map((route) => `help/${route}`),
 ];
 
-export async function verifyMenuStaticRoutes(outputDirectory = "out") {
+export async function verifyMenuStaticRoutes(
+  outputDirectory = "out",
+  basePath = "",
+) {
   for (const route of [...menuExportPaths, ...legacyHelpExportPaths]) {
     await access(resolve(outputDirectory, route, "index.html"));
   }
@@ -118,6 +121,16 @@ export async function verifyMenuStaticRoutes(outputDirectory = "out") {
     );
     if (!html.includes('data-menu-legacy-redirect="true"')) {
       throw new Error(`${route} must export a legacy Menu forward`);
+    }
+    const suffix = route === "help" ? "" : `${route.slice("help/".length)}/`;
+    const destination = `/menu/${suffix}`;
+    if (
+      !html.includes(`data-menu-destination="${destination}"`) ||
+      !html.includes(`href="${basePath}${destination}"`)
+    ) {
+      throw new Error(
+        `${route} must export a legacy Menu forward to its matching Menu destination`,
+      );
     }
   }
 }
@@ -229,7 +242,7 @@ async function main() {
   await access("out/index.html");
   const html = await readFile("out/index.html", "utf8");
   verifyStaticExport(html, configuredBasePath());
-  await verifyMenuStaticRoutes();
+  await verifyMenuStaticRoutes("out", configuredBasePath());
   await verifyTavernKeeperStaticExport();
   await verifyCatalogStaticExport();
   console.log("Static export verified");

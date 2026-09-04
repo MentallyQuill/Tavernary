@@ -53,10 +53,18 @@ test("routes header visitors through every Menu path and back to the Menu", asyn
 
   for (const [name, path] of [
     ["Update or rename your project listing", "/menu/manage-project/"],
+    ["Submit a project", "/submit/project/"],
+    ["Build or manage Kits", "/?mode=kits"],
+    ["Withdraw a published Kit", "/menu/withdraw-kit/"],
+    ["Browse projects", "/"],
+    ["Browse Kits", "/?mode=kits"],
+    ["About Tavernary", "/about/"],
+    ["Catalog Policy", "/catalog-policy/"],
     ["Report a project listing", "/menu/report-project/"],
-    ["Report a website problem", "/menu/report-website/"],
     ["Report a Kit", "/menu/report-kit/"],
+    ["Report a website problem", "/menu/report-website/"],
     ["Ask a Tavernary question", "/menu/other/"],
+    ["Report a security issue privately", "/menu/security/"],
   ]) {
     await expect(page.getByRole("link", { name })).toHaveAttribute(
       "href",
