@@ -16791,6 +16791,232 @@
       }
     },
     {
+      "id": "brutalkoala-sillynpc",
+      "name": "SillyNPC",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "rpg-systems",
+      "summary": "SillyNPC for SillyTavern pairs a Character Stylist that detects speakers and injects portraits, colors, and speech dividers with a Status Tracker & HUD maintaining RPG state via an asynchronous background reading pass.",
+      "canonicalUrl": "https://github.com/BrutalKoala/SillyNPC",
+      "catalogedAt": "2026-09-04T09:24:40.885Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-rpg-gameplay",
+          "label": "Add RPG gameplay",
+          "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
+          "facet": "goal"
+        },
+        {
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "background-operation",
+          "label": "Background operation",
+          "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
+          "facet": "trait"
+        },
+        {
+          "id": "manage-inventory-and-quests",
+          "label": "Manage inventory and quests",
+          "description": "Track equipment, items, objectives, quests, or progression records.",
+          "facet": "goal"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "20e0c27dce7a1c9fcb1b130dec8a333fbab5a388",
+        "report": {
+          "reportId": "2073b6268226da04a27463dd45c0202cbc7e0826d22ffc0e0e9fdfda40a2ea03",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 6,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "24df682f41f7322fb50ddf3a107b672693d6ee13acb5d12594e74f4ede6ec43f",
+            "3b6d752f7d890db4c6b02ba863bf8d47046f920f06d0e56690ed1dade3ed8462",
+            "6a69bd652c67512746f4281e1f694aad65d6f8c48af037b91dde831cc096b4f6",
+            "993e0200a16ba962cce5134cd3fa01091c8259364c2b667f1ae10fdf7a7c6ed0",
+            "abec13b2961f36dffa0d9ffea18334bc2a2ba5e4be0651593289fbf75a363499",
+            "d7f5b7a6cef80dc62b44b7fa2b134292ec78a80b936c291be7a52e7b2286bcbd"
+          ],
+          "scannedSha": "20e0c27dce7a1c9fcb1b130dec8a333fbab5a388",
+          "treeUrl": "https://github.com/BrutalKoala/SillyNPC/tree/20e0c27dce7a1c9fcb1b130dec8a333fbab5a388",
+          "scannedAt": "2026-09-04T10:21:38.503Z",
+          "assessedAt": "2026-09-04T10:32:58.808Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "javascriptAnalysisStatus": "incomplete",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1354538739/20e0c27dce7a1c9fcb1b130dec8a333fbab5a388/5/2073b6268226da04a27463dd45c0202cbc7e0826d22ffc0e0e9fdfda40a2ea03/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1354538739/history/"
+        },
+        "history": [
+          {
+            "reportId": "2073b6268226da04a27463dd45c0202cbc7e0826d22ffc0e0e9fdfda40a2ea03",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 6,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "24df682f41f7322fb50ddf3a107b672693d6ee13acb5d12594e74f4ede6ec43f",
+              "3b6d752f7d890db4c6b02ba863bf8d47046f920f06d0e56690ed1dade3ed8462",
+              "6a69bd652c67512746f4281e1f694aad65d6f8c48af037b91dde831cc096b4f6",
+              "993e0200a16ba962cce5134cd3fa01091c8259364c2b667f1ae10fdf7a7c6ed0",
+              "abec13b2961f36dffa0d9ffea18334bc2a2ba5e4be0651593289fbf75a363499",
+              "d7f5b7a6cef80dc62b44b7fa2b134292ec78a80b936c291be7a52e7b2286bcbd"
+            ],
+            "scannedSha": "20e0c27dce7a1c9fcb1b130dec8a333fbab5a388",
+            "treeUrl": "https://github.com/BrutalKoala/SillyNPC/tree/20e0c27dce7a1c9fcb1b130dec8a333fbab5a388",
+            "scannedAt": "2026-09-04T10:21:38.503Z",
+            "assessedAt": "2026-09-04T10:32:58.808Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "incomplete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1354538739/20e0c27dce7a1c9fcb1b130dec8a333fbab5a388/5/2073b6268226da04a27463dd45c0202cbc7e0826d22ffc0e0e9fdfda40a2ea03/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1354538739/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1354538739/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "BrutalKoala"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-03T21:00:32.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-09-03T18:23:08.000Z",
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 4105,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-04T09:24:40.885Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/BrutalKoala/SillyNPC.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyNPC"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyNPC"
+        ],
+        "aliases": [],
+        "source": [
+          "brutalkoala-sillynpc",
+          "github-1354538739",
+          "BrutalKoala/SillyNPC",
+          "https://github.com/BrutalKoala/SillyNPC"
+        ],
+        "summary": [
+          "SillyNPC for SillyTavern pairs a Character Stylist that detects speakers and injects portraits, colors, and speech dividers with a Status Tracker & HUD maintaining RPG state via an asynchronous background reading pass."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "RPG systems and suites"
+        ],
+        "tags": [
+          "Add RPG gameplay",
+          "tabletop mechanics",
+          "game master tools",
+          "RPG systems",
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals",
+          "Background operation",
+          "asynchronous processing",
+          "quiet generation",
+          "background tasks",
+          "Manage inventory and quests",
+          "quest tracking",
+          "inventory management",
+          "equipment tracking",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "BrutalKoala"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "calamitousfelicitousness-sillytavern-reasoningprofiles",
       "name": "SillyTavern-ReasoningProfiles",
       "kind": "extension",
