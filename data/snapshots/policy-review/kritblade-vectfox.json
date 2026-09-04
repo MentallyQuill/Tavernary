@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "kritblade-vectfox",
+  "source_id": "github-1226349225",
+  "source_identity": "github:kritblade/vectfox",
+  "evidence_fingerprint": "55b59e26745ad6340584a83896b05fde671109343e2760a39e2855f6debdf62d",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-04T12:23:13.456Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-04T12:23:13.456Z"
+  },
+  "maintenance_issue_number": null
+}
