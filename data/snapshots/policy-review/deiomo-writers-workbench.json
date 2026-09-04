@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "deiomo-writers-workbench",
+  "source_id": "github-1356360868",
+  "source_identity": "github:deiomo/writers-workbench",
+  "evidence_fingerprint": "8b6220462bbc40ea1f5078b4fef4f00eaf46aacebec367c6d5213d4946d07b97",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-04T03:37:04.922Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-04T03:37:04.922Z"
+  },
+  "maintenance_issue_number": null
+}
