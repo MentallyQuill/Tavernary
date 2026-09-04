@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "brutalkoala-sillynpc",
+  "name": "SillyNPC",
+  "kind": "extension",
+  "summary": "SillyNPC for SillyTavern pairs a Character Stylist that detects speakers and injects portraits, colors, and speech dividers with a Status Tracker & HUD maintaining RPG state via an asynchronous background reading pass.",
+  "metadata_status": "curated",
+  "source_id": "github-1354538739",
+  "frontends": ["sillytavern"],
+  "primary_function": "rpg-systems",
+  "tags": [
+    "add-rpg-gameplay",
+    "add-visual-immersion",
+    "background-operation",
+    "manage-inventory-and-quests",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-09-04T09:24:40.885Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
