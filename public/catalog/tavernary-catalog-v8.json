@@ -25481,6 +25481,213 @@
       }
     },
     {
+      "id": "deiomo-writers-workbench",
+      "name": "Writers-Workbench",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "character-worldbuilding",
+      "summary": "Offline HTML builder for character cards and lorebooks for SillyTavern and other AI roleplay platforms, with templates for characters, scenarios, locations, factions, and concepts, plus markdown preview and export.",
+      "canonicalUrl": "https://github.com/deiomo/Writers-Workbench",
+      "catalogedAt": "2026-09-04T03:11:43.224Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "build-worlds-and-lore",
+          "label": "Build worlds and lore",
+          "description": "Create fictional settings, lore, locations, factions, or other world material.",
+          "facet": "goal"
+        },
+        {
+          "id": "create-character-cards",
+          "label": "Create character cards",
+          "description": "Generate or author ready-to-use AI roleplay character cards.",
+          "facet": "goal"
+        },
+        {
+          "id": "local-first",
+          "label": "Local-first",
+          "description": "Keeps its primary data and workflow on the user's own device.",
+          "facet": "trait"
+        },
+        {
+          "id": "manage-lorebooks",
+          "label": "Manage lorebooks",
+          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+          "facet": "goal"
+        },
+        {
+          "id": "privacy-focused",
+          "label": "Privacy-focused",
+          "description": "Explicitly minimizes data exposure or gives users strong control over sensitive data.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "7295562f553720b1070c912948d994860a2a7927",
+        "report": {
+          "reportId": "fae281f0dcbf5d8230694ae9f9ad5d1fd03c783fb7171732bf5a1148ddf53f60",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "7295562f553720b1070c912948d994860a2a7927",
+          "treeUrl": "https://github.com/deiomo/Writers-Workbench/tree/7295562f553720b1070c912948d994860a2a7927",
+          "scannedAt": "2026-09-04T03:49:04.576Z",
+          "assessedAt": "2026-09-04T04:01:41.605Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "javascriptAnalysisStatus": "complete",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1356360868/7295562f553720b1070c912948d994860a2a7927/5/fae281f0dcbf5d8230694ae9f9ad5d1fd03c783fb7171732bf5a1148ddf53f60/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1356360868/history/"
+        },
+        "history": [
+          {
+            "reportId": "fae281f0dcbf5d8230694ae9f9ad5d1fd03c783fb7171732bf5a1148ddf53f60",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "7295562f553720b1070c912948d994860a2a7927",
+            "treeUrl": "https://github.com/deiomo/Writers-Workbench/tree/7295562f553720b1070c912948d994860a2a7927",
+            "scannedAt": "2026-09-04T03:49:04.576Z",
+            "assessedAt": "2026-09-04T04:01:41.605Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1356360868/7295562f553720b1070c912948d994860a2a7927/5/fae281f0dcbf5d8230694ae9f9ad5d1fd03c783fb7171732bf5a1148ddf53f60/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1356360868/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1356360868/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "deiomo"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-04T02:24:48.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 351,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-04T03:11:43.224Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "Writers-Workbench"
+        ],
+        "aliases": [],
+        "source": [
+          "deiomo-writers-workbench",
+          "github-1356360868",
+          "deiomo/Writers-Workbench",
+          "https://github.com/deiomo/Writers-Workbench"
+        ],
+        "summary": [
+          "Offline HTML builder for character cards and lorebooks for SillyTavern and other AI roleplay platforms, with templates for characters, scenarios, locations, factions, and concepts, plus markdown preview and export."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Character and worldbuilding"
+        ],
+        "tags": [
+          "Build worlds and lore",
+          "worldbuilding",
+          "character worldbuilding",
+          "lore creation",
+          "setting design",
+          "Create character cards",
+          "character card generation",
+          "character creator",
+          "make characters",
+          "Local-first",
+          "stored locally",
+          "on-device data",
+          "local data ownership",
+          "Manage lorebooks",
+          "World Info management",
+          "worldbook organization",
+          "loredeck management",
+          "Privacy-focused",
+          "private by design",
+          "privacy preserving",
+          "data stays private"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "deiomo"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "devemberteam-ops-pyre",
       "name": "Pyre",
       "kind": "frontend",

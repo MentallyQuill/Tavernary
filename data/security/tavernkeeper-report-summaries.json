@@ -1,6 +1,6 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-09-03T12:27:14.248Z",
+  "generated_at": "2026-09-04T03:53:43.026Z",
   "preferred_report_ids": [
     "8585ad6405b32aa3c434a6dd81257f60a384ad8dea5df02ad5211a3f1f5768cf",
     "383b1635081f9366547124f9e19a4d52a19290f859c7f8d6ebb82930a5ca4787",
@@ -416,7 +416,8 @@
     "46ad5dd9451a737ccccfc56dfc0351ca0b4d607f7bb5688edc8ea42a03a389e2",
     "14f55228240338788536a5ff9b22375c5755b6d21a2938754752a3dbe987350a",
     "3c7c8a76ab00f91c2e22461db92c2626355a11b6f0f1b75d8922d7c70f578c9d",
-    "0f2c9976bd02aea9f9da2d0df0446ffc5038d7933142252165fd2ab666d53d8a"
+    "0f2c9976bd02aea9f9da2d0df0446ffc5038d7933142252165fd2ab666d53d8a",
+    "fae281f0dcbf5d8230694ae9f9ad5d1fd03c783fb7171732bf5a1148ddf53f60"
   ],
   "reports": [
     {
@@ -84649,6 +84650,91 @@
           "1eb8ae5d86a937827b9e7f887d91d40c2d22bfdf54629c0dd5c32c1762ee00ff",
           "70b520f57b1201e94ee1881b85fb555df8e03f6b33119f691601a6eac2a5c44e"
         ],
+        "interaction_chains": []
+      }
+    },
+    {
+      "report_id": "fae281f0dcbf5d8230694ae9f9ad5d1fd03c783fb7171732bf5a1148ddf53f60",
+      "report_digest": "fae281f0dcbf5d8230694ae9f9ad5d1fd03c783fb7171732bf5a1148ddf53f60",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "5",
+      "rule_catalog_version": "2",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "5",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v7",
+      "assessment_schema_version": "contextual-assessment-v2",
+      "source_id": "github-1356360868",
+      "provider": "github",
+      "repository_id": 1356360868,
+      "repository": "deiomo/Writers-Workbench",
+      "target_sha": "7295562f553720b1070c912948d994860a2a7927",
+      "completed_at": "2026-09-04T03:49:04.576Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 0,
+        "assessments": 0,
+        "observations": 0,
+        "items": 0,
+        "disposition": {
+          "expected_behavior": 0,
+          "minor_weakness": 0,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 0,
+          "low": 0,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 0,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 0,
+          "high": 0
+        },
+        "recommended_risk": {
+          "low": 0,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 3,
+        "inventory_bytes": 105710,
+        "tools_completed": 5,
+        "tools_not_applicable": 3,
+        "evidence_validated": 0,
+        "metadata_only_candidates": 0,
+        "review_required": 0,
+        "review_completed": 0,
+        "javascript_analysis_status": "complete"
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1356360868/7295562f553720b1070c912948d994860a2a7927/5/fae281f0dcbf5d8230694ae9f9ad5d1fd03c783fb7171732bf5a1148ddf53f60/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1356360868/history/",
+      "assessed_at": "2026-09-04T04:01:41.605Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
+      "danger_basis": "none",
+      "assessment_source": "deterministic_regrade",
+      "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 0,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
+        "cited_finding_ids": [],
         "interaction_chains": []
       }
     }
