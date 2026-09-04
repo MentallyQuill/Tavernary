@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "brutalkoala-sillynpc",
+  "source_id": "github-1354538739",
+  "source_identity": "github:brutalkoala/sillynpc",
+  "evidence_fingerprint": "80644714b40ff241cfb97879efbe7d8f600871b9bc9765a3006dc30cc9b26d32",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-04T09:49:42.313Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-04T09:49:42.313Z"
+  },
+  "maintenance_issue_number": null
+}
