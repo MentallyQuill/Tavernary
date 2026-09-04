@@ -1106,7 +1106,7 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
     page.getByRole("tooltip", { name: "Report this Kit" }),
   ).toBeVisible();
   await cardReportButton.click();
-  await expect(page).toHaveURL(/\/help\/report-kit\/?\?kit=alpha-kit-101/);
+  await expect(page).toHaveURL(/\/menu\/report-kit\/?\?kit=alpha-kit-101/);
   // The static test server does not resolve directory indexes without a
   // trailing slash, while Pages does. Reload the exported directory route to
   // verify the same contextual query hydrates the selected Kit.
@@ -1228,7 +1228,7 @@ test("routes Kit withdrawal through Tavernary with the current Kit selected", as
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();
   await page.getByRole("link", { name: "Request withdrawal" }).click();
 
-  await expect(page).toHaveURL(/\/help\/withdraw-kit\/?\?kit=alpha-kit-101$/u);
+  await expect(page).toHaveURL(/\/menu\/withdraw-kit\/?\?kit=alpha-kit-101$/u);
   await expect(
     page.getByRole("heading", { name: "Withdraw a Kit" }),
   ).toBeVisible();
