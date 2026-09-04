@@ -34,7 +34,11 @@ test("keeps site actions available without asking visitors for donations", () =>
     screen.getByRole("navigation", { name: "Site actions" }),
   );
   expect(actions.getByRole("link", { name: "About" })).toBeInTheDocument();
-  expect(actions.getByRole("link", { name: "Help" })).toBeInTheDocument();
+  expect(actions.getByRole("link", { name: "Menu" })).toHaveAttribute(
+    "href",
+    "/menu",
+  );
+  expect(actions.queryByRole("link", { name: "Help" })).toBeNull();
   expect(
     actions.getByRole("link", { name: "Submit Project" }),
   ).toBeInTheDocument();

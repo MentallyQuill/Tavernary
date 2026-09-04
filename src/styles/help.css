@@ -149,6 +149,72 @@
   margin-top: 28px;
 }
 
+.menu-groups,
+.menu-group,
+.menu-items,
+.menu-item {
+  display: grid;
+  min-width: 0;
+}
+
+.menu-groups {
+  gap: 30px;
+}
+
+.menu-group {
+  gap: 12px;
+}
+
+.menu-group > h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 1.15rem;
+}
+
+.menu-items {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.menu-item {
+  align-content: start;
+  gap: 6px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  color: inherit;
+  background: var(--color-bg-surface);
+  text-decoration: none;
+}
+
+.menu-item:hover,
+.menu-item:focus-visible {
+  border-color: var(--color-control-border-hover);
+  background: var(--color-bg-surface-hover);
+}
+
+.menu-item:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.menu-item-title {
+  color: var(--color-text-primary);
+  font-weight: 760;
+  line-height: 1.3;
+}
+
+.menu-item-description {
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.menu-group:first-child .menu-item:first-child {
+  grid-column: 1 / -1;
+  border-color: var(--color-accent-teal);
+}
+
 .help-form {
   display: grid;
   min-width: 0;
@@ -590,6 +656,10 @@
   .help-actions button,
   .help-security-actions a {
     width: 100%;
+  }
+
+  .menu-items {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .source-card-batch-heading {

@@ -42,9 +42,9 @@ test("matches the approved mobile header hierarchy", async ({ page }) => {
   const actions = page.locator(".header-actions");
   await expect(actions).toContainText("Submit Project");
   await expect(actions).toContainText("About");
-  await expect(actions).toContainText("Help");
+  await expect(actions).toContainText("Menu");
   await expect(actions.getByRole("link", { name: "About" })).toBeHidden();
-  await expect(actions.getByRole("link", { name: "Help" })).toBeVisible();
+  await expect(actions.getByRole("link", { name: "Menu" })).toBeVisible();
   await expect(actions.getByRole("link", { name: /ko-fi|donat/i })).toHaveCount(
     0,
   );
