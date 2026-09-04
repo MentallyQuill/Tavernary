@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1354538739",
+  "head_sha": "20e0c27dce7a1c9fcb1b130dec8a333fbab5a388",
+  "observed_at": "2026-09-04T09:25:01.716Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyNPC",
+  "manifest": {
+    "display_name": "SillyNPC - Character Stylist & Status Tracker",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
