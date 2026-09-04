@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mattjaybe-sillytavern-echochamber",
+  "source_id": "github-1128074609",
+  "source_identity": "github:mattjaybe/sillytavern-echochamber",
+  "evidence_fingerprint": "20414c5f52bb09532f148ba6342b0b8adde8452d5e406e90dfdbbcdb77bb1c20",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-04T12:20:24.916Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-04T12:20:24.916Z"
+  },
+  "maintenance_issue_number": null
+}
