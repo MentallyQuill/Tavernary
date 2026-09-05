@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sillytavern-sillytavern-pronouns",
+  "source_id": "github-1068908642",
+  "source_identity": "github:sillytavern/sillytavern-pronouns",
+  "evidence_fingerprint": "4531364359c43fa838247c17f84a3d6045beba7d6129c76c9bf2e660461eead6",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-05T11:27:51.624Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-05T11:27:51.624Z"
+  },
+  "maintenance_issue_number": null
+}
