@@ -35,17 +35,17 @@
     "evidence_head_sha": "a6460efb1d63953089532ebc224e0777adbd8047"
   },
   "community": {
-    "stars_count": 0,
+    "stars_count": 1,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 0
+    "aggregate": 1
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "Unlicense",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-04T12:09:57.911Z",
+  "refreshed_at": "2026-09-05T11:18:03.354Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -53,7 +53,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-04T12:09:57.911Z",
+    "refreshed_at": "2026-09-05T11:18:03.354Z",
     "stale_since": null
   }
 }

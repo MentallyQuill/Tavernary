@@ -9,18 +9,23 @@
     "url": "https://github.com/Wanichka/sillytavern-context-tracker",
     "description": "A SillyTavern UI extension",
     "default_branch": "main",
-    "head_sha": "310e3407bfdc35d0d3cc19deaa7825fd91cd67a7",
-    "head_committed_at": "2026-07-14T10:00:47.000Z",
+    "head_sha": "262b726d0bb9c2c866f9c8b385e92046f56f41fd",
+    "head_committed_at": "2026-09-05T10:44:24.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-13T21:44:33.000Z",
-    "size_kb": 96
+    "size_kb": 106
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-14T10:00:47.000Z",
+    "latest_source_activity_at": "2026-09-05T10:44:24.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-09-05T10:44:24.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-13",
         "latest_at": "2026-07-14T10:00:47.000Z",
@@ -30,9 +35,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-06T03:41:51.094Z",
+    "baseline_completed_at": "2026-09-05T11:18:03.354Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "310e3407bfdc35d0d3cc19deaa7825fd91cd67a7"
+    "evidence_head_sha": "262b726d0bb9c2c866f9c8b385e92046f56f41fd"
   },
   "community": {
     "stars_count": 1,
@@ -45,7 +50,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-04T12:09:57.911Z",
+  "refreshed_at": "2026-09-05T11:18:03.354Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -53,7 +58,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-04T12:09:57.911Z",
+    "refreshed_at": "2026-09-05T11:18:03.354Z",
     "stale_since": null
   }
 }
