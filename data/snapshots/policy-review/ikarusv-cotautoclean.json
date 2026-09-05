@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "ikarusv-cotautoclean",
+  "source_id": "github-1216523143",
+  "source_identity": "github:ikarusv/cotautoclean",
+  "evidence_fingerprint": "aade554e5bbd3fa38670c9a66b1388aa146fa92d2b0eae11287dbec5c284a12c",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-05T11:31:12.945Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-05T11:31:12.945Z"
+  },
+  "maintenance_issue_number": null
+}
