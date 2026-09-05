@@ -1,0 +1,30 @@
+{
+  "schema_version": 6,
+  "id": "starlitcode-lumiverse-auto-refine",
+  "name": "Lumiverse-Auto-Refine",
+  "kind": "extension",
+  "summary": "Auto Refine rewrites finished replies to the writing rules you wrote, saving the result into the chat so the wording sticks. Checks drop a bad rewrite, the greeting is never touched, and any refine can be put back.",
+  "metadata_status": "curated",
+  "source_id": "github-1354250444",
+  "frontends": ["lumiverse"],
+  "primary_function": "generation-reasoning",
+  "tags": [
+    "automate-roleplay-workflows",
+    "edit-and-refine-messages",
+    "hands-free",
+    "improve-writing-and-prose",
+    "rules-driven",
+    "secondary-model"
+  ],
+  "cataloged_at": "2026-09-05T20:30:03.642Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "manual", "note": "Verified repository owner selection." }
+  }
+}
