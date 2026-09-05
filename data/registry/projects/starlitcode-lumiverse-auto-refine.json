@@ -1,7 +1,7 @@
 {
   "schema_version": 6,
   "id": "starlitcode-lumiverse-auto-refine",
-  "name": "Lumiverse-Auto-Refine",
+  "name": "Auto Refine",
   "kind": "extension",
   "summary": "Auto Refine rewrites finished replies to the writing rules you wrote, saving the result into the chat so the wording sticks. Checks drop a bad rewrite, the greeting is never touched, and any refine can be put back.",
   "metadata_status": "curated",
