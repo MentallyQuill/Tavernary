@@ -97797,7 +97797,7 @@
     },
     {
       "id": "starlitcode-lumiverse-auto-refine",
-      "name": "Lumiverse-Auto-Refine",
+      "name": "Auto Refine",
       "kind": "extension",
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
@@ -97965,7 +97965,7 @@
       "fork": null,
       "search": {
         "title": [
-          "Lumiverse-Auto-Refine"
+          "Auto Refine"
         ],
         "aliases": [],
         "source": [
@@ -98023,12 +98023,12 @@
     },
     {
       "id": "starlitcode-lumiverse-auto-retry",
-      "name": "Lumiverse Auto-Retry",
+      "name": "Auto Retry",
       "kind": "extension",
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
-      "primaryFunction": "generation-reasoning",
-      "summary": "Auto Retry retries failed, empty, stalled, cut-off, or mistakenly refused AI replies. Inspired by Hikarushmz's SillyTavern fetch-retry, but built from scratch. Includes optional find-and-replace feature.",
+      "primaryFunction": "interface-workflow",
+      "summary": "Auto Retry re-runs an AI reply when it fails, comes back empty, stalls, gets cut off mid-sentence, or refuses by mistake, so you do not have to catch it and press regenerate yourself.",
       "canonicalUrl": "https://github.com/starlitcode/Lumiverse-Auto-Retry",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -98047,12 +98047,6 @@
           "facet": "goal"
         },
         {
-          "id": "edit-and-refine-messages",
-          "label": "Edit and refine messages",
-          "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
-          "facet": "goal"
-        },
-        {
           "id": "recover-failed-generations",
           "label": "Recover failed generations",
           "description": "Retry, resume, or repair failed, empty, interrupted, or stalled model responses.",
@@ -98065,15 +98059,21 @@
           "facet": "trait"
         },
         {
-          "id": "background-operation",
-          "label": "Background operation",
-          "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
-          "facet": "trait"
-        },
-        {
           "id": "streaming-aware",
           "label": "Streaming-aware",
           "description": "Observes, transforms, or reacts to model output while it is still streaming.",
+          "facet": "trait"
+        },
+        {
+          "id": "model-agnostic",
+          "label": "Model-agnostic",
+          "description": "Works across a broad range of model providers rather than requiring one model family.",
+          "facet": "trait"
+        },
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
           "facet": "trait"
         }
       ],
@@ -98432,7 +98432,7 @@
       "fork": null,
       "search": {
         "title": [
-          "Lumiverse Auto-Retry"
+          "Auto Retry"
         ],
         "aliases": [],
         "source": [
@@ -98442,13 +98442,13 @@
           "https://github.com/starlitcode/Lumiverse-Auto-Retry"
         ],
         "summary": [
-          "Auto Retry retries failed, empty, stalled, cut-off, or mistakenly refused AI replies. Inspired by Hikarushmz's SillyTavern fetch-retry, but built from scratch. Includes optional find-and-replace feature."
+          "Auto Retry re-runs an AI reply when it fails, comes back empty, stalls, gets cut off mid-sentence, or refuses by mistake, so you do not have to catch it and press regenerate yourself."
         ],
         "kind": [
           "extension"
         ],
         "primaryFunction": [
-          "Generation and reasoning"
+          "Interface and workflow"
         ],
         "tags": [
           "Automate roleplay workflows",
@@ -98456,10 +98456,6 @@
           "workflow automation",
           "task automation",
           "triggered actions",
-          "Edit and refine messages",
-          "message rewriting",
-          "chat editing",
-          "response refinement",
           "Recover failed generations",
           "automatic retry",
           "generation recovery",
@@ -98468,14 +98464,18 @@
           "voice loop",
           "automatic conversation flow",
           "no-touch interaction",
-          "Background operation",
-          "asynchronous processing",
-          "quiet generation",
-          "background tasks",
           "Streaming-aware",
           "live token processing",
           "stream processing",
-          "incremental output handling"
+          "incremental output handling",
+          "Model-agnostic",
+          "bring your own model",
+          "BYOM",
+          "provider independent",
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay"
         ],
         "frontends": [
           "Lumiverse"
