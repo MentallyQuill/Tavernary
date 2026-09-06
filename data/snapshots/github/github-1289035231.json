@@ -9,21 +9,26 @@
     "url": "https://github.com/unrefined803/RPGraph",
     "description": null,
     "default_branch": "main",
-    "head_sha": "ba528e0f2f802ae2a57a367e161b24d587e046f8",
-    "head_committed_at": "2026-08-13T09:16:14.000Z",
+    "head_sha": "afa75164a83f12b72f25f3469f5a28b22f9cecfc",
+    "head_committed_at": "2026-09-06T04:38:55.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-04T09:02:35.000Z",
-    "size_kb": 24212
+    "size_kb": 27220
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-13T09:16:14.000Z",
+    "latest_source_activity_at": "2026-09-06T04:38:55.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-09-06T04:38:55.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-13T09:16:14.000Z",
+        "latest_at": "2026-08-13T09:31:11.000Z",
         "precision": "exact"
       },
       {
@@ -60,9 +65,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-12T08:41:42.763Z",
+    "baseline_completed_at": "2026-09-06T11:41:00.662Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "ba528e0f2f802ae2a57a367e161b24d587e046f8"
+    "evidence_head_sha": "afa75164a83f12b72f25f3469f5a28b22f9cecfc"
   },
   "community": {
     "stars_count": 43,
@@ -75,7 +80,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-05T11:18:03.354Z",
+  "refreshed_at": "2026-09-06T11:41:00.662Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -87,7 +92,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-05T11:18:03.354Z",
+    "refreshed_at": "2026-09-06T11:41:00.662Z",
     "stale_since": null
   }
 }

@@ -9,18 +9,23 @@
     "url": "https://github.com/platberlitz/sillytavern-image-gen",
     "description": "SillyTavern extension for AI image generation with multiple backend support",
     "default_branch": "main",
-    "head_sha": "f6c9d308ad775160dda0559366f64ed4cdfd37f6",
-    "head_committed_at": "2026-08-28T07:41:36.000Z",
+    "head_sha": "5915f096d899960b5013b759556098d310b2fc08",
+    "head_committed_at": "2026-09-06T01:23:19.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-12T06:21:59.000Z",
-    "size_kb": 1163
+    "size_kb": 1280
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-28T07:41:36.000Z",
+    "latest_source_activity_at": "2026-09-06T01:23:19.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-09-06T01:23:19.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-24",
         "latest_at": "2026-08-28T07:41:36.000Z",
@@ -70,32 +75,27 @@
         "week_start": "2026-06-15",
         "latest_at": "2026-06-16T01:28:58.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-12T21:55:47.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-28T19:28:33.238Z",
+    "baseline_completed_at": "2026-09-06T11:41:00.662Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "f6c9d308ad775160dda0559366f64ed4cdfd37f6"
+    "evidence_head_sha": "5915f096d899960b5013b759556098d310b2fc08"
   },
   "community": {
-    "stars_count": 32,
+    "stars_count": 33,
     "forks_count": 5,
     "watchers_count": 1,
-    "aggregate": 38
+    "aggregate": 39
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-05T11:18:03.354Z",
+  "refreshed_at": "2026-09-06T11:41:00.662Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -108,7 +108,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-05T11:18:03.354Z",
+    "refreshed_at": "2026-09-06T11:41:00.662Z",
     "stale_since": null
   }
 }

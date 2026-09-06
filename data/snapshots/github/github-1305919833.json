@@ -7,7 +7,7 @@
     "owner": "N0819",
     "name": "Sonder_Engine",
     "url": "https://github.com/N0819/Sonder_Engine",
-    "description": "An engine for creating coherent fiction with LLMs",
+    "description": "An engine for creating coherent fiction with LLMs through a persistent worldstate with deterministic epistemic boundaries",
     "default_branch": "main",
     "head_sha": "c0d9276d567a8ea38b579aef340a3cc7ee5e033e",
     "head_committed_at": "2026-09-01T23:58:11.000Z",
@@ -80,7 +80,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-05T11:18:03.354Z",
+  "refreshed_at": "2026-09-06T11:41:00.662Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -91,7 +91,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-05T11:18:03.354Z",
+    "refreshed_at": "2026-09-06T11:41:00.662Z",
     "stale_since": null
   }
 }

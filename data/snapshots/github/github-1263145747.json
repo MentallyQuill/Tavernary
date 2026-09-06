@@ -9,21 +9,21 @@
     "url": "https://github.com/starlitcode/Lumiverse-Auto-Retry",
     "description": "Retries Al replies that  fail, come back empty, stall, or get cut off. A  Lumiverse Spindle extension",
     "default_branch": "stable",
-    "head_sha": "cc82e1ed4d0309ab24f2c3ff8f5cb79cc1a1b9af",
-    "head_committed_at": "2026-09-01T23:14:18.000Z",
+    "head_sha": "46112ddb5d1f2cfa48ac621e2d51d6fe36b6b179",
+    "head_committed_at": "2026-09-06T07:11:34.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-08T17:04:25.000Z",
-    "size_kb": 18477
+    "size_kb": 1519
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-01T23:14:18.000Z",
+    "latest_source_activity_at": "2026-09-06T07:00:42.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-31",
-        "latest_at": "2026-09-01T23:14:18.000Z",
+        "latest_at": "2026-09-06T07:00:42.000Z",
         "precision": "exact"
       },
       {
@@ -80,9 +80,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-02T12:09:05.030Z",
+    "baseline_completed_at": "2026-09-06T11:41:00.662Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "cc82e1ed4d0309ab24f2c3ff8f5cb79cc1a1b9af"
+    "evidence_head_sha": "46112ddb5d1f2cfa48ac621e2d51d6fe36b6b179"
   },
   "community": {
     "stars_count": 2,
@@ -95,18 +95,15 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-05T11:18:03.354Z",
+  "refreshed_at": "2026-09-06T11:41:00.662Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [
-      { "login": "starlitcode", "type": "User", "provider": "github" },
-      { "login": "claude", "type": "User", "provider": "github" }
-    ],
+    "accounts": [{ "login": "claude", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-05T11:18:03.354Z",
+    "refreshed_at": "2026-09-06T11:41:00.662Z",
     "stale_since": null
   }
 }
