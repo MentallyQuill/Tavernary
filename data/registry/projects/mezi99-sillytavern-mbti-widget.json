@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "mezi99-sillytavern-mbti-widget",
+  "name": "SillyTavern-MBTI_Widget",
+  "kind": "extension",
+  "summary": "A SillyTavern extension that analyzes your chat messages to build and visualize an evolving MBTI personality profile, featuring a radar chart, per-chat profiles, trail history, and editable analysis prompts.",
+  "metadata_status": "curated",
+  "source_id": "github-1221553252",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": [
+    "manage-prompts-and-presets",
+    "persistent-state",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-09-07T10:55:35.673Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
