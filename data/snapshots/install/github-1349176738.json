@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1349176738",
+  "head_sha": "159fd54cd426f4efb345677dde496588307f4cfd",
+  "observed_at": "2026-09-07T13:59:40.926Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "game-manager-st",
+  "manifest": {
+    "display_name": "Game Manager",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
