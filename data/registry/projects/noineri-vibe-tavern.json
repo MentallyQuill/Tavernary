@@ -8,13 +8,23 @@
   "source_id": "github-1218770712",
   "frontends": ["vibe-tavern"],
   "primary_function": "frontend",
-  "tags": ["local-first", "mobile-friendly"],
+  "tags": [
+    "local-first",
+    "mobile-friendly",
+    "build-worlds-and-lore",
+    "add-rpg-gameplay",
+    "model-agnostic",
+    "create-character-cards"
+  ],
   "cataloged_at": "2026-08-08T02:41:53.971Z",
   "catalog_cohort": "standard",
   "listing_status": "active",
   "listing_status_reason": null,
   "metadata_policy": {
-    "summary": { "mode": "automatic" },
-    "tags": { "mode": "automatic" }
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "manual", "note": "Verified repository owner selection." }
   }
 }
