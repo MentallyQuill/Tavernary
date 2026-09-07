@@ -3,14 +3,14 @@
   "project_id": "noineri-vibe-tavern",
   "source_id": "github-1218770712",
   "source_identity": "github:noineri/vibe_tavern",
-  "evidence_fingerprint": "cc5b268c6447718d0422b151c1ce27d36a55581799bae8790129922bf3f7b27e",
+  "evidence_fingerprint": "c18db4e7fe136d27bb5c81e76f04c1c7cefc5b7c6e8aa00122574f6c64068ed3",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-09T12:09:55.040Z",
+  "reviewed_at": "2026-09-07T17:25:02.983Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-09T12:09:55.040Z"
+    "attempts": 3,
+    "last_failure_at": "2026-09-07T17:25:02.983Z"
   },
   "maintenance_issue_number": null
 }
