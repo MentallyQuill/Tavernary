@@ -863,6 +863,212 @@
   ],
   "projects": [
     {
+      "id": "0cyris-sillytavern-askplayer",
+      "name": "SillyTavern-AskPlayer",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "Exposes an AskUserQuestion function tool so the GM can pause mid-turn for mechanical player decisions, then resumes the same generation in one unbroken message. Built for RPG rules moments like D&D reaction choices.",
+      "canonicalUrl": "https://github.com/0cyris/SillyTavern-AskPlayer",
+      "catalogedAt": "2026-09-07T15:11:09.146Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-rpg-gameplay",
+          "label": "Add RPG gameplay",
+          "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
+          "facet": "goal"
+        },
+        {
+          "id": "agentic-tool-use",
+          "label": "Agentic tool use",
+          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
+          "facet": "trait"
+        },
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "1993a0b550d41d98bf5859a05246e041aa09151b",
+        "report": {
+          "reportId": "04b72635c33101fd0959fcb2c5255523115f3b0aef41361e0bb698264eb5aaa7",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 6,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "3eac7cc5d1198707533ee635be850464e16456964cc8b247d4c85fc4cc14bd5b",
+            "567dd47f556373b0d895d7fb20e34b8ff032d0008f2d6fcef05c57c891d431a4",
+            "ad85fc1933b2175eb745606ec7cd13fa86c424f14314b5692075f1298dc2554a",
+            "b2acce60a9badbe0dc3768940c346c603d07f57c6e87fcd4302119f7b99d19ac",
+            "e6558ffadfe6b48733bb297dee2914f76bc5a68f2ed5e0cf0d1711aba052ce14",
+            "f6fd0759e19e5879585cb24d6533f593a167eb3f83640e6328ebec031e4af6ff"
+          ],
+          "scannedSha": "1993a0b550d41d98bf5859a05246e041aa09151b",
+          "treeUrl": "https://github.com/0cyris/SillyTavern-AskPlayer/tree/1993a0b550d41d98bf5859a05246e041aa09151b",
+          "scannedAt": "2026-09-07T15:41:35.388Z",
+          "assessedAt": "2026-09-07T15:43:47.361Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "javascriptAnalysisStatus": "complete",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1334528678/1993a0b550d41d98bf5859a05246e041aa09151b/5/04b72635c33101fd0959fcb2c5255523115f3b0aef41361e0bb698264eb5aaa7/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1334528678/history/"
+        },
+        "history": [
+          {
+            "reportId": "04b72635c33101fd0959fcb2c5255523115f3b0aef41361e0bb698264eb5aaa7",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 6,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "3eac7cc5d1198707533ee635be850464e16456964cc8b247d4c85fc4cc14bd5b",
+              "567dd47f556373b0d895d7fb20e34b8ff032d0008f2d6fcef05c57c891d431a4",
+              "ad85fc1933b2175eb745606ec7cd13fa86c424f14314b5692075f1298dc2554a",
+              "b2acce60a9badbe0dc3768940c346c603d07f57c6e87fcd4302119f7b99d19ac",
+              "e6558ffadfe6b48733bb297dee2914f76bc5a68f2ed5e0cf0d1711aba052ce14",
+              "f6fd0759e19e5879585cb24d6533f593a167eb3f83640e6328ebec031e4af6ff"
+            ],
+            "scannedSha": "1993a0b550d41d98bf5859a05246e041aa09151b",
+            "treeUrl": "https://github.com/0cyris/SillyTavern-AskPlayer/tree/1993a0b550d41d98bf5859a05246e041aa09151b",
+            "scannedAt": "2026-09-07T15:41:35.388Z",
+            "assessedAt": "2026-09-07T15:43:47.361Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1334528678/1993a0b550d41d98bf5859a05246e041aa09151b/5/04b72635c33101fd0959fcb2c5255523115f3b0aef41361e0bb698264eb5aaa7/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1334528678/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1334528678/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "0cyris"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-14T20:33:33.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-08-14T20:21:51.000Z",
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 152,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-07T15:11:09.146Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/0cyris/SillyTavern-AskPlayer.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-AskPlayer"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-AskPlayer"
+        ],
+        "aliases": [],
+        "source": [
+          "0cyris-sillytavern-askplayer",
+          "github-1334528678",
+          "0cyris/SillyTavern-AskPlayer",
+          "https://github.com/0cyris/SillyTavern-AskPlayer"
+        ],
+        "summary": [
+          "Exposes an AskUserQuestion function tool so the GM can pause mid-turn for mechanical player decisions, then resumes the same generation in one unbroken message. Built for RPG rules moments like D&D reaction choices."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Add RPG gameplay",
+          "tabletop mechanics",
+          "game master tools",
+          "RPG systems",
+          "Agentic tool use",
+          "tool calling",
+          "AI agents",
+          "agent mode",
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "0cyris"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "0cyris-sillytavern-imagegen",
       "name": "SillyTavern-ImageGen",
       "kind": "extension",
