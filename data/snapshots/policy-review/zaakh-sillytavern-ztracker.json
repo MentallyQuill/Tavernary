@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "zaakh-sillytavern-ztracker",
+  "source_id": "github-1138762188",
+  "source_identity": "github:zaakh/sillytavern-ztracker",
+  "evidence_fingerprint": "0bdb1532a0f42c9e669db5e8f180a17a8c17b8aa323e6bf04540ba3c271cd124",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-07T13:43:47.095Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-07T13:43:47.095Z"
+  },
+  "maintenance_issue_number": null
+}
