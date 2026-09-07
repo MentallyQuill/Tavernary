@@ -71303,6 +71303,30 @@
           "label": "Mobile-friendly",
           "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
           "facet": "trait"
+        },
+        {
+          "id": "build-worlds-and-lore",
+          "label": "Build worlds and lore",
+          "description": "Create fictional settings, lore, locations, factions, or other world material.",
+          "facet": "goal"
+        },
+        {
+          "id": "add-rpg-gameplay",
+          "label": "Add RPG gameplay",
+          "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
+          "facet": "goal"
+        },
+        {
+          "id": "model-agnostic",
+          "label": "Model-agnostic",
+          "description": "Works across a broad range of model providers rather than requiring one model family.",
+          "facet": "trait"
+        },
+        {
+          "id": "create-character-cards",
+          "label": "Create character cards",
+          "description": "Generate or author ready-to-use AI roleplay character cards.",
+          "facet": "goal"
         }
       ],
       "tavernKeeper": {
@@ -71673,7 +71697,24 @@
           "Mobile-friendly",
           "mobile support",
           "phone friendly",
-          "responsive mobile UI"
+          "responsive mobile UI",
+          "Build worlds and lore",
+          "worldbuilding",
+          "character worldbuilding",
+          "lore creation",
+          "setting design",
+          "Add RPG gameplay",
+          "tabletop mechanics",
+          "game master tools",
+          "RPG systems",
+          "Model-agnostic",
+          "bring your own model",
+          "BYOM",
+          "provider independent",
+          "Create character cards",
+          "character card generation",
+          "character creator",
+          "make characters"
         ],
         "frontends": [
           "vibe_tavern"
