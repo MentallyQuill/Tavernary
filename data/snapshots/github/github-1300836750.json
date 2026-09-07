@@ -9,21 +9,21 @@
     "url": "https://github.com/maxime-fleury/ST-cardEditor",
     "description": null,
     "default_branch": "master",
-    "head_sha": "1ad643a34c1a2801be96f5a4cf4dea344395335b",
-    "head_committed_at": "2026-09-04T13:15:49.000Z",
+    "head_sha": "51baba544bfd4b70aab2073cb7cd7eda6c782d73",
+    "head_committed_at": "2026-09-06T22:33:59.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-14T18:36:22.000Z",
-    "size_kb": 11838
+    "size_kb": 8476
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-04T13:15:49.000Z",
+    "latest_source_activity_at": "2026-09-06T22:33:59.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-31",
-        "latest_at": "2026-09-04T13:15:49.000Z",
+        "latest_at": "2026-09-06T22:33:59.000Z",
         "precision": "interval"
       },
       {
@@ -48,11 +48,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-09-04T13:07:11.000Z",
+    "latest_release_at": "2026-09-06T22:34:48.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-02T12:09:05.030Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "1ad643a34c1a2801be96f5a4cf4dea344395335b"
+    "evidence_head_sha": "51baba544bfd4b70aab2073cb7cd7eda6c782d73"
   },
   "community": {
     "stars_count": 14,
@@ -65,7 +65,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-06T11:41:00.662Z",
+  "refreshed_at": "2026-09-07T13:32:56.615Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -78,7 +78,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-06T11:41:00.662Z",
+    "refreshed_at": "2026-09-07T13:32:56.615Z",
     "stale_since": null
   }
 }

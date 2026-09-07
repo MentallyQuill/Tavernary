@@ -9,21 +9,21 @@
     "url": "https://github.com/MultihogAurelius/SillyTavern-MultihogDnDFramework",
     "description": "Started off as a humble \"RPG State Tracker\" but has since expanded into a more ambitious game engine, simulation system, and modular RPG platform where you can even make your own RPGs with their own systems and game logic. The framework is committed to absolute simulation autism. The world must function even without your inputs.",
     "default_branch": "main",
-    "head_sha": "6bfdf9ef1f5f0b2e1e6f36ec60440bdba2634ba7",
-    "head_committed_at": "2026-09-05T16:30:59.000Z",
+    "head_sha": "de2d97b389eb328218437f07aedb58439b0dabaa",
+    "head_committed_at": "2026-09-06T17:45:11.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-16T01:18:13.000Z",
-    "size_kb": 10287
+    "size_kb": 10723
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-05T16:30:59.000Z",
+    "latest_source_activity_at": "2026-09-06T17:45:11.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-31",
-        "latest_at": "2026-09-05T16:30:59.000Z",
+        "latest_at": "2026-09-06T17:45:11.000Z",
         "precision": "exact"
       },
       {
@@ -75,11 +75,6 @@
         "week_start": "2026-06-22",
         "latest_at": "2026-06-28T18:00:22.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-15",
-        "latest_at": "2026-06-21T18:17:28.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
@@ -87,20 +82,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-01T12:37:05.520Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "6bfdf9ef1f5f0b2e1e6f36ec60440bdba2634ba7"
+    "evidence_head_sha": "de2d97b389eb328218437f07aedb58439b0dabaa"
   },
   "community": {
-    "stars_count": 78,
+    "stars_count": 79,
     "forks_count": 18,
-    "watchers_count": 0,
-    "aggregate": 96
+    "watchers_count": 1,
+    "aggregate": 98
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-06T11:41:00.662Z",
+  "refreshed_at": "2026-09-07T13:32:56.615Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -116,7 +111,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-06T11:41:00.662Z",
+    "refreshed_at": "2026-09-07T13:32:56.615Z",
     "stale_since": null
   }
 }

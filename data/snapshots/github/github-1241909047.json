@@ -9,31 +9,26 @@
     "url": "https://github.com/mokimoko/SillyTavern-UIBedazzler",
     "description": "redesigns some UI elements and adds some new ones",
     "default_branch": "main",
-    "head_sha": "9a8f395335841011d0e31174c658dfb28d96477c",
-    "head_committed_at": "2026-09-01T20:28:07.000Z",
+    "head_sha": "c48b364ce00611718a3ac9cffb912f10344dbcae",
+    "head_committed_at": "2026-09-06T20:22:48.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-18T00:40:11.000Z",
-    "size_kb": 1560
+    "size_kb": 1872
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-01T20:28:07.000Z",
+    "latest_source_activity_at": "2026-09-06T20:22:48.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-31",
-        "latest_at": "2026-09-01T20:28:07.000Z",
+        "latest_at": "2026-09-06T20:22:48.000Z",
         "precision": "exact"
       },
       {
         "week_start": "2026-08-17",
         "latest_at": "2026-08-18T13:46:20.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-15",
-        "latest_at": "2026-06-20T17:12:21.000Z",
         "precision": "exact"
       }
     ],
@@ -42,7 +37,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-02T22:00:21.637Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "9a8f395335841011d0e31174c658dfb28d96477c"
+    "evidence_head_sha": "c48b364ce00611718a3ac9cffb912f10344dbcae"
   },
   "community": {
     "stars_count": 4,
@@ -51,7 +46,7 @@
     "aggregate": 5
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-06T11:41:00.662Z",
+  "refreshed_at": "2026-09-07T13:32:56.615Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -59,7 +54,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-06T11:41:00.662Z",
+    "refreshed_at": "2026-09-07T13:32:56.615Z",
     "stale_since": null
   }
 }

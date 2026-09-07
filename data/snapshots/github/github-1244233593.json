@@ -9,30 +9,30 @@
     "url": "https://github.com/mokimoko/SillyTavern-WordCount",
     "description": "simple word count extension for SillyTavern",
     "default_branch": "main",
-    "head_sha": "d015a0ca345e5d4beeaa7c9bf4df90598ad414a2",
-    "head_committed_at": "2026-06-11T05:05:15.000Z",
+    "head_sha": "ff7cfc0dd180a62a7b714fd6ab4008c6046d9ffe",
+    "head_committed_at": "2026-09-06T20:22:19.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-20T04:48:44.000Z",
-    "size_kb": 6
+    "size_kb": 10
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-06-11T05:05:15.000Z",
+    "latest_source_activity_at": "2026-09-06T20:22:19.000Z",
     "source_weeks": [
       {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-11T05:05:15.000Z",
+        "week_start": "2026-08-31",
+        "latest_at": "2026-09-06T20:22:19.000Z",
         "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-17T02:12:13.442Z",
+    "baseline_completed_at": "2026-09-07T13:32:56.615Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "d015a0ca345e5d4beeaa7c9bf4df90598ad414a2"
+    "evidence_head_sha": "ff7cfc0dd180a62a7b714fd6ab4008c6046d9ffe"
   },
   "community": {
     "stars_count": 2,
@@ -41,7 +41,7 @@
     "aggregate": 2
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-06T11:41:00.662Z",
+  "refreshed_at": "2026-09-07T13:32:56.615Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -49,7 +49,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-06T11:41:00.662Z",
+    "refreshed_at": "2026-09-07T13:32:56.615Z",
     "stale_since": null
   }
 }

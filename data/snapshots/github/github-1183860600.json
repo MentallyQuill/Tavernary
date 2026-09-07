@@ -9,21 +9,21 @@
     "url": "https://github.com/PocketRisu/PocketRisu",
     "description": "Self-hosted AI roleplay chat platform you run on your PC or personal server, forked from Risuai",
     "default_branch": "main",
-    "head_sha": "ca09a80746e74e5334145e5e78af47ce423e0eba",
-    "head_committed_at": "2026-09-03T04:24:55.000Z",
+    "head_sha": "b315d898abd543fffaf5346d8eb3246b20da92cd",
+    "head_committed_at": "2026-09-06T13:02:40.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-17T02:40:46.000Z",
-    "size_kb": 82308
+    "size_kb": 81873
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-01T06:36:34.000Z",
+    "latest_source_activity_at": "2026-09-06T13:02:40.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-31",
-        "latest_at": "2026-09-01T06:36:34.000Z",
+        "latest_at": "2026-09-06T13:02:40.000Z",
         "precision": "exact"
       },
       {
@@ -55,32 +55,27 @@
         "week_start": "2026-07-13",
         "latest_at": "2026-07-18T04:55:54.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-15",
-        "latest_at": "2026-06-18T14:20:40.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-09-01T06:51:24.000Z",
+    "latest_release_at": "2026-09-06T13:15:40.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-31T15:10:24.882Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "ca09a80746e74e5334145e5e78af47ce423e0eba"
+    "evidence_head_sha": "b315d898abd543fffaf5346d8eb3246b20da92cd"
   },
   "community": {
-    "stars_count": 328,
+    "stars_count": 334,
     "forks_count": 62,
     "watchers_count": 2,
-    "aggregate": 392
+    "aggregate": 398
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-06T11:41:00.662Z",
+  "refreshed_at": "2026-09-07T13:32:56.615Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -169,7 +164,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-06T11:41:00.662Z",
+    "refreshed_at": "2026-09-07T13:32:56.615Z",
     "stale_since": null
   }
 }

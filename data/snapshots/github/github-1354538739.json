@@ -9,30 +9,30 @@
     "url": "https://github.com/BrutalKoala/SillyNPC",
     "description": "Character stylist and RPG status tracker for SillyTavern. Gives every speaker a portrait, colour and speech block, and keeps stats, inventories and unfinished business updated from the story by a separate reading pass.",
     "default_branch": "main",
-    "head_sha": "e879fefa23cbfe47b78752e81911a399c3c758ec",
-    "head_committed_at": "2026-09-04T18:24:21.000Z",
+    "head_sha": "92377b86e1b08fbd7903b4498f8bd83a489a29da",
+    "head_committed_at": "2026-09-06T18:38:39.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-02T08:49:02.000Z",
-    "size_kb": 4345
+    "size_kb": 4763
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-04T18:24:21.000Z",
+    "latest_source_activity_at": "2026-09-06T18:38:39.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-31",
-        "latest_at": "2026-09-04T18:24:21.000Z",
+        "latest_at": "2026-09-06T18:38:39.000Z",
         "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-09-04T18:28:21.000Z",
+    "latest_release_at": "2026-09-06T18:43:14.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-04T09:24:40.885Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "e879fefa23cbfe47b78752e81911a399c3c758ec"
+    "evidence_head_sha": "92377b86e1b08fbd7903b4498f8bd83a489a29da"
   },
   "community": {
     "stars_count": 1,
@@ -45,7 +45,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-06T11:41:00.662Z",
+  "refreshed_at": "2026-09-07T13:32:56.615Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -55,7 +55,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-06T11:41:00.662Z",
+    "refreshed_at": "2026-09-07T13:32:56.615Z",
     "stale_since": null
   }
 }
