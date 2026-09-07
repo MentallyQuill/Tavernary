@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "closuretxt-game-manager-st",
+  "source_id": "github-1349176738",
+  "source_identity": "github:closuretxt/game-manager-st",
+  "evidence_fingerprint": "658965cd809803ac315edcda44bb400c9f5c37f71c89f6b7e1327efe8f240e50",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-07T14:42:52.953Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-07T14:42:52.953Z"
+  },
+  "maintenance_issue_number": null
+}
