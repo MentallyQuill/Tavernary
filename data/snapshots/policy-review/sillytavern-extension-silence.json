@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sillytavern-extension-silence",
+  "source_id": "github-752014538",
+  "source_identity": "github:sillytavern/extension-silence",
+  "evidence_fingerprint": "cfcbb7d3e2b47e0d36847693c5e82496a3b4853a1506fd60979e9987854923c1",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-07T13:50:20.172Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-07T13:50:20.172Z"
+  },
+  "maintenance_issue_number": null
+}
