@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "0cyris-sillytavern-askplayer",
+  "name": "SillyTavern-AskPlayer",
+  "kind": "extension",
+  "summary": "Exposes an AskUserQuestion function tool so the GM can pause mid-turn for mechanical player decisions, then resumes the same generation in one unbroken message. Built for RPG rules moments like D&D reaction choices.",
+  "metadata_status": "curated",
+  "source_id": "github-1334528678",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["add-rpg-gameplay", "agentic-tool-use", "guide-model-responses"],
+  "cataloged_at": "2026-09-07T15:11:09.146Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1334528678",
+  "head_sha": "1993a0b550d41d98bf5859a05246e041aa09151b",
+  "observed_at": "2026-09-07T15:11:28.408Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-AskPlayer",
+  "manifest": {
+    "display_name": "Ask Player",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
