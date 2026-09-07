@@ -1,6 +1,6 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-09-06T13:20:31.977Z",
+  "generated_at": "2026-09-07T04:29:31.994Z",
   "preferred_report_ids": [
     "8585ad6405b32aa3c434a6dd81257f60a384ad8dea5df02ad5211a3f1f5768cf",
     "383b1635081f9366547124f9e19a4d52a19290f859c7f8d6ebb82930a5ca4787",
@@ -402,7 +402,7 @@
     "820947ef5a01b5cb51f044cc7f4fe016aaf9a75f4be5600a09cd9300dacb93fb",
     "0d149fb369fa6a0d3d713815cfe76f92180daf382b882c4a0e868c02ec4c50ce",
     "3a265ff2048a1f383ef5866a5c70947a0dc83458cb588bcb16ee28fc248b251c",
-    "f6bf07e3a2f2e8f3693418b24789eb21168e05ff27ff98440304b7b6aa5a0eb9",
+    "8b965a67172e891b1b2acfdec1106041c2e7f35b63a66e55d3295ab07e61ef6b",
     "c0e7e0e047b89bedb18bcaa112a809546d119fc3c44f14e2ea99dcaa6de654d8",
     "96afe4f9d85e4c0ae2a26d6f28b60104f759728dfa57f979c755f1bc3b79fd2f",
     "fe292f37e5b604f9f5027d90b9959a8afbddeaeb5100db15a9e052036513ef62",
@@ -85629,6 +85629,91 @@
           "efbd7dbc071cde126a14fea34d7d4753451670b81bef12e13f406060711a790e",
           "fe0e70d66d6f7b725ff6c099554a4d9a3304b0ca04f870c93b9776f2472c68f4"
         ],
+        "interaction_chains": []
+      }
+    },
+    {
+      "report_id": "8b965a67172e891b1b2acfdec1106041c2e7f35b63a66e55d3295ab07e61ef6b",
+      "report_digest": "8b965a67172e891b1b2acfdec1106041c2e7f35b63a66e55d3295ab07e61ef6b",
+      "report_version": 3,
+      "supersedes_report_id": "f6bf07e3a2f2e8f3693418b24789eb21168e05ff27ff98440304b7b6aa5a0eb9",
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "5",
+      "rule_catalog_version": "2",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "5",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v7",
+      "assessment_schema_version": "contextual-assessment-v2",
+      "source_id": "github-1327581386",
+      "provider": "github",
+      "repository_id": 1327581386,
+      "repository": "tavern-rpg-suite/Tavern-Doors",
+      "target_sha": "a4396edf090821b1196730bc8c1393d2c93f44d1",
+      "completed_at": "2026-09-07T04:29:13.417Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 1,
+        "assessments": 1,
+        "observations": 0,
+        "items": 1,
+        "disposition": {
+          "expected_behavior": 1,
+          "minor_weakness": 0,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 1,
+          "low": 0,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 1,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 0,
+          "high": 1
+        },
+        "recommended_risk": {
+          "low": 1,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 2,
+        "inventory_files": 5,
+        "inventory_bytes": 102658,
+        "tools_completed": 5,
+        "tools_not_applicable": 3,
+        "evidence_validated": 1,
+        "metadata_only_candidates": 0,
+        "review_required": 1,
+        "review_completed": 1,
+        "javascript_analysis_status": "complete"
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1327581386/a4396edf090821b1196730bc8c1393d2c93f44d1/5/8b965a67172e891b1b2acfdec1106041c2e7f35b63a66e55d3295ab07e61ef6b/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1327581386/history/",
+      "assessed_at": "2026-09-07T04:31:36.645Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
+      "danger_basis": "none",
+      "assessment_source": "deterministic_regrade",
+      "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 0,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
+        "cited_finding_ids": [],
         "interaction_chains": []
       }
     }
