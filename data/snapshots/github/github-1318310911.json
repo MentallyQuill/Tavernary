@@ -9,18 +9,23 @@
     "url": "https://github.com/ddkhan24/hordestudio",
     "description": "SillyTavern-style character creation + AI Dungeon-style persistent worlds + a detailed virtual companion simulator, packaged as a creator-focused local web application.",
     "default_branch": "main",
-    "head_sha": "7577f61bdfce0068319cb406770a732034d40193",
-    "head_committed_at": "2026-09-05T18:06:59.000Z",
+    "head_sha": "520aa2155b02289f9db1c6740a48e494124d2cca",
+    "head_committed_at": "2026-09-08T10:21:01.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-31T12:09:50.000Z",
-    "size_kb": 55728
+    "size_kb": 56878
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-05T18:06:59.000Z",
+    "latest_source_activity_at": "2026-09-08T10:21:01.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-08T10:21:01.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-31",
         "latest_at": "2026-09-05T18:06:59.000Z",
@@ -48,20 +53,20 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-09-05T18:08:24.000Z",
+    "latest_release_at": "2026-09-08T10:22:46.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-01T12:37:05.520Z",
+    "baseline_completed_at": "2026-09-08T12:10:40.479Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "7577f61bdfce0068319cb406770a732034d40193"
+    "evidence_head_sha": "520aa2155b02289f9db1c6740a48e494124d2cca"
   },
   "community": {
-    "stars_count": 45,
+    "stars_count": 46,
     "forks_count": 7,
     "watchers_count": 4,
-    "aggregate": 56
+    "aggregate": 57
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-07T13:32:56.615Z",
+  "refreshed_at": "2026-09-08T12:10:40.479Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -72,7 +77,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-07T13:32:56.615Z",
+    "refreshed_at": "2026-09-08T12:10:40.479Z",
     "stale_since": null
   }
 }

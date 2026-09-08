@@ -45,15 +45,15 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-07T15:11:09.146Z",
+  "refreshed_at": "2026-09-08T12:10:40.479Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "0cyris", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-07T15:11:09.146Z",
+    "refreshed_at": "2026-09-08T12:10:40.479Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

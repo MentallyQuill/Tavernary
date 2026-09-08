@@ -9,18 +9,23 @@
     "url": "https://github.com/platberlitz/sillytavern-character-colors",
     "description": "LLM-powered dialogue and thought coloring with auto-regex-install for SillyTavern",
     "default_branch": "main",
-    "head_sha": "17a133bec9f523a12b5adc9b69b2a0e2d88729a4",
-    "head_committed_at": "2026-08-26T09:52:42.000Z",
+    "head_sha": "5af565658bc223a74e99d025670db6835dd83682",
+    "head_committed_at": "2026-09-08T09:03:40.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-13T13:14:46.000Z",
-    "size_kb": 3447
+    "size_kb": 3967
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-26T09:52:42.000Z",
+    "latest_source_activity_at": "2026-09-08T09:03:40.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-08T09:03:40.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-24",
         "latest_at": "2026-08-26T09:52:42.000Z",
@@ -65,24 +70,14 @@
         "week_start": "2026-06-22",
         "latest_at": "2026-06-27T06:58:50.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-15",
-        "latest_at": "2026-06-20T03:28:05.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-14T23:43:08.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-27T18:19:19.306Z",
+    "baseline_completed_at": "2026-09-08T12:10:40.479Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "17a133bec9f523a12b5adc9b69b2a0e2d88729a4"
+    "evidence_head_sha": "5af565658bc223a74e99d025670db6835dd83682"
   },
   "community": {
     "stars_count": 21,
@@ -91,7 +86,7 @@
     "aggregate": 23
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-07T13:32:56.615Z",
+  "refreshed_at": "2026-09-08T12:10:40.479Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -104,7 +99,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-07T13:32:56.615Z",
+    "refreshed_at": "2026-09-08T12:10:40.479Z",
     "stale_since": null
   }
 }
