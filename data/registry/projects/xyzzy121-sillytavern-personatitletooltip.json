@@ -1,0 +1,23 @@
+{
+  "schema_version": 6,
+  "id": "xyzzy121-sillytavern-personatitletooltip",
+  "name": "SillyTavern-PersonaTitleTooltip",
+  "kind": "extension",
+  "summary": "This extension enhances the default Personas menu by giving the persona Titles a Hover Tooltip.",
+  "metadata_status": "curated",
+  "source_id": "github-1356076063",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["customize-the-interface", "mobile-friendly"],
+  "cataloged_at": "2026-09-08T05:46:33.736Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "automatic" }
+  }
+}
