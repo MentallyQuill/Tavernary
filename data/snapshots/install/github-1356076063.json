@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1356076063",
+  "head_sha": "bf67631532c7399286795ff6c733841559b36333",
+  "observed_at": "2026-09-08T05:46:51.599Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-PersonaTitleTooltip",
+  "manifest": {
+    "display_name": "Additional Info Tooltips",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
