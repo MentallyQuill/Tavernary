@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "skirianov-sidecar-ai",
+  "source_id": "github-1117596524",
+  "source_identity": "github:skirianov/sidecar-ai",
+  "evidence_fingerprint": "8a0e840930f9fb5d3c5f0846148dd4025bf77b3de08e1f721af7af474fa20dfc",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-08T12:20:47.255Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-08T12:20:47.255Z"
+  },
+  "maintenance_issue_number": null
+}
