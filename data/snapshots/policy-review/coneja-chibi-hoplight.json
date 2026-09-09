@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "coneja-chibi-hoplight",
+  "source_id": "github-1305235960",
+  "source_identity": "github:coneja-chibi/hoplight",
+  "evidence_fingerprint": "8ce6686fe390d8c14cfc68c60eb3df77e825ba4a0f48a6dced56d0ed4fcb1215",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-09T12:38:58.427Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-09T12:38:58.427Z"
+  },
+  "maintenance_issue_number": null
+}
