@@ -1,6 +1,6 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-09-08T12:54:36.898Z",
+  "generated_at": "2026-09-09T12:29:03.667Z",
   "preferred_report_ids": [
     "8585ad6405b32aa3c434a6dd81257f60a384ad8dea5df02ad5211a3f1f5768cf",
     "383b1635081f9366547124f9e19a4d52a19290f859c7f8d6ebb82930a5ca4787",
@@ -321,7 +321,7 @@
     "f791ee97b7b7a61a08b8db9fa27884913eec841fde46c33f077783567b4151b9",
     "417e6121c60c4df7b66ecbc5a3e4de565cdb4e552523eee38c02413cd3f85caa",
     "f20c54e0ba07182316ed0dc2e81cff1f1807f5ec62f84599ad15fc0183942946",
-    "4d631389ab18f21cf4a26c18a3d83b4f9f341950621b87baf84f256882ee740e",
+    "cec21e5bf12b9c59fee75fbea85225344920bca3f57f5eb4f4e72db1a822399d",
     "b44b2669ee85c76089f161fc4e8fe2e01bdf6bbf35405348ecc7026308fc4ec2",
     "6e706fdab725b3eee0c1bed3fb020142fb7852bc9cd634778a1ac099eddfc83a",
     "f69322f3a1a0b02e04db8e9411c60e52f432f36cb56ee416ccfbf8a2ebc84ce5",
@@ -86690,6 +86690,93 @@
           "ba26406c0394ed55c42f0acddba51f89ae58817b370b9cdf3c09e40c0c12ddc0",
           "edfc505a14227ade00e5cc3c5982d04e6017443de06415fae4820e949bc446eb",
           "f6a642b6571b6830e45c709d89977049f957be4c7d399bd2076a9e877a8565a7"
+        ],
+        "interaction_chains": []
+      }
+    },
+    {
+      "report_id": "cec21e5bf12b9c59fee75fbea85225344920bca3f57f5eb4f4e72db1a822399d",
+      "report_digest": "cec21e5bf12b9c59fee75fbea85225344920bca3f57f5eb4f4e72db1a822399d",
+      "report_version": 3,
+      "supersedes_report_id": "4d631389ab18f21cf4a26c18a3d83b4f9f341950621b87baf84f256882ee740e",
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "5",
+      "rule_catalog_version": "2",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "5",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v7",
+      "assessment_schema_version": "contextual-assessment-v2",
+      "source_id": "github-1275428438",
+      "provider": "github",
+      "repository_id": 1275428438,
+      "repository": "mokimoko/SillyTavern-StoryManager",
+      "target_sha": "7e59247dd31f01e133fd6d4d9680ec430ab4756e",
+      "completed_at": "2026-09-09T12:28:29.935Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 1,
+        "assessments": 1,
+        "observations": 0,
+        "items": 1,
+        "disposition": {
+          "expected_behavior": 0,
+          "minor_weakness": 1,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 0,
+          "low": 1,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 0,
+          "plausible": 1,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 1,
+          "high": 0
+        },
+        "recommended_risk": {
+          "low": 1,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 1,
+        "inventory_files": 55,
+        "inventory_bytes": 595745,
+        "tools_completed": 5,
+        "tools_not_applicable": 3,
+        "evidence_validated": 1,
+        "metadata_only_candidates": 0,
+        "review_required": 1,
+        "review_completed": 1,
+        "javascript_analysis_status": "complete"
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1275428438/7e59247dd31f01e133fd6d4d9680ec430ab4756e/5/cec21e5bf12b9c59fee75fbea85225344920bca3f57f5eb4f4e72db1a822399d/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1275428438/history/",
+      "assessed_at": "2026-09-09T12:30:57.003Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
+      "danger_basis": "none",
+      "assessment_source": "deterministic_regrade",
+      "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 1,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
+        "cited_finding_ids": [
+          "cc653776c0e9abbd35650095415bd712d6517d8c47c9a8f0b0e5fcfd5b3c37c7"
         ],
         "interaction_chains": []
       }
