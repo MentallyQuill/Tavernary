@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "revivalist-dev-guidedgenerations-extension",
+  "source_id": "github-1125714946",
+  "source_identity": "github:revivalist-dev/guidedgenerations-extension",
+  "evidence_fingerprint": "a4e35fbe3796b21d9fe7612a536ac61a06cf178703761c0ca20691aac8f231f6",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-09T12:32:56.335Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-09T12:32:56.335Z"
+  },
+  "maintenance_issue_number": null
+}
