@@ -9,18 +9,23 @@
     "url": "https://github.com/vevan/arousalPub",
     "description": "LLM RP client",
     "default_branch": "main",
-    "head_sha": "bae2b970373c6964687be73092858bd9c8306073",
-    "head_committed_at": "2026-09-04T05:45:51.000Z",
+    "head_sha": "f6d79fedd3487215f9676f54437b4a8333fc7a76",
+    "head_committed_at": "2026-09-09T07:55:03.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-25T08:43:02.000Z",
-    "size_kb": 12530
+    "size_kb": 12714
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-04T05:45:51.000Z",
+    "latest_source_activity_at": "2026-09-09T07:55:03.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-09T07:55:03.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-31",
         "latest_at": "2026-09-04T05:45:51.000Z",
@@ -75,19 +80,14 @@
         "week_start": "2026-06-22",
         "latest_at": "2026-06-26T05:32:37.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-15",
-        "latest_at": "2026-06-18T20:18:31.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-04T12:09:57.911Z",
+    "baseline_completed_at": "2026-09-09T12:22:35.002Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "bae2b970373c6964687be73092858bd9c8306073"
+    "evidence_head_sha": "f6d79fedd3487215f9676f54437b4a8333fc7a76"
   },
   "community": {
     "stars_count": 7,
@@ -100,7 +100,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-08T12:10:40.479Z",
+  "refreshed_at": "2026-09-09T12:22:35.002Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -108,7 +108,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-08T12:10:40.479Z",
+    "refreshed_at": "2026-09-09T12:22:35.002Z",
     "stale_since": null
   }
 }
