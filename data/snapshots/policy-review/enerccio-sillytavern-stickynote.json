@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "enerccio-sillytavern-stickynote",
+  "source_id": "github-1251549736",
+  "source_identity": "github:enerccio/sillytavern-stickynote",
+  "evidence_fingerprint": "b9a94d1605e84d283a2e067f327531dad47048d3ee0d7d5223fa4bab7b818ff0",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-10T12:30:01.218Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-10T12:30:01.218Z"
+  },
+  "maintenance_issue_number": null
+}
