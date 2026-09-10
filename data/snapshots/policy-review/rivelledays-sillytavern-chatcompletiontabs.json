@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "rivelledays-sillytavern-chatcompletiontabs",
+  "source_id": "github-992749682",
+  "source_identity": "github:rivelledays/sillytavern-chatcompletiontabs",
+  "evidence_fingerprint": "63ed240e37b05fdd2eb9934fa9bed01e1ad06aa48443b271a6677134c2153858",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-10T12:35:46.618Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-10T12:35:46.618Z"
+  },
+  "maintenance_issue_number": null
+}
