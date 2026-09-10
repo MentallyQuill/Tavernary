@@ -65,17 +65,17 @@
     "evidence_head_sha": "b315d898abd543fffaf5346d8eb3246b20da92cd"
   },
   "community": {
-    "stars_count": 335,
-    "forks_count": 62,
+    "stars_count": 336,
+    "forks_count": 63,
     "watchers_count": 2,
-    "aggregate": 399
+    "aggregate": 401
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-09T12:22:35.002Z",
+  "refreshed_at": "2026-09-10T12:16:03.030Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -129,7 +129,7 @@
       { "login": "iicdii", "type": "User", "provider": "github" },
       { "login": "luyiourwong", "type": "User", "provider": "github" },
       { "login": "green1052", "type": "User", "provider": "github" },
-      { "login": "misov1", "type": "User", "provider": "github" },
+      { "login": "xCrossss", "type": "User", "provider": "github" },
       { "login": "phyyou", "type": "User", "provider": "github" },
       { "login": "tiamatiramisu", "type": "User", "provider": "github" },
       { "login": "Amoeba1234", "type": "User", "provider": "github" },
@@ -164,7 +164,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-09T12:22:35.002Z",
+    "refreshed_at": "2026-09-10T12:16:03.030Z",
     "stale_since": null
   }
 }

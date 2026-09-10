@@ -9,18 +9,23 @@
     "url": "https://github.com/kwaroran/Risuai",
     "description": "Make your own story. User-friendly software for LLM roleplaying",
     "default_branch": "main",
-    "head_sha": "c454df882aaf32e02a22da26d3718c8cadc97814",
-    "head_committed_at": "2026-09-05T00:02:42.000Z",
+    "head_sha": "cad8595aa39620df4246f56918f0962c2aa0263a",
+    "head_committed_at": "2026-09-10T11:51:38.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2023-04-12T13:08:52.000Z",
-    "size_kb": 77180
+    "size_kb": 77199
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-05T00:02:42.000Z",
+    "latest_source_activity_at": "2026-09-10T11:51:38.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-10T11:51:38.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-31",
         "latest_at": "2026-09-05T00:02:42.000Z",
@@ -75,32 +80,27 @@
         "week_start": "2026-06-22",
         "latest_at": "2026-06-27T15:39:24.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-15",
-        "latest_at": "2026-06-21T10:25:53.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-08-25T23:02:13.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-31T15:10:24.882Z",
+    "baseline_completed_at": "2026-09-10T12:16:03.030Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "c454df882aaf32e02a22da26d3718c8cadc97814"
+    "evidence_head_sha": "cad8595aa39620df4246f56918f0962c2aa0263a"
   },
   "community": {
-    "stars_count": 1665,
+    "stars_count": 1666,
     "forks_count": 345,
     "watchers_count": 24,
-    "aggregate": 2034
+    "aggregate": 2035
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-09T12:22:35.002Z",
+  "refreshed_at": "2026-09-10T12:16:03.030Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -155,7 +155,7 @@
       { "login": "iicdii", "type": "User", "provider": "github" },
       { "login": "luyiourwong", "type": "User", "provider": "github" },
       { "login": "green1052", "type": "User", "provider": "github" },
-      { "login": "misov1", "type": "User", "provider": "github" },
+      { "login": "xCrossss", "type": "User", "provider": "github" },
       { "login": "nevaeh5379", "type": "User", "provider": "github" },
       { "login": "phyyou", "type": "User", "provider": "github" },
       { "login": "yaa19212-droid", "type": "User", "provider": "github" },
@@ -192,7 +192,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-09T12:22:35.002Z",
+    "refreshed_at": "2026-09-10T12:16:03.030Z",
     "stale_since": null
   }
 }

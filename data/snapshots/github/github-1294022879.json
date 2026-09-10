@@ -9,8 +9,8 @@
     "url": "https://github.com/japolino/inlay-illustrator",
     "description": "Persistent character image generation with dynamic visual memory, context-aware prompt parsing, inline chat images, asset mode, Anima/ComfyUI prompt output, and optional tag cleanup.",
     "default_branch": "stable",
-    "head_sha": "224742364e8b4b0969fd2d17b798fa43258822e1",
-    "head_committed_at": "2026-08-23T03:13:09.000Z",
+    "head_sha": "68cc000e5e4c9116439d3c38cac7d21f29a85163",
+    "head_committed_at": "2026-08-31T03:18:56.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
@@ -19,8 +19,13 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-23T03:13:09.000Z",
+    "latest_source_activity_at": "2026-08-31T03:18:56.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-08-31T03:18:56.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-17",
         "latest_at": "2026-08-23T03:13:09.000Z",
@@ -60,9 +65,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-31T15:10:24.882Z",
+    "baseline_completed_at": "2026-09-10T12:16:03.030Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "224742364e8b4b0969fd2d17b798fa43258822e1"
+    "evidence_head_sha": "68cc000e5e4c9116439d3c38cac7d21f29a85163"
   },
   "community": {
     "stars_count": 2,
@@ -71,7 +76,7 @@
     "aggregate": 3
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-09T12:22:35.002Z",
+  "refreshed_at": "2026-09-10T12:16:03.030Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -82,7 +87,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-09T12:22:35.002Z",
+    "refreshed_at": "2026-09-10T12:16:03.030Z",
     "stale_since": null
   }
 }
