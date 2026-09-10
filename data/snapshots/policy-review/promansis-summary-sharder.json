@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "promansis-summary-sharder",
+  "source_id": "github-1141807728",
+  "source_identity": "github:promansis/summary-sharder",
+  "evidence_fingerprint": "ac4927842cf7b90d1feeccdee30ce578b12a1c99940efb9b26af5a7893494fe8",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-10T12:26:55.115Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-10T12:26:55.115Z"
+  },
+  "maintenance_issue_number": null
+}
