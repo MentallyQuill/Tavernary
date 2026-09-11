@@ -9,21 +9,35 @@ const projectPage =
 const basePath =
   process.env.TAVERNARY_BASE_PATH ?? (projectPage ? `/${repositoryName}` : "");
 const assetPath = (path: string) => `${basePath}/${path}`;
+const siteOrigin = process.env.TAVERNARY_SITE_ORIGIN ?? "https://tavernary.org";
+const socialImage = assetPath("tavernary-favicon-512.png");
 const homepageTitle = "Tavernary · SillyTavern Tool Library";
 const homepageDescription =
   "Discover open-source tools for SillyTavern and AI roleplay. Explore extensions, frontends, presets, and community-built Kits.";
 
 export const metadata = {
+  metadataBase: new URL(siteOrigin),
   title: homepageTitle,
   description: homepageDescription,
   openGraph: {
+    type: "website",
+    siteName: "Tavernary",
     title: homepageTitle,
     description: homepageDescription,
+    images: [
+      {
+        url: socialImage,
+        width: 512,
+        height: 512,
+        alt: "Tavernary",
+      },
+    ],
   },
   twitter: {
     card: "summary",
     title: homepageTitle,
     description: homepageDescription,
+    images: [socialImage],
   },
   icons: {
     icon: [
