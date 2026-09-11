@@ -3,14 +3,14 @@
   "project_id": "prolix-oc-lumiverse",
   "source_id": "github-1175596366",
   "source_identity": "github:prolix-oc/lumiverse",
-  "evidence_fingerprint": "bd14e964f06dfea21c63052a5ac05f433fcf1a2e62adfedafd69fe464a9f6f06",
+  "evidence_fingerprint": "ba23e8c628227e55eae4920f818297a21d9e35e188ad4c961ecbea11234c951d",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-02T09:34:20.692Z",
+  "reviewed_at": "2026-09-11T12:26:41.127Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-02T09:34:20.692Z"
+    "attempts": 2,
+    "last_failure_at": "2026-09-11T12:26:41.127Z"
   },
   "maintenance_issue_number": null
 }
