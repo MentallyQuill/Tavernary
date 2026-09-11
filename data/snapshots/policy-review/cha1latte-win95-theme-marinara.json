@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "cha1latte-win95-theme-marinara",
+  "source_id": "github-1221894927",
+  "source_identity": "github:cha1latte/win95-theme-marinara",
+  "evidence_fingerprint": "18d6691c65c67f50d589a78ecc21df31c51f4e3f47949e6ccf6ea90ebf53eed1",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-11T12:28:08.858Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-11T12:28:08.858Z"
+  },
+  "maintenance_issue_number": null
+}
