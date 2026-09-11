@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mechamarmot-sillytavern-mazemaster",
+  "source_id": "github-1120101080",
+  "source_identity": "github:mechamarmot/sillytavern-mazemaster",
+  "evidence_fingerprint": "d294490019e95658bc73043b7a799c4bec64feb9f319799ab155391a4285471b",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-11T12:26:00.375Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-11T12:26:00.375Z"
+  },
+  "maintenance_issue_number": null
+}
