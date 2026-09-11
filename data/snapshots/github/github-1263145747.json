@@ -9,18 +9,23 @@
     "url": "https://github.com/starlitcode/Lumiverse-Auto-Retry",
     "description": "Retries Al replies that  fail, come back empty, stall, or get cut off. A  Lumiverse Spindle extension",
     "default_branch": "stable",
-    "head_sha": "46112ddb5d1f2cfa48ac621e2d51d6fe36b6b179",
-    "head_committed_at": "2026-09-06T07:11:34.000Z",
+    "head_sha": "6f1bd9ca99d152a0998e0a94274d498748427a56",
+    "head_committed_at": "2026-09-11T09:21:19.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-08T17:04:25.000Z",
-    "size_kb": 1519
+    "size_kb": 2223
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-06T07:00:42.000Z",
+    "latest_source_activity_at": "2026-09-11T09:21:19.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-11T09:21:19.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-31",
         "latest_at": "2026-09-06T07:00:42.000Z",
@@ -70,19 +75,14 @@
         "week_start": "2026-06-22",
         "latest_at": "2026-06-27T18:37:28.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-15",
-        "latest_at": "2026-06-17T10:02:55.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-06T11:41:00.662Z",
+    "baseline_completed_at": "2026-09-11T12:14:44.479Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "46112ddb5d1f2cfa48ac621e2d51d6fe36b6b179"
+    "evidence_head_sha": "6f1bd9ca99d152a0998e0a94274d498748427a56"
   },
   "community": {
     "stars_count": 3,
@@ -95,7 +95,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-10T12:16:03.030Z",
+  "refreshed_at": "2026-09-11T12:14:44.479Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -103,7 +103,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-10T12:16:03.030Z",
+    "refreshed_at": "2026-09-11T12:14:44.479Z",
     "stale_since": null
   }
 }

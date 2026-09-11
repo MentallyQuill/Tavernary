@@ -9,13 +9,13 @@
     "url": "https://github.com/EvaL3n4/SillyTavern-STARmem",
     "description": "A memory retrieval and extraction system implementing a mixture of different research papers from arXiv.",
     "default_branch": "main",
-    "head_sha": "801909b70c510dfab7268cdfef3bd7986f574d4d",
-    "head_committed_at": "2026-05-08T14:41:15.000Z",
+    "head_sha": "69b9d4018e5b506da5cbb6122870eb7b58040b39",
+    "head_committed_at": "2026-09-11T03:02:09.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-20T13:44:47.000Z",
-    "size_kb": 1909
+    "size_kb": 2017
   },
   "source_health": "healthy",
   "activity": {
@@ -24,22 +24,22 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-06T03:57:07.562Z",
+    "baseline_completed_at": "2026-09-11T12:14:44.479Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "801909b70c510dfab7268cdfef3bd7986f574d4d"
+    "evidence_head_sha": "69b9d4018e5b506da5cbb6122870eb7b58040b39"
   },
   "community": {
-    "stars_count": 7,
+    "stars_count": 8,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 7
+    "aggregate": 8
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "Apache-2.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-10T12:16:03.030Z",
+  "refreshed_at": "2026-09-11T12:14:44.479Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -47,7 +47,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-10T12:16:03.030Z",
+    "refreshed_at": "2026-09-11T12:14:44.479Z",
     "stale_since": null
   }
 }

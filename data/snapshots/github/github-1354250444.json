@@ -9,30 +9,35 @@
     "url": "https://github.com/starlitcode/Lumiverse-Auto-Refine",
     "description": "Rewrites finished Al  replies to your own writing rules. A Lumiverse  Spindle extension.",
     "default_branch": "stable",
-    "head_sha": "9b0106ed9c19a0af7db45dc4cb2462cb15868a24",
-    "head_committed_at": "2026-09-06T07:11:54.000Z",
+    "head_sha": "3103972550199a0988cf1a25b600f13785de1464",
+    "head_committed_at": "2026-09-11T09:25:14.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-02T03:05:23.000Z",
-    "size_kb": 2088
+    "size_kb": 1479
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-06T07:11:54.000Z",
+    "latest_source_activity_at": "2026-09-11T09:25:14.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-11T09:25:14.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-08-31",
-        "latest_at": "2026-09-06T07:11:54.000Z",
+        "latest_at": "2026-09-06T18:24:36.000Z",
         "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-05T20:30:03.642Z",
+    "baseline_completed_at": "2026-09-11T12:14:44.479Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "9b0106ed9c19a0af7db45dc4cb2462cb15868a24"
+    "evidence_head_sha": "3103972550199a0988cf1a25b600f13785de1464"
   },
   "community": {
     "stars_count": 1,
@@ -45,7 +50,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-10T12:16:03.030Z",
+  "refreshed_at": "2026-09-11T12:14:44.479Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -56,7 +61,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-10T12:16:03.030Z",
+    "refreshed_at": "2026-09-11T12:14:44.479Z",
     "stale_since": null
   }
 }

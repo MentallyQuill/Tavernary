@@ -9,18 +9,23 @@
     "url": "https://github.com/Sagesheep/NarrativeEngine-P",
     "description": "Self-hosted AI Dungeon Master - run extended TTRPG campaigns with smart memory, living NPCs, and any OpenAI-compatible LLM",
     "default_branch": "main",
-    "head_sha": "4289e7578c8cdd8bffd35f06426b05abc5003a67",
-    "head_committed_at": "2026-09-02T12:37:08.000Z",
+    "head_sha": "5b518e4c7afa83a7c8617129930d16c4a59ceacf",
+    "head_committed_at": "2026-09-10T23:37:45.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-19T11:01:33.000Z",
-    "size_kb": 63354
+    "size_kb": 64608
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-02T12:37:08.000Z",
+    "latest_source_activity_at": "2026-09-10T23:04:48.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-10T23:04:48.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-31",
         "latest_at": "2026-09-02T12:37:08.000Z",
@@ -75,19 +80,14 @@
         "week_start": "2026-06-22",
         "latest_at": "2026-06-27T00:50:18.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-15",
-        "latest_at": "2026-06-21T10:06:25.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-07-28T01:51:49.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-03T12:08:28.703Z",
+    "baseline_completed_at": "2026-09-11T12:14:44.479Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "4289e7578c8cdd8bffd35f06426b05abc5003a67"
+    "evidence_head_sha": "5b518e4c7afa83a7c8617129930d16c4a59ceacf"
   },
   "community": {
     "stars_count": 93,
@@ -100,7 +100,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-10T12:16:03.030Z",
+  "refreshed_at": "2026-09-11T12:14:44.479Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -113,7 +113,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-10T12:16:03.030Z",
+    "refreshed_at": "2026-09-11T12:14:44.479Z",
     "stale_since": null
   }
 }

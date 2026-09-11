@@ -9,18 +9,23 @@
     "url": "https://github.com/M4Marvin/charon",
     "description": "My take on properly building an AI character chat app — combining features from Chub, SillyTavern, and everything else I always wanted. Self-hosted, branching conversations, character cards V2+V3, lorebooks, personas.",
     "default_branch": "main",
-    "head_sha": "638a9cf1b6b819c610bee9fd0657f01c7992a8cd",
-    "head_committed_at": "2026-08-10T00:13:59.000Z",
+    "head_sha": "618267e9e8254b3e721b592453307d00b046e430",
+    "head_committed_at": "2026-09-10T18:49:02.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-28T12:33:00.000Z",
-    "size_kb": 5358
+    "size_kb": 5473
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-10T00:13:59.000Z",
+    "latest_source_activity_at": "2026-09-10T18:49:02.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-10T18:49:02.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-10",
         "latest_at": "2026-08-10T00:13:59.000Z",
@@ -55,19 +60,14 @@
         "week_start": "2026-06-22",
         "latest_at": "2026-06-28T22:23:36.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-15",
-        "latest_at": "2026-06-21T11:24:31.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-03T12:08:28.703Z",
+    "baseline_completed_at": "2026-09-11T12:14:44.479Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "638a9cf1b6b819c610bee9fd0657f01c7992a8cd"
+    "evidence_head_sha": "618267e9e8254b3e721b592453307d00b046e430"
   },
   "community": {
     "stars_count": 7,
@@ -80,7 +80,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-10T12:16:03.030Z",
+  "refreshed_at": "2026-09-11T12:14:44.479Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -88,7 +88,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-10T12:16:03.030Z",
+    "refreshed_at": "2026-09-11T12:14:44.479Z",
     "stale_since": null
   }
 }

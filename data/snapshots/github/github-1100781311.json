@@ -9,18 +9,23 @@
     "url": "https://github.com/kangjoseph90/Risu-Antigravity",
     "description": "RisuAI Plugin - A plugin powered by Google Antigravity",
     "default_branch": "main",
-    "head_sha": "7bfa6fc0be3436d390c26cfb266b216b30f4f3e8",
-    "head_committed_at": "2026-08-14T08:07:57.000Z",
+    "head_sha": "0998d7134e3496a5fdbdd91b2f283c27f1ff3f82",
+    "head_committed_at": "2026-09-10T13:26:14.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-11-20T18:44:35.000Z",
-    "size_kb": 288
+    "size_kb": 290
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-14T08:07:57.000Z",
+    "latest_source_activity_at": "2026-09-10T13:26:14.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-10T13:26:14.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-10",
         "latest_at": "2026-08-14T08:07:57.000Z",
@@ -30,19 +35,14 @@
         "week_start": "2026-07-20",
         "latest_at": "2026-07-22T08:42:10.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-13T10:20:32.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-14T08:10:17.000Z",
+    "latest_release_at": "2026-09-10T13:26:35.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-14T08:40:01.431Z",
+    "baseline_completed_at": "2026-09-11T12:14:44.479Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "7bfa6fc0be3436d390c26cfb266b216b30f4f3e8"
+    "evidence_head_sha": "0998d7134e3496a5fdbdd91b2f283c27f1ff3f82"
   },
   "community": {
     "stars_count": 8,
@@ -51,7 +51,7 @@
     "aggregate": 12
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-10T12:16:03.030Z",
+  "refreshed_at": "2026-09-11T12:14:44.479Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -62,7 +62,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-10T12:16:03.030Z",
+    "refreshed_at": "2026-09-11T12:14:44.479Z",
     "stale_since": null
   }
 }
