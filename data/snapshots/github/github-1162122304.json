@@ -11,7 +11,7 @@
     "default_branch": "main",
     "head_sha": "1e2a5739d0e196b9f36b0dd712d3680ff251a7ac",
     "head_committed_at": "2026-05-11T14:15:19.000Z",
-    "archived": false,
+    "archived": true,
     "fork": false,
     "parent": null,
     "created_at": "2026-02-19T22:27:32.000Z",
@@ -35,7 +35,7 @@
     "aggregate": 9
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-11T12:14:44.479Z",
+  "refreshed_at": "2026-09-12T11:38:44.340Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -47,7 +47,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-11T12:14:44.479Z",
+    "refreshed_at": "2026-09-12T11:38:44.340Z",
     "stale_since": null
   }
 }

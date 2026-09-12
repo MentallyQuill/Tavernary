@@ -7,37 +7,37 @@
     "owner": "cgstever",
     "name": "StatefulLore",
     "url": "https://github.com/cgstever/StatefulLore",
-    "description": "Sillytavern Extention to replace the current lore system WIP",
+    "description": "SillyTavern extension that replaces the built-in lorebook with a stateful, code-driven lore engine.",
     "default_branch": "main",
-    "head_sha": "2892c6e919ab2dfcb64f77afc3247d93f19aa0be",
-    "head_committed_at": "2026-08-29T21:50:26.000Z",
+    "head_sha": "dd99f71049aad8595242240aa72d8c729e2eb15a",
+    "head_committed_at": "2026-09-12T05:51:59.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-14T20:59:40.000Z",
-    "size_kb": 871
+    "size_kb": 918
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-29T21:50:26.000Z",
+    "latest_source_activity_at": "2026-09-12T05:51:59.000Z",
     "source_weeks": [
       {
-        "week_start": "2026-08-24",
-        "latest_at": "2026-08-29T21:50:26.000Z",
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-12T05:51:59.000Z",
         "precision": "exact"
       },
       {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-09T15:33:19.000Z",
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-29T21:50:26.000Z",
         "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-30T12:58:27.843Z",
+    "baseline_completed_at": "2026-09-12T11:38:44.340Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "2892c6e919ab2dfcb64f77afc3247d93f19aa0be"
+    "evidence_head_sha": "dd99f71049aad8595242240aa72d8c729e2eb15a"
   },
   "community": {
     "stars_count": 5,
@@ -45,8 +45,12 @@
     "watchers_count": 0,
     "aggregate": 5
   },
-  "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-11T12:14:44.479Z",
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-09-12T11:38:44.340Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -54,7 +58,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-11T12:14:44.479Z",
+    "refreshed_at": "2026-09-12T11:38:44.340Z",
     "stale_since": null
   }
 }

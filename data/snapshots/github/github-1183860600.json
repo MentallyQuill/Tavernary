@@ -9,18 +9,23 @@
     "url": "https://github.com/PocketRisu/PocketRisu",
     "description": "Self-hosted AI roleplay chat platform you run on your PC or personal server, forked from Risuai",
     "default_branch": "main",
-    "head_sha": "b315d898abd543fffaf5346d8eb3246b20da92cd",
-    "head_committed_at": "2026-09-06T13:02:40.000Z",
+    "head_sha": "a14c911fd927a2bf63c8665bae202f29643920b4",
+    "head_committed_at": "2026-09-12T09:31:10.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-17T02:40:46.000Z",
-    "size_kb": 81873
+    "size_kb": 81980
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-06T13:02:40.000Z",
+    "latest_source_activity_at": "2026-09-12T03:57:19.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-12T03:57:19.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-31",
         "latest_at": "2026-09-06T13:02:40.000Z",
@@ -60,22 +65,22 @@
     "provisional_weeks": null,
     "latest_release_at": "2026-09-06T13:15:40.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-31T15:10:24.882Z",
+    "baseline_completed_at": "2026-09-12T11:38:44.340Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "b315d898abd543fffaf5346d8eb3246b20da92cd"
+    "evidence_head_sha": "a14c911fd927a2bf63c8665bae202f29643920b4"
   },
   "community": {
-    "stars_count": 340,
-    "forks_count": 63,
+    "stars_count": 342,
+    "forks_count": 65,
     "watchers_count": 2,
-    "aggregate": 405
+    "aggregate": 409
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-11T12:14:44.479Z",
+  "refreshed_at": "2026-09-12T11:38:44.340Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -126,6 +131,7 @@
       { "login": "RivelleDays", "type": "User", "provider": "github" },
       { "login": "dohyun-ko", "type": "User", "provider": "github" },
       { "login": "Hakjeong", "type": "User", "provider": "github" },
+      { "login": "EugenesDad", "type": "User", "provider": "github" },
       { "login": "iicdii", "type": "User", "provider": "github" },
       { "login": "luyiourwong", "type": "User", "provider": "github" },
       { "login": "green1052", "type": "User", "provider": "github" },
@@ -158,13 +164,12 @@
       { "login": "LI-NA", "type": "User", "provider": "github" },
       { "login": "Kuiprux", "type": "User", "provider": "github" },
       { "login": "jgreiner1024", "type": "User", "provider": "github" },
-      { "login": "EugenesDad", "type": "User", "provider": "github" },
       { "login": "3ae3ae", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-11T12:14:44.479Z",
+    "refreshed_at": "2026-09-12T11:38:44.340Z",
     "stale_since": null
   }
 }
