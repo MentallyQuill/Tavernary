@@ -35,8 +35,9 @@
     "aggregate": 0
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-12T14:05:28.997Z",
+  "refreshed_at": "2026-09-13T12:45:52.546Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "LKoczProgramming", "type": "User", "provider": "github" },
@@ -45,8 +46,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-12T14:05:28.997Z",
+    "refreshed_at": "2026-09-13T12:45:52.546Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

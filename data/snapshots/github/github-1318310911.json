@@ -9,21 +9,21 @@
     "url": "https://github.com/ddkhan24/hordestudio",
     "description": "SillyTavern-style character creation + AI Dungeon-style persistent worlds + a detailed virtual companion simulator, packaged as a creator-focused local web application.",
     "default_branch": "main",
-    "head_sha": "520aa2155b02289f9db1c6740a48e494124d2cca",
-    "head_committed_at": "2026-09-08T10:21:01.000Z",
+    "head_sha": "b6b4844b13e5e6fc80c0676c4851e5f53e711be8",
+    "head_committed_at": "2026-09-13T07:03:31.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-31T12:09:50.000Z",
-    "size_kb": 56878
+    "size_kb": 317164
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-08T10:21:01.000Z",
+    "latest_source_activity_at": "2026-09-13T07:03:31.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-07",
-        "latest_at": "2026-09-08T10:21:01.000Z",
+        "latest_at": "2026-09-13T07:03:31.000Z",
         "precision": "exact"
       },
       {
@@ -53,20 +53,20 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-09-08T10:22:46.000Z",
+    "latest_release_at": "2026-09-13T07:58:17.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-08T12:10:40.479Z",
+    "baseline_completed_at": "2026-09-13T12:45:52.546Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "520aa2155b02289f9db1c6740a48e494124d2cca"
+    "evidence_head_sha": "b6b4844b13e5e6fc80c0676c4851e5f53e711be8"
   },
   "community": {
-    "stars_count": 49,
+    "stars_count": 50,
     "forks_count": 8,
     "watchers_count": 4,
-    "aggregate": 61
+    "aggregate": 62
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-12T11:38:44.340Z",
+  "refreshed_at": "2026-09-13T12:45:52.546Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -77,7 +77,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-12T11:38:44.340Z",
+    "refreshed_at": "2026-09-13T12:45:52.546Z",
     "stale_since": null
   }
 }
