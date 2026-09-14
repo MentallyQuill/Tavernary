@@ -3,14 +3,14 @@
   "project_id": "closuretxt-recast-post-processing",
   "source_id": "github-1188318311",
   "source_identity": "github:closuretxt/recast-post-processing",
-  "evidence_fingerprint": "7c85bce95f5620e7b83ff8d993dec054b4bab68d3c4b890923e79a9a508199fa",
+  "evidence_fingerprint": "be90b94cca978a0012dfb067d97c207f35b7b062bd950875da95505f60ff92ff",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-31T15:21:28.058Z",
+  "reviewed_at": "2026-09-14T14:24:29.716Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-31T15:21:28.058Z"
+    "attempts": 3,
+    "last_failure_at": "2026-09-14T14:24:29.716Z"
   },
   "maintenance_issue_number": null
 }
