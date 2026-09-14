@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "nbrown725-sillytavern-alternatedescriptions",
+  "source_id": "github-994448098",
+  "source_identity": "github:nbrown725/sillytavern-alternatedescriptions",
+  "evidence_fingerprint": "c6bfd1b5a82a24d7407f408b8e75af748785e19974a58e0253e38f0b536220d7",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-14T14:32:26.305Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-14T14:32:26.305Z"
+  },
+  "maintenance_issue_number": null
+}

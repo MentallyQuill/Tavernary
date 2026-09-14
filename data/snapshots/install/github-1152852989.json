@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1152852989",
+  "head_sha": "e3b4d2920f0b464fbe69bcc37773f96a76ffb213",
+  "observed_at": "2026-09-12T14:06:19.432Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Ciphers-Dialogue-",
+  "manifest": {
+    "display_name": "Dialogue Translation & Ciphers",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

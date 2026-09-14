@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "coneja-chibi-vecthare",
+  "source_id": "github-1085333493",
+  "source_identity": "github:coneja-chibi/vecthare",
+  "evidence_fingerprint": "079087b18d67326dce11555cb351d65c352d0c1230c9e25e4ddb97b70575f08b",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-11T12:24:49.493Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-11T12:24:49.493Z"
+  },
+  "maintenance_issue_number": null
+}

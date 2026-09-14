@@ -9,18 +9,23 @@
     "url": "https://github.com/Coneja-Chibi/Hoplight",
     "description": "The local-first studio for AI-roleplay content. Characters, lorebooks, personas, presets; one canonical model, exported to any platform.",
     "default_branch": "Mainstage",
-    "head_sha": "90b8b13856db3c8c78adaba313c9b9d4b884d252",
-    "head_committed_at": "2026-08-13T04:52:43.000Z",
+    "head_sha": "0453346d5f2a1b5b921f2fb67d6eabbb2c5e0dca",
+    "head_committed_at": "2026-09-13T17:52:17.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-18T21:26:28.000Z",
-    "size_kb": 40544
+    "size_kb": 44046
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-13T04:52:43.000Z",
+    "latest_source_activity_at": "2026-09-13T17:52:17.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-13T17:52:17.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-10",
         "latest_at": "2026-08-13T04:52:43.000Z",
@@ -60,22 +65,22 @@
     "provisional_weeks": null,
     "latest_release_at": "2026-08-13T04:58:07.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-11T08:16:27.105Z",
+    "baseline_completed_at": "2026-09-13T12:45:52.546Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "90b8b13856db3c8c78adaba313c9b9d4b884d252"
+    "evidence_head_sha": "0453346d5f2a1b5b921f2fb67d6eabbb2c5e0dca"
   },
   "community": {
-    "stars_count": 30,
+    "stars_count": 32,
     "forks_count": 4,
     "watchers_count": 1,
-    "aggregate": 35
+    "aggregate": 37
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-10T12:16:03.030Z",
+  "refreshed_at": "2026-09-14T14:11:43.516Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -89,7 +94,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-10T12:16:03.030Z",
+    "refreshed_at": "2026-09-14T14:11:43.516Z",
     "stale_since": null
   }
 }

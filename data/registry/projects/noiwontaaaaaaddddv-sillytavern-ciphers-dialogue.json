@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "noiwontaaaaaaddddv-sillytavern-ciphers-dialogue",
+  "name": "SillyTavern-Ciphers-Dialogue-",
+  "kind": "extension",
+  "summary": "SillyTavern extension for client-side message manipulation, enabling translation and custom ciphers or constructed languages in dialogue. Repository description confirms translation and cipher workflows.",
+  "metadata_status": "curated",
+  "source_id": "github-1152852989",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": ["edit-and-refine-messages", "translate-roleplay-content"],
+  "cataloged_at": "2026-09-12T14:05:28.997Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
