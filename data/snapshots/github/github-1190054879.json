@@ -7,23 +7,28 @@
     "owner": "mekineer-com",
     "name": "OpenAlma",
     "url": "https://github.com/mekineer-com/OpenAlma",
-    "description": "OpenAlma — AI companion memory, local-first",
+    "description": "OpenAlma — AI companion platform with long-term memory, local-first",
     "default_branch": "main",
-    "head_sha": "6991d7dd649455dc92f2ce056fa7f5be2c3a5895",
-    "head_committed_at": "2026-09-13T06:05:24.000Z",
+    "head_sha": "e4c01c90e304647a42be4d10244effc47d9801ce",
+    "head_committed_at": "2026-09-14T05:47:51.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-23T23:32:48.000Z",
-    "size_kb": 633
+    "size_kb": 714
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-13T06:05:24.000Z",
+    "latest_source_activity_at": "2026-09-14T05:47:51.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-14T05:47:51.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-09-07",
-        "latest_at": "2026-09-13T06:05:24.000Z",
+        "latest_at": "2026-09-13T18:58:45.000Z",
         "precision": "exact"
       },
       {
@@ -55,19 +60,14 @@
         "week_start": "2026-06-29",
         "latest_at": "2026-07-05T06:41:33.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-22",
-        "latest_at": "2026-06-27T23:20:49.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-09T12:22:35.002Z",
+    "baseline_completed_at": "2026-09-14T14:11:43.516Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "6991d7dd649455dc92f2ce056fa7f5be2c3a5895"
+    "evidence_head_sha": "e4c01c90e304647a42be4d10244effc47d9801ce"
   },
   "community": {
     "stars_count": 11,
@@ -80,7 +80,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-13T12:45:52.546Z",
+  "refreshed_at": "2026-09-14T14:11:43.516Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -91,7 +91,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-13T12:45:52.546Z",
+    "refreshed_at": "2026-09-14T14:11:43.516Z",
     "stale_since": null
   }
 }

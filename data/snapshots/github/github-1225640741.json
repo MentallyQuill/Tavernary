@@ -9,21 +9,21 @@
     "url": "https://github.com/ZDOSt/Story-Engine",
     "description": null,
     "default_branch": "main",
-    "head_sha": "02b485bb55d7fab5d145b8c8fc0123d978d51c47",
-    "head_committed_at": "2026-09-13T04:39:39.000Z",
+    "head_sha": "f02d98e2c5362e5218a507dcf4cea3b85de5a7f4",
+    "head_committed_at": "2026-09-13T20:05:48.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-30T13:40:09.000Z",
-    "size_kb": 12968
+    "size_kb": 13260
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-13T04:39:39.000Z",
+    "latest_source_activity_at": "2026-09-13T20:05:48.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-07",
-        "latest_at": "2026-09-13T04:39:39.000Z",
+        "latest_at": "2026-09-13T20:05:48.000Z",
         "precision": "exact"
       },
       {
@@ -75,11 +75,6 @@
         "week_start": "2026-06-29",
         "latest_at": "2026-07-05T22:37:24.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-22",
-        "latest_at": "2026-06-28T17:22:48.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
@@ -87,7 +82,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-09T12:22:35.002Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "02b485bb55d7fab5d145b8c8fc0123d978d51c47"
+    "evidence_head_sha": "f02d98e2c5362e5218a507dcf4cea3b85de5a7f4"
   },
   "community": {
     "stars_count": 11,
@@ -96,7 +91,7 @@
     "aggregate": 11
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-13T12:45:52.546Z",
+  "refreshed_at": "2026-09-14T14:11:43.516Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -104,7 +99,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-13T12:45:52.546Z",
+    "refreshed_at": "2026-09-14T14:11:43.516Z",
     "stale_since": null
   }
 }

@@ -9,8 +9,8 @@
     "url": "https://github.com/Sagesheep/NarrativeEngine-P",
     "description": "Self-hosted AI Dungeon Master - run extended TTRPG campaigns with smart memory, living NPCs, and any OpenAI-compatible LLM",
     "default_branch": "main",
-    "head_sha": "f1db4b291bd5104ca6860cced4641c03760009d5",
-    "head_committed_at": "2026-09-12T02:32:43.000Z",
+    "head_sha": "14cac1fe61327808dd284fef96389731a56f222f",
+    "head_committed_at": "2026-09-14T13:40:32.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
@@ -19,8 +19,13 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-12T02:32:43.000Z",
+    "latest_source_activity_at": "2026-09-14T13:40:32.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-14T13:40:32.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-07",
         "latest_at": "2026-09-12T02:32:43.000Z",
@@ -75,19 +80,14 @@
         "week_start": "2026-06-29",
         "latest_at": "2026-07-04T13:10:48.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-22",
-        "latest_at": "2026-06-27T00:50:18.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-07-28T01:51:49.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-11T12:14:44.479Z",
+    "baseline_completed_at": "2026-09-14T14:11:43.516Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "f1db4b291bd5104ca6860cced4641c03760009d5"
+    "evidence_head_sha": "14cac1fe61327808dd284fef96389731a56f222f"
   },
   "community": {
     "stars_count": 95,
@@ -100,7 +100,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-13T12:45:52.546Z",
+  "refreshed_at": "2026-09-14T14:11:43.516Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -113,7 +113,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-13T12:45:52.546Z",
+    "refreshed_at": "2026-09-14T14:11:43.516Z",
     "stale_since": null
   }
 }

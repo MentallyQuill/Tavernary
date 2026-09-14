@@ -9,21 +9,26 @@
     "url": "https://github.com/Noineri/vibe_tavern",
     "description": "A modern, local-first AI roleplay platform",
     "default_branch": "dev",
-    "head_sha": "51b889f4950a68d8d7d9a78a14ca251bcb586222",
-    "head_committed_at": "2026-09-13T01:04:56.000Z",
+    "head_sha": "a28bd758f3621c83403622992fbac10797f1a13d",
+    "head_committed_at": "2026-09-14T05:13:00.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-23T07:45:41.000Z",
-    "size_kb": 46619
+    "size_kb": 47105
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-13T01:04:56.000Z",
+    "latest_source_activity_at": "2026-09-14T05:03:07.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-14T05:03:07.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-09-07",
-        "latest_at": "2026-09-13T01:04:56.000Z",
+        "latest_at": "2026-09-13T19:17:21.000Z",
         "precision": "exact"
       },
       {
@@ -75,32 +80,27 @@
         "week_start": "2026-06-29",
         "latest_at": "2026-07-05T23:09:11.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-22",
-        "latest_at": "2026-06-28T23:11:29.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-09-12T19:36:49.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-13T12:45:52.546Z",
+    "baseline_completed_at": "2026-09-14T14:11:43.516Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "51b889f4950a68d8d7d9a78a14ca251bcb586222"
+    "evidence_head_sha": "a28bd758f3621c83403622992fbac10797f1a13d"
   },
   "community": {
-    "stars_count": 20,
+    "stars_count": 26,
     "forks_count": 1,
     "watchers_count": 0,
-    "aggregate": 21
+    "aggregate": 27
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-13T12:45:52.546Z",
+  "refreshed_at": "2026-09-14T14:11:43.516Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -112,7 +112,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-13T12:45:52.546Z",
+    "refreshed_at": "2026-09-14T14:11:43.516Z",
     "stale_since": null
   }
 }
