@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "subzero5544-favorites-carousel",
+  "source_id": "github-999164615",
+  "source_identity": "github:subzero5544/favorites-carousel",
+  "evidence_fingerprint": "d9fc6b132b76ada410155f77c0dc29b93e915a536277417fe8a463ae6cfcbefe",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-15T13:02:11.230Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-15T13:02:11.230Z"
+  },
+  "maintenance_issue_number": null
+}
