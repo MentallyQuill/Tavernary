@@ -3,14 +3,14 @@
   "project_id": "arczium-st-message-chunker",
   "source_id": "github-1339644218",
   "source_identity": "github:arczium/st-message-chunker",
-  "evidence_fingerprint": "c85a540bbc8ac1fe8109289e90a1d8cf7a79dc7e15977108d1ef14ddf7759c12",
+  "evidence_fingerprint": "408f9de3de2e2fe028b757a52b93f35f5b51810a7e8e2c506062f34ee0eeffe3",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-23T14:32:32.365Z",
+  "reviewed_at": "2026-09-15T10:27:07.394Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-23T14:32:32.365Z"
+    "attempts": 2,
+    "last_failure_at": "2026-09-15T10:27:07.394Z"
   },
   "maintenance_issue_number": null
 }
