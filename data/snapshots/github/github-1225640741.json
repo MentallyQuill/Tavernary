@@ -9,18 +9,23 @@
     "url": "https://github.com/ZDOSt/Story-Engine",
     "description": null,
     "default_branch": "main",
-    "head_sha": "f02d98e2c5362e5218a507dcf4cea3b85de5a7f4",
-    "head_committed_at": "2026-09-13T20:05:48.000Z",
+    "head_sha": "18dd5fb60a05f353e1d7b671184b884586109e07",
+    "head_committed_at": "2026-09-15T11:34:06.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-30T13:40:09.000Z",
-    "size_kb": 13260
+    "size_kb": 14605
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-13T20:05:48.000Z",
+    "latest_source_activity_at": "2026-09-15T11:34:06.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-15T11:34:06.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-07",
         "latest_at": "2026-09-13T20:05:48.000Z",
@@ -80,9 +85,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-09T12:22:35.002Z",
+    "baseline_completed_at": "2026-09-15T12:43:56.161Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "f02d98e2c5362e5218a507dcf4cea3b85de5a7f4"
+    "evidence_head_sha": "18dd5fb60a05f353e1d7b671184b884586109e07"
   },
   "community": {
     "stars_count": 11,
@@ -91,7 +96,7 @@
     "aggregate": 11
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-14T14:11:43.516Z",
+  "refreshed_at": "2026-09-15T12:43:56.161Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -99,7 +104,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-14T14:11:43.516Z",
+    "refreshed_at": "2026-09-15T12:43:56.161Z",
     "stale_since": null
   }
 }

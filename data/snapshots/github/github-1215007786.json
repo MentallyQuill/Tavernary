@@ -15,7 +15,7 @@
     "fork": false,
     "parent": null,
     "created_at": "2026-04-19T11:01:33.000Z",
-    "size_kb": 65028
+    "size_kb": 65105
   },
   "source_health": "healthy",
   "activity": {
@@ -91,16 +91,16 @@
   },
   "community": {
     "stars_count": 95,
-    "forks_count": 23,
+    "forks_count": 24,
     "watchers_count": 4,
-    "aggregate": 122
+    "aggregate": 123
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-14T14:11:43.516Z",
+  "refreshed_at": "2026-09-15T12:43:56.161Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -113,7 +113,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-14T14:11:43.516Z",
+    "refreshed_at": "2026-09-15T12:43:56.161Z",
     "stale_since": null
   }
 }

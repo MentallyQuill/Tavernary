@@ -9,8 +9,8 @@
     "url": "https://github.com/vadash/Extension-Summaryception",
     "description": "Sillytavern memory plug-in. Simpler  = better",
     "default_branch": "main",
-    "head_sha": "d3cbe03e24cac005979e4d1e70beaf1209cf12e7",
-    "head_committed_at": "2026-09-13T23:33:37.000Z",
+    "head_sha": "14c7f95f9f655e0adab4ec58c700510a63248d98",
+    "head_committed_at": "2026-09-15T11:10:58.000Z",
     "archived": false,
     "fork": true,
     "parent": {
@@ -20,12 +20,17 @@
       "url": "https://github.com/Lodactio/Extension-Summaryception"
     },
     "created_at": "2026-07-02T14:13:57.000Z",
-    "size_kb": 2540
+    "size_kb": 2987
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-13T23:33:37.000Z",
+    "latest_source_activity_at": "2026-09-15T11:10:58.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-15T11:10:58.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-07",
         "latest_at": "2026-09-13T23:33:37.000Z",
@@ -85,9 +90,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-12T11:38:44.340Z",
+    "baseline_completed_at": "2026-09-15T12:43:56.161Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "d3cbe03e24cac005979e4d1e70beaf1209cf12e7"
+    "evidence_head_sha": "14c7f95f9f655e0adab4ec58c700510a63248d98"
   },
   "community": {
     "stars_count": 29,
@@ -100,7 +105,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-14T14:11:43.516Z",
+  "refreshed_at": "2026-09-15T12:43:56.161Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -108,7 +113,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T15:17:57.249Z",
     "scan": null,
-    "refreshed_at": "2026-09-14T14:11:43.516Z",
+    "refreshed_at": "2026-09-15T12:43:56.161Z",
     "stale_since": null
   }
 }

@@ -9,8 +9,8 @@
     "url": "https://github.com/Zaakh/SillyTavern-zTracker",
     "description": "A SillyTavern extension that tracking stats with LLMs",
     "default_branch": "main",
-    "head_sha": "40c624e1035657f46deb9bc8f398d47960af4ea3",
-    "head_committed_at": "2026-09-14T13:52:08.000Z",
+    "head_sha": "9759ea1c46593ab5fbd51a633f26af880f592d57",
+    "head_committed_at": "2026-09-14T14:57:04.000Z",
     "archived": false,
     "fork": true,
     "parent": {
@@ -20,15 +20,15 @@
       "url": "https://github.com/bmen25124/SillyTavern-WTracker"
     },
     "created_at": "2026-01-21T04:48:00.000Z",
-    "size_kb": 14090
+    "size_kb": 14409
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-14T13:33:43.000Z",
+    "latest_source_activity_at": "2026-09-14T14:57:04.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-14",
-        "latest_at": "2026-09-14T13:33:43.000Z",
+        "latest_at": "2026-09-14T14:57:04.000Z",
         "precision": "exact"
       },
       {
@@ -62,7 +62,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-14T14:11:43.516Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "40c624e1035657f46deb9bc8f398d47960af4ea3"
+    "evidence_head_sha": "9759ea1c46593ab5fbd51a633f26af880f592d57"
   },
   "community": {
     "stars_count": 15,
@@ -75,7 +75,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-14T14:11:43.516Z",
+  "refreshed_at": "2026-09-15T12:43:56.161Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -83,7 +83,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-08-10T17:32:34.633Z",
     "scan": null,
-    "refreshed_at": "2026-09-14T14:11:43.516Z",
+    "refreshed_at": "2026-09-15T12:43:56.161Z",
     "stale_since": null
   }
 }
