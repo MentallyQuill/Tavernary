@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "lenanderson-sillytavern-charswitch",
+  "source_id": "github-841159088",
+  "source_identity": "github:lenanderson/sillytavern-charswitch",
+  "evidence_fingerprint": "abbb98ec37e405ebe6973886bcbb4ad7c6a4206e1c6fb439871b51f6d37d18d0",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-15T13:00:53.405Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-15T13:00:53.405Z"
+  },
+  "maintenance_issue_number": null
+}
