@@ -3,14 +3,14 @@
   "project_id": "brutalkoala-sillynpc",
   "source_id": "github-1354538739",
   "source_identity": "github:brutalkoala/sillynpc",
-  "evidence_fingerprint": "80644714b40ff241cfb97879efbe7d8f600871b9bc9765a3006dc30cc9b26d32",
+  "evidence_fingerprint": "12a44eff1942b9744ae6afca9d9921f94b2833dce132921b1633bff5797e0c27",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-09-04T12:26:51.448Z",
+  "reviewed_at": "2026-09-15T13:00:11.580Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-04T12:26:51.448Z"
+    "attempts": 3,
+    "last_failure_at": "2026-09-15T13:00:11.580Z"
   },
   "maintenance_issue_number": null
 }
