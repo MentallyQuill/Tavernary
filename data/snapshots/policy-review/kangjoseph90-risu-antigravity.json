@@ -3,14 +3,14 @@
   "project_id": "kangjoseph90-risu-antigravity",
   "source_id": "github-1100781311",
   "source_identity": "github:kangjoseph90/risu-antigravity",
-  "evidence_fingerprint": "aac36ced839bf8041129e303b9131dbb78eb90ea2a6a1886176cb4f56d001e7f",
+  "evidence_fingerprint": "ba8c5cd3d8b7a364bcaa9efc169055519cdc67ed5ea23328c58452f6f50e1253",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-07T23:51:48.109Z",
+  "reviewed_at": "2026-09-16T12:49:33.452Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-07T23:51:48.109Z"
+    "attempts": 2,
+    "last_failure_at": "2026-09-16T12:49:33.452Z"
   },
   "maintenance_issue_number": null
 }
