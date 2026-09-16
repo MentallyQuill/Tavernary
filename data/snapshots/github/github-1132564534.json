@@ -85,17 +85,17 @@
     "evidence_head_sha": "5915f096d899960b5013b759556098d310b2fc08"
   },
   "community": {
-    "stars_count": 33,
+    "stars_count": 34,
     "forks_count": 5,
     "watchers_count": 1,
-    "aggregate": 39
+    "aggregate": 40
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-15T12:43:56.161Z",
+  "refreshed_at": "2026-09-16T12:38:58.532Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -108,7 +108,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-15T12:43:56.161Z",
+    "refreshed_at": "2026-09-16T12:38:58.532Z",
     "stale_since": null
   }
 }

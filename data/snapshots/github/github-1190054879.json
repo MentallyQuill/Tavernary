@@ -9,13 +9,13 @@
     "url": "https://github.com/mekineer-com/OpenAlma",
     "description": "OpenAlma — AI companion platform with long-term memory, local-first",
     "default_branch": "main",
-    "head_sha": "73f3f604f024996e8260e2dd8daa03e63a381f35",
-    "head_committed_at": "2026-09-14T07:50:27.000Z",
+    "head_sha": "909f423f298c309fa1a3a6aa0d4a0a90ba4d7cc3",
+    "head_committed_at": "2026-09-15T21:51:18.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-23T23:32:48.000Z",
-    "size_kb": 716
+    "size_kb": 814
   },
   "source_health": "healthy",
   "activity": {
@@ -67,7 +67,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-14T14:11:43.516Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "73f3f604f024996e8260e2dd8daa03e63a381f35"
+    "evidence_head_sha": "909f423f298c309fa1a3a6aa0d4a0a90ba4d7cc3"
   },
   "community": {
     "stars_count": 11,
@@ -80,7 +80,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-15T12:43:56.161Z",
+  "refreshed_at": "2026-09-16T12:38:58.532Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -91,7 +91,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-15T12:43:56.161Z",
+    "refreshed_at": "2026-09-16T12:38:58.532Z",
     "stale_since": null
   }
 }
