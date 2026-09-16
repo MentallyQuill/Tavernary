@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "dampfinchen-chunk-dropper-for-sillytavern",
+  "source_id": "github-1207091736",
+  "source_identity": "github:dampfinchen/chunk-dropper-for-sillytavern",
+  "evidence_fingerprint": "dc9797d91248dc93a3f1a441b8d499e54abd14dfbe4cad92b8ca894b311c7ba9",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-16T12:52:32.725Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-16T12:52:32.725Z"
+  },
+  "maintenance_issue_number": null
+}
