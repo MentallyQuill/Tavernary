@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "enerccio-sillytavern-languagelearninghelper",
+  "source_id": "github-1247779874",
+  "source_identity": "github:enerccio/sillytavern-languagelearninghelper",
+  "evidence_fingerprint": "01f063252431bea3b09319fef13453b5678a859b742854f5f3a19806ac9dba60",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-16T12:54:59.421Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-16T12:54:59.421Z"
+  },
+  "maintenance_issue_number": null
+}
