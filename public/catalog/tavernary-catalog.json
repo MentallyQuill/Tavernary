@@ -33098,10 +33098,10 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "b02ee7d192b04cb2878ca22fb598eb0d8938e62d",
         "report": {
-          "reportId": "d850fffb0284db4da807f3a1d7b6c167450b729568ae6356e367d3684380cc13",
+          "reportId": "b4df0d57cc9349a45d7114dfc2d65153d469b508db2f2033203ee50702af6337",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -33110,20 +33110,20 @@
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
           "citedFindingIds": [
-            "9356589ce8e8d5b7010de47ef626df3608cca0a2af6f383ae74ae78da0a737bb",
-            "e074ce584da4b5fd961242bf5147c6a8760f60024340f8d01b01cab19bc5378e"
+            "35c74d2ec720f5d69812c81de136096ed837a1acfc208d160b9f55cba2e588bf",
+            "9356589ce8e8d5b7010de47ef626df3608cca0a2af6f383ae74ae78da0a737bb"
           ],
-          "scannedSha": "6cd20be6c46dc9de3025726e7a333869493a0289",
-          "treeUrl": "https://github.com/ExtensionMuncher/MemoryLoom/tree/6cd20be6c46dc9de3025726e7a333869493a0289",
-          "scannedAt": "2026-08-26T22:13:04.683Z",
-          "assessedAt": "2026-08-26T22:18:36.144Z",
+          "scannedSha": "b02ee7d192b04cb2878ca22fb598eb0d8938e62d",
+          "treeUrl": "https://github.com/ExtensionMuncher/MemoryLoom/tree/b02ee7d192b04cb2878ca22fb598eb0d8938e62d",
+          "scannedAt": "2026-09-16T03:42:11.471Z",
+          "assessedAt": "2026-09-16T03:44:23.840Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
           "synthesisModel": "deterministic-policy-v5",
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1268616226/6cd20be6c46dc9de3025726e7a333869493a0289/5/d850fffb0284db4da807f3a1d7b6c167450b729568ae6356e367d3684380cc13/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1268616226/b02ee7d192b04cb2878ca22fb598eb0d8938e62d/5/b4df0d57cc9349a45d7114dfc2d65153d469b508db2f2033203ee50702af6337/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1268616226/history/"
         },
         "history": [
@@ -33174,6 +33174,32 @@
             "dangerBasis": "none",
             "assessmentSource": "deterministic_regrade",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1268616226/6cd20be6c46dc9de3025726e7a333869493a0289/5/d850fffb0284db4da807f3a1d7b6c167450b729568ae6356e367d3684380cc13/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1268616226/history/"
+          },
+          {
+            "reportId": "b4df0d57cc9349a45d7114dfc2d65153d469b508db2f2033203ee50702af6337",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 2,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "35c74d2ec720f5d69812c81de136096ed837a1acfc208d160b9f55cba2e588bf",
+              "9356589ce8e8d5b7010de47ef626df3608cca0a2af6f383ae74ae78da0a737bb"
+            ],
+            "scannedSha": "b02ee7d192b04cb2878ca22fb598eb0d8938e62d",
+            "treeUrl": "https://github.com/ExtensionMuncher/MemoryLoom/tree/b02ee7d192b04cb2878ca22fb598eb0d8938e62d",
+            "scannedAt": "2026-09-16T03:42:11.471Z",
+            "assessedAt": "2026-09-16T03:44:23.840Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1268616226/b02ee7d192b04cb2878ca22fb598eb0d8938e62d/5/b4df0d57cc9349a45d7114dfc2d65153d469b508db2f2033203ee50702af6337/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1268616226/history/"
           }
         ],
