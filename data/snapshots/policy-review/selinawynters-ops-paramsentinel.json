@@ -3,14 +3,14 @@
   "project_id": "selinawynters-ops-paramsentinel",
   "source_id": "github-1311856766",
   "source_identity": "github:selinawynters-ops/paramsentinel",
-  "evidence_fingerprint": "dd42090b03c26c1153ed02416e3b80f5ddad6b419e4863002b9a467409edea56",
+  "evidence_fingerprint": "20da19bd19252c7f59e38faff7d1106b98c57e4488324cbd214e8919663f5906",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-10T09:08:08.720Z",
+  "reviewed_at": "2026-09-17T12:55:59.222Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-10T09:08:08.720Z"
+    "attempts": 3,
+    "last_failure_at": "2026-09-17T12:55:59.222Z"
   },
   "maintenance_issue_number": null
 }
