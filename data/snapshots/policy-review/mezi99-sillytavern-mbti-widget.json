@@ -3,14 +3,14 @@
   "project_id": "mezi99-sillytavern-mbti-widget",
   "source_id": "github-1221553252",
   "source_identity": "github:mezi99/sillytavern-mbti_widget",
-  "evidence_fingerprint": "dc91078c89c7f9db95be5335a41cb63a2c2047fe28d46a6459fb17809270f68d",
+  "evidence_fingerprint": "f22a27d4cc6bc63f6e7471682b8642c2f03a9186a58b681c1850b039eb26fc3b",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-09-07T11:11:16.842Z",
+  "reviewed_at": "2026-09-17T12:52:12.060Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-09-07T11:11:16.842Z"
+    "attempts": 2,
+    "last_failure_at": "2026-09-17T12:52:12.060Z"
   },
   "maintenance_issue_number": null
 }
