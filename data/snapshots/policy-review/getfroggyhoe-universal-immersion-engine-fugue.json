@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "getfroggyhoe-universal-immersion-engine-fugue",
+  "source_id": "github-1289789562",
+  "source_identity": "github:getfroggyhoe/universal-immersion-engine-fugue",
+  "evidence_fingerprint": "751809b3afaabe19b562ede17375378e5da201f61cd373bd9e95c0c372f8e2d3",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-17T12:54:46.252Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-17T12:54:46.252Z"
+  },
+  "maintenance_issue_number": null
+}
