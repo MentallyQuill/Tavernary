@@ -9,13 +9,13 @@
     "url": "https://github.com/kwaroran/Risuai",
     "description": "Make your own story. User-friendly software for LLM roleplaying",
     "default_branch": "main",
-    "head_sha": "cad8595aa39620df4246f56918f0962c2aa0263a",
-    "head_committed_at": "2026-09-10T11:51:38.000Z",
+    "head_sha": "d31fea55384ef5e1bd78ffc813e40d8d144edce7",
+    "head_committed_at": "2026-09-17T04:36:14.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2023-04-12T13:08:52.000Z",
-    "size_kb": 77201
+    "size_kb": 78293
   },
   "source_health": "healthy",
   "activity": {
@@ -75,32 +75,27 @@
         "week_start": "2026-06-29",
         "latest_at": "2026-07-05T12:56:58.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-22",
-        "latest_at": "2026-06-27T15:39:24.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-08-25T23:02:13.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-10T12:16:03.030Z",
+    "baseline_completed_at": "2026-09-17T12:37:59.664Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "cad8595aa39620df4246f56918f0962c2aa0263a"
+    "evidence_head_sha": "d31fea55384ef5e1bd78ffc813e40d8d144edce7"
   },
   "community": {
-    "stars_count": 1681,
+    "stars_count": 1684,
     "forks_count": 348,
     "watchers_count": 24,
-    "aggregate": 2053
+    "aggregate": 2056
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-16T12:38:58.532Z",
+  "refreshed_at": "2026-09-17T12:37:59.664Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -192,7 +187,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-16T12:38:58.532Z",
+    "refreshed_at": "2026-09-17T12:37:59.664Z",
     "stale_since": null
   }
 }

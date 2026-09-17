@@ -15,7 +15,7 @@
     "fork": false,
     "parent": null,
     "created_at": "2026-03-04T15:37:29.000Z",
-    "size_kb": 304307
+    "size_kb": 303959
   },
   "source_health": "healthy",
   "activity": {
@@ -82,55 +82,27 @@
         "precision": "exact"
       }
     ],
-    "provisional_weeks": [
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true
-    ],
+    "provisional_weeks": null,
     "latest_release_at": "2026-09-15T17:56:41.000Z",
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-09-17T12:37:59.664Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "1a299369ac7025028c3ce1b80cc59f47b7b0691b"
+    "evidence_head_sha": "cc783dd194bacd97379191b9d490939afbe6759e"
   },
   "community": {
-    "stars_count": 683,
-    "forks_count": 182,
+    "stars_count": 686,
+    "forks_count": 184,
     "watchers_count": 10,
-    "aggregate": 875
+    "aggregate": 880
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-16T12:38:58.532Z",
+  "refreshed_at": "2026-09-17T12:37:59.664Z",
   "stale_since": null,
-  "activity_scan": {
-    "head_sha": "cc783dd194bacd97379191b9d490939afbe6759e",
-    "cutoff_at": "2026-06-08T12:38:58.532Z",
-    "next_page": 26,
-    "next_index": 0,
-    "resolved_weeks": [
-      "2026-08-03",
-      "2026-08-10",
-      "2026-08-17",
-      "2026-08-24",
-      "2026-08-31",
-      "2026-09-07",
-      "2026-09-14"
-    ],
-    "pending_commit": null
-  },
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "SpicyMarinara", "type": "User", "provider": "github" },
@@ -183,7 +155,6 @@
       { "login": "Javedz678", "type": "User", "provider": "github" },
       { "login": "Kranael", "type": "User", "provider": "github" },
       { "login": "MagicGoddess", "type": "User", "provider": "github" },
-      { "login": "OneWayGondola", "type": "User", "provider": "github" },
       { "login": "RaynoldVanHeyningen", "type": "User", "provider": "github" },
       { "login": "OnlyJimmy", "type": "User", "provider": "github" },
       { "login": "smurfboyyessir", "type": "User", "provider": "github" },
@@ -209,7 +180,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-16T12:38:58.532Z",
+    "refreshed_at": "2026-09-17T12:37:59.664Z",
     "stale_since": null
   }
 }

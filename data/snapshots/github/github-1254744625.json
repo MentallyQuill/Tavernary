@@ -9,18 +9,23 @@
     "url": "https://github.com/cspiritsong/STLorebookManipulator",
     "description": "SillyTavern extension for safely rewriting and pruning lorebook entries with LLM-powered suggestions, highlighted diff preview, and backup history",
     "default_branch": "master",
-    "head_sha": "3c711cd24ceba4a4afd097cd872c8ce867e57486",
-    "head_committed_at": "2026-08-29T00:34:59.000Z",
+    "head_sha": "c5c56dc06b871a55ac5bd7a0a7c1247548cfe7fc",
+    "head_committed_at": "2026-09-16T12:49:21.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-31T00:29:17.000Z",
-    "size_kb": 565
+    "size_kb": 572
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-29T00:34:59.000Z",
+    "latest_source_activity_at": "2026-09-16T12:49:21.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-16T12:49:21.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-24",
         "latest_at": "2026-08-29T00:34:59.000Z",
@@ -35,19 +40,14 @@
         "week_start": "2026-07-06",
         "latest_at": "2026-07-12T07:39:36.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-08T12:06:21.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-06-01T13:16:08.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-29T13:11:47.248Z",
+    "baseline_completed_at": "2026-09-17T12:37:59.664Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "3c711cd24ceba4a4afd097cd872c8ce867e57486"
+    "evidence_head_sha": "c5c56dc06b871a55ac5bd7a0a7c1247548cfe7fc"
   },
   "community": {
     "stars_count": 2,
@@ -60,7 +60,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-16T12:38:58.532Z",
+  "refreshed_at": "2026-09-17T12:37:59.664Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -71,7 +71,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-16T12:38:58.532Z",
+    "refreshed_at": "2026-09-17T12:37:59.664Z",
     "stale_since": null
   }
 }

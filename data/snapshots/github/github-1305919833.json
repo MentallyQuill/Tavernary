@@ -9,21 +9,31 @@
     "url": "https://github.com/N0819/Sonder_Engine",
     "description": "An engine for creating coherent fiction with LLMs through a persistent worldstate with deterministic epistemic boundaries",
     "default_branch": "main",
-    "head_sha": "c0d9276d567a8ea38b579aef340a3cc7ee5e033e",
-    "head_committed_at": "2026-09-01T23:58:11.000Z",
+    "head_sha": "2e2ff8b39c2a12e2e8051a26ef1d0d7a4d27d481",
+    "head_committed_at": "2026-09-16T23:53:22.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-19T17:55:36.000Z",
-    "size_kb": 81979
+    "size_kb": 85014
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-01T23:54:26.000Z",
+    "latest_source_activity_at": "2026-09-16T23:53:22.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-16T23:53:22.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-13T19:43:23.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-08-31",
-        "latest_at": "2026-09-01T23:54:26.000Z",
+        "latest_at": "2026-09-06T23:27:01.000Z",
         "precision": "exact"
       },
       {
@@ -63,11 +73,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-09-01T23:58:29.000Z",
+    "latest_release_at": "2026-09-16T23:53:48.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-02T12:09:05.030Z",
+    "baseline_completed_at": "2026-09-17T12:37:59.664Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "c0d9276d567a8ea38b579aef340a3cc7ee5e033e"
+    "evidence_head_sha": "2e2ff8b39c2a12e2e8051a26ef1d0d7a4d27d481"
   },
   "community": {
     "stars_count": 59,
@@ -80,7 +90,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-16T12:38:58.532Z",
+  "refreshed_at": "2026-09-17T12:37:59.664Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -91,7 +101,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-16T12:38:58.532Z",
+    "refreshed_at": "2026-09-17T12:37:59.664Z",
     "stale_since": null
   }
 }

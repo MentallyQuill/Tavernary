@@ -9,45 +9,30 @@
     "url": "https://github.com/THEJACKALS/SillyTavern-ImageEmbedExpressions",
     "description": "Add your Character Expressions on your Chats!",
     "default_branch": "main",
-    "head_sha": "328afdd9894d5b155878622b2db715453676721a",
-    "head_committed_at": "2026-06-14T06:00:18.000Z",
+    "head_sha": "50af92ffb9896169eb929ba438d280a280a61efc",
+    "head_committed_at": "2026-09-17T04:17:00.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-12-07T14:32:14.000Z",
-    "size_kb": 1456
+    "size_kb": 1511
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-06-14T06:00:18.000Z",
+    "latest_source_activity_at": "2026-09-17T04:17:00.000Z",
     "source_weeks": [
       {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-14T06:00:18.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-01",
-        "latest_at": "2026-06-04T23:42:37.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-25",
-        "latest_at": "2026-05-30T15:47:14.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-18",
-        "latest_at": "2026-05-24T07:15:35.000Z",
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-17T04:17:00.000Z",
         "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-05-30T15:53:02.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-27T10:52:18.639Z",
+    "baseline_completed_at": "2026-09-17T12:37:59.664Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "328afdd9894d5b155878622b2db715453676721a"
+    "evidence_head_sha": "50af92ffb9896169eb929ba438d280a280a61efc"
   },
   "community": {
     "stars_count": 3,
@@ -60,7 +45,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-16T12:38:58.532Z",
+  "refreshed_at": "2026-09-17T12:37:59.664Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -70,7 +55,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-16T12:38:58.532Z",
+    "refreshed_at": "2026-09-17T12:37:59.664Z",
     "stale_since": null
   }
 }

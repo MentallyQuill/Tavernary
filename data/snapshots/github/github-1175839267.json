@@ -9,18 +9,23 @@
     "url": "https://github.com/prolix-oc/Lumiverse-SimTracker",
     "description": null,
     "default_branch": "main",
-    "head_sha": "c343e1aa5dafa107dc2a3904a2e0a652c143cb78",
-    "head_committed_at": "2026-08-26T03:06:38.000Z",
+    "head_sha": "1a76d48931f51b1ad10367954c0c6488f09f6d38",
+    "head_committed_at": "2026-09-17T08:39:16.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-08T08:42:24.000Z",
-    "size_kb": 3717
+    "size_kb": 4189
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-26T03:06:38.000Z",
+    "latest_source_activity_at": "2026-09-17T08:39:16.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-17T08:39:16.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-24",
         "latest_at": "2026-08-26T03:06:38.000Z",
@@ -45,37 +50,27 @@
         "week_start": "2026-07-13",
         "latest_at": "2026-07-17T07:37:45.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-22",
-        "latest_at": "2026-06-28T18:30:59.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-15",
-        "latest_at": "2026-06-19T00:49:47.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-24T08:06:42.542Z",
+    "baseline_completed_at": "2026-09-17T12:37:59.664Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "c343e1aa5dafa107dc2a3904a2e0a652c143cb78"
+    "evidence_head_sha": "1a76d48931f51b1ad10367954c0c6488f09f6d38"
   },
   "community": {
-    "stars_count": 10,
+    "stars_count": 11,
     "forks_count": 4,
     "watchers_count": 1,
-    "aggregate": 15
+    "aggregate": 16
   },
   "license": {
     "status": "proprietary",
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-09-16T12:38:58.532Z",
+  "refreshed_at": "2026-09-17T12:37:59.664Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -86,7 +81,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-16T12:38:58.532Z",
+    "refreshed_at": "2026-09-17T12:37:59.664Z",
     "stale_since": null
   }
 }

@@ -40,18 +40,19 @@
     "evidence_head_sha": "5336f368a41871275317c60a5bc9a806d59f4000"
   },
   "community": {
-    "stars_count": 420,
+    "stars_count": 421,
     "forks_count": 31,
     "watchers_count": 5,
-    "aggregate": 456
+    "aggregate": 457
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-16T12:38:58.532Z",
+  "refreshed_at": "2026-09-17T12:37:59.664Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "RivelleDays", "type": "User", "provider": "github" },
@@ -63,8 +64,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-16T12:38:58.532Z",
+    "refreshed_at": "2026-09-17T12:37:59.664Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }
