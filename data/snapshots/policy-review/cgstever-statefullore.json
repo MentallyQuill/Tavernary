@@ -3,14 +3,14 @@
   "project_id": "cgstever-statefullore",
   "source_id": "github-1181949380",
   "source_identity": "github:cgstever/statefullore",
-  "evidence_fingerprint": "6062dc9e67b2dabf797b6b24cbdb2e0671a75136fe7a476e326a8eec12bdb73e",
+  "evidence_fingerprint": "0b26a77b8bc6c4a3ec93f168e6faee50deae20f2d43606c7f8d0913bac3a8d06",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-09-01T12:48:09.306Z",
+  "reviewed_at": "2026-09-17T12:50:52.097Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-09-01T12:48:09.306Z"
+    "attempts": 2,
+    "last_failure_at": "2026-09-17T12:50:52.097Z"
   },
   "maintenance_issue_number": null
 }
