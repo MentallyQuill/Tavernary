@@ -3,14 +3,14 @@
   "project_id": "hydall-glaze",
   "source_id": "github-1195300925",
   "source_identity": "github:hydall/glaze",
-  "evidence_fingerprint": "5f763fc1a3bfa9d489f63cd2bff6214d820a6470cbc0d41df512ef6080a501c5",
+  "evidence_fingerprint": "5187eb470e66fe709a85d79d5f1b0aed2cf929b32a03aff5464a69bdb4fe4106",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-16T07:59:41.725Z",
+  "reviewed_at": "2026-09-18T12:28:33.767Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-16T07:59:41.725Z"
+    "attempts": 3,
+    "last_failure_at": "2026-09-18T12:28:33.767Z"
   },
   "maintenance_issue_number": null
 }
