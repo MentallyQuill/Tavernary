@@ -9,21 +9,21 @@
     "url": "https://github.com/Sagesheep/NarrativeEngine-P",
     "description": "Self-hosted AI Dungeon Master - run extended TTRPG campaigns with smart memory, living NPCs, and any OpenAI-compatible LLM",
     "default_branch": "main",
-    "head_sha": "09bb2979d598835084cbbddf3468360158eaf8a6",
-    "head_committed_at": "2026-09-17T10:32:03.000Z",
+    "head_sha": "fe1b3a9871bfa0d8d1a1649b65be7c8cb4c6bf00",
+    "head_committed_at": "2026-09-18T05:47:48.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-19T11:01:33.000Z",
-    "size_kb": 65296
+    "size_kb": 65429
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-17T10:32:03.000Z",
+    "latest_source_activity_at": "2026-09-18T05:47:48.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-14",
-        "latest_at": "2026-09-17T10:32:03.000Z",
+        "latest_at": "2026-09-18T05:47:48.000Z",
         "precision": "exact"
       },
       {
@@ -87,7 +87,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-14T14:11:43.516Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "09bb2979d598835084cbbddf3468360158eaf8a6"
+    "evidence_head_sha": "fe1b3a9871bfa0d8d1a1649b65be7c8cb4c6bf00"
   },
   "community": {
     "stars_count": 98,
@@ -100,7 +100,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-17T12:37:59.664Z",
+  "refreshed_at": "2026-09-18T12:16:22.415Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -113,7 +113,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-17T12:37:59.664Z",
+    "refreshed_at": "2026-09-18T12:16:22.415Z",
     "stale_since": null
   }
 }

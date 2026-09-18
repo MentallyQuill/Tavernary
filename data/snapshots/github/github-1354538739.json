@@ -9,21 +9,26 @@
     "url": "https://github.com/BrutalKoala/SillyNPC",
     "description": "Character stylist and RPG status tracker for SillyTavern. Gives every speaker a portrait, colour and speech block, and keeps stats, inventories and unfinished business updated from the story by a separate reading pass.",
     "default_branch": "main",
-    "head_sha": "22e8dd1d1bd8da7aaeff01a6cf72429e51330466",
-    "head_committed_at": "2026-09-10T14:46:35.000Z",
+    "head_sha": "5698f916cefc766618136c884c50c78794c33601",
+    "head_committed_at": "2026-09-17T16:54:51.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-02T08:49:02.000Z",
-    "size_kb": 5784
+    "size_kb": 6145
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-10T14:46:35.000Z",
+    "latest_source_activity_at": "2026-09-17T16:54:51.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-17T16:54:51.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-09-07",
-        "latest_at": "2026-09-10T14:46:35.000Z",
+        "latest_at": "2026-09-10T16:12:30.000Z",
         "precision": "exact"
       },
       {
@@ -33,11 +38,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-09-10T14:49:52.000Z",
+    "latest_release_at": "2026-09-17T17:11:08.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-08T12:10:40.479Z",
+    "baseline_completed_at": "2026-09-18T12:16:22.415Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "22e8dd1d1bd8da7aaeff01a6cf72429e51330466"
+    "evidence_head_sha": "5698f916cefc766618136c884c50c78794c33601"
   },
   "community": {
     "stars_count": 4,
@@ -50,7 +55,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-17T12:37:59.664Z",
+  "refreshed_at": "2026-09-18T12:16:22.415Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -60,7 +65,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-17T12:37:59.664Z",
+    "refreshed_at": "2026-09-18T12:16:22.415Z",
     "stale_since": null
   }
 }

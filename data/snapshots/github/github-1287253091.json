@@ -9,8 +9,8 @@
     "url": "https://github.com/vadash/Extension-Summaryception",
     "description": "Sillytavern memory plug-in. Simpler  = better",
     "default_branch": "main",
-    "head_sha": "7a7807f5ac80b970a9e8e3879efab04cd15f93f3",
-    "head_committed_at": "2026-09-17T11:28:00.000Z",
+    "head_sha": "176136cef7f27205b60a4604f61dcd4042091f23",
+    "head_committed_at": "2026-09-17T20:19:14.000Z",
     "archived": false,
     "fork": true,
     "parent": {
@@ -20,15 +20,15 @@
       "url": "https://github.com/Lodactio/Extension-Summaryception"
     },
     "created_at": "2026-07-02T14:13:57.000Z",
-    "size_kb": 3182
+    "size_kb": 3611
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-17T11:28:00.000Z",
+    "latest_source_activity_at": "2026-09-17T20:19:14.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-14",
-        "latest_at": "2026-09-17T11:28:00.000Z",
+        "latest_at": "2026-09-17T20:19:14.000Z",
         "precision": "exact"
       },
       {
@@ -92,7 +92,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-15T12:43:56.161Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "7a7807f5ac80b970a9e8e3879efab04cd15f93f3"
+    "evidence_head_sha": "176136cef7f27205b60a4604f61dcd4042091f23"
   },
   "community": {
     "stars_count": 30,
@@ -105,7 +105,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-17T12:37:59.664Z",
+  "refreshed_at": "2026-09-18T12:16:22.415Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -113,7 +113,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T15:17:57.249Z",
     "scan": null,
-    "refreshed_at": "2026-09-17T12:37:59.664Z",
+    "refreshed_at": "2026-09-18T12:16:22.415Z",
     "stale_since": null
   }
 }
