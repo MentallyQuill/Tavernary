@@ -9,18 +9,23 @@
     "url": "https://github.com/kwaroran/Risuai",
     "description": "Make your own story. User-friendly software for LLM roleplaying",
     "default_branch": "main",
-    "head_sha": "d31fea55384ef5e1bd78ffc813e40d8d144edce7",
-    "head_committed_at": "2026-09-17T04:36:14.000Z",
+    "head_sha": "669b12ceabe1c5066d3dadbe0973f2188d10cc97",
+    "head_committed_at": "2026-09-18T18:40:12.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2023-04-12T13:08:52.000Z",
-    "size_kb": 78293
+    "size_kb": 78298
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-10T11:51:38.000Z",
+    "latest_source_activity_at": "2026-09-18T18:40:12.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-18T18:40:12.000Z",
+        "precision": "interval"
+      },
       {
         "week_start": "2026-09-07",
         "latest_at": "2026-09-10T11:51:38.000Z",
@@ -82,7 +87,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-17T12:37:59.664Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "d31fea55384ef5e1bd78ffc813e40d8d144edce7"
+    "evidence_head_sha": "669b12ceabe1c5066d3dadbe0973f2188d10cc97"
   },
   "community": {
     "stars_count": 1688,
@@ -95,7 +100,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-18T12:16:22.415Z",
+  "refreshed_at": "2026-09-19T11:57:52.779Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -187,7 +192,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-18T12:16:22.415Z",
+    "refreshed_at": "2026-09-19T11:57:52.779Z",
     "stale_since": null
   }
 }

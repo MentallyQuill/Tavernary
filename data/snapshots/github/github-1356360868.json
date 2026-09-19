@@ -9,21 +9,21 @@
     "url": "https://github.com/deiomo/Writers-Workbench",
     "description": "A simple and easy character card builder for SillyTavern and other AI roleplay platforms.",
     "default_branch": "main",
-    "head_sha": "730e95a55750ff1548ea6e82027431b9d2cd398c",
-    "head_committed_at": "2026-09-18T06:12:57.000Z",
+    "head_sha": "eacff24144b6486703271b268fda1a4dea8e4f1e",
+    "head_committed_at": "2026-09-18T15:06:14.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-03T19:34:35.000Z",
-    "size_kb": 523
+    "size_kb": 529
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-18T06:11:51.000Z",
+    "latest_source_activity_at": "2026-09-18T15:06:14.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-14",
-        "latest_at": "2026-09-18T06:11:51.000Z",
+        "latest_at": "2026-09-18T15:06:14.000Z",
         "precision": "exact"
       },
       {
@@ -37,28 +37,31 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-18T12:16:22.415Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "730e95a55750ff1548ea6e82027431b9d2cd398c"
+    "evidence_head_sha": "eacff24144b6486703271b268fda1a4dea8e4f1e"
   },
   "community": {
-    "stars_count": 20,
+    "stars_count": 25,
     "forks_count": 2,
     "watchers_count": 1,
-    "aggregate": 23
+    "aggregate": 28
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-18T12:16:22.415Z",
+  "refreshed_at": "2026-09-19T11:57:52.779Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "deiomo", "type": "User", "provider": "github" }],
+    "accounts": [
+      { "login": "deiomo", "type": "User", "provider": "github" },
+      { "login": "imung88", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-18T12:16:22.415Z",
+    "refreshed_at": "2026-09-19T11:57:52.779Z",
     "stale_since": null
   }
 }

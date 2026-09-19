@@ -9,31 +9,51 @@
     "url": "https://github.com/Darkatse/TauriTavern",
     "description": "The classic Sillytavern, now has been rewritten in Tauri/Rust.",
     "default_branch": "main",
-    "head_sha": "9693a4ec47cd4552f90878bccab453f176de0f18",
-    "head_committed_at": "2026-09-09T04:08:03.000Z",
+    "head_sha": "a1855be4a4f8b6ee7cd0374a84dbb3709c3e5375",
+    "head_committed_at": "2026-09-19T04:23:06.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-04-17T13:13:08.000Z",
-    "size_kb": 82429
+    "size_kb": 83501
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-09T04:07:25.000Z",
+    "latest_source_activity_at": "2026-09-19T04:04:56.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-19T04:04:56.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-09-07",
-        "latest_at": "2026-09-09T04:07:25.000Z",
+        "latest_at": "2026-09-13T14:51:10.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-09-06T23:15:15.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-30T22:47:37.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-23T23:17:04.000Z",
         "precision": "exact"
       },
       {
         "week_start": "2026-08-10",
-        "latest_at": "2026-08-13T00:38:33.000Z",
+        "latest_at": "2026-08-16T15:46:46.000Z",
         "precision": "exact"
       },
       {
         "week_start": "2026-08-03",
-        "latest_at": "2026-08-06T22:06:45.000Z",
+        "latest_at": "2026-08-09T23:40:11.000Z",
         "precision": "exact"
       },
       {
@@ -60,32 +80,27 @@
         "week_start": "2026-06-29",
         "latest_at": "2026-07-05T22:36:10.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-22",
-        "latest_at": "2026-06-28T22:40:00.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-07-30T02:30:36.000Z",
+    "latest_release_at": "2026-09-19T05:47:59.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-09T12:22:35.002Z",
+    "baseline_completed_at": "2026-09-19T11:57:52.779Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "9693a4ec47cd4552f90878bccab453f176de0f18"
+    "evidence_head_sha": "a1855be4a4f8b6ee7cd0374a84dbb3709c3e5375"
   },
   "community": {
-    "stars_count": 1643,
+    "stars_count": 1659,
     "forks_count": 140,
     "watchers_count": 8,
-    "aggregate": 1791
+    "aggregate": 1807
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-18T12:16:22.415Z",
+  "refreshed_at": "2026-09-19T11:57:52.779Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -93,24 +108,33 @@
       { "login": "Darkatse", "type": "User", "provider": "github" },
       { "login": "yhny1001", "type": "User", "provider": "github" },
       { "login": "exynos967", "type": "User", "provider": "github" },
+      { "login": "lovewormcn", "type": "User", "provider": "github" },
+      { "login": "kazumaawawa", "type": "User", "provider": "github" },
+      { "login": "gaogao-gao", "type": "User", "provider": "github" },
       { "login": "1756141021", "type": "User", "provider": "github" },
+      { "login": "qwen-intl", "type": "User", "provider": "github" },
       { "login": "YoKONCy", "type": "User", "provider": "github" },
-      { "login": "makerlinck", "type": "User", "provider": "github" },
-      { "login": "Copilot", "type": "Bot", "provider": "github" },
-      { "login": "ftttank", "type": "User", "provider": "github" },
-      { "login": "gilgamesh1124", "type": "User", "provider": "github" },
-      { "login": "Moeblack", "type": "User", "provider": "github" },
+      { "login": "restartxx", "type": "User", "provider": "github" },
       { "login": "MatrixNeoKozak", "type": "User", "provider": "github" },
+      { "login": "Moeblack", "type": "User", "provider": "github" },
+      { "login": "gilgamesh1124", "type": "User", "provider": "github" },
+      { "login": "ftttank", "type": "User", "provider": "github" },
+      { "login": "cwy433-png", "type": "User", "provider": "github" },
+      { "login": "Copilot", "type": "Bot", "provider": "github" },
+      { "login": "makerlinck", "type": "User", "provider": "github" },
+      { "login": "Illustar0", "type": "User", "provider": "github" },
       { "login": "RAMU324E", "type": "User", "provider": "github" },
+      { "login": "Theater-ahyeon", "type": "User", "provider": "github" },
+      { "login": "RebootFlume", "type": "User", "provider": "github" },
       { "login": "anupamme", "type": "User", "provider": "github" },
       { "login": "calm-prussian", "type": "User", "provider": "github" },
-      { "login": "gaogao-gao", "type": "User", "provider": "github" },
-      { "login": "github-actions[bot]", "type": "Bot", "provider": "github" }
+      { "login": "github-actions[bot]", "type": "Bot", "provider": "github" },
+      { "login": "xnshf", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-18T12:16:22.415Z",
+    "refreshed_at": "2026-09-19T11:57:52.779Z",
     "stale_since": null
   }
 }
