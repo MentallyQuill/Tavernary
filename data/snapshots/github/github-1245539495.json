@@ -9,13 +9,13 @@
     "url": "https://github.com/Casus-B/Casus-custom-Chatfill-II",
     "description": "A modified Sillytavern preset",
     "default_branch": "main",
-    "head_sha": "722cf6b07a183fa694918e23c65092cb64f24f23",
-    "head_committed_at": "2026-09-19T10:15:34.000Z",
+    "head_sha": "61584bbbe94c2d804f2ccdc6a40fd9bf9953bf94",
+    "head_committed_at": "2026-09-20T00:18:35.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-21T10:10:50.000Z",
-    "size_kb": 1607
+    "size_kb": 1681
   },
   "source_health": "healthy",
   "activity": {
@@ -62,7 +62,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-19T11:57:52.779Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "722cf6b07a183fa694918e23c65092cb64f24f23"
+    "evidence_head_sha": "61584bbbe94c2d804f2ccdc6a40fd9bf9953bf94"
   },
   "community": {
     "stars_count": 23,
@@ -71,7 +71,7 @@
     "aggregate": 28
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-19T11:57:52.779Z",
+  "refreshed_at": "2026-09-20T12:27:43.995Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -79,7 +79,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-19T11:57:52.779Z",
+    "refreshed_at": "2026-09-20T12:27:43.995Z",
     "stale_since": null
   }
 }

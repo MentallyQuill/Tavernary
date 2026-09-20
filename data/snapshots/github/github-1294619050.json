@@ -9,18 +9,23 @@
     "url": "https://github.com/lsennn/Deus-ex-machina",
     "description": "A feature-rich, beginner-friendly, contextually dynamic, truly modular SillyTavern preset focused on collaborative story writing.",
     "default_branch": "main",
-    "head_sha": "e5ac8a584a4e4e41147944854bfbee6da9c04306",
-    "head_committed_at": "2026-09-01T21:45:13.000Z",
+    "head_sha": "f9b091eacf1f1aebdc8ce7052c2404396213e358",
+    "head_committed_at": "2026-09-20T01:41:47.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-09T04:14:22.000Z",
-    "size_kb": 8517
+    "size_kb": 14520
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-01T21:44:31.000Z",
+    "latest_source_activity_at": "2026-09-20T01:41:47.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-20T01:41:47.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-31",
         "latest_at": "2026-09-01T21:44:31.000Z",
@@ -43,11 +48,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-28T18:13:04.000Z",
+    "latest_release_at": "2026-09-19T17:13:10.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-02T12:09:05.030Z",
+    "baseline_completed_at": "2026-09-20T12:27:43.995Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "e5ac8a584a4e4e41147944854bfbee6da9c04306"
+    "evidence_head_sha": "f9b091eacf1f1aebdc8ce7052c2404396213e358"
   },
   "community": {
     "stars_count": 30,
@@ -60,7 +65,7 @@
     "spdx_id": null,
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-19T11:57:52.779Z",
+  "refreshed_at": "2026-09-20T12:27:43.995Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -68,7 +73,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-19T11:57:52.779Z",
+    "refreshed_at": "2026-09-20T12:27:43.995Z",
     "stale_since": null
   }
 }

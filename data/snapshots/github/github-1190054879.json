@@ -9,13 +9,13 @@
     "url": "https://github.com/mekineer-com/OpenAlma",
     "description": "An open, local runtime for an AI companion that remembers its life with you across chats, messaging, voice, and vision—and lets you inspect and correct its memory.",
     "default_branch": "main",
-    "head_sha": "e0137f687c5e8a2c2dcb39f9eb614b5c1c5b236c",
-    "head_committed_at": "2026-09-19T05:18:00.000Z",
+    "head_sha": "1a54663b68bbc59000faee1c2a9a2d66487729f9",
+    "head_committed_at": "2026-09-19T22:19:40.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-23T23:32:48.000Z",
-    "size_kb": 479
+    "size_kb": 480
   },
   "source_health": "healthy",
   "activity": {
@@ -67,7 +67,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-14T14:11:43.516Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "e0137f687c5e8a2c2dcb39f9eb614b5c1c5b236c"
+    "evidence_head_sha": "1a54663b68bbc59000faee1c2a9a2d66487729f9"
   },
   "community": {
     "stars_count": 11,
@@ -80,7 +80,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-19T11:57:52.779Z",
+  "refreshed_at": "2026-09-20T12:27:43.995Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -91,7 +91,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-19T11:57:52.779Z",
+    "refreshed_at": "2026-09-20T12:27:43.995Z",
     "stale_since": null
   }
 }
