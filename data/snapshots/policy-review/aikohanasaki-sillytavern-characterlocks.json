@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "aikohanasaki-sillytavern-characterlocks",
+  "source_id": "github-998536860",
+  "source_identity": "github:aikohanasaki/sillytavern-characterlocks",
+  "evidence_fingerprint": "68424342323a2e8788186f13d7ad6601a2cbc0654c6ace29e3bdf6865dfd54a3",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-20T12:46:01.269Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-20T12:46:01.269Z"
+  },
+  "maintenance_issue_number": null
+}
