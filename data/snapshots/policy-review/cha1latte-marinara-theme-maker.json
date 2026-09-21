@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "cha1latte-marinara-theme-maker",
+  "source_id": "github-1243718543",
+  "source_identity": "github:cha1latte/marinara-theme-maker",
+  "evidence_fingerprint": "93168dc2aec97ffafdc6d51ea9aed4ef57b53ba0291e8bfd01e477841c342d61",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-21T14:32:27.954Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-21T14:32:27.954Z"
+  },
+  "maintenance_issue_number": null
+}
