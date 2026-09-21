@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "pocketrisu-pocketrisu",
+  "source_id": "github-1183860600",
+  "source_identity": "github:pocketrisu/pocketrisu",
+  "evidence_fingerprint": "e9d6e77e39ce75c0a86fe6ff73ab6aa8611693711afe8fd96acc37c06567b46c",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-21T14:30:28.661Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-21T14:30:28.661Z"
+  },
+  "maintenance_issue_number": null
+}
