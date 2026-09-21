@@ -9,13 +9,13 @@
     "url": "https://github.com/linux4life1/front-porch-AI",
     "description": "Local-first AI character chat & roleplay for Windows/macOS/Linux — a living Realism Engine, built-in TTS & image generation, and The Stoop community character hub. Fully offline by default, open-source (AGPL-3.0). A home for Backyard AI refugees.",
     "default_branch": "main",
-    "head_sha": "4f9d918975715b3df2559008eac8340c8d66c010",
-    "head_committed_at": "2026-09-14T15:43:05.000Z",
+    "head_sha": "42955c0b0465f985f519de1a2439acabba87cbae",
+    "head_committed_at": "2026-09-21T05:41:28.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-02-15T02:01:28.000Z",
-    "size_kb": 98188
+    "size_kb": 98362
   },
   "source_health": "healthy",
   "activity": {
@@ -70,19 +70,14 @@
         "week_start": "2026-07-06",
         "latest_at": "2026-07-12T18:54:41.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-29",
-        "latest_at": "2026-07-05T18:58:09.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-09-04T04:32:31.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-15T12:43:56.161Z",
+    "baseline_completed_at": "2026-09-21T14:17:43.786Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "4f9d918975715b3df2559008eac8340c8d66c010"
+    "evidence_head_sha": "42955c0b0465f985f519de1a2439acabba87cbae"
   },
   "community": {
     "stars_count": 71,
@@ -95,7 +90,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-20T12:27:43.995Z",
+  "refreshed_at": "2026-09-21T14:17:43.786Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -113,7 +108,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-20T12:27:43.995Z",
+    "refreshed_at": "2026-09-21T14:17:43.786Z",
     "stale_since": null
   }
 }

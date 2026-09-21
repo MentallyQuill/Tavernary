@@ -9,8 +9,8 @@
     "url": "https://github.com/KritBlade/VectFox",
     "description": "Vector database driven Sillytavern Memory System",
     "default_branch": "main",
-    "head_sha": "b2ce51888649ae6681e0827a8a158a4d330d1cb8",
-    "head_committed_at": "2026-09-08T08:07:23.000Z",
+    "head_sha": "3623dc808f6e12c7806ba041d98452ac3bc4cd75",
+    "head_committed_at": "2026-09-21T09:03:59.000Z",
     "archived": false,
     "fork": true,
     "parent": {
@@ -20,12 +20,22 @@
       "url": "https://github.com/timwu/VectHare"
     },
     "created_at": "2026-05-01T09:26:16.000Z",
-    "size_kb": 9177
+    "size_kb": 9281
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-05T23:34:51.000Z",
+    "latest_source_activity_at": "2026-09-21T09:00:05.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-21T09:00:05.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-30T13:39:24.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-03",
         "latest_at": "2026-08-05T23:34:51.000Z",
@@ -50,24 +60,14 @@
         "week_start": "2026-07-06",
         "latest_at": "2026-07-12T22:06:02.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-29",
-        "latest_at": "2026-07-05T16:49:57.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-22",
-        "latest_at": "2026-06-25T21:19:13.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-08T12:10:40.479Z",
+    "baseline_completed_at": "2026-09-21T14:17:43.786Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "b2ce51888649ae6681e0827a8a158a4d330d1cb8"
+    "evidence_head_sha": "3623dc808f6e12c7806ba041d98452ac3bc4cd75"
   },
   "community": {
     "stars_count": 69,
@@ -80,7 +80,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-20T12:27:43.995Z",
+  "refreshed_at": "2026-09-21T14:17:43.786Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -91,7 +91,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T16:20:49.192Z",
     "scan": null,
-    "refreshed_at": "2026-09-20T12:27:43.995Z",
+    "refreshed_at": "2026-09-21T14:17:43.786Z",
     "stale_since": null
   }
 }

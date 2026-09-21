@@ -15,7 +15,7 @@
     "fork": false,
     "parent": null,
     "created_at": "2026-03-07T23:15:01.000Z",
-    "size_kb": 123411
+    "size_kb": 126436
   },
   "source_health": "healthy",
   "activity": {
@@ -90,17 +90,17 @@
     "evidence_head_sha": "7398fa5f4fc73eaee1aaa767804312765e84ea79"
   },
   "community": {
-    "stars_count": 189,
+    "stars_count": 190,
     "forks_count": 68,
     "watchers_count": 3,
-    "aggregate": 260
+    "aggregate": 261
   },
   "license": {
     "status": "proprietary",
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-09-20T12:27:43.995Z",
+  "refreshed_at": "2026-09-21T14:17:43.786Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -134,7 +134,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-20T12:27:43.995Z",
+    "refreshed_at": "2026-09-21T14:17:43.786Z",
     "stale_since": null
   }
 }

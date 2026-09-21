@@ -9,18 +9,23 @@
     "url": "https://github.com/Casus-B/Casus-custom-Chatfill-II",
     "description": "A modified Sillytavern preset",
     "default_branch": "main",
-    "head_sha": "61584bbbe94c2d804f2ccdc6a40fd9bf9953bf94",
-    "head_committed_at": "2026-09-20T00:18:35.000Z",
+    "head_sha": "a34f21e5a739f19dd59ae232744191a5958bd5b3",
+    "head_committed_at": "2026-09-21T13:56:43.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-21T10:10:50.000Z",
-    "size_kb": 1681
+    "size_kb": 1739
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-19T10:05:38.000Z",
+    "latest_source_activity_at": "2026-09-21T13:56:43.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-21T13:56:43.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-14",
         "latest_at": "2026-09-19T10:05:38.000Z",
@@ -50,17 +55,25 @@
         "week_start": "2026-07-06",
         "latest_at": "2026-07-10T04:45:37.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-29",
-        "latest_at": "2026-07-05T23:33:35.000Z",
-        "precision": "exact"
       }
     ],
-    "provisional_weeks": null,
+    "provisional_weeks": [
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true
+    ],
     "latest_release_at": null,
-    "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-19T11:57:52.779Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
     "baseline_attempts": 0,
     "evidence_head_sha": "61584bbbe94c2d804f2ccdc6a40fd9bf9953bf94"
   },
@@ -71,15 +84,31 @@
     "aggregate": 28
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-20T12:27:43.995Z",
+  "refreshed_at": "2026-09-21T14:17:43.786Z",
   "stale_since": null,
-  "activity_scan": null,
+  "activity_scan": {
+    "head_sha": "a34f21e5a739f19dd59ae232744191a5958bd5b3",
+    "cutoff_at": "2026-06-13T14:17:43.786Z",
+    "next_page": 2,
+    "next_index": 2,
+    "resolved_weeks": [
+      "2026-06-29",
+      "2026-07-06",
+      "2026-07-20",
+      "2026-07-27",
+      "2026-08-03",
+      "2026-08-10",
+      "2026-09-14",
+      "2026-09-21"
+    ],
+    "pending_commit": null
+  },
   "contributors": {
     "accounts": [{ "login": "Casus-B", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-20T12:27:43.995Z",
+    "refreshed_at": "2026-09-21T14:17:43.786Z",
     "stale_since": null
   }
 }

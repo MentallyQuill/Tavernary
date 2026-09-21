@@ -42,43 +42,23 @@
         "precision": "exact"
       }
     ],
-    "provisional_weeks": [
-      false,
-      true,
-      false,
-      true,
-      false,
-      false,
-      false,
-      false,
-      true,
-      false,
-      false,
-      true
-    ],
+    "provisional_weeks": null,
     "latest_release_at": "2026-09-19T17:05:00.000Z",
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-09-21T14:17:43.786Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "3413f598fdd41235e0ed8aa0b48b63638c1aa880"
+    "evidence_head_sha": "c17cb25f9f454aac1d899f0cf806ef8943b705cb"
   },
   "community": {
-    "stars_count": 80,
+    "stars_count": 81,
     "forks_count": 12,
     "watchers_count": 0,
-    "aggregate": 92
+    "aggregate": 93
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-20T12:27:43.995Z",
+  "refreshed_at": "2026-09-21T14:17:43.786Z",
   "stale_since": null,
-  "activity_scan": {
-    "head_sha": "c17cb25f9f454aac1d899f0cf806ef8943b705cb",
-    "cutoff_at": "2026-06-12T12:27:43.995Z",
-    "next_page": 1,
-    "next_index": 54,
-    "resolved_weeks": ["2026-07-06", "2026-07-20", "2026-08-24", "2026-09-14"],
-    "pending_commit": null
-  },
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "TavernAI", "type": "User", "provider": "github" },
@@ -88,7 +68,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-20T12:27:43.995Z",
+    "refreshed_at": "2026-09-21T14:17:43.786Z",
     "stale_since": null
   }
 }

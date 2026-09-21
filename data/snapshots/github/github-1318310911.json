@@ -9,21 +9,21 @@
     "url": "https://github.com/ddkhan24/hordestudio",
     "description": "SillyTavern-style character creation + AI Dungeon-style persistent worlds + a detailed virtual companion simulator, packaged as a creator-focused local web application.",
     "default_branch": "main",
-    "head_sha": "a6763ba8894e03e16ba422675a351277f9c55625",
-    "head_committed_at": "2026-09-20T08:02:44.000Z",
+    "head_sha": "f9aa74dddcf14f460abb52fe1ed1941c77f9d1df",
+    "head_committed_at": "2026-09-20T18:11:08.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-31T12:09:50.000Z",
-    "size_kb": 320598
+    "size_kb": 321599
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-20T08:02:44.000Z",
+    "latest_source_activity_at": "2026-09-20T18:11:08.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-14",
-        "latest_at": "2026-09-20T08:02:44.000Z",
+        "latest_at": "2026-09-20T18:11:08.000Z",
         "precision": "exact"
       },
       {
@@ -58,11 +58,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-09-20T08:22:12.000Z",
+    "latest_release_at": "2026-09-20T18:14:01.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-15T12:43:56.161Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "a6763ba8894e03e16ba422675a351277f9c55625"
+    "evidence_head_sha": "f9aa74dddcf14f460abb52fe1ed1941c77f9d1df"
   },
   "community": {
     "stars_count": 58,
@@ -71,7 +71,7 @@
     "aggregate": 71
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-20T12:27:43.995Z",
+  "refreshed_at": "2026-09-21T14:17:43.786Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -82,7 +82,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-20T12:27:43.995Z",
+    "refreshed_at": "2026-09-21T14:17:43.786Z",
     "stale_since": null
   }
 }
