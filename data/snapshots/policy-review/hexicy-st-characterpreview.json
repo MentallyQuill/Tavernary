@@ -3,14 +3,14 @@
   "project_id": "hexicy-st-characterpreview",
   "source_id": "github-1112751408",
   "source_identity": "github:hexicy/st-characterpreview",
-  "evidence_fingerprint": "f6597c18e5f10b3ccf359554e558333ab4645698dc8555db113f3ddf22f2e9c9",
+  "evidence_fingerprint": "9e76d42dfad5c25767b876275f45ee6ac2fbc1ecc82a69478f660652b0747362",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-17T08:13:18.509Z",
+  "reviewed_at": "2026-09-21T14:28:25.347Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-17T08:13:18.509Z"
+    "attempts": 3,
+    "last_failure_at": "2026-09-21T14:28:25.347Z"
   },
   "maintenance_issue_number": null
 }
