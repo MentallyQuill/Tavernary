@@ -3,14 +3,14 @@
   "project_id": "xyzzy121-sillytavern-personatitletooltip",
   "source_id": "github-1356076063",
   "source_identity": "github:xyzzy121/sillytavern-personatitletooltip",
-  "evidence_fingerprint": "c400930ae91bc09bc9d91d2171b74441bf3be0ebefef2c476176ea7b4617c544",
+  "evidence_fingerprint": "8048bc3d1ffe6d27e91ee35d5fd2c69ee1539aaa3353a978fba6900810b9b894",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-09-08T06:01:16.011Z",
+  "reviewed_at": "2026-09-21T14:36:14.224Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-09-08T06:01:16.011Z"
+    "attempts": 2,
+    "last_failure_at": "2026-09-21T14:36:14.224Z"
   },
   "maintenance_issue_number": null
 }
