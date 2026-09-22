@@ -9,21 +9,26 @@
     "url": "https://github.com/N0819/Sonder_Engine",
     "description": "An engine for creating coherent fiction with LLMs through a persistent worldstate with deterministic epistemic boundaries",
     "default_branch": "main",
-    "head_sha": "2e2ff8b39c2a12e2e8051a26ef1d0d7a4d27d481",
-    "head_committed_at": "2026-09-16T23:53:22.000Z",
+    "head_sha": "8d15b3d5240f15bba173e477f4ca90c2855f1ead",
+    "head_committed_at": "2026-09-21T21:46:29.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-19T17:55:36.000Z",
-    "size_kb": 86671
+    "size_kb": 80637
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-16T23:53:22.000Z",
+    "latest_source_activity_at": "2026-09-21T21:46:29.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-21T21:46:29.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-09-14",
-        "latest_at": "2026-09-16T23:53:22.000Z",
+        "latest_at": "2026-09-19T17:00:11.000Z",
         "precision": "exact"
       },
       {
@@ -73,11 +78,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-09-16T23:53:48.000Z",
+    "latest_release_at": "2026-09-21T21:46:42.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-17T12:37:59.664Z",
+    "baseline_completed_at": "2026-09-22T12:40:16.477Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "2e2ff8b39c2a12e2e8051a26ef1d0d7a4d27d481"
+    "evidence_head_sha": "8d15b3d5240f15bba173e477f4ca90c2855f1ead"
   },
   "community": {
     "stars_count": 59,
@@ -90,7 +95,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-21T14:17:43.786Z",
+  "refreshed_at": "2026-09-22T12:40:16.477Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -101,7 +106,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-21T14:17:43.786Z",
+    "refreshed_at": "2026-09-22T12:40:16.477Z",
     "stale_since": null
   }
 }

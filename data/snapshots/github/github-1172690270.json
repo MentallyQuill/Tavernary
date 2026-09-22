@@ -9,18 +9,23 @@
     "url": "https://github.com/Pasta-Devs/Marinara-Engine",
     "description": "AI frontend",
     "default_branch": "main",
-    "head_sha": "cc783dd194bacd97379191b9d490939afbe6759e",
-    "head_committed_at": "2026-09-15T17:54:46.000Z",
+    "head_sha": "12a0acd5b7823abeaf3e05ad39a3a07d957e9ffc",
+    "head_committed_at": "2026-09-21T20:51:57.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-04T15:37:29.000Z",
-    "size_kb": 309394
+    "size_kb": 309957
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-15T17:30:33.000Z",
+    "latest_source_activity_at": "2026-09-21T20:51:57.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-21T20:51:57.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-14",
         "latest_at": "2026-09-15T17:30:33.000Z",
@@ -75,34 +80,58 @@
         "week_start": "2026-07-06",
         "latest_at": "2026-07-12T23:41:28.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-29",
-        "latest_at": "2026-07-05T23:38:48.000Z",
-        "precision": "exact"
       }
     ],
-    "provisional_weeks": null,
+    "provisional_weeks": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
     "latest_release_at": "2026-09-15T17:56:41.000Z",
-    "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-17T12:37:59.664Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
     "baseline_attempts": 3,
     "evidence_head_sha": "cc783dd194bacd97379191b9d490939afbe6759e"
   },
   "community": {
-    "stars_count": 667,
-    "forks_count": 189,
-    "watchers_count": 10,
-    "aggregate": 866
+    "stars_count": 669,
+    "forks_count": 190,
+    "watchers_count": 9,
+    "aggregate": 868
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-21T14:17:43.786Z",
+  "refreshed_at": "2026-09-22T12:40:16.477Z",
   "stale_since": null,
-  "activity_scan": null,
+  "activity_scan": {
+    "head_sha": "12a0acd5b7823abeaf3e05ad39a3a07d957e9ffc",
+    "cutoff_at": "2026-06-14T12:40:16.477Z",
+    "next_page": 26,
+    "next_index": 0,
+    "resolved_weeks": [
+      "2026-08-03",
+      "2026-08-10",
+      "2026-08-17",
+      "2026-08-24",
+      "2026-08-31",
+      "2026-09-07",
+      "2026-09-14",
+      "2026-09-21"
+    ],
+    "pending_commit": null
+  },
   "contributors": {
     "accounts": [
       { "login": "SpicyMarinara", "type": "User", "provider": "github" },
@@ -180,7 +209,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-21T14:17:43.786Z",
+    "refreshed_at": "2026-09-22T12:40:16.477Z",
     "stale_since": null
   }
 }

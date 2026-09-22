@@ -9,8 +9,8 @@
     "url": "https://github.com/Hapsburgtopquark388/SillyTavern-Streamline",
     "description": "Streamline SillyTavern by hiding legacy UI clutter and simplifying the interface for narrative roleplay and cloud API use",
     "default_branch": "main",
-    "head_sha": "0d196592d7581aeb38de02bf1704f5fba8b70f28",
-    "head_committed_at": "2026-09-20T07:26:42.000Z",
+    "head_sha": "d389b3a56c3b01f0e533eed6075c63e89dbe7bb4",
+    "head_committed_at": "2026-09-22T10:50:36.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
@@ -24,9 +24,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-20T12:27:43.995Z",
+    "baseline_completed_at": "2026-09-22T12:40:16.477Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "0d196592d7581aeb38de02bf1704f5fba8b70f28"
+    "evidence_head_sha": "d389b3a56c3b01f0e533eed6075c63e89dbe7bb4"
   },
   "community": {
     "stars_count": 5,
@@ -39,7 +39,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-21T14:17:43.786Z",
+  "refreshed_at": "2026-09-22T12:40:16.477Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -50,7 +50,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-21T14:17:43.786Z",
+    "refreshed_at": "2026-09-22T12:40:16.477Z",
     "stale_since": null
   }
 }

@@ -9,13 +9,13 @@
     "url": "https://github.com/Casus-B/Casus-custom-Chatfill-II",
     "description": "A modified Sillytavern preset",
     "default_branch": "main",
-    "head_sha": "a34f21e5a739f19dd59ae232744191a5958bd5b3",
-    "head_committed_at": "2026-09-21T13:56:43.000Z",
+    "head_sha": "d3e778b7b319d36c5441fac07769a40737b76438",
+    "head_committed_at": "2026-09-22T11:34:12.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-21T10:10:50.000Z",
-    "size_kb": 1739
+    "size_kb": 1178
   },
   "source_health": "healthy",
   "activity": {
@@ -57,58 +57,29 @@
         "precision": "exact"
       }
     ],
-    "provisional_weeks": [
-      true,
-      false,
-      true,
-      true,
-      true,
-      true,
-      false,
-      false,
-      false,
-      false,
-      true,
-      true
-    ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-09-22T12:40:16.477Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "61584bbbe94c2d804f2ccdc6a40fd9bf9953bf94"
+    "evidence_head_sha": "a34f21e5a739f19dd59ae232744191a5958bd5b3"
   },
   "community": {
-    "stars_count": 23,
+    "stars_count": 24,
     "forks_count": 2,
     "watchers_count": 3,
-    "aggregate": 28
+    "aggregate": 29
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-21T14:17:43.786Z",
+  "refreshed_at": "2026-09-22T12:40:16.477Z",
   "stale_since": null,
-  "activity_scan": {
-    "head_sha": "a34f21e5a739f19dd59ae232744191a5958bd5b3",
-    "cutoff_at": "2026-06-13T14:17:43.786Z",
-    "next_page": 2,
-    "next_index": 2,
-    "resolved_weeks": [
-      "2026-06-29",
-      "2026-07-06",
-      "2026-07-20",
-      "2026-07-27",
-      "2026-08-03",
-      "2026-08-10",
-      "2026-09-14",
-      "2026-09-21"
-    ],
-    "pending_commit": null
-  },
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "Casus-B", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-21T14:17:43.786Z",
+    "refreshed_at": "2026-09-22T12:40:16.477Z",
     "stale_since": null
   }
 }

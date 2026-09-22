@@ -9,18 +9,23 @@
     "url": "https://github.com/Mezi99/SillyTavern-MBTI_Widget",
     "description": "A SillyTavern extension that analyzes user's messages for an evolving MBTI personality profile",
     "default_branch": "main",
-    "head_sha": "41f6e6ed52733a59ee51bd1241d417fc9615a1f7",
-    "head_committed_at": "2026-09-09T13:17:46.000Z",
+    "head_sha": "748b3f6c77aa64b0fa21162d83bd70592ac6e70a",
+    "head_committed_at": "2026-09-22T11:16:18.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-26T11:22:12.000Z",
-    "size_kb": 1359
+    "size_kb": 111
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-07T10:53:13.000Z",
+    "latest_source_activity_at": "2026-09-22T11:06:24.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-22T11:06:24.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-07",
         "latest_at": "2026-09-07T10:53:13.000Z",
@@ -40,9 +45,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-07T13:32:56.615Z",
+    "baseline_completed_at": "2026-09-22T12:40:16.477Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "41f6e6ed52733a59ee51bd1241d417fc9615a1f7"
+    "evidence_head_sha": "748b3f6c77aa64b0fa21162d83bd70592ac6e70a"
   },
   "community": {
     "stars_count": 2,
@@ -55,7 +60,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-21T14:17:43.786Z",
+  "refreshed_at": "2026-09-22T12:40:16.477Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -63,7 +68,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-21T14:17:43.786Z",
+    "refreshed_at": "2026-09-22T12:40:16.477Z",
     "stale_since": null
   }
 }
