@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "amousepad-lumiagent",
+  "source_id": "github-1235264700",
+  "source_identity": "github:amousepad/lumiagent",
+  "evidence_fingerprint": "1fa109df2ef3c9ca435fd89337f208bc9bc199dc85e3e05bea42a57474741777",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-22T12:54:41.429Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-22T12:54:41.429Z"
+  },
+  "maintenance_issue_number": null
+}
