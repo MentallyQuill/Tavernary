@@ -3,14 +3,14 @@
   "project_id": "deiomo-writers-workbench",
   "source_id": "github-1356360868",
   "source_identity": "github:deiomo/writers-workbench",
-  "evidence_fingerprint": "8b6220462bbc40ea1f5078b4fef4f00eaf46aacebec367c6d5213d4946d07b97",
+  "evidence_fingerprint": "4b59cac8896e06a49f050c538e8b63adc8b3e5f5fe2553d254e9773ebdcae99d",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-09-04T03:37:04.922Z",
+  "reviewed_at": "2026-09-22T12:58:41.923Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-09-04T03:37:04.922Z"
+    "attempts": 2,
+    "last_failure_at": "2026-09-22T12:58:41.923Z"
   },
   "maintenance_issue_number": null
 }
