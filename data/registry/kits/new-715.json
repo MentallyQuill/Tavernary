@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "new-715",
+  "status": "published",
+  "title": "New",
+  "description": "Marinara Replacement",
+  "author": {
+    "github_user_id": 332504821,
+    "login": "christopherdillworth1993-ux"
+  },
+  "source_issue_number": 715,
+  "project_ids": [
+    "sillytavern-sillytavern",
+    "multihogaurelius-sillytavern-multihogdndframework",
+    "zdost-story-engine",
+    "nemovonnirgend-nemoengine",
+    "reddit-1v64r6z",
+    "brasen56-merged-world-tracker",
+    "windy-sora-sillytavern-groupworld",
+    "deiomo-writers-workbench",
+    "maxwell5600-persona-library",
+    "closuretxt-game-manager-st",
+    "mezi99-sillytavern-mbti-widget",
+    "coneja-chibi-hoplight"
+  ],
+  "published_at": "2026-09-22T13:23:27.713Z",
+  "updated_at": "2026-09-22T13:23:27.713Z"
+}
