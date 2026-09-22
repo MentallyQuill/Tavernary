@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sillybunnyteam-sillybunny",
+  "source_id": "github-1201800372",
+  "source_identity": "github:sillybunnyteam/sillybunny",
+  "evidence_fingerprint": "4a9fbc21f2e382bc8f05e733e561630363ee66f3da037098dc66ddbeb18806ab",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-22T12:53:22.150Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-22T12:53:22.150Z"
+  },
+  "maintenance_issue_number": null
+}
