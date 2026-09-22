@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "testerbender-intercede",
+  "source_id": "github-1316944655",
+  "source_identity": "github:testerbender/intercede",
+  "evidence_fingerprint": "a730dd38771d83e42d489302ae126c47baaf36b14d71e837bb11b3f98f8ad552",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-22T12:58:00.199Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-22T12:58:00.199Z"
+  },
+  "maintenance_issue_number": null
+}
