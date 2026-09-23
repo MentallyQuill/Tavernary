@@ -3,14 +3,14 @@
   "project_id": "hype-hosting-sillytavern-roulette",
   "source_id": "github-1230353014",
   "source_identity": "github:hype-hosting/sillytavern-roulette",
-  "evidence_fingerprint": "92fa5490e8f7027344cee2ac90ef331f97c47124aa93e0969495e4b5d8255427",
+  "evidence_fingerprint": "e6599bd62f1f4fd13a6b86b83682104606300c3fb02fff757fad344ec7b6347b",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-23T08:01:48.430Z",
+  "reviewed_at": "2026-09-23T13:01:26.911Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-23T08:01:48.430Z"
+    "attempts": 3,
+    "last_failure_at": "2026-09-23T13:01:26.911Z"
   },
   "maintenance_issue_number": null
 }
