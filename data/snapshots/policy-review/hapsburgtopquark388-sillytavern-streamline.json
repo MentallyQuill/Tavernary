@@ -3,14 +3,14 @@
   "project_id": "hapsburgtopquark388-sillytavern-streamline",
   "source_id": "github-1195775310",
   "source_identity": "github:hapsburgtopquark388/sillytavern-streamline",
-  "evidence_fingerprint": "b9456c2238e502efecfc5d2121f8c0f82ab653aeab14747aec48b38235dc29d5",
+  "evidence_fingerprint": "4cd179df146c53541f66b82dbba7b79a5a6210a5b74c0cedfc42044746762de6",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-09-13T12:57:50.034Z",
+  "reviewed_at": "2026-09-23T12:59:58.759Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-13T12:57:50.034Z"
+    "attempts": 3,
+    "last_failure_at": "2026-09-23T12:59:58.759Z"
   },
   "maintenance_issue_number": null
 }
