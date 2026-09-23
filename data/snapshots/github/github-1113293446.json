@@ -9,8 +9,8 @@
     "url": "https://github.com/Kristyku/InlineSummary",
     "description": "InlineSummary - SillyTavern Extension",
     "default_branch": "main",
-    "head_sha": "708247c59bbf2de6e386b094097de0589df251a4",
-    "head_committed_at": "2026-07-26T13:23:23.000Z",
+    "head_sha": "d720005c5b6efc26b744ea2f23773b018390b2c2",
+    "head_committed_at": "2026-09-23T12:28:44.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
@@ -19,8 +19,13 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-26T13:23:23.000Z",
+    "latest_source_activity_at": "2026-09-23T12:28:44.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-23T12:28:44.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-20",
         "latest_at": "2026-07-26T13:23:23.000Z",
@@ -30,29 +35,14 @@
         "week_start": "2026-07-06",
         "latest_at": "2026-07-10T13:19:19.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-14T08:49:32.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-25",
-        "latest_at": "2026-05-29T11:03:25.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-18",
-        "latest_at": "2026-05-20T07:48:03.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-26T14:04:06.615Z",
+    "baseline_completed_at": "2026-09-23T12:47:43.864Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "708247c59bbf2de6e386b094097de0589df251a4"
+    "evidence_head_sha": "d720005c5b6efc26b744ea2f23773b018390b2c2"
   },
   "community": {
     "stars_count": 56,
@@ -65,7 +55,7 @@
     "spdx_id": "MIT",
     "source_path": "license.md"
   },
-  "refreshed_at": "2026-09-22T12:40:16.477Z",
+  "refreshed_at": "2026-09-23T12:47:43.864Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -73,7 +63,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-22T12:40:16.477Z",
+    "refreshed_at": "2026-09-23T12:47:43.864Z",
     "stale_since": null
   }
 }

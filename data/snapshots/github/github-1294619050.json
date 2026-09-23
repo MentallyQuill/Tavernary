@@ -9,21 +9,21 @@
     "url": "https://github.com/lsennn/Deus-ex-machina",
     "description": "A feature-rich, beginner-friendly, contextually dynamic, truly modular SillyTavern preset focused on collaborative story writing.",
     "default_branch": "main",
-    "head_sha": "7b1ff22257142538e75bca4524817103c37400da",
-    "head_committed_at": "2026-09-22T02:23:04.000Z",
+    "head_sha": "0967f127c63448a6f3dcc0ea13780068932b8454",
+    "head_committed_at": "2026-09-22T23:27:22.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-09T04:14:22.000Z",
-    "size_kb": 14581
+    "size_kb": 16962
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-22T02:23:04.000Z",
+    "latest_source_activity_at": "2026-09-22T23:27:22.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-21",
-        "latest_at": "2026-09-22T02:23:04.000Z",
+        "latest_at": "2026-09-22T23:27:22.000Z",
         "precision": "exact"
       },
       {
@@ -57,20 +57,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-22T12:40:16.477Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "7b1ff22257142538e75bca4524817103c37400da"
+    "evidence_head_sha": "0967f127c63448a6f3dcc0ea13780068932b8454"
   },
   "community": {
-    "stars_count": 35,
+    "stars_count": 36,
     "forks_count": 0,
     "watchers_count": 2,
-    "aggregate": 37
+    "aggregate": 38
   },
   "license": {
     "status": "proprietary",
     "spdx_id": null,
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-22T12:40:16.477Z",
+  "refreshed_at": "2026-09-23T12:47:43.864Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -78,7 +78,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-22T12:40:16.477Z",
+    "refreshed_at": "2026-09-23T12:47:43.864Z",
     "stale_since": null
   }
 }

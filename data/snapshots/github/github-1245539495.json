@@ -57,10 +57,23 @@
         "precision": "exact"
       }
     ],
-    "provisional_weeks": null,
+    "provisional_weeks": [
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true
+    ],
     "latest_release_at": null,
-    "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-22T12:40:16.477Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
     "baseline_attempts": 0,
     "evidence_head_sha": "a34f21e5a739f19dd59ae232744191a5958bd5b3"
   },
@@ -71,15 +84,29 @@
     "aggregate": 29
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-22T12:40:16.477Z",
+  "refreshed_at": "2026-09-23T12:47:43.864Z",
   "stale_since": null,
-  "activity_scan": null,
+  "activity_scan": {
+    "head_sha": "d3e778b7b319d36c5441fac07769a40737b76438",
+    "cutoff_at": "2026-06-15T12:47:43.864Z",
+    "next_page": 1,
+    "next_index": 56,
+    "resolved_weeks": [
+      "2026-07-20",
+      "2026-07-27",
+      "2026-08-03",
+      "2026-08-10",
+      "2026-09-14",
+      "2026-09-21"
+    ],
+    "pending_commit": null
+  },
   "contributors": {
     "accounts": [{ "login": "Casus-B", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-22T12:40:16.477Z",
+    "refreshed_at": "2026-09-23T12:47:43.864Z",
     "stale_since": null
   }
 }

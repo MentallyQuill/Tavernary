@@ -9,8 +9,8 @@
     "url": "https://github.com/kwaroran/Risuai",
     "description": "Make your own story. User-friendly software for LLM roleplaying",
     "default_branch": "main",
-    "head_sha": "669b12ceabe1c5066d3dadbe0973f2188d10cc97",
-    "head_committed_at": "2026-09-18T18:40:12.000Z",
+    "head_sha": "25001174e0452e3b9d16aee459ce9d2444c197d7",
+    "head_committed_at": "2026-09-23T12:31:07.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
@@ -28,13 +28,13 @@
       },
       {
         "week_start": "2026-09-07",
-        "latest_at": "2026-09-10T11:51:38.000Z",
+        "latest_at": "2026-09-12T01:50:34.000Z",
         "precision": "exact"
       },
       {
         "week_start": "2026-08-31",
         "latest_at": "2026-09-05T00:02:42.000Z",
-        "precision": "interval"
+        "precision": "exact"
       },
       {
         "week_start": "2026-08-24",
@@ -63,7 +63,7 @@
       },
       {
         "week_start": "2026-07-20",
-        "latest_at": "2026-07-25T02:03:09.000Z",
+        "latest_at": "2026-07-25T10:25:16.000Z",
         "precision": "exact"
       },
       {
@@ -75,23 +75,18 @@
         "week_start": "2026-07-06",
         "latest_at": "2026-07-12T14:21:47.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-29",
-        "latest_at": "2026-07-05T12:56:58.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-08-25T23:02:13.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-17T12:37:59.664Z",
+    "baseline_completed_at": "2026-09-23T12:47:43.864Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "669b12ceabe1c5066d3dadbe0973f2188d10cc97"
+    "evidence_head_sha": "25001174e0452e3b9d16aee459ce9d2444c197d7"
   },
   "community": {
-    "stars_count": 1692,
-    "forks_count": 350,
+    "stars_count": 1691,
+    "forks_count": 351,
     "watchers_count": 24,
     "aggregate": 2066
   },
@@ -100,7 +95,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-22T12:40:16.477Z",
+  "refreshed_at": "2026-09-23T12:47:43.864Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -192,7 +187,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-22T12:40:16.477Z",
+    "refreshed_at": "2026-09-23T12:47:43.864Z",
     "stale_since": null
   }
 }
