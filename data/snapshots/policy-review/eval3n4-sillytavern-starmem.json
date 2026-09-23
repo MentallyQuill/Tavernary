@@ -3,14 +3,14 @@
   "project_id": "eval3n4-sillytavern-starmem",
   "source_id": "github-1216025460",
   "source_identity": "github:eval3n4/sillytavern-starmem",
-  "evidence_fingerprint": "7fe9f63ab06114b5a3a7b59231ad19f22987e5dd545a3d17fe52b331cb6e8b18",
+  "evidence_fingerprint": "00779711dbdd6fc86d3254df88ec6196c8adecf7d2329ac10ff50efe3701c130",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-16T08:00:11.063Z",
+  "reviewed_at": "2026-09-23T13:00:45.336Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-16T08:00:11.063Z"
+    "attempts": 3,
+    "last_failure_at": "2026-09-23T13:00:45.336Z"
   },
   "maintenance_issue_number": null
 }
