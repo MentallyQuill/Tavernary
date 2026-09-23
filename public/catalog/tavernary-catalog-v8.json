@@ -102055,25 +102055,24 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "58a7bcbb916f8b595fe81b7ff767274dc8151081",
         "report": {
-          "reportId": "39b8cfd06ae9f693200e39600f7b99164c95963d7b74f449d59710fdc1212b8d",
+          "reportId": "0192170196f14818e0ee83ac75a1290ec10de94790ef34adcfa4584df403f655",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
-          "minorCautions": 2,
+          "minorCautions": 1,
           "materialConcerns": 0,
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
           "citedFindingIds": [
-            "3c59820d5f044729bf3b21f0dc50f411c3d00e8f3618dea59dfde5451f349b91",
-            "70dbe4138c36cccf581d241de50e1f647c8874fb76c81f0b00f3489683591c49"
+            "d6c22481009af6157e26eafc7e3adbbc51bd8d178079ca4999ae7d4578fa7402"
           ],
-          "scannedSha": "c008ce5a72d1a264d7ac738e70751c6a3fff05f7",
-          "treeUrl": "https://github.com/starlitcode/Lumiverse-Auto-Retry/tree/c008ce5a72d1a264d7ac738e70751c6a3fff05f7",
-          "scannedAt": "2026-09-16T19:34:36.722Z",
-          "assessedAt": "2026-09-16T19:36:23.524Z",
+          "scannedSha": "58a7bcbb916f8b595fe81b7ff767274dc8151081",
+          "treeUrl": "https://github.com/starlitcode/Lumiverse-Auto-Retry/tree/58a7bcbb916f8b595fe81b7ff767274dc8151081",
+          "scannedAt": "2026-09-23T19:37:58.215Z",
+          "assessedAt": "2026-09-23T19:44:27.321Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
@@ -102081,36 +102080,10 @@
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
           "javascriptAnalysisStatus": "incomplete",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/c008ce5a72d1a264d7ac738e70751c6a3fff05f7/5/39b8cfd06ae9f693200e39600f7b99164c95963d7b74f449d59710fdc1212b8d/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/58a7bcbb916f8b595fe81b7ff767274dc8151081/5/0192170196f14818e0ee83ac75a1290ec10de94790ef34adcfa4584df403f655/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/history/"
         },
         "history": [
-          {
-            "reportId": "cd18a324c7e41d023c195627e9548d7dd587cbe1d1e578f612fc4bb19b3250f5",
-            "riskLevel": "low",
-            "headline": "Low risk: the flagged code is limited to developer tests",
-            "summary": "The project appears low risk for Tavernary visitors. The scanner alert concerns a developer-only automated test, not code included in normal user operation, and it does not execute outside project content.",
-            "minorCautions": 0,
-            "materialConcerns": 0,
-            "highDanger": 0,
-            "maliciousEvidence": "No credible malicious behavior was identified. The flagged dynamic execution is test code that loads the project's own backend module in a simulated environment and runs only when a developer starts the test command. This review cannot prove the absence of unknown behavior.",
-            "citedFindingIds": [
-              "dba79e36b1e27fc823f3d060cf29622a84ca516f7beb7dc59dcb2f8bdd719ae1"
-            ],
-            "scannedSha": "53bca46d1823cc468f3b8080b45fec8941a10949",
-            "treeUrl": "https://github.com/starlitcode/Lumiverse-Auto-Retry/tree/53bca46d1823cc468f3b8080b45fec8941a10949",
-            "scannedAt": "2026-08-05T04:00:31.227Z",
-            "assessedAt": "2026-08-05T09:44:30.550Z",
-            "scannerPolicyVersion": "3",
-            "contextualReviewPolicyVersion": "1",
-            "synthesisPolicyVersion": "4",
-            "synthesisModel": "gpt-5.6-luna",
-            "dangerBasis": "none",
-            "assessmentSource": "model",
-            "javascriptAnalysisStatus": "legacy",
-            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/53bca46d1823cc468f3b8080b45fec8941a10949/3/cd18a324c7e41d023c195627e9548d7dd587cbe1d1e578f612fc4bb19b3250f5/",
-            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/history/"
-          },
           {
             "reportId": "a9cb93c08df4890d5538152060ce3b0e325be6b02174d720fcc7ca34d86a4bb4",
             "riskLevel": "low",
@@ -102413,6 +102386,32 @@
             "assessmentSource": "deterministic_regrade",
             "javascriptAnalysisStatus": "incomplete",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/c008ce5a72d1a264d7ac738e70751c6a3fff05f7/5/39b8cfd06ae9f693200e39600f7b99164c95963d7b74f449d59710fdc1212b8d/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/history/"
+          },
+          {
+            "reportId": "0192170196f14818e0ee83ac75a1290ec10de94790ef34adcfa4584df403f655",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 1,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "d6c22481009af6157e26eafc7e3adbbc51bd8d178079ca4999ae7d4578fa7402"
+            ],
+            "scannedSha": "58a7bcbb916f8b595fe81b7ff767274dc8151081",
+            "treeUrl": "https://github.com/starlitcode/Lumiverse-Auto-Retry/tree/58a7bcbb916f8b595fe81b7ff767274dc8151081",
+            "scannedAt": "2026-09-23T19:37:58.215Z",
+            "assessedAt": "2026-09-23T19:44:27.321Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "incomplete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/58a7bcbb916f8b595fe81b7ff767274dc8151081/5/0192170196f14818e0ee83ac75a1290ec10de94790ef34adcfa4584df403f655/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/history/"
           }
         ],
