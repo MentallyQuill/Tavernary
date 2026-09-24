@@ -9,21 +9,21 @@
     "url": "https://github.com/jschm42/taleweaver",
     "description": "A next-generation AI-powered text adventure engine featuring dynamic storytelling, procedural world-building, and immersive visual/auditory generation.",
     "default_branch": "main",
-    "head_sha": "d88ed33e14a4245874835d32826e56b0d46cbf85",
-    "head_committed_at": "2026-09-22T06:16:39.000Z",
+    "head_sha": "79ffffb4fecbd12c37d51026fd0d01de4ddd4c9b",
+    "head_committed_at": "2026-09-24T08:34:24.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-12T10:29:44.000Z",
-    "size_kb": 280826
+    "size_kb": 282981
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-22T06:16:39.000Z",
+    "latest_source_activity_at": "2026-09-24T08:21:11.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-21",
-        "latest_at": "2026-09-22T06:16:39.000Z",
+        "latest_at": "2026-09-24T08:21:11.000Z",
         "precision": "exact"
       },
       {
@@ -43,24 +43,24 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-06-24T15:21:23.000Z",
+    "latest_release_at": "2026-09-24T08:09:03.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-21T14:17:43.786Z",
+    "baseline_completed_at": "2026-09-24T12:46:01.891Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "d88ed33e14a4245874835d32826e56b0d46cbf85"
+    "evidence_head_sha": "79ffffb4fecbd12c37d51026fd0d01de4ddd4c9b"
   },
   "community": {
-    "stars_count": 19,
+    "stars_count": 20,
     "forks_count": 2,
     "watchers_count": 1,
-    "aggregate": 22
+    "aggregate": 23
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-23T12:47:43.864Z",
+  "refreshed_at": "2026-09-24T12:46:01.891Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -72,7 +72,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-23T12:47:43.864Z",
+    "refreshed_at": "2026-09-24T12:46:01.891Z",
     "stale_since": null
   }
 }

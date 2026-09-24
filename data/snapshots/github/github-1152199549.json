@@ -9,18 +9,23 @@
     "url": "https://github.com/Finn-Hecker/RyokanApp",
     "description": "Native AI roleplay app for Windows & Android with character chat, multiplayer, and interactive AI experiences.",
     "default_branch": "main",
-    "head_sha": "a5bdff0b3fe865b3b70d18c8f9860148812ea30f",
-    "head_committed_at": "2026-09-12T12:40:11.000Z",
+    "head_sha": "951f4f0172d9e46da76d9c2048788788849f89d7",
+    "head_committed_at": "2026-09-24T11:57:45.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-02-07T14:16:53.000Z",
-    "size_kb": 7455
+    "size_kb": 7706
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-12T12:09:22.000Z",
+    "latest_source_activity_at": "2026-09-24T11:52:46.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-24T11:52:46.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-07",
         "latest_at": "2026-09-12T12:09:22.000Z",
@@ -50,9 +55,9 @@
     "provisional_weeks": null,
     "latest_release_at": "2026-09-12T12:38:09.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-13T12:45:52.546Z",
+    "baseline_completed_at": "2026-09-24T12:46:01.891Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "a5bdff0b3fe865b3b70d18c8f9860148812ea30f"
+    "evidence_head_sha": "951f4f0172d9e46da76d9c2048788788849f89d7"
   },
   "community": {
     "stars_count": 15,
@@ -65,7 +70,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-23T12:47:43.864Z",
+  "refreshed_at": "2026-09-24T12:46:01.891Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -75,7 +80,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-23T12:47:43.864Z",
+    "refreshed_at": "2026-09-24T12:46:01.891Z",
     "stale_since": null
   }
 }

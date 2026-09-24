@@ -9,18 +9,23 @@
     "url": "https://github.com/aikohanasaki/SillyTavern-MemoryBooks",
     "description": "Saves SillyTavern chat memories to lorebooks",
     "default_branch": "main",
-    "head_sha": "0e9bdf9d04e56806ec59dd172ad8dd8907aee496",
-    "head_committed_at": "2026-09-18T18:30:14.000Z",
+    "head_sha": "84648a4f6fc9f941d59f037d9de72942a557b2b4",
+    "head_committed_at": "2026-09-24T04:09:23.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-06-12T18:30:31.000Z",
-    "size_kb": 22073
+    "size_kb": 22516
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-18T18:30:14.000Z",
+    "latest_source_activity_at": "2026-09-24T04:09:23.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-24T04:09:23.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-14",
         "latest_at": "2026-09-18T18:30:14.000Z",
@@ -75,32 +80,27 @@
         "week_start": "2026-07-06",
         "latest_at": "2026-07-12T17:18:41.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-29",
-        "latest_at": "2026-07-04T04:18:15.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-15T12:43:56.161Z",
+    "baseline_completed_at": "2026-09-24T12:46:01.891Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "0e9bdf9d04e56806ec59dd172ad8dd8907aee496"
+    "evidence_head_sha": "84648a4f6fc9f941d59f037d9de72942a557b2b4"
   },
   "community": {
     "stars_count": 312,
-    "forks_count": 44,
+    "forks_count": 45,
     "watchers_count": 3,
-    "aggregate": 359
+    "aggregate": 360
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-23T12:47:43.864Z",
+  "refreshed_at": "2026-09-24T12:46:01.891Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -113,7 +113,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-23T12:47:43.864Z",
+    "refreshed_at": "2026-09-24T12:46:01.891Z",
     "stale_since": null
   }
 }

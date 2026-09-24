@@ -9,60 +9,35 @@
     "url": "https://github.com/LithiumWaves/danganronpa-sillytavern",
     "description": "A total conversion extension for SillyTavern that recreates the Danganronpa games core gameplay. Play through investigations, Class Trials and more!",
     "default_branch": "main",
-    "head_sha": "d565554d0d101f60a3ae383bd346f74e77afd65b",
-    "head_committed_at": "2026-08-15T17:45:16.000Z",
+    "head_sha": "243259060d205c006e38aa0bb3cce454d7fc753b",
+    "head_committed_at": "2026-09-24T02:04:03.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-16T20:35:35.000Z",
-    "size_kb": 236754
+    "size_kb": 234365
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-15T17:45:16.000Z",
+    "latest_source_activity_at": "2026-09-24T01:59:22.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-24T01:59:22.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-10",
         "latest_at": "2026-08-15T17:45:16.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-29",
-        "latest_at": "2026-06-29T21:12:34.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-22",
-        "latest_at": "2026-06-28T18:15:34.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-15",
-        "latest_at": "2026-06-19T21:30:00.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-12T22:12:41.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-01",
-        "latest_at": "2026-06-07T21:07:17.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-25",
-        "latest_at": "2026-05-28T11:21:14.000Z",
         "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-16T07:48:28.140Z",
+    "baseline_completed_at": "2026-09-24T12:46:01.891Z",
     "baseline_attempts": 1,
-    "evidence_head_sha": "d565554d0d101f60a3ae383bd346f74e77afd65b"
+    "evidence_head_sha": "243259060d205c006e38aa0bb3cce454d7fc753b"
   },
   "community": {
     "stars_count": 8,
@@ -71,7 +46,7 @@
     "aggregate": 10
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-23T12:47:43.864Z",
+  "refreshed_at": "2026-09-24T12:46:01.891Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -83,7 +58,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-23T12:47:43.864Z",
+    "refreshed_at": "2026-09-24T12:46:01.891Z",
     "stale_since": null
   }
 }

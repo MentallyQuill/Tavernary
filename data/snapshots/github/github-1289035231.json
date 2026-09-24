@@ -7,15 +7,15 @@
     "owner": "unrefined803",
     "name": "RPGraph",
     "url": "https://github.com/unrefined803/RPGraph",
-    "description": null,
+    "description": "AI roleplay with persistent characters, interactive stories, and an in-world phone with messaging and social media.",
     "default_branch": "main",
-    "head_sha": "2ae34e6ae08c9f171f95abc5a147441e65184f74",
-    "head_committed_at": "2026-09-23T12:03:49.000Z",
+    "head_sha": "e88b5cfccb866a9ee4807b3623b3de64e74563c5",
+    "head_committed_at": "2026-09-23T16:27:56.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-04T09:02:35.000Z",
-    "size_kb": 42911
+    "size_kb": 43156
   },
   "source_health": "healthy",
   "activity": {
@@ -77,7 +77,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-21T14:17:43.786Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "2ae34e6ae08c9f171f95abc5a147441e65184f74"
+    "evidence_head_sha": "e88b5cfccb866a9ee4807b3623b3de64e74563c5"
   },
   "community": {
     "stars_count": 46,
@@ -90,7 +90,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-23T12:47:43.864Z",
+  "refreshed_at": "2026-09-24T12:46:01.891Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -102,7 +102,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-23T12:47:43.864Z",
+    "refreshed_at": "2026-09-24T12:46:01.891Z",
     "stale_since": null
   }
 }

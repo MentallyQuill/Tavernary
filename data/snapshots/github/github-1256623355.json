@@ -9,21 +9,26 @@
     "url": "https://github.com/brasen56/merged_world_tracker",
     "description": null,
     "default_branch": "main",
-    "head_sha": "b034eaabb12a4169c4d222b742bfd6b9f8701d12",
-    "head_committed_at": "2026-09-19T07:46:32.000Z",
+    "head_sha": "f1e5fe1ba9a8fcb69ae02d6371d031d30706f943",
+    "head_committed_at": "2026-09-23T21:37:31.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-02T00:29:40.000Z",
-    "size_kb": 3615
+    "size_kb": 3828
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-19T07:46:32.000Z",
+    "latest_source_activity_at": "2026-09-23T21:37:31.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-23T21:37:31.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-09-14",
-        "latest_at": "2026-09-19T07:46:32.000Z",
+        "latest_at": "2026-09-20T23:28:32.000Z",
         "precision": "exact"
       },
       {
@@ -75,19 +80,14 @@
         "week_start": "2026-07-06",
         "latest_at": "2026-07-12T22:13:26.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-29",
-        "latest_at": "2026-07-03T06:42:49.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-14T14:11:43.516Z",
+    "baseline_completed_at": "2026-09-24T12:46:01.891Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "b034eaabb12a4169c4d222b742bfd6b9f8701d12"
+    "evidence_head_sha": "f1e5fe1ba9a8fcb69ae02d6371d031d30706f943"
   },
   "community": {
     "stars_count": 13,
@@ -100,7 +100,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-23T12:47:43.864Z",
+  "refreshed_at": "2026-09-24T12:46:01.891Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -108,7 +108,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-23T12:47:43.864Z",
+    "refreshed_at": "2026-09-24T12:46:01.891Z",
     "stale_since": null
   }
 }
