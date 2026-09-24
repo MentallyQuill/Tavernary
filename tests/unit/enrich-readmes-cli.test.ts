@@ -1257,3 +1257,24 @@ test("rejects the removed mutable backfill mode", async () => {
     "unsupported enrichment mode",
   );
 });
+
+test("preflight identifies invalid JSON repair settings before generation", async () => {
+  const generate = vi.fn();
+  await expect(
+    runCli({
+      mode: "preflight",
+      providerConfiguration: {
+        ...providerConfiguration,
+        jsonRepair: { ...providerConfiguration, apiUrl: "private-invalid-url" },
+      },
+      provider: { generate },
+      reportPath: null,
+      now,
+    }),
+  ).rejects.toMatchObject({
+    code: "provider-configuration-invalid",
+    message:
+      "JSON repair provider: Enrichment provider URL is required and must be valid.",
+  });
+  expect(generate).not.toHaveBeenCalled();
+});

@@ -120,7 +120,7 @@ export function parseProviderMessage(message) {
   return parseProviderText(providerMessageText(message));
 }
 
-export function validateProviderConfiguration({ apiUrl, apiKey, model }) {
+function validateConfiguration({ apiUrl, apiKey, model }) {
   let parsedUrl;
   try {
     parsedUrl = new URL(apiUrl);
@@ -463,10 +463,21 @@ function damagedTextFrom(message) {
   }
 }
 
+export function validateProviderConfiguration(options, role = null) {
+  try {
+    return validateConfiguration(options);
+  } catch (error) {
+    if (!role) throw error;
+    throw Object.assign(new Error(`${role} provider: ${error.message}`), {
+      code: "provider-configuration-invalid",
+    });
+  }
+}
+
 export function createStructuredProviderTransport(options) {
-  const configuration = validateProviderConfiguration(options);
+  const configuration = validateProviderConfiguration(options, "Primary");
   const jsonRepairConfiguration = options.jsonRepair
-    ? validateProviderConfiguration(options.jsonRepair)
+    ? validateProviderConfiguration(options.jsonRepair, "JSON repair")
     : null;
   const fetchImpl = options.fetchImpl ?? fetch;
   const timeoutMs = options.timeoutMs ?? ENRICHMENT_TIMEOUT_MS;

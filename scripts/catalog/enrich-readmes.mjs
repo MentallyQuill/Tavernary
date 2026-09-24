@@ -970,10 +970,13 @@ function providerConfiguration(options) {
   const providerOptions =
     options.providerConfiguration ?? modelProviderOptionsFromEnvironment();
   return {
-    ...validateProviderConfiguration(providerOptions),
+    ...validateProviderConfiguration(providerOptions, "Primary"),
     ...(providerOptions.jsonRepair
       ? {
-          jsonRepair: validateProviderConfiguration(providerOptions.jsonRepair),
+          jsonRepair: validateProviderConfiguration(
+            providerOptions.jsonRepair,
+            "JSON repair",
+          ),
         }
       : {}),
   };
