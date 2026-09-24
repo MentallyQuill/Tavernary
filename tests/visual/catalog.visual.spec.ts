@@ -4,7 +4,12 @@ import { generatedCatalog as catalog } from "../helpers/generated-catalog";
 import { sitePath } from "../helpers/site-path";
 
 const forkRelationshipChild =
-  catalog.projects.find(({ id }) => id === "kritblade-vectfox") ??
+  catalog.projects.find(
+    ({ id, fork }) =>
+      id === "kritblade-vectfox" &&
+      fork?.status === "published" &&
+      fork.parentProjectId,
+  ) ??
   catalog.projects.find(
     ({ fork }) => fork?.status === "published" && fork.parentProjectId,
   );

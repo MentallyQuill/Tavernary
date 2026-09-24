@@ -48,7 +48,12 @@ const missingLicenseCount = catalog.projects.filter(
   ({ license }) => license.status === "missing",
 ).length;
 const forkRelationshipChild =
-  catalog.projects.find(({ id }) => id === "kritblade-vectfox") ??
+  catalog.projects.find(
+    ({ id, fork }) =>
+      id === "kritblade-vectfox" &&
+      fork?.status === "published" &&
+      fork.parentProjectId,
+  ) ??
   catalog.projects.find(
     ({ fork }) => fork?.status === "published" && fork.parentProjectId,
   );
@@ -940,7 +945,7 @@ test("fork relationship preserves filters and keeps parent-first order", async (
 
   await page
     .getByRole("button", {
-      name: `View relationship between ${parentName} and ${childName}`,
+      name: `View relationship between ${child.fork!.parentName} and ${childName}`,
     })
     .click();
 
@@ -970,7 +975,7 @@ test("fork relationship preserves filters and keeps parent-first order", async (
 
   await page
     .getByRole("button", {
-      name: `View relationship between ${parentName} and ${childName}`,
+      name: `View relationship between ${child.fork!.parentName} and ${childName}`,
     })
     .click();
   await page
@@ -987,7 +992,7 @@ test("fork relationship preserves filters and keeps parent-first order", async (
     .fill(childName);
   await page
     .getByRole("button", {
-      name: `View relationship between ${parentName} and ${childName}`,
+      name: `View relationship between ${child.fork!.parentName} and ${childName}`,
     })
     .click();
   await page
