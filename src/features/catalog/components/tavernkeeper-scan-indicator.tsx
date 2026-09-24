@@ -211,6 +211,12 @@ export function TavernKeeperScanIndicator({
     [openPopover],
   );
 
+  const closeFromPointer = useCallback(
+    (event: ReactPointerEvent<HTMLElement>) => {
+      if (event.pointerType !== "touch") delayClose();
+    },
+    [delayClose],
+  );
   const rememberPointerOpenState = useCallback(
     (event: ReactPointerEvent<HTMLButtonElement>) => {
       pointerOpenState.current = event.pointerType === "touch" ? open : null;
@@ -347,11 +353,9 @@ export function TavernKeeperScanIndicator({
         onClick={togglePopover}
         onFocus={openPopover}
         onKeyDown={focusFirstLink}
-        onMouseEnter={openPopover}
-        onMouseLeave={delayClose}
         onPointerDown={rememberPointerOpenState}
         onPointerEnter={openFromPointer}
-        onPointerLeave={delayClose}
+        onPointerLeave={closeFromPointer}
         ref={triggerRef}
         type="button"
       >
@@ -368,10 +372,8 @@ export function TavernKeeperScanIndicator({
               id={popoverId}
               onBlurCapture={closeOnFocusExit}
               onFocusCapture={openPopover}
-              onMouseEnter={openPopover}
-              onMouseLeave={delayClose}
               onPointerEnter={openFromPointer}
-              onPointerLeave={delayClose}
+              onPointerLeave={closeFromPointer}
               ref={popoverRef}
               role="dialog"
               style={{
