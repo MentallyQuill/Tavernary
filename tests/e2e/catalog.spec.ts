@@ -1025,7 +1025,8 @@ test("delisted fork parent remains name-only and stale scope normalizes", async 
   await expect(
     card.getByRole("button", { name: /View relationship/ }),
   ).toHaveCount(0);
-  await expect(page.getByRole("link", { name: parentName })).toHaveCount(0);
+  // Other repositories may publish a project with the same upstream name.
+  await expect(card.getByRole("link", { name: parentName })).toHaveCount(0);
 
   await page.goto(
     `${sitePath()}?q=${encodeURIComponent(childName)}&relationship=${child.id}`,
