@@ -3,14 +3,14 @@
   "project_id": "enclavum-otaku",
   "source_id": "github-1268160811",
   "source_identity": "github:enclavum/otaku",
-  "evidence_fingerprint": "8139b50b959ad4ae459cafa227d391e8764b90567ca01a37c469717c78b2ff73",
+  "evidence_fingerprint": "9bb4cb432d9928666c2d36272cebab9db765b000b7feb4c07f21a5e86c083fd1",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-09-12T11:51:56.884Z",
+  "reviewed_at": "2026-09-24T13:01:16.832Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-12T11:51:56.884Z"
+    "attempts": 3,
+    "last_failure_at": "2026-09-24T13:01:16.832Z"
   },
   "maintenance_issue_number": null
 }
