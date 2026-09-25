@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1372304973",
+  "head_sha": "9990342a1f99484e0b31e56c093e085f6084cfe7",
+  "observed_at": "2026-09-25T03:46:29.298Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-InnerLore",
+  "manifest": {
+    "display_name": "InnerLore — Living Characters & World",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
