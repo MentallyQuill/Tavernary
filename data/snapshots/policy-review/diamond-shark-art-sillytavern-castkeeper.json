@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "diamond-shark-art-sillytavern-castkeeper",
+  "source_id": "github-1375527477",
+  "source_identity": "github:diamond-shark-art/sillytavern-castkeeper",
+  "evidence_fingerprint": "152793f3d91827abeafbe00bdb6b1af6abeb88da514cb9a6c343c83173f21809",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-25T04:29:01.286Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-25T04:29:01.286Z"
+  },
+  "maintenance_issue_number": null
+}
