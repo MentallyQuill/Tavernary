@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "stalwart-turtle-twitch-chat-panel",
+  "name": "twitch-chat-panel",
+  "kind": "extension",
+  "summary": "SillyTavern extension that streams a Twitch channel's chat into a live side panel and forwards messages matching your trigger words so the character responds; anonymous read-only with inline emotes (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1378934026",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "automate-roleplay-workflows",
+    "background-operation",
+    "connect-external-services",
+    "privacy-focused"
+  ],
+  "cataloged_at": "2026-09-25T03:38:49.084Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
