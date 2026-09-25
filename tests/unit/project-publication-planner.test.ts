@@ -339,3 +339,45 @@ test("policy rewrites remain mergeable", () => {
     planProjectPublication(input({ transaction: policyTransaction })),
   ).toMatchObject({ action: "merge" });
 });
+
+test("publishes after an unrelated advisory snapshot without regenerating copy", () => {
+  const baseDriftSafe = isSafeProjectPublicationBaseDrift({
+    transaction,
+    changedPaths: [
+      "data/registry/projects/another-project.json",
+      "data/snapshots/policy-review/another-project.json",
+    ],
+  });
+  expect(baseDriftSafe).toBe(true);
+  expect(
+    planProjectPublication(
+      input({
+        current: { ...input().current, mainSha: "e".repeat(40), baseDriftSafe },
+      }),
+    ),
+  ).toMatchObject({ action: "merge", expectedHeadSha: headSha });
+});
+
+test.each([
+  ["data/snapshots/policy-review/owner-project.json"],
+  ["data/snapshots/policy-review/nested/another-project.json"],
+  ["data/snapshots/policy-review/../another-project.json"],
+  ["data/snapshots/policy-review/another-project.txt"],
+  ["data/snapshots/policy-review-other/another-project.json"],
+  ["data/reports/enrichment-report.json"],
+  [
+    "data/snapshots/policy-review/another-project.json",
+    "scripts/catalog/build.mjs",
+  ],
+  [
+    "data/snapshots/policy-review/another-project.json",
+    ...transaction.generated_paths,
+  ],
+])(
+  "rejects advisory drift outside the unrelated snapshot contract: %j",
+  (...changedPaths) => {
+    expect(
+      isSafeProjectPublicationBaseDrift({ transaction, changedPaths }),
+    ).toBe(false);
+  },
+);
