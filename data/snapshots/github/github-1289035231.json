@@ -9,21 +9,21 @@
     "url": "https://github.com/unrefined803/RPGraph",
     "description": "AI roleplay with persistent characters, interactive stories, and an in-world phone with messaging and social media.",
     "default_branch": "main",
-    "head_sha": "e88b5cfccb866a9ee4807b3623b3de64e74563c5",
-    "head_committed_at": "2026-09-23T16:27:56.000Z",
+    "head_sha": "e6b2014bfa5fa5464480a4a2ae51edada7a7bf55",
+    "head_committed_at": "2026-09-25T07:16:34.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-04T09:02:35.000Z",
-    "size_kb": 43156
+    "size_kb": 43871
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-23T12:03:49.000Z",
+    "latest_source_activity_at": "2026-09-25T07:16:34.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-21",
-        "latest_at": "2026-09-23T12:03:49.000Z",
+        "latest_at": "2026-09-25T07:16:34.000Z",
         "precision": "exact"
       },
       {
@@ -77,7 +77,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-21T14:17:43.786Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "e88b5cfccb866a9ee4807b3623b3de64e74563c5"
+    "evidence_head_sha": "e6b2014bfa5fa5464480a4a2ae51edada7a7bf55"
   },
   "community": {
     "stars_count": 46,
@@ -90,19 +90,20 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-24T12:46:01.891Z",
+  "refreshed_at": "2026-09-25T12:49:19.817Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "unrefined803", "type": "User", "provider": "github" },
       { "login": "rostchri", "type": "User", "provider": "github" },
-      { "login": "ktello", "type": "User", "provider": "github" }
+      { "login": "ktello", "type": "User", "provider": "github" },
+      { "login": "hgdubbe", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-24T12:46:01.891Z",
+    "refreshed_at": "2026-09-25T12:49:19.817Z",
     "stale_since": null
   }
 }

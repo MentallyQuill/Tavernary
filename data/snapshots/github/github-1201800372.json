@@ -8,19 +8,24 @@
     "name": "SillyBunny",
     "url": "https://github.com/SillyBunnyTeam/SillyBunny",
     "description": "A SillyTavern fork with Bun as the backend, along with UI/UX improvements",
-    "default_branch": "main",
-    "head_sha": "3021edcae1a5212a9f828e051d46e7945c7e4fec",
-    "head_committed_at": "2026-08-06T01:09:02.000Z",
+    "default_branch": "release",
+    "head_sha": "47f76923c600858df03c51dc021b866a37fab8d7",
+    "head_committed_at": "2026-09-24T14:40:16.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-05T07:10:53.000Z",
-    "size_kb": 324345
+    "size_kb": 324385
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-05T23:54:28.000Z",
+    "latest_source_activity_at": "2026-09-24T13:39:40.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-24T13:39:40.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-03",
         "latest_at": "2026-08-05T23:54:28.000Z",
@@ -45,62 +50,27 @@
         "week_start": "2026-07-06",
         "latest_at": "2026-07-12T23:51:34.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-29",
-        "latest_at": "2026-07-05T22:57:16.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-22",
-        "latest_at": "2026-06-28T23:26:00.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-15",
-        "latest_at": "2026-06-21T11:58:43.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-14T22:24:29.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-01",
-        "latest_at": "2026-06-07T09:08:16.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-25",
-        "latest_at": "2026-05-31T09:48:22.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-18",
-        "latest_at": "2026-05-24T01:21:14.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-08-06T01:09:40.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-06T10:02:12.858Z",
+    "baseline_completed_at": "2026-09-25T12:49:19.817Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "3021edcae1a5212a9f828e051d46e7945c7e4fec"
+    "evidence_head_sha": "47f76923c600858df03c51dc021b866a37fab8d7"
   },
   "community": {
-    "stars_count": 132,
+    "stars_count": 133,
     "forks_count": 23,
     "watchers_count": 4,
-    "aggregate": 159
+    "aggregate": 160
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-24T12:46:01.891Z",
+  "refreshed_at": "2026-09-25T12:49:19.817Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -469,7 +439,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-24T12:46:01.891Z",
+    "refreshed_at": "2026-09-25T12:49:19.817Z",
     "stale_since": null
   }
 }

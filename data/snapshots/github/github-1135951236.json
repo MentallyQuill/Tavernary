@@ -9,21 +9,21 @@
     "url": "https://github.com/LithiumWaves/danganronpa-sillytavern",
     "description": "A total conversion extension for SillyTavern that recreates the Danganronpa games core gameplay. Play through investigations, Class Trials and more!",
     "default_branch": "main",
-    "head_sha": "243259060d205c006e38aa0bb3cce454d7fc753b",
-    "head_committed_at": "2026-09-24T02:04:03.000Z",
+    "head_sha": "1d2502217b2730d86b88c6ae02324c6feb0e12bc",
+    "head_committed_at": "2026-09-25T02:05:16.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-16T20:35:35.000Z",
-    "size_kb": 234365
+    "size_kb": 235307
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-24T01:59:22.000Z",
+    "latest_source_activity_at": "2026-09-25T02:05:16.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-21",
-        "latest_at": "2026-09-24T01:59:22.000Z",
+        "latest_at": "2026-09-25T02:05:16.000Z",
         "precision": "exact"
       },
       {
@@ -37,7 +37,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-24T12:46:01.891Z",
     "baseline_attempts": 1,
-    "evidence_head_sha": "243259060d205c006e38aa0bb3cce454d7fc753b"
+    "evidence_head_sha": "1d2502217b2730d86b88c6ae02324c6feb0e12bc"
   },
   "community": {
     "stars_count": 8,
@@ -46,7 +46,7 @@
     "aggregate": 10
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-24T12:46:01.891Z",
+  "refreshed_at": "2026-09-25T12:49:19.817Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -58,7 +58,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-24T12:46:01.891Z",
+    "refreshed_at": "2026-09-25T12:49:19.817Z",
     "stale_since": null
   }
 }

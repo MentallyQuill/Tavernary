@@ -17,7 +17,7 @@
     "created_at": "2025-12-18T07:51:15.000Z",
     "size_kb": 20
   },
-  "source_health": "healthy",
+  "source_health": "unavailable",
   "activity": {
     "latest_source_activity_at": null,
     "source_weeks": [],
@@ -35,7 +35,7 @@
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
   "refreshed_at": "2026-09-24T12:46:01.891Z",
-  "stale_since": null,
+  "stale_since": "2026-09-25T12:49:19.817Z",
   "contributors": {
     "accounts": [
       { "login": "japkozjad", "type": "User", "provider": "github" }

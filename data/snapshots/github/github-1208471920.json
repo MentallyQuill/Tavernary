@@ -9,13 +9,13 @@
     "url": "https://github.com/jschm42/taleweaver",
     "description": "A next-generation AI-powered text adventure engine featuring dynamic storytelling, procedural world-building, and immersive visual/auditory generation.",
     "default_branch": "main",
-    "head_sha": "79ffffb4fecbd12c37d51026fd0d01de4ddd4c9b",
-    "head_committed_at": "2026-09-24T08:34:24.000Z",
+    "head_sha": "bdc3363f0ff337720521a14050db561f4b97f945",
+    "head_committed_at": "2026-09-24T14:13:11.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-12T10:29:44.000Z",
-    "size_kb": 282981
+    "size_kb": 283268
   },
   "source_health": "healthy",
   "activity": {
@@ -47,7 +47,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-24T12:46:01.891Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "79ffffb4fecbd12c37d51026fd0d01de4ddd4c9b"
+    "evidence_head_sha": "bdc3363f0ff337720521a14050db561f4b97f945"
   },
   "community": {
     "stars_count": 20,
@@ -60,7 +60,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-24T12:46:01.891Z",
+  "refreshed_at": "2026-09-25T12:49:19.817Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -72,7 +72,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-24T12:46:01.891Z",
+    "refreshed_at": "2026-09-25T12:49:19.817Z",
     "stale_since": null
   }
 }

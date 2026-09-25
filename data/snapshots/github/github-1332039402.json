@@ -50,15 +50,15 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-25T03:33:16.558Z",
+  "refreshed_at": "2026-09-25T12:49:19.817Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "rendyuwu", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-25T03:33:16.558Z",
+    "refreshed_at": "2026-09-25T12:49:19.817Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }
