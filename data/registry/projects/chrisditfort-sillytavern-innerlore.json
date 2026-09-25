@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "chrisditfort-sillytavern-innerlore",
+  "name": "SillyTavern-InnerLore",
+  "kind": "extension",
+  "summary": "SillyTavern extension giving NPCs persistent minds and auto-generated World Info lore that updates as the story unfolds, with time progression and revealable events on SQLite.",
+  "metadata_status": "curated",
+  "source_id": "github-1372304973",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "automate-roleplay-workflows",
+    "build-worlds-and-lore",
+    "maintain-long-term-memory",
+    "manage-lorebooks",
+    "preserve-story-continuity",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-09-25T03:45:00.631Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
