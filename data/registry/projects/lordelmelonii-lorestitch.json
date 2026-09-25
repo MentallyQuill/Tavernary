@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "lordelmelonii-lorestitch",
+  "name": "LoreStitch",
+  "kind": "extension",
+  "summary": "LoreStitch is an offline studio for authoring SillyTavern lorebooks with Git-style versioning, storing projects locally in IndexedDB as a PWA (README: \"Git-style versioning built in\", \"stored locally in IndexedDB\").",
+  "metadata_status": "curated",
+  "source_id": "github-1370298869",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": [
+    "build-worlds-and-lore",
+    "local-first",
+    "manage-lorebooks",
+    "privacy-focused"
+  ],
+  "cataloged_at": "2026-09-25T09:41:37.934Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
