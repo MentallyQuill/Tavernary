@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "rendyuwu-sillytavern-sidethread",
+  "name": "SillyTavern-SideThread",
+  "kind": "extension",
+  "summary": "SillyTavern extension adding an out-of-character side chat in a floating panel, fed the same cards, persona, lorebooks, and history, so you can question lore or plan scenes with the main chat untouched (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1332039402",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "build-worlds-and-lore",
+    "customize-the-interface",
+    "non-destructive",
+    "plan-stories-and-scenes",
+    "preserve-story-continuity",
+    "retrieve-relevant-context"
+  ],
+  "cataloged_at": "2026-09-25T03:33:16.558Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
