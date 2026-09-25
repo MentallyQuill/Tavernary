@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "kwaroran-risuai",
+  "source_id": "github-626937684",
+  "source_identity": "github:kwaroran/risuai",
+  "evidence_fingerprint": "3921f336cb056fab417a4db29bf5a0a0f36d1f74752de62ee7dd7fbb4e8d98f3",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-25T13:08:26.099Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-25T13:08:26.099Z"
+  },
+  "maintenance_issue_number": null
+}
