@@ -1,0 +1,61 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1373670288",
+  "repository": {
+    "id": 1373670288,
+    "owner": "PenitentFleece",
+    "name": "SillyTavern-Showtime",
+    "url": "https://github.com/PenitentFleece/SillyTavern-Showtime",
+    "description": "SillyTavern production desk: Cast, Script, Library, Inventory, Reputation, Motivation, Composer, and Backstage.",
+    "default_branch": "main",
+    "head_sha": "a971c6affe3d0552c77437094ad9f11b35dba05e",
+    "head_committed_at": "2026-09-16T21:41:03.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-09-16T21:53:22.000Z",
+    "size_kb": 516
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-09-16T21:41:03.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-16T21:41:03.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-09-25T03:36:09.350Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "a971c6affe3d0552c77437094ad9f11b35dba05e"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-09-25T03:36:09.350Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "PenitentFleece", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-09-25T03:36:09.350Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
