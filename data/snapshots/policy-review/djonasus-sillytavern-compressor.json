@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "djonasus-sillytavern-compressor",
+  "source_id": "github-1373485282",
+  "source_identity": "github:djonasus/sillytavern-compressor",
+  "evidence_fingerprint": "07d4888600dafc8c81fc55231da4fcbef0e167b7d4b7d72d23842baabd85b052",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-25T04:14:59.651Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-25T04:14:59.651Z"
+  },
+  "maintenance_issue_number": null
+}
