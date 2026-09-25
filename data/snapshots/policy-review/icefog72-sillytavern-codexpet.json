@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "icefog72-sillytavern-codexpet",
+  "source_id": "github-1356384047",
+  "source_identity": "github:icefog72/sillytavern-codexpet",
+  "evidence_fingerprint": "20c44347254180cf8443a89b4f07052edcb2075d386bfa6bbf004ab25351100a",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-25T03:09:39.523Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-25T03:09:39.523Z"
+  },
+  "maintenance_issue_number": null
+}
