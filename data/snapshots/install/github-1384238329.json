@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1384238329",
+  "head_sha": "60bbee16f6ef272a9e91c3c1c233ce75486e7fea",
+  "observed_at": "2026-09-25T03:35:07.112Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Openrouter-TTS",
+  "manifest": {
+    "display_name": "OpenRouter TTS",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
