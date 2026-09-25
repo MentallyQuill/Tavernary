@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "0cyris-sillytavern-openrouter-tts",
+  "name": "SillyTavern-Openrouter-TTS",
+  "kind": "extension",
+  "summary": "Third-party SillyTavern extension adding OpenRouter as a TTS provider: one API key gives every speech model OpenRouter serves, with model and voice lists loaded live so new models appear without an update (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1384238329",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["add-voice-interaction"],
+  "cataloged_at": "2026-09-25T03:31:58.293Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
