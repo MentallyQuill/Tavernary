@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1332039402",
+  "head_sha": "75dda8c74ea76b4b27016254a492253dba460aec",
+  "observed_at": "2026-09-25T03:38:32.074Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-SideThread",
+  "manifest": {
+    "display_name": "BTW — Side Thread",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

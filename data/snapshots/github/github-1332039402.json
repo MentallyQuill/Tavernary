@@ -1,0 +1,64 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1332039402",
+  "repository": {
+    "id": 1332039402,
+    "owner": "rendyuwu",
+    "name": "SillyTavern-SideThread",
+    "url": "https://github.com/rendyuwu/SillyTavern-SideThread",
+    "description": null,
+    "default_branch": "master",
+    "head_sha": "75dda8c74ea76b4b27016254a492253dba460aec",
+    "head_committed_at": "2026-08-18T09:07:16.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-08-12T13:06:43.000Z",
+    "size_kb": 197
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-18T09:07:16.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-18T09:07:16.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-10",
+        "latest_at": "2026-08-14T09:40:13.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-09-25T03:33:16.558Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "75dda8c74ea76b4b27016254a492253dba460aec"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-09-25T03:33:16.558Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "rendyuwu", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-09-25T03:33:16.558Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
