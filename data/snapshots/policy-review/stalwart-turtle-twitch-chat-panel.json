@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "stalwart-turtle-twitch-chat-panel",
+  "source_id": "github-1378934026",
+  "source_identity": "github:stalwart-turtle/twitch-chat-panel",
+  "evidence_fingerprint": "9dff060ab89aa8202bc8539e48bed2924719052be6148eb950b167edaa1962ae",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-25T04:04:30.493Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-25T04:04:30.493Z"
+  },
+  "maintenance_issue_number": null
+}
