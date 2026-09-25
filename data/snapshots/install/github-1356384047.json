@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1356384047",
+  "head_sha": "e01841daa720004078708ff256f8f08e4e4b8c4b",
+  "observed_at": "2026-09-25T02:52:32.765Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-CodexPet",
+  "manifest": {
+    "display_name": "SillyTavern-CodexPet",
+    "key": null,
+    "minimum_client_version": "1.18.0"
+  }
+}
