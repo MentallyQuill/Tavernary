@@ -28652,13 +28652,59 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "3fe757a17c00a1ffc6eef73f4d7a497441f6c846",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "474e371cb174969d00f9b8c080e188e4cb487536e37691231a1ec3ca68e4910b",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "3fe757a17c00a1ffc6eef73f4d7a497441f6c846",
+          "treeUrl": "https://github.com/Djonasus/SillyTavern-compressor/tree/3fe757a17c00a1ffc6eef73f4d7a497441f6c846",
+          "scannedAt": "2026-09-25T04:19:58.416Z",
+          "assessedAt": "2026-09-25T04:22:07.163Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1373485282/3fe757a17c00a1ffc6eef73f4d7a497441f6c846/5/474e371cb174969d00f9b8c080e188e4cb487536e37691231a1ec3ca68e4910b/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1373485282/history/"
+        },
+        "history": [
+          {
+            "reportId": "474e371cb174969d00f9b8c080e188e4cb487536e37691231a1ec3ca68e4910b",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "3fe757a17c00a1ffc6eef73f4d7a497441f6c846",
+            "treeUrl": "https://github.com/Djonasus/SillyTavern-compressor/tree/3fe757a17c00a1ffc6eef73f4d7a497441f6c846",
+            "scannedAt": "2026-09-25T04:19:58.416Z",
+            "assessedAt": "2026-09-25T04:22:07.163Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1373485282/3fe757a17c00a1ffc6eef73f4d7a497441f6c846/5/474e371cb174969d00f9b8c080e188e4cb487536e37691231a1ec3ca68e4910b/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1373485282/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1373485282/"
       },
       "attribution": {
         "owner": {
@@ -77351,6 +77397,150 @@
       }
     },
     {
+      "id": "penitentfleece-sillytavern-showtime",
+      "name": "SillyTavern-Showtime",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "Showtime is a SillyTavern extension offering a production desk covering Cast, Script, Library, Inventory, Reputation, Motivation, and Composer, plus a Backstage",
+      "canonicalUrl": "https://github.com/PenitentFleece/SillyTavern-Showtime",
+      "catalogedAt": "2026-09-25T03:36:09.350Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "manage-inventory-and-quests",
+          "label": "Manage inventory and quests",
+          "description": "Track equipment, items, objectives, quests, or progression records.",
+          "facet": "goal"
+        },
+        {
+          "id": "plan-stories-and-scenes",
+          "label": "Plan stories and scenes",
+          "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
+          "facet": "goal"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "a971c6affe3d0552c77437094ad9f11b35dba05e",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "PenitentFleece"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-16T21:41:03.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 516,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-25T03:36:09.350Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/PenitentFleece/SillyTavern-Showtime.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-Showtime"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-Showtime"
+        ],
+        "aliases": [],
+        "source": [
+          "penitentfleece-sillytavern-showtime",
+          "github-1373670288",
+          "PenitentFleece/SillyTavern-Showtime",
+          "https://github.com/PenitentFleece/SillyTavern-Showtime"
+        ],
+        "summary": [
+          "Showtime is a SillyTavern extension offering a production desk covering Cast, Script, Library, Inventory, Reputation, Motivation, and Composer, plus a Backstage"
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Manage inventory and quests",
+          "quest tracking",
+          "inventory management",
+          "equipment tracking",
+          "Plan stories and scenes",
+          "story planning",
+          "plot direction",
+          "scene planning",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "PenitentFleece"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "phampyk-sillytavern-avatarbanner",
       "name": "SillyTavern AvatarBanner",
       "kind": "extension",
@@ -86891,13 +87081,65 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "3154dba336881820f3939779dea59874c6b203bd",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "96a279108a30bb4f4a4ba07d3f82f6980bf3d4a247c8c356a940ba32a3145ecd",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 2,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "35a662bae79f03ec9e64b436c436d5aaa712f423f7d63a963e0f52d6db26bd14",
+            "5dafb34d38dfdf12bc44d9ca8adf41db72235f32398340c51fa8d368d3751490"
+          ],
+          "scannedSha": "3154dba336881820f3939779dea59874c6b203bd",
+          "treeUrl": "https://github.com/rustyorb/SillyTavern-CreativeStudio/tree/3154dba336881820f3939779dea59874c6b203bd",
+          "scannedAt": "2026-09-25T04:17:00.699Z",
+          "assessedAt": "2026-09-25T04:22:07.163Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1383785103/3154dba336881820f3939779dea59874c6b203bd/5/96a279108a30bb4f4a4ba07d3f82f6980bf3d4a247c8c356a940ba32a3145ecd/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1383785103/history/"
+        },
+        "history": [
+          {
+            "reportId": "96a279108a30bb4f4a4ba07d3f82f6980bf3d4a247c8c356a940ba32a3145ecd",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 2,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "35a662bae79f03ec9e64b436c436d5aaa712f423f7d63a963e0f52d6db26bd14",
+              "5dafb34d38dfdf12bc44d9ca8adf41db72235f32398340c51fa8d368d3751490"
+            ],
+            "scannedSha": "3154dba336881820f3939779dea59874c6b203bd",
+            "treeUrl": "https://github.com/rustyorb/SillyTavern-CreativeStudio/tree/3154dba336881820f3939779dea59874c6b203bd",
+            "scannedAt": "2026-09-25T04:17:00.699Z",
+            "assessedAt": "2026-09-25T04:22:07.163Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1383785103/3154dba336881820f3939779dea59874c6b203bd/5/96a279108a30bb4f4a4ba07d3f82f6980bf3d4a247c8c356a940ba32a3145ecd/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1383785103/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1383785103/"
       },
       "attribution": {
         "owner": {
