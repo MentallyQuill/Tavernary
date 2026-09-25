@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "haide-d-sillytavern-echocore",
+  "source_id": "github-1131052854",
+  "source_identity": "github:haide-d/sillytavern-echocore",
+  "evidence_fingerprint": "0eebde3b68fc93f9379de016fbb19e984b82a4796fd2045eddb8f0a00e6ec7ed",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-25T04:33:08.851Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-25T04:33:08.851Z"
+  },
+  "maintenance_issue_number": null
+}
