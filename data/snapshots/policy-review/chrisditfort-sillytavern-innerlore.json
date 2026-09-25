@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "chrisditfort-sillytavern-innerlore",
+  "source_id": "github-1372304973",
+  "source_identity": "github:chrisditfort/sillytavern-innerlore",
+  "evidence_fingerprint": "3030cecf836094c681d83bc085298c18a0c181625a71ac6e984922aed65b0f6b",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-25T04:08:50.356Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-25T04:08:50.356Z"
+  },
+  "maintenance_issue_number": null
+}
