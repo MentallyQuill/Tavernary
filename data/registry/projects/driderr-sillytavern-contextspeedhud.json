@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "driderr-sillytavern-contextspeedhud",
+  "name": "SillyTavern-ContextSpeedHUD",
+  "kind": "extension",
+  "summary": "SillyTavern extension adding a draggable, always-visible HUD pill that surfaces tokens/sec generation speed and color-coded context usage, reusing ST's own tokenizer data.",
+  "metadata_status": "curated",
+  "source_id": "github-1374177758",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["monitor-token-usage-and-cost"],
+  "cataloged_at": "2026-09-25T03:35:25.819Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
