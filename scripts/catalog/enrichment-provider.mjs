@@ -479,6 +479,20 @@ export function createStructuredProviderTransport(options) {
   const jsonRepairConfiguration = options.jsonRepair
     ? validateProviderConfiguration(options.jsonRepair, "JSON repair")
     : null;
+  const reasoningEffort = options.reasoningEffort;
+  if (
+    reasoningEffort !== undefined &&
+    !["none", "minimal", "low", "medium", "high", "xhigh", "max"].includes(
+      reasoningEffort,
+    )
+  ) {
+    throw Object.assign(
+      new Error(
+        "Primary provider: Reasoning effort must be a supported level.",
+      ),
+      { code: "provider-configuration-invalid" },
+    );
+  }
   const fetchImpl = options.fetchImpl ?? fetch;
   const timeoutMs = options.timeoutMs ?? ENRICHMENT_TIMEOUT_MS;
   const now = options.now ?? Date.now;
@@ -492,7 +506,10 @@ export function createStructuredProviderTransport(options) {
       const schemaValidation = responseSchemaValidator(body);
       const primary = await requestProviderEnvelope({
         configuration,
-        body,
+        body:
+          reasoningEffort === undefined
+            ? body
+            : { ...body, reasoning_effort: reasoningEffort },
         fetchImpl,
         maximumResponseBytes: MAX_PROVIDER_RESPONSE_BYTES,
         now,

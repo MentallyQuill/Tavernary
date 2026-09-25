@@ -1278,3 +1278,33 @@ test("preflight identifies invalid JSON repair settings before generation", asyn
   });
   expect(generate).not.toHaveBeenCalled();
 });
+
+test("CLI preserves primary reasoning control through configuration prevalidation", async () => {
+  const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+    new Response(
+      JSON.stringify({
+        model,
+        choices: [
+          { message: { content: JSON.stringify(providerOutput.output) } },
+        ],
+      }),
+      { status: 200, headers: { "content-type": "application/json" } },
+    ),
+  );
+  try {
+    await runCli({
+      mode: "preflight",
+      providerConfiguration: {
+        ...providerConfiguration,
+        reasoningEffort: "low",
+      },
+      reportPath: null,
+    });
+    expect(fetchSpy).toHaveBeenCalledOnce();
+    expect(
+      JSON.parse(String(fetchSpy.mock.calls[0][1]?.body)).reasoning_effort,
+    ).toBe("low");
+  } finally {
+    fetchSpy.mockRestore();
+  }
+});
