@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "icefog72-sillytavern-codexpet",
+  "name": "SillyTavern-CodexPet",
+  "kind": "extension",
+  "summary": "SillyTavern-CodexPet adds a browser-side animated pet overlay that wanders, hops, and grows more active while text generates (readme), reacting to SillyTavern expression changes via automatic sprite discovery.",
+  "metadata_status": "curated",
+  "source_id": "github-1356384047",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["add-visual-immersion", "persistent-state", "streaming-aware"],
+  "cataloged_at": "2026-09-25T02:51:11.975Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
