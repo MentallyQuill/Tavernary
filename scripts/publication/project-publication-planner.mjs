@@ -15,8 +15,17 @@ const safeConcurrentDataPaths = [
   /^public\/catalog\/tavernary-catalog(?:-v8)?\.json$/u,
 ];
 
+function isUnrelatedAdvisorySnapshot(path, projectIds) {
+  const match =
+    /^data\/snapshots\/policy-review\/([a-z0-9]+(?:-[a-z0-9]+)*)\.json$/u.exec(
+      path,
+    );
+  return Boolean(match && !projectIds.has(match[1]));
+}
+
 export function isSafeProjectPublicationBaseDrift(input) {
   const generatedPaths = new Set(input?.transaction?.generated_paths ?? []);
+  const projectIds = new Set(input?.transaction?.project_ids ?? []);
   const changedPaths = input?.changedPaths;
   return (
     Array.isArray(changedPaths) &&
@@ -24,7 +33,8 @@ export function isSafeProjectPublicationBaseDrift(input) {
       (path) =>
         typeof path === "string" &&
         !generatedPaths.has(path) &&
-        safeConcurrentDataPaths.some((pattern) => pattern.test(path)),
+        (safeConcurrentDataPaths.some((pattern) => pattern.test(path)) ||
+          isUnrelatedAdvisorySnapshot(path, projectIds)),
     )
   );
 }
