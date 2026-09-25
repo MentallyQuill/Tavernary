@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "lordelmelonii-lorestitch",
+  "source_id": "github-1370298869",
+  "source_identity": "github:lordelmelonii/lorestitch",
+  "evidence_fingerprint": "896b33c1a493067747d57e2f77f5759c00a479d00b0040148b10715dca7f74f5",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-25T10:12:30.751Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-25T10:12:30.751Z"
+  },
+  "maintenance_issue_number": null
+}
