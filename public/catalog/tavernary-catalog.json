@@ -58403,6 +58403,201 @@
       }
     },
     {
+      "id": "lordelmelonii-lorestitch",
+      "name": "LoreStitch",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "character-worldbuilding",
+      "summary": "LoreStitch is an offline studio for authoring SillyTavern lorebooks with Git-style versioning, storing projects locally in IndexedDB as a PWA (README: \"Git-style versioning built in\", \"stored locally in IndexedDB\").",
+      "canonicalUrl": "https://github.com/LordElMelonII/LoreStitch",
+      "catalogedAt": "2026-09-25T09:41:37.934Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "build-worlds-and-lore",
+          "label": "Build worlds and lore",
+          "description": "Create fictional settings, lore, locations, factions, or other world material.",
+          "facet": "goal"
+        },
+        {
+          "id": "local-first",
+          "label": "Local-first",
+          "description": "Keeps its primary data and workflow on the user's own device.",
+          "facet": "trait"
+        },
+        {
+          "id": "manage-lorebooks",
+          "label": "Manage lorebooks",
+          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+          "facet": "goal"
+        },
+        {
+          "id": "privacy-focused",
+          "label": "Privacy-focused",
+          "description": "Explicitly minimizes data exposure or gives users strong control over sensitive data.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "1f618e8c1071ed13cc45e3f0af4507c7f17cb98c",
+        "report": {
+          "reportId": "8ba8f50c7aaa89109bfde8938457e3353cb0b2c97a54461f48cbf32788b69108",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "1f618e8c1071ed13cc45e3f0af4507c7f17cb98c",
+          "treeUrl": "https://github.com/LordElMelonII/LoreStitch/tree/1f618e8c1071ed13cc45e3f0af4507c7f17cb98c",
+          "scannedAt": "2026-09-25T10:17:22.758Z",
+          "assessedAt": "2026-09-25T10:19:51.721Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1370298869/1f618e8c1071ed13cc45e3f0af4507c7f17cb98c/5/8ba8f50c7aaa89109bfde8938457e3353cb0b2c97a54461f48cbf32788b69108/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1370298869/history/"
+        },
+        "history": [
+          {
+            "reportId": "8ba8f50c7aaa89109bfde8938457e3353cb0b2c97a54461f48cbf32788b69108",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "1f618e8c1071ed13cc45e3f0af4507c7f17cb98c",
+            "treeUrl": "https://github.com/LordElMelonII/LoreStitch/tree/1f618e8c1071ed13cc45e3f0af4507c7f17cb98c",
+            "scannedAt": "2026-09-25T10:17:22.758Z",
+            "assessedAt": "2026-09-25T10:19:51.721Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1370298869/1f618e8c1071ed13cc45e3f0af4507c7f17cb98c/5/8ba8f50c7aaa89109bfde8938457e3353cb0b2c97a54461f48cbf32788b69108/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1370298869/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1370298869/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "LordElMelonII"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-23T14:56:46.000Z",
+        "activeWeeks12": 3,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 1,
+        "forks": 1,
+        "watchers": 0,
+        "aggregate": 2
+      },
+      "repositorySizeKb": 3356,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-25T09:41:37.934Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "LoreStitch"
+        ],
+        "aliases": [],
+        "source": [
+          "lordelmelonii-lorestitch",
+          "github-1370298869",
+          "LordElMelonII/LoreStitch",
+          "https://github.com/LordElMelonII/LoreStitch"
+        ],
+        "summary": [
+          "LoreStitch is an offline studio for authoring SillyTavern lorebooks with Git-style versioning, storing projects locally in IndexedDB as a PWA (README: \"Git-style versioning built in\", \"stored locally in IndexedDB\")."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Character and worldbuilding"
+        ],
+        "tags": [
+          "Build worlds and lore",
+          "worldbuilding",
+          "character worldbuilding",
+          "lore creation",
+          "setting design",
+          "Local-first",
+          "stored locally",
+          "on-device data",
+          "local data ownership",
+          "Manage lorebooks",
+          "World Info management",
+          "worldbook organization",
+          "loredeck management",
+          "Privacy-focused",
+          "private by design",
+          "privacy preserving",
+          "data stays private"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "LordElMelonII"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "lsennn-deus-ex-machina",
       "name": "Deus-ex-machina",
       "kind": "preset",
