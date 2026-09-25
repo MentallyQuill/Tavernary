@@ -28602,6 +28602,170 @@
       }
     },
     {
+      "id": "djonasus-sillytavern-compressor",
+      "name": "SillyTavern-compressor",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "SillyTavern extension that compresses long chats to keep context small and generation fast: /compress has the model write an editable chronology, then opens a fresh chat with saved user facts injected (readme).",
+      "canonicalUrl": "https://github.com/Djonasus/SillyTavern-compressor",
+      "catalogedAt": "2026-09-25T03:48:00.638Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "maintain-long-term-memory",
+          "label": "Maintain long-term memory",
+          "description": "Preserve and recall important information across long chats or separate sessions.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-context-limits",
+          "label": "Manage context limits",
+          "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
+          "facet": "goal"
+        },
+        {
+          "id": "multi-stage-generation",
+          "label": "Multi-stage generation",
+          "description": "Builds a final result through multiple model calls, passes, branches, or review stages.",
+          "facet": "trait"
+        },
+        {
+          "id": "persistent-state",
+          "label": "Persistent state",
+          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
+          "facet": "trait"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "3fe757a17c00a1ffc6eef73f4d7a497441f6c846",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Djonasus"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-16T19:21:21.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 23,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-25T03:48:00.638Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Djonasus/SillyTavern-compressor.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-compressor"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-compressor"
+        ],
+        "aliases": [],
+        "source": [
+          "djonasus-sillytavern-compressor",
+          "github-1373485282",
+          "Djonasus/SillyTavern-compressor",
+          "https://github.com/Djonasus/SillyTavern-compressor"
+        ],
+        "summary": [
+          "SillyTavern extension that compresses long chats to keep context small and generation fast: /compress has the model write an editable chronology, then opens a fresh chat with saved user facts injected (readme)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Maintain long-term memory",
+          "durable memory",
+          "persistent memory",
+          "remember across chats",
+          "Manage context limits",
+          "context compression",
+          "context window management",
+          "token budgeting",
+          "Multi-stage generation",
+          "generation pipeline",
+          "parallel model calls",
+          "multi-pass generation",
+          "Persistent state",
+          "durable state",
+          "state persistence",
+          "cross-session state",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Djonasus"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "dmitryplyaskin-sillytavern-persona-management-extended",
       "name": "SillyTavern-Persona-Management-Extended",
       "kind": "extension",
@@ -29373,13 +29537,59 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "9c64f3a90017705221d18d62cd988f4decd5e852",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "a4e1446a2e1e5be01face4facd26bd3a9c955c478d209f3a89958da18570ae97",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "9c64f3a90017705221d18d62cd988f4decd5e852",
+          "treeUrl": "https://github.com/driderr/SillyTavern-ContextSpeedHUD/tree/9c64f3a90017705221d18d62cd988f4decd5e852",
+          "scannedAt": "2026-09-25T04:11:07.459Z",
+          "assessedAt": "2026-09-25T04:17:15.042Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1374177758/9c64f3a90017705221d18d62cd988f4decd5e852/5/a4e1446a2e1e5be01face4facd26bd3a9c955c478d209f3a89958da18570ae97/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1374177758/history/"
+        },
+        "history": [
+          {
+            "reportId": "a4e1446a2e1e5be01face4facd26bd3a9c955c478d209f3a89958da18570ae97",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "9c64f3a90017705221d18d62cd988f4decd5e852",
+            "treeUrl": "https://github.com/driderr/SillyTavern-ContextSpeedHUD/tree/9c64f3a90017705221d18d62cd988f4decd5e852",
+            "scannedAt": "2026-09-25T04:11:07.459Z",
+            "assessedAt": "2026-09-25T04:17:15.042Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1374177758/9c64f3a90017705221d18d62cd988f4decd5e852/5/a4e1446a2e1e5be01face4facd26bd3a9c955c478d209f3a89958da18570ae97/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1374177758/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1374177758/"
       },
       "attribution": {
         "owner": {
@@ -84328,13 +84538,59 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "75dda8c74ea76b4b27016254a492253dba460aec",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "8a59463b5d3cb8d1637661a4031fb9e3d47889a7a51f613ff357a9a763f5a9da",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "75dda8c74ea76b4b27016254a492253dba460aec",
+          "treeUrl": "https://github.com/rendyuwu/SillyTavern-SideThread/tree/75dda8c74ea76b4b27016254a492253dba460aec",
+          "scannedAt": "2026-09-25T04:07:20.674Z",
+          "assessedAt": "2026-09-25T04:17:15.042Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1332039402/75dda8c74ea76b4b27016254a492253dba460aec/5/8a59463b5d3cb8d1637661a4031fb9e3d47889a7a51f613ff357a9a763f5a9da/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1332039402/history/"
+        },
+        "history": [
+          {
+            "reportId": "8a59463b5d3cb8d1637661a4031fb9e3d47889a7a51f613ff357a9a763f5a9da",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "75dda8c74ea76b4b27016254a492253dba460aec",
+            "treeUrl": "https://github.com/rendyuwu/SillyTavern-SideThread/tree/75dda8c74ea76b4b27016254a492253dba460aec",
+            "scannedAt": "2026-09-25T04:07:20.674Z",
+            "assessedAt": "2026-09-25T04:17:15.042Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1332039402/75dda8c74ea76b4b27016254a492253dba460aec/5/8a59463b5d3cb8d1637661a4031fb9e3d47889a7a51f613ff357a9a763f5a9da/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1332039402/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1332039402/"
       },
       "attribution": {
         "owner": {
@@ -102194,13 +102450,59 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "2552ae82cdb4a81179bfdbea24e2678436c4e060",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "e024a4e343eab1d2a088e16710d0ab2312d056d5a61b9e8a2068b8d10922b9ae",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "2552ae82cdb4a81179bfdbea24e2678436c4e060",
+          "treeUrl": "https://github.com/Stalwart-Turtle/twitch-chat-panel/tree/2552ae82cdb4a81179bfdbea24e2678436c4e060",
+          "scannedAt": "2026-09-25T04:11:19.977Z",
+          "assessedAt": "2026-09-25T04:17:15.042Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1378934026/2552ae82cdb4a81179bfdbea24e2678436c4e060/5/e024a4e343eab1d2a088e16710d0ab2312d056d5a61b9e8a2068b8d10922b9ae/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1378934026/history/"
+        },
+        "history": [
+          {
+            "reportId": "e024a4e343eab1d2a088e16710d0ab2312d056d5a61b9e8a2068b8d10922b9ae",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "2552ae82cdb4a81179bfdbea24e2678436c4e060",
+            "treeUrl": "https://github.com/Stalwart-Turtle/twitch-chat-panel/tree/2552ae82cdb4a81179bfdbea24e2678436c4e060",
+            "scannedAt": "2026-09-25T04:11:19.977Z",
+            "assessedAt": "2026-09-25T04:17:15.042Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1378934026/2552ae82cdb4a81179bfdbea24e2678436c4e060/5/e024a4e343eab1d2a088e16710d0ab2312d056d5a61b9e8a2068b8d10922b9ae/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1378934026/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1378934026/"
       },
       "attribution": {
         "owner": {
