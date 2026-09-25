@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "djonasus-sillytavern-compressor",
+  "name": "SillyTavern-compressor",
+  "kind": "extension",
+  "summary": "SillyTavern extension that compresses long chats to keep context small and generation fast: /compress has the model write an editable chronology, then opens a fresh chat with saved user facts injected (readme).",
+  "metadata_status": "curated",
+  "source_id": "github-1373485282",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "maintain-long-term-memory",
+    "manage-context-limits",
+    "multi-stage-generation",
+    "persistent-state",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-09-25T03:48:00.638Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
