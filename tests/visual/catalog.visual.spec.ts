@@ -13,8 +13,9 @@ const forkRelationshipChild =
   catalog.projects.find(
     ({ fork }) => fork?.status === "published" && fork.parentProjectId,
   );
+// Keep screenshot geometry independent of newly submitted catalog records.
 const pendingScanProject = catalog.projects.find(
-  ({ tavernKeeper }) => tavernKeeper?.state === "gray",
+  ({ id }) => id === "agnaistic-agnai",
 );
 const hasScanFixture = process.env.TAVERNARY_SCAN_FIXTURE === "true";
 
