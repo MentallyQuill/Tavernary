@@ -41745,6 +41745,198 @@
       }
     },
     {
+      "id": "icefog72-sillytavern-codexpet",
+      "name": "SillyTavern-CodexPet",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "SillyTavern-CodexPet adds a browser-side animated pet overlay that wanders, hops, and grows more active while text generates (readme), reacting to SillyTavern expression changes via automatic sprite discovery.",
+      "canonicalUrl": "https://github.com/IceFog72/SillyTavern-CodexPet",
+      "catalogedAt": "2026-09-25T02:51:11.975Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "persistent-state",
+          "label": "Persistent state",
+          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
+          "facet": "trait"
+        },
+        {
+          "id": "streaming-aware",
+          "label": "Streaming-aware",
+          "description": "Observes, transforms, or reacts to model output while it is still streaming.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "e01841daa720004078708ff256f8f08e4e4b8c4b",
+        "report": {
+          "reportId": "9e298ea3079eca901d650bb24c41c3e18f65744452bb5b5866e28f64a576fd4b",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "e01841daa720004078708ff256f8f08e4e4b8c4b",
+          "treeUrl": "https://github.com/IceFog72/SillyTavern-CodexPet/tree/e01841daa720004078708ff256f8f08e4e4b8c4b",
+          "scannedAt": "2026-09-25T03:15:04.090Z",
+          "assessedAt": "2026-09-25T03:17:11.754Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "javascriptAnalysisStatus": "complete",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1356384047/e01841daa720004078708ff256f8f08e4e4b8c4b/5/9e298ea3079eca901d650bb24c41c3e18f65744452bb5b5866e28f64a576fd4b/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1356384047/history/"
+        },
+        "history": [
+          {
+            "reportId": "9e298ea3079eca901d650bb24c41c3e18f65744452bb5b5866e28f64a576fd4b",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "e01841daa720004078708ff256f8f08e4e4b8c4b",
+            "treeUrl": "https://github.com/IceFog72/SillyTavern-CodexPet/tree/e01841daa720004078708ff256f8f08e4e4b8c4b",
+            "scannedAt": "2026-09-25T03:15:04.090Z",
+            "assessedAt": "2026-09-25T03:17:11.754Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1356384047/e01841daa720004078708ff256f8f08e4e4b8c4b/5/9e298ea3079eca901d650bb24c41c3e18f65744452bb5b5866e28f64a576fd4b/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1356384047/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1356384047/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "IceFog72"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-16T19:16:15.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          true,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 1,
+        "forks": 0,
+        "watchers": 2,
+        "aggregate": 3
+      },
+      "repositorySizeKb": 2249,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-25T02:51:11.975Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/IceFog72/SillyTavern-CodexPet.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-CodexPet"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-CodexPet"
+        ],
+        "aliases": [],
+        "source": [
+          "icefog72-sillytavern-codexpet",
+          "github-1356384047",
+          "IceFog72/SillyTavern-CodexPet",
+          "https://github.com/IceFog72/SillyTavern-CodexPet"
+        ],
+        "summary": [
+          "SillyTavern-CodexPet adds a browser-side animated pet overlay that wanders, hops, and grows more active while text generates (readme), reacting to SillyTavern expression changes via automatic sprite discovery."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals",
+          "Persistent state",
+          "durable state",
+          "state persistence",
+          "cross-session state",
+          "Streaming-aware",
+          "live token processing",
+          "stream processing",
+          "incremental output handling"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "IceFog72"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "icefog72-sillytavern-customthemestyleinputs",
       "name": "SillyTavern-CustomThemeStyleInputs",
       "kind": "extension",
