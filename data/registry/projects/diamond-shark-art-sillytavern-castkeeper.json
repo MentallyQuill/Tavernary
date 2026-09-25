@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "diamond-shark-art-sillytavern-castkeeper",
+  "name": "SillyTavern-Castkeeper",
+  "kind": "extension",
+  "summary": "SillyTavern-Castkeeper maintains an editable cast of supporting characters, detecting relevant NPCs, recording details the story establishes, and helping the model remember them (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1375527477",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": [
+    "maintain-long-term-memory",
+    "manage-characters-and-personas",
+    "preserve-story-continuity",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-09-25T03:52:26.246Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
