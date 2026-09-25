@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "rustyorb-sillytavern-creativestudio",
+  "name": "SillyTavern-CreativeStudio",
+  "kind": "extension",
+  "summary": "SillyTavern extension that turns one line or nothing into a complete linked roleplay kit: card, openings, lorebook, preset, regex, Quick Replies, ComfyUI portraits, plus hands-free AI with undo (repo description).",
+  "metadata_status": "curated",
+  "source_id": "github-1383785103",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": [
+    "add-visual-immersion",
+    "automate-roleplay-workflows",
+    "build-worlds-and-lore",
+    "create-character-cards",
+    "generate-images",
+    "hands-free"
+  ],
+  "cataloged_at": "2026-09-25T03:52:50.829Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
