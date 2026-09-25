@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1131052854",
+  "head_sha": "f4e2deafa3e8b2da6dfd36de2ba6bd94dab6a297",
+  "observed_at": "2026-09-25T04:18:18.380Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-EchoCore",
+  "manifest": {
+    "display_name": "SillyTavern-GPT-SoVITS",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "haide-d-sillytavern-echocore",
+  "name": "SillyTavern-EchoCore",
+  "kind": "extension",
+  "summary": "Immersive voice hub for SillyTavern with a Python backend manager: multi-provider TTS (GPT-SoVITS, ElevenLabs, MiniMax), segment-by-segment playback while text generates, BGM control, and up to 12 bubble skins. (README)",
+  "metadata_status": "curated",
+  "source_id": "github-1131052854",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "add-music-and-audio",
+    "add-visual-immersion",
+    "add-voice-interaction",
+    "background-operation",
+    "modular-and-extensible"
+  ],
+  "cataloged_at": "2026-09-25T04:12:16.402Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
