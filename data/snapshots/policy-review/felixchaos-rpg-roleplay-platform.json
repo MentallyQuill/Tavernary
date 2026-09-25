@@ -3,14 +3,14 @@
   "project_id": "felixchaos-rpg-roleplay-platform",
   "source_id": "github-1252271768",
   "source_identity": "github:felixchaos/rpg-roleplay-platform",
-  "evidence_fingerprint": "b8a6955e7da7680d2719e0d1e5952fe7ec89b255df9e603908cb7dcc182e8676",
+  "evidence_fingerprint": "7d6d7702fb2c09156058b538d44446722dff2d336d4c8198c8a607900a40761a",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-09-14T14:27:32.212Z",
+  "reviewed_at": "2026-09-25T13:04:19.162Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-14T14:27:32.212Z"
+    "attempts": 3,
+    "last_failure_at": "2026-09-25T13:04:19.162Z"
   },
   "maintenance_issue_number": null
 }
