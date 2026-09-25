@@ -51,7 +51,10 @@ export type ProviderResult = {
   };
 };
 
-export function validateProviderConfiguration(input: ProviderConfiguration): {
+export function validateProviderConfiguration(
+  input: ProviderConfiguration,
+  role?: "Primary" | "JSON repair",
+): {
   apiUrl: string;
   apiKey: string;
   model: string;

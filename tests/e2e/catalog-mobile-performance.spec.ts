@@ -152,6 +152,7 @@ test(
       !testInfo.project.name.startsWith("mobile-"),
       "Representative mobile projects own this smoke case",
     );
+    await page.clock.install();
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto(sitePath());
 
@@ -171,6 +172,9 @@ test(
     const panel = page.getByRole("dialog", {
       name: "TavernKeeper Scan Results",
     });
+    await expect(panel).toBeVisible();
+    // A completed tap must outlive the mouse hover-dismiss delay.
+    await page.clock.fastForward(200);
     await expect(panel).toBeVisible();
     const transitionSeconds = await panel.evaluate((element) =>
       Number.parseFloat(getComputedStyle(element).transitionDuration),

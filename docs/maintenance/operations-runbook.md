@@ -441,6 +441,14 @@ provider:
 - `TAVERNARY_ENRICHMENT_API_KEY`
 - `TAVERNARY_ENRICHMENT_MODEL`
 
+Provider configuration is validated before either API receives a request.
+A `provider-configuration-invalid` error identifies `Primary provider` for
+`UTILITY_*` settings or `JSON repair provider` for `TAVERNARY_ENRICHMENT_*`
+settings. Both configurations must be valid, even when a response will not
+need repair. Check the named role's URL, API key, and model; never print
+secret values into workflow logs. After correcting configuration, regenerate
+one blocked submission and verify its review PR before retrying the queue.
+
 Luna is called at most once and only when the utility response is malformed
 JSON, is not an object, or fails the requested JSON schema. It receives the
 damaged utility response, the schema, and sanitized validation paths—not the

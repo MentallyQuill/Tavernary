@@ -614,6 +614,29 @@ describe("TavernKeeperScanIndicator", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
+  test("keeps a tapped popover open after the touch pointer leaves", () => {
+    vi.useFakeTimers();
+    render(
+      <TavernKeeperScanIndicator
+        projectId="touch-retention"
+        status={redStatus}
+      />,
+    );
+    const trigger = screen.getByRole("button");
+    fireEvent.pointerDown(trigger, { pointerType: "touch" });
+    fireEvent.focus(trigger);
+    fireEvent.click(trigger);
+    fireEvent.pointerLeave(trigger, { pointerType: "touch" });
+    fireEvent.mouseLeave(trigger);
+    act(() => vi.advanceTimersByTime(200));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    fireEvent.pointerLeave(screen.getByRole("dialog"), {
+      pointerType: "touch",
+    });
+    fireEvent.mouseLeave(screen.getByRole("dialog"));
+    act(() => vi.advanceTimersByTime(200));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
   test("toggles from a touch click and closes another open scan indicator", () => {
     render(
       <>

@@ -1078,3 +1078,43 @@ test("keeps schema-valid semantic repairs on the utility provider", async () => 
   expect(result.validation.valid).toBe(true);
   expect(urls).toEqual([utilityUrl, utilityUrl]);
 });
+
+test("identifies invalid repair configuration without exposing its values", () => {
+  expect(() =>
+    createEnrichmentProvider({
+      apiUrl: "https://utility.example/v1/chat/completions",
+      apiKey: "utility-secret",
+      model: "utility-model",
+      jsonRepair: {
+        apiUrl: "invalid-private-value",
+        apiKey: "repair-secret",
+        model: "repair-model",
+      },
+    }),
+  ).toThrowError(
+    expect.objectContaining({
+      code: "provider-configuration-invalid",
+      message:
+        "JSON repair provider: Enrichment provider URL is required and must be valid.",
+    }),
+  );
+});
+
+test("identifies invalid primary configuration before calling a provider", () => {
+  const fetchImpl = vi.fn();
+  expect(() =>
+    createEnrichmentProvider({
+      apiUrl: "private-invalid-url",
+      apiKey: "private-key",
+      model: "utility-model",
+      fetchImpl,
+    }),
+  ).toThrowError(
+    expect.objectContaining({
+      code: "provider-configuration-invalid",
+      message:
+        "Primary provider: Enrichment provider URL is required and must be valid.",
+    }),
+  );
+  expect(fetchImpl).not.toHaveBeenCalled();
+});
