@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1374177758",
+  "head_sha": "9c64f3a90017705221d18d62cd988f4decd5e852",
+  "observed_at": "2026-09-25T03:36:54.655Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-ContextSpeedHUD",
+  "manifest": {
+    "display_name": "Context/Speed HUD",
+    "key": null,
+    "minimum_client_version": "1.13.0"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1374177758",
+  "repository": {
+    "id": 1374177758,
+    "owner": "driderr",
+    "name": "SillyTavern-ContextSpeedHUD",
+    "url": "https://github.com/driderr/SillyTavern-ContextSpeedHUD",
+    "description": "SillyTavern extension: always-visible draggable pill showing generation speed (tokens/s) and context usage",
+    "default_branch": "main",
+    "head_sha": "9c64f3a90017705221d18d62cd988f4decd5e852",
+    "head_committed_at": "2026-09-17T08:57:29.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-09-17T08:57:35.000Z",
+    "size_kb": 6
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-09-17T08:57:29.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-17T08:57:29.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-09-25T03:35:25.819Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "9c64f3a90017705221d18d62cd988f4decd5e852"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-09-25T03:35:25.819Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "driderr", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-09-25T03:35:25.819Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
