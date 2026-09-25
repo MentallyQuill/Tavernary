@@ -1295,6 +1295,180 @@
       }
     },
     {
+      "id": "0cyris-sillytavern-openrouter-tts",
+      "name": "SillyTavern-Openrouter-TTS",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "Third-party SillyTavern extension adding OpenRouter as a TTS provider: one API key gives every speech model OpenRouter serves, with model and voice lists loaded live so new models appear without an update (README).",
+      "canonicalUrl": "https://github.com/0cyris/SillyTavern-Openrouter-TTS",
+      "catalogedAt": "2026-09-25T03:31:58.293Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-voice-interaction",
+          "label": "Add voice interaction",
+          "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "60bbee16f6ef272a9e91c3c1c233ce75486e7fea",
+        "report": {
+          "reportId": "1f44c190766f57006cf25fc9bffa383a4bc05c67af31373a20eec8109044ba12",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 1,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "fcf99c8eed38a6c7476d09c632420ba9e7e498a3fd388bbe89705440b5a76ddd"
+          ],
+          "scannedSha": "60bbee16f6ef272a9e91c3c1c233ce75486e7fea",
+          "treeUrl": "https://github.com/0cyris/SillyTavern-Openrouter-TTS/tree/60bbee16f6ef272a9e91c3c1c233ce75486e7fea",
+          "scannedAt": "2026-09-25T03:58:56.163Z",
+          "assessedAt": "2026-09-25T04:10:00.993Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1384238329/60bbee16f6ef272a9e91c3c1c233ce75486e7fea/5/1f44c190766f57006cf25fc9bffa383a4bc05c67af31373a20eec8109044ba12/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1384238329/history/"
+        },
+        "history": [
+          {
+            "reportId": "1f44c190766f57006cf25fc9bffa383a4bc05c67af31373a20eec8109044ba12",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 1,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "fcf99c8eed38a6c7476d09c632420ba9e7e498a3fd388bbe89705440b5a76ddd"
+            ],
+            "scannedSha": "60bbee16f6ef272a9e91c3c1c233ce75486e7fea",
+            "treeUrl": "https://github.com/0cyris/SillyTavern-Openrouter-TTS/tree/60bbee16f6ef272a9e91c3c1c233ce75486e7fea",
+            "scannedAt": "2026-09-25T03:58:56.163Z",
+            "assessedAt": "2026-09-25T04:10:00.993Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1384238329/60bbee16f6ef272a9e91c3c1c233ce75486e7fea/5/1f44c190766f57006cf25fc9bffa383a4bc05c67af31373a20eec8109044ba12/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1384238329/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1384238329/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "0cyris"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-23T21:47:39.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 57,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-25T03:31:58.293Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/0cyris/SillyTavern-Openrouter-TTS.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-Openrouter-TTS"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-Openrouter-TTS"
+        ],
+        "aliases": [],
+        "source": [
+          "0cyris-sillytavern-openrouter-tts",
+          "github-1384238329",
+          "0cyris/SillyTavern-Openrouter-TTS",
+          "https://github.com/0cyris/SillyTavern-Openrouter-TTS"
+        ],
+        "summary": [
+          "Third-party SillyTavern extension adding OpenRouter as a TTS provider: one API key gives every speech model OpenRouter serves, with model and voice lists loaded live so new models appear without an update (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Add voice interaction",
+          "voice chat",
+          "speech input",
+          "text to speech"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "0cyris"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "0x4kgi-sillytavern-auto-pair-input-characters",
       "name": "SillyTavern-Auto-Pair-Input-Characters",
       "kind": "extension",
@@ -21169,6 +21343,182 @@
       }
     },
     {
+      "id": "chrisditfort-sillytavern-innerlore",
+      "name": "SillyTavern-InnerLore",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "memory-retrieval",
+      "summary": "SillyTavern extension giving NPCs persistent minds and auto-generated World Info lore that updates as the story unfolds, with time progression and revealable events on SQLite.",
+      "canonicalUrl": "https://github.com/ChrisDitfort/SillyTavern-InnerLore",
+      "catalogedAt": "2026-09-25T03:45:00.631Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "automate-roleplay-workflows",
+          "label": "Automate roleplay workflows",
+          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
+          "facet": "goal"
+        },
+        {
+          "id": "build-worlds-and-lore",
+          "label": "Build worlds and lore",
+          "description": "Create fictional settings, lore, locations, factions, or other world material.",
+          "facet": "goal"
+        },
+        {
+          "id": "maintain-long-term-memory",
+          "label": "Maintain long-term memory",
+          "description": "Preserve and recall important information across long chats or separate sessions.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-lorebooks",
+          "label": "Manage lorebooks",
+          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+          "facet": "goal"
+        },
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "9990342a1f99484e0b31e56c093e085f6084cfe7",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "ChrisDitfort"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-17T22:03:40.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-09-16T20:24:48.000Z",
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 1,
+        "aggregate": 1
+      },
+      "repositorySizeKb": 1152,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-25T03:45:00.631Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/ChrisDitfort/SillyTavern-InnerLore.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-InnerLore"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-InnerLore"
+        ],
+        "aliases": [],
+        "source": [
+          "chrisditfort-sillytavern-innerlore",
+          "github-1372304973",
+          "ChrisDitfort/SillyTavern-InnerLore",
+          "https://github.com/ChrisDitfort/SillyTavern-InnerLore"
+        ],
+        "summary": [
+          "SillyTavern extension giving NPCs persistent minds and auto-generated World Info lore that updates as the story unfolds, with time progression and revealable events on SQLite."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Memory and retrieval"
+        ],
+        "tags": [
+          "Automate roleplay workflows",
+          "automation",
+          "workflow automation",
+          "task automation",
+          "triggered actions",
+          "Build worlds and lore",
+          "worldbuilding",
+          "character worldbuilding",
+          "lore creation",
+          "setting design",
+          "Maintain long-term memory",
+          "durable memory",
+          "persistent memory",
+          "remember across chats",
+          "Manage lorebooks",
+          "World Info management",
+          "worldbook organization",
+          "loredeck management",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "ChrisDitfort"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "cierru-st-stepped-thinking",
       "name": "ST Stepped Thinking",
       "kind": "extension",
@@ -28992,6 +29342,130 @@
           "Flippo24",
           "djdembeck",
           "ericcurtin"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "driderr-sillytavern-contextspeedhud",
+      "name": "SillyTavern-ContextSpeedHUD",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "SillyTavern extension adding a draggable, always-visible HUD pill that surfaces tokens/sec generation speed and color-coded context usage, reusing ST's own tokenizer data.",
+      "canonicalUrl": "https://github.com/driderr/SillyTavern-ContextSpeedHUD",
+      "catalogedAt": "2026-09-25T03:35:25.819Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "monitor-token-usage-and-cost",
+          "label": "Monitor token usage and cost",
+          "description": "Measure, visualize, budget, or report model token consumption and spending.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "9c64f3a90017705221d18d62cd988f4decd5e852",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "driderr"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-17T08:57:29.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 6,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-25T03:35:25.819Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/driderr/SillyTavern-ContextSpeedHUD.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-ContextSpeedHUD"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-ContextSpeedHUD"
+        ],
+        "aliases": [],
+        "source": [
+          "driderr-sillytavern-contextspeedhud",
+          "github-1374177758",
+          "driderr/SillyTavern-ContextSpeedHUD",
+          "https://github.com/driderr/SillyTavern-ContextSpeedHUD"
+        ],
+        "summary": [
+          "SillyTavern extension adding a draggable, always-visible HUD pill that surfaces tokens/sec generation speed and color-coded context usage, reusing ST's own tokenizer data."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Monitor token usage and cost",
+          "usage analytics",
+          "cost tracking",
+          "token statistics"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "driderr"
         ],
         "relationships": []
       }
@@ -83798,6 +84272,181 @@
       }
     },
     {
+      "id": "rendyuwu-sillytavern-sidethread",
+      "name": "SillyTavern-SideThread",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "SillyTavern extension adding an out-of-character side chat in a floating panel, fed the same cards, persona, lorebooks, and history, so you can question lore or plan scenes with the main chat untouched (README).",
+      "canonicalUrl": "https://github.com/rendyuwu/SillyTavern-SideThread",
+      "catalogedAt": "2026-09-25T03:33:16.558Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "build-worlds-and-lore",
+          "label": "Build worlds and lore",
+          "description": "Create fictional settings, lore, locations, factions, or other world material.",
+          "facet": "goal"
+        },
+        {
+          "id": "customize-the-interface",
+          "label": "Customize the interface",
+          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+          "facet": "trait"
+        },
+        {
+          "id": "plan-stories-and-scenes",
+          "label": "Plan stories and scenes",
+          "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
+          "facet": "goal"
+        },
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        },
+        {
+          "id": "retrieve-relevant-context",
+          "label": "Retrieve relevant context",
+          "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "75dda8c74ea76b4b27016254a492253dba460aec",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "rendyuwu"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-18T09:07:16.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 197,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-25T03:33:16.558Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/rendyuwu/SillyTavern-SideThread.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-SideThread"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-SideThread"
+        ],
+        "aliases": [],
+        "source": [
+          "rendyuwu-sillytavern-sidethread",
+          "github-1332039402",
+          "rendyuwu/SillyTavern-SideThread",
+          "https://github.com/rendyuwu/SillyTavern-SideThread"
+        ],
+        "summary": [
+          "SillyTavern extension adding an out-of-character side chat in a floating panel, fed the same cards, persona, lorebooks, and history, so you can question lore or plan scenes with the main chat untouched (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Build worlds and lore",
+          "worldbuilding",
+          "character worldbuilding",
+          "lore creation",
+          "setting design",
+          "Customize the interface",
+          "interface theming",
+          "layout customization",
+          "UI personalization",
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay",
+          "Plan stories and scenes",
+          "story planning",
+          "plot direction",
+          "scene planning",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
+          "Retrieve relevant context",
+          "context retrieval",
+          "relevant recall",
+          "knowledge retrieval"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "rendyuwu"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "retrovioletred-sillytavern-pictureprompt",
       "name": "SillyTavern PicturePrompt",
       "kind": "extension",
@@ -85918,6 +86567,183 @@
           "node editor",
           "flowchart builder",
           "graphical workflow"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "rustyorb"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "rustyorb-sillytavern-creativestudio",
+      "name": "SillyTavern-CreativeStudio",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "character-worldbuilding",
+      "summary": "SillyTavern extension that turns one line or nothing into a complete linked roleplay kit: card, openings, lorebook, preset, regex, Quick Replies, ComfyUI portraits, plus hands-free AI with undo (repo description).",
+      "canonicalUrl": "https://github.com/rustyorb/SillyTavern-CreativeStudio",
+      "catalogedAt": "2026-09-25T03:52:50.829Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "automate-roleplay-workflows",
+          "label": "Automate roleplay workflows",
+          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
+          "facet": "goal"
+        },
+        {
+          "id": "build-worlds-and-lore",
+          "label": "Build worlds and lore",
+          "description": "Create fictional settings, lore, locations, factions, or other world material.",
+          "facet": "goal"
+        },
+        {
+          "id": "create-character-cards",
+          "label": "Create character cards",
+          "description": "Generate or author ready-to-use AI roleplay character cards.",
+          "facet": "goal"
+        },
+        {
+          "id": "generate-images",
+          "label": "Generate images",
+          "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
+          "facet": "goal"
+        },
+        {
+          "id": "hands-free",
+          "label": "Hands-free",
+          "description": "Supports continuous or automatically sequenced interaction without routine button presses.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "3154dba336881820f3939779dea59874c6b203bd",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "rustyorb"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-24T03:52:00.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 2,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 2
+      },
+      "repositorySizeKb": 8782,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-25T03:52:50.829Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/rustyorb/SillyTavern-CreativeStudio.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-CreativeStudio"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-CreativeStudio"
+        ],
+        "aliases": [],
+        "source": [
+          "rustyorb-sillytavern-creativestudio",
+          "github-1383785103",
+          "rustyorb/SillyTavern-CreativeStudio",
+          "https://github.com/rustyorb/SillyTavern-CreativeStudio"
+        ],
+        "summary": [
+          "SillyTavern extension that turns one line or nothing into a complete linked roleplay kit: card, openings, lorebook, preset, regex, Quick Replies, ComfyUI portraits, plus hands-free AI with undo (repo description)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Character and worldbuilding"
+        ],
+        "tags": [
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals",
+          "Automate roleplay workflows",
+          "automation",
+          "workflow automation",
+          "task automation",
+          "triggered actions",
+          "Build worlds and lore",
+          "worldbuilding",
+          "character worldbuilding",
+          "lore creation",
+          "setting design",
+          "Create character cards",
+          "character card generation",
+          "character creator",
+          "make characters",
+          "Generate images",
+          "image generation",
+          "AI art generation",
+          "scene illustration",
+          "picture generation",
+          "Hands-free",
+          "voice loop",
+          "automatic conversation flow",
+          "no-touch interaction"
         ],
         "frontends": [
           "SillyTavern"
@@ -101108,6 +101934,372 @@
           "splitclover",
           "DAurielS",
           "lesser0"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "st-extensioncollection-sillytavern-worldtracker",
+      "name": "SillyTavern-WorldTracker",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "SillyTavern-WorldTracker extension that tracks roleplay state like time, place, weather, and characters, querying a model in a separate request after each message and applying updates only after approval (README).",
+      "canonicalUrl": "https://github.com/ST-ExtensionCollection/SillyTavern-WorldTracker",
+      "catalogedAt": "2026-09-25T03:37:04.790Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "background-operation",
+          "label": "Background operation",
+          "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
+          "facet": "trait"
+        },
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+          "facet": "trait"
+        },
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "1ec4cd3dac87b7fa2f64d1f65760014cac6aa52b",
+        "report": {
+          "reportId": "bdd8f21e9ce72090ccad8f05397a1f286040dfb1f61ec85f738bc7db0e0f3e42",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 1,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "cbaca6b24414d4a15175fa99308c095a75c525c2e57abd389fba2b37e9e7bfe5"
+          ],
+          "scannedSha": "1ec4cd3dac87b7fa2f64d1f65760014cac6aa52b",
+          "treeUrl": "https://github.com/ST-ExtensionCollection/SillyTavern-WorldTracker/tree/1ec4cd3dac87b7fa2f64d1f65760014cac6aa52b",
+          "scannedAt": "2026-09-25T04:07:14.177Z",
+          "assessedAt": "2026-09-25T04:10:00.993Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1350159893/1ec4cd3dac87b7fa2f64d1f65760014cac6aa52b/5/bdd8f21e9ce72090ccad8f05397a1f286040dfb1f61ec85f738bc7db0e0f3e42/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1350159893/history/"
+        },
+        "history": [
+          {
+            "reportId": "bdd8f21e9ce72090ccad8f05397a1f286040dfb1f61ec85f738bc7db0e0f3e42",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 1,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "cbaca6b24414d4a15175fa99308c095a75c525c2e57abd389fba2b37e9e7bfe5"
+            ],
+            "scannedSha": "1ec4cd3dac87b7fa2f64d1f65760014cac6aa52b",
+            "treeUrl": "https://github.com/ST-ExtensionCollection/SillyTavern-WorldTracker/tree/1ec4cd3dac87b7fa2f64d1f65760014cac6aa52b",
+            "scannedAt": "2026-09-25T04:07:14.177Z",
+            "assessedAt": "2026-09-25T04:10:00.993Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1350159893/1ec4cd3dac87b7fa2f64d1f65760014cac6aa52b/5/bdd8f21e9ce72090ccad8f05397a1f286040dfb1f61ec85f738bc7db0e0f3e42/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1350159893/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1350159893/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "ST-ExtensionCollection"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "Rojikku",
+            "botOrAi": false
+          }
+        ],
+        "humanContributorCount": 1,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-15T04:05:58.000Z",
+        "activeWeeks12": 4,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 1,
+        "aggregate": 1
+      },
+      "repositorySizeKb": 604,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-25T03:37:04.790Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/ST-ExtensionCollection/SillyTavern-WorldTracker.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-WorldTracker"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-WorldTracker"
+        ],
+        "aliases": [],
+        "source": [
+          "st-extensioncollection-sillytavern-worldtracker",
+          "github-1350159893",
+          "ST-ExtensionCollection/SillyTavern-WorldTracker",
+          "https://github.com/ST-ExtensionCollection/SillyTavern-WorldTracker"
+        ],
+        "summary": [
+          "SillyTavern-WorldTracker extension that tracks roleplay state like time, place, weather, and characters, querying a model in a separate request after each message and applying updates only after approval (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Background operation",
+          "asynchronous processing",
+          "quiet generation",
+          "background tasks",
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "ST-ExtensionCollection",
+          "Rojikku"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "stalwart-turtle-twitch-chat-panel",
+      "name": "twitch-chat-panel",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "SillyTavern extension that streams a Twitch channel's chat into a live side panel and forwards messages matching your trigger words so the character responds; anonymous read-only with inline emotes (README).",
+      "canonicalUrl": "https://github.com/Stalwart-Turtle/twitch-chat-panel",
+      "catalogedAt": "2026-09-25T03:38:49.084Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "automate-roleplay-workflows",
+          "label": "Automate roleplay workflows",
+          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
+          "facet": "goal"
+        },
+        {
+          "id": "background-operation",
+          "label": "Background operation",
+          "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
+          "facet": "trait"
+        },
+        {
+          "id": "connect-external-services",
+          "label": "Connect external services",
+          "description": "Bridge roleplay workflows to messaging, media, note-taking, automation, or other services.",
+          "facet": "goal"
+        },
+        {
+          "id": "privacy-focused",
+          "label": "Privacy-focused",
+          "description": "Explicitly minimizes data exposure or gives users strong control over sensitive data.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "2552ae82cdb4a81179bfdbea24e2678436c4e060",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Stalwart-Turtle"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-22T15:48:36.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 45,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-25T03:38:49.084Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Stalwart-Turtle/twitch-chat-panel.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "twitch-chat-panel"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "twitch-chat-panel"
+        ],
+        "aliases": [],
+        "source": [
+          "stalwart-turtle-twitch-chat-panel",
+          "github-1378934026",
+          "Stalwart-Turtle/twitch-chat-panel",
+          "https://github.com/Stalwart-Turtle/twitch-chat-panel"
+        ],
+        "summary": [
+          "SillyTavern extension that streams a Twitch channel's chat into a live side panel and forwards messages matching your trigger words so the character responds; anonymous read-only with inline emotes (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Automate roleplay workflows",
+          "automation",
+          "workflow automation",
+          "task automation",
+          "triggered actions",
+          "Background operation",
+          "asynchronous processing",
+          "quiet generation",
+          "background tasks",
+          "Connect external services",
+          "service integrations",
+          "external bridges",
+          "third-party connections",
+          "Privacy-focused",
+          "private by design",
+          "privacy preserving",
+          "data stays private"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Stalwart-Turtle"
         ],
         "relationships": []
       }
