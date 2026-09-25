@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "rustyorb-sillytavern-creativestudio",
+  "source_id": "github-1383785103",
+  "source_identity": "github:rustyorb/sillytavern-creativestudio",
+  "evidence_fingerprint": "9f2234295d844eb874b28b28327ef692c9edc51fe2db4bbdee7bc7bdebf2c746",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-25T04:09:48.118Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-25T04:09:48.118Z"
+  },
+  "maintenance_issue_number": null
+}
