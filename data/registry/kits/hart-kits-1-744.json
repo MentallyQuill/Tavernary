@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "id": "hart-kits-1-744",
+  "status": "published",
+  "title": "Hart Kits 1",
+  "description": "Testing this out",
+  "author": {
+    "github_user_id": 193646933,
+    "login": "Hart198912"
+  },
+  "source_issue_number": 744,
+  "project_ids": [
+    "sillytavern-sillytavern",
+    "coneja-chibi-bunnymo",
+    "coneja-chibi-rabbit-response-team",
+    "sillytavern-sillytavern-pronouns",
+    "sillyanonymous-sillytavern-characterlibrary",
+    "coneja-chibi-hoplight",
+    "loggo-presets-typingindicatorplus",
+    "loggo-presets-sillytavern-spellbook",
+    "rivelledays-sillytavern-chatcompletiontabs",
+    "sillytavern-extension-promptinspector",
+    "leandrojofre-sillytavern-wi-bulk-mover",
+    "chaaruze-sillytavern-too-many-chats",
+    "samueras-guidedgenerations-extension",
+    "kristalium-sillytavern-too-many-chats",
+    "aikohanasaki-sillytavern-lorebookordering",
+    "nemovonnirgend-nemoengine",
+    "bal-spec-sillytavern-character-memory",
+    "coneja-chibi-tunnelvision",
+    "vadash-extension-summaryception",
+    "aikohanasaki-sillytavern-memorybooks",
+    "welvet-sillytavern-narrator"
+  ],
+  "published_at": "2026-09-25T23:26:07.827Z",
+  "updated_at": "2026-09-25T23:26:07.827Z"
+}
