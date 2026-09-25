@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "driderr-sillytavern-contextspeedhud",
+  "source_id": "github-1374177758",
+  "source_identity": "github:driderr/sillytavern-contextspeedhud",
+  "evidence_fingerprint": "7690b9c290cf7b1a60812b9f13767df8cebfb4db29cbf2867fbc0c29728ae358",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-25T04:06:10.475Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-25T04:06:10.475Z"
+  },
+  "maintenance_issue_number": null
+}
