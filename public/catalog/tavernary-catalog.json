@@ -28189,6 +28189,206 @@
       }
     },
     {
+      "id": "diamond-shark-art-sillytavern-castkeeper",
+      "name": "SillyTavern-Castkeeper",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "character-worldbuilding",
+      "summary": "SillyTavern-Castkeeper maintains an editable cast of supporting characters, detecting relevant NPCs, recording details the story establishes, and helping the model remember them (README).",
+      "canonicalUrl": "https://github.com/Diamond-Shark-art/SillyTavern-Castkeeper",
+      "catalogedAt": "2026-09-25T03:52:26.246Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "maintain-long-term-memory",
+          "label": "Maintain long-term memory",
+          "description": "Preserve and recall important information across long chats or separate sessions.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-characters-and-personas",
+          "label": "Manage characters and personas",
+          "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+          "facet": "goal"
+        },
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "c7a3a3bb902053f7d6333fbb3efc4996aa138324",
+        "report": {
+          "reportId": "89e4e860a7bd34fb158e3bdb5825ab524ad7f36223063207928f599604ab5790",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "c7a3a3bb902053f7d6333fbb3efc4996aa138324",
+          "treeUrl": "https://github.com/Diamond-Shark-art/SillyTavern-Castkeeper/tree/c7a3a3bb902053f7d6333fbb3efc4996aa138324",
+          "scannedAt": "2026-09-25T04:34:50.927Z",
+          "assessedAt": "2026-09-25T04:37:23.270Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1375527477/c7a3a3bb902053f7d6333fbb3efc4996aa138324/5/89e4e860a7bd34fb158e3bdb5825ab524ad7f36223063207928f599604ab5790/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1375527477/history/"
+        },
+        "history": [
+          {
+            "reportId": "89e4e860a7bd34fb158e3bdb5825ab524ad7f36223063207928f599604ab5790",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "c7a3a3bb902053f7d6333fbb3efc4996aa138324",
+            "treeUrl": "https://github.com/Diamond-Shark-art/SillyTavern-Castkeeper/tree/c7a3a3bb902053f7d6333fbb3efc4996aa138324",
+            "scannedAt": "2026-09-25T04:34:50.927Z",
+            "assessedAt": "2026-09-25T04:37:23.270Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1375527477/c7a3a3bb902053f7d6333fbb3efc4996aa138324/5/89e4e860a7bd34fb158e3bdb5825ab524ad7f36223063207928f599604ab5790/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1375527477/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1375527477/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Diamond-Shark-art"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-18T07:54:42.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-09-18T07:55:01.000Z",
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 61,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-25T03:52:26.246Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Diamond-Shark-art/SillyTavern-Castkeeper.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-Castkeeper"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-Castkeeper"
+        ],
+        "aliases": [],
+        "source": [
+          "diamond-shark-art-sillytavern-castkeeper",
+          "github-1375527477",
+          "Diamond-Shark-art/SillyTavern-Castkeeper",
+          "https://github.com/Diamond-Shark-art/SillyTavern-Castkeeper"
+        ],
+        "summary": [
+          "SillyTavern-Castkeeper maintains an editable cast of supporting characters, detecting relevant NPCs, recording details the story establishes, and helping the model remember them (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Character and worldbuilding"
+        ],
+        "tags": [
+          "Maintain long-term memory",
+          "durable memory",
+          "persistent memory",
+          "remember across chats",
+          "Manage characters and personas",
+          "persona management",
+          "character management",
+          "identity management",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Diamond-Shark-art"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "diamond-shark-art-sillytavern-impersonationcarousel",
       "name": "SillyTavern-ImpersonationCarousel",
       "kind": "extension",
@@ -38107,6 +38307,170 @@
         "compatibility": [],
         "maintainers": [
           "Gu-gu-gu-gu-gu"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "haide-d-sillytavern-echocore",
+      "name": "SillyTavern-EchoCore",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "Immersive voice hub for SillyTavern with a Python backend manager: multi-provider TTS (GPT-SoVITS, ElevenLabs, MiniMax), segment-by-segment playback while text generates, BGM control, and up to 12 bubble skins. (README)",
+      "canonicalUrl": "https://github.com/haide-D/SillyTavern-EchoCore",
+      "catalogedAt": "2026-09-25T04:12:16.402Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-music-and-audio",
+          "label": "Add music and audio",
+          "description": "Add music, ambient sound, playlists, or other non-speech audio to roleplay.",
+          "facet": "goal"
+        },
+        {
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "add-voice-interaction",
+          "label": "Add voice interaction",
+          "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+          "facet": "goal"
+        },
+        {
+          "id": "background-operation",
+          "label": "Background operation",
+          "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
+          "facet": "trait"
+        },
+        {
+          "id": "modular-and-extensible",
+          "label": "Modular and extensible",
+          "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "f4e2deafa3e8b2da6dfd36de2ba6bd94dab6a297",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "haide-D"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-19T04:38:56.000Z",
+        "activeWeeks12": 6,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          true,
+          true,
+          false,
+          true,
+          true,
+          false,
+          true,
+          true,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-09-19T04:39:17.000Z",
+      "community": {
+        "stars": 254,
+        "forks": 7,
+        "watchers": 1,
+        "aggregate": 262
+      },
+      "repositorySizeKb": 28703,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-25T04:12:16.402Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/haide-D/SillyTavern-EchoCore.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-EchoCore"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-EchoCore"
+        ],
+        "aliases": [],
+        "source": [
+          "haide-d-sillytavern-echocore",
+          "github-1131052854",
+          "haide-D/SillyTavern-EchoCore",
+          "https://github.com/haide-D/SillyTavern-EchoCore"
+        ],
+        "summary": [
+          "Immersive voice hub for SillyTavern with a Python backend manager: multi-provider TTS (GPT-SoVITS, ElevenLabs, MiniMax), segment-by-segment playback while text generates, BGM control, and up to 12 bubble skins. (README)"
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Add music and audio",
+          "ambient audio",
+          "roleplay music",
+          "soundscapes",
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals",
+          "Add voice interaction",
+          "voice chat",
+          "speech input",
+          "text to speech",
+          "Background operation",
+          "asynchronous processing",
+          "quiet generation",
+          "background tasks",
+          "Modular and extensible",
+          "plugin architecture",
+          "modular design",
+          "extensible system"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "haide-D"
         ],
         "relationships": []
       }
