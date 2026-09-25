@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "st-extensioncollection-sillytavern-worldtracker",
+  "name": "SillyTavern-WorldTracker",
+  "kind": "extension",
+  "summary": "SillyTavern-WorldTracker extension that tracks roleplay state like time, place, weather, and characters, querying a model in a separate request after each message and applying updates only after approval (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1350159893",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "background-operation",
+    "non-destructive",
+    "preserve-story-continuity",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-09-25T03:37:04.790Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

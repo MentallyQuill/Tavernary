@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1350159893",
+  "head_sha": "1ec4cd3dac87b7fa2f64d1f65760014cac6aa52b",
+  "observed_at": "2026-09-25T03:44:15.433Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-WorldTracker",
+  "manifest": {
+    "display_name": "WorldTracker",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
