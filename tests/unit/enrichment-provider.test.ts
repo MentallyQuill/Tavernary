@@ -4,6 +4,7 @@ import {
   ENRICHMENT_TIMEOUT_MS,
   MAX_PROVIDER_RESPONSE_BYTES,
   createEnrichmentProvider,
+  createStructuredProviderTransport,
   parseProviderMessage,
   validateProviderConfiguration,
 } from "../../scripts/catalog/enrichment-provider.mjs";
@@ -1118,3 +1119,59 @@ test("identifies invalid primary configuration before calling a provider", () =>
   );
   expect(fetchImpl).not.toHaveBeenCalled();
 });
+
+test("applies configured primary reasoning effort without leaking it to repair", async () => {
+  const bodies: Record<string, unknown>[] = [];
+  const provider = createEnrichmentProvider({
+    ...utilityProviderOptions(async (url, init) => {
+      bodies.push(JSON.parse(String(init?.body)));
+      return String(url) === utilityUrl
+        ? modelResponse(utilityModel, { content: "{broken-json" })
+        : modelResponse(repairModel, { content: JSON.stringify(output) });
+    }),
+    reasoningEffort: "low",
+  });
+  await provider.generate(input);
+  expect(bodies).toHaveLength(2);
+  expect(bodies[0].reasoning_effort).toBe("low");
+  expect(bodies[1].reasoning_effort).toBe("none");
+});
+
+test.each(["invalid-private-value", " LOW ", "", null])(
+  "rejects invalid primary reasoning effort before any request: %s",
+  (reasoningEffort) => {
+    const fetchImpl = vi.fn<typeof fetch>();
+    expect(() =>
+      createEnrichmentProvider({
+        ...utilityProviderOptions(fetchImpl),
+        reasoningEffort: reasoningEffort as string,
+      }),
+    ).toThrow("Primary provider: Reasoning effort must be a supported level.");
+    expect(fetchImpl).not.toHaveBeenCalled();
+  },
+);
+
+test.each([undefined, "low"])(
+  "shared transport preserves caller settings unless configured: %s",
+  async (reasoningEffort) => {
+    let sent: Record<string, unknown> | undefined;
+    const transport = createStructuredProviderTransport({
+      apiUrl: "https://api.example.test/chat/completions",
+      apiKey: "key",
+      model,
+      reasoningEffort,
+      fetchImpl: async (_url, init) => {
+        sent = JSON.parse(String(init?.body));
+        return success();
+      },
+    });
+    const body = {
+      model,
+      reasoning_effort: "high",
+      messages: [{ role: "user", content: "Return JSON" }],
+    };
+    await transport.request(body);
+    expect(sent?.reasoning_effort).toBe(reasoningEffort ?? "high");
+    expect(body.reasoning_effort).toBe("high");
+  },
+);

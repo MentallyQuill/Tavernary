@@ -120,6 +120,7 @@ test("enrichment delegates one durable rollout to the tested orchestrator", asyn
     UTILITY_API_ENDPOINT: "${{ secrets.UTILITY_API_ENDPOINT }}",
     UTILITY_API_KEY: "${{ secrets.UTILITY_API_KEY }}",
     UTILITY_MODEL: "${{ secrets.UTILITY_MODEL }}",
+    UTILITY_REASONING_EFFORT: "${{ vars.UTILITY_REASONING_EFFORT }}",
     TAVERNARY_ENRICHMENT_API_URL: "${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}",
     TAVERNARY_ENRICHMENT_API_KEY: "${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}",
     TAVERNARY_ENRICHMENT_MODEL: "${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}",

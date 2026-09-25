@@ -426,12 +426,23 @@ Workflow: `.github/workflows/enrich-catalog.yml`
   clean completed run closes it. Recovered first-attempt errors are omitted.
 
 Every model-backed workflow uses the utility provider for its first structured
-response. Configure NanoGPT DeepSeek V4 Flash with:
+response. Configure the selected utility model with:
 
 - `UTILITY_API_ENDPOINT` — the complete OpenAI-compatible
   `/chat/completions` URL
 - `UTILITY_API_KEY`
 - `UTILITY_MODEL`
+
+Set the optional repository variable `UTILITY_REASONING_EFFORT` to a level
+supported by that model (`none`, `minimal`, `low`, `medium`, `high`, `xhigh`,
+or `max`). An unset or empty variable preserves the existing model default.
+This setting applies to primary requests only; JSON repair keeps its own
+model-specific settings. The current NanoGPT GLM route requires reasoning:
+use `low`, not `none`. A real EchoCore admission probe completed with valid
+copy in 8 seconds at `low`; the default request timed out after 300 seconds.
+A 4,096-token cap alone produced no answer content, so no primary output
+cap was added. See [NanoGPT reasoning controls](https://nano-gpt.com/support)
+for provider support; recheck a real request before changing model settings.
 
 The existing enrichment secrets configure GPT-5.6 Luna as a JSON-only repair
 provider:

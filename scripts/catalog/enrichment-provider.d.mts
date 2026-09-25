@@ -64,6 +64,7 @@ export function parseProviderMessage(message: unknown): EnrichmentOutput;
 
 export function createStructuredProviderTransport(
   options: ProviderConfiguration & {
+    reasoningEffort?: string;
     jsonRepair?: ProviderConfiguration;
     fetchImpl?: typeof fetch;
     timeoutMs?: number;
@@ -79,6 +80,7 @@ export function createStructuredProviderTransport(
 
 export function createEnrichmentProvider(
   options: ProviderConfiguration & {
+    reasoningEffort?: string;
     jsonRepair?: ProviderConfiguration;
     fetchImpl?: typeof fetch;
     timeoutMs?: number;

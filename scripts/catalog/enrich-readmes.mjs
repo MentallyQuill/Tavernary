@@ -971,6 +971,9 @@ function providerConfiguration(options) {
     options.providerConfiguration ?? modelProviderOptionsFromEnvironment();
   return {
     ...validateProviderConfiguration(providerOptions, "Primary"),
+    ...(providerOptions.reasoningEffort !== undefined
+      ? { reasoningEffort: providerOptions.reasoningEffort }
+      : {}),
     ...(providerOptions.jsonRepair
       ? {
           jsonRepair: validateProviderConfiguration(

@@ -213,6 +213,7 @@ export function runEnrichmentBatch(options: {
 
 export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
   providerConfiguration?: {
+    reasoningEffort?: string;
     apiUrl?: string;
     apiKey?: string;
     model?: string;

@@ -34,3 +34,16 @@ test("does not silently reverse primary and repair providers", () => {
   expect(options.model).toBe("utility-model");
   expect(options.jsonRepair.model).toBe("repair-model");
 });
+
+test("maps optional primary reasoning effort without changing repair settings", () => {
+  expect(
+    modelProviderOptionsFromEnvironment({ UTILITY_REASONING_EFFORT: "low" }),
+  ).toMatchObject({ reasoningEffort: "low" });
+  expect(
+    modelProviderOptionsFromEnvironment({ UTILITY_REASONING_EFFORT: "" }),
+  ).not.toHaveProperty("reasoningEffort");
+  expect(
+    modelProviderOptionsFromEnvironment({ UTILITY_REASONING_EFFORT: "low" })
+      .jsonRepair,
+  ).not.toHaveProperty("reasoningEffort");
+});

@@ -5,6 +5,7 @@ export type ModelProviderConfiguration = {
 };
 
 export type ModelProviderOptions = ModelProviderConfiguration & {
+  reasoningEffort?: string;
   jsonRepair: ModelProviderConfiguration;
 };
 
