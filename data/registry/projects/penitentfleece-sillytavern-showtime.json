@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "penitentfleece-sillytavern-showtime",
+  "name": "SillyTavern-Showtime",
+  "kind": "extension",
+  "summary": "Showtime is a SillyTavern extension offering a production desk covering Cast, Script, Library, Inventory, Reputation, Motivation, and Composer, plus a Backstage",
+  "metadata_status": "curated",
+  "source_id": "github-1373670288",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "manage-inventory-and-quests",
+    "plan-stories-and-scenes",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-09-25T03:36:09.350Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
