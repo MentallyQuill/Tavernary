@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "aikohanasaki-sillytavern-memorybooks",
+  "source_id": "github-1001051404",
+  "source_identity": "github:aikohanasaki/sillytavern-memorybooks",
+  "evidence_fingerprint": "8959eea1e4cf89620ace437e2cc13fe0599072f13bc50943a3df1992ef209f58",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-26T12:29:11.859Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-26T12:29:11.859Z"
+  },
+  "maintenance_issue_number": null
+}
