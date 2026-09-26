@@ -9,18 +9,23 @@
     "url": "https://github.com/zNe4/SillyTavern-ChromaticDialogue",
     "description": null,
     "default_branch": "main",
-    "head_sha": "bafe5234f8b2fe72c14481bde8f37a622c2bb5fc",
-    "head_committed_at": "2026-08-01T09:14:08.000Z",
+    "head_sha": "064e3bfb22d8bc67ec200ebb976679df44a44ef7",
+    "head_committed_at": "2026-09-26T08:10:08.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-30T06:50:57.000Z",
-    "size_kb": 406
+    "size_kb": 1284
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-01T09:14:08.000Z",
+    "latest_source_activity_at": "2026-09-26T08:08:07.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-26T08:08:07.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-27",
         "latest_at": "2026-08-01T09:14:08.000Z",
@@ -28,11 +33,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-02T04:06:40.000Z",
+    "latest_release_at": "2026-09-26T08:13:32.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-08T03:03:09.760Z",
+    "baseline_completed_at": "2026-09-26T12:17:04.836Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "bafe5234f8b2fe72c14481bde8f37a622c2bb5fc"
+    "evidence_head_sha": "064e3bfb22d8bc67ec200ebb976679df44a44ef7"
   },
   "community": {
     "stars_count": 1,
@@ -45,7 +50,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-25T12:49:19.817Z",
+  "refreshed_at": "2026-09-26T12:17:04.836Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -53,7 +58,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-25T12:49:19.817Z",
+    "refreshed_at": "2026-09-26T12:17:04.836Z",
     "stale_since": null
   }
 }

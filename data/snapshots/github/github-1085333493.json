@@ -17,7 +17,7 @@
     "created_at": "2025-10-28T22:35:40.000Z",
     "size_kb": 1356
   },
-  "source_health": "unavailable",
+  "source_health": "healthy",
   "activity": {
     "latest_source_activity_at": "2026-07-27T11:38:49.000Z",
     "source_weeks": [
@@ -35,14 +35,14 @@
     "evidence_head_sha": "3339e64f14e77f0cfb505d53d32de98ca11bc64a"
   },
   "community": {
-    "stars_count": 71,
-    "forks_count": 24,
+    "stars_count": 3,
+    "forks_count": 0,
     "watchers_count": 4,
-    "aggregate": 99
+    "aggregate": 7
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-19T11:57:52.779Z",
-  "stale_since": "2026-09-20T12:27:43.995Z",
+  "refreshed_at": "2026-09-26T12:17:04.836Z",
+  "stale_since": null,
   "activity_scan": null,
   "contributors": {
     "accounts": [
@@ -57,7 +57,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-19T11:57:52.779Z",
+    "refreshed_at": "2026-09-26T12:17:04.836Z",
     "stale_since": null
   }
 }

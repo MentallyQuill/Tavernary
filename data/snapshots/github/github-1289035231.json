@@ -9,21 +9,21 @@
     "url": "https://github.com/unrefined803/RPGraph",
     "description": "AI roleplay with persistent characters, interactive stories, and an in-world phone with messaging and social media.",
     "default_branch": "main",
-    "head_sha": "e6b2014bfa5fa5464480a4a2ae51edada7a7bf55",
-    "head_committed_at": "2026-09-25T07:16:34.000Z",
+    "head_sha": "56ed2c53d791f5ff5e7fb5a30242047ef4d004e1",
+    "head_committed_at": "2026-09-25T19:15:52.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-04T09:02:35.000Z",
-    "size_kb": 43871
+    "size_kb": 44232
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-25T07:16:34.000Z",
+    "latest_source_activity_at": "2026-09-25T19:15:52.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-21",
-        "latest_at": "2026-09-25T07:16:34.000Z",
+        "latest_at": "2026-09-25T19:15:52.000Z",
         "precision": "exact"
       },
       {
@@ -77,20 +77,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-21T14:17:43.786Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "e6b2014bfa5fa5464480a4a2ae51edada7a7bf55"
+    "evidence_head_sha": "56ed2c53d791f5ff5e7fb5a30242047ef4d004e1"
   },
   "community": {
-    "stars_count": 46,
+    "stars_count": 47,
     "forks_count": 5,
     "watchers_count": 2,
-    "aggregate": 53
+    "aggregate": 54
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-25T12:49:19.817Z",
+  "refreshed_at": "2026-09-26T12:17:04.836Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -103,7 +103,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-25T12:49:19.817Z",
+    "refreshed_at": "2026-09-26T12:17:04.836Z",
     "stale_since": null
   }
 }

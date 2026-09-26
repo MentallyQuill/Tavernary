@@ -9,21 +9,21 @@
     "url": "https://github.com/MentallyQuill/Recursion",
     "description": "A Recursive Multi-Step Thinking Extension for SillyTavern, Using Context-Aware Bounded Guidance",
     "default_branch": "main",
-    "head_sha": "bf6baab098c4f99ea0a4587c7fd1bf276dc3e7e0",
-    "head_committed_at": "2026-09-25T05:07:54.000Z",
+    "head_sha": "435371ee1a32d257fc9a2991a4af2c0ca4a9cd5e",
+    "head_committed_at": "2026-09-26T00:38:44.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-30T15:24:31.000Z",
-    "size_kb": 21230
+    "size_kb": 21688
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-25T05:07:54.000Z",
+    "latest_source_activity_at": "2026-09-26T00:38:44.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-21",
-        "latest_at": "2026-09-25T05:07:54.000Z",
+        "latest_at": "2026-09-26T00:38:44.000Z",
         "precision": "exact"
       },
       {
@@ -62,20 +62,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-21T14:17:43.786Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "bf6baab098c4f99ea0a4587c7fd1bf276dc3e7e0"
+    "evidence_head_sha": "435371ee1a32d257fc9a2991a4af2c0ca4a9cd5e"
   },
   "community": {
-    "stars_count": 20,
+    "stars_count": 21,
     "forks_count": 0,
     "watchers_count": 2,
-    "aggregate": 22
+    "aggregate": 23
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-25T12:49:19.817Z",
+  "refreshed_at": "2026-09-26T12:17:04.836Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -85,7 +85,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-25T12:49:19.817Z",
+    "refreshed_at": "2026-09-26T12:17:04.836Z",
     "stale_since": null
   }
 }

@@ -45,13 +45,13 @@
     "evidence_head_sha": "ad200c88ccf09b47a347f43b57e527ce6c3723d7"
   },
   "community": {
-    "stars_count": 1,
+    "stars_count": 2,
     "forks_count": 1,
     "watchers_count": 0,
-    "aggregate": 2
+    "aggregate": 3
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-25T12:49:19.817Z",
+  "refreshed_at": "2026-09-26T12:17:04.836Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -61,7 +61,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-25T12:49:19.817Z",
+    "refreshed_at": "2026-09-26T12:17:04.836Z",
     "stale_since": null
   }
 }
