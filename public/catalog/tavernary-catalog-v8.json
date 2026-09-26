@@ -104921,10 +104921,10 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "77d3c41ba20b1fb7d43917def5561d3066e6923a",
         "report": {
-          "reportId": "208f90979e7c3bb8973692428500c607d4a87a5d432db940e8cc5d908d6daebb",
+          "reportId": "13ccf4de2f689af739b5fb8dccf618327d0b7c32095aa5be26dd5678c0da6fb6",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -104935,10 +104935,10 @@
           "citedFindingIds": [
             "70dbe4138c36cccf581d241de50e1f647c8874fb76c81f0b00f3489683591c49"
           ],
-          "scannedSha": "6d15e3abfb3c0050c6c009051bdf471de03f3585",
-          "treeUrl": "https://github.com/starlitcode/Lumiverse-Auto-Refine/tree/6d15e3abfb3c0050c6c009051bdf471de03f3585",
-          "scannedAt": "2026-09-19T21:09:30.305Z",
-          "assessedAt": "2026-09-19T21:11:40.763Z",
+          "scannedSha": "77d3c41ba20b1fb7d43917def5561d3066e6923a",
+          "treeUrl": "https://github.com/starlitcode/Lumiverse-Auto-Refine/tree/77d3c41ba20b1fb7d43917def5561d3066e6923a",
+          "scannedAt": "2026-09-26T21:12:30.653Z",
+          "assessedAt": "2026-09-26T21:14:42.491Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
@@ -104946,7 +104946,7 @@
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
           "javascriptAnalysisStatus": "incomplete",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1354250444/6d15e3abfb3c0050c6c009051bdf471de03f3585/5/208f90979e7c3bb8973692428500c607d4a87a5d432db940e8cc5d908d6daebb/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1354250444/77d3c41ba20b1fb7d43917def5561d3066e6923a/5/13ccf4de2f689af739b5fb8dccf618327d0b7c32095aa5be26dd5678c0da6fb6/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1354250444/history/"
         },
         "history": [
@@ -105027,6 +105027,32 @@
             "assessmentSource": "deterministic_regrade",
             "javascriptAnalysisStatus": "incomplete",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1354250444/6d15e3abfb3c0050c6c009051bdf471de03f3585/5/208f90979e7c3bb8973692428500c607d4a87a5d432db940e8cc5d908d6daebb/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1354250444/history/"
+          },
+          {
+            "reportId": "13ccf4de2f689af739b5fb8dccf618327d0b7c32095aa5be26dd5678c0da6fb6",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 1,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "70dbe4138c36cccf581d241de50e1f647c8874fb76c81f0b00f3489683591c49"
+            ],
+            "scannedSha": "77d3c41ba20b1fb7d43917def5561d3066e6923a",
+            "treeUrl": "https://github.com/starlitcode/Lumiverse-Auto-Refine/tree/77d3c41ba20b1fb7d43917def5561d3066e6923a",
+            "scannedAt": "2026-09-26T21:12:30.653Z",
+            "assessedAt": "2026-09-26T21:14:42.491Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "incomplete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1354250444/77d3c41ba20b1fb7d43917def5561d3066e6923a/5/13ccf4de2f689af739b5fb8dccf618327d0b7c32095aa5be26dd5678c0da6fb6/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1354250444/history/"
           }
         ],
