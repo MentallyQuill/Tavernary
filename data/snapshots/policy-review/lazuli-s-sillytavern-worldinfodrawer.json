@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "lazuli-s-sillytavern-worldinfodrawer",
+  "source_id": "github-1114224048",
+  "source_identity": "github:lazuli-s/sillytavern-worldinfodrawer",
+  "evidence_fingerprint": "66741dc6c1762006e29306ebf8dce9c22cb4e153049645cb53a1fc9935de5c1d",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-26T12:30:38.303Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-26T12:30:38.303Z"
+  },
+  "maintenance_issue_number": null
+}
