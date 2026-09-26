@@ -3,14 +3,14 @@
   "project_id": "sillytavern-sillytavern",
   "source_id": "github-599524116",
   "source_identity": "github:sillytavern/sillytavern",
-  "evidence_fingerprint": "196dce7db433f52dbc4f025e4092001d74f198f422c2caf61eb66da83638b3d7",
+  "evidence_fingerprint": "7742d51bbb37f21b4bc1a578126cda8146b8d141133bc75c0d701232154431a5",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-23T08:04:52.397Z",
+  "reviewed_at": "2026-09-26T12:39:10.020Z",
   "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-08-23T08:04:52.397Z"
+    "attempts": 4,
+    "last_failure_at": "2026-09-26T12:39:10.020Z"
   },
   "maintenance_issue_number": null
 }
