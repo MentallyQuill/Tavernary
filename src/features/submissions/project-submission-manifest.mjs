@@ -142,10 +142,7 @@ function normalizeOtherFrontends(values) {
 function canonicalizeProjectSourceUrl(sourceUrl) {
   try {
     const url = new URL(sourceUrl);
-    const parts = url.pathname
-      .replace(/\/+$/u, "")
-      .split("/")
-      .filter(Boolean);
+    const parts = url.pathname.replace(/\/+$/u, "").split("/").filter(Boolean);
     const hostname = url.hostname.toLowerCase();
     if (
       url.protocol !== "https:" ||
