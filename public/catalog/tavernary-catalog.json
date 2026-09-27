@@ -68538,6 +68538,128 @@
       }
     },
     {
+      "id": "mokimoko-github-io-pages-presets-chrysanthemum-html",
+      "name": "chrysanthemum.html",
+      "kind": "preset",
+      "metadataStatus": "provisional",
+      "sourceStatus": "manual",
+      "primaryFunction": "preset",
+      "summary": "No README file found.",
+      "canonicalUrl": "https://mokimoko.github.io/pages/presets/chrysanthemum.html",
+      "catalogedAt": "2026-09-27T14:06:07.501Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        },
+        {
+          "id": "tauritavern",
+          "label": "TauriTavern",
+          "description": "Works with the TauriTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "unsupported",
+        "riskLevel": null,
+        "freshness": "unsupported",
+        "currentSha": null,
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "activity": {
+        "latestSourceActivityAt": null,
+        "activeWeeks12": null,
+        "weeklyActivity": null,
+        "evidenceStatus": null,
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": null,
+      "repositorySizeKb": null,
+      "license": {
+        "status": "pending",
+        "label": "Pending",
+        "tooltip": "License review is pending for this source."
+      },
+      "attribution": null,
+      "preset": {
+        "version": null,
+        "publishedAt": null,
+        "artifactSizeBytes": null,
+        "modelFamilies": [
+          {
+            "id": "glm",
+            "label": "GLM",
+            "description": "Designed for GLM-family models."
+          },
+          {
+            "id": "kimi",
+            "label": "Kimi",
+            "description": "Designed for Kimi models."
+          },
+          {
+            "id": "mimo",
+            "label": "MiMo",
+            "description": "Designed for Xiaomi MiMo models."
+          }
+        ],
+        "completionFormats": [
+          {
+            "id": "chat-completion",
+            "label": "Chat Completion",
+            "description": "Uses role-based chat messages."
+          }
+        ]
+      },
+      "refreshedAt": null,
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "chrysanthemum.html"
+        ],
+        "aliases": [],
+        "source": [
+          "mokimoko-github-io-pages-presets-chrysanthemum-html",
+          "url-mokimoko-github-io-pages-presets-chrysanthemum-html",
+          "mokimoko.github.io/pages/presets/chrysanthemum.html",
+          "https://mokimoko.github.io/pages/presets/chrysanthemum.html"
+        ],
+        "summary": [
+          "No README file found."
+        ],
+        "kind": [
+          "preset"
+        ],
+        "primaryFunction": [
+          "System Preset"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern",
+          "TauriTavern"
+        ],
+        "compatibility": [
+          "GLM",
+          "ChatGLM",
+          "Zhipu",
+          "Kimi",
+          "Moonshot",
+          "Moonshot AI",
+          "MiMo",
+          "Xiaomi MiMo",
+          "Chat Completion"
+        ],
+        "maintainers": [],
+        "relationships": []
+      }
+    },
+    {
       "id": "mokimoko-github-io-pages-presets-white-lotus-html",
       "name": "White Lotus",
       "kind": "preset",
@@ -69155,6 +69277,192 @@
         ],
         "frontends": [
           "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "mokimoko"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "mokimoko-sillytavern-landingpageredux",
+      "name": "SillyTavern-LandingPageRedux",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "SillyTavern extension replacing the default landing page with an immersive character picker (README): filter by tag, assign tag wallpapers, swap personas from the sidebar, and pick sprites or avatar cards.",
+      "canonicalUrl": "https://github.com/mokimoko/SillyTavern-LandingPageRedux",
+      "catalogedAt": "2026-09-27T14:08:02.527Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        },
+        {
+          "id": "tauritavern",
+          "label": "TauriTavern",
+          "description": "Works with the TauriTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "customize-the-interface",
+          "label": "Customize the interface",
+          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-characters-and-personas",
+          "label": "Manage characters and personas",
+          "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "1d25f905036ecc3db280eabfca25e85881cef0bc",
+        "report": {
+          "reportId": "01e6a0f71dc5f39a47b6f38544353f5246d18b3a977cf3688907a193bd19918d",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "1d25f905036ecc3db280eabfca25e85881cef0bc",
+          "treeUrl": "https://github.com/mokimoko/SillyTavern-LandingPageRedux/tree/1d25f905036ecc3db280eabfca25e85881cef0bc",
+          "scannedAt": "2026-09-27T14:31:12.977Z",
+          "assessedAt": "2026-09-27T14:33:44.958Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1252414946/1d25f905036ecc3db280eabfca25e85881cef0bc/5/01e6a0f71dc5f39a47b6f38544353f5246d18b3a977cf3688907a193bd19918d/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1252414946/history/"
+        },
+        "history": [
+          {
+            "reportId": "01e6a0f71dc5f39a47b6f38544353f5246d18b3a977cf3688907a193bd19918d",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "1d25f905036ecc3db280eabfca25e85881cef0bc",
+            "treeUrl": "https://github.com/mokimoko/SillyTavern-LandingPageRedux/tree/1d25f905036ecc3db280eabfca25e85881cef0bc",
+            "scannedAt": "2026-09-27T14:31:12.977Z",
+            "assessedAt": "2026-09-27T14:33:44.958Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1252414946/1d25f905036ecc3db280eabfca25e85881cef0bc/5/01e6a0f71dc5f39a47b6f38544353f5246d18b3a977cf3688907a193bd19918d/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1252414946/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1252414946/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "mokimoko"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-26T17:36:04.000Z",
+        "activeWeeks12": 3,
+        "weeklyActivity": [
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 2,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 2
+      },
+      "repositorySizeKb": 98,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-27T14:08:02.527Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/mokimoko/SillyTavern-LandingPageRedux.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-LandingPageRedux"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-LandingPageRedux"
+        ],
+        "aliases": [],
+        "source": [
+          "mokimoko-sillytavern-landingpageredux",
+          "github-1252414946",
+          "mokimoko/SillyTavern-LandingPageRedux",
+          "https://github.com/mokimoko/SillyTavern-LandingPageRedux"
+        ],
+        "summary": [
+          "SillyTavern extension replacing the default landing page with an immersive character picker (README): filter by tag, assign tag wallpapers, swap personas from the sidebar, and pick sprites or avatar cards."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Customize the interface",
+          "interface theming",
+          "layout customization",
+          "UI personalization",
+          "Manage characters and personas",
+          "persona management",
+          "character management",
+          "identity management"
+        ],
+        "frontends": [
+          "SillyTavern",
+          "TauriTavern"
         ],
         "compatibility": [],
         "maintainers": [
