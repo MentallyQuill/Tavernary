@@ -6,7 +6,7 @@ export interface InstallContract {
   kind: "sillytavern-extension-git";
   repositoryUrl: string;
   branch: string | null;
-  manifestPath: "manifest.json";
+  manifestPath: "manifest.json" | null;
   folderName: string;
 }
 

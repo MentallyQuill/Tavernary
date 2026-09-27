@@ -745,11 +745,7 @@ export function deriveInstallContract({ record, source, snapshot, evidence }) {
     !snapshot ||
     snapshot.source_health !== "healthy" ||
     snapshot.stale_since !== null ||
-    snapshot.repository?.archived === true ||
-    evidence?.status !== "verified" ||
-    evidence.head_sha !== snapshot.repository?.head_sha ||
-    evidence.manifest_path !== "manifest.json" ||
-    evidence.folder_name !== snapshot.repository?.name
+    snapshot.repository?.archived === true
   ) {
     return null;
   }
@@ -763,8 +759,12 @@ export function deriveInstallContract({ record, source, snapshot, evidence }) {
       kind: "sillytavern-extension-git",
       repositoryUrl: repositoryUrl.href,
       branch: null,
-      manifestPath: "manifest.json",
-      folderName: evidence.folder_name,
+      manifestPath:
+        evidence?.status === "verified" &&
+        evidence.manifest_path === "manifest.json"
+          ? "manifest.json"
+          : null,
+      folderName: snapshot.repository.name,
     });
   } catch {
     return null;
