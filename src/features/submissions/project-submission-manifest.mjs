@@ -139,9 +139,49 @@ function normalizeOtherFrontends(values) {
   });
 }
 
-function repositoryProviderFromUrl(sourceUrl) {
+function canonicalizeProjectSourceUrl(sourceUrl) {
   try {
     const url = new URL(sourceUrl);
+    const parts = url.pathname
+      .replace(/\/+$/u, "")
+      .split("/")
+      .filter(Boolean);
+    const hostname = url.hostname.toLowerCase();
+    if (
+      url.protocol !== "https:" ||
+      url.username ||
+      url.password ||
+      url.port ||
+      !["github.com", "raw.githubusercontent.com"].includes(hostname)
+    ) {
+      return sourceUrl;
+    }
+
+    const owner = parts[0];
+    const repository = parts[1]?.replace(/\.git$/iu, "");
+    if (!owner || !repository) return sourceUrl;
+
+    if (hostname === "raw.githubusercontent.com" && parts.length >= 3) {
+      return `https://github.com/${owner}/${repository}`;
+    }
+
+    if (
+      hostname === "github.com" &&
+      parts.length >= 4 &&
+      ["blob", "tree", "raw"].includes(parts[2].toLowerCase())
+    ) {
+      return `https://github.com/${owner}/${repository}`;
+    }
+
+    return sourceUrl;
+  } catch {
+    return sourceUrl;
+  }
+}
+
+function repositoryProviderFromUrl(sourceUrl) {
+  try {
+    const url = new URL(canonicalizeProjectSourceUrl(sourceUrl));
     const parts = url.pathname
       .replace(/\/+$/u, "")
       .replace(/\.git$/iu, "")
@@ -194,8 +234,9 @@ export function normalizeProjectSubmissionManifest(value, options = {}) {
     typeof value?.primary_function === "string"
       ? value.primary_function.trim()
       : "";
-  const sourceUrl =
+  const submittedSourceUrl =
     typeof value?.source_url === "string" ? value.source_url.trim() : "";
+  const sourceUrl = canonicalizeProjectSourceUrl(submittedSourceUrl);
   const knownIds = uniqueStrings(value?.frontends?.known_ids);
   const other = normalizeOtherFrontends(value?.frontends?.other);
   const frontendIndependent = value?.frontend_independent === true;
