@@ -8,6 +8,25 @@ export function deriveExtensionInstallEvidence(input) {
     observed_at: input.observedAt,
   };
 
+  if (input.manifestPath !== "manifest.json") {
+    return { ...base, status: "unavailable", reason: "manifest-not-at-root" };
+  }
+
+  const manifest = input.manifest;
+  const hasEntry =
+    (typeof manifest?.js === "string" && manifest.js.trim().length > 0) ||
+    (typeof manifest?.css === "string" && manifest.css.trim().length > 0);
+  if (
+    !manifest ||
+    typeof manifest.display_name !== "string" ||
+    manifest.display_name.trim().length === 0 ||
+    (manifest.loading_order !== undefined &&
+      !Number.isFinite(manifest.loading_order)) ||
+    !hasEntry
+  ) {
+    return { ...base, status: "unavailable", reason: "invalid-manifest" };
+  }
+
   const folderName = repositoryFolderName(input.repository.repositoryUrl);
   if (!folderName) {
     return { ...base, status: "unavailable", reason: "invalid-repository" };
@@ -16,10 +35,16 @@ export function deriveExtensionInstallEvidence(input) {
   return {
     ...base,
     status: "verified",
-    manifest_path:
-      input.manifestPath === "manifest.json" ? "manifest.json" : null,
+    manifest_path: "manifest.json",
     folder_name: folderName,
-    manifest: optionalManifestMetadata(input.manifest),
+    manifest: {
+      display_name: manifest.display_name,
+      key: typeof manifest.key === "string" ? manifest.key : null,
+      minimum_client_version:
+        typeof manifest.minimum_client_version === "string"
+          ? manifest.minimum_client_version
+          : null,
+    },
   };
 }
 
@@ -96,21 +121,28 @@ export async function refreshExtensionInstallEvidence(input) {
         ref: snapshot.repository.head_sha,
         path: "manifest.json",
       });
-      let manifest = null;
-      if (file) {
+      if (!file) {
+        next = unavailableEvidence({
+          sourceId,
+          headSha: snapshot.repository.head_sha,
+          observedAt: input.observedAt,
+          reason: "manifest-not-found",
+        });
+      } else {
+        let manifest = null;
         try {
           manifest = JSON.parse(file.content);
         } catch {
-          // A manifest is optional metadata; malformed JSON does not block cloning.
+          // The pure derivation records malformed JSON as an invalid manifest.
         }
+        next = deriveExtensionInstallEvidence({
+          sourceId,
+          repository,
+          manifestPath: file.path,
+          manifest,
+          observedAt: input.observedAt,
+        });
       }
-      next = deriveExtensionInstallEvidence({
-        sourceId,
-        repository,
-        manifestPath: file?.path ?? null,
-        manifest,
-        observedAt: input.observedAt,
-      });
     } catch {
       next = unavailableEvidence({
         sourceId,
@@ -131,24 +163,6 @@ export async function refreshExtensionInstallEvidence(input) {
       left.source_id.localeCompare(right.source_id),
     ),
     changedEvidence,
-  };
-}
-
-function optionalManifestMetadata(manifest) {
-  if (!manifest || typeof manifest !== "object" || Array.isArray(manifest)) {
-    return null;
-  }
-  return {
-    display_name:
-      typeof manifest.display_name === "string" &&
-      manifest.display_name.trim().length > 0
-        ? manifest.display_name
-        : null,
-    key: typeof manifest.key === "string" ? manifest.key : null,
-    minimum_client_version:
-      typeof manifest.minimum_client_version === "string"
-        ? manifest.minimum_client_version
-        : null,
   };
 }
 

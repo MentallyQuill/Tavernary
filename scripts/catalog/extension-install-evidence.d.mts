@@ -6,7 +6,7 @@ export interface ExtensionInstallEvidenceInput {
     defaultBranch: string;
     headSha: string;
   };
-  manifestPath: string | null;
+  manifestPath: string;
   manifest: Record<string, unknown> | null;
   observedAt: string;
 }
@@ -20,10 +20,10 @@ export interface ExtensionInstallEvidenceBase {
 
 export interface VerifiedExtensionInstallEvidence extends ExtensionInstallEvidenceBase {
   status: "verified";
-  manifest_path: "manifest.json" | null;
+  manifest_path: "manifest.json";
   folder_name: string;
   manifest: {
-    display_name: string | null;
+    display_name: string;
     key: string | null;
     minimum_client_version: string | null;
   };

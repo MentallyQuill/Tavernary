@@ -745,7 +745,17 @@ export function deriveInstallContract({ record, source, snapshot, evidence }) {
     !snapshot ||
     snapshot.source_health !== "healthy" ||
     snapshot.stale_since !== null ||
-    snapshot.repository?.archived === true
+    snapshot.repository?.archived === true ||
+    !evidence ||
+    evidence.head_sha !== snapshot.repository?.head_sha ||
+    (evidence.status !== "verified" &&
+      !(
+        evidence.status === "unavailable" &&
+        evidence.reason === "manifest-not-found"
+      )) ||
+    (evidence.status === "verified" &&
+      (evidence.folder_name !== snapshot.repository?.name ||
+        evidence.manifest_path !== "manifest.json"))
   ) {
     return null;
   }
