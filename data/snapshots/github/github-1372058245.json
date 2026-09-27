@@ -46,15 +46,15 @@
     "aggregate": 2
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-27T00:34:05.605Z",
+  "refreshed_at": "2026-09-27T13:07:04.032Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "Pyrxpia", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-27T00:34:05.605Z",
+    "refreshed_at": "2026-09-27T13:07:04.032Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

@@ -9,18 +9,23 @@
     "url": "https://github.com/mokimoko/SillyTavern-SimpleSummarizer",
     "description": "a chat summary extension for SillyTavern",
     "default_branch": "main",
-    "head_sha": "9056179b8bc82a4839bea894018f1fcfa7c5e827",
-    "head_committed_at": "2026-09-01T17:13:44.000Z",
+    "head_sha": "7eb04746767a488b75bc8eee93e5dda8703e654b",
+    "head_committed_at": "2026-09-26T17:35:35.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-20T00:39:28.000Z",
-    "size_kb": 251
+    "size_kb": 143
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-01T17:13:44.000Z",
+    "latest_source_activity_at": "2026-09-26T17:35:35.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-26T17:35:35.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-31",
         "latest_at": "2026-09-01T17:13:44.000Z",
@@ -40,24 +45,14 @@
         "week_start": "2026-07-06",
         "latest_at": "2026-07-08T05:00:41.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-29",
-        "latest_at": "2026-07-03T18:59:23.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-22",
-        "latest_at": "2026-06-22T02:25:13.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-02T12:09:05.030Z",
+    "baseline_completed_at": "2026-09-27T13:07:04.032Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "9056179b8bc82a4839bea894018f1fcfa7c5e827"
+    "evidence_head_sha": "7eb04746767a488b75bc8eee93e5dda8703e654b"
   },
   "community": {
     "stars_count": 1,
@@ -67,21 +62,18 @@
   },
   "license": {
     "status": "osi-approved",
-    "spdx_id": "AGPL-3.0",
+    "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-26T12:17:04.836Z",
+  "refreshed_at": "2026-09-27T13:07:04.032Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [
-      { "login": "mokimoko", "type": "User", "provider": "github" },
-      { "login": "nrahis", "type": "User", "provider": "github" }
-    ],
+    "accounts": [{ "login": "mokimoko", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-26T12:17:04.836Z",
+    "refreshed_at": "2026-09-27T13:07:04.032Z",
     "stale_since": null
   }
 }
