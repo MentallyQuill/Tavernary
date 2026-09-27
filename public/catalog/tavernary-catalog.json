@@ -83028,6 +83028,205 @@
       }
     },
     {
+      "id": "pyrxpia-sola-hub",
+      "name": "sola-hub",
+      "kind": "preset",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "preset",
+      "summary": "Sola, your excitable and eager Co-Author. She is ready to help you bring life into your story and make your adventures addictive and alive.",
+      "canonicalUrl": "https://github.com/Pyrxpia/sola-hub",
+      "catalogedAt": "2026-09-27T00:34:05.605Z",
+      "catalogCohort": "standard",
+      "frontends": [],
+      "tags": [
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
+          "facet": "goal"
+        },
+        {
+          "id": "improve-writing-and-prose",
+          "label": "Improve writing and prose",
+          "description": "Strengthen prose, dialogue, style, pacing, subtext, or general writing quality.",
+          "facet": "goal"
+        },
+        {
+          "id": "plan-stories-and-scenes",
+          "label": "Plan stories and scenes",
+          "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "17eb17221816750a2b58e5ae5ffb0bf045afd1be",
+        "report": {
+          "reportId": "371cfa308b041bda17443606f5543c47a8ee861a209f48ff142d2793c3befa30",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "17eb17221816750a2b58e5ae5ffb0bf045afd1be",
+          "treeUrl": "https://github.com/Pyrxpia/sola-hub/tree/17eb17221816750a2b58e5ae5ffb0bf045afd1be",
+          "scannedAt": "2026-09-27T00:53:44.999Z",
+          "assessedAt": "2026-09-27T00:56:08.991Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/17eb17221816750a2b58e5ae5ffb0bf045afd1be/5/371cfa308b041bda17443606f5543c47a8ee861a209f48ff142d2793c3befa30/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/history/"
+        },
+        "history": [
+          {
+            "reportId": "371cfa308b041bda17443606f5543c47a8ee861a209f48ff142d2793c3befa30",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "17eb17221816750a2b58e5ae5ffb0bf045afd1be",
+            "treeUrl": "https://github.com/Pyrxpia/sola-hub/tree/17eb17221816750a2b58e5ae5ffb0bf045afd1be",
+            "scannedAt": "2026-09-27T00:53:44.999Z",
+            "assessedAt": "2026-09-27T00:56:08.991Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/17eb17221816750a2b58e5ae5ffb0bf045afd1be/5/371cfa308b041bda17443606f5543c47a8ee861a209f48ff142d2793c3befa30/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1372058245/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Pyrxpia"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-26T19:50:53.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 2,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 2
+      },
+      "repositorySizeKb": 14736,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": {
+        "version": null,
+        "publishedAt": null,
+        "artifactSizeBytes": null,
+        "modelFamilies": [
+          {
+            "id": "model-agnostic",
+            "label": "Model-Agnostic",
+            "description": "Designed to work across model families."
+          }
+        ],
+        "completionFormats": [
+          {
+            "id": "chat-completion",
+            "label": "Chat Completion",
+            "description": "Uses role-based chat messages."
+          }
+        ]
+      },
+      "refreshedAt": "2026-09-27T00:34:05.605Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "sola-hub"
+        ],
+        "aliases": [],
+        "source": [
+          "pyrxpia-sola-hub",
+          "github-1372058245",
+          "Pyrxpia/sola-hub",
+          "https://github.com/Pyrxpia/sola-hub"
+        ],
+        "summary": [
+          "Sola, your excitable and eager Co-Author. She is ready to help you bring life into your story and make your adventures addictive and alive."
+        ],
+        "kind": [
+          "preset"
+        ],
+        "primaryFunction": [
+          "System Preset"
+        ],
+        "tags": [
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control",
+          "Improve writing and prose",
+          "writing assistance",
+          "prose improvement",
+          "co-writing",
+          "Plan stories and scenes",
+          "story planning",
+          "plot direction",
+          "scene planning"
+        ],
+        "frontends": [],
+        "compatibility": [
+          "Model-Agnostic",
+          "universal",
+          "any model",
+          "Chat Completion"
+        ],
+        "maintainers": [
+          "Pyrxpia"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "q-atastrophe-lore-atlas",
       "name": "Lore Atlas",
       "kind": "extension",
