@@ -1,0 +1,60 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1372058245",
+  "repository": {
+    "id": 1372058245,
+    "owner": "Pyrxpia",
+    "name": "sola-hub",
+    "url": "https://github.com/Pyrxpia/sola-hub",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "17eb17221816750a2b58e5ae5ffb0bf045afd1be",
+    "head_committed_at": "2026-09-26T19:50:53.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-09-15T20:09:53.000Z",
+    "size_kb": 14736
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-09-26T19:50:53.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-26T19:50:53.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-20T22:18:57.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-09-27T00:34:05.605Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "17eb17221816750a2b58e5ae5ffb0bf045afd1be"
+  },
+  "community": {
+    "stars_count": 2,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 2
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-09-27T00:34:05.605Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "Pyrxpia", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-09-27T00:34:05.605Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
