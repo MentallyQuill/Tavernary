@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mokimoko-sillytavern-landingpageredux",
+  "source_id": "github-1252414946",
+  "source_identity": "github:mokimoko/sillytavern-landingpageredux",
+  "evidence_fingerprint": "3d6f5744e8962e0e689ec67e80c46289514405189885a382048702a89bffe669",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-27T14:24:01.217Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-27T14:24:01.217Z"
+  },
+  "maintenance_issue_number": null
+}
