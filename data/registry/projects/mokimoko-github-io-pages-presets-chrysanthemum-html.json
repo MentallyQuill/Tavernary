@@ -1,0 +1,28 @@
+{
+  "schema_version": 6,
+  "id": "mokimoko-github-io-pages-presets-chrysanthemum-html",
+  "name": "chrysanthemum.html",
+  "kind": "preset",
+  "summary": "No README file found.",
+  "metadata_status": "provisional",
+  "source_id": "url-mokimoko-github-io-pages-presets-chrysanthemum-html",
+  "frontends": ["sillytavern", "tauritavern"],
+  "primary_function": "preset",
+  "tags": [],
+  "model_families": ["glm", "kimi", "mimo"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-09-27T14:06:07.501Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "External URL source; requires manual curation."
+    },
+    "tags": {
+      "mode": "manual",
+      "note": "External URL source; requires manual curation."
+    }
+  }
+}
