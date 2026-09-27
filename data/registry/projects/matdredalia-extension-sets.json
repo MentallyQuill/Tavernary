@@ -1,0 +1,23 @@
+{
+  "schema_version": 6,
+  "id": "matdredalia-extension-sets",
+  "name": "Extension-Sets",
+  "kind": "extension",
+  "summary": "Save sets of extensions to quick-swap -- made for swapping sets between different devices. It auto-swaps sets between devices once you've set them -- . Manually change sets as you like",
+  "metadata_status": "curated",
+  "source_id": "github-1389930261",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["local-first"],
+  "cataloged_at": "2026-09-27T08:17:19.536Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "automatic" }
+  }
+}

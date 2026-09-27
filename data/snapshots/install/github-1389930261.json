@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1389930261",
+  "head_sha": "eda2f41717fc7b9391027d88076d10270ce2a1e5",
+  "observed_at": "2026-09-27T08:17:28.542Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Extension-Sets",
+  "manifest": {
+    "display_name": "Extension Sets",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
