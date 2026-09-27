@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "matdredalia-dossier",
+  "name": "Dossier",
+  "kind": "extension",
+  "summary": "Create \"Dossiers\" for your characters, worlds, etc. Workspace in SillyTavern for the worldbuilding material that usually ends up scattered across Google Notes, random folders, and voice memos on your phone.",
+  "metadata_status": "curated",
+  "source_id": "github-1384211037",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": [
+    "build-worlds-and-lore",
+    "local-first",
+    "manage-characters-and-personas"
+  ],
+  "cataloged_at": "2026-09-27T07:26:50.058Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "automatic" }
+  }
+}
