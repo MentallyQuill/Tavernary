@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1252414946",
+  "head_sha": "1d25f905036ecc3db280eabfca25e85881cef0bc",
+  "observed_at": "2026-09-27T14:08:09.431Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-LandingPageRedux",
+  "manifest": {
+    "display_name": "Landing Page Redux",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
