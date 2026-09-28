@@ -9,21 +9,26 @@
     "url": "https://github.com/NemoVonNirgend/NemoPresetExt",
     "description": "A Sillytavern extension for creating drop downs for ChatCompletion presets.",
     "default_branch": "main",
-    "head_sha": "47a9aeafc315001cd5b06d554923f34bdca5ac76",
-    "head_committed_at": "2026-09-26T18:36:34.000Z",
+    "head_sha": "08fc623ca767d62df51faeedcc255c6d1ddf9e65",
+    "head_committed_at": "2026-09-28T06:30:47.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-05-15T07:28:20.000Z",
-    "size_kb": 18331
+    "size_kb": 18432
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-26T18:36:34.000Z",
+    "latest_source_activity_at": "2026-09-28T06:30:47.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-09-28T06:30:47.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-09-21",
-        "latest_at": "2026-09-26T18:36:34.000Z",
+        "latest_at": "2026-09-27T23:49:37.000Z",
         "precision": "exact"
       },
       {
@@ -55,9 +60,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-27T13:07:04.032Z",
+    "baseline_completed_at": "2026-09-28T15:35:58.871Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "47a9aeafc315001cd5b06d554923f34bdca5ac76"
+    "evidence_head_sha": "08fc623ca767d62df51faeedcc255c6d1ddf9e65"
   },
   "community": {
     "stars_count": 93,
@@ -66,7 +71,7 @@
     "aggregate": 110
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-27T13:07:04.032Z",
+  "refreshed_at": "2026-09-28T15:35:58.871Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -79,7 +84,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-27T13:07:04.032Z",
+    "refreshed_at": "2026-09-28T15:35:58.871Z",
     "stale_since": null
   }
 }

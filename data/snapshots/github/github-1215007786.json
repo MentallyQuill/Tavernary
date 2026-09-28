@@ -9,18 +9,23 @@
     "url": "https://github.com/Sagesheep/NarrativeEngine-P",
     "description": "Self-hosted AI Dungeon Master - run extended TTRPG campaigns with smart memory, living NPCs, and any OpenAI-compatible LLM",
     "default_branch": "main",
-    "head_sha": "463cdd7853954fb904e8bddf863001ae61726796",
-    "head_committed_at": "2026-09-23T23:03:18.000Z",
+    "head_sha": "0d7354c7f5c5bef138b4fff03b0eca730269cd5e",
+    "head_committed_at": "2026-09-28T10:12:21.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-19T11:01:33.000Z",
-    "size_kb": 69002
+    "size_kb": 69237
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-23T20:48:49.000Z",
+    "latest_source_activity_at": "2026-09-28T10:12:21.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-09-28T10:12:21.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-21",
         "latest_at": "2026-09-23T20:48:49.000Z",
@@ -75,32 +80,27 @@
         "week_start": "2026-07-13",
         "latest_at": "2026-07-19T23:51:27.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-06",
-        "latest_at": "2026-07-12T23:29:48.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-07-28T01:51:49.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-24T12:46:01.891Z",
+    "baseline_completed_at": "2026-09-28T15:35:58.871Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "463cdd7853954fb904e8bddf863001ae61726796"
+    "evidence_head_sha": "0d7354c7f5c5bef138b4fff03b0eca730269cd5e"
   },
   "community": {
-    "stars_count": 99,
-    "forks_count": 27,
+    "stars_count": 100,
+    "forks_count": 29,
     "watchers_count": 4,
-    "aggregate": 130
+    "aggregate": 133
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-27T13:07:04.032Z",
+  "refreshed_at": "2026-09-28T15:35:58.871Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -113,7 +113,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-27T13:07:04.032Z",
+    "refreshed_at": "2026-09-28T15:35:58.871Z",
     "stale_since": null
   }
 }
