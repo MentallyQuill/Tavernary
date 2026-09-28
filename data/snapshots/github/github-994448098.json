@@ -29,16 +29,16 @@
   },
   "community": {
     "stars_count": 46,
-    "forks_count": 5,
+    "forks_count": 6,
     "watchers_count": 0,
-    "aggregate": 51
+    "aggregate": 52
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-26T12:17:04.836Z",
+  "refreshed_at": "2026-09-27T13:07:04.032Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -47,7 +47,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-26T12:17:04.836Z",
+    "refreshed_at": "2026-09-27T13:07:04.032Z",
     "stale_since": null
   }
 }

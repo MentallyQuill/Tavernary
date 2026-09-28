@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "matdredalia-extension-sets",
+  "source_id": "github-1389930261",
+  "source_identity": "github:matdredalia/extension-sets",
+  "evidence_fingerprint": "5385e3b602d7205fe2f5b8394396baec5560fbed3d370e10909f90ed1fd33a21",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-27T08:33:12.451Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-27T08:33:12.451Z"
+  },
+  "maintenance_issue_number": null
+}

@@ -9,18 +9,23 @@
     "url": "https://github.com/mokimoko/SillyTavern-UIBedazzler",
     "description": "redesigns some UI elements and adds some new ones",
     "default_branch": "main",
-    "head_sha": "3dd4d4b77b9a2744a87ea65f5994f5908bda0161",
-    "head_committed_at": "2026-09-14T13:27:38.000Z",
+    "head_sha": "886da3d9b673dd5b42d9f6a991b14d6d1154b62e",
+    "head_committed_at": "2026-09-26T17:38:44.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-18T00:40:11.000Z",
-    "size_kb": 3620
+    "size_kb": 3082
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-14T13:27:38.000Z",
+    "latest_source_activity_at": "2026-09-26T17:38:44.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-26T17:38:44.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-14",
         "latest_at": "2026-09-14T13:27:38.000Z",
@@ -45,9 +50,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-14T14:11:43.516Z",
+    "baseline_completed_at": "2026-09-27T13:07:04.032Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "3dd4d4b77b9a2744a87ea65f5994f5908bda0161"
+    "evidence_head_sha": "886da3d9b673dd5b42d9f6a991b14d6d1154b62e"
   },
   "community": {
     "stars_count": 8,
@@ -55,8 +60,12 @@
     "watchers_count": 0,
     "aggregate": 8
   },
-  "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-26T12:17:04.836Z",
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-09-27T13:07:04.032Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -64,7 +73,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-26T12:17:04.836Z",
+    "refreshed_at": "2026-09-27T13:07:04.032Z",
     "stale_since": null
   }
 }

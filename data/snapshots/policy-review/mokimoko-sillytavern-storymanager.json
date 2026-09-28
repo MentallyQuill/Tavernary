@@ -3,14 +3,14 @@
   "project_id": "mokimoko-sillytavern-storymanager",
   "source_id": "github-1275428438",
   "source_identity": "github:mokimoko/sillytavern-storymanager",
-  "evidence_fingerprint": "1b1ff3da039d3fccdf9375dbc9472a09d1ff90d55a6703e7afa3912b3fb2928e",
+  "evidence_fingerprint": "fe7c2da40df2e50718420a64c0debe3e83a17e6a8eaa1da34006f91421a8de55",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-09-20T12:41:53.692Z",
+  "reviewed_at": "2026-09-27T13:21:58.608Z",
   "retry": {
-    "attempts": 5,
-    "last_failure_at": "2026-09-20T12:41:53.692Z"
+    "attempts": 6,
+    "last_failure_at": "2026-09-27T13:21:58.608Z"
   },
   "maintenance_issue_number": null
 }

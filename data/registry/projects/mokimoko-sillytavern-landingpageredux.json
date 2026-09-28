@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "mokimoko-sillytavern-landingpageredux",
+  "name": "SillyTavern-LandingPageRedux",
+  "kind": "extension",
+  "summary": "SillyTavern extension replacing the default landing page with an immersive character picker (README): filter by tag, assign tag wallpapers, swap personas from the sidebar, and pick sprites or avatar cards.",
+  "metadata_status": "curated",
+  "source_id": "github-1252414946",
+  "frontends": ["sillytavern", "tauritavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["customize-the-interface", "manage-characters-and-personas"],
+  "cataloged_at": "2026-09-27T14:08:02.527Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "matdredalia-dossier",
+  "source_id": "github-1384211037",
+  "source_identity": "github:matdredalia/dossier",
+  "evidence_fingerprint": "f1fa8bfc1c29aba0bd1c2094d13238a6f8858a8bb1051def379bcae98478704d",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-27T07:43:55.806Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-27T07:43:55.806Z"
+  },
+  "maintenance_issue_number": null
+}

@@ -3,14 +3,14 @@
   "project_id": "kritblade-vectfox",
   "source_id": "github-1226349225",
   "source_identity": "github:kritblade/vectfox",
-  "evidence_fingerprint": "55b59e26745ad6340584a83896b05fde671109343e2760a39e2855f6debdf62d",
+  "evidence_fingerprint": "aad5ca0be25f0777d0d399b6b94c09f94bcf9c97dda7304c6ad95492c589c99d",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-09-04T12:23:13.456Z",
+  "reviewed_at": "2026-09-27T13:20:29.499Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-09-04T12:23:13.456Z"
+    "attempts": 2,
+    "last_failure_at": "2026-09-27T13:20:29.499Z"
   },
   "maintenance_issue_number": null
 }
