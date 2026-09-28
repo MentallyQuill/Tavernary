@@ -396,7 +396,9 @@ const project = {
             kind: { const: "sillytavern-extension-git" },
             repositoryUrl: string,
             branch: nullableString,
-            manifestPath: { const: "manifest.json" },
+            manifestPath: {
+              anyOf: [{ const: "manifest.json" }, { type: "null" }],
+            },
             folderName: string,
           },
         },

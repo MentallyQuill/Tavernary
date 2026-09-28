@@ -42,7 +42,7 @@ export function parseInstallContract(value: unknown): InstallContract {
       "Install kind is unsupported.",
     );
   }
-  if (value.manifestPath !== "manifest.json") {
+  if (value.manifestPath !== "manifest.json" && value.manifestPath !== null) {
     throw new InstallContractValidationError(
       "manifestPath",
       "SillyTavern manifests must be at the repository root.",
@@ -56,7 +56,7 @@ export function parseInstallContract(value: unknown): InstallContract {
     kind: "sillytavern-extension-git",
     repositoryUrl,
     branch,
-    manifestPath: "manifest.json",
+    manifestPath: value.manifestPath,
     folderName,
   };
 }
