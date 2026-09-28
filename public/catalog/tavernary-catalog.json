@@ -61650,6 +61650,180 @@
       }
     },
     {
+      "id": "matdredalia-chat-to-epub",
+      "name": "Chat-to-ePub",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "Turn your SillyTavern chats into ePubs for eReader use, including adding a \"Cover image,\" \"Series name,\" \"Book #,\" etc. Can specify exact message number ranges, reads hidden chat, etc.",
+      "canonicalUrl": "https://github.com/Matdredalia/Chat-to-ePub",
+      "catalogedAt": "2026-09-28T14:36:49.507Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "move-and-back-up-data",
+          "label": "Move and back up data",
+          "description": "Import, export, synchronize, migrate, restore, or back up roleplay data.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "a112314ca179e0e382c83915b1004b39ee54ae89",
+        "report": {
+          "reportId": "2caaec97e97743ee9cb90ed3a93067fc61a95feb3106205148ec55b37f65f2d4",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 1,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "609c5d7537d5cea44c24d7cb266f3ae889a2d03ec2d2fb30f42eb3aab5dc3a65"
+          ],
+          "scannedSha": "a112314ca179e0e382c83915b1004b39ee54ae89",
+          "treeUrl": "https://github.com/Matdredalia/Chat-to-ePub/tree/a112314ca179e0e382c83915b1004b39ee54ae89",
+          "scannedAt": "2026-09-28T14:47:26.164Z",
+          "assessedAt": "2026-09-28T14:50:22.087Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1389927390/a112314ca179e0e382c83915b1004b39ee54ae89/5/2caaec97e97743ee9cb90ed3a93067fc61a95feb3106205148ec55b37f65f2d4/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1389927390/history/"
+        },
+        "history": [
+          {
+            "reportId": "2caaec97e97743ee9cb90ed3a93067fc61a95feb3106205148ec55b37f65f2d4",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 1,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "609c5d7537d5cea44c24d7cb266f3ae889a2d03ec2d2fb30f42eb3aab5dc3a65"
+            ],
+            "scannedSha": "a112314ca179e0e382c83915b1004b39ee54ae89",
+            "treeUrl": "https://github.com/Matdredalia/Chat-to-ePub/tree/a112314ca179e0e382c83915b1004b39ee54ae89",
+            "scannedAt": "2026-09-28T14:47:26.164Z",
+            "assessedAt": "2026-09-28T14:50:22.087Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1389927390/a112314ca179e0e382c83915b1004b39ee54ae89/5/2caaec97e97743ee9cb90ed3a93067fc61a95feb3106205148ec55b37f65f2d4/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1389927390/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1389927390/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Matdredalia"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-27T19:05:03.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 21,
+      "license": {
+        "status": "proprietary",
+        "label": "Proprietary",
+        "tooltip": "The published root license is not OSI-approved."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-28T14:36:49.507Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Matdredalia/Chat-to-ePub.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "Chat-to-ePub"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "Chat-to-ePub"
+        ],
+        "aliases": [],
+        "source": [
+          "matdredalia-chat-to-epub",
+          "github-1389927390",
+          "Matdredalia/Chat-to-ePub",
+          "https://github.com/Matdredalia/Chat-to-ePub"
+        ],
+        "summary": [
+          "Turn your SillyTavern chats into ePubs for eReader use, including adding a \"Cover image,\" \"Series name,\" \"Book #,\" etc. Can specify exact message number ranges, reads hidden chat, etc."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Move and back up data",
+          "data portability",
+          "backup and restore",
+          "import and export"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Matdredalia"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "matdredalia-dossier",
       "name": "Dossier",
       "kind": "extension",
