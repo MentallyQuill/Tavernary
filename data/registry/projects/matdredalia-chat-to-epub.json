@@ -1,0 +1,23 @@
+{
+  "schema_version": 6,
+  "id": "matdredalia-chat-to-epub",
+  "name": "Chat-to-ePub",
+  "kind": "extension",
+  "summary": "Turn your SillyTavern chats into ePubs for eReader use, including adding a \"Cover image,\" \"Series name,\" \"Book #,\" etc. Can specify exact message number ranges, reads hidden chat, etc.",
+  "metadata_status": "curated",
+  "source_id": "github-1389927390",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["move-and-back-up-data"],
+  "cataloged_at": "2026-09-28T14:36:49.507Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "automatic" }
+  }
+}

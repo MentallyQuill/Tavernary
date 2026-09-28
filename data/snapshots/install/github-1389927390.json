@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1389927390",
+  "head_sha": "a112314ca179e0e382c83915b1004b39ee54ae89",
+  "observed_at": "2026-09-28T14:37:04.503Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Chat-to-ePub",
+  "manifest": {
+    "display_name": "Chat to EPUB",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
