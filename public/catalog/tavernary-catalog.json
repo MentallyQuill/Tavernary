@@ -22735,7 +22735,13 @@
       "preset": null,
       "refreshedAt": "2026-09-27T13:07:04.032Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Coneja-Chibi/BunnyMo.git",
+        "branch": null,
+        "manifestPath": null,
+        "folderName": "BunnyMo"
+      },
       "fork": null,
       "search": {
         "title": [
@@ -23074,7 +23080,13 @@
       "preset": null,
       "refreshedAt": "2026-09-27T13:07:04.032Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Coneja-Chibi/Hoplight.git",
+        "branch": null,
+        "manifestPath": null,
+        "folderName": "Hoplight"
+      },
       "fork": null,
       "search": {
         "title": [
@@ -27223,7 +27235,13 @@
       "preset": null,
       "refreshedAt": "2026-09-27T13:07:04.032Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/deiomo/Writers-Workbench.git",
+        "branch": null,
+        "manifestPath": null,
+        "folderName": "Writers-Workbench"
+      },
       "fork": null,
       "search": {
         "title": [
@@ -33793,7 +33811,13 @@
       "preset": null,
       "refreshedAt": "2026-09-27T13:07:04.032Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/ephemera02/SillyLoreSmith2.git",
+        "branch": null,
+        "manifestPath": null,
+        "folderName": "SillyLoreSmith2"
+      },
       "fork": null,
       "search": {
         "title": [
@@ -58728,7 +58752,13 @@
       "preset": null,
       "refreshedAt": "2026-09-27T13:07:04.032Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/LordElMelonII/LoreStitch.git",
+        "branch": null,
+        "manifestPath": null,
+        "folderName": "LoreStitch"
+      },
       "fork": null,
       "search": {
         "title": [
@@ -61554,7 +61584,13 @@
       "preset": null,
       "refreshedAt": "2026-09-27T13:07:04.032Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Manjove1/forged-by-primus-portfolio.git",
+        "branch": null,
+        "manifestPath": null,
+        "folderName": "forged-by-primus-portfolio"
+      },
       "fork": null,
       "search": {
         "title": [
@@ -61751,7 +61787,13 @@
       "preset": null,
       "refreshedAt": "2026-09-27T13:07:04.032Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Matdredalia/Dossier.git",
+        "branch": null,
+        "manifestPath": null,
+        "folderName": "Dossier"
+      },
       "fork": null,
       "search": {
         "title": [
@@ -63014,7 +63056,13 @@
       "preset": null,
       "refreshedAt": "2026-09-27T13:07:04.032Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/maxime-fleury/ST-cardEditor.git",
+        "branch": null,
+        "manifestPath": null,
+        "folderName": "ST-cardEditor"
+      },
       "fork": null,
       "search": {
         "title": [
@@ -65405,7 +65453,13 @@
       "preset": null,
       "refreshedAt": "2026-09-27T13:07:04.032Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/mekineer-com/OpenAlma.git",
+        "branch": null,
+        "manifestPath": null,
+        "folderName": "OpenAlma"
+      },
       "fork": null,
       "search": {
         "title": [
@@ -74319,7 +74373,13 @@
       "preset": null,
       "refreshedAt": "2026-09-27T13:07:04.032Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/NemoVonNirgend/SIllytavern-Moodmusic-extension.git",
+        "branch": null,
+        "manifestPath": null,
+        "folderName": "SIllytavern-Moodmusic-extension"
+      },
       "fork": null,
       "search": {
         "title": [
@@ -88828,7 +88888,13 @@
       "preset": null,
       "refreshedAt": "2026-09-27T13:07:04.032Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/rustyorb/preset-forge.git",
+        "branch": null,
+        "manifestPath": null,
+        "folderName": "preset-forge"
+      },
       "fork": null,
       "search": {
         "title": [
@@ -93309,7 +93375,13 @@
       "preset": null,
       "refreshedAt": "2026-09-27T13:07:04.032Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/shadowtheimpure/SillyTavern-Character-Card-Generator.git",
+        "branch": null,
+        "manifestPath": null,
+        "folderName": "SillyTavern-Character-Card-Generator"
+      },
       "fork": null,
       "search": {
         "title": [
@@ -104247,7 +104319,13 @@
       "preset": null,
       "refreshedAt": "2026-09-27T13:07:04.032Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/SpicyMarinara/SillyTavern-Spotify-Music-Extension.git",
+        "branch": null,
+        "manifestPath": null,
+        "folderName": "SillyTavern-Spotify-Music-Extension"
+      },
       "fork": {
         "parentName": "SIllytavern-Moodmusic-extension",
         "parentProjectId": "nemovonnirgend-sillytavern-moodmusic-extension",
@@ -121871,7 +121949,13 @@
       "preset": null,
       "refreshedAt": "2026-09-27T13:07:04.032Z",
       "staleSince": null,
-      "install": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/zompiexx/ST-Hands-Free-Voice.git",
+        "branch": null,
+        "manifestPath": null,
+        "folderName": "ST-Hands-Free-Voice"
+      },
       "fork": null,
       "search": {
         "title": [
@@ -125593,7 +125677,13 @@
             "preset": null,
             "refreshedAt": "2026-09-27T13:07:04.032Z",
             "staleSince": null,
-            "install": null,
+            "install": {
+              "kind": "sillytavern-extension-git",
+              "repositoryUrl": "https://github.com/Coneja-Chibi/BunnyMo.git",
+              "branch": null,
+              "manifestPath": null,
+              "folderName": "BunnyMo"
+            },
             "fork": null,
             "search": {
               "title": [
@@ -133818,7 +133908,13 @@
             "preset": null,
             "refreshedAt": "2026-09-27T13:07:04.032Z",
             "staleSince": null,
-            "install": null,
+            "install": {
+              "kind": "sillytavern-extension-git",
+              "repositoryUrl": "https://github.com/Coneja-Chibi/BunnyMo.git",
+              "branch": null,
+              "manifestPath": null,
+              "folderName": "BunnyMo"
+            },
             "fork": null,
             "search": {
               "title": [
@@ -142811,7 +142907,13 @@
             "preset": null,
             "refreshedAt": "2026-09-27T13:07:04.032Z",
             "staleSince": null,
-            "install": null,
+            "install": {
+              "kind": "sillytavern-extension-git",
+              "repositoryUrl": "https://github.com/shadowtheimpure/SillyTavern-Character-Card-Generator.git",
+              "branch": null,
+              "manifestPath": null,
+              "folderName": "SillyTavern-Character-Card-Generator"
+            },
             "fork": null,
             "search": {
               "title": [
@@ -150405,7 +150507,13 @@
             "preset": null,
             "refreshedAt": "2026-09-27T13:07:04.032Z",
             "staleSince": null,
-            "install": null,
+            "install": {
+              "kind": "sillytavern-extension-git",
+              "repositoryUrl": "https://github.com/NemoVonNirgend/SIllytavern-Moodmusic-extension.git",
+              "branch": null,
+              "manifestPath": null,
+              "folderName": "SIllytavern-Moodmusic-extension"
+            },
             "fork": null,
             "search": {
               "title": [
@@ -153635,7 +153743,13 @@
             "preset": null,
             "refreshedAt": "2026-09-27T13:07:04.032Z",
             "staleSince": null,
-            "install": null,
+            "install": {
+              "kind": "sillytavern-extension-git",
+              "repositoryUrl": "https://github.com/Coneja-Chibi/BunnyMo.git",
+              "branch": null,
+              "manifestPath": null,
+              "folderName": "BunnyMo"
+            },
             "fork": null,
             "search": {
               "title": [
@@ -154486,7 +154600,13 @@
             "preset": null,
             "refreshedAt": "2026-09-27T13:07:04.032Z",
             "staleSince": null,
-            "install": null,
+            "install": {
+              "kind": "sillytavern-extension-git",
+              "repositoryUrl": "https://github.com/Coneja-Chibi/Hoplight.git",
+              "branch": null,
+              "manifestPath": null,
+              "folderName": "Hoplight"
+            },
             "fork": null,
             "search": {
               "title": [
@@ -167932,7 +168052,13 @@
             "preset": null,
             "refreshedAt": "2026-09-27T13:07:04.032Z",
             "staleSince": null,
-            "install": null,
+            "install": {
+              "kind": "sillytavern-extension-git",
+              "repositoryUrl": "https://github.com/Coneja-Chibi/Hoplight.git",
+              "branch": null,
+              "manifestPath": null,
+              "folderName": "Hoplight"
+            },
             "fork": null,
             "search": {
               "title": [
@@ -184542,7 +184668,13 @@
             "preset": null,
             "refreshedAt": "2026-09-27T13:07:04.032Z",
             "staleSince": null,
-            "install": null,
+            "install": {
+              "kind": "sillytavern-extension-git",
+              "repositoryUrl": "https://github.com/deiomo/Writers-Workbench.git",
+              "branch": null,
+              "manifestPath": null,
+              "folderName": "Writers-Workbench"
+            },
             "fork": null,
             "search": {
               "title": [
@@ -185495,7 +185627,13 @@
             "preset": null,
             "refreshedAt": "2026-09-27T13:07:04.032Z",
             "staleSince": null,
-            "install": null,
+            "install": {
+              "kind": "sillytavern-extension-git",
+              "repositoryUrl": "https://github.com/Coneja-Chibi/Hoplight.git",
+              "branch": null,
+              "manifestPath": null,
+              "folderName": "Hoplight"
+            },
             "fork": null,
             "search": {
               "title": [
@@ -191150,7 +191288,13 @@
             "preset": null,
             "refreshedAt": "2026-09-27T13:07:04.032Z",
             "staleSince": null,
-            "install": null,
+            "install": {
+              "kind": "sillytavern-extension-git",
+              "repositoryUrl": "https://github.com/maxime-fleury/ST-cardEditor.git",
+              "branch": null,
+              "manifestPath": null,
+              "folderName": "ST-cardEditor"
+            },
             "fork": null,
             "search": {
               "title": [
@@ -207460,7 +207604,13 @@
             "preset": null,
             "refreshedAt": "2026-09-27T13:07:04.032Z",
             "staleSince": null,
-            "install": null,
+            "install": {
+              "kind": "sillytavern-extension-git",
+              "repositoryUrl": "https://github.com/Manjove1/forged-by-primus-portfolio.git",
+              "branch": null,
+              "manifestPath": null,
+              "folderName": "forged-by-primus-portfolio"
+            },
             "fork": null,
             "search": {
               "title": [
