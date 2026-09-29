@@ -3,14 +3,14 @@
   "project_id": "zne4-sillytavern-chromaticdialogue",
   "source_id": "github-1316937800",
   "source_identity": "github:zne4/sillytavern-chromaticdialogue",
-  "evidence_fingerprint": "a342593464b36585067054ae8246b1c2e08c54e47d57ff8cf17236badd4eeaa4",
+  "evidence_fingerprint": "602c64d34c47a42a63f5eb93e7ee4da0b28cdfdd3c2215200174cb8aa109f43d",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-09-02T12:27:41.530Z",
+  "reviewed_at": "2026-09-29T14:27:28.767Z",
   "retry": {
-    "attempts": 9,
-    "last_failure_at": "2026-09-02T12:27:41.530Z"
+    "attempts": 10,
+    "last_failure_at": "2026-09-29T14:27:28.767Z"
   },
   "maintenance_issue_number": null
 }
