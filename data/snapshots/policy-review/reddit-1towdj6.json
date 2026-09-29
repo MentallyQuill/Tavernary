@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "reddit-1towdj6",
+  "source_id": "url-reddit-1towdj6",
+  "source_identity": "url:https://www.reddit.com/r/SillyTavernAI/comments/1towdj6/gemma_4_preset_moonlight/",
+  "evidence_fingerprint": "592f45abf598baa26cacb907f0c34b24e0f510b9d16051e6581fbc4a62690c90",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-29T13:24:37.120Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-29T13:24:37.120Z"
+  },
+  "maintenance_issue_number": null
+}
