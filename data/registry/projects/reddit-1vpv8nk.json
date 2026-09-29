@@ -1,0 +1,22 @@
+{
+  "schema_version": 6,
+  "id": "reddit-1vpv8nk",
+  "name": "Generic Preset Eval V1",
+  "kind": "preset",
+  "summary": "Generic Preset Eval V1 is a preset titled Generic Preset Eval v1; no README or repository description is available, so no further behavior is documented beyond its source title.",
+  "metadata_status": "curated",
+  "source_id": "url-reddit-1vpv8nk",
+  "frontends": ["sillytavern"],
+  "primary_function": "preset",
+  "tags": [],
+  "model_families": ["gemma", "model-agnostic"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-09-29T15:10:47.525Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
