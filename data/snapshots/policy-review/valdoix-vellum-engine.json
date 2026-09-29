@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "valdoix-vellum-engine",
+  "source_id": "github-1281396724",
+  "source_identity": "github:valdoix/vellum-engine",
+  "evidence_fingerprint": "5f07e1f445c739453a88cfef0e700e0546c8f0e57adee7f1a10c6eeeab6cd901",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-29T14:25:12.379Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-29T14:25:12.379Z"
+  },
+  "maintenance_issue_number": null
+}
