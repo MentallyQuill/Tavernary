@@ -9,21 +9,21 @@
     "url": "https://github.com/NemoVonNirgend/NemoPresetExt",
     "description": "A Sillytavern extension for creating drop downs for ChatCompletion presets.",
     "default_branch": "main",
-    "head_sha": "08fc623ca767d62df51faeedcc255c6d1ddf9e65",
-    "head_committed_at": "2026-09-28T06:30:47.000Z",
+    "head_sha": "b05006512b21d49024f7822ffa3e883af02270b7",
+    "head_committed_at": "2026-09-29T01:37:35.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-05-15T07:28:20.000Z",
-    "size_kb": 18432
+    "size_kb": 17912
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-28T06:30:47.000Z",
+    "latest_source_activity_at": "2026-09-29T01:37:35.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-28",
-        "latest_at": "2026-09-28T06:30:47.000Z",
+        "latest_at": "2026-09-29T01:37:35.000Z",
         "precision": "exact"
       },
       {
@@ -62,7 +62,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-28T15:35:58.871Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "08fc623ca767d62df51faeedcc255c6d1ddf9e65"
+    "evidence_head_sha": "b05006512b21d49024f7822ffa3e883af02270b7"
   },
   "community": {
     "stars_count": 93,
@@ -71,7 +71,7 @@
     "aggregate": 110
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-28T15:35:58.871Z",
+  "refreshed_at": "2026-09-29T14:07:49.708Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -84,7 +84,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-28T15:35:58.871Z",
+    "refreshed_at": "2026-09-29T14:07:49.708Z",
     "stale_since": null
   }
 }

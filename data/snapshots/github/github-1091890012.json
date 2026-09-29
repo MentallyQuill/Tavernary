@@ -9,21 +9,21 @@
     "url": "https://github.com/amiantos/writers-guild",
     "description": "A SillyTavern alternative focused on short story writing with full support for Tavern cards and Lorebooks",
     "default_branch": "main",
-    "head_sha": "4c17e10aa6c94c92d35b46209ccf6eb038afcc4a",
-    "head_committed_at": "2026-09-28T06:00:12.000Z",
+    "head_sha": "8f1f4d4845bd4840311d4f9ad2f73c09db8d9880",
+    "head_committed_at": "2026-09-28T22:56:23.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-11-07T17:10:43.000Z",
-    "size_kb": 6997
+    "size_kb": 7002
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-28T05:56:15.000Z",
+    "latest_source_activity_at": "2026-09-28T22:56:23.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-28",
-        "latest_at": "2026-09-28T05:56:15.000Z",
+        "latest_at": "2026-09-28T22:56:23.000Z",
         "precision": "exact"
       },
       {
@@ -53,11 +53,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-09-28T06:08:17.000Z",
+    "latest_release_at": "2026-09-28T23:22:19.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-28T15:35:58.871Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "4c17e10aa6c94c92d35b46209ccf6eb038afcc4a"
+    "evidence_head_sha": "8f1f4d4845bd4840311d4f9ad2f73c09db8d9880"
   },
   "community": {
     "stars_count": 15,
@@ -70,7 +70,7 @@
     "spdx_id": "GPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-28T15:35:58.871Z",
+  "refreshed_at": "2026-09-29T14:07:49.708Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -83,7 +83,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-28T15:35:58.871Z",
+    "refreshed_at": "2026-09-29T14:07:49.708Z",
     "stale_since": null
   }
 }

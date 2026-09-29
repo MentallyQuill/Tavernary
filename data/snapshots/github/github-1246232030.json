@@ -9,8 +9,8 @@
     "url": "https://github.com/MentallyQuill/ST-Wandlight",
     "description": "A Harry Potter focused SillyTavern AI Preset",
     "default_branch": "main",
-    "head_sha": "efb89845059cbd041e448c84ad577e1cd08dd84c",
-    "head_committed_at": "2026-09-28T14:12:55.000Z",
+    "head_sha": "43fcf139c20eba313339368b8ff4c22ddb2658ea",
+    "head_committed_at": "2026-09-28T20:07:22.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
@@ -19,11 +19,11 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-28T14:12:55.000Z",
+    "latest_source_activity_at": "2026-09-28T20:07:22.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-28",
-        "latest_at": "2026-09-28T14:12:55.000Z",
+        "latest_at": "2026-09-28T20:07:22.000Z",
         "precision": "exact"
       },
       {
@@ -42,7 +42,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-28T15:35:58.871Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "efb89845059cbd041e448c84ad577e1cd08dd84c"
+    "evidence_head_sha": "43fcf139c20eba313339368b8ff4c22ddb2658ea"
   },
   "community": {
     "stars_count": 6,
@@ -55,7 +55,7 @@
     "spdx_id": null,
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-28T15:35:58.871Z",
+  "refreshed_at": "2026-09-29T14:07:49.708Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -65,7 +65,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-28T15:35:58.871Z",
+    "refreshed_at": "2026-09-29T14:07:49.708Z",
     "stale_since": null
   }
 }
