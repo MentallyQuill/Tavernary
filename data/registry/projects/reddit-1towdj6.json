@@ -1,0 +1,22 @@
+{
+  "schema_version": 6,
+  "id": "reddit-1towdj6",
+  "name": "Gemma 4 Preset Moonlight",
+  "kind": "preset",
+  "summary": "Gemma 4 Preset Moonlight is a SillyTavern preset shared as the Reddit post titled Gemma 4 Preset: Moonlight, providing prompt settings tuned for use with Gemma 4 models.",
+  "metadata_status": "curated",
+  "source_id": "url-reddit-1towdj6",
+  "frontends": ["sillytavern"],
+  "primary_function": "preset",
+  "tags": [],
+  "model_families": ["gemma", "model-agnostic"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-09-29T12:59:20.094Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
