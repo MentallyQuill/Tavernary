@@ -3,14 +3,14 @@
   "project_id": "pyrxpia-sola-hub",
   "source_id": "github-1372058245",
   "source_identity": "github:pyrxpia/sola-hub",
-  "evidence_fingerprint": "0a78071e631b22d11c7480b58ec097a223b0c5b81d6e5cf5f30a84eb4a3f7b32",
+  "evidence_fingerprint": "acb556d51ed61825cb87e2bb7e0f9ca42adcf022c913889cab235571ddefeb38",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-09-27T00:49:43.700Z",
+  "reviewed_at": "2026-09-29T14:28:20.580Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-09-27T00:49:43.700Z"
+    "attempts": 2,
+    "last_failure_at": "2026-09-29T14:28:20.580Z"
   },
   "maintenance_issue_number": null
 }
