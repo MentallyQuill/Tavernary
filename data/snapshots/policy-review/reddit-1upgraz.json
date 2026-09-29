@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "reddit-1upgraz",
+  "source_id": "url-reddit-1upgraz",
+  "source_identity": "url:https://www.reddit.com/r/SillyTavernAI/comments/1upgraz/gemma_4_preset_voyage_v2/",
+  "evidence_fingerprint": "71a9bc822739eee64e553756a1409410289935aefb29784b1aa17693ea1608c2",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-29T15:34:11.003Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-29T15:34:11.003Z"
+  },
+  "maintenance_issue_number": null
+}
