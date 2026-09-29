@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "blueprintcoding-sillytavern-character-tag-manager",
+  "name": "SillyTavern-Character-Tag-Manager",
+  "kind": "extension",
+  "summary": "A SillyTavern UI plugin that provides a centralized modal for managing tags, folders, notes, and metadata for characters and groups, with tag assign/merge and import/export backup tools per README intro and Usage.",
+  "metadata_status": "curated",
+  "source_id": "github-991690002",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "edit-and-refine-messages",
+    "manage-characters-and-personas",
+    "move-and-back-up-data"
+  ],
+  "cataloged_at": "2026-09-29T23:35:00.322Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

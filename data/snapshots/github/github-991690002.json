@@ -1,0 +1,55 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-991690002",
+  "repository": {
+    "id": 991690002,
+    "owner": "BlueprintCoding",
+    "name": "SillyTavern-Character-Tag-Manager",
+    "url": "https://github.com/BlueprintCoding/SillyTavern-Character-Tag-Manager",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "c15d6d7b2989d163128f7c93e5003899b5ad6995",
+    "head_committed_at": "2025-09-14T22:07:44.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-05-28T02:33:11.000Z",
+    "size_kb": 1426
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-09-29T23:35:00.322Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "c15d6d7b2989d163128f7c93e5003899b5ad6995"
+  },
+  "community": {
+    "stars_count": 29,
+    "forks_count": 10,
+    "watchers_count": 0,
+    "aggregate": 39
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-09-29T23:35:00.322Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "BlueprintCoding", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-09-29T23:35:00.322Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
