@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "reddit-1wnana0",
+  "name": "Gemma 4 Preset Voyage V4exp",
+  "kind": "preset",
+  "summary": "Gemma 4 Preset Voyage V4exp is a Voyage v4-exp preset configuration for Gemma 4, offering a ready-made prompt setup for roleplay sessions in SillyTavern.",
+  "metadata_status": "curated",
+  "source_id": "url-reddit-1wnana0",
+  "frontends": ["sillytavern"],
+  "primary_function": "preset",
+  "tags": [
+    "guide-model-responses",
+    "improve-writing-and-prose",
+    "increase-narrative-variety"
+  ],
+  "model_families": ["gemma", "model-agnostic"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-09-29T13:01:32.621Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
