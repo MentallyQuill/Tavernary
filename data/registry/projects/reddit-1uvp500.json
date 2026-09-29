@@ -1,0 +1,22 @@
+{
+  "schema_version": 6,
+  "id": "reddit-1uvp500",
+  "name": "Gemma 4 Preset Voyage V3",
+  "kind": "preset",
+  "summary": "Gemma 4 Preset Voyage v3 is a preset for Gemma 4 models; no README or repository description was supplied, so documented behavior beyond the title is unavailable (source: reddit:1uvp500).",
+  "metadata_status": "curated",
+  "source_id": "url-reddit-1uvp500",
+  "frontends": ["sillytavern"],
+  "primary_function": "preset",
+  "tags": [],
+  "model_families": ["gemma", "model-agnostic"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-09-29T13:00:27.053Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
