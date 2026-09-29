@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "samueras-personatags",
+  "source_id": "github-940123423",
+  "source_identity": "github:samueras/personatags",
+  "evidence_fingerprint": "134db5c25c76806805be2650e6d2ca00cd4c43953b908e32f38f3176da33d74e",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-29T14:31:12.402Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-29T14:31:12.402Z"
+  },
+  "maintenance_issue_number": null
+}
