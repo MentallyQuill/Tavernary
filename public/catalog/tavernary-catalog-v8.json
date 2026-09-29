@@ -87046,6 +87046,114 @@
       }
     },
     {
+      "id": "reddit-1uvp500",
+      "name": "Gemma 4 Preset Voyage V3",
+      "kind": "preset",
+      "metadataStatus": "curated",
+      "sourceStatus": "manual",
+      "primaryFunction": "preset",
+      "summary": "Gemma 4 Preset Voyage v3 is a preset for Gemma 4 models; no README or repository description was supplied, so documented behavior beyond the title is unavailable (source: reddit:1uvp500).",
+      "canonicalUrl": "https://www.reddit.com/r/SillyTavernAI/comments/1uvp500/gemma_4_preset_voyage_v3/",
+      "catalogedAt": "2026-09-29T13:00:27.053Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "unsupported",
+        "riskLevel": null,
+        "freshness": "unsupported",
+        "currentSha": null,
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "activity": {
+        "latestSourceActivityAt": null,
+        "activeWeeks12": null,
+        "weeklyActivity": null,
+        "evidenceStatus": null,
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": null,
+      "repositorySizeKb": null,
+      "license": {
+        "status": "pending",
+        "label": "Pending",
+        "tooltip": "License review is pending for this source."
+      },
+      "attribution": null,
+      "preset": {
+        "version": null,
+        "publishedAt": null,
+        "artifactSizeBytes": null,
+        "modelFamilies": [
+          {
+            "id": "gemma",
+            "label": "Gemma",
+            "description": "Designed for Google Gemma models."
+          },
+          {
+            "id": "model-agnostic",
+            "label": "Model-Agnostic",
+            "description": "Designed to work across model families."
+          }
+        ],
+        "completionFormats": [
+          {
+            "id": "chat-completion",
+            "label": "Chat Completion",
+            "description": "Uses role-based chat messages."
+          }
+        ]
+      },
+      "refreshedAt": null,
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "Gemma 4 Preset Voyage V3"
+        ],
+        "aliases": [],
+        "source": [
+          "reddit-1uvp500",
+          "url-reddit-1uvp500",
+          "www.reddit.com/r/SillyTavernAI/comments/1uvp500/gemma_4_preset_voyage_v3",
+          "https://www.reddit.com/r/SillyTavernAI/comments/1uvp500/gemma_4_preset_voyage_v3/"
+        ],
+        "summary": [
+          "Gemma 4 Preset Voyage v3 is a preset for Gemma 4 models; no README or repository description was supplied, so documented behavior beyond the title is unavailable (source: reddit:1uvp500)."
+        ],
+        "kind": [
+          "preset"
+        ],
+        "primaryFunction": [
+          "System Preset"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [
+          "Gemma",
+          "Google Gemma",
+          "Model-Agnostic",
+          "universal",
+          "any model",
+          "Chat Completion"
+        ],
+        "maintainers": [],
+        "relationships": []
+      }
+    },
+    {
       "id": "reddit-1v64r6z",
       "name": "Writer's Block 5",
       "kind": "preset",
@@ -87657,6 +87765,146 @@
           "SillyTavern"
         ],
         "compatibility": [
+          "Model-Agnostic",
+          "universal",
+          "any model",
+          "Chat Completion"
+        ],
+        "maintainers": [],
+        "relationships": []
+      }
+    },
+    {
+      "id": "reddit-1wnana0",
+      "name": "Gemma 4 Preset Voyage V4exp",
+      "kind": "preset",
+      "metadataStatus": "curated",
+      "sourceStatus": "manual",
+      "primaryFunction": "preset",
+      "summary": "Gemma 4 Preset Voyage V4exp is a Voyage v4-exp preset configuration for Gemma 4, offering a ready-made prompt setup for roleplay sessions in SillyTavern.",
+      "canonicalUrl": "https://www.reddit.com/r/SillyTavernAI/comments/1wnana0/gemma_4_preset_voyage_v4exp/",
+      "catalogedAt": "2026-09-29T13:01:32.621Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
+          "facet": "goal"
+        },
+        {
+          "id": "improve-writing-and-prose",
+          "label": "Improve writing and prose",
+          "description": "Strengthen prose, dialogue, style, pacing, subtext, or general writing quality.",
+          "facet": "goal"
+        },
+        {
+          "id": "increase-narrative-variety",
+          "label": "Increase narrative variety",
+          "description": "Reduce repetition and introduce fresh actions, beats, twists, or response patterns.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "unsupported",
+        "riskLevel": null,
+        "freshness": "unsupported",
+        "currentSha": null,
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "activity": {
+        "latestSourceActivityAt": null,
+        "activeWeeks12": null,
+        "weeklyActivity": null,
+        "evidenceStatus": null,
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": null,
+      "repositorySizeKb": null,
+      "license": {
+        "status": "pending",
+        "label": "Pending",
+        "tooltip": "License review is pending for this source."
+      },
+      "attribution": null,
+      "preset": {
+        "version": null,
+        "publishedAt": null,
+        "artifactSizeBytes": null,
+        "modelFamilies": [
+          {
+            "id": "gemma",
+            "label": "Gemma",
+            "description": "Designed for Google Gemma models."
+          },
+          {
+            "id": "model-agnostic",
+            "label": "Model-Agnostic",
+            "description": "Designed to work across model families."
+          }
+        ],
+        "completionFormats": [
+          {
+            "id": "chat-completion",
+            "label": "Chat Completion",
+            "description": "Uses role-based chat messages."
+          }
+        ]
+      },
+      "refreshedAt": null,
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "Gemma 4 Preset Voyage V4exp"
+        ],
+        "aliases": [],
+        "source": [
+          "reddit-1wnana0",
+          "url-reddit-1wnana0",
+          "www.reddit.com/r/SillyTavernAI/comments/1wnana0/gemma_4_preset_voyage_v4exp",
+          "https://www.reddit.com/r/SillyTavernAI/comments/1wnana0/gemma_4_preset_voyage_v4exp/"
+        ],
+        "summary": [
+          "Gemma 4 Preset Voyage V4exp is a Voyage v4-exp preset configuration for Gemma 4, offering a ready-made prompt setup for roleplay sessions in SillyTavern."
+        ],
+        "kind": [
+          "preset"
+        ],
+        "primaryFunction": [
+          "System Preset"
+        ],
+        "tags": [
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control",
+          "Improve writing and prose",
+          "writing assistance",
+          "prose improvement",
+          "co-writing",
+          "Increase narrative variety",
+          "prevent repetition",
+          "plot variety",
+          "response diversity"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [
+          "Gemma",
+          "Google Gemma",
           "Model-Agnostic",
           "universal",
           "any model",
