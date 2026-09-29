@@ -1,0 +1,22 @@
+{
+  "schema_version": 6,
+  "id": "reddit-1upgraz",
+  "name": "Gemma 4 Preset Voyage V2",
+  "kind": "preset",
+  "summary": "SillyTavern preset titled Gemma 4 Preset Voyage V2, aimed at steering responses for the Gemma 4 model family, per the submitted title; no README evidence was available to verify further behavior.",
+  "metadata_status": "curated",
+  "source_id": "url-reddit-1upgraz",
+  "frontends": ["sillytavern"],
+  "primary_function": "preset",
+  "tags": [],
+  "model_families": ["gemma", "model-agnostic"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-09-29T15:16:21.563Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
