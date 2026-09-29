@@ -1,0 +1,22 @@
+{
+  "schema_version": 6,
+  "id": "reddit-1tx1x7b",
+  "name": "Gemma 4 Preset Voyage",
+  "kind": "preset",
+  "summary": "Gemma 4 Preset Voyage is a SillyTavern preset tuned for Gemma 4 models, giving roleplay users a ready-made configuration to steer model responses (source: reddit-title).",
+  "metadata_status": "curated",
+  "source_id": "url-reddit-1tx1x7b",
+  "frontends": ["sillytavern"],
+  "primary_function": "preset",
+  "tags": ["guide-model-responses"],
+  "model_families": ["gemma", "model-agnostic"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-09-29T15:18:50.983Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
