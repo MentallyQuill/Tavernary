@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "reddit-1vpv8nk",
+  "source_id": "url-reddit-1vpv8nk",
+  "source_identity": "url:https://www.reddit.com/r/SillyTavernAI/comments/1vpv8nk/generic_preset_eval_v1/",
+  "evidence_fingerprint": "d613197133b4fd0c129eefed677750b6bea7e39d44d36b1a57d95a643bdea242",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-29T15:30:42.635Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-29T15:30:42.635Z"
+  },
+  "maintenance_issue_number": null
+}
