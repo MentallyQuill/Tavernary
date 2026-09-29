@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "reddit-1uvp500",
+  "source_id": "url-reddit-1uvp500",
+  "source_identity": "url:https://www.reddit.com/r/SillyTavernAI/comments/1uvp500/gemma_4_preset_voyage_v3/",
+  "evidence_fingerprint": "716664f7ea560adb698013380b723dd6a4cd5c0535f2a6511509dc0135a17fa1",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-29T13:17:01.983Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-29T13:17:01.983Z"
+  },
+  "maintenance_issue_number": null
+}
