@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "blueprintcoding-sillytavern-character-tag-manager",
+  "source_id": "github-991690002",
+  "source_identity": "github:blueprintcoding/sillytavern-character-tag-manager",
+  "evidence_fingerprint": "82d00dde7857ec24d54e368bbff86e699cbb6e6e038fdc3944aafa37aee20c15",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-30T00:07:34.319Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-30T00:07:34.319Z"
+  },
+  "maintenance_issue_number": null
+}
