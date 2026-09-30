@@ -3,14 +3,14 @@
   "project_id": "mentallyquill-directive",
   "source_id": "github-1273112032",
   "source_identity": "github:mentallyquill/directive",
-  "evidence_fingerprint": "d64130a47adf1ec6a37b173e2287ce896d87abe55fe1b470b6a2ce5198aed8b3",
+  "evidence_fingerprint": "2e65553fb81f59c632ab229ce05717d9c2510d1652d766d445c5d74a327cf20d",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-10T23:30:43.691Z",
+  "reviewed_at": "2026-09-30T14:09:46.518Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-10T23:30:43.691Z"
+    "attempts": 3,
+    "last_failure_at": "2026-09-30T14:09:46.518Z"
   },
   "maintenance_issue_number": null
 }
