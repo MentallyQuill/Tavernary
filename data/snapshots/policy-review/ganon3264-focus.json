@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "ganon3264-focus",
+  "source_id": "github-1305306157",
+  "source_identity": "github:ganon3264/focus",
+  "evidence_fingerprint": "e4ddba6ea8249a7a8c13d799922549e832e8024645d5b1b995da3b5336eafd89",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-30T14:11:31.616Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-30T14:11:31.616Z"
+  },
+  "maintenance_issue_number": null
+}
