@@ -9,21 +9,21 @@
     "url": "https://github.com/brasen56/merged_world_tracker",
     "description": null,
     "default_branch": "main",
-    "head_sha": "7e60df18241aae566264153829134ba5ff1040a7",
-    "head_committed_at": "2026-09-29T02:06:18.000Z",
+    "head_sha": "828427d931853a70bbfaae11ef22e8a77590145c",
+    "head_committed_at": "2026-09-29T21:45:48.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-02T00:29:40.000Z",
-    "size_kb": 4583
+    "size_kb": 4740
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-29T02:06:18.000Z",
+    "latest_source_activity_at": "2026-09-29T21:45:48.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-28",
-        "latest_at": "2026-09-29T02:06:18.000Z",
+        "latest_at": "2026-09-29T21:45:48.000Z",
         "precision": "exact"
       },
       {
@@ -87,7 +87,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-29T14:07:49.708Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "7e60df18241aae566264153829134ba5ff1040a7"
+    "evidence_head_sha": "828427d931853a70bbfaae11ef22e8a77590145c"
   },
   "community": {
     "stars_count": 14,
@@ -100,7 +100,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-29T14:07:49.708Z",
+  "refreshed_at": "2026-09-30T13:51:54.026Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -108,7 +108,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-29T14:07:49.708Z",
+    "refreshed_at": "2026-09-30T13:51:54.026Z",
     "stale_since": null
   }
 }

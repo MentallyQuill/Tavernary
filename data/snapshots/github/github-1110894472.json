@@ -35,12 +35,12 @@
   },
   "community": {
     "stars_count": 7,
-    "forks_count": 1,
+    "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 8
+    "aggregate": 7
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-29T14:07:49.708Z",
+  "refreshed_at": "2026-09-30T13:51:54.026Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -49,7 +49,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-29T14:07:49.708Z",
+    "refreshed_at": "2026-09-30T13:51:54.026Z",
     "stale_since": null
   }
 }

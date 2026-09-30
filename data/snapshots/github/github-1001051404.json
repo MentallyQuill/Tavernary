@@ -9,21 +9,21 @@
     "url": "https://github.com/aikohanasaki/SillyTavern-MemoryBooks",
     "description": "Saves SillyTavern chat memories to lorebooks",
     "default_branch": "main",
-    "head_sha": "61f21c445fa22ecb7dc24c0b935527c9cbe24026",
-    "head_committed_at": "2026-09-28T17:37:19.000Z",
+    "head_sha": "67eec6749bcc8888874f65cf1e3766dfdc478926",
+    "head_committed_at": "2026-09-29T22:08:15.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-06-12T18:30:31.000Z",
-    "size_kb": 23980
+    "size_kb": 26009
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-28T17:37:19.000Z",
+    "latest_source_activity_at": "2026-09-29T22:08:15.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-28",
-        "latest_at": "2026-09-28T17:37:19.000Z",
+        "latest_at": "2026-09-29T22:08:15.000Z",
         "precision": "exact"
       },
       {
@@ -87,20 +87,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-29T14:07:49.708Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "61f21c445fa22ecb7dc24c0b935527c9cbe24026"
+    "evidence_head_sha": "67eec6749bcc8888874f65cf1e3766dfdc478926"
   },
   "community": {
-    "stars_count": 312,
+    "stars_count": 313,
     "forks_count": 48,
     "watchers_count": 3,
-    "aggregate": 363
+    "aggregate": 364
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-29T14:07:49.708Z",
+  "refreshed_at": "2026-09-30T13:51:54.026Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -113,7 +113,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-29T14:07:49.708Z",
+    "refreshed_at": "2026-09-30T13:51:54.026Z",
     "stale_since": null
   }
 }

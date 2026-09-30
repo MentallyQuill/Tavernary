@@ -39,8 +39,9 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-29T23:35:00.322Z",
+  "refreshed_at": "2026-09-30T13:51:54.026Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "BlueprintCoding", "type": "User", "provider": "github" }
@@ -48,8 +49,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-29T23:35:00.322Z",
+    "refreshed_at": "2026-09-30T13:51:54.026Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

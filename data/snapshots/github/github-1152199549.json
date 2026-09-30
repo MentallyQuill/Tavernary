@@ -9,21 +9,21 @@
     "url": "https://github.com/Finn-Hecker/RyokanApp",
     "description": "Open source AI roleplay app for Windows & Android with character chat, browser multiplayer, and local or API models.",
     "default_branch": "main",
-    "head_sha": "623bafd62d94a88f55394d341f58ebd528ddc421",
-    "head_committed_at": "2026-09-28T20:13:49.000Z",
+    "head_sha": "cf401235980efa7616a2cb0368622b63fb4beb82",
+    "head_committed_at": "2026-09-29T17:47:17.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-02-07T14:16:53.000Z",
-    "size_kb": 8053
+    "size_kb": 8226
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-28T20:13:49.000Z",
+    "latest_source_activity_at": "2026-09-29T17:47:17.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-28",
-        "latest_at": "2026-09-28T20:13:49.000Z",
+        "latest_at": "2026-09-29T17:47:17.000Z",
         "precision": "exact"
       },
       {
@@ -62,7 +62,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-28T15:35:58.871Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "623bafd62d94a88f55394d341f58ebd528ddc421"
+    "evidence_head_sha": "cf401235980efa7616a2cb0368622b63fb4beb82"
   },
   "community": {
     "stars_count": 16,
@@ -75,7 +75,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-29T14:07:49.708Z",
+  "refreshed_at": "2026-09-30T13:51:54.026Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -85,7 +85,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-29T14:07:49.708Z",
+    "refreshed_at": "2026-09-30T13:51:54.026Z",
     "stale_since": null
   }
 }
