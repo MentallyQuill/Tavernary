@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-991690002",
+  "head_sha": "c15d6d7b2989d163128f7c93e5003899b5ad6995",
+  "observed_at": "2026-09-29T23:37:33.553Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Character-Tag-Manager",
+  "manifest": {
+    "display_name": "ST Character/Tag Manager",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
