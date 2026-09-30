@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "platberlitz-neconyan",
+  "source_id": "github-1388520986",
+  "source_identity": "github:platberlitz/neconyan",
+  "evidence_fingerprint": "8176e0a622219db8a96a7049ea7c0ce2a0dac1fffe2fa01cfedc867073d6d2ca",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-30T02:53:04.947Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-30T02:53:04.947Z"
+  },
+  "maintenance_issue_number": null
+}
