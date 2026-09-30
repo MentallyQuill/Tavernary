@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "serioos-gallery-plus-plus",
+  "source_id": "github-1398595512",
+  "source_identity": "github:serioos/gallery-plus-plus",
+  "evidence_fingerprint": "b5878bcdf933b98635330012be912348db0dd725857910e646b6d0c01412127c",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-30T20:05:29.023Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-30T20:05:29.023Z"
+  },
+  "maintenance_issue_number": null
+}
