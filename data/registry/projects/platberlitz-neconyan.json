@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "platberlitz-neconyan",
+  "name": "Neconyan",
+  "kind": "frontend",
+  "summary": "Neconyan is a cat-themed SillyTavern/SillyBunny fork for AI character chat and roleplay on desktop or phone, with server-side replies that finish after you leave, four chat modes, Mewmory story memory, and helper agents.",
+  "metadata_status": "curated",
+  "source_id": "github-1388520986",
+  "frontends": ["neconyan"],
+  "primary_function": "frontend",
+  "tags": [
+    "agentic-tool-use",
+    "generate-images",
+    "maintain-long-term-memory",
+    "manage-lorebooks",
+    "mobile-friendly",
+    "self-hosted"
+  ],
+  "cataloged_at": "2026-09-30T02:35:40.252Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
