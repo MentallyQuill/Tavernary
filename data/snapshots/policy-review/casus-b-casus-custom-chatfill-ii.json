@@ -3,14 +3,14 @@
   "project_id": "casus-b-casus-custom-chatfill-ii",
   "source_id": "github-1245539495",
   "source_identity": "github:casus-b/casus-custom-chatfill-ii",
-  "evidence_fingerprint": "e9f3659f029c06da43be5e81780816c15ce955f958c7208a4b363d26bc273f4f",
+  "evidence_fingerprint": "cdf71e705b9141ad6febb91f41ac44ad7df311d6be1fc9c7a2d0ff0a23252a96",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-28T19:42:10.274Z",
+  "reviewed_at": "2026-09-30T14:09:03.918Z",
   "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-08-28T19:42:10.274Z"
+    "attempts": 5,
+    "last_failure_at": "2026-09-30T14:09:03.918Z"
   },
   "maintenance_issue_number": null
 }
