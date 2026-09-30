@@ -13105,6 +13105,200 @@
       }
     },
     {
+      "id": "blueprintcoding-sillytavern-character-tag-manager",
+      "name": "SillyTavern-Character-Tag-Manager",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "A SillyTavern UI plugin that provides a centralized modal for managing tags, folders, notes, and metadata for characters and groups, with tag assign/merge and import/export backup tools per README intro and Usage.",
+      "canonicalUrl": "https://github.com/BlueprintCoding/SillyTavern-Character-Tag-Manager",
+      "catalogedAt": "2026-09-29T23:35:00.322Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "edit-and-refine-messages",
+          "label": "Edit and refine messages",
+          "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-characters-and-personas",
+          "label": "Manage characters and personas",
+          "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+          "facet": "goal"
+        },
+        {
+          "id": "move-and-back-up-data",
+          "label": "Move and back up data",
+          "description": "Import, export, synchronize, migrate, restore, or back up roleplay data.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "c15d6d7b2989d163128f7c93e5003899b5ad6995",
+        "report": {
+          "reportId": "d8af64400b7df60c13f6a79c1e54efd1e922a41c09c753e991935bbcaf212011",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 1,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "f864080f932513247b9aa1cbead29fe244bbc2f18b1f65dc7eef114e14a67dee"
+          ],
+          "scannedSha": "c15d6d7b2989d163128f7c93e5003899b5ad6995",
+          "treeUrl": "https://github.com/BlueprintCoding/SillyTavern-Character-Tag-Manager/tree/c15d6d7b2989d163128f7c93e5003899b5ad6995",
+          "scannedAt": "2026-09-30T00:13:03.872Z",
+          "assessedAt": "2026-09-30T00:16:03.357Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/991690002/c15d6d7b2989d163128f7c93e5003899b5ad6995/5/d8af64400b7df60c13f6a79c1e54efd1e922a41c09c753e991935bbcaf212011/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/991690002/history/"
+        },
+        "history": [
+          {
+            "reportId": "d8af64400b7df60c13f6a79c1e54efd1e922a41c09c753e991935bbcaf212011",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 1,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "f864080f932513247b9aa1cbead29fe244bbc2f18b1f65dc7eef114e14a67dee"
+            ],
+            "scannedSha": "c15d6d7b2989d163128f7c93e5003899b5ad6995",
+            "treeUrl": "https://github.com/BlueprintCoding/SillyTavern-Character-Tag-Manager/tree/c15d6d7b2989d163128f7c93e5003899b5ad6995",
+            "scannedAt": "2026-09-30T00:13:03.872Z",
+            "assessedAt": "2026-09-30T00:16:03.357Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/991690002/c15d6d7b2989d163128f7c93e5003899b5ad6995/5/d8af64400b7df60c13f6a79c1e54efd1e922a41c09c753e991935bbcaf212011/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/991690002/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-991690002/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "BlueprintCoding"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": null,
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": true
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 29,
+        "forks": 10,
+        "watchers": 0,
+        "aggregate": 39
+      },
+      "repositorySizeKb": 1426,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-29T23:35:00.322Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/BlueprintCoding/SillyTavern-Character-Tag-Manager.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-Character-Tag-Manager"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-Character-Tag-Manager"
+        ],
+        "aliases": [],
+        "source": [
+          "blueprintcoding-sillytavern-character-tag-manager",
+          "github-991690002",
+          "BlueprintCoding/SillyTavern-Character-Tag-Manager",
+          "https://github.com/BlueprintCoding/SillyTavern-Character-Tag-Manager"
+        ],
+        "summary": [
+          "A SillyTavern UI plugin that provides a centralized modal for managing tags, folders, notes, and metadata for characters and groups, with tag assign/merge and import/export backup tools per README intro and Usage."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Edit and refine messages",
+          "message rewriting",
+          "chat editing",
+          "response refinement",
+          "Manage characters and personas",
+          "persona management",
+          "character management",
+          "identity management",
+          "Move and back up data",
+          "data portability",
+          "backup and restore",
+          "import and export"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "BlueprintCoding"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "bmen25124-sillytavern-character-creator",
       "name": "SillyTavern Character Creator",
       "kind": "extension",
