@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1398595512",
+  "head_sha": "85cebef9a1f7c43e51df04fefdd9e7d411d35279",
+  "observed_at": "2026-09-30T19:46:53.069Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Gallery-Plus-Plus",
+  "manifest": {
+    "display_name": "Gallery++",
+    "key": null,
+    "minimum_client_version": "1.17.0"
+  }
+}

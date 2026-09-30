@@ -1,0 +1,59 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1398595512",
+  "repository": {
+    "id": 1398595512,
+    "owner": "serioos",
+    "name": "Gallery-Plus-Plus",
+    "url": "https://github.com/serioos/Gallery-Plus-Plus",
+    "description": "A community fork of SillyTavern's Gallery extension with left/right click image placement and optimizations. The UI layers over the gallery and its pictures now and the page flipping is much faster with no spills or losing the pagination to the spill if the pictures are have too many long dimensions.",
+    "default_branch": "main",
+    "head_sha": "85cebef9a1f7c43e51df04fefdd9e7d411d35279",
+    "head_committed_at": "2026-09-30T19:31:32.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-09-30T18:31:26.000Z",
+    "size_kb": 187
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-09-30T19:31:32.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-09-30T19:31:32.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-09-30T19:46:28.216Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "85cebef9a1f7c43e51df04fefdd9e7d411d35279"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-09-30T19:46:28.216Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "serioos", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-09-30T19:46:28.216Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

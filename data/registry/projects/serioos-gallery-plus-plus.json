@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "serioos-gallery-plus-plus",
+  "name": "Gallery-Plus-Plus",
+  "kind": "extension",
+  "summary": "Community fork of SillyTavern's Gallery extension (README) that keeps folders, sorting, upload, pagination, and previews while adding fixes, faster page flipping, and click image placement per repo description.",
+  "metadata_status": "curated",
+  "source_id": "github-1398595512",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["add-visual-immersion", "customize-the-interface"],
+  "cataloged_at": "2026-09-30T19:46:28.216Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
