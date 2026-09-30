@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "rmt120430-sillytavern-welcomeidlevoice",
+  "source_id": "github-1116424091",
+  "source_identity": "github:rmt120430/sillytavern_welcomeidlevoice",
+  "evidence_fingerprint": "47212b24f5e4a159790bc32d7b829c5c57ad414936d3173cf6f9ec97149d197b",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-09-30T14:03:55.087Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-09-30T14:03:55.087Z"
+  },
+  "maintenance_issue_number": null
+}
