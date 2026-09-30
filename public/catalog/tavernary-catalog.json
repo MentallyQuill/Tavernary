@@ -80608,6 +80608,182 @@
       }
     },
     {
+      "id": "platberlitz-neconyan",
+      "name": "Neconyan",
+      "kind": "frontend",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": "Neconyan is a cat-themed SillyTavern/SillyBunny fork for AI character chat and roleplay on desktop or phone, with server-side replies that finish after you leave, four chat modes, Mewmory story memory, and helper agents.",
+      "canonicalUrl": "https://github.com/platberlitz/Neconyan",
+      "catalogedAt": "2026-09-30T02:35:40.252Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "neconyan",
+          "label": "Neconyan",
+          "description": "Works with the Neconyan roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "agentic-tool-use",
+          "label": "Agentic tool use",
+          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
+          "facet": "trait"
+        },
+        {
+          "id": "generate-images",
+          "label": "Generate images",
+          "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
+          "facet": "goal"
+        },
+        {
+          "id": "maintain-long-term-memory",
+          "label": "Maintain long-term memory",
+          "description": "Preserve and recall important information across long chats or separate sessions.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-lorebooks",
+          "label": "Manage lorebooks",
+          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+          "facet": "goal"
+        },
+        {
+          "id": "mobile-friendly",
+          "label": "Mobile-friendly",
+          "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
+          "facet": "trait"
+        },
+        {
+          "id": "self-hosted",
+          "label": "Self-hosted",
+          "description": "Runs as infrastructure that users deploy and operate themselves.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "268bc5717835070126f64879a051b3f8a0ab7f7a",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "platberlitz"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "github-actions[bot]",
+            "botOrAi": true
+          }
+        ],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-29T15:17:48.000Z",
+        "activeWeeks12": 3,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-09-30T01:12:51.000Z",
+      "community": {
+        "stars": 4,
+        "forks": 1,
+        "watchers": 1,
+        "aggregate": 6
+      },
+      "repositorySizeKb": 177635,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-09-30T02:35:40.252Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "Neconyan"
+        ],
+        "aliases": [],
+        "source": [
+          "platberlitz-neconyan",
+          "github-1388520986",
+          "platberlitz/Neconyan",
+          "https://github.com/platberlitz/Neconyan"
+        ],
+        "summary": [
+          "Neconyan is a cat-themed SillyTavern/SillyBunny fork for AI character chat and roleplay on desktop or phone, with server-side replies that finish after you leave, four chat modes, Mewmory story memory, and helper agents."
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [
+          "Agentic tool use",
+          "tool calling",
+          "AI agents",
+          "agent mode",
+          "Generate images",
+          "image generation",
+          "AI art generation",
+          "scene illustration",
+          "picture generation",
+          "Maintain long-term memory",
+          "durable memory",
+          "persistent memory",
+          "remember across chats",
+          "Manage lorebooks",
+          "World Info management",
+          "worldbook organization",
+          "loredeck management",
+          "Mobile-friendly",
+          "mobile support",
+          "phone friendly",
+          "responsive mobile UI",
+          "Self-hosted",
+          "self-hostable",
+          "run your own server",
+          "local deployment"
+        ],
+        "frontends": [
+          "Neconyan"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "platberlitz",
+          "github-actions[bot]"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "platberlitz-sd-proxy",
       "name": "SD Proxy",
       "kind": "extension",
