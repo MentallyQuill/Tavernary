@@ -3,14 +3,14 @@
   "project_id": "ddkhan24-hordestudio",
   "source_id": "github-1318310911",
   "source_identity": "github:ddkhan24/hordestudio",
-  "evidence_fingerprint": "fb1c12ff0aed3477df767d5b401924b527a0f5f212eed991ad5fdd6bc18cad0a",
+  "evidence_fingerprint": "ca7f49078fc13934cc4afd836e85d9df4afbbe1125d216d9b8c44dc1efab26c3",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-09T17:08:37.376Z",
+  "reviewed_at": "2026-09-30T14:12:22.286Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-09T17:08:37.376Z"
+    "attempts": 2,
+    "last_failure_at": "2026-09-30T14:12:22.286Z"
   },
   "maintenance_issue_number": null
 }
