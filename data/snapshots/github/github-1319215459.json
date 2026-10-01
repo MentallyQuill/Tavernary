@@ -9,18 +9,23 @@
     "url": "https://github.com/izanagi771-stack/Story-Editor",
     "description": "Human-supervised continuity and review extension for long-form AI-assisted storytelling in SillyTavern.",
     "default_branch": "main",
-    "head_sha": "77d0588f0fdf6812aa83f4cb5663564008a5fe73",
-    "head_committed_at": "2026-08-01T11:03:15.000Z",
+    "head_sha": "ba2b531ea28f363bea663b1455737d350782f232",
+    "head_committed_at": "2026-10-01T11:30:31.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-08-01T11:04:08.000Z",
-    "size_kb": 167
+    "size_kb": 218
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-01T11:03:15.000Z",
+    "latest_source_activity_at": "2026-10-01T11:30:31.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-10-01T11:30:31.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-27",
         "latest_at": "2026-08-01T11:03:15.000Z",
@@ -30,9 +35,9 @@
     "provisional_weeks": null,
     "latest_release_at": "2026-08-01T11:20:36.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-01T12:35:05.018Z",
+    "baseline_completed_at": "2026-10-01T14:33:13.449Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "77d0588f0fdf6812aa83f4cb5663564008a5fe73"
+    "evidence_head_sha": "ba2b531ea28f363bea663b1455737d350782f232"
   },
   "community": {
     "stars_count": 11,
@@ -45,7 +50,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-30T13:51:54.026Z",
+  "refreshed_at": "2026-10-01T14:33:13.449Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -55,7 +60,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-30T13:51:54.026Z",
+    "refreshed_at": "2026-10-01T14:33:13.449Z",
     "stale_since": null
   }
 }

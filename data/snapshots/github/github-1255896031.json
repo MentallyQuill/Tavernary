@@ -9,18 +9,43 @@
     "url": "https://github.com/j-dandelion/Lumiverse-Canvas",
     "description": "Spindle extension for https://lumiverse.chat that adds convenient tweaks and features to enhance the UI. Aimed at deeper customization and quality-of-life improvements.",
     "default_branch": "main",
-    "head_sha": "6dac7eaa6bfba04bb6b20dcfe245ee37eb5deca9",
-    "head_committed_at": "2026-08-19T05:33:36.000Z",
+    "head_sha": "ca16bafc4b709c94feb61e9d2c5bd4d140f84159",
+    "head_committed_at": "2026-09-30T14:45:02.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-01T09:15:47.000Z",
-    "size_kb": 4578
+    "size_kb": 4825
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-19T05:33:36.000Z",
+    "latest_source_activity_at": "2026-09-30T14:39:08.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-09-30T14:39:08.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-27T12:39:24.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-19T15:58:06.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-13T16:41:15.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-27T19:42:19.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-17",
         "latest_at": "2026-08-19T05:33:36.000Z",
@@ -45,44 +70,14 @@
         "week_start": "2026-07-13",
         "latest_at": "2026-07-19T22:19:40.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-06",
-        "latest_at": "2026-07-12T18:16:46.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-29",
-        "latest_at": "2026-07-04T13:55:24.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-22",
-        "latest_at": "2026-06-24T16:10:12.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-15",
-        "latest_at": "2026-06-21T21:03:43.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-14T18:21:12.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-01",
-        "latest_at": "2026-06-07T00:16:42.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-18T07:56:54.593Z",
+    "baseline_completed_at": "2026-10-01T14:33:13.449Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "6dac7eaa6bfba04bb6b20dcfe245ee37eb5deca9"
+    "evidence_head_sha": "ca16bafc4b709c94feb61e9d2c5bd4d140f84159"
   },
   "community": {
     "stars_count": 4,
@@ -90,8 +85,12 @@
     "watchers_count": 0,
     "aggregate": 4
   },
-  "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-09-30T13:51:54.026Z",
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-10-01T14:33:13.449Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -103,7 +102,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-30T13:51:54.026Z",
+    "refreshed_at": "2026-10-01T14:33:13.449Z",
     "stale_since": null
   }
 }

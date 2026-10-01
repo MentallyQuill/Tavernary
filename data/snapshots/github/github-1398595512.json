@@ -45,15 +45,15 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-30T19:46:28.216Z",
+  "refreshed_at": "2026-10-01T14:33:13.449Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "serioos", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-09-30T19:46:28.216Z",
+    "refreshed_at": "2026-10-01T14:33:13.449Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

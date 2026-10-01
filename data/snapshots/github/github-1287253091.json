@@ -9,8 +9,8 @@
     "url": "https://github.com/vadash/Extension-Summaryception",
     "description": "Sillytavern memory plug-in. Simpler  = better",
     "default_branch": "main",
-    "head_sha": "176136cef7f27205b60a4604f61dcd4042091f23",
-    "head_committed_at": "2026-09-17T20:19:14.000Z",
+    "head_sha": "4c9300c50cd18b72e019bfe22be597b031fef3b0",
+    "head_committed_at": "2026-10-01T12:02:50.000Z",
     "archived": false,
     "fork": true,
     "parent": {
@@ -20,15 +20,25 @@
       "url": "https://github.com/Lodactio/Extension-Summaryception"
     },
     "created_at": "2026-07-02T14:13:57.000Z",
-    "size_kb": 4206
+    "size_kb": 4215
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-17T20:19:14.000Z",
+    "latest_source_activity_at": "2026-10-01T12:02:50.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-10-01T12:02:50.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-25T17:02:28.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-09-14",
-        "latest_at": "2026-09-17T20:19:14.000Z",
+        "latest_at": "2026-09-20T22:32:14.000Z",
         "precision": "exact"
       },
       {
@@ -75,24 +85,14 @@
         "week_start": "2026-07-13",
         "latest_at": "2026-07-19T19:08:04.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-06",
-        "latest_at": "2026-07-11T09:37:43.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-29",
-        "latest_at": "2026-07-05T23:16:38.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-15T12:43:56.161Z",
+    "baseline_completed_at": "2026-10-01T14:33:13.449Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "176136cef7f27205b60a4604f61dcd4042091f23"
+    "evidence_head_sha": "4c9300c50cd18b72e019bfe22be597b031fef3b0"
   },
   "community": {
     "stars_count": 34,
@@ -105,7 +105,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-09-30T13:51:54.026Z",
+  "refreshed_at": "2026-10-01T14:33:13.449Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -113,7 +113,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T15:17:57.249Z",
     "scan": null,
-    "refreshed_at": "2026-09-30T13:51:54.026Z",
+    "refreshed_at": "2026-10-01T14:33:13.449Z",
     "stale_since": null
   }
 }
