@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "leandrojofre-sillytavern-mathcros",
+  "source_id": "github-932215365",
+  "source_identity": "github:leandrojofre/sillytavern-mathcros",
+  "evidence_fingerprint": "942a5c923895b7ce98e2a0782c5fcf323fa727439dde58e1d963a729ef8e244a",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-10-01T14:53:40.007Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-10-01T14:53:40.007Z"
+  },
+  "maintenance_issue_number": null
+}
