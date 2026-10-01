@@ -3,14 +3,14 @@
   "project_id": "penitentfleece-sillytavern-showtime",
   "source_id": "github-1373670288",
   "source_identity": "github:penitentfleece/sillytavern-showtime",
-  "evidence_fingerprint": "a544ab074077a708c6c07c4aae4a37586ddc5ae170690b0fe06b6e84aaf4155a",
+  "evidence_fingerprint": "e4fda89053b21c34ce146132dd12f948ed7de9db15935419dfa0ee495819c370",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-09-25T04:21:07.401Z",
+  "reviewed_at": "2026-10-01T14:51:47.895Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-09-25T04:21:07.401Z"
+    "attempts": 2,
+    "last_failure_at": "2026-10-01T14:51:47.895Z"
   },
   "maintenance_issue_number": null
 }
