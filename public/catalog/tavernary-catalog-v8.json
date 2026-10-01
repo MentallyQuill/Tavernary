@@ -46125,24 +46125,25 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "ba2b531ea28f363bea663b1455737d350782f232",
         "report": {
-          "reportId": "77558b038621a6c09c28406adf73f3ff2e903adfbbca414a71039dda927ee03b",
+          "reportId": "80807a9a3a5811de527e85c9eb147663a15b6844040a1ec21fcb493f300a795f",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
-          "minorCautions": 1,
+          "minorCautions": 2,
           "materialConcerns": 0,
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
           "citedFindingIds": [
-            "2fd73a1ac74b5b95106d71a27e86b219d96d65e40846ec0b730f74b7cb610a51"
+            "21a5676942822e387c1480e526049a670e91f981a88b9c9a4c07a82d33bd83cb",
+            "9fa31c684b312dcfacce451cfa03436da05f0961492e7b702c00883f30b26076"
           ],
-          "scannedSha": "77d0588f0fdf6812aa83f4cb5663564008a5fe73",
-          "treeUrl": "https://github.com/izanagi771-stack/Story-Editor/tree/77d0588f0fdf6812aa83f4cb5663564008a5fe73",
-          "scannedAt": "2026-08-24T10:21:03.361Z",
-          "assessedAt": "2026-08-24T10:27:12.716Z",
+          "scannedSha": "ba2b531ea28f363bea663b1455737d350782f232",
+          "treeUrl": "https://github.com/izanagi771-stack/Story-Editor/tree/ba2b531ea28f363bea663b1455737d350782f232",
+          "scannedAt": "2026-10-01T14:46:42.783Z",
+          "assessedAt": "2026-10-01T14:49:17.707Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
@@ -46150,7 +46151,7 @@
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
           "javascriptAnalysisStatus": "complete",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319215459/77d0588f0fdf6812aa83f4cb5663564008a5fe73/5/77558b038621a6c09c28406adf73f3ff2e903adfbbca414a71039dda927ee03b/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319215459/ba2b531ea28f363bea663b1455737d350782f232/5/80807a9a3a5811de527e85c9eb147663a15b6844040a1ec21fcb493f300a795f/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319215459/history/"
         },
         "history": [
@@ -46202,6 +46203,33 @@
             "assessmentSource": "deterministic_regrade",
             "javascriptAnalysisStatus": "complete",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319215459/77d0588f0fdf6812aa83f4cb5663564008a5fe73/5/77558b038621a6c09c28406adf73f3ff2e903adfbbca414a71039dda927ee03b/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319215459/history/"
+          },
+          {
+            "reportId": "80807a9a3a5811de527e85c9eb147663a15b6844040a1ec21fcb493f300a795f",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 2,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "21a5676942822e387c1480e526049a670e91f981a88b9c9a4c07a82d33bd83cb",
+              "9fa31c684b312dcfacce451cfa03436da05f0961492e7b702c00883f30b26076"
+            ],
+            "scannedSha": "ba2b531ea28f363bea663b1455737d350782f232",
+            "treeUrl": "https://github.com/izanagi771-stack/Story-Editor/tree/ba2b531ea28f363bea663b1455737d350782f232",
+            "scannedAt": "2026-10-01T14:46:42.783Z",
+            "assessedAt": "2026-10-01T14:49:17.707Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319215459/ba2b531ea28f363bea663b1455737d350782f232/5/80807a9a3a5811de527e85c9eb147663a15b6844040a1ec21fcb493f300a795f/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319215459/history/"
           }
         ],
