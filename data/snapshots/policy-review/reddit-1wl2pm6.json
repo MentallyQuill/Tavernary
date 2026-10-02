@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "reddit-1wl2pm6",
+  "source_id": "url-reddit-1wl2pm6",
+  "source_identity": "url:https://www.reddit.com/r/SillyTavernAI/comments/1wl2pm6/my_personal_presets/",
+  "evidence_fingerprint": "2c6c7e6a19d4d06d460bee2514715e4507c0a96323daf267368341057875170e",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-10-02T19:23:17.179Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-10-02T19:23:17.179Z"
+  },
+  "maintenance_issue_number": null
+}
