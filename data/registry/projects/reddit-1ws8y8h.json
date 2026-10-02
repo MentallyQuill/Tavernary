@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "reddit-1ws8y8h",
+  "name": "I Present To You My First Original Preset",
+  "kind": "preset",
+  "summary": "A SillyTavern preset family with Universal and Chatfill variants that guides roleplay through cultural norms, social power, and the consequences of a story world's rules.",
+  "metadata_status": "curated",
+  "source_id": "url-reddit-1ws8y8h",
+  "frontends": ["sillytavern"],
+  "primary_function": "preset",
+  "tags": [],
+  "model_families": ["glm", "kimi"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-10-02T19:10:13.543Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Trusted Tavernary editor selection."
+    },
+    "tags": { "mode": "automatic" }
+  }
+}
