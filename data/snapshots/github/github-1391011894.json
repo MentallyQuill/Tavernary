@@ -1,0 +1,66 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1391011894",
+  "repository": {
+    "id": 1391011894,
+    "owner": "Lainholic",
+    "name": "Synapse_Engine",
+    "url": "https://github.com/Lainholic/Synapse_Engine",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "9d1b56fb6884a5c9cfdcd7807e8641ec4d012874",
+    "head_committed_at": "2026-10-02T15:59:35.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-09-27T15:12:36.000Z",
+    "size_kb": 124
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-10-02T15:53:19.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-10-02T15:53:19.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-27T15:44:43.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-10-02T19:52:32.485Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "9d1b56fb6884a5c9cfdcd7807e8641ec4d012874"
+  },
+  "community": {
+    "stars_count": 1,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 1
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-10-02T19:52:32.485Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "Lainholic", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-10-02T19:52:32.485Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

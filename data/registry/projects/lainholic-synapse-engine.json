@@ -1,0 +1,23 @@
+{
+  "schema_version": 6,
+  "id": "lainholic-synapse-engine",
+  "name": "Synapse_Engine",
+  "kind": "frontend",
+  "summary": "A single file, serverless AI roleplay interface built for SillyTavern style character chats.",
+  "metadata_status": "curated",
+  "source_id": "github-1391011894",
+  "frontends": ["synapse-engine"],
+  "primary_function": "frontend",
+  "tags": ["local-first", "mobile-friendly"],
+  "cataloged_at": "2026-10-02T19:52:32.485Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Trusted Tavernary editor selection."
+    },
+    "tags": { "mode": "automatic" }
+  }
+}
