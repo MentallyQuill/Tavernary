@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "lainholic-synapse-engine",
+  "source_id": "github-1391011894",
+  "source_identity": "github:lainholic/synapse_engine",
+  "evidence_fingerprint": "8f6d430b005cf4d4727a1d84c5e20b26844242c297118d59f619e0feb64eb850",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-10-02T20:10:25.169Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-10-02T20:10:25.169Z"
+  },
+  "maintenance_issue_number": null
+}
