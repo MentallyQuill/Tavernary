@@ -30798,6 +30798,112 @@
       }
     },
     {
+      "id": "doomedskull1011-sillytavernandroid",
+      "name": "SillyTavernAndroid",
+      "kind": "frontend",
+      "metadataStatus": "provisional",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": "An Android frontend for running and managing SillyTavern on mobile devices.",
+      "canonicalUrl": "https://github.com/doomedskull1011/SillyTavernAndroid",
+      "catalogedAt": "2026-10-02T19:16:15.846Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavernandroid",
+          "label": "SillyTavernAndroid",
+          "description": "Works with the SillyTavernAndroid roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "c6e0689e539935bd5dd89d7a569adeaf6317583b",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "doomedskull1011"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-12T11:19:04.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-09-12T11:32:21.000Z",
+      "community": {
+        "stars": 5,
+        "forks": 1,
+        "watchers": 0,
+        "aggregate": 6
+      },
+      "repositorySizeKb": 36732,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-10-02T19:16:15.846Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavernAndroid"
+        ],
+        "aliases": [],
+        "source": [
+          "doomedskull1011-sillytavernandroid",
+          "github-1359516136",
+          "doomedskull1011/SillyTavernAndroid",
+          "https://github.com/doomedskull1011/SillyTavernAndroid"
+        ],
+        "summary": [
+          "An Android frontend for running and managing SillyTavern on mobile devices."
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavernAndroid"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "doomedskull1011"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "driderr-sillytavern-contextspeedhud",
       "name": "SillyTavern-ContextSpeedHUD",
       "kind": "extension",
@@ -51711,13 +51817,85 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "c5febe65ad1fcc5fc216d6a77724fb96a9604ffa",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "8215814ad531066d83762f2499dc737a5004f40877e65a4b3e8b1268948aabf2",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 11,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "0ec7180090b08c59ce7bd8829045fe6750198ae6287b9c7848d50b23f4a3c826",
+            "146bbb92c0f4266319fa01aab8ec1ab85f19fd4ac7d3bc423f4087dfa89ca052",
+            "17065bb42574afa34f9e3714b6196cea9e4b70563e5e153748145e6a45ca3ad8",
+            "1f863edb6d2770deb36ee1e65a50ed2ed78b6c1576fd30a3023e52b6c9891715",
+            "25924484db6ee00612ec6d43f624ff98a6fa20d0fef1d0450a4e654b9b05b085",
+            "265db051240ff77100f295b5388dc67585fec5d6153e8b9dab658a25b18f4304",
+            "ae21ff82cb9743d1fe0e96c90a902bc98673d59d72de75da613b40bf453e1c84",
+            "aeef7e095bfa629946e7e88ac84d62b49486df5dccfb76056832264f8625a348",
+            "f5540554d042e0c9695cdeae327508a72161bde09679edafd02dfbeeac5e8676",
+            "f8e2b68f783f3fadb399c71695bce27324875fddbb06a710dad10bd6f26b3a36",
+            "f922ded245bd7a2cf13abca1bbddf7728b266db8b14eb8a637f1a8062dfe3b96"
+          ],
+          "scannedSha": "c5febe65ad1fcc5fc216d6a77724fb96a9604ffa",
+          "treeUrl": "https://github.com/kohz87/npc_state_delta/tree/c5febe65ad1fcc5fc216d6a77724fb96a9604ffa",
+          "scannedAt": "2026-10-02T19:47:05.958Z",
+          "assessedAt": "2026-10-02T19:49:12.768Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "javascriptAnalysisStatus": "complete",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1366168231/c5febe65ad1fcc5fc216d6a77724fb96a9604ffa/5/8215814ad531066d83762f2499dc737a5004f40877e65a4b3e8b1268948aabf2/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1366168231/history/"
+        },
+        "history": [
+          {
+            "reportId": "8215814ad531066d83762f2499dc737a5004f40877e65a4b3e8b1268948aabf2",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 11,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "0ec7180090b08c59ce7bd8829045fe6750198ae6287b9c7848d50b23f4a3c826",
+              "146bbb92c0f4266319fa01aab8ec1ab85f19fd4ac7d3bc423f4087dfa89ca052",
+              "17065bb42574afa34f9e3714b6196cea9e4b70563e5e153748145e6a45ca3ad8",
+              "1f863edb6d2770deb36ee1e65a50ed2ed78b6c1576fd30a3023e52b6c9891715",
+              "25924484db6ee00612ec6d43f624ff98a6fa20d0fef1d0450a4e654b9b05b085",
+              "265db051240ff77100f295b5388dc67585fec5d6153e8b9dab658a25b18f4304",
+              "ae21ff82cb9743d1fe0e96c90a902bc98673d59d72de75da613b40bf453e1c84",
+              "aeef7e095bfa629946e7e88ac84d62b49486df5dccfb76056832264f8625a348",
+              "f5540554d042e0c9695cdeae327508a72161bde09679edafd02dfbeeac5e8676",
+              "f8e2b68f783f3fadb399c71695bce27324875fddbb06a710dad10bd6f26b3a36",
+              "f922ded245bd7a2cf13abca1bbddf7728b266db8b14eb8a637f1a8062dfe3b96"
+            ],
+            "scannedSha": "c5febe65ad1fcc5fc216d6a77724fb96a9604ffa",
+            "treeUrl": "https://github.com/kohz87/npc_state_delta/tree/c5febe65ad1fcc5fc216d6a77724fb96a9604ffa",
+            "scannedAt": "2026-10-02T19:47:05.958Z",
+            "assessedAt": "2026-10-02T19:49:12.768Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1366168231/c5febe65ad1fcc5fc216d6a77724fb96a9604ffa/5/8215814ad531066d83762f2499dc737a5004f40877e65a4b3e8b1268948aabf2/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1366168231/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1366168231/"
       },
       "attribution": {
         "owner": {
