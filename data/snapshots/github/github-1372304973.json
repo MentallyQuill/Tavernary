@@ -9,21 +9,21 @@
     "url": "https://github.com/ChrisDitfort/SillyTavern-InnerLore",
     "description": "Living characters & world for SillyTavern — private NPC minds, automatic lore, world progression, and triggerable events backed by per-chat SQLite state",
     "default_branch": "main",
-    "head_sha": "47b805de1dfabfd4882327c8c8ea448b1011821a",
-    "head_committed_at": "2026-10-01T12:51:15.000Z",
+    "head_sha": "89538b6c83987a08e2c3c4085de410b225b360f0",
+    "head_committed_at": "2026-10-02T09:57:51.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-16T00:21:49.000Z",
-    "size_kb": 1232
+    "size_kb": 1746
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-01T12:51:15.000Z",
+    "latest_source_activity_at": "2026-10-02T09:57:51.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-28",
-        "latest_at": "2026-10-01T12:51:15.000Z",
+        "latest_at": "2026-10-02T09:57:51.000Z",
         "precision": "exact"
       },
       {
@@ -37,7 +37,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-10-01T14:33:13.449Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "47b805de1dfabfd4882327c8c8ea448b1011821a"
+    "evidence_head_sha": "89538b6c83987a08e2c3c4085de410b225b360f0"
   },
   "community": {
     "stars_count": 1,
@@ -50,7 +50,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-01T14:33:13.449Z",
+  "refreshed_at": "2026-10-02T13:56:01.628Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -60,7 +60,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-01T14:33:13.449Z",
+    "refreshed_at": "2026-10-02T13:56:01.628Z",
     "stale_since": null
   }
 }

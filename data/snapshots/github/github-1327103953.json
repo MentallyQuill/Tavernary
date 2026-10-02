@@ -9,18 +9,23 @@
     "url": "https://github.com/0cyris/SillyTavern-ImageGen",
     "description": "A fork of SillyTavern's built-in Image Generation extension.",
     "default_branch": "master",
-    "head_sha": "ea470ddfe8116fa573867cfd645bf413e31b1939",
-    "head_committed_at": "2026-08-09T02:27:14.000Z",
+    "head_sha": "52f8de8fd25d800d0139b7c80ddcd2540c894d67",
+    "head_committed_at": "2026-10-01T21:49:11.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-08-07T19:51:09.000Z",
-    "size_kb": 175
+    "size_kb": 241
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-09T02:27:14.000Z",
+    "latest_source_activity_at": "2026-10-01T21:49:05.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-10-01T21:49:05.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-03",
         "latest_at": "2026-08-09T02:27:14.000Z",
@@ -30,9 +35,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-07T22:08:22.010Z",
+    "baseline_completed_at": "2026-10-02T13:56:01.628Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "ea470ddfe8116fa573867cfd645bf413e31b1939"
+    "evidence_head_sha": "52f8de8fd25d800d0139b7c80ddcd2540c894d67"
   },
   "community": {
     "stars_count": 1,
@@ -45,15 +50,18 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-01T14:33:13.449Z",
+  "refreshed_at": "2026-10-02T13:56:01.628Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "0cyris", "type": "User", "provider": "github" }],
+    "accounts": [
+      { "login": "0cyris", "type": "User", "provider": "github" },
+      { "login": "claude", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-01T14:33:13.449Z",
+    "refreshed_at": "2026-10-02T13:56:01.628Z",
     "stale_since": null
   }
 }

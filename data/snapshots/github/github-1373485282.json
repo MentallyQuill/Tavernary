@@ -9,18 +9,23 @@
     "url": "https://github.com/Djonasus/SillyTavern-compressor",
     "description": null,
     "default_branch": "master",
-    "head_sha": "3fe757a17c00a1ffc6eef73f4d7a497441f6c846",
-    "head_committed_at": "2026-09-16T19:21:21.000Z",
+    "head_sha": "40238cc6d93e698d9e5a34c44af2772217cef67a",
+    "head_committed_at": "2026-10-01T21:15:18.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-16T18:25:32.000Z",
-    "size_kb": 23
+    "size_kb": 42
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-16T19:21:21.000Z",
+    "latest_source_activity_at": "2026-10-01T21:15:18.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-10-01T21:15:18.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-14",
         "latest_at": "2026-09-16T19:21:21.000Z",
@@ -30,9 +35,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-25T03:48:00.638Z",
+    "baseline_completed_at": "2026-10-02T13:56:01.628Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "3fe757a17c00a1ffc6eef73f4d7a497441f6c846"
+    "evidence_head_sha": "40238cc6d93e698d9e5a34c44af2772217cef67a"
   },
   "community": {
     "stars_count": 0,
@@ -41,7 +46,7 @@
     "aggregate": 0
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-10-01T14:33:13.449Z",
+  "refreshed_at": "2026-10-02T13:56:01.628Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -49,7 +54,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-01T14:33:13.449Z",
+    "refreshed_at": "2026-10-02T13:56:01.628Z",
     "stale_since": null
   }
 }
