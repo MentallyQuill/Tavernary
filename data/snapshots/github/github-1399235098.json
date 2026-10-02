@@ -1,0 +1,61 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1399235098",
+  "repository": {
+    "id": 1399235098,
+    "owner": "pathetic777",
+    "name": "st-tavern-architect",
+    "url": "https://github.com/pathetic777/st-tavern-architect",
+    "description": "3D Scene & Architecture Generator for SillyTavern via Dual-Agent & Three.js (Real-time Spatial Rendering)",
+    "default_branch": "main",
+    "head_sha": "d35214731058763836533e801f639d0a36340b0f",
+    "head_committed_at": "2026-10-02T10:35:16.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-10-01T05:49:39.000Z",
+    "size_kb": 37
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-10-02T10:35:16.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-10-02T10:35:16.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-10-02T19:16:53.759Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "d35214731058763836533e801f639d0a36340b0f"
+  },
+  "community": {
+    "stars_count": 12,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 12
+  },
+  "license": {
+    "status": "proprietary",
+    "spdx_id": null,
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-10-02T19:16:53.759Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "pathetic777", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-10-02T19:16:53.759Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
