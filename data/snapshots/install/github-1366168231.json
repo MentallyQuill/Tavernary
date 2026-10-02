@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1366168231",
+  "head_sha": "c5febe65ad1fcc5fc216d6a77724fb96a9604ffa",
+  "observed_at": "2026-10-02T19:24:08.236Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "npc_state_delta",
+  "manifest": {
+    "display_name": "NPC State Delta",
+    "key": null,
+    "minimum_client_version": "1.18.0"
+  }
+}

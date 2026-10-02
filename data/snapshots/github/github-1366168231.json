@@ -1,0 +1,78 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1366168231",
+  "repository": {
+    "id": 1366168231,
+    "owner": "kohz87",
+    "name": "npc_state_delta",
+    "url": "https://github.com/kohz87/npc_state_delta",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "c5febe65ad1fcc5fc216d6a77724fb96a9604ffa",
+    "head_committed_at": "2026-10-01T00:26:51.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-09-11T13:27:05.000Z",
+    "size_kb": 2310
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-10-01T00:25:01.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-10-01T00:25:01.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-27T15:56:08.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-19T15:34:50.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-13T15:53:07.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-10-02T19:15:05.409Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "c5febe65ad1fcc5fc216d6a77724fb96a9604ffa"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-10-02T19:15:05.409Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "kohz87", "type": "User", "provider": "github" },
+      { "login": "claude", "type": "User", "provider": "github" },
+      { "login": "codex", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-10-02T19:15:05.409Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
