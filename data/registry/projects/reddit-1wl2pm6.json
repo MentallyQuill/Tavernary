@@ -1,0 +1,22 @@
+{
+  "schema_version": 6,
+  "id": "reddit-1wl2pm6",
+  "name": "My Personal Presets",
+  "kind": "preset",
+  "summary": "A SillyTavern preset titled \"My Personal Presets,\" shared by its author as their personal prompt configuration; no further documentation is available from the supplied evidence.",
+  "metadata_status": "curated",
+  "source_id": "url-reddit-1wl2pm6",
+  "frontends": ["sillytavern"],
+  "primary_function": "preset",
+  "tags": [],
+  "model_families": ["deepseek", "gemini", "glm", "kimi"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-10-02T19:03:42.794Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
