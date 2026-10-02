@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "reddit-1ws8y8h",
+  "source_id": "url-reddit-1ws8y8h",
+  "source_identity": "url:https://www.reddit.com/r/SillyTavernAI/comments/1ws8y8h/i_present_to_you_my_first_original_preset/",
+  "evidence_fingerprint": "c3140453d4d931e47b03171a7a9985b295229e3a5d79f87bb2916ea130ba9495",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-10-02T19:28:22.383Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-10-02T19:28:22.383Z"
+  },
+  "maintenance_issue_number": null
+}
