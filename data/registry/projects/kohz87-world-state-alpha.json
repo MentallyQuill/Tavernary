@@ -1,0 +1,28 @@
+{
+  "schema_version": 6,
+  "id": "kohz87-world-state-alpha",
+  "name": "world_state_alpha",
+  "kind": "extension",
+  "summary": "A SillyTavern extension that tracks persistent world facts and retrieves relevant details to keep roleplay consistent.",
+  "metadata_status": "curated",
+  "source_id": "github-1379666281",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "maintain-long-term-memory",
+    "persistent-state",
+    "preserve-story-continuity",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-10-02T19:16:55.241Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Trusted Tavernary editor selection."
+    },
+    "tags": { "mode": "automatic" }
+  }
+}
