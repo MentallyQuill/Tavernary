@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1399235098",
+  "head_sha": "d35214731058763836533e801f639d0a36340b0f",
+  "observed_at": "2026-10-02T19:17:22.685Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "st-tavern-architect",
+  "manifest": {
+    "display_name": "酒馆建筑师 (Tavern Architect)",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

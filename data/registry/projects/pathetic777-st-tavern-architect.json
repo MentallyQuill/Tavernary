@@ -1,0 +1,23 @@
+{
+  "schema_version": 6,
+  "id": "pathetic777-st-tavern-architect",
+  "name": "st-tavern-architect",
+  "kind": "extension",
+  "summary": "A SillyTavern extension that creates interactive 3D environments from roleplay context and floorplans.",
+  "metadata_status": "curated",
+  "source_id": "github-1399235098",
+  "frontends": ["sillytavern"],
+  "primary_function": "rpg-systems",
+  "tags": ["add-visual-immersion"],
+  "cataloged_at": "2026-10-02T19:16:53.759Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Trusted Tavernary editor selection."
+    },
+    "tags": { "mode": "automatic" }
+  }
+}
