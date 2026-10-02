@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1379666281",
+  "head_sha": "2e194d3154dd9deefcac05c09eee84cbf355a938",
+  "observed_at": "2026-10-02T19:18:48.958Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "world_state_alpha",
+  "manifest": {
+    "display_name": "World State Alpha",
+    "key": null,
+    "minimum_client_version": "1.18.0"
+  }
+}
