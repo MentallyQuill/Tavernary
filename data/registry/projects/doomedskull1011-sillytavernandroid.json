@@ -1,0 +1,23 @@
+{
+  "schema_version": 6,
+  "id": "doomedskull1011-sillytavernandroid",
+  "name": "SillyTavernAndroid",
+  "kind": "frontend",
+  "summary": "An Android frontend for running and managing SillyTavern on mobile devices.",
+  "metadata_status": "provisional",
+  "source_id": "github-1359516136",
+  "frontends": ["sillytavernandroid"],
+  "primary_function": "frontend",
+  "tags": [],
+  "cataloged_at": "2026-10-02T19:16:15.846Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Trusted Tavernary editor selection."
+    },
+    "tags": { "mode": "automatic" }
+  }
+}
