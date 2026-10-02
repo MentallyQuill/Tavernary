@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "kohz87-world-state-alpha",
+  "source_id": "github-1379666281",
+  "source_identity": "github:kohz87/world_state_alpha",
+  "evidence_fingerprint": "24f09358f45fbac25a95bfd904f4dad3ec88df006e16800936b6b2557c8a330b",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-10-02T19:36:25.019Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-10-02T19:36:25.019Z"
+  },
+  "maintenance_issue_number": null
+}
