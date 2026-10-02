@@ -1,0 +1,30 @@
+{
+  "schema_version": 6,
+  "id": "kohz87-npc-state-delta",
+  "name": "npc_state_delta",
+  "kind": "extension",
+  "summary": "A SillyTavern extension that tracks NPC identities, relationships, memories, and world details across roleplay sessions.",
+  "metadata_status": "curated",
+  "source_id": "github-1366168231",
+  "frontends": ["sillytavern"],
+  "primary_function": "rpg-systems",
+  "tags": [
+    "generate-images",
+    "maintain-long-term-memory",
+    "manage-characters-and-personas",
+    "multi-stage-generation",
+    "persistent-state",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-10-02T19:15:05.409Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Trusted Tavernary editor selection."
+    },
+    "tags": { "mode": "automatic" }
+  }
+}
