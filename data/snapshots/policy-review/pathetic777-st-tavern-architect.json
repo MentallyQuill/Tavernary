@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "pathetic777-st-tavern-architect",
+  "source_id": "github-1399235098",
+  "source_identity": "github:pathetic777/st-tavern-architect",
+  "evidence_fingerprint": "796d45c90907cdd2aa7ad2227b2530a9c142e4057e35b7ccf5b3f5ba8008d439",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-10-02T19:34:13.779Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-10-02T19:34:13.779Z"
+  },
+  "maintenance_issue_number": null
+}
