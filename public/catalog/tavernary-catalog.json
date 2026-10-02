@@ -53587,6 +53587,134 @@
       }
     },
     {
+      "id": "lainholic-synapse-engine",
+      "name": "Synapse_Engine",
+      "kind": "frontend",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": "A single file, serverless AI roleplay interface built for SillyTavern style character chats.",
+      "canonicalUrl": "https://github.com/Lainholic/Synapse_Engine",
+      "catalogedAt": "2026-10-02T19:52:32.485Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "synapse-engine",
+          "label": "Synapse_Engine",
+          "description": "Works with the Synapse_Engine roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "local-first",
+          "label": "Local-first",
+          "description": "Keeps its primary data and workflow on the user's own device.",
+          "facet": "trait"
+        },
+        {
+          "id": "mobile-friendly",
+          "label": "Mobile-friendly",
+          "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "9d1b56fb6884a5c9cfdcd7807e8641ec4d012874",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Lainholic"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-02T15:53:19.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 1,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 1
+      },
+      "repositorySizeKb": 124,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-10-02T19:52:32.485Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "Synapse_Engine"
+        ],
+        "aliases": [],
+        "source": [
+          "lainholic-synapse-engine",
+          "github-1391011894",
+          "Lainholic/Synapse_Engine",
+          "https://github.com/Lainholic/Synapse_Engine"
+        ],
+        "summary": [
+          "A single file, serverless AI roleplay interface built for SillyTavern style character chats."
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [
+          "Local-first",
+          "stored locally",
+          "on-device data",
+          "local data ownership",
+          "Mobile-friendly",
+          "mobile support",
+          "phone friendly",
+          "responsive mobile UI"
+        ],
+        "frontends": [
+          "Synapse_Engine"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Lainholic"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "landozo-extension-slidermacros",
       "name": "Extension-SliderMacros",
       "kind": "extension",
