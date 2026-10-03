@@ -1,0 +1,22 @@
+{
+  "schema_version": 6,
+  "id": "deiomo-writer-s-block-unlimited",
+  "name": "Writer-s-Block-Unlimited",
+  "kind": "preset",
+  "summary": "A SillyTavern preset for AI roleplay and story generation that pairs always-on writing rules with a large menu of toggleable settings to dial in voice, pacing, and tone (README, overview section).",
+  "metadata_status": "curated",
+  "source_id": "github-1326245935",
+  "frontends": ["sillytavern"],
+  "primary_function": "preset",
+  "tags": ["guide-model-responses", "improve-writing-and-prose"],
+  "model_families": ["model-agnostic"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-10-03T18:23:06.431Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
