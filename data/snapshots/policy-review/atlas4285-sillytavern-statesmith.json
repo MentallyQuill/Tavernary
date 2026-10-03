@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "atlas4285-sillytavern-statesmith",
+  "source_id": "github-1388970601",
+  "source_identity": "github:atlas4285/sillytavern-statesmith",
+  "evidence_fingerprint": "7c02fcc5a377f00471fc7802511f834f4e69bf1b0c7fc9b9ce70dadca25a13a4",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-10-03T08:48:32.554Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-10-03T08:48:32.554Z"
+  },
+  "maintenance_issue_number": null
+}
