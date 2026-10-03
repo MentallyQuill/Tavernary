@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "atlas4285-sillytavern-nextactions",
+  "source_id": "github-1370082694",
+  "source_identity": "github:atlas4285/sillytavern-nextactions",
+  "evidence_fingerprint": "9c2ad29885def19f44eff568172ed36ec5c7a683279650dbf7d1bfef2b846442",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-10-03T09:12:41.020Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-10-03T09:12:41.020Z"
+  },
+  "maintenance_issue_number": null
+}
