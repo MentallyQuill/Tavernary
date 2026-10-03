@@ -3,14 +3,14 @@
   "project_id": "starlitcode-lumiverse-auto-refine",
   "source_id": "github-1354250444",
   "source_identity": "github:starlitcode/lumiverse-auto-refine",
-  "evidence_fingerprint": "007a085a1b4c684719fee2ca1bcb0bf70ea3d3d6310f12fdd6205be6fe5ba34d",
+  "evidence_fingerprint": "90b25352239b833fd22158ae1c1a5e897410e924f20bfa968feb70f075e072d7",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-09-23T13:06:24.357Z",
+  "reviewed_at": "2026-10-03T12:55:15.688Z",
   "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-23T13:06:24.357Z"
+    "attempts": 4,
+    "last_failure_at": "2026-10-03T12:55:15.688Z"
   },
   "maintenance_issue_number": null
 }
