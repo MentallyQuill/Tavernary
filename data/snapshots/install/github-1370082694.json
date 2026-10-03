@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1370082694",
+  "head_sha": "5408351c6495f2a0bfe9580f869f55b137f705a0",
+  "observed_at": "2026-10-03T08:52:10.319Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-NextActions",
+  "manifest": {
+    "display_name": "Next Actions",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
