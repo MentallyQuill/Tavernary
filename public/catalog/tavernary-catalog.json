@@ -9703,6 +9703,302 @@
       }
     },
     {
+      "id": "atlas4285-sillytavern-statesmith",
+      "name": "SillyTavern-StateSmith",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "rpg-systems",
+      "summary": "Track custom state fields through model-invoked tools and display them in SillyTavern.",
+      "canonicalUrl": "https://github.com/Atlas4285/SillyTavern-StateSmith",
+      "catalogedAt": "2026-10-03T08:33:35.477Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "agentic-tool-use",
+          "label": "Agentic tool use",
+          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
+          "facet": "trait"
+        },
+        {
+          "id": "move-and-back-up-data",
+          "label": "Move and back up data",
+          "description": "Import, export, synchronize, migrate, restore, or back up roleplay data.",
+          "facet": "goal"
+        },
+        {
+          "id": "multilingual",
+          "label": "Multilingual",
+          "description": "Explicitly supports use, authoring, or interfaces in multiple languages.",
+          "facet": "trait"
+        },
+        {
+          "id": "persistent-state",
+          "label": "Persistent state",
+          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
+          "facet": "trait"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "7cf1594e914cea266e00206a6702bf41c60d5715",
+        "report": {
+          "reportId": "a43dc108570e7e4a8c2bb7f045b523daf51ace147fcfec983659a1e5729e9c82",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 42,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "18cd844d5c5f4ddf6f7b652ec5466c4ecd19b486702417d352144dc5773be4a3",
+            "240e30aa06d72294043e8102e03f939be1c83db4d3e8780535da1ea21f4259b0",
+            "2e47d23598b0baafb39ccbbd312a11720cc67d954391e5b96f2d7aa95abae6d9",
+            "320910130f001e240c7f2b25eada7cbe7f6d3dd636eb6b0aa03389122ae53d2d",
+            "3633601f2080721e8b458e5a69e10967250d215608fbfb20beb5e474201b6b3d",
+            "3660a3981b0f11e74f096db91dfbbfff1097355ad05543de7a6a8cd11fc56aef",
+            "399740b8496a268b99efaeb0e7a012340469d2d650ac1d4bd296d4b38c3d3e4b",
+            "3ad2ba8c06dd2c939425f4c85e5152d1cdbb2f4119ca5ae23e5d7eb521bc1150",
+            "3cbb15defafab8087bec21f9d299630f568ed444ad562228d65851c8854b3b04",
+            "3f3d2978af37d79f973e4b1a8c0b8b32db6b1411b192f6af42de891cde673518",
+            "42a0a6c409c34647d5ce4fabd767ccc0f5f11cdcc952cda1bf36bc72552b8eb3",
+            "4adcf16dbb55b7621575290a4dc53e494f42fb7762a2ebaa07fdaa67298e4484",
+            "4b27dd34233a53433abc8d1e4b6e26c9ec33c6cc0459d2505b68b4ccf6d85965",
+            "59099b1880e3ece677a2acb44b4cfb433bffb3d2f77d207fb24328e5ee06c55c",
+            "626652c33b15b0d6e68848196641c576ae837e64afa4421aed9b7b4253a44c2b",
+            "64ce68dcd5343e197d5194e24a1259a82f3bed55964d09b674a24e124ef07da0",
+            "65f99d5916c7632d7e06aff7ed2c125c1cf76741c8154b70a670a43aacdf7d5d",
+            "73f0803f13dde59b80f3100e4a6662d7bb91717549eb227ccd3ba971d3c6702d",
+            "755201d42da197b7e5c525ed9a7fd3da1ff15f2c807518d08364083ca58b09f1",
+            "7a7e5e4c31d1a0c10683614c9ff6b8ba11607ae6f66a980bb933c413dc878e04",
+            "7c9549a72e65d1e911755c313ee85a0f50e66fe276a785c03c521452e21ebfb0",
+            "8333995046705a4c459abbe877d90a2e5aab1aef8d730858309947fd95215ccc",
+            "848b1eeebef223ac3ceaf33063098c3d4914eb00748abd786f3b5baa794c9ccf",
+            "867b55e8ccaf173f6685b81de5b3d92863309ca936ad2a58e7ec93b2d758c752",
+            "ab040994454be21e243513187b715363ad40105ac88a3fc5bf78fa31045aba1d",
+            "ad95ed3f570d75e596e10f9d610c393b3eb5e4e22901f504beee9ec45baca28a",
+            "b5debb6116d5e9622e24ab44044b40246daf94892dcdd56dd7013fc6b5a9c13f",
+            "b639e46a25e91272154d07930ea6445e86b225df94089306831fb6cb8868d4a6",
+            "b7dbbafc4284486bad3a7560b056183f03a2795ba62d05535cfd3f32f68705d2",
+            "c2f3f6b3c21db50b5169d76d11ecdd91f24930211fb6fd3f09df93fd37629fdf",
+            "c2ff4957efce170daf238cabc2ee805fd8f101dad82d61432860152def84ad28",
+            "d6f7c381b5236e1e26401505dc41a305500c7b990e428e48bf77fc98099848cb",
+            "d82af78e53d4cbb5343d54365902c93dd10c41cddfc591f132f4d1121465b53c",
+            "ddd2ee54e17dc513c15f72457a0d8a5a59721375353e5568fbb251da169cc037",
+            "de5b0ec6a8262a0f786d15511227a647b1defa7894ac5e2fde3420c54c949708",
+            "e15a9083597dac4a1cac16ba5d5aab28608caa9bcbbb26919f8a54a08ed44270",
+            "e185ec900d32613fcc7fd7b0cd46ae96a920d960ce27c896958f82084d624d36",
+            "e299245deb14d2c611c89fbe5145a369dcbf3ccdd52138aeb642719d0559be92",
+            "e44bd9eaff42d8f1d00955e1ae6e7c344a0d9f788d71d96bc9d1883f42ce5586",
+            "e815f4bfb1157cf720150a66bd5c9d9447ce014d6f6af777aa3b2a0665f58a45",
+            "e9e4cdc3d18b25bc5cb753391fa1edfb759f6f5f85bcc59ff01b55dc4ef31411",
+            "f7783e27a5ea07d03db80cf4471009d38b82610591d0f77887451d29ea54df1b"
+          ],
+          "scannedSha": "7cf1594e914cea266e00206a6702bf41c60d5715",
+          "treeUrl": "https://github.com/Atlas4285/SillyTavern-StateSmith/tree/7cf1594e914cea266e00206a6702bf41c60d5715",
+          "scannedAt": "2026-10-03T08:52:40.399Z",
+          "assessedAt": "2026-10-03T08:55:48.469Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1388970601/7cf1594e914cea266e00206a6702bf41c60d5715/5/a43dc108570e7e4a8c2bb7f045b523daf51ace147fcfec983659a1e5729e9c82/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1388970601/history/"
+        },
+        "history": [
+          {
+            "reportId": "a43dc108570e7e4a8c2bb7f045b523daf51ace147fcfec983659a1e5729e9c82",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 42,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "18cd844d5c5f4ddf6f7b652ec5466c4ecd19b486702417d352144dc5773be4a3",
+              "240e30aa06d72294043e8102e03f939be1c83db4d3e8780535da1ea21f4259b0",
+              "2e47d23598b0baafb39ccbbd312a11720cc67d954391e5b96f2d7aa95abae6d9",
+              "320910130f001e240c7f2b25eada7cbe7f6d3dd636eb6b0aa03389122ae53d2d",
+              "3633601f2080721e8b458e5a69e10967250d215608fbfb20beb5e474201b6b3d",
+              "3660a3981b0f11e74f096db91dfbbfff1097355ad05543de7a6a8cd11fc56aef",
+              "399740b8496a268b99efaeb0e7a012340469d2d650ac1d4bd296d4b38c3d3e4b",
+              "3ad2ba8c06dd2c939425f4c85e5152d1cdbb2f4119ca5ae23e5d7eb521bc1150",
+              "3cbb15defafab8087bec21f9d299630f568ed444ad562228d65851c8854b3b04",
+              "3f3d2978af37d79f973e4b1a8c0b8b32db6b1411b192f6af42de891cde673518",
+              "42a0a6c409c34647d5ce4fabd767ccc0f5f11cdcc952cda1bf36bc72552b8eb3",
+              "4adcf16dbb55b7621575290a4dc53e494f42fb7762a2ebaa07fdaa67298e4484",
+              "4b27dd34233a53433abc8d1e4b6e26c9ec33c6cc0459d2505b68b4ccf6d85965",
+              "59099b1880e3ece677a2acb44b4cfb433bffb3d2f77d207fb24328e5ee06c55c",
+              "626652c33b15b0d6e68848196641c576ae837e64afa4421aed9b7b4253a44c2b",
+              "64ce68dcd5343e197d5194e24a1259a82f3bed55964d09b674a24e124ef07da0",
+              "65f99d5916c7632d7e06aff7ed2c125c1cf76741c8154b70a670a43aacdf7d5d",
+              "73f0803f13dde59b80f3100e4a6662d7bb91717549eb227ccd3ba971d3c6702d",
+              "755201d42da197b7e5c525ed9a7fd3da1ff15f2c807518d08364083ca58b09f1",
+              "7a7e5e4c31d1a0c10683614c9ff6b8ba11607ae6f66a980bb933c413dc878e04",
+              "7c9549a72e65d1e911755c313ee85a0f50e66fe276a785c03c521452e21ebfb0",
+              "8333995046705a4c459abbe877d90a2e5aab1aef8d730858309947fd95215ccc",
+              "848b1eeebef223ac3ceaf33063098c3d4914eb00748abd786f3b5baa794c9ccf",
+              "867b55e8ccaf173f6685b81de5b3d92863309ca936ad2a58e7ec93b2d758c752",
+              "ab040994454be21e243513187b715363ad40105ac88a3fc5bf78fa31045aba1d",
+              "ad95ed3f570d75e596e10f9d610c393b3eb5e4e22901f504beee9ec45baca28a",
+              "b5debb6116d5e9622e24ab44044b40246daf94892dcdd56dd7013fc6b5a9c13f",
+              "b639e46a25e91272154d07930ea6445e86b225df94089306831fb6cb8868d4a6",
+              "b7dbbafc4284486bad3a7560b056183f03a2795ba62d05535cfd3f32f68705d2",
+              "c2f3f6b3c21db50b5169d76d11ecdd91f24930211fb6fd3f09df93fd37629fdf",
+              "c2ff4957efce170daf238cabc2ee805fd8f101dad82d61432860152def84ad28",
+              "d6f7c381b5236e1e26401505dc41a305500c7b990e428e48bf77fc98099848cb",
+              "d82af78e53d4cbb5343d54365902c93dd10c41cddfc591f132f4d1121465b53c",
+              "ddd2ee54e17dc513c15f72457a0d8a5a59721375353e5568fbb251da169cc037",
+              "de5b0ec6a8262a0f786d15511227a647b1defa7894ac5e2fde3420c54c949708",
+              "e15a9083597dac4a1cac16ba5d5aab28608caa9bcbbb26919f8a54a08ed44270",
+              "e185ec900d32613fcc7fd7b0cd46ae96a920d960ce27c896958f82084d624d36",
+              "e299245deb14d2c611c89fbe5145a369dcbf3ccdd52138aeb642719d0559be92",
+              "e44bd9eaff42d8f1d00955e1ae6e7c344a0d9f788d71d96bc9d1883f42ce5586",
+              "e815f4bfb1157cf720150a66bd5c9d9447ce014d6f6af777aa3b2a0665f58a45",
+              "e9e4cdc3d18b25bc5cb753391fa1edfb759f6f5f85bcc59ff01b55dc4ef31411",
+              "f7783e27a5ea07d03db80cf4471009d38b82610591d0f77887451d29ea54df1b"
+            ],
+            "scannedSha": "7cf1594e914cea266e00206a6702bf41c60d5715",
+            "treeUrl": "https://github.com/Atlas4285/SillyTavern-StateSmith/tree/7cf1594e914cea266e00206a6702bf41c60d5715",
+            "scannedAt": "2026-10-03T08:52:40.399Z",
+            "assessedAt": "2026-10-03T08:55:48.469Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1388970601/7cf1594e914cea266e00206a6702bf41c60d5715/5/a43dc108570e7e4a8c2bb7f045b523daf51ace147fcfec983659a1e5729e9c82/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1388970601/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1388970601/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Atlas4285"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-01T08:46:58.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 78,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-10-03T08:33:35.477Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Atlas4285/SillyTavern-StateSmith.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-StateSmith"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-StateSmith"
+        ],
+        "aliases": [],
+        "source": [
+          "atlas4285-sillytavern-statesmith",
+          "github-1388970601",
+          "Atlas4285/SillyTavern-StateSmith",
+          "https://github.com/Atlas4285/SillyTavern-StateSmith"
+        ],
+        "summary": [
+          "Track custom state fields through model-invoked tools and display them in SillyTavern."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "RPG systems and suites"
+        ],
+        "tags": [
+          "Agentic tool use",
+          "tool calling",
+          "AI agents",
+          "agent mode",
+          "Move and back up data",
+          "data portability",
+          "backup and restore",
+          "import and export",
+          "Multilingual",
+          "multiple languages",
+          "internationalized",
+          "cross-language support",
+          "Persistent state",
+          "durable state",
+          "state persistence",
+          "cross-session state",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Atlas4285"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "aventurasteam-aventuras",
       "name": "Aventuras",
       "kind": "frontend",
