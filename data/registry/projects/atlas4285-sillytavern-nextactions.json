@@ -1,0 +1,23 @@
+{
+  "schema_version": 6,
+  "id": "atlas4285-sillytavern-nextactions",
+  "name": "SillyTavern-NextActions",
+  "kind": "extension",
+  "summary": "Render clickable next-action buttons from structured tags in SillyTavern responses.",
+  "metadata_status": "curated",
+  "source_id": "github-1370082694",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-10-03T08:51:45.721Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "automatic" }
+  }
+}
