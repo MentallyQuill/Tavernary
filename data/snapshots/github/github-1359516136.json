@@ -37,12 +37,13 @@
   "community": {
     "stars_count": 5,
     "forks_count": 1,
-    "watchers_count": 0,
-    "aggregate": 6
+    "watchers_count": 1,
+    "aggregate": 7
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-10-02T19:16:15.846Z",
+  "refreshed_at": "2026-10-03T12:37:17.455Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "doomedskull1011", "type": "User", "provider": "github" }
@@ -50,8 +51,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-02T19:16:15.846Z",
+    "refreshed_at": "2026-10-03T12:37:17.455Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

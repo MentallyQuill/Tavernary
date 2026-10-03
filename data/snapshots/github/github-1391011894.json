@@ -50,8 +50,9 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-02T19:52:32.485Z",
+  "refreshed_at": "2026-10-03T12:37:17.455Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "Lainholic", "type": "User", "provider": "github" }
@@ -59,8 +60,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-02T19:52:32.485Z",
+    "refreshed_at": "2026-10-03T12:37:17.455Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

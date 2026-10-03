@@ -9,21 +9,21 @@
     "url": "https://github.com/unrefined803/RPGraph",
     "description": "AI roleplay with persistent characters, interactive stories, and an in-world phone with messaging and social media.",
     "default_branch": "main",
-    "head_sha": "2bbce60ee56632b1f2c60aee9c9df8fd424d027a",
-    "head_committed_at": "2026-10-01T23:58:32.000Z",
+    "head_sha": "31dcda4e1d1b2dc2cc078df977412950f6af3fec",
+    "head_committed_at": "2026-10-03T07:44:57.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-04T09:02:35.000Z",
-    "size_kb": 44686
+    "size_kb": 51425
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-01T23:58:32.000Z",
+    "latest_source_activity_at": "2026-10-03T07:44:57.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-28",
-        "latest_at": "2026-10-01T23:58:32.000Z",
+        "latest_at": "2026-10-03T07:44:57.000Z",
         "precision": "exact"
       },
       {
@@ -73,24 +73,24 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": null,
+    "latest_release_at": "2026-10-03T07:50:10.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-09-29T14:07:49.708Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "2bbce60ee56632b1f2c60aee9c9df8fd424d027a"
+    "evidence_head_sha": "31dcda4e1d1b2dc2cc078df977412950f6af3fec"
   },
   "community": {
-    "stars_count": 46,
+    "stars_count": 47,
     "forks_count": 5,
     "watchers_count": 2,
-    "aggregate": 53
+    "aggregate": 54
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-02T13:56:01.628Z",
+  "refreshed_at": "2026-10-03T12:37:17.455Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -103,7 +103,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-02T13:56:01.628Z",
+    "refreshed_at": "2026-10-03T12:37:17.455Z",
     "stale_since": null
   }
 }

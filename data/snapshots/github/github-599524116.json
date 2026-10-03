@@ -15,7 +15,7 @@
     "fork": false,
     "parent": null,
     "created_at": "2023-02-09T10:19:24.000Z",
-    "size_kb": 215797
+    "size_kb": 215670
   },
   "source_health": "healthy",
   "activity": {
@@ -65,17 +65,17 @@
     "evidence_head_sha": "06bde939fb1e9c4c8d8641d810f0a916b5bce127"
   },
   "community": {
-    "stars_count": 34020,
-    "forks_count": 6399,
+    "stars_count": 34038,
+    "forks_count": 6403,
     "watchers_count": 166,
-    "aggregate": 40585
+    "aggregate": 40607
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-02T13:56:01.628Z",
+  "refreshed_at": "2026-10-03T12:37:17.455Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -90,8 +90,8 @@
       { "login": "kingbri1", "type": "User", "provider": "github" },
       { "login": "city-unit", "type": "User", "provider": "github" },
       { "login": "GiveMeSomeUsername", "type": "User", "provider": "github" },
-      { "login": "RivelleDays", "type": "User", "provider": "github" },
       { "login": "RealBeepMcJeep", "type": "User", "provider": "github" },
+      { "login": "RivelleDays", "type": "User", "provider": "github" },
       { "login": "bmen25124", "type": "User", "provider": "github" },
       { "login": "BPplays", "type": "User", "provider": "github" },
       { "login": "Technologicat", "type": "User", "provider": "github" },
@@ -100,7 +100,6 @@
       { "login": "steve02081504", "type": "User", "provider": "github" },
       { "login": "DonMoralez", "type": "User", "provider": "github" },
       { "login": "artisticMink", "type": "User", "provider": "github" },
-      { "login": "BismuthGlass", "type": "User", "provider": "github" },
       { "login": "Bronya-Rand", "type": "User", "provider": "github" },
       { "login": "Succubyss", "type": "User", "provider": "github" },
       { "login": "deffcolony", "type": "User", "provider": "github" },
@@ -477,7 +476,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-02T13:56:01.628Z",
+    "refreshed_at": "2026-10-03T12:37:17.455Z",
     "stale_since": null
   }
 }

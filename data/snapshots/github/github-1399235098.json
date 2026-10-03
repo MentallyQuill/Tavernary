@@ -35,18 +35,19 @@
     "evidence_head_sha": "d35214731058763836533e801f639d0a36340b0f"
   },
   "community": {
-    "stars_count": 12,
+    "stars_count": 13,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 12
+    "aggregate": 13
   },
   "license": {
     "status": "proprietary",
     "spdx_id": null,
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-02T19:16:53.759Z",
+  "refreshed_at": "2026-10-03T12:37:17.455Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "pathetic777", "type": "User", "provider": "github" }
@@ -54,8 +55,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-02T19:16:53.759Z",
+    "refreshed_at": "2026-10-03T12:37:17.455Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

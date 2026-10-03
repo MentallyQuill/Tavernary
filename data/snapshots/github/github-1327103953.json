@@ -9,8 +9,8 @@
     "url": "https://github.com/0cyris/SillyTavern-ImageGen",
     "description": "A fork of SillyTavern's built-in Image Generation extension.",
     "default_branch": "master",
-    "head_sha": "52f8de8fd25d800d0139b7c80ddcd2540c894d67",
-    "head_committed_at": "2026-10-01T21:49:11.000Z",
+    "head_sha": "e22a05e9aa9b7cbca044810cdfaa07cda70e6cee",
+    "head_committed_at": "2026-10-02T01:58:29.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
@@ -19,11 +19,11 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-01T21:49:05.000Z",
+    "latest_source_activity_at": "2026-10-02T01:58:29.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-28",
-        "latest_at": "2026-10-01T21:49:05.000Z",
+        "latest_at": "2026-10-02T01:58:29.000Z",
         "precision": "exact"
       },
       {
@@ -37,7 +37,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-10-02T13:56:01.628Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "52f8de8fd25d800d0139b7c80ddcd2540c894d67"
+    "evidence_head_sha": "e22a05e9aa9b7cbca044810cdfaa07cda70e6cee"
   },
   "community": {
     "stars_count": 1,
@@ -50,7 +50,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-02T13:56:01.628Z",
+  "refreshed_at": "2026-10-03T12:37:17.455Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -61,7 +61,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-02T13:56:01.628Z",
+    "refreshed_at": "2026-10-03T12:37:17.455Z",
     "stale_since": null
   }
 }

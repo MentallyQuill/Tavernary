@@ -9,18 +9,23 @@
     "url": "https://github.com/prolix-oc/Lumiverse-SimTracker",
     "description": null,
     "default_branch": "main",
-    "head_sha": "1a76d48931f51b1ad10367954c0c6488f09f6d38",
-    "head_committed_at": "2026-09-17T08:39:16.000Z",
+    "head_sha": "f88b45e5804979ab8cd785d0888a841e61f13c44",
+    "head_committed_at": "2026-10-03T07:03:46.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-08T08:42:24.000Z",
-    "size_kb": 4189
+    "size_kb": 4225
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-17T08:39:16.000Z",
+    "latest_source_activity_at": "2026-10-03T07:03:46.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-10-03T07:03:46.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-14",
         "latest_at": "2026-09-17T08:39:16.000Z",
@@ -55,9 +60,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-17T12:37:59.664Z",
+    "baseline_completed_at": "2026-10-03T12:37:17.455Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "1a76d48931f51b1ad10367954c0c6488f09f6d38"
+    "evidence_head_sha": "f88b45e5804979ab8cd785d0888a841e61f13c44"
   },
   "community": {
     "stars_count": 11,
@@ -70,7 +75,7 @@
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-10-02T13:56:01.628Z",
+  "refreshed_at": "2026-10-03T12:37:17.455Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -81,7 +86,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-02T13:56:01.628Z",
+    "refreshed_at": "2026-10-03T12:37:17.455Z",
     "stale_since": null
   }
 }
