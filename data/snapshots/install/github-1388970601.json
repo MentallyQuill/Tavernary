@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1388970601",
+  "head_sha": "7cf1594e914cea266e00206a6702bf41c60d5715",
+  "observed_at": "2026-10-03T08:33:54.028Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-StateSmith",
+  "manifest": {
+    "display_name": "StateSmith",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

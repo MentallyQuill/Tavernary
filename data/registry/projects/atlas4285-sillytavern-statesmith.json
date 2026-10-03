@@ -1,0 +1,29 @@
+{
+  "schema_version": 6,
+  "id": "atlas4285-sillytavern-statesmith",
+  "name": "SillyTavern-StateSmith",
+  "kind": "extension",
+  "summary": "Track custom state fields through model-invoked tools and display them in SillyTavern.",
+  "metadata_status": "curated",
+  "source_id": "github-1388970601",
+  "frontends": ["sillytavern"],
+  "primary_function": "rpg-systems",
+  "tags": [
+    "agentic-tool-use",
+    "move-and-back-up-data",
+    "multilingual",
+    "persistent-state",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-10-03T08:33:35.477Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "automatic" }
+  }
+}
