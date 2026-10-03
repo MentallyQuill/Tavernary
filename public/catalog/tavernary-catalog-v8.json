@@ -28649,6 +28649,205 @@
       }
     },
     {
+      "id": "deiomo-writer-s-block-unlimited",
+      "name": "Writer-s-Block-Unlimited",
+      "kind": "preset",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "preset",
+      "summary": "A SillyTavern preset for AI roleplay and story generation that pairs always-on writing rules with a large menu of toggleable settings to dial in voice, pacing, and tone (README, overview section).",
+      "canonicalUrl": "https://github.com/deiomo/Writer-s-Block-Unlimited",
+      "catalogedAt": "2026-10-03T18:23:06.431Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
+          "facet": "goal"
+        },
+        {
+          "id": "improve-writing-and-prose",
+          "label": "Improve writing and prose",
+          "description": "Strengthen prose, dialogue, style, pacing, subtext, or general writing quality.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "8cd093f791227edcba607bf045fb35cddabcfdae",
+        "report": {
+          "reportId": "bdef5137e51fe761239693ef89ce2f3317a035762048fa4593ada8e6d55c728c",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "8cd093f791227edcba607bf045fb35cddabcfdae",
+          "treeUrl": "https://github.com/deiomo/Writer-s-Block-Unlimited/tree/8cd093f791227edcba607bf045fb35cddabcfdae",
+          "scannedAt": "2026-10-03T18:51:02.582Z",
+          "assessedAt": "2026-10-03T18:53:19.968Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "javascriptAnalysisStatus": "complete",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1326245935/8cd093f791227edcba607bf045fb35cddabcfdae/5/bdef5137e51fe761239693ef89ce2f3317a035762048fa4593ada8e6d55c728c/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1326245935/history/"
+        },
+        "history": [
+          {
+            "reportId": "bdef5137e51fe761239693ef89ce2f3317a035762048fa4593ada8e6d55c728c",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "8cd093f791227edcba607bf045fb35cddabcfdae",
+            "treeUrl": "https://github.com/deiomo/Writer-s-Block-Unlimited/tree/8cd093f791227edcba607bf045fb35cddabcfdae",
+            "scannedAt": "2026-10-03T18:51:02.582Z",
+            "assessedAt": "2026-10-03T18:53:19.968Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1326245935/8cd093f791227edcba607bf045fb35cddabcfdae/5/bdef5137e51fe761239693ef89ce2f3317a035762048fa4593ada8e6d55c728c/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1326245935/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1326245935/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "deiomo"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-03T11:00:45.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 1,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 1
+      },
+      "repositorySizeKb": 110,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": {
+        "version": null,
+        "publishedAt": null,
+        "artifactSizeBytes": null,
+        "modelFamilies": [
+          {
+            "id": "model-agnostic",
+            "label": "Model-Agnostic",
+            "description": "Designed to work across model families."
+          }
+        ],
+        "completionFormats": [
+          {
+            "id": "chat-completion",
+            "label": "Chat Completion",
+            "description": "Uses role-based chat messages."
+          }
+        ]
+      },
+      "refreshedAt": "2026-10-03T18:23:06.431Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "Writer-s-Block-Unlimited"
+        ],
+        "aliases": [],
+        "source": [
+          "deiomo-writer-s-block-unlimited",
+          "github-1326245935",
+          "deiomo/Writer-s-Block-Unlimited",
+          "https://github.com/deiomo/Writer-s-Block-Unlimited"
+        ],
+        "summary": [
+          "A SillyTavern preset for AI roleplay and story generation that pairs always-on writing rules with a large menu of toggleable settings to dial in voice, pacing, and tone (README, overview section)."
+        ],
+        "kind": [
+          "preset"
+        ],
+        "primaryFunction": [
+          "System Preset"
+        ],
+        "tags": [
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control",
+          "Improve writing and prose",
+          "writing assistance",
+          "prose improvement",
+          "co-writing"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [
+          "Model-Agnostic",
+          "universal",
+          "any model",
+          "Chat Completion"
+        ],
+        "maintainers": [
+          "deiomo"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "deiomo-writers-workbench",
       "name": "Writers-Workbench",
       "kind": "extension",
