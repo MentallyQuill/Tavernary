@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1399456536",
+  "head_sha": "f606b0d77c6a54db05a83650e680b65d8d192a2f",
+  "observed_at": "2026-10-03T08:52:47.484Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-ContextCompact",
+  "manifest": {
+    "display_name": "ContextCompact",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
