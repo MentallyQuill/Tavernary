@@ -1,0 +1,30 @@
+{
+  "schema_version": 6,
+  "id": "atlas4285-sillytavern-contextcompact",
+  "name": "SillyTavern-ContextCompact",
+  "kind": "extension",
+  "summary": "Compress older chat history into persistent memory while keeping recent messages in SillyTavern's context.",
+  "metadata_status": "curated",
+  "source_id": "github-1399456536",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "maintain-long-term-memory",
+    "manage-context-limits",
+    "multilingual",
+    "non-destructive",
+    "persistent-state",
+    "secondary-model"
+  ],
+  "cataloged_at": "2026-10-03T08:50:46.455Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "automatic" }
+  }
+}
