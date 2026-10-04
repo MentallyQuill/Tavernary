@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "lsennn-deus-ex-machina",
+  "source_id": "github-1294619050",
+  "source_identity": "github:lsennn/deus-ex-machina",
+  "evidence_fingerprint": "59ebd046e888d23fef510d375b7c8ab61abc53b85b3dbff6af195b37594ef79a",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-10-04T13:31:29.078Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-10-04T13:31:29.078Z"
+  },
+  "maintenance_issue_number": null
+}
