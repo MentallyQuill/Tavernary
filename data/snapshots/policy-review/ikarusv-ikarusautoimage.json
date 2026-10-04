@@ -3,14 +3,14 @@
   "project_id": "ikarusv-ikarusautoimage",
   "source_id": "github-1191978638",
   "source_identity": "github:ikarusv/ikarusautoimage",
-  "evidence_fingerprint": "5379e22ec356e95f8bb95fbf7168a0e719877b92d2203899fa5f6eac4e93a6c0",
+  "evidence_fingerprint": "f9955d30e53c40d69617b984b7c2abeb2ed8c83972c3e152e8d57e4a644f319e",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-12T08:53:15.784Z",
+  "reviewed_at": "2026-10-04T13:27:42.096Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-12T08:53:15.784Z"
+    "attempts": 2,
+    "last_failure_at": "2026-10-04T13:27:42.096Z"
   },
   "maintenance_issue_number": null
 }
