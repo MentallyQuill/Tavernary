@@ -9,21 +9,21 @@
     "url": "https://github.com/kohz87/npc_state_delta",
     "description": null,
     "default_branch": "main",
-    "head_sha": "c5febe65ad1fcc5fc216d6a77724fb96a9604ffa",
-    "head_committed_at": "2026-10-01T00:26:51.000Z",
+    "head_sha": "e944c2f64e83dec1a9b2be171b3a4f88cde7fc37",
+    "head_committed_at": "2026-10-04T09:35:31.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-11T13:27:05.000Z",
-    "size_kb": 2310
+    "size_kb": 3071
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-01T00:25:01.000Z",
+    "latest_source_activity_at": "2026-10-04T09:35:31.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-28",
-        "latest_at": "2026-10-01T00:25:01.000Z",
+        "latest_at": "2026-10-04T09:35:31.000Z",
         "precision": "exact"
       },
       {
@@ -47,20 +47,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-10-02T19:15:05.409Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "c5febe65ad1fcc5fc216d6a77724fb96a9604ffa"
+    "evidence_head_sha": "e944c2f64e83dec1a9b2be171b3a4f88cde7fc37"
   },
   "community": {
-    "stars_count": 0,
+    "stars_count": 1,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 0
+    "aggregate": 1
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-03T12:37:17.455Z",
+  "refreshed_at": "2026-10-04T13:16:53.818Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -72,7 +72,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-03T12:37:17.455Z",
+    "refreshed_at": "2026-10-04T13:16:53.818Z",
     "stale_since": null
   }
 }

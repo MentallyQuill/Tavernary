@@ -9,21 +9,21 @@
     "url": "https://github.com/SillyBunnyTeam/SillyBunny",
     "description": "A SillyTavern fork with Bun as the backend, along with UI/UX improvements",
     "default_branch": "release",
-    "head_sha": "70217a9968f7ea66520b7ab425b4adc1d97cda7c",
-    "head_committed_at": "2026-10-01T21:40:19.000Z",
+    "head_sha": "1b7b8c12c088c009fde0459ac7919417e6240456",
+    "head_committed_at": "2026-10-03T19:07:35.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-05T07:10:53.000Z",
-    "size_kb": 326634
+    "size_kb": 326952
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-01T21:31:35.000Z",
+    "latest_source_activity_at": "2026-10-03T19:07:35.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-28",
-        "latest_at": "2026-10-01T21:31:35.000Z",
+        "latest_at": "2026-10-03T19:07:35.000Z",
         "precision": "exact"
       },
       {
@@ -87,7 +87,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-10-02T13:56:01.628Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "70217a9968f7ea66520b7ab425b4adc1d97cda7c"
+    "evidence_head_sha": "1b7b8c12c088c009fde0459ac7919417e6240456"
   },
   "community": {
     "stars_count": 135,
@@ -100,7 +100,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-03T12:37:17.455Z",
+  "refreshed_at": "2026-10-04T13:16:53.818Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -506,7 +506,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-03T12:37:17.455Z",
+    "refreshed_at": "2026-10-04T13:16:53.818Z",
     "stale_since": null
   }
 }
