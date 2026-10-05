@@ -9,18 +9,23 @@
     "url": "https://github.com/kohz87/npc_state_delta",
     "description": null,
     "default_branch": "main",
-    "head_sha": "e944c2f64e83dec1a9b2be171b3a4f88cde7fc37",
-    "head_committed_at": "2026-10-04T09:35:31.000Z",
+    "head_sha": "52f9458f9f90924e57339a4741501510b08d26fc",
+    "head_committed_at": "2026-10-05T09:56:25.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-11T13:27:05.000Z",
-    "size_kb": 3071
+    "size_kb": 3347
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-04T09:35:31.000Z",
+    "latest_source_activity_at": "2026-10-05T09:54:09.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-05T09:54:09.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-28",
         "latest_at": "2026-10-04T09:35:31.000Z",
@@ -45,9 +50,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-02T19:15:05.409Z",
+    "baseline_completed_at": "2026-10-05T16:09:10.348Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "e944c2f64e83dec1a9b2be171b3a4f88cde7fc37"
+    "evidence_head_sha": "52f9458f9f90924e57339a4741501510b08d26fc"
   },
   "community": {
     "stars_count": 1,
@@ -60,7 +65,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-04T13:16:53.818Z",
+  "refreshed_at": "2026-10-05T16:09:10.348Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -72,7 +77,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-04T13:16:53.818Z",
+    "refreshed_at": "2026-10-05T16:09:10.348Z",
     "stale_since": null
   }
 }

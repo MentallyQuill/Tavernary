@@ -9,21 +9,21 @@
     "url": "https://github.com/SillyBunnyTeam/SillyBunny",
     "description": "A SillyTavern fork with Bun as the backend, along with UI/UX improvements",
     "default_branch": "release",
-    "head_sha": "1b7b8c12c088c009fde0459ac7919417e6240456",
-    "head_committed_at": "2026-10-03T19:07:35.000Z",
+    "head_sha": "6c6b611274540ae118cc71d4c16b00f67842ae63",
+    "head_committed_at": "2026-10-04T20:03:02.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-05T07:10:53.000Z",
-    "size_kb": 326952
+    "size_kb": 327754
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-03T19:07:35.000Z",
+    "latest_source_activity_at": "2026-10-04T20:03:02.000Z",
     "source_weeks": [
       {
         "week_start": "2026-09-28",
-        "latest_at": "2026-10-03T19:07:35.000Z",
+        "latest_at": "2026-10-04T20:03:02.000Z",
         "precision": "exact"
       },
       {
@@ -75,11 +75,6 @@
         "week_start": "2026-07-20",
         "latest_at": "2026-07-26T22:26:29.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-13",
-        "latest_at": "2026-07-17T06:13:30.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
@@ -87,7 +82,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-10-02T13:56:01.628Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "1b7b8c12c088c009fde0459ac7919417e6240456"
+    "evidence_head_sha": "6c6b611274540ae118cc71d4c16b00f67842ae63"
   },
   "community": {
     "stars_count": 135,
@@ -100,7 +95,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-04T13:16:53.818Z",
+  "refreshed_at": "2026-10-05T16:09:10.348Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -280,11 +275,11 @@
       { "login": "wickedcode01", "type": "User", "provider": "github" },
       { "login": "junshanxu", "type": "User", "provider": "github" },
       { "login": "A1KESH1", "type": "User", "provider": "github" },
-      { "login": "cxmplex", "type": "User", "provider": "github" },
-      { "login": "AyeeMinerva", "type": "User", "provider": "github" },
-      { "login": "bubfix", "type": "User", "provider": "github" },
       { "login": "BooleanWhale", "type": "User", "provider": "github" },
+      { "login": "bubfix", "type": "User", "provider": "github" },
       { "login": "andrempiva", "type": "User", "provider": "github" },
+      { "login": "AyeeMinerva", "type": "User", "provider": "github" },
+      { "login": "cxmplex", "type": "User", "provider": "github" },
       { "login": "Brioch", "type": "User", "provider": "github" },
       { "login": "chungchandev", "type": "User", "provider": "github" },
       { "login": "AliceRabbit", "type": "User", "provider": "github" },
@@ -296,11 +291,11 @@
       { "login": "Scarlet-t", "type": "User", "provider": "github" },
       { "login": "KTibow", "type": "User", "provider": "github" },
       { "login": "KhreedAI", "type": "User", "provider": "github" },
+      { "login": "AzureKarasuba", "type": "User", "provider": "github" },
       { "login": "iarna", "type": "User", "provider": "github" },
-      { "login": "PeterDaveHello", "type": "User", "provider": "github" },
       { "login": "rsxdalv", "type": "User", "provider": "github" },
       { "login": "SammCheese", "type": "User", "provider": "github" },
-      { "login": "AzureKarasuba", "type": "User", "provider": "github" },
+      { "login": "PeterDaveHello", "type": "User", "provider": "github" },
       { "login": "Pavdig", "type": "User", "provider": "github" },
       { "login": "paniphons", "type": "User", "provider": "github" },
       { "login": "NijikaMyWaifu", "type": "User", "provider": "github" },
@@ -308,10 +303,10 @@
       { "login": "NearEDGE", "type": "User", "provider": "github" },
       { "login": "mschienbein", "type": "User", "provider": "github" },
       { "login": "Miiiikachu", "type": "User", "provider": "github" },
-      { "login": "Kristyku", "type": "User", "provider": "github" },
-      { "login": "racinmat", "type": "User", "provider": "github" },
       { "login": "Meus-Artis", "type": "User", "provider": "github" },
       { "login": "toby3d", "type": "User", "provider": "github" },
+      { "login": "racinmat", "type": "User", "provider": "github" },
+      { "login": "Kristyku", "type": "User", "provider": "github" },
       { "login": "allo-", "type": "User", "provider": "github" },
       { "login": "allen9441", "type": "User", "provider": "github" },
       { "login": "axAilotl", "type": "User", "provider": "github" },
@@ -332,7 +327,7 @@
       { "login": "closuretxt", "type": "User", "provider": "github" },
       { "login": "coffeegrind123", "type": "User", "provider": "github" },
       { "login": "crsp6447", "type": "User", "provider": "github" },
-      { "login": "02loka", "type": "User", "provider": "github" },
+      { "login": "rdeforest", "type": "User", "provider": "github" },
       { "login": "Rojikku", "type": "User", "provider": "github" },
       { "login": "Roland4396", "type": "User", "provider": "github" },
       { "login": "Sanitised", "type": "User", "provider": "github" },
@@ -356,7 +351,7 @@
       { "login": "wbruna", "type": "User", "provider": "github" },
       { "login": "WanderingMouse", "type": "User", "provider": "github" },
       { "login": "YKDZ", "type": "User", "provider": "github" },
-      { "login": "daiaji", "type": "User", "provider": "github" },
+      { "login": "mekineer-com", "type": "User", "provider": "github" },
       { "login": "mrguymiah", "type": "User", "provider": "github" },
       { "login": "nfuller286", "type": "User", "provider": "github" },
       { "login": "nonenothingnada", "type": "User", "provider": "github" },
@@ -380,7 +375,7 @@
       { "login": "yokuminto", "type": "User", "provider": "github" },
       { "login": "zeroDtree", "type": "User", "provider": "github" },
       { "login": "zhongerxll", "type": "User", "provider": "github" },
-      { "login": "40436michael", "type": "User", "provider": "github" },
+      { "login": "daiaji", "type": "User", "provider": "github" },
       { "login": "duncannah", "type": "User", "provider": "github" },
       { "login": "epyllia", "type": "User", "provider": "github" },
       { "login": "cuteanon", "type": "User", "provider": "github" },
@@ -404,7 +399,7 @@
       { "login": "dylenyedc", "type": "User", "provider": "github" },
       { "login": "mashwell", "type": "User", "provider": "github" },
       { "login": "maxime-fleury", "type": "User", "provider": "github" },
-      { "login": "mekineer-com", "type": "User", "provider": "github" },
+      { "login": "02loka", "type": "User", "provider": "github" },
       { "login": "Crush0", "type": "User", "provider": "github" },
       { "login": "DN2331", "type": "User", "provider": "github" },
       { "login": "Dalethium", "type": "User", "provider": "github" },
@@ -455,7 +450,7 @@
       { "login": "chrisbennight", "type": "User", "provider": "github" },
       { "login": "kaiser-chris", "type": "User", "provider": "github" },
       { "login": "Claude", "type": "Bot", "provider": "github" },
-      { "login": "GoldenglowMeow", "type": "User", "provider": "github" },
+      { "login": "plumface-gcc", "type": "User", "provider": "github" },
       { "login": "MakksSh", "type": "User", "provider": "github" },
       { "login": "malformed-c", "type": "User", "provider": "github" },
       { "login": "manthanawgan", "type": "User", "provider": "github" },
@@ -478,7 +473,7 @@
       { "login": "Rawi1005", "type": "User", "provider": "github" },
       { "login": "rwflan", "type": "User", "provider": "github" },
       { "login": "rigbyb", "type": "User", "provider": "github" },
-      { "login": "rdeforest", "type": "User", "provider": "github" },
+      { "login": "GoldenglowMeow", "type": "User", "provider": "github" },
       { "login": "Goshe-nite", "type": "User", "provider": "github" },
       { "login": "Halsey1006", "type": "User", "provider": "github" },
       { "login": "hcsum", "type": "User", "provider": "github" },
@@ -500,13 +495,12 @@
       { "login": "Lockyer228", "type": "User", "provider": "github" },
       { "login": "lukasstraub2", "type": "User", "provider": "github" },
       { "login": "madobeichika", "type": "User", "provider": "github" },
-      { "login": "maeeeeee", "type": "User", "provider": "github" },
-      { "login": "plumface-gcc", "type": "User", "provider": "github" }
+      { "login": "maeeeeee", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-04T13:16:53.818Z",
+    "refreshed_at": "2026-10-05T16:09:10.348Z",
     "stale_since": null
   }
 }
