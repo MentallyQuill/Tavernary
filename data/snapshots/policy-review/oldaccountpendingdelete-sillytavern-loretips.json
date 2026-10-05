@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "oldaccountpendingdelete-sillytavern-loretips",
+  "source_id": "github-954256242",
+  "source_identity": "github:oldaccountpendingdelete/sillytavern-loretips",
+  "evidence_fingerprint": "70dcb057802c638a891af31a92b407820b01a9d42cf2bb31dd2a8f2c9763eb35",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-10-05T16:36:29.783Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-10-05T16:36:29.783Z"
+  },
+  "maintenance_issue_number": null
+}
