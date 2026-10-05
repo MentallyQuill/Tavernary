@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "lenanderson-sillytavern-sendbutton",
+  "source_id": "github-856585955",
+  "source_identity": "github:lenanderson/sillytavern-sendbutton",
+  "evidence_fingerprint": "5352f08adbb9349259f5185c3f8d1bf06bcbdac6635370e76d107217685b8d17",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-10-05T16:33:40.524Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-10-05T16:33:40.524Z"
+  },
+  "maintenance_issue_number": null
+}
