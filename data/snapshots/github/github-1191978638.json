@@ -9,18 +9,23 @@
     "url": "https://github.com/IkarusV/IkarusAutoImage",
     "description": "SillyTavern extension for automatic AI image generation with tag replacements, character prompts, and folder management",
     "default_branch": "main",
-    "head_sha": "510b0bc917215fa8f2c9e11014760dbdedad000d",
-    "head_committed_at": "2026-09-29T16:44:30.000Z",
+    "head_sha": "c2546da9c2271dace328034f7e66530988b36664",
+    "head_committed_at": "2026-10-05T22:13:27.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-25T19:16:55.000Z",
-    "size_kb": 547
+    "size_kb": 687
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-29T02:56:23.000Z",
+    "latest_source_activity_at": "2026-10-05T22:13:27.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-05T22:13:27.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-28",
         "latest_at": "2026-09-29T02:56:23.000Z",
@@ -50,19 +55,14 @@
         "week_start": "2026-07-27",
         "latest_at": "2026-08-02T02:52:17.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-13",
-        "latest_at": "2026-07-15T01:09:20.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-29T14:07:49.708Z",
+    "baseline_completed_at": "2026-10-06T14:16:03.206Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "510b0bc917215fa8f2c9e11014760dbdedad000d"
+    "evidence_head_sha": "c2546da9c2271dace328034f7e66530988b36664"
   },
   "community": {
     "stars_count": 2,
@@ -71,7 +71,7 @@
     "aggregate": 2
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-10-05T16:09:10.348Z",
+  "refreshed_at": "2026-10-06T14:16:03.206Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -79,7 +79,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-05T16:09:10.348Z",
+    "refreshed_at": "2026-10-06T14:16:03.206Z",
     "stale_since": null
   }
 }

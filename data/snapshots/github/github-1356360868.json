@@ -9,21 +9,26 @@
     "url": "https://github.com/deiomo/Writers-Workbench",
     "description": "A simple and easy character card builder for SillyTavern and other AI roleplay platforms.",
     "default_branch": "main",
-    "head_sha": "8fe2f8ae200e3c73bc213e163e20197b40107e93",
-    "head_committed_at": "2026-10-02T06:39:15.000Z",
+    "head_sha": "c5616e2ff8cf26adcc6e64cde8b500dce10698ad",
+    "head_committed_at": "2026-10-06T08:30:23.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-03T19:34:35.000Z",
-    "size_kb": 681
+    "size_kb": 688
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-02T06:35:26.000Z",
+    "latest_source_activity_at": "2026-10-06T08:28:05.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-06T08:28:05.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-09-28",
-        "latest_at": "2026-10-02T06:35:26.000Z",
+        "latest_at": "2026-10-02T21:31:26.000Z",
         "precision": "exact"
       },
       {
@@ -40,22 +45,22 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-02T13:56:01.628Z",
+    "baseline_completed_at": "2026-10-06T14:16:03.206Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "8fe2f8ae200e3c73bc213e163e20197b40107e93"
+    "evidence_head_sha": "c5616e2ff8cf26adcc6e64cde8b500dce10698ad"
   },
   "community": {
-    "stars_count": 32,
+    "stars_count": 33,
     "forks_count": 2,
     "watchers_count": 1,
-    "aggregate": 35
+    "aggregate": 36
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-05T16:09:10.348Z",
+  "refreshed_at": "2026-10-06T14:16:03.206Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -67,7 +72,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-05T16:09:10.348Z",
+    "refreshed_at": "2026-10-06T14:16:03.206Z",
     "stale_since": null
   }
 }

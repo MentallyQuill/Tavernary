@@ -9,21 +9,21 @@
     "url": "https://github.com/AventurasTeam/Aventuras",
     "description": "A frontend for LLM-based text adventure",
     "default_branch": "master",
-    "head_sha": "df824e633d922d5910c071a3a8db7a8e0efff325",
-    "head_committed_at": "2026-10-05T01:04:23.000Z",
+    "head_sha": "cfcb7f19fe1ba0eff4787c48e67f080fb20a04d7",
+    "head_committed_at": "2026-10-06T01:33:24.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-01T15:03:20.000Z",
-    "size_kb": 50194
+    "size_kb": 46300
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-05T01:04:23.000Z",
+    "latest_source_activity_at": "2026-10-06T01:33:24.000Z",
     "source_weeks": [
       {
         "week_start": "2026-10-05",
-        "latest_at": "2026-10-05T01:04:23.000Z",
+        "latest_at": "2026-10-06T01:33:24.000Z",
         "precision": "exact"
       },
       {
@@ -77,7 +77,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-10-05T16:09:10.348Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "df824e633d922d5910c071a3a8db7a8e0efff325"
+    "evidence_head_sha": "cfcb7f19fe1ba0eff4787c48e67f080fb20a04d7"
   },
   "community": {
     "stars_count": 208,
@@ -90,7 +90,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-10-05T16:09:10.348Z",
+  "refreshed_at": "2026-10-06T14:16:03.206Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -112,7 +112,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-05T16:09:10.348Z",
+    "refreshed_at": "2026-10-06T14:16:03.206Z",
     "stale_since": null
   }
 }

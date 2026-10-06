@@ -9,18 +9,23 @@
     "url": "https://github.com/Sagesheep/NarrativeEngine-P",
     "description": "Self-hosted AI Dungeon Master - run extended TTRPG campaigns with smart memory, living NPCs, and any OpenAI-compatible LLM",
     "default_branch": "main",
-    "head_sha": "c4534d4dff05dada12e5563cd5fc677ef4fd1542",
-    "head_committed_at": "2026-10-05T11:02:08.000Z",
+    "head_sha": "de0a64c37a93663aa42d0118884d00ba228656ed",
+    "head_committed_at": "2026-10-06T11:43:38.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-19T11:01:33.000Z",
-    "size_kb": 69801
+    "size_kb": 70010
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-04T23:18:11.000Z",
+    "latest_source_activity_at": "2026-10-06T11:43:38.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-06T11:43:38.000Z",
+        "precision": "interval"
+      },
       {
         "week_start": "2026-09-28",
         "latest_at": "2026-10-04T23:18:11.000Z",
@@ -82,7 +87,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-10-05T16:09:10.348Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "c4534d4dff05dada12e5563cd5fc677ef4fd1542"
+    "evidence_head_sha": "de0a64c37a93663aa42d0118884d00ba228656ed"
   },
   "community": {
     "stars_count": 101,
@@ -95,7 +100,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-05T16:09:10.348Z",
+  "refreshed_at": "2026-10-06T14:16:03.206Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -103,12 +108,13 @@
       { "login": "Sagesheep", "type": "User", "provider": "github" },
       { "login": "ericsonguk", "type": "User", "provider": "github" },
       { "login": "EliteCombine2", "type": "User", "provider": "github" },
-      { "login": "AradoX7", "type": "User", "provider": "github" }
+      { "login": "AradoX7", "type": "User", "provider": "github" },
+      { "login": "claude", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-05T16:09:10.348Z",
+    "refreshed_at": "2026-10-06T14:16:03.206Z",
     "stale_since": null
   }
 }

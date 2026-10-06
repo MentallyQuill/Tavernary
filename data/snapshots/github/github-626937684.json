@@ -9,13 +9,13 @@
     "url": "https://github.com/kwaroran/Risuai",
     "description": "Make your own story. User-friendly software for LLM roleplaying",
     "default_branch": "main",
-    "head_sha": "9f3b589b6e74230401a431a00fd977986d212870",
-    "head_committed_at": "2026-10-03T17:34:34.000Z",
+    "head_sha": "ea0871de01ab068daff874c73cbbd98ccf4c4066",
+    "head_committed_at": "2026-10-05T19:12:08.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2023-04-12T13:08:52.000Z",
-    "size_kb": 78368
+    "size_kb": 78382
   },
   "source_health": "healthy",
   "activity": {
@@ -75,39 +75,34 @@
         "week_start": "2026-07-20",
         "latest_at": "2026-07-25T10:25:16.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-13",
-        "latest_at": "2026-07-19T04:57:31.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-08-25T23:02:13.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-29T14:07:49.708Z",
+    "baseline_completed_at": "2026-10-06T14:16:03.206Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "9f3b589b6e74230401a431a00fd977986d212870"
+    "evidence_head_sha": "ea0871de01ab068daff874c73cbbd98ccf4c4066"
   },
   "community": {
-    "stars_count": 1711,
+    "stars_count": 1714,
     "forks_count": 353,
     "watchers_count": 24,
-    "aggregate": 2088
+    "aggregate": 2091
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-05T16:09:10.348Z",
+  "refreshed_at": "2026-10-06T14:16:03.206Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "kwaroran", "type": "User", "provider": "github" },
-      { "login": "sub-hub", "type": "User", "provider": "github" },
       { "login": "SameDesu123", "type": "User", "provider": "github" },
+      { "login": "sub-hub", "type": "User", "provider": "github" },
       { "login": "cubicj", "type": "User", "provider": "github" },
       { "login": "random-username-423", "type": "User", "provider": "github" },
       { "login": "enzi221", "type": "User", "provider": "github" },
@@ -193,7 +188,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-05T16:09:10.348Z",
+    "refreshed_at": "2026-10-06T14:16:03.206Z",
     "stale_since": null
   }
 }
