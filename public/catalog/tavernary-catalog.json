@@ -28326,7 +28326,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "preset",
-      "summary": "A SillyTavern preset for AI roleplay and story generation that pairs always-on writing rules with a large menu of toggleable settings to dial in voice, pacing, and tone (README, overview section).",
+      "summary": "A SillyTavern preset for creative writing and story generation that pairs always-on writing rules with a large menu of toggleable settings to dial in voice, pacing, and tones.",
       "canonicalUrl": "https://github.com/deiomo/Writer-s-Block-Unlimited",
       "catalogedAt": "2026-10-03T18:23:06.431Z",
       "catalogCohort": "standard",
@@ -28349,6 +28349,24 @@
           "label": "Improve writing and prose",
           "description": "Strengthen prose, dialogue, style, pacing, subtext, or general writing quality.",
           "facet": "goal"
+        },
+        {
+          "id": "add-structured-reasoning",
+          "label": "Add structured reasoning",
+          "description": "Introduce deliberate planning, reflection, critique, or multi-step thinking before output.",
+          "facet": "goal"
+        },
+        {
+          "id": "increase-narrative-variety",
+          "label": "Increase narrative variety",
+          "description": "Reduce repetition and introduce fresh actions, beats, twists, or response patterns.",
+          "facet": "goal"
+        },
+        {
+          "id": "modular-and-extensible",
+          "label": "Modular and extensible",
+          "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
+          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -28483,7 +28501,7 @@
           "https://github.com/deiomo/Writer-s-Block-Unlimited"
         ],
         "summary": [
-          "A SillyTavern preset for AI roleplay and story generation that pairs always-on writing rules with a large menu of toggleable settings to dial in voice, pacing, and tone (README, overview section)."
+          "A SillyTavern preset for creative writing and story generation that pairs always-on writing rules with a large menu of toggleable settings to dial in voice, pacing, and tones."
         ],
         "kind": [
           "preset"
@@ -28499,7 +28517,20 @@
           "Improve writing and prose",
           "writing assistance",
           "prose improvement",
-          "co-writing"
+          "co-writing",
+          "Add structured reasoning",
+          "reasoning pipelines",
+          "stepped thinking",
+          "planning reasoning",
+          "planning passes",
+          "Increase narrative variety",
+          "prevent repetition",
+          "plot variety",
+          "response diversity",
+          "Modular and extensible",
+          "plugin architecture",
+          "modular design",
+          "extensible system"
         ],
         "frontends": [
           "SillyTavern"
