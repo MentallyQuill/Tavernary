@@ -3,14 +3,14 @@
   "project_id": "maxwell5600-persona-library",
   "source_id": "github-1336934111",
   "source_identity": "github:maxwell5600/persona-library",
-  "evidence_fingerprint": "34981e692e524bc5f0594eb30a155675c056c8c039c26888917ea50e54c01201",
+  "evidence_fingerprint": "fc98744c6aba8b8792eaeb5daf64e6448a5a0e0af7977518ec2bd7e8d8210598",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-31T15:27:11.676Z",
+  "reviewed_at": "2026-10-07T14:55:34.368Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-31T15:27:11.676Z"
+    "attempts": 2,
+    "last_failure_at": "2026-10-07T14:55:34.368Z"
   },
   "maintenance_issue_number": null
 }
