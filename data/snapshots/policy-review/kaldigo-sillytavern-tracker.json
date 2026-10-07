@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "kaldigo-sillytavern-tracker",
+  "source_id": "github-884053465",
+  "source_identity": "github:kaldigo/sillytavern-tracker",
+  "evidence_fingerprint": "e2f637a250490037e23b3263f6ccf06573723d239d3e358d45120ceea8d95dd7",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-10-07T14:58:13.860Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-10-07T14:58:13.860Z"
+  },
+  "maintenance_issue_number": null
+}
