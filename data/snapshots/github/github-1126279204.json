@@ -9,21 +9,21 @@
     "url": "https://github.com/AventurasTeam/Aventuras",
     "description": "A frontend for LLM-based text adventure",
     "default_branch": "master",
-    "head_sha": "cfcb7f19fe1ba0eff4787c48e67f080fb20a04d7",
-    "head_committed_at": "2026-10-06T01:33:24.000Z",
+    "head_sha": "25af2145b2b58675c7bb82c7e096017f750562d0",
+    "head_committed_at": "2026-10-07T13:26:05.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-01T15:03:20.000Z",
-    "size_kb": 46300
+    "size_kb": 47114
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-06T01:33:24.000Z",
+    "latest_source_activity_at": "2026-10-07T13:26:05.000Z",
     "source_weeks": [
       {
         "week_start": "2026-10-05",
-        "latest_at": "2026-10-06T01:33:24.000Z",
+        "latest_at": "2026-10-07T13:26:05.000Z",
         "precision": "exact"
       },
       {
@@ -77,25 +77,24 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-10-05T16:09:10.348Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "cfcb7f19fe1ba0eff4787c48e67f080fb20a04d7"
+    "evidence_head_sha": "25af2145b2b58675c7bb82c7e096017f750562d0"
   },
   "community": {
     "stars_count": 208,
-    "forks_count": 33,
+    "forks_count": 32,
     "watchers_count": 13,
-    "aggregate": 254
+    "aggregate": 253
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-10-06T14:16:03.206Z",
+  "refreshed_at": "2026-10-07T14:35:00.644Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "munimunigamer", "type": "User", "provider": "github" },
       { "login": "unkarelian", "type": "User", "provider": "github" },
       { "login": "failerko", "type": "User", "provider": "github" },
       { "login": "a-frazier", "type": "User", "provider": "github" },
@@ -112,7 +111,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-06T14:16:03.206Z",
+    "refreshed_at": "2026-10-07T14:35:00.644Z",
     "stale_since": null
   }
 }

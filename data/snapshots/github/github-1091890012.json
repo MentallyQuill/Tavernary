@@ -53,7 +53,7 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-04T05:42:58.000Z",
+    "latest_release_at": "2026-10-06T16:31:09.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-10-05T16:09:10.348Z",
     "baseline_attempts": 0,
@@ -70,7 +70,7 @@
     "spdx_id": "GPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-06T14:16:03.206Z",
+  "refreshed_at": "2026-10-07T14:35:00.644Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -83,7 +83,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-06T14:16:03.206Z",
+    "refreshed_at": "2026-10-07T14:35:00.644Z",
     "stale_since": null
   }
 }

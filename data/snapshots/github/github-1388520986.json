@@ -9,21 +9,26 @@
     "url": "https://github.com/platberlitz/Neconyan",
     "description": "Nyanyan! The cutest AIRP frontend, Neconyan!",
     "default_branch": "main",
-    "head_sha": "e3b143e56976f5fcd0966660303800cf22692523",
-    "head_committed_at": "2026-10-04T05:31:57.000Z",
+    "head_sha": "2de24c50a7c05e7c00e18745261bcc78ac0bf9dd",
+    "head_committed_at": "2026-10-07T01:21:10.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-26T04:40:44.000Z",
-    "size_kb": 181511
+    "size_kb": 190063
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-04T05:31:57.000Z",
+    "latest_source_activity_at": "2026-10-07T01:21:10.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-07T01:21:10.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-09-28",
-        "latest_at": "2026-10-04T05:31:57.000Z",
+        "latest_at": "2026-10-04T08:36:43.000Z",
         "precision": "exact"
       },
       {
@@ -38,11 +43,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-04T06:23:58.000Z",
+    "latest_release_at": "2026-10-07T02:19:14.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-04T13:16:53.818Z",
+    "baseline_completed_at": "2026-10-07T14:35:00.644Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "e3b143e56976f5fcd0966660303800cf22692523"
+    "evidence_head_sha": "2de24c50a7c05e7c00e18745261bcc78ac0bf9dd"
   },
   "community": {
     "stars_count": 5,
@@ -55,7 +60,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-06T14:16:03.206Z",
+  "refreshed_at": "2026-10-07T14:35:00.644Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -67,7 +72,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-06T14:16:03.206Z",
+    "refreshed_at": "2026-10-07T14:35:00.644Z",
     "stale_since": null
   }
 }

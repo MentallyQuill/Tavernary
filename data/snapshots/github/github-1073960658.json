@@ -44,24 +44,24 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stars_count": 36,
+    "stars_count": 35,
     "forks_count": 5,
     "watchers_count": 1,
-    "aggregate": 42
+    "aggregate": 41
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-06T14:16:03.206Z",
+  "refreshed_at": "2026-10-07T14:35:00.644Z",
   "stale_since": null,
   "contributors": {
     "accounts": [],
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T06:46:55.988Z",
     "scan": null,
-    "refreshed_at": "2026-10-06T14:16:03.206Z",
+    "refreshed_at": "2026-10-07T14:35:00.644Z",
     "stale_since": null
   }
 }

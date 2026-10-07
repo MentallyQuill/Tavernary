@@ -9,21 +9,21 @@
     "url": "https://github.com/unrefined803/RPGraph",
     "description": "AI roleplay with persistent characters, interactive stories, and an in-world phone with messaging and social media.",
     "default_branch": "main",
-    "head_sha": "65780982b40c9ac26d93f045f5ccb2b5fd0e01ad",
-    "head_committed_at": "2026-10-05T01:27:01.000Z",
+    "head_sha": "b4c3cdd7c5f079dd39bc2a79bf480d22d4e2aa9e",
+    "head_committed_at": "2026-10-07T03:17:02.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-04T09:02:35.000Z",
-    "size_kb": 56116
+    "size_kb": 61085
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-05T01:27:01.000Z",
+    "latest_source_activity_at": "2026-10-07T03:17:02.000Z",
     "source_weeks": [
       {
         "week_start": "2026-10-05",
-        "latest_at": "2026-10-05T01:27:01.000Z",
+        "latest_at": "2026-10-07T03:17:02.000Z",
         "precision": "exact"
       },
       {
@@ -73,11 +73,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-05T01:30:48.000Z",
+    "latest_release_at": "2026-10-07T03:20:44.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-10-05T16:09:10.348Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "65780982b40c9ac26d93f045f5ccb2b5fd0e01ad"
+    "evidence_head_sha": "b4c3cdd7c5f079dd39bc2a79bf480d22d4e2aa9e"
   },
   "community": {
     "stars_count": 47,
@@ -90,7 +90,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-06T14:16:03.206Z",
+  "refreshed_at": "2026-10-07T14:35:00.644Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -103,7 +103,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-06T14:16:03.206Z",
+    "refreshed_at": "2026-10-07T14:35:00.644Z",
     "stale_since": null
   }
 }

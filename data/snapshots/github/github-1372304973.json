@@ -9,18 +9,23 @@
     "url": "https://github.com/ChrisDitfort/SillyTavern-InnerLore",
     "description": "Living characters & world for SillyTavern — private NPC minds, automatic lore, world progression, and triggerable events backed by per-chat SQLite state",
     "default_branch": "main",
-    "head_sha": "a59e2a475afdcf65b7a3f9a91fa39d0cbf464122",
-    "head_committed_at": "2026-10-04T23:02:11.000Z",
+    "head_sha": "f60223b8b0e015556636f0f4b5d3b8344d311f59",
+    "head_committed_at": "2026-10-07T09:03:34.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-16T00:21:49.000Z",
-    "size_kb": 2508
+    "size_kb": 1650
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-04T23:02:11.000Z",
+    "latest_source_activity_at": "2026-10-07T09:03:34.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-07T09:03:34.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-28",
         "latest_at": "2026-10-04T23:02:11.000Z",
@@ -35,9 +40,9 @@
     "provisional_weeks": null,
     "latest_release_at": "2026-09-16T20:24:48.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-01T14:33:13.449Z",
+    "baseline_completed_at": "2026-10-07T14:35:00.644Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "a59e2a475afdcf65b7a3f9a91fa39d0cbf464122"
+    "evidence_head_sha": "f60223b8b0e015556636f0f4b5d3b8344d311f59"
   },
   "community": {
     "stars_count": 2,
@@ -50,7 +55,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-06T14:16:03.206Z",
+  "refreshed_at": "2026-10-07T14:35:00.644Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -60,7 +65,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-06T14:16:03.206Z",
+    "refreshed_at": "2026-10-07T14:35:00.644Z",
     "stale_since": null
   }
 }

@@ -30,16 +30,16 @@
   },
   "community": {
     "stars_count": 317,
-    "forks_count": 72,
+    "forks_count": 71,
     "watchers_count": 6,
-    "aggregate": 395
+    "aggregate": 394
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-06T14:16:03.206Z",
+  "refreshed_at": "2026-10-07T14:35:00.644Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -47,7 +47,6 @@
       { "login": "SpicyMarinara", "type": "User", "provider": "github" },
       { "login": "paperboygold", "type": "User", "provider": "github" },
       { "login": "tomt610", "type": "User", "provider": "github" },
-      { "login": "munimunigamer", "type": "User", "provider": "github" },
       { "login": "jlasz", "type": "User", "provider": "github" },
       { "login": "Subarashimo", "type": "User", "provider": "github" },
       { "login": "IDeathByte", "type": "User", "provider": "github" },
@@ -69,7 +68,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-06T14:16:03.206Z",
+    "refreshed_at": "2026-10-07T14:35:00.644Z",
     "stale_since": null
   }
 }
