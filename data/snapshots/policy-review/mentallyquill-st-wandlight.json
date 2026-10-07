@@ -3,14 +3,14 @@
   "project_id": "mentallyquill-st-wandlight",
   "source_id": "github-1246232030",
   "source_identity": "github:mentallyquill/st-wandlight",
-  "evidence_fingerprint": "eb48f16962d0265e999334c717477ae20a2cc43c175a5ccf41b67a4bc4c83123",
+  "evidence_fingerprint": "fddfbae06ee12b84923d2e80679ca2b2b6f679bbbbb0f318f620abb5ba63a790",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-03T09:08:19.601Z",
+  "reviewed_at": "2026-10-07T14:51:32.763Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-03T09:08:19.601Z"
+    "attempts": 2,
+    "last_failure_at": "2026-10-07T14:51:32.763Z"
   },
   "maintenance_issue_number": null
 }
