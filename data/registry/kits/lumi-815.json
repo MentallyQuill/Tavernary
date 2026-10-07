@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "id": "lumi-815",
+  "status": "published",
+  "title": "lumi",
+  "description": "awesome",
+  "author": {
+    "github_user_id": 238270207,
+    "login": "sammysparks000"
+  },
+  "source_issue_number": 815,
+  "project_ids": [
+    "prolix-oc-lumiverse",
+    "sca255-lumiverse-autoimg",
+    "amousepad-hone",
+    "valdoix-vellum-engine",
+    "cfigure-lumiverse-shutter",
+    "prolix-oc-lumiverse-xtimeline",
+    "amousepad-lumirealm",
+    "amousepad-lumiagent"
+  ],
+  "published_at": "2026-10-07T00:10:38.686Z",
+  "updated_at": "2026-10-07T00:10:38.686Z"
+}
