@@ -3,14 +3,14 @@
   "project_id": "deiomo-writer-s-block-unlimited",
   "source_id": "github-1326245935",
   "source_identity": "github:deiomo/writer-s-block-unlimited",
-  "evidence_fingerprint": "0fb7a14c167263866425aa588171f72549bf95003d167ae51f6da7b8c345d705",
+  "evidence_fingerprint": "0a1145bc294577bf51a51e00f2347faf92496a9b7aa9dd65113fc1af6fd23ece",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-10-03T18:45:50.768Z",
+  "reviewed_at": "2026-10-07T04:04:45.960Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-10-03T18:45:50.768Z"
+    "attempts": 2,
+    "last_failure_at": "2026-10-07T04:04:45.960Z"
   },
   "maintenance_issue_number": null
 }
