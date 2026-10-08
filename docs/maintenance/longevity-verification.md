@@ -396,6 +396,28 @@ subsequent updates, detached records, executable data and substituted objects.
 Task 2 migrations, all later phases, independent review, CI, merge and actual
 production verification remain outstanding.
 
+### Coalesced publication recovery
+
+Ruling: only the current global deployment operation requests Pages; domain
+publication operations await that confirmed export. Otherwise twenty older
+published operations can occupy the quota and repeatedly build stale revisions.
+Authenticated active Pages runs coalesce the requested revision; foreign actors
+and forks cannot suppress recovery. Confirmed descendant exports cover earlier
+canonical publications through bounded batched Git ancestry reads.
+
+Ruling: private metadata-only commits finish without a public deployment, while
+private advisory commits remain eligible for notice finalization. Confirmation
+failures retain their published revision and durable backoff. Equal receipt
+state returns before rebuilding its timestamps, preventing terminal heartbeats.
+
+Evidence: all 299 unit files / 3,221 tests passed; type checking, focused lint,
+formatting and whitespace checks passed. New regression tests first failed for
+duplicate Pages dispatch, starvation, private-only publication, active-run
+custody, confirmation backoff and terminal timestamps, then passed. Publication
+Task 2 remains in progress: native finalization, legacy writer migration and
+canonical Kit history still require completion. Same-revision build identity
+races and maintenance quota recovery remain integration obligations.
+
 ### Exact revision manifest and monotonic Pages deployment
 
 The complete export contains `revision.json`, binding the exact source SHA, build

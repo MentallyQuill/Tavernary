@@ -2,6 +2,32 @@ import { expect, test } from "vitest";
 import { discoverDeploymentOperations } from "../../scripts/automation/deployment-operations.mjs";
 import { deploymentInventoryFixture } from "../helpers/automation-fixtures";
 import { validateAutomationOperation } from "../../scripts/automation/operation.mjs";
+import { deploymentArtifactFixture } from "../helpers/deployment-artifact-fixtures";
+
+test("an authoritative in-flight Pages run coalesces the current deployment while a fork or foreign dispatch cannot", () => {
+  const input = deploymentInventoryFixture(),
+    run = deploymentArtifactFixture().run;
+  input.repository = "MentallyQuill/Tavernary";
+  input.publisherActorId = 4624827;
+  run.display_title = `Site: Deploy ${input.mainHeadSha}`;
+  run.status = "in_progress";
+  input.runs = [run];
+  expect(discoverDeploymentOperations(input)[0]).toMatchObject({
+    stage: "deployment-requested",
+    workerRunId: 42,
+  });
+  run.actor.id = 99;
+  expect(discoverDeploymentOperations(input)[0]).toMatchObject({
+    stage: "published",
+    workerRunId: null,
+  });
+  run.actor.id = 4624827;
+  run.head_repository.id = 101;
+  expect(discoverDeploymentOperations(input)[0]).toMatchObject({
+    stage: "published",
+    workerRunId: null,
+  });
+});
 
 test("a bookkeeping-only head recovers the latest publishable ancestor exactly once", () => {
   const input = deploymentInventoryFixture();

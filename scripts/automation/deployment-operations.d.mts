@@ -28,6 +28,7 @@ export interface DeploymentInventoryInput extends InventoryWorkerState {
   }>;
   deployments: DeploymentInventoryEvidence[];
   activeDeployment?: ActiveDeployment | null;
+  isAncestor?: (ancestor: string, descendant: string) => boolean | null;
 }
 export function discoverDeploymentOperations(
   input: DeploymentInventoryInput,

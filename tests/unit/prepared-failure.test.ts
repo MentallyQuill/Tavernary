@@ -42,6 +42,32 @@ test("an unavailable prepared artifact persists bounded retry state without leak
   ).toBeGreaterThanOrEqual(300_000);
   expect(JSON.stringify(receipt)).not.toContain("secret-token");
 });
+test("an unavailable public deployment persists confirmation backoff while preserving its canonical publication", async () => {
+  const input = fixture();
+  const operation = operationFixture({
+    stage: "deployment-requested",
+    identity: {
+      kind: "deployment",
+      subject: `revision:${"b".repeat(40)}`,
+      inputDigest: "a".repeat(64),
+      policyVersion: "1",
+    },
+  });
+  input.replace(operation);
+  const result = await persistPreparedFailure({
+    ...input,
+    operationKey: operation.key,
+    error: { code: "provider-unavailable" },
+  });
+  expect(result.persisted).toBe(true);
+  expect(input.persist.mock.calls[0][0].operation).toMatchObject({
+    stage: "deployment-requested",
+    expectedSha: operation.expectedSha,
+    retry: {
+      failure: { kind: "transient", reasonCode: "provider-unavailable" },
+    },
+  });
+});
 
 test("an intent-only dispatch delay cannot hide an authenticated budget refusal", async () => {
   const input = fixture();

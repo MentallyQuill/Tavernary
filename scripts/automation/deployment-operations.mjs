@@ -7,6 +7,7 @@ import { fingerprintProjectPublicationInput } from "../publication/project-publi
 import {
   recoverInventoryWorker,
   trustedOperationWorkerRuns,
+  isInventoryWorkerActive,
 } from "./inventory-worker.mjs";
 const digest = /^[a-f0-9]{64}$/u;
 const sha = /^[a-f0-9]{40}$/u;
@@ -72,12 +73,47 @@ export function discoverDeploymentOperations(input) {
   const confirmed = active
     ? isConfirmedDeployment(active.deployment, commit)
     : matching.some((deployment) => isConfirmedDeployment(deployment, commit));
+  const pages = (input.runs ?? [])
+    .filter(
+      (run) =>
+        input.repository === "MentallyQuill/Tavernary" &&
+        Number.isSafeInteger(input.publisherActorId) &&
+        input.publisherActorId > 0 &&
+        run.path === ".github/workflows/deploy-pages.yml" &&
+        run.head_branch === "main" &&
+        run.display_title === `Site: Deploy ${commit.sha}` &&
+        Number.isSafeInteger(run.id) &&
+        run.id > 0 &&
+        Number.isSafeInteger(run.run_attempt) &&
+        run.run_attempt > 0 &&
+        sha.test(run.head_sha ?? "") &&
+        Number.isSafeInteger(run.repository?.id) &&
+        run.repository.id > 0 &&
+        run.repository.full_name === input.repository &&
+        run.head_repository?.id === run.repository.id &&
+        run.head_repository.full_name === input.repository &&
+        Number.isSafeInteger(run.actor?.id) &&
+        run.actor.id > 0 &&
+        (run.event === "push" ||
+          (run.event === "workflow_dispatch" &&
+            [2625904, input.publisherActorId].includes(run.actor.id))) &&
+        (run.head_sha === commit.sha ||
+          run.head_sha === input.mainHeadSha ||
+          input.isAncestor?.(run.head_sha, input.mainHeadSha) === true),
+    )
+    .sort((a, b) => b.id - a.id);
+  const inFlight = pages.find(isInventoryWorkerActive);
+  const successful = pages.find(
+    (run) => run.status === "completed" && run.conclusion === "success",
+  );
   const operation = {
     key: operationKey(identity),
     identity,
     stage: confirmed
       ? "deployment-confirmed"
-      : matching.some(
+      : inFlight ||
+          successful ||
+          matching.some(
             (deployment) =>
               deployment.status === "requested" ||
               (!active && deployment.status === "confirmed"),
@@ -90,11 +126,11 @@ export function discoverDeploymentOperations(input) {
     workerRunId: null,
     retry: null,
   };
-  if (!confirmed)
-    recoverInventoryWorker(
-      operation,
-      input,
-      trustedOperationWorkerRuns(input, operation),
-    );
+  if (!confirmed && inFlight) operation.workerRunId = inFlight.id;
+  else if (!confirmed)
+    recoverInventoryWorker(operation, input, [
+      ...pages,
+      ...trustedOperationWorkerRuns(input, operation),
+    ]);
   return [operation];
 }

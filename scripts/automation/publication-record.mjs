@@ -158,14 +158,24 @@ export function discoverCanonicalPublications({
         receipt.operation.key === record.operation.key &&
         receipt.operation.expectedSha === revision,
     );
-    const confirmed = confirmedRevisions.includes(revision);
-    const stage = confirmed
-      ? receipt?.operation.stage === "finalized"
+    const privateOnly =
+      ["metadata", "advisory"].includes(record.operation.identity.kind) &&
+      record.files.every((file) =>
+        /^data\/(?:snapshots\/policy-review|maintenance\/automation\/metadata)\//u.test(
+          file.path,
+        ),
+      );
+    const confirmed = privateOnly || confirmedRevisions.includes(revision);
+    const stage =
+      privateOnly && record.operation.identity.kind === "metadata"
         ? "finalized"
-        : "deployment-confirmed"
-      : requestedRevisions.includes(revision)
-        ? "deployment-requested"
-        : "published";
+        : confirmed
+          ? receipt?.operation.stage === "finalized"
+            ? "finalized"
+            : "deployment-confirmed"
+          : requestedRevisions.includes(revision)
+            ? "deployment-requested"
+            : "published";
     operations.push(
       validateAutomationOperation({
         ...record.operation,

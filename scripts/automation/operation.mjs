@@ -177,6 +177,8 @@ export function selectDueOperations(operations, { nowMs, limit = 20 }) {
         (operation) =>
           operation.workerRunId !== null ||
           operation.stage === "finalized" ||
+          (operation.identity.kind !== "deployment" &&
+            ["published", "deployment-requested"].includes(operation.stage)) ||
           operation.retry?.failure.kind === "permanent",
       )
       .map((operation) => operation.key),

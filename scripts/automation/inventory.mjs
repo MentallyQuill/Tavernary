@@ -11,6 +11,7 @@ import { discoverKitOperations } from "./kit-operations.mjs";
 import { discoverCatalogOperations } from "./catalog-operations.mjs";
 import { discoverReportOperations } from "./report-operations.mjs";
 import { discoverDeploymentOperations } from "./deployment-operations.mjs";
+import { readDeploymentCoverage } from "./deployment-coverage.mjs";
 import {
   readLatestPublishableRevision,
   readAuthoritativeActiveDeployment,
@@ -163,6 +164,23 @@ export function discoverAutomationState(state) {
       ],
       deployments: local.deployments,
       activeDeployment: local.activeDeployment ?? null,
+      isAncestor: (ancestor, descendant) => {
+        try {
+          execFileSync(
+            "git",
+            ["merge-base", "--is-ancestor", ancestor, descendant],
+            {
+              cwd: state.root,
+              timeout: 30000,
+              stdio: "ignore",
+              windowsHide: true,
+            },
+          );
+          return true;
+        } catch (error) {
+          return error.status === 1 ? false : null;
+        }
+      },
     }),
   ];
   return [
@@ -330,7 +348,7 @@ export async function loadAutomationInventory({
   });
   local.publications = publicationProof.publications;
   local.publicationFileDigests = publicationProof.fileDigests;
-  local.confirmedRevisions = verifiedAutomationDeployments({
+  const confirmedSources = verifiedAutomationDeployments({
     deployments,
     activeDeployment,
     nowMs,
@@ -349,6 +367,22 @@ export async function loadAutomationInventory({
         return false;
       }
     },
+  });
+  local.confirmedRevisions = readDeploymentCoverage({
+    root,
+    sourceShas: confirmedSources,
+    candidates: [
+      ...confirmedSources,
+      ...publicationProof.publications.map(
+        (publication) => publication.revision,
+      ),
+      ...(remote.pulls ?? [])
+        .map((pull) => pull.merge_commit_sha)
+        .filter(
+          (value) => typeof value === "string" && /^[a-f0-9]{40}$/u.test(value),
+        ),
+      local.publishableRevision,
+    ],
   });
   const state = {
     root,

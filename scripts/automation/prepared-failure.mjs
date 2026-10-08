@@ -24,12 +24,9 @@ export async function persistPreparedFailure({
     (operation.retry &&
       operation.nextEligibleAt !== null &&
       Date.parse(operation.nextEligibleAt) > state.nowMs) ||
-    [
-      "published",
-      "deployment-requested",
-      "deployment-confirmed",
-      "finalized",
-    ].includes(operation.stage)
+    ["deployment-confirmed", "finalized"].includes(operation.stage) ||
+    (operation.identity.kind !== "deployment" &&
+      ["published", "deployment-requested"].includes(operation.stage))
   )
     return { persisted: false, incident: false };
   const code = error?.code;

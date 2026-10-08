@@ -28,11 +28,14 @@ export function planAutomationWorker(operation) {
       operation_key: operation.key,
     });
   if (operation.stage === "deployment-requested")
+    if (operation.identity.kind !== "deployment") return { action: "wait" };
+  if (operation.stage === "deployment-requested")
     return dispatch("automation-writer.yml", {
       mode: "confirm",
       operation_key: operation.key,
     });
   if (operation.stage === "published") {
+    if (operation.identity.kind !== "deployment") return { action: "wait" };
     if (!/^[a-f0-9]{40}$/u.test(operation.expectedSha ?? ""))
       throw new Error("Published work has no trusted revision.");
     return dispatch("deploy-pages.yml", { source_sha: operation.expectedSha });

@@ -30,12 +30,28 @@ test("worker dispatch uses the current reconstructed operation and never a recei
 });
 
 test("canonical publication advances to deployment without another generation", () => {
-  const operation = operationFixture({ stage: "published" });
+  const operation = operationFixture({
+    stage: "published",
+    identity: {
+      kind: "deployment",
+      subject: `revision:${"b".repeat(40)}`,
+      inputDigest: "a".repeat(64),
+      policyVersion: "1",
+    },
+  });
   expect(planAutomationWorker(operation)).toMatchObject({
     action: "dispatch",
     workflow: "deploy-pages.yml",
     inputs: { source_sha: operation.expectedSha },
   });
+});
+test("published domain operations wait for the coalesced deployment instead of dispatching duplicate Pages builds", () => {
+  expect(
+    planAutomationWorker(operationFixture({ stage: "published" })),
+  ).toEqual({ action: "wait" });
+  expect(
+    planAutomationWorker(operationFixture({ stage: "deployment-requested" })),
+  ).toEqual({ action: "wait" });
 });
 
 test.each(["kit", "withdrawal"] as const)(

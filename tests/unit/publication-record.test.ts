@@ -8,6 +8,7 @@ import {
 import {
   preparedResultFixture,
   preparedResultContextFixture,
+  operationFixture,
 } from "../helpers/automation-fixtures";
 function fixture() {
   const result = preparedResultFixture();
@@ -43,6 +44,39 @@ test("publication proof is co-committed with exact canonical file hashes and ope
     }),
   ]);
 });
+test.each(["advisory", "metadata"] as const)(
+  "a private %s publication does not wait for a public deployment",
+  (kind) => {
+    const operation = operationFixture({
+      identity: {
+        kind,
+        subject: "source:github-42:example",
+        inputDigest: "a".repeat(64),
+        policyVersion: "1",
+      },
+    });
+    const result = preparedResultFixture({
+      kind,
+      operationKey: operation.key,
+      paths: [
+        kind === "advisory"
+          ? "data/snapshots/policy-review/example.json"
+          : "data/maintenance/automation/metadata/example.json",
+      ],
+    });
+    const revision = "d".repeat(40),
+      record = createCanonicalPublicationRecord({ result, operation });
+    expect(
+      discoverCanonicalPublications({
+        records: [{ record, revision }],
+        fileDigests: {
+          [`${revision}:${result.files[0].path}`]: result.files[0].sha256,
+        },
+        nowMs: Date.now(),
+      })[0].stage,
+    ).toBe(kind === "advisory" ? "deployment-confirmed" : "finalized");
+  },
+);
 test("a receipt, altered identity, wrong file hash, or unverified revision cannot serve as publication proof", () => {
   const input = fixture();
   expect(() =>

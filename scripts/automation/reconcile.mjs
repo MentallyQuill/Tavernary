@@ -36,6 +36,12 @@ export async function reconcileAutomation(input) {
     else if (!selected.includes(operation)) result.waiting++;
   }
   async function persist(operation) {
+    const previous = receipts.get(operation.key);
+    if (
+      previous &&
+      JSON.stringify(previous.operation) === JSON.stringify(operation)
+    )
+      return;
     const receipt = validateAutomationReceipt({
       schema_version: 1,
       operation,
@@ -45,13 +51,6 @@ export async function reconcileAutomation(input) {
           ? new Date(input.nowMs).toISOString()
           : null,
     });
-    const previous = receipts.get(operation.key);
-    if (
-      previous &&
-      JSON.stringify(previous.operation) === JSON.stringify(operation) &&
-      previous.completedAt === receipt.completedAt
-    )
-      return;
     if (!input.dryRun) await input.persist(receipt);
     receipts.set(operation.key, receipt);
   }
