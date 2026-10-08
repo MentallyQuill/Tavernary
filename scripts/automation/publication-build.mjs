@@ -81,7 +81,9 @@ export async function buildPreparedCatalogPublication({ action, state }) {
   const catalog = await buildCatalog({
     ...inputs,
     write: false,
-    now: new Date(state.nowMs).toISOString(),
+    now:
+      local.refreshManifest?.completed_at ??
+      new Date(state.nowMs).toISOString(),
   });
   return [
     ...action.files,

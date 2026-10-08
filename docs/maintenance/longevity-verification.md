@@ -883,3 +883,16 @@ focused lint and whitespace checks passed. Ruling: scheduled entrypoints select
 at most ten current operations while the writer retains global reservation
 and freshness authority; late input changes remain superseded by the writer.
 The other legacy writer migrations and remaining approved phases are unfinished.
+
+### Publication/build clock consistency
+
+The complete advisory unit suite passed 302 files / 3,239 tests. A subsequent
+regression reproduced different catalog generation clocks after a seventy-two-hour
+delay: canonical publication used resumed wall time, while production build used
+the committed observation time. Publication now follows that same committed clock.
+Both V7 and V8 assertions first failed and now pass; inventory, metadata and
+rollback checks passed 12 tests. Types and focused lint passed.
+
+Ruling: advance the catalog clock through a verified refresh rather than a
+private receipt or delayed writer. The pending refresh migration must preserve
+its actual observation manifest and Kit support updates.

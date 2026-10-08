@@ -93,6 +93,31 @@ test("aggregate cross-reference validation blocks a file that names a nonexisten
     }),
   ).rejects.toThrow();
 });
+test("publication uses the same committed observation clock as the later production build after a seventy-two-hour delay", async () => {
+  const { state, file } = fixture();
+  const manifest = JSON.parse(
+    readFileSync("data/snapshots/github-refresh.json", "utf8"),
+  );
+  state.local.refreshManifest = manifest;
+  state.nowMs = Date.parse(manifest.completed_at) + 72 * 3600000;
+  const files = await buildPreparedCatalogPublication({
+    action: {
+      action: "commit",
+      operationKeys: ["a".repeat(64)],
+      expectedMainSha: "b".repeat(40),
+      files: [file],
+    },
+    state,
+  });
+  for (const path of [
+    "public/catalog/tavernary-catalog.json",
+    "public/catalog/tavernary-catalog-v8.json",
+  ])
+    expect(
+      JSON.parse(files.find((value) => value.path === path)!.content)
+        .generatedAt,
+    ).toBe(manifest.completed_at);
+});
 
 test("an unchanged-source cache publication never manufactures new public assets", async () => {
   const input = await metadataMaintenanceFixture({ unchanged: true });
