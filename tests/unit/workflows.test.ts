@@ -61,9 +61,7 @@ const expectedPublisherConditions = {
   "publisher-verification":
     "github.ref == 'refs/heads/main' && github.actor_id == 2625904",
   "review-catalog-policy":
-    "inputs.operation_key == '' && github.event_name == 'workflow_dispatch' && " +
-    "github.ref == 'refs/heads/main' && " +
-    "(github.actor_id == 2625904 || " +
+    "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || github.actor_id == 2625904 || " +
     `${publisherActorExpression})`,
   "import-tavernkeeper-reports":
     "inputs.operation_key == '' && github.ref == 'refs/heads/main' && " +
@@ -281,7 +279,10 @@ test("limits every main publisher to the protected Publisher App", async () => {
 
   expect(discoveredPublishers.sort()).toEqual(
     Object.keys(protectedPublisherJobs)
-      .filter((name) => !name.startsWith("apply-kit-"))
+      .filter(
+        (name) =>
+          !(name.startsWith("apply-kit-") || name === "review-catalog-policy"),
+      )
       .sort(),
   );
 
@@ -326,14 +327,18 @@ test("limits every main publisher to the protected Publisher App", async () => {
       with: {
         "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
         "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
-        ...(name.startsWith("apply-kit-")
+        ...(name.startsWith("apply-kit-") || name === "review-catalog-policy"
           ? { "permission-actions": "write" }
           : { "permission-contents": "write" }),
       },
     });
-    if (name.startsWith("apply-kit-"))
+    if (name.startsWith("apply-kit-") || name === "review-catalog-policy")
       expect(publisherToken?.with?.["permission-contents"]).toBeUndefined();
-    if (name === "automation-writer" || name.startsWith("apply-kit-")) {
+    if (
+      name === "automation-writer" ||
+      name.startsWith("apply-kit-") ||
+      name === "review-catalog-policy"
+    ) {
       expect(checkout?.with).toMatchObject({
         ref: "main",
         "persist-credentials": false,
@@ -463,7 +468,7 @@ test("uses the Publisher App identity for every protected workflow dispatch", as
       "publish-project-transaction.yml:publish->review-catalog-policy.yml",
       "reconcile-automation.yml:reconcile->automation-writer.yml",
       "refresh-catalog.yml:refresh->review-catalog-policy.yml",
-      "review-catalog-policy.yml:retry->review-catalog-policy.yml",
+      "review-catalog-policy.yml:review->automation-writer.yml",
       "targeted-tavernkeeper-scan.yml:request->refresh-catalog.yml",
       "triage-kit-submission.yml:validate->apply-kit-submission.yml",
     ].sort(),
@@ -524,16 +529,16 @@ test("verifies advisory checkout SHAs against main before minting a Publisher to
     ({ name }) => name === "Verify exact published state",
   );
   const tokenIndex = steps.findIndex(
-    ({ name }) => name === "Create Tavernary Publisher token",
+    ({ name }) => name === "Create fresh Publisher dispatch token",
   );
   const checkoutIndex = steps.findIndex(
-    ({ name }) => name === "Check out exact published state",
+    ({ name }) => name === "Check out trusted current request code",
   );
   const verification = steps[verifyIndex]?.run ?? "";
 
   expect(verifyIndex).toBeGreaterThanOrEqual(0);
   expect(verifyIndex).toBeLessThan(tokenIndex);
-  expect(tokenIndex).toBeLessThan(checkoutIndex);
+  expect(checkoutIndex).toBeLessThan(verifyIndex);
   expect(verification).toContain("pulls/$PULL_NUMBER");
   expect(verification).toContain("compare/${MERGE_SHA}...main");
   expect(verification).toContain('"ahead"');

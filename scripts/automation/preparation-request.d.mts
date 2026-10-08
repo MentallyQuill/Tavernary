@@ -1,4 +1,11 @@
 import type { AutomationInventoryState } from "./inventory.mjs";
+export function planAdvisoryPreparationRequests(input: {
+  state: AutomationInventoryState;
+  projectId?: string;
+}): Array<{
+  workflow: "automation-writer.yml";
+  inputs: { mode: "prepare" | "advisory-notice"; operation_key: string };
+}>;
 export function planPreparationRequest(input: {
   state: AutomationInventoryState;
   workflow: string;

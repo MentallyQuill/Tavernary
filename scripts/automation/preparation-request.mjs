@@ -1,6 +1,9 @@
 import { readFile, appendFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
-import { validateAutomationOperation } from "./operation.mjs";
+import {
+  validateAutomationOperation,
+  selectDueOperations,
+} from "./operation.mjs";
 import { assertTrustedAutomationContext } from "./github-inventory.mjs";
 import {
   loadAutomationInventory,
@@ -12,7 +15,27 @@ import { synchronizeWithdrawalFeedback } from "./withdrawal-feedback.mjs";
 const workflowKinds = {
   "apply-kit-submission.yml": "kit",
   "apply-kit-withdrawal.yml": "withdrawal",
+  "review-catalog-policy.yml": "advisory",
 };
+export function planAdvisoryPreparationRequests({ state, projectId }) {
+  if (projectId && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(projectId))
+    throw new Error("Advisory request identity is invalid.");
+  return selectDueOperations(
+    state.operations.filter(
+      (operation) =>
+        operation.identity.kind === "advisory" &&
+        ["admitted", "validated"].includes(operation.stage) &&
+        (!projectId || operation.identity.subject.split(":")[2] === projectId),
+    ),
+    { nowMs: state.nowMs, limit: 10 },
+  ).map((operation) => ({
+    workflow: "automation-writer.yml",
+    inputs: {
+      mode: operation.stage === "validated" ? "advisory-notice" : "prepare",
+      operation_key: operation.key,
+    },
+  }));
+}
 export function planPreparationRequest({ state, workflow, issueNumber }) {
   const kind = workflowKinds[workflow];
   if (!kind || !Number.isSafeInteger(issueNumber) || issueNumber < 1)
@@ -47,7 +70,7 @@ export async function runPreparationRequestCli(options = {}) {
       options.event ??
       JSON.parse(await readFile(env.GITHUB_EVENT_PATH, "utf8"));
     assertTrustedAutomationContext(env, repository, event);
-    if (env.GITHUB_EVENT_NAME !== "workflow_dispatch")
+    if (!["workflow_dispatch", "schedule"].includes(env.GITHUB_EVENT_NAME))
       throw new Error("Preparation request must be explicitly dispatched.");
     const workflow = /^\.github\/workflows\/([a-z0-9-]+\.yml)$/u.exec(
       env.GITHUB_WORKFLOW_REF?.slice(`${repository}/`.length).split("@")[0],
@@ -58,6 +81,11 @@ export async function runPreparationRequestCli(options = {}) {
       !workflowKinds[workflow]
     )
       throw new Error("Preparation request workflow is invalid.");
+    if (
+      env.GITHUB_EVENT_NAME === "schedule" &&
+      workflow !== "review-catalog-policy.yml"
+    )
+      throw new Error("Scheduled request workflow is invalid.");
     const state = await (
       options.load ??
       (() =>
@@ -76,6 +104,21 @@ export async function runPreparationRequestCli(options = {}) {
         runs: state.remote.runs.filter((run) => run.id !== requestRunId),
       };
       state.operations = discoverAutomationState(state);
+    }
+    if (workflow === "review-catalog-policy.yml") {
+      if (
+        env.GITHUB_EVENT_NAME === "workflow_dispatch" &&
+        !event.inputs?.project_id
+      )
+        throw new Error("Advisory project is required.");
+      const requests = planAdvisoryPreparationRequests({
+        state,
+        projectId: event.inputs?.project_id,
+      });
+      if (env.GITHUB_OUTPUT)
+        await appendFile(env.GITHUB_OUTPUT, `requests=${requests.length}\n`);
+      write(JSON.stringify(requests));
+      return 0;
     }
     const issueNumber = Number(event.inputs?.issue_number);
     const plan = planPreparationRequest({ state, workflow, issueNumber });

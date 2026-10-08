@@ -866,3 +866,20 @@ A draft PR is being submitted for real CI feedback. Remaining implementation,
 independent whole-branch review, the current browser/visual matrix, CI resolution,
 merge and actual production verification are still required. This is not the
 completion of Task 2 or the overall goal.
+
+### Advisory writer migration
+
+The legacy advisory schedule and transaction entrypoint now select up to ten
+eligible current operations and request shared-writer reservations or recovered
+notices. They preserve exact merged-SHA/ancestry checks and saved eligibility
+and worker delays. Only pinned read-only preparation receives model credentials;
+main writes and advisory notice persistence use the existing shared writer.
+The exhausted eight-attempt legacy scheduled retry loop is removed.
+
+Evidence: new advisory request/workflow regressions first failed, then passed.
+Native scheduled and manual CLI checks, budget adapters, writer and lifecycle
+checks passed 39 tests; the updated workflow contracts passed 72 tests. Types,
+focused lint and whitespace checks passed. Ruling: scheduled entrypoints select
+at most ten current operations while the writer retains global reservation
+and freshness authority; late input changes remain superseded by the writer.
+The other legacy writer migrations and remaining approved phases are unfinished.
