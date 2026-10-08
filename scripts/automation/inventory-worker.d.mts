@@ -4,7 +4,14 @@ import type { ProjectInventoryRun } from "./project-operations.mjs";
 export interface InventoryWorkerState {
   receipts: AutomationReceipt[];
   nowMs: number;
+  runs?: ProjectInventoryRun[];
+  publisherActorId?: number;
+  defaultBranch?: string;
 }
+export function trustedOperationWorkerRuns(
+  input: InventoryWorkerState,
+  operation: AutomationOperation,
+): ProjectInventoryRun[];
 export function isInventoryWorkerActive(run: ProjectInventoryRun): boolean;
 export function matchingOperationReceipt(
   input: InventoryWorkerState,

@@ -178,3 +178,27 @@ worker/receipt retry helper so Kit and project recovery cannot diverge. Attach t
 loaded canonical checkout revision to Kit deployment work; receipts alone never
 prove publication. The cost if wrong is conservative manual exceptions or delayed
 cleanup until deployment proof is available; the controller must load that proof.
+
+### Phase 2 Task 4: catalog, report and deployment inventories
+
+Refresh work uses source identity and the last completed refresh rather than a
+polling timestamp. Metadata and advisory work use current evidence and policy;
+unchanged completed evidence is skipped. Missing advisory notices remain separate
+from inference. Report imports use validated immutable index identities, exact
+canonical digests and current synthesis policy, with stable quarantine probes.
+Deployment discovery coalesces current-main requests and requires matching public
+revision/catalog/target proof, retained-bundle integrity and essential smoke checks
+before confirmation. The hosted target manifest does not select deployment heads.
+
+Verification: nine inventory and existing policy/report suites 157/157; typecheck,
+scoped ESLint, formatting and whitespace checks exit 0. Regressions cover missing
+state, unavailable providers, 72-hour recovery, changed digests, unsafe report URLs,
+source deletion/identity change, duplicate deployment requests and false confirmation.
+
+Ruling: Use the current trusted main revision as the sole ordinary deployment
+candidate. Canonical report projections must come from the loader's validated
+stored index; worker association requires trusted main code, Publisher actor and
+the exact operation key. Initial metadata inventory uses evidence/head identity;
+Phase 4 adds normalized-content cache selection before model calls. The cost if
+wrong is conservative rediscovery, rather than receipt-authorized publication;
+public proof, cache validation and worker wiring remain integration obligations.

@@ -17,8 +17,97 @@ import { parseProjectSubmissionIssue } from "../../scripts/submissions/parse-pro
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
 import recursion from "../../data/registry/projects/mentallyquill-recursion.json";
 import type { KitInventoryInput } from "../../scripts/automation/kit-operations.mjs";
+import type { CatalogInventoryInput } from "../../scripts/automation/catalog-operations.mjs";
+import type { ReportInventoryInput } from "../../scripts/automation/report-operations.mjs";
+import type { DeploymentInventoryInput } from "../../scripts/automation/deployment-operations.mjs";
+import reportIndexFixture from "../fixtures/tavernkeeper/report-index.v5.valid.json";
+import { validateReportIndex } from "../../scripts/security/tavernkeeper-reports.mjs";
+import { initialTavernKeeperImportState } from "../../scripts/security/tavernkeeper-import-state.mjs";
 
 export const AUTOMATION_NOW = Date.parse("2026-10-07T12:00:00.000Z");
+
+export function deploymentInventoryFixture(): DeploymentInventoryInput {
+  return {
+    mainHeadSha: "d".repeat(40),
+    mainCommits: [
+      {
+        sha: "d".repeat(40),
+        committedAt: new Date(AUTOMATION_NOW - 3_600_000).toISOString(),
+        catalogDigest: "b".repeat(64),
+        targetDigest: "c".repeat(64),
+        publishable: true,
+      },
+    ],
+    deployments: [],
+    receipts: [],
+    nowMs: AUTOMATION_NOW,
+  };
+}
+
+export function catalogInventoryFixture(
+  options: Partial<CatalogInventoryInput> & { changedEvidence?: boolean } = {},
+): CatalogInventoryInput {
+  const project = {
+    ...recursion,
+    id: "example-project",
+    source_id: "github-42",
+  };
+  const source = {
+    schema_version: 1 as const,
+    id: "github-42",
+    type: "github" as const,
+    repository: "Owner/Repo",
+    repository_id: 42,
+    status: "active" as const,
+    status_reason: null,
+    refresh_policy: "automatic" as const,
+  };
+  const { changedEvidence, ...overrides } = options;
+  return {
+    catalog: { projects: [project], sources: [source] },
+    evidence: [
+      {
+        source_id: source.id,
+        repository: {
+          id: 42,
+          head_sha: (changedEvidence ? "e" : "a").repeat(40),
+        },
+        refreshed_at: new Date(AUTOMATION_NOW - 2 * 86_400_000).toISOString(),
+        source_health: "healthy",
+      },
+    ],
+    advisoryState: [],
+    metadataState: [],
+    receipts: [],
+    nowMs: AUTOMATION_NOW,
+    ...overrides,
+  };
+}
+
+export function reportInventoryFixture(): ReportInventoryInput {
+  const registry = [
+    {
+      id: "github-42",
+      type: "github",
+      repository: "owner/repo",
+      repository_id: 42,
+      status: "active",
+    },
+  ];
+  return {
+    reportIndex: validateReportIndex(
+      structuredClone(reportIndexFixture),
+      registry,
+    ),
+    registry,
+    importState: initialTavernKeeperImportState(
+      new Date(AUTOMATION_NOW).toISOString(),
+    ),
+    importedReports: [],
+    receipts: [],
+    nowMs: AUTOMATION_NOW,
+  };
+}
 
 export function kitInventoryFixture(
   options: {

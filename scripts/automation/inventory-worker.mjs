@@ -1,6 +1,24 @@
 import { validateAutomationReceipt } from "./receipts.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
 import { planAutomationRetry } from "./retry.mjs";
+export function trustedOperationWorkerRuns(input, operation) {
+  return (input.runs ?? [])
+    .filter(
+      (run) =>
+        run.path === ".github/workflows/automation-worker.yml" &&
+        run.event === "workflow_dispatch" &&
+        run.head_branch === (input.defaultBranch ?? "main") &&
+        run.display_title === `Automation ${operation.key}` &&
+        Number.isSafeInteger(input.publisherActorId) &&
+        run.actor?.id === input.publisherActorId &&
+        run.actor.type === "Bot",
+    )
+    .sort(
+      (left, right) =>
+        Date.parse(right.created_at ?? "") -
+          Date.parse(left.created_at ?? "") || right.id - left.id,
+    );
+}
 const activeStatuses = new Set([
   "queued",
   "in_progress",
