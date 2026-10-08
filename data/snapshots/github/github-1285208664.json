@@ -9,18 +9,23 @@
     "url": "https://github.com/MentallyQuill/Recursion",
     "description": "A Recursive Multi-Step Thinking Extension for SillyTavern, Using Context-Aware Bounded Guidance",
     "default_branch": "main",
-    "head_sha": "81627ab3054265d0e55d76c519f94ef88412baf5",
-    "head_committed_at": "2026-09-29T20:31:41.000Z",
+    "head_sha": "5983d0bd91f47850039533fbe02336d2d8926524",
+    "head_committed_at": "2026-10-08T03:01:55.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-30T15:24:31.000Z",
-    "size_kb": 21689
+    "size_kb": 23484
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-29T20:31:41.000Z",
+    "latest_source_activity_at": "2026-10-08T02:55:07.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-08T02:55:07.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-28",
         "latest_at": "2026-09-29T20:31:41.000Z",
@@ -50,19 +55,14 @@
         "week_start": "2026-07-20",
         "latest_at": "2026-07-22T17:29:15.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-13",
-        "latest_at": "2026-07-19T22:39:55.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-30T13:51:54.026Z",
+    "baseline_completed_at": "2026-10-08T14:39:08.801Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "81627ab3054265d0e55d76c519f94ef88412baf5"
+    "evidence_head_sha": "5983d0bd91f47850039533fbe02336d2d8926524"
   },
   "community": {
     "stars_count": 22,
@@ -75,7 +75,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-07T14:35:00.644Z",
+  "refreshed_at": "2026-10-08T14:39:08.801Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -85,7 +85,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-07T14:35:00.644Z",
+    "refreshed_at": "2026-10-08T14:39:08.801Z",
     "stale_since": null
   }
 }
