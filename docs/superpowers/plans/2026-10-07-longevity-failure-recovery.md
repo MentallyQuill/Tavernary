@@ -1,6 +1,6 @@
 # Failure Recovery Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. Execution method awaits user selection.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. User selected inline execution with independent branch review on 2026-10-07.
 
 **Goal:** Recover infrastructure interruptions without exhausting valid submissions.
 
@@ -43,7 +43,7 @@ scenario flags.
 
 **Interfaces:** Produce `classifyAutomationFailure({ conclusion?, diagnosticCode?, httpStatus?, validationErrors?, authorizationLost?, superseded? }): AutomationFailure`, with `kind` in transient/configuration/permanent/superseded/unknown. Produce `planAutomationRetry({ failure, transientAttempts, immediateAttempts, nowMs, retryAfterMs?, jitterSeed }): RetryDecision`, containing action, nextEligibleAt, and reasonCode. Declare these shapes in matching declaration files.
 
-- [ ] **Step 1: Add the behavioral regression.**
+- [x] **Step 1: Add the behavioral regression.**
 
 ```ts
 test("cancellation remains recoverable after seventy-two hours", () => {
@@ -61,10 +61,10 @@ test("cancellation remains recoverable after seventy-two hours", () => {
 });
 ```
 
-- [ ] **Step 2: Verify the regression fails.** Run `npx vitest run tests/unit/automation-retry.test.ts`. Expect the stated new assertion to fail or the new import to be missing; distinguish this from unrelated baseline failures.
-- [ ] **Step 3: Implement the contract.** Use structured reasons before conclusions. Implement the specified delay ladder; cap jitter at ten percent, clamp valid Retry-After to the twenty-four-hour circuit interval, and ignore malformed values. Test deterministic rejection, changed input, skips, cancellation, unknown failures, and exact delay boundaries.
-- [ ] **Step 4: Verify the regression and relevant existing coverage.** Run `npx vitest run tests/unit/automation-retry.test.ts`; expect exit 0 and all selected tests passing. Check declarations with `npm run typecheck`.
-- [ ] **Step 5: Review the diff and commit.** Stage only the listed deliverable files and necessary verified generated outputs; use `fix(automation): classify recoverable failures`.
+- [x] **Step 2: Verify the regression fails.** Run `npx vitest run tests/unit/automation-retry.test.ts`. Expect the stated new assertion to fail or the new import to be missing; distinguish this from unrelated baseline failures.
+- [x] **Step 3: Implement the contract.** Use structured reasons before conclusions. Implement the specified delay ladder; cap jitter at ten percent, clamp valid Retry-After to the twenty-four-hour circuit interval, and ignore malformed values. Test deterministic rejection, changed input, skips, cancellation, unknown failures, and exact delay boundaries.
+- [x] **Step 4: Verify the regression and relevant existing coverage.** Run `npx vitest run tests/unit/automation-retry.test.ts`; expect exit 0 and all selected tests passing. Check declarations with `npm run typecheck`.
+- [x] **Step 5: Review the diff and commit.** Stage only the listed deliverable files and necessary verified generated outputs; use `fix(automation): classify recoverable failures`.
 
 ### Task 2: Integrate safe retries into current-head validation
 

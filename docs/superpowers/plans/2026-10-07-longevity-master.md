@@ -56,14 +56,14 @@ behavior; none reduces the final goal's scope.
 
 Read-only observations are recorded in [preflight evidence](2026-10-07-longevity-preflight.md). They do not satisfy implementation or completion gates.
 
-- [ ] Confirm user approval of these written plans and selected execution method.
-- [ ] Record `git status`, main SHA, runtime, and original-checkout status.
-- [ ] Install the committed lockfile using `npm ci` in the managed worktree.
-- [ ] Read the relevant guides in its installed `node_modules/next/dist/docs/`.
-- [ ] Run `npm run check` and the required browser/visual commands from CI.
-- [ ] Investigate baseline failures using systematic debugging; preserve the
+- [x] User approved all linked plans on 2026-10-07 and selected inline implementation with independent branch review.
+- [x] Record `git status`, main SHA, runtime, and original-checkout status.
+- [x] Install the committed lockfile using `npm ci` in the managed worktree (exit 0).
+- [x] Read installed static-export and testing guides in `node_modules/next/dist/docs/`.
+- [x] Run `npm run check` and every baseline browser/visual command from CI on Windows (all exit 0); actual Linux/Windows CI remains an integration gate.
+- [x] Baseline checks passed; investigate any later failures using systematic debugging; preserve the
       design and required checks. Keep baseline evidence separate from regressions.
-- [ ] Create a requirement-evidence ledger linked from this master plan.
+- [x] Create the [requirement-evidence ledger](../../maintenance/longevity-verification.md) linked from this master plan.
       Record concrete commits, commands, PRs, live runs, and verified public revisions.
 
 ## Delivery and completion
