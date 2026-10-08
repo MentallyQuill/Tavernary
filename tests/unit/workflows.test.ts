@@ -285,7 +285,9 @@ test("limits every main publisher to the protected Publisher App", async () => {
             name.startsWith("apply-kit-") ||
             name === "review-catalog-policy" ||
             name === "refresh-catalog" ||
-            name === "import-tavernkeeper-reports"
+            name === "import-tavernkeeper-reports" ||
+            name === "backfill-repository-identities" ||
+            name === "publisher-verification"
           ),
       )
       .sort(),
@@ -335,7 +337,9 @@ test("limits every main publisher to the protected Publisher App", async () => {
         ...(name.startsWith("apply-kit-") ||
         name === "review-catalog-policy" ||
         name === "refresh-catalog" ||
-        name === "import-tavernkeeper-reports"
+        name === "import-tavernkeeper-reports" ||
+        name === "backfill-repository-identities" ||
+        name === "publisher-verification"
           ? { "permission-actions": "write" }
           : { "permission-contents": "write" }),
       },
@@ -344,7 +348,9 @@ test("limits every main publisher to the protected Publisher App", async () => {
       name.startsWith("apply-kit-") ||
       name === "review-catalog-policy" ||
       name === "refresh-catalog" ||
-      name === "import-tavernkeeper-reports"
+      name === "import-tavernkeeper-reports" ||
+      name === "backfill-repository-identities" ||
+      name === "publisher-verification"
     )
       expect(publisherToken?.with?.["permission-contents"]).toBeUndefined();
     if (
@@ -352,7 +358,9 @@ test("limits every main publisher to the protected Publisher App", async () => {
       name.startsWith("apply-kit-") ||
       name === "review-catalog-policy" ||
       name === "refresh-catalog" ||
-      name === "import-tavernkeeper-reports"
+      name === "import-tavernkeeper-reports" ||
+      name === "backfill-repository-identities" ||
+      name === "publisher-verification"
     ) {
       expect(checkout?.with).toMatchObject({
         ref: "main",
@@ -370,27 +378,23 @@ test("limits every main publisher to the protected Publisher App", async () => {
   }
 });
 
-test("keeps Publisher verification owner-only and content-neutral", async () => {
+test("keeps Publisher verification owner-only and delegates content-neutral proof", async () => {
   const document = await workflow("publisher-verification");
   const job = document.jobs.verify;
-  const token = job.steps.find((step: WorkflowStep) =>
-    step.uses?.startsWith("actions/create-github-app-token@"),
+  const token = job.steps.find(
+    (step: WorkflowStep) => step.id === "publisher-token",
   );
-  const checkout = job.steps.find((step: WorkflowStep) =>
-    step.uses?.startsWith("actions/checkout@"),
+  const dispatch = job.steps.find((step: WorkflowStep) =>
+    step.run?.includes("gh workflow run"),
   );
-  const push = job.steps.find((step: WorkflowStep) =>
-    step.run?.includes("git push origin HEAD:main"),
-  );
-
   expect(document.on).toEqual({ workflow_dispatch: null });
-  expect(document.permissions).toEqual({ contents: "read" });
+  expect(document.permissions).toEqual({ contents: "read", actions: "read" });
   expect(document.concurrency).toEqual({
     group: "tavernary-publisher-verification",
     "cancel-in-progress": false,
   });
   expect(job.environment).toBe("publisher");
-  expect(job.permissions).toEqual({ contents: "read" });
+  expect(job.permissions).toEqual({ contents: "read", actions: "read" });
   expect(job.if).toBe(
     "github.ref == 'refs/heads/main' && github.actor_id == 2625904",
   );
@@ -400,23 +404,14 @@ test("keeps Publisher verification owner-only and content-neutral", async () => 
     with: {
       "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
       "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
-      owner: "MentallyQuill",
-      repositories: "Tavernary",
-      "permission-contents": "write",
+      "permission-actions": "write",
     },
   });
-  expect(checkout).toMatchObject({
-    uses: `actions/checkout@${pinnedActions["actions/checkout"]}`,
-    with: {
-      ref: "main",
-      "fetch-depth": 0,
-      token: "${{ steps.publisher-token.outputs.token }}",
-    },
-  });
-  expect(push?.run).toContain("git commit --allow-empty");
-  expect(push?.run).toContain("git rebase --keep-empty origin/main");
-  expect(push?.run).toContain("git push origin HEAD:main");
-  expect(push?.run).not.toMatch(/--force|push\s+origin\s+\+HEAD/iu);
+  expect(token?.with?.["permission-contents"]).toBeUndefined();
+  expect(dispatch?.run).toContain("automation-writer.yml --ref main");
+  expect(dispatch?.run).toContain("mode=verify-publisher");
+  expect(dispatch?.env?.REQUEST_RUN_ID).toBe("${{ github.run_id }}");
+  expect(JSON.stringify(job)).not.toMatch(/git (?:push|commit|rebase)/u);
 });
 
 test("uses the Publisher App identity for every protected workflow dispatch", async () => {
@@ -479,6 +474,9 @@ test("uses the Publisher App identity for every protected workflow dispatch", as
       "apply-kit-submission.yml:publish->apply-kit-submission.yml",
       "apply-kit-withdrawal.yml:withdraw->apply-kit-withdrawal.yml",
       "automation-prepared.yml:wake->automation-writer.yml",
+      "backfill-repository-identities.yml:backfill->automation-writer.yml",
+      "publisher-verification.yml:verify->automation-writer.yml",
+      "publisher-automation-branch-verification.yml:verify->automation-writer.yml",
       "import-tavernkeeper-reports.yml:import->import-tavernkeeper-reports.yml",
       "import-tavernkeeper-reports.yml:import->automation-writer.yml",
       "publish-project-transaction.yml:publish->review-catalog-policy.yml",

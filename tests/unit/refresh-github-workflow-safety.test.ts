@@ -180,7 +180,7 @@ test("enrichment delegates one durable rollout to the tested orchestrator", asyn
   ).toBe("catalog-refresh-${{ inputs.operation_key || 'request' }}");
 });
 
-test("identity backfill targets optional IDs and owns only repository identity writes", async () => {
+test("identity backfill delegates optional IDs to the shared writer", async () => {
   const text = await workflowSource("backfill-repository-identities");
   const document = parse(text) as {
     concurrency: { group: string };
@@ -191,14 +191,11 @@ test("identity backfill targets optional IDs and owns only repository identity w
     .map(({ run }) => run)
     .filter(Boolean)
     .join("\n");
-
-  expect(document.concurrency.group).toBe("catalog-refresh");
-  expect(text).toContain("while IFS= read -r source_id");
-  expect(text).toContain('args+=(--source-id "$source_id")');
-  expect(commands).toContain("npm run catalog:backfill-identities");
-  expect(commands).toContain("npm run catalog:validate");
-  expect(text).toContain("git add data/registry/sources/*.json");
-  expect(text).not.toMatch(/git add .*data\/snapshots/);
+  expect(document.concurrency.group).toBe("identity-backfill-request");
+  expect(commands).toContain("automation-writer.yml --ref main");
+  expect(commands).toContain("mode=backfill-identities");
+  expect(commands).toContain('source_ids="$SOURCE_IDS"');
+  expect(commands).not.toMatch(/git (?:add|commit|push|rebase)/u);
   expect(text).not.toContain("data/reports/enrichment-report.json");
   expect(text).not.toContain("workflow run enrich-catalog.yml");
 });

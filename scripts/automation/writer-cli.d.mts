@@ -4,6 +4,10 @@ export type AutomationWriterMode =
   | "publish"
   | "prepare"
   | "confirm"
+  | "confirm-restore"
+  | "retain"
+  | "backfill-identities"
+  | "verify-publisher"
   | "finalize"
   | "advisory-notice";
 export function runAutomationWriterCli(options?: {

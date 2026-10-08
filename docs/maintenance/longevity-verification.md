@@ -25,11 +25,12 @@ attached PRs, required checks, independent review, merge, and production proof.
 
 Current delivery: [draft PR #818](https://github.com/MentallyQuill/Tavernary/pull/818)
 is attached. Both required `verify` and `visual` checks passed on head
-`ddf0035da85d5d69fd691219d75f1467fb4823bc`, including focused content deployment
-checks and the refresh writer migration. The next batch migrates report import;
-the earlier CI results do not validate that batch.
+`3531e752fee4d3ba4d5e5b0e4ae1cf0585038511`, including the report writer,
+focused content deployment checks and the refresh migration. The next batch
+migrates identity maintenance and Publisher probes; previous CI does not
+validate that batch.
 
-Remaining implementation: manual enrichment/checkpoints, identity backfill/verification serialization,
+Remaining implementation: manual enrichment/checkpoints,
 fork-dependent recovery, complete provider-budget coverage, and Phase 5
 dependency/runtime/health/retention/drill/runbook work. End-to-end canary,
 independent review, final CI, merge and production verification remain required.
@@ -53,7 +54,7 @@ independent review, final CI, merge and production verification remain required.
 | R15 | Verified supported-runtime policy                     | Pending                                                                                                                 |
 | R16 | Safe bounded retention                                | Pending                                                                                                                 |
 | R17 | Owner runbook                                         | Pending                                                                                                                 |
-| R18 | Attached PRs, CI, review, merge, production proof     | Draft PR #818 attached; verify/visual passed ddf0035da; next head, independent review, merge and production pending     |
+| R18 | Attached PRs, CI, review, merge, production proof     | Draft PR #818 attached; verify/visual passed 3531e752f; next head, independent review, merge and production pending     |
 
 ## Rulings and task outcomes
 
@@ -1015,3 +1016,37 @@ palette/catalog/report validation, types, production build and static export
 verification. The saved owner-intent adapter regression also passed after a
 thirty-day gap. Later migrations, maintenance, review, merge and production
 remain required.
+
+### Identity maintenance and Publisher probes
+
+Identity backfill and both Publisher verification workflows are read-only
+requests with fresh actions-only dispatch tokens. Canonical writes and branch
+custody probes run in the existing shared writer, after dependency setup and
+fresh scoped write-token creation. No separate writer framework or operation
+kind is introduced.
+
+Identity maintenance reads regular canonical Git objects, applies the existing
+healthy-snapshot and immutable-ID checks, validates the projected catalog and
+rechecks current main before a non-forced publication. Owner status, refresh
+policy and all other fields are preserved. Lost commit responses recover from
+the already-filled IDs. Conflicting identities, unknown selections and changed
+main produce no write.
+
+Ruling: bound explicit identity maintenance to 256 changed source files per
+publication and reject larger selections before writing — this is an owner
+maintenance command, not an unattended background rollout. Cost: a large
+manual backfill must be split into named selections; no partial success is
+reported as completion.
+
+Publisher probes require the actual numeric owner's workflow run, trusted main
+origin and fixed request workflow. The main probe publishes a content-neutral
+commit and recovers its last empty commit after a lost response. Branch probes
+use a reserved zero-issue namespace scoped to the owner request, verify
+create/advance/delete, and recover only a branch with their exact marker and
+unchanged tree. They cannot submit an ordinary project for publication.
+
+Evidence: missing shared modes, privileged request workflows, branch-probe
+support and main-probe replay were observed failing, then passing. Seven
+targeted suites passed 131 checks; final types and scoped lint passed. Full CI
+for this next checkpoint, remaining manual enrichment, maintenance, independent
+review, merge and live production proof are still required.

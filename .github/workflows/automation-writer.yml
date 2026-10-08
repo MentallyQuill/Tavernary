@@ -19,6 +19,8 @@ on:
             retain,
             finalize,
             advisory-notice,
+            backfill-identities,
+            verify-publisher,
           ]
         default: reconcile
       operation_key:
@@ -31,6 +33,10 @@ on:
         type: number
       budget_ticket:
         description: Previously reserved optional model allowance
+        required: false
+        type: string
+      source_ids:
+        description: Optional newline-separated IDs for identity maintenance.
         required: false
         type: string
 

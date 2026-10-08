@@ -16,6 +16,8 @@ const modes = new Set([
   "retain",
   "finalize",
   "advisory-notice",
+  "backfill-identities",
+  "verify-publisher",
 ]);
 export async function runAutomationWriterCli(options = {}) {
   const env = options.env ?? process.env;
@@ -37,6 +39,32 @@ export async function runAutomationWriterCli(options = {}) {
       const { runAutomationWriterReconciliation } =
         await import("./writer-runtime.mjs");
       write(JSON.stringify(await runAutomationWriterReconciliation({ env })));
+      return 0;
+    }
+    if (mode === "backfill-identities") {
+      const { runRepositoryIdentityWriter } =
+        await import("./maintenance-writer.mjs");
+      write(
+        JSON.stringify(
+          await runRepositoryIdentityWriter({
+            sourceIds: event.inputs?.source_ids ?? "",
+            env,
+          }),
+        ),
+      );
+      return 0;
+    }
+    if (mode === "verify-publisher") {
+      const { runPublisherWriterVerification } =
+        await import("./maintenance-writer.mjs");
+      write(
+        JSON.stringify(
+          await runPublisherWriterVerification({
+            runId: Number(event.inputs?.result_run_id),
+            env,
+          }),
+        ),
+      );
       return 0;
     }
     if (mode === "publish") {
