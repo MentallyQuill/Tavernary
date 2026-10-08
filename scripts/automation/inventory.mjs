@@ -18,6 +18,7 @@ import {
   verifiedAutomationDeployments,
 } from "./data-digests.mjs";
 import { buildCatalog } from "../catalog/build.mjs";
+import { tagVocabularyHash } from "../catalog/tag-vocabulary.mjs";
 import {
   buildTavernKeeperTargets,
   popularityRankedProjectIds,
@@ -126,6 +127,7 @@ export function discoverAutomationState(state) {
         projects: local.projects,
         sources: local.sources,
         revision: local.revision,
+        vocabularyHash: local.vocabularyHash,
       },
       evidence: local.snapshots,
       advisoryState: local.advisoryState,
@@ -275,6 +277,9 @@ export async function loadAutomationInventory({
     kits,
     advisoryState,
     metadataState,
+    vocabularyHash: tagVocabularyHash(
+      await readJson(root, "data/vocabularies/tags.json"),
+    ),
     deployments,
     blockedUsers,
     importState,

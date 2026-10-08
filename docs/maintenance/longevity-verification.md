@@ -506,3 +506,22 @@ requests without allowance. A read-only GitHub CLI query accepted the exact-SHA
 workflow-run filter. Remaining producer endpoints, normalized metadata cache,
 manual rollout preservation and all later phases remain required. Neither this
 task nor the publication migration is complete.
+
+### Normalized metadata selection and cache identity
+
+Metadata selection normalizes bounded README/description content and reuses
+validated cache entries across unrelated repository commits. Cache provenance
+binds the immutable repository, project traits, policy, vocabulary, independent
+automatic fields and actual canonical output digest. Current inventory includes
+the vocabulary read from its trusted checkout; malformed or substituted cache
+entries cannot suppress required work. Missing source evidence remains pending.
+
+Ruling: cap a scheduled selection at ten records as well as ten sources — one
+repository shared by many records must not create unbounded model work. The cost
+is slower processing for such a repository. Existing manual fields remain
+independently excluded.
+
+Evidence: all 273 unit files / 3,061 tests passed; full lint and type checking
+passed. The task's three named suites passed 22 tests. Producer acquisition,
+writer validation of newly emitted cache sidecars and overall scheduled model
+integration remain subsequent deliverables; the whole overhaul is unfinished.

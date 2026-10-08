@@ -7,6 +7,13 @@ import { supportsAutomaticEnrichmentSource } from "../catalog/enrichment-policy.
 import { metadataFieldsToGenerate } from "../catalog/metadata-policy.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
 import { planAutomationRetry } from "./retry.mjs";
+import tags from "../../data/vocabularies/tags.json" with { type: "json" };
+import { tagVocabularyHash } from "../catalog/tag-vocabulary.mjs";
+import {
+  validateMetadataCache,
+  metadataTraitsDigest,
+  metadataOutputDigest,
+} from "./metadata-refresh.mjs";
 import {
   recoverInventoryWorker,
   trustedOperationWorkerRuns,
@@ -42,6 +49,8 @@ function sourceIdentity(source) {
 
 export function discoverCatalogOperations(input) {
   const operations = [];
+  const vocabularyHash =
+    input.catalog.vocabularyHash ?? tagVocabularyHash(tags);
   for (const source of input.catalog.sources) {
     if (
       source.status !== "active" ||
@@ -100,15 +109,29 @@ export function discoverCatalogOperations(input) {
             "unavailable",
           fields,
           metadataPolicy: project.metadata_policy,
+          vocabularyHash,
+          traitsDigest: metadataTraitsDigest(project),
         },
         createdAt,
       );
-      const cached = input.metadataState?.some(
-        (state) =>
-          state.projectId === project.id &&
-          state.inputDigest === metadata.identity.inputDigest &&
-          state.policyVersion === CATALOG_POLICY_VERSION,
-      );
+      const cached = input.metadataState?.some((state) => {
+        try {
+          validateMetadataCache(state);
+          return (
+            state.projectId === project.id &&
+            state.sourceId === source.id &&
+            state.sourceIdentity === `${source.type}:${source.repository_id}` &&
+            state.inputDigest === metadata.identity.inputDigest &&
+            state.policyVersion === CATALOG_POLICY_VERSION &&
+            state.vocabularyHash === vocabularyHash &&
+            state.fields.join(",") === [...fields].sort().join(",") &&
+            state.traitsDigest === metadataTraitsDigest(project) &&
+            state.outputDigest === metadataOutputDigest(project, fields)
+          );
+        } catch {
+          return false;
+        }
+      });
       if (!cached) operations.push(metadata);
     }
     const fingerprint = createPolicyEvidenceFingerprint({

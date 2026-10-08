@@ -5,6 +5,12 @@ import { AUTOMATION_NOW, receiptFixture } from "../helpers/automation-fixtures";
 import { createPolicyEvidenceFingerprint } from "../../scripts/moderation/catalog-policy-review-contract.mjs";
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
 import { validateAutomationOperation } from "../../scripts/automation/operation.mjs";
+import {
+  createMetadataCache,
+  metadataTraitsDigest,
+} from "../../scripts/automation/metadata-refresh.mjs";
+import { tagVocabularyHash } from "../../scripts/catalog/tag-vocabulary.mjs";
+import tags from "../../data/vocabularies/tags.json";
 
 test("a dropped advisory dispatch is reconstructed before state exists", () => {
   const operations = discoverCatalogOperations(
@@ -156,17 +162,33 @@ test("cached metadata and fully manual fields do not call optional enrichment", 
     (operation) => operation.identity.kind === "metadata",
   )!;
   input.metadataState = [
-    {
-      projectId: "example-project",
-      inputDigest: metadata.identity.inputDigest,
-      policyVersion: CATALOG_POLICY_VERSION,
-    },
+    createMetadataCache({
+      operation: metadata,
+      record: { ...input.catalog.projects[0], metadata_status: "curated" },
+      sourceIdentity: "github:42",
+      headSha: input.evidence[0].repository!.head_sha!,
+      normalizedContent: "fixture",
+      vocabularyHash: tagVocabularyHash(
+        tags as Parameters<typeof tagVocabularyHash>[0],
+      ),
+      nowMs: AUTOMATION_NOW,
+    }),
   ];
   expect(
     discoverCatalogOperations(input).some(
       (operation) => operation.identity.kind === "metadata",
     ),
   ).toBe(false);
+  const cache = input.metadataState[0];
+  cache.traitsDigest = metadataTraitsDigest({
+    ...input.catalog.projects[0],
+    name: "Changed project",
+  });
+  expect(
+    discoverCatalogOperations(input).some(
+      (operation) => operation.identity.kind === "metadata",
+    ),
+  ).toBe(true);
   input.metadataState = [];
   input.catalog.projects[0].metadata_policy = {
     summary: { mode: "manual" },
