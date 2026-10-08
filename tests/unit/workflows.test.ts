@@ -49,6 +49,9 @@ const expectedPublisherConditions = {
   "refresh-catalog":
     "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || github.actor_id == 2625904 || " +
     `${publisherActorExpression})`,
+  "enrich-catalog":
+    "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || github.actor_id == 2625904 || " +
+    `${publisherActorExpression})`,
   "apply-kit-submission":
     "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || github.actor_id == 2625904 || " +
     `${publisherActorExpression})`,
@@ -58,7 +61,7 @@ const expectedPublisherConditions = {
   "publisher-verification":
     "github.ref == 'refs/heads/main' && github.actor_id == 2625904",
   "review-catalog-policy":
-    "github.event_name == 'workflow_dispatch' && " +
+    "inputs.operation_key == '' && github.event_name == 'workflow_dispatch' && " +
     "github.ref == 'refs/heads/main' && " +
     "(github.actor_id == 2625904 || " +
     `${publisherActorExpression})`,

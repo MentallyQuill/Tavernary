@@ -70,6 +70,33 @@ test("the live dispatch adapter binds only a uniquely authenticated run at its r
     }),
   ).rejects.toThrow();
 });
+
+test("budgeted advisory dispatch preserves the required published-evidence inputs", async () => {
+  const advisory = ".github/workflows/review-catalog-policy.yml";
+  const gh = vi.fn(async (args: string[]) =>
+    args[0] === "workflow"
+      ? ""
+      : JSON.stringify({
+          total_count: 1,
+          workflow_runs: [{ ...run, path: advisory }],
+        }),
+  );
+  await dispatchReservedModelPreparation({
+    gh,
+    repository,
+    publisherActorId,
+    operationKey,
+    workflow: advisory,
+    sourceSha,
+    ticketIds: ["c".repeat(64)],
+    projectId: "verified-project",
+    nowMs,
+  });
+  expect(gh.mock.calls[0][0]).toContain("project_id=verified-project");
+  expect(gh.mock.calls[0][0]).toContain(`merge_sha=${sourceSha}`);
+  expect(gh.mock.calls[0][0]).toContain("transaction_issue_number=0");
+  expect(gh.mock.calls[0][0]).toContain("transaction_pull_number=0");
+});
 test("read-only preparation loads current writer-owned tickets and rejects a rerun before model HTTP", async () => {
   const reservation = reserveModelBudget(
     createModelBudgetState(nowMs),

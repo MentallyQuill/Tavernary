@@ -8,6 +8,7 @@ export function dispatchReservedModelPreparation(input: {
   workflow: string;
   sourceSha: string;
   ticketIds: string[];
+  projectId?: string;
   nowMs: number;
   sleep?: (ms: number) => Promise<void>;
 }): Promise<{ runId: number; workflow: string }>;
@@ -19,3 +20,9 @@ export function loadProducerBudgetGuard(input: {
   nowMs?: () => number;
   sleep?: (ms: number) => Promise<void>;
 }): Promise<ModelBudgetGuard>;
+export function dispatchUnbudgetedPreparation(
+  input: Omit<
+    Parameters<typeof dispatchReservedModelPreparation>[0],
+    "ticketIds"
+  >,
+): Promise<{ runId: number; workflow: string }>;

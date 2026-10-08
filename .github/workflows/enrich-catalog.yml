@@ -1,9 +1,22 @@
 name: "Catalog maintenance: Enrich project metadata"
-run-name: "Catalog: Enrich ${{ inputs.enrichment_scope }} project metadata"
+run-name: >-
+  ${{ inputs.operation_key
+    && format('Automation prepare {0}', inputs.operation_key)
+    || format('Catalog: Enrich {0} project metadata', inputs.enrichment_scope) }}
 
 on:
   workflow_dispatch:
     inputs:
+      operation_key:
+        description: Immutable reconciled operation; empty for an owner rollout.
+        type: string
+        required: false
+        default: ""
+      budget_ticket:
+        description: Writer-reserved allowance; empty only for cache-only preparation.
+        type: string
+        required: false
+        default: ""
       enrichment_scope:
         description: Choose pending records or re-enrich every automatic record.
         type: choice
@@ -36,6 +49,7 @@ concurrency:
 jobs:
   enrich:
     if: >-
+      inputs.operation_key == '' &&
       github.ref == 'refs/heads/main' &&
       (github.event_name != 'workflow_dispatch' ||
       github.actor_id == 2625904 ||
@@ -108,3 +122,62 @@ jobs:
             node -e "const r=require('./data/reports/enrichment-canary.json'); const a=r.aggregates||{}; const m=r.provider_metrics||{}; console.log('## Enrichment canary '+r.run_id+'\\n\\n- Status: '+r.status+'\\n- Phase: '+r.phase+'\\n- Selection scope: '+(r.selection_mode||'pending')+'\\n- Manual exclusions: '+(r.manual_exclusions||[]).length+'\\n- Primary cursor: '+r.primary_cursor+'/'+r.manifest.length+'\\n- Retry cursor: '+r.retry_cursor+'/'+r.retry_queue.length+'\\n- Model calls: '+(m.call_count||0)+'\\n- Repair calls: '+(m.repair_call_count||0)+'\\n- Rate-limit events: '+(m.rate_limit_events||0)+'\\n- Total model latency: '+(m.latency_ms_total||0)+' ms\\n- Successful: '+((a.enriched||0)+(a.fallback||0)+(a['retry-enriched']||0)+(a['retry-fallback']||0))+'\\n- Final failures: '+(a['final-failure']||0))" >> "$GITHUB_STEP_SUMMARY"
             node -e "const r=require('./data/reports/enrichment-canary.json'); const excluded=r.manual_exclusions||[]; const cell=value=>String(value??'').replaceAll('|',String.fromCharCode(92)+'|').replace(/\\s+/g,' ').trim(); if(excluded.length){ console.log('\\n### Manual exclusions\\n\\n| Project | Reason | Note |\\n| --- | --- | --- |'); for(const entry of excluded){ console.log('| '+cell(entry.id)+' | '+cell(entry.reason_code)+' | '+cell(entry.enrichment_note)+' |'); } }" >> "$GITHUB_STEP_SUMMARY"
           fi
+
+  prepare:
+    if: >-
+      inputs.operation_key != '' &&
+      github.ref == 'refs/heads/main' &&
+      github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID
+    runs-on: ubuntu-latest
+    environment: publisher
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      actions: read
+      issues: read
+      pull-requests: read
+    steps:
+      - name: Check out pinned trusted preparation code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Prepare one operation with reserved model allowance
+        id: prepare
+        run: node scripts/automation/catalog-preparation-cli.mjs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
+          TAVERNARY_REQUIRE_MODEL_BUDGET: "true"
+          UTILITY_API_ENDPOINT: ${{ secrets.UTILITY_API_ENDPOINT }}
+          UTILITY_API_KEY: ${{ secrets.UTILITY_API_KEY }}
+          UTILITY_MODEL: ${{ secrets.UTILITY_MODEL }}
+          UTILITY_REASONING_EFFORT: ${{ vars.UTILITY_REASONING_EFFORT }}
+          TAVERNARY_ENRICHMENT_API_URL: ${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}
+          TAVERNARY_ENRICHMENT_API_KEY: ${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}
+          TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}
+      - name: Retain immutable data result for the shared writer
+        if: steps.prepare.outputs.result_available == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: automation-prepared-${{ inputs.operation_key }}
+          path: ${{ runner.temp }}/automation-prepared/result.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Retain safe preparation failure diagnostic
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: automation-failure-${{ inputs.operation_key }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/automation-prepared/diagnostic.json
+          if-no-files-found: ignore
+          retention-days: 90

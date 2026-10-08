@@ -7,8 +7,112 @@ import {
   downloadPreparedArtifact,
   runModelWriterPreparation,
 } from "../../scripts/automation/writer-runtime.mjs";
-import { createModelBudgetState } from "../../scripts/automation/model-budget.mjs";
+import {
+  createModelBudgetState,
+  reserveModelBudget,
+} from "../../scripts/automation/model-budget.mjs";
+import { persistPreparedFailure } from "../../scripts/automation/prepared-failure.mjs";
 import { operationFixture } from "../helpers/automation-fixtures";
+import { metadataMaintenanceFixture } from "../helpers/automation-fixtures";
+
+test("the writer checks normalized cache before reserving any allowance", async () => {
+  const fixture = await metadataMaintenanceFixture({ unchanged: true });
+  const commit = vi.fn(async () => ({ sha: "c".repeat(40) }));
+  const dispatchCached = vi.fn(async () => ({
+    runId: 701,
+    workflow: ".github/workflows/enrich-catalog.yml",
+  }));
+  const result = await runModelWriterPreparation({
+    operationKey: fixture.operation.key,
+    load: async () => fixture.state,
+    commit,
+    dispatchCached,
+    metadataCached: async (input) => {
+      const { metadataObservationIsCached } =
+        await import("../../scripts/automation/metadata-preparation.mjs");
+      return metadataObservationIsCached({
+        ...input,
+        observation: await fixture.observe(),
+      });
+    },
+    env: {
+      GITHUB_REPOSITORY: fixture.state.repository,
+      GITHUB_REF: "refs/heads/main",
+      GITHUB_EVENT_NAME: "workflow_dispatch",
+      GITHUB_ACTOR_ID: "2625904",
+      GITHUB_WORKFLOW_REF: `${fixture.state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
+      GITHUB_RUN_ID: "800",
+      GITHUB_RUN_ATTEMPT: "1",
+      TAVERNARY_PUBLISHER_BOT_ID: String(fixture.state.publisherActorId),
+    },
+  });
+  expect(result.status).toBe("cache-dispatched");
+  expect(commit).not.toHaveBeenCalled();
+  expect(dispatchCached).toHaveBeenCalledOnce();
+});
+
+test("writer budget refusal records a durable daily retry without dispatch or budget mutation", async () => {
+  const fixture = await metadataMaintenanceFixture();
+  const reservation = reserveModelBudget(
+    createModelBudgetState(fixture.state.nowMs),
+    {
+      operationKey: "c".repeat(64),
+      model: "primary",
+      requestCount: 40,
+      requestedTokens: 200000,
+    },
+    { nowMs: fixture.state.nowMs },
+  );
+  if (!reservation.allowed) throw new Error("Fixture reservation failed");
+  fixture.state.local.modelBudget = reservation.state;
+  const commit = vi.fn(async () => ({ sha: "c".repeat(40) }));
+  const dispatch = vi.fn(async () => ({
+    runId: 701,
+    workflow: ".github/workflows/enrich-catalog.yml",
+  }));
+  const receipt = vi.fn(
+    async (value: { operation: typeof fixture.operation }) => {
+      fixture.state.operations = [value.operation];
+    },
+  );
+  const outcome = await runModelWriterPreparation({
+    operationKey: fixture.operation.key,
+    load: async () => fixture.state,
+    commit,
+    dispatch,
+    metadataCached: async () => false,
+    persistFailure: async (error) => {
+      await persistPreparedFailure({
+        operationKey: fixture.operation.key,
+        load: async () => fixture.state,
+        persist: receipt,
+        error,
+      });
+    },
+    env: {
+      GITHUB_REPOSITORY: fixture.state.repository,
+      GITHUB_REF: "refs/heads/main",
+      GITHUB_EVENT_NAME: "workflow_dispatch",
+      GITHUB_ACTOR_ID: "2625904",
+      GITHUB_WORKFLOW_REF: `${fixture.state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
+      GITHUB_RUN_ID: "800",
+      GITHUB_RUN_ATTEMPT: "1",
+      TAVERNARY_PUBLISHER_BOT_ID: String(fixture.state.publisherActorId),
+      UTILITY_MODEL: "primary",
+    },
+  });
+  expect(outcome.status).toBe("waiting");
+  expect(commit).not.toHaveBeenCalled();
+  expect(dispatch).not.toHaveBeenCalled();
+  expect(receipt).toHaveBeenCalledOnce();
+  expect(fixture.state.operations[0].retry?.failure.reasonCode).toBe(
+    "budget-exhausted",
+  );
+  expect(
+    Date.parse(fixture.state.operations[0].nextEligibleAt!) -
+      fixture.state.nowMs,
+  ).toBe(86400000);
+});
 
 test("the actual writer mode commits primary and repair reservations before authenticated dispatch", async () => {
   const operation = operationFixture({
@@ -61,12 +165,13 @@ test("the actual writer mode commits primary and repair reservations before auth
         load,
         commit,
         dispatch,
+        metadataCached: async () => false,
       })
     ).status,
   ).toBe("dispatched");
   expect(commit).toHaveBeenCalledTimes(2);
   expect(dispatch).toHaveBeenCalledOnce();
-  expect(budget.days[0]).toMatchObject({ requests: 4, tokens: 45000 });
+  expect(budget.days[0]).toMatchObject({ requests: 4, tokens: 195000 });
   expect(commit.mock.invocationCallOrder[0]).toBeLessThan(
     dispatch.mock.invocationCallOrder[0],
   );

@@ -10,6 +10,7 @@ import {
 } from "./catalog-preparation.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
 import { githubFailureStatus } from "./github-inventory.mjs";
+import { loadProducerBudgetGuard } from "./model-budget-github.mjs";
 
 export async function runCatalogPreparationCli(options = {}) {
   const env = options.env ?? process.env;
@@ -58,7 +59,23 @@ export async function runCatalogPreparationCli(options = {}) {
       state,
       operation,
       producer,
-      acquire: (input) => acquireCatalogData({ ...input, mode }),
+      acquire: (input) =>
+        acquireCatalogData({
+          ...input,
+          mode,
+          options: {
+            env,
+            budgetGuard: () =>
+              loadProducerBudgetGuard({
+                env,
+                operationKey,
+                ticketIds: String(event.inputs?.budget_ticket ?? "")
+                  .split(",")
+                  .filter(Boolean),
+                gh: executeGh,
+              }),
+          },
+        }),
     });
     if (result) {
       if (!outputDirectory)

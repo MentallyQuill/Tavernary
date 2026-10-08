@@ -8,7 +8,14 @@ import {
   validateModelBudgetState,
 } from "./model-budget.mjs";
 import { reserveModelPreparation } from "./model-preparation.mjs";
-import { dispatchReservedModelPreparation } from "./model-budget-github.mjs";
+import {
+  dispatchReservedModelPreparation,
+  dispatchUnbudgetedPreparation,
+} from "./model-budget-github.mjs";
+import {
+  observeMetadataSource,
+  metadataObservationIsCached,
+} from "./metadata-preparation.mjs";
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 import {
   assertCanonicalWriterContext,
@@ -51,6 +58,25 @@ export async function runModelWriterPreparation({
   load = writerInventoryLoader({ root, env, gh }),
   commit = (input) => commitCanonicalData({ ...input, gh }),
   dispatch = (input) => dispatchReservedModelPreparation({ ...input, gh }),
+  dispatchCached = (input) => dispatchUnbudgetedPreparation({ ...input, gh }),
+  persistFailure = async (error) => {
+    await persistPreparedFailure({
+      operationKey,
+      load,
+      error,
+      persist: (receipt) =>
+        persistGithubAutomationReceipt({
+          gh,
+          repository: env.GITHUB_REPOSITORY,
+          receipt,
+        }),
+    });
+  },
+  metadataCached = async (input) =>
+    metadataObservationIsCached({
+      ...input,
+      observation: await observeMetadataSource(input),
+    }),
 }) {
   const repository = env.GITHUB_REPOSITORY;
   assertCanonicalWriterContext(env, repository);
@@ -60,110 +86,153 @@ export async function runModelWriterPreparation({
     env.GITHUB_RUN_ATTEMPT !== "1"
   )
     throw new Error("Model writer context is invalid.");
-  const initial = await load();
-  const operation = initial.operations.find(
-    (current) => current.key === operationKey,
-  );
-  const workflows = {
-    metadata: ".github/workflows/enrich-catalog.yml",
-    advisory: ".github/workflows/review-catalog-policy.yml",
-  };
-  const workflow = workflows[operation?.identity.kind];
-  if (!operation) return { status: "superseded" };
-  if (!workflow) throw new Error("Model preparation kind is invalid.");
-  let prices;
   try {
-    prices = env.TAVERNARY_MODEL_PRICES
-      ? JSON.parse(env.TAVERNARY_MODEL_PRICES)
-      : {};
-  } catch {
-    throw Object.assign(new Error("Model prices are invalid."), {
-      code: "provider-configuration-invalid",
-    });
-  }
-  if (!prices || typeof prices !== "object" || Array.isArray(prices))
-    throw Object.assign(new Error("Model prices are invalid."), {
-      code: "provider-configuration-invalid",
-    });
-  const monthlyUsd = env.TAVERNARY_MODEL_MONTHLY_USD
-    ? Number(env.TAVERNARY_MODEL_MONTHLY_USD)
-    : undefined;
-  const request = (model, requestCount, requestedTokens) => ({
-    model,
-    requestCount,
-    requestedTokens,
-    ...(Object.hasOwn(prices, model)
-      ? { price: { model, ...prices[model] } }
-      : {}),
-  });
-  const requests = [
-    request(env.UTILITY_MODEL, 3, 30000),
-    ...(env.TAVERNARY_ENRICHMENT_MODEL
-      ? [request(env.TAVERNARY_ENRICHMENT_MODEL, 1, 15000)]
-      : []),
-  ];
-  const path = "data/maintenance/automation/model-budgets/global.json";
-  const budgetState = async (state) => {
-    let budget = state.local.modelBudget;
-    if (!budget) {
-      try {
-        budget = JSON.parse(await readFile(resolve(root, path), "utf8"));
-      } catch (error) {
-        if (error.code !== "ENOENT") throw error;
-        budget = createModelBudgetState(0);
-      }
-    }
-    const current = state.operations.find(
-      (value) => value.key === operationKey,
+    const initial = await load();
+    const operation = initial.operations.find(
+      (current) => current.key === operationKey,
     );
-    return {
-      mainSha: state.local.revision,
-      budget: validateModelBudgetState(budget),
-      eligible: Boolean(
-        current &&
-        current.stage === "admitted" &&
-        current.retry?.failure.kind !== "permanent" &&
-        (!current.retry ||
-          !current.nextEligibleAt ||
-          Date.parse(current.nextEligibleAt) <= state.nowMs),
-      ),
+    const workflows = {
+      metadata: ".github/workflows/enrich-catalog.yml",
+      advisory: ".github/workflows/review-catalog-policy.yml",
     };
-  };
-  return reserveModelPreparation({
-    operationKey,
-    workflow,
-    requestId: `writer-${env.GITHUB_RUN_ID}`,
-    requests,
-    monthlyUsd,
-    nowMs: initial.nowMs,
-    load: async () => budgetState(await load()),
-    persist: async ({ mainSha, budget }) => {
-      const content = `${JSON.stringify(budget, null, 2)}\n`;
-      return commit({
+    const workflow = workflows[operation?.identity.kind];
+    if (!operation) return { status: "superseded" };
+    if (!workflow) throw new Error("Model preparation kind is invalid.");
+    if (
+      operation.identity.kind === "metadata" &&
+      (await metadataCached({ state: initial, operation }))
+    ) {
+      const fresh = await load();
+      const current = fresh.operations.find(
+        (value) => value.key === operationKey,
+      );
+      if (
+        !current ||
+        current.stage !== "admitted" ||
+        current.retry?.failure.kind === "permanent" ||
+        (current.retry &&
+          current.nextEligibleAt &&
+          Date.parse(current.nextEligibleAt) > fresh.nowMs)
+      )
+        return { status: "superseded" };
+      const run = await dispatchCached({
         repository,
-        expectedMainSha: mainSha,
-        message: "chore(automation): reserve verified model allowance",
-        files: [
-          {
-            path,
-            type: "file",
-            content,
-            bytes: Buffer.byteLength(content),
-            sha256: createHash("sha256").update(content).digest("hex"),
-          },
-        ],
-      });
-    },
-    dispatch: (input) =>
-      dispatch({
-        ...input,
-        repository,
-        publisherActorId: initial.publisherActorId,
+        publisherActorId: fresh.publisherActorId,
         operationKey,
         workflow,
-        nowMs: initial.nowMs,
-      }),
-  });
+        sourceSha: fresh.local.revision,
+        nowMs: fresh.nowMs,
+      });
+      return { status: "cache-dispatched", runId: run.runId };
+    }
+    let prices;
+    try {
+      prices = env.TAVERNARY_MODEL_PRICES
+        ? JSON.parse(env.TAVERNARY_MODEL_PRICES)
+        : {};
+    } catch {
+      throw Object.assign(new Error("Model prices are invalid."), {
+        code: "provider-configuration-invalid",
+      });
+    }
+    if (!prices || typeof prices !== "object" || Array.isArray(prices))
+      throw Object.assign(new Error("Model prices are invalid."), {
+        code: "provider-configuration-invalid",
+      });
+    const monthlyUsd = env.TAVERNARY_MODEL_MONTHLY_USD
+      ? Number(env.TAVERNARY_MODEL_MONTHLY_USD)
+      : undefined;
+    const request = (model, requestCount, requestedTokens) => ({
+      model,
+      requestCount,
+      requestedTokens,
+      ...(Object.hasOwn(prices, model)
+        ? { price: { model, ...prices[model] } }
+        : {}),
+    });
+    const requests = [
+      request(env.UTILITY_MODEL, 3, 180000),
+      ...(env.TAVERNARY_ENRICHMENT_MODEL
+        ? [request(env.TAVERNARY_ENRICHMENT_MODEL, 1, 15000)]
+        : []),
+    ];
+    const path = "data/maintenance/automation/model-budgets/global.json";
+    const budgetState = async (state) => {
+      let budget = state.local.modelBudget;
+      if (!budget) {
+        try {
+          budget = JSON.parse(await readFile(resolve(root, path), "utf8"));
+        } catch (error) {
+          if (error.code !== "ENOENT") throw error;
+          budget = createModelBudgetState(0);
+        }
+      }
+      const current = state.operations.find(
+        (value) => value.key === operationKey,
+      );
+      return {
+        mainSha: state.local.revision,
+        budget: validateModelBudgetState(budget),
+        eligible: Boolean(
+          current &&
+          current.stage === "admitted" &&
+          current.retry?.failure.kind !== "permanent" &&
+          (!current.retry ||
+            !current.nextEligibleAt ||
+            Date.parse(current.nextEligibleAt) <= state.nowMs),
+        ),
+      };
+    };
+    const outcome = await reserveModelPreparation({
+      operationKey,
+      workflow,
+      requestId: `writer-${env.GITHUB_RUN_ID}`,
+      requests,
+      monthlyUsd,
+      nowMs: initial.nowMs,
+      load: async () => budgetState(await load()),
+      persist: async ({ mainSha, budget }) => {
+        const content = `${JSON.stringify(budget, null, 2)}\n`;
+        return commit({
+          repository,
+          expectedMainSha: mainSha,
+          message: "chore(automation): reserve verified model allowance",
+          files: [
+            {
+              path,
+              type: "file",
+              content,
+              bytes: Buffer.byteLength(content),
+              sha256: createHash("sha256").update(content).digest("hex"),
+            },
+          ],
+        });
+      },
+      dispatch: (input) =>
+        dispatch({
+          ...input,
+          repository,
+          publisherActorId: initial.publisherActorId,
+          operationKey,
+          workflow,
+          nowMs: initial.nowMs,
+          ...(operation.identity.kind === "advisory"
+            ? { projectId: operation.identity.subject.split(":")[2] }
+            : {}),
+        }),
+    });
+    if (outcome.status === "waiting")
+      await persistFailure(
+        Object.assign(
+          new Error("Model preparation allowance is unavailable."),
+          { code: "budget-exhausted" },
+        ),
+      );
+    return outcome;
+  } catch (error) {
+    await persistFailure(error);
+    throw error;
+  }
 }
 function writerInventoryLoader({ root, env, gh }) {
   return async () => {

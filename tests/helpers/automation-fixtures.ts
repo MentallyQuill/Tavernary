@@ -26,6 +26,18 @@ import reportIndexFixture from "../fixtures/tavernkeeper/report-index.v5.valid.j
 import { validateReportIndex } from "../../scripts/security/tavernkeeper-reports.mjs";
 import { initialTavernKeeperImportState } from "../../scripts/security/tavernkeeper-import-state.mjs";
 import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
+import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
+import { discoverCatalogOperations } from "../../scripts/automation/catalog-operations.mjs";
+import {
+  createMetadataCache,
+  normalizeMetadataContent,
+} from "../../scripts/automation/metadata-refresh.mjs";
+import { tagVocabularyHash } from "../../scripts/catalog/tag-vocabulary.mjs";
+import type { TagVocabulary } from "../../scripts/catalog/tag-vocabulary.mjs";
+import tags from "../../data/vocabularies/tags.json";
+import { createEnrichmentProvider } from "../../scripts/catalog/enrichment-provider.mjs";
 import type {
   PublicationInput,
   CanonicalPublicationState,
@@ -608,6 +620,163 @@ export function projectInventoryFixture(
         },
       ],
       confirmedRevisions: options.confirmedDeployment ? ["d".repeat(40)] : [],
+    },
+  };
+}
+
+export async function metadataMaintenanceFixture(
+  options: {
+    unchanged?: boolean;
+    manualSummary?: boolean;
+    budgetExhausted?: boolean;
+  } = {},
+) {
+  const project = structuredClone(recursion);
+  if (options.manualSummary)
+    project.metadata_policy.summary = {
+      mode: "manual",
+      note: "Verified creator description",
+    } as typeof project.metadata_policy.summary;
+  const source = JSON.parse(
+    await readFile(`data/registry/sources/${project.source_id}.json`, "utf8"),
+  );
+  const snapshot = JSON.parse(
+    await readFile(`data/snapshots/github/${project.source_id}.json`, "utf8"),
+  );
+  const nowMs = Date.parse("2026-10-08T12:00:00Z");
+  snapshot.refreshed_at = new Date(nowMs).toISOString();
+  const local = {
+    projects: [project],
+    sources: [source],
+    snapshots: [snapshot],
+    metadataState: [] as unknown[],
+    advisoryState: [],
+    revision: execFileSync("git", ["rev-parse", "HEAD"], {
+      encoding: "utf8",
+    }).trim(),
+    vocabularyHash: tagVocabularyHash(tags as TagVocabulary),
+  };
+  const operations = discoverCatalogOperations({
+    catalog: {
+      projects: [project],
+      sources: [source],
+      vocabularyHash: local.vocabularyHash,
+    },
+    evidence: [snapshot],
+    advisoryState: [],
+    metadataState: [],
+    receipts: [],
+    nowMs,
+  });
+  const state: AutomationInventoryState = {
+    root: process.cwd(),
+    repository: "MentallyQuill/Tavernary",
+    publisherActorId: 41982982,
+    nowMs,
+    local,
+    operations,
+    receipts: [],
+    remote: { mainHeadSha: local.revision, issues: [], pulls: [], runs: [] },
+  };
+  const operation = operations.find(
+    (value) => value.identity.kind === "metadata",
+  )!;
+  const description = snapshot.repository.description;
+  const readme = `# ${project.name}\n${project.summary}`;
+  const normalizedContent = normalizeMetadataContent({ readme, description });
+  if (options.unchanged)
+    local.metadataState.push(
+      createMetadataCache({
+        operation,
+        record: project,
+        sourceIdentity: `github:${source.repository_id}`,
+        headSha: "b".repeat(40),
+        normalizedContent,
+        vocabularyHash: local.vocabularyHash,
+        nowMs: nowMs - 86400000,
+      }),
+    );
+  const evidence = {
+    sourceId: source.id,
+    sourceIdentity: `github:${source.repository_id}`,
+    provider: "github",
+    headSha: snapshot.repository.head_sha,
+    normalizedContent,
+    status: "ready" as const,
+    public: true,
+    observedAt: new Date(nowMs).toISOString(),
+    policyVersion: operation.identity.policyVersion,
+    vocabularyHash: local.vocabularyHash,
+  };
+  const loadedSource = {
+    status: "ready" as const,
+    sourceKind: "readme" as const,
+    sourceIdentity: `github:${source.repository.toLowerCase()}`,
+    text: readme,
+    readmeText: readme,
+    repositoryDescription: description,
+    repositoryId: source.repository_id,
+    headSha: snapshot.repository.head_sha,
+    readmePath: "README.md",
+    readmeRef: snapshot.repository.head_sha,
+    readmeIdentity: `github:${source.repository.toLowerCase()}@${snapshot.repository.head_sha}:README.md`,
+  };
+  let modelCalls = 0;
+  const provider = options.budgetExhausted
+    ? createEnrichmentProvider({
+        apiUrl: "https://provider.example/v1",
+        apiKey: "fixture-key",
+        model: "approved",
+        requireBudget: true,
+        fetchImpl: async () => {
+          modelCalls++;
+          throw new Error("Unexpected HTTP");
+        },
+      })
+    : {
+        generate: async () => {
+          modelCalls++;
+          return {
+            output: {
+              ...(options.manualSummary
+                ? {}
+                : {
+                    summary: {
+                      value: project.summary,
+                      evidence: ["readme:1-2"],
+                    },
+                    result: "accepted-unchanged" as const,
+                    change_reasons: [],
+                    policy_signal: "none" as const,
+                  }),
+              tags: [],
+            },
+            metadata: {
+              requestedModel: "approved",
+              returnedModel: "approved",
+              latencyMs: 1,
+            },
+          };
+        },
+      };
+  const observe = async () => ({ evidence, source: loadedSource });
+  return {
+    state,
+    operation,
+    project,
+    source,
+    snapshot,
+    evidence,
+    observe,
+    modelCalls: () => modelCalls,
+    run: async () => {
+      const { acquirePreparedMetadataData } =
+        await import("../../scripts/automation/metadata-preparation.mjs");
+      return acquirePreparedMetadataData({
+        state,
+        operation,
+        options: { observe, provider },
+      });
     },
   };
 }

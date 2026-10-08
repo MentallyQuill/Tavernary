@@ -60,9 +60,20 @@ test("runs advisory review after publication without blocking publication", asyn
         modelKeys.some((key) => Object.hasOwn(step.env ?? {}, key)),
       ),
   ).toBe(false);
-  expect(source.match(/secrets\.UTILITY_API_KEY/gu)).toHaveLength(1);
+  const preparation = workflow.jobs.prepare as typeof job;
+  expect(
+    modelKeys.some((key) => Object.hasOwn(preparation.env ?? {}, key)),
+  ).toBe(false);
+  for (const step of preparation.steps) {
+    if (step.name === "Prepare one operation with reserved model allowance")
+      continue;
+    expect(modelKeys.some((key) => Object.hasOwn(step.env ?? {}, key))).toBe(
+      false,
+    );
+  }
+  expect(source.match(/secrets\.UTILITY_API_KEY/gu)).toHaveLength(2);
   expect(source.match(/secrets\.TAVERNARY_ENRICHMENT_API_KEY/gu)).toHaveLength(
-    1,
+    2,
   );
   expect(source).toContain("modelProviderOptionsFromEnvironment");
   expect(source).toContain("review-unavailable");

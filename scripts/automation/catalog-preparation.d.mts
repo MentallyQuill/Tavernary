@@ -1,5 +1,6 @@
 import type { AutomationInventoryState } from "./inventory.mjs";
 import type { AutomationOperation } from "./operation.mjs";
+import type { ModelPreparationOptions } from "./advisory-preparation.mjs";
 import type {
   PreparedCurrentState,
   PreparedResult,
@@ -18,6 +19,7 @@ export function acquireCatalogData(input: {
   state: AutomationInventoryState;
   operation: AutomationOperation;
   mode?: "project" | "forensic";
+  options?: ModelPreparationOptions;
 }): Promise<Record<string, string>>;
 export function prepareCatalogOperation(input: {
   state: AutomationInventoryState;

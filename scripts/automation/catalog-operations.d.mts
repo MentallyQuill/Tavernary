@@ -5,7 +5,7 @@ import type { InventoryWorkerState } from "./inventory-worker.mjs";
 import type { MetadataRecord, MetadataCache } from "./metadata-refresh.mjs";
 export interface CatalogEvidence {
   source_id: string;
-  repository?: { id: number; head_sha?: string };
+  repository?: { id: number; head_sha?: string; description?: string | null };
   refreshed_at?: string;
   observed_at?: string;
   source_health?: string;

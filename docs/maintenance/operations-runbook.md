@@ -384,6 +384,38 @@ Forgejo/Gitea origin or infer that GitHub and Codeberg repositories are mirrors.
 
 Workflow: `.github/workflows/enrich-catalog.yml`
 
+### Reconciled read-only preparation
+
+The controller selects a metadata operation by its immutable source, observed
+commit/description, independent automatic fields, project traits, policy and
+tag vocabulary. The shared writer checks the normalized README/description
+cache before reserving model allowance. A valid cache hit dispatches a
+read-only cache update with no model ticket. A changed source reserves primary
+and repair allowance in `data/maintenance/automation/model-budgets/global.json`
+before dispatch, then binds it to one authenticated preparation run.
+
+Preparation accepts `operation_key` and `budget_ticket`, runs pinned main code
+for at most forty-five minutes, and emits an immutable data artifact. It cannot
+write canonical files. The writer rechecks the actual source's numeric identity,
+pinned content, automatic field authority, vocabulary and proposed output
+digest before publishing the project and cache sidecar together. Advisory
+preparation follows the same ticket rules and emits only non-blocking review
+state. Manual transaction review inputs remain required.
+
+The global ceiling is forty requests and two hundred thousand conservatively
+requested tokens per UTC day, including repair allowance. The current primary
+reservation covers three attempts and up to 180,000 requested tokens; configured
+JSON repair reserves one further request and 15,000 tokens. Unused or unknown
+allowance stays charged, so this pessimistic envelope can limit optional
+metadata throughput to one operation per day. Required price accounting fails
+closed when a configured model has no matching price. Budget/configuration
+refusal saves a daily retry; transient provider failures use normal bounded
+backoff. Inspect sanitized failure receipts and the budget state before changing
+provider settings. Verified scan and catalog facts remain publishable without
+model calls.
+
+### Manual rollout
+
 - One manual action owns preflight, canary, deployment approval, full-run
   preparation, batching, and resume behavior through the tested durable
   orchestrator.
@@ -400,9 +432,10 @@ Workflow: `.github/workflows/enrich-catalog.yml`
 - An intake-only classification review may confirm a submitted Extension
   category or emit a sanitized mismatch warning. The warning does not mutate
   canonical classification and raw provider/source payloads are not published.
-- Preflight retries transient provider timeouts, network failures, rate limits,
-  and server errors three times after the initial request, waiting 5, 15, and
-  30 seconds between attempts. Exhausted preflight retries remain fatal.
+- Preflight makes at most three immediate requests for transient provider
+  timeouts, network failures, rate limits and server errors, waiting 5 and 15
+  seconds between attempts. Transport and validation retries share the same
+  three-primary-request ceiling. Exhausted preflight retries remain fatal.
 - Canary:
   - a representative pool of 5-7 unique project IDs is selected within the
     chosen scope

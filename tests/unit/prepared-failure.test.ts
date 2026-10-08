@@ -42,6 +42,30 @@ test("an unavailable prepared artifact persists bounded retry state without leak
   ).toBeGreaterThanOrEqual(300_000);
   expect(JSON.stringify(receipt)).not.toContain("secret-token");
 });
+
+test("an intent-only dispatch delay cannot hide an authenticated budget refusal", async () => {
+  const input = fixture();
+  input.replace(
+    operationFixture({
+      retry: null,
+      nextEligibleAt: new Date(AUTOMATION_NOW + 900000).toISOString(),
+    }),
+  );
+  const result = await persistPreparedFailure({
+    ...input,
+    error: Object.assign(new Error("Budget refusal"), {
+      code: "budget-exhausted",
+    }),
+  });
+  expect(result.persisted).toBe(true);
+  expect(
+    input.persist.mock.calls[0][0].operation.retry?.failure.reasonCode,
+  ).toBe("budget-exhausted");
+  expect(
+    Date.parse(input.persist.mock.calls[0][0].operation.nextEligibleAt!) -
+      AUTOMATION_NOW,
+  ).toBe(86400000);
+});
 test("three repeated unknown handoff failures move to daily probes and a visible incident", async () => {
   const input = fixture();
   for (let i = 0; i < 2; i++) {

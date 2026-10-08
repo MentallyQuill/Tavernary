@@ -127,8 +127,13 @@ test("enrichment delegates one durable rollout to the tested orchestrator", asyn
     GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
     GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
   });
-  expect(text.match(/secrets\.UTILITY_API_KEY/gu)).toHaveLength(1);
-  expect(text.match(/secrets\.TAVERNARY_ENRICHMENT_API_KEY/gu)).toHaveLength(1);
+  expect(text.match(/secrets\.UTILITY_API_KEY/gu)).toHaveLength(2);
+  expect(text.match(/secrets\.TAVERNARY_ENRICHMENT_API_KEY/gu)).toHaveLength(2);
+  const credentialSteps = steps.filter((step) => step.env?.UTILITY_API_KEY);
+  expect(credentialSteps.map((step) => step.name).sort()).toEqual([
+    "Prepare one operation with reserved model allowance",
+    "Run durable enrichment rollout",
+  ]);
   expect(reporter?.env).toEqual({
     GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
   });

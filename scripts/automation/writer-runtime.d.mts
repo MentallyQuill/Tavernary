@@ -13,6 +13,19 @@ interface ProjectWriterInput {
 }
 export function runModelWriterPreparation(
   input: ProjectWriterInput & {
+    persistFailure?: (error: unknown) => Promise<void>;
+    metadataCached?: (input: {
+      state: AutomationInventoryState;
+      operation: import("./operation.mjs").AutomationOperation;
+    }) => Promise<boolean>;
+    dispatchCached?: (
+      input: Omit<
+        Parameters<
+          typeof import("./model-budget-github.mjs").dispatchUnbudgetedPreparation
+        >[0],
+        "gh"
+      >,
+    ) => Promise<{ runId: number; workflow: string }>;
     commit?: (
       input: Omit<Parameters<typeof commitCanonicalData>[0], "gh">,
     ) => Promise<{ sha: string }>;

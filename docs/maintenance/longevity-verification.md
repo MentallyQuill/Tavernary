@@ -396,6 +396,49 @@ subsequent updates, detached records, executable data and substituted objects.
 Task 2 migrations, all later phases, independent review, CI, merge and actual
 production verification remain outstanding.
 
+### Budgeted metadata and advisory producer integration (Task 4 in progress)
+
+The reconciled metadata/advisory workflows now expose authenticated, pinned,
+read-only preparation jobs. Both accept writer-bound allowance, retain immutable
+results and sanitized diagnostics for ninety days, and cannot write main. The
+existing manual rollout and advisory transaction lifecycle jobs remain guarded
+separately until their equivalent shared-writer migration is complete. Advisory
+dispatch retains all existing required project/transaction/revision inputs.
+
+Metadata acquisition verifies the current numeric repository ID before reading
+the pinned README, bounds JSON responses and timeouts, validates snapshot/schema
+readiness and normalizes README/description evidence. Cache hits are checked
+before reservation and update provenance without a model request. The writer
+re-observes content and validates the project/cache together; substituted content
+fingerprints, output digests, identities or missing sidecars cannot publish.
+Automatic tag updates preserve manual summary policy and exact text.
+
+Ruling: bind description and immutable repository ID into metadata operation
+identity — description-only or identity changes must not reuse old intent — the
+cost is one new refresh after such an authoritative change. Ruling: preserve
+required legacy advisory inputs and supply verified values from the writer —
+read-only preparation must not weaken manual review's dispatch contract.
+Ruling: let authenticated failure bookkeeping replace an intent-only dispatch
+delay — the delay prevents duplicate dispatch, not preservation of actual failure
+classification — a recorded failure still blocks replay heartbeats.
+
+Ruling: enlarge the conservative primary envelope to 180,000 tokens across three
+attempts, plus one 15,000-token repair envelope — the measured real source-backed
+prompt exceeded the original 30,000-token total before its first request. Unknown
+or unused allowance stays charged. The cost is potentially one optional model
+operation per UTC day. Actual production throughput will remain bounded by this
+documented policy; deterministic security publication does not depend on it.
+
+Evidence: new regressions were observed failing, then passing for cross-file
+cache validation, cache-before-reservation, workflow endpoints, required advisory
+dispatch inputs, durable budget refusal, intent/failure delay distinction,
+description-only refresh and immutable identity binding. Native provider tests
+exercise three real serialized request bodies inside the ticket envelope with
+no network access. All 276 unit files / 3,090 tests passed, with full lint and
+type checking passing. Overall producer/model integration, all legacy main
+publisher migrations, deployment/maintenance/integration phases, independent
+review, CI, merge and public production proof remain unfinished.
+
 ### Shared batches and durable handoff failures (Task 2 still in progress)
 
 The production runtime now sends compatible prepared operations through one

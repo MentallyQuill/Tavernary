@@ -25,6 +25,37 @@ test("a dropped advisory dispatch is reconstructed before state exists", () => {
   ).toBe(true);
 });
 
+test("a repository description change refreshes automatic metadata even with the same commit", () => {
+  const input = catalogInventoryFixture();
+  const before = discoverCatalogOperations(input).find(
+    (value) => value.identity.kind === "metadata",
+  )!;
+  input.evidence[0].repository = {
+    ...input.evidence[0].repository!,
+    description: "New verified repository description",
+  } as (typeof input.evidence)[0]["repository"];
+  const after = discoverCatalogOperations(input).find(
+    (value) => value.identity.kind === "metadata",
+  )!;
+  expect(after.key).not.toBe(before.key);
+});
+
+test("metadata input identity binds the immutable repository identifier", () => {
+  const input = catalogInventoryFixture();
+  const before = discoverCatalogOperations(input).find(
+    (value) => value.identity.kind === "metadata",
+  )!;
+  const source = input.catalog.sources[0];
+  if (source.type !== "github" && source.type !== "codeberg")
+    throw new Error("Expected repository fixture");
+  source.repository_id = 43;
+  input.evidence[0].repository!.id = 43;
+  const after = discoverCatalogOperations(input).find(
+    (value) => value.identity.kind === "metadata",
+  )!;
+  expect(after.key).not.toBe(before.key);
+});
+
 test.each(["metadata", "advisory"] as const)(
   "an authenticated active %s preparation suppresses duplicate dispatch",
   (kind) => {

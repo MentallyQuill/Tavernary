@@ -171,6 +171,12 @@ export function enrichRecord(
   },
 ): Promise<EnrichmentOutput | null>;
 
+export function applyEnrichmentOutput(
+  current: RegistryRecord,
+  output: EnrichmentOutput,
+  vocabularies?: TagVocabulary,
+): RegistryRecord;
+
 export function writeEnrichedRecord(
   path: string,
   record: RegistryRecord,

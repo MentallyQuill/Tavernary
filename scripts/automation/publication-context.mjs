@@ -9,6 +9,11 @@ import { createPolicyEvidenceFingerprint } from "../moderation/catalog-policy-re
 import { fingerprintProjectPublicationInput } from "../publication/project-publication-transaction.mjs";
 import { createKitPreparedPublicationContext } from "./kit-publication-context.mjs";
 import { createPreparedReportContext } from "./report-publication-context.mjs";
+import {
+  observeMetadataSource,
+  validateMetadataPreparedFiles,
+} from "./metadata-preparation.mjs";
+import { validateMetadataCache } from "./metadata-refresh.mjs";
 
 const schemaNames = {
   project: "project",
@@ -53,6 +58,7 @@ export async function createPreparedPublicationContext({
   state,
   operation,
   preparation = false,
+  observeMetadata = observeMetadataSource,
 }) {
   validateAutomationOperation(operation);
   if (
@@ -116,7 +122,10 @@ export async function createPreparedPublicationContext({
           `data/snapshots/install/${source.id}.json`,
         ]
       : operation.identity.kind === "metadata"
-        ? [`data/registry/projects/${project.id}.json`]
+        ? [
+            `data/registry/projects/${project.id}.json`,
+            `data/maintenance/automation/metadata/${operation.key}.json`,
+          ]
         : [`data/snapshots/policy-review/${project.id}.json`];
   const fileDigests = canonicalFileDigests({
     root: state.root,
@@ -132,6 +141,10 @@ export async function createPreparedPublicationContext({
           value.project_id === project.id && value.source_id === source.id,
       )
     : null;
+  const observation =
+    operation.identity.kind === "metadata"
+      ? await observeMetadata({ state, operation })
+      : null;
   const validateContent = (path, value) => {
     if (
       !paths.includes(path) ||
@@ -151,6 +164,18 @@ export async function createPreparedPublicationContext({
       );
     }
     if (operation.identity.kind === "metadata") {
+      if (path.startsWith("data/maintenance/automation/metadata/")) {
+        try {
+          validateMetadataCache(value);
+          return (
+            value.inputDigest === operation.identity.inputDigest &&
+            value.projectId === project.id &&
+            value.sourceIdentity === `${source.type}:${source.repository_id}`
+          );
+        } catch {
+          return false;
+        }
+      }
       if (
         !validators.project(value) ||
         value.id !== project.id ||
@@ -201,5 +226,21 @@ export async function createPreparedPublicationContext({
     allowedPaths: paths,
     fileDigests,
     validateContent,
+    ...(observation
+      ? {
+          validateFiles: (files) =>
+            validateMetadataPreparedFiles({
+              state,
+              operation,
+              observation,
+              files,
+              validateProject: (value) =>
+                validateContent(
+                  `data/registry/projects/${project.id}.json`,
+                  value,
+                ),
+            }),
+        }
+      : {}),
   };
 }

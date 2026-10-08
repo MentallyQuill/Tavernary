@@ -21,7 +21,8 @@ export async function persistPreparedFailure({
   if (
     !operation ||
     operation.retry?.failure.kind === "permanent" ||
-    (operation.nextEligibleAt !== null &&
+    (operation.retry &&
+      operation.nextEligibleAt !== null &&
       Date.parse(operation.nextEligibleAt) > state.nowMs) ||
     [
       "published",

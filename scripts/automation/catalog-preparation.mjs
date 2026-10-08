@@ -9,6 +9,8 @@ import { createPreparedPublicationContext } from "./publication-context.mjs";
 import { runRepositoryRefresh } from "../catalog/refresh-repositories.mjs";
 import { acquirePreparedKitData } from "./kit-preparation.mjs";
 import { acquirePreparedReportData } from "./report-preparation.mjs";
+import { acquirePreparedMetadataData } from "./metadata-preparation.mjs";
+import { acquirePreparedAdvisoryData } from "./advisory-preparation.mjs";
 
 export function assertCatalogPreparationContext({ state, operation, env }) {
   const workflow = env.GITHUB_WORKFLOW_REF?.slice(
@@ -140,6 +142,10 @@ export async function prepareCatalogOperation({
   });
 }
 export async function acquireCatalogData(input) {
+  if (input.operation.identity.kind === "metadata")
+    return acquirePreparedMetadataData(input);
+  if (input.operation.identity.kind === "advisory")
+    return acquirePreparedAdvisoryData(input);
   if (input.operation.identity.kind === "report-import")
     return acquirePreparedReportData(input);
   if (input.operation.identity.kind === "refresh")

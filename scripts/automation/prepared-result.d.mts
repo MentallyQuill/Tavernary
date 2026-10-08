@@ -44,6 +44,8 @@ export interface PreparedCurrentState {
   fileDigests: Record<string, string>;
   /** Trusted domain schema/field/identity validator, never supplied by the artifact. */
   validateContent: (path: string, value: unknown) => boolean;
+  /** Trusted cross-file provenance validation; never supplied by the artifact. */
+  validateFiles?: (files: Array<{ path: string; content: string }>) => boolean;
   /** Fresh existing project publication planner input; never artifact-supplied. */
   projectPublication?: Record<string, unknown>;
 }

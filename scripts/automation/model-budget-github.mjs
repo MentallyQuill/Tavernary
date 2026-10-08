@@ -32,7 +32,7 @@ function trustedRun(
     run.display_title === `Automation prepare ${operationKey}`
   );
 }
-function validateContext(input) {
+function validateContext(input, allowEmptyTickets = false) {
   if (
     !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(input.repository ?? "") ||
     !Number.isSafeInteger(input.publisherActorId) ||
@@ -41,7 +41,7 @@ function validateContext(input) {
     !/^[a-f0-9]{40}$/u.test(input.sourceSha ?? "") ||
     !workflows.has(input.workflow) ||
     !Array.isArray(input.ticketIds) ||
-    !input.ticketIds.length ||
+    (!input.ticketIds.length && !allowEmptyTickets) ||
     input.ticketIds.length > 2 ||
     input.ticketIds.some((id) => !/^[a-f0-9]{64}$/u.test(id))
   )
@@ -54,6 +54,18 @@ function json(text) {
 }
 export async function dispatchReservedModelPreparation(input) {
   validateContext(input);
+  return dispatchPreparation(input);
+}
+export async function dispatchUnbudgetedPreparation(input) {
+  const context = { ...input, ticketIds: [] };
+  validateContext(context, true);
+  return dispatchPreparation(context);
+}
+async function dispatchPreparation(input) {
+  const advisory =
+    input.workflow === ".github/workflows/review-catalog-policy.yml";
+  if (advisory && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(input.projectId ?? ""))
+    throw fail();
   const {
     gh,
     repository,
@@ -76,6 +88,18 @@ export async function dispatchReservedModelPreparation(input) {
     `operation_key=${operationKey}`,
     "-f",
     `budget_ticket=${ticketIds.join(",")}`,
+    ...(advisory
+      ? [
+          "-f",
+          `project_id=${input.projectId}`,
+          "-f",
+          "transaction_issue_number=0",
+          "-f",
+          "transaction_pull_number=0",
+          "-f",
+          `merge_sha=${sourceSha}`,
+        ]
+      : []),
   ]);
   for (let attempt = 0; attempt < 5; attempt++) {
     const page = json(

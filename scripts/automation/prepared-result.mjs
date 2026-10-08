@@ -302,5 +302,10 @@ export function validatePreparedResult(
     )
       fail("prepared-content-invalid");
   }
+  if (
+    currentState.validateFiles &&
+    currentState.validateFiles(result.files) !== true
+  )
+    fail("prepared-content-invalid");
   return result;
 }

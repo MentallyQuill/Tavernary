@@ -252,6 +252,22 @@ export async function writeEnrichedRecord(
   vocabularies = { tags: [] },
 ) {
   const current = JSON.parse(await readFile(path, "utf8"));
+  const updated = applyEnrichmentOutput(current, output, vocabularies);
+  const temporaryPath = `${path}.${randomUUID()}.tmp`;
+  try {
+    await writeFile(temporaryPath, await formatJson(updated));
+    await rename(temporaryPath, path);
+  } catch (error) {
+    await rm(temporaryPath, { force: true });
+    throw error;
+  }
+}
+
+export function applyEnrichmentOutput(
+  current,
+  output,
+  vocabularies = { tags: [] },
+) {
   const requestedFields = metadataFieldsToGenerate(current).filter((field) =>
     Object.hasOwn(output, field),
   );
@@ -297,14 +313,7 @@ export async function writeEnrichedRecord(
       : {}),
     metadata_status: "curated",
   };
-  const temporaryPath = `${path}.${randomUUID()}.tmp`;
-  try {
-    await writeFile(temporaryPath, await formatJson(updated));
-    await rename(temporaryPath, path);
-  } catch (error) {
-    await rm(temporaryPath, { force: true });
-    throw error;
-  }
+  return updated;
 }
 
 export async function mapWithConcurrency(items, limit, worker) {

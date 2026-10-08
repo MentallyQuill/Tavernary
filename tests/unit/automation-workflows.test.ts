@@ -4,6 +4,51 @@ import { expect, test } from "vitest";
 import { planAutomationWorker } from "../../scripts/automation/worker.mjs";
 import { discoverReportOperations } from "../../scripts/automation/report-operations.mjs";
 import { reportInventoryFixture } from "../helpers/automation-fixtures";
+import { parse } from "yaml";
+
+test.each(["enrich-catalog.yml", "review-catalog-policy.yml"])(
+  "reconciled %s provides a pinned read-only budgeted preparation endpoint",
+  (workflowName) => {
+    const workflow = parse(
+      readFileSync(`.github/workflows/${workflowName}`, "utf8"),
+    );
+    expect(workflow.on.workflow_dispatch.inputs.operation_key).toBeDefined();
+    expect(workflow.on.workflow_dispatch.inputs.budget_ticket).toBeDefined();
+    const job = workflow.jobs.prepare;
+    expect(job["timeout-minutes"]).toBe(45);
+    expect(job.permissions).toEqual({
+      contents: "read",
+      actions: "read",
+      issues: "read",
+      "pull-requests": "read",
+    });
+    expect(job.if).toContain(
+      "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID",
+    );
+    const checkout = job.steps.find((step: { uses?: string }) =>
+      step.uses?.startsWith("actions/checkout@"),
+    );
+    expect(checkout.with.ref).toBe("${{ github.sha }}");
+    expect(checkout.with["persist-credentials"]).toBe(false);
+    const prepare = job.steps.find(
+      (step: { run?: string }) =>
+        step.run === "node scripts/automation/catalog-preparation-cli.mjs",
+    );
+    expect(prepare.env.TAVERNARY_REQUIRE_MODEL_BUDGET).toBe("true");
+    expect(
+      job.steps.some(
+        (step: { with?: Record<string, unknown> }) =>
+          step.with?.["permission-contents"] === "write",
+      ),
+    ).toBe(false);
+    for (const [name, legacy] of Object.entries(workflow.jobs) as Array<
+      [string, { if?: string }]
+    >) {
+      if (name !== "prepare" && legacy.if && !legacy.if.includes("needs."))
+        expect(legacy.if).toContain("inputs.operation_key == ''");
+    }
+  },
+);
 
 test("the controller runs every fifteen minutes using trusted main code and bounded execution", () => {
   const workflow = readFileSync(

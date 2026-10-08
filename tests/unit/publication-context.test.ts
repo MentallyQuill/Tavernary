@@ -1,11 +1,47 @@
 import { readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { expect, test } from "vitest";
-import { createPreparedPublicationContext } from "../../scripts/automation/publication-context.mjs";
+import { createPreparedPublicationContext as createContext } from "../../scripts/automation/publication-context.mjs";
 import { discoverCatalogOperations } from "../../scripts/automation/catalog-operations.mjs";
 import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
 import project from "../../data/registry/projects/mentallyquill-recursion.json";
 import { createPolicyEvidenceFingerprint } from "../../scripts/moderation/catalog-policy-review-contract.mjs";
+
+function createPreparedPublicationContext(
+  input: Parameters<typeof createContext>[0],
+) {
+  return createContext({
+    ...input,
+    observeMetadata: async ({ state, operation }) => {
+      const source = (
+        state.local.sources as Array<{ id: string; repository_id: number }>
+      )[0];
+      const snapshot = (
+        state.local.snapshots as Array<{ repository: { head_sha: string } }>
+      )[0];
+      return {
+        source: {
+          status: "ready",
+          sourceKind: "readme",
+          sourceIdentity: `github:${source.repository_id}`,
+          text: "Verified fixture README",
+        },
+        evidence: {
+          sourceId: source.id,
+          sourceIdentity: `github:${source.repository_id}`,
+          provider: "github",
+          headSha: snapshot.repository.head_sha,
+          normalizedContent: "Verified fixture README",
+          status: "ready",
+          public: true,
+          observedAt: new Date(state.nowMs).toISOString(),
+          policyVersion: operation.identity.policyVersion,
+          vocabularyHash: "a".repeat(64),
+        },
+      };
+    },
+  });
+}
 
 function currentState(): AutomationInventoryState {
   const source = JSON.parse(

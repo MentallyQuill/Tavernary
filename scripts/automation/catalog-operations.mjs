@@ -103,6 +103,8 @@ export function discoverCatalogOperations(input) {
         {
           sourceIdentity: sourceIdentity(source),
           sourceId: source.id,
+          repositoryId: source.repository_id ?? null,
+          repositoryDescription: evidence?.repository?.description ?? null,
           content:
             evidence?.contentDigest ??
             evidence?.repository?.head_sha ??
