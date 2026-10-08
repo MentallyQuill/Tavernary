@@ -107,7 +107,7 @@ function trustedPull(pull, transaction, input, producer, issue) {
   );
 }
 
-function trustedGenerationRuns(input, issue, producer) {
+function trustedGenerationRuns(input, issue, producer, key) {
   const title = `${producer === "project-submission" ? "Project" : "Owner request"} #${issue.number}: Create review PR`;
   return input.runs
     .filter(
@@ -115,7 +115,11 @@ function trustedGenerationRuns(input, issue, producer) {
         run.path === `.github/workflows/generate-${producer}.yml` &&
         run.event === "workflow_dispatch" &&
         run.head_branch === (input.defaultBranch ?? "main") &&
-        run.display_title === title &&
+        (run.display_title === title ||
+          new RegExp(
+            `^Automation prepare ${key}(?: request[1-9]\\d*)?$`,
+            "u",
+          ).test(run.display_title ?? "")) &&
         run.actor?.id === input.publisherActorId &&
         run.actor.type === "Bot",
     )
@@ -126,6 +130,60 @@ function trustedGenerationRuns(input, issue, producer) {
     );
 }
 
+export function discoverRequestedGeneration(input, request) {
+  const issue = input.issues.find(
+    (value) => value.number === request.issueNumber && value.state === "open",
+  );
+  if (!issue) return null;
+  if (!request.ownerAuthorized)
+    return (
+      discoverProjectOperations(input).find(
+        (value) =>
+          value.identity.kind === request.kind &&
+          value.identity.subject === `issue:${request.issueNumber}` &&
+          value.stage === "admitted",
+      ) ?? null
+    );
+  const producer =
+    request.kind === "project" ? "project-submission" : "project-owner-request";
+  const branch = `automation/${producer}-${request.issueNumber}`;
+  const related = input.pulls.filter((pull) => pull.head?.ref === branch);
+  if (related.some((pull) => pull.merged_at)) return null;
+  const open = related.filter((pull) => pull.state === "open");
+  if (open.length > 1) return null;
+  for (const pull of related) {
+    const transaction = parseProjectPublicationTransaction(pull.body ?? "");
+    if (
+      !transaction ||
+      !trustedPull(
+        {
+          ...pull,
+          head: { ...pull.head, sha: transaction.generated_head_sha },
+        },
+        transaction,
+        input,
+        producer,
+        issue,
+      )
+    )
+      return null;
+  }
+  const operation = discoverProjectOperations({
+    ...input,
+    pulls: input.pulls.filter((pull) => pull.head?.ref !== branch),
+  }).find(
+    (value) =>
+      value.identity.kind === request.kind &&
+      value.identity.subject === `issue:${request.issueNumber}` &&
+      value.stage === "admitted",
+  );
+  if (!operation) return null;
+  if (operation.retry?.failure.kind === "permanent") {
+    operation.retry = null;
+    operation.nextEligibleAt = null;
+  }
+  return operation;
+}
 export function discoverProjectOperations(input) {
   const operations = [];
   for (const issue of input.issues) {
@@ -200,7 +258,7 @@ export function discoverProjectOperations(input) {
       generationRecovery(
         operation,
         input,
-        trustedGenerationRuns(input, issue, producer),
+        trustedGenerationRuns(input, issue, producer, operation.key),
       );
       operations.push(operation);
       continue;
@@ -239,8 +297,9 @@ export function discoverProjectOperations(input) {
       transaction.policy_version !== identity.policyVersion
     ) {
       operation.workerRunId =
-        trustedGenerationRuns(input, issue, producer).find(isActive)?.id ??
-        null;
+        trustedGenerationRuns(input, issue, producer, operation.key).find(
+          isActive,
+        )?.id ?? null;
       operations.push(operation);
       continue;
     }
@@ -272,7 +331,12 @@ export function discoverProjectOperations(input) {
       ...operation,
       stage: "generated",
     });
-    const generations = trustedGenerationRuns(input, issue, producer)
+    const generations = trustedGenerationRuns(
+      input,
+      issue,
+      producer,
+      operation.key,
+    )
       .filter((run) => isActive(run) || boundGeneration(run, receipt))
       .map((run) => ({ ...run, head_sha: pull.head.sha }));
     const plan = planProjectValidationReconciliation({

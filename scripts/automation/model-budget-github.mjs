@@ -1,8 +1,171 @@
 import {
   validateModelBudgetState,
   createModelBudgetGuard,
+  validateModelUsageEvidence,
 } from "./model-budget.mjs";
+import { loadPreparedGithubArtifact } from "./prepared-github.mjs";
+import { decodePreparedArtifact } from "./prepared-artifact.mjs";
+import { readFile, writeFile } from "node:fs/promises";
+import { writeFileSync, renameSync } from "node:fs";
+import { resolve } from "node:path";
+import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
+
+export async function loadGenerationModelUsage(input) {
+  const context = await loadPreparedGithubArtifact({
+    ...input,
+    artifactKind: "generation-usage",
+    allowMissing: true,
+  });
+  if (!context) return null;
+  const archive = await input.download([
+    "api",
+    `repos/${input.repository}/actions/artifacts/${context.artifact.id}/zip`,
+  ]);
+  const value = decodePreparedArtifact({
+    archive,
+    digest: context.artifact.digest,
+    filename: "automation-generation-model-usage.json",
+  });
+  if (
+    Object.keys(value).sort().join(",") !==
+      "modelUsage,operationKey,producer,schema_version" ||
+    value.schema_version !== 1 ||
+    value.operationKey !== input.operation.key ||
+    !value.producer ||
+    Object.keys(value.producer).sort().join(",") !==
+      "runId,sourceSha,workflow" ||
+    value.producer.runId !== context.run.id ||
+    value.producer.workflow !== context.run.path ||
+    value.producer.sourceSha !== context.run.head_sha
+  )
+    throw new Error("Generation usage evidence is invalid.");
+  validateModelUsageEvidence(value.modelUsage);
+  return value;
+}
+
+export async function runGenerationWithBudgetEvidence({
+  generate,
+  loader,
+  env = process.env,
+  read = readFile,
+  write = writeFile,
+  emit = true,
+}) {
+  let failed = false;
+  try {
+    return await generate();
+  } catch (error) {
+    failed = true;
+    throw error;
+  } finally {
+    if (
+      emit &&
+      env.RUNNER_TEMP &&
+      env.GITHUB_RUN_ID &&
+      !loader.evidenceSaved?.()
+    ) {
+      try {
+        const event = JSON.parse(await read(env.GITHUB_EVENT_PATH, "utf8"));
+        const workflow = env.GITHUB_WORKFLOW_REF?.split("/")
+          .slice(2)
+          .join("/")
+          .split("@")[0];
+        if (
+          !/^[a-f0-9]{64}$/u.test(event.inputs?.operation_key ?? "") ||
+          !/^[a-f0-9]{40}$/u.test(env.GITHUB_SHA ?? "") ||
+          !/^[1-9]\d*$/u.test(env.GITHUB_RUN_ID) ||
+          ![
+            ".github/workflows/generate-project-submission.yml",
+            ".github/workflows/generate-project-owner-request.yml",
+          ].includes(workflow)
+        )
+          throw fail();
+        await loader.load();
+        const modelUsage = validateModelUsageEvidence(loader.usage());
+        if (!loader.evidenceSaved?.())
+          await write(
+            resolve(env.RUNNER_TEMP, "automation-generation-model-usage.json"),
+            `${JSON.stringify({ schema_version: 1, operationKey: event.inputs.operation_key, producer: { runId: Number(env.GITHUB_RUN_ID), sourceSha: env.GITHUB_SHA, workflow }, modelUsage })}\n`,
+            { flag: "wx" },
+          );
+      } catch (error) {
+        if (!failed) throw error;
+      }
+    }
+  }
+}
+
+export function createProducerBudgetLoader({
+  env = process.env,
+  gh = executeGh,
+  event,
+  nowMs,
+  sleep,
+  persistEvidence = (path, content, options) => {
+    if (options.flag === "wx") writeFileSync(path, content, options);
+    else {
+      writeFileSync(`${path}.pending`, content, { flag: "w" });
+      renameSync(`${path}.pending`, path);
+    }
+  },
+} = {}) {
+  let promise,
+    guard,
+    evidenceSaved = false;
+  return {
+    load: () =>
+      (promise ??= (async () => {
+        const metadata =
+          event ?? JSON.parse(await readFile(env.GITHUB_EVENT_PATH, "utf8"));
+        guard = await loadProducerBudgetGuard({
+          env,
+          operationKey: metadata.inputs?.operation_key,
+          ticketIds: String(metadata.inputs?.budget_ticket ?? "")
+            .split(",")
+            .filter(Boolean),
+          gh,
+          nowMs,
+          sleep,
+          requestRunId: Number(metadata.inputs?.request_run_id || 0),
+        });
+        const workflow = env.GITHUB_WORKFLOW_REF?.slice(
+          `${env.GITHUB_REPOSITORY}/`.length,
+        ).split("@")[0];
+        if (
+          env.RUNNER_TEMP &&
+          [
+            ".github/workflows/generate-project-submission.yml",
+            ".github/workflows/generate-project-owner-request.yml",
+          ].includes(workflow)
+        ) {
+          const persist = () => {
+            const content = `${JSON.stringify({ schema_version: 1, operationKey: metadata.inputs.operation_key, producer: { runId: Number(env.GITHUB_RUN_ID), sourceSha: env.GITHUB_SHA, workflow }, modelUsage: guard.usage() })}\n`;
+            persistEvidence(
+              resolve(
+                env.RUNNER_TEMP,
+                "automation-generation-model-usage.json",
+              ),
+              content,
+              { flag: evidenceSaved ? "w" : "wx" },
+            );
+            evidenceSaved = true;
+          };
+          persist();
+          const complete = guard.completeRequest;
+          guard.completeRequest = (request) => {
+            complete(request);
+            persist();
+          };
+        }
+        return guard;
+      })()),
+    usage: () => guard?.usage?.() ?? [],
+    evidenceSaved: () => evidenceSaved,
+  };
+}
 const workflows = new Set([
+  ".github/workflows/generate-project-submission.yml",
+  ".github/workflows/generate-project-owner-request.yml",
   ".github/workflows/enrich-catalog.yml",
   ".github/workflows/review-catalog-policy.yml",
   ".github/workflows/import-tavernkeeper-reports.yml",
@@ -15,7 +178,14 @@ const fail = () =>
   );
 function trustedRun(
   run,
-  { repository, publisherActorId, operationKey, workflow, sourceSha },
+  {
+    repository,
+    publisherActorId,
+    operationKey,
+    workflow,
+    sourceSha,
+    requestRunId = 0,
+  },
 ) {
   return (
     Number.isSafeInteger(run?.id) &&
@@ -29,7 +199,8 @@ function trustedRun(
     run.actor?.id === publisherActorId &&
     run.actor.type === "Bot" &&
     run.run_attempt === 1 &&
-    run.display_title === `Automation prepare ${operationKey}`
+    run.display_title ===
+      `Automation prepare ${operationKey}${requestRunId ? ` request${requestRunId}` : ""}`
   );
 }
 function validateContext(input, allowEmptyTickets = false) {
@@ -43,7 +214,10 @@ function validateContext(input, allowEmptyTickets = false) {
     !Array.isArray(input.ticketIds) ||
     (!input.ticketIds.length && !allowEmptyTickets) ||
     input.ticketIds.length > 2 ||
-    input.ticketIds.some((id) => !/^[a-f0-9]{64}$/u.test(id))
+    input.ticketIds.some((id) => !/^[a-f0-9]{64}$/u.test(id)) ||
+    !Number.isSafeInteger(input.requestRunId ?? 0) ||
+    (input.requestRunId ?? 0) < 0 ||
+    (input.forceRegeneration === true && !input.requestRunId)
   )
     throw fail();
 }
@@ -62,8 +236,25 @@ export async function dispatchUnbudgetedPreparation(input) {
   return dispatchPreparation(context);
 }
 async function dispatchPreparation(input) {
+  if (
+    input.checkpointRunIds !== undefined &&
+    (!Array.isArray(input.checkpointRunIds) ||
+      input.checkpointRunIds.length > 10 ||
+      new Set(input.checkpointRunIds).size !== input.checkpointRunIds.length ||
+      input.checkpointRunIds.some((id) => !Number.isSafeInteger(id) || id < 1))
+  )
+    throw fail();
   const advisory =
     input.workflow === ".github/workflows/review-catalog-policy.yml";
+  const generation = [
+    ".github/workflows/generate-project-submission.yml",
+    ".github/workflows/generate-project-owner-request.yml",
+  ].includes(input.workflow);
+  if (
+    generation &&
+    (!Number.isSafeInteger(input.issueNumber) || input.issueNumber < 1)
+  )
+    throw fail();
   if (advisory && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(input.projectId ?? ""))
     throw fail();
   const {
@@ -88,6 +279,16 @@ async function dispatchPreparation(input) {
     `operation_key=${operationKey}`,
     "-f",
     `budget_ticket=${ticketIds.join(",")}`,
+    ...(generation
+      ? [
+          "-f",
+          `issue_number=${input.issueNumber}`,
+          "-f",
+          `force_regeneration=${input.forceRegeneration === true ? "true" : "false"}`,
+          "-f",
+          `request_run_id=${input.requestRunId ?? 0}`,
+        ]
+      : []),
     ...(advisory
       ? [
           "-f",
@@ -99,6 +300,10 @@ async function dispatchPreparation(input) {
           "-f",
           `merge_sha=${sourceSha}`,
         ]
+      : []),
+    ...(input.workflow ===
+    ".github/workflows/generate-project-owner-request.yml"
+      ? ["-f", `checkpoint_run_ids=${(input.checkpointRunIds ?? []).join(",")}`]
       : []),
   ]);
   for (let attempt = 0; attempt < 5; attempt++) {
@@ -143,6 +348,7 @@ export async function loadProducerBudgetGuard({
   gh,
   nowMs = Date.now,
   sleep = sleepDefault,
+  requestRunId = 0,
 }) {
   const workflow = env.GITHUB_WORKFLOW_REF?.slice(
     `${env.GITHUB_REPOSITORY}/`.length,
@@ -154,6 +360,7 @@ export async function loadProducerBudgetGuard({
     workflow,
     sourceSha: env.GITHUB_SHA,
     ticketIds,
+    requestRunId,
   };
   validateContext(input);
   if (
@@ -190,6 +397,10 @@ export async function loadProducerBudgetGuard({
         (ticket) =>
           !ticket ||
           ticket.operationKey !== operationKey ||
+          (requestRunId &&
+            !ticket.requestId.startsWith(
+              `generation-request-${requestRunId}:`,
+            )) ||
           ticket.settled ||
           (ticket.producer &&
             (ticket.producer.runId !== runId ||

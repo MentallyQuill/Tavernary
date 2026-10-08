@@ -1,6 +1,47 @@
 import { expect, test, vi } from "vitest";
 import { createProjectReconciliationRequest } from "../../scripts/automation/project-reconciliation-request.mjs";
 
+test("regeneration diverts into writer allowance and binds only its current issue and workflow", async () => {
+  const gh = vi.fn(async () => "");
+  const prepareGeneration = vi.fn(async () => {});
+  const bridge = createProjectReconciliationRequest({
+    repository: "Owner/Repo",
+    request: vi.fn(),
+    gh,
+    publish: vi.fn(),
+    issueNumber: 42,
+    generationWorkflow: "generate-project-submission.yml",
+    prepareGeneration,
+  });
+  const path =
+    "/repos/Owner/Repo/actions/workflows/generate-project-submission.yml/dispatches";
+  await bridge(path, {
+    method: "POST",
+    body: JSON.stringify({
+      ref: "main",
+      inputs: { issue_number: "42", force_regeneration: "false" },
+    }),
+  });
+  expect(prepareGeneration).toHaveBeenCalledOnce();
+  expect(gh).not.toHaveBeenCalled();
+  for (const body of [
+    { ref: "main", inputs: { issue_number: "43" } },
+    { ref: "other", inputs: { issue_number: "42" } },
+    { ref: "main", inputs: { issue_number: "42", force_regeneration: "true" } },
+  ])
+    await expect(
+      bridge(path, { method: "POST", body: JSON.stringify(body) }),
+    ).rejects.toThrow();
+  await expect(
+    bridge(path.replace("project-submission", "project-owner-request"), {
+      method: "POST",
+      body: JSON.stringify({ ref: "main", inputs: { issue_number: "42" } }),
+    }),
+  ).rejects.toThrow();
+  expect(prepareGeneration).toHaveBeenCalledOnce();
+  expect(gh).not.toHaveBeenCalled();
+});
+
 test("project projections preserve default automation-bot custody while dispatches use the App", async () => {
   const request = vi.fn(async () => null);
   const gh = vi.fn(async () => "");

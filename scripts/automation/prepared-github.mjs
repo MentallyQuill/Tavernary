@@ -1,5 +1,6 @@
 import {
   assertTrustedPreparedProducer,
+  assertTrustedPreparationOrigin,
   validatePreparedResult,
 } from "./prepared-result.mjs";
 import { validateAutomationOperation } from "./operation.mjs";
@@ -18,8 +19,30 @@ export async function loadPreparedGithubArtifact({
   allowMissing = false,
   artifactKind = "result",
 }) {
-  validateAutomationOperation(operation);
-  if (!["result", "diagnostic"].includes(artifactKind))
+  const generation = ["generation-usage", "generation-checkpoint"].includes(
+    artifactKind,
+  );
+  const generationTitle = new RegExp(
+    `^Automation prepare ${operation?.key}(?: request[1-9]\\d*)?$`,
+    "u",
+  );
+  if (generation) {
+    if (
+      !/^[a-f0-9]{64}$/u.test(operation?.key ?? "") ||
+      !["project", "owner-request"].includes(operation?.identity?.kind) ||
+      (artifactKind === "generation-checkpoint" &&
+        operation.identity.kind !== "owner-request")
+    )
+      throw new Error("Generation artifact context is invalid.");
+  } else validateAutomationOperation(operation);
+  if (
+    ![
+      "result",
+      "diagnostic",
+      "generation-usage",
+      "generation-checkpoint",
+    ].includes(artifactKind)
+  )
     throw new Error("Prepared artifact kind is invalid.");
   if (
     !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(repository) ||
@@ -29,6 +52,21 @@ export async function loadPreparedGithubArtifact({
     throw new Error("Prepared artifact context is invalid.");
   const root = `repos/${repository}`;
   const run = JSON.parse(await gh(["api", `${root}/actions/runs/${runId}`]));
+  if (generation && run.status !== "completed") {
+    assertTrustedPreparationOrigin({
+      kind: operation.identity.kind,
+      repository,
+      run,
+      publisherActorId,
+    });
+    if (
+      run.id !== runId ||
+      run.run_attempt !== 1 ||
+      !generationTitle.test(run.display_title ?? "")
+    )
+      throw new Error("Generation usage producer is invalid.");
+    return null;
+  }
   assertTrustedPreparedProducer({
     kind: operation.identity.kind,
     repository,
@@ -43,6 +81,13 @@ export async function loadPreparedGithubArtifact({
     run.head_repository?.id !== run.repository.id
   )
     throw new Error("Prepared run origin is invalid.");
+  if (
+    generation &&
+    (!["project", "owner-request"].includes(operation.identity.kind) ||
+      run.run_attempt !== 1 ||
+      !generationTitle.test(run.display_title ?? ""))
+  )
+    throw new Error("Generation usage producer is invalid.");
   const pages = JSON.parse(
     await gh([
       "api",
@@ -71,7 +116,11 @@ export async function loadPreparedGithubArtifact({
         artifact.name ===
         (artifactKind === "result"
           ? `automation-prepared-${operation.key}`
-          : `automation-failure-${operation.key}-${runId}`),
+          : artifactKind === "generation-usage"
+            ? `automation-generation-${operation.key}-${runId}`
+            : artifactKind === "generation-checkpoint"
+              ? `automation-generation-checkpoint-${operation.key}-${runId}`
+              : `automation-failure-${operation.key}-${runId}`),
     );
   if (!matches.length && allowMissing) return null;
   if (matches.length !== 1)
@@ -85,7 +134,11 @@ export async function loadPreparedGithubArtifact({
     !Number.isSafeInteger(artifact.size_in_bytes) ||
     artifact.size_in_bytes < 1 ||
     artifact.size_in_bytes >
-      (artifactKind === "diagnostic" ? 16_384 : 33_554_432) ||
+      (artifactKind === "result"
+        ? 33_554_432
+        : artifactKind === "generation-checkpoint"
+          ? 262_144
+          : 16_384) ||
     !/^sha256:[a-f0-9]{64}$/u.test(artifact.digest ?? "") ||
     origin?.id !== runId ||
     origin.repository_id !== run.repository.id ||

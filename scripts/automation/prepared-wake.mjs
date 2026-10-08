@@ -8,6 +8,7 @@ import {
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 import { trustedRestoreRun } from "./restore-source.mjs";
 import { parseEnrichmentOwnerRequest } from "./enrichment-owner-request.mjs";
+import { parseGenerationOwnerRequest } from "./preparation-request.mjs";
 
 const kinds = {
   "refresh-catalog": "refresh",
@@ -17,6 +18,35 @@ const kinds = {
   "apply-kit-submission": "kit",
   "apply-kit-withdrawal": "withdrawal",
 };
+function trustedGenerationWake(run, repository, publisherActorId) {
+  const kind = {
+    ".github/workflows/generate-project-submission.yml": "project",
+    ".github/workflows/generate-project-owner-request.yml": "owner-request",
+  }[run?.path];
+  if (
+    !kind ||
+    run.run_attempt !== 1 ||
+    run.repository?.id !== 1309605115 ||
+    run.repository.full_name !== repository ||
+    run.head_repository?.id !== run.repository.id ||
+    !/^Automation prepare [a-f0-9]{64}(?: request[1-9]\d*)?$/u.test(
+      run.display_title ?? "",
+    )
+  )
+    return false;
+  try {
+    assertTrustedPreparedProducer({
+      kind,
+      repository,
+      publisherActorId,
+      run,
+      requireSuccess: false,
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
 function trustedDeploymentWake(run, env, repository, runId) {
   const publisherActorId = Number(env.TAVERNARY_PUBLISHER_BOT_ID);
   return (
@@ -161,6 +191,42 @@ export async function runPreparedWakeCli(options = {}) {
     const run = JSON.parse(
       await gh(["api", `repos/${repository}/actions/runs/${runId}`]),
     );
+    if (
+      env.GITHUB_WORKFLOW_REF ===
+        `${repository}/.github/workflows/automation-prepared.yml@refs/heads/main` &&
+      run.id === runId
+    ) {
+      const request =
+        run.status === "completed"
+          ? parseGenerationOwnerRequest(
+              run,
+              repository,
+              Number(env.TAVERNARY_PUBLISHER_BOT_ID),
+            )
+          : null;
+      const generation = trustedGenerationWake(
+        run,
+        repository,
+        Number(env.TAVERNARY_PUBLISHER_BOT_ID),
+      );
+      if (request || generation) {
+        const mode = request ? "prepare" : "reconcile";
+        await gh([
+          "workflow",
+          "run",
+          "automation-writer.yml",
+          "--repo",
+          repository,
+          "--ref",
+          "main",
+          "-f",
+          `mode=${mode}`,
+          ...(request ? ["-f", `result_run_id=${runId}`] : []),
+        ]);
+        write(JSON.stringify({ status: "dispatched", mode, runId }));
+        return 0;
+      }
+    }
     if (
       env.GITHUB_WORKFLOW_REF ===
         `${repository}/.github/workflows/automation-prepared.yml@refs/heads/main` &&

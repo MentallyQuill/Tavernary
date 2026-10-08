@@ -11,6 +11,7 @@ import { confirmPublicDeployment } from "./confirm-deployment.mjs";
 import {
   createModelBudgetState,
   validateModelBudgetState,
+  settlePreparedModelUsage,
 } from "./model-budget.mjs";
 import { reserveModelPreparation } from "./model-preparation.mjs";
 import { isReportNarrativeRetry } from "./report-operations.mjs";
@@ -18,6 +19,7 @@ import { enrichmentCheckpointNeedsModel } from "./enrichment-preparation.mjs";
 import {
   dispatchReservedModelPreparation,
   dispatchUnbudgetedPreparation,
+  loadGenerationModelUsage,
 } from "./model-budget-github.mjs";
 import {
   observeMetadataSource,
@@ -27,6 +29,7 @@ import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 import {
   assertCanonicalWriterContext,
   persistGithubAutomationReceipt,
+  loadGenerationOwnerRequestRuns,
 } from "./github-inventory.mjs";
 import { loadAutomationInventory } from "./inventory.mjs";
 import { createPreparedPublicationContext } from "./publication-context.mjs";
@@ -55,11 +58,85 @@ import {
 } from "./project-merge.mjs";
 import { createProjectReconciliationRequest } from "./project-reconciliation-request.mjs";
 import {
+  parseGenerationOwnerRequest,
+  generationRequestOperation,
+  generationRequestCompleted,
+} from "./preparation-request.mjs";
+import { enrichmentRequestAncestor } from "./enrichment-owner-request.mjs";
+import {
   reconcileProjectValidations,
   githubRequest,
 } from "../submissions/reconcile-project-validations.mjs";
 
 const exec = promisify(execFile);
+export async function reconcileGenerationOwnerRequests({
+  state,
+  gh,
+  prepare,
+  isAncestor,
+  limit = 1,
+}) {
+  if (!Number.isSafeInteger(limit) || limit < 0 || limit > 20)
+    throw new Error("Generation request quota is invalid.");
+  if (!limit) return { status: "idle", slots: 0, consumedKeys: [] };
+  const requests = new Map();
+  const runs = await loadGenerationOwnerRequestRuns({
+    gh,
+    repository: state.repository,
+    issues: state.remote.issues,
+    nowMs: state.nowMs,
+  });
+  for (const run of runs) {
+    const request = parseGenerationOwnerRequest(
+      run,
+      state.repository,
+      state.publisherActorId,
+    );
+    if (
+      !request?.ownerAuthorized ||
+      run.status !== "completed" ||
+      !state.remote.issues.some(
+        (issue) =>
+          issue.number === request.issueNumber && issue.state === "open",
+      )
+    )
+      continue;
+    const subject = `${request.kind}:${request.issueNumber}`;
+    if (!requests.has(subject) || requests.get(subject).runId < request.runId)
+      requests.set(subject, request);
+  }
+  for (const request of [...requests.values()].sort(
+    (a, b) => a.runId - b.runId,
+  )) {
+    const operation = generationRequestOperation(state, request);
+    if (
+      !operation ||
+      operation.workerRunId !== null ||
+      operation.retry?.failure.kind === "permanent" ||
+      (operation.retry &&
+        operation.nextEligibleAt &&
+        Date.parse(operation.nextEligibleAt) > state.nowMs) ||
+      isAncestor(request.sourceSha, state.local.revision) !== true ||
+      (await generationRequestCompleted({ state, request, gh, isAncestor }))
+    )
+      continue;
+    try {
+      const outcome = await prepare({ requestRunId: request.runId });
+      return {
+        status: outcome.status,
+        slots: 1,
+        consumedKeys: [operation.key],
+      };
+    } catch {
+      return {
+        status: "unavailable",
+        slots: 1,
+        consumedKeys: [operation.key],
+      };
+    }
+  }
+  return { status: "idle", slots: 0, consumedKeys: [] };
+}
 export async function runEnrichmentOwnerWriter({
   runId,
   root = process.cwd(),
@@ -155,8 +232,153 @@ export async function runPublicationWriterFinalization({
     throw error;
   }
 }
+const generationKinds = {
+  ".github/workflows/generate-project-submission.yml": "project",
+  ".github/workflows/generate-project-owner-request.yml": "owner-request",
+};
+export async function reconcileGenerationModelUsage({
+  state,
+  limit = 20,
+  settle,
+  onFailure,
+}) {
+  if (!Number.isInteger(limit) || limit < 0 || limit > 20)
+    throw new Error("Generation settlement limit is invalid.");
+  const result = { slots: 0, consumedKeys: [], failures: 0 };
+  if (!state.local.modelBudget || !limit) return result;
+  const budget = validateModelBudgetState(state.local.modelBudget);
+  const keys = [
+    ...new Set(
+      budget.tickets
+        .filter(
+          (ticket) =>
+            !ticket.settled &&
+            Object.hasOwn(generationKinds, ticket.producer?.workflow ?? ""),
+        )
+        .sort((a, b) => b.producer.runId - a.producer.runId)
+        .map((ticket) => ticket.operationKey),
+    ),
+  ].slice(0, Math.min(4, limit));
+  for (const operationKey of keys) {
+    result.slots++;
+    let failure;
+    try {
+      const outcome = await settle({ operationKey });
+      if (["settled", "recovered"].includes(outcome.status))
+        result.consumedKeys.push(operationKey);
+    } catch (error) {
+      failure = error;
+    }
+    if (failure) {
+      if (onFailure) await onFailure({ operationKey, error: failure });
+      result.consumedKeys.push(operationKey);
+      result.failures++;
+    }
+  }
+  return result;
+}
+async function loadGenerationBudgetSnapshot({ env, gh }) {
+  const repository = env.GITHUB_REPOSITORY;
+  const reference = JSON.parse(
+    await gh(["api", `repos/${repository}/git/ref/heads/main`]),
+  );
+  const revision = reference?.object?.sha;
+  if (!/^[a-f0-9]{40}$/u.test(revision ?? ""))
+    throw new Error("Generation budget revision is invalid.");
+  const text = await gh([
+    "api",
+    `repos/${repository}/contents/data/maintenance/automation/model-budgets/global.json?ref=${revision}`,
+    "--header",
+    "Accept: application/vnd.github.raw+json",
+  ]);
+  if (typeof text !== "string" || Buffer.byteLength(text) > 8_388_608)
+    throw new Error("Generation budget snapshot exceeds its bound.");
+  return {
+    publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
+    local: {
+      revision,
+      modelBudget: validateModelBudgetState(JSON.parse(text)),
+    },
+  };
+}
+export async function runGenerationModelWriterSettlement({
+  operationKey,
+  env = process.env,
+  gh = executeGh,
+  load = () => loadGenerationBudgetSnapshot({ env, gh }),
+  download = downloadPreparedArtifact,
+  commit = (input) => commitCanonicalData({ ...input, gh }),
+}) {
+  const repository = env.GITHUB_REPOSITORY;
+  assertCanonicalWriterContext(env, repository);
+  const state = await load();
+  if (!state.local.modelBudget) return { status: "idle" };
+  const budget = validateModelBudgetState(state.local.modelBudget);
+  const ticket = budget.tickets
+    .filter(
+      (value) =>
+        value.operationKey === operationKey &&
+        Object.hasOwn(generationKinds, value.producer?.workflow ?? "") &&
+        !value.settled,
+    )
+    .sort((a, b) => b.producer.runId - a.producer.runId)[0];
+  if (!ticket) return { status: "idle" };
+  const operation = {
+    key: operationKey,
+    identity: { kind: generationKinds[ticket.producer.workflow] },
+  };
+  const usage = await loadGenerationModelUsage({
+    gh,
+    download,
+    repository,
+    operation,
+    publisherActorId: state.publisherActorId,
+    runId: ticket.producer.runId,
+  });
+  if (!usage) return { status: "waiting" };
+  const fresh = await load();
+  const updated = settlePreparedModelUsage(
+    validateModelBudgetState(fresh.local.modelBudget),
+    [usage],
+  );
+  const content = `${JSON.stringify(updated, null, 2)}\n`;
+  try {
+    await commit({
+      repository,
+      expectedMainSha: fresh.local.revision,
+      message: "chore(automation): settle verified generation usage",
+      files: [
+        {
+          path: "data/maintenance/automation/model-budgets/global.json",
+          type: "file",
+          content,
+          bytes: Buffer.byteLength(content),
+          sha256: createHash("sha256").update(content).digest("hex"),
+        },
+      ],
+    });
+    return { status: "settled" };
+  } catch (error) {
+    const recovered = await load();
+    try {
+      if (
+        JSON.stringify(
+          settlePreparedModelUsage(
+            validateModelBudgetState(recovered.local.modelBudget),
+            [usage],
+          ),
+        ) === JSON.stringify(recovered.local.modelBudget)
+      )
+        return { status: "recovered" };
+    } catch {
+      /* Changed or absent usage cannot prove a successful commit. */
+    }
+    throw error;
+  }
+}
 export async function runModelWriterPreparation({
   operationKey,
+  requestRunId = 0,
   root = process.cwd(),
   env = process.env,
   gh = executeGh,
@@ -187,21 +409,67 @@ export async function runModelWriterPreparation({
       ...input,
       model: env.UTILITY_MODEL,
     })),
+  projectGenerationEligible = async ({ state, operation }) =>
+    operation.stage === "admitted" ||
+    (["generated", "validated"].includes(operation.stage) &&
+      (await loadProjectMergePlan({ state, operation, gh })).action ===
+        "regenerate"),
+  isRequestAncestor = (ancestor, descendant) =>
+    enrichmentRequestAncestor(root, ancestor, descendant),
 }) {
   const repository = env.GITHUB_REPOSITORY;
   assertCanonicalWriterContext(env, repository);
   if (
-    !/^[a-f0-9]{64}$/u.test(operationKey ?? "") ||
+    (!requestRunId && !/^[a-f0-9]{64}$/u.test(operationKey ?? "")) ||
+    !Number.isSafeInteger(requestRunId) ||
+    requestRunId < 0 ||
     !/^[1-9]\d*$/u.test(env.GITHUB_RUN_ID ?? "") ||
     env.GITHUB_RUN_ATTEMPT !== "1"
   )
     throw new Error("Model writer context is invalid.");
   try {
     const initial = await load();
-    const operation = initial.operations.find(
-      (current) => current.key === operationKey,
-    );
+    const request = requestRunId
+      ? parseGenerationOwnerRequest(
+          JSON.parse(
+            await gh([
+              "api",
+              `repos/${repository}/actions/runs/${requestRunId}`,
+            ]),
+          ),
+          repository,
+          initial.publisherActorId,
+        )
+      : null;
+    if (
+      requestRunId &&
+      (!request ||
+        request.runId !== requestRunId ||
+        isRequestAncestor(request.sourceSha, initial.local.revision) !== true)
+    )
+      throw Object.assign(
+        new Error("Generation request authority is unavailable."),
+        { code: "authorization-lost" },
+      );
+    if (
+      request &&
+      (await generationRequestCompleted({
+        state: initial,
+        request,
+        gh,
+        isAncestor: isRequestAncestor,
+      }))
+    )
+      return { status: "already-requested", runId: request.runId };
+    const operation = request
+      ? generationRequestOperation(initial, request)
+      : initial.operations.find((current) => current.key === operationKey);
+    if (request && operationKey && operation?.key !== operationKey)
+      return { status: "superseded" };
+    if (operation) operationKey = operation.key;
     const workflows = {
+      project: ".github/workflows/generate-project-submission.yml",
+      "owner-request": ".github/workflows/generate-project-owner-request.yml",
       metadata: ".github/workflows/enrich-catalog.yml",
       enrichment: ".github/workflows/enrich-catalog.yml",
       advisory: ".github/workflows/review-catalog-policy.yml",
@@ -210,6 +478,7 @@ export async function runModelWriterPreparation({
     const workflow = workflows[operation?.identity.kind];
     if (!operation) return { status: "superseded" };
     if (!workflow) throw new Error("Model preparation kind is invalid.");
+    if (operation.workerRunId !== null) return { status: "superseded" };
     if (
       operation.identity.kind === "report-import" &&
       !isReportNarrativeRetry(operation)
@@ -261,7 +530,7 @@ export async function runModelWriterPreparation({
     const monthlyUsd = env.TAVERNARY_MODEL_MONTHLY_USD
       ? Number(env.TAVERNARY_MODEL_MONTHLY_USD)
       : undefined;
-    const request = (model, requestCount, requestedTokens) => ({
+    const modelRequest = (model, requestCount, requestedTokens) => ({
       model,
       requestCount,
       requestedTokens,
@@ -270,9 +539,9 @@ export async function runModelWriterPreparation({
         : {}),
     });
     const requests = [
-      request(env.UTILITY_MODEL, 3, 180000),
+      modelRequest(env.UTILITY_MODEL, 3, 180000),
       ...(env.TAVERNARY_ENRICHMENT_MODEL
-        ? [request(env.TAVERNARY_ENRICHMENT_MODEL, 1, 15000)]
+        ? [modelRequest(env.TAVERNARY_ENRICHMENT_MODEL, 1, 15000)]
         : []),
     ];
     const path = "data/maintenance/automation/model-budgets/global.json";
@@ -286,15 +555,17 @@ export async function runModelWriterPreparation({
           budget = createModelBudgetState(0);
         }
       }
-      const current = state.operations.find(
-        (value) => value.key === operationKey,
-      );
+      const current = request
+        ? generationRequestOperation(state, request)
+        : state.operations.find((value) => value.key === operationKey);
       return {
         mainSha: state.local.revision,
         budget: validateModelBudgetState(budget),
         eligible: Boolean(
           current &&
-          current.stage === "admitted" &&
+          (["project", "owner-request"].includes(current.identity.kind)
+            ? await projectGenerationEligible({ state, operation: current })
+            : current.stage === "admitted") &&
           current.retry?.failure.kind !== "permanent" &&
           (!current.retry ||
             !current.nextEligibleAt ||
@@ -305,7 +576,9 @@ export async function runModelWriterPreparation({
     const outcome = await reserveModelPreparation({
       operationKey,
       workflow,
-      requestId: `writer-${env.GITHUB_RUN_ID}`,
+      requestId: request
+        ? `generation-request-${request.runId}`
+        : `writer-${env.GITHUB_RUN_ID}`,
       requests,
       monthlyUsd,
       nowMs: initial.nowMs,
@@ -335,8 +608,34 @@ export async function runModelWriterPreparation({
           operationKey,
           workflow,
           nowMs: initial.nowMs,
+          ...(request
+            ? {
+                requestRunId: request.runId,
+                forceRegeneration: request.forceRegeneration,
+              }
+            : {}),
           ...(operation.identity.kind === "advisory"
             ? { projectId: operation.identity.subject.split(":")[2] }
+            : {}),
+          ...(["project", "owner-request"].includes(operation.identity.kind)
+            ? { issueNumber: Number(operation.identity.subject.slice(6)) }
+            : {}),
+          ...(operation.identity.kind === "owner-request"
+            ? {
+                checkpointRunIds: [
+                  ...new Set(
+                    (initial.local.modelBudget?.tickets ?? [])
+                      .filter(
+                        (ticket) =>
+                          ticket.operationKey === operationKey &&
+                          ticket.producer?.workflow === workflow,
+                      )
+                      .map((ticket) => ticket.producer.runId),
+                  ),
+                ]
+                  .sort((a, b) => b - a)
+                  .slice(0, 10),
+              }
             : {}),
         }),
     });
@@ -550,21 +849,7 @@ export async function runProjectWriterPublication({
       (await loadProjectMergePlan({ state, operation, gh })).action ===
         "regenerate"
     )
-      await gh([
-        "workflow",
-        "run",
-        operation.identity.kind === "project"
-          ? "generate-project-submission.yml"
-          : "generate-project-owner-request.yml",
-        "--repo",
-        repository,
-        "--ref",
-        "main",
-        "-f",
-        `issue_number=${operation.identity.subject.slice(6)}`,
-        "-f",
-        "force_regeneration=false",
-      ]);
+      await runModelWriterPreparation({ operationKey, root, env, gh, load });
   }
   return result;
 }
@@ -619,6 +904,13 @@ export async function runProjectWriterReconciliation({
     gh,
     publish: () =>
       runProjectWriterPublication({ operationKey, root, env, gh, load }),
+    issueNumber: Number(operation.identity.subject.slice(6)),
+    generationWorkflow:
+      operation.identity.kind === "project"
+        ? "generate-project-submission.yml"
+        : "generate-project-owner-request.yml",
+    prepareGeneration: () =>
+      runModelWriterPreparation({ operationKey, root, env, gh, load }),
   });
   const summary = await reconcileProjectValidations({
     repository,
@@ -867,9 +1159,44 @@ export async function runAutomationWriterReconciliation({
       failure: classifyAutomationFailure({ diagnosticCode: error?.code }),
     };
   }
-  const prepared = await reconcilePreparedOperations({
+  const generation = await reconcileGenerationModelUsage({
     state,
     limit: 20 - enrichmentSlot,
+    settle: ({ operationKey }) =>
+      runGenerationModelWriterSettlement({ operationKey, env, gh }),
+    onFailure: (input) =>
+      persistPreparedFailure({
+        ...input,
+        load,
+        persist: (receipt) =>
+          persistGithubAutomationReceipt({ gh, repository, receipt }),
+      }),
+  });
+  if (generation.consumedKeys.length) state = await load();
+  let generationRequests = { status: "idle", slots: 0, consumedKeys: [] };
+  try {
+    generationRequests = await reconcileGenerationOwnerRequests({
+      state,
+      gh,
+      limit: 20 - enrichmentSlot - generation.slots,
+      isAncestor: (a, b) => enrichmentRequestAncestor(root, a, b),
+      prepare: ({ requestRunId }) =>
+        runModelWriterPreparation({ requestRunId, root, env, gh, load }),
+    });
+    if (generationRequests.consumedKeys.length) state = await load();
+  } catch {
+    generationRequests = { status: "unavailable", slots: 0, consumedKeys: [] };
+  }
+  const prepared = await reconcilePreparedOperations({
+    state: {
+      ...state,
+      operations: state.operations.filter(
+        (operation) =>
+          !generation.consumedKeys.includes(operation.key) &&
+          !generationRequests.consumedKeys.includes(operation.key),
+      ),
+    },
+    limit: 20 - enrichmentSlot - generation.slots - generationRequests.slots,
     readDiagnostic: (wake) =>
       loadPreparedGithubDiagnostic({
         gh,
@@ -910,12 +1237,18 @@ export async function runAutomationWriterReconciliation({
       }),
   });
   if (prepared.consumedKeys.length) state = await load();
-  const consumed = new Set(prepared.consumedKeys);
+  const consumed = new Set([
+    ...prepared.consumedKeys,
+    ...generation.consumedKeys,
+    ...generationRequests.consumedKeys,
+  ]);
+  const usedSlots =
+    prepared.consumedKeys.length + generation.slots + generationRequests.slots;
   const { selectDependencyPullNumbers } =
     await import("./dependency-update.mjs");
   const dependencyPullNumbers = selectDependencyPullNumbers(state.remote.pulls);
   const dependencySlot =
-    consumed.size + enrichmentSlot < 20 && dependencyPullNumbers.length ? 1 : 0;
+    usedSlots + enrichmentSlot < 20 && dependencyPullNumbers.length ? 1 : 0;
   const healthInput = (state) => ({
     findings: assessInventoryHealth(state),
     existingIssues: state.remote.issues,
@@ -928,7 +1261,7 @@ export async function runAutomationWriterReconciliation({
     initialHealth = healthInput(state);
     const proposals = planIncidentUpdates(initialHealth);
     healthSlot =
-      consumed.size + dependencySlot + enrichmentSlot < 20 && proposals.length
+      usedSlots + dependencySlot + enrichmentSlot < 20 && proposals.length
         ? 1
         : 0;
     if (proposals.length && !healthSlot)
@@ -941,7 +1274,7 @@ export async function runAutomationWriterReconciliation({
     args: [
       "--apply",
       "--limit",
-      String(20 - consumed.size - dependencySlot - healthSlot - enrichmentSlot),
+      String(20 - usedSlots - dependencySlot - healthSlot - enrichmentSlot),
     ],
     env,
     event: {},
@@ -1031,5 +1364,14 @@ export async function runAutomationWriterReconciliation({
       dependencies = { status: "unavailable" };
     }
   }
-  return { prepared, controller, retention, dependencies, health, enrichment };
+  return {
+    prepared,
+    controller,
+    retention,
+    dependencies,
+    health,
+    enrichment,
+    generation,
+    generationRequests,
+  };
 }

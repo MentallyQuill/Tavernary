@@ -55,6 +55,14 @@ export interface ProjectInventoryInput {
 export function discoverProjectOperations(
   input: ProjectInventoryInput,
 ): AutomationOperation[];
+export function discoverRequestedGeneration(
+  input: ProjectInventoryInput,
+  request: {
+    issueNumber: number;
+    kind: "project" | "owner-request";
+    ownerAuthorized: boolean;
+  },
+): AutomationOperation | null;
 export function projectIssueMatchesTransaction(input: {
   issue: ProjectInventoryIssue;
   transaction: import("../publication/project-publication-transaction.mjs").ProjectPublicationTransaction;

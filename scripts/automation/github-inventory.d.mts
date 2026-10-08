@@ -22,6 +22,12 @@ export function loadAutomationWorkerRuns(input: {
   repository: string;
   nowMs: number;
 }): Promise<ProjectInventoryRun[]>;
+export function loadGenerationOwnerRequestRuns(input: {
+  gh: GhRunner;
+  repository: string;
+  issues: ProjectInventoryIssue[];
+  nowMs: number;
+}): Promise<ProjectInventoryRun[]>;
 export function assertTrustedAutomationContext(
   env: Record<string, string | undefined>,
   repository: string,

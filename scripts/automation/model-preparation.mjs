@@ -18,6 +18,8 @@ export async function reserveModelPreparation({
   if (
     !/^[a-f0-9]{64}$/u.test(operationKey ?? "") ||
     ![
+      ".github/workflows/generate-project-submission.yml",
+      ".github/workflows/generate-project-owner-request.yml",
       ".github/workflows/enrich-catalog.yml",
       ".github/workflows/review-catalog-policy.yml",
       ".github/workflows/import-tavernkeeper-reports.yml",

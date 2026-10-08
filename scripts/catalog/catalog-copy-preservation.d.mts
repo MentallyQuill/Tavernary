@@ -37,4 +37,7 @@ export function preserveCatalogSummary(input: {
   protectedTerms?: readonly string[];
   policyVersion?: string;
   copySummary?: (input: Record<string, unknown>) => Promise<CatalogCopyResult>;
+  loadBudgetGuard?: () => Promise<
+    import("../automation/model-budget.mjs").ModelBudgetGuard
+  >;
 }): Promise<PreservedCatalogSummary>;

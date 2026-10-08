@@ -210,10 +210,18 @@ test("identifies the object and action in every workflow run name", async () => 
   const expectedRunNameParts = {
     "admit-issue": ["Issue #", "Check submission eligibility"],
     "triage-submission": ["Project #", "Validate submission"],
-    "generate-project-submission": ["Project #", "Create review PR"],
+    "generate-project-submission": [
+      "Project #",
+      "Request review PR",
+      "Automation prepare",
+    ],
     "project-submission-lifecycle": ["Project review PR #", "Process result"],
     "triage-project-owner-request": ["Owner request #", "Validate authority"],
-    "generate-project-owner-request": ["Owner request #", "Create review PR"],
+    "generate-project-owner-request": [
+      "Owner request #",
+      "Request review PR",
+      "Automation prepare",
+    ],
     "project-owner-request-lifecycle": ["Owner review PR #", "Process result"],
     "generated-project-branch-cleanup": ["Generated branch cleanup for PR #"],
     "retry-frontend-dependencies": [
@@ -472,6 +480,8 @@ test("uses the Publisher App identity for every protected workflow dispatch", as
       "apply-kit-submission.yml:publish->apply-kit-submission.yml",
       "apply-kit-withdrawal.yml:withdraw->apply-kit-withdrawal.yml",
       "automation-prepared.yml:wake->automation-writer.yml",
+      "generate-project-owner-request.yml:request->automation-writer.yml",
+      "generate-project-submission.yml:request->automation-writer.yml",
       "backfill-repository-identities.yml:backfill->automation-writer.yml",
       "publisher-verification.yml:verify->automation-writer.yml",
       "publisher-automation-branch-verification.yml:verify->automation-writer.yml",
@@ -1600,7 +1610,10 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
     group: "project-owner-generation",
     "cancel-in-progress": false,
   });
-  expect(checkout?.with).toMatchObject({ "fetch-depth": 0, ref: "main" });
+  expect(checkout?.with).toMatchObject({
+    "fetch-depth": 0,
+    ref: "${{ github.sha }}",
+  });
   expect(exposesModelProviderEnvironment(generationJob)).toBe(false);
   expect(modelStep?.env).toMatchObject(modelProviderEnvironment);
   expect(exposesModelProviderEnvironment(replayStep ?? {})).toBe(false);

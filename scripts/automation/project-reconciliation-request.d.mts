@@ -5,4 +5,8 @@ export function createProjectReconciliationRequest(input: {
   request: GitHubRequest;
   gh: GhRunner;
   publish: () => Promise<unknown>;
+  issueNumber?: number;
+  generationWorkflow?:
+    "generate-project-submission.yml" | "generate-project-owner-request.yml";
+  prepareGeneration?: () => Promise<unknown>;
 }): GitHubRequest;

@@ -11,9 +11,21 @@ export function loadPreparedGithubArtifact(
     repository: string;
     runId: number;
     allowMissing?: boolean;
-    artifactKind?: "result" | "diagnostic";
+    artifactKind?: "result" | "diagnostic" | "generation-usage";
   },
 ): Promise<{
+  run: TrustedPreparationRun;
+  artifact: { id: number; digest: string };
+} | null>;
+export function loadPreparedGithubArtifact(input: {
+  operation: { key: string; identity: { kind: "project" | "owner-request" } };
+  gh: GhRunner;
+  repository: string;
+  runId: number;
+  publisherActorId: number;
+  allowMissing?: boolean;
+  artifactKind: "generation-usage" | "generation-checkpoint";
+}): Promise<{
   run: TrustedPreparationRun;
   artifact: { id: number; digest: string };
 } | null>;

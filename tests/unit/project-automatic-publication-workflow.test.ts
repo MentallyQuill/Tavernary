@@ -313,7 +313,8 @@ test("regenerates stale transactions with Publisher identity", async () => {
     const generated = parse(
       await readFile(`.github/workflows/${generator}.yml`, "utf8"),
     ) as any;
-    expect(generated.jobs.generate.if).toContain("github.actor_id == 2625904");
+    expect(generated.jobs.request.if).toContain("github.actor_id == 2625904");
+    expect(generated.jobs.generate.if).toContain("inputs.operation_key != ''");
     expect(generated.jobs.generate.if).toContain(
       "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID",
     );

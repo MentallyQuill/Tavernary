@@ -1,9 +1,34 @@
 name: "Project owner requests: Create review PR"
-run-name: "Owner request #${{ inputs.issue_number }}: Create review PR"
+run-name: >-
+  ${{ inputs.operation_key
+    && (inputs.request_run_id
+        && format('Automation prepare {0} request{1}', inputs.operation_key, inputs.request_run_id)
+        || format('Automation prepare {0}', inputs.operation_key))
+    || format('Owner request #{0}: Request review PR force={1}', inputs.issue_number, inputs.force_regeneration) }}
 
 on:
   workflow_dispatch:
     inputs:
+      operation_key:
+        description: Writer-selected immutable generation operation; empty for an owner request.
+        required: false
+        type: string
+        default: ""
+      request_run_id:
+        description: Writer-verified native generation request run; zero for automatic preparation.
+        required: false
+        type: number
+        default: 0
+      budget_ticket:
+        description: Writer-reserved primary and repair allowance.
+        required: false
+        type: string
+        default: ""
+      checkpoint_run_ids:
+        description: Writer-selected prior producer checkpoints for resumable owner metadata.
+        required: false
+        type: string
+        default: ""
       issue_number:
         description: Project owner request issue number
         required: true
@@ -25,15 +50,75 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  generate:
+  request:
     if: >-
-      github.ref == 'refs/heads/main' &&
-      (github.actor_id == 2625904 ||
-       github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)
+      inputs.operation_key == '' && github.ref == 'refs/heads/main' &&
+      (github.actor_id == 2625904 || github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)
     runs-on: ubuntu-latest
     environment: publisher
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+      issues: read
+      pull-requests: read
+    steps:
+      - name: Check out trusted request code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Select current admitted generation
+        id: request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
+        run: |
+          node scripts/automation/preparation-request.mjs > "$RUNNER_TEMP/generation-request.json"
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const plan = JSON.parse(fs.readFileSync(`${process.env.RUNNER_TEMP}/generation-request.json`, 'utf8'));
+          if (plan.action === 'dispatch') fs.appendFileSync(process.env.GITHUB_OUTPUT, `operation_key=${plan.inputs.operation_key}\n`);
+          NODE
+      - name: Create scoped Publisher dispatch token
+        id: dispatch-token
+        if: steps.request.outputs.operation_key != ''
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-actions: write
+      - name: Request writer-owned generation allowance
+        if: steps.request.outputs.operation_key != ''
+        env:
+          GH_TOKEN: ${{ steps.dispatch-token.outputs.token }}
+          OPERATION_KEY: ${{ steps.request.outputs.operation_key }}
+        run: >-
+          gh workflow run automation-writer.yml --ref main
+          -f mode=prepare -f operation_key="$OPERATION_KEY"
+          -f result_run_id="$GITHUB_RUN_ID"
+
+  generate:
+    if: >-
+      inputs.operation_key != '' && github.ref == 'refs/heads/main' &&
+      github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID
+    runs-on: ubuntu-latest
+    environment: publisher
+    timeout-minutes: 45
     env:
+      TAVERNARY_REQUIRE_MODEL_BUDGET: "true"
+      TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
       ISSUE_NUMBER: ${{ inputs.issue_number }}
+      REQUEST_RUN_ID: ${{ inputs.request_run_id }}
+      OPERATION_KEY: ${{ inputs.operation_key }}
       FORCE_REGENERATION: ${{ inputs.force_regeneration }}
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -51,7 +136,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
-          ref: main
+          ref: ${{ github.sha }}
           token: ${{ steps.publisher-token.outputs.token }}
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
@@ -147,6 +232,10 @@ jobs:
         run: |
           set -euo pipefail
           git fetch origin main
+          if ! git diff --quiet "$GITHUB_SHA" origin/main -- .github/workflows scripts src data/schemas package.json package-lock.json tsconfig.json; then
+            echo "::error::Generation code changed; request a fresh preparation."
+            exit 1
+          fi
           git config user.name "Tavernary Publisher"
           git config user.email "tavernary-publisher[bot]@users.noreply.github.com"
           if [[ -n "$PR_NUMBER" ]]; then
@@ -565,7 +654,10 @@ jobs:
             report,
             marker: transaction,
           });
-          fs.writeFileSync(`${process.env.RUNNER_TEMP}/project-owner-pr.md`, body);
+          const requestMarker = Number(process.env.REQUEST_RUN_ID) > 0
+            ? `\n<!-- tavernary-generation-request:${Number(process.env.REQUEST_RUN_ID)}:${process.env.GITHUB_RUN_ID}:${process.env.OPERATION_KEY} -->\n`
+            : "";
+          fs.writeFileSync(`${process.env.RUNNER_TEMP}/project-owner-pr.md`, body + requestMarker);
           NODE
           title="[Project owner request] ${PROJECT_LABEL}"
           if [[ -n "$PR_NUMBER" ]]; then
@@ -638,3 +730,20 @@ jobs:
           GENERATION_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/submissions/project-generation-failure.mjs
+
+      - name: Retain immutable generation model usage
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: automation-generation-${{ inputs.operation_key }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/automation-generation-model-usage.json
+          if-no-files-found: ignore
+          retention-days: 90
+      - name: Retain validated owner metadata checkpoint
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: automation-generation-checkpoint-${{ inputs.operation_key }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/owner-generation-checkpoint.json
+          if-no-files-found: ignore
+          retention-days: 90

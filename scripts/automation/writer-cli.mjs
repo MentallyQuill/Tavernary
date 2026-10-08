@@ -128,6 +128,7 @@ export async function runAutomationWriterCli(options = {}) {
         JSON.stringify(
           await runModelWriterPreparation({
             operationKey: event.inputs?.operation_key,
+            requestRunId: Number(event.inputs?.result_run_id || 0),
             env,
           }),
         ),

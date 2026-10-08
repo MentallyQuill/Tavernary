@@ -1,4 +1,31 @@
 import type { AutomationInventoryState } from "./inventory.mjs";
+export interface GenerationOwnerRequest {
+  runId: number;
+  sourceSha: string;
+  issueNumber: number;
+  kind: "project" | "owner-request";
+  workflow: string;
+  forceRegeneration: boolean;
+  ownerAuthorized: boolean;
+}
+export function parseGenerationOwnerRequest(
+  run: unknown,
+  repository: string,
+  publisherActorId: number,
+): GenerationOwnerRequest | null;
+export function generationRequestOperation(
+  state: AutomationInventoryState,
+  request: Pick<
+    GenerationOwnerRequest,
+    "issueNumber" | "kind" | "ownerAuthorized"
+  >,
+): import("./operation.mjs").AutomationOperation | null;
+export function generationRequestCompleted(input: {
+  state: AutomationInventoryState;
+  request: GenerationOwnerRequest;
+  gh: import("../submissions/kit-submission-reconciliation.mjs").GhRunner;
+  isAncestor: (ancestor: string, descendant: string) => boolean | null;
+}): Promise<boolean>;
 export function planReportPreparationRequests(input: {
   state: AutomationInventoryState;
   reportDigest?: string;
@@ -30,12 +57,16 @@ export function planPreparationRequest(input: {
   state: AutomationInventoryState;
   workflow: string;
   issueNumber: number;
+  ownerAuthorized?: boolean;
+  requestRunId?: number;
 }):
   | { action: "wait" }
   | {
       action: "dispatch";
       workflow: string;
-      inputs: { issue_number: string; operation_key: string };
+      inputs:
+        | { issue_number: string; operation_key: string }
+        | { mode: "prepare"; operation_key: string; result_run_id?: string };
     };
 export function runPreparationRequestCli(options?: {
   env?: Record<string, string | undefined>;

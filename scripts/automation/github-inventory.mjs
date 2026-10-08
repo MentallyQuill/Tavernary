@@ -146,6 +146,64 @@ export async function loadAutomationWorkerRuns({ gh, repository, nowMs }) {
     throw new Error("Final worker inventory exceeds GitHub's result cap.");
   return runPages(value);
 }
+export async function loadGenerationOwnerRequestRuns({
+  gh,
+  repository,
+  issues,
+  nowMs,
+}) {
+  const open = issues.filter(
+    (issue) =>
+      issue.state === "open" &&
+      !issue.pull_request &&
+      issue.labels?.some((label) =>
+        ["project-submission", "project-owner-request"].includes(
+          typeof label === "string" ? label : label.name,
+        ),
+      ),
+  );
+  if (!open.length) return [];
+  const start = Math.min(...open.map((issue) => Date.parse(issue.created_at)));
+  if (!Number.isFinite(start) || !Number.isFinite(nowMs) || start > nowMs)
+    throw new Error("Generation request history clock is unavailable.");
+  let searches = 0;
+  const found = new Map();
+  for (const workflow of [
+    "generate-project-submission.yml",
+    "generate-project-owner-request.yml",
+  ]) {
+    async function window(lower, upper) {
+      if (++searches > 64)
+        throw new Error(
+          "Generation request history exceeds its bounded search budget.",
+        );
+      const value = await boundedRunPages(
+        gh,
+        `${repositoryPath(repository)}/actions/workflows/${workflow}/runs`,
+        [
+          "branch=main",
+          "event=workflow_dispatch",
+          "status=success",
+          "actor=MentallyQuill",
+          `created=${new Date(lower).toISOString()}..${new Date(upper).toISOString()}`,
+        ],
+      );
+      if (value[0].total_count > 1000) {
+        if (upper - lower <= 1000)
+          throw new Error(
+            "Generation request history exceeds GitHub's result cap in one second.",
+          );
+        const middle = Math.floor((lower + upper) / 2);
+        await window(lower, middle);
+        await window(middle, upper);
+      } else {
+        for (const run of runPages(value)) found.set(run.id, run);
+      }
+    }
+    await window(start, nowMs);
+  }
+  return [...found.values()];
+}
 export async function loadGithubAutomationInventory({
   gh,
   repository,

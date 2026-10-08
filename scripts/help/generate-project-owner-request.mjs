@@ -19,6 +19,12 @@ import { createEnrichmentProvider } from "../catalog/enrichment-provider.mjs";
 import { formatJson } from "../catalog/json-format.mjs";
 import { modelProviderOptionsFromEnvironment } from "../catalog/model-provider-configuration.mjs";
 import {
+  createProducerBudgetLoader,
+  runGenerationWithBudgetEvidence,
+} from "../automation/model-budget-github.mjs";
+import { loadPreparedGithubArtifact } from "../automation/prepared-github.mjs";
+import { decodePreparedArtifact } from "../automation/prepared-artifact.mjs";
+import {
   automaticMetadataPolicy,
   manualMetadataPolicy,
   metadataFieldsToGenerate,
@@ -523,6 +529,8 @@ async function generatedMetadataOutput(
     input.enrichmentProvider ??
     createEnrichmentProvider({
       ...modelProviderOptionsFromEnvironment(),
+      requireBudget: true,
+      budgetGuard: await input.loadBudgetGuard?.(),
     });
   return enrichRecord(context.record, final.source, snapshot, provider, {
     force: true,
@@ -553,6 +561,88 @@ function automaticMetadataResult(record, requestedFields, output) {
   };
 }
 
+export function validateOwnerGenerationCheckpoint(value) {
+  if (
+    !isRecord(value) ||
+    Object.keys(value).sort().join(",") !== "entries,schema_version" ||
+    value.schema_version !== 1 ||
+    !Array.isArray(value.entries) ||
+    value.entries.length > 20 ||
+    Buffer.byteLength(JSON.stringify(value)) > 262144
+  )
+    throw new Error("Owner generation checkpoint is invalid.");
+  const seen = new Set();
+  for (const row of value.entries) {
+    const key = `${row?.project_id}:${row?.field}`;
+    if (
+      !isRecord(row) ||
+      Object.keys(row).sort().join(",") !==
+        "field,input_digest,output,project_id" ||
+      !ID_PATTERN.test(row.project_id ?? "") ||
+      !["copy", "automatic"].includes(row.field) ||
+      !/^[a-f0-9]{64}$/u.test(row.input_digest ?? "") ||
+      !isRecord(row.output) ||
+      seen.has(key) ||
+      Object.keys(row.output).some(
+        (name) =>
+          ![
+            "summary",
+            "tags",
+            "result",
+            "change_reasons",
+            "policy_signal",
+            "tag_generation_diagnostic",
+          ].includes(name),
+      )
+    )
+      throw new Error("Owner generation checkpoint entry is invalid.");
+    seen.add(key);
+  }
+  return value;
+}
+
+export async function loadOwnerGenerationCheckpoint({
+  gh,
+  download,
+  repository,
+  operationKey,
+  publisherActorId,
+  runIds,
+}) {
+  if (
+    !/^[a-f0-9]{64}$/u.test(operationKey ?? "") ||
+    !Array.isArray(runIds) ||
+    runIds.length > 10 ||
+    new Set(runIds).size !== runIds.length ||
+    runIds.some((id) => !Number.isSafeInteger(id) || id < 1)
+  )
+    throw new Error("Owner checkpoint context is invalid.");
+  for (const runId of runIds) {
+    const context = await loadPreparedGithubArtifact({
+      gh,
+      repository,
+      runId,
+      publisherActorId,
+      operation: { key: operationKey, identity: { kind: "owner-request" } },
+      artifactKind: "generation-checkpoint",
+      allowMissing: true,
+    });
+    if (!context) continue;
+    const archive = await download([
+      "api",
+      `repos/${repository}/actions/artifacts/${context.artifact.id}/zip`,
+    ]);
+    return validateOwnerGenerationCheckpoint(
+      decodePreparedArtifact({
+        archive,
+        digest: context.artifact.digest,
+        filename: "owner-generation-checkpoint.json",
+      }),
+    );
+  }
+  return { schema_version: 1, entries: [] };
+}
+
 async function resolveOwnerMetadata(input, final, snapshot, catalogedAt) {
   const candidates = ownerMetadataCandidates(final, catalogedAt);
   const proposed = proposedMetadataByProjectId(final.decision);
@@ -565,6 +655,40 @@ async function resolveOwnerMetadata(input, final, snapshot, catalogedAt) {
     sourceEvidencePromise ??= sourceLoader(...arguments_);
     return sourceEvidencePromise;
   };
+  const cacheEnabled = Boolean(
+    input.generationCheckpoint || input.saveGenerationCheckpoint,
+  );
+  const checkpoint = structuredClone(
+    validateOwnerGenerationCheckpoint(
+      input.generationCheckpoint ?? { schema_version: 1, entries: [] },
+    ),
+  );
+  const save = async (record, field, digest, output) => {
+    if (!cacheEnabled) return;
+    const selected = Object.fromEntries(
+      Object.entries(output).filter(([name]) =>
+        [
+          "summary",
+          "tags",
+          "result",
+          "change_reasons",
+          "policy_signal",
+          "tag_generation_diagnostic",
+        ].includes(name),
+      ),
+    );
+    checkpoint.entries = checkpoint.entries.filter(
+      (entry) => entry.project_id !== record.id || entry.field !== field,
+    );
+    checkpoint.entries.push({
+      project_id: record.id,
+      field,
+      input_digest: digest,
+      output: selected,
+    });
+    validateOwnerGenerationCheckpoint(checkpoint);
+    await input.saveGenerationCheckpoint?.(checkpoint);
+  };
 
   for (const record of candidates) {
     const request = proposed.get(record.id);
@@ -572,6 +696,35 @@ async function resolveOwnerMetadata(input, final, snapshot, catalogedAt) {
       throw new Error(`Owner metadata request is missing for ${record.id}.`);
     }
     const requestedFields = ownerMetadataFieldsToGenerate(record, request);
+    const content =
+      cacheEnabled && requestedFields.length
+        ? await loadSourceOnce(record, final.source, snapshot, {})
+        : null;
+    const digest = fingerprintProjectPublicationInput({
+      request: final.decision.manifest,
+      inputs: inputFingerprints(final.decision),
+      source: final.source,
+      projectId: record.id,
+      requestedFields,
+      protectedTerms: ownerProtectedTerms(final, record),
+      content,
+      vocabularyHash: tagVocabularyHash(final.vocabularies.tags),
+      policyVersion: CATALOG_POLICY_VERSION,
+      model: {
+        primary: process.env.UTILITY_MODEL ?? null,
+        endpoint: process.env.UTILITY_API_ENDPOINT ?? null,
+        reasoning: process.env.UTILITY_REASONING_EFFORT ?? null,
+        repair: process.env.TAVERNARY_ENRICHMENT_MODEL ?? null,
+        repairEndpoint: process.env.TAVERNARY_ENRICHMENT_API_URL ?? null,
+      },
+    });
+    const cached = (field) =>
+      checkpoint.entries.find(
+        (entry) =>
+          entry.project_id === record.id &&
+          entry.field === field &&
+          entry.input_digest === digest,
+      )?.output;
     let summary = request.proposed.summary;
     let tags = structuredClone(request.proposed.tags);
 
@@ -587,9 +740,17 @@ async function resolveOwnerMetadata(input, final, snapshot, catalogedAt) {
             record,
             request.proposed.summary,
           ),
-          copySummary: input.copySummary,
+          copySummary: cached("copy")
+            ? async () => cached("copy")
+            : input.copySummary,
+          loadBudgetGuard: input.loadBudgetGuard,
         });
         summary = copied.publishedSummary;
+        if (copied.reviewStatus === "validated" && copied.copyResult)
+          await save(record, "copy", digest, {
+            summary: copied.publishedSummary,
+            ...copied.copyResult,
+          });
         copyResults.push({
           project_id: record.id,
           mode: copied.mode,
@@ -614,13 +775,15 @@ async function resolveOwnerMetadata(input, final, snapshot, catalogedAt) {
         vocabularies: { tags: final.vocabularies.tags },
         protectedTerms: ownerProtectedTerms(final, record),
       };
-      const output = await generatedMetadataOutput(
-        input,
-        final,
-        snapshot,
-        context,
-        loadSourceOnce,
-      );
+      const output =
+        cached("automatic") ??
+        (await generatedMetadataOutput(
+          input,
+          final,
+          snapshot,
+          context,
+          loadSourceOnce,
+        ));
       if (!output) {
         const error = new Error(
           `Automatic metadata generation returned no output for ${record.id}.`,
@@ -644,6 +807,7 @@ async function resolveOwnerMetadata(input, final, snapshot, catalogedAt) {
         error.code = "output-invalid";
         throw error;
       }
+      await save(record, "automatic", digest, output);
       if (requestedFields.includes("summary")) {
         summary = output.summary.value;
         copyResults.push({
@@ -1183,6 +1347,9 @@ export async function runGenerateProjectOwnerCli(options) {
       request: options.request,
       now: options.now ?? new Date(),
       validatedReport,
+      loadBudgetGuard: options.loadBudgetGuard,
+      generationCheckpoint: options.generationCheckpoint,
+      saveGenerationCheckpoint: options.saveGenerationCheckpoint,
     });
   } catch (error) {
     if (options.failureDiagnosticPath) {
@@ -1202,10 +1369,56 @@ async function main() {
   const cli = parseGenerateProjectOwnerCli(process.argv.slice(2));
   const repository = process.env.GITHUB_REPOSITORY;
   if (!repository) throw new Error("GITHUB_REPOSITORY is required.");
-  await runGenerateProjectOwnerCli({
-    ...cli,
-    hostRepository: repository,
-    request: github,
+  const loader = createProducerBudgetLoader();
+  await runGenerationWithBudgetEvidence({
+    loader,
+    emit: !cli.validatedReportPath,
+    generate: async () => {
+      let generationCheckpoint, saveGenerationCheckpoint;
+      if (
+        !cli.validatedReportPath &&
+        process.env.RUNNER_TEMP &&
+        process.env.GITHUB_EVENT_PATH
+      ) {
+        await loader.load();
+        const event = JSON.parse(
+          await defaultReadFile(process.env.GITHUB_EVENT_PATH, "utf8"),
+        );
+        const { executeGh } =
+          await import("../submissions/kit-submission-reconciliation.mjs");
+        const { downloadPreparedArtifact } =
+          await import("../automation/writer-runtime.mjs");
+        generationCheckpoint = await loadOwnerGenerationCheckpoint({
+          gh: executeGh,
+          download: downloadPreparedArtifact,
+          repository,
+          operationKey: event.inputs?.operation_key,
+          publisherActorId: Number(process.env.TAVERNARY_PUBLISHER_BOT_ID),
+          runIds: String(event.inputs?.checkpoint_run_ids ?? "")
+            .split(",")
+            .filter(Boolean)
+            .map(Number),
+        });
+        saveGenerationCheckpoint = async (value) =>
+          defaultWriteFile(
+            resolve(
+              process.env.RUNNER_TEMP,
+              "owner-generation-checkpoint.json",
+            ),
+            `${JSON.stringify(validateOwnerGenerationCheckpoint(value))}\n`,
+            "utf8",
+          );
+        await saveGenerationCheckpoint(generationCheckpoint);
+      }
+      return runGenerateProjectOwnerCli({
+        ...cli,
+        hostRepository: repository,
+        request: github,
+        loadBudgetGuard: loader.load,
+        generationCheckpoint,
+        saveGenerationCheckpoint,
+      });
+    },
   });
 }
 

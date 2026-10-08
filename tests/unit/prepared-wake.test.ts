@@ -5,6 +5,110 @@ import {
   runPreparedWakeCli,
 } from "../../scripts/automation/prepared-wake.mjs";
 import { preparedResultContextFixture } from "../helpers/automation-fixtures";
+function generationWakeFixture(owner: boolean, project = false) {
+  const repository = "MentallyQuill/Tavernary";
+  return {
+    id: 987,
+    path: `.github/workflows/generate-${project ? "project-submission" : "project-owner-request"}.yml`,
+    display_title: owner
+      ? `${project ? "Project" : "Owner request"} #42: Request review PR force=true`
+      : `Automation prepare ${"a".repeat(64)} request500`,
+    event: "workflow_dispatch",
+    head_branch: "main",
+    head_sha: "b".repeat(40),
+    actor: { id: owner ? 2625904 : 900, type: owner ? "User" : "Bot" },
+    repository: { id: 1309605115, full_name: repository },
+    head_repository: { id: 1309605115, full_name: repository },
+    status: "completed",
+    conclusion: "success",
+    run_attempt: 1,
+  };
+}
+const generationWakeEnv = {
+  GITHUB_REPOSITORY: "MentallyQuill/Tavernary",
+  GITHUB_REF: "refs/heads/main",
+  GITHUB_EVENT_NAME: "workflow_run",
+  GITHUB_WORKFLOW_REF:
+    "MentallyQuill/Tavernary/.github/workflows/automation-prepared.yml@refs/heads/main",
+  TAVERNARY_PUBLISHER_BOT_ID: "900",
+};
+test.each([true, false])(
+  "a completed explicit generation request survives a lost direct handoff (project=%s)",
+  async (project) => {
+    const run = generationWakeFixture(true, project);
+    const gh = vi.fn<(args: string[]) => Promise<string>>(async () =>
+      JSON.stringify(run),
+    );
+    expect(
+      await runPreparedWakeCli({
+        env: generationWakeEnv,
+        runId: run.id,
+        gh,
+        write: () => {},
+      }),
+    ).toBe(0);
+    expect(gh.mock.calls[1][0]).toEqual(
+      expect.arrayContaining(["mode=prepare", "result_run_id=987"]),
+    );
+    expect(
+      gh.mock.calls[1][0].some((value: string) =>
+        value.startsWith("operation_key="),
+      ),
+    ).toBe(false);
+  },
+);
+test.each(["success", "failure", "cancelled"])(
+  "a %s generation completion reconciles accounting without publishing an artifact",
+  async (conclusion) => {
+    const run = { ...generationWakeFixture(false), conclusion };
+    const gh = vi.fn<(args: string[]) => Promise<string>>(async () =>
+      JSON.stringify(run),
+    );
+    expect(
+      await runPreparedWakeCli({
+        env: generationWakeEnv,
+        runId: run.id,
+        gh,
+        write: () => {},
+      }),
+    ).toBe(0);
+    expect(gh.mock.calls[1][0]).toContain("mode=reconcile");
+    expect(gh.mock.calls[1][0]).not.toContain("mode=publish");
+    expect(
+      planPreparedWake({
+        run,
+        repository: generationWakeEnv.GITHUB_REPOSITORY,
+        publisherActorId: 900,
+      }),
+    ).toBeNull();
+  },
+);
+test.each([
+  "actor",
+  "origin",
+  "attempt",
+  "active",
+  "title",
+  "handler",
+  "request-failed",
+])("a forged or incomplete generation %s wake is ignored", async (variant) => {
+  const run = generationWakeFixture(variant === "request-failed");
+  const env = { ...generationWakeEnv };
+  if (variant === "actor") run.actor.id++;
+  if (variant === "origin") run.head_repository.id++;
+  if (variant === "attempt") run.run_attempt++;
+  if (variant === "active") run.status = "in_progress";
+  if (variant === "title") run.display_title += " arbitrary";
+  if (variant === "handler") env.GITHUB_WORKFLOW_REF = "other";
+  if (variant === "request-failed") run.conclusion = "failure";
+  const gh = vi.fn<(args: string[]) => Promise<string>>(async () =>
+    JSON.stringify(run),
+  );
+  expect(
+    await runPreparedWakeCli({ env, runId: run.id, gh, write: () => {} }),
+  ).toBe(0);
+  expect(gh).toHaveBeenCalledOnce();
+});
 test("an authenticated completed owner request wakes only its shared writer admission", async () => {
   const repository = "MentallyQuill/Tavernary";
   const run = {
@@ -20,7 +124,9 @@ test("an authenticated completed owner request wakes only its shared writer admi
     status: "completed",
     conclusion: "success",
   };
-  const gh = vi.fn(async () => JSON.stringify(run));
+  const gh = vi.fn<(args: string[]) => Promise<string>>(async () =>
+    JSON.stringify(run),
+  );
   const write = vi.fn();
   expect(
     await runPreparedWakeCli({

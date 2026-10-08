@@ -4,6 +4,9 @@ export function createProjectReconciliationRequest({
   request,
   gh,
   publish,
+  issueNumber,
+  generationWorkflow,
+  prepareGeneration,
 }) {
   if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(repository ?? ""))
     throw new Error("Project reconciliation repository is invalid.");
@@ -30,6 +33,28 @@ export function createProjectReconciliationRequest({
       return null;
     }
     if (options.method === "POST" && path.startsWith(`${root}actions/`)) {
+      const generation =
+        /\/actions\/workflows\/(generate-project-(?:submission|owner-request)\.yml)\/dispatches$/u.exec(
+          path,
+        );
+      if (generation) {
+        const body = JSON.parse(options.body ?? "{}");
+        if (
+          typeof prepareGeneration !== "function" ||
+          !Number.isSafeInteger(issueNumber) ||
+          issueNumber < 1 ||
+          generation[1] !== generationWorkflow ||
+          body.ref !== "main" ||
+          String(body.inputs?.issue_number ?? "") !== String(issueNumber) ||
+          String(body.inputs?.force_regeneration ?? "false") !== "false" ||
+          Object.keys(body.inputs ?? {}).some(
+            (key) => !["issue_number", "force_regeneration"].includes(key),
+          )
+        )
+          throw new Error("Project regeneration authority is invalid.");
+        await prepareGeneration();
+        return null;
+      }
       const allowed =
         /\/actions\/(?:workflows\/(?:ci|generate-project-submission|generate-project-owner-request)\.yml\/dispatches|runs\/[1-9]\d*\/rerun(?:-failed-jobs)?)$/u.test(
           path,

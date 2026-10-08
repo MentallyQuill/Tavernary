@@ -11,6 +11,17 @@ interface ProjectWriterInput {
   gh?: GhRunner;
   load?: () => Promise<AutomationInventoryState>;
 }
+export function reconcileGenerationOwnerRequests(input: {
+  state: AutomationInventoryState;
+  gh: GhRunner;
+  prepare: (input: { requestRunId: number }) => Promise<{ status: string }>;
+  isAncestor: (ancestor: string, descendant: string) => boolean | null;
+  limit?: number;
+}): Promise<{
+  status: string;
+  slots: number;
+  consumedKeys: string[];
+}>;
 export function runEnrichmentOwnerWriter(input: {
   runId: number;
   root?: string;
@@ -37,14 +48,41 @@ export function runPublicationWriterFinalization(
     ) => Promise<{ status: "complete" | "superseded" | "waiting" }>;
   },
 ): Promise<Record<string, unknown>>;
-export function runModelWriterPreparation(
+export function runGenerationModelWriterSettlement(
   input: ProjectWriterInput & {
+    download?: (args: string[]) => Promise<Uint8Array>;
+    commit?: (
+      input: Omit<Parameters<typeof commitCanonicalData>[0], "gh">,
+    ) => Promise<{ sha: string }>;
+  },
+): Promise<{ status: "idle" | "waiting" | "settled" | "recovered" }>;
+export function reconcileGenerationModelUsage(input: {
+  state: AutomationInventoryState;
+  limit?: number;
+  settle: (input: { operationKey: string }) => Promise<{ status: string }>;
+  onFailure?: (input: {
+    operationKey: string;
+    error: unknown;
+  }) => Promise<unknown>;
+}): Promise<{ slots: number; consumedKeys: string[]; failures: number }>;
+export function runModelWriterPreparation(
+  input: Omit<ProjectWriterInput, "operationKey"> & {
+    operationKey?: string;
+    requestRunId?: number;
+    isRequestAncestor?: (
+      ancestor: string,
+      descendant: string,
+    ) => boolean | null;
     persistFailure?: (error: unknown) => Promise<void>;
     metadataCached?: (input: {
       state: AutomationInventoryState;
       operation: import("./operation.mjs").AutomationOperation;
     }) => Promise<boolean>;
     enrichmentCached?: (input: {
+      state: AutomationInventoryState;
+      operation: import("./operation.mjs").AutomationOperation;
+    }) => Promise<boolean>;
+    projectGenerationEligible?: (input: {
       state: AutomationInventoryState;
       operation: import("./operation.mjs").AutomationOperation;
     }) => Promise<boolean>;

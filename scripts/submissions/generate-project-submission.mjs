@@ -9,6 +9,10 @@ import { createEnrichmentProvider } from "../catalog/enrichment-provider.mjs";
 import { loadEnrichmentSource } from "../catalog/enrichment-source.mjs";
 import { formatJson } from "../catalog/json-format.mjs";
 import { modelProviderOptionsFromEnvironment } from "../catalog/model-provider-configuration.mjs";
+import {
+  createProducerBudgetLoader,
+  runGenerationWithBudgetEvidence,
+} from "../automation/model-budget-github.mjs";
 import { EXTENSION_PRIMARY_FUNCTION_IDS } from "../../src/features/catalog/primary-function-contract.mjs";
 import {
   createInitialRepositorySnapshot,
@@ -537,6 +541,7 @@ export async function prepareProjectSubmissionDraft({
             submittedDescription: metadataRequest.summary.value,
           }),
           copySummary: sourceClients.copySummary,
+          loadBudgetGuard: sourceClients.loadBudgetGuard,
         })
       : null;
 
@@ -730,6 +735,8 @@ export async function prepareProjectSubmissionDraft({
           sourceClients.enrichmentProvider ??
           createEnrichmentProvider({
             ...modelProviderOptionsFromEnvironment(),
+            requireBudget: true,
+            budgetGuard: await sourceClients.loadBudgetGuard?.(),
           });
         const output = await enrichRecord(
           preliminary.record,
@@ -909,6 +916,8 @@ export async function prepareProjectSubmissionDraft({
         sourceClients.enrichmentProvider ??
         createEnrichmentProvider({
           ...modelProviderOptionsFromEnvironment(),
+          requireBudget: true,
+          budgetGuard: await sourceClients.loadBudgetGuard?.(),
         });
       const output = await enrichRecord(
         preliminary.record,
@@ -1059,7 +1068,15 @@ export async function runGenerateProjectSubmissionCli(options) {
 
 async function main() {
   const cli = parseGenerateProjectSubmissionCli(process.argv.slice(2));
-  await runGenerateProjectSubmissionCli(cli);
+  const loader = createProducerBudgetLoader();
+  await runGenerationWithBudgetEvidence({
+    loader,
+    generate: () =>
+      runGenerateProjectSubmissionCli({
+        ...cli,
+        sourceClients: { loadBudgetGuard: loader.load },
+      }),
+  });
 }
 
 if (

@@ -24,6 +24,8 @@ function unavailableCopyReview(submittedSummary, diagnostic) {
 async function defaultCopySummary(input) {
   const provider = createCatalogCopyProvider({
     ...modelProviderOptionsFromEnvironment(),
+    requireBudget: true,
+    budgetGuard: await input.loadBudgetGuard?.(),
   });
   const generated = await provider.generate({
     mode: "preserve",
@@ -71,7 +73,13 @@ export async function preserveCatalogSummary(input) {
     ],
     policyVersion: input.policyVersion ?? CATALOG_POLICY_VERSION,
   };
-  const copySummary = input.copySummary ?? defaultCopySummary;
+  const copySummary =
+    input.copySummary ??
+    ((request) =>
+      defaultCopySummary({
+        ...request,
+        loadBudgetGuard: input.loadBudgetGuard,
+      }));
   let output;
   try {
     output = await copySummary(request);
