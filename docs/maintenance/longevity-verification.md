@@ -847,3 +847,22 @@ Type checking, focused lint and whitespace checks passed. Existing withdrawal
 feedback and Kit community support behavior remain covered by native tests.
 Other writer migrations, budget coverage, maintenance, independent review,
 PR/CI/merge and production verification remain required.
+
+### Draft integration preparation
+
+Current production main b7762519ed7ca01cbe148ca630d025895021ce32 was merged
+without conflicts, preserving its 21 newer automated data commits. Full
+`npm run check` passed on integration head
+82344b6c96a5b9339088942f4c01079993ad3c68: 301 unit files / 3,234 tests,
+formatting, lint, palette/catalog/report validation, types, build and export.
+
+The first full run reproduced a native full-dataset inventory timeout at the
+five-second Vitest default; every other test passed. The focused inventory/history
+checks passed, and the full gate passed after assigning only that integration
+test a bounded twenty-second deadline. All behavioral assertions and global
+timeouts remain unchanged.
+
+A draft PR is being submitted for real CI feedback. Remaining implementation,
+independent whole-branch review, the current browser/visual matrix, CI resolution,
+merge and actual production verification are still required. This is not the
+completion of Task 2 or the overall goal.
