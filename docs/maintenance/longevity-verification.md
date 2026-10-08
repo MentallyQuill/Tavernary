@@ -1100,3 +1100,10 @@ churn were observed failing, then passing. Four focused suites passed 29 checks,
 including native Git/CI/merge transport, denied production state, forged custody,
 stale checks and exhausted operation allowance. Types and focused lint passed.
 The next full CI checkpoint and remaining maintenance scope are still required.
+
+The first accumulated CI run (`37827106280`, head `a49a91ecb`) passed Dependabot
+configuration validation and 3,288 unit tests. Its sole failure was the existing
+React grouping contract, which still asserted only React/DOM after their type
+packages joined the group. The failure reproduced locally; the expectation is
+updated to retain all four coupled packages. No implementation gate, timeout or
+repository protection is relaxed. The repaired exact-head full CI remains required.

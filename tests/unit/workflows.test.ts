@@ -1925,7 +1925,12 @@ test("groups coupled dependency updates into coherent pull requests", async () =
     (update) => update["package-ecosystem"] === "github-actions",
   );
 
-  expect(npm?.groups?.react.patterns).toEqual(["react", "react-dom"]);
+  expect(npm?.groups?.react.patterns).toEqual([
+    "react",
+    "react-dom",
+    "@types/react",
+    "@types/react-dom",
+  ]);
   expect(npm?.ignore).toContainEqual({
     "dependency-name": "eslint",
     "update-types": ["version-update:semver-major"],
