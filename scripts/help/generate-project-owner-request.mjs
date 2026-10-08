@@ -7,6 +7,7 @@ import {
 } from "node:fs/promises";
 import { dirname, isAbsolute, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { projectGenerationDiagnostic } from "../submissions/project-generation-failure.mjs";
 
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
 import { fingerprintSourceRecord } from "../../src/features/help/project-owner-record.mjs";
@@ -1099,6 +1100,7 @@ export function parseGenerateProjectOwnerCli(argv) {
         "--output-directory",
         "--report-path",
         "--validated-report-path",
+        "--failure-diagnostic-path",
       ].includes(name) ||
       value === undefined
     ) {
@@ -1115,6 +1117,9 @@ export function parseGenerateProjectOwnerCli(argv) {
     root: requiredOption(options, "--output-directory"),
     reportPath: requiredOption(options, "--report-path"),
     validatedReportPath: options.get("--validated-report-path") ?? null,
+    ...(options.has("--failure-diagnostic-path")
+      ? { failureDiagnosticPath: options.get("--failure-diagnostic-path") }
+      : {}),
   };
 }
 
@@ -1165,21 +1170,42 @@ async function github(path, options = {}) {
   return response.status === 204 ? null : response.json();
 }
 
+export async function runGenerateProjectOwnerCli(options) {
+  try {
+    const validatedReport = options.validatedReportPath
+      ? await readValidatedOwnerReport(options.validatedReportPath)
+      : undefined;
+    return await (options.generate ?? generateProjectOwnerRequest)({
+      issue: { number: options.issueNumber },
+      hostRepository: options.hostRepository,
+      root: options.root,
+      reportPath: options.reportPath,
+      request: options.request,
+      now: options.now ?? new Date(),
+      validatedReport,
+    });
+  } catch (error) {
+    if (options.failureDiagnosticPath) {
+      const path = resolve(options.failureDiagnosticPath);
+      await defaultMkdir(dirname(path), { recursive: true });
+      await defaultWriteFile(
+        path,
+        await formatJson(projectGenerationDiagnostic(error)),
+        "utf8",
+      );
+    }
+    throw error;
+  }
+}
+
 async function main() {
   const cli = parseGenerateProjectOwnerCli(process.argv.slice(2));
   const repository = process.env.GITHUB_REPOSITORY;
   if (!repository) throw new Error("GITHUB_REPOSITORY is required.");
-  const validatedReport = cli.validatedReportPath
-    ? await readValidatedOwnerReport(cli.validatedReportPath)
-    : undefined;
-  await generateProjectOwnerRequest({
-    issue: { number: cli.issueNumber },
+  await runGenerateProjectOwnerCli({
+    ...cli,
     hostRepository: repository,
-    root: cli.root,
-    reportPath: cli.reportPath,
     request: github,
-    now: new Date(),
-    validatedReport,
   });
 }
 

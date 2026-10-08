@@ -16,6 +16,7 @@ import {
 } from "../catalog/repository-snapshot.mjs";
 import { repositoryProvider } from "../catalog/repository-provider.mjs";
 import { evaluateProjectSubmission } from "./admission.mjs";
+import { projectGenerationDiagnostic } from "./project-generation-failure.mjs";
 import { draftProjectRecord } from "./draft-project-record.mjs";
 import { reconcileFrontends } from "./frontend-reconciliation.mjs";
 import { parseProjectSubmissionIssue } from "./parse-project-submission.mjs";
@@ -1027,13 +1028,7 @@ export async function runGenerateProjectSubmissionCli(options) {
       await mkdir(dirname(failureDiagnosticPath), { recursive: true });
       await writeFile(
         failureDiagnosticPath,
-        await formatJson({
-          schema_version: 1,
-          reason_code:
-            error?.code === "output-invalid"
-              ? "output-invalid"
-              : "generation-failed",
-        }),
+        await formatJson(projectGenerationDiagnostic(error)),
         "utf8",
       );
     }

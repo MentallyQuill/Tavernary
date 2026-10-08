@@ -173,7 +173,8 @@ jobs:
           node scripts/help/generate-project-owner-request.mjs \
             --issue-number "$ISSUE_NUMBER" \
             --output-directory "$GITHUB_WORKSPACE" \
-            --report-path "${RUNNER_TEMP}/project-owner-generation-report.json"
+            --report-path "${RUNNER_TEMP}/project-owner-generation-report.json" \
+            --failure-diagnostic-path "${RUNNER_TEMP}/project-owner-generation-failure.json"
       - name: Summarize copy review diagnostics
         shell: bash
         run: |
@@ -381,6 +382,7 @@ jobs:
             --issue-number "$ISSUE_NUMBER" \
             --output-directory "$GITHUB_WORKSPACE" \
             --report-path "${RUNNER_TEMP}/project-owner-generation-report.json" \
+            --failure-diagnostic-path "${RUNNER_TEMP}/project-owner-generation-failure.json" \
             --validated-report-path "${RUNNER_TEMP}/validated-project-owner-report.json"
           node --input-type=module <<'NODE'
           import { createHash } from "node:crypto";
@@ -632,6 +634,7 @@ jobs:
           ISSUE_NUMBER: ${{ inputs.issue_number }}
           GENERATION_PRODUCER: project-owner-request
           GENERATION_REASON_CODE: generation-failed
+          GENERATION_DIAGNOSTIC_PATH: ${{ runner.temp }}/project-owner-generation-failure.json
           GENERATION_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/submissions/project-generation-failure.mjs

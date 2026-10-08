@@ -97,3 +97,25 @@ Ruling: Pass the existing automatic-publication switch into the reconciliation
 workflow and fail closed when it is absent in the CLI. Publisher retains its
 final authoritative policy check. The cost if wrong is paused recovery when
 configuration is absent, rather than mutation that bypasses policy.
+
+### Phase 1 Task 3: generation and credential boundaries
+
+Submission and owner CLI producers now preserve safe credential, timeout,
+rate-limit and configuration codes. The consumer uses the same strict allowlist;
+malformed artifacts, extra fields, unfamiliar codes and arbitrary error messages
+cannot enter durable diagnostics. Existing Reddit retry state is preserved.
+Owner preparation and validated replay both write the sanitized diagnostic.
+
+Verification: generation, cross-stage recovery and existing publication-authority
+coverage 106/106; full unit suite 227 files / 2690 tests; typecheck, scoped ESLint,
+formatting and whitespace checks exit 0. The production controller adapter is
+exercised with recorded API effects for repaired CI after a 72-hour outage,
+active-Publisher deduplication, and actor/head changes after preparation.
+The shared retry suite also exercises malformed rate-limit metadata.
+
+Ruling: Keep output-invalid as an unknown generation defect, rather than evidence
+that submitted content is invalid. Share one producer/consumer allowlist and
+preserve the existing submission workflow wiring and declaration without redundant
+edits. The cost if wrong is conservative unknown probes for unfamiliar failures.
+Whole-inventory cancellation recovery and dependency-wide circuit suppression
+remain Phase 2 work; token acquisition near publication remains Phase 3 work.

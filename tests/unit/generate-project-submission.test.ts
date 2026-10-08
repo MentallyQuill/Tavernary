@@ -1,6 +1,12 @@
 import { expect, test } from "vitest";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
-import { generateProjectSubmission } from "../../scripts/submissions/generate-project-submission.mjs";
+import {
+  generateProjectSubmission,
+  runGenerateProjectSubmissionCli,
+} from "../../scripts/submissions/generate-project-submission.mjs";
 
 const record = {
   schema_version: 6,
@@ -22,6 +28,52 @@ const record = {
     tags: { mode: "automatic" },
   },
 };
+
+test.each([
+  "provider-authentication-failed",
+  "provider-timeout",
+  "secret arbitrary error",
+])("submission CLI preserves only safe %s diagnostics", async (code) => {
+  const root = await mkdtemp(
+    join(tmpdir(), "tavernary-generation-diagnostic-"),
+  );
+  const diagnosticPath = join(root, "failure.json");
+  const error = Object.assign(new Error("secret response and credentials"), {
+    code,
+  });
+  try {
+    await expect(
+      runGenerateProjectSubmissionCli({
+        issueNumber: 166,
+        outputDirectory: join(root, "output"),
+        reportPath: join(root, "report.json"),
+        failureDiagnosticPath: diagnosticPath,
+        fetchIssue: async () => ({
+          number: 166,
+          state: "open",
+          labels: [
+            "issue-admitted",
+            "project-submission",
+            "submission-retryable",
+          ],
+        }),
+        sourceClients: {
+          prepareDraft: async () => {
+            throw error;
+          },
+        },
+      }),
+    ).rejects.toBe(error);
+    const contents = await readFile(diagnosticPath, "utf8");
+    expect(JSON.parse(contents)).toEqual({
+      schema_version: 1,
+      reason_code: code.startsWith("provider-") ? code : "generation-failed",
+    });
+    expect(contents).not.toContain("secret");
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
 const source = {
   schema_version: 1 as const,
   id: "github-42",

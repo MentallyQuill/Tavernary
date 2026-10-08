@@ -101,7 +101,7 @@ test("cancelled current-head validations do not exhaust allowance", () => {
 
 **Interfaces:** Consume failure/retry contracts. Extend `planProjectGenerationFailure(input): ProjectGenerationFailurePlan` with optional `nowMs` and `transientAttempts` inputs and optional `failure: AutomationFailure` and `nextEligibleAt: string | null` output fields for structured reason codes. Preserve existing callers and Reddit retry state. Token acquisition/publication job separation is implemented in Phase 3; this task makes credential unavailability a dependency circuit rather than content rejection.
 
-- [ ] **Step 1: Add the behavioral regression.**
+- [x] **Step 1: Add the behavioral regression.**
 
 ```ts
 test("generation carries a recoverable credential diagnostic", () => {
@@ -120,7 +120,7 @@ test("generation carries a recoverable credential diagnostic", () => {
 });
 ```
 
-- [ ] **Step 2: Verify the regression fails.** Run `npx vitest run tests/unit/project-generation-failure.test.ts tests/unit/generate-project-submission.test.ts tests/unit/automation-recovery-flow.test.ts tests/unit/automation-retry.test.ts`. Expect the stated new assertion to fail or the new import to be missing; distinguish this from unrelated baseline failures.
-- [ ] **Step 3: Implement the contract.** Carry safe reason codes across admission/generation boundaries; update the CLI producer and strict diagnostic-artifact allowlist together, falling back to an unknown category for unrecognized errors. Never persist raw secrets or arbitrary error messages. Add a CLI regression proving the provider-authentication code survives preparation failure. Cancellation recovery belongs to Phase 2 because a cancelled worker may never write diagnostics. Exercise changed actor/head after preparation, unknown failure followed by repaired CI, provider recovery after seventy-two simulated hours, and malformed rate-limit metadata. Run relevant existing publication-authority tests.
-- [ ] **Step 4: Verify the regression and relevant existing coverage.** Run `npx vitest run tests/unit/project-generation-failure.test.ts tests/unit/generate-project-submission.test.ts tests/unit/automation-recovery-flow.test.ts tests/unit/automation-retry.test.ts`; expect exit 0 and all selected tests passing. Check declarations with `npm run typecheck`.
-- [ ] **Step 5: Review the diff and commit.** Stage only the listed deliverable files and necessary verified generated outputs; use `test(automation): cover prolonged recovery`.
+- [x] **Step 2: Verify the regression fails.** Run `npx vitest run tests/unit/project-generation-failure.test.ts tests/unit/generate-project-submission.test.ts tests/unit/automation-recovery-flow.test.ts tests/unit/automation-retry.test.ts`. Expect the stated new assertion to fail or the new import to be missing; distinguish this from unrelated baseline failures.
+- [x] **Step 3: Implement the contract.** Carry safe reason codes across admission/generation boundaries; update the CLI producer and strict diagnostic-artifact allowlist together, falling back to an unknown category for unrecognized errors. Never persist raw secrets or arbitrary error messages. Add a CLI regression proving the provider-authentication code survives preparation failure. Cancellation recovery belongs to Phase 2 because a cancelled worker may never write diagnostics. Exercise changed actor/head after preparation, unknown failure followed by repaired CI, provider recovery after seventy-two simulated hours, and malformed rate-limit metadata. Run relevant existing publication-authority tests.
+- [x] **Step 4: Verify the regression and relevant existing coverage.** Run `npx vitest run tests/unit/project-generation-failure.test.ts tests/unit/generate-project-submission.test.ts tests/unit/automation-recovery-flow.test.ts tests/unit/automation-retry.test.ts`; expect exit 0 and all selected tests passing. Check declarations with `npm run typecheck`.
+- [x] **Step 5: Review the diff and commit.** Stage only the listed deliverable files and necessary verified generated outputs; use `test(automation): cover prolonged recovery`.

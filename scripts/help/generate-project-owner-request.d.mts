@@ -141,7 +141,17 @@ export function parseGenerateProjectOwnerCli(argv: string[]): {
   root: string;
   reportPath: string;
   validatedReportPath: string | null;
+  failureDiagnosticPath?: string;
 };
+
+export function runGenerateProjectOwnerCli(
+  options: ReturnType<typeof parseGenerateProjectOwnerCli> & {
+    hostRepository: string;
+    request: Parameters<typeof generateProjectOwnerRequest>[0]["request"];
+    now?: string | Date;
+    generate?: typeof generateProjectOwnerRequest;
+  },
+): Promise<OwnerGenerationResult>;
 
 export function readValidatedOwnerReport(
   reportPath: string,
