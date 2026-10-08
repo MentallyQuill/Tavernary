@@ -71,7 +71,14 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Validate, test, and build
+      - name: Classify changes since confirmed production
+        id: route
+        run: node scripts/ci/classify-deployment.mjs
+      - name: Validate and build published content
+        if: steps.route.outputs.route == 'content'
+        run: npm run check:content
+      - name: Validate, test, and build implementation changes
+        if: steps.route.outputs.route != 'content'
         run: npm run check
       - name: Bind the complete export to its exact revision
         id: revision

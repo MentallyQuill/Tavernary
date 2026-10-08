@@ -59,9 +59,15 @@ export function readAuthoritativeActiveDeployment({ root, revision }) {
   if (!sha.test(revision ?? ""))
     throw new Error("Active deployment revision is invalid.");
   const path = "data/maintenance/automation/deployments/current.json";
-  const present = git(root, ["ls-tree", "--name-only", revision, "--", path]);
+  const present = git(root, ["ls-tree", revision, "--", path]);
   if (!present) return null;
-  if (present !== path) throw new Error("Active deployment path is invalid.");
+  if (
+    !new RegExp(
+      `^100644 blob [a-f0-9]{40}\\t${path.replaceAll(".", "\\.")}$`,
+      "u",
+    ).test(present)
+  )
+    throw new Error("Active deployment path or file mode is invalid.");
   const active = validateActiveDeployment(
     JSON.parse(git(root, ["show", `${revision}:${path}`], 64 * 1024)),
   );

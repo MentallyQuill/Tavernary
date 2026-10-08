@@ -910,6 +910,25 @@ test("the final serialized Pages guard uses this run's exact manifest and fresh 
   expect(comparison).toContain("if (( read_status != 0 )); then");
 });
 
+test("content deployment uses focused checks while implementation changes retain the full gate", async () => {
+  const deploy = await workflow("deploy-pages");
+  const steps = deploy.jobs.build.steps as Array<{
+    id?: string;
+    run?: string;
+    if?: string;
+  }>;
+  expect(steps.find((step) => step.id === "route")?.run).toContain(
+    "scripts/ci/classify-deployment.mjs",
+  );
+  expect(steps.find((step) => step.run === "npm run check:content")?.if).toBe(
+    "steps.route.outputs.route == 'content'",
+  );
+  expect(steps.find((step) => step.run === "npm run check")?.if).toBe(
+    "steps.route.outputs.route != 'content'",
+  );
+  expect(deploy.jobs["confirm-public"]).toBeDefined();
+});
+
 test("deploys only a verified static export to the Pages environment", async () => {
   const deploy = await workflow("deploy-pages");
   const build = deploy.jobs.build as {

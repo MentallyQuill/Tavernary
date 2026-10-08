@@ -884,6 +884,28 @@ at most ten current operations while the writer retains global reservation
 and freshness authority; late input changes remain superseded by the writer.
 The other legacy writer migrations and remaining approved phases are unfinished.
 
+### Focused content deployments
+
+Ruling: classify the complete Git diff from the active confirmed ordinary
+deployment, rather than only the latest commit — a queued Kit update must not
+hide an earlier implementation change. Missing/invalid proof, rollback state,
+unknown paths or unsupported file modes default to the full gate. Cost: one full
+build until an ordinary deployment is confirmed, and conservative extra checks.
+
+Kit/catalog data updates now use the existing focused content validation, unit
+checks, build and export verification. Security report validation is included.
+Code, dependencies, schema, configuration and workflow changes retain the full
+gate. Exact artifact binding, serialized deployment guard and public revision,
+asset and Chromium/WebKit confirmation remain mandatory.
+
+Evidence: the new classification/workflow regressions first failed, then the
+native Git, classification and workflow checks passed 113 tests. A marker with
+symlink mode is rejected. Actual `npm run check:content` passed all validation,
+116 focused tests (8.36 seconds), production type checking/build and export
+verification. Its first run caught a missing environment field in the new test
+fixture; the corrected fixture passed the build. Other approved work,
+independent review, CI, merge and production remain required.
+
 ### Publication/build clock consistency
 
 The complete advisory unit suite passed 302 files / 3,239 tests. A subsequent
