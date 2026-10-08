@@ -50,6 +50,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: publisher
+    permissions:
+      contents: read
+      actions: read
+      issues: write
+      pull-requests: write
+      statuses: write
     steps:
       - name: Check out trusted writer code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -78,5 +84,6 @@ jobs:
         run: node scripts/automation/writer-cli.mjs
         env:
           GH_TOKEN: ${{ steps.writer-token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
           PROJECT_AUTO_PUBLICATION_ENABLED: ${{ vars.PROJECT_AUTO_PUBLICATION_ENABLED }}

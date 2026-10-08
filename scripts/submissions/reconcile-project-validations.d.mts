@@ -12,6 +12,11 @@ export type GitHubRequest = (
     headers?: Record<string, string>;
   },
 ) => Promise<unknown>;
+export function githubRequest(
+  path: string,
+  options?: Parameters<GitHubRequest>[1],
+  token?: string,
+): Promise<unknown>;
 
 export type ReconciliationResult =
   | {
@@ -65,6 +70,7 @@ export function reconcileProjectValidations(input: {
   request: GitHubRequest;
   nowMs: number;
   publisherActorId: number;
+  selectedPullNumber?: number;
   loadAutomaticPublicationEnabled?: () => Promise<boolean>;
 }): Promise<ReconciliationSummary>;
 

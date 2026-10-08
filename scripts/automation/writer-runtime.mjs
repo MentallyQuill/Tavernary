@@ -23,8 +23,153 @@ import {
   revalidateAutomationOperation,
   dispatchAutomationOperation,
 } from "./inventory.mjs";
+import {
+  loadProjectMergePlan,
+  publishProjectOperation,
+  mergeExactProjectHead,
+} from "./project-merge.mjs";
+import { createProjectReconciliationRequest } from "./project-reconciliation-request.mjs";
+import {
+  reconcileProjectValidations,
+  githubRequest,
+} from "../submissions/reconcile-project-validations.mjs";
 
 const exec = promisify(execFile);
+function writerInventoryLoader({ root, env, gh }) {
+  return async () => {
+    await synchronizeWriterCheckout({ root, env });
+    return loadAutomationInventory({
+      root,
+      gh,
+      repository: env.GITHUB_REPOSITORY,
+      publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
+      nowMs: Date.now(),
+    });
+  };
+}
+
+export async function runProjectWriterPublication({
+  operationKey,
+  root = process.cwd(),
+  env = process.env,
+  gh = executeGh,
+  load = writerInventoryLoader({ root, env, gh }),
+}) {
+  const repository = env.GITHUB_REPOSITORY;
+  assertCanonicalWriterContext(env, repository);
+  const result = await publishProjectOperation({
+    operationKey,
+    load,
+    plan: (input) => loadProjectMergePlan({ ...input, gh }),
+    merge: (action) => mergeExactProjectHead({ repository, gh, action }),
+    persist: (receipt) =>
+      persistGithubAutomationReceipt({ gh, repository, receipt }),
+  });
+  if (result.regenerated) {
+    const state = await load();
+    const operation = state.operations.find(
+      (operation) => operation.key === operationKey,
+    );
+    if (
+      operation &&
+      (await loadProjectMergePlan({ state, operation, gh })).action ===
+        "regenerate"
+    )
+      await gh([
+        "workflow",
+        "run",
+        operation.identity.kind === "project"
+          ? "generate-project-submission.yml"
+          : "generate-project-owner-request.yml",
+        "--repo",
+        repository,
+        "--ref",
+        "main",
+        "-f",
+        `issue_number=${operation.identity.subject.slice(6)}`,
+        "-f",
+        "force_regeneration=false",
+      ]);
+  }
+  return result;
+}
+
+export async function runProjectWriterReconciliation({
+  operationKey,
+  root = process.cwd(),
+  env = process.env,
+  gh = executeGh,
+  load = writerInventoryLoader({ root, env, gh }),
+  request = (path, options) => githubRequest(path, options, env.GITHUB_TOKEN),
+}) {
+  const repository = env.GITHUB_REPOSITORY;
+  assertCanonicalWriterContext(env, repository);
+  if (!env.GITHUB_TOKEN || !/^[a-f0-9]{64}$/u.test(operationKey ?? ""))
+    throw new Error("Project reconciliation credentials or key are invalid.");
+  const state = await load();
+  const operation = state.operations.find(
+    (operation) => operation.key === operationKey,
+  );
+  if (!operation || operation.retry?.failure.kind === "permanent")
+    return { status: "superseded" };
+  if (!["project", "owner-request"].includes(operation.identity.kind))
+    throw new Error("Project reconciliation kind is invalid.");
+  if (
+    [
+      "validated",
+      "published",
+      "deployment-requested",
+      "deployment-confirmed",
+      "finalized",
+    ].includes(operation.stage)
+  )
+    return runProjectWriterPublication({ operationKey, root, env, gh, load });
+  const producer =
+    operation.identity.kind === "project"
+      ? "project-submission"
+      : "project-owner-request";
+  const pulls = state.remote.pulls.filter(
+    (pull) =>
+      pull.state === "open" &&
+      pull.head?.ref ===
+        `automation/${producer}-${operation.identity.subject.slice(6)}` &&
+      pull.head.sha === operation.expectedSha &&
+      pull.user?.id === state.publisherActorId &&
+      pull.user.type === "Bot",
+  );
+  if (pulls.length !== 1) return { status: "superseded" };
+  const bridge = createProjectReconciliationRequest({
+    repository,
+    request,
+    gh,
+    publish: () =>
+      runProjectWriterPublication({ operationKey, root, env, gh, load }),
+  });
+  const summary = await reconcileProjectValidations({
+    repository,
+    selectedPullNumber: pulls[0].number,
+    publisherActorId: state.publisherActorId,
+    nowMs: state.nowMs,
+    request: bridge,
+    loadAutomaticPublicationEnabled: async () =>
+      JSON.parse(
+        await gh([
+          "api",
+          `repos/${repository}/actions/variables/PROJECT_AUTO_PUBLICATION_ENABLED`,
+        ]),
+      ).value === "true",
+  });
+  if (summary.results.some((result) => result.action === "error"))
+    throw new Error("Project reconciliation is unavailable.");
+  return {
+    scannedPulls: summary.scannedPulls,
+    results: summary.results.map(({ pullNumber, action, outcome }) => ({
+      pullNumber,
+      action,
+      outcome,
+    })),
+  };
+}
 async function command(executable, args, options) {
   return (await exec(executable, args, { windowsHide: true, ...options }))
     .stdout;

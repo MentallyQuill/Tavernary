@@ -1,4 +1,5 @@
 import { expect, test } from "vitest";
+import { vi } from "vitest";
 
 import {
   reconcileProjectValidations,
@@ -20,6 +21,28 @@ const NEXT_HEAD_SHA = "e".repeat(40);
 const OLD_HEAD_SHA = "d".repeat(40);
 const PUBLISHER_ACTOR_ID = 41_982_982;
 const NOW = Date.parse("2026-08-23T12:00:00.000Z");
+
+test("the shared writer reconciles one selected PR without scanning unrelated pull requests", async () => {
+  const request = vi.fn(async (path: string) => {
+    if (path === `/repos/${REPOSITORY}`) return { default_branch: "main" };
+    if (path === `/repos/${REPOSITORY}/pulls/999`)
+      return { number: 999, state: "closed" };
+    throw new Error("Unrelated inventory is forbidden");
+  });
+  const result = await reconcileProjectValidations({
+    repository: REPOSITORY,
+    publisherActorId: PUBLISHER_ACTOR_ID,
+    nowMs: NOW,
+    request,
+    selectedPullNumber: 999,
+  });
+  expect(result.scannedPulls).toBe(1);
+  expect(result.results[0].action).toBe("ignore");
+  expect(request.mock.calls).toEqual([
+    [`/repos/${REPOSITORY}`],
+    [`/repos/${REPOSITORY}/pulls/999`],
+  ]);
+});
 
 type JsonObject = Record<string, unknown>;
 type Pull = ReturnType<typeof pullFixture>;

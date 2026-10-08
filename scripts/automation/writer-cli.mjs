@@ -51,6 +51,19 @@ export async function runAutomationWriterCli(options = {}) {
       );
       return 0;
     }
+    if (mode === "reconcile-project") {
+      const { runProjectWriterReconciliation } =
+        await import("./writer-runtime.mjs");
+      write(
+        JSON.stringify(
+          await runProjectWriterReconciliation({
+            operationKey: event.inputs?.operation_key,
+            env,
+          }),
+        ),
+      );
+      return 0;
+    }
     throw new Error("Writer mode is not implemented.");
   } catch (error) {
     write(

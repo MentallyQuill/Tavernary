@@ -702,6 +702,7 @@ export async function reconcileProjectValidations({
   request,
   nowMs,
   publisherActorId,
+  selectedPullNumber,
   loadAutomaticPublicationEnabled = async () => true,
 }) {
   if (
@@ -721,7 +722,15 @@ export async function reconcileProjectValidations({
   if (typeof defaultBranch !== "string" || defaultBranch.length === 0) {
     throw new Error("GitHub returned no default branch.");
   }
-  const pulls = await listOpenPulls(repository, request);
+  if (
+    selectedPullNumber !== undefined &&
+    (!Number.isSafeInteger(selectedPullNumber) || selectedPullNumber < 1)
+  )
+    throw new Error("Selected pull request identity is invalid.");
+  const pulls =
+    selectedPullNumber === undefined
+      ? await listOpenPulls(repository, request)
+      : [await request(`/repos/${repository}/pulls/${selectedPullNumber}`)];
   const results = [];
   let labelsReady = false;
   let publicationRunsPromise;
@@ -883,10 +892,14 @@ export async function reconcileProjectValidations({
   };
 }
 
-async function githubRequest(path, options = {}) {
-  const token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN;
+export async function githubRequest(
+  path,
+  options = {},
+  token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN,
+) {
   const response = await fetch(`https://api.github.com${path}`, {
     ...options,
+    signal: AbortSignal.timeout(20_000),
     headers: {
       Accept: "application/vnd.github+json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),

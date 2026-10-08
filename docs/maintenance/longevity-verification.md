@@ -353,3 +353,25 @@ type checking passed. The subsequent large-file verification change passed its
 protected Publisher App and numeric actor checks. All remaining Task 2
 migrations, final complete verification, independent review, CI, merge and
 production proof remain outstanding.
+
+### Project writer integration (Task 2 still in progress)
+
+The shared writer now handles selected-PR validation recovery and exact-head
+project merges through the common publisher. Current numeric Publisher custody,
+transaction identity, source ownership/staff authority, issue decisions,
+generated paths and authenticated exact-head CI are re-fetched before merging.
+The emergency switch is read again at the final write boundary. Status comments
+retain the existing default automation bot's custody; App authority handles
+workflow dispatches and merges. Existing legacy entrypoints/lifecycle paths
+remain until equivalent replacement coverage is complete.
+
+Narrowly named operation/publication/deployment bookkeeping files are accepted as
+unrelated base drift; authority registry, vocabulary, policy, code and generated
+file changes still require revalidation or regeneration. Validation recovery
+can select one PR without scanning unrelated requests.
+
+Evidence: full unit suite 266 files / 2,989 tests pass; full lint and type checking
+pass. Production-adapter tests confirm that disabling the emergency switch at
+the final boundary prevents every write. Original-commit publication evidence,
+remaining producers, all final deployment/maintenance phases and final review,
+CI, merge and production verification are still required.

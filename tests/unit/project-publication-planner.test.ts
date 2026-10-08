@@ -358,6 +358,25 @@ test("publishes after an unrelated advisory snapshot without regenerating copy",
   ).toMatchObject({ action: "merge", expectedHeadSha: headSha });
 });
 
+test("controller bookkeeping cannot force endless regeneration of a validated project", () => {
+  expect(
+    isSafeProjectPublicationBaseDrift({
+      transaction,
+      changedPaths: [
+        `data/maintenance/automation/operations/${"a".repeat(64)}.json`,
+        `data/maintenance/automation/publications/${"b".repeat(64)}.json`,
+        `data/maintenance/automation/deployments/${"c".repeat(40)}.json`,
+      ],
+    }),
+  ).toBe(true);
+  expect(
+    isSafeProjectPublicationBaseDrift({
+      transaction,
+      changedPaths: ["data/maintenance/trusted-tavernary-editors.json"],
+    }),
+  ).toBe(false);
+});
+
 test.each([
   ["data/snapshots/policy-review/owner-project.json"],
   ["data/snapshots/policy-review/nested/another-project.json"],
