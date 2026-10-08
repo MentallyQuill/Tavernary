@@ -1,10 +1,7 @@
 import { readFile, readdir } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import { resolve } from "node:path";
-import {
-  canonicalFileDigests,
-  publicationHistory,
-} from "./canonical-files.mjs";
+import { readCanonicalPublicationEvidence } from "./publication-evidence.mjs";
 import {
   loadGithubAutomationInventory,
   loadAutomationWorkerRuns,
@@ -287,37 +284,16 @@ export async function loadAutomationInventory({
     committedAt,
     ...automationDataDigests({ catalog, targets }),
   };
-  local.publications = [];
   const validatedPublications = publicationRecords.map(
     validateCanonicalPublicationRecord,
   );
-  const revisions = await publicationHistory({
+  const publicationProof = await readCanonicalPublicationEvidence({
     root,
     revision,
-    paths: validatedPublications.map(
-      (record) =>
-        `data/maintenance/automation/publications/${record.operation.key}.json`,
-    ),
+    records: validatedPublications,
   });
-  local.publicationFileDigests = canonicalFileDigests({
-    root,
-    revision,
-    paths: [
-      ...new Set(
-        validatedPublications.flatMap((record) =>
-          record.files.map((file) => file.path),
-        ),
-      ),
-    ],
-  });
-  for (const value of publicationRecords) {
-    const record = validateCanonicalPublicationRecord(value);
-    const path = `data/maintenance/automation/publications/${record.operation.key}.json`;
-    const proofRevision = revisions[path];
-    if (!/^[a-f0-9]{40}$/u.test(proofRevision))
-      throw new Error("Publication evidence has no canonical commit.");
-    local.publications.push({ record, revision: proofRevision });
-  }
+  local.publications = publicationProof.publications;
+  local.publicationFileDigests = publicationProof.fileDigests;
   local.confirmedRevisions = verifiedAutomationDeployments({
     deployments,
     revision,

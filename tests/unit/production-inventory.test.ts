@@ -93,7 +93,7 @@ test("canonical proof takes precedence when unchanged metadata also remains disc
       revision,
       publications: [{ record, revision }],
       publicationFileDigests: {
-        [result.files[0].path]: result.files[0].sha256,
+        [`${revision}:${result.files[0].path}`]: result.files[0].sha256,
       },
     },
     operations: [],

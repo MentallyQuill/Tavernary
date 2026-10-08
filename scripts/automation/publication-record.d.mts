@@ -7,8 +7,9 @@ export interface CanonicalPublicationRecord {
   source: PreparedResult["source"];
   authorId: number;
   producer: PreparedResult["producer"];
-  files: Array<{ path: string; sha256: string }>;
+  files: Array<{ path: string; sha256: string; gitBlobSha: string }>;
 }
+export function canonicalGitBlobSha(content: string | Uint8Array): string;
 export function createCanonicalPublicationRecord(input: {
   result: PreparedResult;
   operation: AutomationOperation;

@@ -27,7 +27,10 @@ test("publication proof is co-committed with exact canonical file hashes and ope
   const operations = discoverCanonicalPublications({
     records: [{ record: input.record, revision: input.revision }],
     fileDigests: Object.fromEntries(
-      input.result.files.map((file) => [file.path, file.sha256]),
+      input.result.files.map((file) => [
+        `${input.revision}:${file.path}`,
+        file.sha256,
+      ]),
     ),
     nowMs: Date.now(),
   });
@@ -60,7 +63,9 @@ test("a receipt, altered identity, wrong file hash, or unverified revision canno
     discoverCanonicalPublications({
       records: [{ record: input.record, revision: input.revision }],
       fileDigests: {
-        [input.result.files[0].path]: createHash("sha256")
+        [`${input.revision}:${input.result.files[0].path}`]: createHash(
+          "sha256",
+        )
           .update("{}")
           .digest("hex"),
       },
@@ -93,7 +98,10 @@ test("publication confirmation preserves finalized bookkeeping without interpret
   ];
   const common = {
     records: [{ record: input.record, revision: input.revision }],
-    fileDigests: { [input.result.files[0].path]: input.result.files[0].sha256 },
+    fileDigests: {
+      [`${input.revision}:${input.result.files[0].path}`]:
+        input.result.files[0].sha256,
+    },
     nowMs: Date.now(),
     receipts,
     confirmedRevisions: [input.revision],

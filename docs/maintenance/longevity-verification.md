@@ -375,3 +375,23 @@ pass. Production-adapter tests confirm that disabling the emergency switch at
 the final boundary prevents every write. Original-commit publication evidence,
 remaining producers, all final deployment/maintenance phases and final review,
 CI, merge and production verification are still required.
+
+### Original publication evidence (Task 2 still in progress)
+
+Canonical recovery now verifies the original commit containing both the
+publication record and its prepared data. Later authorized data updates do not
+erase this evidence. Detached record edits, executable data, substituted Git
+objects and unchanged prepared bytes fail verification. One bounded streaming
+Git history read checks the native object identity of each co-committed file.
+Deployment confirmation remains a separate required proof before finalization.
+
+Ruling: require each file's native Git object identity in the unreleased
+publication-record format — this binds verified prepared bytes to their original
+commit without one historical subprocess per payload. The cost if wrong is
+recoverable waiting, never permission to apply an operation twice.
+
+Evidence: the complete unit suite passed 266 files / 2,993 tests. Full lint and
+type checking passed. Four real-Git regression cases cover line endings,
+subsequent updates, detached records, executable data and substituted objects.
+Task 2 migrations, all later phases, independent review, CI, merge and actual
+production verification remain outstanding.

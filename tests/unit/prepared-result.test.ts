@@ -13,6 +13,15 @@ test("trusted data results retain their immutable operation and file identity", 
     validatePreparedResult(result, preparedResultContextFixture()),
   ).toEqual(result);
 });
+
+test("a prepared data result cannot claim publication for unchanged base bytes", () => {
+  const result = preparedResultFixture();
+  const context = preparedResultContextFixture();
+  result.files[0].baseDigest = result.files[0].sha256;
+  context.currentState.fileDigests[result.files[0].path] =
+    result.files[0].sha256;
+  expect(() => validatePreparedResult(result, context)).toThrow();
+});
 test("an invalid configured Publisher identity cannot authenticate a prepared producer", () => {
   const result = preparedResultFixture();
   const context = preparedResultContextFixture();

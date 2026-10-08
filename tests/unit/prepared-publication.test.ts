@@ -1,5 +1,6 @@
 import { expect, test, vi } from "vitest";
 import { publishPreparedOperation } from "../../scripts/automation/prepared-publication.mjs";
+import { createCanonicalPublicationRecord } from "../../scripts/automation/publication-record.mjs";
 import {
   preparedResultFixture,
   preparedResultContextFixture,
@@ -30,19 +31,18 @@ function fixture() {
         revision: "d".repeat(40),
         publications: [
           {
-            record: {
-              schema_version: 1,
+            record: createCanonicalPublicationRecord({
+              result,
               operation: context.operation,
-              source: result.source,
-              authorId: result.authorId,
-              producer: result.producer,
-              files: result.files.map(({ path, sha256 }) => ({ path, sha256 })),
-            },
+            }),
             revision: "d".repeat(40),
           },
         ],
         publicationFileDigests: Object.fromEntries(
-          result.files.map((file) => [file.path, file.sha256]),
+          result.files.map((file) => [
+            `${"d".repeat(40)}:${file.path}`,
+            file.sha256,
+          ]),
         ),
       },
     };

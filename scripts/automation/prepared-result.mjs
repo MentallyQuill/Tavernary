@@ -264,6 +264,7 @@ export function validatePreparedResult(
       fail("prepared-content-invalid");
     if ((currentState.fileDigests[file.path] ?? null) !== file.baseDigest)
       fail("prepared-base-stale");
+    if (file.sha256 === file.baseDigest) fail("prepared-content-invalid");
     let value;
     try {
       value = JSON.parse(file.content);
