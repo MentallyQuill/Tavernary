@@ -3,6 +3,7 @@ import { buildCatalog, projectCatalogV7 } from "../catalog/build.mjs";
 import { validateCatalog } from "../catalog/validate.mjs";
 import { validateStoredReportIndex } from "../security/tavernkeeper-reports.mjs";
 import { validateTavernKeeperImportState } from "../security/tavernkeeper-import-state.mjs";
+import { settlePreparedModelUsage } from "./model-budget.mjs";
 
 function replace(records, value, key) {
   const values = records.filter((record) => record[key] !== value[key]);
@@ -72,6 +73,27 @@ export async function buildPreparedCatalogPublication({ action, state }) {
       new Error("Prepared catalog cross-reference validation failed."),
       { code: "validation-failed" },
     );
+  let files = action.files;
+  if (action.modelSettlements?.length) {
+    if (
+      action.modelSettlements.some(
+        (row) => !action.operationKeys.includes(row.operationKey),
+      )
+    )
+      throw new Error("Model settlement operation is unrelated.");
+    const budget = settlePreparedModelUsage(
+      local.modelBudget,
+      action.modelSettlements,
+    );
+    if (JSON.stringify(budget) !== JSON.stringify(local.modelBudget))
+      files = [
+        ...files,
+        publicFile(
+          "data/maintenance/automation/model-budgets/global.json",
+          budget,
+        ),
+      ];
+  }
   if (
     action.files.every((file) =>
       /^(?:data\/maintenance\/automation\/metadata|data\/snapshots\/policy-review)\//u.test(
@@ -79,7 +101,7 @@ export async function buildPreparedCatalogPublication({ action, state }) {
       ),
     )
   )
-    return action.files;
+    return files;
   const catalog = await buildCatalog({
     ...inputs,
     write: false,
@@ -88,7 +110,7 @@ export async function buildPreparedCatalogPublication({ action, state }) {
       new Date(state.nowMs).toISOString(),
   });
   return [
-    ...action.files,
+    ...files,
     publicFile(
       "public/catalog/tavernary-catalog.json",
       projectCatalogV7(catalog),

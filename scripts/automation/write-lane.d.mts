@@ -22,6 +22,11 @@ export type PublicationAction =
       operationKeys: string[];
       expectedMainSha: string;
       files: PreparedFile[];
+      modelSettlements?: Array<{
+        operationKey: string;
+        producer: PreparedResult["producer"];
+        modelUsage: NonNullable<PreparedResult["modelUsage"]>;
+      }>;
     }
   | (Extract<ProjectPublicationPlan, { action: "merge" }> & {
       operationKeys: string[];

@@ -335,6 +335,7 @@ async function requestProviderEnvelope({
   budgetGuard,
   requireBudget,
 }) {
+  let budgetReceipt;
   if (requireBudget || budgetGuard) {
     if (!budgetGuard || typeof budgetGuard.beforeRequest !== "function")
       throw Object.assign(new Error("Verified model allowance is required."), {
@@ -348,7 +349,7 @@ async function requestProviderEnvelope({
       ...body,
       max_completion_tokens: Math.min(body.max_completion_tokens ?? 4096, 4096),
     };
-    budgetGuard.beforeRequest({
+    budgetReceipt = budgetGuard.beforeRequest({
       model: configuration.model,
       body,
       maxOutputTokens: body.max_completion_tokens,
@@ -391,6 +392,8 @@ async function requestProviderEnvelope({
     if (returnedModel !== null && returnedModel !== configuration.model) {
       throw new EnrichmentProviderError("provider-model-mismatch");
     }
+    if (typeof budgetReceipt === "string")
+      budgetGuard.completeRequest?.(budgetReceipt);
     return {
       payload,
       metadata: {

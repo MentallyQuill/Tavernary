@@ -663,6 +663,15 @@ diagnostics contain fixed reason codes and public operation identities, not raw
 provider errors or credentials. A human closure or body edit is preserved.
 Closing a notice as not planned explicitly dismisses it.
 
+Migrated metadata, advisory and optional report producers reserve global model
+allowance before dispatch. Their successful result carries safe usage evidence;
+the shared writer settles it with the content publication after checking the
+current producer and every bound ticket. Positive settled requests can prove
+provider recovery. Token evidence is a conservative requested bound, not a
+billing statement. Failed or interrupted requests and unused allowance remain
+charged; a lost response cannot create more allowance. Manual enrichment and
+intake producers remain pending migration until their native coverage is proved.
+
 These checks run inside GitHub. If GitHub Actions stops running or the required
 GitHub credential cannot write issues, it cannot report that outage itself.
 GitHub availability and account/credential repair remain owner responsibilities.

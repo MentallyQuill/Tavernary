@@ -258,3 +258,55 @@ test("verified tickets bind one producer run and guard every primary, retry and 
   });
   expect(() => expired.beforeRequest(call)).toThrow();
 });
+
+test("usage evidence records successful responses once while failed attempts remain reserved", () => {
+  const reservation = reserveModelBudget(
+    createModelBudgetState(nowMs),
+    {
+      ...request,
+      requestCount: 3,
+      requestedTokens: 20000,
+    },
+    options,
+  );
+  if (!reservation.allowed) throw new Error("Reservation failed");
+  const producer = {
+    runId: 700,
+    workflow: ".github/workflows/enrich-catalog.yml",
+  };
+  const guard = createModelBudgetGuard({
+    state: bindModelBudgetTicket(
+      reservation.state,
+      reservation.ticket.id,
+      producer,
+    ),
+    ticketIds: [reservation.ticket.id],
+    operationKey: key,
+    ...producer,
+    runAttempt: 1,
+    nowMs: () => nowMs,
+  });
+  const call = {
+    model: request.model,
+    body: { messages: [] },
+    maxOutputTokens: 1000,
+  };
+  const successful = guard.beforeRequest(call);
+  guard.beforeRequest(call);
+  guard.completeRequest(successful);
+  guard.completeRequest(successful);
+  const evidence = guard.usage();
+  expect(evidence).toEqual([
+    {
+      ticketId: reservation.ticket.id,
+      usage: { requests: 1, tokens: estimateRequestedTokens(call) },
+    },
+  ]);
+  evidence[0].usage.requests = 0;
+  expect(guard.usage()[0].usage.requests).toBe(1);
+  expect(() => guard.completeRequest("foreign")).toThrow();
+  expect(reservation.state.days[0]).toMatchObject({
+    requests: 3,
+    tokens: 20000,
+  });
+});

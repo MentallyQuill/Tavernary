@@ -7,6 +7,22 @@ export interface ModelUsage {
   requests: number;
   tokens: number;
 }
+export interface ModelUsageEvidence {
+  ticketId: string;
+  usage: ModelUsage;
+}
+export const MODEL_USAGE_SCHEMA: Record<string, unknown>;
+export function validateModelUsageEvidence(
+  value: unknown,
+): ModelUsageEvidence[];
+export function settlePreparedModelUsage(
+  state: ModelBudgetState,
+  settlements: Array<{
+    operationKey: string;
+    producer: { runId: number; workflow: string };
+    modelUsage: ModelUsageEvidence[];
+  }>,
+): ModelBudgetState;
 export interface ModelBudgetTicket {
   id: string;
   operationKey: string;
@@ -86,7 +102,18 @@ export interface ModelBudgetGuard {
     model: string;
     body: Record<string, unknown>;
     maxOutputTokens: number;
-  }): void;
+  }): string | void;
+  completeRequest?: (receipt: string) => void;
+  usage?: () => ModelUsageEvidence[];
+}
+export interface VerifiedModelBudgetGuard extends ModelBudgetGuard {
+  beforeRequest(input: {
+    model: string;
+    body: Record<string, unknown>;
+    maxOutputTokens: number;
+  }): string;
+  completeRequest(receipt: string): void;
+  usage(): ModelUsageEvidence[];
 }
 export function createModelBudgetGuard(input: {
   state: ModelBudgetState;
@@ -96,4 +123,4 @@ export function createModelBudgetGuard(input: {
   workflow: string;
   runAttempt: number;
   nowMs?: () => number;
-}): ModelBudgetGuard;
+}): VerifiedModelBudgetGuard;

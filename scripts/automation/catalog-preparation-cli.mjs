@@ -11,6 +11,7 @@ import {
 import { classifyAutomationFailure } from "./failure.mjs";
 import { githubFailureStatus } from "./github-inventory.mjs";
 import { loadProducerBudgetGuard } from "./model-budget-github.mjs";
+import { validateModelUsageEvidence } from "./model-budget.mjs";
 
 export async function runCatalogPreparationCli(options = {}) {
   const env = options.env ?? process.env;
@@ -55,6 +56,19 @@ export async function runCatalogPreparationCli(options = {}) {
       return 0;
     }
     const producer = assertCatalogPreparationContext({ state, operation, env });
+    let budgetGuard, budgetGuardPromise;
+    const loadBudget = () =>
+      (budgetGuardPromise ??= loadProducerBudgetGuard({
+        env,
+        operationKey,
+        ticketIds: String(event.inputs?.budget_ticket ?? "")
+          .split(",")
+          .filter(Boolean),
+        gh: executeGh,
+      }).then((guard) => {
+        budgetGuard = guard;
+        return guard;
+      }));
     const result = await (options.prepare ?? prepareCatalogOperation)({
       state,
       operation,
@@ -65,19 +79,13 @@ export async function runCatalogPreparationCli(options = {}) {
           mode,
           options: {
             env,
-            budgetGuard: () =>
-              loadProducerBudgetGuard({
-                env,
-                operationKey,
-                ticketIds: String(event.inputs?.budget_ticket ?? "")
-                  .split(",")
-                  .filter(Boolean),
-                gh: executeGh,
-              }),
+            budgetGuard: loadBudget,
           },
         }),
     });
     if (result) {
+      if (budgetGuard)
+        result.modelUsage = validateModelUsageEvidence(budgetGuard.usage());
       if (!outputDirectory)
         throw new Error("Preparation output directory is unavailable.");
       await mkdir(outputDirectory, { recursive: true });

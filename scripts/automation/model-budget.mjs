@@ -2,6 +2,37 @@ import { createHash } from "node:crypto";
 import { automationSchemaValidator } from "./operation.mjs";
 import schema from "../../data/schemas/automation-model-budget.schema.json" with { type: "json" };
 const validateSchema = automationSchemaValidator(schema);
+export const MODEL_USAGE_SCHEMA = {
+  type: "array",
+  minItems: 1,
+  maxItems: 2,
+  items: {
+    type: "object",
+    additionalProperties: false,
+    required: ["ticketId", "usage"],
+    properties: {
+      ticketId: { type: "string", pattern: "^[a-f0-9]{64}$" },
+      usage: {
+        type: "object",
+        additionalProperties: false,
+        required: ["requests", "tokens"],
+        properties: {
+          requests: { type: "integer", minimum: 0, maximum: 40 },
+          tokens: { type: "integer", minimum: 0, maximum: 200000 },
+        },
+      },
+    },
+  },
+};
+const validateUsage = automationSchemaValidator(MODEL_USAGE_SCHEMA);
+export function validateModelUsageEvidence(value) {
+  if (
+    !validateUsage(value) ||
+    new Set(value.map((row) => row.ticketId)).size !== value.length
+  )
+    throw new Error("Model usage evidence is invalid.");
+  return value;
+}
 const hash = (value) =>
   createHash("sha256").update(JSON.stringify(value)).digest("hex");
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -302,6 +333,45 @@ export function bindModelBudgetTicket(state, id, producer) {
   updated.tickets.find((value) => value.id === id).producer = producer;
   return validateModelBudgetState(updated);
 }
+export function settlePreparedModelUsage(state, settlements) {
+  validateModelBudgetState(state);
+  if (
+    !Array.isArray(settlements) ||
+    !settlements.length ||
+    settlements.length > 20
+  )
+    throw new Error("Model settlement batch is invalid.");
+  let updated = state;
+  const seen = new Set();
+  for (const row of settlements) {
+    validateModelUsageEvidence(row.modelUsage);
+    if (
+      !/^[a-f0-9]{64}$/u.test(row.operationKey ?? "") ||
+      !Number.isSafeInteger(row.producer?.runId) ||
+      row.producer.runId < 1 ||
+      !/^\.github\/workflows\/[a-z0-9-]+\.yml$/u.test(
+        row.producer.workflow ?? "",
+      )
+    )
+      throw new Error("Model settlement producer is invalid.");
+    const tickets = updated.tickets.filter(
+      (ticket) =>
+        ticket.operationKey === row.operationKey &&
+        ticket.producer?.runId === row.producer.runId &&
+        ticket.producer?.workflow === row.producer.workflow,
+    );
+    if (tickets.length !== row.modelUsage.length)
+      throw new Error("Model settlement reservation changed.");
+    for (const evidence of row.modelUsage) {
+      const ticket = tickets.find((value) => value.id === evidence.ticketId);
+      if (!ticket || seen.has(ticket.id))
+        throw new Error("Model settlement ticket is invalid.");
+      seen.add(ticket.id);
+      updated = settleModelBudget(updated, ticket, evidence.usage);
+    }
+  }
+  return updated;
+}
 export function estimateRequestedTokens({ body, maxOutputTokens }) {
   if (
     !body ||
@@ -349,6 +419,8 @@ export function createModelBudgetGuard({
   )
     throw refuse("Model ticket is not bound to this producer.");
   const spent = new Map();
+  const requests = new Map();
+  const successful = new Map();
   return {
     beforeRequest({ model, body, maxOutputTokens }) {
       const clock = nowMs();
@@ -369,6 +441,35 @@ export function createModelBudgetGuard({
         requests: use.requests + 1,
         tokens: use.tokens + needed,
       });
+      const receipt = `${ticket.id}:${use.requests + 1}`;
+      requests.set(receipt, {
+        ticketId: ticket.id,
+        tokens: needed,
+        complete: false,
+      });
+      return receipt;
+    },
+    completeRequest(receipt) {
+      const request = requests.get(receipt);
+      if (!request) throw refuse("Model response receipt is invalid.");
+      if (request.complete) return;
+      request.complete = true;
+      const previous = successful.get(request.ticketId) ?? {
+        requests: 0,
+        tokens: 0,
+      };
+      successful.set(request.ticketId, {
+        requests: previous.requests + 1,
+        tokens: previous.tokens + request.tokens,
+      });
+    },
+    usage() {
+      // Successful transport evidence uses conservative requested token bounds;
+      // billing and failed/interrupted requests remain charged by the reservation.
+      return tickets.map((ticket) => ({
+        ticketId: ticket.id,
+        usage: { ...(successful.get(ticket.id) ?? { requests: 0, tokens: 0 }) },
+      }));
     },
   };
 }

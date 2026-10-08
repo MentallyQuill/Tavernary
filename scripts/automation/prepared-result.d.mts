@@ -19,6 +19,7 @@ export interface PreparedResult {
   producer: { workflow: string; runId: number; sourceSha: string };
   baseSha: string;
   files: PreparedFile[];
+  modelUsage?: import("./model-budget.mjs").ModelUsageEvidence[];
 }
 export interface TrustedPreparationRun {
   id: number;

@@ -1,5 +1,9 @@
 import { createHash } from "node:crypto";
 import {
+  MODEL_USAGE_SCHEMA,
+  validateModelUsageEvidence,
+} from "./model-budget.mjs";
+import {
   automationSchemaValidator,
   validateAutomationOperation,
 } from "./operation.mjs";
@@ -34,6 +38,7 @@ export const PREPARED_RESULT_SCHEMA = {
   ],
   properties: {
     schema_version: { const: 1 },
+    modelUsage: MODEL_USAGE_SCHEMA,
     operationKey: digestSchema,
     kind: { enum: kinds },
     inputDigest: digestSchema,
@@ -217,6 +222,23 @@ export function validatePreparedResult(
 ) {
   validateAutomationOperation(operation);
   if (!validate(result)) fail("prepared-schema-invalid");
+  if (result.modelUsage) {
+    if (
+      ![
+        "metadata",
+        "advisory",
+        "report-import",
+        "project",
+        "owner-request",
+      ].includes(result.kind)
+    )
+      fail("prepared-schema-invalid");
+    try {
+      validateModelUsageEvidence(result.modelUsage);
+    } catch {
+      fail("prepared-schema-invalid");
+    }
+  }
   if (
     ["refresh", "metadata", "advisory"].includes(result.kind) &&
     operation.identity.subject !==

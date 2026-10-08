@@ -180,11 +180,19 @@ export function planCanonicalPublication({
     const files = new Map();
     for (const candidate of commits)
       for (const file of candidate.result.files) files.set(file.path, file);
+    const modelSettlements = commits
+      .filter((candidate) => candidate.result.modelUsage)
+      .map((candidate) => ({
+        operationKey: candidate.key,
+        producer: candidate.result.producer,
+        modelUsage: candidate.result.modelUsage,
+      }));
     plan.actions.push({
       action: "commit",
       operationKeys: commits.map((candidate) => candidate.key),
       expectedMainSha: currentMainSha,
       files: [...files.values()].sort((a, b) => a.path.localeCompare(b.path)),
+      ...(modelSettlements.length ? { modelSettlements } : {}),
     });
   }
   return plan;

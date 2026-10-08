@@ -581,6 +581,27 @@ Task 5 remains in progress: native current-data restore, workflow wiring, lost
 retention-handoff recovery, production configuration and subsequent phases are
 still required.
 
+### Durable model usage checkpoint
+
+Scheduled metadata, advisory and optional report preparation now reuse one
+verified model guard per producer. Successful responses carry only ticket IDs,
+request counts and conservative requested token bounds in the existing immutable
+result envelope. The native publication planner preserves that evidence, and the
+catalog builder checks the current complete producer/ticket binding before
+settling it in the same canonical commit. Reserved daily/monthly charges are
+never refunded for failures, interruption or unused repair allowance. Replayed
+settlement is idempotent; a changed producer or reservation is rejected.
+
+Evidence: missing usage/settlement and repeated native guard loading were watched
+failing, then passing. A real metadata request path returned two HTTP 503s and
+one successful response: only the success appears in recovery evidence, while
+all three requests remain reserved. The test carries the actual prepared result
+through validation, planning and catalog rebuilding into the durable ledger.
+The production CLI saves that safe evidence without prompts or raw payloads.
+Nine focused suites passed 153 checks; types and scoped lint passed. This checkpoint covers
+the migrated producers; production manual enrichment and all intake/generation
+producers still need their allowance integration before all-provider completion.
+
 ### Native retained-site restore and active public proof
 
 Pages builds now retain the complete verified archive for ninety days. Owner-only
