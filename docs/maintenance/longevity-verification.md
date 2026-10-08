@@ -476,6 +476,53 @@ an aborted hydration script was rejected by each browser. Full type checking and
 lint passed. The full suite passed 283 files / 3,150 tests. Retained complete bundles, dependent operation finalization, all
 remaining phases and actual merged production confirmation remain required.
 
+### Retained-bundle foundation (publication Task 5 in progress)
+
+Complete site bundles use a versioned, gzip-compressed frame with a bounded JSON
+header and regular file bytes. Native verification rejects unsupported formats,
+unknown paths, traversal, links, duplicates, missing/extra files, corrupt bytes,
+malformed schemas and inconsistent semantic digests before extraction. Restore
+creates a new directory and rejects parent links. Compressed exports are limited
+to 128 MiB and uncompressed assets to 256 MiB, with existing per-file and count
+bounds. The actual current export fits these limits.
+
+Ruling: use native gzip with a small explicit frame rather than a general archive
+extractor — recovery accepts only regular allowlisted files and requires no new
+runtime package. The cost is requiring the trusted bundle tool for recovery;
+the owner runbook must document the format. The shared V8 schema factory keeps
+the browser parser and native recovery validator on the same full schema;
+V7 remains supported and target validation uses the tracked V3 schema.
+
+The GitHub adapter authenticates completed Pages runs and bounded one-file ZIPs,
+then uploads a verified export and confirmation proof to a draft release.
+Interrupted uploads reuse the same draft without replacing verified assets.
+Publication must yield an immutable Publisher-authored release whose tag matches
+the exact source commit. Read-only restore verifies both release asset hashes,
+public confirmation, source ancestry and the complete enclosed export.
+Retention preserves the latest three bundles and one per calendar month across
+twelve months, plus protected restore references. Only verified automation
+releases can be pruned; changing download counters do not alter their identity.
+
+Ruling: require GitHub release immutability and fresh source-bound metadata rather
+than overwriteable release assets — a durable artifact must resist replacement.
+The cost is one owner-authorized repository setup step before the production
+canary. Read-only GitHub inspection on 2026-10-08 found immutability disabled and
+no existing releases. Setup is still required; no production mutation occurred.
+[GitHub documents](https://docs.github.com/en/code-security/concepts/supply-chain-security/immutable-releases)
+that complete immutable releases can be deleted while their surviving assets and
+tags cannot be edited.
+
+Evidence: the real native CLI created a bundle from the complete export, restored
+it into a fresh tree and passed five Chromium/WebKit deployment tests with one
+intentional duplicate-CLI skip. The restored Node confirmation CLI completed in
+12.2 seconds. Lost upload, replay, current-data/owner-removal conflicts, unsafe
+archives, full schema checks and changing GitHub counters have focused tests.
+The complete repository check passed 288 unit files / 3,180 tests, formatting,
+lint, palette, catalog/report validation, type checking, build and export checks.
+Task 5 remains in progress: native current-data restore, workflow wiring, lost
+retention-handoff recovery, production configuration and subsequent phases are
+still required.
+
 ### Budgeted metadata and advisory producer integration (Task 4 in progress)
 
 The reconciled metadata/advisory workflows now expose authenticated, pinned,

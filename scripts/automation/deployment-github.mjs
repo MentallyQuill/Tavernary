@@ -1,4 +1,9 @@
-import { decodePreparedArtifact } from "./prepared-artifact.mjs";
+import { createHash } from "node:crypto";
+import {
+  decodePreparedArtifact,
+  decodePreparedArtifactBytes,
+} from "./prepared-artifact.mjs";
+import { decodeSiteBundle } from "./site-bundle.mjs";
 import { validateRevisionManifest } from "./revision-manifest.mjs";
 const sha = /^[a-f0-9]{40}$/u;
 function fail() {
@@ -77,7 +82,12 @@ async function loadArtifact({
     pages.some((page) => !Array.isArray(page.artifacts))
   )
     fail();
-  const prefix = kind === "revision" ? "site-revision-" : "site-confirmation-";
+  const prefixes = {
+    revision: "site-revision-",
+    confirmation: "site-confirmation-",
+    bundle: "site-bundle-",
+  };
+  const prefix = prefixes[kind];
   const candidates = pages
     .flatMap((page) => page.artifacts)
     .filter(
@@ -107,7 +117,12 @@ async function loadArtifact({
     artifact.id < 1 ||
     !Number.isSafeInteger(artifact.size_in_bytes) ||
     artifact.size_in_bytes < 22 ||
-    artifact.size_in_bytes > (kind === "revision" ? 16_777_216 : 65_536) ||
+    artifact.size_in_bytes >
+      (kind === "bundle"
+        ? 134_217_728
+        : kind === "revision"
+          ? 16_777_216
+          : 65_536) ||
     !/^sha256:[a-f0-9]{64}$/u.test(artifact.digest ?? "") ||
     origin?.id !== runId ||
     origin.repository_id !== run.repository.id ||
@@ -122,10 +137,17 @@ async function loadArtifact({
     "api",
     `${route}/actions/artifacts/${artifact.id}/zip`,
   ]);
-  const value = decodePreparedArtifact({
+  const value = (
+    kind === "bundle" ? decodePreparedArtifactBytes : decodePreparedArtifact
+  )({
     archive,
     digest: artifact.digest,
-    filename: kind === "revision" ? "revision.json" : "confirmation.json",
+    filename:
+      kind === "bundle"
+        ? "site-bundle.tsb.gz"
+        : kind === "revision"
+          ? "revision.json"
+          : "confirmation.json",
   });
   return { runId, runAttempt: run.run_attempt, sourceSha, value };
 }
@@ -141,4 +163,20 @@ export async function loadGithubRevisionManifest(input) {
   )
     fail();
   return { runId, manifest };
+}
+export async function loadGithubSiteBundle(input) {
+  const { runId, runAttempt, sourceSha, value } = await loadArtifact({
+    ...input,
+    kind: "bundle",
+  });
+  const bundle = decodeSiteBundle({
+    archive: value,
+    archiveDigest: `sha256:${createHash("sha256").update(value).digest("hex")}`,
+  });
+  if (
+    bundle.manifest.sourceSha !== sourceSha ||
+    bundle.manifest.buildId !== `run-${runId}-attempt-${runAttempt}`
+  )
+    fail();
+  return { runId, bundle, archive: value };
 }

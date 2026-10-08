@@ -4,7 +4,7 @@ import { crc32, inflateRawSync } from "node:zlib";
 function fail() {
   throw new Error("Prepared artifact integrity or format is invalid.");
 }
-export function decodePreparedArtifact({
+export function decodePreparedArtifactBytes({
   archive,
   digest,
   filename = "result.json",
@@ -14,6 +14,7 @@ export function decodePreparedArtifact({
     "diagnostic.json": 16_384,
     "revision.json": 16_777_216,
     "confirmation.json": 65_536,
+    "site-bundle.tsb.gz": 134_217_728,
   };
   if (!Object.hasOwn(limits, filename)) fail();
   const maximumBytes = limits[filename];
@@ -104,7 +105,14 @@ export function decodePreparedArtifact({
       : inflateRawSync(encoded, { maxOutputLength: size });
   if (content.byteLength !== size || crc32(content) !== uint32(central + 16))
     fail();
-  const result = JSON.parse(decoder.decode(content));
+  return new Uint8Array(content);
+}
+export function decodePreparedArtifact(input) {
+  if (input.filename === "site-bundle.tsb.gz") fail();
+  const content = decodePreparedArtifactBytes(input);
+  const result = JSON.parse(
+    new TextDecoder("utf-8", { fatal: true }).decode(content),
+  );
   if (result === null || typeof result !== "object" || Array.isArray(result))
     fail();
   return result;
