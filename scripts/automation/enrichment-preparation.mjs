@@ -26,6 +26,8 @@ import {
 } from "../catalog/enrich-readmes.mjs";
 import { modelProviderOptionsFromEnvironment } from "../catalog/model-provider-configuration.mjs";
 import { observeProjectMetadataSource } from "./metadata-preparation.mjs";
+import { loadRedditEnrichmentSource } from "../catalog/reddit-enrichment-source.mjs";
+import { parseSourceIdentity } from "../submissions/source-identity.mjs";
 import { operationKey, validateAutomationOperation } from "./operation.mjs";
 import {
   recoverInventoryWorker,
@@ -212,9 +214,34 @@ function currentCheckpoint({ state, operation }) {
     throw failure("input-superseded");
   return checkpointRecords(state);
 }
-async function observeCheckpoint({ state, selected, observe }) {
+async function observeCheckpoint({ state, selected, observe, readSource }) {
   if (!selected.eligible) return null;
   const { project, source, snapshot } = selected;
+  if (source.status !== "active") throw failure("authorization-lost");
+  if (source.type === "url") {
+    let identity;
+    try {
+      identity = parseSourceIdentity(source.url);
+    } catch {
+      throw failure("authorization-lost");
+    }
+    if (identity.kind !== "reddit") throw failure("authorization-lost");
+    const observation = observe
+      ? await observe({ state, project, source, snapshot })
+      : { source: await loadRedditEnrichmentSource(source, { readSource }) };
+    if (observation.source.status === "failed") {
+      const codes = {
+        "reddit-rate-limited": "provider-rate-limited",
+        "reddit-server-error": "provider-server-error",
+        "reddit-fetch-failed": "provider-network-error",
+        "reddit-response-invalid": "provider-unavailable",
+        "reddit-identity-mismatch": "authorization-lost",
+      };
+      if (codes[observation.source.reasonCode])
+        throw failure(codes[observation.source.reasonCode]);
+    }
+    return observation;
+  }
   if (
     !["github", "codeberg"].includes(source.type) ||
     source.status !== "active" ||
@@ -245,6 +272,7 @@ export async function enrichmentCheckpointNeedsModel(input) {
     state: input.state,
     selected,
     observe: input.observe,
+    readSource: input.readSource,
   });
   return observation?.source.status === "ready";
 }
@@ -259,6 +287,7 @@ export async function acquirePreparedEnrichmentData({
     state,
     selected,
     observe: options.observe,
+    readSource: options.readSource,
   });
   const configuration =
     options.providerConfiguration ??
@@ -299,6 +328,11 @@ export async function acquirePreparedEnrichmentData({
     writeReport: async () => {},
   });
   const entry = report.entries[selected.id];
+  if (selected.source?.type === "url" && observation?.source.status === "ready")
+    entry.source_content_digest = fingerprintProjectPublicationInput({
+      sourceKind: observation.source.sourceKind,
+      text: observation.source.text,
+    });
   const unavailable = classifyAutomationFailure({
     diagnosticCode: entry?.reason_code,
   });
@@ -311,6 +345,7 @@ export async function acquirePreparedEnrichmentData({
 const entryMappings = [
   ["sourceKind", "source_kind"],
   ["sourceIdentity", "source_identity"],
+  ["sourceContentDigest", "source_content_digest"],
   ["repositoryId", "repository_id"],
   ["headSha", "head_sha"],
   ["readmePath", "readme_path"],
@@ -382,10 +417,16 @@ export async function createPreparedEnrichmentContext({
   state,
   operation,
   observe,
+  readSource,
   validateProject,
 }) {
   const selected = currentCheckpoint({ state, operation });
-  const observation = await observeCheckpoint({ state, selected, observe });
+  const observation = await observeCheckpoint({
+    state,
+    selected,
+    observe,
+    readSource,
+  });
   const vocabulary = JSON.parse(
     await readFile(resolve(state.root, "data/vocabularies/tags.json"), "utf8"),
   );
@@ -484,7 +525,12 @@ export async function createPreparedEnrichmentContext({
         "retry-fallback",
       ].includes(entry.outcome);
       if (!success) return !proposed;
-      if (!selected.eligible || !observation) return false;
+      if (
+        !selected.eligible ||
+        !observation ||
+        !["ready", "fallback"].includes(observation.source.status)
+      )
+        return false;
       const updated = proposed ? JSON.parse(proposed.content) : project;
       if (!validateContent(projectPath, updated)) return false;
       const provenance = {
@@ -492,8 +538,16 @@ export async function createPreparedEnrichmentContext({
         source_identity: observation.source.sourceIdentity,
         repository_id: observation.source.repositoryId,
         head_sha: observation.source.headSha,
-        readme_path: observation.source.readmePath,
-        readme_ref: observation.source.readmeRef,
+        readme_path: observation.source.readmePath ?? null,
+        readme_ref: observation.source.readmeRef ?? null,
+        reddit_post_id: observation.source.redditPostId,
+        source_content_digest:
+          source.type === "url" && observation.source.status === "ready"
+            ? fingerprintProjectPublicationInput({
+                sourceKind: observation.source.sourceKind,
+                text: observation.source.text,
+              })
+            : undefined,
         source_id: project.source_id,
         requested_fields: fields,
         vocabulary_hash: tagVocabularyHash(vocabulary),
@@ -551,7 +605,10 @@ export async function createPreparedEnrichmentContext({
         copyContext: {
           mode: "synthesize",
           submittedSummary: "",
-          protectedTerms: [project.name, ...source.repository.split("/")],
+          protectedTerms: [
+            project.name,
+            ...(source.repository?.split("/") ?? []),
+          ],
         },
       }).valid;
     } catch {
@@ -565,7 +622,9 @@ export async function createPreparedEnrichmentContext({
     source: {
       id: source?.id ?? "enrichment-rollout",
       identity: source
-        ? `${source.type}:${source.repository_id}`
+        ? source.type === "url"
+          ? `reddit:${parseSourceIdentity(source.url).postId}`
+          : `${source.type}:${source.repository_id}`
         : `maintenance:${report.run_id}`,
     },
     authorId: 2625904,

@@ -11,6 +11,17 @@ interface ProjectWriterInput {
   gh?: GhRunner;
   load?: () => Promise<AutomationInventoryState>;
 }
+export function runEnrichmentOwnerWriter(input: {
+  runId: number;
+  root?: string;
+  env?: Record<string, string | undefined>;
+  gh?: GhRunner;
+  load?: () => Promise<AutomationInventoryState>;
+  commit?: (
+    input: Omit<Parameters<typeof commitCanonicalData>[0], "gh">,
+  ) => Promise<{ sha: string }>;
+  isAncestor?: (ancestor: string, descendant: string) => boolean | null;
+}): Promise<Record<string, unknown>>;
 export function runPublicationWriterFinalization(
   input: ProjectWriterInput & {
     noticeOnly?: boolean;

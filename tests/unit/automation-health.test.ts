@@ -1,5 +1,6 @@
 import { expect, test, vi } from "vitest";
 import * as dependencyWriter from "../../scripts/automation/dependency-update.mjs";
+import * as enrichmentRequests from "../../scripts/automation/enrichment-owner-request.mjs";
 import {
   assessAutomationHealth,
   assessInventoryHealth,
@@ -14,6 +15,45 @@ import {
 const nowMs = AUTOMATION_NOW;
 const before = (hours: number) =>
   new Date(nowMs - hours * 3_600_000).toISOString();
+
+test("the scheduled writer recovers a missed owner request through authenticated admission", async () => {
+  const { state } = await metadataMaintenanceFixture();
+  state.operations = [];
+  const latest = vi
+    .spyOn(enrichmentRequests, "loadLatestEnrichmentOwnerRequest")
+    .mockResolvedValue({ id: 987 });
+  const admission = vi
+    .spyOn(enrichmentRequests, "admitEnrichmentOwnerRequest")
+    .mockResolvedValue({ status: "admitted", runId: 987, sha: "c".repeat(40) });
+  try {
+    const result = await runAutomationWriterReconciliation({
+      load: async () => state,
+      gh: async () => JSON.stringify({ id: 987 }),
+      env: {
+        GITHUB_REF: "refs/heads/main",
+        GITHUB_REPOSITORY: state.repository,
+        GITHUB_EVENT_NAME: "workflow_dispatch",
+        GITHUB_ACTOR_ID: "2625904",
+        GITHUB_WORKFLOW_REF: `${state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
+        TAVERNARY_PUBLISHER_BOT_ID: String(state.publisherActorId),
+        UTILITY_MODEL: "fixture-model",
+      },
+    });
+    expect(result.enrichment).toMatchObject({ status: "admitted", runId: 987 });
+    expect(latest).toHaveBeenCalledOnce();
+    expect(admission).toHaveBeenCalledWith(
+      expect.objectContaining({
+        state,
+        run: { id: 987 },
+        model: "fixture-model",
+      }),
+    );
+    expect(result.controller).toMatchObject({ dispatched: 0 });
+  } finally {
+    latest.mockRestore();
+    admission.mockRestore();
+  }
+});
 
 test("manual waits are not stalled automatic submissions", () => {
   const operation = {

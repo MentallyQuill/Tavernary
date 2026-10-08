@@ -1,4 +1,5 @@
 export type AutomationWriterMode =
+  | "enrichment-request"
   | "reconcile"
   | "reconcile-project"
   | "publish"

@@ -184,6 +184,7 @@ function entryForResult(result, attempt, outcome, now, previousEntry) {
   const mappings = [
     ["sourceKind", "source_kind"],
     ["sourceIdentity", "source_identity"],
+    ["sourceContentDigest", "source_content_digest"],
     ["repositoryId", "repository_id"],
     ["headSha", "head_sha"],
     ["readmePath", "readme_path"],

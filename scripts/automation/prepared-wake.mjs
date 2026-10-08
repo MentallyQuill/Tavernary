@@ -7,6 +7,7 @@ import {
 } from "./operation.mjs";
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 import { trustedRestoreRun } from "./restore-source.mjs";
+import { parseEnrichmentOwnerRequest } from "./enrichment-owner-request.mjs";
 
 const kinds = {
   "refresh-catalog": "refresh",
@@ -160,6 +161,34 @@ export async function runPreparedWakeCli(options = {}) {
     const run = JSON.parse(
       await gh(["api", `repos/${repository}/actions/runs/${runId}`]),
     );
+    if (
+      env.GITHUB_WORKFLOW_REF ===
+        `${repository}/.github/workflows/automation-prepared.yml@refs/heads/main` &&
+      run.id === runId &&
+      parseEnrichmentOwnerRequest(run, repository)
+    ) {
+      await gh([
+        "workflow",
+        "run",
+        "automation-writer.yml",
+        "--repo",
+        repository,
+        "--ref",
+        "main",
+        "-f",
+        "mode=enrichment-request",
+        "-f",
+        `result_run_id=${runId}`,
+      ]);
+      write(
+        JSON.stringify({
+          status: "dispatched",
+          mode: "enrichment-request",
+          runId,
+        }),
+      );
+      return 0;
+    }
     if (
       env.GITHUB_WORKFLOW_REF ===
         `${repository}/.github/workflows/automation-prepared.yml@refs/heads/main` &&

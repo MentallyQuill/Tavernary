@@ -5,6 +5,7 @@ on:
     workflows:
       - "Catalog maintenance: Refresh source data"
       - "Catalog maintenance: Enrich project metadata"
+      - "Catalog maintenance: Request metadata rollout"
       - "Catalog: Advisory policy review"
       - "Security: Reconcile TavernKeeper reports"
       - "Kit submissions: Publish approved Kit"
@@ -29,6 +30,9 @@ jobs:
          (github.event.workflow_run.event == 'workflow_dispatch' &&
           github.event.workflow_run.actor.id == 2625904)))
        || (github.event.workflow_run.name == 'Site: Restore verified bundle' &&
+           github.event.workflow_run.event == 'workflow_dispatch' &&
+           github.event.workflow_run.actor.id == 2625904)
+       || (github.event.workflow_run.name == 'Catalog maintenance: Request metadata rollout' &&
            github.event.workflow_run.event == 'workflow_dispatch' &&
            github.event.workflow_run.actor.id == 2625904))
     runs-on: ubuntu-latest

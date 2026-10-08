@@ -40,6 +40,7 @@ import { buildPreparedCatalogPublication } from "./publication-build.mjs";
 import { commitCanonicalData } from "./canonical-data.mjs";
 import { reconcilePreparedOperations } from "./prepared-reconciliation.mjs";
 import { persistPreparedFailure } from "./prepared-failure.mjs";
+import { classifyAutomationFailure } from "./failure.mjs";
 import { runReconcileAutomationCli } from "./reconcile-cli.mjs";
 import { assessInventoryHealth } from "./health.mjs";
 import { planIncidentUpdates, reconcileIncidentUpdates } from "./incidents.mjs";
@@ -59,6 +60,37 @@ import {
 } from "../submissions/reconcile-project-validations.mjs";
 
 const exec = promisify(execFile);
+export async function runEnrichmentOwnerWriter({
+  runId,
+  root = process.cwd(),
+  env = process.env,
+  gh = executeGh,
+  load = writerInventoryLoader({ root, env, gh }),
+  commit = (input) => commitCanonicalData({ ...input, gh }),
+  isAncestor,
+}) {
+  assertCanonicalWriterContext(env, env.GITHUB_REPOSITORY);
+  if (!Number.isSafeInteger(runId) || runId < 1)
+    throw new Error("Owner enrichment run is invalid.");
+  const response = await gh([
+    "api",
+    `repos/${env.GITHUB_REPOSITORY}/actions/runs/${runId}`,
+  ]);
+  if (Buffer.byteLength(response) > 4194304)
+    throw new Error("Owner enrichment run exceeds its bound.");
+  const run = JSON.parse(response);
+  if (run.id !== runId)
+    throw new Error("Owner enrichment run identity is invalid.");
+  const { admitEnrichmentOwnerRequest } =
+    await import("./enrichment-owner-request.mjs");
+  return admitEnrichmentOwnerRequest({
+    state: await load(),
+    run,
+    model: env.UTILITY_MODEL,
+    commit,
+    isAncestor,
+  });
+}
 export async function runPublicationWriterFinalization({
   operationKey,
   noticeOnly = false,
@@ -805,8 +837,39 @@ export async function runAutomationWriterReconciliation({
   const publisherActorId = Number(env.TAVERNARY_PUBLISHER_BOT_ID);
   assertCanonicalWriterContext(env, repository);
   let state = await load();
+  let enrichment = { status: "idle" },
+    enrichmentSlot = 0;
+  try {
+    const { loadLatestEnrichmentOwnerRequest } =
+      await import("./enrichment-owner-request.mjs");
+    const request = await loadLatestEnrichmentOwnerRequest({ gh, repository });
+    const admittedId = Number(
+      /^owner-enrichment-([1-9]\d*)$/u.exec(
+        state.local.enrichmentCanary?.run_id ?? "",
+      )?.[1] ?? 0,
+    );
+    if (request && request.id > admittedId) {
+      enrichment = await runEnrichmentOwnerWriter({
+        runId: request.id,
+        root,
+        env,
+        gh,
+        load,
+      });
+      if (enrichment.status === "admitted") {
+        enrichmentSlot = 1;
+        state = await load();
+      }
+    }
+  } catch (error) {
+    enrichment = {
+      status: "unavailable",
+      failure: classifyAutomationFailure({ diagnosticCode: error?.code }),
+    };
+  }
   const prepared = await reconcilePreparedOperations({
     state,
+    limit: 20 - enrichmentSlot,
     readDiagnostic: (wake) =>
       loadPreparedGithubDiagnostic({
         gh,
@@ -852,7 +915,7 @@ export async function runAutomationWriterReconciliation({
     await import("./dependency-update.mjs");
   const dependencyPullNumbers = selectDependencyPullNumbers(state.remote.pulls);
   const dependencySlot =
-    consumed.size < 20 && dependencyPullNumbers.length ? 1 : 0;
+    consumed.size + enrichmentSlot < 20 && dependencyPullNumbers.length ? 1 : 0;
   const healthInput = (state) => ({
     findings: assessInventoryHealth(state),
     existingIssues: state.remote.issues,
@@ -865,7 +928,9 @@ export async function runAutomationWriterReconciliation({
     initialHealth = healthInput(state);
     const proposals = planIncidentUpdates(initialHealth);
     healthSlot =
-      consumed.size + dependencySlot < 20 && proposals.length ? 1 : 0;
+      consumed.size + dependencySlot + enrichmentSlot < 20 && proposals.length
+        ? 1
+        : 0;
     if (proposals.length && !healthSlot)
       health = { status: "waiting", reason: "operation-limit" };
   } catch {
@@ -876,7 +941,7 @@ export async function runAutomationWriterReconciliation({
     args: [
       "--apply",
       "--limit",
-      String(20 - consumed.size - dependencySlot - healthSlot),
+      String(20 - consumed.size - dependencySlot - healthSlot - enrichmentSlot),
     ],
     env,
     event: {},
@@ -966,5 +1031,5 @@ export async function runAutomationWriterReconciliation({
       dependencies = { status: "unavailable" };
     }
   }
-  return { prepared, controller, retention, dependencies, health };
+  return { prepared, controller, retention, dependencies, health, enrichment };
 }

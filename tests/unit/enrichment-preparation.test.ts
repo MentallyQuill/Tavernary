@@ -25,9 +25,79 @@ import { planAutomationWorker } from "../../scripts/automation/worker.mjs";
 import { selectPreparedWakes } from "../../scripts/automation/prepared-wake.mjs";
 import { formatJson } from "../../scripts/catalog/json-format.mjs";
 import { runModelWriterPreparation } from "../../scripts/automation/writer-runtime.mjs";
+import { runEnrichmentOwnerWriter } from "../../scripts/automation/writer-runtime.mjs";
+import type { RedditSourceReader } from "../../scripts/catalog/reddit-enrichment-source.mjs";
+import {
+  parseEnrichmentOwnerRequest,
+  loadLatestEnrichmentOwnerRequest,
+} from "../../scripts/automation/enrichment-owner-request.mjs";
 
 const now = "2026-10-08T18:00:00.000Z";
 const model = "fixture-model";
+const ownerRequest = () => ({
+  id: 987,
+  path: ".github/workflows/request-catalog-enrichment.yml",
+  display_title: "Enrichment request all-automatic batch20 concurrency2",
+  event: "workflow_dispatch",
+  head_branch: "main",
+  head_sha: "a".repeat(40),
+  actor: { id: 2625904, type: "User" },
+  repository: { id: 1309605115, full_name: "MentallyQuill/Tavernary" },
+  head_repository: { id: 1309605115, full_name: "MentallyQuill/Tavernary" },
+  status: "completed",
+  conclusion: "success",
+  created_at: "2026-09-01T00:00:00Z",
+});
+test("owner recovery reads bounded workflow-specific history outside the recent-worker window", async () => {
+  const request = ownerRequest();
+  const gh = vi.fn(async (_args: string[]) =>
+    JSON.stringify({ total_count: 5000, workflow_runs: [request] }),
+  );
+  expect(
+    await loadLatestEnrichmentOwnerRequest({
+      gh,
+      repository: request.repository.full_name,
+    }),
+  ).toEqual(request);
+  expect(gh).toHaveBeenCalledOnce();
+  expect(gh.mock.calls[0][0].join(" ")).toContain(
+    "request-catalog-enrichment.yml/runs?branch=main&event=workflow_dispatch&status=success&per_page=100&page=1",
+  );
+  expect(gh.mock.calls[0][0].join(" ")).not.toContain("created=");
+});
+test("owner request metadata denies bot impersonation, forks, failed runs and unsafe input bounds", () => {
+  const valid = ownerRequest();
+  expect(parseEnrichmentOwnerRequest(valid)).toMatchObject({
+    runId: 987,
+    batchSize: 20,
+    concurrency: 2,
+  });
+  for (const invalid of [
+    { ...valid, actor: { id: 900, type: "Bot" } },
+    { ...valid, actor: { id: 2625904, type: "Bot" } },
+    {
+      ...valid,
+      head_repository: { id: 9, full_name: valid.repository.full_name },
+    },
+    { ...valid, path: ".github/workflows/enrich-catalog.yml" },
+    { ...valid, status: "in_progress" },
+    { ...valid, conclusion: "failure" },
+    {
+      ...valid,
+      display_title: "Enrichment request all-automatic batch31 concurrency2",
+    },
+    {
+      ...valid,
+      display_title: "Enrichment request all-automatic batch20 concurrency9",
+    },
+    {
+      ...valid,
+      display_title:
+        "Enrichment request all-automatic batch20 concurrency2 injected",
+    },
+  ])
+    expect(parseEnrichmentOwnerRequest(invalid)).toBeNull();
+});
 const providerConfiguration = {
   apiUrl: "https://api.example.test/v1/chat/completions",
   apiKey: "test-key",
@@ -35,6 +105,149 @@ const providerConfiguration = {
 };
 const summary =
   "Example organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator controls, and keeps complex configuration work clear and accessible.";
+function redditFixture() {
+  const f = fixture();
+  (f.state.local.sources as Array<Record<string, unknown>>)[0] = {
+    id: "reddit-a",
+    type: "url",
+    url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/example/",
+    status: "active",
+    refresh_policy: "manual",
+  };
+  f.projects[0].source_id = "reddit-a";
+  f.state.operations = discoverEnrichmentOperations(f.state);
+  let text = summary;
+  let postId = "1v64r6z";
+  let status = 200;
+  const readSource: RedditSourceReader = vi.fn(async (url) => ({
+    finalUrl: url,
+    status,
+    contentType: "application/json",
+    contentLength: null,
+    redirects: [],
+    body: new TextEncoder().encode(
+      JSON.stringify([
+        {
+          data: {
+            children: [
+              {
+                kind: "t3",
+                data: { id: postId, title: "Example", selftext: text },
+              },
+            ],
+          },
+        },
+      ]),
+    ),
+  }));
+  const provider = {
+    generate: vi.fn(async () => ({
+      output: {
+        summary: { value: summary, evidence: ["reddit-body:1-2"] },
+        result: "accepted-unchanged" as const,
+        change_reasons: [],
+        policy_signal: "none" as const,
+      },
+      metadata: { requestedModel: model, returnedModel: model, latencyMs: 1 },
+    })),
+  };
+  return {
+    ...f,
+    readSource,
+    provider,
+    changeText: (value: string) => {
+      text = value;
+    },
+    changePost: (value: string) => {
+      postId = value;
+    },
+    changeStatus: (value: number) => {
+      status = value;
+    },
+  };
+}
+
+test("native Reddit checkpoints bind the actual post and source text before publication", async () => {
+  const f = redditFixture();
+  const operation = f.state.operations[0];
+  const outputs = await acquirePreparedEnrichmentData({
+    state: f.state,
+    operation,
+    options: {
+      provider: f.provider,
+      providerConfiguration,
+      readSource: f.readSource,
+    },
+  });
+  const entry = JSON.parse(outputs["data/reports/enrichment-canary.json"])
+    .entries.a;
+  expect(entry).toMatchObject({
+    outcome: "enriched",
+    source_kind: "reddit-body",
+    source_identity: "reddit:1v64r6z",
+    reddit_post_id: "1v64r6z",
+  });
+  expect(entry.source_content_digest).toMatch(/^[a-f0-9]{64}$/u);
+  const context = await createPreparedEnrichmentContext({
+    state: f.state,
+    operation,
+    readSource: f.readSource,
+  });
+  const files = Object.entries(outputs).map(([path, content]) => ({
+    path,
+    content,
+  }));
+  expect(context.source.identity).toBe("reddit:1v64r6z");
+  expect(context.validateFiles!(files)).toBe(true);
+  f.changeText(`${summary} The author changed this post.`);
+  const changed = await createPreparedEnrichmentContext({
+    state: f.state,
+    operation,
+    readSource: f.readSource,
+  });
+  expect(changed.validateFiles!(files)).toBe(false);
+  expect(f.provider.generate).toHaveBeenCalledOnce();
+  expect(f.report.primary_cursor).toBe(0);
+});
+
+test.each([429, 503])(
+  "Reddit HTTP %s leaves the frozen checkpoint pending and makes no model request",
+  async (status) => {
+    const f = redditFixture();
+    f.changeStatus(status);
+    await expect(
+      acquirePreparedEnrichmentData({
+        state: f.state,
+        operation: f.state.operations[0],
+        options: {
+          provider: f.provider,
+          providerConfiguration,
+          readSource: f.readSource,
+        },
+      }),
+    ).rejects.toMatchObject({
+      code: status === 429 ? "provider-rate-limited" : "provider-server-error",
+    });
+    expect(f.provider.generate).not.toHaveBeenCalled();
+    expect(f.report.primary_cursor).toBe(0);
+    expect(f.report.retry_queue).toEqual([]);
+  },
+);
+
+test("a different Reddit post cannot consume model allowance or publish metadata", async () => {
+  const f = redditFixture();
+  f.changePost("other123");
+  const budgetGuard = vi.fn();
+  await expect(
+    acquirePreparedEnrichmentData({
+      state: f.state,
+      operation: f.state.operations[0],
+      options: { providerConfiguration, readSource: f.readSource, budgetGuard },
+    }),
+  ).rejects.toMatchObject({ code: "authorization-lost" });
+  expect(budgetGuard).not.toHaveBeenCalled();
+  expect(f.report.primary_cursor).toBe(0);
+});
 function fixture() {
   const base = catalogInventoryFixture();
   const ids = ["a", "b", "c", "d", "e"];
@@ -172,6 +385,90 @@ test("native acquisition emits one actual CLI checkpoint and immutable rollout c
   expect(updated.summary).toBe(summary);
   expect(updated.metadata_policy).toEqual(f.projects[0].metadata_policy);
   expect(updated.tags).toEqual([]);
+});
+
+test("the shared writer admits an authenticated owner canary without resetting a running full manifest", async () => {
+  const f = fixture();
+  const full = createEnrichmentReport(
+    createEnrichmentRunState({
+      mode: "full",
+      runId: "legacy-full",
+      manifest: ["a", "b", "c", "d", "e"],
+      batchSize: 30,
+      concurrency: 6,
+      model,
+      now,
+      selectionMode: "all-automatic",
+    }),
+  );
+  const running = createEnrichmentReport(
+    applyAttemptResults(
+      full,
+      [{ id: "a", phase: "primary", outcome: "enriched" }],
+      now,
+      { checkpointLimit: 1 },
+    ),
+  );
+  f.state.local.enrichmentFull = running;
+  f.state.local.enrichmentCanary = null;
+  const run = {
+    id: 987,
+    path: ".github/workflows/request-catalog-enrichment.yml",
+    display_title: "Enrichment request all-automatic batch20 concurrency2",
+    event: "workflow_dispatch",
+    head_branch: "main",
+    head_sha: f.state.local.revision,
+    actor: { id: 2625904, type: "User" },
+    repository: { id: 1309605115, full_name: f.state.repository },
+    head_repository: { id: 1309605115, full_name: f.state.repository },
+    status: "completed",
+    conclusion: "success",
+  };
+  const gh = vi.fn(async () => JSON.stringify(run));
+  const commit = vi.fn(
+    async (input: { files: Array<{ path: string; content: string }> }) => {
+      for (const file of input.files) {
+        if (file.path.endsWith("enrichment-canary.json"))
+          f.state.local.enrichmentCanary = JSON.parse(file.content);
+        if (file.path.endsWith("enrichment-report.json"))
+          f.state.local.enrichmentFull = JSON.parse(file.content);
+      }
+      return { sha: "c".repeat(40) };
+    },
+  );
+  const input = {
+    runId: 987,
+    load: async () => f.state,
+    gh,
+    commit,
+    env: {
+      GITHUB_REPOSITORY: f.state.repository,
+      GITHUB_REF: "refs/heads/main",
+      GITHUB_EVENT_NAME: "workflow_dispatch",
+      GITHUB_ACTOR_ID: "2625904",
+      GITHUB_WORKFLOW_REF: `${f.state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
+      TAVERNARY_PUBLISHER_BOT_ID: "900",
+      UTILITY_MODEL: model,
+    },
+  };
+  expect(await runEnrichmentOwnerWriter(input)).toMatchObject({
+    status: "admitted",
+  });
+  expect(f.state.local.enrichmentCanary).toMatchObject({
+    run_id: "owner-enrichment-987",
+    expected_model: model,
+    batch_size: 20,
+    concurrency: 2,
+    manifest: ["a", "b", "c", "d", "e"],
+  });
+  expect(f.state.local.enrichmentFull).toEqual(running);
+  expect(commit.mock.calls[0][0].files.map((file) => file.path)).toEqual([
+    "data/reports/enrichment-canary.json",
+  ]);
+  expect(await runEnrichmentOwnerWriter(input)).toMatchObject({
+    status: "already-admitted",
+  });
+  expect(commit).toHaveBeenCalledOnce();
 });
 test("a verified empty repository source produces a validated fallback without model allowance", async () => {
   const f = fixture();

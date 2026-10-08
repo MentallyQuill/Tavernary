@@ -1245,8 +1245,39 @@ contracts at the checkpoint clock so confirmation has a public revision to verif
 Fifteen focused suites passed 155 checks, with typecheck, scoped source/test lint,
 formatting and whitespace checks passing. The preceding allowance-checkpoint commit
 `6b7a6a5d3` passed verify and visual in CI run `37841955278`. This checkpoint does
-not replace the legacy five-hour owner job yet: authenticated owner-request
-admission, canary approval/full finalization, existing Reddit-source support, and resumption of the existing
-180/281-record rollout still require wiring before the legacy writer is removed.
+not replace the legacy five-hour owner job yet. Canary approval/full finalization
+and resumption of the existing 180/281-record rollout still require wiring before
+the legacy writer is removed. Owner admission and Reddit compatibility are covered
+by the following checkpoint.
 Other producer allowances, runtime/retention/drills, final review, exact-head CI,
 merge and public verification remain in progress.
+
+## Native owner admission and Reddit compatibility checkpoint
+
+The five-minute, read-only owner request workflow records bounded scope, batch and
+concurrency inputs in native run metadata. The completed-run handler checks actual
+numeric owner identity, repository custody, workflow, branch and successful
+completion before waking the shared writer. The writer independently fetches the
+run, requires its trusted-main ancestry, and commits a frozen canary. A running
+full report retains its run identity, manifest, entries, model, batch, scope and
+cursor. Replaying an admitted request makes no new commit. A new full manifest is
+frozen before its canary runs and remains gated on verified canary deployment.
+
+Scheduled writer reconciliation recovers a lost owner wake from one bounded page
+of dedicated request-workflow history, independently of the recent worker window.
+Admission consumes one slot from the existing twenty-operation pass. An active
+native rollout prevents a newer request from replacing it.
+
+Native Reddit preparation reuses the bounded source reader and verifies the actual
+post ID. The report retains a validated content fingerprint, with no raw source
+text. A fresh publication observation rejects results if the post changes. Wrong
+post identity cannot reserve model allowance; rate limits and server outages leave
+the frozen checkpoint pending without a model request. URL source handling keeps
+manual catalog fields protected.
+
+Eleven focused suites passed 148 checks; types, scoped lint, formatting and
+whitespace checks passed. The preceding checkpoint `7c7d19c8d` passed both required
+CI jobs in run `37845609882`. Canary approval, full deployment finalization and
+replacement of the legacy owner job remain unfinished. All remaining producer
+allowances, runtime/retention/drills, final independent review, exact-head CI,
+merge and actual public verification are still required.

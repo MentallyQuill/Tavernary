@@ -68,6 +68,7 @@ function sanitizedEntry(entry) {
   for (const key of [
     "source_kind",
     "source_identity",
+    "source_content_digest",
     "repository_id",
     "head_sha",
     "readme_path",
@@ -102,6 +103,12 @@ function sanitizedEntry(entry) {
     result.copy_change_reasons,
     result.copy_policy_signal,
   ];
+  if (
+    result.source_content_digest !== undefined &&
+    (typeof result.source_content_digest !== "string" ||
+      !/^[a-f0-9]{64}$/u.test(result.source_content_digest))
+  )
+    throw new Error("enrichment report source content digest is invalid");
   if (copyValues.some((value) => value !== undefined)) {
     const copyValidation = validateCatalogCopyMetadata({
       result: result.copy_result,

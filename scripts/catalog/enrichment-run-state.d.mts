@@ -33,6 +33,7 @@ export type ProjectAttemptResult = {
     | "reddit-title"
     | "confirmed-fallback";
   sourceIdentity?: string;
+  sourceContentDigest?: string;
   repositoryId?: number;
   headSha?: string;
   readmePath?: string | null;

@@ -7,6 +7,7 @@ import {
 import { classifyAutomationFailure } from "./failure.mjs";
 
 const modes = new Set([
+  "enrichment-request",
   "reconcile",
   "reconcile-project",
   "publish",
@@ -39,6 +40,18 @@ export async function runAutomationWriterCli(options = {}) {
       const { runAutomationWriterReconciliation } =
         await import("./writer-runtime.mjs");
       write(JSON.stringify(await runAutomationWriterReconciliation({ env })));
+      return 0;
+    }
+    if (mode === "enrichment-request") {
+      const { runEnrichmentOwnerWriter } = await import("./writer-runtime.mjs");
+      write(
+        JSON.stringify(
+          await runEnrichmentOwnerWriter({
+            runId: Number(event.inputs?.result_run_id),
+            env,
+          }),
+        ),
+      );
       return 0;
     }
     if (mode === "backfill-identities") {

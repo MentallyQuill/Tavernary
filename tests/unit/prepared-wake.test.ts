@@ -5,6 +5,58 @@ import {
   runPreparedWakeCli,
 } from "../../scripts/automation/prepared-wake.mjs";
 import { preparedResultContextFixture } from "../helpers/automation-fixtures";
+test("an authenticated completed owner request wakes only its shared writer admission", async () => {
+  const repository = "MentallyQuill/Tavernary";
+  const run = {
+    id: 987,
+    path: ".github/workflows/request-catalog-enrichment.yml",
+    display_title: "Enrichment request all-automatic batch20 concurrency2",
+    event: "workflow_dispatch",
+    head_branch: "main",
+    head_sha: "a".repeat(40),
+    actor: { id: 2625904, type: "User" },
+    repository: { id: 1309605115, full_name: repository },
+    head_repository: { id: 1309605115, full_name: repository },
+    status: "completed",
+    conclusion: "success",
+  };
+  const gh = vi.fn(async () => JSON.stringify(run));
+  const write = vi.fn();
+  expect(
+    await runPreparedWakeCli({
+      env: {
+        GITHUB_REPOSITORY: repository,
+        GITHUB_REF: "refs/heads/main",
+        GITHUB_EVENT_NAME: "workflow_run",
+        GITHUB_WORKFLOW_REF: `${repository}/.github/workflows/automation-prepared.yml@refs/heads/main`,
+        TAVERNARY_PUBLISHER_BOT_ID: "900",
+      },
+      runId: 987,
+      gh,
+      write,
+    }),
+  ).toBe(0);
+  expect(gh).toHaveBeenCalledWith([
+    "workflow",
+    "run",
+    "automation-writer.yml",
+    "--repo",
+    repository,
+    "--ref",
+    "main",
+    "-f",
+    "mode=enrichment-request",
+    "-f",
+    "result_run_id=987",
+  ]);
+  expect(write).toHaveBeenCalledWith(
+    JSON.stringify({
+      status: "dispatched",
+      mode: "enrichment-request",
+      runId: 987,
+    }),
+  );
+});
 function fixture() {
   const context = preparedResultContextFixture();
   return {

@@ -12,6 +12,31 @@ import {
 
 const now = "2026-07-24T00:00:00.000Z";
 const model = "minimax/minimax-m3:thinking";
+test("source content fingerprints cannot contain source text or malformed digests", () => {
+  const state = applyAttemptResults(
+    createEnrichmentRunState({
+      mode: "full",
+      manifest: ["a"],
+      runId: "digest-proof",
+      now,
+      model,
+    }),
+    [
+      {
+        id: "a",
+        phase: "primary",
+        outcome: "enriched",
+        sourceContentDigest: "b".repeat(64),
+      },
+    ],
+    now,
+  );
+  expect(createEnrichmentReport(state).entries.a.source_content_digest).toBe(
+    "b".repeat(64),
+  );
+  state.entries.a.source_content_digest = "private source body";
+  expect(() => createEnrichmentReport(state)).toThrow("source content digest");
+});
 const privateProviderOutput = {
   summary: "Private submitter wording must never enter the report.",
   result: "accepted-with-light-edits" as const,

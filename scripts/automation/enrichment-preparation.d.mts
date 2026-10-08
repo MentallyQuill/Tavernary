@@ -10,6 +10,7 @@ import type {
   RunCliOptions,
 } from "../catalog/enrich-readmes.mjs";
 import type { ModelBudgetGuard } from "./model-budget.mjs";
+import type { RedditSourceReader } from "../catalog/reddit-enrichment-source.mjs";
 export interface EnrichmentCheckpointInput {
   state: AutomationInventoryState;
   operation: AutomationOperation;
@@ -18,7 +19,7 @@ export type EnrichmentCheckpointObserver = (input: {
   state: AutomationInventoryState;
   project: RegistryRecord;
   source: SourceRecord;
-  snapshot: RepositorySnapshot;
+  snapshot: RepositorySnapshot | undefined;
 }) => Promise<{ source: EnrichmentSource }>;
 export function hasConfirmedEnrichmentCanary(
   state: AutomationInventoryState,
@@ -30,6 +31,7 @@ export function discoverEnrichmentOperations(
 export function enrichmentCheckpointNeedsModel(
   input: EnrichmentCheckpointInput & {
     observe?: EnrichmentCheckpointObserver;
+    readSource?: RedditSourceReader;
     model?: string;
   },
 ): Promise<boolean>;
@@ -40,6 +42,7 @@ export function acquirePreparedEnrichmentData(
       provider?: RunCliOptions["provider"];
       providerConfiguration?: RunCliOptions["providerConfiguration"];
       observe?: EnrichmentCheckpointObserver;
+      readSource?: RedditSourceReader;
       budgetGuard?: () => Promise<ModelBudgetGuard>;
     };
   },
@@ -47,6 +50,7 @@ export function acquirePreparedEnrichmentData(
 export function createPreparedEnrichmentContext(
   input: EnrichmentCheckpointInput & {
     observe?: EnrichmentCheckpointObserver;
+    readSource?: RedditSourceReader;
     validateProject?: (value: unknown) => boolean;
   },
 ): Promise<PreparedCurrentState>;

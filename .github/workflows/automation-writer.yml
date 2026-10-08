@@ -11,6 +11,7 @@ on:
         options:
           [
             reconcile,
+            enrichment-request,
             reconcile-project,
             publish,
             prepare,

@@ -1,0 +1,38 @@
+name: "Catalog maintenance: Request metadata rollout"
+run-name: "Enrichment request ${{ inputs.enrichment_scope }} batch${{ inputs.batch_size }} concurrency${{ inputs.model_concurrency }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      enrichment_scope:
+        description: Frozen selection scope; a running rollout must keep its existing scope.
+        type: choice
+        options: [pending, all-automatic]
+        default: pending
+      batch_size:
+        description: Frozen batch size from 1 through 30; native workers prepare one record at a time.
+        type: number
+        default: 20
+      model_concurrency:
+        description: Frozen concurrency from 1 through 8; native workers stay within shared model allowance.
+        type: number
+        default: 2
+
+permissions:
+  contents: read
+
+jobs:
+  request:
+    if: github.ref == 'refs/heads/main' && github.actor_id == 2625904
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Record owner request for the shared writer
+        env:
+          BATCH_SIZE: ${{ inputs.batch_size }}
+          MODEL_CONCURRENCY: ${{ inputs.model_concurrency }}
+        shell: bash
+        run: |
+          [[ "$BATCH_SIZE" =~ ^[1-9][0-9]?$ && "$BATCH_SIZE" -le 30 ]]
+          [[ "$MODEL_CONCURRENCY" =~ ^[1-8]$ ]]
+          echo "Owner metadata request recorded. The shared writer will admit a durable canary and preserve any running full rollout."
