@@ -1071,3 +1071,32 @@ The allowance regression was observed failing before the fix. Three focused
 provider/CLI/budget suites passed 116 checks; the checkpoint suite passed 34.
 Types, scoped lint and whitespace checks passed. Native production routing,
 authenticated confirmation and automatic resumption remain required.
+
+### npm dependency maintenance checkpoint
+
+The existing writer now reserves at most one dependency-maintenance slot within
+the twenty-operation pass when its authenticated inventory contains Dependabot
+PRs. It selects up to twenty oldest bot PRs from that inventory, so older owner
+PRs do not hide candidates. It never executes PR code with Publisher credentials.
+Native Git reads require regular manifest/lockfile blobs, bounded content and
+registry provenance. Script, local-package, range-policy and coupled-version
+changes outside the allowed transaction stay manual. Actual numeric Dependabot
+custody, allowlisted patch/minor versions, a current base and both trusted
+exact-head CI jobs are required. Main and the PR head are read again before the
+head-bound GitHub merge request. A stale base with successful checks requests a
+branch update and another CI run; failed checks do not repeatedly update it.
+The existing deployment controller owns subsequent build and public confirmation.
+Missing or rolled-back current production proof prevents another automatic update.
+
+Next.js/ESLint, React/DOM/types and other tooling now have version-update groups.
+Security grouping uses GitHub's separate `applies-to: security-updates` option
+([official documentation](https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configure-security-updates)).
+Major and policy-changing updates remain owner decisions. This checkpoint does
+not claim automatic Actions-pin maintenance, deduplicated maintenance incidents,
+live dependency publication or overall Task 1 completion.
+
+Evidence: missing native adapter, unsafe major eligibility and failed-CI branch
+churn were observed failing, then passing. Four focused suites passed 29 checks,
+including native Git/CI/merge transport, denied production state, forged custody,
+stale checks and exhausted operation allowance. Types and focused lint passed.
+The next full CI checkpoint and remaining maintenance scope are still required.

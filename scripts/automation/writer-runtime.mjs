@@ -837,9 +837,16 @@ export async function runAutomationWriterReconciliation({
   });
   if (prepared.consumedKeys.length) state = await load();
   const consumed = new Set(prepared.consumedKeys);
+  const dependencySlot =
+    consumed.size < 20 &&
+    state.remote.pulls.some(
+      (pull) => pull.user?.id === 49699333 && pull.user?.type === "Bot",
+    )
+      ? 1
+      : 0;
   let controller;
   const exitCode = await runReconcileAutomationCli({
-    args: ["--apply", "--limit", String(20 - consumed.size)],
+    args: ["--apply", "--limit", String(20 - consumed.size - dependencySlot)],
     env,
     event: {},
     gh,
@@ -894,5 +901,26 @@ export async function runAutomationWriterReconciliation({
       retention = { status: "unavailable" };
     }
   }
-  return { prepared, controller, retention };
+  let dependencies = { status: "idle" };
+  if (dependencySlot) {
+    try {
+      const { runDependencyWriter } = await import("./dependency-update.mjs");
+      dependencies = await runDependencyWriter({
+        root,
+        env,
+        gh,
+        availableSlots: dependencySlot,
+        pullNumbers: state.remote.pulls
+          .filter(
+            (pull) => pull.user?.id === 49699333 && pull.user?.type === "Bot",
+          )
+          .sort((left, right) => left.number - right.number)
+          .slice(0, 20)
+          .map((pull) => pull.number),
+      });
+    } catch {
+      dependencies = { status: "unavailable" };
+    }
+  }
+  return { prepared, controller, retention, dependencies };
 }
