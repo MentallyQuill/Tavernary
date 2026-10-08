@@ -7,6 +7,7 @@ export interface InventoryWorkerState {
   runs?: ProjectInventoryRun[];
   publisherActorId?: number;
   defaultBranch?: string;
+  repository?: string;
 }
 export function trustedOperationWorkerRuns(
   input: InventoryWorkerState,

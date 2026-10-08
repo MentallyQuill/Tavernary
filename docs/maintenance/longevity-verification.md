@@ -395,3 +395,27 @@ type checking passed. Four real-Git regression cases cover line endings,
 subsequent updates, detached records, executable data and substituted objects.
 Task 2 migrations, all later phases, independent review, CI, merge and actual
 production verification remain outstanding.
+
+### Shared batches and durable handoff failures (Task 2 still in progress)
+
+The production runtime now sends compatible prepared operations through one
+validated atomic commit, retaining a separate co-committed record per operation.
+Every operation's authority is refreshed at the write boundary. Missing artifacts
+are isolated so a healthy handoff can publish. Failures persist only sanitized
+classification and bounded retry state; repeated unknown failures move to daily
+probes after three attempts. Replayed completions cannot reset a saved delay or
+create heartbeat commits. Superseded artifacts yield to ordinary regeneration.
+
+Authenticated completed preparation releases dispatch waiting for artifact
+inspection. It does not establish publication. Saved artifact failures still
+apply, and foreign producers cannot release a stalled dispatch.
+
+Ruling: share one canonical build/commit for compatible data — this reduces
+repeated inventory reads and generated-catalog writes without broadening any
+operation's path or authority. The cost if wrong is a whole-batch refusal at the
+last authority check, followed by normal reconciliation.
+
+Evidence: the complete unit suite passed 268 files / 3,008 tests; full lint and
+type checking passed. A subsequent test correction directly verifies that a
+foreign source path is rejected while the authorized source can publish. The
+remaining producer/lifecycle migrations and all later phases remain required.

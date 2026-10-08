@@ -16,6 +16,7 @@ export function selectPreparedWakes(input: {
   repository: string;
   publisherActorId: number;
   limit?: number;
+  nowMs?: number;
 }): PreparedWake[];
 export function runPreparedWakeCli(options?: {
   env?: Record<string, string | undefined>;

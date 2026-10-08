@@ -14,10 +14,11 @@ import {
   loadPreparedGithubResult,
   loadPreparedGithubArtifact,
 } from "./prepared-github.mjs";
-import { publishPreparedOperation } from "./prepared-publication.mjs";
+import { publishPreparedOperations } from "./prepared-publication.mjs";
 import { buildPreparedCatalogPublication } from "./publication-build.mjs";
 import { commitCanonicalData } from "./canonical-data.mjs";
 import { reconcilePreparedOperations } from "./prepared-reconciliation.mjs";
+import { persistPreparedFailure } from "./prepared-failure.mjs";
 import { runReconcileAutomationCli } from "./reconcile-cli.mjs";
 import {
   revalidateAutomationOperation,
@@ -258,25 +259,27 @@ export async function downloadPreparedArtifact(args, { run = command } = {}) {
 export async function runPreparedWriterPublication({
   operationKey,
   runId,
+  ...input
+}) {
+  return runPreparedWriterBatch({ ...input, wakes: [{ operationKey, runId }] });
+}
+export async function runPreparedWriterBatch({
+  wakes,
   root = process.cwd(),
   env = process.env,
   gh = executeGh,
 }) {
   const repository = env.GITHUB_REPOSITORY;
   assertCanonicalWriterContext(env, repository);
-  return publishPreparedOperation({
-    operationKey,
-    runId,
-    load: async () => {
-      await synchronizeWriterCheckout({ root, env });
-      return loadAutomationInventory({
-        root,
-        gh,
-        repository,
-        publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
-        nowMs: Date.now(),
-      });
-    },
+  const load = writerInventoryLoader({ root, env, gh });
+  const persist = (receipt) =>
+    persistGithubAutomationReceipt({ gh, repository, receipt });
+  const onFailure = (input) =>
+    persistPreparedFailure({ ...input, load, persist }).then(() => {});
+  return publishPreparedOperations({
+    wakes,
+    load,
+    onFailure,
     context: (state, operation) =>
       createPreparedPublicationContext({ state, operation }),
     loadResult: async ({ operation, currentState, runId }) => {
@@ -304,8 +307,11 @@ export async function runPreparedWriterPublication({
         files: action.files,
         message: "chore(automation): publish validated canonical data",
       }),
-    persist: (receipt) =>
-      persistGithubAutomationReceipt({ gh, repository, receipt }),
+    persist,
+  }).catch(async (error) => {
+    for (const wake of wakes)
+      await onFailure({ operationKey: wake.operationKey, error });
+    throw error;
   });
 }
 export async function runAutomationWriterReconciliation({
@@ -329,6 +335,13 @@ export async function runAutomationWriterReconciliation({
   let state = await load();
   const prepared = await reconcilePreparedOperations({
     state,
+    onFailure: (input) =>
+      persistPreparedFailure({
+        ...input,
+        load,
+        persist: (receipt) =>
+          persistGithubAutomationReceipt({ gh, repository, receipt }),
+      }).then(() => {}),
     hasResult: async (wake) =>
       Boolean(
         await loadPreparedGithubArtifact({
@@ -342,10 +355,9 @@ export async function runAutomationWriterReconciliation({
           allowMissing: true,
         }),
       ),
-    publish: (wake) =>
-      runPreparedWriterPublication({
-        operationKey: wake.operationKey,
-        runId: wake.runId,
+    publish: (wakes) =>
+      runPreparedWriterBatch({
+        wakes,
         root,
         env,
         gh,

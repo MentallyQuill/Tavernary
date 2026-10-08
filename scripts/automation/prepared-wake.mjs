@@ -1,7 +1,10 @@
 import { readFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import { assertTrustedPreparedProducer } from "./prepared-result.mjs";
-import { validateAutomationOperation } from "./operation.mjs";
+import {
+  validateAutomationOperation,
+  selectDueOperations,
+} from "./operation.mjs";
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 
 const kinds = {
@@ -40,12 +43,13 @@ export function selectPreparedWakes({
   repository,
   publisherActorId,
   limit = 20,
+  nowMs = Date.now(),
 }) {
   if (!Number.isSafeInteger(limit) || limit < 0 || limit > 20)
     throw new Error("Prepared wake quota is invalid.");
   operations.forEach(validateAutomationOperation);
   const current = new Map(
-    operations
+    selectDueOperations(operations, { nowMs, limit: 20 })
       .filter(
         (operation) =>
           ![
@@ -54,7 +58,7 @@ export function selectPreparedWakes({
             "deployment-confirmed",
             "finalized",
           ].includes(operation.stage) &&
-          operation.retry?.failure.kind !== "permanent",
+          !["permanent", "superseded"].includes(operation.retry?.failure.kind),
       )
       .map((operation) => [operation.key, operation]),
   );

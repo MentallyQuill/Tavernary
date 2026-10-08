@@ -4,8 +4,12 @@ import type { PreparedWake } from "./prepared-wake.mjs";
 export function reconcilePreparedOperations(input: {
   state: AutomationInventoryState;
   hasResult: (wake: PreparedWake) => Promise<boolean>;
-  publish: (wake: PreparedWake) => Promise<PublicationResult>;
+  publish: (wakes: PreparedWake[]) => Promise<PublicationResult>;
   limit?: number;
+  onFailure?: (input: {
+    operationKey: string;
+    error: unknown;
+  }) => Promise<void>;
 }): Promise<{
   published: number;
   recovered: number;

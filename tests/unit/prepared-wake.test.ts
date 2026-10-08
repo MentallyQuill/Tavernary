@@ -69,6 +69,26 @@ test("missed preparation wakes can be reconstructed from current operations and 
     }),
   ).toEqual([]);
 });
+
+test("completed handoffs cannot bypass persisted backoff or an active worker", () => {
+  const input = fixture();
+  const nowMs = Date.now();
+  for (const operation of [
+    {
+      ...input.operation,
+      nextEligibleAt: new Date(nowMs + 86_400_000).toISOString(),
+    },
+    { ...input.operation, workerRunId: 701 },
+  ])
+    expect(
+      selectPreparedWakes({
+        ...input,
+        operations: [operation],
+        runs: [input.run],
+        nowMs,
+      }),
+    ).toEqual([]);
+});
 test("the completion CLI fetches authoritative run metadata and dispatches only the shared writer", async () => {
   const input = fixture();
   const gh = vi.fn(async (args: string[]) =>

@@ -51,3 +51,9 @@ export function runAutomationWriterReconciliation(input?: {
   env?: Record<string, string | undefined>;
   gh?: GhRunner;
 }): Promise<Record<string, unknown>>;
+export function runPreparedWriterBatch(input: {
+  wakes: { operationKey: string; runId: number }[];
+  root?: string;
+  env?: Record<string, string | undefined>;
+  gh?: GhRunner;
+}): Promise<PublicationResult>;

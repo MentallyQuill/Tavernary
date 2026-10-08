@@ -9,9 +9,7 @@ import type {
 import type { PublicationAction } from "./write-lane.mjs";
 import type { PublicationResult } from "./publish.mjs";
 import type { AutomationReceipt } from "./receipts.mjs";
-export function publishPreparedOperation(input: {
-  operationKey: string;
-  runId: number;
+export interface PreparedPublicationAdapters {
   load: () => Promise<AutomationInventoryState>;
   context: (
     state: AutomationInventoryState,
@@ -32,4 +30,19 @@ export function publishPreparedOperation(input: {
     state: AutomationInventoryState,
   ) => Promise<{ sha: string }>;
   persist: (receipt: AutomationReceipt) => Promise<void>;
-}): Promise<PublicationResult>;
+  onFailure?: (input: {
+    operationKey: string;
+    error: unknown;
+  }) => Promise<void>;
+}
+export function publishPreparedOperation(
+  input: PreparedPublicationAdapters & {
+    operationKey: string;
+    runId: number;
+  },
+): Promise<PublicationResult>;
+export function publishPreparedOperations(
+  input: PreparedPublicationAdapters & {
+    wakes: { operationKey: string; runId: number }[];
+  },
+): Promise<PublicationResult>;

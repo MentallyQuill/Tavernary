@@ -1,6 +1,7 @@
 import { validateAutomationReceipt } from "./receipts.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
 import { planAutomationRetry } from "./retry.mjs";
+import { assertTrustedPreparedProducer } from "./prepared-result.mjs";
 export function trustedOperationWorkerRuns(input, operation) {
   return (input.runs ?? [])
     .filter(
@@ -70,6 +71,48 @@ export function recoverInventoryWorker(operation, input, runs) {
     return;
   }
   const receipt = matchingOperationReceipt(input, operation);
+  const prepared = (input.runs ?? [])
+    .filter((candidate) => {
+      if (
+        candidate.display_title !== `Automation prepare ${operation.key}` ||
+        !Number.isFinite(Date.parse(candidate.updated_at ?? "")) ||
+        Date.parse(candidate.created_at ?? "") < Date.parse(operation.createdAt)
+      )
+        return false;
+      try {
+        assertTrustedPreparedProducer({
+          kind: operation.identity.kind,
+          repository: input.repository,
+          publisherActorId: input.publisherActorId,
+          run: candidate,
+        });
+        return true;
+      } catch {
+        return false;
+      }
+    })
+    .sort(
+      (left, right) =>
+        Date.parse(right.updated_at) - Date.parse(left.updated_at) ||
+        right.id - left.id,
+    )[0];
+  if (prepared) {
+    // A completed producer makes its artifact eligible for inspection, never proof of publication.
+    const savedFailure = receipt?.operation.retry;
+    if (
+      savedFailure &&
+      (savedFailure.failure.kind === "permanent" ||
+        Date.parse(receipt.updatedAt) >= Date.parse(prepared.updated_at))
+    ) {
+      operation.retry = savedFailure;
+      operation.nextEligibleAt = receipt.operation.nextEligibleAt;
+    } else {
+      operation.retry = null;
+      operation.nextEligibleAt = null;
+    }
+    operation.workerRunId = null;
+    return;
+  }
   const run = runs.find((candidate) => receiptBindsWorker(candidate, receipt));
   if (!run) {
     if (receipt?.operation.retry) {

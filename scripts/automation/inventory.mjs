@@ -61,7 +61,13 @@ async function records(root, path, required = false) {
 export function discoverAutomationState(state) {
   const { remote, local, receipts, nowMs, publisherActorId, repository } =
     state;
-  const common = { receipts, nowMs, runs: remote.runs, publisherActorId };
+  const common = {
+    receipts,
+    nowMs,
+    runs: remote.runs,
+    publisherActorId,
+    repository,
+  };
   const confirmedRevisions = local.confirmedRevisions ?? [];
   const requestedRevisions = local.deployments
     .filter((record) => record.status === "requested")
