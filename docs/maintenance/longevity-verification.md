@@ -535,3 +535,26 @@ still be synchronized and freshly validated. The cost is one reconciliation
 delay after a trusted code change. The regression first failed and now passes;
 four writer/publication suites passed 22 tests, with type checking and focused
 lint passing. The publication migration remains unfinished.
+
+### Provider outages and bounded immediate retries
+
+Automatic intake can retain a recent verified repository description when the
+provider or its allowance is unavailable. The resulting record remains
+provisional, with empty automatic tags; unsafe, absent or stale facts remain
+pending. Manual field policy and source identity requirements remain enforced.
+Sanitized warnings contain no provider response text. The existing provisional
+and stale UI labels are tested against an actual generated factual record.
+
+Ruling: share three immediate primary attempts across transport and validation
+retry layers — nested loops otherwise multiplied requests beyond the approved
+limit. Older four/five-attempt test expectations were updated to the specified
+three-attempt behavior. The cost is earlier deferral to durable reconciliation.
+Primary and JSON repair requests already reject missing required budget context
+before HTTP; the environment adapter now accepts that mandatory policy flag.
+
+Evidence: the nested retry regression first failed with five calls, then passed
+with three. All 273 unit files / 3,071 tests passed, with full lint and type
+checking passing. Actual intake CLI tests verify zero model HTTP requests when
+required allowance is absent. Producer workflow wiring remains Phase 4 Task 4;
+the publication migration and later phases, review, CI, merge and actual public
+production verification remain outstanding.

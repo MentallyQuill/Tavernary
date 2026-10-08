@@ -2,6 +2,15 @@ import { expect, test } from "vitest";
 
 import { modelProviderOptionsFromEnvironment } from "../../scripts/catalog/model-provider-configuration.mjs";
 
+test("a budget-required workflow cannot silently construct unguarded primary or repair transport", () => {
+  expect(
+    modelProviderOptionsFromEnvironment({
+      TAVERNARY_REQUIRE_MODEL_BUDGET: "true",
+      UTILITY_MODEL: "primary",
+    }),
+  ).toMatchObject({ requireBudget: true });
+});
+
 test("maps UTILITY to primary and TAVERNARY_ENRICHMENT to JSON repair", () => {
   expect(
     modelProviderOptionsFromEnvironment({

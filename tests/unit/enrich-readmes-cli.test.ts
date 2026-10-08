@@ -305,7 +305,7 @@ test.each([
   expect(sleep).toHaveBeenCalledWith(5_000);
 });
 
-test("preflight exhausts four transient attempts with bounded backoff", async () => {
+test("preflight exhausts three transient attempts with bounded backoff", async () => {
   const sleep = vi.fn(async (_milliseconds: number) => {});
   const generate = vi.fn(async () => {
     throw new EnrichmentProviderError("provider-timeout");
@@ -322,9 +322,9 @@ test("preflight exhausts four transient attempts with bounded backoff", async ()
     }),
   ).rejects.toMatchObject({ code: "provider-timeout" });
 
-  expect(generate).toHaveBeenCalledTimes(4);
+  expect(generate).toHaveBeenCalledTimes(3);
   expect(sleep.mock.calls.map(([milliseconds]) => milliseconds)).toEqual([
-    5_000, 15_000, 30_000,
+    5_000, 15_000,
   ]);
 });
 

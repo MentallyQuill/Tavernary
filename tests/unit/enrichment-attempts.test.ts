@@ -41,7 +41,7 @@ test("returns the first valid response within the attempt budget", async () => {
   expect(generate).toHaveBeenCalledTimes(3);
 });
 
-test("returns the fifth invalid response without making a sixth call", async () => {
+test("caps a requested repair loop at three immediate primary calls", async () => {
   const generate = vi.fn(async () => ({
     output: { value: `bad-${generate.mock.calls.length}` },
     metadata: {},
@@ -62,9 +62,9 @@ test("returns the fifth invalid response without making a sixth call", async () 
 
   expect(result.validation).toMatchObject({
     valid: false,
-    errors: ["bad-5"],
+    errors: ["bad-3"],
   });
-  expect(generate).toHaveBeenCalledTimes(5);
+  expect(generate).toHaveBeenCalledTimes(3);
 });
 
 test.each([0, -1, 1.5, Number.NaN])(
@@ -125,7 +125,7 @@ test.each([
   expect(sleep).toHaveBeenCalledWith(5_000);
 });
 
-test("exhausts four transient attempts with bounded backoff", async () => {
+test("exhausts three immediate transient attempts with bounded backoff", async () => {
   const sleep = vi.fn(async (_milliseconds: number) => undefined);
   const generate = vi.fn(async () => {
     throw new EnrichmentProviderError("provider-timeout");
@@ -139,9 +139,9 @@ test("exhausts four transient attempts with bounded backoff", async () => {
     }),
   ).rejects.toMatchObject({ code: "provider-timeout" });
 
-  expect(generate).toHaveBeenCalledTimes(4);
+  expect(generate).toHaveBeenCalledTimes(3);
   expect(sleep.mock.calls.map(([milliseconds]) => milliseconds)).toEqual([
-    5_000, 15_000, 30_000,
+    5_000, 15_000,
   ]);
 });
 

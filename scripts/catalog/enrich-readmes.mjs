@@ -145,17 +145,24 @@ export async function enrichRecord(
   const validationInput = input;
   const validateCandidate = (candidate) =>
     validateOutput(candidate, record, vocabularies, validationInput);
+  let primaryAttempts = 0;
+  const canRetry = () => primaryAttempts < 3;
   const generated = await generateValidatedEnrichment({
     initialInput: input,
     maxAttempts: options.maxProviderAttempts ?? 1,
     generate: (providerInput) =>
       generateWithTransientProviderRetries({
         input: providerInput,
-        generate: (candidate) => provider.generate(candidate),
+        generate: (candidate) => {
+          primaryAttempts += 1;
+          return provider.generate(candidate);
+        },
         sleep: options.sleep,
+        canRetry,
       }),
     validate: validateCandidate,
     repair: validationRepairInput,
+    canRetry,
   });
   let output = generated.output;
   let validation = generated.validation;
@@ -605,7 +612,7 @@ async function processProject(input, id) {
     try {
       const generated = await generateValidatedEnrichment({
         initialInput: providerInput,
-        maxAttempts: phase === "retry" ? 5 : 1,
+        maxAttempts: phase === "retry" ? 3 : 1,
         generate,
         validate: (candidate) =>
           validateOutput(candidate, record, vocabularies, providerInput),

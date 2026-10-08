@@ -7,13 +7,14 @@ export type EnrichmentValidation =
       repairHint?: string;
     };
 
-export const TRANSIENT_PROVIDER_RETRY_DELAYS_MS: readonly [5000, 15000, 30000];
+export const TRANSIENT_PROVIDER_RETRY_DELAYS_MS: readonly [5000, 15000];
 
 export function generateWithTransientProviderRetries<TInput, TOutput>(options: {
   input: TInput;
   generate(input: TInput): Promise<TOutput>;
   sleep?(milliseconds: number): Promise<void>;
   retryDelays?: readonly number[];
+  canRetry?(): boolean;
 }): Promise<TOutput>;
 
 export function generateValidatedEnrichment<
@@ -23,6 +24,7 @@ export function generateValidatedEnrichment<
 >(options: {
   initialInput: TInput;
   maxAttempts?: number;
+  canRetry?(): boolean;
   generate(input: TInput): Promise<{ output: TOutput; metadata: TMetadata }>;
   validate(output: TOutput): EnrichmentValidation;
   repair(

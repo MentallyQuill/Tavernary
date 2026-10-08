@@ -969,6 +969,7 @@ export async function prepareProjectSubmissionDraft({
       copyRequired:
         manualSummaryCopyRequired(manualSummaryCopy) ||
         requestedFields.includes("summary"),
+      allowProvisionalFacts: true,
       now,
     }),
     decision,

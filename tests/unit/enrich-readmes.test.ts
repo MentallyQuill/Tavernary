@@ -879,7 +879,39 @@ test("defaults direct enrichment to one provider call", async () => {
   expect(generate).toHaveBeenCalledOnce();
 });
 
-test("direct intake can succeed on the fifth provider call", async () => {
+test("transport and validation retries share three immediate primary calls", async () => {
+  const generate = vi.fn(async () => {
+    if (generate.mock.calls.length < 3)
+      throw new EnrichmentProviderError("provider-timeout");
+    return {
+      output: {
+        ...outputFor({
+          requestedFields: ["summary", "tags"],
+          allowedTags: vocabularies.tags,
+        }),
+        summary: { value: "Too short.", evidence: ["readme:1-3"] },
+      },
+      metadata: providerMetadata,
+    };
+  });
+  await expect(
+    enrichRecord(
+      record,
+      sourceRecord,
+      snapshot,
+      { generate },
+      {
+        vocabularies,
+        loadSource: async () => readySource(),
+        maxProviderAttempts: 5,
+        sleep: async () => undefined,
+      },
+    ),
+  ).rejects.toMatchObject({ code: "output-invalid" });
+  expect(generate).toHaveBeenCalledTimes(3);
+});
+
+test("direct intake stops before a fifth provider response", async () => {
   const valid = outputFor({
     requestedFields: ["summary", "tags"],
     allowedTags: vocabularies.tags,
@@ -911,11 +943,8 @@ test("direct intake can succeed on the fifth provider call", async () => {
         maxProviderAttempts: 5,
       },
     ),
-  ).resolves.toEqual(valid);
-  expect(generate).toHaveBeenCalledTimes(5);
-  expect(generate.mock.calls[4]?.[0].repair).toMatchObject({
-    rejectedSummary: "Too short 4.",
-  });
+  ).rejects.toMatchObject({ code: "output-invalid" });
+  expect(generate).toHaveBeenCalledTimes(3);
 });
 
 test("falls back to zero tags after malformed tag repairs without failing the summary", async () => {
@@ -1005,14 +1034,14 @@ test("bulk primary uses one provider call for invalid output", async () => {
   expect(generate).toHaveBeenCalledOnce();
 });
 
-test("bulk retry stops on the fifth valid response", async () => {
+test("bulk retry succeeds on the third valid response", async () => {
   const valid = outputFor({
     requestedFields: ["summary", "tags"],
     allowedTags: vocabularies.tags,
   });
   const generate = vi.fn(async () => ({
     output:
-      generate.mock.calls.length === 5
+      generate.mock.calls.length === 3
         ? valid
         : {
             ...valid,
@@ -1045,13 +1074,13 @@ test("bulk retry stops on the fifth valid response", async () => {
 
   expect(result).toMatchObject({
     outcome: "enriched",
-    providerCallCount: 5,
-    providerRepairCallCount: 5,
+    providerCallCount: 3,
+    providerRepairCallCount: 3,
   });
-  expect(generate).toHaveBeenCalledTimes(5);
+  expect(generate).toHaveBeenCalledTimes(3);
 });
 
-test("bulk retry stops after five invalid responses", async () => {
+test("bulk retry stops after three invalid responses", async () => {
   const generate = vi.fn(async () => ({
     output: {
       ...outputFor({
@@ -1088,10 +1117,10 @@ test("bulk retry stops after five invalid responses", async () => {
   expect(result).toMatchObject({
     outcome: "failed",
     reasonCode: "output-invalid",
-    providerCallCount: 5,
-    providerRepairCallCount: 5,
+    providerCallCount: 3,
+    providerRepairCallCount: 3,
   });
-  expect(generate).toHaveBeenCalledTimes(5);
+  expect(generate).toHaveBeenCalledTimes(3);
 });
 
 test("returns ordered isolated outcomes for a mixed batch", async () => {

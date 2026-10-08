@@ -9,7 +9,7 @@ import type {
   ProjectAttemptResult,
 } from "./enrichment-run-state.d.mts";
 
-export const PREFLIGHT_RETRY_DELAYS_MS: readonly [5000, 15000, 30000];
+export const PREFLIGHT_RETRY_DELAYS_MS: readonly [5000, 15000];
 export const MODEL_RATE_LIMIT_BACKOFF_DELAYS_MS: readonly [5000, 15000, 30000];
 
 export type MetadataField = "summary" | "tags";

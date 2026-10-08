@@ -4,7 +4,10 @@ import { join, resolve } from "node:path";
 
 import { expect, test, vi } from "vitest";
 
-import { EnrichmentProviderError } from "../../scripts/catalog/enrichment-provider.mjs";
+import {
+  EnrichmentProviderError,
+  createEnrichmentProvider,
+} from "../../scripts/catalog/enrichment-provider.mjs";
 import {
   parseGenerateProjectSubmissionCli,
   prepareProjectSubmissionDraft,
@@ -90,6 +93,7 @@ function repositorySubmissionFixture({
   metadata,
   enrich,
   copySummary,
+  description = "Repository description.",
 }: {
   user: { id: number; login: string };
   ownerId: number;
@@ -99,6 +103,7 @@ function repositorySubmissionFixture({
   };
   enrich: (input: unknown) => Promise<Record<string, unknown>>;
   copySummary: (input: unknown) => Promise<Record<string, unknown>>;
+  description?: string | null;
 }) {
   const headSha = "b".repeat(40);
   return {
@@ -158,7 +163,7 @@ function repositorySubmissionFixture({
               owner: "Owner",
               name: "Repo",
               url: "https://github.com/Owner/Repo",
-              description: "Repository description.",
+              description,
               defaultBranch: "main",
               headSha,
               headCommittedAt: "2026-07-29T17:00:00.000Z",
@@ -212,6 +217,43 @@ function repositorySubmissionFixture({
     },
   };
 }
+
+test("actual repository intake with no model allowance publishes verified provisional facts and makes zero model HTTP calls", async () => {
+  const fixture = repositorySubmissionFixture({
+    user: { id: 23, login: "Contributor" },
+    ownerId: 11,
+    metadata: { summary: { mode: "automatic" }, tags: { mode: "automatic" } },
+    enrich: async () => {
+      throw new Error("Unused");
+    },
+    copySummary: async () => {
+      throw new Error("Unused");
+    },
+  });
+  const fetchImpl = vi.fn<typeof fetch>();
+  const sourceClients = fixture.sourceClients as Record<string, unknown>;
+  delete sourceClients.enrich;
+  sourceClients.enrichmentProvider = createEnrichmentProvider({
+    apiUrl: "https://provider.example/v1/chat/completions",
+    apiKey: "not-real",
+    model: "approved",
+    fetchImpl,
+    requireBudget: true,
+  });
+  sourceClients.loadEnrichmentSource = async () => ({
+    status: "ready",
+    sourceKind: "readme",
+    sourceIdentity: "github:owner/repo",
+    text: "Repo provides source-grounded tools.",
+    readmeText: "Repo provides source-grounded tools.",
+    repositoryDescription: "Repository description.",
+  });
+  const draft = await prepareProjectSubmissionDraft(fixture);
+  expect(draft.record.summary).toBe("Repository description.");
+  expect(draft.record.metadata_status).toBe("provisional");
+  expect(draft.copyResult).toBeNull();
+  expect(fetchImpl).not.toHaveBeenCalled();
+});
 
 test("parses the generation CLI boundary", () => {
   expect(
@@ -769,6 +811,7 @@ test.each([["http-401"], ["http-403"]] as const)(
           copySummary: vi.fn(async () => {
             throw new Error("Automatic copy must not use manual copy review.");
           }),
+          description: null,
         }),
       ),
     ).rejects.toMatchObject({

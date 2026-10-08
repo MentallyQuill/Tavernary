@@ -90,9 +90,32 @@ function fallbackSummary(input, request) {
 }
 
 function enrichmentWarning(input) {
-  return input.enrichment?.message
-    ? `Automated enrichment failed: ${input.enrichment.message}`
+  return input.allowProvisionalFacts
+    ? "Automatic metadata is pending; verified source facts were retained."
     : "Automated enrichment was unavailable; deterministic provisional metadata was used.";
+}
+
+function verifiedProvisionalSummary(input) {
+  const description = input.observation?.repository?.description;
+  const observedAt = Date.parse(input.snapshot?.refreshed_at ?? "");
+  const now = Date.parse(input.now);
+  if (
+    !input.allowProvisionalFacts ||
+    !isRepositoryIdentity(input.admitted.identity) ||
+    input.snapshot?.source_health !== "healthy" ||
+    input.snapshot?.stale_since !== null ||
+    !Number.isFinite(observedAt) ||
+    !Number.isFinite(now) ||
+    observedAt > now + 300000 ||
+    now - observedAt > 86400000 ||
+    typeof description !== "string" ||
+    description.trim().length === 0 ||
+    input.snapshot.repository.description !== description ||
+    /[\u0000-\u001F\u007F<>`]/u.test(description) ||
+    /https?:\/\/|\[[^\]]*\]\(/iu.test(description)
+  )
+    return null;
+  return boundedSummary(description);
 }
 
 function copyResult(enrichment) {
@@ -242,12 +265,13 @@ export async function draftProjectRecord(input) {
   const request = metadataRequest(input);
   const curated =
     input.enrichment?.status === "curated" ? input.enrichment : null;
+  const factualSummary = verifiedProvisionalSummary(input);
   const summary =
     request.summary.mode === "manual"
       ? boundedSummary(input.publishedSummary ?? request.summary.value)
       : typeof curated?.summary === "string"
         ? curated.summary
-        : fallbackSummary(input, request);
+        : (factualSummary ?? fallbackSummary(input, request));
   const tags =
     request.tags.mode === "manual"
       ? [...request.tags.values]
@@ -260,7 +284,11 @@ export async function draftProjectRecord(input) {
       ? "curated"
       : "provisional";
   const acceptedCopy = acceptedCopyResult(input);
-  if (input.copyRequired && !acceptedCopy) {
+  if (
+    input.copyRequired &&
+    !acceptedCopy &&
+    !(factualSummary && request.summary.mode === "automatic" && !curated)
+  ) {
     const failureReason =
       input.enrichment?.status === "failed" &&
       typeof input.enrichment.message === "string"

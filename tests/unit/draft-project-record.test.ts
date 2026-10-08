@@ -1,103 +1,66 @@
+import {
+  admittedGithubExtension,
+  observation,
+  snapshot,
+} from "../helpers/project-draft";
 import { expect, test } from "vitest";
 
 import { draftProjectRecord } from "../../scripts/submissions/draft-project-record.mjs";
 
-const admittedGithubExtension = {
-  status: "admitted" as const,
-  manifest: {
-    schema_version: 4 as const,
-    project_type: "extension" as const,
-    primary_function: "generation-reasoning",
-    source_url: "https://github.com/Owner/Repo",
-    frontends: { known_ids: ["sillytavern"], other: [] },
-    frontend_independent: false,
-    additional_context: null,
-    metadata: {
-      summary: { mode: "automatic" as const },
-      tags: { mode: "automatic" as const },
+test("verified repository facts produce provisional copy during a model outage without claiming validated model copy", async () => {
+  const result = await draftProjectRecord({
+    admitted: admittedGithubExtension,
+    observation,
+    snapshot,
+    enrichment: {
+      status: "failed",
+      code: "budget-exhausted",
+      message: "untrusted provider text",
     },
-  },
-  identity: {
-    kind: "repository" as const,
-    provider: "github" as const,
-    canonicalUrl: "https://github.com/Owner/Repo",
-    repository: "Owner/Repo",
-    repositoryId: 42,
-    owner: "Owner",
-    name: "Repo",
-  },
-  frontendIds: ["sillytavern"],
-  warnings: [],
-};
+    copyRequired: true,
+    allowProvisionalFacts: true,
+    now: "2026-07-25T18:00:00.000Z",
+  });
+  expect(result.record.summary).toBe(observation.repository.description);
+  expect(result.record.metadata_status).toBe("provisional");
+  expect(result.record.primary_function).toBe(
+    admittedGithubExtension.manifest.primary_function,
+  );
+  expect(result.record.tags).toEqual([]);
+  expect(result.copyResult).toBeNull();
+  expect(JSON.stringify(result.warnings)).not.toContain(
+    "untrusted provider text",
+  );
+});
 
-const observation = {
-  provider: "github" as const,
-  sourceId: "github-42",
-  repository: {
-    id: 42,
-    owner: "Owner",
-    name: "Repo",
-    url: "https://github.com/Owner/Repo",
-    description: "Repository description.",
-    defaultBranch: "main",
-    headSha: "a".repeat(40),
-    headCommittedAt: "2026-07-25T17:00:00.000Z",
-    archived: false,
-    fork: false,
-    parent: null,
-    createdAt: "2026-01-01T00:00:00.000Z",
-    sizeKb: 12,
+test.each([
+  null,
+  "",
+  "<script>unsafe()</script>",
+  "A description with\u0000controls",
+])(
+  "missing or unsafe verified facts remain recoverable pending intake: %s",
+  async (description) => {
+    await expect(
+      draftProjectRecord({
+        admitted: admittedGithubExtension,
+        observation: {
+          ...observation,
+          repository: { ...observation.repository, description },
+        },
+        snapshot,
+        enrichment: {
+          status: "failed",
+          code: "budget-exhausted",
+          message: "unavailable",
+        },
+        copyRequired: true,
+        allowProvisionalFacts: true,
+        now: "2026-07-25T18:00:00.000Z",
+      }),
+    ).rejects.toMatchObject({ code: "budget-exhausted" });
   },
-  community: {
-    starsCount: 3,
-    forksCount: 2,
-    watchersCount: 1,
-  },
-  latestReleaseAt: null,
-  coarseLicenseSpdxId: "MIT",
-};
-
-const snapshot = {
-  schema_version: 4 as const,
-  provider: "github" as const,
-  source_id: "github-42",
-  repository: {
-    id: 42,
-    owner: "Owner",
-    name: "Repo",
-    url: "https://github.com/Owner/Repo",
-    description: "Repository description.",
-    default_branch: "main",
-    head_sha: "a".repeat(40),
-    head_committed_at: "2026-07-25T17:00:00.000Z",
-    archived: false,
-    created_at: "2026-01-01T00:00:00.000Z",
-    size_kb: 12,
-  },
-  source_health: "healthy" as const,
-  activity: {
-    latest_source_activity_at: null,
-    source_weeks: [],
-    provisional_weeks: Array.from({ length: 12 }, () => false),
-    latest_release_at: null,
-    evidence_status: "provisional" as const,
-    baseline_completed_at: null,
-    baseline_attempts: 0,
-  },
-  community: {
-    stars_count: 3,
-    forks_count: 2,
-    watchers_count: 1,
-    aggregate: 6,
-  },
-  license: {
-    status: "osi-approved" as const,
-    spdx_id: "MIT",
-    source_path: "LICENSE",
-  },
-  refreshed_at: "2026-07-25T18:00:00.000Z",
-  stale_since: null,
-};
+);
 
 test("drafts a source-backed GitHub card with permanent identity", async () => {
   const result = await draftProjectRecord({
@@ -487,7 +450,7 @@ test("falls back to repository description when enrichment is unavailable", asyn
     tags: [],
   });
   expect(result.warnings).toContain(
-    "Automated enrichment failed: The enrichment provider timed out.",
+    "Automated enrichment was unavailable; deterministic provisional metadata was used.",
   );
   expect(result.warnings).toContain(
     "The optional classification check was unavailable; the submitted primary function was preserved.",
@@ -846,5 +809,3 @@ test("bounds a repository fallback summary to the project schema limit", async (
 
   expect(result.record.summary.length).toBeLessThanOrEqual(220);
 });
-
-export { admittedGithubExtension, observation, snapshot };
