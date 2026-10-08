@@ -139,7 +139,13 @@ export function createEnrichmentRunState(input: {
   manualExclusions?: ManualEnrichmentExclusion[];
 }): EnrichmentRunState;
 
-export function selectNextRunBatch(state: EnrichmentRunState): {
+export interface EnrichmentCheckpointOptions {
+  checkpointLimit?: number;
+}
+export function selectNextRunBatch(
+  state: EnrichmentRunState,
+  options?: EnrichmentCheckpointOptions,
+): {
   phase: "primary" | "retry";
   projectIds: string[];
   attempt: 1 | 2;
@@ -149,6 +155,7 @@ export function applyAttemptResults(
   state: EnrichmentRunState,
   results: ProjectAttemptResult[],
   now: string,
+  options?: EnrichmentCheckpointOptions,
 ): EnrichmentRunState;
 
 export function recordCheckpointPublication(

@@ -158,12 +158,116 @@ function executionOptions(ids: string[]) {
     providerConfiguration,
     provider: { generate: vi.fn(async (_input: unknown) => providerOutput) },
     loadSource: async (candidate: { id: string }) => sources(candidate.id),
-    writeRecord: vi.fn(async () => {}),
+    writeRecord: vi.fn(async (_record: { id: string }) => {}),
     reportPath: null,
     now,
     runId: "run-1",
   };
 }
+
+test("the real CLI publishes one ordered allowance checkpoint and resumes the frozen twenty-record configuration", async () => {
+  const ids = ["bounded-a", "bounded-b", "bounded-c"];
+  const initial = createEnrichmentRunState({
+    mode: "full",
+    manifest: ids,
+    runId: "bounded-owner",
+    model,
+    now,
+    batchSize: 20,
+    concurrency: 2,
+  });
+  const firstOptions = executionOptions(ids);
+  const first = await runCli({
+    ...firstOptions,
+    mode: "resume",
+    previousReport: initial,
+    checkpointLimit: 1,
+  });
+  expect(firstOptions.provider.generate).toHaveBeenCalledOnce();
+  expect(firstOptions.writeRecord).toHaveBeenCalledOnce();
+  expect(first).toMatchObject({
+    primary_cursor: 1,
+    batch_size: 20,
+    manifest: ids,
+    status: "running",
+  });
+  const secondOptions = executionOptions(ids);
+  const second = await runCli({
+    ...secondOptions,
+    mode: "resume",
+    previousReport: JSON.parse(JSON.stringify(first)),
+    checkpointLimit: 1,
+  });
+  expect(second).toMatchObject({
+    primary_cursor: 2,
+    batch_size: 20,
+    manifest: ids,
+  });
+  expect(secondOptions.writeRecord.mock.calls[0][0]).toMatchObject({
+    id: ids[1],
+  });
+});
+
+test.each(["primary", "retry"] as const)(
+  "allowance exhaustion preserves the pending %s checkpoint without model HTTP or report mutation",
+  async (phase) => {
+    const ids = ["budget-pending"];
+    let previous = createEnrichmentRunState({
+      mode: "full",
+      manifest: ids,
+      runId: "budget-owner",
+      model,
+      now,
+      batchSize: 20,
+      concurrency: 2,
+    });
+    if (phase === "retry")
+      previous = applyAttemptResults(
+        previous,
+        [
+          {
+            id: ids[0],
+            phase: "primary",
+            outcome: "failed",
+            reasonCode: "provider-timeout",
+          },
+        ],
+        now,
+      );
+    const original = JSON.stringify(previous);
+    const options = executionOptions(ids);
+    const writeReport = vi.fn();
+    const transport = vi
+      .spyOn(globalThis, "fetch")
+      .mockRejectedValue(new Error("Unexpected HTTP"));
+    try {
+      await expect(
+        runCli({
+          ...options,
+          mode: "resume",
+          previousReport: previous,
+          checkpointLimit: 1,
+          provider: undefined,
+          requireBudget: true,
+          budgetGuard: {
+            beforeRequest: () => {
+              throw Object.assign(new Error("Allowance exhausted"), {
+                code: "budget-exhausted",
+              });
+            },
+          },
+          writeReport,
+        }),
+      ).rejects.toMatchObject({ code: "budget-exhausted" });
+      expect(transport).not.toHaveBeenCalled();
+      expect(options.writeRecord).not.toHaveBeenCalled();
+      expect(writeReport).not.toHaveBeenCalled();
+      expect(JSON.stringify(previous)).toBe(original);
+    } finally {
+      transport.mockRestore();
+    }
+  },
+);
 
 function awaitingCanary(canaryModel = model) {
   let canary = createEnrichmentRunState({

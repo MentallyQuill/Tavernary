@@ -631,6 +631,7 @@ async function processProject(input, id) {
       providerMetadata = generated.metadata;
       validation = generated.validation;
     } catch (error) {
+      if (error?.code === "budget-exhausted") throw error;
       return {
         id,
         phase,
@@ -836,6 +837,7 @@ export async function runEnrichmentBatch(input) {
       recordRateLimit(result);
       return result;
     } catch (error) {
+      if (error?.code === "budget-exhausted") throw error;
       const result = {
         id,
         phase,
@@ -1333,7 +1335,8 @@ export async function runCli(options = {}) {
     return report;
   }
 
-  const batch = selectNextRunBatch(state);
+  const checkpoint = { checkpointLimit: options.checkpointLimit };
+  const batch = selectNextRunBatch(state, checkpoint);
   const results = await runEnrichmentBatch({
     projectIds: batch.projectIds,
     recordsById: Object.fromEntries(
@@ -1359,7 +1362,7 @@ export async function runCli(options = {}) {
     previousEntries: state.entries,
     force: forceForSelectionMode(state.selection_mode),
   });
-  state = applyAttemptResults(state, results, timestamp);
+  state = applyAttemptResults(state, results, timestamp, checkpoint);
   const report = createEnrichmentReport(state);
   if (options.writeReport) await options.writeReport(report);
   if (reportPath) await writeJsonAtomic(reportPath, report);

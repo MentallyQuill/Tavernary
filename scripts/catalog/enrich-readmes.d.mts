@@ -218,6 +218,7 @@ export function runEnrichmentBatch(options: {
 }): Promise<ProjectAttemptResult[]>;
 
 export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
+  checkpointLimit?: number;
   requireBudget?: boolean;
   budgetGuard?: import("../automation/model-budget.mjs").ModelBudgetGuard;
   providerConfiguration?: {

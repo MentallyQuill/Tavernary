@@ -602,6 +602,24 @@ Nine focused suites passed 153 checks; types and scoped lint passed. This checkp
 the migrated producers; production manual enrichment and all intake/generation
 producers still need their allowance integration before all-provider completion.
 
+### Owner-enrichment allowance checkpoint
+
+The existing frozen enrichment state now accepts an explicit smaller checkpoint
+limit. Both selection and result application require that same limit and exact
+ordered IDs, phase and model. Serialized resumption preserves the manifest,
+selection scope and configured batch size. Existing CLI callers retain their
+previous default batch behavior; the pending native adapter can process one
+bounded step without rewriting a frozen twenty- or thirty-record configuration.
+
+Actual CLI tests also reproduced a budget failure that consumed a primary
+attempt and could end retry work as complete with errors. Budget exhaustion now
+propagates to the automation failure handler without model HTTP, report writes,
+cursor advancement or attempt consumption. Six focused suites passed 172
+checks after watched failing cases for selection and both denial phases; types,
+scoped lint, formatting and whitespace passed.
+Production owner workflow migration and its shared-writer publication/real
+canary confirmation remain required; this checkpoint does not claim that wiring.
+
 ### Native retained-site restore and active public proof
 
 Pages builds now retain the complete verified archive for ninety days. Owner-only
