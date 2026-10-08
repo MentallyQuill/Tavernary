@@ -54,6 +54,8 @@ behavior; none reduces the final goal's scope.
 
 ## Baseline and execution setup
 
+Read-only observations are recorded in [preflight evidence](2026-10-07-longevity-preflight.md). They do not satisfy implementation or completion gates.
+
 - [ ] Confirm user approval of these written plans and selected execution method.
 - [ ] Record `git status`, main SHA, runtime, and original-checkout status.
 - [ ] Install the committed lockfile using `npm ci` in the managed worktree.
