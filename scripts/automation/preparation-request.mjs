@@ -13,13 +13,48 @@ import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 import { synchronizeWithdrawalFeedback } from "./withdrawal-feedback.mjs";
 import { REFRESH_COMPANION_SOURCE_ID } from "./catalog-operations.mjs";
 import { selectRefreshSources } from "../catalog/refresh-repositories.mjs";
+import {
+  isReportNarrativeRetry,
+  reportOperationDigest,
+} from "./report-operations.mjs";
 
 const workflowKinds = {
   "apply-kit-submission.yml": "kit",
   "apply-kit-withdrawal.yml": "withdrawal",
   "review-catalog-policy.yml": "advisory",
   "refresh-catalog.yml": "refresh",
+  "import-tavernkeeper-reports.yml": "report-import",
 };
+export function planReportPreparationRequests({ state, reportDigest }) {
+  if (
+    reportDigest &&
+    (!/^[a-f0-9]{64}$/u.test(reportDigest) ||
+      !state.local.reportIndex?.reports.some(
+        (entry) => entry.report_digest === reportDigest,
+      ))
+  )
+    throw new Error("Report request digest is invalid.");
+  return selectDueOperations(
+    state.operations.filter(
+      (operation) =>
+        operation.identity.kind === "report-import" &&
+        operation.stage === "admitted" &&
+        (reportDigest
+          ? isReportNarrativeRetry(operation) &&
+            reportOperationDigest(operation) === reportDigest
+          : !isReportNarrativeRetry(operation)),
+    ),
+    { nowMs: state.nowMs, limit: 20 },
+  ).map((operation) => ({
+    workflow: isReportNarrativeRetry(operation)
+      ? "automation-writer.yml"
+      : "import-tavernkeeper-reports.yml",
+    inputs: {
+      operation_key: operation.key,
+      ...(isReportNarrativeRetry(operation) ? { mode: "prepare" } : {}),
+    },
+  }));
+}
 export function planRefreshPreparationRequests({
   state,
   mode = "incremental",
@@ -122,7 +157,11 @@ export async function runPreparationRequestCli(options = {}) {
       throw new Error("Preparation request workflow is invalid.");
     if (
       env.GITHUB_EVENT_NAME === "schedule" &&
-      !["review-catalog-policy.yml", "refresh-catalog.yml"].includes(workflow)
+      ![
+        "review-catalog-policy.yml",
+        "refresh-catalog.yml",
+        "import-tavernkeeper-reports.yml",
+      ].includes(workflow)
     )
       throw new Error("Scheduled request workflow is invalid.");
     const state = await (
@@ -137,12 +176,30 @@ export async function runPreparationRequestCli(options = {}) {
         }))
     )();
     const requestRunId = Number(env.GITHUB_RUN_ID);
-    if (Number.isSafeInteger(requestRunId) && requestRunId > 0) {
+    if (
+      workflow !== "import-tavernkeeper-reports.yml" &&
+      Number.isSafeInteger(requestRunId) &&
+      requestRunId > 0
+    ) {
       state.remote = {
         ...state.remote,
         runs: state.remote.runs.filter((run) => run.id !== requestRunId),
       };
       state.operations = discoverAutomationState(state);
+    }
+    if (workflow === "import-tavernkeeper-reports.yml") {
+      const reportDigest = event.inputs?.retry_report_digest;
+      if (
+        reportDigest &&
+        (env.GITHUB_EVENT_NAME !== "workflow_dispatch" ||
+          env.GITHUB_ACTOR_ID !== "2625904")
+      )
+        throw new Error("Narrative retry requires current owner authority.");
+      const requests = planReportPreparationRequests({ state, reportDigest });
+      if (env.GITHUB_OUTPUT)
+        await appendFile(env.GITHUB_OUTPUT, `requests=${requests.length}\n`);
+      write(JSON.stringify(requests));
+      return 0;
     }
     if (workflow === "review-catalog-policy.yml") {
       if (

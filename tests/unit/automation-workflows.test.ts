@@ -156,5 +156,8 @@ test("reconciled report imports prepare pinned data with read-only credentials a
   expect(prepared).toContain("catalog-preparation-cli.mjs");
   expect(prepared).not.toContain("permission-contents: write");
   expect(prepared).not.toContain("git push");
-  expect(prepared).not.toContain("UTILITY_API_KEY");
+  expect(prepared).toContain(
+    "inputs.budget_ticket != '' && secrets.UTILITY_API_KEY || ''",
+  );
+  expect(prepared).toContain('TAVERNARY_REQUIRE_MODEL_BUDGET: "true"');
 });

@@ -1,4 +1,9 @@
 export function modelProviderOptionsFromEnvironment(environment = process.env) {
+  const jsonRepair = {
+    apiUrl: environment.TAVERNARY_ENRICHMENT_API_URL,
+    apiKey: environment.TAVERNARY_ENRICHMENT_API_KEY,
+    model: environment.TAVERNARY_ENRICHMENT_MODEL,
+  };
   return {
     apiUrl: environment.UTILITY_API_ENDPOINT,
     apiKey: environment.UTILITY_API_KEY,
@@ -9,10 +14,6 @@ export function modelProviderOptionsFromEnvironment(environment = process.env) {
     ...(environment.UTILITY_REASONING_EFFORT
       ? { reasoningEffort: environment.UTILITY_REASONING_EFFORT }
       : {}),
-    jsonRepair: {
-      apiUrl: environment.TAVERNARY_ENRICHMENT_API_URL,
-      apiKey: environment.TAVERNARY_ENRICHMENT_API_KEY,
-      model: environment.TAVERNARY_ENRICHMENT_MODEL,
-    },
+    ...(Object.values(jsonRepair).some(Boolean) ? { jsonRepair } : {}),
   };
 }

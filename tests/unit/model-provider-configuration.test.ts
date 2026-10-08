@@ -41,7 +41,7 @@ test("does not silently reverse primary and repair providers", () => {
   });
 
   expect(options.model).toBe("utility-model");
-  expect(options.jsonRepair.model).toBe("repair-model");
+  expect(options.jsonRepair?.model).toBe("repair-model");
 });
 
 test("maps optional primary reasoning effort without changing repair settings", () => {
@@ -52,7 +52,9 @@ test("maps optional primary reasoning effort without changing repair settings", 
     modelProviderOptionsFromEnvironment({ UTILITY_REASONING_EFFORT: "" }),
   ).not.toHaveProperty("reasoningEffort");
   expect(
-    modelProviderOptionsFromEnvironment({ UTILITY_REASONING_EFFORT: "low" })
-      .jsonRepair,
+    modelProviderOptionsFromEnvironment({
+      UTILITY_REASONING_EFFORT: "low",
+      TAVERNARY_ENRICHMENT_MODEL: "repair",
+    }).jsonRepair,
   ).not.toHaveProperty("reasoningEffort");
 });

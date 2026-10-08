@@ -23,6 +23,12 @@ import { createPolicyEvidenceFingerprint } from "../moderation/catalog-policy-re
 import { renderCatalogPolicyReviewIssue } from "../moderation/catalog-policy-review-notice.mjs";
 import { effectiveListingState } from "../../src/features/catalog/listing-state.mjs";
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
+import { reportOperationDigest } from "./report-operations.mjs";
+import {
+  validateTavernKeeperImportState,
+  reportSynthesisIncidentKey,
+} from "../security/tavernkeeper-import-state.mjs";
+import { TAVERNKEEPER_SYNTHESIS_POLICY_VERSION } from "../security/tavernkeeper-assessment-contract.mjs";
 
 const advisoryAjv = new Ajv({ strict: false });
 advisoryAjv.addFormat(
@@ -554,6 +560,110 @@ async function advisoryProjection({ operation, gh, load, commit }) {
     ? complete()
     : waiting();
 }
+function reportIncidentData(state, digest) {
+  const quarantine = validateTavernKeeperImportState(
+    state.local.importState,
+  ).quarantines.find(
+    (entry) =>
+      entry.report_digest === digest &&
+      entry.synthesis_policy_version === TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
+  );
+  const indexed = state.local.reportIndex.reports.find(
+    (entry) => entry.report_digest === digest,
+  );
+  const source = state.local.sources.find(
+    (entry) => entry.id === indexed?.source_id,
+  );
+  return quarantine &&
+    indexed &&
+    source?.status === "active" &&
+    source.type === "github" &&
+    source.repository_id === quarantine.repository_id &&
+    indexed.repository_id === quarantine.repository_id &&
+    indexed.target_sha === quarantine.target_sha
+    ? quarantine
+    : null;
+}
+async function reportProjection({ operation, gh, load }) {
+  const state = await load();
+  if (!currentOperation(state, operation)) return superseded();
+  if (!Array.isArray(state.local.reportIndex?.reports)) return waiting();
+  const digest = reportOperationDigest(operation);
+  const active = reportIncidentData(state, digest);
+  const marker = `Report incident key: \`${reportSynthesisIncidentKey(digest, TAVERNKEEPER_SYNTHESIS_POLICY_VERSION)}\``;
+  const binds = (notice) =>
+    positive(notice?.number) &&
+    !notice.pull_request &&
+    owned(notice, state.publisherActorId) &&
+    typeof notice.body === "string" &&
+    notice.body.includes(marker) &&
+    notice.title === "[tavernkeeper-import] narrative enrichment fallback" &&
+    Array.isArray(notice.labels) &&
+    labels(notice).includes("tavernkeeper-import");
+  const notices = (
+    await pages(gh, "issues?state=all&labels=tavernkeeper-import")
+  )
+    .filter(binds)
+    .sort((left, right) => left.number - right.number);
+  const unchanged = async () => {
+    const fresh = await load();
+    return (
+      currentOperation(fresh, operation) &&
+      Array.isArray(fresh.local.reportIndex?.reports) &&
+      fingerprintProjectPublicationInput(reportIncidentData(fresh, digest)) ===
+        fingerprintProjectPublicationInput(active)
+    );
+  };
+  if (!active) {
+    for (const notice of notices) {
+      const current = await issue(gh, notice.number);
+      if (
+        !binds(current) ||
+        !sameIssue(current, notice) ||
+        humanDecision(current)
+      )
+        continue;
+      if (!(await unchanged())) return superseded();
+      if (current.state !== "closed") {
+        await api(gh, `issues/${current.number}`, "PATCH", {
+          state: "closed",
+          state_reason: "completed",
+        });
+        const after = await issue(gh, current.number);
+        if (
+          !binds(after) ||
+          !sameIssue(after, current) ||
+          after.state !== "closed"
+        )
+          return waiting();
+      }
+    }
+    return complete();
+  }
+  let notice = notices[0];
+  if (!notice) {
+    await ensureLabel(gh, "tavernkeeper-import");
+    if (!(await unchanged())) return superseded();
+    notice = await api(gh, "issues", "POST", {
+      title: "[tavernkeeper-import] narrative enrichment fallback",
+      labels: ["tavernkeeper-import"],
+      body: `Optional narrative enrichment is pending. The verified deterministic assessment remains published.\n\n${marker}\nRepository: \`${active.repository}\`\nRepository ID: \`${active.repository_id}\`\nTarget commit: \`${active.target_sha}\`\nReport digest: \`${digest}\`\nSynthesis policy: \`${active.synthesis_policy_version}\`\nDiagnostic: \`${active.diagnostic}\`\nAttempts: \`${active.attempts}\``,
+    });
+    if (!binds(notice))
+      throw new Error("Report incident creation is unconfirmed.");
+  }
+  const current = await issue(gh, notice.number);
+  if (!binds(current) || !sameIssue(current, notice)) return superseded();
+  if (humanDecision(current)) return complete();
+  if (!(await unchanged())) return superseded();
+  if (current.state === "closed") {
+    await api(gh, `issues/${current.number}`, "PATCH", { state: "open" });
+    const after = await issue(gh, current.number);
+    if (!binds(after) || !sameIssue(after, current) || after.state !== "open")
+      return waiting();
+  }
+  return complete();
+}
 export async function projectAutomationLifecycle(input) {
   const { operation, state } = input;
   validateAutomationOperation(operation);
@@ -565,15 +675,13 @@ export async function projectAutomationLifecycle(input) {
   )
     return advisoryProjection(input);
   if (operation.stage !== "deployment-confirmed") return waiting();
+  if (operation.identity.kind === "report-import")
+    return reportProjection(input);
   if (["kit", "withdrawal"].includes(operation.identity.kind))
     return kitProjection(input);
   if (["project", "owner-request"].includes(operation.identity.kind))
     return projectProjection(input);
-  if (
-    ["deployment", "refresh", "metadata", "report-import"].includes(
-      operation.identity.kind,
-    )
-  )
+  if (["deployment", "refresh", "metadata"].includes(operation.identity.kind))
     return complete();
   throw new Error("Lifecycle kind is unsupported.");
 }

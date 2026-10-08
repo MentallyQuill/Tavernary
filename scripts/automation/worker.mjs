@@ -8,6 +8,7 @@ import {
 import { assertTrustedAutomationContext } from "./github-inventory.mjs";
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
+import { isReportNarrativeRetry } from "./report-operations.mjs";
 
 export function planAutomationWorker(operation) {
   validateAutomationOperation(operation);
@@ -82,6 +83,14 @@ export function planAutomationWorker(operation) {
   if (operation.identity.kind === "advisory" && operation.stage === "validated")
     return dispatch("automation-writer.yml", {
       mode: "advisory-notice",
+      operation_key: operation.key,
+    });
+  if (
+    operation.identity.kind === "report-import" &&
+    isReportNarrativeRetry(operation)
+  )
+    return dispatch("automation-writer.yml", {
+      mode: "prepare",
       operation_key: operation.key,
     });
   if (operation.identity.kind === "report-import")

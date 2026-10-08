@@ -22,3 +22,5 @@ export interface ReportInventoryInput extends InventoryWorkerState {
 export function discoverReportOperations(
   input: ReportInventoryInput,
 ): AutomationOperation[];
+export function reportOperationDigest(operation: AutomationOperation): string;
+export function isReportNarrativeRetry(operation: AutomationOperation): boolean;

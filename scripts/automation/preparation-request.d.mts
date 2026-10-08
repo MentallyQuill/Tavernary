@@ -1,4 +1,11 @@
 import type { AutomationInventoryState } from "./inventory.mjs";
+export function planReportPreparationRequests(input: {
+  state: AutomationInventoryState;
+  reportDigest?: string;
+}): Array<{
+  workflow: "automation-writer.yml" | "import-tavernkeeper-reports.yml";
+  inputs: { operation_key: string; mode?: "prepare" };
+}>;
 export function planRefreshPreparationRequests(input: {
   state: AutomationInventoryState;
   mode?: "incremental" | "baseline" | "project" | "forensic";

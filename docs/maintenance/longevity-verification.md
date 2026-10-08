@@ -25,12 +25,11 @@ attached PRs, required checks, independent review, merge, and production proof.
 
 Current delivery: [draft PR #818](https://github.com/MentallyQuill/Tavernary/pull/818)
 is attached. Both required `verify` and `visual` checks passed on head
-`cb595e2521d66a00b7ed640483de49b0a9bb670d`. The next batch adds focused content
-deployment checks and the refresh writer migration. Those earlier CI results
-do not validate the next head.
+`ddf0035da85d5d69fd691219d75f1467fb4823bc`, including focused content deployment
+checks and the refresh writer migration. The next batch migrates report import;
+the earlier CI results do not validate that batch.
 
-Remaining implementation: report import/incidents and optional narrative,
-manual enrichment/checkpoints, identity backfill/verification serialization,
+Remaining implementation: manual enrichment/checkpoints, identity backfill/verification serialization,
 fork-dependent recovery, complete provider-budget coverage, and Phase 5
 dependency/runtime/health/retention/drill/runbook work. End-to-end canary,
 independent review, final CI, merge and production verification remain required.
@@ -54,7 +53,7 @@ independent review, final CI, merge and production verification remain required.
 | R15 | Verified supported-runtime policy                     | Pending                                                                                                                 |
 | R16 | Safe bounded retention                                | Pending                                                                                                                 |
 | R17 | Owner runbook                                         | Pending                                                                                                                 |
-| R18 | Attached PRs, CI, review, merge, production proof     | Draft PR #818 attached; verify/visual passed cb595e252; current head, independent review, merge and production pending  |
+| R18 | Attached PRs, CI, review, merge, production proof     | Draft PR #818 attached; verify/visual passed ddf0035da; next head, independent review, merge and production pending     |
 
 ## Rulings and task outcomes
 
@@ -974,3 +973,45 @@ Git fixtures and jsdom instances exhausted host resources. Keep behavioral
 assertions and timeout deadlines. Cost: a slower full suite on machines capable
 of higher concurrency, in exchange for predictable integration checks. Content
 deployments continue to run their smaller focused suite.
+
+### Report writer migration
+
+Report requests now select up to twenty current immutable preparations after
+installing dependencies, then obtain an actions-only dispatch token. Pinned
+read-only workers prepare report data; the shared writer owns canonical
+publication and confirmed-deployment incident finalization. Direct rebase/push,
+Pages dispatch and recursive importer chains are removed.
+
+Ruling: publish missing verified assessment facts independently from optional
+narrative quarantine — provider failures must not delay deterministic policy
+output. An owner retry is bound to the current report, synthesis policy and
+authenticated numeric owner request. Saved receipts retain the request-run
+identity for lookup after it leaves recent workflow inventory. Cost: a removed
+request run requires an owner to request the optional retry again.
+
+Narrative preparation uses the existing global model reservation and verified
+primary/repair transport. An invalid producer ticket makes zero model HTTP
+requests and retains deterministic risk. Successful narrative output still
+passes the existing evidence floor, source identity and report validators.
+Wholly absent repair configuration is optional; partially configured repair
+settings retain strict validation. The existing TavernKeeper integration actor
+may request factual imports, while narrative retries require the owner.
+
+Report incidents use current canonical quarantine evidence and numeric bot
+custody. Lost creation responses recover the existing issue; unchanged replays
+add no comments. Explicit owner dismissal is preserved, and resolution touches
+only owned notices. Missing current report-index observation waits instead of
+claiming resolution. The existing ten-page lifecycle lookup bound remains;
+retention and high-volume integration must address accumulating resolved issue
+history before whole-goal completion.
+
+Evidence: owner retry reconstruction, lost incident creation and missing facts
+behind quarantine were observed failing, then passing. Nine targeted suites
+passed 228 checks; types passed. Native ticket checks demonstrate zero HTTP
+requests for invalid custody and one for valid allowance, while deterministic
+high-risk output remains unchanged. The complete report integration gate
+passed: all 307 files / 3,267 tests in 152.10 seconds, formatting, lint,
+palette/catalog/report validation, types, production build and static export
+verification. The saved owner-intent adapter regression also passed after a
+thirty-day gap. Later migrations, maintenance, review, merge and production
+remain required.

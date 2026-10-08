@@ -284,7 +284,8 @@ test("limits every main publisher to the protected Publisher App", async () => {
           !(
             name.startsWith("apply-kit-") ||
             name === "review-catalog-policy" ||
-            name === "refresh-catalog"
+            name === "refresh-catalog" ||
+            name === "import-tavernkeeper-reports"
           ),
       )
       .sort(),
@@ -333,7 +334,8 @@ test("limits every main publisher to the protected Publisher App", async () => {
         "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
         ...(name.startsWith("apply-kit-") ||
         name === "review-catalog-policy" ||
-        name === "refresh-catalog"
+        name === "refresh-catalog" ||
+        name === "import-tavernkeeper-reports"
           ? { "permission-actions": "write" }
           : { "permission-contents": "write" }),
       },
@@ -341,14 +343,16 @@ test("limits every main publisher to the protected Publisher App", async () => {
     if (
       name.startsWith("apply-kit-") ||
       name === "review-catalog-policy" ||
-      name === "refresh-catalog"
+      name === "refresh-catalog" ||
+      name === "import-tavernkeeper-reports"
     )
       expect(publisherToken?.with?.["permission-contents"]).toBeUndefined();
     if (
       name === "automation-writer" ||
       name.startsWith("apply-kit-") ||
       name === "review-catalog-policy" ||
-      name === "refresh-catalog"
+      name === "refresh-catalog" ||
+      name === "import-tavernkeeper-reports"
     ) {
       expect(checkout?.with).toMatchObject({
         ref: "main",
@@ -475,7 +479,8 @@ test("uses the Publisher App identity for every protected workflow dispatch", as
       "apply-kit-submission.yml:publish->apply-kit-submission.yml",
       "apply-kit-withdrawal.yml:withdraw->apply-kit-withdrawal.yml",
       "automation-prepared.yml:wake->automation-writer.yml",
-      "import-tavernkeeper-reports.yml:continue->import-tavernkeeper-reports.yml",
+      "import-tavernkeeper-reports.yml:import->import-tavernkeeper-reports.yml",
+      "import-tavernkeeper-reports.yml:import->automation-writer.yml",
       "publish-project-transaction.yml:publish->review-catalog-policy.yml",
       "reconcile-automation.yml:reconcile->automation-writer.yml",
       "refresh-catalog.yml:refresh->refresh-catalog.yml",
@@ -984,104 +989,57 @@ test("deploys only a verified static export to the Pages environment", async () 
   );
 });
 
-test("reconciles reports independently and wakes TavernKeeper only after a changed public deployment", async () => {
+test("report preparation remains independent while TavernKeeper wakes after a changed public deployment", async () => {
   const reportImport = await workflow("import-tavernkeeper-reports");
   const deploy = await workflow("deploy-pages");
   const deploySource = await readFile(
     resolve(workflowDirectory, "deploy-pages.yml"),
     "utf8",
   );
-  const importSource = await readFile(
-    resolve(workflowDirectory, "import-tavernkeeper-reports.yml"),
-    "utf8",
-  );
   const wakeSteps = deploy.jobs["wake-tavernkeeper"].steps as Array<{
     name?: string;
     if?: string;
     run?: string;
+    "continue-on-error"?: boolean;
   }>;
   const wake = wakeSteps.find(
     (step) => step.name === "Wake TavernKeeper reconciliation (best effort)",
   );
   const token = wakeSteps.find(
     (step) => step.name === "Create destination-only TavernKeeper token",
-  ) as { "continue-on-error"?: boolean } | undefined;
-  const reportImportSteps = reportImport.jobs.import.steps as Array<{
-    name?: string;
-    env?: Record<string, string>;
-    run?: string;
-    "continue-on-error"?: boolean;
-  }>;
-  const synthesisStep = reportImportSteps.find(
-    (step) =>
-      step.name === "Import and synthesize validated TavernKeeper reports",
   );
-  const incidentStep = reportImportSteps.find(
-    (step) => step.name === "Reconcile report synthesis incidents",
-  );
-
   expect(reportImport.on.schedule).toEqual([{ cron: "41 */6 * * *" }]);
   expect(
     reportImport.on.workflow_dispatch.inputs.retry_report_digest,
   ).toMatchObject({ required: false, type: "string" });
-  expect(reportImport.permissions).toEqual({
-    actions: "write",
-    contents: "read",
-    issues: "write",
+  expect(reportImport.on.workflow_dispatch.inputs.budget_ticket).toMatchObject({
+    required: false,
+    type: "string",
   });
+  expect(reportImport.permissions).toEqual({
+    contents: "read",
+    actions: "read",
+    issues: "read",
+  });
+  expect(
+    reportImport.jobs.import.steps.some(exposesModelProviderEnvironment),
+  ).toBe(false);
+  expect(reportImport.jobs.prepare["timeout-minutes"]).toBe(45);
+  const producer = reportImport.jobs.prepare.steps.find(
+    (step: WorkflowStep) => step.id === "prepare",
+  );
+  expect(producer.env.TAVERNARY_REQUIRE_MODEL_BUDGET).toBe("true");
+  for (const key of modelProviderEnvironmentKeys.filter(
+    (key) => key !== "UTILITY_REASONING_EFFORT",
+  )) {
+    expect(producer.env[key]).toBe(
+      "${{ inputs.budget_ticket != '' && secrets." + key + " || '' }}",
+    );
+  }
   expect(deploy.jobs["wake-tavernkeeper"].needs).toEqual(["build", "deploy"]);
   expect(deploy.jobs["wake-tavernkeeper"].permissions).toEqual({
     contents: "read",
   });
-  expect(importSource).toContain("security:import-reports");
-  expect(importSource).toContain("tavernkeeper-import-state.json");
-  expect(reportImport.jobs.import.outputs).toMatchObject({
-    remaining: "${{ steps.import.outputs.remaining }}",
-    quarantined: "${{ steps.import.outputs.quarantined }}",
-  });
-  expect(reportImport.jobs.deploy.needs).toBe("import");
-  expect(reportImport.jobs.continue.needs).toBe("import");
-  expect(reportImport.jobs.continue.if).toContain(
-    "needs.import.outputs.remaining != '0'",
-  );
-  expect(reportImport.jobs.continue.if).toContain(
-    "inputs.retry_report_digest == ''",
-  );
-  expect(JSON.stringify(reportImport.jobs.continue)).not.toContain(
-    "needs.deploy",
-  );
-  expect(synthesisStep?.env).toEqual({
-    ...modelProviderEnvironment,
-    TAVERNARY_RETRY_REPORT_DIGEST: "${{ inputs.retry_report_digest || '' }}",
-  });
-  for (const output of [
-    "imported",
-    "retained",
-    "quarantined",
-    "skipped_quarantines",
-    "remaining",
-  ]) {
-    expect(synthesisStep?.run).toContain(
-      `.${output} | select(type == "number")`,
-    );
-  }
-  expect(synthesisStep?.run).toContain(".created_or_updated");
-  expect(synthesisStep?.run).toContain(".resolved");
-  expect(synthesisStep?.run).not.toContain('type == \\"number\\"');
-  expect(incidentStep?.run).toContain("incident_key");
-  expect(incidentStep?.run).toContain("Report incident key:");
-  expect(incidentStep?.run).toContain("narrative enrichment fallback");
-  expect(incidentStep?.run).not.toContain("report synthesis quarantined");
-  expect(incidentStep?.run).not.toContain("diagnostic in:body");
-  expect(incidentStep?.["continue-on-error"]).toBe(true);
-  expect(
-    reportImportSteps
-      .filter((step) => step !== synthesisStep)
-      .some(exposesModelProviderEnvironment),
-  ).toBe(false);
-  expect(importSource).toContain("for attempt in 1 2 3");
-  expect(importSource).toContain("-f source_sha=");
-  expect(importSource).not.toContain("reconcile.yml");
   expect(deploySource).toContain(
     "repos/MentallyQuill/TavernKeeper/actions/workflows/reconcile.yml/dispatches",
   );
@@ -1094,92 +1052,26 @@ test("reconciles reports independently and wakes TavernKeeper only after a chang
   expect(JSON.stringify(deploy)).not.toContain("actions: write");
 });
 
-test("redispatches Pages without gating the next due import", async () => {
+test("report import uses immutable preparation and shared publication instead of a second main writer or deploy chain", async () => {
   const reportImport = await workflow("import-tavernkeeper-reports");
-  const steps = reportImport.jobs.import.steps as Array<{
-    name?: string;
-    id?: string;
-    if?: string;
-    run?: string;
-    env?: Record<string, string>;
-    "continue-on-error"?: boolean;
-  }>;
-  const commit = steps.find(
-    (step) => step.name === "Commit and publish changed summaries",
+  const source = await readFile(
+    resolve(workflowDirectory, "import-tavernkeeper-reports.yml"),
+    "utf8",
   );
-  const deploySteps = reportImport.jobs.deploy.steps as Array<{
-    name?: string;
-    id?: string;
-    if?: string;
-    run?: string;
-    env?: Record<string, string>;
-    "continue-on-error"?: boolean;
-  }>;
-  const deploy = deploySteps.find(
-    (step) => step.name === "Deploy the exact reconciled summary commit",
+  expect(reportImport.jobs.deploy).toBeUndefined();
+  expect(reportImport.jobs.continue).toBeUndefined();
+  expect(source).not.toMatch(/git (?:add|commit|rebase|push)\b/u);
+  expect(source).not.toContain("gh workflow run deploy-pages.yml");
+  expect(source).toContain("node scripts/automation/preparation-request.mjs");
+  expect(source).toContain(
+    "node scripts/automation/catalog-preparation-cli.mjs",
   );
-  const commitSource = commit?.run ?? "";
-  const noDiffStart = commitSource.indexOf(
-    "if git diff --cached --quiet -- data/security/tavernkeeper-report-summaries.json",
-  );
-  const noDiffEnd = commitSource.indexOf("\nfi", noDiffStart);
-  const noDiffSource = commitSource.slice(noDiffStart, noDiffEnd);
-  const rebase = commitSource.indexOf("git rebase origin/main");
-  const validate = commitSource.indexOf("npm run check", rebase);
-  const finalFetch = commitSource.indexOf(
-    "git fetch --no-tags origin main",
-    validate,
-  );
-  const finalRebase = commitSource.indexOf(
-    "git rebase origin/main",
-    rebase + "git rebase origin/main".length,
-  );
-  const catalogValidate = commitSource.indexOf(
-    "npm run catalog:validate",
-    finalRebase,
-  );
-  const reportValidate = commitSource.indexOf(
-    "npm run security:validate-reports",
-    catalogValidate,
-  );
-  const push = commitSource.indexOf(
-    "git push origin HEAD:main",
-    reportValidate,
-  );
-
-  expect(commitSource).toContain(
-    "git add -- data/security/tavernkeeper-report-summaries.json data/security/tavernkeeper-import-state.json public/catalog/tavernary-catalog.json public/catalog/tavernary-catalog-v8.json",
-  );
-  expect(commitSource).toContain(
-    "git diff --cached --quiet -- data/security/tavernkeeper-report-summaries.json data/security/tavernkeeper-import-state.json public/catalog/tavernary-catalog.json public/catalog/tavernary-catalog-v8.json",
-  );
-  expect(noDiffStart).toBeGreaterThanOrEqual(0);
-  expect(noDiffSource).toContain("git fetch --no-tags origin main");
-  expect(noDiffSource).toContain("git merge --ff-only origin/main");
-  expect(noDiffSource).toContain("npm run check");
-  expect(noDiffSource).toContain('echo "sha=$(git rev-parse HEAD)"');
-  expect(commitSource).toContain("for attempt in 1 2 3");
-  expect(rebase).toBeGreaterThanOrEqual(0);
-  expect(rebase).toBeLessThan(validate);
-  expect(validate).toBeLessThan(finalFetch);
-  expect(finalFetch).toBeLessThan(finalRebase);
-  expect(finalRebase).toBeLessThan(catalogValidate);
-  expect(catalogValidate).toBeLessThan(reportValidate);
-  expect(reportValidate).toBeLessThan(push);
-
-  expect(reportImport.jobs.deploy.if).toContain(
-    "needs.import.result == 'success'",
-  );
-  expect(deploy?.env?.SOURCE_SHA).toBe("${{ needs.import.outputs.sha }}");
-  expect(deploy?.run).toContain(
-    'gh workflow run deploy-pages.yml --repo "$GITHUB_REPOSITORY" --ref main',
-  );
-  expect(deploy?.run).toContain('-f source_sha="$SOURCE_SHA"');
-  expect(deploy?.run).not.toContain("gh run watch");
-  expect(deploy?.run).not.toContain("sleep");
-  expect(deploy?.["continue-on-error"]).not.toBe(true);
-  expect(reportImport.jobs.continue.needs).toBe("import");
-  expect(reportImport.jobs.continue.if).not.toContain("needs.deploy");
+  expect(source).toContain("automation-prepared-${{ inputs.operation_key }}");
+  expect(reportImport.concurrency).toEqual({
+    group:
+      "tavernkeeper-report-import-${{ inputs.operation_key || 'request' }}",
+    "cancel-in-progress": false,
+  });
 });
 
 test("daily refresh preserves the existing manual modes and bounded baseline input", async () => {

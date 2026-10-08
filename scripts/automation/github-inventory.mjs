@@ -20,6 +20,17 @@ export function assertTrustedAutomationContext(env, repository, event = {}) {
   )
     throw new Error("Automation apply requires trusted main code.");
   if (env.GITHUB_EVENT_NAME === "schedule") return;
+  // The existing TavernKeeper integration can request factual imports only.
+  if (
+    env.GITHUB_EVENT_NAME === "workflow_dispatch" &&
+    repository === "MentallyQuill/Tavernary" &&
+    env.GITHUB_ACTOR_ID === "311860138" &&
+    env.GITHUB_WORKFLOW_REF ===
+      `${repository}/.github/workflows/import-tavernkeeper-reports.yml@refs/heads/main` &&
+    !event.inputs?.operation_key &&
+    !event.inputs?.retry_report_digest
+  )
+    return;
   if (
     ["workflow_dispatch", "issues"].includes(env.GITHUB_EVENT_NAME) &&
     ["2625904", env.TAVERNARY_PUBLISHER_BOT_ID]
@@ -189,17 +200,31 @@ export async function loadGithubAutomationInventory({
   const runs = new Map([...recent, ...active].map((run) => [run.id, run]));
   for (const receipt of receipts) {
     validateAutomationReceipt(receipt);
-    const id = receipt.operation.workerRunId;
-    if (id === null) continue;
-    try {
-      const run = JSON.parse(await gh(["api", `${root}/actions/runs/${id}`]));
-      if (run.id !== id || typeof run.status !== "string")
-        throw new Error("GitHub returned an invalid saved worker.");
-      runs.set(id, run);
-    } catch (error) {
-      if (githubFailureStatus(error) !== 404) throw error;
-      // A deleted/expired handle is not live; durable retry state still survives.
-      runs.delete(id);
+    const requestId =
+      receipt.operation.identity.kind === "report-import"
+        ? Number(
+            /\.narrative-([1-9]\d*)$/u.exec(
+              receipt.operation.identity.policyVersion,
+            )?.[1],
+          )
+        : null;
+    const ids = new Set(
+      [receipt.operation.workerRunId, requestId].filter(
+        (id) => Number.isSafeInteger(id) && id > 0,
+      ),
+    );
+    for (const id of ids) {
+      if (runs.has(id)) continue;
+      try {
+        const run = JSON.parse(await gh(["api", `${root}/actions/runs/${id}`]));
+        if (run.id !== id || typeof run.status !== "string")
+          throw new Error("GitHub returned an invalid saved worker.");
+        runs.set(id, run);
+      } catch (error) {
+        if (githubFailureStatus(error) !== 404) throw error;
+        // A deleted/expired handle is not live; durable retry state still survives.
+        runs.delete(id);
+      }
     }
   }
   return {

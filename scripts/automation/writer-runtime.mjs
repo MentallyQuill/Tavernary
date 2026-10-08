@@ -13,6 +13,7 @@ import {
   validateModelBudgetState,
 } from "./model-budget.mjs";
 import { reserveModelPreparation } from "./model-preparation.mjs";
+import { isReportNarrativeRetry } from "./report-operations.mjs";
 import {
   dispatchReservedModelPreparation,
   dispatchUnbudgetedPreparation,
@@ -163,10 +164,16 @@ export async function runModelWriterPreparation({
     const workflows = {
       metadata: ".github/workflows/enrich-catalog.yml",
       advisory: ".github/workflows/review-catalog-policy.yml",
+      "report-import": ".github/workflows/import-tavernkeeper-reports.yml",
     };
     const workflow = workflows[operation?.identity.kind];
     if (!operation) return { status: "superseded" };
     if (!workflow) throw new Error("Model preparation kind is invalid.");
+    if (
+      operation.identity.kind === "report-import" &&
+      !isReportNarrativeRetry(operation)
+    )
+      throw new Error("Report facts do not require model preparation.");
     if (
       operation.identity.kind === "metadata" &&
       (await metadataCached({ state: initial, operation }))

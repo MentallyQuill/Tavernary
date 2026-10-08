@@ -1,7 +1,10 @@
 import { isDeepStrictEqual } from "node:util";
 import { canonicalFileDigests } from "./canonical-files.mjs";
 import { validateAutomationOperation } from "./operation.mjs";
-import { discoverReportOperations } from "./report-operations.mjs";
+import {
+  discoverReportOperations,
+  reportOperationDigest,
+} from "./report-operations.mjs";
 import {
   validateReportIndex,
   validateStoredReportIndex,
@@ -37,7 +40,7 @@ export async function createPreparedReportContext({
   validateAutomationOperation(operation);
   if (operation.identity.kind !== "report-import")
     throw new Error("Report publication kind is invalid.");
-  const digest = operation.identity.subject.slice(7);
+  const digest = reportOperationDigest(operation);
   const selected = state.local.reportIndex?.reports.find(
     (entry) => entry.report_digest === digest,
   );
@@ -74,6 +77,9 @@ export async function createPreparedReportContext({
     importedReports: previous.reports,
     receipts: [],
     nowMs: state.nowMs,
+    repository: state.repository,
+    publisherActorId: state.publisherActorId,
+    runs: state.remote.runs,
   });
   if (
     !discovered.some(

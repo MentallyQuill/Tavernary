@@ -17,6 +17,13 @@ import {
 import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
 import scan from "../fixtures/tavernkeeper/scan-report.v5.valid.json";
 import policy5 from "../fixtures/tavernkeeper/scan-report.v5.policy5.valid.json";
+import { quarantineTavernKeeperReport } from "../../scripts/security/tavernkeeper-import-state.mjs";
+import {
+  createModelBudgetState,
+  reserveModelBudget,
+  bindModelBudgetTicket,
+  createModelBudgetGuard,
+} from "../../scripts/automation/model-budget.mjs";
 function dangerFixture() {
   const candidate = structuredClone(policy5.candidates[0]);
   const {
@@ -240,4 +247,176 @@ test("production report acquisition publishes deterministic security data withou
   expect(
     execFileSync("git", ["status", "--porcelain"], { encoding: "utf8" }),
   ).toBe(before);
+});
+
+test("owner report narrative acquisition spends a bound model ticket and preserves deterministic risk when allowance is unavailable", async () => {
+  const input = fixture();
+  const inventory = reportInventoryFixture();
+  const index = validateReportIndex(
+    input.state.local.reportIndex,
+    inventory.registry,
+  );
+  const entry = index.reports[0];
+  input.state.local.storedReports = input.snapshot;
+  input.state.local.importedReports = input.snapshot.reports;
+  const quarantine = quarantineTavernKeeperReport(
+    inventory.importState,
+    entry,
+    TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
+    "budget-exhausted",
+    new Date(input.state.nowMs).toISOString(),
+  );
+  input.state.local.importState = quarantine;
+  input.state.nowMs += 2000;
+  input.state.remote.runs = [
+    {
+      id: 801,
+      path: ".github/workflows/import-tavernkeeper-reports.yml",
+      event: "workflow_dispatch",
+      display_title: `Security: Retry narrative ${entry.report_digest}`,
+      actor: { id: 2625904, type: "User" },
+      head_branch: "main",
+      head_sha: String(input.state.local.revision),
+      head_repository: { full_name: input.state.repository },
+      run_attempt: 1,
+      status: "completed",
+      conclusion: "success",
+      created_at: new Date(input.state.nowMs - 1000).toISOString(),
+      updated_at: new Date(input.state.nowMs).toISOString(),
+    },
+  ];
+  input.operation = discoverReportOperations({
+    reportIndex: index,
+    registry: inventory.registry,
+    importedReports: input.snapshot.reports,
+    importState: quarantine,
+    receipts: [],
+    runs: input.state.remote.runs,
+    repository: input.state.repository,
+    nowMs: input.state.nowMs,
+  })[0];
+  input.state.operations = [input.operation];
+  const reserved = reserveModelBudget(
+    createModelBudgetState(input.state.nowMs),
+    {
+      operationKey: input.operation.key,
+      requestCount: 3,
+      requestedTokens: 180000,
+      model: "approved",
+    },
+    { nowMs: input.state.nowMs },
+  );
+  if (!reserved.allowed)
+    throw new Error("Budget fixture must reserve successfully");
+  const workflow = ".github/workflows/import-tavernkeeper-reports.yml";
+  const budget = bindModelBudgetTicket(reserved.state, reserved.ticket.id, {
+    runId: 901,
+    workflow,
+  });
+  for (const allowed of [false, true]) {
+    let calls = 0;
+    const outputs = await acquirePreparedReportData({
+      ...input,
+      options: {
+        env: {
+          UTILITY_API_ENDPOINT:
+            "https://model.example.test/v1/chat/completions",
+          UTILITY_API_KEY: "test",
+          UTILITY_MODEL: "approved",
+        },
+        budgetGuard: async () =>
+          createModelBudgetGuard({
+            state: budget,
+            ticketIds: [reserved.ticket.id],
+            operationKey: input.operation.key,
+            runId: allowed ? 901 : 902,
+            workflow,
+            runAttempt: 1,
+            nowMs: () => input.state.nowMs,
+          }),
+        dnsLookup: async () => [{ address: "8.8.8.8", family: 4 }],
+        requestImpl: async (url: string) =>
+          new Response(
+            JSON.stringify(
+              url.endsWith("/index.json")
+                ? input.state.local.reportIndex
+                : input.report,
+            ),
+            { headers: { "content-type": "application/json" } },
+          ),
+        providerFetchImpl: async () => {
+          calls++;
+          return new Response(
+            JSON.stringify({
+              model: "approved",
+              choices: [
+                {
+                  message: {
+                    content: JSON.stringify(
+                      buildDeterministicAssessment(input.report),
+                    ),
+                  },
+                },
+              ],
+            }),
+            { headers: { "content-type": "application/json" } },
+          );
+        },
+      },
+    });
+    const summary = JSON.parse(
+      outputs["data/security/tavernkeeper-report-summaries.json"],
+    );
+    expect(calls).toBe(allowed ? 1 : 0);
+    expect(summary.reports[0].assessment_source).toBe(
+      allowed ? "model" : "deterministic_fallback",
+    );
+    expect(summary.reports[0].assessment.risk_level).toBe("high");
+    const context = await createPreparedReportContext(input);
+    for (const [path, content] of Object.entries(outputs))
+      expect(context.validateContent(path, JSON.parse(content))).toBe(true);
+    const state = JSON.parse(
+      outputs["data/security/tavernkeeper-import-state.json"],
+    );
+    expect(state.quarantines).toHaveLength(allowed ? 0 : 1);
+  }
+});
+
+test("a previous optional-provider quarantine cannot prevent publishing missing verified report facts", async () => {
+  const input = fixture();
+  const inventory = reportInventoryFixture();
+  const index = validateReportIndex(
+    input.state.local.reportIndex,
+    inventory.registry,
+  );
+  input.state.local.importState = quarantineTavernKeeperReport(
+    inventory.importState,
+    index.reports[0],
+    TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
+    "provider-authentication-failed",
+    new Date(input.state.nowMs).toISOString(),
+  );
+  const outputs = await acquirePreparedReportData({
+    ...input,
+    options: {
+      dnsLookup: async () => [{ address: "8.8.8.8", family: 4 }],
+      requestImpl: async (url: string) =>
+        new Response(
+          JSON.stringify(url.endsWith("/index.json") ? index : input.report),
+          { headers: { "content-type": "application/json" } },
+        ),
+      budgetGuard: async () => {
+        throw new Error("Factual acquisition must not request model allowance");
+      },
+      providerFetchImpl: async () => {
+        throw new Error("Factual acquisition must not call a model");
+      },
+    },
+  });
+  const summary = JSON.parse(
+    outputs["data/security/tavernkeeper-report-summaries.json"],
+  );
+  expect(summary.reports).toHaveLength(1);
+  expect(summary.reports[0].assessment.risk_level).toBe("high");
+  expect(summary.reports[0].assessment_source).toBe("deterministic_fallback");
 });

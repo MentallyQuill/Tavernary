@@ -322,7 +322,8 @@ export async function reconcileTavernKeeperReports(options = {}) {
     if (retryReportDigest === entry.report_digest) return true;
     if (
       mode === "model" &&
-      currentQuarantine(importState, entry.report_digest) !== undefined
+      currentQuarantine(importState, entry.report_digest) !== undefined &&
+      matchingTrackedEntry(existing.get(entry.report_id), entry)
     ) {
       return false;
     }
@@ -348,7 +349,8 @@ export async function reconcileTavernKeeperReports(options = {}) {
     ({ entry, mode }) =>
       mode === "model" &&
       retryReportDigest !== entry.report_digest &&
-      currentQuarantine(importState, entry.report_digest) !== undefined,
+      currentQuarantine(importState, entry.report_digest) !== undefined &&
+      matchingTrackedEntry(existing.get(entry.report_id), entry),
   ).length;
   const additions = [];
   let imported = 0;
