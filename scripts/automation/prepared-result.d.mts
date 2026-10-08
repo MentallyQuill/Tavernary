@@ -32,6 +32,7 @@ export interface TrustedPreparationRun {
   conclusion: string | null;
 }
 export interface PreparedCurrentState {
+  projectId?: string;
   repository: string;
   mainSha: string;
   source: PreparedResult["source"];
@@ -53,6 +54,12 @@ export interface PreparedResultContext {
   currentState: PreparedCurrentState;
 }
 export const PREPARED_RESULT_SCHEMA: Record<string, unknown>;
+export function assertTrustedPreparedProducer(input: {
+  kind: AutomationKind;
+  repository: string;
+  run: TrustedPreparationRun;
+  publisherActorId: number;
+}): void;
 export function validatePreparedResult(
   result: unknown,
   context: PreparedResultContext,

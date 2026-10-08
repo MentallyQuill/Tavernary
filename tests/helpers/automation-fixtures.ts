@@ -27,6 +27,67 @@ import { validateReportIndex } from "../../scripts/security/tavernkeeper-reports
 import { initialTavernKeeperImportState } from "../../scripts/security/tavernkeeper-import-state.mjs";
 import { createHash } from "node:crypto";
 import type {
+  PublicationInput,
+  CanonicalPublicationState,
+} from "../../scripts/automation/publish.mjs";
+import type { PublicationAction } from "../../scripts/automation/write-lane.mjs";
+
+export function publisherFixture(options: { alreadyMerged?: boolean } = {}) {
+  const operation = operationFixture({
+    stage: "validated",
+    expectedSha: "c".repeat(40),
+  });
+  const action: PublicationAction = {
+    action: "merge",
+    operationKeys: [operation.key],
+    expectedMainSha: "b".repeat(40),
+    expectedHeadSha: operation.expectedSha!,
+    pullNumber: 84,
+    producer: "project-submission",
+    issueNumber: 42,
+    projectIds: ["example-project"],
+    sourceId: "github-42",
+  };
+  const merges: PublicationAction[] = [];
+  const commits: PublicationAction[] = [];
+  const receipts: AutomationReceipt[] = [];
+  const state: CanonicalPublicationState = {
+    mainSha: options.alreadyMerged ? "d".repeat(40) : action.expectedMainSha,
+    operations: [operation],
+    canonicalRevisions: options.alreadyMerged
+      ? { [operation.key]: "d".repeat(40) }
+      : {},
+  };
+  const publish = async (
+    effect: PublicationAction,
+    destination: PublicationAction[],
+  ) => {
+    destination.push(structuredClone(effect));
+    state.mainSha = "d".repeat(40);
+    for (const key of effect.operationKeys)
+      state.canonicalRevisions[key] = state.mainSha;
+    return { sha: state.mainSha };
+  };
+  const input: PublicationInput = {
+    plan: {
+      actions: [action],
+      rejected: [],
+      regenerate: [],
+      waiting: [],
+      satisfied: [],
+    },
+    readState: async () => structuredClone(state),
+    validate: async (effect) => ({ action: "ready", publication: effect }),
+    commit: async (effect) => publish(effect, commits),
+    merge: async (effect) => publish(effect, merges),
+    persist: async (receipt) => {
+      receipts.push(structuredClone(receipt));
+    },
+    nowMs: AUTOMATION_NOW,
+  };
+  return { input, state, merges, commits, receipts };
+}
+import type {
   PreparedResult,
   PreparedResultContext,
 } from "../../scripts/automation/prepared-result.mjs";

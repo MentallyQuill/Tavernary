@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import { reconcileAutomation } from "./reconcile.mjs";
 import {
-  assertTrustedAutomationContext,
+  assertCanonicalWriterContext,
   githubFailureStatus,
   persistGithubAutomationReceipt,
 } from "./github-inventory.mjs";
@@ -38,7 +38,7 @@ export async function runReconcileAutomationCli(options = {}) {
       (env.GITHUB_EVENT_PATH
         ? JSON.parse(await readFile(env.GITHUB_EVENT_PATH, "utf8"))
         : {});
-    if (args.apply) assertTrustedAutomationContext(env, repository, event);
+    if (args.apply) assertCanonicalWriterContext(env, repository, event);
     const nowMs = options.nowMs ?? Date.now();
     let inventory = options.inventory;
     let receipts = options.receipts ?? [];

@@ -56,6 +56,14 @@ export function assertTrustedAutomationContext(env, repository, event = {}) {
     return;
   throw new Error("Automation actor or wake is not trusted.");
 }
+export function assertCanonicalWriterContext(env, repository, event = {}) {
+  assertTrustedAutomationContext(env, repository, event);
+  if (
+    env.GITHUB_WORKFLOW_REF !==
+    `${repository}/.github/workflows/automation-writer.yml@refs/heads/main`
+  )
+    throw new Error("Canonical writer custody is invalid.");
+}
 
 async function pages(gh, path, fields = []) {
   const value = JSON.parse(

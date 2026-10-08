@@ -53,6 +53,8 @@ test("authorized apply executes the production controller and keeps unsafe error
       GITHUB_REF: "refs/heads/main",
       GITHUB_EVENT_NAME: "workflow_dispatch",
       GITHUB_ACTOR_ID: "2625904",
+      GITHUB_WORKFLOW_REF:
+        "MentallyQuill/Tavernary/.github/workflows/automation-writer.yml@refs/heads/main",
     },
     inventory: async () => [operationFixture()],
     receipts: [],
@@ -73,4 +75,26 @@ test("authorized apply executes the production controller and keeps unsafe error
 test("the CLI rejects unknown arguments and limits above twenty", async () => {
   for (const args of [["--unknown"], ["--limit", "21"]])
     expect(await runReconcileAutomationCli({ args, write: () => {} })).toBe(1);
+});
+
+test("privileged controller execution cannot bypass the serialized writer", async () => {
+  let loaded = false;
+  const code = await runReconcileAutomationCli({
+    args: ["--apply"],
+    env: {
+      GITHUB_REF: "refs/heads/main",
+      GITHUB_REPOSITORY: "MentallyQuill/Tavernary",
+      GITHUB_EVENT_NAME: "workflow_dispatch",
+      GITHUB_ACTOR_ID: "2625904",
+      GITHUB_WORKFLOW_REF:
+        "MentallyQuill/Tavernary/.github/workflows/reconcile-automation.yml@refs/heads/main",
+    },
+    inventory: async () => {
+      loaded = true;
+      return [];
+    },
+    write: () => {},
+  });
+  expect(code).toBe(1);
+  expect(loaded).toBe(false);
 });

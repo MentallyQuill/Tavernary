@@ -12,6 +12,11 @@ export interface GithubAutomationInventory {
   mainHeadSha: string;
 }
 export function githubFailureStatus(error: unknown): number;
+export function assertCanonicalWriterContext(
+  env: Record<string, string | undefined>,
+  repository: string,
+  event?: unknown,
+): void;
 export function loadAutomationWorkerRuns(input: {
   gh: GhRunner;
   repository: string;

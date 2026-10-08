@@ -28,6 +28,7 @@ const modelProviderEnvironment = {
 const modelProviderEnvironmentKeys = Object.keys(modelProviderEnvironment);
 
 const protectedPublisherJobs = {
+  "automation-writer": "write",
   "apply-kit-submission": "publish",
   "apply-kit-withdrawal": "withdraw",
   "backfill-repository-identities": "backfill",
@@ -42,6 +43,12 @@ const publisherActorExpression =
   "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID";
 
 const expectedPublisherConditions = {
+  "automation-writer":
+    "github.ref == 'refs/heads/main' && (github.actor_id == 2625904 || " +
+    `${publisherActorExpression})`,
+  "refresh-catalog":
+    "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || github.actor_id == 2625904 || " +
+    `${publisherActorExpression})`,
   "publisher-verification":
     "github.ref == 'refs/heads/main' && github.actor_id == 2625904",
   "review-catalog-policy":
@@ -102,6 +109,7 @@ function shellCommands(source = "") {
 
 function stepWritesMain(step: WorkflowStep) {
   if (step.run?.includes("catalog:enrichment-rollout")) return true;
+  if (step.run?.includes("node scripts/automation/writer-cli.mjs")) return true;
 
   return shellCommands(step.run).some((command) => {
     const pushesMain =
@@ -122,6 +130,8 @@ function stepWritesMain(step: WorkflowStep) {
 
 function workflowDispatchTargets(step: WorkflowStep) {
   const candidates: string[] = [];
+  if (step.run?.includes("node scripts/automation/prepared-wake.mjs"))
+    candidates.push("automation-writer.yml");
   const command = shellCommands(step.run).join(" ");
   for (const match of command.matchAll(
     /\bgh\s+workflow\s+run\s+(?:"([^"]+)"|'([^']+)'|([^\s\\]+))/gu,
@@ -301,16 +311,27 @@ test("limits every main publisher to the protected Publisher App", async () => {
       `actions/create-github-app-token@${pinnedActions["actions/create-github-app-token"]}`,
     );
     expect(publisherToken, name).toMatchObject({
-      id: "publisher-token",
+      id: name === "automation-writer" ? "writer-token" : "publisher-token",
       with: {
         "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
         "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
         "permission-contents": "write",
       },
     });
-    expect(checkout?.with?.token, name).toBe(
-      "${{ steps.publisher-token.outputs.token }}",
-    );
+    if (name === "automation-writer") {
+      expect(checkout?.with).toMatchObject({
+        ref: "main",
+        "persist-credentials": false,
+      });
+      expect(checkout?.with?.token).toBeUndefined();
+      expect(job.steps.indexOf(publisherToken!)).toBeGreaterThan(
+        job.steps.indexOf(checkout!),
+      );
+    } else {
+      expect(checkout?.with?.token, name).toBe(
+        "${{ steps.publisher-token.outputs.token }}",
+      );
+    }
   }
 });
 
@@ -420,8 +441,10 @@ test("uses the Publisher App identity for every protected workflow dispatch", as
   expect(dispatches.sort()).toEqual(
     [
       "admit-issue.yml:admit->apply-kit-withdrawal.yml",
+      "automation-prepared.yml:wake->automation-writer.yml",
       "import-tavernkeeper-reports.yml:continue->import-tavernkeeper-reports.yml",
       "publish-project-transaction.yml:publish->review-catalog-policy.yml",
+      "reconcile-automation.yml:reconcile->automation-writer.yml",
       "refresh-catalog.yml:refresh->review-catalog-policy.yml",
       "review-catalog-policy.yml:retry->review-catalog-policy.yml",
       "targeted-tavernkeeper-scan.yml:request->refresh-catalog.yml",

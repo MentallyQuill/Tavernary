@@ -276,3 +276,57 @@ binding, rather than admitting project records through generic snapshot commits.
 The cost if wrong is an extra data read or regeneration; exact-head/manual/owner
 protections remain mandatory. Bookkeeping satisfaction relies on the caller's
 authoritative canonical operation stage and must be rechecked in the publisher.
+
+## Phase 3 Task 2 checkpoint — in progress
+
+The serialized writer now consumes validated data artifacts, refreshes trusted
+main at its write boundaries, performs aggregate catalog validation, rebuilds
+both v7 and v8 assets, and applies parent-bound Git data commits with
+`force=false`. Co-committed publication evidence binds the operation and target
+file hashes; canonical path history supplies the publication revision. Receipt
+outages recover bookkeeping without another data commit.
+
+Reconciled repository refreshes now carry their immutable operation key into a
+read-only preparation job pinned to `github.sha`, capped at forty-five minutes.
+The job retains one `result.json` artifact for ninety days. Completed-run wakes
+re-fetch producer metadata before dispatching the shared writer. Scheduled
+reconciliation can recover a missed wake, sharing its twenty-operation quota
+with ordinary due work. The writer verifies the authenticated archive digest,
+ZIP headers, regular-file/path bounds, CRC, bounded decompression, producer
+custody, current domain authority and base file hashes.
+
+The real inventory adapter comparison caught omitted install evidence and Kit
+support in semantic catalog digests. Both inputs and Codeberg snapshots are now
+included. Further regressions cover immutable capture, forbidden acquisition
+paths, concurrent main changes, cross-reference validation, post-publication
+cancellation, invalid Publisher identity and artifact-chosen advisory notice
+issues.
+
+Verification: 257 unit files / 2,951 tests pass; full ESLint and type checking
+exit 0. The initial full runs caught stale workflow inventory assertions; their
+replacement retains App-token and actor custody coverage for the new writer
+and completion-dispatch path. The live read-only integrity probe also matched
+GitHub artifact 11533282408 / run 37739473002 to its authenticated SHA256
+`55c8cc74cf48812a7d5df3a2d5638d37b86e93824b428ad73baaa1fd6c320054`.
+
+Ruling: Co-commit immutable publication evidence with canonical data and derive
+its revision from path history. Receipts remain retry and bookkeeping state.
+The cost if wrong is conservative recovery rejection, with actual target hashes
+still required before a replay can satisfy publication.
+
+Ruling: Use explicit-parent, non-forced Git reference updates for prepared data.
+A concurrent main advance requires regeneration. The cost if wrong is an
+unattached Git object or an extra preparation run.
+
+Ruling: Accept trusted completed-run notifications as wake hints, and reconstruct
+missed notifications on the scheduled shared writer. Artifact inspection and
+ordinary reconciliation share the operation quota. The cost if wrong is an extra
+read-only probe; archive integrity and current authority still gate every write.
+
+Task 2 is unfinished. Owner refresh and Kit support paths remain until equivalent
+shared-writer coverage exists. Kit/withdrawal, report, advisory and enrichment
+preparation, bounded rollout checkpoints, exact-head project merge routing,
+final-boundary emergency controls, safe diagnostic consumption and removal of
+old direct deployment/finalization paths remain required before integration.
+Publication history lookup, canonical blob hashing across checkout line endings
+and high-volume GitHub inventory costs also require hardening and canary coverage.

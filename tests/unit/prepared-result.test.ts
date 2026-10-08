@@ -13,6 +13,13 @@ test("trusted data results retain their immutable operation and file identity", 
     validatePreparedResult(result, preparedResultContextFixture()),
   ).toEqual(result);
 });
+test("an invalid configured Publisher identity cannot authenticate a prepared producer", () => {
+  const result = preparedResultFixture();
+  const context = preparedResultContextFixture();
+  context.publisherActorId = 0;
+  context.run.actor.id = 0;
+  expect(() => validatePreparedResult(result, context)).toThrow();
+});
 test("prepared traversal is rejected", () => {
   expect(() =>
     validatePreparedResult(
@@ -116,6 +123,34 @@ test("the immutable operation subject must match the prepared source", () => {
     identity: { ...identity, subject: "source:github-43" },
   });
   result.operationKey = context.operation.key;
+  expect(() => validatePreparedResult(result, context)).toThrow();
+});
+
+test("metadata binds both source and card rather than rejecting the inventory's card subject", () => {
+  const result = preparedResultFixture({
+    kind: "metadata",
+    paths: ["data/registry/projects/example-project.json"],
+    producer: {
+      workflow: ".github/workflows/enrich-catalog.yml",
+      runId: 700,
+      sourceSha: "b".repeat(40),
+    },
+  });
+  const context = preparedResultContextFixture();
+  context.operation = operationFixture({
+    identity: {
+      kind: "metadata",
+      subject: "source:github-42:example-project",
+      inputDigest: result.inputDigest,
+      policyVersion: result.policyVersion,
+    },
+  });
+  result.operationKey = context.operation.key;
+  context.run.path = result.producer.workflow;
+  context.currentState.projectId = "example-project";
+  context.currentState.allowedPaths = result.files.map((file) => file.path);
+  expect(validatePreparedResult(result, context)).toEqual(result);
+  context.currentState.projectId = "other-project";
   expect(() => validatePreparedResult(result, context)).toThrow();
 });
 test("oversized UTF-8 content is rejected before domain validation", () => {

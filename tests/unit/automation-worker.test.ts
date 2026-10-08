@@ -76,6 +76,10 @@ test("model work requires a budget ticket while source refresh stays independent
   });
   expect(planAutomationWorker(refresh)).toMatchObject({
     workflow: "refresh-catalog.yml",
-    inputs: { mode: "project", source_id: "github-42" },
+    inputs: {
+      operation_key: refresh.key,
+      mode: "project",
+      source_id: "github-42",
+    },
   });
 });

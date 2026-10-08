@@ -157,6 +157,32 @@ function allowedPath(result, path) {
     )
   );
 }
+export function assertTrustedPreparedProducer({
+  kind,
+  repository,
+  run,
+  publisherActorId,
+}) {
+  const producerPaths = (workflows[kind] ?? []).map(
+    (name) => `.github/workflows/${name}.yml`,
+  );
+  if (
+    !Number.isSafeInteger(publisherActorId) ||
+    publisherActorId < 1 ||
+    !producerPaths.includes(run?.path) ||
+    !Number.isSafeInteger(run?.id) ||
+    run.id < 1 ||
+    !/^[a-f0-9]{40}$/u.test(run.head_sha ?? "") ||
+    run.actor?.id !== publisherActorId ||
+    run.actor?.type !== "Bot" ||
+    run.event !== "workflow_dispatch" ||
+    run.head_branch !== "main" ||
+    run.head_repository?.full_name !== repository ||
+    run.status !== "completed" ||
+    run.conclusion !== "success"
+  )
+    fail("prepared-producer-untrusted");
+}
 export function validatePreparedResult(
   result,
   { operation, run, publisherActorId, currentState },
@@ -165,26 +191,24 @@ export function validatePreparedResult(
   if (!validate(result)) fail("prepared-schema-invalid");
   if (
     ["refresh", "metadata", "advisory"].includes(result.kind) &&
-    operation.identity.subject !== `source:${result.source.id}`
+    operation.identity.subject !==
+      (result.kind === "refresh"
+        ? `source:${result.source.id}`
+        : `source:${result.source.id}:${currentState?.projectId}`)
   )
     fail("prepared-operation-mismatch");
   if (result.baseSha !== result.producer.sourceSha)
     fail("prepared-base-invalid");
-  const producerPaths = workflows[result.kind].map(
-    (name) => `.github/workflows/${name}.yml`,
-  );
+  assertTrustedPreparedProducer({
+    kind: result.kind,
+    repository: result.repository,
+    run,
+    publisherActorId,
+  });
   if (
-    !producerPaths.includes(result.producer.workflow) ||
     run?.id !== result.producer.runId ||
     run.path !== result.producer.workflow ||
-    run.actor?.id !== publisherActorId ||
-    run.actor?.type !== "Bot" ||
-    run.event !== "workflow_dispatch" ||
-    run.head_branch !== "main" ||
-    run.head_sha !== result.producer.sourceSha ||
-    run.head_repository?.full_name !== result.repository ||
-    run.status !== "completed" ||
-    run.conclusion !== "success"
+    run.head_sha !== result.producer.sourceSha
   )
     fail("prepared-producer-untrusted");
   if (

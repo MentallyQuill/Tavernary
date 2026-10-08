@@ -64,6 +64,7 @@ export function planAutomationWorker(operation, { budgetTicket } = {}) {
     return dispatch("apply-kit-withdrawal.yml", { issue_number: number });
   if (operation.identity.kind === "refresh")
     return dispatch("refresh-catalog.yml", {
+      operation_key: operation.key,
       mode: "project",
       source_id: operation.identity.subject.slice(7),
     });
