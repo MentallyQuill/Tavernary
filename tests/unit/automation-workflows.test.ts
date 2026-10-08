@@ -6,6 +6,34 @@ import { discoverReportOperations } from "../../scripts/automation/report-operat
 import { reportInventoryFixture } from "../helpers/automation-fixtures";
 import { parse } from "yaml";
 
+test("owner rollouts use read-only native requests and enrichment has no privileged legacy writer", () => {
+  const enrichment = parse(
+    readFileSync(".github/workflows/enrich-catalog.yml", "utf8"),
+  );
+  const request = parse(
+    readFileSync(".github/workflows/request-catalog-enrichment.yml", "utf8"),
+  );
+  expect(Object.keys(enrichment.jobs)).toEqual(["prepare"]);
+  expect(enrichment.permissions).toEqual({
+    contents: "read",
+    actions: "read",
+    issues: "read",
+    "pull-requests": "read",
+  });
+  expect(
+    enrichment.on.workflow_dispatch.inputs.enrichment_scope,
+  ).toBeUndefined();
+  expect(enrichment.on.workflow_dispatch.inputs.operation_key.required).toBe(
+    true,
+  );
+  expect(request.jobs.request["timeout-minutes"]).toBe(5);
+  expect(request.permissions).toEqual({ contents: "read" });
+  expect(request.jobs.request.if).toContain("github.actor_id == 2625904");
+  expect(JSON.stringify(request)).not.toMatch(
+    /PRIVATE_KEY|UTILITY_API_KEY|permission-contents/,
+  );
+});
+
 test.each(["enrich-catalog.yml", "review-catalog-policy.yml"])(
   "reconciled %s provides a pinned read-only budgeted preparation endpoint",
   (workflowName) => {

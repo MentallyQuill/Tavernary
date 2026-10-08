@@ -11,6 +11,14 @@ import type {
 } from "../catalog/enrich-readmes.mjs";
 import type { ModelBudgetGuard } from "./model-budget.mjs";
 import type { RedditSourceReader } from "../catalog/reddit-enrichment-source.mjs";
+import type { CanonicalPublicationRecord } from "./publication-record.mjs";
+import type { DeploymentInventoryEvidence } from "./deployment-operations.mjs";
+export function findEnrichmentCheckpointDeployment(input: {
+  state: AutomationInventoryState;
+  publication: { record: CanonicalPublicationRecord; revision: string };
+  checkpoint: EnrichmentReport;
+  workflowRunId?: number;
+}): (DeploymentInventoryEvidence & { workflowRunId: number }) | null;
 export interface EnrichmentCheckpointInput {
   state: AutomationInventoryState;
   operation: AutomationOperation;
@@ -22,6 +30,10 @@ export type EnrichmentCheckpointObserver = (input: {
   snapshot: RepositorySnapshot | undefined;
 }) => Promise<{ source: EnrichmentSource }>;
 export function hasConfirmedEnrichmentCanary(
+  state: AutomationInventoryState,
+  full: EnrichmentReport,
+): boolean;
+export function hasConfirmedEnrichmentFull(
   state: AutomationInventoryState,
   full: EnrichmentReport,
 ): boolean;

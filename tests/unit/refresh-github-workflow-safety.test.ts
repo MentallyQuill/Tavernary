@@ -107,79 +107,39 @@ test("names catalog runs by their actual operating mode", async () => {
   expect(source).toContain("inputs.batch_size");
 });
 
-test("enrichment delegates one durable rollout to the tested orchestrator", async () => {
+test("enrichment exposes model credentials only to one budgeted read-only preparation step", async () => {
   const text = await workflowSource("enrich-catalog");
-  const document = parse(text) as {
-    jobs: Record<
-      string,
-      {
-        steps: Array<{
-          name?: string;
-          run?: string;
-          env?: Record<string, string>;
-        }>;
-      }
-    >;
-    concurrency: { group: string; "cancel-in-progress": boolean };
-    on: {
-      workflow_dispatch: {
-        inputs: Record<string, unknown>;
-      };
-    };
-  };
-  const steps = Object.values(document.jobs).flatMap(({ steps }) => steps);
-  const rollout = steps.find(
-    ({ name }) => name === "Run durable enrichment rollout",
+  const document = parse(text);
+  const credentialSteps = document.jobs.prepare.steps.filter(
+    (step: { env?: Record<string, string> }) => step.env?.UTILITY_API_KEY,
   );
-  const reporter = steps.find(
-    ({ name }) => name === "Report unresolved enrichment projects",
-  );
-
-  expect(document.on.workflow_dispatch.inputs).not.toHaveProperty("mode");
-  expect(document.on.workflow_dispatch.inputs).not.toHaveProperty(
-    "project_ids",
-  );
-  expect(rollout?.run?.trim()).toBe("npm run catalog:enrichment-rollout");
-  expect(rollout?.env).toMatchObject({
-    UTILITY_API_ENDPOINT: "${{ secrets.UTILITY_API_ENDPOINT }}",
-    UTILITY_API_KEY: "${{ secrets.UTILITY_API_KEY }}",
-    UTILITY_MODEL: "${{ secrets.UTILITY_MODEL }}",
-    UTILITY_REASONING_EFFORT: "${{ vars.UTILITY_REASONING_EFFORT }}",
-    TAVERNARY_ENRICHMENT_API_URL: "${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}",
-    TAVERNARY_ENRICHMENT_API_KEY: "${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}",
-    TAVERNARY_ENRICHMENT_MODEL: "${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}",
-    GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
-    GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
-  });
-  expect(text.match(/secrets\.UTILITY_API_KEY/gu)).toHaveLength(2);
-  expect(text.match(/secrets\.TAVERNARY_ENRICHMENT_API_KEY/gu)).toHaveLength(2);
-  const credentialSteps = steps.filter((step) => step.env?.UTILITY_API_KEY);
-  expect(credentialSteps.map((step) => step.name).sort()).toEqual([
+  expect(credentialSteps.map((step: { name: string }) => step.name)).toEqual([
     "Prepare one operation with reserved model allowance",
-    "Run durable enrichment rollout",
   ]);
-  expect(reporter?.env).toEqual({
-    GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
+  expect(text.match(/secrets\.UTILITY_API_KEY/gu)).toHaveLength(1);
+  expect(text.match(/secrets\.TAVERNARY_ENRICHMENT_API_KEY/gu)).toHaveLength(1);
+  expect(credentialSteps[0].env.TAVERNARY_REQUIRE_MODEL_BUDGET).toBe("true");
+  expect(document.jobs.prepare["timeout-minutes"]).toBe(45);
+  expect(document.jobs.prepare.permissions).toEqual({
+    contents: "read",
+    actions: "read",
+    issues: "read",
+    "pull-requests": "read",
   });
-  expect(reporter?.run).toContain("enrichment-rollout-result.json");
-  expect(text).toContain("## Enrichment provider preflight");
-  expect(text).not.toContain("publish_changes()");
-  expect(text).not.toContain("complete_canary()");
-  expect(text).not.toContain("finish_full_rollout()");
-  expect(text).toContain("timeout-minutes: 300");
+  expect(document.jobs.prepare.steps[0].with).toMatchObject({
+    ref: "${{ github.sha }}",
+    "persist-credentials": false,
+  });
   expect(document.concurrency).toEqual({
-    group: "catalog-refresh",
+    group: "catalog-enrichment-preparation",
     "cancel-in-progress": false,
   });
-  expect(
-    (
-      parse(await workflowSource("refresh-catalog")) as {
-        concurrency: { group: string };
-      }
-    ).concurrency.group,
-  ).toBe("catalog-refresh-${{ inputs.operation_key || 'request' }}");
+  const request = await workflowSource("request-catalog-enrichment");
+  expect(request).not.toContain("secrets.");
+  expect(text).not.toMatch(
+    /catalog:enrichment-rollout|catalog:report-enrichment-errors|git push|permission-contents/u,
+  );
 });
-
 test("identity backfill delegates optional IDs to the shared writer", async () => {
   const text = await workflowSource("backfill-repository-identities");
   const document = parse(text) as {

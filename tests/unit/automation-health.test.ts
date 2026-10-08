@@ -1,4 +1,10 @@
 import { expect, test, vi } from "vitest";
+import {
+  createEnrichmentRunState,
+  applyAttemptResults,
+} from "../../scripts/catalog/enrichment-run-state.mjs";
+import { createEnrichmentReport } from "../../scripts/catalog/enrichment-report.mjs";
+import { planIncidentUpdates } from "../../scripts/automation/incidents.mjs";
 import * as dependencyWriter from "../../scripts/automation/dependency-update.mjs";
 import * as enrichmentRequests from "../../scripts/automation/enrichment-owner-request.mjs";
 import {
@@ -15,6 +21,66 @@ import {
 const nowMs = AUTOMATION_NOW;
 const before = (hours: number) =>
   new Date(nowMs - hours * 3_600_000).toISOString();
+
+test("terminal enrichment errors use one actionable native incident and unverified clean reports cannot close it", async () => {
+  const { state } = await metadataMaintenanceFixture();
+  const running = createEnrichmentRunState({
+    mode: "full",
+    runId: "health-enrichment",
+    manifest: ["failed-project"],
+    batchSize: 20,
+    concurrency: 2,
+    model: "fixture-model",
+    now: new Date(nowMs).toISOString(),
+  });
+  state.local.enrichmentFull = createEnrichmentReport(
+    applyAttemptResults(
+      running,
+      [
+        {
+          id: "failed-project",
+          phase: "primary",
+          outcome: "source-not-ready",
+          reasonCode: "readme-missing",
+        },
+      ],
+      new Date(nowMs).toISOString(),
+    ),
+  );
+  const findings = assessInventoryHealth(state).filter(
+    (value) => value.code === "enrichment-unresolved",
+  );
+  expect(findings).toMatchObject([
+    { subject: "enrichment:catalog", status: "active", count: 1 },
+  ]);
+  const mutation = planIncidentUpdates({
+    findings,
+    existingIssues: [],
+    publisherActorId: state.publisherActorId,
+  })[0];
+  expect(mutation.title).toBe(
+    "[automation] Catalog enrichment has unresolved projects",
+  );
+  expect(mutation.body).toContain("data/reports/enrichment-report.json");
+  state.local.enrichmentFull = createEnrichmentReport(
+    applyAttemptResults(
+      running,
+      [{ id: "failed-project", phase: "primary", outcome: "enriched" }],
+      new Date(nowMs).toISOString(),
+    ),
+  );
+  expect(
+    assessInventoryHealth(state).some(
+      (value) => value.code === "enrichment-unresolved",
+    ),
+  ).toBe(false);
+  state.local.enrichmentFull = createEnrichmentReport(running);
+  expect(
+    assessInventoryHealth(state).some(
+      (value) => value.code === "enrichment-unresolved",
+    ),
+  ).toBe(false);
+});
 
 test("the scheduled writer recovers a missed owner request through authenticated admission", async () => {
   const { state } = await metadataMaintenanceFixture();

@@ -1281,3 +1281,35 @@ CI jobs in run `37845609882`. Canary approval, full deployment finalization and
 replacement of the legacy owner job remain unfinished. All remaining producer
 allowances, runtime/retention/drills, final independent review, exact-head CI,
 merge and actual public verification are still required.
+
+## Native rollout finalization and legacy writer retirement
+
+The shared writer now confirms canary and full checkpoints using the original
+co-committed report bytes, native publication digests, actual deployment run,
+retained-bundle integrity and essential browser proof. Git publication evidence
+now includes the two private report paths; real repository fixtures reproduced
+the missing-path failure before the repair. A later deployment can confirm an
+unchanged canary only with ancestry and unchanged source identity, listing and
+automatic metadata. Missing browser, bundle, run or Git evidence cannot approve
+full work. One fixed approval clock survives fresh inventory reads, and a lost
+commit response recovers the actual approval without a repeated commit or model
+call. Full approval preserves the frozen manifest, model, batch and cursors.
+
+The old privileged five-hour owner job has been removed. Owner requests use the
+dedicated read-only request Action; enrichment itself exposes only the bounded,
+pinned, budgeted read-only preparation job. The existing native incident mechanism
+replaces the shell error notifier. Terminal unresolved projects remain visible in
+one actionable incident and the private frozen report. A clean full report closes
+that incident only with actual native publication/deployment proof; earlier running
+checkpoints cannot hide that proof. Missing or running state cannot clear it, and
+historical notices remain under owner control. Owner guides and the operations
+runbook now describe these entry points and recovery semantics.
+
+Eight focused suites passed 133 checks, with typecheck, scoped lint, formatting
+and whitespace checks passing. The preceding owner-admission commit `149b9e7`
+passed both required CI jobs in
+[run 37847900703](https://github.com/MentallyQuill/Tavernary/actions/runs/37847900703).
+This retires only the enrichment shell writer. Dependent submission retries,
+remaining provider allowances, runtime/retention/drills, final independent review,
+exact-head CI, merge and actual public verification remain required. The real
+legacy 180/281 report has been preserved and is not claimed to have completed.

@@ -13,7 +13,11 @@ function body(finding) {
     count: finding.count,
     ...(finding.revision ? { revision: finding.revision } : {}),
   };
-  return `<!-- tavernary-automation-incident:v1:${finding.key} -->\n\n${HEALTH_TITLES[finding.code]}. Inspect the corresponding Actions run and repair the reported dependency or operation. Catalog processing continues independently.\n\nSubject: \`${finding.subject}\`\nReason: \`${finding.reason}\`\nAffected: ${finding.count}\n\n<!-- evidence:${JSON.stringify(evidence)} -->`;
+  const guidance =
+    finding.code === "enrichment-unresolved"
+      ? "Inspect `data/reports/enrichment-report.json` for the frozen run, project IDs and sanitized terminal reasons. Repair the affected source or provider, then request enrichment from the owner-only Catalog enrichment request Action. A later clean, verified full deployment closes this incident."
+      : "Inspect the corresponding Actions run and repair the reported dependency or operation. Catalog processing continues independently.";
+  return `<!-- tavernary-automation-incident:v1:${finding.key} -->\n\n${HEALTH_TITLES[finding.code]}. ${guidance}\n\nSubject: \`${finding.subject}\`\nReason: \`${finding.reason}\`\nAffected: ${finding.count}\n\n<!-- evidence:${JSON.stringify(evidence)} -->`;
 }
 function intact(issue, key) {
   if (typeof issue.body !== "string" || Buffer.byteLength(issue.body) > 16_384)

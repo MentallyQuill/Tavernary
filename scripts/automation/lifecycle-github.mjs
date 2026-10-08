@@ -24,6 +24,7 @@ import { renderCatalogPolicyReviewIssue } from "../moderation/catalog-policy-rev
 import { effectiveListingState } from "../../src/features/catalog/listing-state.mjs";
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
 import { reportOperationDigest } from "./report-operations.mjs";
+import { projectEnrichmentLifecycle } from "./enrichment-finalization.mjs";
 import {
   validateTavernKeeperImportState,
   reportSynthesisIncidentKey,
@@ -675,6 +676,8 @@ export async function projectAutomationLifecycle(input) {
   )
     return advisoryProjection(input);
   if (operation.stage !== "deployment-confirmed") return waiting();
+  if (operation.identity.kind === "enrichment")
+    return projectEnrichmentLifecycle(input);
   if (operation.identity.kind === "report-import")
     return reportProjection(input);
   if (["kit", "withdrawal"].includes(operation.identity.kind))

@@ -382,7 +382,7 @@ Forgejo/Gitea origin or infer that GitHub and Codeberg repositories are mirrors.
 
 ## Enrichment automation
 
-Workflow: `.github/workflows/enrich-catalog.yml`
+Owner request: `.github/workflows/request-catalog-enrichment.yml`; read-only preparation: `.github/workflows/enrich-catalog.yml`.
 
 ### Reconciled read-only preparation
 
@@ -414,50 +414,60 @@ backoff. Inspect sanitized failure receipts and the budget state before changing
 provider settings. Verified scan and catalog facts remain publishable without
 model calls.
 
-### Manual rollout
+### Owner rollout and recovery
 
-- One manual action owns preflight, canary, deployment approval, full-run
-  preparation, batching, and resume behavior through the tested durable
-  orchestrator.
-- `enrichment_scope` controls selection:
-  - `pending` (default) processes cards whose automatic fields still need
-    enrichment.
-  - `all-automatic` re-enriches every card with at least one automatic field
-    and is intended for provider-contract migrations.
-- `model_timeout_seconds` defaults to `120` and applies independently to each
-  provider request, not to a batch or the five-hour workflow job.
-- Neither scope overrides either field's manual metadata policy.
-- Enrichment writes only automatic summary/tag fields and `metadata_status`.
-  It never writes or changes `primary_function`.
-- An intake-only classification review may confirm a submitted Extension
-  category or emit a sanitized mismatch warning. The warning does not mutate
-  canonical classification and raw provider/source payloads are not published.
-- Preflight makes at most three immediate requests for transient provider
-  timeouts, network failures, rate limits and server errors, waiting 5 and 15
-  seconds between attempts. Transport and validation retries share the same
-  three-primary-request ceiling. Exhausted preflight retries remain fatal.
-- Canary:
-  - a representative pool of 5-7 unique project IDs is selected within the
-    chosen scope
-  - preps snapshot and registry writes in one gated commit
-  - waits deployment (`gh run watch`) before approval transition
-  - requires `--mode approve-canary` after deployment to mark pass
-- Full run:
-  - `start` initializes full enrichment manifest
-  - `resume` advances until state is no longer `running`
-  - required gate `npm run check` between batches
-  - isolated project failures remain provisional after their durable retry and
-    produce a successful `complete-with-errors` Action conclusion
-  - systemic configuration, authentication, model, state, write, publication,
-    deployment, or notification failures produce a failed Action conclusion
-- `concurrency` also `catalog-refresh`.
-- Deployment summary writes include manifest mode/phase/cursor checkpoints.
-- Durable reports freeze `selection_mode` and list `manual_exclusions`, so a
-  resumed run cannot silently change scope.
-- A successful partial run creates, updates, or reopens one
-  `Catalog enrichment errors` issue with sanitized terminal errors. A later
-  clean completed run closes it. Recovered first-attempt errors are omitted.
+The owner records a request on trusted main code. For example:
 
+```powershell
+gh workflow run request-catalog-enrichment.yml --ref main -f enrichment_scope=all-automatic -f batch_size=20 -f model_concurrency=2
+```
+
+`pending` selects automatic fields still needing enrichment; `all-automatic`
+selects every record with an automatic field. Neither scope overrides manual
+field policy or changes `primary_function`. Select the running full report's
+existing scope and configured model when resuming. A new request preserves
+that report's complete manifest, primary/retry cursors, batch size, concurrency,
+entries and exclusions; it never resets the legacy 180/281 checkpoint.
+
+The five-minute request has read access and no model credentials. Authenticated
+request metadata supplies authority to the shared writer. Each preparation
+handles one record, runs for at most forty-five minutes and uses writer-reserved
+global model allowance. No separate unbudgeted preflight is performed: the
+first actual canary calls must return validated output from the configured
+model. A representative five-to-seven-project canary must have a native
+co-committed checkpoint and a verified retained bundle with browser proof
+before the full report receives its canary authorization. An unchanged canary
+may be served by a later catalog revision; identity, field policy, listing
+authority and selected metadata must still match. A historical canary's green
+Action or editable report fields alone cannot authorize full work.
+
+Provider outages, invalid credentials/model configuration and exhausted
+allowance retain pending work with bounded retry. Primary and retry passes
+stop before further provider calls when allowance is unavailable. The shared
+writer rechecks source identity, exact content, independent automatic fields
+and owner decisions before publishing each checkpoint. Model-ready Reddit
+sources use the actual post identity and freshly checked source content.
+The ordinary catalog-data gate validates catalog/build output and essential
+browser behavior; the full implementation suite is not rerun for each record.
+
+Inspect the two private reports for selection mode, manual exclusions, cursors,
+model/repair/rate-limit metrics and sanitized project reasons. Full deployment
+finalization records the actual verified run once, and replay recovers an
+already-committed approval without repeating model work. A terminal
+`complete-with-errors` report leaves failed projects provisional and opens the
+existing bounded native incident `[automation] Catalog enrichment has unresolved
+projects`. A later clean full report closes it only with native publication,
+retained-bundle and browser confirmation. Running, missing or edited proof
+cannot clear the incident. The native incident mechanism respects owner edits
+and dismissals. Historical `Catalog enrichment errors` notices remain under
+owner control instead of being rewritten by the removed shell publisher.
+
+When a canary fails, repair the affected source/provider and create a new owner
+request. If a completed canary's input has changed before deployment, restore
+or correct the affected authority/input through owner review before retrying;
+do not manufacture approval by editing report control fields. Keep the running
+full checkpoint intact. The scheduled controller also recovers a missed request
+wake and resumes after an outage.
 Every model-backed workflow uses the utility provider for its first structured
 response. Configure the selected utility model with:
 

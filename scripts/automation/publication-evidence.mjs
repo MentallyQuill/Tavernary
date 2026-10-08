@@ -46,6 +46,8 @@ export async function readCanonicalPublicationEvidence({
       "data/registry",
       "data/snapshots",
       "data/security",
+      "data/reports/enrichment-canary.json",
+      "data/reports/enrichment-report.json",
     ],
     { cwd: root, windowsHide: true, stdio: ["ignore", "pipe", "ignore"] },
   );

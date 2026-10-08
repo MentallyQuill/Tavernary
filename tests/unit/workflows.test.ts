@@ -32,7 +32,7 @@ const protectedPublisherJobs = {
   "apply-kit-submission": "publish",
   "apply-kit-withdrawal": "withdraw",
   "backfill-repository-identities": "backfill",
-  "enrich-catalog": "enrich",
+
   "import-tavernkeeper-reports": "import",
   "publisher-verification": "verify",
   "refresh-catalog": "refresh",
@@ -49,9 +49,7 @@ const expectedPublisherConditions = {
   "refresh-catalog":
     "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || github.actor_id == 2625904 || " +
     `${publisherActorExpression})`,
-  "enrich-catalog":
-    "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || github.actor_id == 2625904 || " +
-    `${publisherActorExpression})`,
+
   "apply-kit-submission":
     "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.actor_id == 2625904 || " +
     `${publisherActorExpression})`,
@@ -231,7 +229,7 @@ test("identifies the object and action in every workflow run name", async () => 
     "apply-kit-submission": ["Kit #", "Publish approved Kit"],
     "apply-kit-withdrawal": ["Kit #", "Withdraw published Kit"],
     "refresh-catalog": ["Catalog:", "Refresh"],
-    "enrich-catalog": ["Catalog:", "Enrich", "project metadata"],
+    "enrich-catalog": ["Automation prepare", "inputs.operation_key"],
     "backfill-repository-identities": ["Catalog:", "Backfill repository IDs"],
     ci: ["Site:", "Validate"],
     "deploy-pages": ["Site:", "Deploy"],
@@ -1106,75 +1104,51 @@ test("daily refresh preserves the existing manual modes and bounded baseline inp
   ).toBe(true);
 });
 
-test("runs enrichment through one tested durable orchestrator", async () => {
-  const enrich = (await workflow("enrich-catalog")) as {
-    permissions: Record<string, string>;
-    concurrency: Record<string, unknown>;
-    on: {
-      workflow_dispatch: {
-        inputs: Record<string, unknown>;
-      };
-    };
-  };
+test("enrichment prepares one read-only checkpoint after a separate owner request", async () => {
+  const enrich = await workflow("enrich-catalog");
+  const request = await workflow("request-catalog-enrichment");
   const source = await readFile(
     resolve(workflowDirectory, "enrich-catalog.yml"),
     "utf8",
   );
-  const inputs = enrich.on.workflow_dispatch.inputs;
-
-  expect(inputs).not.toHaveProperty("mode");
-  expect(inputs).not.toHaveProperty("project_ids");
-  expect(inputs.enrichment_scope).toEqual({
-    description: "Choose pending records or re-enrich every automatic record.",
-    type: "choice",
-    options: ["pending", "all-automatic"],
-    default: "pending",
-  });
+  expect(Object.keys(enrich.jobs)).toEqual(["prepare"]);
+  expect(Object.keys(enrich.on.workflow_dispatch.inputs)).toEqual([
+    "operation_key",
+    "budget_ticket",
+  ]);
+  expect(enrich.on.workflow_dispatch.inputs.operation_key.required).toBe(true);
   expect(enrich.permissions).toEqual({
     contents: "read",
-    actions: "write",
-    issues: "write",
+    actions: "read",
+    issues: "read",
+    "pull-requests": "read",
   });
   expect(enrich.concurrency).toEqual({
-    group: "catalog-refresh",
+    group: "catalog-enrichment-preparation",
     "cancel-in-progress": false,
   });
-  expect(source).toContain("npm run catalog:enrichment-rollout");
-  expect(source).toContain(
-    "ENRICHMENT_SELECTION_MODE: ${{ inputs.enrichment_scope || 'pending' }}",
-  );
-  expect(inputs.model_timeout_seconds).toEqual({
-    description: "Per-model-request timeout in seconds.",
-    type: "number",
-    default: 120,
-  });
-  expect(inputs.model_concurrency).toEqual({
-    description: "Concurrent model calls, from 1 through 8.",
-    type: "number",
-    default: 6,
-  });
-  expect(source).toContain(
-    "MODEL_CONCURRENCY: ${{ inputs.model_concurrency || 6 }}",
+  expect(enrich.jobs.prepare["timeout-minutes"]).toBe(45);
+  expect(enrich.jobs.prepare.if.replace(/\s+/gu, " ").trim()).toBe(
+    "inputs.operation_key != '' && github.ref == 'refs/heads/main' && github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID",
   );
   expect(source).toContain(
-    "MODEL_TIMEOUT_SECONDS: ${{ inputs.model_timeout_seconds || 120 }}",
+    "node scripts/automation/catalog-preparation-cli.mjs",
   );
-  expect(source).toContain("npm run catalog:report-enrichment-errors");
-  expect(source).toContain("enrichment-rollout-result.json");
-  expect(source).toContain("Manual exclusions:");
-  expect(source).toContain("Model calls:");
-  expect(source).toContain("Repair calls:");
-  expect(source).toContain("Rate-limit events:");
-  expect(source).toContain("Total model latency:");
-  expect(source).toContain("manual_exclusions");
-  expect(source).toContain("data/reports/enrichment-canary.json");
-  expect(source).toContain("| Project | Outcome | Reason | Detail |");
-  expect(source).toContain(
-    "['source-not-ready','final-failure','skipped'].includes(entry.outcome)",
+  expect(source).toContain('TAVERNARY_REQUIRE_MODEL_BUDGET: "true"');
+  expect(source).not.toMatch(
+    /catalog:enrichment-rollout|create-github-app-token|git push|permission-contents/u,
   );
-  expect(source).not.toContain("publish_changes()");
+  expect(request.jobs.request["timeout-minutes"]).toBe(5);
+  expect(request.jobs.request.if).toBe(
+    "github.ref == 'refs/heads/main' && github.actor_id == 2625904",
+  );
+  expect(request.on.workflow_dispatch.inputs.enrichment_scope.options).toEqual([
+    "pending",
+    "all-automatic",
+  ]);
+  expect(request.on.workflow_dispatch.inputs.model_concurrency.default).toBe(2);
+  expect(JSON.stringify(request)).not.toContain("secrets.");
 });
-
 test("triage dispatches admitted projects without repository write access", async () => {
   const triage = await workflow("triage-submission");
   const source = await readFile(

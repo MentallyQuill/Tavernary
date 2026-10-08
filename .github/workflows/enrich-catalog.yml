@@ -1,128 +1,30 @@
 name: "Catalog maintenance: Enrich project metadata"
-run-name: >-
-  ${{ inputs.operation_key
-    && format('Automation prepare {0}', inputs.operation_key)
-    || format('Catalog: Enrich {0} project metadata', inputs.enrichment_scope) }}
+run-name: "Automation prepare ${{ inputs.operation_key }}"
 
 on:
   workflow_dispatch:
     inputs:
       operation_key:
-        description: Immutable reconciled operation; empty for an owner rollout.
+        description: Immutable reconciled enrichment checkpoint.
         type: string
-        required: false
-        default: ""
+        required: true
       budget_ticket:
-        description: Writer-reserved allowance; empty only for cache-only preparation.
+        description: Writer-reserved allowance; empty only when no model work is needed.
         type: string
         required: false
         default: ""
-      enrichment_scope:
-        description: Choose pending records or re-enrich every automatic record.
-        type: choice
-        options:
-          - pending
-          - all-automatic
-        default: pending
-      batch_size:
-        description: Frozen primary and retry batch size.
-        type: number
-        default: 20
-      model_concurrency:
-        description: Concurrent model calls, from 1 through 8.
-        type: number
-        default: 6
-      model_timeout_seconds:
-        description: Per-model-request timeout in seconds.
-        type: number
-        default: 120
 
 permissions:
   contents: read
-  actions: write
-  issues: write
+  actions: read
+  issues: read
+  pull-requests: read
 
 concurrency:
-  group: catalog-refresh
+  group: catalog-enrichment-preparation
   cancel-in-progress: false
 
 jobs:
-  enrich:
-    if: >-
-      inputs.operation_key == '' &&
-      github.ref == 'refs/heads/main' &&
-      (github.event_name != 'workflow_dispatch' ||
-      github.actor_id == 2625904 ||
-      github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)
-    runs-on: ubuntu-latest
-    environment: publisher
-    timeout-minutes: 300
-    steps:
-      - name: Create Tavernary Publisher token
-        id: publisher-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
-        with:
-          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
-          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
-          permission-contents: write
-      - name: Check out repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          fetch-depth: 0
-          token: ${{ steps.publisher-token.outputs.token }}
-      - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        with:
-          node-version: 24
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Configure catalog publisher
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      - name: Run durable enrichment rollout
-        env:
-          UTILITY_API_ENDPOINT: ${{ secrets.UTILITY_API_ENDPOINT }}
-          UTILITY_API_KEY: ${{ secrets.UTILITY_API_KEY }}
-          UTILITY_MODEL: ${{ secrets.UTILITY_MODEL }}
-          UTILITY_REASONING_EFFORT: ${{ vars.UTILITY_REASONING_EFFORT }}
-          TAVERNARY_ENRICHMENT_API_URL: ${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}
-          TAVERNARY_ENRICHMENT_API_KEY: ${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}
-          TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BATCH_SIZE: ${{ inputs.batch_size || 20 }}
-          MODEL_CONCURRENCY: ${{ inputs.model_concurrency || 6 }}
-          MODEL_TIMEOUT_SECONDS: ${{ inputs.model_timeout_seconds || 120 }}
-          ENRICHMENT_SELECTION_MODE: ${{ inputs.enrichment_scope || 'pending' }}
-        run: npm run catalog:enrichment-rollout
-      - name: Report unresolved enrichment projects
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: >-
-          npm run catalog:report-enrichment-errors --
-          --result-path "$RUNNER_TEMP/enrichment-rollout-result.json"
-          --report-path data/reports/enrichment-report.json
-      - name: Write sanitized workflow summary
-        if: always()
-        shell: bash
-        run: |
-          if [[ -f "$RUNNER_TEMP/enrichment-preflight.log" ]]; then
-            echo "## Enrichment provider preflight" >> "$GITHUB_STEP_SUMMARY"
-            tail -n 1 "$RUNNER_TEMP/enrichment-preflight.log" >> "$GITHUB_STEP_SUMMARY"
-            echo "" >> "$GITHUB_STEP_SUMMARY"
-          fi
-          if [[ -f data/reports/enrichment-report.json ]]; then
-            node -e "const r=require('./data/reports/enrichment-report.json'); const a=r.aggregates||{}; const m=r.provider_metrics||{}; console.log('## Full enrichment '+r.run_id+'\\n\\n- Status: '+r.status+'\\n- Phase: '+r.phase+'\\n- Selection scope: '+(r.selection_mode||'pending')+'\\n- Manual exclusions: '+(r.manual_exclusions||[]).length+'\\n- Primary cursor: '+r.primary_cursor+'/'+r.manifest.length+'\\n- Retry cursor: '+r.retry_cursor+'/'+r.retry_queue.length+'\\n- Model calls: '+(m.call_count||0)+'\\n- Repair calls: '+(m.repair_call_count||0)+'\\n- Rate-limit events: '+(m.rate_limit_events||0)+'\\n- Total model latency: '+(m.latency_ms_total||0)+' ms\\n- Enriched: '+((a.enriched||0)+(a['retry-enriched']||0))+'\\n- Fallback: '+((a.fallback||0)+(a['retry-fallback']||0))+'\\n- Source not ready: '+(a['source-not-ready']||0)+'\\n- Final failures: '+(a['final-failure']||0))" >> "$GITHUB_STEP_SUMMARY"
-            node -e "const r=require('./data/reports/enrichment-report.json'); const entries=Object.values(r.entries||{}); const unresolved=entries.filter(entry=>['source-not-ready','final-failure','skipped'].includes(entry.outcome)); const cell=value=>String(value??'').replaceAll('|',String.fromCharCode(92)+'|').replace(/\\s+/g,' ').trim(); if(unresolved.length){ console.log('\\n### Unresolved projects\\n\\n| Project | Outcome | Reason | Detail |\\n| --- | --- | --- | --- |'); for(const entry of unresolved){ console.log('| '+cell(entry.id)+' | '+cell(entry.outcome)+' | '+cell(entry.reason_code)+' | '+cell(entry.message)+' |'); } }" >> "$GITHUB_STEP_SUMMARY"
-            node -e "const r=require('./data/reports/enrichment-report.json'); const excluded=r.manual_exclusions||[]; const cell=value=>String(value??'').replaceAll('|',String.fromCharCode(92)+'|').replace(/\\s+/g,' ').trim(); if(excluded.length){ console.log('\\n### Manual exclusions\\n\\n| Project | Reason | Note |\\n| --- | --- | --- |'); for(const entry of excluded){ console.log('| '+cell(entry.id)+' | '+cell(entry.reason_code)+' | '+cell(entry.enrichment_note)+' |'); } }" >> "$GITHUB_STEP_SUMMARY"
-          fi
-          if [[ -f data/reports/enrichment-canary.json ]]; then
-            node -e "const r=require('./data/reports/enrichment-canary.json'); const a=r.aggregates||{}; const m=r.provider_metrics||{}; console.log('## Enrichment canary '+r.run_id+'\\n\\n- Status: '+r.status+'\\n- Phase: '+r.phase+'\\n- Selection scope: '+(r.selection_mode||'pending')+'\\n- Manual exclusions: '+(r.manual_exclusions||[]).length+'\\n- Primary cursor: '+r.primary_cursor+'/'+r.manifest.length+'\\n- Retry cursor: '+r.retry_cursor+'/'+r.retry_queue.length+'\\n- Model calls: '+(m.call_count||0)+'\\n- Repair calls: '+(m.repair_call_count||0)+'\\n- Rate-limit events: '+(m.rate_limit_events||0)+'\\n- Total model latency: '+(m.latency_ms_total||0)+' ms\\n- Successful: '+((a.enriched||0)+(a.fallback||0)+(a['retry-enriched']||0)+(a['retry-fallback']||0))+'\\n- Final failures: '+(a['final-failure']||0))" >> "$GITHUB_STEP_SUMMARY"
-            node -e "const r=require('./data/reports/enrichment-canary.json'); const excluded=r.manual_exclusions||[]; const cell=value=>String(value??'').replaceAll('|',String.fromCharCode(92)+'|').replace(/\\s+/g,' ').trim(); if(excluded.length){ console.log('\\n### Manual exclusions\\n\\n| Project | Reason | Note |\\n| --- | --- | --- |'); for(const entry of excluded){ console.log('| '+cell(entry.id)+' | '+cell(entry.reason_code)+' | '+cell(entry.enrichment_note)+' |'); } }" >> "$GITHUB_STEP_SUMMARY"
-          fi
-
   prepare:
     if: >-
       inputs.operation_key != '' &&

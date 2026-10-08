@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
 import { isDeepStrictEqual } from "node:util";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
@@ -18,6 +19,7 @@ import {
   assertFullRolloutAllowed,
   approveCanaryDeployment,
   recordCheckpointPublication,
+  recordFullDeployment,
 } from "../catalog/enrichment-run-state.mjs";
 import {
   runCli,
@@ -48,29 +50,172 @@ const normalizeReport = (value) =>
 const failure = (code) =>
   Object.assign(new Error("Enrichment checkpoint is unavailable."), { code });
 
+function checkpointAncestor(root, ancestor, descendant) {
+  if (ancestor === descendant) return true;
+  try {
+    execFileSync("git", ["merge-base", "--is-ancestor", ancestor, descendant], {
+      cwd: root,
+      stdio: "ignore",
+      timeout: 30000,
+      windowsHide: true,
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+function canaryMetadataUnchanged(state, checkpoint, original, deployed) {
+  const entries = Object.values(checkpoint.entries).filter((entry) =>
+    ["enriched", "retry-enriched", "fallback", "retry-fallback"].includes(
+      entry.outcome,
+    ),
+  );
+  const projectPaths = entries.map(
+    (entry) => `data/registry/projects/${entry.id}.json`,
+  );
+  const sourcePaths = entries.map(
+    (entry) => `data/registry/sources/${entry.source_id}.json`,
+  );
+  const paths = [...new Set([...projectPaths, ...sourcePaths])];
+  const before = readCanonicalFiles({
+    root: state.root,
+    revision: original,
+    paths,
+  });
+  const after = readCanonicalFiles({
+    root: state.root,
+    revision: deployed,
+    paths,
+  });
+  return entries.every((entry, index) => {
+    if (
+      !Array.isArray(entry.requested_fields) ||
+      entry.requested_fields.length < 1 ||
+      entry.requested_fields.some(
+        (field) => !["summary", "tags"].includes(field),
+      )
+    )
+      return false;
+    if (
+      !before[projectPaths[index]] ||
+      !after[projectPaths[index]] ||
+      !before[sourcePaths[index]] ||
+      !after[sourcePaths[index]]
+    )
+      return false;
+    const projectBefore = JSON.parse(before[projectPaths[index]]),
+      projectAfter = JSON.parse(after[projectPaths[index]]);
+    const sourceBefore = JSON.parse(before[sourcePaths[index]]),
+      sourceAfter = JSON.parse(after[sourcePaths[index]]);
+    if (
+      ![
+        "source_id",
+        "metadata_status",
+        "listing_status",
+        ...entry.requested_fields,
+      ].every((field) =>
+        isDeepStrictEqual(projectBefore[field], projectAfter[field]),
+      ) ||
+      projectAfter.source_id !== entry.source_id ||
+      sourceBefore.type !== sourceAfter.type ||
+      sourceBefore.status !== sourceAfter.status
+    )
+      return false;
+    if (sourceAfter.type === "url") {
+      const originalIdentity = parseSourceIdentity(sourceBefore.url),
+        deployedIdentity = parseSourceIdentity(sourceAfter.url);
+      return (
+        originalIdentity.kind === "reddit" &&
+        deployedIdentity.kind === "reddit" &&
+        typeof entry.reddit_post_id === "string" &&
+        entry.reddit_post_id.length > 0 &&
+        originalIdentity.postId === entry.reddit_post_id &&
+        deployedIdentity.postId === entry.reddit_post_id
+      );
+    }
+    return (
+      sourceBefore.repository_id === entry.repository_id &&
+      sourceAfter.repository_id === entry.repository_id
+    );
+  });
+}
+export function findEnrichmentCheckpointDeployment({
+  state,
+  publication,
+  checkpoint,
+  workflowRunId,
+}) {
+  const candidates = (state.local.deployments ?? [])
+    .filter(
+      (deployment) =>
+        Number.isSafeInteger(deployment.workflowRunId) &&
+        deployment.workflowRunId > 0 &&
+        (workflowRunId === undefined ||
+          deployment.workflowRunId === workflowRunId) &&
+        isConfirmedDeployment(deployment, {
+          sha: deployment.sourceSha,
+          catalogDigest: deployment.confirmation?.catalogDigest,
+          targetDigest: deployment.confirmation?.targetDigest,
+        }),
+    )
+    .sort((left, right) => right.workflowRunId - left.workflowRunId)
+    .slice(0, 20);
+  for (const deployment of candidates) {
+    try {
+      if (
+        !checkpointAncestor(
+          state.root,
+          publication.revision,
+          deployment.sourceSha,
+        )
+      )
+        continue;
+      if (
+        !publication.record.files.every(
+          (file) =>
+            state.local.publicationFileDigests?.[
+              `${publication.revision}:${file.path}`
+            ] === file.sha256,
+        )
+      )
+        continue;
+      const digests = canonicalFileDigests({
+        root: state.root,
+        revision: deployment.sourceSha,
+        paths: publication.record.files.map((file) => file.path),
+      });
+      if (
+        !publication.record.files.every(
+          (file) => digests[file.path] === file.sha256,
+        )
+      )
+        continue;
+      if (
+        checkpoint.mode === "canary" &&
+        publication.revision !== deployment.sourceSha &&
+        !canaryMetadataUnchanged(
+          state,
+          checkpoint,
+          publication.revision,
+          deployment.sourceSha,
+        )
+      )
+        continue;
+      return deployment;
+    } catch {
+      /* Try another verified deployment; never infer missing history. */
+    }
+  }
+  return null;
+}
+
 export function hasConfirmedEnrichmentCanary(state, full) {
   try {
     const canary = normalizeReport(state.local.enrichmentCanary);
     assertFullRolloutAllowed(canary, full.expected_model, full.selection_mode);
-    if (
-      full.authorized_canary_run_id !== canary.run_id ||
-      canary.publication?.checkpoint_commit_sha !== canary.deployment.commit_sha
-    )
+    if (full.authorized_canary_run_id !== canary.run_id || !canary.publication)
       return false;
-    const revision = canary.deployment.commit_sha;
-    if (
-      !(state.local.deployments ?? []).some(
-        (deployment) =>
-          deployment.sourceSha === revision &&
-          deployment.workflowRunId === canary.deployment.run_id &&
-          isConfirmedDeployment(deployment, {
-            sha: revision,
-            catalogDigest: deployment.confirmation?.catalogDigest,
-            targetDigest: deployment.confirmation?.targetDigest,
-          }),
-      )
-    )
-      return false;
+    const revision = canary.publication.checkpoint_commit_sha;
     // Approval changes only private report state; bind the original awaiting-deployment bytes.
     const bytes = readCanonicalFiles({
       root: state.root,
@@ -88,7 +233,7 @@ export function hasConfirmedEnrichmentCanary(state, full) {
           now: canary.publication.recorded_at,
         }),
         {
-          commitSha: revision,
+          commitSha: canary.deployment.commit_sha,
           deploymentRunId: canary.deployment.run_id,
           now: canary.deployment.verified_at,
         },
@@ -106,8 +251,76 @@ export function hasConfirmedEnrichmentCanary(state, full) {
             file.sha256 === checkpointDigest &&
             state.local.publicationFileDigests?.[`${revision}:${file.path}`] ===
               file.sha256,
-        ),
+        ) &&
+        findEnrichmentCheckpointDeployment({
+          state,
+          publication: { record, revision: sourceSha },
+          checkpoint,
+          workflowRunId: canary.deployment.run_id,
+        })?.sourceSha === canary.deployment.commit_sha,
     );
+  } catch {
+    return false;
+  }
+}
+
+export function hasConfirmedEnrichmentFull(state, value) {
+  try {
+    const full = normalizeReport(value);
+    if (full.mode !== "full" || !full.publication || !full.deployment)
+      return false;
+    return (state.local.publications ?? []).some((publication) => {
+      if (
+        publication.record.operation.identity.kind !== "enrichment" ||
+        !publication.record.files.some((file) => file.path === reportPaths.full)
+      )
+        return false;
+      const bytes = readCanonicalFiles({
+        root: state.root,
+        revision: publication.revision,
+        paths: [reportPaths.full],
+      })[reportPaths.full];
+      if (!bytes) return false;
+      const digest = createHash("sha256").update(bytes).digest("hex");
+      if (
+        !publication.record.files.some(
+          (file) => file.path === reportPaths.full && file.sha256 === digest,
+        )
+      )
+        return false;
+      const checkpoint = normalizeReport(
+        JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)),
+      );
+      if (
+        checkpoint.run_id !== full.run_id ||
+        checkpoint.mode !== "full" ||
+        checkpoint.phase !== "complete" ||
+        !["complete", "complete-with-errors"].includes(checkpoint.status)
+      )
+        return false;
+      const approved = createEnrichmentReport(
+        recordFullDeployment(
+          recordCheckpointPublication(checkpoint, {
+            commitSha: full.publication.checkpoint_commit_sha,
+            now: full.publication.recorded_at,
+          }),
+          {
+            commitSha: full.deployment.commit_sha,
+            deploymentRunId: full.deployment.run_id,
+            now: full.deployment.verified_at,
+          },
+        ),
+      );
+      return (
+        isDeepStrictEqual(approved, full) &&
+        findEnrichmentCheckpointDeployment({
+          state,
+          publication,
+          checkpoint,
+          workflowRunId: full.deployment.run_id,
+        })?.sourceSha === full.deployment.commit_sha
+      );
+    });
   } catch {
     return false;
   }

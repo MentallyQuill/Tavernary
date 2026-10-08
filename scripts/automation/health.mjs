@@ -1,6 +1,11 @@
 import { createHash } from "node:crypto";
 import { AUTOMATION_FAILURE_REASON_CODES } from "./failure.mjs";
 import { validateModelBudgetState } from "./model-budget.mjs";
+import {
+  createEnrichmentReport,
+  validateEnrichmentReport,
+} from "../catalog/enrichment-report.mjs";
+import { hasConfirmedEnrichmentFull } from "./enrichment-preparation.mjs";
 
 export const HEALTH_TITLES = Object.freeze({
   "refresh-stale": "Repository refresh is stale",
@@ -11,9 +16,10 @@ export const HEALTH_TITLES = Object.freeze({
   "budget-exhausted": "The model allowance is exhausted",
   "unknown-failure": "An automation failure needs investigation",
   "dependency-checks-failed": "A dependency update failed verification",
+  "enrichment-unresolved": "Catalog enrichment has unresolved projects",
 });
 const subjectPattern =
-  /^(?:refresh:(?:github|codeberg)|operation:[a-f0-9]{64}|dependency:(?:model-provider|publisher|budget)|deployment:pages|pull:[1-9]\d*)$/u;
+  /^(?:refresh:(?:github|codeberg)|operation:[a-f0-9]{64}|dependency:(?:model-provider|publisher|budget)|deployment:pages|enrichment:catalog|pull:[1-9]\d*)$/u;
 const reasons = new Set([
   ...AUTOMATION_FAILURE_REASON_CODES,
   "observation-stale",
@@ -402,7 +408,7 @@ export function assessInventoryHealth(state) {
   const day = budget?.days.find(
     (value) => value.day === new Date(state.nowMs).toISOString().slice(0, 10),
   );
-  return assessAutomationHealth({
+  const findings = assessAutomationHealth({
     nowMs: state.nowMs,
     operations,
     refreshState: observations,
@@ -435,4 +441,33 @@ export function assessInventoryHealth(state) {
         }
       : {}),
   });
+  try {
+    const full = createEnrichmentReport(
+      validateEnrichmentReport(structuredClone(state.local.enrichmentFull)),
+    );
+    if (
+      full.mode === "full" &&
+      full.phase === "complete" &&
+      ["complete", "complete-with-errors"].includes(full.status)
+    ) {
+      const unresolved =
+        Object.values(full.entries).filter((entry) =>
+          ["source-not-ready", "final-failure"].includes(entry.outcome),
+        ).length + (full.deferred_ids?.length ?? 0);
+      if (unresolved || hasConfirmedEnrichmentFull(state, full))
+        findings.push(
+          finding(
+            "enrichment-unresolved",
+            "enrichment:catalog",
+            unresolved > 0,
+            unresolved ? "validation-failed" : "verified-recovery",
+            unresolved,
+            unresolved ? state.local.revision : full.deployment.commit_sha,
+          ),
+        );
+    }
+  } catch {
+    /* Missing or invalid report state cannot close an existing incident. */
+  }
+  return findings;
 }
