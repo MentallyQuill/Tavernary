@@ -1,7 +1,7 @@
 # Tavernary unattended-operation overhaul
 
 Date: 2026-10-07
-Status: proposed specification for user review
+Status: approved by the user on 2026-10-07; GitHub-only scope
 Production baseline: `a7139759edfb253bfeb43e6196ff00a7c7f07eb3`
 Working branch: `codex/tavernary-longevity`
 
@@ -113,13 +113,13 @@ are unavailable. A busy item must not starve unrelated sources.
 
 Classify results using structured diagnostic evidence:
 
-| Classification | Examples | Behavior |
-| --- | --- | --- |
-| Superseded | Input or head changed, duplicate event, old deployment request | Recompute current operation; acknowledge old work safely |
-| Transient infrastructure | Cancellation, provider timeout, HTTP 429/5xx, network failure, mergeability delay, temporary runner failure | Back off and resume automatically |
-| Configuration unavailable | Missing provider configuration, invalid credential, exhausted spending allowance | Open the affected dependency circuit; probe on a bounded schedule |
-| Permanent input or policy failure | Invalid manifest, unsupported source, lost owner authority, path violation, deterministic validation failure | Stop mutation for that input; preserve a clear corrective state |
-| Unknown failure | Insufficient evidence to distinguish code failure from infrastructure | Bounded retries, then an actionable incident and dependency probe; never infer validation success |
+| Classification                    | Examples                                                                                                     | Behavior                                                                                          |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| Superseded                        | Input or head changed, duplicate event, old deployment request                                               | Recompute current operation; acknowledge old work safely                                          |
+| Transient infrastructure          | Cancellation, provider timeout, HTTP 429/5xx, network failure, mergeability delay, temporary runner failure  | Back off and resume automatically                                                                 |
+| Configuration unavailable         | Missing provider configuration, invalid credential, exhausted spending allowance                             | Open the affected dependency circuit; probe on a bounded schedule                                 |
+| Permanent input or policy failure | Invalid manifest, unsupported source, lost owner authority, path violation, deterministic validation failure | Stop mutation for that input; preserve a clear corrective state                                   |
+| Unknown failure                   | Insufficient evidence to distinguish code failure from infrastructure                                        | Bounded retries, then an actionable incident and dependency probe; never infer validation success |
 
 Use five minutes, fifteen minutes, one hour, six hours, then twenty-four hours
 as default transient delays, with bounded jitter and Retry-After support.
@@ -323,26 +323,26 @@ verification.
 
 ## Acceptance and completion evidence
 
-| ID | Requirement | Required evidence |
-| --- | --- | --- |
-| R1 | Current production base; preserve user changes | Isolated worktree baseline and separate original-checkout status |
-| R2 | Recover missed admission, generation, validation, publication, deployment, and finalization | Integration cases deleting each event/receipt and a trusted canary through all eligible stages |
-| R3 | Recover eligible Kits and owner requests; respect manual decisions | Authenticated fixture flows, replay/no-op cases, manual-mode denial cases |
-| R4 | Survive cancellations and a simulated seventy-two-hour provider outage | Injected clock and provider recovery tests; resumed work without permanent transient exhaustion |
-| R5 | Preserve exact-head, immutable identity, authority, tombstone, and path invariants | Existing and new adversarial publication tests; ruleset inspection |
-| R6 | Serialize canonical changes and avoid duplicate writes/deploys | Concurrent/replayed result tests; coordinator traces with one canonical result |
-| R7 | Prevent ordinary deployment regression | Out-of-order revision/ancestry tests and stale-request canary |
-| R8 | Recover deployment when old hosting/manifest read fails | Public-manifest outage injection with a valid recovery artifact |
-| R9 | Confirm real deployed artifact and essential browser behavior | Expected public revision/digests and browser smoke output |
-| R10 | Retain restorable GitHub bundles; support authorized safe rollback | Verified assets, integrity checks, rollback data-safety tests, clean restore drill |
-| R11 | GitHub-only operational checks and bounded incident handling | Stale-progress/provider/budget scenarios; incident deduplication and recovery evidence |
-| R12 | Preserve trusted fields and deterministic scans during model outages | Provider-failure cases, manual-policy tests, provisional-copy and assessment contracts |
-| R13 | Maintain changed metadata automatically with bounded budgets and cache | Scheduled selector tests, unchanged-source no-call cases, concurrent budget and repair accounting |
-| R14 | Complete eligible dependency maintenance safely | Trusted update transaction tests, full CI, exact-head merge evidence, post-deploy verification |
-| R15 | Tested supported-runtime upgrade policy | Supported manifest, full compatibility checks, end-of-life warning and transition cases |
-| R16 | Bound state and artifact retention without losing active work | Retention boundary tests, pending-operation preservation, protected restore target tests |
-| R17 | Actionable owner runbook | Documented recovery commands, switches, credential repair, manual exceptions, restore/rollback, and GitHub-only limitations |
-| R18 | PR, CI, review, merge, and production completion | Attached PR URLs, passing required checks at merged heads, resolved feedback, merged states, deployed revisions, and final audit |
+| ID  | Requirement                                                                                 | Required evidence                                                                                                                |
+| --- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| R1  | Current production base; preserve user changes                                              | Isolated worktree baseline and separate original-checkout status                                                                 |
+| R2  | Recover missed admission, generation, validation, publication, deployment, and finalization | Integration cases deleting each event/receipt and a trusted canary through all eligible stages                                   |
+| R3  | Recover eligible Kits and owner requests; respect manual decisions                          | Authenticated fixture flows, replay/no-op cases, manual-mode denial cases                                                        |
+| R4  | Survive cancellations and a simulated seventy-two-hour provider outage                      | Injected clock and provider recovery tests; resumed work without permanent transient exhaustion                                  |
+| R5  | Preserve exact-head, immutable identity, authority, tombstone, and path invariants          | Existing and new adversarial publication tests; ruleset inspection                                                               |
+| R6  | Serialize canonical changes and avoid duplicate writes/deploys                              | Concurrent/replayed result tests; coordinator traces with one canonical result                                                   |
+| R7  | Prevent ordinary deployment regression                                                      | Out-of-order revision/ancestry tests and stale-request canary                                                                    |
+| R8  | Recover deployment when old hosting/manifest read fails                                     | Public-manifest outage injection with a valid recovery artifact                                                                  |
+| R9  | Confirm real deployed artifact and essential browser behavior                               | Expected public revision/digests and browser smoke output                                                                        |
+| R10 | Retain restorable GitHub bundles; support authorized safe rollback                          | Verified assets, integrity checks, rollback data-safety tests, clean restore drill                                               |
+| R11 | GitHub-only operational checks and bounded incident handling                                | Stale-progress/provider/budget scenarios; incident deduplication and recovery evidence                                           |
+| R12 | Preserve trusted fields and deterministic scans during model outages                        | Provider-failure cases, manual-policy tests, provisional-copy and assessment contracts                                           |
+| R13 | Maintain changed metadata automatically with bounded budgets and cache                      | Scheduled selector tests, unchanged-source no-call cases, concurrent budget and repair accounting                                |
+| R14 | Complete eligible dependency maintenance safely                                             | Trusted update transaction tests, full CI, exact-head merge evidence, post-deploy verification                                   |
+| R15 | Tested supported-runtime upgrade policy                                                     | Supported manifest, full compatibility checks, end-of-life warning and transition cases                                          |
+| R16 | Bound state and artifact retention without losing active work                               | Retention boundary tests, pending-operation preservation, protected restore target tests                                         |
+| R17 | Actionable owner runbook                                                                    | Documented recovery commands, switches, credential repair, manual exceptions, restore/rollback, and GitHub-only limitations      |
+| R18 | PR, CI, review, merge, and production completion                                            | Attached PR URLs, passing required checks at merged heads, resolved feedback, merged states, deployed revisions, and final audit |
 
 Before completion, inspect every row against current authoritative evidence.
 A green narrow unit suite, a queued deployment, an opened PR, or a successful
