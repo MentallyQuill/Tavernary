@@ -1106,4 +1106,23 @@ configuration validation and 3,288 unit tests. Its sole failure was the existing
 React grouping contract, which still asserted only React/DOM after their type
 packages joined the group. The failure reproduced locally; the expectation is
 updated to retain all four coupled packages. No implementation gate, timeout or
-repository protection is relaxed. The repaired exact-head full CI remains required.
+repository protection is relaxed. The repaired exact head
+`c0fc6495114243cfb65e4862d740cf21be3afeaa` passed both required jobs in
+[CI run 37827904041](https://github.com/MentallyQuill/Tavernary/actions/runs/37827904041).
+
+### Actions dependency maintenance checkpoint
+
+The same native writer now accepts only pin-line changes in existing regular
+workflow files for the seven allowlisted official Actions. It reads each pinned
+commit's package version and verifies that the full stable release tag resolves
+to that commit, with bounded annotated-tag dereferencing. Generic major-version
+comments must agree with the actual package version. The native path reuses the
+npm update's bot identity, patch/minor policy, confirmed production, exact-head
+CI and fresh-base checks; permission changes and mixed update paths stay manual.
+
+Evidence: the native Actions transaction first returned idle before routing was
+connected, then requested exactly one head-bound merge after actual Git tree,
+blob and release-reference reads. Adding a contents permission produced zero
+PUTs. A moved stable release tag also fails provenance checks. Four focused
+suites passed 86 checks; types, scoped lint, formatting and whitespace passed.
+This checkpoint does not claim live automatic publication or incident handling.

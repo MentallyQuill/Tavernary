@@ -31,6 +31,16 @@ export const ALLOWED_NPM_DEPENDENCIES = [
   "typescript",
 ];
 const sha = /^[a-f0-9]{40}$/u;
+const workflowPath = /^\.github\/workflows\/[a-z0-9-]+\.yml$/u;
+export const ALLOWED_ACTION_DEPENDENCIES = [
+  "actions/checkout",
+  "actions/configure-pages",
+  "actions/create-github-app-token",
+  "actions/deploy-pages",
+  "actions/setup-node",
+  "actions/upload-artifact",
+  "actions/upload-pages-artifact",
+];
 
 function version(value) {
   if (!/^\d+\.\d+\.\d+$/u.test(value ?? "")) return null;
@@ -177,6 +187,186 @@ export function inspectNpmDependencyUpdate({
   };
 }
 
+async function readDependencyGitFiles({ revision, paths, request }) {
+  if (
+    !sha.test(revision ?? "") ||
+    !Array.isArray(paths) ||
+    paths.length > 32 ||
+    paths.some(
+      (path) =>
+        !["package.json", "package-lock.json"].includes(path) &&
+        !workflowPath.test(path),
+    )
+  )
+    throw new Error("Dependency Git selection is invalid.");
+  const commit = await request(`git/commits/${revision}`);
+  if (commit.sha !== revision || !sha.test(commit.tree?.sha ?? ""))
+    throw new Error("Dependency Git commit is invalid.");
+  const trees = new Map(),
+    result = {};
+  let totalBytes = 0;
+  for (const path of paths) {
+    let treeSha = commit.tree.sha;
+    const segments = path.split("/");
+    for (const [index, segment] of segments.entries()) {
+      if (!trees.has(treeSha)) {
+        const tree = await request(`git/trees/${treeSha}`);
+        if (
+          tree.sha !== treeSha ||
+          tree.truncated ||
+          !Array.isArray(tree.tree) ||
+          tree.tree.length > 1000
+        )
+          throw new Error("Dependency Git tree is unavailable.");
+        trees.set(treeSha, tree.tree);
+      }
+      const matches = trees
+        .get(treeSha)
+        .filter((entry) => entry.path === segment);
+      const entry = matches[0],
+        leaf = index === segments.length - 1;
+      if (
+        matches.length !== 1 ||
+        !sha.test(entry.sha ?? "") ||
+        entry.type !== (leaf ? "blob" : "tree") ||
+        entry.mode !== (leaf ? "100644" : "040000")
+      )
+        throw new Error("Dependency path is not a regular Git blob.");
+      if (!leaf) {
+        treeSha = entry.sha;
+        continue;
+      }
+      const blob = await request(`git/blobs/${entry.sha}`);
+      if (
+        blob.sha !== entry.sha ||
+        blob.encoding !== "base64" ||
+        !Number.isSafeInteger(blob.size) ||
+        blob.size < 0 ||
+        blob.size > 1_048_576 ||
+        typeof blob.content !== "string"
+      )
+        throw new Error("Dependency Git blob is invalid.");
+      const content = Buffer.from(blob.content, "base64");
+      totalBytes += content.length;
+      if (content.length !== blob.size || totalBytes > 2_097_152)
+        throw new Error(
+          "Dependency Git blob size differs or exceeds its bound.",
+        );
+      result[path] = new TextDecoder("utf-8", { fatal: true }).decode(content);
+    }
+  }
+  return result;
+}
+
+export async function resolveVerifiedActionVersion({
+  action,
+  pin,
+  gh = executeGh,
+}) {
+  if (!ALLOWED_ACTION_DEPENDENCIES.includes(action) || !sha.test(pin ?? ""))
+    throw new Error("Actions release provenance is invalid.");
+  const request = async (path) => {
+    const output = await gh(["api", `repos/${action}/${path}`]);
+    if (Buffer.byteLength(output) > 2_097_152)
+      throw new Error("Actions API response exceeds its bound.");
+    return JSON.parse(output);
+  };
+  const files = await readDependencyGitFiles({
+    revision: pin,
+    paths: ["package.json"],
+    request,
+  });
+  const declared = JSON.parse(files["package.json"]).version;
+  if (!version(declared))
+    throw new Error("Actions release provenance is invalid.");
+  const reference = await request(`git/ref/tags/v${declared}`);
+  if (reference.ref !== `refs/tags/v${declared}`)
+    throw new Error("Actions release provenance is invalid.");
+  let object = reference.object;
+  for (let depth = 0; object?.type === "tag" && depth < 3; depth++) {
+    if (!sha.test(object.sha ?? ""))
+      throw new Error("Actions release provenance is invalid.");
+    const tag = await request(`git/tags/${object.sha}`);
+    if (tag.sha !== object.sha)
+      throw new Error("Actions release provenance is invalid.");
+    object = tag.object;
+  }
+  if (object?.type !== "commit" || object.sha !== pin)
+    throw new Error("Actions release provenance is invalid.");
+  return declared;
+}
+
+export async function inspectActionsDependencyUpdate({
+  before,
+  after,
+  resolveVersion,
+}) {
+  const paths = Object.keys(before).sort();
+  if (
+    !paths.length ||
+    paths.length > 32 ||
+    !isDeepStrictEqual(paths, Object.keys(after).sort()) ||
+    paths.some((path) => !workflowPath.test(path))
+  )
+    throw new Error("Actions workflow policy changed.");
+  const updates = new Map();
+  const pin =
+    /^(\s*(?:-\s*)?uses:\s*)(actions\/[a-z0-9-]+)@([a-f0-9]{40})(?:\s+#\s*(v\d+(?:\.\d+){0,2}))?\s*$/u;
+  const hintMatches = (hint, actual) =>
+    !hint ||
+    hint
+      .slice(1)
+      .split(".")
+      .every(
+        (part, index) => Number(part) === Number(actual.split(".")[index]),
+      );
+  for (const path of paths) {
+    if (
+      typeof before[path] !== "string" ||
+      typeof after[path] !== "string" ||
+      Buffer.byteLength(before[path]) > 1_048_576 ||
+      Buffer.byteLength(after[path]) > 1_048_576
+    )
+      throw new Error("Actions workflow exceeds its bound.");
+    const oldLines = before[path].split("\n"),
+      newLines = after[path].split("\n");
+    if (oldLines.length !== newLines.length)
+      throw new Error("Actions workflow policy changed.");
+    for (let index = 0; index < oldLines.length; index++) {
+      if (oldLines[index] === newLines[index]) continue;
+      const oldPin = pin.exec(oldLines[index]),
+        newPin = pin.exec(newLines[index]);
+      if (
+        !oldPin ||
+        !newPin ||
+        oldPin[1] !== newPin[1] ||
+        oldPin[2] !== newPin[2] ||
+        !ALLOWED_ACTION_DEPENDENCIES.includes(oldPin[2])
+      )
+        throw new Error("Actions workflow policy changed.");
+      const from = await resolveVersion(oldPin[2], oldPin[3]);
+      const to = await resolveVersion(newPin[2], newPin[3]);
+      if (
+        !version(from) ||
+        !version(to) ||
+        !hintMatches(oldPin[4], from) ||
+        !hintMatches(newPin[4], to)
+      )
+        throw new Error("Actions release provenance is invalid.");
+      const update = { name: oldPin[2], from, to };
+      updates.set(JSON.stringify(update), update);
+    }
+  }
+  if (!updates.size)
+    throw new Error("Actions update has no verified pin change.");
+  return {
+    ecosystem: "github-actions",
+    provenance: true,
+    permissionsChanged: false,
+    updates: [...updates.values()],
+  };
+}
+
 export function planDependencyUpdate(input) {
   if (input.metadata.permissionsChanged)
     return { action: "owner-review", reason: "expanded-policy" };
@@ -196,7 +386,7 @@ export function planDependencyUpdate(input) {
   )
     return { action: "owner-review", reason: "untrusted-update" };
   if (
-    metadata.ecosystem !== "npm" ||
+    !["npm", "github-actions"].includes(metadata.ecosystem) ||
     !metadata.updates.length ||
     metadata.updates.some(
       (update) => !input.allowedPackages.includes(update.name),
@@ -205,12 +395,17 @@ export function planDependencyUpdate(input) {
     return { action: "owner-review", reason: "unsupported-update" };
   if (metadata.updates.some((update) => !patchOrMinor(update.from, update.to)))
     return { action: "owner-review", reason: "version-policy" };
-  if (
-    !files.includes("package-lock.json") ||
-    files.length > 2 ||
-    files.some((path) => !["package.json", "package-lock.json"].includes(path))
-  )
-    return { action: "owner-review", reason: "expanded-policy" };
+  const safePaths =
+    metadata.ecosystem === "npm"
+      ? files.includes("package-lock.json") &&
+        files.length <= 2 &&
+        files.every((path) =>
+          ["package.json", "package-lock.json"].includes(path),
+        )
+      : files.length > 0 &&
+        files.length <= 32 &&
+        files.every((path) => workflowPath.test(path));
+  if (!safePaths) return { action: "owner-review", reason: "expanded-policy" };
   if (!input.deploymentHealthy)
     return { action: "wait", reason: "deployment-unconfirmed" };
   if (
@@ -306,47 +501,15 @@ export async function runDependencyWriter({
         }));
   if (!Array.isArray(pulls) || pulls.length > 20)
     throw new Error("Dependency inventory exceeds its bound.");
-  const readPackages = async (revision) => {
-    if (!sha.test(revision)) throw new Error("Dependency revision is invalid.");
-    const commit = await api(`git/commits/${revision}`);
-    if (commit.sha !== revision || !sha.test(commit.tree?.sha ?? ""))
-      throw new Error("Dependency Git commit is invalid.");
-    const tree = await api(`git/trees/${commit.tree.sha}`);
-    if (
-      tree.sha !== commit.tree.sha ||
-      tree.truncated ||
-      !Array.isArray(tree.tree) ||
-      tree.tree.length > 1000
-    )
-      throw new Error("Dependency Git tree is unavailable.");
-    const result = {};
-    for (const path of ["package.json", "package-lock.json"]) {
-      const matches = tree.tree.filter((entry) => entry.path === path);
-      const entry = matches[0];
-      if (
-        matches.length !== 1 ||
-        entry.mode !== "100644" ||
-        entry.type !== "blob" ||
-        !sha.test(entry.sha)
-      )
-        throw new Error("Dependency path is not a regular Git blob.");
-      const blob = await api(`git/blobs/${entry.sha}`);
-      if (
-        blob.sha !== entry.sha ||
-        blob.encoding !== "base64" ||
-        !Number.isSafeInteger(blob.size) ||
-        blob.size < 0 ||
-        blob.size > 1_048_576
-      )
-        throw new Error("Dependency Git blob is invalid.");
-      const content = Buffer.from(blob.content, "base64");
-      if (content.length !== blob.size)
-        throw new Error("Dependency Git blob size differs.");
-      result[path] = JSON.parse(
-        new TextDecoder("utf-8", { fatal: true }).decode(content),
+  const actionVersions = new Map();
+  const resolveAction = (action, pin) => {
+    const key = `${action}@${pin}`;
+    if (!actionVersions.has(key))
+      actionVersions.set(
+        key,
+        resolveVerifiedActionVersion({ action, pin, gh }),
       );
-    }
-    return result;
+    return actionVersions.get(key);
   };
   const loadChecks = async (headSha) => {
     const result = await api(
@@ -426,12 +589,10 @@ export async function runDependencyWriter({
       const files = await api(`pulls/${pull.number}/files?per_page=100`);
       if (
         !Array.isArray(files) ||
-        files.length > 2 ||
+        !files.length ||
+        files.length > 32 ||
         files.some(
-          (file) =>
-            file.status !== "modified" ||
-            file.previous_filename ||
-            !["package.json", "package-lock.json"].includes(file.filename),
+          (file) => file.status !== "modified" || file.previous_filename,
         )
       ) {
         decisions.push({
@@ -441,24 +602,57 @@ export async function runDependencyWriter({
         });
         continue;
       }
+      const paths = files.map((file) => file.filename);
+      const npm =
+        paths.length <= 2 &&
+        paths.includes("package-lock.json") &&
+        paths.every((path) =>
+          ["package.json", "package-lock.json"].includes(path),
+        );
+      const actions = paths.every((path) => workflowPath.test(path));
+      if (!npm && !actions) {
+        decisions.push({
+          pullNumber: pull.number,
+          action: "owner-review",
+          reason: "expanded-policy",
+        });
+        continue;
+      }
       const comparison = await api(`compare/${revision}...${pull.head.sha}`);
       const mergeBaseSha = comparison.merge_base_commit?.sha;
-      const before = await readPackages(mergeBaseSha),
-        after = await readPackages(pull.head.sha);
-      const metadata = inspectNpmDependencyUpdate({
-        beforePackage: before["package.json"],
-        afterPackage: after["package.json"],
-        beforeLock: before["package-lock.json"],
-        afterLock: after["package-lock.json"],
+      const selection = npm ? ["package.json", "package-lock.json"] : paths;
+      const before = await readDependencyGitFiles({
+        revision: mergeBaseSha,
+        paths: selection,
+        request: api,
       });
+      const after = await readDependencyGitFiles({
+        revision: pull.head.sha,
+        paths: selection,
+        request: api,
+      });
+      const metadata = npm
+        ? inspectNpmDependencyUpdate({
+            beforePackage: JSON.parse(before["package.json"]),
+            afterPackage: JSON.parse(after["package.json"]),
+            beforeLock: JSON.parse(before["package-lock.json"]),
+            afterLock: JSON.parse(after["package-lock.json"]),
+          })
+        : await inspectActionsDependencyUpdate({
+            before,
+            after,
+            resolveVersion: resolveAction,
+          });
       const input = {
         pull,
         metadata,
-        files: files.map((file) => file.filename),
+        files: paths,
         checks: await loadChecks(pull.head.sha),
         currentMainSha: revision,
         mergeBaseSha,
-        allowedPackages: ALLOWED_NPM_DEPENDENCIES,
+        allowedPackages: npm
+          ? ALLOWED_NPM_DEPENDENCIES
+          : ALLOWED_ACTION_DEPENDENCIES,
         deploymentHealthy: true,
       };
       const decision = planDependencyUpdate(input);

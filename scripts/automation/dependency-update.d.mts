@@ -42,6 +42,17 @@ export function inspectNpmDependencyUpdate(input: {
   afterLock: Record<string, unknown>;
 }): DependencyMetadata;
 export const ALLOWED_NPM_DEPENDENCIES: string[];
+export const ALLOWED_ACTION_DEPENDENCIES: string[];
+export function resolveVerifiedActionVersion(input: {
+  action: string;
+  pin: string;
+  gh?: (args: string[], stdin?: string) => Promise<string>;
+}): Promise<string>;
+export function inspectActionsDependencyUpdate(input: {
+  before: Record<string, string>;
+  after: Record<string, string>;
+  resolveVersion: (action: string, sha: string) => Promise<string>;
+}): Promise<DependencyMetadata>;
 export function runDependencyWriter(options?: {
   root?: string;
   availableSlots?: number;
