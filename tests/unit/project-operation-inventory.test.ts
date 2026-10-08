@@ -7,6 +7,26 @@ import {
 import { AUTOMATION_NOW } from "../helpers/automation-fixtures";
 import { validateAutomationOperation } from "../../scripts/automation/operation.mjs";
 
+test("verified merged projects remain finalized on later ticks only while public proof covers their revision", () => {
+  const input = projectInventoryFixture({
+    merged: true,
+    confirmedDeployment: true,
+  });
+  const operation = discoverProjectOperations(input)[0];
+  const time = new Date(input.nowMs).toISOString();
+  input.receipts = [
+    {
+      schema_version: 1,
+      operation: { ...operation, stage: "finalized" },
+      updatedAt: time,
+      completedAt: time,
+    },
+  ];
+  expect(discoverProjectOperations(input)[0].stage).toBe("finalized");
+  input.catalog.confirmedRevisions = [];
+  expect(discoverProjectOperations(input)[0].stage).toBe("published");
+});
+
 test("lost generation event leaves eligible work discoverable", () => {
   const operations = discoverProjectOperations(
     projectInventoryFixture({

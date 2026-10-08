@@ -1,4 +1,5 @@
 import { operationKey } from "./operation.mjs";
+import { applyFinalizationReceipt } from "./finalization.mjs";
 import {
   activeRollbackCoversMain,
   validateActiveDeployment,
@@ -126,10 +127,11 @@ export function discoverDeploymentOperations(input) {
     workerRunId: null,
     retry: null,
   };
+  Object.assign(operation, applyFinalizationReceipt(operation, input.receipts));
   if (!confirmed && inFlight) operation.workerRunId = inFlight.id;
-  else if (!confirmed)
+  else if (operation.stage !== "finalized")
     recoverInventoryWorker(operation, input, [
-      ...pages,
+      ...(!confirmed ? pages : []),
       ...trustedOperationWorkerRuns(input, operation),
     ]);
   return [operation];

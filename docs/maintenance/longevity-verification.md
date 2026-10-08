@@ -418,6 +418,30 @@ Task 2 remains in progress: native finalization, legacy writer migration and
 canonical Kit history still require completion. Same-revision build identity
 races and maintenance quota recovery remain integration obligations.
 
+### Native publication finalization
+
+The shared writer now implements finalization and advisory notice delivery.
+Fresh canonical/public proof gates terminal receipts. Kit and project/owner
+issue projections retry their unfinished effects, preserve human labels, ignore
+foreign bot markers and refuse edited or declined requests. Completed receipts
+only suppress work while the authoritative publication remains covered.
+Private advisory delivery binds numeric bot custody to its immutable operation;
+a lost canonical pointer commit recovers the created issue without duplication.
+
+Ruling: change workflow-owned labels individually rather than replacing the
+issue's entire label list. Ruling: remove a stale maintainer-review label after
+the unchanged transaction has actually merged; explicit declines and requests
+for information remain protected. Ruling: render the persisted advisory category
+with neutral text, because the canonical review contract retains no model prose.
+The costs are extra bounded reads and conservative deferral on custody conflicts.
+
+Evidence: all 301 unit files / 3,236 tests passed; types and focused lint passed.
+Watched regressions cover terminal replay, saved notice delays, lost projection
+and pointer writes, numeric custody, stale review labels and changed input.
+Task 2 remains in progress: legacy write/lifecycle workflows, Kit path history,
+fork-dependent recovery, manual rollout checkpoints and report incidents still
+require completion. This checkpoint is not PR, merge or production completion.
+
 ### Exact revision manifest and monotonic Pages deployment
 
 The complete export contains `revision.json`, binding the exact source SHA, build

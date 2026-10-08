@@ -4,6 +4,36 @@ import { deploymentInventoryFixture } from "../helpers/automation-fixtures";
 import { validateAutomationOperation } from "../../scripts/automation/operation.mjs";
 import { deploymentArtifactFixture } from "../helpers/deployment-artifact-fixtures";
 
+test("a finalized receipt suppresses repeated lifecycle dispatch only while canonical deployment proof still covers its exact revision", () => {
+  const input = deploymentInventoryFixture();
+  input.deployments = [
+    {
+      sourceSha: input.mainHeadSha,
+      status: "confirmed",
+      bundleDigest: "e".repeat(64),
+      confirmation: {
+        sourceSha: input.mainHeadSha,
+        catalogDigest: "b".repeat(64),
+        targetDigest: "c".repeat(64),
+        buildDigest: "e".repeat(64),
+        essentialSmokePassed: true,
+      },
+    },
+  ];
+  const operation = discoverDeploymentOperations(input)[0];
+  input.receipts = [
+    {
+      schema_version: 1,
+      operation: { ...operation, stage: "finalized" },
+      updatedAt: new Date(input.nowMs).toISOString(),
+      completedAt: new Date(input.nowMs).toISOString(),
+    },
+  ];
+  expect(discoverDeploymentOperations(input)[0].stage).toBe("finalized");
+  input.deployments = [];
+  expect(discoverDeploymentOperations(input)[0].stage).toBe("published");
+});
+
 test("an authoritative in-flight Pages run coalesces the current deployment while a fork or foreign dispatch cannot", () => {
   const input = deploymentInventoryFixture(),
     run = deploymentArtifactFixture().run;

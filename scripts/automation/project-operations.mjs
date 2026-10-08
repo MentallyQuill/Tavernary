@@ -15,6 +15,7 @@ import modelFamilies from "../../data/vocabularies/model-families.json" with { t
 import completionFormats from "../../data/vocabularies/completion-formats.json" with { type: "json" };
 import { tagVocabularyHash } from "../catalog/tag-vocabulary.mjs";
 import { operationKey } from "./operation.mjs";
+import { applyFinalizationReceipt } from "./finalization.mjs";
 
 import {
   matchingOperationReceipt as matchingReceipt,
@@ -67,6 +68,28 @@ function issueManifest(issue, kind, catalog, admitted) {
       (source) => source.id === parsed.manifest?.source_id,
     ),
   });
+}
+export function projectIssueMatchesTransaction({
+  issue,
+  transaction,
+  catalog,
+}) {
+  if (!transaction || !actorMatches(transaction.actor, issue.user))
+    return false;
+  const parsed = issueManifest(
+    issue,
+    transaction.producer === "project-submission" ? "project" : "owner-request",
+    catalog,
+    issue.labels.some(
+      (label) =>
+        (typeof label === "string" ? label : label.name) === "issue-admitted",
+    ),
+  );
+  return (
+    parsed.valid &&
+    fingerprintProjectPublicationInput(parsed.manifest) ===
+      transaction.input_digest
+  );
 }
 
 function trustedPull(pull, transaction, input, producer, issue) {
@@ -202,6 +225,10 @@ export function discoverProjectOperations(input) {
         : input.catalog.requestedRevisions?.includes(pull.merge_commit_sha)
           ? "deployment-requested"
           : "published";
+      Object.assign(
+        operation,
+        applyFinalizationReceipt(operation, input.receipts),
+      );
       operations.push(operation);
       continue;
     }
@@ -289,13 +316,14 @@ export function discoverProjectOperations(input) {
     operations.push(operation);
   }
   for (const operation of operations) {
+    if (operation.stage === "finalized") continue;
     const workers = trustedOperationWorkerRuns(input, operation);
     const saved = matchingReceipt(input, operation);
     if (
       workers.length ||
       (operation.workerRunId === null &&
         operation.retry === null &&
-        saved?.operation.nextEligibleAt)
+        (saved?.operation.nextEligibleAt || saved?.operation.retry))
     )
       generationRecovery(operation, input, workers);
   }

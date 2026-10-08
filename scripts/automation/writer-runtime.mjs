@@ -4,6 +4,8 @@ import { readFile, writeFile, rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import { randomUUID, createHash } from "node:crypto";
 import { confirmCanonicalDeployment } from "./deployment-writer.mjs";
+import { finalizeAutomationOperation } from "./finalization.mjs";
+import { projectAutomationLifecycle } from "./lifecycle-github.mjs";
 import { loadGithubRevisionManifest } from "./deployment-github.mjs";
 import { confirmPublicDeployment } from "./confirm-deployment.mjs";
 import {
@@ -53,6 +55,70 @@ import {
 } from "../submissions/reconcile-project-validations.mjs";
 
 const exec = promisify(execFile);
+export async function runPublicationWriterFinalization({
+  operationKey,
+  noticeOnly = false,
+  root = process.cwd(),
+  env = process.env,
+  gh = executeGh,
+  load = writerInventoryLoader({ root, env, gh }),
+  persist = (receipt) =>
+    persistGithubAutomationReceipt({
+      gh,
+      repository: env.GITHUB_REPOSITORY,
+      receipt,
+    }),
+  commit = (input) => commitCanonicalData({ ...input, gh }),
+  project = (operation, state) =>
+    projectAutomationLifecycle({ operation, state, gh, load, commit }),
+}) {
+  assertCanonicalWriterContext(env, env.GITHUB_REPOSITORY);
+  if (!/^[a-f0-9]{64}$/u.test(operationKey ?? ""))
+    throw new Error("Finalization request is invalid.");
+  try {
+    if (noticeOnly) {
+      const state = await load();
+      const operation = state.operations.find(
+        (value) => value.key === operationKey,
+      );
+      if (!operation) return { status: "superseded" };
+      if (operation.identity.kind !== "advisory")
+        throw new Error("Advisory notice kind is invalid.");
+      if (
+        operation.retry &&
+        (operation.retry.failure.kind === "permanent" ||
+          (operation.nextEligibleAt !== null &&
+            Date.parse(operation.nextEligibleAt) > state.nowMs))
+      )
+        return { status: "waiting" };
+      return await project(operation, state);
+    }
+    const result = await finalizeAutomationOperation({
+      operationKey,
+      load,
+      project,
+      persist,
+    });
+    if (result.status === "waiting")
+      await persistPreparedFailure({
+        operationKey,
+        phase: "finalization",
+        load,
+        persist,
+        error: { code: "provider-unavailable" },
+      });
+    return result;
+  } catch (error) {
+    await persistPreparedFailure({
+      operationKey,
+      phase: "finalization",
+      load,
+      persist,
+      error,
+    });
+    throw error;
+  }
+}
 export async function runModelWriterPreparation({
   operationKey,
   root = process.cwd(),

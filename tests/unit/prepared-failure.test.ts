@@ -25,6 +25,26 @@ function fixture() {
     },
   };
 }
+test("finalization failures retain confirmed publication proof and durable notice backoff", async () => {
+  const input = fixture();
+  input.replace(operationFixture({ stage: "deployment-confirmed" }));
+  expect(
+    (
+      await persistPreparedFailure({
+        ...input,
+        phase: "finalization",
+        error: { code: "provider-unavailable" },
+      })
+    ).persisted,
+  ).toBe(true);
+  expect(input.persist.mock.calls[0][0].operation).toMatchObject({
+    stage: "deployment-confirmed",
+    retry: { failure: { kind: "transient" } },
+  });
+  expect(input.persist.mock.calls[0][0].operation.expectedSha).toBe(
+    operationFixture().expectedSha,
+  );
+});
 test("an unavailable prepared artifact persists bounded retry state without leaking error text", async () => {
   const input = fixture();
   const outcome = await persistPreparedFailure({

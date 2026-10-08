@@ -93,6 +93,20 @@ export async function runAutomationWriterCli(options = {}) {
       );
       return 0;
     }
+    if (mode === "finalize" || mode === "advisory-notice") {
+      const { runPublicationWriterFinalization } =
+        await import("./writer-runtime.mjs");
+      write(
+        JSON.stringify(
+          await runPublicationWriterFinalization({
+            operationKey: event.inputs?.operation_key,
+            noticeOnly: mode === "advisory-notice",
+            env,
+          }),
+        ),
+      );
+      return 0;
+    }
     if (mode === "retain" || mode === "confirm-restore") {
       const { runSiteWriterRetention, runSiteWriterRestoreConfirmation } =
         await import("./site-writer-runtime.mjs");

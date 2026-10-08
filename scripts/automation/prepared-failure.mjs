@@ -11,6 +11,7 @@ export async function persistPreparedFailure({
   load,
   persist,
   error,
+  phase,
 }) {
   if (!/^[a-f0-9]{64}$/u.test(operationKey ?? ""))
     throw new Error("Prepared failure key is invalid.");
@@ -24,7 +25,8 @@ export async function persistPreparedFailure({
     (operation.retry &&
       operation.nextEligibleAt !== null &&
       Date.parse(operation.nextEligibleAt) > state.nowMs) ||
-    ["deployment-confirmed", "finalized"].includes(operation.stage) ||
+    operation.stage === "finalized" ||
+    (operation.stage === "deployment-confirmed" && phase !== "finalization") ||
     (operation.identity.kind !== "deployment" &&
       ["published", "deployment-requested"].includes(operation.stage))
   )

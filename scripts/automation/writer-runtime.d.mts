@@ -11,6 +11,21 @@ interface ProjectWriterInput {
   gh?: GhRunner;
   load?: () => Promise<AutomationInventoryState>;
 }
+export function runPublicationWriterFinalization(
+  input: ProjectWriterInput & {
+    noticeOnly?: boolean;
+    persist?: (
+      receipt: import("./receipts.mjs").AutomationReceipt,
+    ) => Promise<void>;
+    commit?: (
+      input: Omit<Parameters<typeof commitCanonicalData>[0], "gh">,
+    ) => Promise<{ sha: string }>;
+    project?: (
+      operation: import("./operation.mjs").AutomationOperation,
+      state: AutomationInventoryState,
+    ) => Promise<{ status: "complete" | "superseded" | "waiting" }>;
+  },
+): Promise<Record<string, unknown>>;
 export function runModelWriterPreparation(
   input: ProjectWriterInput & {
     persistFailure?: (error: unknown) => Promise<void>;

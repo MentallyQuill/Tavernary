@@ -55,3 +55,8 @@ export interface ProjectInventoryInput {
 export function discoverProjectOperations(
   input: ProjectInventoryInput,
 ): AutomationOperation[];
+export function projectIssueMatchesTransaction(input: {
+  issue: ProjectInventoryIssue;
+  transaction: import("../publication/project-publication-transaction.mjs").ProjectPublicationTransaction;
+  catalog: ProjectInventoryInput["catalog"];
+}): boolean;
