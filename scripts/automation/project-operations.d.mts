@@ -51,6 +51,8 @@ export interface ProjectInventoryInput {
   nowMs: number;
   repository?: string;
   defaultBranch?: string;
+  resolvedDependencies?: Set<number>;
+  deferredRetries?: Map<number, string>;
 }
 export function discoverProjectOperations(
   input: ProjectInventoryInput,

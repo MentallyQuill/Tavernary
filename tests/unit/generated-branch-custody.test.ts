@@ -256,7 +256,12 @@ describe("generated project branch workflow custody", () => {
         "pull-requests": "write",
         actions: "write",
       });
-      expect(normalizedExpression(job.if)).toBe(publisherCallerCondition);
+      expect(normalizedExpression(job.if)).toBe(
+        "inputs.operation_key != '' && github.ref == 'refs/heads/main' && github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID",
+      );
+      expect(
+        normalizedExpression((document.jobs.request as { if?: string }).if),
+      ).toBe(`inputs.operation_key == '' && ${publisherCallerCondition}`);
       expect(job.environment).toBe("publisher");
       expect(job.env?.GH_TOKEN).toBe("${{ secrets.GITHUB_TOKEN }}");
       expect(token).toMatchObject({

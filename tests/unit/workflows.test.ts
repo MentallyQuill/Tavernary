@@ -489,6 +489,9 @@ test("uses the Publisher App identity for every protected workflow dispatch", as
       "import-tavernkeeper-reports.yml:import->automation-writer.yml",
       "publish-project-transaction.yml:publish->review-catalog-policy.yml",
       "reconcile-automation.yml:reconcile->automation-writer.yml",
+      "retry-fork-dependencies.yml:retry->automation-writer.yml",
+      "retry-frontend-dependencies.yml:retry->automation-writer.yml",
+      "retry-project-submission-enrichment.yml:retry->automation-writer.yml",
       "refresh-catalog.yml:refresh->refresh-catalog.yml",
       "review-catalog-policy.yml:review->automation-writer.yml",
       "targeted-tavernkeeper-scan.yml:request->refresh-catalog.yml",
@@ -1204,14 +1207,14 @@ test("retries frontend dependencies from read-only catalog changes", async () =>
   expect(retry.permissions).toEqual({
     contents: "read",
     issues: "read",
-    actions: "write",
+    actions: "read",
   });
   expect(retry.concurrency).toEqual({
     group: "retry-frontend-dependencies",
     "cancel-in-progress": false,
   });
   expect(source).toContain(
-    "node scripts/submissions/retry-frontend-dependencies.mjs",
+    "gh workflow run automation-writer.yml --ref main -f mode=reconcile",
   );
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
@@ -1236,18 +1239,16 @@ test("retries fork dependencies after registry or upstream review changes", asyn
   expect(retry.permissions).toEqual({
     contents: "read",
     issues: "read",
-    actions: "write",
+    actions: "read",
   });
   expect(retry.concurrency).toEqual({
     group: "retry-fork-dependencies",
     "cancel-in-progress": false,
   });
   expect(source).toContain(
-    "node scripts/submissions/retry-fork-dependencies.mjs",
+    "gh workflow run automation-writer.yml --ref main -f mode=reconcile",
   );
-  expect(source).toContain(
-    "UPSTREAM_ISSUE_NUMBER: ${{ inputs.upstream_issue_number }}",
-  );
+  expect(retry.jobs.retry.environment).toBe("publisher");
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
 
@@ -1438,7 +1439,7 @@ test("checks for due Reddit submissions once daily", async () => {
   expect(retry.permissions).toEqual({
     contents: "read",
     issues: "read",
-    actions: "write",
+    actions: "read",
   });
   expect(retry.concurrency).toEqual({
     group: "retry-project-submission-enrichment",
@@ -1447,7 +1448,7 @@ test("checks for due Reddit submissions once daily", async () => {
   expect(
     allSteps(retry).some((step) =>
       step.run?.includes(
-        "node scripts/submissions/retry-project-submission-enrichment.mjs",
+        "gh workflow run automation-writer.yml --ref main -f mode=reconcile",
       ),
     ),
   ).toBe(true);

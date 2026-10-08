@@ -63,6 +63,7 @@ import {
   generationRequestCompleted,
 } from "./preparation-request.mjs";
 import { enrichmentRequestAncestor } from "./enrichment-owner-request.mjs";
+import { inspectProjectRetry } from "./project-retries.mjs";
 import {
   reconcileProjectValidations,
   githubRequest,
@@ -409,11 +410,23 @@ export async function runModelWriterPreparation({
       ...input,
       model: env.UTILITY_MODEL,
     })),
-  projectGenerationEligible = async ({ state, operation }) =>
-    operation.stage === "admitted" ||
-    (["generated", "validated"].includes(operation.stage) &&
-      (await loadProjectMergePlan({ state, operation, gh })).action ===
-        "regenerate"),
+  projectGenerationEligible = async ({ state, operation }) => {
+    if (operation.identity.kind === "project") {
+      const issue = state.remote.issues.find(
+        (value) => value.number === Number(operation.identity.subject.slice(6)),
+      );
+      if (!issue) return false;
+      const retry = await inspectProjectRetry({ state, issue, gh });
+      if (retry.notBefore && Date.parse(retry.notBefore) > state.nowMs)
+        return false;
+    }
+    return (
+      operation.stage === "admitted" ||
+      (["generated", "validated"].includes(operation.stage) &&
+        (await loadProjectMergePlan({ state, operation, gh })).action ===
+          "regenerate")
+    );
+  },
   isRequestAncestor = (ancestor, descendant) =>
     enrichmentRequestAncestor(root, ancestor, descendant),
 }) {

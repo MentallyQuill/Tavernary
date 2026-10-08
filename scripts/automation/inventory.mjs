@@ -39,6 +39,10 @@ import { validateTavernKeeperImportState } from "../security/tavernkeeper-import
 import { trustedOperationWorkerRuns } from "./inventory-worker.mjs";
 import { recoverInventoryWorker } from "./inventory-worker.mjs";
 import {
+  inspectProjectRetry,
+  inspectProjectRetries,
+} from "./project-retries.mjs";
+import {
   validateCanonicalPublicationRecord,
   discoverCanonicalPublications,
 } from "./publication-record.mjs";
@@ -105,6 +109,8 @@ export function discoverAutomationState(state) {
       issues: remote.issues,
       pulls: remote.pulls,
       repository,
+      resolvedDependencies: new Set(local.resolvedProjectWaits ?? []),
+      deferredRetries: new Map(local.deferredProjectRetries ?? []),
       catalog: {
         projects: local.projects,
         sources: local.sources,
@@ -429,6 +435,11 @@ export async function loadAutomationInventory({
     receipts,
     operations: [],
   };
+  const retries = await inspectProjectRetries({ state, gh });
+  local.resolvedProjectWaits = [...retries.resolvedDependencies];
+  local.deferredProjectRetries = [...retries.deferredRetries];
+  local.projectRetryInspectionFailures = retries.failures;
+  local.projectRetryInspectionComplete = retries.inspectionComplete;
   state.operations = discoverAutomationState(state);
   return state;
 }
@@ -477,6 +488,22 @@ export async function revalidateAutomationOperation({
   );
   state.remote.runs = [...replacementRuns.values()];
   state.nowMs = nowMs;
+  if (operation.identity.kind === "project") {
+    const issue = state.remote.issues.find(
+      (value) => value.number === Number(operation.identity.subject.slice(6)),
+    );
+    if (issue) {
+      const retry = await inspectProjectRetry({ state, issue, gh });
+      const resolved = new Set(state.local.resolvedProjectWaits ?? []);
+      const deferred = new Map(state.local.deferredProjectRetries ?? []);
+      if (retry.resolved) resolved.add(issue.number);
+      else resolved.delete(issue.number);
+      if (retry.notBefore) deferred.set(issue.number, retry.notBefore);
+      else deferred.delete(issue.number);
+      state.local.resolvedProjectWaits = [...resolved];
+      state.local.deferredProjectRetries = [...deferred];
+    }
+  }
   return (
     discoverAutomationState(state).find(
       (candidate) => candidate.key === operation.key,

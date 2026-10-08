@@ -36,6 +36,7 @@ const protectedLabels = new Set([
   "needs-information",
   "submission-declined",
   "issue-limit-reached",
+  "waiting-on-fork-parent",
 ]);
 const activeStatuses = new Set([
   "queued",
@@ -200,7 +201,15 @@ export function discoverProjectOperations(input) {
       typeof label === "string" ? label : label.name,
     );
     const admitted = labels.includes("issue-admitted");
-    if (labels.some((label) => protectedLabels.has(label))) continue;
+    if (
+      labels.some(
+        (label) =>
+          protectedLabels.has(label) &&
+          (!input.resolvedDependencies?.has(issue.number) ||
+            !["needs-information", "waiting-on-fork-parent"].includes(label)),
+      )
+    )
+      continue;
     const kind = route === "project" ? "project" : "owner-request";
     const producer =
       route === "project" ? "project-submission" : "project-owner-request";
@@ -390,6 +399,23 @@ export function discoverProjectOperations(input) {
         (saved?.operation.nextEligibleAt || saved?.operation.retry))
     )
       generationRecovery(operation, input, workers);
+    const notBefore = input.deferredRetries?.get(
+      Number(operation.identity.subject.slice(6)),
+    );
+    if (
+      operation.stage === "admitted" &&
+      notBefore &&
+      Date.parse(notBefore) > input.nowMs &&
+      Date.parse(notBefore) >
+        Date.parse(operation.nextEligibleAt ?? "1970-01-01T00:00:00.000Z")
+    ) {
+      operation.nextEligibleAt = notBefore;
+      operation.retry ??= {
+        failure: { kind: "transient", reasonCode: "provider-unavailable" },
+        transientAttempts: 0,
+        immediateAttempts: 0,
+      };
+    }
   }
   return operations;
 }

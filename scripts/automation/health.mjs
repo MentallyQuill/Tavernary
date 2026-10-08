@@ -469,5 +469,22 @@ export function assessInventoryHealth(state) {
   } catch {
     /* Missing or invalid report state cannot close an existing incident. */
   }
+  const inspectionFailures = state.local.projectRetryInspectionFailures;
+  if (
+    Number.isSafeInteger(inspectionFailures) &&
+    inspectionFailures >= 0 &&
+    (inspectionFailures > 0 ||
+      state.local.projectRetryInspectionComplete === true)
+  ) {
+    findings.push(
+      finding(
+        "unknown-failure",
+        "dependency:publisher",
+        inspectionFailures > 0,
+        inspectionFailures > 0 ? "unclassified-failure" : "verified-recovery",
+        inspectionFailures,
+      ),
+    );
+  }
   return findings;
 }

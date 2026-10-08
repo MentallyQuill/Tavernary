@@ -13,7 +13,7 @@ on:
 permissions:
   contents: read
   issues: read
-  actions: write
+  actions: read
 
 concurrency:
   group: retry-frontend-dependencies
@@ -21,15 +21,22 @@ concurrency:
 
 jobs:
   retry:
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'schedule' || github.event_name == 'push' ||
+       github.actor_id == 2625904 || github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: publisher
     steps:
-      - name: Check out repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+      - name: Create scoped Publisher wake token
+        id: dispatch-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
-          node-version: 24
-      - name: Retry matching blocked submissions
-        run: node scripts/submissions/retry-frontend-dependencies.mjs
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-actions: write
+      - name: Recover retries through the shared writer
+        run: gh workflow run automation-writer.yml --ref main -f mode=reconcile
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.dispatch-token.outputs.token }}

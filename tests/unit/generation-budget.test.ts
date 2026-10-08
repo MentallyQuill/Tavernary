@@ -1000,6 +1000,7 @@ test.each(["project", "owner-request"] as const)(
     });
     operation.key = operationKey(operation.identity);
     f.state.operations = [operation];
+    f.state.remote.issues = projectInventoryFixture().issues;
     f.state.local.modelBudget = createModelBudgetState(f.state.nowMs);
     const workflow = `.github/workflows/generate-${kind === "project" ? "project-submission" : "project-owner-request"}.yml`;
     const commit = vi.fn(
