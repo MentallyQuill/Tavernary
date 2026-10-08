@@ -17,11 +17,6 @@ test("production inventory uses the complete canonical build inputs, including i
   const revision = execFileSync("git", ["rev-parse", "HEAD"], {
     encoding: "utf8",
   }).trim();
-  const committedAt = new Date(
-    execFileSync("git", ["show", "-s", "--format=%cI", revision], {
-      encoding: "utf8",
-    }).trim(),
-  ).toISOString();
   const gh = async (args: string[]) => {
     const route = args.find((arg) => arg.startsWith("repos/"))!;
     if (route.endsWith("/git/ref/heads/main"))
@@ -44,7 +39,7 @@ test("production inventory uses the complete canonical build inputs, including i
       reports: [],
     },
   });
-  const catalog = await buildCatalog({ write: false, now: committedAt });
+  const catalog = await buildCatalog({ write: false });
   const expected = automationDataDigests({
     catalog,
     targets: { schema_version: 3, repositories: [] },

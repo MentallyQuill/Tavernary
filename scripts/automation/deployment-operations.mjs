@@ -10,6 +10,9 @@ const sha = /^[a-f0-9]{40}$/u;
 export function isConfirmedDeployment(deployment, commit) {
   const proof = deployment.confirmation;
   return (
+    sha.test(commit.sha ?? "") &&
+    digest.test(commit.catalogDigest ?? "") &&
+    digest.test(commit.targetDigest ?? "") &&
     deployment.status === "confirmed" &&
     proof?.sourceSha === commit.sha &&
     proof.catalogDigest === commit.catalogDigest &&
@@ -22,7 +25,8 @@ export function isConfirmedDeployment(deployment, commit) {
 
 export function discoverDeploymentOperations(input) {
   const commit = input.mainCommits.find(
-    (commit) => commit.sha === input.mainHeadSha,
+    (commit) =>
+      commit.sha === (input.latestPublishableSha ?? input.mainHeadSha),
   );
   if (
     !commit?.publishable ||

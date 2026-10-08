@@ -3,6 +3,17 @@ import { discoverDeploymentOperations } from "../../scripts/automation/deploymen
 import { deploymentInventoryFixture } from "../helpers/automation-fixtures";
 import { validateAutomationOperation } from "../../scripts/automation/operation.mjs";
 
+test("a bookkeeping-only head recovers the latest publishable ancestor exactly once", () => {
+  const input = deploymentInventoryFixture();
+  input.mainHeadSha = "e".repeat(40);
+  input.latestPublishableSha = "d".repeat(40);
+  expect(discoverDeploymentOperations(input)).toMatchObject([
+    { expectedSha: "d".repeat(40), stage: "published" },
+  ]);
+  input.mainCommits[0].publishable = false;
+  expect(discoverDeploymentOperations(input)).toEqual([]);
+});
+
 test("a lost deployment event is reconstructed only for the current trusted main revision", () => {
   const input = deploymentInventoryFixture();
   input.mainCommits.push({ ...input.mainCommits[0], sha: "a".repeat(40) });

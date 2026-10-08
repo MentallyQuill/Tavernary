@@ -4,6 +4,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
+import { verifyRevisionExport } from "./automation/revision-manifest.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -245,6 +246,12 @@ async function main() {
   await verifyMenuStaticRoutes("out", configuredBasePath());
   await verifyTavernKeeperStaticExport();
   await verifyCatalogStaticExport();
+  if (process.env.TAVERNARY_EXPECTED_SOURCE_SHA) {
+    await verifyRevisionExport({
+      expectedSourceSha: process.env.TAVERNARY_EXPECTED_SOURCE_SHA,
+      expectedBuildId: process.env.TAVERNARY_EXPECTED_BUILD_ID,
+    });
+  }
   console.log("Static export verified");
 }
 

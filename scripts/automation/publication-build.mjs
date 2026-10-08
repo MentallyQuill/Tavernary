@@ -70,6 +70,14 @@ export async function buildPreparedCatalogPublication({ action, state }) {
       new Error("Prepared catalog cross-reference validation failed."),
       { code: "validation-failed" },
     );
+  if (
+    action.files.every((file) =>
+      /^(?:data\/maintenance\/automation\/metadata|data\/snapshots\/policy-review)\//u.test(
+        file.path,
+      ),
+    )
+  )
+    return action.files;
   const catalog = await buildCatalog({
     ...inputs,
     write: false,

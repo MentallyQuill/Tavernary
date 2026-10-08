@@ -988,6 +988,53 @@ test("runs Windows-specific visual baselines on a Windows runner", async () => {
   expect(visualCommands).toContain("npm run test:visual");
 });
 
+test("the final serialized Pages guard uses this run's exact manifest and fresh authoritative main", async () => {
+  const deploy = await workflow("deploy-pages");
+  const build = deploy.jobs.build.steps as Array<{
+    name?: string;
+    run?: string;
+    uses?: string;
+    with?: Record<string, unknown>;
+    env?: Record<string, string>;
+  }>;
+  const steps = deploy.jobs.deploy.steps as Array<{
+    name?: string;
+    run?: string;
+    uses?: string;
+    if?: string;
+  }>;
+  const guard = steps.findIndex(
+    (step) =>
+      step.name === "Recheck fresh main and confirmed deployment ancestry",
+  );
+  const publication = steps.findIndex(
+    (step) => step.name === "Deploy GitHub Pages",
+  );
+  expect(guard).toBeGreaterThan(-1);
+  expect(publication).toBe(guard + 1);
+  expect(steps[guard].run).toContain("git fetch --no-tags origin main");
+  expect(steps[guard].run).toContain("deployment-gate.mjs");
+  expect(steps[publication].if).toBe("steps.guard.outputs.action == 'deploy'");
+  expect(deploy.jobs.deploy.permissions).toEqual({
+    contents: "read",
+    actions: "read",
+    pages: "write",
+    "id-token": "write",
+  });
+  expect(
+    build.find((step) => step.name === "Retain revision integrity metadata")
+      ?.with,
+  ).toMatchObject({ path: "out/revision.json", "retention-days": 90 });
+  expect(
+    build.find((step) => step.name === "Verify static export")?.env,
+  ).toHaveProperty("TAVERNARY_EXPECTED_SOURCE_SHA");
+  const comparison = build.find(
+    (step) => step.name === "Compare public and built TavernKeeper targets",
+  )?.run;
+  expect(comparison).not.toContain('exit "$read_status"');
+  expect(comparison).toContain("if (( read_status != 0 )); then");
+});
+
 test("deploys only a verified static export to the Pages environment", async () => {
   const deploy = await workflow("deploy-pages");
   const build = deploy.jobs.build as {

@@ -4,6 +4,7 @@ import { expect, test } from "vitest";
 import { buildPreparedCatalogPublication } from "../../scripts/automation/publication-build.mjs";
 import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
 import project from "../../data/registry/projects/mentallyquill-recursion.json";
+import { metadataMaintenanceFixture } from "../helpers/automation-fixtures";
 function fixture() {
   const source = JSON.parse(
     readFileSync(`data/registry/sources/${project.source_id}.json`, "utf8"),
@@ -91,4 +92,32 @@ test("aggregate cross-reference validation blocks a file that names a nonexisten
       state,
     }),
   ).rejects.toThrow();
+});
+
+test("an unchanged-source cache publication never manufactures new public assets", async () => {
+  const input = await metadataMaintenanceFixture({ unchanged: true });
+  const data = await input.run();
+  const files = Object.entries(data).map(([path, content]) => ({
+    path,
+    content,
+    type: "file" as const,
+    bytes: Buffer.byteLength(content),
+    sha256: createHash("sha256").update(content).digest("hex"),
+    baseDigest: null,
+  }));
+  const { state } = fixture();
+  const published = await buildPreparedCatalogPublication({
+    state,
+    action: {
+      action: "commit",
+      operationKeys: [input.operation.key],
+      expectedMainSha: "b".repeat(40),
+      files,
+    },
+  });
+  expect(published.map((file) => file.path)).toEqual(
+    files.map((file) => file.path),
+  );
+  expect(published[0]).toEqual(files[0]);
+  expect(input.modelCalls()).toBe(0);
 });

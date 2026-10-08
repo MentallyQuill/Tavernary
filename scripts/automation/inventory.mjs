@@ -11,6 +11,7 @@ import { discoverKitOperations } from "./kit-operations.mjs";
 import { discoverCatalogOperations } from "./catalog-operations.mjs";
 import { discoverReportOperations } from "./report-operations.mjs";
 import { discoverDeploymentOperations } from "./deployment-operations.mjs";
+import { readLatestPublishableRevision } from "./deployment-gate.mjs";
 import { validateAutomationReceipt } from "./receipts.mjs";
 import { validateAutomationOperation } from "./operation.mjs";
 import {
@@ -145,10 +146,13 @@ export function discoverAutomationState(state) {
     ...discoverDeploymentOperations({
       ...common,
       mainHeadSha: remote.mainHeadSha,
+      ...(local.revision === remote.mainHeadSha && local.publishableRevision
+        ? { latestPublishableSha: local.publishableRevision }
+        : {}),
       mainCommits: [
         {
-          sha: local.revision,
-          committedAt: local.committedAt,
+          sha: local.publishableRevision ?? local.revision,
+          committedAt: local.publishableCommittedAt ?? local.committedAt,
           publishable: true,
           catalogDigest: local.catalogDigest,
           targetDigest: local.targetDigest,
@@ -192,6 +196,7 @@ export async function loadAutomationInventory({
     codebergSnapshots,
     publicationRecords,
     trustedEditors,
+    refreshManifest,
   ] = await Promise.all([
     records(root, "data/registry/projects", true),
     records(root, "data/registry/sources", true),
@@ -209,6 +214,7 @@ export async function loadAutomationInventory({
     records(root, "data/snapshots/codeberg"),
     records(root, "data/maintenance/automation/publications"),
     readJson(root, "data/maintenance/trusted-tavernary-editors.json"),
+    readJson(root, "data/snapshots/github-refresh.json"),
   ]);
   snapshots.push(...codebergSnapshots);
   receipts.forEach(validateAutomationReceipt);
@@ -230,6 +236,13 @@ export async function loadAutomationInventory({
       encoding: "utf8",
     }).trim(),
   ).toISOString();
+  const publishableRevision = readLatestPublishableRevision({ root, revision });
+  const publishableCommittedAt = new Date(
+    execFileSync("git", ["show", "-s", "--format=%cI", publishableRevision], {
+      cwd: root,
+      encoding: "utf8",
+    }).trim(),
+  ).toISOString();
   const catalog = await buildCatalog({
     write: false,
     records: projects,
@@ -240,7 +253,8 @@ export async function loadAutomationInventory({
     kitSnapshots,
     blockedUsers,
     tavernKeeperReports: stored,
-    now: committedAt,
+    refreshManifest,
+    now: refreshManifest.completed_at,
   });
   const publicIds = new Set(catalog.projects.map((project) => project.id));
   const targets = buildTavernKeeperTargets({
@@ -255,7 +269,7 @@ export async function loadAutomationInventory({
         .filter((project) => publicIds.has(project.id))
         .map((project) => project.source_id),
     ),
-    generatedAt: committedAt,
+    generatedAt: refreshManifest.completed_at,
   });
   let index = reportIndex;
   if (!index) {
@@ -286,13 +300,15 @@ export async function loadAutomationInventory({
     trustedEditors,
     reportIndex: index,
     storedReports: stored,
-    refreshManifest: await readJson(root, "data/snapshots/github-refresh.json"),
+    refreshManifest,
     importedReports: stored.reports.map((report) => ({
       ...report,
       synthesis_policy_version: report.synthesis_policy_version,
     })),
     revision,
     committedAt,
+    publishableRevision,
+    publishableCommittedAt,
     ...automationDataDigests({ catalog, targets }),
   };
   const validatedPublications = publicationRecords.map(

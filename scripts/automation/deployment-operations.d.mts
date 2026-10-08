@@ -15,6 +15,8 @@ export interface DeploymentInventoryEvidence {
 }
 export interface DeploymentInventoryInput extends InventoryWorkerState {
   mainHeadSha: string;
+  /** Latest ancestor with public effects, derived from fresh trusted main Git history. */
+  latestPublishableSha?: string;
   /** Commits and digests come from the trusted main checkout, not the hosted manifest. */
   mainCommits: Array<{
     sha: string;

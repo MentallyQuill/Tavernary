@@ -23,26 +23,26 @@ attached PRs, required checks, independent review, merge, and production proof.
 
 ## Requirement evidence
 
-| ID  | Required result                                       | Current evidence/status                                                                           |
-| --- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| R1  | Current main base; preserve original changes          | Isolated branch from the recorded main SHA; original status recorded; integration recheck pending |
-| R2  | Recover every missed core handoff                     | Pending implementation and integration/canary proof                                               |
-| R3  | Eligible Kits/owner flows; preserve manual decisions  | Pending                                                                                           |
-| R4  | Cancellation and 72-hour outage recovery              | Pending                                                                                           |
-| R5  | Exact head, identity, authority, tombstones, paths    | Existing protections are baseline; new adversarial evidence pending                               |
-| R6  | Serialize and deduplicate writes/deployments          | Pending                                                                                           |
-| R7  | Prevent ordinary deployment regression                | Pending                                                                                           |
-| R8  | Recover when old hosted manifest is unavailable       | Pending                                                                                           |
-| R9  | Confirm public revision, digests, browser behavior    | Existing baseline browser observations only; new manifest/confirmation pending                    |
-| R10 | Retained verified bundles and safe rollback           | Pending                                                                                           |
-| R11 | GitHub health checks and bounded incidents            | Pending                                                                                           |
-| R12 | Trusted fields, factual fallback, deterministic scans | Existing scan fallback is baseline; overhaul proof pending                                        |
-| R13 | Scheduled changed metadata, cache, global budgets     | Pending                                                                                           |
-| R14 | Gated dependency completion                           | Pending; baseline audit requires triage                                                           |
-| R15 | Verified supported-runtime policy                     | Pending                                                                                           |
-| R16 | Safe bounded retention                                | Pending                                                                                           |
-| R17 | Owner runbook                                         | Pending                                                                                           |
-| R18 | Attached PRs, CI, review, merge, production proof     | Pending                                                                                           |
+| ID  | Required result                                       | Current evidence/status                                                                                    |
+| --- | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| R1  | Current main base; preserve original changes          | Isolated branch from the recorded main SHA; original status recorded; integration recheck pending          |
+| R2  | Recover every missed core handoff                     | Pending implementation and integration/canary proof                                                        |
+| R3  | Eligible Kits/owner flows; preserve manual decisions  | Pending                                                                                                    |
+| R4  | Cancellation and 72-hour outage recovery              | Pending                                                                                                    |
+| R5  | Exact head, identity, authority, tombstones, paths    | Existing protections are baseline; new adversarial evidence pending                                        |
+| R6  | Serialize and deduplicate writes/deployments          | Pending                                                                                                    |
+| R7  | Prevent ordinary deployment regression                | Planner, fresh serialized Git ancestry guard and native queued-build regression tests; live canary pending |
+| R8  | Recover when old hosted manifest is unavailable       | All failed old-manifest reads are advisory; strict new-export verification; production recovery pending    |
+| R9  | Confirm public revision, digests, browser behavior    | Existing baseline browser observations only; new manifest/confirmation pending                             |
+| R10 | Retained verified bundles and safe rollback           | Pending                                                                                                    |
+| R11 | GitHub health checks and bounded incidents            | Pending                                                                                                    |
+| R12 | Trusted fields, factual fallback, deterministic scans | Existing scan fallback is baseline; overhaul proof pending                                                 |
+| R13 | Scheduled changed metadata, cache, global budgets     | Pending                                                                                                    |
+| R14 | Gated dependency completion                           | Pending; baseline audit requires triage                                                                    |
+| R15 | Verified supported-runtime policy                     | Pending                                                                                                    |
+| R16 | Safe bounded retention                                | Pending                                                                                                    |
+| R17 | Owner runbook                                         | Pending                                                                                                    |
+| R18 | Attached PRs, CI, review, merge, production proof     | Pending                                                                                                    |
 
 ## Rulings and task outcomes
 
@@ -395,6 +395,44 @@ type checking passed. Four real-Git regression cases cover line endings,
 subsequent updates, detached records, executable data and substituted objects.
 Task 2 migrations, all later phases, independent review, CI, merge and actual
 production verification remain outstanding.
+
+### Exact revision manifest and monotonic Pages deployment
+
+The complete export contains `revision.json`, binding the exact source SHA, build
+run, supported public schemas, semantic catalog/target identities and every
+other exported regular file's SHA-256 and size. Native verification rejects
+extra/missing/modified assets, unsupported schema versions and substituted
+source/build identity. Links, unsafe paths and resource-limit violations fail
+closed. The revision manifest excludes its own hash to avoid a circular digest;
+its schema, build identity and all other asset digests are independently checked.
+
+Pages retains this run's integrity metadata for ninety days and downloads it by
+exact workflow run and source name. Immediately before the serialized Pages
+action, the controller fetches main and rechecks trusted main/deployment ancestry.
+Older queued builds are superseded, verified duplicates coalesce, unknown
+ancestry is rejected, and ordinary publication cannot roll back a descendant.
+Missing, invalid, unavailable and timed-out previous hosted target manifests are
+advisory. The new export remains strictly validated.
+
+Ruling: recover the latest publishable ancestor after internal bookkeeping
+commits — budget/cache/confirmation state does not require a new website — cost
+if wrong: unknown paths conservatively trigger a deployment rather than hiding
+public changes. Read-only cache/advisory publication retains cross-reference
+validation but does not manufacture timestamp-only generated catalog writes.
+
+Ruling: inventory uses the canonical refresh timestamp used by the production
+catalog builder — commit time changed time-derived activity/trending values and
+made confirmation digests disagree — cost if wrong: time-derived display changes
+wait for the next canonical refresh, preserving existing production behavior.
+
+Evidence: watched RED/GREEN regressions cover native Git bookkeeping/queued
+builds, incomplete confirmation proof, cache-only public-write suppression and
+the real production build's semantic digest. All 279 unit files / 3,114 tests
+passed; full lint and type checking passed. The production export was rebuilt
+with 508 projects and 23 Kits, then verified byte for byte against the new
+revision manifest. Public confirmation, retained complete
+bundles, the remaining writer migration, later phases, review, CI, merge and
+actual production proof remain required.
 
 ### Budgeted metadata and advisory producer integration (Task 4 in progress)
 
