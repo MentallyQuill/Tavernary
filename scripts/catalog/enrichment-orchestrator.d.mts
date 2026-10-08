@@ -25,6 +25,14 @@ export function runEnrichmentRollout(
   operations: EnrichmentRolloutOperations,
 ): Promise<{ status: "complete" | "complete-with-errors" }>;
 
+export function runEnrichmentCheckpoint(
+  operations: EnrichmentRolloutOperations & {
+    confirmedDeployment(commit: string): Promise<number | null>;
+  },
+): Promise<{
+  status: "running" | "awaiting-deployment" | "checkpointed" | "complete";
+}>;
+
 export function runMain(options?: {
   operations?: EnrichmentRolloutOperations;
   runnerTemp?: string;

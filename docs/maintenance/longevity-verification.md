@@ -1058,3 +1058,16 @@ admits only `data/snapshots/github-refresh.json`; regular-file, content-hash,
 JSON, size and non-forced main-update checks remain in effect. Four focused
 suites passed 30 tests, including publication and verification of the real
 clock manifest through the Git adapter. Other enrichment work remains pending.
+
+### Bounded enrichment checkpoint support
+
+The enrichment orchestrator now offers a one-batch checkpoint driver. It yields
+after durable progress and waits for confirmed deployment before canary approval
+or full-rollout authorization. The existing production workflow is not yet wired
+to this driver, so this checkpoint does not claim the rollout migration is done.
+The manual CLI forwards its required allowance and guard to the real model
+provider, including preflight; a denied allowance makes zero HTTP requests.
+The allowance regression was observed failing before the fix. Three focused
+provider/CLI/budget suites passed 116 checks; the checkpoint suite passed 34.
+Types, scoped lint and whitespace checks passed. Native production routing,
+authenticated confirmation and automatic resumption remain required.

@@ -1134,6 +1134,10 @@ export async function runCli(options = {}) {
     createEnrichmentProvider({
       ...configuration,
       timeoutMs: options.timeoutMs,
+      requireBudget:
+        options.requireBudget ??
+        process.env.TAVERNARY_REQUIRE_MODEL_BUDGET === "true",
+      budgetGuard: options.budgetGuard,
     });
   const sleep =
     options.sleep ??

@@ -8,6 +8,7 @@ import {
   requiresFullCheck,
   runMain,
   runEnrichmentRollout,
+  runEnrichmentCheckpoint,
 } from "../../scripts/catalog/enrichment-orchestrator.mjs";
 
 type BatchResult = {
@@ -269,6 +270,88 @@ function recordingOperations(options: {
     },
   };
 }
+
+test("a bounded full-rollout invocation publishes one durable batch and returns before the next", async () => {
+  const input = recordingOperations({
+    plans: ["resume-full"],
+    full: [
+      {
+        status: "running",
+        progress: "primary:1",
+        checkpointCommit: "a".repeat(40),
+      },
+      {
+        status: "running",
+        progress: "primary:2",
+        checkpointCommit: "b".repeat(40),
+      },
+    ],
+  });
+  expect(
+    await runEnrichmentCheckpoint({
+      ...input.operations,
+      confirmedDeployment: async () => null,
+    }),
+  ).toEqual({ status: "running" });
+  expect(input.calls).toEqual([
+    "sync",
+    "plan:resume-full",
+    "preflight",
+    "resume-full",
+  ]);
+});
+
+test("bounded canary progress yields at the deployment barrier and preserves the full-rollout approval", async () => {
+  const input = recordingOperations({
+    plans: ["start-canary", "deploy-canary", "deploy-canary", "start-full"],
+    canary: [
+      {
+        status: "awaiting-deployment",
+        progress: "complete",
+        checkpointCommit: "c".repeat(40),
+      },
+    ],
+    full: [
+      {
+        status: "running",
+        progress: "primary:1",
+        checkpointCommit: "d".repeat(40),
+      },
+    ],
+  });
+  let verified: number | null = null;
+  const operations = {
+    ...input.operations,
+    confirmedDeployment: async (sha: string) => {
+      expect(sha).toBe("c".repeat(40));
+      return verified;
+    },
+  };
+  expect(await runEnrichmentCheckpoint(operations)).toEqual({
+    status: "awaiting-deployment",
+  });
+  expect(await runEnrichmentCheckpoint(operations)).toEqual({
+    status: "awaiting-deployment",
+  });
+  expect(input.calls).not.toContain("authorize-full");
+  expect(input.calls.some((value) => value.startsWith("approve:"))).toBe(false);
+  verified = 12345;
+  expect(await runEnrichmentCheckpoint(operations)).toEqual({
+    status: "checkpointed",
+  });
+  expect(input.calls).toContain(`approve:${"c".repeat(40)}:12345`);
+  expect(await runEnrichmentCheckpoint(operations)).toEqual({
+    status: "running",
+  });
+  expect(input.calls.slice(-5)).toEqual([
+    "plan:start-full",
+    "authorize-full",
+    "preflight",
+    "prepare-full",
+    "start-full",
+  ]);
+  expect(input.calls.some((value) => value.startsWith("wait:"))).toBe(false);
+});
 
 test("runs a fresh canary and full rollout with one exact deployment wait per phase", async () => {
   const canaryCommit = "a".repeat(40);

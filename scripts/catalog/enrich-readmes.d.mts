@@ -218,6 +218,8 @@ export function runEnrichmentBatch(options: {
 }): Promise<ProjectAttemptResult[]>;
 
 export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
+  requireBudget?: boolean;
+  budgetGuard?: import("../automation/model-budget.mjs").ModelBudgetGuard;
   providerConfiguration?: {
     reasoningEffort?: string;
     apiUrl?: string;

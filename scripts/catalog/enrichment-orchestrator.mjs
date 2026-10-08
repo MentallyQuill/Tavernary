@@ -6,6 +6,53 @@ import { pathToFileURL } from "node:url";
 const FULL_REPORT = "data/reports/enrichment-report.json";
 const CANARY_REPORT = "data/reports/enrichment-canary.json";
 
+export async function runEnrichmentCheckpoint(operations) {
+  await operations.syncMain();
+  const { action } = await operations.plan();
+  if (action === "complete") return { status: "complete" };
+  if (["deploy-canary", "deploy-full"].includes(action)) {
+    const canary = action === "deploy-canary";
+    const commit = await (canary
+      ? operations.canaryCheckpointCommit()
+      : operations.fullCheckpointCommit());
+    if (!/^[0-9a-f]{40}$/u.test(commit ?? ""))
+      throw new Error("Enrichment checkpoint has no valid commit.");
+    const runId = await operations.confirmedDeployment(commit);
+    if (runId === null) return { status: "awaiting-deployment" };
+    if (!Number.isSafeInteger(runId) || runId < 1)
+      throw new Error("Confirmed enrichment deployment is invalid.");
+    if (canary) await operations.approveCanary(commit, runId);
+    else await operations.recordFullDeployment(commit, runId);
+    return { status: "checkpointed" };
+  }
+  const canary = ["start-canary", "continue-canary"].includes(action);
+  let result;
+  if (canary) {
+    await operations.preflight();
+    if (action === "start-canary") await operations.startCanary();
+    result = await operations.publishCanaryBatch();
+  } else if (["start-full", "restart-full"].includes(action)) {
+    await operations.authorizeFull();
+    await operations.preflight();
+    await operations.prepareFull();
+    result = await operations.startFull();
+  } else if (action === "resume-full") {
+    await operations.preflight();
+    result = await operations.resumeFull();
+  } else throw new Error(`Unsupported checkpoint action: ${action}`);
+  if (result.status === "failed")
+    throw new Error("Full rollout ended with a systemic failure.");
+  if (result.status === "running") return { status: "running" };
+  if (
+    (canary && result.status === "awaiting-deployment") ||
+    (!canary && ["complete", "complete-with-errors"].includes(result.status))
+  )
+    return { status: "awaiting-deployment" };
+  throw new Error(
+    `Full rollout ended with unexpected status ${result.status}.`,
+  );
+}
+
 async function finishCanary(operations) {
   let previousProgress = null;
   let checkpointCommit = null;

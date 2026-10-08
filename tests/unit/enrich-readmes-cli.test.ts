@@ -19,6 +19,32 @@ const providerConfiguration = {
   apiKey: "test-key",
   model,
 };
+
+test("manual enrichment preflight checks its reserved allowance before any model HTTP request", async () => {
+  const beforeRequest = vi.fn(() => {
+    throw Object.assign(new Error("Verified model allowance is required."), {
+      code: "budget-exhausted",
+    });
+  });
+  const transport = vi
+    .spyOn(globalThis, "fetch")
+    .mockRejectedValue(new Error("Unexpected model HTTP request"));
+  try {
+    await expect(
+      runCli({
+        mode: "preflight",
+        providerConfiguration,
+        requireBudget: true,
+        budgetGuard: { beforeRequest },
+        sleep: async () => {},
+      }),
+    ).rejects.toThrow("Verified model allowance is required.");
+    expect(beforeRequest).toHaveBeenCalledOnce();
+    expect(transport).not.toHaveBeenCalled();
+  } finally {
+    transport.mockRestore();
+  }
+});
 const vocabularies = {
   schema_version: 1 as const,
   tags: [
