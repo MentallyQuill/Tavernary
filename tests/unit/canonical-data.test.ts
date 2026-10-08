@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
 import { expect, test, vi } from "vitest";
 import {
   commitCanonicalData,
@@ -60,6 +61,38 @@ test("canonical publication creates one parent-bound commit and never force-upda
   expect(
     input.requests.find((request) => request.args.includes("PATCH"))?.body,
   ).toEqual({ sha: "e".repeat(40), force: false });
+});
+
+test("the canonical Git adapter publishes and verifies the trusted refresh clock manifest", async () => {
+  const input = fixture();
+  const content = await readFile("data/snapshots/github-refresh.json", "utf8");
+  input.files[0] = {
+    ...input.files[0],
+    path: "data/snapshots/github-refresh.json",
+    content,
+    bytes: Buffer.byteLength(content),
+    sha256: createHash("sha256").update(content).digest("hex"),
+  };
+  const published = await commitCanonicalData(input);
+  expect(published).toEqual({ sha: "e".repeat(40) });
+  const tree = input.requests.find((request) =>
+    request.args.includes("repos/Owner/Repo/git/trees"),
+  );
+  expect(tree?.body.tree).toEqual([
+    {
+      path: "data/snapshots/github-refresh.json",
+      mode: "100644",
+      type: "blob",
+      sha: "c".repeat(40),
+    },
+  ]);
+  expect(
+    await verifyCanonicalData({
+      ...input,
+      sha: published.sha,
+      mainSha: published.sha,
+    }),
+  ).toBe(true);
 });
 test("a concurrent main advance fails publication without retrying or forcing the same proposal", async () => {
   const input = fixture();

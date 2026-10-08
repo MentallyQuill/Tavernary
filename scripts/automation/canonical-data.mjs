@@ -16,9 +16,10 @@ function validateFiles(files) {
   let total = 0;
   for (const file of files) {
     if (
-      !/^(?:data\/(?:registry\/(?:projects|sources|kits)|snapshots\/(?:github(?:\/kits)?|codeberg|install|policy-review)|maintenance\/automation\/(?:operations|publications|metadata|deployments|model-budgets)|security)\/[a-z0-9]+(?:-[a-z0-9]+)*\.json|public\/catalog\/tavernary-catalog(?:-v8)?\.json)$/u.test(
-        file.path ?? "",
-      ) ||
+      (file.path !== "data/snapshots/github-refresh.json" &&
+        !/^(?:data\/(?:registry\/(?:projects|sources|kits)|snapshots\/(?:github(?:\/kits)?|codeberg|install|policy-review)|maintenance\/automation\/(?:operations|publications|metadata|deployments|model-budgets)|security)\/[a-z0-9]+(?:-[a-z0-9]+)*\.json|public\/catalog\/tavernary-catalog(?:-v8)?\.json)$/u.test(
+          file.path ?? "",
+        )) ||
       seen.has(file.path) ||
       file.type !== "file" ||
       typeof file.content !== "string" ||

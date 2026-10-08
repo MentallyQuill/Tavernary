@@ -1050,3 +1050,11 @@ support and main-probe replay were observed failing, then passing. Seven
 targeted suites passed 131 checks; final types and scoped lint passed. Full CI
 for this next checkpoint, remaining manual enrichment, maintenance, independent
 review, merge and live production proof are still required.
+
+The identity-maintenance checkpoint `318337254` passed both required GitHub CI
+checks in run `37820511122`. A subsequent native Git-adapter regression exposed
+an omitted refresh-clock path in the low-level canonical allowlist. The fix
+admits only `data/snapshots/github-refresh.json`; regular-file, content-hash,
+JSON, size and non-forced main-update checks remain in effect. Four focused
+suites passed 30 tests, including publication and verification of the real
+clock manifest through the Git adapter. Other enrichment work remains pending.
