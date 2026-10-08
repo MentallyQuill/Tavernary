@@ -138,3 +138,23 @@ classifier's allowed reason/kind catalog with receipt validation. Finalized
 receipts require a completion timestamp, a revision and no active worker.
 The cost if wrong is reduced same-source throughput; publication and pruning
 still require authoritative evidence rather than trusting a receipt alone.
+
+### Phase 2 Task 2: project and owner inventories
+
+Project and owner work is reconstructed from current issues, normalized input,
+trusted PR transactions, exact-head validation, worker runs and merged revisions.
+Missing admission, generation, validation, publication and deployment bookkeeping
+remain discoverable without an event or receipt. Manual transactions, changed PR
+heads or actors, closed unmerged issues and intentional correction states remain
+protected. Receipts contribute current-input retry timing, never publication proof.
+
+Verification: inventory and existing owner/publication coverage 86/86; typecheck,
+scoped ESLint and formatting exit 0. New regressions cover 72-hour outages, missing
+timestamps, changed inputs, untrusted workers, live regeneration and closed merged
+issues. Inventory coverage includes 205 issues; API pagination is wired in Task 5.
+
+Ruling: Bind terminal generation diagnostics to a validated current-input receipt;
+retain stable timing when timestamps are absent. Unbound historical failures do
+not reject edited input. Preserve intentional correction/decline states; merged
+transactions remain eligible for deployment bookkeeping after issue closure.
+The cost if wrong is conservative rediscovery until canonical evidence is loaded.

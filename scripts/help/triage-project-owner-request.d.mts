@@ -20,6 +20,12 @@ export interface OwnerTriageIssue {
   updated_at?: string;
 }
 
+export function parseProjectOwnerManifestIssue(
+  body: string,
+):
+  | { valid: true; manifest: Record<string, unknown> }
+  | { valid: false; errors: string[] };
+
 export type ProjectOwnerTriageDecision =
   | {
       status: "admitted";

@@ -89,7 +89,7 @@ function renderedJson(value) {
   );
 }
 
-function preliminary(body) {
+export function parseProjectOwnerManifestIssue(body) {
   const collected = collectHeadings(body);
   if (collected.duplicates.length > 0) {
     return {
@@ -232,7 +232,7 @@ export async function processProjectOwnerTriage(input) {
       "Owner request must be open, admitted, and labeled project-owner-request.",
     );
   }
-  const parsed = preliminary(issue.body ?? "");
+  const parsed = parseProjectOwnerManifestIssue(issue.body ?? "");
   if (!parsed.valid) {
     return needsInformation("owner-request-invalid", parsed.errors.join(" "), {
       errors: parsed.errors,
