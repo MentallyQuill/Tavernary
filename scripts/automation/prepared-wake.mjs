@@ -15,7 +15,12 @@ const kinds = {
   "apply-kit-submission": "kit",
   "apply-kit-withdrawal": "withdrawal",
 };
-export function planPreparedWake({ run, repository, publisherActorId }) {
+export function planPreparedWake({
+  run,
+  repository,
+  publisherActorId,
+  diagnostic = false,
+}) {
   if (
     !Number.isSafeInteger(publisherActorId) ||
     publisherActorId < 1 ||
@@ -31,11 +36,21 @@ export function planPreparedWake({ run, repository, publisherActorId }) {
   const kind = kinds[name];
   if (!operationKey || !kind) return null;
   try {
-    assertTrustedPreparedProducer({ kind, repository, publisherActorId, run });
+    assertTrustedPreparedProducer({
+      kind,
+      repository,
+      publisherActorId,
+      run,
+      requireSuccess: !diagnostic,
+    });
   } catch {
     return null;
   }
-  return { operationKey, runId: run.id };
+  return {
+    operationKey,
+    runId: run.id,
+    ...(diagnostic ? { diagnostic: true } : {}),
+  };
 }
 export function selectPreparedWakes({
   runs,
@@ -44,6 +59,7 @@ export function selectPreparedWakes({
   publisherActorId,
   limit = 20,
   nowMs = Date.now(),
+  includeDiagnostics = false,
 }) {
   if (!Number.isSafeInteger(limit) || limit < 0 || limit > 20)
     throw new Error("Prepared wake quota is invalid.");
@@ -64,7 +80,12 @@ export function selectPreparedWakes({
   );
   const selected = new Map();
   for (const run of runs) {
-    const wake = planPreparedWake({ run, repository, publisherActorId });
+    const wake = planPreparedWake({
+      run,
+      repository,
+      publisherActorId,
+      diagnostic: includeDiagnostics && run.conclusion !== "success",
+    });
     if (
       !wake ||
       !current.has(wake.operationKey) ||
@@ -116,6 +137,7 @@ export async function runPreparedWakeCli(options = {}) {
             run,
             repository,
             publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
+            diagnostic: run.conclusion !== "success",
           })
         : null;
     if (!wake) {
@@ -131,7 +153,7 @@ export async function runPreparedWakeCli(options = {}) {
       "--ref",
       "main",
       "-f",
-      "mode=publish",
+      wake.diagnostic ? "mode=reconcile" : "mode=publish",
       "-f",
       `operation_key=${wake.operationKey}`,
       "-f",

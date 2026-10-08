@@ -53,6 +53,13 @@ export function classifyAutomationFailure(input = {}) {
   if (TRANSIENT_DIAGNOSTICS.has(input.diagnosticCode)) {
     return { kind: "transient", reasonCode: input.diagnosticCode };
   }
+  if (
+    Object.hasOwn(AUTOMATION_FAILURE_REASON_KINDS, input.diagnosticCode ?? "")
+  )
+    return {
+      kind: AUTOMATION_FAILURE_REASON_KINDS[input.diagnosticCode],
+      reasonCode: input.diagnosticCode,
+    };
   if (input.httpStatus === 401 || input.httpStatus === 403) {
     return { kind: "configuration", reasonCode: "authentication-unavailable" };
   }

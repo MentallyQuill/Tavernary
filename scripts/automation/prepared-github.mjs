@@ -4,6 +4,10 @@ import {
 } from "./prepared-result.mjs";
 import { validateAutomationOperation } from "./operation.mjs";
 import { decodePreparedArtifact } from "./prepared-artifact.mjs";
+import {
+  AUTOMATION_FAILURE_REASON_KINDS,
+  classifyAutomationFailure,
+} from "./failure.mjs";
 
 export async function loadPreparedGithubArtifact({
   gh,
@@ -12,8 +16,11 @@ export async function loadPreparedGithubArtifact({
   operation,
   publisherActorId,
   allowMissing = false,
+  artifactKind = "result",
 }) {
   validateAutomationOperation(operation);
+  if (!["result", "diagnostic"].includes(artifactKind))
+    throw new Error("Prepared artifact kind is invalid.");
   if (
     !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(repository) ||
     !Number.isSafeInteger(runId) ||
@@ -27,6 +34,7 @@ export async function loadPreparedGithubArtifact({
     repository,
     run,
     publisherActorId,
+    requireSuccess: artifactKind === "result",
   });
   if (
     run.id !== runId ||
@@ -59,7 +67,11 @@ export async function loadPreparedGithubArtifact({
   const matches = pages
     .flatMap((page) => page.artifacts)
     .filter(
-      (artifact) => artifact.name === `automation-prepared-${operation.key}`,
+      (artifact) =>
+        artifact.name ===
+        (artifactKind === "result"
+          ? `automation-prepared-${operation.key}`
+          : `automation-failure-${operation.key}-${runId}`),
     );
   if (!matches.length && allowMissing) return null;
   if (matches.length !== 1)
@@ -72,7 +84,8 @@ export async function loadPreparedGithubArtifact({
     artifact.expired !== false ||
     !Number.isSafeInteger(artifact.size_in_bytes) ||
     artifact.size_in_bytes < 1 ||
-    artifact.size_in_bytes > 33_554_432 ||
+    artifact.size_in_bytes >
+      (artifactKind === "diagnostic" ? 16_384 : 33_554_432) ||
     !/^sha256:[a-f0-9]{64}$/u.test(artifact.digest ?? "") ||
     origin?.id !== runId ||
     origin.repository_id !== run.repository.id ||
@@ -107,4 +120,53 @@ export async function loadPreparedGithubResult({
     decodePreparedArtifact({ archive, digest: artifact.digest }),
     { operation, run, currentState, publisherActorId },
   );
+}
+
+export async function loadPreparedGithubDiagnostic(input) {
+  const context = await loadPreparedGithubArtifact({
+    ...input,
+    artifactKind: "diagnostic",
+    allowMissing: true,
+  });
+  if (!context) {
+    const run = JSON.parse(
+      await input.gh([
+        "api",
+        `repos/${input.repository}/actions/runs/${input.runId}`,
+      ]),
+    );
+    assertTrustedPreparedProducer({
+      kind: input.operation.identity.kind,
+      repository: input.repository,
+      run,
+      publisherActorId: input.publisherActorId,
+      requireSuccess: false,
+    });
+    if (run.id !== input.runId) throw new Error("Diagnostic run changed.");
+    return classifyAutomationFailure({ conclusion: run.conclusion });
+  }
+  const archive = await input.download([
+    "api",
+    `repos/${input.repository}/actions/artifacts/${context.artifact.id}/zip`,
+  ]);
+  const value = decodePreparedArtifact({
+    archive,
+    digest: context.artifact.digest,
+    filename: "diagnostic.json",
+  });
+  if (
+    value.schema_version !== 1 ||
+    value.operation_key !== input.operation.key ||
+    Object.keys(value).sort().join(",") !==
+      "failure,operation_key,schema_version" ||
+    !value.failure ||
+    Object.keys(value.failure).sort().join(",") !== "kind,reasonCode" ||
+    !Object.hasOwn(AUTOMATION_FAILURE_REASON_KINDS, value.failure.reasonCode) ||
+    AUTOMATION_FAILURE_REASON_KINDS[value.failure.reasonCode] !==
+      value.failure.kind
+  )
+    throw Object.assign(new Error("Prepared diagnostic is invalid."), {
+      code: "prepared-diagnostic-invalid",
+    });
+  return value.failure;
 }

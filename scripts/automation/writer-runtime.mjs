@@ -13,6 +13,7 @@ import { createPreparedPublicationContext } from "./publication-context.mjs";
 import {
   loadPreparedGithubResult,
   loadPreparedGithubArtifact,
+  loadPreparedGithubDiagnostic,
 } from "./prepared-github.mjs";
 import { publishPreparedOperations } from "./prepared-publication.mjs";
 import { buildPreparedCatalogPublication } from "./publication-build.mjs";
@@ -335,6 +336,17 @@ export async function runAutomationWriterReconciliation({
   let state = await load();
   const prepared = await reconcilePreparedOperations({
     state,
+    readDiagnostic: (wake) =>
+      loadPreparedGithubDiagnostic({
+        gh,
+        download: downloadPreparedArtifact,
+        repository,
+        runId: wake.runId,
+        publisherActorId,
+        operation: state.operations.find(
+          (operation) => operation.key === wake.operationKey,
+        ),
+      }),
     onFailure: (input) =>
       persistPreparedFailure({
         ...input,

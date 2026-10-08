@@ -69,6 +69,7 @@ test("a run search over GitHub's thousand-result cap is split into smaller time 
     if (created) {
       queries.push(created);
       if (capped) {
+        expect(args).not.toContain("--paginate");
         capped = false;
         return JSON.stringify([{ total_count: 1001, workflow_runs: [] }]);
       }
@@ -252,8 +253,12 @@ test("the final worker lookup paginates and refuses truncated filtered inventori
   const gh = async (args: string[]) => {
     captured = args;
     return JSON.stringify([
-      { total_count: 101, workflow_runs: [{ id: 1 }] },
-      { total_count: 101, workflow_runs: [{ id: 101 }] },
+      {
+        total_count: 101,
+        workflow_runs: args.includes("--paginate")
+          ? [{ id: 101 }]
+          : Array.from({ length: 100 }, (_, i) => ({ id: i + 1 })),
+      },
     ]);
   };
   expect(
@@ -262,7 +267,7 @@ test("the final worker lookup paginates and refuses truncated filtered inventori
       repository: "MentallyQuill/Tavernary",
       nowMs: AUTOMATION_NOW,
     }),
-  ).toEqual([{ id: 1 }, { id: 101 }]);
+  ).toEqual(Array.from({ length: 101 }, (_, i) => ({ id: i + 1 })));
   expect(captured).toContain("--paginate");
   expect(captured).toContain("--slurp");
   await expect(
@@ -273,6 +278,37 @@ test("the final worker lookup paginates and refuses truncated filtered inventori
       nowMs: AUTOMATION_NOW,
     }),
   ).rejects.toThrow();
+});
+
+test("an overloaded active-run search refuses on its first page without spending pagination requests", async () => {
+  const calls: string[][] = [];
+  const gh = async (args: string[]) => {
+    calls.push(args);
+    const path = args.find((arg) => arg.startsWith("repos/"))!;
+    if (path.endsWith("/issues") || path.endsWith("/pulls")) return "[[]]";
+    if (path.endsWith("/git/ref/heads/main"))
+      return JSON.stringify({ object: { sha: "d".repeat(40) } });
+    return JSON.stringify([
+      {
+        total_count: args.includes("status=queued") ? 1001 : 0,
+        workflow_runs: [],
+      },
+    ]);
+  };
+  await expect(
+    loadGithubAutomationInventory({
+      gh,
+      repository: "MentallyQuill/Tavernary",
+      receipts: [],
+      nowMs: AUTOMATION_NOW,
+    }),
+  ).rejects.toThrow(/cap/u);
+  expect(calls.filter((args) => args.includes("status=queued"))).toHaveLength(
+    1,
+  );
+  expect(calls.find((args) => args.includes("status=queued"))).not.toContain(
+    "--paginate",
+  );
 });
 
 test("the emergency publication switch waits without dispatch or an incident retry", async () => {

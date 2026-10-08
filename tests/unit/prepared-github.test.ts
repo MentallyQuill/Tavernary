@@ -1,7 +1,10 @@
 import { createHash } from "node:crypto";
 import { expect, test } from "vitest";
 import { zipSync, strToU8 } from "fflate";
-import { loadPreparedGithubResult } from "../../scripts/automation/prepared-github.mjs";
+import {
+  loadPreparedGithubResult,
+  loadPreparedGithubDiagnostic,
+} from "../../scripts/automation/prepared-github.mjs";
 import {
   preparedResultFixture,
   preparedResultContextFixture,
@@ -49,6 +52,67 @@ function effects() {
   };
   return { result, run, artifact, input, downloads, calls };
 }
+
+function diagnosticEffects(value?: Record<string, unknown>) {
+  const fixture = effects();
+  fixture.run.conclusion = "failure";
+  const diagnostic = value ?? {
+    schema_version: 1,
+    operation_key: fixture.result.operationKey,
+    failure: {
+      kind: "configuration",
+      reasonCode: "provider-authentication-failed",
+    },
+  };
+  const archive = zipSync({
+    "diagnostic.json": strToU8(JSON.stringify(diagnostic)),
+  });
+  fixture.artifact.name = `automation-failure-${fixture.result.operationKey}-${fixture.run.id}`;
+  fixture.artifact.digest = `sha256:${createHash("sha256").update(archive).digest("hex")}`;
+  fixture.artifact.size_in_bytes = archive.length;
+  fixture.input.download = async (args) => {
+    fixture.downloads.push(args);
+    return archive;
+  };
+  return { ...fixture, diagnostic };
+}
+
+test("an authenticated failed preparation recovers its sanitized failure classification without permitting publication", async () => {
+  const fixture = diagnosticEffects();
+  expect(await loadPreparedGithubDiagnostic(fixture.input)).toEqual(
+    fixture.diagnostic.failure,
+  );
+  await expect(loadPreparedGithubResult(fixture.input)).rejects.toThrow();
+  expect(fixture.downloads).toHaveLength(1);
+});
+
+test.each(["key", "extra", "reason", "kind", "size", "actor"])(
+  "a forged or unsafe diagnostic %s cannot become a failure receipt",
+  async (variant) => {
+    const key = preparedResultFixture().operationKey;
+    const value: Record<string, unknown> = {
+      schema_version: 1,
+      operation_key: key,
+      failure: {
+        kind: "configuration",
+        reasonCode: "provider-authentication-failed",
+      },
+    };
+    if (variant === "key") value.operation_key = "c".repeat(64);
+    if (variant === "extra") value.message = "provider secret output";
+    if (variant === "reason")
+      value.failure = { kind: "unknown", reasonCode: "raw-provider-output" };
+    if (variant === "kind")
+      value.failure = {
+        kind: "permanent",
+        reasonCode: "provider-authentication-failed",
+      };
+    if (variant === "size") value.padding = "a".repeat(20_000);
+    const fixture = diagnosticEffects(value);
+    if (variant === "actor") fixture.run.actor.id++;
+    await expect(loadPreparedGithubDiagnostic(fixture.input)).rejects.toThrow();
+  },
+);
 test("the writer downloads only the exact named artifact of the trusted producer run", async () => {
   const fixture = effects();
   expect(await loadPreparedGithubResult(fixture.input)).toEqual(fixture.result);

@@ -88,14 +88,41 @@ function runPages(value) {
     value.some(
       (page) =>
         !Array.isArray(page.workflow_runs) ||
-        !Number.isSafeInteger(page.total_count),
+        !Number.isSafeInteger(page.total_count) ||
+        page.total_count < 0,
     )
   )
     throw new Error("GitHub returned an invalid run inventory.");
   return value.flatMap((page) => page.workflow_runs);
 }
+async function boundedRunPages(gh, path, fields) {
+  // Probe one page before following links: an over-cap search must be split,
+  // and an over-cap active/final-worker inventory must fail closed.
+  const first = JSON.parse(
+    await gh([
+      "api",
+      "--method",
+      "GET",
+      path,
+      "-f",
+      "per_page=100",
+      ...fields.flatMap((field) => ["-f", field]),
+      "--jq",
+      "[.]",
+    ]),
+  );
+  if (!Array.isArray(first) || first.length !== 1)
+    throw new Error("GitHub returned an invalid first run page.");
+  runPages(first);
+  if (first[0].total_count > 1000 || first[0].total_count <= 100) return first;
+  const tail = await pages(gh, path, [...fields, "page=2"]);
+  runPages(tail);
+  if (tail.some((page) => page.total_count > 1000))
+    throw new Error("Workflow inventory changed beyond GitHub's result cap.");
+  return [...first, ...tail];
+}
 export async function loadAutomationWorkerRuns({ gh, repository, nowMs }) {
-  const value = await pages(
+  const value = await boundedRunPages(
     gh,
     `${repositoryPath(repository)}/actions/workflows/automation-worker.yml/runs`,
     [
@@ -130,7 +157,7 @@ export async function loadGithubAutomationInventory({
   async function window(start, end) {
     if (++searches > 64)
       throw new Error("Workflow inventory exceeded its bounded search budget.");
-    const value = await pages(gh, `${root}/actions/runs`, [
+    const value = await boundedRunPages(gh, `${root}/actions/runs`, [
       `created=${new Date(start).toISOString()}..${new Date(end).toISOString()}`,
     ]);
     if ((value[0]?.total_count ?? 0) > 1000) {
@@ -152,7 +179,9 @@ export async function loadGithubAutomationInventory({
     "requested",
     "pending",
   ]) {
-    const value = await pages(gh, `${root}/actions/runs`, [`status=${status}`]);
+    const value = await boundedRunPages(gh, `${root}/actions/runs`, [
+      `status=${status}`,
+    ]);
     if ((value[0]?.total_count ?? 0) > 1000)
       throw new Error("Active workflow inventory exceeds GitHub's result cap.");
     active.push(...runPages(value));

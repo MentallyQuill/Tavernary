@@ -2,4 +2,5 @@
 export function decodePreparedArtifact(input: {
   archive: Uint8Array;
   digest: string;
+  filename?: "result.json" | "diagnostic.json";
 }): unknown;

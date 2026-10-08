@@ -162,6 +162,7 @@ export function assertTrustedPreparedProducer({
   repository,
   run,
   publisherActorId,
+  requireSuccess = true,
 }) {
   const producerPaths = (workflows[kind] ?? []).map(
     (name) => `.github/workflows/${name}.yml`,
@@ -179,7 +180,18 @@ export function assertTrustedPreparedProducer({
     run.head_branch !== "main" ||
     run.head_repository?.full_name !== repository ||
     run.status !== "completed" ||
-    run.conclusion !== "success"
+    (requireSuccess
+      ? run.conclusion !== "success"
+      : ![
+          "success",
+          "failure",
+          "cancelled",
+          "timed_out",
+          "skipped",
+          "neutral",
+          "action_required",
+          "stale",
+        ].includes(run.conclusion))
   )
     fail("prepared-producer-untrusted");
 }

@@ -81,6 +81,27 @@ test("replayed completion failures cannot append heartbeats or reset their saved
   await persistPreparedFailure({ ...input, error: new Error("Unavailable") });
   expect(input.persist).toHaveBeenCalledTimes(1);
 });
+
+test("an authenticated provider diagnostic survives as configuration failure and a daily probe", async () => {
+  const input = fixture();
+  const result = await persistPreparedFailure({
+    ...input,
+    error: {
+      failure: {
+        kind: "configuration",
+        reasonCode: "provider-authentication-failed",
+      },
+    },
+  });
+  expect(result.incident).toBe(true);
+  expect(input.persist.mock.calls[0][0].operation.retry?.failure.kind).toBe(
+    "configuration",
+  );
+  expect(
+    Date.parse(input.persist.mock.calls[0][0].operation.nextEligibleAt!) -
+      AUTOMATION_NOW,
+  ).toBe(86_400_000);
+});
 test("a stale input or already published effect cannot acquire a failure receipt", async () => {
   const input = fixture();
   input.replace(

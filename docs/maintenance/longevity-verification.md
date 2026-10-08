@@ -419,3 +419,29 @@ Evidence: the complete unit suite passed 268 files / 3,008 tests; full lint and
 type checking passed. A subsequent test correction directly verifies that a
 foreign source path is rejected while the authorized source can publish. The
 remaining producer/lifecycle migrations and all later phases remain required.
+
+### Authenticated diagnostics and bounded inventory reads (Task 2 in progress)
+
+Failed preparation completions now wake reconciliation. The writer authenticates
+the run, repository, numeric actor, operation and artifact origin, verifies the
+archive digest in memory, and accepts only a bounded diagnostic with enumerated
+failure kind/reason. Raw provider text and extra fields are rejected. Successful
+preparation remains mandatory for data publication. Diagnostic bookkeeping
+outages are surfaced rather than swallowed. Repeated failures retain their
+attempt count across subsequent preparations and honor saved daily probes.
+
+Workflow-run inventory checks the first page before pagination. Over-cap recent
+searches split into bounded windows; over-cap active/final-worker searches refuse
+without spending pagination requests. A read-only live GitHub CLI probe confirmed
+the first-page response shape. Complete bounded inventories and old saved worker
+handle verification remain required.
+
+Ruling: recover failure reasons only from authenticated, schema-limited diagnostic
+artifacts — diagnostics may adjust retry bookkeeping but cannot authorize a data
+write. The cost if wrong is an unknown-failure retry or daily incident, never
+publication. Ruling: probe result caps before pagination — an overloaded search
+must split or fail closed, avoiding discarded page reads.
+
+Evidence: the full unit suite passed 268 files / 3,019 tests; full lint and type
+checking passed. Producer/lifecycle migrations, all remaining phases, independent
+review, CI, merge and actual production proof are still outstanding.

@@ -1,4 +1,7 @@
-import { classifyAutomationFailure } from "./failure.mjs";
+import {
+  classifyAutomationFailure,
+  AUTOMATION_FAILURE_REASON_KINDS,
+} from "./failure.mjs";
 import { planAutomationRetry } from "./retry.mjs";
 import { githubFailureStatus } from "./github-inventory.mjs";
 import { validateAutomationReceipt } from "./receipts.mjs";
@@ -29,8 +32,14 @@ export async function persistPreparedFailure({
   )
     return { persisted: false, incident: false };
   const code = error?.code;
+  const diagnostic = error?.failure;
   const failure = classifyAutomationFailure({
-    diagnosticCode: code,
+    diagnosticCode:
+      diagnostic &&
+      Object.hasOwn(AUTOMATION_FAILURE_REASON_KINDS, diagnostic.reasonCode) &&
+      AUTOMATION_FAILURE_REASON_KINDS[diagnostic.reasonCode] === diagnostic.kind
+        ? diagnostic.reasonCode
+        : code,
     httpStatus: githubFailureStatus(error),
     authorizationLost: [
       "authorization-lost",

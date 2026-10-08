@@ -1,11 +1,16 @@
 import { createHash } from "node:crypto";
 import { crc32, inflateRawSync } from "node:zlib";
 
-const maximumBytes = 33_554_432;
 function fail() {
   throw new Error("Prepared artifact integrity or format is invalid.");
 }
-export function decodePreparedArtifact({ archive, digest }) {
+export function decodePreparedArtifact({
+  archive,
+  digest,
+  filename = "result.json",
+}) {
+  if (!["result.json", "diagnostic.json"].includes(filename)) fail();
+  const maximumBytes = filename === "diagnostic.json" ? 16_384 : 33_554_432;
   if (
     !(archive instanceof Uint8Array) ||
     archive.byteLength < 22 ||
@@ -70,7 +75,7 @@ export function decodePreparedArtifact({ archive, digest }) {
   const decoder = new TextDecoder("utf-8", { fatal: true });
   if (
     decoder.decode(archive.subarray(central + 46, central + 46 + nameBytes)) !==
-      "result.json" ||
+      filename ||
     uint32(local) !== 0x04034b50 ||
     uint16(local + 6) !== flags ||
     uint16(local + 8) !== compression
@@ -81,7 +86,7 @@ export function decodePreparedArtifact({ archive, digest }) {
   if (
     decoder.decode(
       archive.subarray(local + 30, local + 30 + localNameBytes),
-    ) !== "result.json" ||
+    ) !== filename ||
     dataStart > central ||
     dataStart + compressedSize > central
   )

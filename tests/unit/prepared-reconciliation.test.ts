@@ -84,3 +84,26 @@ test("a zero quota performs no artifact reads or publication", async () => {
   ).toEqual([]);
   expect(input.hasResult).not.toHaveBeenCalled();
 });
+
+test("a failed preparation transfers its sanitized diagnostic to retry persistence without publication", async () => {
+  const input = fixture();
+  input.state.remote.runs[0].conclusion = "failure";
+  const failure = {
+    kind: "configuration" as const,
+    reasonCode: "provider-authentication-failed",
+  };
+  const readDiagnostic = vi.fn(async () => failure);
+  const onFailure = vi.fn(async () => {});
+  const result = await reconcilePreparedOperations({
+    ...input,
+    readDiagnostic,
+    onFailure,
+  });
+  expect(result.failures).toBe(1);
+  expect(onFailure).toHaveBeenCalledWith({
+    operationKey: input.state.operations[0].key,
+    error: { failure },
+  });
+  expect(input.hasResult).not.toHaveBeenCalled();
+  expect(input.publish).not.toHaveBeenCalled();
+});

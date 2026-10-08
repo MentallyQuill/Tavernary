@@ -4,8 +4,10 @@ import type { GhRunner } from "../submissions/kit-submission-reconciliation.mjs"
 export interface PreparedWake {
   operationKey: string;
   runId: number;
+  diagnostic?: true;
 }
 export function planPreparedWake(input: {
+  diagnostic?: boolean;
   run: TrustedPreparationRun & { display_title: string };
   repository: string;
   publisherActorId: number;
@@ -17,6 +19,7 @@ export function selectPreparedWakes(input: {
   publisherActorId: number;
   limit?: number;
   nowMs?: number;
+  includeDiagnostics?: boolean;
 }): PreparedWake[];
 export function runPreparedWakeCli(options?: {
   env?: Record<string, string | undefined>;

@@ -85,6 +85,7 @@ export function recoverInventoryWorker(operation, input, runs) {
           repository: input.repository,
           publisherActorId: input.publisherActorId,
           run: candidate,
+          requireSuccess: false,
         });
         return true;
       } catch {
@@ -107,7 +108,10 @@ export function recoverInventoryWorker(operation, input, runs) {
       operation.retry = savedFailure;
       operation.nextEligibleAt = receipt.operation.nextEligibleAt;
     } else {
-      operation.retry = null;
+      operation.retry =
+        savedFailure?.failure.kind === "superseded"
+          ? null
+          : (savedFailure ?? null);
       operation.nextEligibleAt = null;
     }
     operation.workerRunId = null;

@@ -59,6 +59,7 @@ export function assertTrustedPreparedProducer(input: {
   repository: string;
   run: TrustedPreparationRun;
   publisherActorId: number;
+  requireSuccess?: boolean;
 }): void;
 export function validatePreparedResult(
   result: unknown,

@@ -1,4 +1,5 @@
 import type { GhRunner } from "../submissions/kit-submission-reconciliation.mjs";
+import type { AutomationFailure } from "./failure.mjs";
 import type {
   PreparedResult,
   PreparedResultContext,
@@ -10,6 +11,7 @@ export function loadPreparedGithubArtifact(
     repository: string;
     runId: number;
     allowMissing?: boolean;
+    artifactKind?: "result" | "diagnostic";
   },
 ): Promise<{
   run: TrustedPreparationRun;
@@ -23,3 +25,11 @@ export function loadPreparedGithubResult(
     runId: number;
   },
 ): Promise<PreparedResult>;
+export function loadPreparedGithubDiagnostic(
+  input: Omit<PreparedResultContext, "run" | "currentState"> & {
+    gh: GhRunner;
+    download: (args: string[]) => Promise<Uint8Array>;
+    repository: string;
+    runId: number;
+  },
+): Promise<AutomationFailure>;

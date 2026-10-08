@@ -4,6 +4,7 @@ export async function reconcilePreparedOperations({
   hasResult,
   publish,
   onFailure,
+  readDiagnostic,
   limit = 20,
 }) {
   const wakes = selectPreparedWakes({
@@ -13,31 +14,46 @@ export async function reconcilePreparedOperations({
     publisherActorId: state.publisherActorId,
     limit,
     nowMs: state.nowMs,
+    includeDiagnostics: true,
   });
   const result = { published: 0, recovered: 0, failures: 0, consumedKeys: [] };
   const ready = [];
   for (const wake of wakes) {
+    let error;
+    let available = false;
     try {
-      if (!(await hasResult(wake))) continue;
+      if (wake.diagnostic) {
+        if (!readDiagnostic)
+          throw new Error("Prepared diagnostic adapter is unavailable.");
+        error = { failure: await readDiagnostic(wake) };
+      } else available = await hasResult(wake);
+    } catch (caught) {
+      error = caught;
+    }
+    if (error) {
       result.consumedKeys.push(wake.operationKey);
-      ready.push(wake);
-    } catch (error) {
+      // Persist outside the observation catch: bookkeeping outages must remain visible.
       if (onFailure)
         await onFailure({ operationKey: wake.operationKey, error });
-      if (!result.consumedKeys.includes(wake.operationKey))
-        result.consumedKeys.push(wake.operationKey);
       result.failures++;
+    } else if (available) {
+      result.consumedKeys.push(wake.operationKey);
+      ready.push(wake);
     }
   }
   if (ready.length) {
+    let failure;
     try {
       const publication = await publish(ready);
       result.published += publication.published;
       result.recovered += publication.recovered;
     } catch (error) {
+      failure = error;
+    }
+    if (failure) {
       if (onFailure)
         for (const wake of ready)
-          await onFailure({ operationKey: wake.operationKey, error });
+          await onFailure({ operationKey: wake.operationKey, error: failure });
       result.failures += ready.length;
     }
   }

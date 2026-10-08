@@ -119,3 +119,22 @@ test("the completion CLI fetches authoritative run metadata and dispatches only 
     `result_run_id=${input.run.id}`,
   ]);
 });
+
+test("a trusted failed completion wakes reconciliation for diagnostics without dispatching publication", async () => {
+  const input = fixture();
+  input.run.conclusion = "failure";
+  const gh = vi.fn(async (args: string[]) =>
+    args[0] === "api" ? JSON.stringify(input.run) : "",
+  );
+  const env = {
+    GITHUB_REPOSITORY: input.repository,
+    GITHUB_REF: "refs/heads/main",
+    GITHUB_EVENT_NAME: "workflow_run",
+    TAVERNARY_PUBLISHER_BOT_ID: String(input.publisherActorId),
+  };
+  expect(
+    await runPreparedWakeCli({ env, runId: input.run.id, gh, write: () => {} }),
+  ).toBe(0);
+  expect(gh.mock.calls[1][0]).toContain("mode=reconcile");
+  expect(gh.mock.calls[1][0]).not.toContain("mode=publish");
+});
