@@ -20,11 +20,36 @@ import type { KitInventoryInput } from "../../scripts/automation/kit-operations.
 import type { CatalogInventoryInput } from "../../scripts/automation/catalog-operations.mjs";
 import type { ReportInventoryInput } from "../../scripts/automation/report-operations.mjs";
 import type { DeploymentInventoryInput } from "../../scripts/automation/deployment-operations.mjs";
+import type { ReconciliationInput } from "../../scripts/automation/reconcile.mjs";
+import { discoverProjectOperations } from "../../scripts/automation/project-operations.mjs";
 import reportIndexFixture from "../fixtures/tavernkeeper/report-index.v5.valid.json";
 import { validateReportIndex } from "../../scripts/security/tavernkeeper-reports.mjs";
 import { initialTavernKeeperImportState } from "../../scripts/security/tavernkeeper-import-state.mjs";
 
 export const AUTOMATION_NOW = Date.parse("2026-10-07T12:00:00.000Z");
+
+export function controllerFixture(options: { missedWebhook?: boolean } = {}) {
+  const inventory = discoverProjectOperations(
+    projectInventoryFixture({
+      generationRun: options.missedWebhook === false ? {} : null,
+    }),
+  );
+  const dispatches: AutomationOperation[] = [];
+  const receipts: AutomationReceipt[] = [];
+  const input: ReconciliationInput = {
+    inventory: async () => inventory,
+    receipts: [],
+    nowMs: AUTOMATION_NOW,
+    dispatch: async (operation) => {
+      dispatches.push(structuredClone(operation));
+      return { workerRunId: 700 };
+    },
+    persist: async (receipt) => {
+      receipts.push(structuredClone(receipt));
+    },
+  };
+  return { input, dispatches, receipts };
+}
 
 export function deploymentInventoryFixture(): DeploymentInventoryInput {
   return {

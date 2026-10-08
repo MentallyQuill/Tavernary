@@ -555,7 +555,7 @@ describe("generated project branch workflow custody", () => {
     },
   );
 
-  test("admits public issue events but reserves manual Publisher dispatch for the owner", async () => {
+  test("admits public issue events and limits manual dispatch to the owner or Publisher", async () => {
     const document = await workflow("admit-issue");
     const job = document.jobs.admit as {
       if?: string;
@@ -565,9 +565,10 @@ describe("generated project branch workflow custody", () => {
       (step) => step.id === "publisher-dispatch-token",
     );
 
-    expect(job.if).toBe(
+    expect(normalizedExpression(job.if)).toBe(
       "github.ref == 'refs/heads/main' && " +
-        "(github.event_name != 'workflow_dispatch' || github.actor_id == 2625904)",
+        "(github.event_name != 'workflow_dispatch' || github.actor_id == 2625904 || " +
+        "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)",
     );
     expect(token?.if).toContain("steps.admission.outputs.route == 'project'");
     expect(token?.if).toContain(

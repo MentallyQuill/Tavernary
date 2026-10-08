@@ -1,0 +1,68 @@
+name: "Automation: Prepare operation"
+run-name: "Automation ${{ inputs.operation_key }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation_key:
+        description: Immutable operation key from the trusted inventory
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: automation-operation-${{ inputs.operation_key }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.actor_id == 2625904 || github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: publisher
+    steps:
+      - name: Check out trusted main code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Create scoped dispatch token
+        id: dispatch-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-actions: write
+          permission-contents: read
+          permission-issues: read
+          permission-pull-requests: read
+      - name: Reconstruct and hand off current eligible work
+        run: node scripts/automation/worker.mjs
+        env:
+          GH_TOKEN: ${{ steps.dispatch-token.outputs.token }}
+          OPERATION_KEY: ${{ inputs.operation_key }}
+          TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
+          PROJECT_AUTO_PUBLICATION_ENABLED: ${{ vars.PROJECT_AUTO_PUBLICATION_ENABLED }}
+          AUTOMATION_DIAGNOSTIC_PATH: ${{ runner.temp }}/automation-diagnostic.json
+      - name: Retain sanitized failure diagnostic
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: automation-diagnostic-${{ github.run_id }}
+          path: ${{ runner.temp }}/automation-diagnostic.json
+          if-no-files-found: ignore
+          retention-days: 90

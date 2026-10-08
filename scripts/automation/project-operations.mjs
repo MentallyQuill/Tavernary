@@ -20,6 +20,7 @@ import {
   matchingOperationReceipt as matchingReceipt,
   receiptBindsWorker as boundGeneration,
   recoverInventoryWorker as generationRecovery,
+  trustedOperationWorkerRuns,
 } from "./inventory-worker.mjs";
 
 const defaultVocabularies = {
@@ -286,6 +287,17 @@ export function discoverProjectOperations(input) {
       operation.nextEligibleAt = saved.operation.nextEligibleAt;
     }
     operations.push(operation);
+  }
+  for (const operation of operations) {
+    const workers = trustedOperationWorkerRuns(input, operation);
+    const saved = matchingReceipt(input, operation);
+    if (
+      workers.length ||
+      (operation.workerRunId === null &&
+        operation.retry === null &&
+        saved?.operation.nextEligibleAt)
+    )
+      generationRecovery(operation, input, workers);
   }
   return operations;
 }

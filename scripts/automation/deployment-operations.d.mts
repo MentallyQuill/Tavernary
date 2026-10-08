@@ -28,3 +28,7 @@ export interface DeploymentInventoryInput extends InventoryWorkerState {
 export function discoverDeploymentOperations(
   input: DeploymentInventoryInput,
 ): AutomationOperation[];
+export function isConfirmedDeployment(
+  deployment: unknown,
+  commit: { sha: string; catalogDigest: string; targetDigest: string },
+): boolean;

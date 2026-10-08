@@ -202,3 +202,43 @@ the exact operation key. Initial metadata inventory uses evidence/head identity;
 Phase 4 adds normalized-content cache selection before model calls. The cost if
 wrong is conservative rediscovery, rather than receipt-authorized publication;
 public proof, cache validation and worker wiring remain integration obligations.
+
+### Phase 2 Task 5: bounded controller and event wakes
+
+The production loader paginates current issues, PRs and workflow runs, splits
+capped history searches, and directly verifies every saved worker handle. It
+rebuilds the real catalog and targets without generated-file writes. The
+controller selects at most twenty operations, rechecks eligibility, records
+dispatch intent before effects, and preserves active handles after interruption.
+Unchanged observations produce no heartbeat commit; zero-limit and dry runs
+produce no effects. A trusted-main worker routes current operations to existing
+workers and the forthcoming shared writer. Successful workflow wakes supplement
+the fifteen-minute schedule; failures cannot start an unavailable-dependency loop.
+
+Verification: controller/GitHub/CLI/worker/digest/workflow regressions 36/36,
+follow-up CLI-error and custody coverage 46/46; typecheck, scoped ESLint and
+formatting exit 0. Tests cover missing webhooks, cancelled dispatch, receipt
+failure after dispatch, live generic workers, cross-key results, truncated API
+results, deliberate publication pause, invalid deployment proof and main lineage.
+The complete unit suite passes: 239 files, 2,803 tests. The prior custody assertion
+was updated to check the explicit owner-or-Publisher manual dispatch guard.
+
+Ruling: Separate semantic catalog/target digests from generation timestamps, while
+leaving the existing external target publication digest contract unchanged.
+Confirmation requires complete matching proof and an ancestor of trusted main.
+The cost if wrong is delayed confirmation; Phase 3 must retain full asset hashes
+and reverify public proof before finalization.
+
+Ruling: Include trusted Publisher dispatch in admission and preserve the owner
+publication pause as an intentional wait. Paginate final worker lookups and
+refuse GitHub result truncation. The cost if wrong is delayed recovery rather
+than duplicate dispatch or unauthorized publication.
+
+Ruling: Commit controller/worker wiring as an intermediate foundation; the branch
+is not ready for integration until Phase 3 moves all canonical receipt/data writes
+into the shared writer, consumes trusted safe worker diagnostics, and supplies its
+publication/confirmation/finalization modes. Phase 4 must replace the placeholder
+model-ticket gate with serialized budget reservations and validated cache hits.
+The cost if wrong is incomplete optional worker execution; no PR or production
+completion is claimed at this boundary. Keep legacy recovery active until its
+shared-writer replacement has tested coverage.

@@ -7,7 +7,7 @@ import {
 const digest = /^[a-f0-9]{64}$/u;
 const sha = /^[a-f0-9]{40}$/u;
 
-function confirmedDeployment(deployment, commit) {
+export function isConfirmedDeployment(deployment, commit) {
   const proof = deployment.confirmation;
   return (
     deployment.status === "confirmed" &&
@@ -45,7 +45,7 @@ export function discoverDeploymentOperations(input) {
     (deployment) => deployment.sourceSha === commit.sha,
   );
   const confirmed = matching.some((deployment) =>
-    confirmedDeployment(deployment, commit),
+    isConfirmedDeployment(deployment, commit),
   );
   const operation = {
     key: operationKey(identity),

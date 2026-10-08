@@ -6,7 +6,10 @@ import { fingerprintProjectPublicationInput } from "../publication/project-publi
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
 import { operationKey } from "./operation.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
-import { recoverInventoryWorker } from "./inventory-worker.mjs";
+import {
+  recoverInventoryWorker,
+  trustedOperationWorkerRuns,
+} from "./inventory-worker.mjs";
 
 export function discoverKitOperations(input) {
   const operations = [];
@@ -163,7 +166,10 @@ export function discoverKitOperations(input) {
               Date.parse(left.created_at ?? "") || right.id - left.id,
         );
       if (operation.retry?.failure.kind !== "permanent")
-        recoverInventoryWorker(operation, input, runs);
+        recoverInventoryWorker(operation, input, [
+          ...trustedOperationWorkerRuns(input, operation),
+          ...runs,
+        ]);
     }
     operations.push(operation);
   }

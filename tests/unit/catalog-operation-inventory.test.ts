@@ -234,3 +234,20 @@ test("a cancelled advisory without state retains current-input retry timing and 
     )!.workerRunId,
   ).toBe(700);
 });
+
+test("a persisted dispatch intent suppresses duplicates while GitHub makes the worker visible", () => {
+  const input = catalogInventoryFixture();
+  const operation = discoverCatalogOperations(input).find(
+    (operation) => operation.identity.kind === "advisory",
+  )!;
+  const intent = {
+    ...operation,
+    nextEligibleAt: new Date(AUTOMATION_NOW + 15 * 60_000).toISOString(),
+  };
+  input.receipts = [receiptFixture({ operation: intent })];
+  expect(
+    discoverCatalogOperations(input).find(
+      (operation) => operation.identity.kind === "advisory",
+    )?.nextEligibleAt,
+  ).toBe(intent.nextEligibleAt);
+});

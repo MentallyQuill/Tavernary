@@ -315,3 +315,20 @@ test("an input edit still waits for a live generator before dispatching a replac
     workerRunId: 700,
   });
 });
+test("an operation-bound worker suppresses duplicate project dispatch before a legacy generation starts", () => {
+  const input = projectInventoryFixture();
+  const operation = discoverProjectOperations(input)[0];
+  input.runs = [
+    {
+      id: 702,
+      path: ".github/workflows/automation-worker.yml",
+      event: "workflow_dispatch",
+      display_title: `Automation ${operation.key}`,
+      head_branch: "main",
+      actor: { id: input.publisherActorId, type: "Bot" },
+      status: "in_progress",
+      conclusion: null,
+    },
+  ];
+  expect(discoverProjectOperations(input)[0].workerRunId).toBe(702);
+});

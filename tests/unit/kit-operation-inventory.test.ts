@@ -222,3 +222,20 @@ test("receipts cannot claim a Kit was published when the canonical record is abs
   ];
   expect(discoverKitOperations(input)[0].stage).toBe("validated");
 });
+test("an operation-bound worker suppresses duplicate Kit dispatch before a legacy publisher starts", () => {
+  const input = kitInventoryFixture();
+  const operation = discoverKitOperations(input)[0];
+  input.runs = [
+    {
+      id: 702,
+      path: ".github/workflows/automation-worker.yml",
+      event: "workflow_dispatch",
+      display_title: `Automation ${operation.key}`,
+      head_branch: "main",
+      actor: { id: input.publisherActorId, type: "Bot" },
+      status: "in_progress",
+      conclusion: null,
+    },
+  ];
+  expect(discoverKitOperations(input)[0].workerRunId).toBe(702);
+});
