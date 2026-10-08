@@ -73,3 +73,27 @@ transient jitter is positive, deterministic, capped at 10%, and never exceeds
 the 24-hour interval. This avoids shared outage retry storms; the cost if wrong
 is delayed detection of repaired credentials, so owner recovery commands must
 provide an explicit wake/probe path.
+
+### Phase 1 Task 2: current-head recovery
+
+The validation controller now classifies failed validation, publication, and
+regeneration runs, records a sanitized due time, and resumes transient work
+without permanently exhausting an allowance. Tests simulate a 72-hour outage,
+missing terminal timestamps, unknown failures, malformed timing, changed PR
+author/transaction at the final dispatch boundary, disabled automation, and a
+merge completed before cancellation. Manual and modified transactions retain
+their existing exclusion guards.
+
+Verification: selected controller tests 71/71; full unit suite 226 files / 2680
+tests; typecheck, scoped ESLint, formatting, and diff whitespace checks exit 0.
+The broad missed-handoff canary and production evidence remain pending.
+
+Ruling: Three unknown failures and success without generated output use a daily
+incident probe instead of a permanent block. Terminal timestamps anchor stable
+jitter; exact-run bot markers preserve timing when GitHub omits timestamps.
+The cost if wrong is bounded probing of a defect until it is corrected.
+
+Ruling: Pass the existing automatic-publication switch into the reconciliation
+workflow and fail closed when it is absent in the CLI. Publisher retains its
+final authoritative policy check. The cost if wrong is paused recovery when
+configuration is absent, rather than mutation that bypasses policy.

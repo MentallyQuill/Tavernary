@@ -72,7 +72,7 @@ test("cancellation remains recoverable after seventy-two hours", () => {
 
 **Interfaces:** Consume Task 1 classifier/planner. Preserve `planProjectValidationReconciliation(input)` and exact transaction checks; add optional structured failure/next-eligible inputs and corresponding sanitized state-comment fields without changing transaction schema.
 
-- [ ] **Step 1: Add the behavioral regression.**
+- [x] **Step 1: Add the behavioral regression.**
 
 ```ts
 test("cancelled current-head validations do not exhaust allowance", () => {
@@ -90,10 +90,10 @@ test("cancelled current-head validations do not exhaust allowance", () => {
 });
 ```
 
-- [ ] **Step 2: Verify the regression fails.** Run `npx vitest run tests/unit/project-validation-reconciliation.test.ts tests/unit/reconcile-project-validations.test.ts`. Expect the stated new assertion to fail or the new import to be missing; distinguish this from unrelated baseline failures.
-- [ ] **Step 3: Implement the contract.** Replace conclusion-only permanent failure counting. Persist due time and structured reason in bot-owned controller state; wait before due time. Revalidate head, issue, author, authority, auto-publication switch, and active worker before dispatch. Keep modified/manual transactions outside automatic recovery. Add a merge-before-cancellation case that performs no second merge.
-- [ ] **Step 4: Verify the regression and relevant existing coverage.** Run `npx vitest run tests/unit/project-validation-reconciliation.test.ts tests/unit/reconcile-project-validations.test.ts`; expect exit 0 and all selected tests passing. Check declarations with `npm run typecheck`.
-- [ ] **Step 5: Review the diff and commit.** Stage only the listed deliverable files and necessary verified generated outputs; use `fix(submissions): resume interrupted validation`.
+- [x] **Step 2: Verify the regression fails.** Run `npx vitest run tests/unit/project-validation-reconciliation.test.ts tests/unit/reconcile-project-validations.test.ts`. Expect the stated new assertion to fail or the new import to be missing; distinguish this from unrelated baseline failures.
+- [x] **Step 3: Implement the contract.** Replace conclusion-only permanent failure counting. Persist due time and structured reason in bot-owned controller state; wait before due time. Revalidate head, issue, author, authority, auto-publication switch, and active worker before dispatch. Keep modified/manual transactions outside automatic recovery. Add a merge-before-cancellation case that performs no second merge.
+- [x] **Step 4: Verify the regression and relevant existing coverage.** Run `npx vitest run tests/unit/project-validation-reconciliation.test.ts tests/unit/reconcile-project-validations.test.ts`; expect exit 0 and all selected tests passing. Check declarations with `npm run typecheck`.
+- [x] **Step 5: Review the diff and commit.** Stage only the listed deliverable files and necessary verified generated outputs; use `fix(submissions): resume interrupted validation`.
 
 ### Task 3: Adversarial recovery and credential lifecycle boundaries
 

@@ -1,3 +1,6 @@
+import { classifyAutomationFailure } from "../automation/failure.mjs";
+import { planAutomationRetry } from "../automation/retry.mjs";
+
 export const PROJECT_VALIDATION_RETRY_LIMIT = 3;
 export const PROJECT_VALIDATION_REGENERATION_GRACE_MS = 15 * 60_000;
 export const PROJECT_VALIDATION_OWNED_LABELS = [
@@ -50,7 +53,14 @@ function activeRun(runs) {
   );
 }
 
-function completedFailureAttempts(runs) {
+function runFailure(run) {
+  return classifyAutomationFailure({
+    ...run?.failure,
+    conclusion: run?.conclusion,
+  });
+}
+
+function completedFailureAttempts(runs, kinds = ["unknown", "permanent"]) {
   return runs.reduce((attempts, run) => {
     const runAttempt =
       Number.isSafeInteger(run?.run_attempt) && run.run_attempt > 0
@@ -60,9 +70,11 @@ function completedFailureAttempts(runs) {
       ACTIVE_STATUSES.has(run?.status) ||
       !TERMINAL_CONCLUSIONS.has(run?.conclusion)
     ) {
-      return attempts + Math.max(0, runAttempt - 1);
+      return attempts;
     }
-    return run.conclusion === "success" ? attempts : attempts + runAttempt;
+    return run.conclusion !== "success" && kinds.includes(runFailure(run).kind)
+      ? attempts + runAttempt
+      : attempts;
   }, 0);
 }
 
@@ -85,6 +97,64 @@ function afterGrace(nowMs, run, graceMs) {
   return nowMs - timestamp(run) >= graceMs;
 }
 
+function recovery(
+  input,
+  runs,
+  run,
+  actionName,
+  state,
+  extra = {},
+  forceProbe = false,
+) {
+  const failure = runFailure(run);
+  const attempts = completedFailureAttempts(runs);
+  const anchor = timestamp(run);
+  const saved = input.retryState;
+  const savedMatches =
+    saved?.headSha === input.headSha &&
+    saved.runId === run.id &&
+    saved.runAttempt === (run.run_attempt ?? 1) &&
+    saved.state === state &&
+    saved.reasonCode === failure.reasonCode;
+  const retry = planAutomationRetry({
+    failure,
+    transientAttempts: Math.max(
+      0,
+      completedFailureAttempts(runs, ["transient", "unknown"]) - 1,
+    ),
+    immediateAttempts: forceProbe
+      ? PROJECT_VALIDATION_RETRY_LIMIT
+      : completedFailureAttempts(runs, ["unknown"]),
+    nowMs: anchor || input.nowMs,
+    retryAfterMs: run.retryAfterMs,
+    jitterSeed: `${input.headSha}:${state}:${run.id}:${run.run_attempt ?? 1}`,
+  });
+  // A missing terminal timestamp must not move the deadline on every poll.
+  if (
+    !anchor &&
+    savedMatches &&
+    Number.isFinite(Date.parse(saved.nextEligibleAt))
+  ) {
+    retry.nextEligibleAt = saved.nextEligibleAt;
+  }
+  const due = Date.parse(retry.nextEligibleAt);
+  const selectedAction =
+    retry.action === "stop"
+      ? "block"
+      : Number.isFinite(due) && due <= input.nowMs
+        ? actionName
+        : "wait";
+  return action(
+    selectedAction,
+    selectedAction === "block"
+      ? state.replace("retrying-", "") + "-blocked"
+      : state,
+    attempts,
+    run,
+    { ...extra, failure, retry },
+  );
+}
+
 export function planProjectValidationReconciliation(input) {
   const transaction = input?.transaction;
   const headSha = input?.headSha;
@@ -97,6 +167,7 @@ export function planProjectValidationReconciliation(input) {
   }
 
   const nowMs = Number.isFinite(input?.nowMs) ? input.nowMs : Date.now();
+  const recoveryInput = { ...input, nowMs };
   const validations = currentHeadRuns(input?.validationRuns, headSha);
   const activeValidation = activeRun(validations);
   const validationFailures = completedFailureAttempts(validations);
@@ -109,19 +180,12 @@ export function planProjectValidationReconciliation(input) {
     return action("wait", "validating", validationFailures, activeValidation);
   }
   if (latestValidation.conclusion !== "success") {
-    if (validationFailures >= PROJECT_VALIDATION_RETRY_LIMIT) {
-      return action(
-        "block",
-        "validation-blocked",
-        validationFailures,
-        latestValidation,
-      );
-    }
-    return action(
+    return recovery(
+      recoveryInput,
+      validations,
+      latestValidation,
       "retry-validation",
       "retrying-validation",
-      validationFailures,
-      latestValidation,
     );
   }
 
@@ -148,19 +212,12 @@ export function planProjectValidationReconciliation(input) {
     generationIsLatestRecoveryAttempt &&
     latestGeneration.conclusion !== "success"
   ) {
-    if (generationFailures >= PROJECT_VALIDATION_RETRY_LIMIT) {
-      return action(
-        "block",
-        "regeneration-blocked",
-        generationFailures,
-        latestGeneration,
-      );
-    }
-    return action(
+    return recovery(
+      recoveryInput,
+      generations,
+      latestGeneration,
       "regenerate",
       "retrying-regeneration",
-      generationFailures,
-      latestGeneration,
       { validationRunId: latestValidation.id },
     );
   }
@@ -183,30 +240,26 @@ export function planProjectValidationReconciliation(input) {
         latestGeneration,
       );
     }
-    return action(
-      "block",
-      "regeneration-blocked",
-      generationAttempts,
-      latestGeneration,
+    return recovery(
+      recoveryInput,
+      generations,
+      { ...latestGeneration, conclusion: "failure" },
+      "regenerate",
+      "retrying-regeneration",
+      { attempts: generationAttempts, validationRunId: latestValidation.id },
+      true,
     );
   }
   if (!latestPublication) {
     return action("publish", "publishing", 1, latestValidation);
   }
   if (latestPublication.conclusion !== "success") {
-    if (publicationFailures >= PROJECT_VALIDATION_RETRY_LIMIT) {
-      return action(
-        "block",
-        "publication-blocked",
-        publicationFailures,
-        latestPublication,
-      );
-    }
-    return action(
+    return recovery(
+      recoveryInput,
+      publications,
+      latestPublication,
       "retry-publication",
       "retrying-publication",
-      publicationFailures,
-      latestPublication,
       { validationRunId: latestValidation.id },
     );
   }
@@ -225,25 +278,28 @@ export function planProjectValidationReconciliation(input) {
   return action("wait", "published", 1, latestPublication);
 }
 
-function humanText(state, attempts, run) {
+function humanText(state, run) {
   const runLink = run?.html_url
     ? ` [View the exact GitHub Actions run.](${run.html_url})`
     : "";
   const messages = {
     validating: "Tavernary is validating this exact generated head.",
-    "retrying-validation": `Tavernary will retry validation (attempt ${attempts} of ${PROJECT_VALIDATION_RETRY_LIMIT}).`,
+    "retrying-validation":
+      "Tavernary will resume validation when its recovery delay ends.",
     "validation-blocked":
-      "Validation attempts are exhausted and require intervention.",
+      "Validation found a permanent input or policy failure that requires correction.",
     handoff:
       "Validation passed; Tavernary is waiting for the normal Publisher handoff.",
     "publication-queued":
       "Validation passed; Tavernary queued this transaction behind the active Publisher run.",
     publishing: "Tavernary is publishing this validated transaction.",
-    "retrying-publication": `Tavernary will retry publication (attempt ${attempts} of ${PROJECT_VALIDATION_RETRY_LIMIT}).`,
+    "retrying-publication":
+      "Tavernary will resume publication when its recovery delay ends.",
     "publication-blocked":
-      "Publication attempts are exhausted and require intervention.",
+      "Publication found a permanent input or policy failure that requires correction.",
     regenerating: "Tavernary will regenerate this stale automatic transaction.",
-    "retrying-regeneration": `Tavernary will retry regeneration (attempt ${attempts} of ${PROJECT_VALIDATION_RETRY_LIMIT}).`,
+    "retrying-regeneration":
+      "Tavernary will resume regeneration when its recovery delay ends.",
     "regeneration-blocked":
       "Regeneration attempts are exhausted and require intervention.",
     published:
@@ -257,6 +313,8 @@ export function projectValidationStateComment({
   headSha,
   attempts,
   run,
+  failure,
+  retry,
 }) {
   const marker = {
     schema_version: 1,
@@ -264,6 +322,88 @@ export function projectValidationStateComment({
     head_sha: headSha,
     attempts,
     run_id: run?.id ?? null,
+    ...(retry
+      ? {
+          schema_version: 2,
+          run_attempt: run?.run_attempt ?? 1,
+          failure_kind: failure.kind,
+          reason_code: retry.reasonCode,
+          retry_action: retry.action,
+          next_eligible_at: retry.nextEligibleAt,
+          incident: retry.incident === true,
+        }
+      : {}),
   };
-  return `${PROJECT_VALIDATION_STATE_MARKER}\n${JSON.stringify(marker)}\n-->\n${humanText(state, attempts, run)}`;
+  const timing = retry?.nextEligibleAt
+    ? ` Next eligible: ${retry.nextEligibleAt}.`
+    : "";
+  const incident = retry?.incident
+    ? " Repeated unknown or configuration failures require investigation; bounded probes continue."
+    : "";
+  return `${PROJECT_VALIDATION_STATE_MARKER}\n${JSON.stringify(marker)}\n-->\n${humanText(state, run)}${timing}${incident}`;
+}
+
+const SAFE_REASON_CODES = new Set([
+  "authorization-lost",
+  "validation-failed",
+  "input-superseded",
+  "provider-authentication-failed",
+  "publisher-authentication-failed",
+  "provider-configuration-invalid",
+  "provider-model-mismatch",
+  "budget-exhausted",
+  "provider-timeout",
+  "provider-network-error",
+  "provider-rate-limited",
+  "provider-server-error",
+  "authentication-unavailable",
+  "provider-unavailable",
+  "workflow-skipped",
+  "workflow-timeout",
+  "workflow-cancelled",
+  "unclassified-failure",
+  "invalid-retry-clock",
+  "invalid-retry-state",
+]);
+
+export function parseProjectValidationRetryState(body) {
+  if (
+    typeof body !== "string" ||
+    body.split(PROJECT_VALIDATION_STATE_MARKER).length !== 2
+  )
+    return null;
+  try {
+    const marker = JSON.parse(
+      body.split(PROJECT_VALIDATION_STATE_MARKER)[1].split("-->")[0].trim(),
+    );
+    if (
+      marker.schema_version !== 2 ||
+      !/^[a-f0-9]{40}$/u.test(marker.head_sha) ||
+      !Number.isSafeInteger(marker.run_id) ||
+      marker.run_id < 1 ||
+      !Number.isSafeInteger(marker.run_attempt) ||
+      marker.run_attempt < 1 ||
+      ![
+        "retrying-validation",
+        "retrying-publication",
+        "retrying-regeneration",
+      ].includes(marker.status) ||
+      !SAFE_REASON_CODES.has(marker.reason_code) ||
+      typeof marker.next_eligible_at !== "string" ||
+      !Number.isFinite(Date.parse(marker.next_eligible_at)) ||
+      new Date(marker.next_eligible_at).toISOString() !==
+        marker.next_eligible_at
+    )
+      return null;
+    return {
+      headSha: marker.head_sha,
+      runId: marker.run_id,
+      runAttempt: marker.run_attempt,
+      state: marker.status,
+      reasonCode: marker.reason_code,
+      nextEligibleAt: marker.next_eligible_at,
+    };
+  } catch {
+    return null;
+  }
 }
