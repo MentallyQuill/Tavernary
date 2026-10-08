@@ -1126,3 +1126,21 @@ blob and release-reference reads. Adding a contents permission produced zero
 PUTs. A moved stable release tag also fails provenance checks. Four focused
 suites passed 86 checks; types, scoped lint, formatting and whitespace passed.
 This checkpoint does not claim live automatic publication or incident handling.
+
+### Concrete dependency security repair
+
+Next.js and its ESLint configuration are updated together from `16.3.4` to
+`16.3.8`, with compatible non-forced transitive lockfile fixes. The official
+[stable release](https://github.com/vercel/next.js/releases/tag/v16.3.8) clears
+the affected range in the [critical Next.js advisory](https://github.com/advisories/GHSA-vcvr-r3jv-pc5j).
+The native dependency transaction policy accepts the actual manifest/lockfile
+diff. A clean install confirms the installed framework is `16.3.8`; build,
+static-export verification, types and whole-repository lint pass.
+
+The audit now reports zero critical and five high findings, down from one
+critical and eleven high. All remaining findings come from the same development
+tool chain: ESLint config/plugin, fast-glob, micromatch and the unpatched
+[braces advisory](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm). The audit's
+suggested downgrade to ESLint config `14.2.35` would break the coupled framework
+policy and is not applied. This remaining upstream issue needs a future compatible
+patch or an owner-reviewed tooling change; it is not described as resolved.
