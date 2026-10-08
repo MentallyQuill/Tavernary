@@ -281,7 +281,11 @@ test("limits every main publisher to the protected Publisher App", async () => {
     Object.keys(protectedPublisherJobs)
       .filter(
         (name) =>
-          !(name.startsWith("apply-kit-") || name === "review-catalog-policy"),
+          !(
+            name.startsWith("apply-kit-") ||
+            name === "review-catalog-policy" ||
+            name === "refresh-catalog"
+          ),
       )
       .sort(),
   );
@@ -327,17 +331,24 @@ test("limits every main publisher to the protected Publisher App", async () => {
       with: {
         "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
         "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
-        ...(name.startsWith("apply-kit-") || name === "review-catalog-policy"
+        ...(name.startsWith("apply-kit-") ||
+        name === "review-catalog-policy" ||
+        name === "refresh-catalog"
           ? { "permission-actions": "write" }
           : { "permission-contents": "write" }),
       },
     });
-    if (name.startsWith("apply-kit-") || name === "review-catalog-policy")
+    if (
+      name.startsWith("apply-kit-") ||
+      name === "review-catalog-policy" ||
+      name === "refresh-catalog"
+    )
       expect(publisherToken?.with?.["permission-contents"]).toBeUndefined();
     if (
       name === "automation-writer" ||
       name.startsWith("apply-kit-") ||
-      name === "review-catalog-policy"
+      name === "review-catalog-policy" ||
+      name === "refresh-catalog"
     ) {
       expect(checkout?.with).toMatchObject({
         ref: "main",
@@ -467,7 +478,7 @@ test("uses the Publisher App identity for every protected workflow dispatch", as
       "import-tavernkeeper-reports.yml:continue->import-tavernkeeper-reports.yml",
       "publish-project-transaction.yml:publish->review-catalog-policy.yml",
       "reconcile-automation.yml:reconcile->automation-writer.yml",
-      "refresh-catalog.yml:refresh->review-catalog-policy.yml",
+      "refresh-catalog.yml:refresh->refresh-catalog.yml",
       "review-catalog-policy.yml:review->automation-writer.yml",
       "targeted-tavernkeeper-scan.yml:request->refresh-catalog.yml",
       "triage-kit-submission.yml:validate->apply-kit-submission.yml",
@@ -1171,49 +1182,18 @@ test("redispatches Pages without gating the next due import", async () => {
   expect(reportImport.jobs.continue.if).not.toContain("needs.deploy");
 });
 
-test("refreshes snapshots daily without granting production-record writes", async () => {
-  const refresh = (await workflow("refresh-catalog")) as {
-    "run-name": string;
-    permissions: Record<string, string>;
-    concurrency: Record<string, unknown>;
-    on: {
-      workflow_dispatch: {
-        inputs: Record<string, { options?: string[]; default?: unknown }>;
-      };
-    };
-    jobs: Record<
-      string,
-      {
-        steps: Array<{
-          id?: string;
-          name?: string;
-          if?: string;
-          run?: string;
-        }>;
-      }
-    >;
-  };
-  const source = await readFile(
-    resolve(workflowDirectory, "refresh-catalog.yml"),
-    "utf8",
-  );
-
+test("daily refresh preserves the existing manual modes and bounded baseline input", async () => {
+  const refresh = await workflow("refresh-catalog");
   expect(refresh.permissions).toEqual({
     contents: "read",
-    actions: "write",
+    actions: "read",
     issues: "read",
   });
   expect(refresh.concurrency).toEqual({
-    group: "catalog-refresh",
+    group: "catalog-refresh-${{ inputs.operation_key || 'request' }}",
     "cancel-in-progress": false,
   });
-  const inputs = (
-    refresh.on as {
-      workflow_dispatch: {
-        inputs: Record<string, { options?: string[]; default?: unknown }>;
-      };
-    }
-  ).workflow_dispatch.inputs;
+  const inputs = refresh.on.workflow_dispatch.inputs;
   expect(inputs.mode.options).toEqual([
     "incremental",
     "baseline",
@@ -1224,50 +1204,16 @@ test("refreshes snapshots daily without granting production-record writes", asyn
   expect(inputs).toHaveProperty("source_id");
   expect(inputs).not.toHaveProperty("start_index");
   expect(refresh["run-name"]).toContain("Catalog: Refresh baseline queue");
-  const refreshSteps = refresh.jobs.refresh.steps;
-  expect(refreshSteps.map(({ name }) => name)).toEqual(
-    expect.arrayContaining([
-      "Advance baseline queue or refresh selected sources",
-    ]),
-  );
-  const advance = refreshSteps.find(
-    ({ name }) => name === "Advance baseline queue or refresh selected sources",
-  )?.run;
-  expect(advance).toContain("refresh_batch");
-  expect(advance).not.toContain("baseline-queue.mjs evaluate");
-  expect(advance).not.toContain("while (( remaining > 0 )); do");
-  expect(source).not.toContain("workflow run refresh-catalog.yml");
-  expect(source).toContain("data/snapshots/github/*.json");
-  expect(source).toContain("data/snapshots/codeberg/*.json");
-  expect(source).toContain("data/snapshots/github-refresh.json");
-  expect(source).toContain("data/snapshots/github/kits/*.json");
-  expect(source).toContain("data/snapshots/install/*.json");
-  expect(source).toContain("public/catalog/tavernary-catalog.json");
-  expect(source).toContain("public/catalog/tavernary-catalog-v8.json");
-  expect(source).toContain("refresh-reactions.mjs");
-  expect(source).not.toMatch(/git add (?:data\/registry|data\/catalog)/);
-  expect(source).not.toContain("git add src/generated/catalog.json");
-  expect(source).toContain("workflow run deploy-pages.yml");
-
-  const supportRefresh = refreshSteps.find(
-    ({ name }) => name === "Refresh Kit community support",
-  );
-  const validation = refreshSteps.find(
-    ({ name }) => name === "Validate refreshed catalog",
-  );
-  const commit = refreshSteps.find(
-    ({ name }) => name === "Commit snapshot changes",
-  );
-  const redeploy = refreshSteps.find(
-    ({ name }) => name === "Redeploy refreshed catalog",
-  );
-  expect(supportRefresh?.run).toBe("node scripts/kits/refresh-reactions.mjs");
-  expect(validation?.run).toBe("npm run check");
-  expect(commit?.run).toContain("data/snapshots/github/kits/*.json");
-  expect(redeploy?.run).toBe("gh workflow run deploy-pages.yml --ref main");
-  expect(source).not.toMatch(
-    /data\/snapshots\/github\/kits\/(?!\*\.json)[a-z0-9-]+\.json/,
-  );
+  expect(
+    refresh.jobs.prepare.steps.some((step: WorkflowStep) =>
+      step.run?.includes("catalog-preparation-cli.mjs"),
+    ),
+  ).toBe(true);
+  expect(
+    refresh.jobs.refresh.steps.some((step: WorkflowStep) =>
+      step.run?.includes("preparation-request.mjs"),
+    ),
+  ).toBe(true);
 });
 
 test("runs enrichment through one tested durable orchestrator", async () => {

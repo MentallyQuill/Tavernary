@@ -1,6 +1,8 @@
 import type { AutomationInventoryState } from "./inventory.mjs";
 import type { AutomationOperation } from "./operation.mjs";
 import type { ModelPreparationOptions } from "./advisory-preparation.mjs";
+import type { refreshKitReactions } from "../kits/refresh-reactions.mjs";
+import type { GitHubRefreshManifest } from "../catalog/github-refresh-manifest.mjs";
 import type {
   PreparedCurrentState,
   PreparedResult,
@@ -14,6 +16,12 @@ export function acquireRefreshData(input: {
   state: AutomationInventoryState;
   operation: AutomationOperation;
   mode?: "project" | "forensic";
+  refresh?: (input: Record<string, unknown>) => Promise<{
+    changedSnapshots: unknown[];
+    changedInstallEvidence: unknown[];
+    manifest: GitHubRefreshManifest;
+  }>;
+  fetchPage?: Parameters<typeof refreshKitReactions>[0]["fetchPage"];
 }): Promise<Record<string, string>>;
 export function acquireCatalogData(input: {
   state: AutomationInventoryState;

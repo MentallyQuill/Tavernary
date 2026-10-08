@@ -11,6 +11,13 @@ import { acquirePreparedKitData } from "./kit-preparation.mjs";
 import { acquirePreparedReportData } from "./report-preparation.mjs";
 import { acquirePreparedMetadataData } from "./metadata-preparation.mjs";
 import { acquirePreparedAdvisoryData } from "./advisory-preparation.mjs";
+import {
+  selectRefreshCompanionData,
+  REFRESH_COMPANION_SOURCE_ID,
+} from "./catalog-operations.mjs";
+import { buildRefreshManifest } from "../catalog/github-refresh-manifest.mjs";
+import { refreshKitReactions } from "../kits/refresh-reactions.mjs";
+import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 
 export function assertCatalogPreparationContext({ state, operation, env }) {
   const workflow = env.GITHUB_WORKFLOW_REF?.slice(
@@ -54,13 +61,73 @@ export async function acquireRefreshData({
   state,
   operation,
   mode = "project",
+  refresh = runRepositoryRefresh,
+  fetchPage = async ({ kit, page, perPage }) => {
+    if (page > 10)
+      throw new Error("Kit reaction inventory exceeds its page bound.");
+    const text = await executeGh([
+      "api",
+      `repos/${state.repository}/issues/${kit.source_issue_number}/reactions?per_page=${perPage}&page=${page}`,
+    ]);
+    if (Buffer.byteLength(text) > 4 * 1024 * 1024)
+      throw new Error("Kit reaction page exceeds its byte bound.");
+    const values = JSON.parse(text);
+    if (!Array.isArray(values) || values.length > perPage)
+      throw new Error("Kit reaction page is invalid.");
+    return values;
+  },
 }) {
   if (
     operation.identity.kind !== "refresh" ||
     !["project", "forensic"].includes(mode)
   )
     throw new Error("Catalog acquisition is unsupported.");
-  const result = await runRepositoryRefresh({
+  if (operation.identity.subject === `source:${REFRESH_COMPANION_SOURCE_ID}`) {
+    const companions = selectRefreshCompanionData(state.local);
+    const now = new Date(state.nowMs).toISOString();
+    // This observation advances the display clock without claiming any repository fetch.
+    const manifest = buildRefreshManifest({
+      mode: "incremental",
+      startedAt: now,
+      completedAt: now,
+      outcomes: [],
+      snapshots: state.local.snapshots,
+    });
+    const outputs = {
+      "data/snapshots/github-refresh.json": await format(
+        JSON.stringify(manifest),
+        { parser: "json" },
+      ),
+    };
+    const snapshots = await refreshKitReactions({
+      kits: companions.kits,
+      snapshots: state.local.kitSnapshots ?? [],
+      blockedUsers: state.local.blockedUsers,
+      fetchPage,
+      now,
+    });
+    const blocked = new Set(
+      state.local.blockedUsers.blocked.map((user) => user.github_user_id),
+    );
+    const published = new Set(
+      companions.kits
+        .filter((kit) => kit.status === "published")
+        .map((kit) => kit.id),
+    );
+    for (const snapshot of snapshots) {
+      snapshot.supporters = snapshot.supporters.map((user) => ({
+        ...user,
+        active:
+          user.active &&
+          published.has(snapshot.kit_id) &&
+          !blocked.has(user.github_user_id),
+      }));
+      outputs[`data/snapshots/github/kits/${snapshot.kit_id}.json`] =
+        await format(JSON.stringify(snapshot), { parser: "json" });
+    }
+    return outputs;
+  }
+  const result = await refresh({
     write: false,
     mode,
     sourceId: operation.identity.subject.slice(7),
@@ -69,6 +136,7 @@ export async function acquireRefreshData({
     snapshots: state.local.snapshots,
     installEvidence: state.local.installEvidence,
     previousManifest: state.local.refreshManifest,
+    startedAt: state.nowMs,
   });
   if (result.manifest.counts.failed)
     throw Object.assign(new Error("Source observation failed."), {

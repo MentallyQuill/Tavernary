@@ -14,6 +14,10 @@ import {
   validateMetadataPreparedFiles,
 } from "./metadata-preparation.mjs";
 import { validateMetadataCache } from "./metadata-refresh.mjs";
+import {
+  selectRefreshCompanionData,
+  REFRESH_COMPANION_SOURCE_ID,
+} from "./catalog-operations.mjs";
 
 const schemaNames = {
   project: "project",
@@ -22,6 +26,7 @@ const schemaNames = {
   advisory: "catalog-policy-review",
   kit: "kit",
   support: "kit-support-snapshot",
+  refresh: "github-refresh",
 };
 async function schemaValidators(root) {
   const ajv = new Ajv({ allErrors: true, strict: false });
@@ -68,6 +73,89 @@ export async function createPreparedPublicationContext({
     throw Object.assign(new Error("Canonical operation is superseded."), {
       code: "input-superseded",
     });
+  if (
+    operation.identity.kind === "refresh" &&
+    operation.identity.subject === `source:${REFRESH_COMPANION_SOURCE_ID}`
+  ) {
+    const validators = await schemaValidators(state.root);
+    const companions = selectRefreshCompanionData(state.local);
+    const paths = [
+      "data/snapshots/github-refresh.json",
+      ...companions.kits.map(
+        (kit) => `data/snapshots/github/kits/${kit.id}.json`,
+      ),
+    ];
+    const validTime = (time) =>
+      Number.isFinite(Date.parse(time ?? "")) &&
+      Date.parse(time) <= state.nowMs + 300000;
+    const blocked = new Set(
+      state.local.blockedUsers.blocked.map((user) => user.github_user_id),
+    );
+    return {
+      repository: state.repository,
+      mainSha: state.local.revision,
+      source: {
+        id: REFRESH_COMPANION_SOURCE_ID,
+        identity: `github-reactions:${state.repository}`,
+      },
+      authorId: state.publisherActorId,
+      inputDigest: operation.identity.inputDigest,
+      policyVersion: operation.identity.policyVersion,
+      authorityValid: true,
+      allowedPaths: paths,
+      fileDigests: canonicalFileDigests({
+        root: state.root,
+        revision: state.local.revision,
+        paths,
+      }),
+      validateContent: (path, value) => {
+        if (
+          !paths.includes(path) ||
+          !value ||
+          typeof value !== "object" ||
+          Array.isArray(value)
+        )
+          return false;
+        if (path === "data/snapshots/github-refresh.json")
+          return (
+            validators.refresh(value) &&
+            value.mode === "incremental" &&
+            validTime(value.started_at) &&
+            validTime(value.completed_at) &&
+            Date.parse(value.started_at) <= Date.parse(value.completed_at) &&
+            Date.parse(value.completed_at) >=
+              Date.parse(
+                state.local.refreshManifest?.completed_at ??
+                  "1970-01-01T00:00:00.000Z",
+              ) &&
+            value.counts.checked === 0 &&
+            value.counts.total === 0 &&
+            value.counts.failed === 0 &&
+            value.source_timings.length === 0
+          );
+        const kit = companions.kits.find(
+          (kit) => path === `data/snapshots/github/kits/${kit.id}.json`,
+        );
+        return (
+          kit != null &&
+          validators.support(value) &&
+          value.kit_id === kit.id &&
+          value.source_issue_number === kit.source_issue_number &&
+          validTime(value.refreshed_at) &&
+          (value.stale_since === null || validTime(value.stale_since)) &&
+          new Set(value.supporters.map((user) => user.github_user_id)).size ===
+            value.supporters.length &&
+          value.supporters.every(
+            (user) =>
+              validTime(user.first_reacted_at) &&
+              (!user.active ||
+                (kit.status === "published" &&
+                  !blocked.has(user.github_user_id))),
+          )
+        );
+      },
+    };
+  }
   if (["kit", "withdrawal"].includes(operation.identity.kind))
     return createKitPreparedPublicationContext({
       state,

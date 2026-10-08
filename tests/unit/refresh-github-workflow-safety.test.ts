@@ -17,31 +17,55 @@ test("uses status-driven refresh modes without indexed backfill", async () => {
   expect(source).not.toContain("start_index");
   expect(source).not.toContain("next_index");
   expect(source).not.toContain("< 200");
-  expect(source).toContain('"$MODE" != "baseline"');
+  const document = parse(source);
+  expect(document.on.workflow_dispatch.inputs.mode.options).toEqual([
+    "incremental",
+    "baseline",
+    "project",
+    "forensic",
+  ]);
+  expect(document.on.workflow_dispatch.inputs.batch_size.default).toBe(12);
 });
 
-test("stages only snapshots and the refresh manifest", async () => {
+test("keeps refresh preparation read-only and retains a bounded result", async () => {
   const source = await readFile(refreshPath, "utf8");
-
-  expect(source).toContain("git add data/snapshots/github/*.json");
-  expect(source).toContain("git add data/snapshots/codeberg/*.json");
-  expect(source).toContain("data/snapshots/github-refresh.json");
-  expect(source).not.toMatch(/git add (?:data\/registry|data\/catalog)/);
+  const document = parse(source);
+  expect(document.permissions).toEqual({
+    contents: "read",
+    actions: "read",
+    issues: "read",
+  });
+  expect(document.jobs.prepare.permissions).toEqual({
+    contents: "read",
+    actions: "read",
+    issues: "read",
+    "pull-requests": "read",
+  });
+  expect(source).not.toMatch(/git (?:add|commit|push|rebase)\b/);
+  expect(source).toContain(
+    "node scripts/automation/catalog-preparation-cli.mjs",
+  );
+  expect(source).toContain("automation-prepared-${{ inputs.operation_key }}");
+  expect(source).toContain("if-no-files-found: error");
 });
 
-test("validates before commit and deploys only after a committed change", async () => {
+test("selects current authority before creating the dispatch credential", async () => {
   const source = await readFile(refreshPath, "utf8");
-  const check = source.indexOf("npm run check");
-  const commit = source.indexOf('git commit -m "chore(catalog)');
-  const deploy = source.indexOf("workflow run deploy-pages.yml");
-
-  expect(check).toBeGreaterThan(-1);
-  expect(check).toBeLessThan(commit);
-  expect(commit).toBeLessThan(deploy);
-  expect(source).toContain("steps.commit.outputs.changed == 'true'");
+  const select = source.indexOf(
+    "node scripts/automation/preparation-request.mjs",
+  );
+  const credential = source.indexOf("Create fresh preparation dispatch token");
+  const dispatch = source.indexOf("gh workflow run refresh-catalog.yml");
+  expect(select).toBeGreaterThan(-1);
+  expect(select).toBeLessThan(credential);
+  expect(credential).toBeLessThan(dispatch);
+  expect(source).toContain("steps.request.outputs.requests != '0'");
+  expect(source).toContain("permission-actions: write");
+  expect(source).not.toContain("permission-contents: write");
+  expect(source).not.toContain("workflow run deploy-pages.yml");
 });
 
-test("rebases with bounded retries and never force-pushes", async () => {
+test("pins preparation code and guards refresh requests by current authority", async () => {
   const source = await readFile(refreshPath, "utf8");
 
   expect(source).toContain("github.ref == 'refs/heads/main'");
@@ -51,27 +75,27 @@ test("rebases with bounded retries and never force-pushes", async () => {
   );
   expect(source).not.toContain("github.actor_id == 41898282");
   expect(source).toContain("fetch-depth: 0");
-  expect(source).toContain("for attempt in 1 2 3");
-  expect(source).toContain("git fetch origin main");
-  expect(source).toContain("git rebase origin/main");
-  expect(source).toContain("git rebase --abort || true");
-  expect(source).not.toMatch(/push[^\n]*(?:--force|-f\b)/);
-  const rebase = source.indexOf("git rebase origin/main");
-  const postRebaseCheck = source.indexOf("npm run check", rebase);
-  const push = source.indexOf("git push origin HEAD:main", rebase);
-  expect(postRebaseCheck).toBeGreaterThan(rebase);
-  expect(postRebaseCheck).toBeLessThan(push);
+  expect(source).toContain("persist-credentials: false");
+  expect(source).toContain("ref: ${{ github.sha }}");
+  expect(source).not.toMatch(/git (?:push|rebase)\b/);
 });
 
-test("runs one bounded baseline batch so activity cursors persist between runs", async () => {
+test("dispatches immutable preparations with bounded native source selection", async () => {
   const source = await readFile(refreshPath, "utf8");
-  expect(source).toContain(
-    "Advance baseline queue or refresh selected sources",
+  const planner = await readFile(
+    resolve("scripts/automation/preparation-request.mjs"),
+    "utf8",
   );
+  expect(planner).toContain(
+    "selectRefreshSources(state.local.sources, state.local.snapshots",
+  );
+  expect(planner).toContain("limit: 20");
   expect(source).not.toContain("while (( remaining > 0 )); do");
   expect(source).not.toContain("baseline-queue.mjs evaluate");
-  expect(source.match(/\brefresh_batch\b/gu)).toHaveLength(3);
-  expect(source).not.toContain("workflow run refresh-catalog.yml");
+  expect(source).toContain('-f operation_key="$operation_key"');
+  expect(source).toContain(
+    "catalog-refresh-${{ inputs.operation_key || 'request' }}",
+  );
 });
 
 test("names catalog runs by their actual operating mode", async () => {
@@ -153,7 +177,7 @@ test("enrichment delegates one durable rollout to the tested orchestrator", asyn
         concurrency: { group: string };
       }
     ).concurrency.group,
-  ).toBe("catalog-refresh");
+  ).toBe("catalog-refresh-${{ inputs.operation_key || 'request' }}");
 });
 
 test("identity backfill targets optional IDs and owns only repository identity writes", async () => {

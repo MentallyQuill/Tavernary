@@ -119,6 +119,40 @@ test("publication uses the same committed observation clock as the later product
     ).toBe(manifest.completed_at);
 });
 
+test("an actual refresh manifest advances both public catalog clocks", async () => {
+  const { state, file } = fixture();
+  const manifest = JSON.parse(
+    readFileSync("data/snapshots/github-refresh.json", "utf8"),
+  );
+  manifest.completed_at = "2026-10-08T12:00:00.000Z";
+  const content = `${JSON.stringify(manifest, null, 2)}\n`;
+  const files = await buildPreparedCatalogPublication({
+    state,
+    action: {
+      action: "commit",
+      operationKeys: ["a".repeat(64)],
+      expectedMainSha: "b".repeat(40),
+      files: [
+        {
+          ...file,
+          path: "data/snapshots/github-refresh.json",
+          content,
+          sha256: createHash("sha256").update(content).digest("hex"),
+          bytes: Buffer.byteLength(content),
+        },
+      ],
+    },
+  });
+  for (const path of [
+    "public/catalog/tavernary-catalog.json",
+    "public/catalog/tavernary-catalog-v8.json",
+  ])
+    expect(
+      JSON.parse(files.find((value) => value.path === path)!.content)
+        .generatedAt,
+    ).toBe(manifest.completed_at);
+});
+
 test("an unchanged-source cache publication never manufactures new public assets", async () => {
   const input = await metadataMaintenanceFixture({ unchanged: true });
   const data = await input.run();

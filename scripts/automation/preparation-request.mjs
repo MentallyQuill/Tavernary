@@ -11,12 +11,51 @@ import {
 } from "./inventory.mjs";
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 import { synchronizeWithdrawalFeedback } from "./withdrawal-feedback.mjs";
+import { REFRESH_COMPANION_SOURCE_ID } from "./catalog-operations.mjs";
+import { selectRefreshSources } from "../catalog/refresh-repositories.mjs";
 
 const workflowKinds = {
   "apply-kit-submission.yml": "kit",
   "apply-kit-withdrawal.yml": "withdrawal",
   "review-catalog-policy.yml": "advisory",
+  "refresh-catalog.yml": "refresh",
 };
+export function planRefreshPreparationRequests({
+  state,
+  mode = "incremental",
+  sourceId,
+  batchSize = 12,
+}) {
+  const selected = new Set(
+    selectRefreshSources(state.local.sources, state.local.snapshots, {
+      mode,
+      sourceId,
+      batchSize,
+    }).map((source) => source.id),
+  );
+  if (mode === "incremental") selected.add(REFRESH_COMPANION_SOURCE_ID);
+  const explicit = ["baseline", "project", "forensic"].includes(mode);
+  return selectDueOperations(
+    state.operations
+      .filter(
+        (operation) =>
+          operation.identity.kind === "refresh" &&
+          operation.stage === "admitted" &&
+          selected.has(operation.identity.subject.slice(7)),
+      )
+      .map((operation) =>
+        explicit ? { ...operation, nextEligibleAt: null } : operation,
+      ),
+    { nowMs: state.nowMs, limit: 20 },
+  ).map((operation) => ({
+    workflow: "refresh-catalog.yml",
+    inputs: {
+      mode: mode === "forensic" ? "forensic" : "project",
+      source_id: operation.identity.subject.slice(7),
+      operation_key: operation.key,
+    },
+  }));
+}
 export function planAdvisoryPreparationRequests({ state, projectId }) {
   if (projectId && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(projectId))
     throw new Error("Advisory request identity is invalid.");
@@ -83,7 +122,7 @@ export async function runPreparationRequestCli(options = {}) {
       throw new Error("Preparation request workflow is invalid.");
     if (
       env.GITHUB_EVENT_NAME === "schedule" &&
-      workflow !== "review-catalog-policy.yml"
+      !["review-catalog-policy.yml", "refresh-catalog.yml"].includes(workflow)
     )
       throw new Error("Scheduled request workflow is invalid.");
     const state = await (
@@ -114,6 +153,18 @@ export async function runPreparationRequestCli(options = {}) {
       const requests = planAdvisoryPreparationRequests({
         state,
         projectId: event.inputs?.project_id,
+      });
+      if (env.GITHUB_OUTPUT)
+        await appendFile(env.GITHUB_OUTPUT, `requests=${requests.length}\n`);
+      write(JSON.stringify(requests));
+      return 0;
+    }
+    if (workflow === "refresh-catalog.yml") {
+      const requests = planRefreshPreparationRequests({
+        state,
+        mode: event.inputs?.mode ?? "incremental",
+        sourceId: event.inputs?.source_id,
+        batchSize: Number(event.inputs?.batch_size ?? 12),
       });
       if (env.GITHUB_OUTPUT)
         await appendFile(env.GITHUB_OUTPUT, `requests=${requests.length}\n`);

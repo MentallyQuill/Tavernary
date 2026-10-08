@@ -23,6 +23,18 @@ attached PRs, required checks, independent review, merge, and production proof.
 
 ## Requirement evidence
 
+Current delivery: [draft PR #818](https://github.com/MentallyQuill/Tavernary/pull/818)
+is attached. Both required `verify` and `visual` checks passed on head
+`cb595e2521d66a00b7ed640483de49b0a9bb670d`. The next batch adds focused content
+deployment checks and the refresh writer migration. Those earlier CI results
+do not validate the next head.
+
+Remaining implementation: report import/incidents and optional narrative,
+manual enrichment/checkpoints, identity backfill/verification serialization,
+fork-dependent recovery, complete provider-budget coverage, and Phase 5
+dependency/runtime/health/retention/drill/runbook work. End-to-end canary,
+independent review, final CI, merge and production verification remain required.
+
 | ID  | Required result                                       | Current evidence/status                                                                                                 |
 | --- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | R1  | Current main base; preserve original changes          | Isolated branch from the recorded main SHA; original status recorded; integration recheck pending                       |
@@ -42,7 +54,7 @@ attached PRs, required checks, independent review, merge, and production proof.
 | R15 | Verified supported-runtime policy                     | Pending                                                                                                                 |
 | R16 | Safe bounded retention                                | Pending                                                                                                                 |
 | R17 | Owner runbook                                         | Pending                                                                                                                 |
-| R18 | Attached PRs, CI, review, merge, production proof     | Pending                                                                                                                 |
+| R18 | Attached PRs, CI, review, merge, production proof     | Draft PR #818 attached; verify/visual passed cb595e252; current head, independent review, merge and production pending  |
 
 ## Rulings and task outcomes
 
@@ -918,3 +930,47 @@ rollback checks passed 12 tests. Types and focused lint passed.
 Ruling: advance the catalog clock through a verified refresh rather than a
 private receipt or delayed writer. The pending refresh migration must preserve
 its actual observation manifest and Kit support updates.
+
+### Refresh writer migration
+
+Refresh entrypoints now select current immutable operations, then mint an
+actions-only dispatch credential. Read-only pinned workers prepare snapshots;
+the shared writer validates current identities, schemas and canonical file
+digests before publication. Baseline, project and forensic owner requests retain
+their existing selection rules and permanent-failure/active-worker guards.
+
+Ruling: observe Kit support and the catalog display clock in one independent
+daily refresh operation using the existing worker/writer contracts. A source
+provider outage cannot block this operation or unrelated source observations.
+The manifest honestly records zero repository scans; source freshness must use
+individual source evidence, rather than this display clock. Cost: one additional
+bounded operation each day.
+
+Kit observations select the oldest one hundred snapshots, bound pagination to
+ten pages and four MiB per response, and retain the existing 128-file prepared
+result limit. Provider outages preserve old reaction evidence with stale status;
+withdrawn and blocked users remain inactive. Native prepared validation rejects
+unrelated files, altered issue identities, future clocks and invented scan counts.
+
+Ruling: cap preparation dispatches at twenty per pass, including explicit
+baseline requests. A request for twenty-four sources leaves eligible remainder
+for subsequent reconstruction. More than one hundred Kits require additional
+daily cycles. These limits trade throughput for bounded unattended work.
+
+Evidence: source-outage isolation first failed, then passed with zero source
+provider calls. Eight targeted suites passed 107 checks, with types and focused
+lint passing. The first complete integration gate passed 3,250 tests and found
+six workflow contracts still expecting the removed direct writer. Updated
+contracts and native refresh checks passed 19 tests. A second integration run
+exposed eight five-second native/UI timeouts and one subsequent UI failure under
+host oversubscription. With test workers bounded to four, all 305 files / 3,256
+tests passed in 180.29 seconds; types, lint, formatting and catalog/report gates
+also passed. Production build and static export verification passed; the complete
+`npm run check` exited zero. No report,
+enrichment, maintenance, review or production milestone is implied by this migration.
+
+Ruling: bound unit-test worker concurrency at four — many simultaneous native
+Git fixtures and jsdom instances exhausted host resources. Keep behavioral
+assertions and timeout deadlines. Cost: a slower full suite on machines capable
+of higher concurrency, in exchange for predictable integration checks. Content
+deployments continue to run their smaller focused suite.

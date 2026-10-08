@@ -11,6 +11,8 @@ export default defineConfig({
     },
   },
   test: {
+    // Native Git fixtures and UI tests share host resources; avoid oversubscription.
+    maxWorkers: 4,
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
     exclude: [

@@ -32,6 +32,8 @@ export async function buildPreparedCatalogPublication({ action, state }) {
       local.kits = replace(local.kits, value, "id");
     else if (file.path.startsWith("data/snapshots/github/kits/"))
       local.kitSnapshots = replace(local.kitSnapshots, value, "kit_id");
+    else if (file.path === "data/snapshots/github-refresh.json")
+      local.refreshManifest = value;
     else if (/^data\/snapshots\/(github|codeberg)\//u.test(file.path))
       local.snapshots = replace(local.snapshots, value, "source_id");
     else if (file.path.startsWith("data/snapshots/install/"))

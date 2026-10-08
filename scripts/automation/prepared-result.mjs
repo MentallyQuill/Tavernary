@@ -118,6 +118,8 @@ function fail(code) {
 }
 function allowedPath(result, path) {
   const slug = "[a-z0-9]+(?:-[a-z0-9]+)*";
+  if (path === "data/snapshots/github-refresh.json")
+    return result.kind === "refresh";
   if (
     !new RegExp(
       `^data/(?:registry/(?:projects|sources|kits)|snapshots/(?:github(?:/kits)?|codeberg|install|policy-review)|maintenance/automation/metadata|security)/${slug}\\.json$`,
@@ -126,9 +128,12 @@ function allowedPath(result, path) {
   )
     return false;
   if (result.kind === "refresh")
-    return ["github", "codeberg", "install"].some(
-      (provider) =>
-        path === `data/snapshots/${provider}/${result.source.id}.json`,
+    return (
+      /^data\/snapshots\/github\/kits\//u.test(path) ||
+      ["github", "codeberg", "install"].some(
+        (provider) =>
+          path === `data/snapshots/${provider}/${result.source.id}.json`,
+      )
     );
   if (result.kind === "metadata")
     return (

@@ -47,8 +47,55 @@ function sourceIdentity(source) {
     : `url:${source.url ?? ""}`;
 }
 
+export const REFRESH_COMPANION_SOURCE_ID = "catalog-maintenance";
+export function selectRefreshCompanionData(input) {
+  const kits = Array.isArray(input.kits) ? input.kits : [];
+  const snapshots = Array.isArray(input.kitSnapshots) ? input.kitSnapshots : [];
+  const observed = new Map(
+    snapshots.map((value) => [
+      value.kit_id,
+      Date.parse(value.refreshed_at) || 0,
+    ]),
+  );
+  return {
+    sourceId: REFRESH_COMPANION_SOURCE_ID,
+    kits: [...kits]
+      .sort(
+        (left, right) =>
+          (observed.get(left.id) ?? 0) - (observed.get(right.id) ?? 0) ||
+          left.id.localeCompare(right.id),
+      )
+      .slice(0, 100),
+  };
+}
+
 export function discoverCatalogOperations(input) {
   const operations = [];
+  const companions = selectRefreshCompanionData(input.catalog);
+  if (Array.isArray(input.catalog.kits)) {
+    const observed = Date.parse(
+      input.catalog.refreshManifest?.completed_at ?? "",
+    );
+    const lastObservation = Number.isFinite(observed) ? observed : 0;
+    const operation = makeOperation(
+      "refresh",
+      `source:${REFRESH_COMPANION_SOURCE_ID}`,
+      {
+        lastObservation,
+        kits: companions.kits.map((kit) => ({
+          id: kit.id,
+          status: kit.status,
+          source_issue_number: kit.source_issue_number,
+        })),
+        blockedUsers: input.catalog.blockedUsers ?? null,
+      },
+      lastObservation,
+    );
+    operation.nextEligibleAt = new Date(
+      lastObservation + 86400000,
+    ).toISOString();
+    operations.push(operation);
+  }
   const vocabularyHash =
     input.catalog.vocabularyHash ?? tagVocabularyHash(tags);
   for (const source of input.catalog.sources) {

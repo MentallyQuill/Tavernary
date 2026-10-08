@@ -1,4 +1,17 @@
 import type { AutomationInventoryState } from "./inventory.mjs";
+export function planRefreshPreparationRequests(input: {
+  state: AutomationInventoryState;
+  mode?: "incremental" | "baseline" | "project" | "forensic";
+  sourceId?: string;
+  batchSize?: number;
+}): Array<{
+  workflow: "refresh-catalog.yml";
+  inputs: {
+    mode: "project" | "forensic";
+    source_id: string;
+    operation_key: string;
+  };
+}>;
 export function planAdvisoryPreparationRequests(input: {
   state: AutomationInventoryState;
   projectId?: string;
