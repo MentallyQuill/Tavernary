@@ -242,3 +242,37 @@ model-ticket gate with serialized budget reservations and validated cache hits.
 The cost if wrong is incomplete optional worker execution; no PR or production
 completion is claimed at this boundary. Keep legacy recovery active until its
 shared-writer replacement has tested coverage.
+
+### Phase 3 Task 1: validated canonical write planning
+
+Strict prepared-result envelopes bind the current operation, immutable source,
+author, policy/input digest, trusted in-repository Publisher producer/run/main
+revision, allowlisted JSON paths, byte sizes and content/base hashes. Unsafe
+paths, links, unknown fields, invalid domain data, changed authority and stale
+file bases fail before writes. Independent snapshots coalesce into one commit;
+replays produce one action, conflicting claimants regenerate together, and a
+canonical published operation recovers bookkeeping without republishing.
+
+Project candidates retain the existing planner's authority, manual approval,
+exact-head and base-drift checks. The envelope additionally binds the transaction
+actor/source/paths and every prepared file hash to the validated PR head. A
+permanently rejected current input remains rejected on artifact replay.
+
+Verification: prepared-result, write-lane and existing project-planner coverage
+69/69; typecheck, scoped ESLint, formatting and whitespace checks exit 0. Watched
+regressions caught unrelated base revisions, incomplete conflict propagation,
+project-envelope substitution, excessive candidate counts, permanent replay and
+cross-source operation binding.
+
+Ruling: Represent prepared data as a bounded strict JSON envelope; the writer
+supplies domain validators and current base hashes, and executes no artifact
+code. Accept only configured Publisher producers on main; legacy/manual entry
+points must route preparation through that trusted dispatch. The cost if wrong
+is conservative regeneration or rejected producer output. Archive validation
+and actual workflow custody remain later publication tasks.
+
+Ruling: Require the existing project planner plus transaction/validated-file
+binding, rather than admitting project records through generic snapshot commits.
+The cost if wrong is an extra data read or regeneration; exact-head/manual/owner
+protections remain mandatory. Bookkeeping satisfaction relies on the caller's
+authoritative canonical operation stage and must be rechecked in the publisher.

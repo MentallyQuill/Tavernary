@@ -25,6 +25,121 @@ import { discoverProjectOperations } from "../../scripts/automation/project-oper
 import reportIndexFixture from "../fixtures/tavernkeeper/report-index.v5.valid.json";
 import { validateReportIndex } from "../../scripts/security/tavernkeeper-reports.mjs";
 import { initialTavernKeeperImportState } from "../../scripts/security/tavernkeeper-import-state.mjs";
+import { createHash } from "node:crypto";
+import type {
+  PreparedResult,
+  PreparedResultContext,
+} from "../../scripts/automation/prepared-result.mjs";
+import type { PublicationPlanningInput } from "../../scripts/automation/write-lane.mjs";
+
+export function preparedResultFixture(
+  overrides: Partial<PreparedResult> & { paths?: string[] } = {},
+): PreparedResult {
+  const operation = operationFixture({
+    identity: {
+      kind: "refresh",
+      subject: "source:github-42",
+      inputDigest: "a".repeat(64),
+      policyVersion: "1",
+    },
+  });
+  const content = JSON.stringify({ source_id: "github-42", repository_id: 42 });
+  const { paths, ...values } = overrides;
+  return {
+    schema_version: 1,
+    operationKey: operation.key,
+    kind: operation.identity.kind,
+    inputDigest: operation.identity.inputDigest,
+    policyVersion: operation.identity.policyVersion,
+    source: { id: "github-42", identity: "github:42" },
+    authorId: 41_982_982,
+    repository: "MentallyQuill/Tavernary",
+    producer: {
+      workflow: ".github/workflows/refresh-catalog.yml",
+      runId: 700,
+      sourceSha: "b".repeat(40),
+    },
+    baseSha: "b".repeat(40),
+    files: (paths ?? ["data/snapshots/github/github-42.json"]).map((path) => ({
+      path,
+      type: "file" as const,
+      content,
+      sha256: createHash("sha256").update(content).digest("hex"),
+      bytes: Buffer.byteLength(content),
+      baseDigest: null,
+    })),
+    ...values,
+  };
+}
+export function preparedResultContextFixture(
+  overrides: Partial<PreparedResultContext> = {},
+): PreparedResultContext {
+  const result = preparedResultFixture();
+  return {
+    operation: operationFixture({
+      identity: {
+        kind: "refresh",
+        subject: "source:github-42",
+        inputDigest: result.inputDigest,
+        policyVersion: result.policyVersion,
+      },
+    }),
+    publisherActorId: result.authorId,
+    run: {
+      id: result.producer.runId,
+      path: result.producer.workflow,
+      event: "workflow_dispatch",
+      head_branch: "main",
+      head_sha: result.producer.sourceSha,
+      actor: { id: result.authorId, type: "Bot" },
+      head_repository: { full_name: result.repository },
+      status: "completed",
+      conclusion: "success",
+    },
+    currentState: {
+      repository: result.repository,
+      mainSha: result.baseSha,
+      source: result.source,
+      authorId: result.authorId,
+      inputDigest: result.inputDigest,
+      policyVersion: result.policyVersion,
+      authorityValid: true,
+      fileDigests: {},
+      allowedPaths: result.files.map((file) => file.path),
+      validateContent: (_path, value) => {
+        const record = value as { source_id?: string; repository_id?: number };
+        return (
+          record.source_id === result.source.id && record.repository_id === 42
+        );
+      },
+    },
+    ...overrides,
+  };
+}
+export function writeLaneFixture(
+  overrides: Partial<Omit<PublicationPlanningInput, "candidates">> & {
+    candidates?: PreparedResult[];
+  } = {},
+): PublicationPlanningInput {
+  const { candidates = [preparedResultFixture()], ...values } = overrides;
+  const context = preparedResultContextFixture();
+  return {
+    operations: [context.operation],
+    currentMainSha: context.currentState.mainSha,
+    expectedPublisherId: context.publisherActorId,
+    candidates: candidates.map((result) => ({
+      result,
+      run: {
+        ...context.run,
+        id: result.producer.runId,
+        path: result.producer.workflow,
+        head_sha: result.producer.sourceSha,
+      },
+      currentState: context.currentState,
+    })),
+    ...values,
+  };
+}
 
 export const AUTOMATION_NOW = Date.parse("2026-10-07T12:00:00.000Z");
 
