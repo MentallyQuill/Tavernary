@@ -9,7 +9,7 @@ import { assertTrustedAutomationContext } from "./github-inventory.mjs";
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
 
-export function planAutomationWorker(operation, { budgetTicket } = {}) {
+export function planAutomationWorker(operation) {
   validateAutomationOperation(operation);
   if (
     operation.workerRunId !== null ||
@@ -86,15 +86,9 @@ export function planAutomationWorker(operation, { budgetTicket } = {}) {
       operation_key: operation.key,
     });
   if (["metadata", "advisory"].includes(operation.identity.kind)) {
-    if (!budgetTicket)
-      throw Object.assign(
-        new Error("Optional model work requires a reserved budget ticket."),
-        { code: "budget-exhausted" },
-      );
     return dispatch("automation-writer.yml", {
       mode: "prepare",
       operation_key: operation.key,
-      budget_ticket: budgetTicket,
     });
   }
   throw new Error("Automation worker kind is unsupported.");
@@ -105,7 +99,6 @@ export async function runAutomationWorker({
   load,
   gh,
   repository = "MentallyQuill/Tavernary",
-  budgetTicket,
 }) {
   if (!/^[a-f0-9]{64}$/u.test(operationKey))
     throw new Error("Worker operation key is invalid.");
@@ -113,7 +106,7 @@ export async function runAutomationWorker({
     (operation) => operation.key === operationKey,
   );
   if (!operation) return { action: "superseded" };
-  const plan = planAutomationWorker(operation, { budgetTicket });
+  const plan = planAutomationWorker(operation);
   if (plan.action !== "dispatch") return plan;
   await gh([
     "workflow",
@@ -156,7 +149,6 @@ async function main() {
       load: async () => discoverAutomationState(state),
       gh: executeGh,
       repository,
-      budgetTicket: env.AUTOMATION_MODEL_TICKET,
     });
     console.log(JSON.stringify(result));
   } catch (error) {

@@ -5,12 +5,10 @@ export type AutomationWorkerPlan =
   | { action: "dispatch"; workflow: string; inputs: Record<string, string> };
 export function planAutomationWorker(
   operation: AutomationOperation,
-  options?: { budgetTicket?: string },
 ): AutomationWorkerPlan;
 export function runAutomationWorker(input: {
   operationKey: string;
   load: () => Promise<AutomationOperation[]>;
   gh: GhRunner;
   repository?: string;
-  budgetTicket?: string;
 }): Promise<AutomationWorkerPlan>;

@@ -2,6 +2,8 @@ import type { GhRunner } from "../submissions/kit-submission-reconciliation.mjs"
 import type { PublicationResult } from "./publish.mjs";
 import type { AutomationInventoryState } from "./inventory.mjs";
 import type { GitHubRequest } from "../submissions/reconcile-project-validations.mjs";
+import type { commitCanonicalData } from "./canonical-data.mjs";
+import type { dispatchReservedModelPreparation } from "./model-budget-github.mjs";
 interface ProjectWriterInput {
   operationKey: string;
   root?: string;
@@ -9,6 +11,16 @@ interface ProjectWriterInput {
   gh?: GhRunner;
   load?: () => Promise<AutomationInventoryState>;
 }
+export function runModelWriterPreparation(
+  input: ProjectWriterInput & {
+    commit?: (
+      input: Omit<Parameters<typeof commitCanonicalData>[0], "gh">,
+    ) => Promise<{ sha: string }>;
+    dispatch?: (
+      input: Omit<Parameters<typeof dispatchReservedModelPreparation>[0], "gh">,
+    ) => Promise<{ runId: number; workflow: string }>;
+  },
+): Promise<Record<string, unknown>>;
 export function runProjectWriterPublication(
   input: ProjectWriterInput,
 ): Promise<PublicationResult>;

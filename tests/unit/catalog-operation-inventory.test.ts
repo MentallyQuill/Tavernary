@@ -19,6 +19,44 @@ test("a dropped advisory dispatch is reconstructed before state exists", () => {
   ).toBe(true);
 });
 
+test.each(["metadata", "advisory"] as const)(
+  "an authenticated active %s preparation suppresses duplicate dispatch",
+  (kind) => {
+    const input = catalogInventoryFixture();
+    input.repository = "Owner/Repo";
+    input.publisherActorId = 41;
+    const operation = discoverCatalogOperations(input).find(
+      (value) => value.identity.kind === kind,
+    )!;
+    input.runs = [
+      {
+        id: 700,
+        path: `.github/workflows/${kind === "metadata" ? "enrich-catalog" : "review-catalog-policy"}.yml`,
+        head_sha: "b".repeat(40),
+        head_branch: "main",
+        head_repository: { full_name: input.repository },
+        event: "workflow_dispatch",
+        display_title: `Automation prepare ${operation.key}`,
+        actor: { id: 41, type: "Bot" },
+        created_at: new Date(AUTOMATION_NOW).toISOString(),
+        status: "in_progress",
+        conclusion: null,
+      },
+    ];
+    expect(
+      discoverCatalogOperations(input).find(
+        (current) => current.key === operation.key,
+      )?.workerRunId,
+    ).toBe(700);
+    input.runs![0].actor!.id = 42;
+    expect(
+      discoverCatalogOperations(input).find(
+        (current) => current.key === operation.key,
+      )?.workerRunId,
+    ).toBeNull();
+  },
+);
+
 test("unchanged reviewed evidence is skipped, while changed evidence or policy is rediscovered", () => {
   const input = catalogInventoryFixture();
   const fingerprint = createPolicyEvidenceFingerprint({

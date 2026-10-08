@@ -332,7 +332,28 @@ async function requestProviderEnvelope({
   maximumResponseBytes,
   now,
   timeoutMs,
+  budgetGuard,
+  requireBudget,
 }) {
+  if (requireBudget || budgetGuard) {
+    if (!budgetGuard || typeof budgetGuard.beforeRequest !== "function")
+      throw Object.assign(new Error("Verified model allowance is required."), {
+        code: "budget-exhausted",
+      });
+    if (body.model !== configuration.model || body.max_tokens !== undefined)
+      throw Object.assign(new Error("Budgeted model request is invalid."), {
+        code: "provider-configuration-invalid",
+      });
+    body = {
+      ...body,
+      max_completion_tokens: Math.min(body.max_completion_tokens ?? 4096, 4096),
+    };
+    budgetGuard.beforeRequest({
+      model: configuration.model,
+      body,
+      maxOutputTokens: body.max_completion_tokens,
+    });
+  }
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
   const startedAt = now();
@@ -514,6 +535,8 @@ export function createStructuredProviderTransport(options) {
         maximumResponseBytes: MAX_PROVIDER_RESPONSE_BYTES,
         now,
         timeoutMs,
+        budgetGuard: options.budgetGuard,
+        requireBudget: options.requireBudget,
       });
       try {
         const { output } = outputWithSchemaValidation(
@@ -571,6 +594,8 @@ export function createStructuredProviderTransport(options) {
             maximumResponseBytes: MAX_JSON_REPAIR_RESPONSE_BYTES,
             now,
             timeoutMs,
+            budgetGuard: options.budgetGuard,
+            requireBudget: options.requireBudget,
           });
           const { output } = outputWithSchemaValidation(
             repair.payload?.choices?.[0]?.message,
@@ -589,7 +614,8 @@ export function createStructuredProviderTransport(options) {
               },
             },
           };
-        } catch {
+        } catch (error) {
+          if (error?.code === "budget-exhausted") throw error;
           throw primaryError;
         }
       }

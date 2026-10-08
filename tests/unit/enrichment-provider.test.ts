@@ -12,6 +12,66 @@ import { generateValidatedEnrichment } from "../../scripts/catalog/enrichment-at
 
 const model = "minimax/minimax-m3:thinking";
 
+test("required model allowance refuses before the first HTTP request", async () => {
+  const fetchImpl = vi.fn(async () => success());
+  const provider = createEnrichmentProvider({
+    apiUrl: "https://provider.example/v1/chat/completions",
+    apiKey: "secret",
+    model,
+    fetchImpl,
+    requireBudget: true,
+  });
+  await expect(provider.generate(input)).rejects.toMatchObject({
+    code: "budget-exhausted",
+  });
+  expect(fetchImpl).not.toHaveBeenCalled();
+});
+
+test("primary and JSON repair each consume verified allowance, and repair refusal preserves its reason", async () => {
+  const calls: Array<{ model: string; maxOutputTokens: number }> = [];
+  const budgetGuard = {
+    beforeRequest: (request: { model: string; maxOutputTokens: number }) => {
+      calls.push(request);
+      if (request.model === "repair-model")
+        throw Object.assign(new Error("Unavailable"), {
+          code: "budget-exhausted",
+        });
+    },
+  };
+  const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(
+    new Response(
+      JSON.stringify({
+        model,
+        choices: [{ message: { content: "{broken" } }],
+      }),
+      { status: 200 },
+    ),
+  );
+  const provider = createEnrichmentProvider({
+    apiUrl: "https://provider.example/v1/chat/completions",
+    apiKey: "secret",
+    model,
+    fetchImpl,
+    requireBudget: true,
+    budgetGuard,
+    jsonRepair: {
+      apiUrl: "https://repair.example/v1/chat/completions",
+      apiKey: "repair-secret",
+      model: "repair-model",
+    },
+  });
+  await expect(provider.generate(input)).rejects.toMatchObject({
+    code: "budget-exhausted",
+  });
+  expect(fetchImpl).toHaveBeenCalledOnce();
+  expect(calls.map((call) => call.model)).toEqual([model, "repair-model"]);
+  expect(calls.every((call) => call.maxOutputTokens === 4096)).toBe(true);
+  expect(
+    JSON.parse(String(fetchImpl.mock.calls[0]?.[1]?.body))
+      .max_completion_tokens,
+  ).toBe(4096);
+});
+
 const allowedTags = [
   {
     id: "automate-roleplay-workflows",

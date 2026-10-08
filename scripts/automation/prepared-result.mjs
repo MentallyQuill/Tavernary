@@ -157,12 +157,11 @@ function allowedPath(result, path) {
     )
   );
 }
-export function assertTrustedPreparedProducer({
+export function assertTrustedPreparationOrigin({
   kind,
   repository,
   run,
   publisherActorId,
-  requireSuccess = true,
 }) {
   const producerPaths = (workflows[kind] ?? []).map(
     (name) => `.github/workflows/${name}.yml`,
@@ -178,7 +177,19 @@ export function assertTrustedPreparedProducer({
     run.actor?.type !== "Bot" ||
     run.event !== "workflow_dispatch" ||
     run.head_branch !== "main" ||
-    run.head_repository?.full_name !== repository ||
+    run.head_repository?.full_name !== repository
+  )
+    fail("prepared-producer-untrusted");
+}
+export function assertTrustedPreparedProducer({
+  kind,
+  repository,
+  run,
+  publisherActorId,
+  requireSuccess = true,
+}) {
+  assertTrustedPreparationOrigin({ kind, repository, run, publisherActorId });
+  if (
     run.status !== "completed" ||
     (requireSuccess
       ? run.conclusion !== "success"

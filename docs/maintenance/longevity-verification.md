@@ -481,3 +481,28 @@ wrong is a retained delay for unchanged source input, never stale publication.
 Three new regression cases first failed and now pass across repeated main
 bookkeeping changes. Four focused suites passed 36 tests; type checking and
 focused lint passed. The publication migration remains in progress.
+
+### Reserved model allowance foundation (Phase 4 Task 2 in progress)
+
+The serialized writer now atomically reserves primary, retry and repair
+allowance before dispatch, then binds tickets to one authenticated run at the
+reserved source revision. Read-only producers load current writer-owned state;
+reruns, foreign actors, missing binding and expired tickets cannot call a model.
+Primary and JSON-repair HTTP requests each consume a guarded local envelope.
+Configuration or binding failures preserve spent allowance and safe diagnostics.
+
+Ruling: do not refund requested daily tokens or unknown outcomes — requested
+allowance remains the safety ceiling even when actual response usage is lower.
+The cost is conservative throughput. Ruling: expire tickets at UTC midnight as
+well as forty-five minutes — unused prior-day tickets cannot double a new day's
+limit. Ruling: a lost dispatch/binding keeps its reservation spent and unusable
+until normal recovery reserves new allowance — the cost is delayed optional work.
+
+Evidence: the complete unit suite passed 272 files / 3,050 tests. Full lint and
+type checking passed. New tests cover last-allowance competition, replay, repairs,
+token and USD ceilings, rollover, malformed usage, backwards clocks, CAS races,
+authentic producer binding, active-producer duplicate prevention and zero HTTP
+requests without allowance. A read-only GitHub CLI query accepted the exact-SHA
+workflow-run filter. Remaining producer endpoints, normalized metadata cache,
+manual rollout preservation and all later phases remain required. Neither this
+task nor the publication migration is complete.

@@ -54,6 +54,12 @@ export interface PreparedResultContext {
   currentState: PreparedCurrentState;
 }
 export const PREPARED_RESULT_SCHEMA: Record<string, unknown>;
+export function assertTrustedPreparationOrigin(input: {
+  kind: AutomationKind;
+  repository: string;
+  run: TrustedPreparationRun;
+  publisherActorId: number;
+}): void;
 export function assertTrustedPreparedProducer(input: {
   kind: AutomationKind;
   repository: string;

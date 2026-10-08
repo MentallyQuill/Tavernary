@@ -82,14 +82,19 @@ test("confirmed deployment routes finalization through the privileged writer", (
   });
 });
 
-test("model work requires a budget ticket while source refresh stays independently available", () => {
+test("model work requests writer-owned reservation while source refresh stays independently available", () => {
   const identity = {
     kind: "metadata" as const,
     subject: "source:github-42:example-project",
     inputDigest: "a".repeat(64),
     policyVersion: "1",
   };
-  expect(() => planAutomationWorker(operationFixture({ identity }))).toThrow();
+  const operation = operationFixture({ identity });
+  expect(planAutomationWorker(operation)).toEqual({
+    action: "dispatch",
+    workflow: "automation-writer.yml",
+    inputs: { mode: "prepare", operation_key: operation.key },
+  });
   const refresh = operationFixture({
     identity: { ...identity, kind: "refresh", subject: "source:github-42" },
   });

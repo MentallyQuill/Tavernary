@@ -32,6 +32,7 @@ export interface ProjectInventoryRun extends ProjectValidationRun {
   event?: string;
   display_title?: string;
   head_branch?: string;
+  head_repository?: { full_name: string };
   actor?: { id: number; type: string };
 }
 export interface ProjectInventoryInput {

@@ -1,7 +1,10 @@
 import { validateAutomationReceipt } from "./receipts.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
 import { planAutomationRetry } from "./retry.mjs";
-import { assertTrustedPreparedProducer } from "./prepared-result.mjs";
+import {
+  assertTrustedPreparedProducer,
+  assertTrustedPreparationOrigin,
+} from "./prepared-result.mjs";
 export function trustedOperationWorkerRuns(input, operation) {
   return (input.runs ?? [])
     .filter(
@@ -65,7 +68,26 @@ export function receiptBindsWorker(run, receipt) {
 }
 
 export function recoverInventoryWorker(operation, input, runs) {
-  const active = runs.find(isInventoryWorkerActive);
+  const preparationActive = (input.runs ?? []).find((run) => {
+    if (
+      !isInventoryWorkerActive(run) ||
+      run.display_title !== `Automation prepare ${operation.key}` ||
+      Date.parse(run.created_at ?? "") < Date.parse(operation.createdAt)
+    )
+      return false;
+    try {
+      assertTrustedPreparationOrigin({
+        kind: operation.identity.kind,
+        repository: input.repository,
+        run,
+        publisherActorId: input.publisherActorId,
+      });
+      return true;
+    } catch {
+      return false;
+    }
+  });
+  const active = preparationActive ?? runs.find(isInventoryWorkerActive);
   if (active) {
     operation.workerRunId = active.id;
     return;

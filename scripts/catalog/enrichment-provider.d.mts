@@ -1,4 +1,5 @@
 import type { EnrichmentInput, EnrichmentOutput } from "./enrich-readmes.d.mts";
+import type { ModelBudgetGuard } from "../automation/model-budget.mjs";
 
 export const ENRICHMENT_TIMEOUT_MS: 120000;
 export const MAX_PROVIDER_RESPONSE_BYTES: 262144;
@@ -11,6 +12,10 @@ export type ProviderConfiguration = {
   apiKey?: string;
   model?: string;
 };
+export interface ProviderBudgetContext {
+  requireBudget?: boolean;
+  budgetGuard?: ModelBudgetGuard;
+}
 
 export type JsonRepairMetadata = {
   diagnosticCode: string;
@@ -63,13 +68,14 @@ export function validateProviderConfiguration(
 export function parseProviderMessage(message: unknown): EnrichmentOutput;
 
 export function createStructuredProviderTransport(
-  options: ProviderConfiguration & {
-    reasoningEffort?: string;
-    jsonRepair?: ProviderConfiguration;
-    fetchImpl?: typeof fetch;
-    timeoutMs?: number;
-    now?: () => number;
-  },
+  options: ProviderConfiguration &
+    ProviderBudgetContext & {
+      reasoningEffort?: string;
+      jsonRepair?: ProviderConfiguration;
+      fetchImpl?: typeof fetch;
+      timeoutMs?: number;
+      now?: () => number;
+    },
 ): {
   configuration: { apiUrl: string; apiKey: string; model: string };
   request(body: Record<string, unknown>): Promise<{
@@ -79,13 +85,14 @@ export function createStructuredProviderTransport(
 };
 
 export function createEnrichmentProvider(
-  options: ProviderConfiguration & {
-    reasoningEffort?: string;
-    jsonRepair?: ProviderConfiguration;
-    fetchImpl?: typeof fetch;
-    timeoutMs?: number;
-    now?: () => number;
-  },
+  options: ProviderConfiguration &
+    ProviderBudgetContext & {
+      reasoningEffort?: string;
+      jsonRepair?: ProviderConfiguration;
+      fetchImpl?: typeof fetch;
+      timeoutMs?: number;
+      now?: () => number;
+    },
 ): {
   generate(input: EnrichmentInput): Promise<ProviderResult>;
 };
