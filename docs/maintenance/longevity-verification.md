@@ -525,3 +525,13 @@ Evidence: all 273 unit files / 3,061 tests passed; full lint and type checking
 passed. The task's three named suites passed 22 tests. Producer acquisition,
 writer validation of newly emitted cache sidecars and overall scheduled model
 integration remain subsequent deliverables; the whole overhaul is unfinished.
+
+### Writer process freshness
+
+Ruling: defer publication when fetched main changes the writer's code, workflows,
+dependencies, schemas, vocabulary or moderation policy — a running process must
+not apply modules loaded before an authority/policy update. Data-only changes can
+still be synchronized and freshly validated. The cost is one reconciliation
+delay after a trusted code change. The regression first failed and now passes;
+four writer/publication suites passed 22 tests, with type checking and focused
+lint passing. The publication migration remains unfinished.

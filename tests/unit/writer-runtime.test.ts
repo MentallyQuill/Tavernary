@@ -120,6 +120,33 @@ test("writer synchronization refuses to replace a checkout with tracked local ch
   ).rejects.toThrow();
   expect(run).toHaveBeenCalledTimes(1);
 });
+
+test("writer defers when trusted code, schemas or policy changed after its process started", async () => {
+  const root = await mkdtemp(join(tmpdir(), "tavernary-writer-policy-"));
+  const run = vi.fn(async (_command: string, args: string[]) =>
+    args[0] === "diff"
+      ? "data/vocabularies/tags.json\nscripts/catalog/enrichment-provider.mjs\n"
+      : "",
+  );
+  try {
+    await expect(
+      synchronizeWriterCheckout({
+        root,
+        env: {
+          GITHUB_REPOSITORY: "Owner/Repo",
+          GH_TOKEN: "secret",
+          RUNNER_TEMP: root,
+        },
+        run,
+      }),
+    ).rejects.toMatchObject({ code: "input-superseded" });
+    expect(run.mock.calls.some((call) => call[1][0] === "checkout")).toBe(
+      false,
+    );
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
 test("artifact download is bounded, binary, and restricted to the known GitHub artifact API", async () => {
   const run = vi.fn(async () => Buffer.from([1, 2, 3]));
   const args = ["api", "repos/Owner/Repo/actions/artifacts/42/zip"];

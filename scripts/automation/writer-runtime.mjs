@@ -359,6 +359,36 @@ export async function synchronizeWriterCheckout({
       ],
       options,
     );
+    const changedTrustedCode = await run(
+      "git",
+      [
+        "diff",
+        "--name-only",
+        "--no-renames",
+        "HEAD",
+        "FETCH_HEAD",
+        "--",
+        "scripts",
+        "src",
+        ".github",
+        "package.json",
+        "package-lock.json",
+        "next.config.ts",
+        "tsconfig.json",
+        "data/schemas",
+        "data/vocabularies",
+        "data/moderation",
+        "data/maintenance/trusted-tavernary-editors.json",
+      ],
+      options,
+    );
+    if (changedTrustedCode.trim())
+      throw Object.assign(
+        new Error(
+          "Trusted writer code or policy advanced; a fresh process is required.",
+        ),
+        { code: "input-superseded" },
+      );
     await run("git", ["checkout", "--detach", "FETCH_HEAD"], options);
   } finally {
     await rm(askpass, { force: true });
