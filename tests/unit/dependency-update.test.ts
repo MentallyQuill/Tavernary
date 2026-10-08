@@ -6,6 +6,7 @@ import {
   resolveVerifiedActionVersion,
   planDependencyUpdate,
   runDependencyWriter,
+  selectDependencyPullNumbers,
 } from "../../scripts/automation/dependency-update.mjs";
 
 const eligible = (): Parameters<typeof planDependencyUpdate>[0] => ({
@@ -38,6 +39,28 @@ const eligible = (): Parameters<typeof planDependencyUpdate>[0] => ({
   mergeBaseSha: "a".repeat(40),
   allowedPackages: ["next"],
   deploymentHealthy: true,
+});
+
+test("old closed dependency history does not hide current open bot candidates", () => {
+  const closed = Array.from({ length: 200 }, (_, index) => ({
+    number: index + 1,
+    state: "closed",
+    user: { id: 49699333, type: "Bot" },
+  }));
+  const owner = {
+    number: 201,
+    state: "open",
+    user: { id: 2625904, type: "User" },
+  };
+  const current = {
+    number: 242,
+    state: "open",
+    user: { id: 49699333, type: "Bot" },
+  };
+  expect(selectDependencyPullNumbers([...closed, owner, current])).toEqual([
+    242,
+  ]);
+  expect(selectDependencyPullNumbers(closed)).toEqual([]);
 });
 
 test("an Actions pin update preserves workflow policy and proves its stable versions", async () => {

@@ -146,6 +146,30 @@ export async function acquireRefreshData({
   for (const snapshot of result.changedSnapshots)
     outputs[`data/snapshots/${snapshot.provider}/${snapshot.source_id}.json`] =
       await format(JSON.stringify(snapshot), { parser: "json" });
+  const sourceId = operation.identity.subject.slice(7);
+  const observed = result.manifest.source_timings.find(
+    (entry) =>
+      entry.source_id === sourceId &&
+      !["failed", "unavailable", "identity-change"].includes(entry.outcome),
+  );
+  const snapshot = result.snapshots?.find(
+    (entry) => entry.source_id === sourceId,
+  );
+  if (
+    observed &&
+    snapshot?.source_health === "healthy" &&
+    snapshot.stale_since === null
+  ) {
+    // A successful comparison is durable progress even when repository facts did not change.
+    outputs[`data/snapshots/${snapshot.provider}/${sourceId}.json`] =
+      await format(
+        JSON.stringify({
+          ...snapshot,
+          refreshed_at: result.manifest.completed_at,
+        }),
+        { parser: "json" },
+      );
+  }
   for (const evidence of result.changedInstallEvidence)
     outputs[`data/snapshots/install/${evidence.source_id}.json`] = await format(
       JSON.stringify(evidence),

@@ -40,6 +40,8 @@ import { commitCanonicalData } from "./canonical-data.mjs";
 import { reconcilePreparedOperations } from "./prepared-reconciliation.mjs";
 import { persistPreparedFailure } from "./prepared-failure.mjs";
 import { runReconcileAutomationCli } from "./reconcile-cli.mjs";
+import { assessInventoryHealth } from "./health.mjs";
+import { planIncidentUpdates, reconcileIncidentUpdates } from "./incidents.mjs";
 import {
   revalidateAutomationOperation,
   dispatchAutomationOperation,
@@ -779,20 +781,20 @@ export async function runAutomationWriterReconciliation({
   root = process.cwd(),
   env = process.env,
   gh = executeGh,
-} = {}) {
-  const repository = env.GITHUB_REPOSITORY;
-  const publisherActorId = Number(env.TAVERNARY_PUBLISHER_BOT_ID);
-  assertCanonicalWriterContext(env, repository);
-  const load = async () => {
+  load = async () => {
     await synchronizeWriterCheckout({ root, env });
     return loadAutomationInventory({
       root,
       gh,
-      repository,
-      publisherActorId,
+      repository: env.GITHUB_REPOSITORY,
+      publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
       nowMs: Date.now(),
     });
-  };
+  },
+} = {}) {
+  const repository = env.GITHUB_REPOSITORY;
+  const publisherActorId = Number(env.TAVERNARY_PUBLISHER_BOT_ID);
+  assertCanonicalWriterContext(env, repository);
   let state = await load();
   const prepared = await reconcilePreparedOperations({
     state,
@@ -837,16 +839,36 @@ export async function runAutomationWriterReconciliation({
   });
   if (prepared.consumedKeys.length) state = await load();
   const consumed = new Set(prepared.consumedKeys);
+  const { selectDependencyPullNumbers } =
+    await import("./dependency-update.mjs");
+  const dependencyPullNumbers = selectDependencyPullNumbers(state.remote.pulls);
   const dependencySlot =
-    consumed.size < 20 &&
-    state.remote.pulls.some(
-      (pull) => pull.user?.id === 49699333 && pull.user?.type === "Bot",
-    )
-      ? 1
-      : 0;
+    consumed.size < 20 && dependencyPullNumbers.length ? 1 : 0;
+  const healthInput = (state) => ({
+    findings: assessInventoryHealth(state),
+    existingIssues: state.remote.issues,
+    publisherActorId: state.publisherActorId,
+  });
+  let health = { status: "idle" },
+    initialHealth,
+    healthSlot = 0;
+  try {
+    initialHealth = healthInput(state);
+    const proposals = planIncidentUpdates(initialHealth);
+    healthSlot =
+      consumed.size + dependencySlot < 20 && proposals.length ? 1 : 0;
+    if (proposals.length && !healthSlot)
+      health = { status: "waiting", reason: "operation-limit" };
+  } catch {
+    health = { status: "unavailable" };
+  }
   let controller;
   const exitCode = await runReconcileAutomationCli({
-    args: ["--apply", "--limit", String(20 - consumed.size - dependencySlot)],
+    args: [
+      "--apply",
+      "--limit",
+      String(20 - consumed.size - dependencySlot - healthSlot),
+    ],
     env,
     event: {},
     gh,
@@ -901,6 +923,25 @@ export async function runAutomationWriterReconciliation({
       retention = { status: "unavailable" };
     }
   }
+  if (healthSlot) {
+    let useInitial = true;
+    try {
+      health = await reconcileIncidentUpdates({
+        env,
+        gh,
+        availableSlots: healthSlot,
+        load: async () => {
+          if (useInitial) {
+            useInitial = false;
+            return initialHealth;
+          }
+          return healthInput(await load());
+        },
+      });
+    } catch {
+      health = { status: "unavailable" };
+    }
+  }
   let dependencies = { status: "idle" };
   if (dependencySlot) {
     try {
@@ -910,17 +951,11 @@ export async function runAutomationWriterReconciliation({
         env,
         gh,
         availableSlots: dependencySlot,
-        pullNumbers: state.remote.pulls
-          .filter(
-            (pull) => pull.user?.id === 49699333 && pull.user?.type === "Bot",
-          )
-          .sort((left, right) => left.number - right.number)
-          .slice(0, 20)
-          .map((pull) => pull.number),
+        pullNumbers: dependencyPullNumbers,
       });
     } catch {
       dependencies = { status: "unavailable" };
     }
   }
-  return { prepared, controller, retention, dependencies };
+  return { prepared, controller, retention, dependencies, health };
 }

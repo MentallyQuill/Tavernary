@@ -106,6 +106,7 @@ export function runAutomationWriterReconciliation(input?: {
   root?: string;
   env?: Record<string, string | undefined>;
   gh?: GhRunner;
+  load?: () => Promise<AutomationInventoryState>;
 }): Promise<Record<string, unknown>>;
 export function runPreparedWriterBatch(input: {
   wakes: { operationKey: string; runId: number }[];

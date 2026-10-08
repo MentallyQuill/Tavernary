@@ -1144,3 +1144,41 @@ tool chain: ESLint config/plugin, fast-glob, micromatch and the unpatched
 suggested downgrade to ESLint config `14.2.35` would break the coupled framework
 policy and is not applied. This remaining upstream issue needs a future compatible
 patch or an owner-reviewed tooling change; it is not described as resolved.
+
+The exact security/Actions head `ae422c53579cc32d2c834f0725c0b188d2ee8309`
+passed both required jobs in
+[CI run 37831400509](https://github.com/MentallyQuill/Tavernary/actions/runs/37831400509).
+
+### Native health and incident checkpoint
+
+The scheduled writer projects individual source observations, due factual
+imports, eligible automatic submission progress, ordinary production revision,
+known credential/provider failures, allowance exhaustion, repeated unknown
+failures and trusted exact-head dependency CI. It reserves at most one incident
+mutation within the existing twenty-operation pass. An incident-service failure
+preserves the catalog controller result. Fixed reason codes and public identities
+exclude raw diagnostics. Stable fingerprints deduplicate notices; absent recovery
+proof leaves them open. Fresh issue custody, human closure and owner body edits
+are respected. A lost creation response is recovered without another notice or
+comments. Provider recovery still requires positive usage proof from the pending
+complete model-producer/ledger migration; no successful usage is invented.
+
+Two concrete integration gaps were also reproduced and corrected. The native
+refresh adapter now persists a successful unchanged source's observation time
+without changing other facts or advancing an unavailable source. This supplies
+durable scheduling/health evidence through the existing content publication path.
+The actual scheduled writer previously selected closed dependency PRs 1–20 ahead
+of open PR 242; it now selects open bot work before reserving its slot. Starting
+another worker attempt was also observed prematurely reporting recovery; it now
+leaves the stalled notice open until verified publication/completion progress.
+
+Ten focused suites passed 137 checks, including the real scheduled-writer entry,
+native issue transport, lost responses, owner decisions, denied allowance,
+unchanged-source observations and closed-history selection. Source credentials
+are attributed to their actual provider; later healthy, identity-matched source
+observations prove recovery. Owner-rejected closed dependency history generates
+no new failure alerts. The runbook documents
+the focused catalog gate, thresholds and GitHub outage/credential limitations.
+This remains a checkpoint: all-provider recovery proof, remaining implementation,
+final independent review, exact-head CI, merge and production verification are
+still required.

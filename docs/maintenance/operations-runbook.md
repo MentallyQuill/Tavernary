@@ -616,17 +616,15 @@ Use this workflow for reproducible identity persistence:
 
 ## Verification checklist for manual catalog mutations
 
-Run from repo root:
+For changes confined to the approved catalog/Kit/source/report data paths, run
+the focused content gate from the repository root:
 
 ```powershell
-npm run catalog:validate
-npm run catalog:build
-npm run test
+npm run check:content
 ```
 
-Use `npm run check` only when generated exports changed.
-
-For refresh/enrichment-only mutations:
+For implementation, dependencies, schemas, vocabulary, configuration,
+workflow changes, or uncertain classification, run the full gate:
 
 ```powershell
 npm run check
@@ -634,7 +632,37 @@ npm run check
 
 Deployment trigger sequence:
 
-- Snapshot-only changes are published by `deploy-pages.yml` after
-  `refresh-catalog`.
-- Registry enrichment publish path is in `enrich-catalog` (commit + page dispatch).
-- Kit changes publish through kit apply workflows only.
+- Refresh and Kit entrypoints request read-only preparation; the shared writer
+  publishes validated canonical data.
+- The deployment controller coalesces eligible revisions and publishes Pages.
+  Every deployment still needs matching revision/assets and Chromium/WebKit
+  confirmation.
+- The manual enrichment workflow remains on its previous path until the pending
+  approved rollout migration is complete.
+
+## GitHub operational incidents
+
+The scheduled shared writer checks individual repository observations at
+forty-eight hours, due factual report imports at twenty-four hours, and eligible
+automatic submission/publication progress at two hours. A fresh companion clock
+does not prove a repository was checked. Successful unchanged source checks
+persist their own observation time; failed checks preserve prior observations.
+Manual review waits and an explicit owner restore are excluded from automatic
+stalled-work notices.
+
+Incidents use numeric Publisher custody and one stable fingerprint. Unchanged
+findings produce no comments or repeated edits. One incident mutation fits within
+the existing twenty-operation pass; failure to write it does not discard the
+catalog controller's result. The writer checks fresh findings and issue custody
+before mutation. Starting another attempt is insufficient to close a stalled
+work notice. Closure requires an observed recovery; absent proof leaves it open.
+
+Inspect the indicated operation receipt and Actions run, repair the credential,
+provider or allowance, and let the next scheduled pass observe recovery. The
+diagnostics contain fixed reason codes and public operation identities, not raw
+provider errors or credentials. A human closure or body edit is preserved.
+Closing a notice as not planned explicitly dismisses it.
+
+These checks run inside GitHub. If GitHub Actions stops running or the required
+GitHub credential cannot write issues, it cannot report that outage itself.
+GitHub availability and account/credential repair remain owner responsibilities.

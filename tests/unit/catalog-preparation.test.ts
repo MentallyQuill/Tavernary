@@ -2,8 +2,14 @@ import { expect, test, vi } from "vitest";
 import {
   prepareCatalogOperation,
   assertCatalogPreparationContext,
+  acquireRefreshData,
 } from "../../scripts/automation/catalog-preparation.mjs";
-import { preparedResultContextFixture } from "../helpers/automation-fixtures";
+import {
+  preparedResultContextFixture,
+  metadataMaintenanceFixture,
+  operationFixture,
+} from "../helpers/automation-fixtures";
+import { buildRefreshManifest } from "../../scripts/catalog/github-refresh-manifest.mjs";
 import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
 function fixture() {
   const context = preparedResultContextFixture();
@@ -60,6 +66,67 @@ test("an acquisition attempt cannot add executable or unrelated data to its enve
       '{"source_id":"github-42","repository_id":42}',
   });
   await expect(prepareCatalogOperation(input)).rejects.toThrow();
+});
+
+test("successful unchanged refreshes persist their per-source observation without promoting failures", async () => {
+  const { state } = await metadataMaintenanceFixture();
+  state.nowMs += 86_400_000;
+  const source = (
+    state.local.sources as Array<{ id: string; type: "github" }>
+  )[0];
+  const previous = (state.local.snapshots as Array<Record<string, unknown>>)[0];
+  const operation = operationFixture({
+    identity: {
+      ...operationFixture().identity,
+      kind: "refresh",
+      subject: `source:${source.id}`,
+    },
+  });
+  const now = new Date(state.nowMs).toISOString();
+  const refresh = vi.fn(async () => ({
+    snapshots: [previous],
+    changedSnapshots: [],
+    changedInstallEvidence: [],
+    manifest: buildRefreshManifest({
+      mode: "project",
+      startedAt: now,
+      completedAt: now,
+      outcomes: [
+        {
+          sourceId: source.id,
+          provider: "github",
+          result: "unchanged",
+          durationMs: 1,
+        },
+      ],
+      snapshots: [previous],
+    }),
+  }));
+  const output = await acquireRefreshData({ state, operation, refresh });
+  const path = `data/snapshots/${source.type}/${source.id}.json`;
+  expect(JSON.parse(output[path])).toEqual({ ...previous, refreshed_at: now });
+  expect(previous.refreshed_at).not.toBe(now);
+  const failed = buildRefreshManifest({
+    mode: "project",
+    startedAt: now,
+    completedAt: now,
+    outcomes: [
+      {
+        sourceId: source.id,
+        provider: "github",
+        result: "unavailable",
+        durationMs: 1,
+      },
+    ],
+    snapshots: [previous],
+  });
+  refresh.mockResolvedValue({
+    snapshots: [previous],
+    changedSnapshots: [],
+    changedInstallEvidence: [],
+    manifest: failed,
+  });
+  expect(await acquireRefreshData({ state, operation, refresh })).toEqual({});
 });
 test.each(["owner", "branch", "checkout", "workflow"])(
   "untrusted preparation %s is denied before acquisition",

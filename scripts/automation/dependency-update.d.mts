@@ -67,3 +67,6 @@ export function runDependencyWriter(options?: {
   sha?: string;
   decisions: Array<{ pullNumber: number; action: string; reason?: string }>;
 }>;
+export function selectDependencyPullNumbers(
+  pulls: Array<Pick<DependencyPull, "number" | "state" | "user">>,
+): number[];

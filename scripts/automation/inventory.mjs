@@ -225,6 +225,7 @@ export async function loadAutomationInventory({
     publicationRecords,
     trustedEditors,
     refreshManifest,
+    modelBudget,
   ] = await Promise.all([
     records(root, "data/registry/projects", true),
     records(root, "data/registry/sources", true),
@@ -243,6 +244,11 @@ export async function loadAutomationInventory({
     records(root, "data/maintenance/automation/publications"),
     readJson(root, "data/maintenance/trusted-tavernary-editors.json"),
     readJson(root, "data/snapshots/github-refresh.json"),
+    readJson(
+      root,
+      "data/maintenance/automation/model-budgets/global.json",
+      null,
+    ),
   ]);
   snapshots.push(...codebergSnapshots);
   receipts.forEach(validateAutomationReceipt);
@@ -343,6 +349,7 @@ export async function loadAutomationInventory({
     publishableRevision,
     publishableCommittedAt,
     ...automationDataDigests({ catalog, targets }),
+    modelBudget,
   };
   const validatedPublications = publicationRecords.map(
     validateCanonicalPublicationRecord,

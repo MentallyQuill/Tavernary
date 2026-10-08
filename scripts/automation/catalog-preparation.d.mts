@@ -17,6 +17,7 @@ export function acquireRefreshData(input: {
   operation: AutomationOperation;
   mode?: "project" | "forensic";
   refresh?: (input: Record<string, unknown>) => Promise<{
+    snapshots?: unknown[];
     changedSnapshots: unknown[];
     changedInstallEvidence: unknown[];
     manifest: GitHubRefreshManifest;

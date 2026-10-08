@@ -31,6 +31,26 @@ export const ALLOWED_NPM_DEPENDENCIES = [
   "typescript",
 ];
 const sha = /^[a-f0-9]{40}$/u;
+export function selectDependencyPullNumbers(pulls) {
+  if (!Array.isArray(pulls) || pulls.length > 100_000)
+    throw new Error("Dependency inventory exceeds its bound.");
+  return [
+    ...new Set(
+      pulls
+        .filter(
+          (pull) =>
+            pull.state === "open" &&
+            pull.user?.id === 49699333 &&
+            pull.user.type === "Bot" &&
+            Number.isSafeInteger(pull.number) &&
+            pull.number > 0,
+        )
+        .map((pull) => pull.number),
+    ),
+  ]
+    .sort((left, right) => left - right)
+    .slice(0, 20);
+}
 const workflowPath = /^\.github\/workflows\/[a-z0-9-]+\.yml$/u;
 export const ALLOWED_ACTION_DEPENDENCIES = [
   "actions/checkout",
