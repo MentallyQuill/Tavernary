@@ -158,3 +158,23 @@ retain stable timing when timestamps are absent. Unbound historical failures do
 not reject edited input. Preserve intentional correction/decline states; merged
 transactions remain eligible for deployment bookkeeping after issue closure.
 The cost if wrong is conservative rediscovery until canonical evidence is loaded.
+
+### Phase 2 Task 3: Kit and withdrawal inventories
+
+Eligible Kit admission, triage, publication, deployment and cleanup are rebuilt
+from manifests, numeric authors and canonical records. Withdrawals require the
+confirmed manifest and matching canonical author. Tombstones and already-published
+Kits recover deployment or cleanup without republishing. Manual review, invalid
+composition, blocked authors and deleted sources do not enter publication.
+
+Verification: Kit and project inventory plus existing reconciliation coverage
+50/50; typecheck, scoped ESLint, formatting and whitespace checks exit 0. New
+regressions cover cancellation through a 72-hour outage, edited input, normalized
+text, untrusted workers, canonical-record proof and replayed cleanup.
+
+Ruling: Reuse the existing Kit history classifier directly rather than changing
+its legacy CLI behavior during inventory construction. Extract the already-tested
+worker/receipt retry helper so Kit and project recovery cannot diverge. Attach the
+loaded canonical checkout revision to Kit deployment work; receipts alone never
+prove publication. The cost if wrong is conservative manual exceptions or delayed
+cleanup until deployment proof is available; the controller must load that proof.

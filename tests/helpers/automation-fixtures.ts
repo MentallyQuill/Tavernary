@@ -16,8 +16,94 @@ import {
 import { parseProjectSubmissionIssue } from "../../scripts/submissions/parse-project-submission.mjs";
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
 import recursion from "../../data/registry/projects/mentallyquill-recursion.json";
+import type { KitInventoryInput } from "../../scripts/automation/kit-operations.mjs";
 
 export const AUTOMATION_NOW = Date.parse("2026-10-07T12:00:00.000Z");
+
+export function kitInventoryFixture(
+  options: {
+    canonicalPublished?: boolean;
+    issueOpen?: boolean;
+    confirmedDeployment?: boolean;
+    operation?: "create" | "edit" | "withdrawal";
+    ready?: boolean;
+    admitted?: boolean;
+  } = {},
+): KitInventoryInput {
+  const withdrawal = options.operation === "withdrawal";
+  const manifest = withdrawal
+    ? {
+        schema_version: 1,
+        request_kind: "kit-withdrawal",
+        kit_id: "example-kit-42",
+        confirmation: true,
+      }
+    : {
+        operation: options.operation ?? "create",
+        kit_id: options.operation === "edit" ? "example-kit-42" : null,
+        title: "Example Kit",
+        description: "A useful collection.",
+        project_ids: ["frontend", "extension-a", "extension-b"],
+      };
+  const kit = {
+    schema_version: 1 as const,
+    id: "example-kit-42",
+    status: "published" as const,
+    title: "Example Kit",
+    description: "A useful collection.",
+    project_ids: ["frontend", "extension-a", "extension-b"],
+    author: { github_user_id: 1, login: "Owner" },
+    source_issue_number: 42,
+    published_at: new Date(AUTOMATION_NOW - 3_600_000).toISOString(),
+    updated_at: new Date(AUTOMATION_NOW - 3_600_000).toISOString(),
+  };
+  const projects = ["frontend", "extension-a", "extension-b"].map(
+    (id, index) => ({
+      id,
+      kind: index === 0 ? "frontend" : "extension",
+      source_id: `github-${index + 1}`,
+      listing_status: "active",
+    }),
+  );
+  return {
+    issues: [
+      {
+        number: 42,
+        state: options.issueOpen === false ? "closed" : "open",
+        state_reason: null,
+        user: { id: 1, login: "Owner", type: "User" },
+        body: `### ${withdrawal ? "Kit withdrawal manifest" : "Kit manifest"}\n${JSON.stringify(manifest)}`,
+        labels: [
+          withdrawal ? "kit-withdrawal" : "kit-submission",
+          ...(options.admitted === false ? [] : ["issue-admitted"]),
+          ...(options.ready === false || withdrawal
+            ? []
+            : ["kit-publication-ready"]),
+        ],
+        created_at: new Date(AUTOMATION_NOW - 3_600_000).toISOString(),
+      },
+    ],
+    kits:
+      options.canonicalPublished || options.operation === "edit" || withdrawal
+        ? [kit]
+        : [],
+    projects,
+    sourcesById: Object.fromEntries(
+      projects.map((project) => [
+        project.source_id,
+        { id: project.source_id, status: "active" },
+      ]),
+    ),
+    snapshotsBySourceId: {},
+    blockedUsers: { blocked: [] },
+    runs: [],
+    receipts: [],
+    nowMs: AUTOMATION_NOW,
+    publisherActorId: 41_982_982,
+    canonicalRevision: "d".repeat(40),
+    confirmedRevisions: options.confirmedDeployment ? ["d".repeat(40)] : [],
+  };
+}
 
 export function operationFixture(
   overrides: Partial<AutomationOperation> = {},
