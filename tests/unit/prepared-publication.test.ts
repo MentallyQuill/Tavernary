@@ -198,8 +198,71 @@ function batchFixture() {
       },
     ),
   };
-  return { batch, results };
+  return { batch, results, input };
 }
+
+test("prepared reports sharing a canonical snapshot publish in order instead of regenerating each other forever", async () => {
+  const { batch, results, input } = batchFixture();
+  const pairs = [...results.values()].map((result, index) => {
+    const operation = operationFixture({
+      identity: {
+        kind: "report-import",
+        subject: `report:${String(index + 1).repeat(64)}`,
+        inputDigest: result.inputDigest,
+        policyVersion: result.policyVersion,
+      },
+    });
+    const content = JSON.stringify({ report: index });
+    return {
+      operation,
+      result: {
+        ...result,
+        kind: "report-import" as const,
+        operationKey: operation.key,
+        producer: {
+          ...result.producer,
+          workflow: ".github/workflows/import-tavernkeeper-reports.yml",
+        },
+        files: [
+          {
+            ...result.files[0],
+            path: "data/security/tavernkeeper-report-summaries.json",
+            content,
+            bytes: Buffer.byteLength(content),
+            sha256: createHash("sha256").update(content).digest("hex"),
+          },
+        ],
+      },
+    };
+  });
+  results.clear();
+  for (const pair of pairs) results.set(pair.operation.key, pair.result);
+  input.setState({
+    ...input.getState(),
+    operations: pairs.map((pair) => pair.operation),
+  });
+  batch.wakes = pairs.map((pair) => ({
+    operationKey: pair.operation.key,
+    runId: 700,
+  }));
+  batch.loadResult = vi.fn(async ({ operation }) => ({
+    result: results.get(operation.key)!,
+    run: {
+      ...preparedResultContextFixture().run,
+      path: ".github/workflows/import-tavernkeeper-reports.yml",
+    },
+  }));
+  expect(await publishPreparedOperations(batch)).toMatchObject({
+    published: 1,
+    waiting: 1,
+    regenerated: 0,
+    rejected: 0,
+  });
+  expect(batch.commit).toHaveBeenCalledTimes(1);
+  expect(batch.commit.mock.calls[0][0].operationKeys).toEqual([
+    batch.wakes[0].operationKey,
+  ]);
+});
 
 test("compatible production handoffs share one commit and retain separate recoverable records", async () => {
   const { batch } = batchFixture();

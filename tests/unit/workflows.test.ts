@@ -63,7 +63,7 @@ const expectedPublisherConditions = {
     "(github.actor_id == 2625904 || " +
     `${publisherActorExpression})`,
   "import-tavernkeeper-reports":
-    "github.ref == 'refs/heads/main' && " +
+    "inputs.operation_key == '' && github.ref == 'refs/heads/main' && " +
     "(github.event_name != 'workflow_dispatch' || " +
     "github.actor_id == 2625904 || " +
     `${publisherActorExpression} || ` +

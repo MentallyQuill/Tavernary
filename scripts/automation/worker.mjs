@@ -81,9 +81,11 @@ export function planAutomationWorker(operation, { budgetTicket } = {}) {
       mode: "advisory-notice",
       operation_key: operation.key,
     });
-  if (
-    ["metadata", "advisory", "report-import"].includes(operation.identity.kind)
-  ) {
+  if (operation.identity.kind === "report-import")
+    return dispatch("import-tavernkeeper-reports.yml", {
+      operation_key: operation.key,
+    });
+  if (["metadata", "advisory"].includes(operation.identity.kind)) {
     if (!budgetTicket)
       throw Object.assign(
         new Error("Optional model work requires a reserved budget ticket."),

@@ -445,3 +445,26 @@ must split or fail closed, avoiding discarded page reads.
 Evidence: the full unit suite passed 268 files / 3,019 tests; full lint and type
 checking passed. Producer/lifecycle migrations, all remaining phases, independent
 review, CI, merge and actual production proof are still outstanding.
+
+### Read-only report preparation (Task 2 still in progress)
+
+Authenticated report operations acquire one immutable report and prepare the
+summary and import state without writing canonical files. The writer validates
+the actual hashed scan, current repository identity, target, policy and schema;
+it rejects softened danger grades, substituted targets and unrelated quarantine
+changes. Missing verified model budgets produce the deterministic security
+assessment, preserving security publication without optional model calls.
+
+Ruling: serialize prepared reports sharing the global summary path — publish the
+oldest due report and let later reports reprepare against its result. The cost
+is slower backlog processing; rejecting all conflicting reports would prevent
+progress. Ruling: preserve the existing report workflow's lifecycle jobs while
+adding read-only preparation — equivalent incident, deployment and finalization
+coverage is required before removing the legacy path.
+
+Evidence: the full unit suite passed 269 files / 3,026 tests. Full lint and type
+checking passed. Real importer tests verify selected-digest acquisition and
+byte-for-byte preservation of local canonical files. A real immediate-danger
+scan verifies deterministic grading and writer rejection of a downgraded result.
+Task 2, subsequent phases, independent review, CI, merge and public production
+verification remain outstanding.

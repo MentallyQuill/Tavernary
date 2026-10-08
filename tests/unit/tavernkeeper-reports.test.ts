@@ -9,6 +9,7 @@ import {
   reconcileTavernKeeperReports,
 } from "../../scripts/security/import-tavernkeeper-reports.mjs";
 import { TAVERNKEEPER_SYNTHESIS_POLICY_VERSION } from "../../scripts/security/tavernkeeper-assessment-contract.mjs";
+import { initialTavernKeeperImportState } from "../../scripts/security/tavernkeeper-import-state.mjs";
 import {
   ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION,
   TAVERNKEEPER_REPORT_INDEX_URL,
@@ -41,6 +42,73 @@ const registry = [
     repository: "owner/repo",
   },
 ];
+
+test("scoped read-only report preparation imports one immutable report and leaves canonical files untouched", async () => {
+  const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-prepare-"));
+  const outputPath = resolve(root, "summaries.json");
+  const importStatePath = resolve(root, "state.json");
+  const previousSnapshot = {
+    schema_version: 6 as const,
+    generated_at: "1970-01-01T00:00:00.000Z",
+    preferred_report_ids: [],
+    reports: [],
+  };
+  const priorImportState = initialTavernKeeperImportState();
+  const previousText = `${JSON.stringify(previousSnapshot)}\n`;
+  const stateText = `${JSON.stringify(priorImportState)}\n`;
+  await writeFile(outputPath, previousText);
+  await writeFile(importStatePath, stateText);
+  const [index, report] = await contextualFixtures();
+  const second = secondReportFrom(report);
+  index.reports.push(projectIndexReport(second));
+  const fetched: string[] = [];
+  const outcome = await reconcileTavernKeeperReports({
+    root,
+    outputPath,
+    importStatePath,
+    write: false,
+    reportDigest: report.report_digest,
+    previousSnapshot,
+    priorImportState,
+    registry: [
+      ...registry,
+      {
+        id: "github-43",
+        type: "github",
+        status: "active",
+        repository_id: 43,
+        repository: "owner/repo-two",
+      },
+    ],
+    dnsLookup: publicDnsLookup,
+    requestImpl: async (url: string) => {
+      fetched.push(url);
+      return jsonResponse(
+        url === TAVERNKEEPER_REPORT_INDEX_URL
+          ? index
+          : url.includes(second.report_id)
+            ? second
+            : report,
+      );
+    },
+    synthesizeReport: async (current) =>
+      synthesisFor(
+        index.reports.find(
+          (entry: { report_id: string }) =>
+            entry.report_id === current.report_id,
+        ),
+      ),
+    now: () => new Date("2026-08-02T12:10:00.000Z"),
+    batchSize: 20,
+  });
+  expect(outcome.imported).toBe(1);
+  expect(outcome.snapshot.reports.map((entry) => entry.report_id)).toEqual([
+    report.report_id,
+  ]);
+  expect(fetched.some((url) => url.includes(second.report_id))).toBe(false);
+  expect(await readFile(outputPath, "utf8")).toBe(previousText);
+  expect(await readFile(importStatePath, "utf8")).toBe(stateText);
+});
 
 async function fixtures() {
   return Promise.all(

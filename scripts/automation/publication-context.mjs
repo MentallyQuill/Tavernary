@@ -8,6 +8,7 @@ import { effectiveListingState } from "../../src/features/catalog/listing-state.
 import { createPolicyEvidenceFingerprint } from "../moderation/catalog-policy-review-contract.mjs";
 import { fingerprintProjectPublicationInput } from "../publication/project-publication-transaction.mjs";
 import { createKitPreparedPublicationContext } from "./kit-publication-context.mjs";
+import { createPreparedReportContext } from "./report-publication-context.mjs";
 
 const schemaNames = {
   project: "project",
@@ -67,6 +68,8 @@ export async function createPreparedPublicationContext({
       operation,
       validators: await schemaValidators(state.root),
     });
+  if (operation.identity.kind === "report-import")
+    return createPreparedReportContext({ state, operation });
   if (!["refresh", "metadata", "advisory"].includes(operation.identity.kind))
     throw new Error("Publication domain is not implemented.");
   const parts = operation.identity.subject.split(":");

@@ -1,6 +1,9 @@
 import { readFileSync } from "node:fs";
 import { readdirSync } from "node:fs";
 import { expect, test } from "vitest";
+import { planAutomationWorker } from "../../scripts/automation/worker.mjs";
+import { discoverReportOperations } from "../../scripts/automation/report-operations.mjs";
+import { reportInventoryFixture } from "../helpers/automation-fixtures";
 
 test("the controller runs every fifteen minutes using trusted main code and bounded execution", () => {
   const workflow = readFileSync(
@@ -88,4 +91,25 @@ test("reconciled refreshes prepare one pinned data artifact and cannot use the l
   expect(preparation).not.toContain("git push");
   expect(preparation).not.toContain("gh workflow run");
   expect(preparation).toContain("/result.json");
+});
+
+test("reconciled report imports prepare pinned data with read-only credentials and preserve deterministic fallback without a ticket", () => {
+  const operation = discoverReportOperations(reportInventoryFixture())[0];
+  expect(planAutomationWorker(operation)).toEqual({
+    action: "dispatch",
+    workflow: "import-tavernkeeper-reports.yml",
+    inputs: { operation_key: operation.key },
+  });
+  const workflow = readFileSync(
+    ".github/workflows/import-tavernkeeper-reports.yml",
+    "utf8",
+  );
+  expect(workflow).toContain("inputs.operation_key == ''");
+  const prepared = workflow.slice(workflow.indexOf("  prepare:"));
+  expect(prepared).toContain("ref: ${{ github.sha }}");
+  expect(prepared).toContain("timeout-minutes: 45");
+  expect(prepared).toContain("catalog-preparation-cli.mjs");
+  expect(prepared).not.toContain("permission-contents: write");
+  expect(prepared).not.toContain("git push");
+  expect(prepared).not.toContain("UTILITY_API_KEY");
 });

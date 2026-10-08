@@ -1,7 +1,9 @@
 name: "Security: Reconcile TavernKeeper reports"
 
 run-name: >-
-  ${{ github.event_name == 'schedule'
+  ${{ inputs.operation_key
+    && format('Automation prepare {0}', inputs.operation_key)
+    || github.event_name == 'schedule'
     && 'Security: Reconcile scheduled TavernKeeper reports'
     || 'Security: Reconcile TavernKeeper reports' }}
 
@@ -10,6 +12,11 @@ on:
     - cron: "41 */6 * * *"
   workflow_dispatch:
     inputs:
+      operation_key:
+        description: Immutable operation selected by the reconciler; empty for an owner request.
+        required: false
+        type: string
+        default: ""
       retry_report_digest:
         description: "Optional exact quarantined report digest to retry"
         required: false
@@ -27,6 +34,7 @@ concurrency:
 jobs:
   import:
     if: >-
+      inputs.operation_key == '' &&
       github.ref == 'refs/heads/main' &&
       (github.event_name != 'workflow_dispatch' ||
       github.actor_id == 2625904 ||
@@ -227,3 +235,53 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.publisher-dispatch-token.outputs.token }}
         run: gh workflow run import-tavernkeeper-reports.yml --repo "$GITHUB_REPOSITORY" --ref main
+
+  prepare:
+    if: >-
+      inputs.operation_key != '' &&
+      github.ref == 'refs/heads/main' &&
+      github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      actions: read
+      issues: read
+      pull-requests: read
+    steps:
+      - name: Check out pinned trusted preparation code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Prepare one immutable report operation
+        id: prepare
+        run: node scripts/automation/catalog-preparation-cli.mjs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
+      - name: Retain immutable data result for the shared writer
+        if: steps.prepare.outputs.result_available == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: automation-prepared-${{ inputs.operation_key }}
+          path: ${{ runner.temp }}/automation-prepared/result.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Retain safe preparation failure diagnostic
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: automation-failure-${{ inputs.operation_key }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/automation-prepared/diagnostic.json
+          if-no-files-found: ignore
+          retention-days: 90

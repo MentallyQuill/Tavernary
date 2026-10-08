@@ -92,6 +92,20 @@ export async function publishPreparedOperations({
       });
       continue;
     }
+    if (
+      operation.identity.kind === "report-import" &&
+      [...candidates.values()].some(
+        (candidate) => candidate.result.kind === "report-import",
+      )
+    ) {
+      // Full report snapshots share canonical paths. Publish the oldest one;
+      // later handoffs revalidate against that updated snapshot on the next wake.
+      waiting.push({
+        key: operation.key,
+        reasonCode: "prepared-shared-record-wait",
+      });
+      continue;
+    }
     try {
       const currentState = await context(inventory, operation);
       candidates.set(operation.key, {
