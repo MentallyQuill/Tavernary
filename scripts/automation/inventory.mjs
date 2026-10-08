@@ -1,7 +1,10 @@
 import { readFile, readdir } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import { resolve } from "node:path";
-import { createHash } from "node:crypto";
+import {
+  canonicalFileDigests,
+  publicationHistory,
+} from "./canonical-files.mjs";
 import {
   loadGithubAutomationInventory,
   loadAutomationWorkerRuns,
@@ -109,6 +112,7 @@ export function discoverAutomationState(state) {
         local.snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
       ),
       blockedUsers: local.blockedUsers,
+      trustedEditors: local.trustedEditors,
       canonicalRevision: local.revision,
       confirmedRevisions,
       requestedRevisions,
@@ -182,6 +186,7 @@ export async function loadAutomationInventory({
     kitSnapshots,
     codebergSnapshots,
     publicationRecords,
+    trustedEditors,
   ] = await Promise.all([
     records(root, "data/registry/projects", true),
     records(root, "data/registry/sources", true),
@@ -198,6 +203,7 @@ export async function loadAutomationInventory({
     records(root, "data/snapshots/github/kits"),
     records(root, "data/snapshots/codeberg"),
     records(root, "data/maintenance/automation/publications"),
+    readJson(root, "data/maintenance/trusted-tavernary-editors.json"),
   ]);
   snapshots.push(...codebergSnapshots);
   receipts.forEach(validateAutomationReceipt);
@@ -269,6 +275,7 @@ export async function loadAutomationInventory({
     deployments,
     blockedUsers,
     importState,
+    trustedEditors,
     reportIndex: index,
     storedReports: stored,
     refreshManifest: await readJson(root, "data/snapshots/github-refresh.json"),
@@ -281,27 +288,35 @@ export async function loadAutomationInventory({
     ...automationDataDigests({ catalog, targets }),
   };
   local.publications = [];
-  local.publicationFileDigests = {};
+  const validatedPublications = publicationRecords.map(
+    validateCanonicalPublicationRecord,
+  );
+  const revisions = await publicationHistory({
+    root,
+    revision,
+    paths: validatedPublications.map(
+      (record) =>
+        `data/maintenance/automation/publications/${record.operation.key}.json`,
+    ),
+  });
+  local.publicationFileDigests = canonicalFileDigests({
+    root,
+    revision,
+    paths: [
+      ...new Set(
+        validatedPublications.flatMap((record) =>
+          record.files.map((file) => file.path),
+        ),
+      ),
+    ],
+  });
   for (const value of publicationRecords) {
     const record = validateCanonicalPublicationRecord(value);
     const path = `data/maintenance/automation/publications/${record.operation.key}.json`;
-    const proofRevision = execFileSync(
-      "git",
-      ["log", "-1", "--format=%H", "HEAD", "--", path],
-      { cwd: root, encoding: "utf8" },
-    ).trim();
+    const proofRevision = revisions[path];
     if (!/^[a-f0-9]{40}$/u.test(proofRevision))
       throw new Error("Publication evidence has no canonical commit.");
     local.publications.push({ record, revision: proofRevision });
-    for (const file of record.files) {
-      try {
-        local.publicationFileDigests[file.path] = createHash("sha256")
-          .update(await readFile(resolve(root, file.path)))
-          .digest("hex");
-      } catch (error) {
-        if (error.code !== "ENOENT") throw error;
-      }
-    }
   }
   local.confirmedRevisions = verifiedAutomationDeployments({
     deployments,

@@ -146,16 +146,27 @@ export async function verifyCanonicalData({
       return false;
   }
   for (const file of files) {
-    const blob = JSON.parse(
+    let blob = JSON.parse(
       await gh([
         "api",
         `repos/${repository}/contents/${file.path}?ref=${mainSha}`,
       ]),
     );
+    if (blob.type !== "file") return false;
+    if (blob.encoding === "none") {
+      if (!shaPattern.test(blob.sha ?? "")) return false;
+      const expectedBlobSha = blob.sha;
+      blob = JSON.parse(
+        await gh(["api", `repos/${repository}/git/blobs/${expectedBlobSha}`]),
+      );
+      if (blob.sha !== expectedBlobSha || blob.size !== file.bytes)
+        return false;
+    }
     if (
-      blob.type !== "file" ||
       blob.encoding !== "base64" ||
       typeof blob.content !== "string" ||
+      blob.content.length > 11_535_000 ||
+      Buffer.from(blob.content, "base64").byteLength !== file.bytes ||
       createHash("sha256")
         .update(Buffer.from(blob.content, "base64"))
         .digest("hex") !== file.sha256

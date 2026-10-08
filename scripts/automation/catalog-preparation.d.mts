@@ -14,6 +14,11 @@ export function acquireRefreshData(input: {
   operation: AutomationOperation;
   mode?: "project" | "forensic";
 }): Promise<Record<string, string>>;
+export function acquireCatalogData(input: {
+  state: AutomationInventoryState;
+  operation: AutomationOperation;
+  mode?: "project" | "forensic";
+}): Promise<Record<string, string>>;
 export function prepareCatalogOperation(input: {
   state: AutomationInventoryState;
   operation: AutomationOperation;

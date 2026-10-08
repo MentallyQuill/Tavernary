@@ -1,5 +1,4 @@
-import { lstat, readFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { readCanonicalFiles } from "./canonical-files.mjs";
 import { format } from "prettier";
 import { assertTrustedPreparedProducer } from "./prepared-result.mjs";
 import {
@@ -8,6 +7,7 @@ import {
 } from "./preparation.mjs";
 import { createPreparedPublicationContext } from "./publication-context.mjs";
 import { runRepositoryRefresh } from "../catalog/refresh-repositories.mjs";
+import { acquirePreparedKitData } from "./kit-preparation.mjs";
 
 export function assertCatalogPreparationContext({ state, operation, env }) {
   const workflow = env.GITHUB_WORKFLOW_REF?.slice(
@@ -86,7 +86,7 @@ export async function prepareCatalogOperation({
   state,
   operation,
   producer,
-  acquire = acquireRefreshData,
+  acquire = acquireCatalogData,
   context = createPreparedPublicationContext,
 }) {
   if (!state.operations.some((current) => current.key === operation.key))
@@ -114,26 +114,37 @@ export async function prepareCatalogOperation({
     throw new Error(
       "Catalog acquisition contains an unrelated or executable path.",
     );
+  const baseline = readCanonicalFiles({
+    root: state.root,
+    revision: state.local.revision,
+    paths: captured.allowedPaths.filter(
+      (path) => !Object.hasOwn(outputs, path),
+    ),
+  });
   return emitPreparedOperation({
     captured,
     currentState,
     read: async (path) => {
       if (Object.hasOwn(outputs, path))
         return { type: "file", content: outputs[path] };
-      try {
-        const file = resolve(state.root, path);
-        if (!(await lstat(file)).isFile())
-          return { type: "symlink", content: "" };
-        return {
-          type: "file",
-          content: new TextDecoder("utf-8", { fatal: true }).decode(
-            await readFile(file),
-          ),
-        };
-      } catch (error) {
-        if (error.code === "ENOENT") return null;
-        throw error;
-      }
+      return baseline[path]
+        ? {
+            type: "file",
+            content: new TextDecoder("utf-8", { fatal: true }).decode(
+              baseline[path],
+            ),
+          }
+        : null;
     },
   });
+}
+export async function acquireCatalogData(input) {
+  if (input.operation.identity.kind === "refresh")
+    return acquireRefreshData(input);
+  if (
+    ["kit", "withdrawal"].includes(input.operation.identity.kind) &&
+    (!input.mode || input.mode === "project")
+  )
+    return acquirePreparedKitData(input);
+  throw new Error("Catalog acquisition kind is unsupported.");
 }

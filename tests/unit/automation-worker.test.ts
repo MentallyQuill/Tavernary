@@ -38,6 +38,25 @@ test("canonical publication advances to deployment without another generation", 
   });
 });
 
+test.each(["kit", "withdrawal"] as const)(
+  "%s preparation carries its current immutable operation key",
+  (kind) => {
+    const operation = operationFixture({
+      stage: "validated",
+      identity: {
+        kind,
+        subject: "issue:42",
+        inputDigest: "a".repeat(64),
+        policyVersion: "1",
+      },
+    });
+    expect(planAutomationWorker(operation)).toMatchObject({
+      action: "dispatch",
+      inputs: { issue_number: "42", operation_key: operation.key },
+    });
+  },
+);
+
 test("active workers and permanent failures remain protected", () => {
   expect(
     planAutomationWorker(operationFixture({ workerRunId: 700 })).action,

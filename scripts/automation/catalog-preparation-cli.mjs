@@ -6,7 +6,7 @@ import { loadAutomationInventory } from "./inventory.mjs";
 import {
   assertCatalogPreparationContext,
   prepareCatalogOperation,
-  acquireRefreshData,
+  acquireCatalogData,
 } from "./catalog-preparation.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
 import { githubFailureStatus } from "./github-inventory.mjs";
@@ -58,7 +58,7 @@ export async function runCatalogPreparationCli(options = {}) {
       state,
       operation,
       producer,
-      acquire: (input) => acquireRefreshData({ ...input, mode }),
+      acquire: (input) => acquireCatalogData({ ...input, mode }),
     });
     if (result) {
       if (!outputDirectory)

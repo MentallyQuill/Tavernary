@@ -1,6 +1,7 @@
 import type { AutomationOperation } from "./operation.mjs";
 import type { AutomationReceipt } from "./receipts.mjs";
 import type { ProjectInventoryRun } from "./project-operations.mjs";
+import type { TrustedEditorRegistry } from "../maintenance/trusted-editor-authority.mjs";
 import type {
   GitHubKitIssue,
   ReconciliationProject,
@@ -22,6 +23,7 @@ export interface KitInventoryInput {
   sourcesById: Record<string, ReconciliationSource>;
   snapshotsBySourceId: Record<string, ReconciliationSnapshot>;
   blockedUsers: ReconciliationBlockedUsers;
+  trustedEditors?: TrustedEditorRegistry;
   runs: ProjectInventoryRun[];
   receipts: AutomationReceipt[];
   nowMs: number;

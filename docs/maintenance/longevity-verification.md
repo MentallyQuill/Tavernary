@@ -330,3 +330,26 @@ final-boundary emergency controls, safe diagnostic consumption and removal of
 old direct deployment/finalization paths remain required before integration.
 Publication history lookup, canonical blob hashing across checkout line endings
 and high-volume GitHub inventory costs also require hardening and canary coverage.
+
+### Kit preparation and canonical proof hardening (Task 2 still in progress)
+
+Reconciled Kit and withdrawal work now carries its immutable operation key into
+separate, pinned, read-only preparation jobs. The existing review entrypoints
+remain until replacement correction and verified-deployment lifecycle behavior
+is fully covered. The new request adapter preserves malformed-withdrawal
+feedback, paginates comments, accepts only the numeric automation bot's owned
+correction comments, and checks for late request edits before mutation.
+
+Kit recovery requires the current create manifest to match the published record.
+Identical staff edits recognize canonical data only with current trusted editor
+authority. Canonical base/publication hashes now use bounded Git blob reads, so
+checkout line endings cannot invalidate proof. One streaming history read
+replaces per-publication Git subprocesses. Large Contents API files are verified
+through their pinned Git blob identity and actual content hash.
+
+Evidence: the full unit suite passed 264 files / 2,978 tests, and full lint and
+type checking passed. The subsequent large-file verification change passed its
+8-test regression suite after watched RED/GREEN. Workflow contract tests retain
+protected Publisher App and numeric actor checks. All remaining Task 2
+migrations, final complete verification, independent review, CI, merge and
+production proof remain outstanding.

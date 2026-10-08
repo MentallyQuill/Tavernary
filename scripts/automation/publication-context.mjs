@@ -1,18 +1,21 @@
-import { readFile, lstat } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import { createHash } from "node:crypto";
+import { canonicalFileDigests } from "./canonical-files.mjs";
 import Ajv from "ajv";
 import { validateAutomationOperation } from "./operation.mjs";
 import { metadataFieldsToGenerate } from "../catalog/metadata-policy.mjs";
 import { effectiveListingState } from "../../src/features/catalog/listing-state.mjs";
 import { createPolicyEvidenceFingerprint } from "../moderation/catalog-policy-review-contract.mjs";
 import { fingerprintProjectPublicationInput } from "../publication/project-publication-transaction.mjs";
+import { createKitPreparedPublicationContext } from "./kit-publication-context.mjs";
 
 const schemaNames = {
   project: "project",
   snapshot: "repository-snapshot",
   install: "extension-install-evidence",
   advisory: "catalog-policy-review",
+  kit: "kit",
+  support: "kit-support-snapshot",
 };
 async function schemaValidators(root) {
   const ajv = new Ajv({ allErrors: true, strict: false });
@@ -57,6 +60,12 @@ export async function createPreparedPublicationContext({
   )
     throw Object.assign(new Error("Canonical operation is superseded."), {
       code: "input-superseded",
+    });
+  if (["kit", "withdrawal"].includes(operation.identity.kind))
+    return createKitPreparedPublicationContext({
+      state,
+      operation,
+      validators: await schemaValidators(state.root),
     });
   if (!["refresh", "metadata", "advisory"].includes(operation.identity.kind))
     throw new Error("Publication domain is not implemented.");
@@ -106,19 +115,11 @@ export async function createPreparedPublicationContext({
       : operation.identity.kind === "metadata"
         ? [`data/registry/projects/${project.id}.json`]
         : [`data/snapshots/policy-review/${project.id}.json`];
-  const fileDigests = {};
-  for (const path of paths) {
-    try {
-      const file = resolve(state.root, path);
-      if (!(await lstat(file)).isFile())
-        throw new Error("Canonical data path is not a regular file.");
-      fileDigests[path] = createHash("sha256")
-        .update(await readFile(file))
-        .digest("hex");
-    } catch (error) {
-      if (error.code !== "ENOENT") throw error;
-    }
-  }
+  const fileDigests = canonicalFileDigests({
+    root: state.root,
+    revision: state.local.revision,
+    paths,
+  });
   const automaticFields = project
     ? new Set(metadataFieldsToGenerate(project))
     : new Set();

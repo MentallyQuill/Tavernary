@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { expect, test } from "vitest";
 import { createPreparedPublicationContext } from "../../scripts/automation/publication-context.mjs";
 import { discoverCatalogOperations } from "../../scripts/automation/catalog-operations.mjs";
@@ -17,7 +18,9 @@ function currentState(): AutomationInventoryState {
     projects: [structuredClone(project)],
     sources: [source],
     snapshots: [snapshot],
-    revision: "b".repeat(40),
+    revision: execFileSync("git", ["rev-parse", "HEAD"], {
+      encoding: "utf8",
+    }).trim(),
     advisoryState: [],
     metadataState: [],
   };

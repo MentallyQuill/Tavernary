@@ -58,10 +58,18 @@ export function planAutomationWorker(operation, { budgetTicket } = {}) {
       operation.stage === "validated"
         ? "apply-kit-submission.yml"
         : "triage-kit-submission.yml",
-      { issue_number: number },
+      {
+        issue_number: number,
+        ...(operation.stage === "validated"
+          ? { operation_key: operation.key }
+          : {}),
+      },
     );
   if (operation.identity.kind === "withdrawal")
-    return dispatch("apply-kit-withdrawal.yml", { issue_number: number });
+    return dispatch("apply-kit-withdrawal.yml", {
+      issue_number: number,
+      operation_key: operation.key,
+    });
   if (operation.identity.kind === "refresh")
     return dispatch("refresh-catalog.yml", {
       operation_key: operation.key,

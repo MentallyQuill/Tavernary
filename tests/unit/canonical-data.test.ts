@@ -120,3 +120,36 @@ test("canonical proof requires ancestry and actual file bytes, not a returned co
     false,
   );
 });
+
+test("canonical proof verifies large Contents API files through their pinned Git blob", async () => {
+  const input = fixture();
+  const sha = "a".repeat(40);
+  const blobSha = "c".repeat(40);
+  input.gh.mockImplementation(async (args) =>
+    args[1]?.includes("/contents/")
+      ? JSON.stringify({ type: "file", encoding: "none", sha: blobSha })
+      : JSON.stringify({
+          sha: blobSha,
+          encoding: "base64",
+          size: input.files[0].bytes,
+          content: Buffer.from(input.files[0].content).toString("base64"),
+        }),
+  );
+  const proof = { ...input, sha, mainSha: sha };
+  expect(await verifyCanonicalData(proof)).toBe(true);
+  expect(
+    input.gh.mock.calls.some(
+      ([args]) => args[1] === `repos/Owner/Repo/git/blobs/${blobSha}`,
+    ),
+  ).toBe(true);
+  input.gh.mockImplementation(async (args) =>
+    args[1]?.includes("/contents/")
+      ? JSON.stringify({ type: "file", encoding: "none", sha: blobSha })
+      : JSON.stringify({
+          sha: "d".repeat(40),
+          encoding: "base64",
+          content: Buffer.from(input.files[0].content).toString("base64"),
+        }),
+  );
+  expect(await verifyCanonicalData(proof)).toBe(false);
+});

@@ -49,6 +49,12 @@ const expectedPublisherConditions = {
   "refresh-catalog":
     "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || github.actor_id == 2625904 || " +
     `${publisherActorExpression})`,
+  "apply-kit-submission":
+    "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || github.actor_id == 2625904 || " +
+    `${publisherActorExpression})`,
+  "apply-kit-withdrawal":
+    "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || github.actor_id == 2625904 || " +
+    `${publisherActorExpression})`,
   "publisher-verification":
     "github.ref == 'refs/heads/main' && github.actor_id == 2625904",
   "review-catalog-policy":

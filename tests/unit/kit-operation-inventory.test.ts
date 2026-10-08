@@ -192,6 +192,7 @@ test("a cancelled current-input publisher is retryable after a long outage witho
     nextEligibleAt: null,
   });
   input.kits = kitInventoryFixture({ canonicalPublished: true }).kits;
+  input.kits[0].description = "Changed collection.";
   expect(discoverKitOperations(input)[0]).toMatchObject({
     stage: "published",
     retry: null,
