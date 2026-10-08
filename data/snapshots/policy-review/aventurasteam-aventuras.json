@@ -3,14 +3,14 @@
   "project_id": "aventurasteam-aventuras",
   "source_id": "github-1126279204",
   "source_identity": "github:aventurasteam/aventuras",
-  "evidence_fingerprint": "ff0eca2db05a8a3ee7939f0345bfcae0dbb2d63a40ff49fd60d2b7d48c7f2599",
+  "evidence_fingerprint": "a2a292d9ea938ce0c7881a1c797e9b78eb3fdb5ceb80a51f02dde95210ff1d56",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-24T04:07:13.979Z",
+  "reviewed_at": "2026-10-08T14:51:21.089Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-24T04:07:13.979Z"
+    "attempts": 3,
+    "last_failure_at": "2026-10-08T14:51:21.089Z"
   },
   "maintenance_issue_number": null
 }

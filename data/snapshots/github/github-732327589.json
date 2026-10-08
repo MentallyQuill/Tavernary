@@ -9,35 +9,30 @@
     "url": "https://github.com/sakhavhyand/SillyTavern-AnotherCharManager",
     "description": "Another character management interface for SillyTavern.",
     "default_branch": "main",
-    "head_sha": "fcfa71af7030ba0d7722fdc61483c1692e0acf0d",
-    "head_committed_at": "2026-05-25T23:03:47.000Z",
+    "head_sha": "fd364d097db826e56c571eade43e3755d2ddb151",
+    "head_committed_at": "2026-10-07T18:54:18.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2023-12-16T10:03:38.000Z",
-    "size_kb": 643
+    "size_kb": 682
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-05-25T22:50:16.000Z",
+    "latest_source_activity_at": "2026-08-23T19:51:30.000Z",
     "source_weeks": [
       {
-        "week_start": "2026-05-25",
-        "latest_at": "2026-05-25T22:50:16.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-11",
-        "latest_at": "2026-05-12T12:34:33.000Z",
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-23T19:51:30.000Z",
         "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-27T10:52:18.639Z",
+    "baseline_completed_at": "2026-10-08T14:39:08.801Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "fcfa71af7030ba0d7722fdc61483c1692e0acf0d"
+    "evidence_head_sha": "fd364d097db826e56c571eade43e3755d2ddb151"
   },
   "community": {
     "stars_count": 27,
@@ -50,18 +45,19 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-07T14:35:00.644Z",
+  "refreshed_at": "2026-10-08T14:39:08.801Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "sakhavhyand", "type": "User", "provider": "github" },
-      { "login": "Copilot", "type": "Bot", "provider": "github" }
+      { "login": "Copilot", "type": "Bot", "provider": "github" },
+      { "login": "Rojikku", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-07T14:35:00.644Z",
+    "refreshed_at": "2026-10-08T14:39:08.801Z",
     "stale_since": null
   }
 }

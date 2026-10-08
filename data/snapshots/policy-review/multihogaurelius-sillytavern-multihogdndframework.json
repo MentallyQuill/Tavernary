@@ -3,14 +3,14 @@
   "project_id": "multihogaurelius-sillytavern-multihogdndframework",
   "source_id": "github-1212009993",
   "source_identity": "github:multihogaurelius/sillytavern-multihogdndframework",
-  "evidence_fingerprint": "db605933b3328ada9cc29482c6235cadb76e565a5169a32d88487ce7d08ec075",
+  "evidence_fingerprint": "a7c4e9bd6ecb0f7c4b3423cf03ae70819fd22a1d32ef0b70c48b1fd41688f4f2",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-17T08:15:37.439Z",
+  "reviewed_at": "2026-10-08T14:54:09.380Z",
   "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-17T08:15:37.439Z"
+    "attempts": 3,
+    "last_failure_at": "2026-10-08T14:54:09.380Z"
   },
   "maintenance_issue_number": null
 }

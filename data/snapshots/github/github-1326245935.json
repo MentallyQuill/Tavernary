@@ -9,13 +9,13 @@
     "url": "https://github.com/deiomo/Writer-s-Block-Unlimited",
     "description": "Home to the Writer's Block preset for sillytavern",
     "default_branch": "main",
-    "head_sha": "a22f828fdd66f3c05bf1652e29c14286e8099816",
-    "head_committed_at": "2026-10-07T02:33:49.000Z",
+    "head_sha": "047fe2744f1a98cc81f84f9bc4cf6b81f6893de8",
+    "head_committed_at": "2026-10-07T17:38:41.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-08-07T05:23:19.000Z",
-    "size_kb": 194
+    "size_kb": 205
   },
   "source_health": "healthy",
   "activity": {
@@ -32,20 +32,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-10-07T14:35:00.644Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "a22f828fdd66f3c05bf1652e29c14286e8099816"
+    "evidence_head_sha": "047fe2744f1a98cc81f84f9bc4cf6b81f6893de8"
   },
   "community": {
-    "stars_count": 10,
+    "stars_count": 12,
     "forks_count": 0,
     "watchers_count": 1,
-    "aggregate": 11
+    "aggregate": 13
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-07T14:35:00.644Z",
+  "refreshed_at": "2026-10-08T14:39:08.801Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -53,7 +53,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-07T14:35:00.644Z",
+    "refreshed_at": "2026-10-08T14:39:08.801Z",
     "stale_since": null
   }
 }
