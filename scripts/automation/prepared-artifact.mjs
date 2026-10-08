@@ -9,8 +9,14 @@ export function decodePreparedArtifact({
   digest,
   filename = "result.json",
 }) {
-  if (!["result.json", "diagnostic.json"].includes(filename)) fail();
-  const maximumBytes = filename === "diagnostic.json" ? 16_384 : 33_554_432;
+  const limits = {
+    "result.json": 33_554_432,
+    "diagnostic.json": 16_384,
+    "revision.json": 16_777_216,
+    "confirmation.json": 65_536,
+  };
+  if (!Object.hasOwn(limits, filename)) fail();
+  const maximumBytes = limits[filename];
   if (
     !(archive instanceof Uint8Array) ||
     archive.byteLength < 22 ||

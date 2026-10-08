@@ -7,6 +7,30 @@ import { preparedResultFixture } from "../helpers/automation-fixtures";
 
 const archiveDigest = (bytes: Uint8Array) =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
+test.each(["revision.json", "confirmation.json"] as const)(
+  "trusted single-file %s metadata uses the same bounded archive integrity checks",
+  (filename) => {
+    const value = { schema_version: 1, sourceSha: "a".repeat(40) };
+    const archive = zipSync({ [filename]: strToU8(JSON.stringify(value)) });
+    expect(
+      decodePreparedArtifact({
+        archive,
+        digest: archiveDigest(archive),
+        filename,
+      }),
+    ).toEqual(value);
+    const substituted = zipSync({
+      "../revision.json": strToU8(JSON.stringify(value)),
+    });
+    expect(() =>
+      decodePreparedArtifact({
+        archive: substituted,
+        digest: archiveDigest(substituted),
+        filename,
+      }),
+    ).toThrow();
+  },
+);
 test("a prepared artifact is verified and decoded entirely in memory", () => {
   const result = preparedResultFixture();
   const archive = zipSync({ "result.json": strToU8(JSON.stringify(result)) });

@@ -34,6 +34,22 @@ export function runModelWriterPreparation(
     ) => Promise<{ runId: number; workflow: string }>;
   },
 ): Promise<Record<string, unknown>>;
+export function runDeploymentWriterConfirmation(input: {
+  operationKey?: string;
+  runId?: number;
+  root?: string;
+  env?: Record<string, string | undefined>;
+  gh?: GhRunner;
+  load?: () => Promise<AutomationInventoryState>;
+  download?: (args: string[]) => Promise<Uint8Array>;
+  isAncestor?: (ancestor: string, descendant: string) => boolean | null;
+  probe?: Parameters<
+    typeof import("./deployment-writer.mjs").confirmCanonicalDeployment
+  >[0]["probe"];
+  commit?: (
+    input: Omit<Parameters<typeof commitCanonicalData>[0], "gh">,
+  ) => Promise<{ sha: string }>;
+}): Promise<Record<string, unknown>>;
 export function runProjectWriterPublication(
   input: ProjectWriterInput,
 ): Promise<PublicationResult>;

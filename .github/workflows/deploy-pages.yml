@@ -173,6 +173,47 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
 
+  confirm-public:
+    needs: [build, deploy]
+    if: needs.deploy.outputs.action == 'deploy'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Check out trusted public verifier
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install verifier dependencies
+        run: npm ci
+      - name: Install public verification browsers
+        run: npx playwright install --with-deps chromium webkit
+      - name: Read this run's exact revision metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ needs.build.outputs.source_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh run download "$GITHUB_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "site-revision-$SOURCE_SHA" --dir .tmp/site-revision
+      - name: Confirm public revision, assets, and essential browser behavior
+        run: node scripts/automation/confirm-deployment.mjs .tmp/site-revision/revision.json .tmp/confirmation.json
+      - name: Retain public verification result
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: site-confirmation-${{ needs.build.outputs.source_sha }}
+          path: .tmp/confirmation.json
+          retention-days: 90
+          if-no-files-found: warn
+
   wake-tavernkeeper:
     needs:
       - build

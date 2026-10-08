@@ -41,15 +41,13 @@ test("metadata acquisition verifies immutable identity before reading a pinned R
 test("a reused repository name cannot supply metadata for another numeric identity", async () => {
   const fixture = await metadataMaintenanceFixture();
   const [owner, name] = fixture.source.repository.split("/");
-  const fetchImpl = vi
-    .fn<typeof fetch>()
-    .mockResolvedValue(
-      Response.json({
-        id: fixture.source.repository_id + 1,
-        owner: { login: owner },
-        name,
-      }),
-    );
+  const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(
+    Response.json({
+      id: fixture.source.repository_id + 1,
+      owner: { login: owner },
+      name,
+    }),
+  );
   await expect(
     observeMetadataSource({
       state: fixture.state,
@@ -96,7 +94,8 @@ test("missing README uses the verified snapshot description without inventing co
     fetchImpl,
   });
   expect(result.source.status).toBe("ready");
-  if (result.source.status !== "ready") throw new Error("Source was unavailable");
+  if (result.source.status !== "ready")
+    throw new Error("Source was unavailable");
   expect(result.source.sourceKind).toBe("description");
   expect(result.evidence.normalizedContent).toContain(
     fixture.snapshot.repository.description,

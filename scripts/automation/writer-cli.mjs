@@ -64,6 +64,20 @@ export async function runAutomationWriterCli(options = {}) {
       );
       return 0;
     }
+    if (mode === "confirm") {
+      const { runDeploymentWriterConfirmation } =
+        await import("./writer-runtime.mjs");
+      write(
+        JSON.stringify(
+          await runDeploymentWriterConfirmation({
+            operationKey: event.inputs?.operation_key || undefined,
+            runId: Number(event.inputs?.result_run_id || 0),
+            env,
+          }),
+        ),
+      );
+      return 0;
+    }
     if (mode === "prepare") {
       const { runModelWriterPreparation } =
         await import("./writer-runtime.mjs");

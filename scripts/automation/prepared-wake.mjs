@@ -15,6 +15,33 @@ const kinds = {
   "apply-kit-submission": "kit",
   "apply-kit-withdrawal": "withdrawal",
 };
+function trustedDeploymentWake(run, env, repository, runId) {
+  const publisherActorId = Number(env.TAVERNARY_PUBLISHER_BOT_ID);
+  return (
+    repository === "MentallyQuill/Tavernary" &&
+    env.GITHUB_WORKFLOW_REF ===
+      `${repository}/.github/workflows/automation-prepared.yml@refs/heads/main` &&
+    Number.isSafeInteger(publisherActorId) &&
+    publisherActorId > 0 &&
+    run?.id === runId &&
+    run.path === ".github/workflows/deploy-pages.yml" &&
+    run.head_branch === "main" &&
+    /^[a-f0-9]{40}$/u.test(run.head_sha ?? "") &&
+    /^Site: Deploy [a-f0-9]{40}$/u.test(run.display_title ?? "") &&
+    run.status === "completed" &&
+    ["success", "failure", "cancelled", "timed_out"].includes(run.conclusion) &&
+    Number.isSafeInteger(run.repository?.id) &&
+    run.repository.id > 0 &&
+    run.repository.full_name === repository &&
+    run.head_repository?.id === run.repository.id &&
+    run.head_repository.full_name === repository &&
+    Number.isSafeInteger(run.actor?.id) &&
+    run.actor.id > 0 &&
+    (run.event === "push" ||
+      (run.event === "workflow_dispatch" &&
+        [2625904, publisherActorId].includes(run.actor.id)))
+  );
+}
 export function planPreparedWake({
   run,
   repository,
@@ -131,6 +158,23 @@ export async function runPreparedWakeCli(options = {}) {
     const run = JSON.parse(
       await gh(["api", `repos/${repository}/actions/runs/${runId}`]),
     );
+    if (trustedDeploymentWake(run, env, repository, runId)) {
+      await gh([
+        "workflow",
+        "run",
+        "automation-writer.yml",
+        "--repo",
+        repository,
+        "--ref",
+        "main",
+        "-f",
+        "mode=confirm",
+        "-f",
+        `result_run_id=${runId}`,
+      ]);
+      write(JSON.stringify({ status: "dispatched", mode: "confirm", runId }));
+      return 0;
+    }
     const wake =
       run.id === runId
         ? planPreparedWake({

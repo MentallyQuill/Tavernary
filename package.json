@@ -47,6 +47,8 @@
     "submissions:reconcile-kits:apply": "node scripts/submissions/kit-submission-reconciliation.mjs --repo MentallyQuill/Tavernary --apply",
     "catalog:build": "node scripts/catalog/build.mjs",
     "automation:reconcile": "node scripts/automation/reconcile-cli.mjs",
+    "test:deployment-e2e": "playwright test --config playwright.deployment.config.ts",
+    "test:deployment-fixture": "node scripts/run-playwright.mjs --config playwright.deployment.config.ts",
     "verify:export": "node scripts/verify-static-export.mjs",
     "check": "npm run format:check && npm run lint && npm run palette:audit && npm run catalog:validate && npm run security:validate-reports && npm run catalog:build && npm run typecheck && npm test && npm run build && npm run verify:export",
     "check:content": "npm run format:check && npm run catalog:validate && npm run catalog:build && npm run test:content && npm run build && npm run verify:export"

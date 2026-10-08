@@ -70,6 +70,9 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
+      - name: Install public verification browsers
+        if: inputs.mode == 'confirm'
+        run: npx playwright install --with-deps chromium webkit
       - name: Create fresh scoped writer token
         id: writer-token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0

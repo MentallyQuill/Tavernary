@@ -18,6 +18,7 @@ export default defineConfig({
       ".worktrees/**",
       "tests/e2e/**",
       "tests/kits-e2e/**",
+      "tests/deployment-e2e/**",
       "tests/visual/**",
     ],
     passWithNoTests: true,

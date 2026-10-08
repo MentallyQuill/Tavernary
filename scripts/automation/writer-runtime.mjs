@@ -1,8 +1,11 @@
-import { execFile } from "node:child_process";
+import { execFile, execFileSync } from "node:child_process";
 import { promisify } from "node:util";
 import { readFile, writeFile, rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import { randomUUID, createHash } from "node:crypto";
+import { confirmCanonicalDeployment } from "./deployment-writer.mjs";
+import { loadGithubRevisionManifest } from "./deployment-github.mjs";
+import { confirmPublicDeployment } from "./confirm-deployment.mjs";
 import {
   createModelBudgetState,
   validateModelBudgetState,
@@ -245,6 +248,137 @@ function writerInventoryLoader({ root, env, gh }) {
       nowMs: Date.now(),
     });
   };
+}
+
+export async function runDeploymentWriterConfirmation({
+  operationKey,
+  runId = 0,
+  root = process.cwd(),
+  env = process.env,
+  gh = executeGh,
+  load = writerInventoryLoader({ root, env, gh }),
+  download = downloadPreparedArtifact,
+  probe = (input) => confirmPublicDeployment(input),
+  commit = (input) => commitCanonicalData({ ...input, gh }),
+  isAncestor = (ancestor, descendant) => {
+    try {
+      execFileSync(
+        "git",
+        ["merge-base", "--is-ancestor", ancestor, descendant],
+        { cwd: root, stdio: "ignore", timeout: 30000, windowsHide: true },
+      );
+      return true;
+    } catch (error) {
+      return error.status === 1 ? false : null;
+    }
+  },
+}) {
+  const repository = env.GITHUB_REPOSITORY;
+  assertCanonicalWriterContext(env, repository);
+  if (
+    (operationKey && !/^[a-f0-9]{64}$/u.test(operationKey)) ||
+    !Number.isSafeInteger(runId) ||
+    runId < 0
+  )
+    throw new Error("Deployment confirmation request is invalid.");
+  try {
+    const initial = await load();
+    const operation = operationKey
+      ? initial.operations.find((value) => value.key === operationKey)
+      : null;
+    if (operationKey && !operation) return { status: "superseded" };
+    if (runId === 0) {
+      if (!/^[a-f0-9]{40}$/u.test(operation?.expectedSha ?? ""))
+        throw new Error("Confirmation has no trusted published revision.");
+      const candidates = initial.remote.runs
+        .filter((run) => {
+          const sourceSha = String(run.display_title ?? "").match(
+            /^Site: Deploy ([a-f0-9]{40})$/u,
+          )?.[1];
+          return (
+            run.path === ".github/workflows/deploy-pages.yml" &&
+            run.status === "completed" &&
+            sourceSha &&
+            (operation.expectedSha === sourceSha ||
+              isAncestor(operation.expectedSha, sourceSha) === true) &&
+            (sourceSha === initial.local.revision ||
+              isAncestor(sourceSha, initial.local.revision) === true)
+          );
+        })
+        .sort(
+          (a, b) =>
+            Date.parse(b.created_at) - Date.parse(a.created_at) || b.id - a.id,
+        );
+      runId = candidates[0]?.id ?? 0;
+      if (runId === 0)
+        throw Object.assign(
+          new Error("Validated deployment metadata is not available yet."),
+          { code: "provider-unavailable" },
+        );
+    }
+    let first = true;
+    const project = (state) => {
+      if (!Array.isArray(state.local.deployments))
+        throw new Error("Deployment proof inventory is invalid.");
+      return {
+        revision: state.local.revision,
+        nowMs: state.nowMs,
+        deployments: state.local.deployments,
+      };
+    };
+    const result = await confirmCanonicalDeployment({
+      runId,
+      isAncestor,
+      load: async () => {
+        if (first) {
+          first = false;
+          return project(initial);
+        }
+        return project(await load());
+      },
+      loadManifest: async ({ runId, revision }) => {
+        const data = await loadGithubRevisionManifest({
+          gh,
+          download,
+          repository,
+          publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
+          runId,
+          currentMainSha: revision,
+          isAncestor,
+        });
+        if (
+          operation &&
+          operation.expectedSha !== data.manifest.sourceSha &&
+          isAncestor(operation.expectedSha, data.manifest.sourceSha) !== true
+        )
+          throw Object.assign(
+            new Error("Deployment no longer covers the published operation."),
+            { code: "input-superseded" },
+          );
+        return data;
+      },
+      probe,
+      commit: (input) => commit({ ...input, repository }),
+    });
+    if (result.status === "waiting" || result.status === "incident")
+      throw Object.assign(new Error("Public deployment remains unconfirmed."), {
+        code:
+          result.status === "waiting"
+            ? "provider-unavailable"
+            : "validation-failed",
+      });
+    return result;
+  } catch (error) {
+    if (operationKey)
+      await persistPreparedFailure({
+        operationKey,
+        load,
+        error,
+        persist: (receipt) =>
+          persistGithubAutomationReceipt({ gh, repository, receipt }),
+      });
+    throw error;
+  }
 }
 
 export async function runProjectWriterPublication({
