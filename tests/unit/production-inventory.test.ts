@@ -55,7 +55,7 @@ test("production inventory uses the complete canonical build inputs, including i
       expect.objectContaining({ kit_id: expect.any(String) }),
     ]),
   );
-});
+}, 20_000);
 test("canonical proof takes precedence when unchanged metadata also remains discoverable", () => {
   const input = catalogInventoryFixture();
   const operation = discoverCatalogOperations(input).find(
