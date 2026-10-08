@@ -119,3 +119,22 @@ preserve the existing submission workflow wiring and declaration without redunda
 edits. The cost if wrong is conservative unknown probes for unfamiliar failures.
 Whole-inventory cancellation recovery and dependency-wide circuit suppression
 remain Phase 2 work; token acquisition near publication remains Phase 3 work.
+
+### Phase 2 Task 1: durable operation contracts
+
+Stable operation keys use kind, immutable subject, normalized input digest and
+policy version. Strict version-1 receipts reject unknown fields and versions,
+unsafe identities, mismatched hashes, invalid clocks and worker handles,
+unrecognized diagnostics, inconsistent failure kinds, and contradictory
+completion evidence. Due selection is stable and bounded; stale duplicate events
+cannot reopen active, completed or permanently rejected operations.
+
+Verification: operation/receipt and shared recovery tests 26/26; typecheck,
+scoped ESLint, formatting and whitespace checks exit 0. These contracts are not
+yet wired into authoritative domain inventories or the scheduled controller.
+
+Ruling: Limit a pass to twenty operations and one per subject, and share the
+classifier's allowed reason/kind catalog with receipt validation. Finalized
+receipts require a completion timestamp, a revision and no active worker.
+The cost if wrong is reduced same-source throughput; publication and pruning
+still require authoritative evidence rather than trusting a receipt alone.

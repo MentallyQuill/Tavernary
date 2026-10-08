@@ -13,6 +13,27 @@ const TRANSIENT_DIAGNOSTICS = new Set([
   "provider-server-error",
 ]);
 
+export const AUTOMATION_FAILURE_REASON_KINDS = Object.freeze({
+  ...Object.fromEntries(
+    [...CONFIGURATION_DIAGNOSTICS].map((code) => [code, "configuration"]),
+  ),
+  ...Object.fromEntries(
+    [...TRANSIENT_DIAGNOSTICS].map((code) => [code, "transient"]),
+  ),
+  "authorization-lost": "permanent",
+  "validation-failed": "permanent",
+  "input-superseded": "superseded",
+  "authentication-unavailable": "configuration",
+  "provider-unavailable": "transient",
+  "workflow-skipped": "transient",
+  "workflow-timeout": "transient",
+  "workflow-cancelled": "transient",
+  "unclassified-failure": "unknown",
+});
+export const AUTOMATION_FAILURE_REASON_CODES = Object.freeze(
+  Object.keys(AUTOMATION_FAILURE_REASON_KINDS),
+);
+
 export function classifyAutomationFailure(input = {}) {
   if (input.authorizationLost === true) {
     return { kind: "permanent", reasonCode: "authorization-lost" };

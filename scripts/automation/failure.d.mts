@@ -1,3 +1,8 @@
+export const AUTOMATION_FAILURE_REASON_CODES: readonly string[];
+export const AUTOMATION_FAILURE_REASON_KINDS: Readonly<
+  Record<string, AutomationFailureKind>
+>;
+
 export type AutomationFailureKind =
   "transient" | "configuration" | "permanent" | "superseded" | "unknown";
 

@@ -1,6 +1,6 @@
 # Durable Reconciliation Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. User selected inline execution with independent branch review on 2026-10-07.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking. User selected inline execution with independent branch review on 2026-10-07.
 
 **Goal:** Reconstruct every eligible operation when events or receipts are lost.
 
@@ -43,7 +43,7 @@ scenario flags.
 
 **Interfaces:** Produce `operationKey(identity): string`, `validateAutomationReceipt(value): AutomationReceipt`, and `selectDueOperations(operations, { nowMs, limit }): AutomationOperation[]`. Declare identity `{ kind, subject, inputDigest, policyVersion }`, operation `{ key, identity, stage, createdAt, nextEligibleAt, expectedSha, workerRunId, retry }`, and version-1 receipt with meaningful-progress timestamps. Fixtures export `operationFixture(overrides)` and `receiptFixture(overrides)` with fixed valid digests/SHA/time and the same declared types.
 
-- [ ] **Step 1: Add the behavioral regression.**
+- [x] **Step 1: Add the behavioral regression.**
 
 ```ts
 test("input edits change identity while event replays do not", () => {
@@ -60,10 +60,10 @@ test("input edits change identity while event replays do not", () => {
 });
 ```
 
-- [ ] **Step 2: Verify the regression fails.** Run `npx vitest run tests/unit/automation-operation.test.ts`. Expect the stated new assertion to fail or the new import to be missing; distinguish this from unrelated baseline failures.
-- [ ] **Step 3: Implement the contract.** Use stable canonical serialization and SHA-256. Validate schemas and stages strictly; reject path-derived keys and unknown versions. Select oldest due work stably, limit twenty by default, and prevent one active source from monopolizing a pass. Do not store credentials or raw source content in receipts.
-- [ ] **Step 4: Verify the regression and relevant existing coverage.** Run `npx vitest run tests/unit/automation-operation.test.ts`; expect exit 0 and all selected tests passing. Check declarations with `npm run typecheck`.
-- [ ] **Step 5: Review the diff and commit.** Stage only the listed deliverable files and necessary verified generated outputs; use `feat(automation): add durable operation contracts`.
+- [x] **Step 2: Verify the regression fails.** Run `npx vitest run tests/unit/automation-operation.test.ts`. Expect the stated new assertion to fail or the new import to be missing; distinguish this from unrelated baseline failures.
+- [x] **Step 3: Implement the contract.** Use stable canonical serialization and SHA-256. Validate schemas and stages strictly; reject path-derived keys and unknown versions. Select oldest due work stably, limit twenty by default, and prevent one active source from monopolizing a pass. Do not store credentials or raw source content in receipts.
+- [x] **Step 4: Verify the regression and relevant existing coverage.** Run `npx vitest run tests/unit/automation-operation.test.ts`; expect exit 0 and all selected tests passing. Check declarations with `npm run typecheck`.
+- [x] **Step 5: Review the diff and commit.** Stage only the listed deliverable files and necessary verified generated outputs; use `feat(automation): add durable operation contracts`.
 
 ### Task 2: Project and owner inventory adapters
 
