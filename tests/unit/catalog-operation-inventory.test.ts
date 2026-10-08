@@ -251,3 +251,38 @@ test("a persisted dispatch intent suppresses duplicates while GitHub makes the w
     )?.nextEligibleAt,
   ).toBe(intent.nextEligibleAt);
 });
+
+test.each(["refresh", "metadata", "advisory"])(
+  "%s retains its dispatch delay and failure receipt across bookkeeping commits",
+  (kind) => {
+    const input = catalogInventoryFixture();
+    input.catalog.revision = "a".repeat(40);
+    const operation = discoverCatalogOperations(input).find(
+      (operation) => operation.identity.kind === kind,
+    )!;
+    const deadline = new Date(AUTOMATION_NOW + 86_400_000).toISOString();
+    const intent = { ...operation, nextEligibleAt: deadline };
+    input.receipts = [receiptFixture({ operation: intent })];
+    input.catalog.revision = "b".repeat(40);
+    expect(
+      discoverCatalogOperations(input).find(
+        (current) => current.key === operation.key,
+      )?.nextEligibleAt,
+    ).toBe(deadline);
+    const retry = {
+      failure: {
+        kind: "configuration" as const,
+        reasonCode: "budget-exhausted" as const,
+      },
+      transientAttempts: 0,
+      immediateAttempts: 0,
+    };
+    input.receipts = [receiptFixture({ operation: { ...intent, retry } })];
+    input.catalog.revision = "c".repeat(40);
+    const recovered = discoverCatalogOperations(input).find(
+      (current) => current.key === operation.key,
+    )!;
+    expect(recovered.retry).toEqual(retry);
+    expect(recovered.nextEligibleAt).toBe(deadline);
+  },
+);

@@ -12,7 +12,7 @@ import {
   trustedOperationWorkerRuns,
 } from "./inventory-worker.mjs";
 
-function makeOperation(input, kind, subject, value, createdAt) {
+function makeOperation(kind, subject, value, createdAt) {
   const identity = {
     kind,
     subject,
@@ -27,7 +27,8 @@ function makeOperation(input, kind, subject, value, createdAt) {
       Number.isFinite(createdAt) ? createdAt : 0,
     ).toISOString(),
     nextEligibleAt: null,
-    expectedSha: input.catalog.revision ?? null,
+    // The source input binds admission; prepared results separately bind their base SHA.
+    expectedSha: null,
     workerRunId: null,
     retry: null,
   };
@@ -54,7 +55,6 @@ export function discoverCatalogOperations(input) {
     const refreshed = Date.parse(evidence?.refreshed_at ?? "");
     const lastRefresh = Number.isFinite(refreshed) ? refreshed : 0;
     const operation = makeOperation(
-      input,
       "refresh",
       `source:${source.id}`,
       { source, lastRefresh },
@@ -89,7 +89,6 @@ export function discoverCatalogOperations(input) {
     const fields = metadataFieldsToGenerate(project);
     if (fields.length) {
       const metadata = makeOperation(
-        input,
         "metadata",
         `source:${source.id}:${project.id}`,
         {
@@ -134,7 +133,6 @@ export function discoverCatalogOperations(input) {
     )
       continue;
     const operation = makeOperation(
-      input,
       "advisory",
       `source:${source.id}:${project.id}`,
       { sourceIdentity: sourceIdentity(source), fingerprint },

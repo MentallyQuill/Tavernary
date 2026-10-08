@@ -468,3 +468,16 @@ byte-for-byte preservation of local canonical files. A real immediate-danger
 scan verifies deterministic grading and writer rejection of a downgraded result.
 Task 2, subsequent phases, independent review, CI, merge and public production
 verification remain outstanding.
+
+### Stable catalog retry identity
+
+Ruling: keep admitted catalog operations' expected SHA unset — their source input
+identity binds retry bookkeeping, and prepared envelopes independently bind the
+canonical base SHA. Binding admission to the moving main SHA discarded delays
+when a receipt commit advanced main. Published, project, report-target and
+deployment operations retain their required exact revision checks. The cost if
+wrong is a retained delay for unchanged source input, never stale publication.
+
+Three new regression cases first failed and now pass across repeated main
+bookkeeping changes. Four focused suites passed 36 tests; type checking and
+focused lint passed. The publication migration remains in progress.
