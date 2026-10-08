@@ -2,7 +2,10 @@ import { readFile, appendFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import { validateAutomationOperation } from "./operation.mjs";
 import { assertTrustedAutomationContext } from "./github-inventory.mjs";
-import { loadAutomationInventory } from "./inventory.mjs";
+import {
+  loadAutomationInventory,
+  discoverAutomationState,
+} from "./inventory.mjs";
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 import { synchronizeWithdrawalFeedback } from "./withdrawal-feedback.mjs";
 
@@ -66,6 +69,14 @@ export async function runPreparationRequestCli(options = {}) {
           nowMs: Date.now(),
         }))
     )();
+    const requestRunId = Number(env.GITHUB_RUN_ID);
+    if (Number.isSafeInteger(requestRunId) && requestRunId > 0) {
+      state.remote = {
+        ...state.remote,
+        runs: state.remote.runs.filter((run) => run.id !== requestRunId),
+      };
+      state.operations = discoverAutomationState(state);
+    }
     const issueNumber = Number(event.inputs?.issue_number);
     const plan = planPreparationRequest({ state, workflow, issueNumber });
     if (workflow === "apply-kit-withdrawal.yml")

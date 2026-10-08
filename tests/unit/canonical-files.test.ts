@@ -16,6 +16,39 @@ import {
   publicationHistory,
 } from "../../scripts/automation/canonical-files.mjs";
 
+test("Kit publication history stays at the Kit mutation when bookkeeping and another Kit advance main", async () => {
+  const root = await mkdtemp(join(tmpdir(), "tavernary-kit-history-"));
+  const git = (args: string[]) =>
+    execFileSync("git", args, { cwd: root, encoding: "utf8" }).trim();
+  try {
+    git(["init", "-q"]);
+    git(["config", "user.name", "Test"]);
+    git(["config", "user.email", "test@example.org"]);
+    git(["config", "core.autocrlf", "false"]);
+    await mkdir(join(root, "data/registry/kits"), { recursive: true });
+    const first = "data/registry/kits/first-kit.json",
+      second = "data/registry/kits/second-kit.json";
+    await writeFile(join(root, first), "{}\n");
+    git(["add", "data"]);
+    git(["commit", "-qm", "publish first Kit"]);
+    const firstSha = git(["rev-parse", "HEAD"]);
+    await writeFile(join(root, second), "{}\n");
+    git(["add", "data"]);
+    git(["commit", "-qm", "publish another Kit"]);
+    const secondSha = git(["rev-parse", "HEAD"]);
+    git(["commit", "--allow-empty", "-qm", "receipt bookkeeping"]);
+    expect(
+      await publicationHistory({
+        root,
+        revision: git(["rev-parse", "HEAD"]),
+        paths: [first, second],
+      }),
+    ).toEqual({ [first]: firstSha, [second]: secondSha });
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
 test("canonical file hashes and history ignore checkout EOL and recover the actual last publication commit", async () => {
   const root = await mkdtemp(join(tmpdir(), "tavernary-canonical-files-"));
   const git = (args: string[]) =>

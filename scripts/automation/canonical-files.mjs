@@ -84,7 +84,8 @@ export async function publicationHistory({ root, revision, paths }) {
       (path) =>
         !/^data\/maintenance\/automation\/publications\/[a-f0-9]{64}\.json$/u.test(
           path,
-        ),
+        ) &&
+        !/^data\/registry\/kits\/[a-z0-9]+(?:-[a-z0-9]+)*\.json$/u.test(path),
     )
   )
     throw new Error("Publication history path is invalid.");
@@ -99,6 +100,7 @@ export async function publicationHistory({ root, revision, paths }) {
       revision,
       "--",
       "data/maintenance/automation/publications",
+      "data/registry/kits",
     ],
     { cwd: root, windowsHide: true, stdio: ["ignore", "pipe", "ignore"] },
   );

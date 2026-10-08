@@ -12,6 +12,20 @@ test.each(["apply-kit-submission", "apply-kit-withdrawal"])(
       workflow.jobs[name === "apply-kit-submission" ? "publish" : "withdraw"];
     expect(existing.if).toContain("inputs.operation_key == ''");
     expect(existing.if).toContain("github.actor_id == 2625904");
+    expect(JSON.stringify(existing)).not.toMatch(
+      /permission-contents.*write|git push|git rebase|gh issue close|deploy-pages/,
+    );
+    expect(
+      existing.steps.some((step: { run?: string }) =>
+        step.run?.includes("preparation-request.mjs"),
+      ),
+    ).toBe(true);
+    const token = existing.steps.find(
+      (step: { id?: string }) => step.id === "publisher-token",
+    );
+    expect(token.with["permission-actions"]).toBe("write");
+    expect(token.with["permission-contents"]).toBeUndefined();
+    expect(token.if).toContain("steps.request.outputs.prepare == 'true'");
     const job = workflow.jobs.prepare;
     expect(job.if).toContain(
       "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID",

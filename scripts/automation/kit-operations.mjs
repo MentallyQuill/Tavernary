@@ -87,7 +87,25 @@ export function discoverKitOperations(input) {
       ["published-create", "applied-edit"].includes(history?.disposition) ||
       withdrawalKit?.status === "withdrawn"
     ) {
-      operation.expectedSha = input.canonicalRevision ?? null;
+      const kitId =
+        withdrawalKit?.id ??
+        (manifest?.operation === "edit"
+          ? manifest.kit_id
+          : input.kits.find(
+              (kit) =>
+                kit.source_issue_number === issue.number &&
+                kit.author.github_user_id === issue.user.id,
+            )?.id);
+      operation.expectedSha = input.canonicalRevisions
+        ? (input.canonicalRevisions[kitId] ?? null)
+        : (input.canonicalRevision ?? null);
+      if (
+        input.canonicalRevisions &&
+        !/^[a-f0-9]{40}$/u.test(operation.expectedSha ?? "")
+      )
+        throw new Error(
+          "Published Kit has no authoritative canonical revision.",
+        );
       operation.stage = input.confirmedRevisions?.includes(
         operation.expectedSha,
       )

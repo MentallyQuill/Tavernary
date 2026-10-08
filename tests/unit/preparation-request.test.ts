@@ -4,6 +4,7 @@ import {
   runPreparationRequestCli,
 } from "../../scripts/automation/preparation-request.mjs";
 import { discoverKitOperations } from "../../scripts/automation/kit-operations.mjs";
+import { discoverAutomationState } from "../../scripts/automation/inventory.mjs";
 import { kitInventoryFixture } from "../helpers/automation-fixtures";
 import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
 function fixture() {
@@ -17,6 +18,71 @@ function fixture() {
     issueNumber: 42,
   };
 }
+test.each([false, true])(
+  "a current request excludes only its own run and preserves another active producer (%s)",
+  async (peer) => {
+    const input = kitInventoryFixture();
+    const revision = "d".repeat(40);
+    const own = {
+      id: 700,
+      path: ".github/workflows/apply-kit-submission.yml",
+      event: "workflow_dispatch",
+      display_title: "Kit #42: Publish approved Kit",
+      head_branch: "main",
+      head_sha: revision,
+      status: "in_progress",
+      conclusion: null,
+      created_at: new Date(input.nowMs).toISOString(),
+      actor: { id: input.publisherActorId, type: "Bot" },
+    };
+    const state = {
+      root: process.cwd(),
+      repository: "MentallyQuill/Tavernary",
+      publisherActorId: input.publisherActorId,
+      nowMs: input.nowMs,
+      receipts: [],
+      remote: {
+        issues: input.issues,
+        pulls: [],
+        runs: [...(peer ? [{ ...own, id: 699 }] : []), own],
+        mainHeadSha: revision,
+      },
+      local: {
+        projects: input.projects,
+        sources: Object.values(input.sourcesById),
+        snapshots: [],
+        kits: [],
+        blockedUsers: input.blockedUsers,
+        deployments: [],
+        revision,
+        advisoryState: [],
+        metadataState: [],
+      },
+      operations: [],
+    } as unknown as AutomationInventoryState;
+    state.operations = discoverAutomationState(state);
+    const write = vi.fn();
+    expect(
+      await runPreparationRequestCli({
+        env: {
+          GITHUB_REPOSITORY: state.repository,
+          GITHUB_REF: "refs/heads/main",
+          GITHUB_ACTOR_ID: String(input.publisherActorId),
+          TAVERNARY_PUBLISHER_BOT_ID: String(input.publisherActorId),
+          GITHUB_EVENT_NAME: "workflow_dispatch",
+          GITHUB_RUN_ID: "700",
+          GITHUB_WORKFLOW_REF: `${state.repository}/.github/workflows/apply-kit-submission.yml@refs/heads/main`,
+        },
+        event: { inputs: { issue_number: "42" } },
+        load: async () => state,
+        write,
+      }),
+    ).toBe(0);
+    expect(JSON.parse(write.mock.calls[0][0]).action).toBe(
+      peer ? "wait" : "dispatch",
+    );
+  },
+);
 test("an existing approved Kit entrypoint dispatches only its immutable current operation", () => {
   const input = fixture();
   expect(planPreparationRequest(input)).toEqual({

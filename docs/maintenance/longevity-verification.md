@@ -827,3 +827,23 @@ checking passing. Actual intake CLI tests verify zero model HTTP requests when
 required allowance is absent. Producer workflow wiring remains Phase 4 Task 4;
 the publication migration and later phases, review, CI, merge and actual public
 production verification remain outstanding.
+
+### Kit writer migration
+
+Kit creation/edit and withdrawal entrypoints now revalidate current admission,
+authority and correction state, then dispatch immutable read-only preparation.
+They mint only a fresh actions token after dependency installation and validation;
+canonical publication and confirmed-deployment finalization use the shared writer.
+
+Ruling: derive legacy Kit revisions from each canonical Kit file's Git history —
+later receipt commits cannot change publication identity. Missing history fails
+closed. Ruling: omit only the current authenticated request run before rebuilding
+inventory — preserve peer producer runs and duplicate prevention.
+
+Evidence: the two canonical-history regressions and the self-blocking request
+regression failed before their fixes, then passed. The migrated workflow/history
+checks passed 87 tests and request/lifecycle/native inventory checks passed 24.
+Type checking, focused lint and whitespace checks passed. Existing withdrawal
+feedback and Kit community support behavior remain covered by native tests.
+Other writer migrations, budget coverage, maintenance, independent review,
+PR/CI/merge and production verification remain required.

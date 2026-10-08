@@ -1,4 +1,17 @@
 import { expect, test } from "vitest";
+
+test("legacy Kit confirmation binds the exact Kit path revision rather than later bookkeeping main", () => {
+  const input = kitInventoryFixture({
+    canonicalPublished: true,
+    confirmedDeployment: true,
+  });
+  input.canonicalRevision = "e".repeat(40);
+  input.canonicalRevisions = { "example-kit-42": "d".repeat(40) };
+  expect(discoverKitOperations(input)[0]).toMatchObject({
+    stage: "deployment-confirmed",
+    expectedSha: "d".repeat(40),
+  });
+});
 import { discoverKitOperations } from "../../scripts/automation/kit-operations.mjs";
 import {
   AUTOMATION_NOW,

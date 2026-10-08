@@ -2,6 +2,7 @@ import { readFile, readdir } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import { resolve } from "node:path";
 import { readCanonicalPublicationEvidence } from "./publication-evidence.mjs";
+import { publicationHistory } from "./canonical-files.mjs";
 import {
   loadGithubAutomationInventory,
   loadAutomationWorkerRuns,
@@ -123,6 +124,7 @@ export function discoverAutomationState(state) {
       blockedUsers: local.blockedUsers,
       trustedEditors: local.trustedEditors,
       canonicalRevision: local.revision,
+      canonicalRevisions: local.canonicalKitRevisions,
       confirmedRevisions,
       requestedRevisions,
     }),
@@ -341,11 +343,24 @@ export async function loadAutomationInventory({
   const validatedPublications = publicationRecords.map(
     validateCanonicalPublicationRecord,
   );
-  const publicationProof = await readCanonicalPublicationEvidence({
-    root,
-    revision,
-    records: validatedPublications,
-  });
+  const [publicationProof, kitHistory] = await Promise.all([
+    readCanonicalPublicationEvidence({
+      root,
+      revision,
+      records: validatedPublications,
+    }),
+    publicationHistory({
+      root,
+      revision,
+      paths: kits.map((kit) => `data/registry/kits/${kit.id}.json`),
+    }),
+  ]);
+  local.canonicalKitRevisions = Object.fromEntries(
+    kits.map((kit) => [
+      kit.id,
+      kitHistory[`data/registry/kits/${kit.id}.json`],
+    ]),
+  );
   local.publications = publicationProof.publications;
   local.publicationFileDigests = publicationProof.fileDigests;
   const confirmedSources = verifiedAutomationDeployments({
@@ -373,6 +388,7 @@ export async function loadAutomationInventory({
     sourceShas: confirmedSources,
     candidates: [
       ...confirmedSources,
+      ...Object.values(local.canonicalKitRevisions),
       ...publicationProof.publications.map(
         (publication) => publication.revision,
       ),

@@ -53,10 +53,10 @@ const expectedPublisherConditions = {
     "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || github.actor_id == 2625904 || " +
     `${publisherActorExpression})`,
   "apply-kit-submission":
-    "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || github.actor_id == 2625904 || " +
+    "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.actor_id == 2625904 || " +
     `${publisherActorExpression})`,
   "apply-kit-withdrawal":
-    "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || github.actor_id == 2625904 || " +
+    "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.actor_id == 2625904 || " +
     `${publisherActorExpression})`,
   "publisher-verification":
     "github.ref == 'refs/heads/main' && github.actor_id == 2625904",
@@ -280,7 +280,9 @@ test("limits every main publisher to the protected Publisher App", async () => {
   }
 
   expect(discoveredPublishers.sort()).toEqual(
-    Object.keys(protectedPublisherJobs).sort(),
+    Object.keys(protectedPublisherJobs)
+      .filter((name) => !name.startsWith("apply-kit-"))
+      .sort(),
   );
 
   for (const [name, jobName] of Object.entries(protectedPublisherJobs)) {
@@ -324,10 +326,14 @@ test("limits every main publisher to the protected Publisher App", async () => {
       with: {
         "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
         "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
-        "permission-contents": "write",
+        ...(name.startsWith("apply-kit-")
+          ? { "permission-actions": "write" }
+          : { "permission-contents": "write" }),
       },
     });
-    if (name === "automation-writer") {
+    if (name.startsWith("apply-kit-"))
+      expect(publisherToken?.with?.["permission-contents"]).toBeUndefined();
+    if (name === "automation-writer" || name.startsWith("apply-kit-")) {
       expect(checkout?.with).toMatchObject({
         ref: "main",
         "persist-credentials": false,
@@ -450,6 +456,8 @@ test("uses the Publisher App identity for every protected workflow dispatch", as
   expect(dispatches.sort()).toEqual(
     [
       "admit-issue.yml:admit->apply-kit-withdrawal.yml",
+      "apply-kit-submission.yml:publish->apply-kit-submission.yml",
+      "apply-kit-withdrawal.yml:withdraw->apply-kit-withdrawal.yml",
       "automation-prepared.yml:wake->automation-writer.yml",
       "import-tavernkeeper-reports.yml:continue->import-tavernkeeper-reports.yml",
       "publish-project-transaction.yml:publish->review-catalog-policy.yml",
@@ -617,14 +625,15 @@ test("publishes Kits only by manual dispatch and serializes registry writes", as
       "cancel-in-progress": false,
     });
   }
-  expect(publicationSource.indexOf("catalog:validate")).toBeLessThan(
-    publicationSource.indexOf("git add"),
-  );
-  expect(withdrawalSource.indexOf("catalog:validate")).toBeLessThan(
-    withdrawalSource.indexOf("git add"),
-  );
-  expect(publicationSource).toContain("kit-published");
-  expect(publicationSource).toContain("workflow run deploy-pages.yml");
+  for (const source of [publicationSource, withdrawalSource]) {
+    expect(source).toContain("node scripts/automation/preparation-request.mjs");
+    expect(source).toContain(
+      "node scripts/automation/catalog-preparation-cli.mjs",
+    );
+    expect(source).not.toMatch(
+      /git push|git rebase|gh issue close|workflow run deploy-pages/,
+    );
+  }
   expect(withdrawalSource).toContain(
     "ISSUE_NUMBER: ${{ inputs.issue_number }}",
   );
@@ -636,153 +645,33 @@ test("publishes Kits only by manual dispatch and serializes registry writes", as
   );
 });
 
-test("gates Kit withdrawal writes behind manifest validation and synchronizes correction state", async () => {
-  const withdrawal = await workflow("apply-kit-withdrawal");
-  const source = await readFile(
-    resolve(workflowDirectory, "apply-kit-withdrawal.yml"),
-    "utf8",
-  );
-  const steps = withdrawal.jobs.withdraw.steps as Array<{
-    id?: string;
-    name?: string;
-    if?: string;
-  }>;
-  const apply = steps.find(
-    ({ name }) => name === "Verify numeric author and write tombstone",
-  );
-  expect(apply?.id).toBe("withdraw");
-  for (const name of [
-    "Validate withdrawal",
-    "Commit Kit tombstone",
-    "Close withdrawal request",
-    "Deploy updated catalog",
+test("Kit entrypoints bind data preparation to one immutable operation and leave publication to the shared writer", async () => {
+  for (const [name, requestJob] of [
+    ["apply-kit-submission", "publish"],
+    ["apply-kit-withdrawal", "withdraw"],
   ]) {
-    expect(steps.find((step) => step.name === name)?.if).toBe(
-      "steps.withdraw.outputs.status == 'applied'",
+    const document = await workflow(name);
+    const request = document.jobs[requestJob];
+    expect(request.permissions.contents).toBe("read");
+    expect(
+      request.steps.find((step: WorkflowStep) => step.id === "request").run,
+    ).toBe("node scripts/automation/preparation-request.mjs");
+    const producer = document.jobs.prepare;
+    expect(producer["timeout-minutes"]).toBe(45);
+    expect(Object.values(producer.permissions)).not.toContain("write");
+    expect(producer.steps[0].with.ref).toBe("${{ github.sha }}");
+    expect(producer.steps[0].with["persist-credentials"]).toBe(false);
+    const artifact = producer.steps.find((step: WorkflowStep) =>
+      step.with?.name?.startsWith("automation-prepared-"),
     );
-  }
-  expect(source).toContain("tavernary-kit-withdrawal-correction");
-  expect(source).toContain("needs-information");
-  expect(source).toContain("https://tavernary.org/menu/withdraw-kit/");
-  expect(source).toContain("STATUS: ${{ steps.withdraw.outputs.status }}");
-  expect(source).toContain('status === "needs-information"');
-  expect(source).toContain("steps.withdraw.outputs.status == 'applied'");
-});
-
-test("initializes Kit support before publishing the new registry record", async () => {
-  const publication = await workflow("apply-kit-submission");
-  const steps = publication.jobs.publish.steps as Array<{
-    id?: string;
-    name?: string;
-    run?: string;
-    env?: Record<string, string>;
-  }>;
-  const applyIndex = steps.findIndex(
-    ({ name }) => name === "Re-fetch, revalidate, and apply approved issue",
-  );
-  const supportIndex = steps.findIndex(
-    ({ name }) => name === "Initialize Kit community support",
-  );
-  const validationIndex = steps.findIndex(
-    ({ name }) => name === "Validate publication",
-  );
-  const apply = steps[applyIndex];
-  const support = steps[supportIndex];
-  const commit = steps.find(({ name }) => name === "Commit canonical Kit");
-
-  expect(applyIndex).toBeGreaterThanOrEqual(0);
-  expect(supportIndex).toBeGreaterThan(applyIndex);
-  expect(validationIndex).toBeGreaterThan(supportIndex);
-  expect(apply?.id).toBe("apply");
-  expect(support.run).toBe("node scripts/kits/refresh-reactions.mjs");
-  expect(support.env).toMatchObject({
-    GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
-    REQUIRED_KIT_ID: "${{ steps.apply.outputs.kit_id }}",
-  });
-  expect(support.env).not.toHaveProperty("REQUIRED_KIT_ISSUE_NUMBER");
-  expect(commit?.run).toContain(
-    "git add data/registry/kits data/snapshots/github/kits public/catalog/tavernary-catalog.json public/catalog/tavernary-catalog-v8.json",
-  );
-});
-
-test("publishes the canonical catalog after every rebased Kit mutation", async () => {
-  for (const name of ["apply-kit-submission", "apply-kit-withdrawal"]) {
-    const source = await readFile(
-      resolve(workflowDirectory, `${name}.yml`),
-      "utf8",
+    expect(artifact.with.path).toBe(
+      "${{ runner.temp }}/automation-prepared/result.json",
     );
-    const rebase = source.indexOf("git rebase origin/main");
-    const rebuild = source.indexOf("npm run catalog:build", rebase);
-    const stage = source.indexOf(
-      "git add public/catalog/tavernary-catalog.json public/catalog/tavernary-catalog-v8.json",
-      rebuild,
-    );
-    const push = source.indexOf("git push origin HEAD:main", stage);
-
-    expect(rebase).toBeGreaterThanOrEqual(0);
-    expect(rebuild).toBeGreaterThan(rebase);
-    expect(stage).toBeGreaterThan(rebuild);
-    expect(source.slice(stage, push)).toContain("git commit --amend --no-edit");
-    expect(push).toBeGreaterThan(stage);
+    expect(artifact.with["retention-days"]).toBe(90);
   }
 });
 
-test("rebases and revalidates Kit registry commits before pushing", async () => {
-  for (const name of ["apply-kit-submission", "apply-kit-withdrawal"]) {
-    const source = await readFile(
-      resolve(workflowDirectory, `${name}.yml`),
-      "utf8",
-    );
-    const commitBlock = source.slice(source.indexOf("git commit -m"));
-    const rebase = commitBlock.indexOf("git rebase origin/main");
-    const validate = commitBlock.indexOf("npm run catalog:validate");
-    const push = commitBlock.indexOf("git push origin HEAD:main");
-
-    expect(commitBlock).toContain("for attempt in 1 2 3");
-    expect(rebase).toBeGreaterThanOrEqual(0);
-    expect(rebase).toBeLessThan(validate);
-    expect(validate).toBeLessThan(push);
-  }
-});
-
-test("rebases no-op Kit retries before selecting their deployment commit", async () => {
-  for (const name of ["apply-kit-submission", "apply-kit-withdrawal"]) {
-    const source = await readFile(
-      resolve(workflowDirectory, `${name}.yml`),
-      "utf8",
-    );
-    const stage = source.indexOf("git add data/registry/kits");
-    const commitGuardEnd = source.indexOf("\n          fi", stage);
-    const retryLoop = source.indexOf("for attempt in 1 2 3", stage);
-    const publishedSha = source.indexOf(
-      'echo "sha=$(git rev-parse HEAD)"',
-      stage,
-    );
-
-    expect(commitGuardEnd).toBeGreaterThan(stage);
-    expect(retryLoop).toBeGreaterThan(commitGuardEnd);
-    expect(publishedSha).toBeGreaterThan(retryLoop);
-  }
-});
-
-test("dispatches Kit deployments for the exact published commit", async () => {
-  for (const name of ["apply-kit-submission", "apply-kit-withdrawal"]) {
-    const source = await readFile(
-      resolve(workflowDirectory, `${name}.yml`),
-      "utf8",
-    );
-
-    expect(source).toContain("id: commit");
-    expect(source).toContain(
-      'echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"',
-    );
-    expect(source).toContain(
-      'gh workflow run deploy-pages.yml --ref main -f source_sha="${{ steps.commit.outputs.sha }}"',
-    );
-  }
-});
-
-test("runs Kit registry writers from full main-branch history", async () => {
+test("runs Kit preparation requests from full main-branch history", async () => {
   for (const [name, jobName] of [
     ["apply-kit-submission", "publish"],
     ["apply-kit-withdrawal", "withdraw"],
@@ -806,25 +695,6 @@ test("runs Kit registry writers from full main-branch history", async () => {
 
     expect(job.if).toContain("github.ref == 'refs/heads/main'");
     expect(checkout?.with?.["fetch-depth"]).toBe(0);
-  }
-});
-
-test("synchronizes current main before mutating the Kit registry", async () => {
-  for (const [name, mutation] of [
-    ["apply-kit-submission", "node scripts/kits/apply-submission.mjs"],
-    ["apply-kit-withdrawal", "node scripts/kits/apply-withdrawal.mjs"],
-  ]) {
-    const source = await readFile(
-      resolve(workflowDirectory, `${name}.yml`),
-      "utf8",
-    );
-    const fetch = source.indexOf("git fetch origin main");
-    const checkout = source.indexOf("git checkout -B main origin/main");
-    const mutate = source.indexOf(mutation);
-
-    expect(fetch).toBeGreaterThanOrEqual(0);
-    expect(fetch).toBeLessThan(checkout);
-    expect(checkout).toBeLessThan(mutate);
   }
 });
 

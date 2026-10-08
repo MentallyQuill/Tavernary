@@ -29,6 +29,7 @@ export interface KitInventoryInput {
   nowMs: number;
   publisherActorId: number;
   canonicalRevision?: string;
+  canonicalRevisions?: Record<string, string>;
   confirmedRevisions?: string[];
   requestedRevisions?: string[];
   defaultBranch?: string;
