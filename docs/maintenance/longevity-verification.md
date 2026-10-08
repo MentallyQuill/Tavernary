@@ -1221,3 +1221,32 @@ the focused catalog gate, thresholds and GitHub outage/credential limitations.
 This remains a checkpoint: all-provider recovery proof, remaining implementation,
 final independent review, exact-head CI, merge and production verification are
 still required.
+
+## Native rollout preparation checkpoint
+
+The frozen canary/full reports now reconstruct a native enrichment operation for
+one ordered record. The existing worker requests its allowance through the shared
+writer, the read-only preparation job emits the project/report data envelope, and
+the normal immutable-result wake selects that operation. Newly manual records and
+verified deterministic fallbacks use preparation without reserving model allowance.
+Current source identity is checked through the existing repository observation
+adapter. Publication permits the selected automatic fields and exact report path;
+it rejects frozen-state changes, owner-field changes, missing model accounting,
+unrelated paths and stale inputs. Provider outages/configuration failures leave the
+record pending, and denied allowance makes zero model HTTP requests.
+
+Full resumption requires the configured, authorized canary, its actual historical
+checkpoint bytes and native publication digest, and the matching deployment run,
+bundle integrity and essential browser confirmation. A legacy report's lexical
+deployment fields do not provide that authority. Later catalog writes preserve the
+already verified canary admission. Report-only checkpoints rebuild both public
+contracts at the checkpoint clock so confirmation has a public revision to verify.
+
+Fifteen focused suites passed 155 checks, with typecheck, scoped source/test lint,
+formatting and whitespace checks passing. The preceding allowance-checkpoint commit
+`6b7a6a5d3` passed verify and visual in CI run `37841955278`. This checkpoint does
+not replace the legacy five-hour owner job yet: authenticated owner-request
+admission, canary approval/full finalization, existing Reddit-source support, and resumption of the existing
+180/281-record rollout still require wiring before the legacy writer is removed.
+Other producer allowances, runtime/retention/drills, final review, exact-head CI,
+merge and public verification remain in progress.

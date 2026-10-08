@@ -25,6 +25,14 @@ export function metadataOperationRecords(input: MetadataPreparationInput): {
 export function observeMetadataSource(
   input: MetadataPreparationInput & { fetchImpl?: typeof fetch },
 ): Promise<MetadataObservation>;
+export function observeProjectMetadataSource(input: {
+  state: AutomationInventoryState;
+  project: RegistryRecord;
+  source: SourceRecord;
+  snapshot: RepositorySnapshot;
+  fetchImpl?: typeof fetch;
+  policyVersion?: string;
+}): Promise<MetadataObservation>;
 export function metadataObservationIsCached(
   input: MetadataPreparationInput & { observation: MetadataObservation },
 ): boolean;

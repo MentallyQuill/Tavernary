@@ -14,6 +14,7 @@ import {
 } from "./model-budget.mjs";
 import { reserveModelPreparation } from "./model-preparation.mjs";
 import { isReportNarrativeRetry } from "./report-operations.mjs";
+import { enrichmentCheckpointNeedsModel } from "./enrichment-preparation.mjs";
 import {
   dispatchReservedModelPreparation,
   dispatchUnbudgetedPreparation,
@@ -149,6 +150,11 @@ export async function runModelWriterPreparation({
       ...input,
       observation: await observeMetadataSource(input),
     }),
+  enrichmentCached = async (input) =>
+    !(await enrichmentCheckpointNeedsModel({
+      ...input,
+      model: env.UTILITY_MODEL,
+    })),
 }) {
   const repository = env.GITHUB_REPOSITORY;
   assertCanonicalWriterContext(env, repository);
@@ -165,6 +171,7 @@ export async function runModelWriterPreparation({
     );
     const workflows = {
       metadata: ".github/workflows/enrich-catalog.yml",
+      enrichment: ".github/workflows/enrich-catalog.yml",
       advisory: ".github/workflows/review-catalog-policy.yml",
       "report-import": ".github/workflows/import-tavernkeeper-reports.yml",
     };
@@ -177,8 +184,10 @@ export async function runModelWriterPreparation({
     )
       throw new Error("Report facts do not require model preparation.");
     if (
-      operation.identity.kind === "metadata" &&
-      (await metadataCached({ state: initial, operation }))
+      (operation.identity.kind === "metadata" &&
+        (await metadataCached({ state: initial, operation }))) ||
+      (operation.identity.kind === "enrichment" &&
+        (await enrichmentCached({ state: initial, operation })))
     ) {
       const fresh = await load();
       const current = fresh.operations.find(

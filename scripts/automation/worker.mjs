@@ -97,7 +97,9 @@ export function planAutomationWorker(operation) {
     return dispatch("import-tavernkeeper-reports.yml", {
       operation_key: operation.key,
     });
-  if (["metadata", "advisory"].includes(operation.identity.kind)) {
+  if (
+    ["metadata", "advisory", "enrichment"].includes(operation.identity.kind)
+  ) {
     return dispatch("automation-writer.yml", {
       mode: "prepare",
       operation_key: operation.key,

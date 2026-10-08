@@ -11,6 +11,7 @@ import { discoverProjectOperations } from "./project-operations.mjs";
 import { discoverKitOperations } from "./kit-operations.mjs";
 import { discoverCatalogOperations } from "./catalog-operations.mjs";
 import { discoverReportOperations } from "./report-operations.mjs";
+import { discoverEnrichmentOperations } from "./enrichment-preparation.mjs";
 import { discoverDeploymentOperations } from "./deployment-operations.mjs";
 import { readDeploymentCoverage } from "./deployment-coverage.mjs";
 import {
@@ -98,6 +99,7 @@ export function discoverAutomationState(state) {
     canonicalPublications.map((operation) => operation.key),
   );
   const discovered = [
+    ...discoverEnrichmentOperations(state),
     ...discoverProjectOperations({
       ...common,
       issues: remote.issues,
@@ -226,6 +228,8 @@ export async function loadAutomationInventory({
     trustedEditors,
     refreshManifest,
     modelBudget,
+    enrichmentCanary,
+    enrichmentFull,
   ] = await Promise.all([
     records(root, "data/registry/projects", true),
     records(root, "data/registry/sources", true),
@@ -249,6 +253,8 @@ export async function loadAutomationInventory({
       "data/maintenance/automation/model-budgets/global.json",
       null,
     ),
+    readJson(root, "data/reports/enrichment-canary.json", null),
+    readJson(root, "data/reports/enrichment-report.json", null),
   ]);
   snapshots.push(...codebergSnapshots);
   receipts.forEach(validateAutomationReceipt);
@@ -350,6 +356,8 @@ export async function loadAutomationInventory({
     publishableCommittedAt,
     ...automationDataDigests({ catalog, targets }),
     modelBudget,
+    enrichmentCanary,
+    enrichmentFull,
   };
   const validatedPublications = publicationRecords.map(
     validateCanonicalPublicationRecord,

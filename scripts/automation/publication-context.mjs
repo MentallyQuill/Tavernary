@@ -14,6 +14,7 @@ import {
   validateMetadataPreparedFiles,
 } from "./metadata-preparation.mjs";
 import { validateMetadataCache } from "./metadata-refresh.mjs";
+import { createPreparedEnrichmentContext } from "./enrichment-preparation.mjs";
 import {
   selectRefreshCompanionData,
   REFRESH_COMPANION_SOURCE_ID,
@@ -164,6 +165,12 @@ export async function createPreparedPublicationContext({
     });
   if (operation.identity.kind === "report-import")
     return createPreparedReportContext({ state, operation });
+  if (operation.identity.kind === "enrichment")
+    return createPreparedEnrichmentContext({
+      state,
+      operation,
+      validateProject: (await schemaValidators(state.root)).project,
+    });
   if (!["refresh", "metadata", "advisory"].includes(operation.identity.kind))
     throw new Error("Publication domain is not implemented.");
   const parts = operation.identity.subject.split(":");

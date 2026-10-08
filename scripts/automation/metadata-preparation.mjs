@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { format } from "prettier";
 import { validateAutomationOperation } from "./operation.mjs";
+import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
 import { effectiveListingState } from "../../src/features/catalog/listing-state.mjs";
 import {
   loadReadmeSource,
@@ -65,6 +66,23 @@ export async function observeMetadataSource({
     state,
     operation,
   });
+  return observeProjectMetadataSource({
+    state,
+    project,
+    source,
+    snapshot,
+    fetchImpl,
+    policyVersion: operation.identity.policyVersion,
+  });
+}
+export async function observeProjectMetadataSource({
+  state,
+  project,
+  source,
+  snapshot,
+  fetchImpl = fetch,
+  policyVersion = CATALOG_POLICY_VERSION,
+}) {
   const vocabulary = JSON.parse(
     await readFile(resolve(state.root, "data/vocabularies/tags.json"), "utf8"),
   );
@@ -179,7 +197,7 @@ export async function observeMetadataSource({
       status: "ready",
       public: true,
       observedAt: new Date(state.nowMs).toISOString(),
-      policyVersion: operation.identity.policyVersion,
+      policyVersion,
       vocabularyHash: tagVocabularyHash(vocabulary),
     },
   };

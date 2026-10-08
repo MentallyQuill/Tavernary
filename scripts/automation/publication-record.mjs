@@ -65,7 +65,7 @@ const validate = automationSchemaValidator({
           path: {
             type: "string",
             pattern:
-              "^data/(?:(?:registry/(?:projects|sources|kits)|snapshots/(?:github(?:/kits)?|codeberg|install|policy-review)|maintenance/automation/metadata|security)/[a-z0-9]+(?:-[a-z0-9]+)*|snapshots/github-refresh)\\.json$",
+              "^data/(?:(?:registry/(?:projects|sources|kits)|snapshots/(?:github(?:/kits)?|codeberg|install|policy-review)|maintenance/automation/metadata|security)/[a-z0-9]+(?:-[a-z0-9]+)*|snapshots/github-refresh|reports/enrichment-(?:canary|report))\\.json$",
           },
           sha256: { type: "string", pattern: "^[a-f0-9]{64}$" },
           gitBlobSha: { type: "string", pattern: "^[a-f0-9]{40}$" },

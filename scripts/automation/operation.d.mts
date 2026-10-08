@@ -8,6 +8,7 @@ export type AutomationKind =
   | "refresh"
   | "report-import"
   | "metadata"
+  | "enrichment"
   | "advisory"
   | "deployment"
   | "dependency"

@@ -11,6 +11,7 @@ import { acquirePreparedKitData } from "./kit-preparation.mjs";
 import { acquirePreparedReportData } from "./report-preparation.mjs";
 import { acquirePreparedMetadataData } from "./metadata-preparation.mjs";
 import { acquirePreparedAdvisoryData } from "./advisory-preparation.mjs";
+import { acquirePreparedEnrichmentData } from "./enrichment-preparation.mjs";
 import {
   selectRefreshCompanionData,
   REFRESH_COMPANION_SOURCE_ID,
@@ -234,6 +235,8 @@ export async function prepareCatalogOperation({
   });
 }
 export async function acquireCatalogData(input) {
+  if (input.operation.identity.kind === "enrichment")
+    return acquirePreparedEnrichmentData(input);
   if (input.operation.identity.kind === "metadata")
     return acquirePreparedMetadataData(input);
   if (input.operation.identity.kind === "advisory")

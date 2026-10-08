@@ -4,6 +4,7 @@ import { validateCatalog } from "../catalog/validate.mjs";
 import { validateStoredReportIndex } from "../security/tavernkeeper-reports.mjs";
 import { validateTavernKeeperImportState } from "../security/tavernkeeper-import-state.mjs";
 import { settlePreparedModelUsage } from "./model-budget.mjs";
+import { validateEnrichmentReport } from "../catalog/enrichment-report.mjs";
 
 function replace(records, value, key) {
   const values = records.filter((record) => record[key] !== value[key]);
@@ -49,6 +50,13 @@ export async function buildPreparedCatalogPublication({ action, state }) {
       local.storedReports = validateStoredReportIndex(value, local.sources);
     else if (file.path === "data/security/tavernkeeper-import-state.json")
       validateTavernKeeperImportState(value);
+    else if (
+      [
+        "data/reports/enrichment-canary.json",
+        "data/reports/enrichment-report.json",
+      ].includes(file.path)
+    )
+      validateEnrichmentReport(value);
     else if (!file.path.startsWith("data/maintenance/automation/metadata/"))
       throw new Error("Prepared catalog contains an unsupported data path.");
   }
@@ -105,9 +113,15 @@ export async function buildPreparedCatalogPublication({ action, state }) {
   const catalog = await buildCatalog({
     ...inputs,
     write: false,
-    now:
-      local.refreshManifest?.completed_at ??
-      new Date(state.nowMs).toISOString(),
+    now: action.files.some((file) =>
+      [
+        "data/reports/enrichment-canary.json",
+        "data/reports/enrichment-report.json",
+      ].includes(file.path),
+    )
+      ? new Date(state.nowMs).toISOString()
+      : (local.refreshManifest?.completed_at ??
+        new Date(state.nowMs).toISOString()),
   });
   return [
     ...files,

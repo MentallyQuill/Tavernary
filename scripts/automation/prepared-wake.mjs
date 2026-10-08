@@ -10,7 +10,7 @@ import { trustedRestoreRun } from "./restore-source.mjs";
 
 const kinds = {
   "refresh-catalog": "refresh",
-  "enrich-catalog": "metadata",
+  "enrich-catalog": ["metadata", "enrichment"],
   "review-catalog-policy": "advisory",
   "import-tavernkeeper-reports": "report-import",
   "apply-kit-submission": "kit",
@@ -61,7 +61,7 @@ export function planPreparedWake({
   const name = /^\.github\/workflows\/([a-z0-9-]+)\.yml$/u.exec(
     run?.path ?? "",
   )?.[1];
-  const kind = kinds[name];
+  const kind = Array.isArray(kinds[name]) ? kinds[name][0] : kinds[name];
   if (!operationKey || !kind) return null;
   try {
     assertTrustedPreparedProducer({
@@ -117,8 +117,9 @@ export function selectPreparedWakes({
     if (
       !wake ||
       !current.has(wake.operationKey) ||
-      current.get(wake.operationKey).identity.kind !==
-        kinds[run.path.slice(".github/workflows/".length, -4)]
+      ![kinds[run.path.slice(".github/workflows/".length, -4)]]
+        .flat()
+        .includes(current.get(wake.operationKey).identity.kind)
     )
       continue;
     if (

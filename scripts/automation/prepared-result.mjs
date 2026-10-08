@@ -17,6 +17,7 @@ const kinds = [
   "withdrawal",
   "refresh",
   "metadata",
+  "enrichment",
   "advisory",
   "report-import",
 ];
@@ -113,6 +114,7 @@ const workflows = {
   withdrawal: ["apply-kit-withdrawal"],
   refresh: ["refresh-catalog"],
   metadata: ["enrich-catalog"],
+  enrichment: ["enrich-catalog"],
   advisory: ["review-catalog-policy"],
   "report-import": ["import-tavernkeeper-reports"],
 };
@@ -122,6 +124,14 @@ function fail(code) {
   });
 }
 function allowedPath(result, path) {
+  if (result.kind === "enrichment")
+    return (
+      [
+        "data/reports/enrichment-canary.json",
+        "data/reports/enrichment-report.json",
+      ].includes(path) ||
+      /^data\/registry\/projects\/[a-z0-9]+(?:-[a-z0-9]+)*\.json$/u.test(path)
+    );
   const slug = "[a-z0-9]+(?:-[a-z0-9]+)*";
   if (path === "data/snapshots/github-refresh.json")
     return result.kind === "refresh";
@@ -226,6 +236,7 @@ export function validatePreparedResult(
     if (
       ![
         "metadata",
+        "enrichment",
         "advisory",
         "report-import",
         "project",

@@ -5,6 +5,8 @@ import { buildPreparedCatalogPublication } from "../../scripts/automation/public
 import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
 import project from "../../data/registry/projects/mentallyquill-recursion.json";
 import { metadataMaintenanceFixture } from "../helpers/automation-fixtures";
+import { createEnrichmentRunState } from "../../scripts/catalog/enrichment-run-state.mjs";
+import { createEnrichmentReport } from "../../scripts/catalog/enrichment-report.mjs";
 function fixture() {
   const source = JSON.parse(
     readFileSync(`data/registry/sources/${project.source_id}.json`, "utf8"),
@@ -52,6 +54,50 @@ function fixture() {
   };
   return { state, file };
 }
+test("a private rollout checkpoint rebuilds public contracts at its own clock for revision-bound confirmation", async () => {
+  const { state } = fixture();
+  state.nowMs = Date.parse("2026-10-08T18:00:00.000Z");
+  state.local.refreshManifest = JSON.parse(
+    readFileSync("data/snapshots/github-refresh.json", "utf8"),
+  );
+  const report = createEnrichmentReport(
+    createEnrichmentRunState({
+      mode: "full",
+      runId: "native-full",
+      manifest: [project.id],
+      model: "fixture-model",
+      now: new Date(state.nowMs).toISOString(),
+    }),
+  );
+  const content = `${JSON.stringify(report)}\n`;
+  const files = await buildPreparedCatalogPublication({
+    state,
+    action: {
+      action: "commit",
+      operationKeys: ["a".repeat(64)],
+      expectedMainSha: "b".repeat(40),
+      files: [
+        {
+          path: "data/reports/enrichment-report.json",
+          type: "file",
+          content,
+          bytes: Buffer.byteLength(content),
+          sha256: createHash("sha256").update(content).digest("hex"),
+          baseDigest: null,
+        },
+      ],
+    },
+  });
+  for (const path of [
+    "public/catalog/tavernary-catalog.json",
+    "public/catalog/tavernary-catalog-v8.json",
+  ]) {
+    const file = files.find((value) => value.path === path)!;
+    expect(JSON.parse(file.content).generatedAt).toBe(
+      new Date(state.nowMs).toISOString(),
+    );
+  }
+});
 test("the writer rebuilds both public contracts from validated canonical data without modifying its checkout", async () => {
   const { state, file } = fixture();
   const original = structuredClone(state.local);

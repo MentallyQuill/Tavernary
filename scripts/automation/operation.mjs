@@ -13,6 +13,7 @@ export const AUTOMATION_KINDS = [
   "refresh",
   "report-import",
   "metadata",
+  "enrichment",
   "advisory",
   "deployment",
   "dependency",

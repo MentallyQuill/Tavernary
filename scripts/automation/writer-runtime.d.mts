@@ -33,6 +33,10 @@ export function runModelWriterPreparation(
       state: AutomationInventoryState;
       operation: import("./operation.mjs").AutomationOperation;
     }) => Promise<boolean>;
+    enrichmentCached?: (input: {
+      state: AutomationInventoryState;
+      operation: import("./operation.mjs").AutomationOperation;
+    }) => Promise<boolean>;
     dispatchCached?: (
       input: Omit<
         Parameters<
