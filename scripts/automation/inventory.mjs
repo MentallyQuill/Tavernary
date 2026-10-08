@@ -11,7 +11,10 @@ import { discoverKitOperations } from "./kit-operations.mjs";
 import { discoverCatalogOperations } from "./catalog-operations.mjs";
 import { discoverReportOperations } from "./report-operations.mjs";
 import { discoverDeploymentOperations } from "./deployment-operations.mjs";
-import { readLatestPublishableRevision } from "./deployment-gate.mjs";
+import {
+  readLatestPublishableRevision,
+  readAuthoritativeActiveDeployment,
+} from "./deployment-gate.mjs";
 import { validateAutomationReceipt } from "./receipts.mjs";
 import { validateAutomationOperation } from "./operation.mjs";
 import {
@@ -159,6 +162,7 @@ export function discoverAutomationState(state) {
         },
       ],
       deployments: local.deployments,
+      activeDeployment: local.activeDeployment ?? null,
     }),
   ];
   return [
@@ -237,6 +241,10 @@ export async function loadAutomationInventory({
     }).trim(),
   ).toISOString();
   const publishableRevision = readLatestPublishableRevision({ root, revision });
+  const activeDeployment = readAuthoritativeActiveDeployment({
+    root,
+    revision,
+  });
   const publishableCommittedAt = new Date(
     execFileSync("git", ["show", "-s", "--format=%cI", publishableRevision], {
       cwd: root,
@@ -295,6 +303,7 @@ export async function loadAutomationInventory({
       await readJson(root, "data/vocabularies/tags.json"),
     ),
     deployments,
+    activeDeployment,
     blockedUsers,
     importState,
     trustedEditors,
@@ -323,6 +332,8 @@ export async function loadAutomationInventory({
   local.publicationFileDigests = publicationProof.fileDigests;
   local.confirmedRevisions = verifiedAutomationDeployments({
     deployments,
+    activeDeployment,
+    nowMs,
     revision,
     catalogDigest: local.catalogDigest,
     targetDigest: local.targetDigest,

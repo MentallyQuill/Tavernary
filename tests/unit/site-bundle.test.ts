@@ -100,3 +100,39 @@ test("an oversized regular entry is rejected without allocating its declared arc
     }),
   ).toThrow();
 });
+test.each(
+  [
+    ["icons/Badge.svg", "icons/badge.svg"],
+    ["styles", "styles/theme.css"],
+    ["assets/NUL.txt"],
+    ["assets/name."],
+    ["assets/name|alias.txt"],
+  ].map((paths) => ({ paths })),
+)(
+  "a bundle with nonportable or conflicting paths %j fails before filesystem extraction",
+  ({ paths }) => {
+    const fixture = bundleFixture();
+    for (const path of paths)
+      fixture.entries.push({
+        path,
+        type: "file",
+        content: new Uint8Array([1]),
+      });
+    fixture.manifest = buildRevisionManifest({
+      sourceSha: fixture.manifest.sourceSha,
+      buildId: fixture.manifest.buildId,
+      catalog: fixture.catalog,
+      targets: fixture.targets,
+      files: fixture.entries
+        .filter((entry) => entry.path !== "revision.json")
+        .map((entry) => ({
+          path: entry.path,
+          bytes: entry.content.length,
+          sha256: createHash("sha256").update(entry.content).digest("hex"),
+        })),
+    });
+    fixture.entries.find((entry) => entry.path === "revision.json")!.content =
+      new TextEncoder().encode(JSON.stringify(fixture.manifest));
+    expect(() => encodeSiteBundle(fixture)).toThrow();
+  },
+);

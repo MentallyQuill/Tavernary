@@ -9,6 +9,26 @@ const env = {
   GITHUB_WORKFLOW_REF:
     "MentallyQuill/Tavernary/.github/workflows/automation-writer.yml@refs/heads/main",
 };
+test.each(["retain", "confirm-restore"])(
+  "the shared writer permits the trusted %s recovery mode",
+  async (mode) => {
+    let invoked = false;
+    expect(
+      await runAutomationWriterCli({
+        env,
+        event: { inputs: { mode, result_run_id: "88" } },
+        handlers: {
+          [mode]: async () => {
+            invoked = true;
+            return {};
+          },
+        },
+        write: () => {},
+      }),
+    ).toBe(0);
+    expect(invoked).toBe(true);
+  },
+);
 test("only the trusted serialized workflow may invoke privileged reconciliation", async () => {
   let reconciled = 0;
   expect(

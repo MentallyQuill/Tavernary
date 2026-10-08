@@ -258,14 +258,34 @@ export async function retainGithubSiteBundle({
   }
   let status = "already-retained";
   if (!release || release.draft) {
-    const loaded = await loadBundle({
-      repository,
-      publisherActorId,
-      runId,
-      currentMainSha: state.revision,
-      isAncestor,
-      expectedSourceSha: record.sourceSha,
-    });
+    if (release && release.target_commitish !== record.sourceSha) fail();
+    const saved = release?.assets.find(
+      (asset) => asset.name === "site-bundle.tsb.gz",
+    );
+    let loaded;
+    if (saved) {
+      const archive = await download([
+        "api",
+        `repos/${repository}/releases/assets/${saved.id}`,
+        "-H",
+        "Accept: application/octet-stream",
+      ]);
+      if (archive.byteLength !== saved.size || hash(archive) !== saved.digest)
+        fail();
+      loaded = {
+        runId,
+        archive,
+        bundle: decodeSiteBundle({ archive, archiveDigest: saved.digest }),
+      };
+    } else
+      loaded = await loadBundle({
+        repository,
+        publisherActorId,
+        runId,
+        currentMainSha: state.revision,
+        isAncestor,
+        expectedSourceSha: record.sourceSha,
+      });
     const verified = decodeSiteBundle({
         archive: loaded.archive,
         archiveDigest: loaded.bundle.archiveDigest,
@@ -433,6 +453,8 @@ export async function retainGithubSiteBundle({
     ],
   });
   for (const id of retention.removeIds) {
+    const guard = await load();
+    if (guard.protectedBundleIds?.includes(id)) fail("input-superseded");
     const candidate = releases.find((value) => value.id === id),
       fresh = parse(await gh(["api", `${route}/${id}`]));
     checkRelease(fresh, publisherActorId);
@@ -448,7 +470,7 @@ export async function retainGithubSiteBundle({
     retention,
   };
 }
-export async function loadRetainedGithubSiteBundle({
+export async function inspectRetainedGithubSiteBundle({
   repository,
   publisherActorId,
   releaseId,
@@ -483,6 +505,27 @@ export async function loadRetainedGithubSiteBundle({
     isAncestor,
     revision: currentMainSha,
   });
+  return {
+    releaseId,
+    deployment: data.proof.deployment,
+    archiveDigest: data.proof.archiveDigest,
+    asset: data.bundle,
+  };
+}
+export async function loadRetainedGithubSiteBundle(input) {
+  const {
+    repository,
+    gh = executeGh,
+    download = downloadSiteGithubBytes,
+  } = input;
+  const inspection = await inspectRetainedGithubSiteBundle(input);
+  const data = {
+    bundle: inspection.asset,
+    proof: {
+      deployment: inspection.deployment,
+      archiveDigest: inspection.archiveDigest,
+    },
+  };
   const archive = await download([
     "api",
     `repos/${repository}/releases/assets/${data.bundle.id}`,
@@ -508,5 +551,5 @@ export async function loadRetainedGithubSiteBundle({
     manifest.targetDigest !== record.confirmation.targetDigest
   )
     fail();
-  return { releaseId, bundle, deployment: record };
+  return { releaseId: inspection.releaseId, bundle, deployment: record };
 }

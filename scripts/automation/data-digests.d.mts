@@ -1,4 +1,5 @@
 import type { DeploymentInventoryEvidence } from "./deployment-operations.mjs";
+import type { ActiveDeployment } from "./deployment-state.mjs";
 export function automationDataDigests(input: {
   catalog: {
     schemaVersion: number;
@@ -14,6 +15,8 @@ export function automationDataDigests(input: {
   };
 }): { catalogDigest: string; targetDigest: string };
 export function verifiedAutomationDeployments(input: {
+  activeDeployment?: ActiveDeployment | null;
+  nowMs?: number;
   deployments: Array<
     Omit<DeploymentInventoryEvidence, "confirmation"> & {
       confirmation?: Omit<

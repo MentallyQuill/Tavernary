@@ -267,12 +267,17 @@ test("pruning verified older releases tolerates changing GitHub download counter
     Array.from({ length: 11 }, (_, index) => 101 + index),
   );
 });
-test("lost upload completion resumes the same draft without overwriting a verified asset or canonical proof", async () => {
+test("lost upload completion resumes the same draft after the Actions artifact expires without overwriting verified assets", async () => {
   const data = input();
   data.setUploadFailure();
   await expect(retainGithubSiteBundle(data.options)).rejects.toThrow();
   expect(data.getRelease()).toMatchObject({ draft: true });
   expect(data.proof.status).toBe("confirmed");
+  data.options.loadBundle = async () => {
+    throw Object.assign(new Error("Actions artifact expired"), {
+      code: "provider-unavailable",
+    });
+  };
   expect(await retainGithubSiteBundle(data.options)).toMatchObject({
     status: "retained",
   });

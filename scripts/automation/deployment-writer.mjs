@@ -1,6 +1,10 @@
 import { createHash } from "node:crypto";
 import { validateRevisionManifest } from "./revision-manifest.mjs";
 import { isConfirmedDeployment } from "./deployment-operations.mjs";
+import {
+  createActiveDeployment,
+  validateActiveDeployment,
+} from "./deployment-state.mjs";
 const sha = /^[a-f0-9]{40}$/u;
 function fail(code = "validation-failed") {
   throw Object.assign(
@@ -70,12 +74,35 @@ export async function confirmCanonicalDeployment({
   const ancestor = (revision) =>
     expected.sourceSha === revision ||
     isAncestor(expected.sourceSha, revision) === true;
-  if (!ancestor(initial.revision)) fail("input-superseded");
-  if (
-    initial.deployments.some((record) =>
-      validProof(record, expected, initial.nowMs, false),
+  const activeProof = (state) =>
+    state.activeDeployment == null
+      ? null
+      : validateActiveDeployment(state.activeDeployment, {
+          nowMs: state.nowMs,
+        });
+  const monotonic = (state) => {
+    const active = activeProof(state);
+    if (
+      active &&
+      active.deployment.sourceSha !== expected.sourceSha &&
+      isAncestor(active.deployment.sourceSha, expected.sourceSha) !== true
     )
-  )
+      fail("input-superseded");
+    return active;
+  };
+  const alreadyConfirmed = (state) => {
+    const active = activeProof(state);
+    return (
+      (!active ||
+        validProof(active.deployment, expected, state.nowMs, false)) &&
+      state.deployments.some((record) =>
+        validProof(record, expected, state.nowMs, false),
+      )
+    );
+  };
+  if (!ancestor(initial.revision)) fail("input-superseded");
+  monotonic(initial);
+  if (alreadyConfirmed(initial))
     return { status: "already-confirmed", sourceSha: expected.sourceSha };
   const result = await probe({ expected });
   if (result.status !== "confirmed") return result;
@@ -83,13 +110,11 @@ export async function confirmCanonicalDeployment({
   if (!sha.test(fresh.revision ?? "") || !ancestor(fresh.revision))
     fail("input-superseded");
   if (!validProof(result.deployment, expected, fresh.nowMs)) fail();
-  if (
-    fresh.deployments.some((record) =>
-      validProof(record, expected, fresh.nowMs, false),
-    )
-  )
+  monotonic(fresh);
+  if (alreadyConfirmed(fresh))
     return { status: "already-confirmed", sourceSha: expected.sourceSha };
   const content = `${JSON.stringify({ ...result.deployment, workflowRunId: runId }, null, 2)}\n`;
+  const activeContent = `${JSON.stringify(createActiveDeployment({ deployment: { ...result.deployment, workflowRunId: runId }, confirmingRunId: runId, mode: "ordinary", nowMs: fresh.nowMs }), null, 2)}\n`;
   const publication = await commit({
     expectedMainSha: fresh.revision,
     message: "chore(deploy): record verified public revision",
@@ -100,6 +125,14 @@ export async function confirmCanonicalDeployment({
         content,
         bytes: Buffer.byteLength(content),
         sha256: createHash("sha256").update(content).digest("hex"),
+        baseDigest: null,
+      },
+      {
+        path: "data/maintenance/automation/deployments/current.json",
+        type: "file",
+        content: activeContent,
+        bytes: Buffer.byteLength(activeContent),
+        sha256: createHash("sha256").update(activeContent).digest("hex"),
         baseDigest: null,
       },
     ],

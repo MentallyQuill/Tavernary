@@ -58,3 +58,11 @@ export function loadRetainedGithubSiteBundle(input: {
   bundle: VerifiedBundle;
   deployment: ConfirmedDeployment & { workflowRunId: number };
 }>;
+export function inspectRetainedGithubSiteBundle(
+  input: Parameters<typeof loadRetainedGithubSiteBundle>[0],
+): Promise<{
+  releaseId: number;
+  deployment: ConfirmedDeployment & { workflowRunId: number };
+  archiveDigest: string;
+  asset: { id: number; size: number; digest: string };
+}>;

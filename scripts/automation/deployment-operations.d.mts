@@ -1,4 +1,5 @@
 import type { AutomationOperation } from "./operation.mjs";
+import type { ActiveDeployment } from "./deployment-state.mjs";
 import type { InventoryWorkerState } from "./inventory-worker.mjs";
 export interface DeploymentInventoryEvidence {
   sourceSha: string;
@@ -26,6 +27,7 @@ export interface DeploymentInventoryInput extends InventoryWorkerState {
     publishable: boolean;
   }>;
   deployments: DeploymentInventoryEvidence[];
+  activeDeployment?: ActiveDeployment | null;
 }
 export function discoverDeploymentOperations(
   input: DeploymentInventoryInput,

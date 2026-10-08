@@ -1,5 +1,5 @@
 name: "Automation: Publish canonical work"
-run-name: "Automation write ${{ inputs.mode }} ${{ inputs.operation_key }}"
+run-name: "${{ inputs.mode == 'retain' && format('Site bundle retain {0}', inputs.result_run_id) || format('Automation write {0} {1}', inputs.mode, inputs.operation_key) }}"
 
 on:
   workflow_dispatch:
@@ -15,6 +15,8 @@ on:
             publish,
             prepare,
             confirm,
+            confirm-restore,
+            retain,
             finalize,
             advisory-notice,
           ]
@@ -71,7 +73,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Install public verification browsers
-        if: inputs.mode == 'confirm'
+        if: inputs.mode == 'confirm' || inputs.mode == 'confirm-restore'
         run: npx playwright install --with-deps chromium webkit
       - name: Create fresh scoped writer token
         id: writer-token
@@ -89,6 +91,7 @@ jobs:
           GH_TOKEN: ${{ steps.writer-token.outputs.token }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
+          TAVERNARY_IMMUTABLE_RELEASES_ENABLED: ${{ vars.TAVERNARY_IMMUTABLE_RELEASES_ENABLED }}
           PROJECT_AUTO_PUBLICATION_ENABLED: ${{ vars.PROJECT_AUTO_PUBLICATION_ENABLED }}
           UTILITY_MODEL: ${{ secrets.UTILITY_MODEL }}
           TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}

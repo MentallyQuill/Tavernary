@@ -110,6 +110,16 @@ test("only exact public and browser proof writes a durable confirmation through 
     workflowRunId: 42,
     confirmation: { essentialSmokePassed: true },
   });
+  const active = data.commits[0].files.find(
+    (file) =>
+      file.path === "data/maintenance/automation/deployments/current.json",
+  );
+  expect(active).toBeDefined();
+  expect(JSON.parse(active!.content)).toMatchObject({
+    mode: "ordinary",
+    deployment: { sourceSha: "c".repeat(40), workflowRunId: 42 },
+    rollbackBaselineSha: null,
+  });
 });
 test("unconfirmed output produces no canonical mutation", async () => {
   const data = await fixture({ unconfirmed: true });

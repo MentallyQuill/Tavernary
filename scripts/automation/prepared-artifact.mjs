@@ -14,6 +14,7 @@ export function decodePreparedArtifactBytes({
     "diagnostic.json": 16_384,
     "revision.json": 16_777_216,
     "confirmation.json": 65_536,
+    "restore-source.json": 65_536,
     "site-bundle.tsb.gz": 134_217_728,
   };
   if (!Object.hasOwn(limits, filename)) fail();

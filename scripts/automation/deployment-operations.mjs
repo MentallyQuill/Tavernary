@@ -1,4 +1,8 @@
 import { operationKey } from "./operation.mjs";
+import {
+  activeRollbackCoversMain,
+  validateActiveDeployment,
+} from "./deployment-state.mjs";
 import { fingerprintProjectPublicationInput } from "../publication/project-publication-transaction.mjs";
 import {
   recoverInventoryWorker,
@@ -35,6 +39,23 @@ export function discoverDeploymentOperations(input) {
     !digest.test(commit.targetDigest)
   )
     return [];
+  const active =
+    input.activeDeployment == null
+      ? null
+      : validateActiveDeployment(input.activeDeployment, {
+          nowMs: input.nowMs,
+        });
+  if (
+    active &&
+    activeRollbackCoversMain({
+      active,
+      latestPublishableSha: commit.sha,
+      catalogDigest: commit.catalogDigest,
+      targetDigest: commit.targetDigest,
+      nowMs: input.nowMs,
+    })
+  )
+    return [];
   const identity = {
     kind: "deployment",
     subject: `revision:${commit.sha}`,
@@ -48,16 +69,18 @@ export function discoverDeploymentOperations(input) {
   const matching = input.deployments.filter(
     (deployment) => deployment.sourceSha === commit.sha,
   );
-  const confirmed = matching.some((deployment) =>
-    isConfirmedDeployment(deployment, commit),
-  );
+  const confirmed = active
+    ? isConfirmedDeployment(active.deployment, commit)
+    : matching.some((deployment) => isConfirmedDeployment(deployment, commit));
   const operation = {
     key: operationKey(identity),
     identity,
     stage: confirmed
       ? "deployment-confirmed"
-      : matching.some((deployment) =>
-            ["requested", "confirmed"].includes(deployment.status),
+      : matching.some(
+            (deployment) =>
+              deployment.status === "requested" ||
+              (!active && deployment.status === "confirmed"),
           )
         ? "deployment-requested"
         : "published",

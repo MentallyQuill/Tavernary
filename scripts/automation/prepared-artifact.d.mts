@@ -3,7 +3,11 @@ export function decodePreparedArtifact(input: {
   archive: Uint8Array;
   digest: string;
   filename?:
-    "result.json" | "diagnostic.json" | "revision.json" | "confirmation.json";
+    | "result.json"
+    | "diagnostic.json"
+    | "revision.json"
+    | "confirmation.json"
+    | "restore-source.json";
 }): unknown;
 export function decodePreparedArtifactBytes(input: {
   archive: Uint8Array;
@@ -13,5 +17,6 @@ export function decodePreparedArtifactBytes(input: {
     | "diagnostic.json"
     | "revision.json"
     | "confirmation.json"
+    | "restore-source.json"
     | "site-bundle.tsb.gz";
 }): Uint8Array;

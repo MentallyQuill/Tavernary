@@ -117,6 +117,21 @@ jobs:
           path: out/revision.json
           retention-days: 90
           if-no-files-found: error
+      - name: Create complete verified restore bundle
+        env:
+          SOURCE_SHA: ${{ steps.revision.outputs.source_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/automation/site-bundle.mjs create "$RUNNER_TEMP/site-bundle.tsb.gz" "$SOURCE_SHA" "run-${GITHUB_RUN_ID}-attempt-${GITHUB_RUN_ATTEMPT}"
+      - name: Retain complete verified restore bundle
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: site-bundle-${{ steps.revision.outputs.source_sha }}
+          path: ${{ runner.temp }}/site-bundle.tsb.gz
+          retention-days: 90
+          compression-level: 0
+          if-no-files-found: error
       - name: Configure GitHub Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
       - name: Upload static export

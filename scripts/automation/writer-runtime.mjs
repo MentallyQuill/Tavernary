@@ -324,6 +324,12 @@ export async function runDeploymentWriterConfirmation({
         revision: state.local.revision,
         nowMs: state.nowMs,
         deployments: state.local.deployments,
+        activeDeployment:
+          state.local.activeDeployment ??
+          state.local.deployments.find(
+            (record) => record.mode && record.deployment,
+          ) ??
+          null,
       };
     };
     const result = await confirmCanonicalDeployment({
@@ -367,6 +373,26 @@ export async function runDeploymentWriterConfirmation({
             ? "provider-unavailable"
             : "validation-failed",
       });
+    if (env.TAVERNARY_IMMUTABLE_RELEASES_ENABLED === "true") {
+      try {
+        const fresh = await load();
+        const { recoverSiteBundleRetention } =
+          await import("./site-writer-runtime.mjs");
+        const retention = await recoverSiteBundleRetention({
+          gh,
+          env,
+          isAncestor,
+          state: {
+            revision: fresh.local.revision,
+            nowMs: fresh.nowMs,
+            activeDeployment: fresh.local.activeDeployment ?? null,
+          },
+        });
+        return { ...result, retention };
+      } catch {
+        return { ...result, retention: { status: "unavailable" } };
+      }
+    }
     return result;
   } catch (error) {
     if (operationKey)
@@ -764,5 +790,36 @@ export async function runAutomationWriterReconciliation({
     },
   });
   if (exitCode) throw new Error("Canonical reconciliation is unavailable.");
-  return { prepared, controller };
+  let retention = { status: "disabled" };
+  if (env.TAVERNARY_IMMUTABLE_RELEASES_ENABLED === "true") {
+    try {
+      const { recoverSiteBundleRetention } =
+        await import("./site-writer-runtime.mjs");
+      retention = await recoverSiteBundleRetention({
+        gh,
+        env,
+        state: {
+          revision: state.local.revision,
+          nowMs: state.nowMs,
+          activeDeployment: state.local.activeDeployment ?? null,
+        },
+        isAncestor: (a, b) => {
+          try {
+            execFileSync("git", ["merge-base", "--is-ancestor", a, b], {
+              cwd: root,
+              stdio: "ignore",
+              timeout: 30000,
+              windowsHide: true,
+            });
+            return true;
+          } catch (error) {
+            return error.status === 1 ? false : null;
+          }
+        },
+      });
+    } catch {
+      retention = { status: "unavailable" };
+    }
+  }
+  return { prepared, controller, retention };
 }

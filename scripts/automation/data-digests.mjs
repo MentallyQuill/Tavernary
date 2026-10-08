@@ -1,5 +1,6 @@
 import { fingerprintProjectPublicationInput } from "../publication/project-publication-transaction.mjs";
 import { isConfirmedDeployment } from "./deployment-operations.mjs";
+import { validateActiveDeployment } from "./deployment-state.mjs";
 
 export function automationDataDigests({ catalog, targets }) {
   return {
@@ -22,7 +23,20 @@ export function verifiedAutomationDeployments({
   catalogDigest,
   targetDigest,
   isAncestor,
+  activeDeployment,
+  nowMs,
 }) {
+  if (activeDeployment != null) {
+    const active = validateActiveDeployment(activeDeployment, { nowMs });
+    const deployment = active.deployment;
+    return isConfirmedDeployment(deployment, {
+      sha: deployment.sourceSha,
+      catalogDigest,
+      targetDigest,
+    }) && isAncestor(deployment.sourceSha, revision)
+      ? [deployment.sourceSha]
+      : [];
+  }
   return [
     ...new Set(
       deployments

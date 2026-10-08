@@ -10,6 +10,7 @@ on:
       - "Kit submissions: Publish approved Kit"
       - "Kit submissions: Withdraw published Kit"
       - "Site: Deploy to GitHub Pages"
+      - "Site: Restore verified bundle"
     types: [completed]
 
 permissions:
@@ -26,7 +27,10 @@ jobs:
        (github.event.workflow_run.name == 'Site: Deploy to GitHub Pages' &&
         (github.event.workflow_run.event == 'push' ||
          (github.event.workflow_run.event == 'workflow_dispatch' &&
-          github.event.workflow_run.actor.id == 2625904))))
+          github.event.workflow_run.actor.id == 2625904)))
+       || (github.event.workflow_run.name == 'Site: Restore verified bundle' &&
+           github.event.workflow_run.event == 'workflow_dispatch' &&
+           github.event.workflow_run.actor.id == 2625904))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: publisher

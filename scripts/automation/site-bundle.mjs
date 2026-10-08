@@ -76,6 +76,18 @@ const schemas = [
   ajv.compile(createCatalogV8Schema(catalogV7Schema)),
   ajv.compile(targetSchema),
 ];
+function portablePath(path) {
+  return (
+    !/[<>"|*]/u.test(path) &&
+    path
+      .split("/")
+      .every(
+        (segment) =>
+          !/[. ]$/u.test(segment) &&
+          !/^(?:con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/iu.test(segment),
+      )
+  );
+}
 function validateCatalogSemantics(catalog) {
   for (const records of [catalog.projects, catalog.kits, catalog.tagVocabulary])
     if (new Set(records.map((record) => record.id)).size !== records.length)
@@ -102,7 +114,8 @@ export function validateSiteBundle({ manifest, entries, archiveDigest }) {
     fail();
   let total = 0;
   const assets = new Map(manifest.assets.map((asset) => [asset.path, asset])),
-    files = new Map();
+    files = new Map(),
+    portableNames = new Set();
   for (const entry of entries) {
     if (
       !entry ||
@@ -110,6 +123,8 @@ export function validateSiteBundle({ manifest, entries, archiveDigest }) {
       !["path", "type", "content"].every((key) => Object.hasOwn(entry, key)) ||
       entry.type !== "file" ||
       (entry.path !== "revision.json" && !validSiteAssetPath(entry.path)) ||
+      !portablePath(entry.path) ||
+      portableNames.has(entry.path.normalize("NFC").toLowerCase()) ||
       files.has(entry.path) ||
       !bytes(entry.content) ||
       entry.content.byteLength >
@@ -128,6 +143,12 @@ export function validateSiteBundle({ manifest, entries, archiveDigest }) {
         fail();
     }
     files.set(entry.path, entry);
+    portableNames.add(entry.path.normalize("NFC").toLowerCase());
+  }
+  for (const path of portableNames) {
+    const segments = path.split("/");
+    for (let count = 1; count < segments.length; count++)
+      if (portableNames.has(segments.slice(0, count).join("/"))) fail();
   }
   if (
     !files.has("revision.json") ||

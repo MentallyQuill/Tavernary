@@ -6,6 +6,7 @@ import {
   selectDueOperations,
 } from "./operation.mjs";
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
+import { trustedRestoreRun } from "./restore-source.mjs";
 
 const kinds = {
   "refresh-catalog": "refresh",
@@ -158,6 +159,38 @@ export async function runPreparedWakeCli(options = {}) {
     const run = JSON.parse(
       await gh(["api", `repos/${repository}/actions/runs/${runId}`]),
     );
+    if (
+      env.GITHUB_WORKFLOW_REF ===
+        `${repository}/.github/workflows/automation-prepared.yml@refs/heads/main` &&
+      trustedRestoreRun(run, {
+        repository,
+        runId,
+        currentMainSha: run.head_sha,
+        isAncestor: () => false,
+      })
+    ) {
+      await gh([
+        "workflow",
+        "run",
+        "automation-writer.yml",
+        "--repo",
+        repository,
+        "--ref",
+        "main",
+        "-f",
+        "mode=confirm-restore",
+        "-f",
+        `result_run_id=${runId}`,
+      ]);
+      write(
+        JSON.stringify({
+          status: "dispatched",
+          mode: "confirm-restore",
+          runId,
+        }),
+      );
+      return 0;
+    }
     if (trustedDeploymentWake(run, env, repository, runId)) {
       await gh([
         "workflow",

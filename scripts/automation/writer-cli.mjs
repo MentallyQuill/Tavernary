@@ -12,6 +12,8 @@ const modes = new Set([
   "publish",
   "prepare",
   "confirm",
+  "confirm-restore",
+  "retain",
   "finalize",
   "advisory-notice",
 ]);
@@ -87,6 +89,20 @@ export async function runAutomationWriterCli(options = {}) {
             operationKey: event.inputs?.operation_key,
             env,
           }),
+        ),
+      );
+      return 0;
+    }
+    if (mode === "retain" || mode === "confirm-restore") {
+      const { runSiteWriterRetention, runSiteWriterRestoreConfirmation } =
+        await import("./site-writer-runtime.mjs");
+      const handler =
+        mode === "retain"
+          ? runSiteWriterRetention
+          : runSiteWriterRestoreConfirmation;
+      write(
+        JSON.stringify(
+          await handler({ runId: Number(event.inputs?.result_run_id), env }),
         ),
       );
       return 0;

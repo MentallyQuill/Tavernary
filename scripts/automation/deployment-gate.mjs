@@ -8,6 +8,7 @@ import {
   REVISION_LIMITS,
 } from "./revision-manifest.mjs";
 import { isConfirmedDeployment } from "./deployment-operations.mjs";
+import { validateActiveDeployment } from "./deployment-state.mjs";
 
 const sha = /^[a-f0-9]{40}$/u;
 function git(root, args, maxBuffer = 1024 * 1024) {
@@ -54,7 +55,27 @@ export function readLatestPublishableRevision({ root, revision }) {
   if (!sha.test(latest)) throw new Error("Publishable history is unavailable.");
   return latest;
 }
+export function readAuthoritativeActiveDeployment({ root, revision }) {
+  if (!sha.test(revision ?? ""))
+    throw new Error("Active deployment revision is invalid.");
+  const path = "data/maintenance/automation/deployments/current.json";
+  const present = git(root, ["ls-tree", "--name-only", revision, "--", path]);
+  if (!present) return null;
+  if (present !== path) throw new Error("Active deployment path is invalid.");
+  const active = validateActiveDeployment(
+    JSON.parse(git(root, ["show", `${revision}:${path}`], 64 * 1024)),
+  );
+  if (
+    ancestry(root, active.deployment.sourceSha, revision) !== true ||
+    (active.mode === "rollback" &&
+      ancestry(root, active.rollbackBaselineSha, revision) !== true)
+  )
+    throw new Error("Active deployment ancestry is unavailable.");
+  return active;
+}
 export function readAuthoritativeDeployedSha({ root, revision }) {
+  const active = readAuthoritativeActiveDeployment({ root, revision });
+  if (active) return active.deployment.sourceSha;
   const paths = git(root, [
     "ls-tree",
     "-r",
