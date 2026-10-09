@@ -48,6 +48,7 @@ export function readLatestPublishableRevision({ root, revision }) {
   ];
   const latest = git(root, [
     "log",
+    "--first-parent",
     "-1",
     "--format=%H",
     revision,

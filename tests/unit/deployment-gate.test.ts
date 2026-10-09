@@ -129,3 +129,69 @@ test("native Git inventory ignores bookkeeping, catches public changes and rejec
     await rm(root, { recursive: true, force: true });
   }
 });
+
+test("a merged publication remains the deployable main revision after receipt-only commits", async () => {
+  const root = await mkdtemp(resolve(tmpdir(), "tavernary-merge-gate-"));
+  const git = (args: string[]) =>
+    execFileSync(
+      "git",
+      [
+        "-c",
+        "user.name=Fixture",
+        "-c",
+        "user.email=fixture@example.com",
+        ...args,
+      ],
+      { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] },
+    ).trim();
+  const commit = () => {
+    git(["add", "."]);
+    git(["commit", "-qm", "fixture"]);
+    return git(["rev-parse", "HEAD"]);
+  };
+  try {
+    git(["init", "--initial-branch=main"]);
+    await writeFile(resolve(root, "index.html"), "old");
+    commit();
+    git(["switch", "-c", "publication"]);
+    await writeFile(resolve(root, "index.html"), "new");
+    const branch = commit();
+    git(["switch", "main"]);
+    git(["merge", "--no-ff", "publication", "-m", "merge publication"]);
+    const merged = git(["rev-parse", "HEAD"]);
+    await mkdir(resolve(root, "data/maintenance/automation"), {
+      recursive: true,
+    });
+    await writeFile(
+      resolve(root, "data/maintenance/automation/receipt.json"),
+      "{}",
+    );
+    const receipt = commit();
+    expect(readLatestPublishableRevision({ root, revision: receipt })).toBe(
+      merged,
+    );
+    const manifest = buildRevisionManifest(
+      revisionFixture({ sourceSha: merged }),
+    );
+    expect(
+      await gateDeployment({
+        root,
+        manifest,
+        requestedSha: merged,
+        currentMainSha: receipt,
+        deployedSha: null,
+      }),
+    ).toMatchObject({ action: "deploy" });
+    expect(
+      await gateDeployment({
+        root,
+        manifest: buildRevisionManifest(revisionFixture({ sourceSha: branch })),
+        requestedSha: branch,
+        currentMainSha: receipt,
+        deployedSha: null,
+      }),
+    ).toEqual({ action: "superseded", targetSha: merged });
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});

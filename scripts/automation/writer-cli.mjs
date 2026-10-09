@@ -165,13 +165,30 @@ export async function runAutomationWriterCli(options = {}) {
     }
     throw new Error("Writer mode is not implemented.");
   } catch (error) {
+    const httpStatus = githubFailureStatus(error);
+    const message = String(error?.message ?? "");
+    const diagnostic =
+      Number.isSafeInteger(httpStatus) && httpStatus >= 100 && httpStatus <= 599
+        ? {
+            httpStatus,
+            githubRateLimited:
+              /(?:API rate limit exceeded|secondary rate limit)/iu.test(
+                message,
+              ),
+            githubRequestPath:
+              /\bgh api(?: --method [A-Z]+)? (repos\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_./-]{1,256})/u.exec(
+                message,
+              )?.[1],
+          }
+        : undefined;
     write(
       JSON.stringify({
         status: "unavailable",
         failure: classifyAutomationFailure({
           diagnosticCode: error?.code,
-          httpStatus: githubFailureStatus(error),
+          httpStatus,
         }),
+        ...(diagnostic ? { diagnostic } : {}),
       }),
     );
     return 1;

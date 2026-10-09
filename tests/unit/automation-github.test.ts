@@ -530,6 +530,61 @@ test("the production loader reconstructs real canonical maintenance without writ
   }
 }, 30_000);
 
+test("large run inventories read independent pages concurrently within a four-request bound", async () => {
+  let active = 0;
+  let maximumActive = 0;
+  const pages: number[] = [];
+  const runs = await loadAutomationWorkerRuns({
+    repository: "MentallyQuill/Tavernary",
+    nowMs: AUTOMATION_NOW,
+    gh: async (args) => {
+      const page = Number(
+        args.find((arg) => arg.startsWith("page="))!.slice(5),
+      );
+      pages.push(page);
+      active++;
+      maximumActive = Math.max(maximumActive, active);
+      await new Promise((resolve) => setTimeout(resolve, 5));
+      active--;
+      return JSON.stringify([
+        {
+          total_count: 901,
+          workflow_runs: Array.from(
+            { length: page === 10 ? 1 : 100 },
+            (_, i) => ({ id: (page - 1) * 100 + i + 1 }),
+          ),
+        },
+      ]);
+    },
+  });
+  expect(runs).toEqual(Array.from({ length: 901 }, (_, i) => ({ id: i + 1 })));
+  expect(pages).toEqual(Array.from({ length: 10 }, (_, i) => i + 1));
+  expect(maximumActive).toBeGreaterThan(1);
+  expect(maximumActive).toBeLessThanOrEqual(4);
+});
+
+test("a concurrent run page exceeding GitHub's result cap rejects the inventory", async () => {
+  await expect(
+    loadAutomationWorkerRuns({
+      repository: "MentallyQuill/Tavernary",
+      nowMs: AUTOMATION_NOW,
+      gh: async (args) => {
+        const page = Number(
+          args.find((arg) => arg.startsWith("page="))!.slice(5),
+        );
+        return JSON.stringify([
+          {
+            total_count: page === 3 ? 1001 : 500,
+            workflow_runs: Array.from({ length: 100 }, (_, i) => ({
+              id: (page - 1) * 100 + i + 1,
+            })),
+          },
+        ]);
+      },
+    }),
+  ).rejects.toThrow("changed beyond GitHub's result cap");
+});
+
 test("the final worker lookup paginates and refuses truncated filtered inventories", async () => {
   let captured: string[] = [];
   const gh = async (args: string[]) => {
