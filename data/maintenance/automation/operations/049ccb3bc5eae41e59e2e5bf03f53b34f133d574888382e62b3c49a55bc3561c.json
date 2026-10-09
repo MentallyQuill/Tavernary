@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "049ccb3bc5eae41e59e2e5bf03f53b34f133d574888382e62b3c49a55bc3561c",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1327772222:diamond-shark-art-sillytavern-impersonationcarousel",
+      "inputDigest": "b29eca512f0fcf0f6dbfc875d3d3ff6f87367528eebcd4ffa022b38d5396b226",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T10:45:14.113Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 2
+    }
+  },
+  "updatedAt": "2026-10-09T10:30:14.113Z",
+  "completedAt": null
+}
