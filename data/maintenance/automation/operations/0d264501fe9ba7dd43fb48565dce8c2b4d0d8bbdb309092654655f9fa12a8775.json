@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0d264501fe9ba7dd43fb48565dce8c2b4d0d8bbdb309092654655f9fa12a8775",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-997100420:rsxdalv-sillytavern-extension-tts-webui",
+      "inputDigest": "b68a107752aa9f20ed213db1c9e9df9a763d64d96debe9ccefe9db2b94f64f54",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T12:41:39.875Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T12:26:39.875Z",
+  "completedAt": null
+}
