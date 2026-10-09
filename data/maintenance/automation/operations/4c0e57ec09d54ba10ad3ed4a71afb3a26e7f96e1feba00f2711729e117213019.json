@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4c0e57ec09d54ba10ad3ed4a71afb3a26e7f96e1feba00f2711729e117213019",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:url-reddit-1wl2pm6:reddit-1wl2pm6",
+      "inputDigest": "ac2385229b3f5adb7f11b4db749eaeb39627dbe8bc5be85afedf45d4b2c5a678",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "1970-01-01T00:00:00.000Z",
+    "nextEligibleAt": "2026-10-09T04:57:20.862Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T04:42:20.862Z",
+  "completedAt": null
+}
