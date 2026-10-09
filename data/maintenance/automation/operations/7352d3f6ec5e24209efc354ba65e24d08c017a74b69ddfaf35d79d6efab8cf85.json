@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7352d3f6ec5e24209efc354ba65e24d08c017a74b69ddfaf35d79d6efab8cf85",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:url-realistic-frankenstein-preset:realistic-frankenstein-preset",
+      "inputDigest": "020f39e3449d72c22f1be70e0efb17920e54268fbe8726cb7381d403335ce45b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "1970-01-01T00:00:00.000Z",
+    "nextEligibleAt": "2026-10-09T04:36:19.198Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T04:21:19.198Z",
+  "completedAt": null
+}
