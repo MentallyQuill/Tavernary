@@ -30,6 +30,9 @@ export function protectedRestoreBundleIds(
 export function recoverSiteBundleRetention(
   input: SiteRecoveryInput & { availableSlots?: number },
 ): Promise<Record<string, unknown>>;
+export function recoverSiteWriterHandoffs(
+  input: SiteRecoveryInput & { availableSlots?: number },
+): Promise<Record<string, unknown>>;
 export function runSiteWriterRetention(
   input: SiteWriterInput & { retain?: typeof retainGithubSiteBundle },
 ): ReturnType<typeof retainGithubSiteBundle>;
@@ -37,6 +40,7 @@ export function runSiteWriterRestoreConfirmation(
   input: SiteWriterInput & {
     bundleDownload?: (args: string[]) => Promise<Uint8Array>;
     probe?: RestoreWriterInput["probe"];
+    readCurrent?: RestoreWriterInput["readCurrent"];
     commit?: RestoreWriterInput["commit"];
   },
 ): Promise<Record<string, unknown>>;

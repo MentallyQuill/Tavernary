@@ -10,7 +10,7 @@ import {
 import { createActiveDeployment } from "../../scripts/automation/deployment-state.mjs";
 import { buildRevisionManifest } from "../../scripts/automation/revision-manifest.mjs";
 import { revisionFixture } from "../helpers/deployment-fixtures";
-test("the native serialized guard uses the actual authorized restored revision and permits a subsequent verified forward deploy", async () => {
+test("the native serialized guard preserves an owner restore against queued builds until a new publishable revision", async () => {
   const root = await mkdtemp(resolve(tmpdir(), "tavernary-active-gate-"));
   const git = (args: string[]) =>
     execFileSync("git", args, {
@@ -92,7 +92,33 @@ test("the native serialized guard uses the actual authorized restored revision a
         deployedSha,
         expectedBuildId: manifest.buildId,
       }),
-    ).toMatchObject({ action: "deploy" });
+    ).toMatchObject({ action: "coalesced", sourceSha: first });
+    expect(
+      await gateDeployment({
+        root,
+        manifest,
+        requestedSha: second,
+        currentMainSha: current,
+        deployedSha,
+        expectedBuildId: "run-999-attempt-1",
+      }),
+    ).toMatchObject({ action: "reject", reason: "artifact-build-mismatch" });
+
+    await writeFile(resolve(root, "index.html"), "third");
+    const third = commit();
+    const newManifest = buildRevisionManifest(
+      revisionFixture({ sourceSha: third }),
+    );
+    expect(
+      await gateDeployment({
+        root,
+        manifest: newManifest,
+        requestedSha: third,
+        currentMainSha: third,
+        deployedSha,
+        expectedBuildId: newManifest.buildId,
+      }),
+    ).toMatchObject({ action: "deploy", sourceSha: third });
   } finally {
     await rm(root, { recursive: true, force: true });
   }

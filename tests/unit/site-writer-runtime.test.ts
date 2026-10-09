@@ -10,6 +10,7 @@ import {
   runSiteWriterRestoreConfirmation,
   protectedRestoreBundleIds,
   recoverSiteBundleRetention,
+  recoverSiteWriterHandoffs,
 } from "../../scripts/automation/site-writer-runtime.mjs";
 import { runPreparedWakeCli } from "../../scripts/automation/prepared-wake.mjs";
 const env = {
@@ -120,17 +121,18 @@ function fixture() {
   };
   const gh = vi.fn(async (args: string[]) => {
     if (args[0] !== "api") return "";
-    const route = args[1];
+    const route = args.find((arg) => arg.startsWith("repos/"))!;
     if (route.endsWith("/actions/runs/88")) return JSON.stringify(run);
     if (route.includes("/artifacts?"))
       return JSON.stringify({ total_count: 1, artifacts: [artifact] });
     if (route.includes("git/ref/tags/"))
       return JSON.stringify({ object: { type: "commit", sha: m.sourceSha } });
-    if (route.includes("/actions/workflows/restore-site.yml/runs"))
-      return JSON.stringify({
-        total_count: 1,
-        workflow_runs: [{ ...run, status: "in_progress" }],
-      });
+    if (route.includes("/actions/workflows/restore-site.yml/runs")) {
+      const rows = args.includes(`status=${run.status}`) ? [run] : [];
+      return JSON.stringify([
+        { total_count: rows.length, workflow_runs: rows },
+      ]);
+    }
     if (route.includes("/releases/")) return JSON.stringify(release);
     throw new Error(`Unexpected route ${route}`);
   });
@@ -174,6 +176,11 @@ test("the production restore writer authenticates both immutable archives before
       load: async () => data.state,
       isAncestor: data.isAncestor,
       probe,
+      readCurrent: async () => ({
+        catalogDigest: data.source.catalogDigest,
+        targetDigest: data.source.targetDigest,
+        ownerTombstones: [],
+      }),
       commit,
     }),
   ).toMatchObject({ status: "confirmed" });
@@ -193,6 +200,11 @@ test("the production restore writer authenticates both immutable archives before
       load: async () => data.state,
       isAncestor: data.isAncestor,
       probe,
+      readCurrent: async () => ({
+        catalogDigest: data.source.catalogDigest,
+        targetDigest: data.source.targetDigest,
+        ownerTombstones: [],
+      }),
       commit,
     }),
   ).rejects.toThrow();
@@ -201,6 +213,7 @@ test("the production restore writer authenticates both immutable archives before
 });
 test("pending owner restores protect their numeric release IDs and foreign restore actors cannot claim protection", async () => {
   const data = fixture();
+  data.run.status = "queued";
   expect(
     await protectedRestoreBundleIds({
       env,
@@ -218,6 +231,29 @@ test("pending owner restores protect their numeric release IDs and foreign resto
       isAncestor: data.isAncestor,
     }),
   ).toEqual([]);
+});
+test("a completed owner restore with a dropped confirmation still protects its immutable bundle", async () => {
+  const data = fixture();
+  const gh = async (args: string[]) => {
+    const route = args.find((arg) => arg.startsWith("repos/"))!;
+    if (route.includes("/restore-site.yml/runs")) {
+      const completed = args.includes("status=completed");
+      const page = {
+        total_count: completed ? 1 : 0,
+        workflow_runs: completed ? [data.run] : [],
+      };
+      return JSON.stringify(args.includes("--jq") ? [page] : page);
+    }
+    return data.gh(args);
+  };
+  expect(
+    await protectedRestoreBundleIds({
+      env,
+      gh,
+      state: data.state,
+      isAncestor: data.isAncestor,
+    }),
+  ).toEqual([77]);
 });
 test("trusted failed restore completion wakes exact-source confirmation while a foreign completion is ignored", async () => {
   const data = fixture();
@@ -316,8 +352,17 @@ function retentionRecoveryFixture(failures = 0) {
     }
     if (args[1].includes("/releases/tags/"))
       throw Object.assign(new Error("HTTP 404"), { status: 404 });
-    if (args[1].includes("/actions/workflows/automation-writer.yml/runs"))
-      return JSON.stringify({ total_count: runs.length, workflow_runs: runs });
+    if (
+      args
+        .find((arg) => arg.startsWith("repos/"))
+        ?.includes("/actions/workflows/automation-writer.yml/runs")
+    ) {
+      const status = args.find((arg) => arg.startsWith("status="))?.slice(7);
+      const rows = runs.filter((run) => run.status === status);
+      return JSON.stringify([
+        { total_count: rows.length, workflow_runs: rows },
+      ]);
+    }
     throw new Error(`Unexpected retention endpoint ${args[1]}`);
   });
   return {
@@ -368,4 +413,98 @@ test("malformed native completion clocks cannot trigger repeated retention dispa
   data.runs[0].updated_at = "invalid";
   await expect(recoverSiteBundleRetention(data.input)).rejects.toThrow();
   expect(data.dispatches).toEqual([]);
+});
+
+test("scheduled native recovery finds a cancelled owner restore after a 72-hour dropped wake and coalesces its queued confirmation", async () => {
+  const data = fixture();
+  data.state.nowMs += 72 * 3600000;
+  const completedRestore = {
+    ...data.run,
+    conclusion: "cancelled",
+    created_at: "2026-10-08T11:00:00Z",
+    updated_at: "2026-10-08T11:10:00Z",
+  };
+  const confirmations: Record<string, unknown>[] = [];
+  const dispatches: string[][] = [];
+  const gh = vi.fn(async (args: string[]) => {
+    if (args[0] === "workflow") {
+      dispatches.push(args);
+      confirmations.push({
+        ...completedRestore,
+        id: 1000 + dispatches.length,
+        status: "queued",
+        path: ".github/workflows/automation-writer.yml",
+        display_title: "Site restore confirm 88",
+        actor: { id: 4624827 },
+      });
+      return "";
+    }
+    const route = args.find((arg) => arg.startsWith("repos/"))!;
+    if (route.includes("/actions/workflows/")) {
+      const status = args.find((arg) => arg.startsWith("status="))?.slice(7);
+      const rows = route.includes("/restore-site.yml/")
+        ? [completedRestore]
+        : confirmations;
+      const matching = rows.filter((run) => run.status === status);
+      return JSON.stringify([
+        { total_count: matching.length, workflow_runs: matching },
+      ]);
+    }
+    return data.gh(args);
+  });
+  const input = {
+    env,
+    gh,
+    state: data.state,
+    download: data.download,
+    isAncestor: data.isAncestor,
+  };
+  expect(await recoverSiteWriterHandoffs(input)).toMatchObject({
+    status: "requested",
+    mode: "confirm-restore",
+    runId: 88,
+  });
+  expect(dispatches).toHaveLength(1);
+  expect(dispatches[0]).toContain("result_run_id=88");
+  expect(await recoverSiteWriterHandoffs(input)).toMatchObject({
+    status: "already-requested",
+  });
+  expect(dispatches).toHaveLength(1);
+  const request = confirmations[0];
+  confirmations.splice(
+    0,
+    1,
+    ...Array.from({ length: 3 }, (_, index) => ({
+      ...request,
+      id: 900 - index,
+      status: "completed",
+      conclusion: "failure",
+      created_at: new Date(
+        data.state.nowMs - (index + 1) * 60000,
+      ).toISOString(),
+      updated_at: new Date(data.state.nowMs - index * 60000).toISOString(),
+    })),
+  );
+  expect(await recoverSiteWriterHandoffs(input)).toMatchObject({
+    restore: {
+      status: "waiting",
+      reason: "restore-backoff",
+      nextEligibleAt: new Date(data.state.nowMs + 86400000).toISOString(),
+    },
+  });
+  expect(dispatches).toHaveLength(1);
+  data.state.nowMs += 86400000;
+  expect(await recoverSiteWriterHandoffs(input)).toMatchObject({
+    status: "requested",
+    runId: 88,
+  });
+  expect(dispatches).toHaveLength(2);
+  gh.mockClear();
+  expect(
+    await recoverSiteWriterHandoffs({ ...input, availableSlots: 0 }),
+  ).toMatchObject({
+    status: "waiting",
+    reason: "operation-limit",
+  });
+  expect(gh).not.toHaveBeenCalled();
 });

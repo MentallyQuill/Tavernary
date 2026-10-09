@@ -2,6 +2,8 @@ import type { GhRunner } from "../submissions/kit-submission-reconciliation.mjs"
 import type { VerifiedBundle } from "./site-bundle.mjs";
 import type { GithubRevisionInput } from "./deployment-github.mjs";
 import type { ConfirmedDeployment } from "./confirm-deployment.mjs";
+import type { confirmPublicDeployment } from "./confirm-deployment.mjs";
+import type { CurrentRollbackData } from "./rollback-canonical.mjs";
 export interface RetentionState {
   revision: string;
   nowMs: number;
@@ -14,6 +16,10 @@ export function listGithubSiteReleases(
 ): Promise<Array<{ tag_name?: string; [key: string]: unknown }>>;
 export interface GithubRetentionInput {
   runId: number;
+  root?: string;
+  fetchImpl?: typeof fetch;
+  probe?: typeof confirmPublicDeployment;
+  readCurrent?: () => Promise<CurrentRollbackData>;
   env?: Record<string, string | undefined>;
   load: () => Promise<RetentionState>;
   gh?: GhRunner;

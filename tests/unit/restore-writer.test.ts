@@ -1,4 +1,8 @@
 import { expect, test, vi } from "vitest";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { buildRevisionManifest } from "../../scripts/automation/revision-manifest.mjs";
 import {
   encodeSiteBundle,
   decodeSiteBundle,
@@ -8,7 +12,38 @@ import { confirmRestoredDeployment } from "../../scripts/automation/restore-writ
 import type { RestoreSource } from "../../scripts/automation/restore-source.mjs";
 import type { ActiveDeployment } from "../../scripts/automation/deployment-state.mjs";
 function fixture() {
-  const bundle = decodeSiteBundle(encodeSiteBundle(bundleFixture()));
+  const exported = bundleFixture();
+  // Listed identities come from the actual retained catalog, not confirmation metadata.
+  const project = JSON.parse(
+    readFileSync(
+      resolve(process.cwd(), "public/catalog/tavernary-catalog-v8.json"),
+      "utf8",
+    ),
+  ).projects[0];
+  exported.catalog.projects = [{ ...project, id: "project-one" }] as never[];
+  const catalogEntry = exported.entries.find(
+    (entry) => entry.path === "catalog/tavernary-catalog-v8.json",
+  )!;
+  catalogEntry.content = new TextEncoder().encode(
+    JSON.stringify(exported.catalog),
+  );
+  // The fixture manifest must cover the changed catalog bytes.
+  exported.manifest = buildRevisionManifest({
+    sourceSha: exported.manifest.sourceSha,
+    buildId: exported.manifest.buildId,
+    catalog: exported.catalog,
+    targets: exported.targets,
+    files: exported.entries
+      .filter((entry) => entry.path !== "revision.json")
+      .map((entry) => ({
+        path: entry.path,
+        bytes: entry.content.length,
+        sha256: createHash("sha256").update(entry.content).digest("hex"),
+      })),
+  });
+  exported.entries.find((entry) => entry.path === "revision.json")!.content =
+    new TextEncoder().encode(JSON.stringify(exported.manifest));
+  const bundle = decodeSiteBundle(encodeSiteBundle(exported));
   const manifest = bundle.manifest;
   const nowMs = Date.parse("2026-10-08T12:00:00Z");
   const source: RestoreSource = {
@@ -54,6 +89,11 @@ function fixture() {
     load: vi.fn(async () => structuredClone(state)),
     loadSource: vi.fn(async () => source),
     loadBundle: vi.fn(async () => ({ releaseId: 77, bundle, deployment })),
+    readCurrent: vi.fn(async () => ({
+      catalogDigest: manifest.catalogDigest,
+      targetDigest: manifest.targetDigest,
+      ownerTombstones: [] as string[],
+    })),
     probe: vi.fn(async () => ({ status: "confirmed" as const, deployment })),
     commit: vi.fn(
       async (_value: {
@@ -91,6 +131,32 @@ test("only exact public proof of an authenticated owner restore writes the activ
   expect(data.input.commit).not.toHaveBeenCalled();
   expect(data.input.probe).not.toHaveBeenCalled();
 });
+test.each(["catalog", "targets", "owner-removal", "changed-during-probe"])(
+  "delayed owner restore confirmation rejects %s before recording an override",
+  async (variant) => {
+    const data = fixture();
+    const current = await data.input.readCurrent();
+    const changed = {
+      ...current,
+      ...(variant === "catalog" || variant === "changed-during-probe"
+        ? { catalogDigest: "f".repeat(64) }
+        : variant === "targets"
+          ? { targetDigest: "f".repeat(64) }
+          : { ownerTombstones: ["project-one"] }),
+    };
+    if (variant === "changed-during-probe")
+      data.input.readCurrent
+        .mockResolvedValueOnce(current)
+        .mockResolvedValueOnce(changed);
+    else data.input.readCurrent.mockResolvedValue(changed);
+    await expect(confirmRestoredDeployment(data.input)).rejects.toMatchObject({
+      code: "input-superseded",
+    });
+    expect(data.input.commit).not.toHaveBeenCalled();
+    if (variant !== "changed-during-probe")
+      expect(data.input.probe).not.toHaveBeenCalled();
+  },
+);
 test.each(["source", "bundle", "probe", "changed-main"])(
   "a substituted restore %s cannot write an active rollback",
   async (variant) => {

@@ -4,9 +4,21 @@ import {
   pollDeploymentConfirmation,
   deploymentSiteOrigin,
   confirmPublicDeployment,
+  createPublicAssetReader,
 } from "../../scripts/automation/confirm-deployment.mjs";
 import { confirmationFixture } from "../helpers/confirmation-fixtures";
 afterEach(() => vi.useRealTimers());
+
+test("public manifest discovery cannot read assets before an expected manifest is verified", async () => {
+  const fetchImpl = vi.fn<typeof fetch>(async () => new Response("{}"));
+  const read = createPublicAssetReader({ fetchImpl });
+  await expect(read("index.html")).rejects.toThrow("path");
+  expect(fetchImpl).not.toHaveBeenCalled();
+  expect(Array.from(await read("revision.json"))).toEqual([123, 125]);
+  expect(new URL(String(fetchImpl.mock.calls[0][0])).origin).toBe(
+    "https://tavernary.org",
+  );
+});
 
 test("the native public checker verifies bounded actual response bytes at the fixed origin", async () => {
   const fixture = confirmationFixture(),

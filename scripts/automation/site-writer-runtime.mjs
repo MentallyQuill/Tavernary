@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import {
   assertCanonicalWriterContext,
   githubFailureStatus,
+  loadSiteWriterRecoveryRuns,
 } from "./github-inventory.mjs";
 import {
   synchronizeWriterCheckout,
@@ -17,7 +18,11 @@ import {
   downloadSiteGithubBytes,
 } from "./site-bundle-github.mjs";
 import { confirmRestoredDeployment } from "./restore-writer.mjs";
-import { loadGithubRestoreSource } from "./restore-source.mjs";
+import { readRollbackCanonicalData } from "./rollback-canonical.mjs";
+import {
+  loadGithubRestoreSource,
+  trustedRestoreRun,
+} from "./restore-source.mjs";
 import { confirmPublicDeployment } from "./confirm-deployment.mjs";
 import { commitCanonicalData } from "./canonical-data.mjs";
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
@@ -67,51 +72,55 @@ export async function protectedRestoreBundleIds({
     publisherActorId = Number(env.TAVERNARY_PUBLISHER_BOT_ID),
     ids = new Set();
   if (repository !== repositoryName || !sha.test(state.revision ?? "")) fail();
-  for (const status of [
-    "queued",
-    "in_progress",
-    "waiting",
-    "pending",
-    "requested",
-  ]) {
-    const page = parse(
-      await gh([
-        "api",
-        `repos/${repository}/actions/workflows/restore-site.yml/runs?per_page=100&status=${status}`,
-      ]),
-    );
+  const runs = await loadSiteWriterRecoveryRuns({
+    gh,
+    repository,
+    nowMs: state.nowMs,
+    workflow: "restore-site.yml",
+  });
+  for (const run of runs) {
+    const completed = run.status === "completed";
     if (
-      !Array.isArray(page.workflow_runs) ||
-      page.total_count !== page.workflow_runs.length ||
-      page.workflow_runs.length > 100
-    )
-      fail();
-    for (const run of page.workflow_runs) {
-      if (
-        run.actor?.id !== 2625904 ||
-        run.event !== "workflow_dispatch" ||
-        run.head_branch !== "main"
+      !trustedRestoreRun(
+        {
+          ...run,
+          status: "completed",
+          conclusion: completed ? run.conclusion : "success",
+        },
+        {
+          repository,
+          runId: run.id,
+          currentMainSha: state.revision,
+          isAncestor,
+        },
       )
-        continue;
-      const id = Number(
-        /^Site restore ([1-9]\d*)$/u.exec(run.display_title ?? "")?.[1],
-      );
+    )
+      continue;
+    if (completed && state.activeDeployment?.confirmingRunId >= run.id)
+      continue;
+    const id = Number(
+      /^Site restore ([1-9]\d*)$/u.exec(run.display_title)?.[1],
+    );
+    if (completed) {
+      let release;
+      try {
+        release = parse(
+          await gh(["api", `repos/${repository}/releases/${id}`]),
+        );
+      } catch (error) {
+        if (githubFailureStatus(error) === 404) continue;
+        throw error;
+      }
       if (
-        !Number.isSafeInteger(id) ||
-        id < 1 ||
-        run.path !== ".github/workflows/restore-site.yml" ||
-        run.repository?.full_name !== repository ||
-        !Number.isSafeInteger(run.repository.id) ||
-        run.repository.id < 1 ||
-        run.head_repository?.id !== run.repository.id ||
-        run.head_repository.full_name !== repository ||
-        !sha.test(run.head_sha ?? "") ||
-        (run.head_sha !== state.revision &&
-          isAncestor(run.head_sha, state.revision) !== true)
+        release.id !== id ||
+        release.author?.id !== publisherActorId ||
+        release.draft !== false ||
+        release.immutable !== true
       )
         fail();
-      ids.add(id);
     }
+    ids.add(id);
+    if (ids.size > 1000) fail();
   }
   if (state.activeDeployment?.mode === "rollback") {
     const record = state.activeDeployment.deployment;
@@ -178,6 +187,7 @@ export async function runSiteWriterRetention({
   assertCanonicalWriterContext(env, env.GITHUB_REPOSITORY);
   return retain({
     runId,
+    root,
     env,
     gh,
     download,
@@ -206,6 +216,7 @@ export async function runSiteWriterRestoreConfirmation({
   bundleDownload = downloadSiteGithubBytes,
   isAncestor = ancestry(root),
   probe = confirmPublicDeployment,
+  readCurrent = () => readRollbackCanonicalData({ root }),
   commit = (input) =>
     commitCanonicalData({ ...input, gh, repository: env.GITHUB_REPOSITORY }),
 }) {
@@ -216,6 +227,7 @@ export async function runSiteWriterRestoreConfirmation({
     load,
     isAncestor,
     probe,
+    readCurrent,
     commit,
     loadSource: ({ runId, revision }) =>
       loadGithubRestoreSource({
@@ -245,6 +257,177 @@ export async function runSiteWriterRestoreConfirmation({
         : "validation-failed",
     );
   return result;
+}
+function recoveryRequestState({ runs, env, state, isAncestor, title, reason }) {
+  const trusted = runs.filter(
+    (run) =>
+      run.display_title === title &&
+      run.path === ".github/workflows/automation-writer.yml" &&
+      run.event === "workflow_dispatch" &&
+      run.head_branch === "main" &&
+      run.actor?.id === Number(env.TAVERNARY_PUBLISHER_BOT_ID) &&
+      run.repository?.full_name === env.GITHUB_REPOSITORY &&
+      run.head_repository?.id === run.repository?.id &&
+      run.head_repository?.full_name === env.GITHUB_REPOSITORY &&
+      Number.isSafeInteger(run.id) &&
+      run.id > 0 &&
+      Number.isSafeInteger(run.repository?.id) &&
+      run.repository.id > 0 &&
+      Number.isSafeInteger(run.run_attempt) &&
+      run.run_attempt > 0 &&
+      sha.test(run.head_sha ?? "") &&
+      (run.head_sha === state.revision ||
+        isAncestor(run.head_sha, state.revision) === true),
+  );
+  if (
+    trusted.some((run) =>
+      ["queued", "in_progress", "waiting", "pending", "requested"].includes(
+        run.status,
+      ),
+    )
+  )
+    return { status: "already-requested" };
+  const completed = trusted.filter((run) => run.status === "completed");
+  for (const run of completed) {
+    const created = Date.parse(run.created_at),
+      updated = Date.parse(run.updated_at);
+    if (
+      !Number.isSafeInteger(state.nowMs) ||
+      !Number.isFinite(created) ||
+      !Number.isFinite(updated) ||
+      updated < created ||
+      updated > state.nowMs + 300000
+    )
+      fail();
+  }
+  completed.sort(
+    (a, b) =>
+      Date.parse(b.created_at) - Date.parse(a.created_at) || b.id - a.id,
+  );
+  if (completed.length) {
+    const latest = completed[0],
+      firstSuccess = completed.findIndex((run) => run.conclusion === "success");
+    const failures =
+      latest.conclusion === "success"
+        ? 1
+        : firstSuccess < 0
+          ? completed.length
+          : firstSuccess;
+    const retry = planAutomationRetry({
+      failure: classifyAutomationFailure(
+        latest.conclusion === "success"
+          ? { diagnosticCode: "provider-unavailable" }
+          : { conclusion: latest.conclusion },
+      ),
+      transientAttempts: Math.max(0, failures - 1),
+      immediateAttempts: failures,
+      nowMs: Date.parse(latest.updated_at),
+      jitterSeed: title,
+    });
+    if (!retry.nextEligibleAt || Date.parse(retry.nextEligibleAt) > state.nowMs)
+      return {
+        status: "waiting",
+        reason,
+        nextEligibleAt: retry.nextEligibleAt,
+      };
+  }
+  return null;
+}
+export async function recoverSiteWriterHandoffs(input) {
+  const {
+    gh,
+    env,
+    state,
+    isAncestor,
+    availableSlots = 1,
+    download = downloadPreparedArtifact,
+  } = input;
+  assertCanonicalWriterContext(env, env.GITHUB_REPOSITORY);
+  if (
+    !Number.isSafeInteger(availableSlots) ||
+    availableSlots < 0 ||
+    availableSlots > 20
+  )
+    fail();
+  if (!availableSlots) return { status: "waiting", reason: "operation-limit" };
+  if (env.TAVERNARY_IMMUTABLE_RELEASES_ENABLED !== "true")
+    return { status: "disabled" };
+  const runs = await loadSiteWriterRecoveryRuns({
+    gh,
+    repository: env.GITHUB_REPOSITORY,
+    nowMs: state.nowMs,
+    workflow: "restore-site.yml",
+  });
+  const candidates = runs
+    .filter(
+      (run) =>
+        trustedRestoreRun(run, {
+          repository: env.GITHUB_REPOSITORY,
+          runId: run.id,
+          currentMainSha: state.revision,
+          isAncestor,
+        }) &&
+        (!state.activeDeployment ||
+          state.activeDeployment.confirmingRunId < run.id),
+    )
+    .sort((a, b) => b.id - a.id);
+  let deferred;
+  if (candidates.length) {
+    const requests = await loadSiteWriterRecoveryRuns({
+      gh,
+      repository: env.GITHUB_REPOSITORY,
+      nowMs: state.nowMs,
+      workflow: "automation-writer.yml",
+    });
+    // Rotate bounded artifact probes so a failed latest restore cannot hide older intent.
+    const offset = (Math.floor(state.nowMs / 900000) * 20) % candidates.length;
+    for (let index = 0; index < Math.min(20, candidates.length); index++) {
+      const run = candidates[(offset + index) % candidates.length];
+      const pending = recoveryRequestState({
+        runs: requests,
+        env,
+        state,
+        isAncestor,
+        title: `Site restore confirm ${run.id}`,
+        reason: "restore-backoff",
+      });
+      if (pending?.status === "already-requested") return pending;
+      if (pending) {
+        deferred = pending;
+        continue;
+      }
+      try {
+        await loadGithubRestoreSource({
+          gh,
+          download,
+          repository: env.GITHUB_REPOSITORY,
+          runId: run.id,
+          currentMainSha: state.revision,
+          isAncestor,
+        });
+      } catch (error) {
+        // A native owner run may have stopped before creating any restore source.
+        if (error.code === "provider-unavailable") continue;
+        throw error;
+      }
+      await gh([
+        "workflow",
+        "run",
+        "automation-writer.yml",
+        "--repo",
+        env.GITHUB_REPOSITORY,
+        "--ref",
+        "main",
+        "-f",
+        "mode=confirm-restore",
+        "-f",
+        `result_run_id=${run.id}`,
+      ]);
+      return { status: "requested", mode: "confirm-restore", runId: run.id };
+    }
+  }
+  const retention = await recoverSiteBundleRetention(input);
+  return deferred ? { ...retention, restore: deferred } : retention;
 }
 export async function recoverSiteBundleRetention({
   gh,
@@ -303,88 +486,21 @@ export async function recoverSiteBundleRetention({
     if (githubFailureStatus(error) !== 404) throw error;
   }
   const title = `Site bundle retain ${record.workflowRunId}`;
-  const runs = parse(
-    await gh([
-      "api",
-      `${route}/actions/workflows/automation-writer.yml/runs?per_page=100`,
-    ]),
-  );
-  if (!Array.isArray(runs.workflow_runs) || runs.workflow_runs.length > 100)
-    fail();
-  const trusted = runs.workflow_runs.filter(
-    (run) =>
-      run.display_title === title &&
-      run.path === ".github/workflows/automation-writer.yml" &&
-      run.event === "workflow_dispatch" &&
-      run.head_branch === "main" &&
-      run.actor?.id === Number(env.TAVERNARY_PUBLISHER_BOT_ID) &&
-      run.repository?.full_name === env.GITHUB_REPOSITORY &&
-      run.head_repository?.id === run.repository?.id &&
-      run.head_repository?.full_name === env.GITHUB_REPOSITORY &&
-      Number.isSafeInteger(run.id) &&
-      run.id > 0 &&
-      Number.isSafeInteger(run.repository?.id) &&
-      run.repository.id > 0 &&
-      Number.isSafeInteger(run.run_attempt) &&
-      run.run_attempt > 0 &&
-      sha.test(run.head_sha ?? "") &&
-      (run.head_sha === state.revision ||
-        isAncestor(run.head_sha, state.revision) === true),
-  );
-  if (
-    trusted.some((run) =>
-      ["queued", "in_progress", "waiting", "pending", "requested"].includes(
-        run.status,
-      ),
-    )
-  )
-    return { status: "already-requested" };
-  const completed = trusted.filter((run) => run.status === "completed");
-  for (const run of completed) {
-    const created = Date.parse(run.created_at),
-      updated = Date.parse(run.updated_at);
-    if (
-      !Number.isSafeInteger(state.nowMs) ||
-      !Number.isFinite(created) ||
-      !Number.isFinite(updated) ||
-      updated < created ||
-      updated > state.nowMs + 300000
-    )
-      fail();
-  }
-  completed.sort(
-    (a, b) =>
-      Date.parse(b.created_at) - Date.parse(a.created_at) || b.id - a.id,
-  );
-  if (completed.length) {
-    const latest = completed[0];
-    const firstSuccess = completed.findIndex(
-      (run) => run.conclusion === "success",
-    );
-    const failures =
-      latest.conclusion === "success"
-        ? 1
-        : firstSuccess < 0
-          ? completed.length
-          : firstSuccess;
-    const retry = planAutomationRetry({
-      failure: classifyAutomationFailure({
-        ...(latest.conclusion === "success"
-          ? { diagnosticCode: "provider-unavailable" }
-          : { conclusion: latest.conclusion }),
-      }),
-      transientAttempts: Math.max(0, failures - 1),
-      immediateAttempts: failures,
-      nowMs: Date.parse(latest.updated_at),
-      jitterSeed: title,
-    });
-    if (!retry.nextEligibleAt || Date.parse(retry.nextEligibleAt) > state.nowMs)
-      return {
-        status: "waiting",
-        reason: "retention-backoff",
-        nextEligibleAt: retry.nextEligibleAt,
-      };
-  }
+  const runs = await loadSiteWriterRecoveryRuns({
+    gh,
+    repository: env.GITHUB_REPOSITORY,
+    nowMs: state.nowMs,
+    workflow: "automation-writer.yml",
+  });
+  const pending = recoveryRequestState({
+    runs,
+    env,
+    state,
+    isAncestor,
+    title,
+    reason: "retention-backoff",
+  });
+  if (pending) return pending;
   await gh([
     "workflow",
     "run",

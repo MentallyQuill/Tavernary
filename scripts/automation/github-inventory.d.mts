@@ -28,6 +28,12 @@ export function loadAutomationWorkerRuns(input: {
   repository: string;
   nowMs: number;
 }): Promise<ProjectInventoryRun[]>;
+export function loadSiteWriterRecoveryRuns(input: {
+  gh: GhRunner;
+  repository: string;
+  nowMs: number;
+  workflow: "restore-site.yml" | "automation-writer.yml";
+}): Promise<ProjectInventoryRun[]>;
 export function loadGenerationOwnerRequestRuns(input: {
   gh: GhRunner;
   repository: string;

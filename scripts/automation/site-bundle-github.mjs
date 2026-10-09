@@ -11,7 +11,18 @@ import {
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 import { loadGithubSiteBundle } from "./deployment-github.mjs";
 import { isConfirmedDeployment } from "./deployment-operations.mjs";
-import { decodeSiteBundle, SITE_BUNDLE_LIMITS } from "./site-bundle.mjs";
+import {
+  decodeSiteBundle,
+  encodeSiteBundle,
+  SITE_BUNDLE_LIMITS,
+} from "./site-bundle.mjs";
+import {
+  createPublicAssetReader,
+  confirmPublicDeployment,
+} from "./confirm-deployment.mjs";
+import { validateRevisionManifest } from "./revision-manifest.mjs";
+import { readRollbackCanonicalData } from "./rollback-canonical.mjs";
+import { planRollback } from "./rollback.mjs";
 import { planSiteBundleRetention } from "./site-bundle-retention.mjs";
 import { fingerprintProjectPublicationInput } from "../publication/project-publication-transaction.mjs";
 const exec = promisify(execFile),
@@ -46,6 +57,117 @@ export async function listGithubSiteReleases(gh, route) {
 const same = (a, b) =>
   fingerprintProjectPublicationInput(a) ===
   fingerprintProjectPublicationInput(b);
+async function recoverServedBundle({
+  runId,
+  record,
+  fetchImpl,
+  probe,
+  readCurrent,
+}) {
+  const controller = new AbortController(),
+    timer = setTimeout(() => controller.abort(), 180000);
+  try {
+    const bootstrap = createPublicAssetReader({
+      fetchImpl,
+      signal: controller.signal,
+    });
+    const manifestBytes = await bootstrap("revision.json");
+    const manifest = validateRevisionManifest(
+      JSON.parse(
+        new TextDecoder("utf-8", { fatal: true }).decode(manifestBytes),
+      ),
+    );
+    if (
+      manifest.sourceSha !== record.sourceSha ||
+      manifest.buildId !== record.buildId ||
+      manifest.buildDigest !== record.bundleDigest ||
+      manifest.catalogDigest !== record.confirmation.catalogDigest ||
+      manifest.targetDigest !== record.confirmation.targetDigest
+    )
+      fail("input-superseded");
+    if (
+      manifest.assets.reduce(
+        (total, asset) => total + asset.bytes,
+        manifestBytes.length,
+      ) > SITE_BUNDLE_LIMITS.payloadBytes
+    )
+      fail();
+    const fetchAsset = createPublicAssetReader({
+      expected: manifest,
+      fetchImpl,
+      signal: controller.signal,
+    });
+    const entries = [
+      { path: "revision.json", type: "file", content: manifestBytes },
+    ];
+    let next = 0;
+    await Promise.all(
+      Array.from({ length: Math.min(6, manifest.assets.length) }, async () => {
+        while (next < manifest.assets.length) {
+          const asset = manifest.assets[next++],
+            content = await fetchAsset(asset.path);
+          if (
+            content.length !== asset.bytes ||
+            createHash("sha256").update(content).digest("hex") !== asset.sha256
+          )
+            fail();
+          entries.push({ path: asset.path, type: "file", content });
+        }
+      }),
+    );
+    const encoded = encodeSiteBundle({ manifest, entries });
+    const bundle = decodeSiteBundle(encoded);
+    const current = await readCurrent();
+    if (
+      planRollback({
+        target: bundle,
+        currentCatalogDigest: current.catalogDigest,
+        currentTargetsDigest: current.targetDigest,
+        ownerTombstones: current.ownerTombstones,
+        authorizedReason: "Retain verified served export",
+      }).action !== "deploy"
+    )
+      fail("input-superseded");
+    const result = await probe({
+      expected: manifest,
+      fetchImpl,
+      maxAttempts: 1,
+    });
+    if (result.status !== "confirmed")
+      fail(
+        result.status === "waiting"
+          ? "provider-unavailable"
+          : "validation-failed",
+      );
+    if (
+      result.deployment.buildId !== record.buildId ||
+      result.deployment.bundleDigest !== record.bundleDigest ||
+      !isConfirmedDeployment(result.deployment, {
+        sha: record.sourceSha,
+        catalogDigest: record.confirmation.catalogDigest,
+        targetDigest: record.confirmation.targetDigest,
+      })
+    )
+      fail();
+    if (
+      !same(
+        validateRevisionManifest(
+          JSON.parse(
+            new TextDecoder("utf-8", { fatal: true }).decode(
+              await fetchAsset("revision.json"),
+            ),
+          ),
+        ),
+        manifest,
+      )
+    )
+      fail("input-superseded");
+    return { runId, archive: encoded.archive, bundle };
+  } finally {
+    clearTimeout(timer);
+    controller.abort();
+  }
+}
 function stableRelease(release) {
   return {
     id: release.id,
@@ -224,6 +346,10 @@ export async function retainGithubSiteBundle({
   download = downloadSiteGithubBytes,
   isAncestor,
   loadBundle = (input) => loadGithubSiteBundle({ ...input, gh, download }),
+  root = process.cwd(),
+  fetchImpl = fetch,
+  probe = confirmPublicDeployment,
+  readCurrent = () => readRollbackCanonicalData({ root }),
 }) {
   const repository = env.GITHUB_REPOSITORY;
   assertCanonicalWriterContext(env, repository);
@@ -288,15 +414,27 @@ export async function retainGithubSiteBundle({
         archive,
         bundle: decodeSiteBundle({ archive, archiveDigest: saved.digest }),
       };
-    } else
-      loaded = await loadBundle({
-        repository,
-        publisherActorId,
-        runId,
-        currentMainSha: state.revision,
-        isAncestor,
-        expectedSourceSha: record.sourceSha,
-      });
+    } else {
+      try {
+        loaded = await loadBundle({
+          repository,
+          publisherActorId,
+          runId,
+          currentMainSha: state.revision,
+          isAncestor,
+          expectedSourceSha: record.sourceSha,
+        });
+      } catch (error) {
+        if (error.code !== "provider-unavailable") throw error;
+        loaded = await recoverServedBundle({
+          runId,
+          record,
+          fetchImpl,
+          probe,
+          readCurrent,
+        });
+      }
+    }
     const verified = decodeSiteBundle({
         archive: loaded.archive,
         archiveDigest: loaded.bundle.archiveDigest,

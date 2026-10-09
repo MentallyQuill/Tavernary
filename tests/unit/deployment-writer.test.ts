@@ -92,6 +92,7 @@ function recoveryFixture(
       if (runId === 42) return artifact.input.gh(args);
       return JSON.stringify([
         {
+          total_count: runId !== 43 || latest === "missing" ? 0 : 1,
           artifacts:
             runId !== 43 || latest === "missing"
               ? []

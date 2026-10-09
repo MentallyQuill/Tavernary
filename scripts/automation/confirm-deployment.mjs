@@ -192,14 +192,16 @@ export function createPublicAssetReader({
   fetchImpl = fetch,
   signal,
 }) {
-  const manifest = validateRevisionManifest(expected),
+  // Without an expected manifest, only its fixed discovery path is readable.
+  const manifest =
+      expected === undefined ? null : validateRevisionManifest(expected),
     origin = deploymentSiteOrigin({ mode, fixtureOrigin });
   return async (path) => {
     if (signal?.aborted) throw new Error("Public confirmation timed out.");
     if (
       path !== "revision.json" &&
       (!validSiteAssetPath(path) ||
-        !manifest.assets.some((asset) => asset.path === path))
+        !manifest?.assets.some((asset) => asset.path === path))
     )
       throw new Error("Public verification path is invalid.");
     const maximumBytes =
@@ -212,7 +214,7 @@ export function createPublicAssetReader({
     );
     url.searchParams.set(
       "tavernary_verification",
-      `${manifest.sourceSha}-${Date.now()}`,
+      `${manifest?.sourceSha ?? "manifest"}-${Date.now()}`,
     );
     const controller = new AbortController(),
       timer = setTimeout(() => controller.abort(), 20000);

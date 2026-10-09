@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { validateRestoreSource } from "./restore-source.mjs";
 import { validateSiteBundle } from "./site-bundle.mjs";
+import { planRollback } from "./rollback.mjs";
 import {
   createActiveDeployment,
   validateActiveDeployment,
@@ -17,6 +18,7 @@ export async function confirmRestoredDeployment({
   load,
   loadSource,
   loadBundle,
+  readCurrent,
   probe,
   commit,
   isAncestor,
@@ -78,12 +80,27 @@ export async function confirmRestoredDeployment({
   };
   if (already(initial))
     return { status: "already-confirmed", sourceSha: source.sourceSha };
+  const verifyCurrent = async () => {
+    const current = await readCurrent();
+    if (
+      planRollback({
+        target: bundle,
+        currentCatalogDigest: current.catalogDigest,
+        currentTargetsDigest: current.targetDigest,
+        ownerTombstones: current.ownerTombstones,
+        authorizedReason: source.reason,
+      }).action !== "deploy"
+    )
+      fail("input-superseded");
+  };
+  await verifyCurrent();
   const result = await probe({ expected: manifest });
   if (result.status !== "confirmed") return result;
   const fresh = await load();
   if (fresh.revision !== initial.revision) fail("input-superseded");
   if (already(fresh))
     return { status: "already-confirmed", sourceSha: source.sourceSha };
+  await verifyCurrent();
   const deployment = {
     ...result.deployment,
     workflowRunId: retained.deployment.workflowRunId,

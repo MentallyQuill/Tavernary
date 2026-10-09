@@ -7,6 +7,7 @@ import {
   loadRetainedGithubSiteBundle,
 } from "../../scripts/automation/site-bundle-github.mjs";
 import type { GhRunner } from "../../scripts/submissions/kit-submission-reconciliation.mjs";
+import type { GithubRetentionInput } from "../../scripts/automation/site-bundle-github.mjs";
 import {
   decodeSiteBundle,
   encodeSiteBundle,
@@ -288,6 +289,85 @@ test("lost upload completion resumes the same draft after the Actions artifact e
       .filter((name) => name === "site-bundle.tsb.gz"),
   ).toHaveLength(1);
 });
+test.each(["valid", "different-build", "corrupt-asset", "changed-canonical"])(
+  "an expired Actions archive before any uploaded bytes recovers only the exact served export (%s)",
+  async (variant) => {
+    const data = input();
+    const native = data.options.gh;
+    let interrupt = true;
+    const options: GithubRetentionInput = {
+      ...data.options,
+      gh: async (args, body) => {
+        if (args[0] === "release" && interrupt)
+          throw Object.assign(new Error("cancelled before upload"), {
+            code: "provider-unavailable",
+          });
+        return native(args, body);
+      },
+    };
+    await expect(retainGithubSiteBundle(options)).rejects.toThrow("cancelled");
+    expect(data.getRelease()).toMatchObject({ id: 88, draft: true });
+    expect(data.assets).toEqual([]);
+    interrupt = false;
+    options.loadBundle = async () => {
+      throw Object.assign(new Error("Actions artifact expired"), {
+        code: "provider-unavailable",
+      });
+    };
+    const reads: string[] = [];
+    options.fetchImpl = async (url) => {
+      const path = new URL(String(url)).pathname.slice(1);
+      reads.push(path);
+      const entry = data.bundle.entries.find((entry) => entry.path === path)!;
+      const bytes =
+        variant === "different-build" && path === "revision.json"
+          ? Buffer.from(
+              JSON.stringify({
+                ...data.bundle.manifest,
+                buildId: "run-43-attempt-1",
+              }),
+            )
+          : variant === "corrupt-asset" && path === "index.html"
+            ? Buffer.from("changed")
+            : entry.content;
+      return new Response(Buffer.from(bytes));
+    };
+    options.probe = async () => ({
+      status: "confirmed",
+      deployment: data.proof as never,
+    });
+    options.readCurrent = async () => ({
+      catalogDigest:
+        variant === "changed-canonical"
+          ? "f".repeat(64)
+          : data.bundle.manifest.catalogDigest,
+      targetDigest: data.bundle.manifest.targetDigest,
+      ownerTombstones: [],
+    });
+    if (variant === "valid") {
+      expect(await retainGithubSiteBundle(options)).toMatchObject({
+        status: "retained",
+        releaseId: 88,
+      });
+      expect(new Set(reads)).toEqual(
+        new Set(data.bundle.entries.map((entry) => entry.path)),
+      );
+      expect(data.assets).toHaveLength(2);
+      expect(
+        Buffer.from(
+          data.contents.get(
+            data.assets.find((asset) => asset.name === "site-bundle.tsb.gz")!
+              .id,
+          )!,
+        ),
+      ).toEqual(data.encoded.archive);
+    } else {
+      await expect(retainGithubSiteBundle(options)).rejects.toThrow();
+      expect(data.getRelease()).toMatchObject({ draft: true });
+      expect(data.assets).toEqual([]);
+    }
+  },
+);
 test("missing immutable-release setup and absent public proof cannot publish a restore bundle", async () => {
   const data = input();
   data.options.env.TAVERNARY_IMMUTABLE_RELEASES_ENABLED = "false";

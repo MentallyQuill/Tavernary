@@ -8,7 +8,10 @@ import {
   REVISION_LIMITS,
 } from "./revision-manifest.mjs";
 import { isConfirmedDeployment } from "./deployment-operations.mjs";
-import { validateActiveDeployment } from "./deployment-state.mjs";
+import {
+  activeRollbackCoversMain,
+  validateActiveDeployment,
+} from "./deployment-state.mjs";
 
 const sha = /^[a-f0-9]{40}$/u;
 function git(root, args, maxBuffer = 1024 * 1024) {
@@ -141,18 +144,35 @@ export async function gateDeployment({
   const verified = validateRevisionManifest(manifest);
   if (expectedBuildId !== undefined && verified.buildId !== expectedBuildId)
     return { action: "reject", reason: "artifact-build-mismatch" };
-  return planDeployment({
+  const latestPublishableSha = readLatestPublishableRevision({
+    root,
+    revision: currentMainSha,
+  });
+  const decision = planDeployment({
     requestedSha,
     currentMainSha,
     deployedSha,
     validatedSha: verified.sourceSha,
-    latestPublishableSha: readLatestPublishableRevision({
-      root,
-      revision: currentMainSha,
-    }),
+    latestPublishableSha,
     isAncestor: (a, b) => ancestry(root, a, b),
     mode: "ordinary",
   });
+  if (decision.action !== "deploy") return decision;
+  const active = readAuthoritativeActiveDeployment({
+    root,
+    revision: currentMainSha,
+  });
+  if (
+    active &&
+    activeRollbackCoversMain({
+      active,
+      latestPublishableSha,
+      catalogDigest: verified.catalogDigest,
+      targetDigest: verified.targetDigest,
+    })
+  )
+    return { action: "coalesced", sourceSha: active.deployment.sourceSha };
+  return decision;
 }
 export async function runDeploymentGate({
   root = process.cwd(),

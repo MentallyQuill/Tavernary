@@ -1291,12 +1291,7 @@ export async function runAutomationWriterReconciliation({
     await import("./dependency-update.mjs");
   const dependencyPullNumbers = selectDependencyPullNumbers(state.remote.pulls);
   // Retention dispatch uses this lane, rather than an uncounted confirmation tail.
-  const retentionWanted =
-    env.TAVERNARY_IMMUTABLE_RELEASES_ENABLED === "true" &&
-    Number.isSafeInteger(
-      state.local.activeDeployment?.deployment?.workflowRunId,
-    ) &&
-    state.local.activeDeployment.deployment.workflowRunId > 0;
+  const retentionWanted = env.TAVERNARY_IMMUTABLE_RELEASES_ENABLED === "true";
   const retentionSlot =
     retentionWanted && usedSlots + runtimeSlot + enrichmentSlot < 20 ? 1 : 0;
   const initialRetirement = planAutomationRetention({
@@ -1423,9 +1418,9 @@ export async function runAutomationWriterReconciliation({
     : { status: "disabled" };
   if (retentionSlot) {
     try {
-      const { recoverSiteBundleRetention } =
+      const { recoverSiteWriterHandoffs } =
         await import("./site-writer-runtime.mjs");
-      retention = await recoverSiteBundleRetention({
+      retention = await recoverSiteWriterHandoffs({
         gh,
         env,
         availableSlots: retentionSlot,

@@ -30,9 +30,13 @@ is attached. The last fully successful required CI head is
 with both `verify` and `visual` successful.
 This includes supported runtimes, the weekly restore drill, exact-build
 confirmation fallback and shared-quota retention retries.
-The subsequent history/terminal-retention checkpoint requires its own
-exact-head CI. A green implementation branch does not establish merge or native
-production drill evidence.
+The subsequent history/terminal-retention checkpoint failed CI on obsolete docs
+assertions. Its repair, head `9736242859f1623833a8bab0c43cc9088c168d18`, failed
+[run 37872546212](https://github.com/MentallyQuill/Tavernary/actions/runs/37872546212)
+on seven deployment-recovery fixtures missing the native artifact `total_count`.
+The fixtures now match the bounded reader; integrity requirements remain intact.
+The recovery checkpoint below requires fresh exact-head CI. A green implementation
+branch does not establish merge or native production drill evidence.
 
 The active delivery goal freezes the shared architecture. Finish the concrete
 runtime, retention, restore-drill and runbook requirements, remaining recovery
@@ -54,17 +58,17 @@ boundaries.
 | R3 | Eligible Kits/owner flows; preserve manual decisions | Domain-specific publication, withdrawal and owner validators; manual PR preparation and original divergence guards preserved. Live completion proof pending. |
 | R4 | Cancellation and 72-hour outage recovery | Worker recovery, authenticated incremental usage and multi-card owner checkpoints tested. One final production-adapter outage canary remains. |
 | R5 | Exact head, identity, authority, tombstones, paths | Native run/artifact/source custody and fresh publication authority tested; canonical identifiers and manual exceptions retained. Independent review remains. |
-| R6 | Serialize and deduplicate writes/deployments | Shared canonical writer and bounded controller quota implemented. Retention dispatch now reserves one shared slot and no longer runs as an uncounted confirmation tail. Native failed attempts back off. Restore handoff/interruption edges remain. |
-| R7 | Prevent ordinary deployment regression | Planner, fresh serialized ancestry guard and queued-build tests; live canary pending. |
+| R6 | Serialize and deduplicate writes/deployments | Shared canonical writer and bounded controller quota implemented. Restore confirmation and bundle retention share one reserved slot, with bounded native history, active-run coalescing and failed-attempt backoff. Live complete-flow proof remains. |
+| R7 | Prevent ordinary deployment regression | Planner and fresh serialized ancestry guard tested against a queued build undoing an owner restore. New genuine publishable revisions resume normal deployment; live canary pending. |
 | R8 | Recover when old hosted manifest is unavailable | Failed old-manifest reads are advisory; new export is strictly verified. Production recovery proof pending. |
 | R9 | Confirm public revision, digests, browser behavior | Fixed-origin integrity and Chromium/WebKit confirmation tested. Bounded automatic fallback accepts only the actually served verified build; a same-SHA rebuild requires its own build/digest/browser proof. Actual merged public revision and assets still required. |
-| R10 | Retained verified bundles and safe rollback | Full-export archives, immutable-release retention and owner-only current-data restore tested. Live setup and remaining retained-bundle fallback cases pending. |
+| R10 | Retained verified bundles and safe rollback | Full-export archives, immutable-release retention and owner-only current-data restore tested. Interrupted empty drafts recover the exact served archive after Actions expiry, with all-file integrity, current-data and public/browser proof. Delayed restore confirmation rechecks owner removals and current data. Live configuration/bundle proof remains. |
 | R11 | GitHub health checks and bounded incidents | Native typed incidents, deduplication and positive-proof closure implemented; unreadable retry histories are visible. Live health verification remains. |
 | R12 | Trusted fields, factual fallback, deterministic scans | Report facts publish independently of optional narrative; cached/manual metadata and scan contracts preserved. Final consumer/browser proof remains. |
 | R13 | Scheduled changed metadata, cache, global budgets | Native scheduled enrichment, field/source checkpoints and model allowances cover all five automated credential-bearing workflows, including generation and repairs. Live progress proof remains. |
 | R14 | Gated dependency completion | Grouped packages, native NPM selector, exact-head merge gate and failed-check incidents implemented; critical Next.js findings addressed in the earlier maintenance checkpoint. Actual eligible maintenance PR completion remains. |
 | R15 | Verified supported-runtime policy | Implemented: official schedule validation, Node 24 manifest and declarations, shared workflow runtime file, weekly full compatibility checks, constrained recoverable Publisher PRs, native exact-head current/candidate CI merge gate and 90-day/EOL incidents. Head ec7fdd8c2 passes required full CI; actual scheduled proof remains. Node 26 becomes eligible only on its official LTS date. |
-| R16 | Safe bounded retention | Open/recently closed inventory, release pages and native run artifacts now bounded before fetching; pending references and old declines remain visible. Eligible terminal receipt/publication pairs retire after ninety days with compact completion markers and exact Git-history replay. Cleanup shares the twenty-operation quota and protects pending/current/retained/canary deployment proof. Weekly offline drill implemented. Interruption/restore edges and actual native drill proof remain. |
+| R16 | Safe bounded retention | Open/recently closed inventory, release pages and native run artifacts bounded before fetching; pending references and old declines remain visible. Eligible terminal pairs retire after ninety days with compact markers and exact Git-history replay. Cleanup shares the twenty-operation quota and protects pending/current/retained/canary proof plus completed unconfirmed owner restores. Weekly offline drill implemented; actual native drill proof remains. |
 | R17 | Owner runbook | Updated against current generation, refresh, Kit, identity, restore and shared-writer sources plus actual GitHub permissions. Includes token repair, exact recovery/rollback commands, switches, focused content/browser checks and owner responsibilities. Final merged native command/configuration proof remains. |
 | R18 | Attached PRs, CI, review, merge, production proof | PR #818 attached. Head 61cecc312 is fully green; the next retention checkpoint needs its exact-head CI. Independent review, merge, live canary/drill and public proof remain. |
 
@@ -75,6 +79,43 @@ scoped zero-warning lint, formatting and whitespace checks passed. Full CI on
 for owner access to the model job. The corrected tests require owners to submit
 read-only requests and reserve actual model generation for the Publisher app.
 Repository protections and required checks remain unchanged.
+
+## Owner restore and expired-archive recovery checkpoint
+
+A real Git fixture reproduced an ordinary queued build undoing a confirmed owner
+restore. The final serialized gate now preserves the exact rollback baseline after
+validating artifact identity and ancestry. A new publishable revision resumes
+ordinary deployment. Delayed restore confirmation independently rejects changed
+catalog data, scan targets and owner removals before its public probe and before
+writing an active override; exact confirmed replay remains inert.
+
+Scheduled recovery authenticates native completed owner restores, including
+cancellation after deployment, within the ninety-day source-artifact window.
+Its dedicated history reader splits over-cap time windows before pagination,
+bounds pages/bytes/searches and rejects truncated inventory. Confirmation requests
+use exact native source custody, coalesce active runs, rotate at most twenty
+artifact probes and apply the existing backoff. Restore confirmation and bundle
+retention share one reserved canonical slot; an exhausted allowance makes no API
+call. Completed unconfirmed owner restores retain protection for their immutable
+bundles. Foreign actors cannot claim recovery or protection.
+
+An empty draft whose original Actions archive expired now reconstructs the exact
+export actually served at the fixed public origin. The reader admits manifest
+discovery only; all asset paths, lengths, hashes and bundle schemas must verify.
+Current data/removals and positive public/browser confirmation gate retention.
+The original release ID and byte-identical archive survive replay. Different
+public builds, corrupt assets or changed canonical data leave the draft untouched.
+Saved verified archives continue to resume directly. No rebuild or Pages mutation
+is introduced by this fallback.
+
+The production adapters passed a simulated seventy-two-hour lost-wake/cancellation
+case, queued replay, repeated-failure backoff and due-time recovery. The actual
+scheduled writer still selects nineteen ordinary operations plus one recovery
+slot, or eighteen plus recovery and terminal retirement. Nineteen affected suites
+passed 144 checks in 11.70 seconds; types, scoped zero-warning lint, formatting and
+whitespace checks passed. This is local adapter evidence. Native exact-head CI,
+the final whole-flow canary, independent review, merge and actual production
+configuration/bundle/drill/browser evidence remain required.
 
 ## Bounded deployment recovery checkpoint
 

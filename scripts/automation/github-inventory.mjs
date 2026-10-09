@@ -160,6 +160,67 @@ export async function loadAutomationWorkerRuns({ gh, repository, nowMs }) {
     throw new Error("Final worker inventory exceeds GitHub's result cap.");
   return runPages(value);
 }
+export async function loadSiteWriterRecoveryRuns({
+  gh,
+  repository,
+  nowMs,
+  workflow,
+}) {
+  if (
+    !["restore-site.yml", "automation-writer.yml"].includes(workflow) ||
+    !Number.isSafeInteger(nowMs) ||
+    nowMs < 90 * 86_400_000
+  )
+    throw new Error("Site recovery history context is invalid.");
+  const path = `${repositoryPath(repository)}/actions/workflows/${workflow}/runs`;
+  const found = new Map();
+  let searches = 0;
+  const read = async (fields) => {
+    if (++searches > 64)
+      throw new Error("Site recovery history exceeds its search budget.");
+    const pages = await boundedRunPages(gh, path, [
+      "branch=main",
+      "event=workflow_dispatch",
+      ...fields,
+    ]);
+    const rows = runPages(pages);
+    if (pages[0].total_count <= 1000 && rows.length < pages[0].total_count)
+      throw new Error("Site recovery history is truncated.");
+    return { rows, total: pages[0].total_count };
+  };
+  const window = async (lower, upper) => {
+    const { rows, total } = await read([
+      "status=completed",
+      `created=${new Date(lower).toISOString()}..${new Date(upper).toISOString()}`,
+    ]);
+    if (total > 1000) {
+      if (upper - lower <= 1000)
+        throw new Error(
+          "Site recovery history exceeds the one-second result cap.",
+        );
+      const middle = Math.floor((lower + upper) / 2);
+      await window(lower, middle);
+      await window(middle, upper);
+    } else for (const run of rows) found.set(run.id, run);
+  };
+  await window(
+    nowMs - (workflow === "restore-site.yml" ? 90 : 7) * 86_400_000,
+    nowMs,
+  );
+  for (const status of [
+    "queued",
+    "in_progress",
+    "waiting",
+    "pending",
+    "requested",
+  ]) {
+    const { rows, total } = await read([`status=${status}`]);
+    if (total > 1000)
+      throw new Error("Active site recovery history exceeds its result cap.");
+    for (const run of rows) found.set(run.id, run);
+  }
+  return [...found.values()];
+}
 export async function loadGithubRunArtifacts({ gh, repository, runId }) {
   if (!Number.isSafeInteger(runId) || runId < 1)
     throw new Error("GitHub artifact run identity is invalid.");

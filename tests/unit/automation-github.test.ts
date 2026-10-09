@@ -4,11 +4,64 @@ import { revalidateAutomationOperation } from "../../scripts/automation/inventor
 import {
   assertTrustedAutomationContext,
   loadGithubAutomationInventory,
+  loadSiteWriterRecoveryRuns,
   persistGithubAutomationReceipt,
 } from "../../scripts/automation/github-inventory.mjs";
 import { AUTOMATION_NOW, receiptFixture } from "../helpers/automation-fixtures";
 import { execFileSync } from "node:child_process";
 import { loadAutomationInventory } from "../../scripts/automation/inventory.mjs";
+
+test("site recovery splits an over-cap completed search before pagination and reads every smaller window", async () => {
+  const calls: string[][] = [];
+  let completedQueries = 0;
+  const runs = await loadSiteWriterRecoveryRuns({
+    repository: "MentallyQuill/Tavernary",
+    nowMs: AUTOMATION_NOW,
+    workflow: "restore-site.yml",
+    gh: async (args) => {
+      calls.push(args);
+      if (!args.includes("status=completed"))
+        return JSON.stringify([{ total_count: 0, workflow_runs: [] }]);
+      completedQueries++;
+      const page = Number(
+        args.find((arg) => arg.startsWith("page="))!.slice(5),
+      );
+      if (completedQueries === 1)
+        return JSON.stringify([{ total_count: 1001, workflow_runs: [] }]);
+      return JSON.stringify([
+        {
+          total_count: 101,
+          workflow_runs: Array.from(
+            { length: page === 1 ? 100 : 1 },
+            (_, i) => ({
+              id: (completedQueries <= 3 ? 0 : 200) + (page - 1) * 100 + i + 1,
+            }),
+          ),
+        },
+      ]);
+    },
+  });
+  expect(runs).toHaveLength(202);
+  const completed = calls.filter((args) => args.includes("status=completed"));
+  expect(completed).toHaveLength(5);
+  expect(completed[0]).toContain("page=1");
+  expect(completed[1]).toContain("page=1");
+  expect(completed[0].find((arg) => arg.startsWith("created="))).not.toBe(
+    completed[1].find((arg) => arg.startsWith("created=")),
+  );
+  expect(calls.every((args) => !args.includes("--paginate"))).toBe(true);
+});
+
+test("truncated site recovery history fails before declaring handoffs absent", async () => {
+  await expect(
+    loadSiteWriterRecoveryRuns({
+      repository: "MentallyQuill/Tavernary",
+      nowMs: AUTOMATION_NOW,
+      workflow: "automation-writer.yml",
+      gh: async () => JSON.stringify([{ total_count: 50, workflow_runs: [] }]),
+    }),
+  ).rejects.toThrow("truncated");
+});
 
 test("the GitHub CLI loader bounds open-work pages and explicitly verifies old worker handles", async () => {
   const calls: string[][] = [];

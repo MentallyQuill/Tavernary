@@ -47,7 +47,8 @@ export function deploymentSiteOrigin(input?: {
 }): string;
 export function createPublicAssetReader(input: {
   signal?: AbortSignal;
-  expected: RevisionManifest;
+  /** Omitting this permits reading revision.json only, without authorizing deployment. */
+  expected?: RevisionManifest;
   mode?: "production" | "fixture";
   fixtureOrigin?: string;
   fetchImpl?: typeof fetch;

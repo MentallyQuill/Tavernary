@@ -678,9 +678,13 @@ prove completion. Keep pending receipts, frozen rollout manifests, owner
 decisions and tombstones intact during diagnosis. A successful dispatch alone
 does not prove publication or incident recovery.
 
-If a restore completed but its confirmation wake was dropped, request the exact
-native restore run through the existing writer. Replace the placeholder with
-the authenticated `restore-site.yml` run ID:
+Scheduled reconciliation recovers dropped restore-confirmation wakes from bounded
+native owner-run history within the ninety-day artifact window. Active confirmation
+runs coalesce; repeated failures back off. Confirmation and bundle retention share
+one slot in the twenty-operation pass. Completed restores still awaiting proof
+protect their immutable bundles. For immediate recovery, request the exact native
+restore run through the existing writer. Replace the placeholder with the
+authenticated `restore-site.yml` run ID:
 
 ```powershell
 gh workflow run automation-writer.yml --repo MentallyQuill/Tavernary --ref main -f mode=confirm-restore -f 'result_run_id=<restore-run-id>'
@@ -693,6 +697,12 @@ run ID. Automatic confirmation checks at most eight eligible native runs; missin
 or expired metadata cannot hide an older build that is actually served. Integrity
 failures stop recovery. Rebuilding one source SHA requires new exact build proof.
 Retention dispatch has its own shared-lane slot and native failed-attempt backoff.
+If an upload stopped before saving its archive and the Actions artifact expires,
+retention can reconstruct the exact export currently served at the fixed site.
+Every file must match its verified manifest; current catalog/target digests,
+owner removals and both-browser public confirmation must pass. A different build
+or corrupt file leaves the same draft unpublished. Already uploaded verified
+archives resume directly without replacing their bytes.
 
 The same writer safely retires eligible terminal receipt/publication pairs after
 ninety days, using one slot and a bounded commit. Compact completion markers live
@@ -767,8 +777,10 @@ canonical data and owner removals immediately before deployment. If current
 catalog/target digests or tombstones conflict with that bundle, create a fresh
 current-data export rather than overriding the guard. Restoration must never
 resurrect withdrawn content or downgrade owner decisions. The active rollback
-proof suppresses ordinary replay of the same canonical baseline; later genuine
-publishable changes can resume normal deployment.
+proof suppresses ordinary replay of the same canonical baseline, including builds
+queued before the restore. Later genuine publishable changes can resume normal
+deployment. Delayed confirmation rechecks current canonical data and owner
+removals before probing and before recording the override.
 
 ### Owner responsibilities
 

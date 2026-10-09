@@ -136,8 +136,12 @@ test.each([false, true])(
           }
           if (args[1].includes("/releases/tags/"))
             throw Object.assign(new Error("HTTP 404"), { status: 404 });
-          if (args[1].includes("/actions/workflows/automation-writer.yml/runs"))
-            return JSON.stringify({ total_count: 0, workflow_runs: [] });
+          const route = args.find((arg) => arg.startsWith("repos/"))!;
+          if (
+            route.includes("/actions/workflows/automation-writer.yml/runs") ||
+            route.includes("/actions/workflows/restore-site.yml/runs")
+          )
+            return JSON.stringify([{ total_count: 0, workflow_runs: [] }]);
           throw new Error(`Unexpected fixture endpoint ${args[1]}`);
         },
         env: {

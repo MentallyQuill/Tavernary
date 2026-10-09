@@ -3,6 +3,7 @@ import type { RestoreSource } from "./restore-source.mjs";
 import type { loadRetainedGithubSiteBundle } from "./site-bundle-github.mjs";
 import type { confirmPublicDeployment } from "./confirm-deployment.mjs";
 import type { commitCanonicalData } from "./canonical-data.mjs";
+import type { CurrentRollbackData } from "./rollback-canonical.mjs";
 export interface RestoreWriterState {
   revision: string;
   nowMs: number;
@@ -20,6 +21,7 @@ export interface RestoreWriterInput {
     revision: string;
     nowMs: number;
   }) => ReturnType<typeof loadRetainedGithubSiteBundle>;
+  readCurrent: () => Promise<CurrentRollbackData>;
   probe: (
     input: Parameters<typeof confirmPublicDeployment>[0],
   ) => ReturnType<typeof confirmPublicDeployment>;
