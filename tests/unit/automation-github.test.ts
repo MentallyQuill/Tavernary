@@ -11,6 +11,95 @@ import { AUTOMATION_NOW, receiptFixture } from "../helpers/automation-fixtures";
 import { execFileSync } from "node:child_process";
 import { loadAutomationInventory } from "../../scripts/automation/inventory.mjs";
 import { productionInventoryRoot } from "../helpers/production-inventory-root.mjs";
+import { operationKey } from "../../scripts/automation/operation.mjs";
+
+test("confirmed project finalization reads its fresh issue, all deterministic PR history and saved worker without global histories", async () => {
+  const receipt = receiptFixture();
+  Object.assign(receipt.operation, {
+    stage: "deployment-confirmed",
+    expectedSha: "d".repeat(40),
+    workerRunId: 700,
+  });
+  receipt.operation.identity.kind = "project";
+  receipt.operation.identity.subject = "issue:42";
+  const calls: string[][] = [];
+  let body = "original";
+  const gh = async (args: string[]) => {
+    calls.push(args);
+    const path = args.find((arg) => arg.startsWith("repos/"))!;
+    if (path.endsWith("/git/ref/heads/main"))
+      return JSON.stringify({ object: { sha: "d".repeat(40) } });
+    if (path.endsWith("/issues/42"))
+      return JSON.stringify({
+        number: 42,
+        state: "open",
+        body,
+        labels: [{ name: "project-submission" }],
+      });
+    if (path.endsWith("/actions/runs/700"))
+      return JSON.stringify({
+        id: 700,
+        status: "completed",
+        conclusion: "success",
+      });
+    if (
+      path.endsWith("/pulls") &&
+      args.includes("head=MentallyQuill:automation/project-submission-42")
+    ) {
+      expect(args).toContain("state=all");
+      return JSON.stringify([
+        [{ number: 800, state: "closed", merged_at: null }],
+      ]);
+    }
+    throw new Error("Unrelated repository inventory requested.");
+  };
+  const input = {
+    gh,
+    repository: "MentallyQuill/Tavernary",
+    receipts: [receipt],
+    nowMs: AUTOMATION_NOW,
+    finalizationOperation: receipt.operation,
+  };
+  const first = await loadGithubAutomationInventory(input);
+  expect(first.issues[0].body).toBe("original");
+  expect(first.pulls).toContainEqual(
+    expect.objectContaining({ number: 800, merged_at: null }),
+  );
+  expect(first.runs).toContainEqual(expect.objectContaining({ id: 700 }));
+  expect(calls).toHaveLength(4);
+  body = "owner changed the request";
+  expect((await loadGithubAutomationInventory(input)).issues[0].body).toBe(
+    body,
+  );
+  expect(calls).toHaveLength(8);
+});
+
+test("a finalization scope never hides a native issue outage", async () => {
+  const receipt = receiptFixture();
+  Object.assign(receipt.operation, {
+    stage: "deployment-confirmed",
+    expectedSha: "d".repeat(40),
+    workerRunId: null,
+  });
+  receipt.operation.identity.kind = "kit";
+  receipt.operation.identity.subject = "issue:42";
+  receipt.operation.key = operationKey(receipt.operation.identity);
+  await expect(
+    loadGithubAutomationInventory({
+      repository: "MentallyQuill/Tavernary",
+      receipts: [receipt],
+      nowMs: AUTOMATION_NOW,
+      finalizationOperation: receipt.operation,
+      gh: async (args) => {
+        const path = args.find((arg) => arg.startsWith("repos/"))!;
+        if (path.endsWith("/git/ref/heads/main"))
+          return JSON.stringify({ object: { sha: "d".repeat(40) } });
+        if (path.endsWith("/issues/42")) throw { status: 503 };
+        throw new Error("Unexpected global read");
+      },
+    }),
+  ).rejects.toMatchObject({ status: 503 });
+});
 
 test("site recovery splits an over-cap completed search before pagination and reads every smaller window", async () => {
   const calls: string[][] = [];
@@ -529,6 +618,61 @@ test("the production loader reconstructs real canonical maintenance without writ
     await fixture.cleanup();
   }
 }, 30_000);
+
+test("large run inventories read independent pages concurrently within a four-request bound", async () => {
+  let active = 0;
+  let maximumActive = 0;
+  const pages: number[] = [];
+  const runs = await loadAutomationWorkerRuns({
+    repository: "MentallyQuill/Tavernary",
+    nowMs: AUTOMATION_NOW,
+    gh: async (args) => {
+      const page = Number(
+        args.find((arg) => arg.startsWith("page="))!.slice(5),
+      );
+      pages.push(page);
+      active++;
+      maximumActive = Math.max(maximumActive, active);
+      await new Promise((resolve) => setTimeout(resolve, 5));
+      active--;
+      return JSON.stringify([
+        {
+          total_count: 901,
+          workflow_runs: Array.from(
+            { length: page === 10 ? 1 : 100 },
+            (_, i) => ({ id: (page - 1) * 100 + i + 1 }),
+          ),
+        },
+      ]);
+    },
+  });
+  expect(runs).toEqual(Array.from({ length: 901 }, (_, i) => ({ id: i + 1 })));
+  expect(pages).toEqual(Array.from({ length: 10 }, (_, i) => i + 1));
+  expect(maximumActive).toBeGreaterThan(1);
+  expect(maximumActive).toBeLessThanOrEqual(4);
+});
+
+test("a concurrent run page exceeding GitHub's result cap rejects the inventory", async () => {
+  await expect(
+    loadAutomationWorkerRuns({
+      repository: "MentallyQuill/Tavernary",
+      nowMs: AUTOMATION_NOW,
+      gh: async (args) => {
+        const page = Number(
+          args.find((arg) => arg.startsWith("page="))!.slice(5),
+        );
+        return JSON.stringify([
+          {
+            total_count: page === 3 ? 1001 : 500,
+            workflow_runs: Array.from({ length: 100 }, (_, i) => ({
+              id: (page - 1) * 100 + i + 1,
+            })),
+          },
+        ]);
+      },
+    }),
+  ).rejects.toThrow("changed beyond GitHub's result cap");
+});
 
 test("the final worker lookup paginates and refuses truncated filtered inventories", async () => {
   let captured: string[] = [];

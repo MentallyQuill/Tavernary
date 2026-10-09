@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "439ff7c2823a2a0cfd34c7184875bd2ddb1b299b43c5732c4d376603398a4cea",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1320029623:mezi99-sillytavern-internalstates",
+      "inputDigest": "c80193fdedafca287a70f02a6a5890c38cda4d2479f6e7b1d4d3c67e71287095",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-09-01T12:37:05.520Z",
+    "nextEligibleAt": "2026-10-09T06:50:29.697Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-09T06:35:29.697Z",
+  "completedAt": null
+}

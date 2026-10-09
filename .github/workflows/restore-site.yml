@@ -81,6 +81,7 @@ jobs:
     timeout-minutes: 15
     concurrency:
       group: canonical-publication
+      queue: max
       cancel-in-progress: false
     permissions:
       contents: read

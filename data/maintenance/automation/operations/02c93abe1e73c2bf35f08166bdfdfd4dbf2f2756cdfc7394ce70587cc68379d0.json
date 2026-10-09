@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "02c93abe1e73c2bf35f08166bdfdfd4dbf2f2756cdfc7394ce70587cc68379d0",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1318310911:ddkhan24-hordestudio",
+      "inputDigest": "13342277c3b614edc58d794b28a3ee6a4c3deb20ba2f1e6ae6be092b8c6069bf",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T10:28:09.115Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-09T10:13:09.115Z",
+  "completedAt": null
+}

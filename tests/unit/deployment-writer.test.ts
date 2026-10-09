@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 import { confirmCanonicalDeployment } from "../../scripts/automation/deployment-writer.mjs";
 import type { CanonicalConfirmationInput } from "../../scripts/automation/deployment-writer.mjs";
 import { confirmationFixture } from "../helpers/confirmation-fixtures";
@@ -190,6 +190,44 @@ test("an explicitly selected run retains exact-run custody without automatic fal
   ).rejects.toMatchObject({ code: "provider-unavailable" });
   expect(data.reads).toEqual([43]);
   expect(data.commits).toEqual([]);
+});
+
+test("a completed deployment run confirms without unrelated issue or pull inventory", async () => {
+  const data = recoveryFixture("missing");
+  const loadSite = vi.fn(async () => ({
+    revision: data.state.remote.mainHeadSha,
+    nowMs: data.state.nowMs,
+    deployments: [],
+    activeDeployment: null,
+  }));
+  expect(
+    await runDeploymentWriterConfirmation({
+      ...data.input,
+      operationKey: undefined,
+      runId: 42,
+      load: undefined,
+      loadSite,
+    }),
+  ).toMatchObject({ status: "confirmed" });
+  expect(loadSite).toHaveBeenCalledTimes(2);
+  expect(data.reads).toEqual([42]);
+  expect(data.commits).toHaveLength(1);
+  expect(data.publicSite.smokeCalls()).toBe(1);
+});
+
+test("operation-bound confirmation retains authoritative operation discovery", async () => {
+  const data = recoveryFixture("missing");
+  const loadSite = vi.fn(async () => {
+    throw new Error("Operation custody requires the complete inventory.");
+  });
+  expect(
+    await runDeploymentWriterConfirmation({
+      ...data.input,
+      runId: 42,
+      loadSite,
+    }),
+  ).toMatchObject({ status: "confirmed" });
+  expect(loadSite).not.toHaveBeenCalled();
 });
 
 test("the production writer authenticates the actual Pages archive and commits only verified public proof", async () => {

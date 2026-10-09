@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "05d9d7c37150ede96092e49cc2fbe7290a58533f8fed7921a795220ec54ba4c0",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1319688315:zeadenbeake-sillytavern-loregovernor",
+      "inputDigest": "9d0fbf78cffe890e9cd605645dfc0acc9d9d6f8d728a4a0e228c5d0321133187",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T10:45:14.113Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 7,
+      "immediateAttempts": 8
+    }
+  },
+  "updatedAt": "2026-10-09T10:30:14.113Z",
+  "completedAt": null
+}

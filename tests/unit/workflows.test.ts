@@ -6,6 +6,16 @@ import { parse } from "yaml";
 import { configuredBasePath } from "../../scripts/verify-static-export.mjs";
 
 const workflowDirectory = resolve(".github/workflows");
+test("the recovery canary retains its hidden fault report and effect journals", async () => {
+  const canary = await workflow("verify-automation");
+  const artifact = canary.jobs.verify.steps.find((step: WorkflowStep) =>
+    step.uses?.startsWith("actions/upload-artifact@"),
+  );
+  expect(artifact.with["include-hidden-files"]).toBe(true);
+  expect(artifact.with.path).toContain(".tmp/automation-canary.json");
+  expect(artifact.with.path).toContain(".tmp/automation-canary-effects-*.json");
+});
+
 test.each(["verify-automation", "restore-drill"])(
   "%s serves the production domain root under GitHub Actions",
   async (name) => {

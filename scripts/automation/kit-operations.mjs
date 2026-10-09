@@ -5,6 +5,7 @@ import { parseKitWithdrawalIssue } from "../kits/apply-withdrawal.mjs";
 import { fingerprintProjectPublicationInput } from "../publication/project-publication-transaction.mjs";
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
 import { operationKey } from "./operation.mjs";
+import { applyFinalizationReceipt } from "./finalization.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
 import {
   recoverInventoryWorker,
@@ -118,8 +119,16 @@ export function discoverKitOperations(input) {
         operation.stage === "deployment-confirmed" &&
         issue.state === "closed" &&
         issue.state_reason === "completed" &&
-        labels.includes(completeLabel)
+        labels.includes(completeLabel) &&
+        !input.receipts.some(
+          (receipt) =>
+            receipt.operation.key === operation.key &&
+            receipt.operation.expectedSha === operation.expectedSha &&
+            receipt.operation.stage === "deployment-confirmed",
+        )
       )
+        // Keep an exact pending receipt through the fresh post-projection read.
+        // Once finalized, completed issue bookkeeping becomes undiscoverable.
         continue;
     } else {
       if (
@@ -189,7 +198,7 @@ export function discoverKitOperations(input) {
           ...runs,
         ]);
     }
-    operations.push(operation);
+    operations.push(applyFinalizationReceipt(operation, input.receipts));
   }
   return operations;
 }

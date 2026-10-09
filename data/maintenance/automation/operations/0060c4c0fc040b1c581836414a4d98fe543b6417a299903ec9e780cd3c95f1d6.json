@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0060c4c0fc040b1c581836414a4d98fe543b6417a299903ec9e780cd3c95f1d6",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1281058203:soyo5800-rpg-tracker-for-sillytavern",
+      "inputDigest": "db0e6ef6fb1991449cf4fa0b918ad2905a35205310e3dc74756ba083f91c9a76",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T09:12:53.329Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 3
+    }
+  },
+  "updatedAt": "2026-10-09T08:57:53.329Z",
+  "completedAt": null
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "04349eb4bd3d883179dd0f1a2b569d48784ec2dbd43b527c2b84d0ca2ccc3b3e",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1179141243:carlosnahuelcoy-sillytavern-player2",
+      "inputDigest": "849f31f217940797613472bcb177742aac9a0cb5f2d6cfe068087fd76f3b40b8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T10:28:09.115Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T10:13:09.115Z",
+  "completedAt": null
+}

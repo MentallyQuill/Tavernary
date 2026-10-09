@@ -80,6 +80,7 @@ export async function reconcileAutomation(input) {
       observationSlots--;
     }
   }
+  let inlineFinalizationUsed = false;
   for (const candidate of selected) {
     let operation = input.revalidate
       ? await input.revalidate(candidate)
@@ -94,13 +95,24 @@ export async function reconcileAutomation(input) {
     }
     validateAutomationOperation(operation);
     if (input.dryRun) continue;
+    const inlineFinalization =
+      operation.stage === "deployment-confirmed" &&
+      input.finalize &&
+      !inlineFinalizationUsed;
+    if (inlineFinalization) inlineFinalizationUsed = true;
     const intent = {
       ...operation,
       nextEligibleAt: new Date(input.nowMs + 15 * 60_000).toISOString(),
     };
-    await persist(intent);
+    // The serialized finalizer owns its durable receipt; a future dispatch lease
+    // would block an otherwise-due retry before lifecycle projection starts.
+    if (!inlineFinalization) await persist(intent);
     try {
-      const effect = await input.dispatch(operation);
+      const effect = await (inlineFinalization
+        ? input.finalize(operation)
+        : input.dispatch(operation));
+      if (inlineFinalization && !effect.operation)
+        throw new Error("Inline finalization requires the current operation.");
       const next = effect.operation ?? {
         ...intent,
         workerRunId: effect.workerRunId ?? null,
@@ -113,6 +125,14 @@ export async function reconcileAutomation(input) {
       else if (effect.waiting) result.waiting++;
       else result.dispatched++;
     } catch (error) {
+      if (inlineFinalization) {
+        // The finalizer reconstructs authority and owns failure persistence.
+        // A lost response can follow a durable terminal write; this earlier
+        // candidate must never overwrite that receipt with a stale retry.
+        result.waiting++;
+        result.incidents++;
+        continue;
+      }
       const failure = classifyAutomationFailure({
         diagnosticCode: error?.code,
         httpStatus: githubFailureStatus(error),

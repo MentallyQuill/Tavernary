@@ -11,6 +11,7 @@ export interface GithubAutomationInventory {
   pulls: ProjectInventoryPull[];
   runs: ProjectInventoryRun[];
   mainHeadSha: string;
+  finalizationOperationKey?: string;
 }
 export function githubFailureStatus(error: unknown): number;
 export function loadGithubRunArtifacts(input: {
@@ -51,6 +52,7 @@ export function loadGithubAutomationInventory(input: {
   receipts: AutomationReceipt[];
   referencedOperations?: AutomationOperation[];
   nowMs: number;
+  finalizationOperation?: AutomationOperation;
 }): Promise<GithubAutomationInventory>;
 export function persistGithubAutomationReceipt(input: {
   gh: GhRunner;

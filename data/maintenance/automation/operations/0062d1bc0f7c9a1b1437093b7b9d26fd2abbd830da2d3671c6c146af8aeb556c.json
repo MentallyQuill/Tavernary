@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0062d1bc0f7c9a1b1437093b7b9d26fd2abbd830da2d3671c6c146af8aeb556c",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1221995274:aceeenvw-charswitchpro",
+      "inputDigest": "e97051c255e8f901323d4b61ca870f5e211a5bacbc594e0e41e4e1706ff8cd0c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T09:12:53.329Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T08:57:53.329Z",
+  "completedAt": null
+}

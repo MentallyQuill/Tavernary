@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b87509e6ebfe4f5194839bf73fc91d3eef59338a400fe83b5f6708a06df63bc1",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1118736914:japkozjad-st-action-pickers",
+      "inputDigest": "5f53789677da154776e3d9f46012a0ee050857233438304bc3525cb2d0a9cf6d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-09-24T12:46:01.891Z",
+    "nextEligibleAt": "2026-10-09T08:06:27.514Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T07:51:27.514Z",
+  "completedAt": null
+}

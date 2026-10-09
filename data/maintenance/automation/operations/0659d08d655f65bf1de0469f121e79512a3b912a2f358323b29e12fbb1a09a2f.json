@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0659d08d655f65bf1de0469f121e79512a3b912a2f358323b29e12fbb1a09a2f",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-626937684:kwaroran-risuai",
+      "inputDigest": "ac41959cc4e95b3a0ccef3480c6d5f692a31e268e5da0957b709d29c171cb23e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T11:38:23.305Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T11:23:23.305Z",
+  "completedAt": null
+}

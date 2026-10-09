@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "01772467d63cd803507582c2e2743403ba6f6bfb5ef1b67c69970f6d9bc50286",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1275541730:nattaphat010447-nutho-autocloser",
+      "inputDigest": "25c4168625b9d1df4b64c404c9487ca8f0e1acaa92f0a58114d1c2f4cd2260c4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T09:12:53.329Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T08:57:53.329Z",
+  "completedAt": null
+}

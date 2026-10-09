@@ -1,10 +1,124 @@
 import { expect, test } from "vitest";
+import type { AutomationReceipt } from "../../scripts/automation/receipts.mjs";
+
+test("a lost inline finalization response cannot overwrite the remote terminal receipt with a stale retry", async () => {
+  const effects = controllerFixture();
+  const operation = operationFixture({ stage: "deployment-confirmed" });
+  let remote: AutomationReceipt | undefined;
+  effects.input.inventory = async () => [operation];
+  const result = await reconcileAutomation({
+    ...effects.input,
+    persist: async (receipt) => {
+      remote = receipt;
+    },
+    finalize: async () => {
+      remote = {
+        schema_version: 1,
+        operation: {
+          ...operation,
+          stage: "finalized",
+          workerRunId: null,
+          retry: null,
+          nextEligibleAt: null,
+        },
+        updatedAt: new Date(AUTOMATION_NOW).toISOString(),
+        completedAt: new Date(AUTOMATION_NOW).toISOString(),
+      };
+      throw Object.assign(
+        new Error("Response lost after durable terminal write."),
+        { status: 503 },
+      );
+    },
+  });
+  expect(remote?.operation.stage).toBe("finalized");
+  expect(remote?.operation.retry).toBeNull();
+  expect(result.dispatched).toBe(0);
+  expect(result.waiting).toBe(1);
+});
 import { reconcileAutomation } from "../../scripts/automation/reconcile.mjs";
 import {
   AUTOMATION_NOW,
   controllerFixture,
   operationFixture,
 } from "../helpers/automation-fixtures";
+
+test("one oldest confirmed operation finishes in the canonical pass without a replaceable worker handoff or future intent", async () => {
+  const effects = controllerFixture();
+  const oldest = operationFixture({
+    stage: "deployment-confirmed",
+    retry: {
+      failure: { kind: "transient", reasonCode: "provider-unavailable" },
+      transientAttempts: 1,
+      immediateAttempts: 0,
+    },
+    nextEligibleAt: new Date(AUTOMATION_NOW - 60_000).toISOString(),
+  });
+  const derived = operationFixture({
+    identity: { ...oldest.identity, subject: "issue:43" },
+    stage: "deployment-confirmed",
+    createdAt: new Date(AUTOMATION_NOW - 1_800_000).toISOString(),
+  });
+  effects.input.inventory = async () => [oldest, derived];
+  const finalized: string[] = [];
+  const result = await reconcileAutomation({
+    ...effects.input,
+    finalize: async (operation) => {
+      finalized.push(operation.key);
+      expect(
+        effects.receipts.some(
+          (receipt) => receipt.operation.key === operation.key,
+        ),
+      ).toBe(false);
+      return {
+        operation: {
+          ...operation,
+          expectedSha: "e".repeat(40),
+          stage: "finalized",
+          workerRunId: null,
+          retry: null,
+          nextEligibleAt: null,
+        },
+      };
+    },
+  });
+  expect(finalized).toEqual([oldest.key]);
+  expect(result).toMatchObject({ finished: 1, dispatched: 1 });
+  expect(effects.dispatches.map((operation) => operation.key)).toEqual([
+    derived.key,
+  ]);
+  expect(
+    effects.receipts.find((receipt) => receipt.operation.key === oldest.key)
+      ?.operation,
+  ).toMatchObject({ stage: "finalized", expectedSha: "e".repeat(40) });
+});
+
+test("a waiting inline finalizer preserves freshly reconstructed backoff instead of stale dispatch intent", async () => {
+  const effects = controllerFixture();
+  const operation = operationFixture({ stage: "deployment-confirmed" });
+  const nextEligibleAt = new Date(AUTOMATION_NOW + 86_400_000).toISOString();
+  effects.input.inventory = async () => [operation];
+  const result = await reconcileAutomation({
+    ...effects.input,
+    finalize: async () => ({
+      waiting: true,
+      operation: {
+        ...operation,
+        nextEligibleAt,
+        retry: {
+          failure: { kind: "transient", reasonCode: "provider-unavailable" },
+          transientAttempts: 4,
+          immediateAttempts: 0,
+        },
+      },
+    }),
+  });
+  expect(result).toMatchObject({ waiting: 1, dispatched: 0, finished: 0 });
+  expect(effects.dispatches).toHaveLength(0);
+  expect(effects.receipts.at(-1)?.operation.nextEligibleAt).toBe(
+    nextEligibleAt,
+  );
+  expect(effects.receipts.at(-1)?.operation.retry?.transientAttempts).toBe(4);
+});
 
 test("a missed webhook is recovered by the scheduled pass", async () => {
   const effects = controllerFixture({ missedWebhook: true });

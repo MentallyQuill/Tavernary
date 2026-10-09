@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "02d7b7a4245a6c66045707eff27b0bb3610b4a3606f0b50b83326c3cd89b5434",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1298579218:owler-tavern-context-image-generation",
+      "inputDigest": "aeb39742b53e71463438ec1fa688f0ced4eff9edf491a5940ff0b07d48d52d6c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T10:28:09.115Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-09T10:13:09.115Z",
+  "completedAt": null
+}

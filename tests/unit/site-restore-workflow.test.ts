@@ -37,6 +37,7 @@ test("owner restore is dry by default, serializes Pages and the final data guard
   expect(workflow.jobs.verify.if).toContain("github.actor_id == 2625904");
   expect(workflow.jobs.deploy.concurrency).toEqual({
     group: "canonical-publication",
+    queue: "max",
     "cancel-in-progress": false,
   });
   expect(workflow.jobs.deploy.if).toContain("!inputs.dry_run");

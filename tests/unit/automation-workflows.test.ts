@@ -5,6 +5,72 @@ import { planAutomationWorker } from "../../scripts/automation/worker.mjs";
 import { discoverReportOperations } from "../../scripts/automation/report-operations.mjs";
 import { reportInventoryFixture } from "../helpers/automation-fixtures";
 import { parse } from "yaml";
+import { runInNewContext } from "node:vm";
+
+test.each([
+  ["deploy-pages.yml", "Site: Deploy e4e5436c", "push"],
+  ["deploy-pages.yml", "Site: Deploy e4e5436c", "workflow_dispatch"],
+  ["restore-site.yml", "Site: Restore release407557671", "workflow_dispatch"],
+  [
+    "request-catalog-enrichment.yml",
+    "Owner metadata rollout",
+    "workflow_dispatch",
+  ],
+  [
+    "generate-project-submission.yml",
+    "Project #42: Request review PR force=true",
+    "workflow_dispatch",
+  ],
+  [
+    "generate-project-owner-request.yml",
+    "Owner request #42: Request review PR force=true",
+    "workflow_dispatch",
+  ],
+])(
+  "completed %s wakes retain owner authorization with a dynamic run title",
+  (file, name, event) => {
+    const workflow = parse(
+      readFileSync(".github/workflows/automation-prepared.yml", "utf8"),
+    );
+    const context = {
+      github: {
+        repository: "MentallyQuill/Tavernary",
+        event: {
+          workflow_run: {
+            path: `.github/workflows/${file}`,
+            name,
+            event,
+            head_branch: "main",
+            head_repository: { full_name: "MentallyQuill/Tavernary" },
+            actor: { id: 2625904 },
+          },
+        },
+      },
+      vars: { TAVERNARY_PUBLISHER_BOT_ID: 317929880 },
+    };
+    expect(
+      runInNewContext(workflow.jobs.wake.if, context, { timeout: 1000 }),
+    ).toBe(true);
+    const run = context.github.event.workflow_run;
+    for (const denied of [
+      { ...run, head_branch: "other" },
+      { ...run, head_repository: { full_name: "Foreign/Repo" } },
+      { ...run, event: "workflow_dispatch", actor: { id: 999 } },
+      { ...run, path: ".github/workflows/foreign.yml" },
+    ]) {
+      expect(
+        runInNewContext(
+          workflow.jobs.wake.if,
+          {
+            ...context,
+            github: { ...context.github, event: { workflow_run: denied } },
+          },
+          { timeout: 1000 },
+        ),
+      ).toBe(false);
+    }
+  },
+);
 
 test("expired-archive retention has the browsers required by its public-proof fallback", () => {
   const workflow = parse(
@@ -143,12 +209,13 @@ test("every successful workflow wake names an actual workflow and failures rely 
   );
 });
 
-test("the canonical writer serializes receipt mutations and mints its write token after setup", () => {
+test("the canonical writer queues receipt mutations and mints its write token after setup", () => {
   const writer = readFileSync(
     ".github/workflows/automation-writer.yml",
     "utf8",
   );
   expect(writer).toContain("group: canonical-publication");
+  expect(writer).toContain("queue: max");
   expect(writer).toContain("cancel-in-progress: false");
   expect(writer).toContain("ref: main");
   expect(writer).toContain("permission-contents: write");

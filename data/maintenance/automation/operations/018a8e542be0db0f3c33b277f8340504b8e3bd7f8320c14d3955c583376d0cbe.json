@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "018a8e542be0db0f3c33b277f8340504b8e3bd7f8320c14d3955c583376d0cbe",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1276977142:jeremyoha450-sillytavern-character-continuity-manager",
+      "inputDigest": "6fe5b71ab9bec1a28c17577de7e9a943939f10d3e9917df45b832d3155f3f608",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T09:12:53.329Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T08:57:53.329Z",
+  "completedAt": null
+}

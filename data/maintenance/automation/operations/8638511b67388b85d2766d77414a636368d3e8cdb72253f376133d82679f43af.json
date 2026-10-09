@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8638511b67388b85d2766d77414a636368d3e8cdb72253f376133d82679f43af",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1170213715:coneja-chibi-the-hawthorne-directives",
+      "inputDigest": "b49a6e302a6c186b5dca6793e42a4f1dd6a5510f99c4bf40045523ece6ef2638",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-09-18T12:16:22.415Z",
+    "nextEligibleAt": "2026-10-09T07:50:43.948Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T07:35:43.948Z",
+  "completedAt": null
+}

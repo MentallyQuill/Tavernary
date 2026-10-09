@@ -230,7 +230,13 @@ export function discoverAutomationState(state) {
   return [
     ...canonicalPublications,
     ...discovered.filter((operation) => !publishedKeys.has(operation.key)),
-  ].map((operation) => retired.get(operation.key) ?? operation);
+  ]
+    .map((operation) => retired.get(operation.key) ?? operation)
+    .filter(
+      (operation) =>
+        !remote.finalizationOperationKey ||
+        operation.key === remote.finalizationOperationKey,
+    );
 }
 
 export async function loadAutomationInventory({
@@ -240,7 +246,13 @@ export async function loadAutomationInventory({
   publisherActorId,
   nowMs,
   reportIndex,
+  finalizationOperationKey,
 }) {
+  if (
+    finalizationOperationKey !== undefined &&
+    !/^[a-f0-9]{64}$/u.test(finalizationOperationKey)
+  )
+    throw new Error("Finalization inventory key is invalid.");
   if (!Number.isSafeInteger(publisherActorId) || publisherActorId < 1)
     throw Object.assign(new Error("Publisher actor is not configured."), {
       code: "publisher-authentication-failed",
@@ -334,6 +346,12 @@ export async function loadAutomationInventory({
       )
       .map(({ record }) => record.operation),
     nowMs,
+    finalizationOperation:
+      finalizationOperationKey === undefined
+        ? undefined
+        : receipts.find(
+            (receipt) => receipt.operation.key === finalizationOperationKey,
+          )?.operation,
   });
   const committedAt = new Date(
     execFileSync("git", ["show", "-s", "--format=%cI", revision], {
@@ -505,6 +523,27 @@ export async function loadAutomationInventory({
   if (local.retiredReceipts.length) {
     state.receipts.push(...local.retiredReceipts);
     state.operations = discoverAutomationState(state);
+  }
+  if (remote.finalizationOperationKey) {
+    const operation = state.operations.find(
+      (current) => current.key === remote.finalizationOperationKey,
+    );
+    const receipt = receipts.find(
+      (current) => current.operation.key === remote.finalizationOperationKey,
+    );
+    if (
+      !operation ||
+      !["deployment-confirmed", "finalized"].includes(operation.stage) ||
+      operation.expectedSha !== receipt?.operation.expectedSha
+    )
+      return loadAutomationInventory({
+        root,
+        gh,
+        repository,
+        publisherActorId,
+        nowMs,
+        reportIndex,
+      });
   }
   return state;
 }

@@ -138,29 +138,61 @@ export async function runAutomationWorker({
   return plan;
 }
 
+export async function loadAutomationWorkerOperations({
+  operationKey,
+  runId,
+  load,
+}) {
+  const state = await load(operationKey);
+  // Our dispatch intent and live handle guard the controller, not worker authority.
+  const reconstruct = (current) =>
+    discoverAutomationState({
+      ...current,
+      receipts: current.receipts.filter(
+        (receipt) => receipt.operation.key !== operationKey,
+      ),
+      remote: {
+        ...current.remote,
+        runs: current.remote.runs.filter((run) => run.id !== runId),
+      },
+    });
+  const operations = reconstruct(state);
+  const operation = operations.find((current) => current.key === operationKey);
+  const receipt = state.receipts.find(
+    (current) => current.operation.key === operationKey,
+  );
+  if (
+    state.remote.finalizationOperationKey &&
+    (!operation ||
+      !["deployment-confirmed", "finalized"].includes(operation.stage) ||
+      operation.expectedSha !== receipt?.operation.expectedSha)
+  )
+    return reconstruct(await load());
+  return operations;
+}
+
 async function main() {
   const env = process.env;
   const repository = env.GITHUB_REPOSITORY;
   const event = JSON.parse(await readFile(env.GITHUB_EVENT_PATH, "utf8"));
   assertTrustedAutomationContext(env, repository, event);
   try {
-    const state = await loadAutomationInventory({
-      root: process.cwd(),
-      gh: executeGh,
-      repository,
-      publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
-      nowMs: Date.now(),
+    const operations = await loadAutomationWorkerOperations({
+      operationKey: env.OPERATION_KEY,
+      runId: Number(env.GITHUB_RUN_ID),
+      load: (finalizationOperationKey) =>
+        loadAutomationInventory({
+          root: process.cwd(),
+          gh: executeGh,
+          repository,
+          publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
+          nowMs: Date.now(),
+          finalizationOperationKey,
+        }),
     });
-    // Reconstruct authority; our own dispatch intent and live handle only guard the controller.
-    state.receipts = state.receipts.filter(
-      (receipt) => receipt.operation.key !== env.OPERATION_KEY,
-    );
-    state.remote.runs = state.remote.runs.filter(
-      (run) => run.id !== Number(env.GITHUB_RUN_ID),
-    );
     const result = await runAutomationWorker({
       operationKey: env.OPERATION_KEY,
-      load: async () => discoverAutomationState(state),
+      load: async () => operations,
       gh: executeGh,
       repository,
     });

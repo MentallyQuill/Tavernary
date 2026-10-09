@@ -135,14 +135,29 @@ async function boundedRunPages(gh, path, fields) {
   const first = [await inventoryPage(gh, path, fields, 1)];
   runPages(first);
   if (first[0].total_count > 1000 || first[0].total_count <= 100) return first;
-  for (let page = 2; page <= 10; page++) {
-    const next = [await inventoryPage(gh, path, fields, page)];
+  for (let page = 2; page <= 10;) {
+    // Revalidation may reload this history several times. Read only pages
+    // already justified by the last observed total, with at most four in flight.
+    const end = Math.min(
+      page + 3,
+      10,
+      Math.ceil(first.at(-1).total_count / 100),
+    );
+    if (end < page) return first;
+    const next = await Promise.all(
+      Array.from({ length: end - page + 1 }, (_, index) =>
+        inventoryPage(gh, path, fields, page + index),
+      ),
+    );
     runPages(next);
-    if (next[0].total_count > 1000)
+    if (next.some((value) => value.total_count > 1000))
       throw new Error("Workflow inventory changed beyond GitHub's result cap.");
-    first.push(...next);
-    if (next[0].workflow_runs.length < 100 || page * 100 >= next[0].total_count)
-      return first;
+    for (const value of next) {
+      first.push(value);
+      if (value.workflow_runs.length < 100 || page * 100 >= value.total_count)
+        return first;
+      page++;
+    }
   }
   throw new Error("Workflow inventory exceeds its page bound.");
 }
@@ -302,16 +317,102 @@ export async function loadGenerationOwnerRequestRuns({
   }
   return [...found.values()];
 }
+async function loadFinalizationInventory({ gh, root, repository, operation }) {
+  const read = async (path) => {
+    const text = await gh(["api", `${root}/${path}`]);
+    if (Buffer.byteLength(text, "utf8") > 4 * 1024 * 1024)
+      throw new Error(
+        "Finalization inventory response exceeds its byte bound.",
+      );
+    return JSON.parse(text);
+  };
+  const optional = async (path) => {
+    try {
+      return await read(path);
+    } catch (error) {
+      if (githubFailureStatus(error) !== 404) throw error;
+      return null;
+    }
+  };
+  const number = Number(
+    /^issue:([1-9]\d*)$/u.exec(operation.identity.subject)?.[1],
+  );
+  const producer =
+    operation.identity.kind === "project"
+      ? "project-submission"
+      : "project-owner-request";
+  const [reference, issue, pullPages, worker] = await Promise.all([
+    read("git/ref/heads/main"),
+    Number.isSafeInteger(number) && number > 0
+      ? optional(`issues/${number}`)
+      : null,
+    ["project", "owner-request"].includes(operation.identity.kind)
+      ? pages(gh, `${root}/pulls`, [
+          "state=all",
+          `head=${repository.split("/")[0]}:automation/${producer}-${number}`,
+        ])
+      : [],
+    operation.workerRunId === null
+      ? null
+      : optional(`actions/runs/${operation.workerRunId}`),
+  ]);
+  if (
+    !/^[a-f0-9]{40}$/u.test(reference?.object?.sha ?? "") ||
+    (issue &&
+      (issue.number !== number || !["open", "closed"].includes(issue.state))) ||
+    (worker &&
+      (worker.id !== operation.workerRunId ||
+        typeof worker.status !== "string"))
+  )
+    throw new Error("GitHub returned an invalid finalization inventory.");
+  return {
+    issues: issue ? [issue] : [],
+    pulls: pullPages.flat(),
+    runs: worker ? [worker] : [],
+    mainHeadSha: reference.object.sha,
+    finalizationOperationKey: operation.key,
+  };
+}
+
 export async function loadGithubAutomationInventory({
   gh,
   repository,
   receipts,
   referencedOperations = [],
   nowMs,
+  finalizationOperation,
 }) {
   const root = repositoryPath(repository);
   if (!Number.isSafeInteger(nowMs) || nowMs < 90 * 86_400_000)
     throw new Error("GitHub inventory retention clock is invalid.");
+  if (finalizationOperation) {
+    validateAutomationOperation(finalizationOperation);
+    const kind = finalizationOperation.identity.kind;
+    const issueNumber = Number(
+      /^issue:([1-9]\d*)$/u.exec(finalizationOperation.identity.subject)?.[1],
+    );
+    if (
+      finalizationOperation.stage === "deployment-confirmed" &&
+      /^[a-f0-9]{40}$/u.test(finalizationOperation.expectedSha ?? "") &&
+      [
+        "project",
+        "owner-request",
+        "kit",
+        "withdrawal",
+        "refresh",
+        "metadata",
+        "deployment",
+      ].includes(kind) &&
+      (!["project", "owner-request", "kit", "withdrawal"].includes(kind) ||
+        (Number.isSafeInteger(issueNumber) && issueNumber > 0))
+    )
+      return loadFinalizationInventory({
+        gh,
+        root,
+        repository,
+        operation: finalizationOperation,
+      });
+  }
   const cutoff = nowMs - 90 * 86_400_000;
   const recentClosure = (row) => {
     const updated = Date.parse(row.updated_at);

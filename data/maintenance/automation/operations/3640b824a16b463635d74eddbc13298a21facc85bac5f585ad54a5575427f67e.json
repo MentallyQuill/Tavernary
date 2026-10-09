@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3640b824a16b463635d74eddbc13298a21facc85bac5f585ad54a5575427f67e",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:codeberg-2445404:targren-lumiverse-swipescrubber",
+      "inputDigest": "b9616e88516e6350f33fe775fcb943fa4e34e1b4959c43f44f3b04224d74e65e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.698Z",
+    "nextEligibleAt": "2026-10-09T09:12:53.329Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T08:57:53.329Z",
+  "completedAt": null
+}

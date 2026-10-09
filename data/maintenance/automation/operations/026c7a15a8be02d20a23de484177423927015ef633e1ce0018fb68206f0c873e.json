@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "026c7a15a8be02d20a23de484177423927015ef633e1ce0018fb68206f0c873e",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1336934111:maxwell5600-persona-library",
+      "inputDigest": "42af7b9880fbc3ab212365dc9c86aaaf45b448017d2868ce2371a5f7b60f57ae",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T10:28:09.115Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-09T10:13:09.115Z",
+  "completedAt": null
+}

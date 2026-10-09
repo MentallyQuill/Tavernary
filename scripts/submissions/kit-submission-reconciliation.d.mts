@@ -110,3 +110,8 @@ export function parseReconciliationArgs(args: string[]): {
 };
 
 export function executeGh(args: string[], stdin?: string): Promise<string>;
+export function createGithubCliFailure(
+  args: string[],
+  code: number | null,
+  stderr: string,
+): Error & { code?: string };

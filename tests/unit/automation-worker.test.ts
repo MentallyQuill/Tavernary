@@ -2,8 +2,81 @@ import { expect, test } from "vitest";
 import {
   planAutomationWorker,
   runAutomationWorker,
+  loadAutomationWorkerOperations,
 } from "../../scripts/automation/worker.mjs";
-import { operationFixture } from "../helpers/automation-fixtures";
+import {
+  operationFixture,
+  projectInventoryFixture,
+  receiptFixture,
+} from "../helpers/automation-fixtures";
+import { discoverProjectOperations } from "../../scripts/automation/project-operations.mjs";
+import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
+
+test("a stale confirmed receipt cannot redispatch normal work from a sparse inventory after worker exclusions", async () => {
+  const input = projectInventoryFixture({ generationRun: { id: 702 } });
+  const operation = discoverProjectOperations(input)[0];
+  const receipt = receiptFixture({
+    operation: {
+      ...operation,
+      stage: "deployment-confirmed",
+      expectedSha: "d".repeat(40),
+      workerRunId: 900,
+    },
+  });
+  const state: AutomationInventoryState = {
+    root: process.cwd(),
+    repository: "MentallyQuill/Tavernary",
+    nowMs: input.nowMs,
+    publisherActorId: input.publisherActorId,
+    receipts: [receipt],
+    operations: [receipt.operation],
+    remote: {
+      issues: input.issues,
+      pulls: [],
+      runs: [],
+      mainHeadSha: "b".repeat(40),
+      finalizationOperationKey: operation.key,
+    },
+    local: {
+      projects: input.catalog.projects,
+      sources: input.catalog.sources,
+      snapshots: [],
+      kits: [],
+      deployments: [],
+      blockedUsers: { blocked: [] },
+      revision: "b".repeat(40),
+      metadataState: [],
+      advisoryState: [],
+    },
+  };
+  const loads: (string | undefined)[] = [];
+  const operations = await loadAutomationWorkerOperations({
+    operationKey: operation.key,
+    runId: 900,
+    load: async (key) => {
+      loads.push(key);
+      return key
+        ? state
+        : {
+            ...state,
+            remote: {
+              ...state.remote,
+              finalizationOperationKey: undefined,
+              runs: input.runs,
+            },
+          };
+    },
+  });
+  const result = await runAutomationWorker({
+    operationKey: operation.key,
+    load: async () => operations,
+    gh: async () => {
+      throw new Error("Active replacement producer must prevent dispatch.");
+    },
+  });
+  expect(result).toEqual({ action: "wait" });
+  expect(loads).toEqual([operation.key, undefined]);
+});
 
 test("worker dispatch uses the current reconstructed operation and never a receipt as authority", async () => {
   const operation = operationFixture();

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "034c71d0434a32f9cc97e33bb375cc7c7685633aae41239b7246b070fb16764e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1050800660:pureconcentratedspite-world-navigatorst",
+      "inputDigest": "b0d1f22f63ca1e0a2d1454236211adaa37bd5730b5691dbc53d349637c4d3507",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T10:28:09.115Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-09T10:13:09.115Z",
+  "completedAt": null
+}
