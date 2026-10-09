@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { AUTOMATION_FAILURE_REASON_CODES } from "./failure.mjs";
 import { validateModelBudgetState } from "./model-budget.mjs";
+import { assessModelProviderCircuit } from "./model-preparation.mjs";
 import {
   createEnrichmentReport,
   validateEnrichmentReport,
@@ -308,6 +309,18 @@ export function assessInventoryHealth(state) {
   const budget = state.local.modelBudget
     ? validateModelBudgetState(state.local.modelBudget)
     : null;
+  const modelCircuit = assessModelProviderCircuit({
+    operations: state.operations,
+    receipts: state.receipts,
+    budget,
+    nowMs: state.nowMs,
+  });
+  if (modelCircuit.reason)
+    circuits.set("dependency:model-provider", {
+      subject: "dependency:model-provider",
+      reason: modelCircuit.reason,
+      recovered: !modelCircuit.open,
+    });
   for (const subject of [
     "dependency:publisher",
     "dependency:model-provider",

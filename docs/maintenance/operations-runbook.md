@@ -678,6 +678,13 @@ prove completion. Keep pending receipts, frozen rollout manifests, owner
 decisions and tombstones intact during diagnosis. A successful dispatch alone
 does not prove publication or incident recovery.
 
+A malformed operation receipt is isolated and reported through a sanitized
+`receipt-invalid` incident. Other operations still reconstruct from native GitHub
+and canonical publication evidence. When that exact operation writes a repaired
+receipt, it replaces only its own path using the freshly read GitHub blob SHA.
+Damaged publication records, model budgets and tombstones still stop unsafe work;
+do not delete them to bypass validation.
+
 Scheduled reconciliation recovers dropped restore-confirmation wakes from bounded
 native owner-run history within the ninety-day artifact window. Active confirmation
 runs coalesce; repeated failures back off. Confirmation and bundle retention share
@@ -855,6 +862,15 @@ provider recovery. Token evidence is a conservative requested bound, not a
 billing statement. Failed or interrupted requests and unused allowance remain
 charged; a lost response cannot create more allowance. Owner enrichment admission
 uses the same budgeted preparation and authenticated checkpoint/completion path.
+
+A known model credential or configuration failure suppresses related preparation
+across daily and monthly budget resets. After its twenty-four-hour retry delay,
+one eligible job claims the shared probe through its durable model reservation.
+An expired or unconfirmed dispatch remains charged and prevents a replacement
+probe for twenty-four hours. A positive settled response after the failure clears
+the circuit; a new failure opens it again. Cached work continues without model
+spending. Repair the configured credential, then request reconciliation as above;
+the existing cooldown still applies.
 
 These checks run inside GitHub. If GitHub Actions stops running or the required
 GitHub credential cannot write issues, it cannot report that outage itself.

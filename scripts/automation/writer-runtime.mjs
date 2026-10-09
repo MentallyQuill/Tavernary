@@ -13,7 +13,10 @@ import {
   validateModelBudgetState,
   settlePreparedModelUsage,
 } from "./model-budget.mjs";
-import { reserveModelPreparation } from "./model-preparation.mjs";
+import {
+  reserveModelPreparation,
+  assessModelProviderCircuit,
+} from "./model-preparation.mjs";
 import { isReportNarrativeRetry } from "./report-operations.mjs";
 import { enrichmentCheckpointNeedsModel } from "./enrichment-preparation.mjs";
 import {
@@ -562,6 +565,9 @@ export async function runModelWriterPreparation({
         : []),
     ];
     const path = "data/maintenance/automation/model-budgets/global.json";
+    const requestId = request
+      ? `generation-request-${request.runId}`
+      : `writer-${env.GITHUB_RUN_ID}`;
     const budgetState = async (state) => {
       let budget = state.local.modelBudget;
       if (!budget) {
@@ -575,9 +581,20 @@ export async function runModelWriterPreparation({
       const current = request
         ? generationRequestOperation(state, request)
         : state.operations.find((value) => value.key === operationKey);
+      validateModelBudgetState(budget);
+      const circuit = assessModelProviderCircuit({
+        operations: state.operations,
+        receipts: state.receipts,
+        budget,
+        nowMs: state.nowMs,
+        models: requests.map((value) => value.model),
+        operationKey,
+        requestId,
+      });
       return {
         mainSha: state.local.revision,
-        budget: validateModelBudgetState(budget),
+        budget,
+        ...(circuit.blocked ? { waitReason: "provider-circuit-open" } : {}),
         eligible: Boolean(
           current &&
           (["project", "owner-request"].includes(current.identity.kind)
@@ -593,9 +610,7 @@ export async function runModelWriterPreparation({
     const outcome = await reserveModelPreparation({
       operationKey,
       workflow,
-      requestId: request
-        ? `generation-request-${request.runId}`
-        : `writer-${env.GITHUB_RUN_ID}`,
+      requestId,
       requests,
       monthlyUsd,
       nowMs: initial.nowMs,
@@ -656,7 +671,10 @@ export async function runModelWriterPreparation({
             : {}),
         }),
     });
-    if (outcome.status === "waiting")
+    if (
+      outcome.status === "waiting" &&
+      outcome.reason !== "provider-circuit-open"
+    )
       await persistFailure(
         Object.assign(
           new Error("Model preparation allowance is unavailable."),

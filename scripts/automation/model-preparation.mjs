@@ -3,6 +3,124 @@ import {
   bindModelBudgetTicket,
   validateModelBudgetState,
 } from "./model-budget.mjs";
+import { validateAutomationOperation } from "./operation.mjs";
+import { validateAutomationReceipt } from "./receipts.mjs";
+
+const MODEL_KINDS = new Set([
+  "project",
+  "owner-request",
+  "metadata",
+  "enrichment",
+  "advisory",
+  "report-import",
+]);
+const PROBE_WINDOW_MS = 86_400_000;
+
+// Receipts carry the existing shared model-provider circuit; reservations are its
+// durable probe claim. Neither a new budget day nor an expired envelope clears it.
+export function assessModelProviderCircuit({
+  operations,
+  receipts,
+  budget,
+  nowMs,
+  models,
+  operationKey,
+  requestId,
+}) {
+  if (!Number.isSafeInteger(nowMs) || nowMs < 0)
+    throw new Error("Model circuit clock is invalid.");
+  if (budget) validateModelBudgetState(budget);
+  const tickets = (budget?.tickets ?? []).filter(
+    (ticket) => !models || models.includes(ticket.model),
+  );
+  const candidates = new Map();
+  for (const receipt of receipts) {
+    if (receipt.operation.retry?.failure.kind !== "configuration") continue;
+    validateAutomationReceipt(receipt);
+    candidates.set(receipt.operation.key, {
+      operation: receipt.operation,
+      observedAt: Date.parse(receipt.updatedAt),
+    });
+  }
+  for (const operation of operations) {
+    if (
+      operation.retry?.failure.kind !== "configuration" ||
+      candidates.has(operation.key)
+    )
+      continue;
+    validateAutomationOperation(operation);
+    candidates.set(operation.key, {
+      operation,
+      observedAt: Date.parse(operation.createdAt),
+    });
+  }
+  const failures = [...candidates.values()].filter(({ operation }) => {
+    if (
+      !MODEL_KINDS.has(operation.identity.kind) ||
+      ["budget-exhausted", "publisher-authentication-failed"].includes(
+        operation.retry.failure.reasonCode,
+      )
+    )
+      return false;
+    const bound =
+      budget?.tickets.filter(
+        (ticket) => ticket.operationKey === operation.key,
+      ) ?? [];
+    return (
+      !models ||
+      !bound.length ||
+      bound.some((ticket) => models.includes(ticket.model))
+    );
+  });
+  if (!failures.length) return { open: false, blocked: false, reason: null };
+  const latest = Math.max(...failures.map((value) => value.observedAt));
+  const reason = failures.find((value) => value.observedAt === latest).operation
+    .retry.failure.reasonCode;
+  const recovered = failures.every(({ operation, observedAt }) => {
+    const bound =
+      budget?.tickets.filter(
+        (ticket) => ticket.operationKey === operation.key,
+      ) ?? [];
+    return tickets.some(
+      (ticket) =>
+        ticket.settled &&
+        ticket.usage?.requests > 0 &&
+        Date.parse(ticket.createdAt) > observedAt &&
+        Date.parse(ticket.createdAt) <= nowMs &&
+        (!bound.length ||
+          bound.some((previous) => previous.model === ticket.model)),
+    );
+  });
+  if (recovered)
+    return { open: false, blocked: false, reason: "verified-recovery" };
+  const nextProbeAt = Math.max(
+    ...failures.map(({ operation, observedAt }) =>
+      Math.max(
+        observedAt + PROBE_WINDOW_MS,
+        Date.parse(operation.nextEligibleAt ?? "") || 0,
+      ),
+    ),
+  );
+  const claims = tickets.filter(
+    (ticket) =>
+      Date.parse(ticket.createdAt) > latest &&
+      Date.parse(ticket.createdAt) + PROBE_WINDOW_MS > nowMs,
+  );
+  const ownClaim =
+    operationKey &&
+    requestId &&
+    claims.length > 0 &&
+    claims.every(
+      (ticket) =>
+        ticket.operationKey === operationKey &&
+        [0, 1].some((index) => ticket.requestId === `${requestId}:${index}`),
+    );
+  return {
+    open: true,
+    blocked: nowMs < nextProbeAt || (claims.length > 0 && !ownClaim),
+    reason,
+  };
+}
 
 export async function reserveModelPreparation({
   operationKey,
@@ -32,6 +150,7 @@ export async function reserveModelPreparation({
     throw new Error("Model preparation request is invalid.");
   let state = await load();
   if (!state.eligible) return { status: "superseded" };
+  if (state.waitReason) return { status: "waiting", reason: state.waitReason };
   validateModelBudgetState(state.budget);
   let budget = state.budget;
   const tickets = [];

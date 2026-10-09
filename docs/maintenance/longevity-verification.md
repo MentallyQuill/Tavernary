@@ -25,8 +25,8 @@ attached PRs, required checks, independent review, merge, and production proof.
 
 Current delivery: [draft PR #818](https://github.com/MentallyQuill/Tavernary/pull/818)
 is attached. The last fully successful required CI head is
-`4253b02bda417607f998b44f028645ff80c90028`
-([run 37875451088](https://github.com/MentallyQuill/Tavernary/actions/runs/37875451088)),
+`da0a707123d54e36d478c54cfe0511fd3a4a3a61`
+([run 37878152164](https://github.com/MentallyQuill/Tavernary/actions/runs/37878152164)),
 with both `verify` and `visual` successful.
 This includes supported runtimes, the weekly restore drill, exact-build
 confirmation fallback and shared-quota retention retries.
@@ -36,7 +36,7 @@ assertions. Its repair, head `9736242859f1623833a8bab0c43cc9088c168d18`, failed
 on seven deployment-recovery fixtures missing the native artifact `total_count`.
 The fixtures now match the bounded reader; integrity requirements remain intact.
 The recovery checkpoint passed both required jobs; the new canary checkpoint
-requires its own exact-head CI. A green implementation
+passed its own exact-head CI. The subsequent review repairs require fresh CI. A green implementation
 branch does not establish merge or native production drill evidence.
 
 The active delivery goal freezes the shared architecture. Finish the concrete
@@ -118,6 +118,32 @@ Approved GitHub setup is live: `PUT immutable-releases` succeeded, and fresh
 The native repository variable `TAVERNARY_IMMUTABLE_RELEASES_ENABLED` is verified
 `true`, created `2026-10-09T02:38:51Z`. Actual retained bundles and drill evidence
 remain required after merge.
+
+## Independent review and bounded repairs
+
+A fresh read-only gpt-6-astra whole-branch review covered
+`b7762519ed7ca01cbe148ca630d025895021ce32..da0a707123d54e36d478c54cfe0511fd3a4a3a61`.
+It reported no Critical findings and three Important recovery defects. Each
+repair is tied to a demonstrated failure in the approved requirements:
+
+- Retention now installs Chromium and WebKit before the expired-archive public
+  confirmation path. The parsed workflow regression failed before the fix and
+  passed afterward.
+- Malformed receipt sidecars are isolated, excluded from authority, and reported
+  with sanitized health evidence. Native reconstruction continues. Exact-path
+  replacement uses the fresh native blob SHA; a valid different identity is
+  rejected. Seven regressions passed, including strict publication-authority
+  controls; 142 checks passed across ten affected suites.
+- Model preparation now consumes the shared provider/configuration circuit.
+  Durable reservations claim one probe per twenty-four-hour window, including
+  unknown dispatch outcomes and expired envelopes. Positive settled responses
+  after the failure clear it; future-dated, zero-usage and unrelated-model evidence
+  do not clear preparation. Native preparation regressions failed before the
+  repair; all ten now pass, along with 82 checks across four affected suites.
+
+The read-only native canary includes both new regression suites. No new service,
+state framework, publication authority or approval bypass was introduced.
+Final exact-head CI, merge and native production evidence remain pending.
 
 ## Owner restore and expired-archive recovery checkpoint
 

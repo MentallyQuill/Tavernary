@@ -38,6 +38,7 @@ jobs:
           npx vitest run --reporter=dot --reporter=json --outputFile=.tmp/automation-canary.json \
             tests/unit/automation-end-to-end.test.ts \
             tests/unit/production-inventory.test.ts \
+            tests/unit/receipt-corruption.test.ts \
             tests/unit/project-operation-inventory.test.ts \
             tests/unit/kit-operation-inventory.test.ts \
             tests/unit/automation-controller.test.ts \
@@ -52,6 +53,7 @@ jobs:
             tests/unit/model-budget.test.ts \
             tests/unit/model-budget-github.test.ts \
             tests/unit/generation-budget.test.ts \
+            tests/unit/model-provider-circuit.test.ts \
             tests/unit/deployment-writer.test.ts \
             tests/unit/deployment-active-gate.test.ts \
             tests/unit/rollback-plan.test.ts \

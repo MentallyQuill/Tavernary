@@ -1,8 +1,20 @@
 import type { ModelBudgetState, ModelBudgetRequest } from "./model-budget.mjs";
+import type { AutomationOperation } from "./operation.mjs";
+import type { AutomationReceipt } from "./receipts.mjs";
+export function assessModelProviderCircuit(input: {
+  operations: AutomationOperation[];
+  receipts: AutomationReceipt[];
+  budget: ModelBudgetState | null;
+  nowMs: number;
+  models?: string[];
+  operationKey?: string;
+  requestId?: string;
+}): { open: boolean; blocked: boolean; reason: string | null };
 export interface BudgetWriterState {
   mainSha: string;
   budget: ModelBudgetState;
   eligible: boolean;
+  waitReason?: string;
 }
 export function reserveModelPreparation(input: {
   operationKey: string;
