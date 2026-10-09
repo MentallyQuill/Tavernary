@@ -19,6 +19,8 @@ import {
   receiptFixture,
 } from "../helpers/automation-fixtures";
 import { validateAutomationOperation } from "../../scripts/automation/operation.mjs";
+import { selectDueOperations } from "../../scripts/automation/operation.mjs";
+import { reconcileAutomation } from "../../scripts/automation/reconcile.mjs";
 
 test("missing finalization is recovered without publishing twice", () => {
   const operations = discoverKitOperations(
@@ -183,6 +185,56 @@ test.each(["create", "withdrawal"] as const)(
       receiptFixture({ operation: { ...operation, key: "f".repeat(64) } }),
     ];
     expect(discoverKitOperations(input)).toEqual([]);
+  },
+);
+
+test.each(["create", "withdrawal"] as const)(
+  "a finalized %s receipt prevents replay after a manual issue closure",
+  async (kind) => {
+    const input = kitInventoryFixture({
+      operation: kind,
+      canonicalPublished: true,
+      confirmedDeployment: true,
+      issueOpen: false,
+    });
+    if (kind === "withdrawal") input.kits[0].status = "withdrawn";
+    input.issues[0].state_reason = "not_planned";
+    const operation = discoverKitOperations(input)[0];
+    const terminal = receiptFixture({
+      operation: { ...operation, stage: "finalized" },
+      completedAt: new Date(input.nowMs).toISOString(),
+    });
+    input.receipts = [terminal];
+    const operations = discoverKitOperations(input);
+    expect(operations[0].stage).toBe("finalized");
+    expect(selectDueOperations(operations, { nowMs: input.nowMs })).toEqual([]);
+    const unexpectedEffect = async () => {
+      throw new Error("Finalized Kit replay must not produce effects.");
+    };
+    const result = await reconcileAutomation({
+      inventory: async () => operations,
+      nowMs: input.nowMs,
+      receipts: input.receipts,
+      persist: unexpectedEffect,
+      dispatch: unexpectedEffect,
+      finalize: unexpectedEffect,
+    });
+    expect(result).toMatchObject({
+      dispatched: 0,
+      finished: 1,
+      selectedKeys: [],
+    });
+
+    input.receipts = [
+      receiptFixture({
+        ...terminal,
+        operation: { ...terminal.operation, expectedSha: "e".repeat(40) },
+      }),
+    ];
+    expect(discoverKitOperations(input)[0].stage).toBe("deployment-confirmed");
+    input.receipts = [terminal];
+    input.confirmedRevisions = [];
+    expect(discoverKitOperations(input)[0].stage).toBe("published");
   },
 );
 
