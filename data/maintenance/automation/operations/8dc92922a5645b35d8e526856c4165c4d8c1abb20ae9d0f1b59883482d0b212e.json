@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8dc92922a5645b35d8e526856c4165c4d8c1abb20ae9d0f1b59883482d0b212e",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:url-reddit-1towdj6:reddit-1towdj6",
+      "inputDigest": "6885130e1ecd00947a0ad87c12b5afda1b2d69a840a8ab53732d572292c879d3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "1970-01-01T00:00:00.000Z",
+    "nextEligibleAt": "2026-10-09T04:36:19.198Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T04:21:19.198Z",
+  "completedAt": null
+}
