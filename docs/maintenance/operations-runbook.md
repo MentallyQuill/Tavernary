@@ -694,6 +694,16 @@ or expired metadata cannot hide an older build that is actually served. Integrit
 failures stop recovery. Rebuilding one source SHA requires new exact build proof.
 Retention dispatch has its own shared-lane slot and native failed-attempt backoff.
 
+The same writer safely retires eligible terminal receipt/publication pairs after
+ninety days, using one slot and a bounded commit. Compact completion markers live
+under `data/maintenance/automation/terminal/<key-prefix>/<operation-key>.json`;
+the original records remain in Git history. A marker lets fresh inventory recover
+the exact finalized receipt when the same input appears again. Preserve these
+markers during diagnosis. Pending, unpaired or unproven records remain intact.
+Deployment-proof cleanup requires successful native release inventory and keeps
+the latest proofs, active deployment, retained bundles and pending/frozen references.
+The cleanup adapter cannot delete registry identities or owner tombstones.
+
 ### Credentials and permissions
 
 Check local CLI authentication with `gh auth status --hostname github.com`.

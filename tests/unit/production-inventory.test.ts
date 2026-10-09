@@ -98,4 +98,25 @@ test("canonical proof takes precedence when unchanged metadata also remains disc
   );
   expect(matches).toHaveLength(1);
   expect(matches[0].stage).toBe("published");
+  state.local.publications = [];
+  state.local.retiredReceipts = [
+    {
+      schema_version: 1,
+      operation: {
+        ...operation,
+        stage: "finalized",
+        expectedSha: revision,
+        workerRunId: null,
+        retry: null,
+        nextEligibleAt: null,
+      },
+      updatedAt: new Date(input.nowMs).toISOString(),
+      completedAt: new Date(input.nowMs).toISOString(),
+    },
+  ];
+  const replay = discoverAutomationState(state).filter(
+    (current) => current.key === operation.key,
+  );
+  expect(replay).toHaveLength(1);
+  expect(replay[0].stage).toBe("finalized");
 });

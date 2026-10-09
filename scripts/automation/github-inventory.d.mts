@@ -1,4 +1,5 @@
 import type { AutomationReceipt } from "./receipts.mjs";
+import type { AutomationOperation } from "./operation.mjs";
 import type {
   ProjectInventoryIssue,
   ProjectInventoryPull,
@@ -37,6 +38,7 @@ export function loadGithubAutomationInventory(input: {
   gh: GhRunner;
   repository: string;
   receipts: AutomationReceipt[];
+  referencedOperations?: AutomationOperation[];
   nowMs: number;
 }): Promise<GithubAutomationInventory>;
 export function persistGithubAutomationReceipt(input: {

@@ -25,11 +25,12 @@ attached PRs, required checks, independent review, merge, and production proof.
 
 Current delivery: [draft PR #818](https://github.com/MentallyQuill/Tavernary/pull/818)
 is attached. The last fully successful required CI head is
-`ec7fdd8c2a04b9baf1b0dc34ec65ba107b51ad92`
-([run 37865862658](https://github.com/MentallyQuill/Tavernary/actions/runs/37865862658)),
+`61cecc312aa0b231378340e2fdb1061d73fcaa95`
+([run 37867288511](https://github.com/MentallyQuill/Tavernary/actions/runs/37867288511)),
 with both `verify` and `visual` successful.
-This includes the supported-runtime and weekly restore-drill implementation.
-The subsequent bounded deployment/retention recovery checkpoint requires its own
+This includes supported runtimes, the weekly restore drill, exact-build
+confirmation fallback and shared-quota retention retries.
+The subsequent history/terminal-retention checkpoint requires its own
 exact-head CI. A green implementation branch does not establish merge or native
 production drill evidence.
 
@@ -63,9 +64,9 @@ boundaries.
 | R13 | Scheduled changed metadata, cache, global budgets | Native scheduled enrichment, field/source checkpoints and model allowances cover all five automated credential-bearing workflows, including generation and repairs. Live progress proof remains. |
 | R14 | Gated dependency completion | Grouped packages, native NPM selector, exact-head merge gate and failed-check incidents implemented; critical Next.js findings addressed in the earlier maintenance checkpoint. Actual eligible maintenance PR completion remains. |
 | R15 | Verified supported-runtime policy | Implemented: official schedule validation, Node 24 manifest and declarations, shared workflow runtime file, weekly full compatibility checks, constrained recoverable Publisher PRs, native exact-head current/candidate CI merge gate and 90-day/EOL incidents. Head ec7fdd8c2 passes required full CI; actual scheduled proof remains. Node 26 becomes eligible only on its official LTS date. |
-| R16 | Safe bounded retention | Weekly read-only retained-bundle drill implemented: verified immutable release, clean workspace, exact full-export restore and Chromium/WebKit with outbound requests blocked. Native step proof and an eight-day freshness limit gate incident recovery. Terminal-state cleanup, historical inventory bounds and retained-bundle interruption edges remain. Actual GitHub drill proof is still required. |
+| R16 | Safe bounded retention | Open/recently closed inventory and release pages now bounded before fetching; pending references and old declines remain visible. Eligible terminal receipt/publication pairs retire after ninety days with compact completion markers and exact Git-history replay. Cleanup shares the twenty-operation quota and protects pending/current/retained/canary deployment proof. Weekly offline drill implemented. Artifact pagination, interruption/restore edges and actual native drill proof remain. |
 | R17 | Owner runbook | Updated against current generation, refresh, Kit, identity, restore and shared-writer sources plus actual GitHub permissions. Includes token repair, exact recovery/rollback commands, switches, focused content/browser checks and owner responsibilities. Final merged native command/configuration proof remains. |
-| R18 | Attached PRs, CI, review, merge, production proof | PR #818 attached. Head ec7fdd8c2 is fully green; the next recovery checkpoint needs its exact-head CI. Independent review, merge, live canary/drill and public proof remain. |
+| R18 | Attached PRs, CI, review, merge, production proof | PR #818 attached. Head 61cecc312 is fully green; the next retention checkpoint needs its exact-head CI. Independent review, merge, live canary/drill and public proof remain. |
 
 Generation checkpoint: 19 affected suites/311 checks passed. Retry checkpoint:
 13 affected suites/247 checks passed, followed by 16 final retry checks. Typecheck,
@@ -102,6 +103,55 @@ full-suite run was added; the new exact-head CI supplies its complete gate.
 Retained-bundle interruption fallback, dropped restore confirmation wakes, safe
 terminal cleanup/history bounds, final runbook, native canary/review/merge and
 production proof remain open.
+
+## Bounded history and terminal retirement
+
+The native inventory loads bounded open work and a bounded slice of the most
+recent closures within ninety days. Optional closed history can fill its page
+budget without blocking live work; open-work overload still fails closed.
+Old issue references needed by pending receipts or co-committed publications are
+fetched directly; provider outages cannot erase them. Scoped generated-branch
+queries preserve earlier declines for active or pending submissions. Workflow
+and immutable-release readers stop before exceeding their page budget, rather
+than downloading all history and checking afterward. Each page has a byte bound.
+Exact co-committed revisions distinguish completed publications from pending
+references, so completed history does not consume the pending-reference budget.
+
+The shared writer retires at most sixty-four eligible terminal receipt/publication
+pairs per pass, within a 256-file commit and one reserved operation slot. Eligibility
+requires ninety days since completion, exact canonical co-commit/file digests and
+positive deployment coverage. Pending work and frozen enrichment are retained.
+An atomic tree writes a compact completion marker and removes both hot records;
+removing a receipt alone would recreate it from its publication record. The marker
+binds the original Git blobs and parent revision. Fresh inventory loads markers
+only for currently discovered keys, validates canonical bytes and ancestry, and
+recovers the exact finalized receipt without repeating publication or model work.
+Unpaired or unproven receipts remain intact; retirement never guesses completion.
+
+Old confirmed deployment proofs can retire only after bounded native release
+inventory succeeds. Every retained or draft bundle's source remains protected,
+along with the latest three proofs, active deployment, pending operation/receipt
+references and publication/canary evidence. The deletion adapter accepts only
+hashed automation operation, publication and deployment paths, checks exact
+parent-bound blobs, and uses the existing non-forced main update. Owner tombstones,
+source identities, registry records and security state are outside deletion scope.
+
+Ruling: keep small completion markers indefinitely and detailed records in Git
+history; only positively proven paired state leaves the active inventory. This
+preserves exact idempotency and avoids scanning cold history. Missing proof costs
+additional retention, rather than risking repeated publication or erasing work.
+
+The actual scheduled entry selects eighteen ordinary operations when both bundle
+retention and terminal retirement reserve a slot. Zero quota does no cleanup.
+Malformed build proof and pending-operation references reproduced unsafe removal
+and now remain protected. Sixteen affected suites passed 168 checks in 9.42 seconds;
+typecheck, scoped lint, formatting and whitespace checks are recorded with this
+checkpoint. The subsequent closed-history growth regression failed, then passed
+with nineteen affected inventory checks in 4.39 seconds; it keeps a pending old
+reference even when two thousand recent closures fill the optional slice.
+No repeated local full-suite gate was added. Artifact-reader bounds,
+remaining interruption/restore recovery, native canary/drill, final review, exact-head
+CI, merge and production verification remain required.
 
 ## Owner runbook audit
 

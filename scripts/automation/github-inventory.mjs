@@ -1,4 +1,5 @@
 import { validateAutomationReceipt } from "./receipts.mjs";
+import { validateAutomationOperation } from "./operation.mjs";
 
 const repositoryPattern = /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u;
 function repositoryPath(repository) {
@@ -76,29 +77,51 @@ export function assertCanonicalWriterContext(env, repository, event = {}) {
     throw new Error("Canonical writer custody is invalid.");
 }
 
-async function pages(gh, path, fields = []) {
-  const value = JSON.parse(
-    await gh([
-      "api",
-      "--paginate",
-      "--slurp",
-      "--method",
-      "GET",
-      path,
-      "-f",
-      "per_page=100",
-      ...fields.flatMap((field) => ["-f", field]),
-    ]),
-  );
-  if (!Array.isArray(value))
-    throw new Error("GitHub returned an invalid paginated inventory.");
-  return value;
+async function inventoryPage(gh, path, fields, page) {
+  const raw = await gh([
+    "api",
+    "--method",
+    "GET",
+    path,
+    "-f",
+    "per_page=100",
+    ...fields.flatMap((field) => ["-f", field]),
+    "-f",
+    `page=${page}`,
+    "--jq",
+    "[.]",
+  ]);
+  if (Buffer.byteLength(raw, "utf8") > 4 * 1024 * 1024)
+    throw new Error("GitHub inventory page exceeds its byte bound.");
+  const value = JSON.parse(raw);
+  if (!Array.isArray(value) || value.length !== 1)
+    throw new Error("GitHub returned an invalid inventory page.");
+  return value[0];
+}
+async function pages(
+  gh,
+  path,
+  fields = [],
+  stop = () => false,
+  allowPrefix = false,
+) {
+  const found = [];
+  for (let page = 1; page <= 20; page++) {
+    const value = await inventoryPage(gh, path, fields, page);
+    if (!Array.isArray(value) || value.length > 100)
+      throw new Error("GitHub returned an invalid list inventory.");
+    found.push(value);
+    if (value.length < 100 || stop(value)) return found;
+  }
+  if (allowPrefix) return found;
+  throw new Error("GitHub current-work inventory exceeds its page bound.");
 }
 function runPages(value) {
   if (
     value.some(
       (page) =>
         !Array.isArray(page.workflow_runs) ||
+        page.workflow_runs.length > 100 ||
         !Number.isSafeInteger(page.total_count) ||
         page.total_count < 0,
     )
@@ -109,28 +132,19 @@ function runPages(value) {
 async function boundedRunPages(gh, path, fields) {
   // Probe one page before following links: an over-cap search must be split,
   // and an over-cap active/final-worker inventory must fail closed.
-  const first = JSON.parse(
-    await gh([
-      "api",
-      "--method",
-      "GET",
-      path,
-      "-f",
-      "per_page=100",
-      ...fields.flatMap((field) => ["-f", field]),
-      "--jq",
-      "[.]",
-    ]),
-  );
-  if (!Array.isArray(first) || first.length !== 1)
-    throw new Error("GitHub returned an invalid first run page.");
+  const first = [await inventoryPage(gh, path, fields, 1)];
   runPages(first);
   if (first[0].total_count > 1000 || first[0].total_count <= 100) return first;
-  const tail = await pages(gh, path, [...fields, "page=2"]);
-  runPages(tail);
-  if (tail.some((page) => page.total_count > 1000))
-    throw new Error("Workflow inventory changed beyond GitHub's result cap.");
-  return [...first, ...tail];
+  for (let page = 2; page <= 10; page++) {
+    const next = [await inventoryPage(gh, path, fields, page)];
+    runPages(next);
+    if (next[0].total_count > 1000)
+      throw new Error("Workflow inventory changed beyond GitHub's result cap.");
+    first.push(...next);
+    if (next[0].workflow_runs.length < 100 || page * 100 >= next[0].total_count)
+      return first;
+  }
+  throw new Error("Workflow inventory exceeds its page bound.");
 }
 export async function loadAutomationWorkerRuns({ gh, repository, nowMs }) {
   const value = await boundedRunPages(
@@ -208,14 +222,46 @@ export async function loadGithubAutomationInventory({
   gh,
   repository,
   receipts,
+  referencedOperations = [],
   nowMs,
 }) {
   const root = repositoryPath(repository);
-  const [issuePages, pullPages, reference] = await Promise.all([
-    pages(gh, `${root}/issues`, ["state=all"]),
-    pages(gh, `${root}/pulls`, ["state=all"]),
-    gh(["api", `${root}/git/ref/heads/main`]).then(JSON.parse),
-  ]);
+  if (!Number.isSafeInteger(nowMs) || nowMs < 90 * 86_400_000)
+    throw new Error("GitHub inventory retention clock is invalid.");
+  const cutoff = nowMs - 90 * 86_400_000;
+  const recentClosure = (row) => {
+    const updated = Date.parse(row.updated_at);
+    if (!Number.isFinite(updated) || updated > nowMs + 300000)
+      throw new Error("GitHub closed inventory clock is invalid.");
+    return updated >= cutoff;
+  };
+  const [openIssues, closedIssues, openPulls, closedPulls, reference] =
+    await Promise.all([
+      pages(gh, `${root}/issues`, ["state=open"]),
+      pages(
+        gh,
+        `${root}/issues`,
+        [
+          "state=closed",
+          "sort=updated",
+          "direction=desc",
+          `since=${new Date(cutoff).toISOString()}`,
+        ],
+        (page) => page.some((row) => !recentClosure(row)),
+        true,
+      ),
+      pages(gh, `${root}/pulls`, ["state=open"]),
+      pages(
+        gh,
+        `${root}/pulls`,
+        ["state=closed", "sort=updated", "direction=desc"],
+        (page) => page.some((row) => !recentClosure(row)),
+        true,
+      ),
+      gh(["api", `${root}/git/ref/heads/main`]).then(JSON.parse),
+    ]);
+  const issuePages = [...openIssues, closedIssues.flat().filter(recentClosure)];
+  const pullPages = [...openPulls, closedPulls.flat().filter(recentClosure)];
   if (
     issuePages.some((page) => !Array.isArray(page)) ||
     pullPages.some((page) => !Array.isArray(page)) ||
@@ -258,6 +304,7 @@ export async function loadGithubAutomationInventory({
   const runs = new Map([...recent, ...active].map((run) => [run.id, run]));
   for (const receipt of receipts) {
     validateAutomationReceipt(receipt);
+    if (receipt.operation.stage === "finalized") continue;
     const requestId =
       receipt.operation.identity.kind === "report-import"
         ? Number(
@@ -285,9 +332,57 @@ export async function loadGithubAutomationInventory({
       }
     }
   }
+  const issues = new Map(
+    issuePages.flat().map((issue) => [issue.number, issue]),
+  );
+  const pulls = new Map(pullPages.flat().map((pull) => [pull.number, pull]));
+  const references = new Set();
+  for (const operation of [
+    ...receipts.map((receipt) => receipt.operation),
+    ...referencedOperations,
+  ]) {
+    validateAutomationOperation(operation);
+    if (operation.stage === "finalized") continue;
+    const number = Number(
+      /^issue:([1-9]\d*)$/u.exec(operation.identity.subject)?.[1],
+    );
+    if (Number.isSafeInteger(number) && number > 0) references.add(number);
+  }
+  if (references.size > 2000)
+    throw new Error("Pending issue references exceed their inventory bound.");
+  for (const number of references) {
+    if (issues.has(number)) continue;
+    try {
+      const issue = JSON.parse(await gh(["api", `${root}/issues/${number}`]));
+      if (issue.number !== number || !["open", "closed"].includes(issue.state))
+        throw new Error("GitHub returned an invalid pending issue reference.");
+      issues.set(number, issue);
+    } catch (error) {
+      if (githubFailureStatus(error) !== 404) throw error;
+    }
+  }
+  // A reopened issue must still see an old declined generated PR. Query only
+  // its deterministic branches instead of retaining all closed PR history.
+  for (const issue of issues.values()) {
+    if (
+      issue.pull_request ||
+      (issue.state !== "open" && !references.has(issue.number))
+    )
+      continue;
+    for (const label of issue.labels ?? []) {
+      const kind = typeof label === "string" ? label : label.name;
+      if (!["project-submission", "project-owner-request"].includes(kind))
+        continue;
+      const scoped = await pages(gh, `${root}/pulls`, [
+        "state=all",
+        `head=${repository.split("/")[0]}:automation/${kind}-${issue.number}`,
+      ]);
+      for (const pull of scoped.flat()) pulls.set(pull.number, pull);
+    }
+  }
   return {
-    issues: issuePages.flat(),
-    pulls: pullPages.flat(),
+    issues: [...issues.values()],
+    pulls: [...pulls.values()],
     runs: [...runs.values()],
     mainHeadSha: reference.object.sha,
   };

@@ -32,6 +32,17 @@ function parse(value, maxBytes = 4 * 1024 * 1024) {
   if (typeof value !== "string" || Buffer.byteLength(value) > maxBytes) fail();
   return JSON.parse(value);
 }
+export async function listGithubSiteReleases(gh, route) {
+  if (route !== `repos/${repositoryName}/releases`) fail();
+  const found = [];
+  for (let page = 1; page <= 10; page++) {
+    const rows = parse(await gh(["api", `${route}?per_page=100&page=${page}`]));
+    if (!Array.isArray(rows) || rows.length > 100) fail();
+    found.push(...rows);
+    if (rows.length < 100) return found;
+  }
+  fail("provider-configuration-invalid");
+}
 const same = (a, b) =>
   fingerprintProjectPublicationInput(a) ===
   fingerprintProjectPublicationInput(b);
@@ -400,25 +411,14 @@ export async function retainGithubSiteBundle({
     revision: state.revision,
   });
   if (!same(current.proof.deployment, record)) fail();
-  const pages = parse(
-    await gh(["api", "--paginate", "--slurp", `${route}?per_page=100`]),
-  );
-  if (
-    !Array.isArray(pages) ||
-    pages.length > 10 ||
-    pages.some((page) => !Array.isArray(page))
-  )
-    fail();
-  const releases = pages
-      .flat()
-      .filter(
-        (value) =>
-          value.author?.id === publisherActorId &&
-          /^site-bundle-[a-f0-9]{40}-run-[1-9]\d*-attempt-[1-9]\d*$/u.test(
-            value.tag_name ?? "",
-          ) &&
-          value.draft === false,
-      ),
+  const releases = (await listGithubSiteReleases(gh, route)).filter(
+      (value) =>
+        value.author?.id === publisherActorId &&
+        /^site-bundle-[a-f0-9]{40}-run-[1-9]\d*-attempt-[1-9]\d*$/u.test(
+          value.tag_name ?? "",
+        ) &&
+        value.draft === false,
+    ),
     bundles = [];
   for (const value of releases) {
     const data =

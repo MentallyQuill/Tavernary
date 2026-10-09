@@ -42,6 +42,8 @@ import { planIncidentUpdates } from "../../scripts/automation/incidents.mjs";
 import * as dependencyWriter from "../../scripts/automation/dependency-update.mjs";
 import * as runtimeWriter from "../../scripts/automation/runtime-maintenance.mjs";
 import * as enrichmentRequests from "../../scripts/automation/enrichment-owner-request.mjs";
+import * as stateRetention from "../../scripts/automation/retention.mjs";
+import { createCanonicalPublicationRecord } from "../../scripts/automation/publication-record.mjs";
 import {
   assessAutomationHealth,
   assessInventoryHealth,
@@ -51,70 +53,123 @@ import {
   operationFixture,
   AUTOMATION_NOW,
   metadataMaintenanceFixture,
+  preparedResultFixture,
+  preparedResultContextFixture,
 } from "../helpers/automation-fixtures";
 
 const nowMs = AUTOMATION_NOW;
-test("the actual scheduled writer reserves retention inside the twenty-operation lane", async () => {
-  const { state } = await metadataMaintenanceFixture();
-  state.operations = Array.from({ length: 20 }, (_, index) =>
-    operationFixture({
-      identity: {
-        kind: "project",
-        subject: `issue:${index + 100}`,
-        inputDigest: "a".repeat(64),
-        policyVersion: "1",
+test.each([false, true])(
+  "the scheduled writer keeps bundle and terminal retention inside twenty operations (terminal=%s)",
+  async (retireState) => {
+    const { state } = await metadataMaintenanceFixture();
+    const originalNow = state.nowMs;
+    if (retireState) state.nowMs += 120 * 86400000;
+    state.operations = Array.from({ length: 20 }, (_, index) =>
+      operationFixture({
+        identity: {
+          kind: "project",
+          subject: `issue:${index + 100}`,
+          inputDigest: "a".repeat(64),
+          policyVersion: "1",
+        },
+        stage: "validated",
+        createdAt: new Date(state.nowMs).toISOString(),
+      }),
+    );
+    state.local = {
+      revision: "d".repeat(40),
+      deployments: [],
+      sources: [],
+      kits: [],
+      publishableRevision: "c".repeat(40),
+      publishableCommittedAt: new Date(state.nowMs).toISOString(),
+      activeDeployment: {
+        mode: "ordinary",
+        deployment: { sourceSha: "c".repeat(40), workflowRunId: 42 },
       },
-      stage: "validated",
-      createdAt: new Date(state.nowMs).toISOString(),
-    }),
-  );
-  state.local = {
-    revision: "d".repeat(40),
-    deployments: [],
-    sources: [],
-    kits: [],
-    publishableRevision: "c".repeat(40),
-    publishableCommittedAt: new Date(state.nowMs).toISOString(),
-    activeDeployment: {
-      mode: "ordinary",
-      deployment: { sourceSha: "c".repeat(40), workflowRunId: 42 },
-    },
-  };
-  const dispatches: string[][] = [];
-  const result = await runAutomationWriterReconciliation({
-    load: async () => state,
-    gh: async (args) => {
-      if (args[0] === "workflow") {
-        dispatches.push(args);
-        return "";
-      }
-      if (args[1].includes("/releases/tags/"))
-        throw Object.assign(new Error("HTTP 404"), { status: 404 });
-      if (args[1].includes("/actions/workflows/automation-writer.yml/runs"))
-        return JSON.stringify({ total_count: 0, workflow_runs: [] });
-      throw new Error(`Unexpected fixture endpoint ${args[1]}`);
-    },
-    env: {
-      GITHUB_REF: "refs/heads/main",
-      GITHUB_REPOSITORY: state.repository,
-      GITHUB_EVENT_NAME: "workflow_dispatch",
-      GITHUB_ACTOR_ID: "2625904",
-      GITHUB_WORKFLOW_REF: `${state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
-      TAVERNARY_PUBLISHER_BOT_ID: String(state.publisherActorId),
-      TAVERNARY_IMMUTABLE_RELEASES_ENABLED: "true",
-    },
-  });
-  expect(result.controller).toMatchObject({
-    selectedKeys: expect.any(Array),
-    dispatched: 0,
-  });
-  expect(
-    (result.controller as { selectedKeys: string[] }).selectedKeys,
-  ).toHaveLength(19);
-  expect(dispatches).toHaveLength(1);
-  expect(dispatches[0]).toContain("mode=retain");
-  expect(result.retention).toMatchObject({ status: "requested" });
-});
+    };
+    if (retireState) {
+      const operation = preparedResultContextFixture().operation;
+      const result = preparedResultFixture();
+      const revision = "e".repeat(40);
+      state.receipts = [
+        {
+          schema_version: 1,
+          operation: {
+            ...operation,
+            stage: "finalized",
+            expectedSha: revision,
+            workerRunId: null,
+            retry: null,
+            nextEligibleAt: null,
+          },
+          updatedAt: new Date(originalNow).toISOString(),
+          completedAt: new Date(originalNow).toISOString(),
+        },
+      ];
+      state.local.publications = [
+        {
+          record: createCanonicalPublicationRecord({ operation, result }),
+          revision,
+        },
+      ];
+      state.local.publicationFileDigests = Object.fromEntries(
+        result.files.map((file) => [`${revision}:${file.path}`, file.sha256]),
+      );
+      state.local.confirmedRevisions = [revision];
+    }
+    const retire = vi
+      .spyOn(stateRetention, "runAutomationStateRetention")
+      .mockResolvedValue({
+        status: "retired",
+        sha: "f".repeat(40),
+        removed: 2,
+      });
+    try {
+      const dispatches: string[][] = [];
+      const result = await runAutomationWriterReconciliation({
+        load: async () => state,
+        gh: async (args) => {
+          if (args[0] === "workflow") {
+            dispatches.push(args);
+            return "";
+          }
+          if (args[1].includes("/releases/tags/"))
+            throw Object.assign(new Error("HTTP 404"), { status: 404 });
+          if (args[1].includes("/actions/workflows/automation-writer.yml/runs"))
+            return JSON.stringify({ total_count: 0, workflow_runs: [] });
+          throw new Error(`Unexpected fixture endpoint ${args[1]}`);
+        },
+        env: {
+          GITHUB_REF: "refs/heads/main",
+          GITHUB_REPOSITORY: state.repository,
+          GITHUB_EVENT_NAME: "workflow_dispatch",
+          GITHUB_ACTOR_ID: "2625904",
+          GITHUB_WORKFLOW_REF: `${state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
+          TAVERNARY_PUBLISHER_BOT_ID: String(state.publisherActorId),
+          TAVERNARY_IMMUTABLE_RELEASES_ENABLED: "true",
+        },
+      });
+      expect(result.controller).toMatchObject({
+        selectedKeys: expect.any(Array),
+        dispatched: 0,
+      });
+      expect(
+        (result.controller as { selectedKeys: string[] }).selectedKeys,
+      ).toHaveLength(retireState ? 18 : 19);
+      expect(dispatches).toHaveLength(1);
+      expect(dispatches[0]).toContain("mode=retain");
+      expect(result.retention).toMatchObject({ status: "requested" });
+      expect(retire).toHaveBeenCalledTimes(retireState ? 1 : 0);
+      if (retireState)
+        expect(retire).toHaveBeenCalledWith(
+          expect.objectContaining({ availableSlots: 1 }),
+        );
+    } finally {
+      retire.mockRestore();
+    }
+  },
+);
 test("offline drill failures use a single recoverable operational incident", () => {
   const failed = assessAutomationHealth({
     nowMs,

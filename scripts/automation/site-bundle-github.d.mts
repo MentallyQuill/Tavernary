@@ -8,6 +8,10 @@ export interface RetentionState {
   deployments: unknown[];
   protectedBundleIds?: number[];
 }
+export function listGithubSiteReleases(
+  gh: GhRunner,
+  route: string,
+): Promise<Array<{ tag_name?: string; [key: string]: unknown }>>;
 export interface GithubRetentionInput {
   runId: number;
   env?: Record<string, string | undefined>;

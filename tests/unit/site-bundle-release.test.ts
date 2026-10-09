@@ -96,10 +96,11 @@ function input() {
       olderReleases.splice(index, 1);
       return "";
     }
-    if (args.includes("--slurp"))
-      return JSON.stringify([
-        release ? [release, ...olderReleases] : olderReleases,
-      ]);
+    if (/\/releases\?per_page=100&page=\d+$/u.test(args[1])) {
+      const page = Number(args[1].split("page=").pop());
+      const rows = release ? [release, ...olderReleases] : olderReleases;
+      return JSON.stringify(rows.slice((page - 1) * 100, page * 100));
+    }
     if (args[1].includes("/git/ref/tags/"))
       return JSON.stringify({
         object: { type: "commit", sha: manifest.sourceSha },
@@ -296,4 +297,23 @@ test("missing immutable-release setup and absent public proof cannot publish a r
   unconfirmed.proof.confirmation.essentialSmokePassed = false;
   await expect(retainGithubSiteBundle(unconfirmed.options)).rejects.toThrow();
   expect(unconfirmed.writes).toEqual([]);
+});
+
+test("release retention stops an overloaded inventory before fetching page eleven or deleting a bundle", async () => {
+  const data = input();
+  const native = data.options.gh;
+  const listing: string[][] = [];
+  data.options.gh = async (args, body) => {
+    if (args.some((arg) => /\/releases\?per_page=100/u.test(arg))) {
+      listing.push(args);
+      return JSON.stringify(
+        Array.from({ length: 100 }, (_, index) => ({ id: index + 1 })),
+      );
+    }
+    return native(args, body);
+  };
+  await expect(retainGithubSiteBundle(data.options)).rejects.toThrow();
+  expect(listing).toHaveLength(10);
+  expect(listing.every((args) => !args.includes("--paginate"))).toBe(true);
+  expect(data.writes.filter((args) => args.includes("DELETE"))).toEqual([]);
 });

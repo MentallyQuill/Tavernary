@@ -9,18 +9,25 @@ function validateContext(repository, sha) {
   )
     throw new Error("Canonical GitHub context is invalid.");
 }
-function validateFiles(files) {
-  if (!Array.isArray(files) || !files.length || files.length > 256)
+function validateFiles(files, allowEmpty = false) {
+  if (
+    !Array.isArray(files) ||
+    (!allowEmpty && !files.length) ||
+    files.length > 256
+  )
     throw new Error("Canonical data batch is invalid.");
   const seen = new Set();
   let total = 0;
   for (const file of files) {
     if (
-      (![
-        "data/snapshots/github-refresh.json",
-        "data/reports/enrichment-canary.json",
-        "data/reports/enrichment-report.json",
-      ].includes(file.path) &&
+      (!/^data\/maintenance\/automation\/terminal\/([a-f0-9]{2})\/\1[a-f0-9]{62}\.json$/u.test(
+        file.path ?? "",
+      ) &&
+        ![
+          "data/snapshots/github-refresh.json",
+          "data/reports/enrichment-canary.json",
+          "data/reports/enrichment-report.json",
+        ].includes(file.path) &&
         !/^(?:data\/(?:registry\/(?:projects|sources|kits)|snapshots\/(?:github(?:\/kits)?|codeberg|install|policy-review)|maintenance\/automation\/(?:operations|publications|metadata|deployments|model-budgets)|security)\/[a-z0-9]+(?:-[a-z0-9]+)*\.json|public\/catalog\/tavernary-catalog(?:-v8)?\.json)$/u.test(
           file.path ?? "",
         )) ||
@@ -50,10 +57,24 @@ export async function commitCanonicalData({
   repository,
   expectedMainSha,
   files,
+  removeFiles = [],
   message,
 }) {
   validateContext(repository, expectedMainSha);
-  validateFiles(files);
+  validateFiles(files, removeFiles.length > 0);
+  if (
+    !Array.isArray(removeFiles) ||
+    files.length + removeFiles.length > 256 ||
+    new Set([...files, ...removeFiles].map((file) => file.path)).size !==
+      files.length + removeFiles.length ||
+    removeFiles.some(
+      (file) =>
+        !/^data\/maintenance\/automation\/(?:(?:operations|publications)\/[a-f0-9]{64}|deployments\/[a-f0-9]{40})\.json$/u.test(
+          file.path ?? "",
+        ) || !shaPattern.test(file.gitBlobSha ?? ""),
+    )
+  )
+    throw new Error("Canonical retirement removal is invalid.");
   if (
     typeof message !== "string" ||
     !message.trim() ||
@@ -71,6 +92,19 @@ export async function commitCanonicalData({
   )
     throw new Error("Canonical parent is invalid.");
   const tree = [];
+  for (const file of removeFiles) {
+    const current = JSON.parse(
+      await gh([
+        "api",
+        `repos/${repository}/contents/${file.path}?ref=${expectedMainSha}`,
+      ]),
+    );
+    if (current.type !== "file" || current.sha !== file.gitBlobSha)
+      throw Object.assign(new Error("Canonical retirement input changed."), {
+        code: "input-superseded",
+      });
+    tree.push({ path: file.path, mode: "100644", type: "blob", sha: null });
+  }
   for (const file of files) {
     const blob = JSON.parse(
       await gh(

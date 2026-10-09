@@ -41,6 +41,10 @@ import {
 import { publishPreparedOperations } from "./prepared-publication.mjs";
 import { buildPreparedCatalogPublication } from "./publication-build.mjs";
 import { commitCanonicalData } from "./canonical-data.mjs";
+import {
+  planAutomationRetention,
+  runAutomationStateRetention,
+} from "./retention.mjs";
 import { reconcilePreparedOperations } from "./prepared-reconciliation.mjs";
 import { persistPreparedFailure } from "./prepared-failure.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
@@ -1295,9 +1299,21 @@ export async function runAutomationWriterReconciliation({
     state.local.activeDeployment.deployment.workflowRunId > 0;
   const retentionSlot =
     retentionWanted && usedSlots + runtimeSlot + enrichmentSlot < 20 ? 1 : 0;
+  const initialRetirement = planAutomationRetention({
+    state,
+    pruneDeployments: env.TAVERNARY_IMMUTABLE_RELEASES_ENABLED === "true",
+  });
+  const retirementWanted =
+    initialRetirement.files.length > 0 ||
+    initialRetirement.removeFiles.length > 0;
+  const retirementSlot =
+    retirementWanted &&
+    usedSlots + runtimeSlot + enrichmentSlot + retentionSlot < 20
+      ? 1
+      : 0;
   const dependencySlot =
-    usedSlots + runtimeSlot + enrichmentSlot + retentionSlot < 20 &&
-    dependencyPullNumbers.length
+    usedSlots + runtimeSlot + enrichmentSlot + retentionSlot + retirementSlot <
+      20 && dependencyPullNumbers.length
       ? 1
       : 0;
   let restoreDrill;
@@ -1353,7 +1369,8 @@ export async function runAutomationWriterReconciliation({
         runtimeSlot +
         dependencySlot +
         enrichmentSlot +
-        retentionSlot <
+        retentionSlot +
+        retirementSlot <
         20 && proposals.length
         ? 1
         : 0;
@@ -1374,7 +1391,8 @@ export async function runAutomationWriterReconciliation({
           dependencySlot -
           healthSlot -
           enrichmentSlot -
-          retentionSlot,
+          retentionSlot -
+          retirementSlot,
       ),
     ],
     env,
@@ -1434,6 +1452,21 @@ export async function runAutomationWriterReconciliation({
       retention = { status: "unavailable" };
     }
   }
+  let stateRetention = retirementWanted
+    ? { status: "waiting", reason: "operation-limit" }
+    : { status: "idle" };
+  if (retirementSlot) {
+    try {
+      stateRetention = await runAutomationStateRetention({
+        env,
+        gh,
+        load,
+        availableSlots: retirementSlot,
+      });
+    } catch {
+      stateRetention = { status: "unavailable" };
+    }
+  }
   if (healthSlot) {
     let useInitial = true;
     try {
@@ -1472,6 +1505,7 @@ export async function runAutomationWriterReconciliation({
     prepared,
     controller,
     retention,
+    stateRetention,
     dependencies,
     runtime,
     health,

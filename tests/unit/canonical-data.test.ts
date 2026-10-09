@@ -63,6 +63,51 @@ test("canonical publication creates one parent-bound commit and never force-upda
   ).toEqual({ sha: "e".repeat(40), force: false });
 });
 
+test("retirement deletes an exact hot record in the same parent-bound tree as its marker", async () => {
+  const input = fixture();
+  const path = `data/maintenance/automation/operations/${"a".repeat(64)}.json`;
+  const original = input.gh.getMockImplementation()!;
+  input.gh.mockImplementation(async (args, body) => {
+    if (args[1]?.includes(`/contents/${path}?ref=`))
+      return JSON.stringify({ type: "file", sha: "f".repeat(40) });
+    return original(args, body);
+  });
+  expect(
+    await commitCanonicalData({
+      ...input,
+      removeFiles: [{ path, gitBlobSha: "f".repeat(40) }],
+    }),
+  ).toEqual({ sha: "e".repeat(40) });
+  const tree = input.requests.find((request) =>
+    request.args.includes("repos/Owner/Repo/git/trees"),
+  );
+  expect(tree?.body.tree).toContainEqual({
+    path,
+    mode: "100644",
+    type: "blob",
+    sha: null,
+  });
+});
+test.each(["tombstone", "changed-blob"])(
+  "unsafe %s retirement cannot update main",
+  async (variant) => {
+    const input = fixture();
+    const path =
+      variant === "tombstone"
+        ? "data/security/tombstones.json"
+        : `data/maintenance/automation/operations/${"a".repeat(64)}.json`;
+    await expect(
+      commitCanonicalData({
+        ...input,
+        removeFiles: [{ path, gitBlobSha: "f".repeat(40) }],
+      }),
+    ).rejects.toThrow();
+    expect(
+      input.requests.some((request) => request.args.includes("PATCH")),
+    ).toBe(false);
+  },
+);
+
 test("the canonical Git adapter publishes and verifies the trusted refresh clock manifest", async () => {
   const input = fixture();
   const content = await readFile("data/snapshots/github-refresh.json", "utf8");

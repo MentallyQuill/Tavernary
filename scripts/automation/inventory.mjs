@@ -20,6 +20,7 @@ import {
 } from "./deployment-gate.mjs";
 import { validateAutomationReceipt } from "./receipts.mjs";
 import { validateAutomationOperation } from "./operation.mjs";
+import { loadRetiredAutomationReceipts } from "./retention.mjs";
 import {
   automationDataDigests,
   verifiedAutomationDeployments,
@@ -197,10 +198,18 @@ export function discoverAutomationState(state) {
       },
     }),
   ];
+  const retired = new Map(
+    (local.retiredReceipts ?? []).map((receipt) => {
+      validateAutomationReceipt(receipt);
+      if (receipt.operation.stage !== "finalized")
+        throw new Error("Retired automation state is not terminal.");
+      return [receipt.operation.key, receipt.operation];
+    }),
+  );
   return [
     ...canonicalPublications,
     ...discovered.filter((operation) => !publishedKeys.has(operation.key)),
-  ];
+  ].map((operation) => retired.get(operation.key) ?? operation);
 }
 
 export async function loadAutomationInventory({
@@ -266,18 +275,40 @@ export async function loadAutomationInventory({
   ]);
   snapshots.push(...codebergSnapshots);
   receipts.forEach(validateAutomationReceipt);
+  const validatedPublications = publicationRecords.map(
+    validateCanonicalPublicationRecord,
+  );
   validateTavernKeeperImportState(importState);
   const stored = validateStoredReportIndex(storedReports, sources);
-  const remote = await loadGithubAutomationInventory({
-    gh,
-    repository,
-    receipts,
-    nowMs,
-  });
   const revision = execFileSync("git", ["rev-parse", "HEAD"], {
     cwd: root,
     encoding: "utf8",
   }).trim();
+  const publicationProof = await readCanonicalPublicationEvidence({
+    root,
+    revision,
+    records: validatedPublications,
+  });
+  const completedPublications = new Set(
+    receipts
+      .filter((receipt) => receipt.operation.stage === "finalized")
+      .map(
+        (receipt) =>
+          `${receipt.operation.key}:${receipt.operation.expectedSha}`,
+      ),
+  );
+  const remote = await loadGithubAutomationInventory({
+    gh,
+    repository,
+    receipts,
+    referencedOperations: publicationProof.publications
+      .filter(
+        ({ record, revision: publishedSha }) =>
+          !completedPublications.has(`${record.operation.key}:${publishedSha}`),
+      )
+      .map(({ record }) => record.operation),
+    nowMs,
+  });
   const committedAt = new Date(
     execFileSync("git", ["show", "-s", "--format=%cI", revision], {
       cwd: root,
@@ -368,21 +399,11 @@ export async function loadAutomationInventory({
     enrichmentFull,
     runtimePolicy,
   };
-  const validatedPublications = publicationRecords.map(
-    validateCanonicalPublicationRecord,
-  );
-  const [publicationProof, kitHistory] = await Promise.all([
-    readCanonicalPublicationEvidence({
-      root,
-      revision,
-      records: validatedPublications,
-    }),
-    publicationHistory({
-      root,
-      revision,
-      paths: kits.map((kit) => `data/registry/kits/${kit.id}.json`),
-    }),
-  ]);
+  const kitHistory = await publicationHistory({
+    root,
+    revision,
+    paths: kits.map((kit) => `data/registry/kits/${kit.id}.json`),
+  });
   local.canonicalKitRevisions = Object.fromEntries(
     kits.map((kit) => [
       kit.id,
@@ -444,6 +465,19 @@ export async function loadAutomationInventory({
   local.projectRetryInspectionFailures = retries.failures;
   local.projectRetryInspectionComplete = retries.inspectionComplete;
   state.operations = discoverAutomationState(state);
+  const liveKeys = new Set(receipts.map((receipt) => receipt.operation.key));
+  local.retiredReceipts = await loadRetiredAutomationReceipts({
+    root,
+    revision,
+    nowMs,
+    operations: state.operations.filter(
+      (operation) => !liveKeys.has(operation.key),
+    ),
+  });
+  if (local.retiredReceipts.length) {
+    state.receipts.push(...local.retiredReceipts);
+    state.operations = discoverAutomationState(state);
+  }
   return state;
 }
 
