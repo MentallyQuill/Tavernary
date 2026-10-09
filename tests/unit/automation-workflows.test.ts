@@ -143,12 +143,13 @@ test("every successful workflow wake names an actual workflow and failures rely 
   );
 });
 
-test("the canonical writer serializes receipt mutations and mints its write token after setup", () => {
+test("the canonical writer queues receipt mutations and mints its write token after setup", () => {
   const writer = readFileSync(
     ".github/workflows/automation-writer.yml",
     "utf8",
   );
   expect(writer).toContain("group: canonical-publication");
+  expect(writer).toContain("queue: max");
   expect(writer).toContain("cancel-in-progress: false");
   expect(writer).toContain("ref: main");
   expect(writer).toContain("permission-contents: write");
