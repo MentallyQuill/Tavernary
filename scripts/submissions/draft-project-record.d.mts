@@ -117,6 +117,7 @@ export function draftProjectRecord(input: {
   copyMode?: "preserve" | "synthesize";
   copyReviewDiagnostic?: import("../catalog/catalog-copy-diagnostic.mjs").CopyReviewDiagnostic;
   copyRequired?: boolean;
+  allowProvisionalFacts?: boolean;
   provisionalSummary?: string;
   provisionalWarning?: string;
   now: string;

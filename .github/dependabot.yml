@@ -5,10 +5,39 @@ updates:
     schedule:
       interval: weekly
     groups:
+      security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+      next:
+        patterns:
+          - next
+          - eslint-config-next
+        update-types:
+          - minor
+          - patch
       react:
         patterns:
           - react
           - react-dom
+          - "@types/react"
+          - "@types/react-dom"
+        update-types:
+          - minor
+          - patch
+      tooling:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - next
+          - eslint-config-next
+          - react
+          - react-dom
+          - "@types/react"
+          - "@types/react-dom"
+        update-types:
+          - minor
+          - patch
     ignore:
       - dependency-name: eslint
         update-types:

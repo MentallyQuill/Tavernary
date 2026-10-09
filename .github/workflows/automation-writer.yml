@@ -1,0 +1,106 @@
+name: "Automation: Publish canonical work"
+run-name: "${{ inputs.mode == 'retain' && format('Site bundle retain {0}', inputs.result_run_id) || inputs.mode == 'confirm-restore' && format('Site restore confirm {0}', inputs.result_run_id) || format('Automation write {0} {1}', inputs.mode, inputs.operation_key) }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Trusted canonical writer operation
+        required: true
+        type: choice
+        options:
+          [
+            reconcile,
+            enrichment-request,
+            reconcile-project,
+            publish,
+            prepare,
+            confirm,
+            confirm-restore,
+            retain,
+            finalize,
+            advisory-notice,
+            backfill-identities,
+            verify-publisher,
+          ]
+        default: reconcile
+      operation_key:
+        description: Immutable operation key when applicable
+        required: false
+        type: string
+      result_run_id:
+        description: Trusted preparation run when applicable
+        required: false
+        type: number
+      budget_ticket:
+        description: Previously reserved optional model allowance
+        required: false
+        type: string
+      source_ids:
+        description: Optional newline-separated IDs for identity maintenance.
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: canonical-publication
+  cancel-in-progress: false
+
+jobs:
+  write:
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.actor_id == 2625904 || github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: publisher
+    permissions:
+      contents: read
+      actions: read
+      issues: write
+      pull-requests: write
+      statuses: write
+    steps:
+      - name: Check out trusted writer code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Install public verification browsers
+        if: inputs.mode == 'confirm' || inputs.mode == 'confirm-restore' || inputs.mode == 'retain'
+        run: npx playwright install --with-deps chromium webkit
+      - name: Create fresh scoped writer token
+        id: writer-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-actions: write
+          permission-contents: write
+          permission-issues: write
+          permission-pull-requests: write
+      - name: Apply current canonical operation
+        run: node scripts/automation/writer-cli.mjs
+        env:
+          GH_TOKEN: ${{ steps.writer-token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
+          TAVERNARY_IMMUTABLE_RELEASES_ENABLED: ${{ vars.TAVERNARY_IMMUTABLE_RELEASES_ENABLED }}
+          PROJECT_AUTO_PUBLICATION_ENABLED: ${{ vars.PROJECT_AUTO_PUBLICATION_ENABLED }}
+          UTILITY_MODEL: ${{ secrets.UTILITY_MODEL }}
+          TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}
+          TAVERNARY_MODEL_MONTHLY_USD: ${{ vars.TAVERNARY_MODEL_MONTHLY_USD }}
+          TAVERNARY_MODEL_PRICES: ${{ vars.TAVERNARY_MODEL_PRICES }}

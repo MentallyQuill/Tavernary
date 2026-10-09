@@ -1,0 +1,62 @@
+name: "Automation: Reconcile eligible work"
+
+on:
+  schedule:
+    - cron: "3,18,33,48 * * * *"
+  workflow_dispatch:
+  issues:
+    types: [opened, reopened, edited]
+  workflow_run:
+    workflows:
+      - "Site: Validate changes"
+      - "Maintenance: Verify supported runtimes"
+      - "Maintenance: Drill retained bundle"
+      - "Projects: Publish validated transaction"
+      - "Project submissions: Create review PR"
+      - "Project owner requests: Create review PR"
+      - "Kit submissions: Publish approved Kit"
+      - "Kit submissions: Withdraw published Kit"
+      - "Automation: Prepare operation"
+      - "Submission intake: Check issue eligibility"
+      - "Project submissions: Validate submission"
+      - "Project owner requests: Validate authority"
+      - "Kit submissions: Validate submission"
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: automation-controller
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'schedule' ||
+       (github.event_name == 'issues' &&
+        (github.actor_id == 2625904 || github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)) ||
+       (github.event_name == 'workflow_dispatch' &&
+        (github.actor_id == 2625904 || github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)) ||
+       (github.event_name == 'workflow_run' &&
+        github.event.workflow_run.head_repository.full_name == github.repository &&
+        github.event.workflow_run.conclusion == 'success'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: publisher
+    steps:
+      - name: Create scoped controller dispatch token
+        id: controller-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-actions: write
+      - name: Wake the serialized canonical controller
+        run: gh workflow run automation-writer.yml --repo "$GITHUB_REPOSITORY" --ref main -f mode=reconcile
+        env:
+          GH_TOKEN: ${{ steps.controller-token.outputs.token }}

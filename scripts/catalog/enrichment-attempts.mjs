@@ -1,4 +1,4 @@
-export const TRANSIENT_PROVIDER_RETRY_DELAYS_MS = [5_000, 15_000, 30_000];
+export const TRANSIENT_PROVIDER_RETRY_DELAYS_MS = [5_000, 15_000];
 
 const transientProviderCodes = new Set([
   "provider-timeout",
@@ -15,13 +15,19 @@ export async function generateWithTransientProviderRetries({
   generate,
   sleep = defaultSleep,
   retryDelays = TRANSIENT_PROVIDER_RETRY_DELAYS_MS,
+  canRetry = () => true,
 }) {
   for (let attempt = 0; ; attempt += 1) {
     try {
       return await generate(input);
     } catch (error) {
       const delay = retryDelays[attempt];
-      if (!transientProviderCodes.has(error?.code) || delay === undefined) {
+      if (
+        !transientProviderCodes.has(error?.code) ||
+        delay === undefined ||
+        attempt >= 2 ||
+        !canRetry()
+      ) {
         throw error;
       }
       await sleep(delay);
@@ -35,17 +41,20 @@ export async function generateValidatedEnrichment({
   generate,
   validate,
   repair,
+  canRetry = () => true,
 }) {
   if (!Number.isInteger(maxAttempts) || maxAttempts < 1) {
     throw new Error("maximum enrichment attempts must be a positive integer");
   }
+  maxAttempts = Math.min(maxAttempts, 3);
   let input = initialInput;
   let latest;
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     const generated = await generate(input);
     const validation = validate(generated.output);
     latest = { ...generated, validation };
-    if (validation.valid || attempt === maxAttempts) return latest;
+    if (validation.valid || attempt === maxAttempts || !canRetry())
+      return latest;
     input = repair(input, validation, generated.output);
   }
   throw new Error("enrichment attempt loop ended unexpectedly");

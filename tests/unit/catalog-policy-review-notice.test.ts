@@ -1,6 +1,25 @@
 import { expect, test } from "vitest";
 import { renderCatalogPolicyReviewIssue } from "../../scripts/moderation/catalog-policy-review-notice.mjs";
 
+test("scheduled advisory notices omit absent transaction numbers", () => {
+  const result = renderCatalogPolicyReviewIssue({
+    project: { id: "alpha", name: "Alpha", summary: "Published." },
+    sourceUrl: "https://github.com/Owner/Alpha",
+    output: {
+      status: "review-suggested",
+      category: "potential-other-catalog-policy-conflict",
+      explanation: "Review the verified source.",
+    },
+    submittedSummary: "",
+    evidenceFingerprint: "a".repeat(64),
+    policyVersion: "2026-07-29",
+    reviewedAt: "2026-07-29T12:00:00.000Z",
+  });
+  expect(result.body).not.toContain("#undefined");
+  expect(result.body).not.toContain("Transaction issue:");
+  expect(result.body).not.toContain("Merged PR:");
+});
+
 test("renders a bounded neutral maintenance advisory with inert summaries", () => {
   const issue = renderCatalogPolicyReviewIssue({
     project: {

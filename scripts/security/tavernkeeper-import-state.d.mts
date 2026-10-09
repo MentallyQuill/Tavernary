@@ -1,4 +1,5 @@
 export type TavernaryAssessmentDiagnostic =
+  | "budget-exhausted"
   | "response_schema"
   | "public_text_references"
   | "unknown_candidate_ids"

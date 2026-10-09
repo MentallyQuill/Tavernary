@@ -41,6 +41,42 @@ function results(
   return projectIds.map((id) => ({ id, phase, outcome }));
 }
 
+test("an explicit allowance checkpoint preserves frozen configuration and resumes exact ordered IDs", () => {
+  const state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ids(21),
+    runId: "bounded",
+    now,
+    batchSize: 20,
+    selectionMode: "all-automatic",
+  });
+  const options = { checkpointLimit: 1 };
+  expect(selectNextRunBatch(state, options).projectIds).toEqual(ids(1));
+  const next = applyAttemptResults(
+    state,
+    results(ids(1), "primary"),
+    later,
+    options,
+  );
+  expect(next.primary_cursor).toBe(1);
+  expect(next.batch_size).toBe(20);
+  expect(next.manifest).toEqual(state.manifest);
+  expect(next.selection_mode).toBe("all-automatic");
+  const resumed = JSON.parse(JSON.stringify(next));
+  expect(selectNextRunBatch(resumed, options).projectIds).toEqual(ids(1, 1));
+  expect(() =>
+    applyAttemptResults(state, results(ids(1, 1), "primary"), later, options),
+  ).toThrow();
+  expect(() =>
+    applyAttemptResults(state, results(ids(2), "primary"), later, options),
+  ).toThrow();
+  expect(() =>
+    applyAttemptResults(state, results(ids(1), "retry"), later, options),
+  ).toThrow();
+  for (const checkpointLimit of [0, 21, NaN, 1.5])
+    expect(() => selectNextRunBatch(state, { checkpointLimit })).toThrow();
+});
+
 test("defaults new runs to six model calls and accepts up to eight", () => {
   const defaultState = createEnrichmentRunState({
     mode: "full",

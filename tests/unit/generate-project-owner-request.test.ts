@@ -1000,6 +1000,127 @@ test("generates an automatic summary without changing manual tags", async () => 
   });
 });
 
+test("a four-card owner request resumes validated metadata after exhausting three model calls", async () => {
+  const {
+    createModelBudgetState,
+    reserveModelBudget,
+    bindModelBudgetTicket,
+    createModelBudgetGuard,
+  } = await import("../../scripts/automation/model-budget.mjs");
+  const manifest = addManifest();
+  const original = manifest.proposed_cards[0];
+  manifest.proposed_cards = ["One", "Two", "Three", "Four"].map((name) => ({
+    ...original,
+    draft_id: `draft-${name.toLowerCase()}`,
+    project_id: `owner-alpha-${name.toLowerCase()}`,
+    name,
+    metadata: { summary: { mode: "automatic" }, tags: { mode: "automatic" } },
+  }));
+  const fixture = harness(manifest);
+  const checkpointWrites: Array<{
+    schema_version: number;
+    entries: unknown[];
+  }> = [];
+  const saveGenerationCheckpoint = async (value: {
+    schema_version: number;
+    entries: unknown[];
+  }) => {
+    checkpointWrites.push(structuredClone(value));
+  };
+  const source = {
+    status: "ready",
+    readmeText: "The repository supplies four distinct interface extensions.",
+    sourceIdentity: "github:42",
+    readmeRef: "main",
+  };
+  const loadEnrichmentSource = vi.fn(async () => source);
+  const called: string[] = [];
+  const guard = (runId: number) => {
+    const nowMs = Date.parse("2026-10-08T12:00:00Z"),
+      key = "a".repeat(64),
+      workflow = ".github/workflows/generate-project-owner-request.yml";
+    const reserved = reserveModelBudget(
+      createModelBudgetState(nowMs),
+      {
+        operationKey: key,
+        requestCount: 3,
+        requestedTokens: 180000,
+        model: "primary",
+      },
+      { nowMs },
+    );
+    if (!reserved.allowed) throw new Error("Fixture allowance unavailable");
+    return createModelBudgetGuard({
+      state: bindModelBudgetTicket(reserved.state, reserved.ticket.id, {
+        runId,
+        workflow,
+      }),
+      ticketIds: [reserved.ticket.id],
+      operationKey: key,
+      runId,
+      workflow,
+      runAttempt: 1,
+      nowMs: () => nowMs,
+    });
+  };
+  let allowance = guard(700);
+  const enrichMetadata = vi.fn(
+    async ({ record }: { record: { id: string } }) => {
+      const request = allowance.beforeRequest({
+        model: "primary",
+        body: { project: record.id },
+        maxOutputTokens: 1024,
+      });
+      called.push(record.id);
+      allowance.completeRequest?.(request);
+      return {
+        summary: {
+          value: `${record.id} provides a distinct repository offering with source-grounded behavior and independently selected catalog metadata. This summary stays specific to the sibling card instead of cloning another entry.`,
+          evidence: ["readme:1-2"],
+        },
+        tags: [{ id: "automation", evidence: ["readme:1-2"] }],
+        result: "accepted-unchanged",
+        change_reasons: [],
+        policy_signal: "none",
+      };
+    },
+  );
+  await expect(
+    generate(fixture, {
+      enrichMetadata,
+      loadEnrichmentSource,
+      saveGenerationCheckpoint,
+    }),
+  ).rejects.toMatchObject({ code: "budget-exhausted" });
+  expect(checkpointWrites.at(-1)?.entries).toHaveLength(3);
+  expect(fixture.writes).toEqual([]);
+  allowance = guard(701);
+  const result = await generate(fixture, {
+    enrichMetadata,
+    loadEnrichmentSource,
+    saveGenerationCheckpoint,
+    generationCheckpoint: checkpointWrites.at(-1),
+  });
+  expect(result.report.project_ids).toHaveLength(4);
+  expect([...called].sort()).toEqual(
+    manifest.proposed_cards.map((card) => card.project_id).sort(),
+  );
+  expect(result.report.metadata_results).toHaveLength(4);
+  expect(allowance.usage?.()[0].usage.requests).toBe(1);
+  expect(JSON.stringify(checkpointWrites)).not.toContain(source.readmeText);
+  source.readmeText += " The repository README has changed.";
+  allowance = guard(702);
+  await expect(
+    generate(harness(manifest), {
+      enrichMetadata,
+      loadEnrichmentSource,
+      saveGenerationCheckpoint,
+      generationCheckpoint: checkpointWrites.at(-1),
+    }),
+  ).rejects.toMatchObject({ code: "budget-exhausted" });
+  expect(called).toHaveLength(7);
+});
+
 test("generates automatic summary and tags independently for every add-card sibling", async () => {
   const manifest = addManifest();
   for (const card of manifest.proposed_cards) {

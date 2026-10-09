@@ -3,7 +3,9 @@ import { expect, test } from "vitest";
 import {
   PROJECT_VALIDATION_REGENERATION_GRACE_MS,
   PROJECT_VALIDATION_RETRY_LIMIT,
+  PROJECT_VALIDATION_STATE_MARKER,
   projectValidationStateComment,
+  parseProjectValidationRetryState,
   planProjectValidationReconciliation,
 } from "../../scripts/submissions/project-validation-reconciliation.mjs";
 import { createProjectPublicationTransaction } from "../../scripts/publication/project-publication-transaction.mjs";
@@ -50,8 +52,8 @@ function run(
     head_sha: HEAD_SHA,
     status: conclusion === null ? "in_progress" : "completed",
     conclusion,
-    created_at: new Date(NOW - id * 1_000).toISOString(),
-    updated_at: new Date(NOW - id * 1_000).toISOString(),
+    created_at: new Date(NOW - 172_800_000 - id * 1_000).toISOString(),
+    updated_at: new Date(NOW - 172_800_000 - id * 1_000).toISOString(),
     ...options,
   };
 }
@@ -67,6 +69,21 @@ function input(overrides: Record<string, unknown> = {}) {
     ...overrides,
   };
 }
+
+test("cancelled current-head validations do not exhaust allowance", () => {
+  const result = planProjectValidationReconciliation(
+    input({
+      validationRuns: [
+        run(3, "cancelled"),
+        run(2, "skipped"),
+        run(1, "cancelled"),
+      ],
+    }),
+  );
+  expect(result.action).not.toBe("block");
+  if (result.action === "ignore") throw new Error("Expected recovery state");
+  expect(result.attempts).toBe(0);
+});
 
 test("validates an automatic transaction with no current-head run", () => {
   expect(planProjectValidationReconciliation(input())).toMatchObject({
@@ -95,7 +112,7 @@ test("retries fewer than three failed exact-head validations", () => {
   ).toMatchObject({ action: "retry-validation", attempts: 2 });
 });
 
-test("blocks after three failed exact-head validations", () => {
+test("keeps mixed infrastructure and unknown failures recoverable", () => {
   expect(
     planProjectValidationReconciliation(
       input({
@@ -107,9 +124,9 @@ test("blocks after three failed exact-head validations", () => {
       }),
     ),
   ).toMatchObject({
-    action: "block",
-    state: "validation-blocked",
-    attempts: 3,
+    action: "retry-validation",
+    state: "retrying-validation",
+    attempts: 1,
   });
 });
 
@@ -166,7 +183,7 @@ test("retries a failed Publisher below three attempts", () => {
   });
 });
 
-test("blocks an exhausted Publisher", () => {
+test("keeps an interrupted Publisher recoverable", () => {
   expect(
     planProjectValidationReconciliation(
       input({
@@ -179,13 +196,13 @@ test("blocks an exhausted Publisher", () => {
       }),
     ),
   ).toMatchObject({
-    action: "block",
-    state: "publication-blocked",
-    attempts: 3,
+    action: "retry-publication",
+    state: "retrying-publication",
+    attempts: 1,
   });
 });
 
-test("blocks newer exhausted Publisher attempts before retrying an older generation failure", () => {
+test("probes newer unknown Publisher failures before retrying older generation", () => {
   expect(
     planProjectValidationReconciliation(
       input({
@@ -218,10 +235,11 @@ test("blocks newer exhausted Publisher attempts before retrying an older generat
       }),
     ),
   ).toMatchObject({
-    action: "block",
-    state: "publication-blocked",
+    action: "wait",
+    state: "retrying-publication",
     attempts: 3,
     run: { id: 5 },
+    retry: { action: "probe", incident: true },
   });
 });
 
@@ -294,4 +312,113 @@ test("renders one machine-readable state marker", () => {
     `${JSON.stringify({ schema_version: 1, status: "retrying-validation", head_sha: HEAD_SHA, attempts: 2, run_id: 12 })}`,
   );
   expect(PROJECT_VALIDATION_RETRY_LIMIT).toBe(3);
+});
+
+test("waits before a stable run-anchored due time then resumes after a 72-hour outage", () => {
+  const failed = run(10, "cancelled", {
+    created_at: new Date(NOW - 1_000).toISOString(),
+    updated_at: new Date(NOW).toISOString(),
+  });
+  const first = planProjectValidationReconciliation(
+    input({ validationRuns: [failed] }),
+  );
+  expect(first).toMatchObject({
+    action: "wait",
+    retry: { reasonCode: "workflow-cancelled" },
+  });
+  if (first.action === "ignore") throw new Error("Expected recovery state");
+  const next = planProjectValidationReconciliation(
+    input({ validationRuns: [failed], nowMs: NOW + 60_000 }),
+  );
+  expect(next).toMatchObject({ action: "wait", retry: first.retry });
+  expect(
+    planProjectValidationReconciliation(
+      input({ validationRuns: [failed], nowMs: NOW + 72 * 3_600_000 }),
+    ),
+  ).toMatchObject({ action: "retry-validation", attempts: 0 });
+});
+
+test("stops unchanged input only when structured validation evidence is permanent", () => {
+  expect(
+    planProjectValidationReconciliation(
+      input({
+        validationRuns: [
+          run(1, "failure", {
+            failure: { validationErrors: ["invalid manifest"] },
+          }),
+        ],
+      }),
+    ),
+  ).toMatchObject({
+    action: "block",
+    retry: { action: "stop", reasonCode: "validation-failed" },
+  });
+});
+
+test("three unknown failures open a bounded probe rather than a permanent block", () => {
+  const result = planProjectValidationReconciliation(
+    input({
+      validationRuns: [1, 2, 3].map((id) =>
+        run(id, "failure", { updated_at: new Date(NOW).toISOString() }),
+      ),
+    }),
+  );
+  expect(result).toMatchObject({
+    action: "wait",
+    retry: {
+      action: "probe",
+      incident: true,
+      nextEligibleAt: new Date(NOW + 86_400_000).toISOString(),
+    },
+  });
+});
+
+test("persists and reads sanitized retry timing scoped to the exact run and head", () => {
+  const result = planProjectValidationReconciliation(
+    input({ validationRuns: [run(1, "cancelled")] }),
+  );
+  if (result.action === "ignore") throw new Error("Expected retry");
+  const body = projectValidationStateComment({ ...result, headSha: HEAD_SHA });
+  expect(parseProjectValidationRetryState(body)).toMatchObject({
+    headSha: HEAD_SHA,
+    runId: 1,
+    runAttempt: 1,
+    state: "retrying-validation",
+    nextEligibleAt: result.retry?.nextEligibleAt,
+  });
+  expect(
+    parseProjectValidationRetryState(
+      `${PROJECT_VALIDATION_STATE_MARKER}\n{"schema_version":2,"reason_code":"secret provider body"}\n-->`,
+    ),
+  ).toBeNull();
+  expect(parseProjectValidationRetryState(`${body}\n${body}`)).toBeNull();
+});
+
+test("rejects malformed persisted retry timing and ignores another run attempt", () => {
+  const failed = run(1, "cancelled", { created_at: "", updated_at: "" });
+  const result = planProjectValidationReconciliation(
+    input({ validationRuns: [failed] }),
+  );
+  if (result.action === "ignore") throw new Error("Expected retry");
+  const body = projectValidationStateComment({ ...result, headSha: HEAD_SHA });
+  const saved = parseProjectValidationRetryState(body)!;
+  expect(
+    parseProjectValidationRetryState(
+      body.replace(JSON.stringify(saved.nextEligibleAt), "123"),
+    ),
+  ).toBeNull();
+  expect(
+    parseProjectValidationRetryState(
+      body.replace(JSON.stringify(saved.nextEligibleAt), '"2026-08-24"'),
+    ),
+  ).toBeNull();
+  expect(
+    planProjectValidationReconciliation(
+      input({
+        validationRuns: [failed],
+        retryState: { ...saved, runAttempt: 2 },
+        nowMs: NOW + 3_600_000,
+      }),
+    ),
+  ).toMatchObject({ action: "wait" });
 });

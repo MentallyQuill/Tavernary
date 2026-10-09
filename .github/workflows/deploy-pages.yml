@@ -9,6 +9,12 @@ on:
     paths-ignore:
       - "data/reports/**"
       - "data/snapshots/policy-review/**"
+      - "data/maintenance/automation/**"
+      - "docs/**"
+      - "tests/**"
+      - "README.md"
+      - "AGENTS.md"
+      - "CLAUDE.md"
   workflow_dispatch:
     inputs:
       source_sha:
@@ -31,7 +37,9 @@ jobs:
       TAVERNARY_BASE_PATH: ""
       TAVERNARY_TARGET_MANIFEST_URL: https://tavernary.org/security/tavernkeeper-targets.json
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     outputs:
+      source_sha: ${{ steps.revision.outputs.source_sha }}
       prior_target_digest: ${{ steps.target-manifest.outputs.prior_digest }}
       built_target_digest: ${{ steps.target-manifest.outputs.built_digest }}
       targets_changed: ${{ steps.target-manifest.outputs.changed }}
@@ -40,6 +48,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Validate exact deployment source
         if: ${{ inputs.source_sha != '' }}
         env:
@@ -58,12 +67,27 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
-          node-version: 24
+          node-version-file: .node-version
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Validate, test, and build
+      - name: Classify changes since confirmed production
+        id: route
+        run: node scripts/ci/classify-deployment.mjs
+      - name: Validate and build published content
+        if: steps.route.outputs.route == 'content'
+        run: npm run check:content
+      - name: Validate, test, and build implementation changes
+        if: steps.route.outputs.route != 'content'
         run: npm run check
+      - name: Bind the complete export to its exact revision
+        id: revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_sha="$(git rev-parse HEAD)"
+          node scripts/automation/revision-manifest.mjs write "$source_sha" "run-${GITHUB_RUN_ID}-attempt-${GITHUB_RUN_ATTEMPT}"
+          echo "source_sha=$source_sha" >> "$GITHUB_OUTPUT"
       - name: Compare public and built TavernKeeper targets
         id: target-manifest
         shell: bash
@@ -76,11 +100,9 @@ jobs:
           prior_digest="$(node scripts/security/tavernkeeper-publication.mjs read "$TAVERNARY_TARGET_MANIFEST_URL")"
           read_status=$?
           set -e
-          if (( read_status == 2 )); then
-            echo "No previous public TavernKeeper target manifest; treating this deployment as changed."
+          if (( read_status != 0 )); then
+            echo "::notice::Previous hosted manifest unavailable or invalid; treating this deployment as changed."
             prior_digest=""
-          elif (( read_status != 0 )); then
-            exit "$read_status"
           fi
 
           changed=false
@@ -91,7 +113,32 @@ jobs:
           echo "built_digest=$built_digest" >> "$GITHUB_OUTPUT"
           echo "changed=$changed" >> "$GITHUB_OUTPUT"
       - name: Verify static export
+        env:
+          TAVERNARY_EXPECTED_SOURCE_SHA: ${{ steps.revision.outputs.source_sha }}
+          TAVERNARY_EXPECTED_BUILD_ID: run-${{ github.run_id }}-attempt-${{ github.run_attempt }}
         run: npm run verify:export
+      - name: Retain revision integrity metadata
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: site-revision-${{ steps.revision.outputs.source_sha }}
+          path: out/revision.json
+          retention-days: 90
+          if-no-files-found: error
+      - name: Create complete verified restore bundle
+        env:
+          SOURCE_SHA: ${{ steps.revision.outputs.source_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/automation/site-bundle.mjs create "$RUNNER_TEMP/site-bundle.tsb.gz" "$SOURCE_SHA" "run-${GITHUB_RUN_ID}-attempt-${GITHUB_RUN_ATTEMPT}"
+      - name: Retain complete verified restore bundle
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: site-bundle-${{ steps.revision.outputs.source_sha }}
+          path: ${{ runner.temp }}/site-bundle.tsb.gz
+          retention-days: 90
+          compression-level: 0
+          if-no-files-found: error
       - name: Configure GitHub Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
       - name: Upload static export
@@ -102,19 +149,98 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+      pages: write
+      id-token: write
+    outputs:
+      action: ${{ steps.guard.outputs.action }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Check out trusted deployment controller
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - name: Install controller dependencies
+        run: npm ci
+      - name: Read this run's exact revision metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ needs.build.outputs.source_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh run download "$GITHUB_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "site-revision-$SOURCE_SHA" --dir .tmp/site-revision
+      - name: Recheck fresh main and confirmed deployment ancestry
+        id: guard
+        env:
+          SOURCE_SHA: ${{ needs.build.outputs.source_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main
+          node scripts/automation/deployment-gate.mjs .tmp/site-revision/revision.json "$SOURCE_SHA"
       - name: Deploy GitHub Pages
+        if: steps.guard.outputs.action == 'deploy'
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+  confirm-public:
+    needs: [build, deploy]
+    if: needs.deploy.outputs.action == 'deploy'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Check out trusted public verifier
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - name: Install verifier dependencies
+        run: npm ci
+      - name: Install public verification browsers
+        run: npx playwright install --with-deps chromium webkit
+      - name: Read this run's exact revision metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ needs.build.outputs.source_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh run download "$GITHUB_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "site-revision-$SOURCE_SHA" --dir .tmp/site-revision
+      - name: Confirm public revision, assets, and essential browser behavior
+        run: node scripts/automation/confirm-deployment.mjs .tmp/site-revision/revision.json .tmp/confirmation.json
+      - name: Retain public verification result
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: site-confirmation-${{ needs.build.outputs.source_sha }}
+          path: .tmp/confirmation.json
+          retention-days: 90
+          if-no-files-found: warn
 
   wake-tavernkeeper:
     needs:
       - build
       - deploy
-    if: needs.build.outputs.targets_changed == 'true'
+    if: needs.build.outputs.targets_changed == 'true' && needs.deploy.outputs.action == 'deploy'
     runs-on: ubuntu-latest
     permissions:
       contents: read

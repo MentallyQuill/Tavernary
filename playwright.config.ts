@@ -4,6 +4,7 @@ export default defineConfig({
   snapshotPathTemplate:
     "{testDir}/{testFilePath}-snapshots/{arg}-{platform}{ext}",
   testDir: "./tests",
+  testIgnore: "**/deployment-e2e/**",
   projects: [
     {
       name: "chromium",

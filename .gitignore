@@ -6,6 +6,7 @@
 node_modules/
 .next/
 out/
+/local-data/site-bundles/
 coverage/
 playwright-report/
 test-results/

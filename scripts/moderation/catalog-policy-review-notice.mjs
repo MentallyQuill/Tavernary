@@ -43,8 +43,14 @@ export function renderCatalogPolicyReviewIssue(input) {
       `- **Project:** ${safe(input.project.name)} (\`${safe(input.project.id, 100)}\`)`,
       `- **Source:** ${safe(input.sourceUrl, 320)}`,
       `- **Category:** ${categoryLabels[input.output.category]}`,
-      `- **Transaction issue:** #${input.transactionIssueNumber}`,
-      `- **Merged PR:** #${input.transactionPullNumber}`,
+      ...(Number.isSafeInteger(input.transactionIssueNumber) &&
+      input.transactionIssueNumber > 0
+        ? [`- **Transaction issue:** #${input.transactionIssueNumber}`]
+        : []),
+      ...(Number.isSafeInteger(input.transactionPullNumber) &&
+      input.transactionPullNumber > 0
+        ? [`- **Merged PR:** #${input.transactionPullNumber}`]
+        : []),
       `- **Evidence fingerprint:** \`${safe(input.evidenceFingerprint, 80)}\``,
       `- **Policy version:** \`${safe(input.policyVersion, 80)}\``,
       `- **Reviewed at:** ${safe(input.reviewedAt, 80)}`,

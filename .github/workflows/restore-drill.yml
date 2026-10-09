@@ -1,0 +1,58 @@
+name: "Maintenance: Drill retained bundle"
+
+on:
+  schedule:
+    - cron: "41 7 * * 3"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: restore-drill
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'schedule' || github.actor_id == 2625904 ||
+       github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out trusted verification code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit
+      - name: Restore the authenticated retained export into a clean workspace
+        run: node scripts/automation/restore-drill.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
+      - name: Verify restored behavior with all outbound browser requests blocked
+        shell: bash
+        run: |
+          export TAVERNARY_STATIC_EXPORT_DIR="$(node -e "console.log(require('./.tmp/restore-drill-decision.json').outputDirectory)")"
+          node scripts/run-playwright.mjs --config playwright.deployment.config.ts tests/deployment-e2e/restore-bundle.spec.ts
+        env:
+          TAVERNARY_DEPLOYMENT_FIXTURE_ORIGIN: http://127.0.0.1:3000
+          TAVERNARY_OFFLINE_RESTORE_DRILL: "true"
+      - name: Retain recovery drill evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: site-restore-drill-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .tmp/restore-drill-decision.json
+            test-results
+          retention-days: 90
+          if-no-files-found: warn

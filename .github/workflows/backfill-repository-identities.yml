@@ -5,15 +5,16 @@ on:
   workflow_dispatch:
     inputs:
       source_ids:
-        description: Optional newline-separated source IDs; empty selects all.
+        description: Optional newline-separated source IDs; at most 256 missing identities per write.
         type: string
         required: false
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
-  group: catalog-refresh
+  group: identity-backfill-request
   cancel-in-progress: false
 
 jobs:
@@ -25,58 +26,25 @@ jobs:
       github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)
     runs-on: ubuntu-latest
     environment: publisher
+    timeout-minutes: 15
     steps:
-      - name: Create Tavernary Publisher token
+      - name: Check out current trusted request code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Create fresh Publisher dispatch token
         id: publisher-token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
           client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
           private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
-          permission-contents: write
-      - name: Check out repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          fetch-depth: 0
-          token: ${{ steps.publisher-token.outputs.token }}
-      - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        with:
-          node-version: 24
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Backfill selected identities
+          permission-actions: write
+      - name: Request identity maintenance in the shared writer
+        shell: bash
         env:
+          GH_TOKEN: ${{ steps.publisher-token.outputs.token }}
           SOURCE_IDS: ${{ inputs.source_ids || '' }}
-        shell: bash
-        run: |
-          args=(--write)
-          while IFS= read -r source_id; do
-            [[ -z "$source_id" ]] || args+=(--source-id "$source_id")
-          done <<< "$SOURCE_IDS"
-          npm run catalog:backfill-identities -- "${args[@]}"
-      - name: Validate catalog identities
-        run: npm run catalog:validate
-      - name: Commit repository identities
-        shell: bash
-        run: |
-          git add data/registry/sources/*.json
-          if git diff --cached --quiet; then
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore(catalog): backfill repository identities"
-          for attempt in 1 2 3; do
-            if git fetch origin main &&
-              git rebase origin/main; then
-              if npm run catalog:validate &&
-                git push origin HEAD:main; then
-                break
-              fi
-            fi
-            git rebase --abort || true
-            if (( attempt == 3 )); then
-              exit 1
-            fi
-          done
+        run: >-
+          gh workflow run automation-writer.yml --ref main
+          -f mode=backfill-identities -f source_ids="$SOURCE_IDS"

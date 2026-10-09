@@ -1,4 +1,5 @@
 import { expect, test } from "vitest";
+import { vi } from "vitest";
 
 import {
   reconcileProjectValidations,
@@ -11,6 +12,7 @@ import {
 import {
   PROJECT_VALIDATION_REGENERATION_GRACE_MS,
   PROJECT_VALIDATION_STATE_MARKER,
+  parseProjectValidationRetryState,
 } from "../../scripts/submissions/project-validation-reconciliation.mjs";
 
 const REPOSITORY = "MentallyQuill/Tavernary";
@@ -19,6 +21,28 @@ const NEXT_HEAD_SHA = "e".repeat(40);
 const OLD_HEAD_SHA = "d".repeat(40);
 const PUBLISHER_ACTOR_ID = 41_982_982;
 const NOW = Date.parse("2026-08-23T12:00:00.000Z");
+
+test("the shared writer reconciles one selected PR without scanning unrelated pull requests", async () => {
+  const request = vi.fn(async (path: string) => {
+    if (path === `/repos/${REPOSITORY}`) return { default_branch: "main" };
+    if (path === `/repos/${REPOSITORY}/pulls/999`)
+      return { number: 999, state: "closed" };
+    throw new Error("Unrelated inventory is forbidden");
+  });
+  const result = await reconcileProjectValidations({
+    repository: REPOSITORY,
+    publisherActorId: PUBLISHER_ACTOR_ID,
+    nowMs: NOW,
+    request,
+    selectedPullNumber: 999,
+  });
+  expect(result.scannedPulls).toBe(1);
+  expect(result.results[0].action).toBe("ignore");
+  expect(request.mock.calls).toEqual([
+    [`/repos/${REPOSITORY}`],
+    [`/repos/${REPOSITORY}/pulls/999`],
+  ]);
+});
 
 type JsonObject = Record<string, unknown>;
 type Pull = ReturnType<typeof pullFixture>;
@@ -116,8 +140,8 @@ function pullFixture({
     created_at: new Date(NOW - 60_000).toISOString(),
     updated_at: updatedAt,
     closed_at: state === "closed" ? updatedAt : null,
-    merged_at: null,
-    merge_commit_sha: null,
+    merged_at: null as string | null,
+    merge_commit_sha: null as string | null,
     user: {
       login: "github-actions[bot]",
       id: pullAuthorId,
@@ -207,7 +231,7 @@ function runFixture({
   headBranch = "automation/project-submission-620",
   conclusion,
   status = conclusion === null ? "in_progress" : "completed",
-  createdAt = new Date(NOW - id * 1_000).toISOString(),
+  createdAt = new Date(NOW - 172_800_000 - id * 1_000).toISOString(),
   updatedAt = createdAt,
   displayTitle,
   workflow = "ci.yml",
@@ -652,6 +676,168 @@ async function reconcile(fake: FakeGitHub) {
   });
 }
 
+test("records a stable due time and resumes cancellation after a 72-hour outage", async () => {
+  const pull = pullFixture();
+  const fake = new FakeGitHub([pull]);
+  const cancelled = runFixture({
+    id: 90,
+    conclusion: "cancelled",
+    createdAt: new Date(NOW).toISOString(),
+  });
+  fake.validationPages.set(pull.head.ref, [[cancelled]]);
+  const first = await reconcile(fake);
+  expect(first.results[0]).toMatchObject({ action: "wait", attempts: 0 });
+  const saved = parseProjectValidationRetryState(
+    fake.comments
+      .get(620)
+      ?.find((comment) => comment.user === fake.authenticatedUser)?.body,
+  );
+  expect(saved?.nextEligibleAt).toBeDefined();
+  const options = {
+    repository: REPOSITORY,
+    request: fake.request,
+    publisherActorId: PUBLISHER_ACTOR_ID,
+  };
+  await reconcileProjectValidations({ ...options, nowMs: NOW + 60_000 });
+  expect(
+    fake
+      .mutationRequests()
+      .filter((request) => request.path.endsWith("/ci.yml/dispatches")),
+  ).toHaveLength(0);
+  expect(
+    parseProjectValidationRetryState(
+      fake.comments
+        .get(620)
+        ?.find((comment) => comment.user === fake.authenticatedUser)?.body,
+    ),
+  ).toEqual(saved);
+  const recovered = await reconcileProjectValidations({
+    ...options,
+    nowMs: NOW + 72 * 3_600_000,
+  });
+  expect(recovered.results[0]).toMatchObject({
+    action: "retry-validation",
+    outcome: "applied",
+  });
+  expect(
+    fake
+      .mutationRequests()
+      .filter((request) => request.path.endsWith("/ci.yml/dispatches")),
+  ).toHaveLength(1);
+});
+
+test("reuses trusted timing when GitHub omits the terminal timestamp", async () => {
+  const pull = pullFixture();
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [
+    [
+      runFixture({
+        id: 91,
+        conclusion: "cancelled",
+        createdAt: "",
+        updatedAt: "",
+      }),
+    ],
+  ]);
+  await reconcile(fake);
+  const resumed = await reconcileProjectValidations({
+    repository: REPOSITORY,
+    request: fake.request,
+    publisherActorId: PUBLISHER_ACTOR_ID,
+    nowMs: NOW + 3_600_000,
+  });
+  expect(resumed.results[0]).toMatchObject({
+    action: "retry-validation",
+    outcome: "applied",
+  });
+});
+
+test("rechecks the automatic publication switch immediately before dispatch", async () => {
+  const pull = pullFixture();
+  const fake = new FakeGitHub([pull]);
+  let reads = 0;
+  const summary = await reconcileProjectValidations({
+    repository: REPOSITORY,
+    request: fake.request,
+    publisherActorId: PUBLISHER_ACTOR_ID,
+    nowMs: NOW,
+    loadAutomaticPublicationEnabled: async () => ++reads === 1,
+  });
+  expect(summary.results[0]).toMatchObject({
+    action: "ignore",
+    reason: "automatic-publication-disabled",
+  });
+  expect(fake.mutationRequests()).toHaveLength(0);
+});
+
+test("CLI fails closed when the automatic publication switch is absent", async () => {
+  const fake = new FakeGitHub([pullFixture()]);
+  const output: string[] = [];
+  expect(
+    await runReconcileProjectValidationsCli({
+      env: {
+        GITHUB_REPOSITORY: REPOSITORY,
+        GITHUB_TOKEN: "test-token",
+        TAVERNARY_PUBLISHER_BOT_ID: String(PUBLISHER_ACTOR_ID),
+      },
+      request: fake.request,
+      nowMs: NOW,
+      write: (text) => output.push(text),
+    }),
+  ).toBe(0);
+  expect(JSON.parse(output[0]).results[0]).toMatchObject({
+    action: "ignore",
+    reason: "automatic-publication-disabled",
+  });
+  expect(fake.mutationRequests()).toHaveLength(0);
+});
+
+test("a merge completed before cancellation causes no second publication", async () => {
+  const pull = pullFixture();
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [
+    [runFixture({ id: 92, conclusion: "success" })],
+  ]);
+  fake.publicationPages = [
+    [
+      runFixture({
+        id: 93,
+        conclusion: "cancelled",
+        workflow: "publish-project-transaction.yml",
+        displayTitle: "Project publication for validation #92",
+      }),
+    ],
+  ];
+  fake.livePulls.set(620, {
+    ...pull,
+    state: "closed",
+    merged_at: new Date(NOW).toISOString(),
+    merge_commit_sha: "f".repeat(40),
+  });
+  await reconcile(fake);
+  expect(fake.mutationRequests()).toHaveLength(0);
+});
+
+test.each(["author", "transaction"])(
+  "rechecks changed PR %s at the final dispatch boundary",
+  async (change) => {
+    const pull = pullFixture();
+    const fake = new FakeGitHub([pull]);
+    const changed =
+      change === "author"
+        ? { ...pull, user: { ...pull.user, id: 123 } }
+        : {
+            ...pull,
+            body: transactionBody(
+              transactionFixture({ publicationMode: "manual" }),
+            ),
+          };
+    fake.livePullReads.set(620, [pull, changed]);
+    await reconcile(fake);
+    expect(fake.mutationRequests()).toHaveLength(0);
+  },
+);
+
 test("ignores a generated PR created by a different actor ID", async () => {
   const fake = new FakeGitHub([
     pullFixture({ pullAuthorId: PUBLISHER_ACTOR_ID + 1 }),
@@ -945,7 +1131,7 @@ test("projects retry state and dispatches another current-head validation", asyn
     body: {
       state: "pending",
       context: "tavernary/publication-validation",
-      description: "Retrying exact-head validation (1 of 3).",
+      description: "Exact-head validation is waiting for automatic recovery.",
       target_url: `https://github.com/${REPOSITORY}/actions/runs/11`,
     },
   });
@@ -1071,7 +1257,7 @@ test("caches the installation-token-supported Actions bot identity lookup", asyn
   expect(fake.requestCounts.get("GET /user")).toBeUndefined();
 });
 
-test("blocks exhausted validation attempts without another dispatch", async () => {
+test("resumes mixed infrastructure failures without exhausting validation", async () => {
   const pull = pullFixture();
   const fake = new FakeGitHub([pull]);
   fake.validationPages.set(pull.head.ref, [
@@ -1085,16 +1271,16 @@ test("blocks exhausted validation attempts without another dispatch", async () =
   const summary = await reconcile(fake);
 
   expect(summary.results[0]).toMatchObject({
-    action: "block",
-    state: "validation-blocked",
-    attempts: 3,
+    action: "retry-validation",
+    state: "retrying-validation",
+    attempts: 1,
     outcome: "applied",
   });
   expect(fake.requests).toContainEqual({
     method: "POST",
     path: `/repos/${REPOSITORY}/issues/620/labels`,
     body: {
-      labels: ["submission-validation-blocked"],
+      labels: ["submission-validation-retrying"],
     },
   });
   expect(fake.requests).toContainEqual(
@@ -1102,7 +1288,7 @@ test("blocks exhausted validation attempts without another dispatch", async () =
       method: "POST",
       path: `/repos/${REPOSITORY}/statuses/${HEAD_SHA}`,
       body: expect.objectContaining({
-        state: "failure",
+        state: "pending",
         context: "tavernary/publication-validation",
       }),
     }),
@@ -1112,21 +1298,28 @@ test("blocks exhausted validation attempts without another dispatch", async () =
       ({ method, path }) =>
         method === "POST" && path.endsWith("/ci.yml/dispatches"),
     ),
-  ).toBe(false);
+  ).toBe(true);
 });
 
-test("counts every completed validation run_attempt toward the head budget", async () => {
+test("three unknown worker attempts wait for a bounded probe", async () => {
   const pull = pullFixture();
   const fake = new FakeGitHub([pull]);
   fake.validationPages.set(pull.head.ref, [
-    [runFixture({ id: 17, conclusion: "failure", runAttempt: 3 })],
+    [
+      runFixture({
+        id: 17,
+        conclusion: "failure",
+        runAttempt: 3,
+        updatedAt: new Date(NOW).toISOString(),
+      }),
+    ],
   ]);
 
   const summary = await reconcile(fake);
 
   expect(summary.results[0]).toMatchObject({
-    action: "block",
-    state: "validation-blocked",
+    action: "wait",
+    state: "retrying-validation",
     attempts: 3,
   });
   expect(
@@ -1169,13 +1362,13 @@ test("mutates only owned labels and preserves concurrent foreign label changes",
     {
       method: "POST",
       path: `/repos/${REPOSITORY}/issues/620/labels`,
-      body: { labels: ["submission-validation-blocked"] },
+      body: { labels: ["submission-validation-retrying"] },
     },
   ]);
   expect(fake.issues.get(620)?.labels.map(({ name }) => name)).toEqual([
     "issue-admitted",
     "concurrent-review",
-    "submission-validation-blocked",
+    "submission-validation-retrying",
   ]);
 
   await reconcile(fake);
@@ -1313,7 +1506,7 @@ test.each(["failure", "cancelled"])(
 
     expect(summary.results[0]).toMatchObject({
       action: "retry-publication",
-      attempts: 2,
+      attempts: conclusion === "cancelled" ? 0 : 2,
     });
     expect(fake.requests).toContainEqual({
       method: "POST",
@@ -1683,7 +1876,7 @@ test("retries a failed generation through Publisher below the head budget", asyn
   });
 });
 
-test("blocks after three failed generation runs for the current head", async () => {
+test("probes after three unknown generation failures for the current head", async () => {
   const old = new Date(
     NOW - PROJECT_VALIDATION_REGENERATION_GRACE_MS - 1,
   ).toISOString();
@@ -1717,8 +1910,8 @@ test("blocks after three failed generation runs for the current head", async () 
   const summary = await reconcile(fake);
 
   expect(summary.results[0]).toMatchObject({
-    action: "block",
-    state: "regeneration-blocked",
+    action: "wait",
+    state: "retrying-regeneration",
     attempts: 3,
     runId: 57,
   });
@@ -1731,7 +1924,7 @@ test("blocks after three failed generation runs for the current head", async () 
   ).toBe(false);
 });
 
-test("blocks a successful generation that leaves the old head unchanged", async () => {
+test("probes a successful generation that leaves the old head unchanged", async () => {
   const old = new Date(
     NOW - PROJECT_VALIDATION_REGENERATION_GRACE_MS - 1,
   ).toISOString();
@@ -1764,8 +1957,8 @@ test("blocks a successful generation that leaves the old head unchanged", async 
   const summary = await reconcile(fake);
 
   expect(summary.results[0]).toMatchObject({
-    action: "block",
-    state: "regeneration-blocked",
+    action: "wait",
+    state: "retrying-regeneration",
     attempts: 1,
     runId: 60,
   });
@@ -2030,6 +2223,7 @@ test("CLI finishes every candidate and exits nonzero after an action error", asy
       GITHUB_REPOSITORY: REPOSITORY,
       GITHUB_TOKEN: "test-token",
       TAVERNARY_PUBLISHER_BOT_ID: String(PUBLISHER_ACTOR_ID),
+      PROJECT_AUTO_PUBLICATION_ENABLED: "true",
     },
     request: fake.request,
     nowMs: NOW,
@@ -2064,6 +2258,7 @@ test("CLI exits nonzero after a required state projection fails", async () => {
       GITHUB_REPOSITORY: REPOSITORY,
       GITHUB_TOKEN: "test-token",
       TAVERNARY_PUBLISHER_BOT_ID: String(PUBLISHER_ACTOR_ID),
+      PROJECT_AUTO_PUBLICATION_ENABLED: "true",
     },
     request: fake.request,
     nowMs: NOW,

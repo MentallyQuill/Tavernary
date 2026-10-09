@@ -9,7 +9,7 @@ import type {
   ProjectAttemptResult,
 } from "./enrichment-run-state.d.mts";
 
-export const PREFLIGHT_RETRY_DELAYS_MS: readonly [5000, 15000, 30000];
+export const PREFLIGHT_RETRY_DELAYS_MS: readonly [5000, 15000];
 export const MODEL_RATE_LIMIT_BACKOFF_DELAYS_MS: readonly [5000, 15000, 30000];
 
 export type MetadataField = "summary" | "tags";
@@ -171,6 +171,12 @@ export function enrichRecord(
   },
 ): Promise<EnrichmentOutput | null>;
 
+export function applyEnrichmentOutput(
+  current: RegistryRecord,
+  output: EnrichmentOutput,
+  vocabularies?: TagVocabulary,
+): RegistryRecord;
+
 export function writeEnrichedRecord(
   path: string,
   record: RegistryRecord,
@@ -212,6 +218,9 @@ export function runEnrichmentBatch(options: {
 }): Promise<ProjectAttemptResult[]>;
 
 export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
+  checkpointLimit?: number;
+  requireBudget?: boolean;
+  budgetGuard?: import("../automation/model-budget.mjs").ModelBudgetGuard;
   providerConfiguration?: {
     reasoningEffort?: string;
     apiUrl?: string;

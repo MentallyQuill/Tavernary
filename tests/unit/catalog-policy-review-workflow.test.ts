@@ -2,28 +2,12 @@ import { readFile } from "node:fs/promises";
 import { expect, test } from "vitest";
 import { parse } from "yaml";
 
-test("runs advisory review after publication without blocking publication", async () => {
+test("advisory requests preserve their entrypoints while only reserved preparation receives model credentials", async () => {
   const source = await readFile(
     ".github/workflows/review-catalog-policy.yml",
     "utf8",
   );
-  const workflow = parse(source) as any;
-  const job = workflow.jobs.review as {
-    env?: Record<string, string>;
-    steps: Array<{ name?: string; env?: Record<string, string> }>;
-  };
-  const reviewStep = job.steps.find(
-    (step) => step.name === "Run advisory evidence review",
-  );
-  const modelKeys = [
-    "UTILITY_API_ENDPOINT",
-    "UTILITY_API_KEY",
-    "UTILITY_MODEL",
-    "UTILITY_REASONING_EFFORT",
-    "TAVERNARY_ENRICHMENT_API_URL",
-    "TAVERNARY_ENRICHMENT_API_KEY",
-    "TAVERNARY_ENRICHMENT_MODEL",
-  ];
+  const workflow = parse(source);
   expect(workflow.on.workflow_dispatch.inputs).toMatchObject({
     project_id: { required: true, type: "string" },
     transaction_issue_number: { required: true, type: "number" },
@@ -35,38 +19,24 @@ test("runs advisory review after publication without blocking publication", asyn
     group: "catalog-policy-review",
     "cancel-in-progress": false,
   });
-  expect(source).toContain("reviewCatalogPolicy");
-  expect(source).toContain("data/registry/sources/${project.source_id}.json");
-  expect(source).toContain("data/snapshots/${source.type}/${source.id}.json");
-  expect(source).toContain("renderCatalogPolicyReviewIssue");
-  expect(source).toContain("data/snapshots/policy-review/");
-  expect(source).toContain("catalog-policy-advisory");
-  expect(modelKeys.some((key) => Object.hasOwn(job.env ?? {}, key))).toBe(
-    false,
+  expect(JSON.stringify(workflow.jobs.review)).not.toMatch(
+    /UTILITY_API_KEY|TAVERNARY_ENRICHMENT_API_KEY|permission-contents.*write|git push/,
   );
-  expect(reviewStep?.env).toEqual({
-    UTILITY_API_ENDPOINT: "${{ secrets.UTILITY_API_ENDPOINT }}",
+  const steps = workflow.jobs.prepare.steps as Array<{
+    name?: string;
+    env?: Record<string, string>;
+  }>;
+  const credentialSteps = steps.filter((step) => step.env?.UTILITY_API_KEY);
+  expect(credentialSteps).toHaveLength(1);
+  expect(credentialSteps[0].name).toBe(
+    "Prepare one operation with reserved model allowance",
+  );
+  expect(credentialSteps[0].env).toMatchObject({
+    TAVERNARY_REQUIRE_MODEL_BUDGET: "true",
     UTILITY_API_KEY: "${{ secrets.UTILITY_API_KEY }}",
-    UTILITY_MODEL: "${{ secrets.UTILITY_MODEL }}",
-    UTILITY_REASONING_EFFORT: "${{ vars.UTILITY_REASONING_EFFORT }}",
-    TAVERNARY_ENRICHMENT_API_URL: "${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}",
     TAVERNARY_ENRICHMENT_API_KEY: "${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}",
-    TAVERNARY_ENRICHMENT_MODEL: "${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}",
   });
-  expect(
-    job.steps
-      .filter((step) => step !== reviewStep)
-      .some((step) =>
-        modelKeys.some((key) => Object.hasOwn(step.env ?? {}, key)),
-      ),
-  ).toBe(false);
-  expect(source.match(/secrets\.UTILITY_API_KEY/gu)).toHaveLength(1);
-  expect(source.match(/secrets\.TAVERNARY_ENRICHMENT_API_KEY/gu)).toHaveLength(
-    1,
-  );
-  expect(source).toContain("modelProviderOptionsFromEnvironment");
-  expect(source).toContain("review-unavailable");
-  expect(source).not.toContain("gh pr merge");
+  expect(source).not.toMatch(/gh pr merge|git push/);
 });
 
 test("publisher dispatches advisory review only after a confirmed merge", async () => {

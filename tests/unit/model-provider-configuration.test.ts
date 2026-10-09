@@ -2,6 +2,15 @@ import { expect, test } from "vitest";
 
 import { modelProviderOptionsFromEnvironment } from "../../scripts/catalog/model-provider-configuration.mjs";
 
+test("a budget-required workflow cannot silently construct unguarded primary or repair transport", () => {
+  expect(
+    modelProviderOptionsFromEnvironment({
+      TAVERNARY_REQUIRE_MODEL_BUDGET: "true",
+      UTILITY_MODEL: "primary",
+    }),
+  ).toMatchObject({ requireBudget: true });
+});
+
 test("maps UTILITY to primary and TAVERNARY_ENRICHMENT to JSON repair", () => {
   expect(
     modelProviderOptionsFromEnvironment({
@@ -32,7 +41,7 @@ test("does not silently reverse primary and repair providers", () => {
   });
 
   expect(options.model).toBe("utility-model");
-  expect(options.jsonRepair.model).toBe("repair-model");
+  expect(options.jsonRepair?.model).toBe("repair-model");
 });
 
 test("maps optional primary reasoning effort without changing repair settings", () => {
@@ -43,7 +52,9 @@ test("maps optional primary reasoning effort without changing repair settings", 
     modelProviderOptionsFromEnvironment({ UTILITY_REASONING_EFFORT: "" }),
   ).not.toHaveProperty("reasoningEffort");
   expect(
-    modelProviderOptionsFromEnvironment({ UTILITY_REASONING_EFFORT: "low" })
-      .jsonRepair,
+    modelProviderOptionsFromEnvironment({
+      UTILITY_REASONING_EFFORT: "low",
+      TAVERNARY_ENRICHMENT_MODEL: "repair",
+    }).jsonRepair,
   ).not.toHaveProperty("reasoningEffort");
 });

@@ -228,6 +228,8 @@ function uniqueIncidents(items) {
 }
 
 export async function reconcileTavernKeeperReports(options = {}) {
+  if (options.write !== undefined && typeof options.write !== "boolean")
+    throw new Error("Report write mode is invalid.");
   const root = options.root ?? rootDirectory;
   const outputPath =
     options.outputPath ??
@@ -251,9 +253,26 @@ export async function reconcileTavernKeeperReports(options = {}) {
     registry,
     { pruneDelisted: true },
   );
+  const selected =
+    options.reportDigest === undefined
+      ? null
+      : index.reports.find(
+          (entry) => entry.report_digest === options.reportDigest,
+        );
+  if (
+    options.reportDigest !== undefined &&
+    (!digestPattern.test(options.reportDigest) || !selected)
+  )
+    throw Object.assign(new Error("Selected report is superseded."), {
+      code: "input-superseded",
+    });
   const [previous, priorImportState] = await Promise.all([
-    readPrevious(outputPath, registry),
-    readTavernKeeperImportState(importStatePath),
+    options.previousSnapshot
+      ? validateStoredReportIndex(options.previousSnapshot, registry)
+      : readPrevious(outputPath, registry),
+    options.priorImportState
+      ? validateTavernKeeperImportState(options.priorImportState)
+      : readTavernKeeperImportState(importStatePath),
   ]);
   if (Date.parse(index.generated_at) < Date.parse(previous.generated_at)) {
     throw new Error(
@@ -262,7 +281,25 @@ export async function reconcileTavernKeeperReports(options = {}) {
   }
 
   const migrated = migrateTavernKeeperImportState(priorImportState, index, now);
-  const retainedQuarantines = retainCurrentQuarantines(migrated, index, now);
+  const allRetainedQuarantines = retainCurrentQuarantines(migrated, index, now);
+  const retainedQuarantines = selected
+    ? {
+        state: validateTavernKeeperImportState({
+          ...priorImportState,
+          quarantines: [
+            ...priorImportState.quarantines.filter(
+              (entry) => entry.report_digest !== selected.report_digest,
+            ),
+            ...allRetainedQuarantines.state.quarantines.filter(
+              (entry) => entry.report_digest === selected.report_digest,
+            ),
+          ],
+        }),
+        resolved: allRetainedQuarantines.resolved.filter(
+          (entry) => entry.report_digest === selected.report_digest,
+        ),
+      }
+    : allRetainedQuarantines;
   let importState = retainedQuarantines.state;
   const resolved = [...retainedQuarantines.resolved];
   const createdOrUpdated = [];
@@ -280,10 +317,13 @@ export async function reconcileTavernKeeperReports(options = {}) {
     mode: reconciliationMode(existing.get(entry.report_id), entry),
   }));
   const eligible = work.filter(({ entry, mode }) => {
+    if (selected && entry.report_digest !== selected.report_digest)
+      return false;
     if (retryReportDigest === entry.report_digest) return true;
     if (
       mode === "model" &&
-      currentQuarantine(importState, entry.report_digest) !== undefined
+      currentQuarantine(importState, entry.report_digest) !== undefined &&
+      matchingTrackedEntry(existing.get(entry.report_id), entry)
     ) {
       return false;
     }
@@ -309,7 +349,8 @@ export async function reconcileTavernKeeperReports(options = {}) {
     ({ entry, mode }) =>
       mode === "model" &&
       retryReportDigest !== entry.report_digest &&
-      currentQuarantine(importState, entry.report_digest) !== undefined,
+      currentQuarantine(importState, entry.report_digest) !== undefined &&
+      matchingTrackedEntry(existing.get(entry.report_id), entry),
   ).length;
   const additions = [];
   let imported = 0;
@@ -400,8 +441,8 @@ export async function reconcileTavernKeeperReports(options = {}) {
       : [
           ...new Map(
             [
-              ...previous.reports.filter(({ source_id }) =>
-                indexedSourceIds.has(source_id),
+              ...previous.reports.filter(
+                ({ source_id }) => selected || indexedSourceIds.has(source_id),
               ),
               ...additions,
             ].map((entry) => [entry.report_id, entry]),
@@ -414,11 +455,22 @@ export async function reconcileTavernKeeperReports(options = {}) {
   const retainedById = new Map(
     reports.map((entry) => [entry.report_id, entry]),
   );
-  const preferredReportIds = index.reports.flatMap((entry) =>
-    matchingIndexEntry(retainedById.get(entry.report_id), entry)
-      ? [entry.report_id]
-      : [],
-  );
+  const preferredReportIds = selected
+    ? [
+        ...previous.preferred_report_ids.filter(
+          (id) =>
+            previous.reports.find((report) => report.report_id === id)
+              ?.source_id !== selected.source_id,
+        ),
+        ...(matchingIndexEntry(retainedById.get(selected.report_id), selected)
+          ? [selected.report_id]
+          : []),
+      ]
+    : index.reports.flatMap((entry) =>
+        matchingIndexEntry(retainedById.get(entry.report_id), entry)
+          ? [entry.report_id]
+          : [],
+      );
   const snapshot = validateStoredReportIndex(
     {
       schema_version: 6,
@@ -429,8 +481,10 @@ export async function reconcileTavernKeeperReports(options = {}) {
     registry,
   );
   importState = validateTavernKeeperImportState(importState);
-  await writeReportSummaries(snapshot, outputPath);
-  await writeReportSummaries(importState, importStatePath);
+  if (options.write !== false) {
+    await writeReportSummaries(snapshot, outputPath);
+    await writeReportSummaries(importState, importStatePath);
+  }
 
   const remaining = index.reports.filter(
     (entry) => !matchingTrackedEntry(retainedById.get(entry.report_id), entry),

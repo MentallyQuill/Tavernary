@@ -184,6 +184,7 @@ function entryForResult(result, attempt, outcome, now, previousEntry) {
   const mappings = [
     ["sourceKind", "source_kind"],
     ["sourceIdentity", "source_identity"],
+    ["sourceContentDigest", "source_content_digest"],
     ["repositoryId", "repository_id"],
     ["headSha", "head_sha"],
     ["readmePath", "readme_path"],
@@ -318,7 +319,16 @@ export function createEnrichmentRunState(input) {
   };
 }
 
-export function selectNextRunBatch(state) {
+export function selectNextRunBatch(
+  state,
+  { checkpointLimit = state.batch_size } = {},
+) {
+  if (
+    !Number.isSafeInteger(checkpointLimit) ||
+    checkpointLimit < 1 ||
+    checkpointLimit > state.batch_size
+  )
+    throw new Error("enrichment checkpoint limit is invalid");
   if (state.phase === "complete") {
     return { phase: "primary", projectIds: [], attempt: 1 };
   }
@@ -327,7 +337,7 @@ export function selectNextRunBatch(state) {
       phase: "primary",
       projectIds: state.manifest.slice(
         state.primary_cursor,
-        state.primary_cursor + state.batch_size,
+        state.primary_cursor + checkpointLimit,
       ),
       attempt: 1,
     };
@@ -336,13 +346,13 @@ export function selectNextRunBatch(state) {
     phase: "retry",
     projectIds: state.retry_queue.slice(
       state.retry_cursor,
-      state.retry_cursor + state.batch_size,
+      state.retry_cursor + checkpointLimit,
     ),
     attempt: 2,
   };
 }
 
-function assertAttemptResults(state, results) {
+function assertAttemptResults(state, results, options) {
   if (!Array.isArray(results) || results.length === 0) {
     throw new Error("attempt results are required");
   }
@@ -350,7 +360,7 @@ function assertAttemptResults(state, results) {
   if (new Set(ids).size !== ids.length) {
     throw new Error("attempt results contain duplicate IDs");
   }
-  const expected = selectNextRunBatch(state);
+  const expected = selectNextRunBatch(state, options);
   if (results.some(({ phase }) => phase !== expected.phase)) {
     throw new Error(`attempt results must use ${expected.phase} phase`);
   }
@@ -369,8 +379,8 @@ function assertAttemptResults(state, results) {
   }
 }
 
-export function applyAttemptResults(state, results, now) {
-  assertAttemptResults(state, results);
+export function applyAttemptResults(state, results, now, options) {
+  assertAttemptResults(state, results, options);
   const next = structuredClone(state);
   next.manifest = Object.freeze([...state.manifest]);
   freezeSelectionState(next, state);

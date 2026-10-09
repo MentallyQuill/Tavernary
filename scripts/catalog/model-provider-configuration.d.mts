@@ -5,8 +5,9 @@ export type ModelProviderConfiguration = {
 };
 
 export type ModelProviderOptions = ModelProviderConfiguration & {
+  requireBudget?: boolean;
   reasoningEffort?: string;
-  jsonRepair: ModelProviderConfiguration;
+  jsonRepair?: ModelProviderConfiguration;
 };
 
 export function modelProviderOptionsFromEnvironment(

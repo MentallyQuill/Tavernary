@@ -10,6 +10,10 @@ import type {
 } from "./tavernkeeper-import-state.mjs";
 
 export interface TavernKeeperImportOptions {
+  write?: boolean;
+  reportDigest?: string;
+  previousSnapshot?: TavernKeeperAssessmentSnapshotV6;
+  priorImportState?: TavernKeeperImportState;
   root?: string;
   outputPath?: string;
   importStatePath?: string;

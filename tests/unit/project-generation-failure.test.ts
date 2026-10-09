@@ -3,6 +3,7 @@ import { expect, test } from "vitest";
 import {
   planProjectGenerationFailure,
   reconcileProjectGenerationFailure,
+  parseProjectGenerationDiagnostic,
 } from "../../scripts/submissions/project-generation-failure.mjs";
 import { renderRedditRetryState } from "../../scripts/submissions/project-submission-retry-state.mjs";
 
@@ -29,7 +30,7 @@ test("moves an admitted failed generation without a PR to retryable", () => {
         "https://github.com/MentallyQuill/Tavernary/actions/runs/30551455832",
       reasonCode: "generation-failed",
     }),
-  ).toEqual({
+  ).toMatchObject({
     action: "reconcile",
     labels: [
       "issue-admitted",
@@ -43,6 +44,62 @@ test("moves an admitted failed generation without a PR to retryable", () => {
       "Generation stopped before publication",
     ),
   });
+});
+
+test("generation carries a recoverable credential diagnostic", () => {
+  const plan = planProjectGenerationFailure({
+    issue: issue(["issue-admitted", "project-submission"]),
+    producer: "project-submission",
+    ownedPull: null,
+    runUrl: "https://github.com/MentallyQuill/Tavernary/actions/runs/7",
+    reasonCode: "provider-authentication-failed",
+    nowMs: 0,
+    transientAttempts: 0,
+  });
+  expect(plan.failure?.kind).toBe("configuration");
+  expect(Date.parse(plan.nextEligibleAt!)).toBeGreaterThan(0);
+  expect(plan.labels).not.toContain("submission-rejected");
+});
+
+test("accepts only allowlisted schema-bound diagnostic artifacts", () => {
+  expect(
+    parseProjectGenerationDiagnostic(
+      JSON.stringify({
+        schema_version: 1,
+        reason_code: "provider-authentication-failed",
+      }),
+    ),
+  ).toEqual({
+    schema_version: 1,
+    reason_code: "provider-authentication-failed",
+  });
+  expect(
+    parseProjectGenerationDiagnostic(
+      '{"schema_version":1,"reason_code":"output-invalid"}',
+    ),
+  ).toEqual({ schema_version: 1, reason_code: "output-invalid" });
+  for (const value of [
+    "not json",
+    "null",
+    '{"schema_version":2,"reason_code":"provider-timeout"}',
+    '{"schema_version":1,"reason_code":"secret"}',
+    '{"schema_version":1,"reason_code":"provider-timeout","raw_response":"secret"}',
+  ]) {
+    expect(parseProjectGenerationDiagnostic(value)).toBeNull();
+  }
+});
+
+test("unrecognized generation errors never enter durable comments", () => {
+  const plan = planProjectGenerationFailure({
+    issue: issue(["issue-admitted", "project-submission"]),
+    producer: "project-submission",
+    ownedPull: null,
+    runUrl: "https://github.com/MentallyQuill/Tavernary/actions/runs/7",
+    reasonCode: "secret arbitrary provider response",
+    nowMs: 0,
+  });
+  expect(plan.failure?.kind).toBe("unknown");
+  expect(plan.commentBody).not.toContain("secret");
 });
 
 test("embeds sanitized Reddit retry state in the existing failure comment", () => {

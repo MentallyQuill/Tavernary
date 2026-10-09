@@ -145,17 +145,24 @@ export async function enrichRecord(
   const validationInput = input;
   const validateCandidate = (candidate) =>
     validateOutput(candidate, record, vocabularies, validationInput);
+  let primaryAttempts = 0;
+  const canRetry = () => primaryAttempts < 3;
   const generated = await generateValidatedEnrichment({
     initialInput: input,
     maxAttempts: options.maxProviderAttempts ?? 1,
     generate: (providerInput) =>
       generateWithTransientProviderRetries({
         input: providerInput,
-        generate: (candidate) => provider.generate(candidate),
+        generate: (candidate) => {
+          primaryAttempts += 1;
+          return provider.generate(candidate);
+        },
         sleep: options.sleep,
+        canRetry,
       }),
     validate: validateCandidate,
     repair: validationRepairInput,
+    canRetry,
   });
   let output = generated.output;
   let validation = generated.validation;
@@ -245,6 +252,22 @@ export async function writeEnrichedRecord(
   vocabularies = { tags: [] },
 ) {
   const current = JSON.parse(await readFile(path, "utf8"));
+  const updated = applyEnrichmentOutput(current, output, vocabularies);
+  const temporaryPath = `${path}.${randomUUID()}.tmp`;
+  try {
+    await writeFile(temporaryPath, await formatJson(updated));
+    await rename(temporaryPath, path);
+  } catch (error) {
+    await rm(temporaryPath, { force: true });
+    throw error;
+  }
+}
+
+export function applyEnrichmentOutput(
+  current,
+  output,
+  vocabularies = { tags: [] },
+) {
   const requestedFields = metadataFieldsToGenerate(current).filter((field) =>
     Object.hasOwn(output, field),
   );
@@ -290,14 +313,7 @@ export async function writeEnrichedRecord(
       : {}),
     metadata_status: "curated",
   };
-  const temporaryPath = `${path}.${randomUUID()}.tmp`;
-  try {
-    await writeFile(temporaryPath, await formatJson(updated));
-    await rename(temporaryPath, path);
-  } catch (error) {
-    await rm(temporaryPath, { force: true });
-    throw error;
-  }
+  return updated;
 }
 
 export async function mapWithConcurrency(items, limit, worker) {
@@ -605,7 +621,7 @@ async function processProject(input, id) {
     try {
       const generated = await generateValidatedEnrichment({
         initialInput: providerInput,
-        maxAttempts: phase === "retry" ? 5 : 1,
+        maxAttempts: phase === "retry" ? 3 : 1,
         generate,
         validate: (candidate) =>
           validateOutput(candidate, record, vocabularies, providerInput),
@@ -615,6 +631,7 @@ async function processProject(input, id) {
       providerMetadata = generated.metadata;
       validation = generated.validation;
     } catch (error) {
+      if (error?.code === "budget-exhausted") throw error;
       return {
         id,
         phase,
@@ -820,6 +837,7 @@ export async function runEnrichmentBatch(input) {
       recordRateLimit(result);
       return result;
     } catch (error) {
+      if (error?.code === "budget-exhausted") throw error;
       const result = {
         id,
         phase,
@@ -1118,6 +1136,10 @@ export async function runCli(options = {}) {
     createEnrichmentProvider({
       ...configuration,
       timeoutMs: options.timeoutMs,
+      requireBudget:
+        options.requireBudget ??
+        process.env.TAVERNARY_REQUIRE_MODEL_BUDGET === "true",
+      budgetGuard: options.budgetGuard,
     });
   const sleep =
     options.sleep ??
@@ -1313,7 +1335,8 @@ export async function runCli(options = {}) {
     return report;
   }
 
-  const batch = selectNextRunBatch(state);
+  const checkpoint = { checkpointLimit: options.checkpointLimit };
+  const batch = selectNextRunBatch(state, checkpoint);
   const results = await runEnrichmentBatch({
     projectIds: batch.projectIds,
     recordsById: Object.fromEntries(
@@ -1339,7 +1362,7 @@ export async function runCli(options = {}) {
     previousEntries: state.entries,
     force: forceForSelectionMode(state.selection_mode),
   });
-  state = applyAttemptResults(state, results, timestamp);
+  state = applyAttemptResults(state, results, timestamp, checkpoint);
   const report = createEnrichmentReport(state);
   if (options.writeReport) await options.writeReport(report);
   if (reportPath) await writeJsonAtomic(reportPath, report);

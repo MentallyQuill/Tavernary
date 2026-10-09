@@ -3,16 +3,18 @@ import type { TavernaryAssessmentRepair } from "./tavernkeeper-assessment-contra
 import type {
   JsonRepairMetadata,
   ProviderConfiguration,
+  ProviderBudgetContext,
 } from "../catalog/enrichment-provider.mjs";
 
 export function tavernKeeperSynthesisInstructions(): string;
 export function createTavernKeeperSynthesisProvider(
-  options: ProviderConfiguration & {
-    jsonRepair?: ProviderConfiguration;
-    fetchImpl?: typeof fetch;
-    timeoutMs?: number;
-    now?: () => number;
-  },
+  options: ProviderConfiguration &
+    ProviderBudgetContext & {
+      jsonRepair?: ProviderConfiguration;
+      fetchImpl?: typeof fetch;
+      timeoutMs?: number;
+      now?: () => number;
+    },
 ): {
   configuration: { apiUrl: string; apiKey: string; model: string };
   generate(input: {

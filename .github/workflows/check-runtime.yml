@@ -1,0 +1,94 @@
+name: "Maintenance: Verify supported runtimes"
+
+on:
+  schedule:
+    - cron: "17 6 * * 2"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: runtime-compatibility
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      majors: ${{ steps.runtime.outputs.majors }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .node-version
+      - id: runtime
+        run: |
+          majors="$(node scripts/automation/runtime-check-cli.mjs matrix)"
+          echo "majors=$majors" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  linux:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        major: ${{ fromJSON(needs.plan.outputs.majors) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: ${{ matrix.major }}
+          cache: npm
+      - run: npm ci
+      - run: node scripts/automation/runtime-check-cli.mjs candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAVERNARY_RUNTIME_CANDIDATE: ${{ matrix.major }}
+      - run: npm ci
+      - run: npm run check
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run test:e2e
+      - run: npm run test:scan-e2e
+
+  windows:
+    needs: plan
+    runs-on: windows-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        major: ${{ fromJSON(needs.plan.outputs.majors) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: ${{ matrix.major }}
+          cache: npm
+      - run: npm ci
+      - run: node scripts/automation/runtime-check-cli.mjs candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAVERNARY_RUNTIME_CANDIDATE: ${{ matrix.major }}
+      - run: npm ci
+      - run: npm run check
+      - run: npx playwright install chromium
+      - run: npm run test:scan
+      - run: npm run test:visual
+      - run: npm run build:test-kits
+      - run: npm run test:kits-e2e
+      - run: npm run test:kits-visual

@@ -3,9 +3,9 @@ import { pathToFileURL } from "node:url";
 import { parseProjectPublicationTransaction } from "../publication/project-publication-transaction.mjs";
 import {
   PROJECT_VALIDATION_OWNED_LABELS,
-  PROJECT_VALIDATION_RETRY_LIMIT,
   PROJECT_VALIDATION_STATE_MARKER,
   planProjectValidationReconciliation,
+  parseProjectValidationRetryState,
   projectValidationStateComment,
 } from "./project-validation-reconciliation.mjs";
 
@@ -35,8 +35,7 @@ const OWNED_LABEL_DEFINITIONS = {
   },
   "submission-validation-blocked": {
     color: "d93f0b",
-    description:
-      "Automatic exact-head validation or publication attempts are exhausted.",
+    description: "A permanent input or policy failure needs correction.",
   },
 };
 
@@ -271,6 +270,7 @@ async function loadReconciliationPlan({
   nowMs,
   loadPublicationRuns,
   publisherActorId,
+  loadAuthenticatedActor,
 }) {
   const validationRuns = await listValidationRuns(repository, pull, request);
   const successfulValidations = validationRuns.filter(
@@ -294,6 +294,15 @@ async function loadReconciliationPlan({
     publicationRuns,
     pull.head.sha,
   );
+  const [comments, actor] = await Promise.all([
+    listIssueComments(repository, transaction.issue_number, request),
+    loadAuthenticatedActor(),
+  ]);
+  const retryState =
+    comments
+      .filter((comment) => comment?.user?.id === actor?.id)
+      .map((comment) => parseProjectValidationRetryState(comment.body))
+      .find((state) => state?.headSha === pull.head.sha) ?? null;
   return planProjectValidationReconciliation({
     transaction,
     headSha: pull.head.sha,
@@ -302,6 +311,7 @@ async function loadReconciliationPlan({
     generationRuns,
     nowMs,
     pull,
+    retryState,
   });
 }
 
@@ -312,7 +322,11 @@ function sameLivePull(expected, live) {
     live.head?.sha === expected.head.sha &&
     live.head?.ref === expected.head.ref &&
     live.head?.repo?.full_name === expected.head.repo?.full_name &&
-    live.base?.ref === expected.base.ref
+    live.base?.ref === expected.base.ref &&
+    live.base?.repo?.full_name === expected.base.repo?.full_name &&
+    live.user?.id === expected.user?.id &&
+    live.user?.type === expected.user?.type &&
+    live.body === expected.body
   );
 }
 
@@ -462,17 +476,19 @@ async function reconcileOwnedLabels({
 function statusProjection(plan) {
   const descriptions = {
     validating: "Exact-head validation is queued.",
-    "retrying-validation": `Retrying exact-head validation (${plan.attempts} of ${PROJECT_VALIDATION_RETRY_LIMIT}).`,
-    "validation-blocked": "Exact-head validation attempts are exhausted.",
+    "retrying-validation":
+      "Exact-head validation is waiting for automatic recovery.",
+    "validation-blocked":
+      "Exact-head validation requires input or policy correction.",
     handoff: "Exact-head validation passed; awaiting Publisher.",
     "publication-queued":
       "Exact-head validation passed; queued behind the active Publisher run.",
     publishing: "Publishing the validated project transaction.",
-    "retrying-publication": `Re-dispatching Publisher (${plan.attempts} of ${PROJECT_VALIDATION_RETRY_LIMIT}).`,
-    "publication-blocked": "Publisher attempts are exhausted.",
+    "retrying-publication": "Publication is waiting for automatic recovery.",
+    "publication-blocked": "Publication requires input or policy correction.",
     regenerating: "Regenerating the stale automatic transaction.",
-    "retrying-regeneration": `Retrying stale transaction regeneration (${plan.attempts} of ${PROJECT_VALIDATION_RETRY_LIMIT}).`,
-    "regeneration-blocked": "Transaction regeneration attempts are exhausted.",
+    "retrying-regeneration": "Regeneration is waiting for automatic recovery.",
+    "regeneration-blocked": "Transaction regeneration requires investigation.",
     published: "Publisher completed this exact generated head.",
   };
   return {
@@ -528,6 +544,8 @@ async function projectState({
     headSha: pull.head.sha,
     attempts: plan.attempts,
     run: plan.run,
+    failure: plan.failure,
+    retry: plan.retry,
   });
   const existing = comments.find(
     (comment) =>
@@ -576,6 +594,8 @@ async function replanAndApply({
   nowMs,
   publisherActorId,
   publicationSlotClaimed,
+  loadAuthenticatedActor,
+  loadAutomaticPublicationEnabled,
 }) {
   if (
     ![
@@ -613,6 +633,7 @@ async function replanAndApply({
       return livePublicationRunsPromise;
     },
     publisherActorId,
+    loadAuthenticatedActor,
   });
   if (currentPlan.action !== plan.action) {
     return { plan: currentPlan, applied: false, superseded: true };
@@ -666,6 +687,9 @@ async function replanAndApply({
     return { plan: currentPlan, applied: false, superseded: true };
   }
   await guardCandidate(repository, pull, transaction, request);
+  if (!(await loadAutomaticPublicationEnabled())) {
+    throw new StaleCandidateError("automatic-publication-disabled");
+  }
   await request(path, {
     method: "POST",
     ...(body ? { body: JSON.stringify(body) } : {}),
@@ -678,6 +702,8 @@ export async function reconcileProjectValidations({
   request,
   nowMs,
   publisherActorId,
+  selectedPullNumber,
+  loadAutomaticPublicationEnabled = async () => true,
 }) {
   if (
     typeof repository !== "string" ||
@@ -696,7 +722,15 @@ export async function reconcileProjectValidations({
   if (typeof defaultBranch !== "string" || defaultBranch.length === 0) {
     throw new Error("GitHub returned no default branch.");
   }
-  const pulls = await listOpenPulls(repository, request);
+  if (
+    selectedPullNumber !== undefined &&
+    (!Number.isSafeInteger(selectedPullNumber) || selectedPullNumber < 1)
+  )
+    throw new Error("Selected pull request identity is invalid.");
+  const pulls =
+    selectedPullNumber === undefined
+      ? await listOpenPulls(repository, request)
+      : [await request(`/repos/${repository}/pulls/${selectedPullNumber}`)];
   const results = [];
   let labelsReady = false;
   let publicationRunsPromise;
@@ -726,6 +760,15 @@ export async function reconcileProjectValidations({
     }
     const transaction = candidate.transaction;
     try {
+      if (!(await loadAutomaticPublicationEnabled())) {
+        results.push({
+          pullNumber: pull.number,
+          issueNumber: transaction.issue_number,
+          action: "ignore",
+          reason: "automatic-publication-disabled",
+        });
+        continue;
+      }
       const issue = await request(
         `/repos/${repository}/issues/${transaction.issue_number}`,
       );
@@ -755,6 +798,7 @@ export async function reconcileProjectValidations({
           return publicationRunsPromise;
         },
         publisherActorId,
+        loadAuthenticatedActor,
       });
       if (plan.action === "ignore") {
         results.push({
@@ -776,6 +820,8 @@ export async function reconcileProjectValidations({
         nowMs,
         publisherActorId,
         publicationSlotClaimed,
+        loadAuthenticatedActor,
+        loadAutomaticPublicationEnabled,
       });
       if (
         application.applied &&
@@ -810,6 +856,7 @@ export async function reconcileProjectValidations({
         state: currentPlan.state,
         attempts: currentPlan.attempts,
         runId: currentPlan.run?.id ?? null,
+        ...(currentPlan.retry ? { retry: currentPlan.retry } : {}),
         outcome: application.superseded
           ? "superseded"
           : application.applied || currentPlan.action === "block"
@@ -845,10 +892,14 @@ export async function reconcileProjectValidations({
   };
 }
 
-async function githubRequest(path, options = {}) {
-  const token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN;
+export async function githubRequest(
+  path,
+  options = {},
+  token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN,
+) {
   const response = await fetch(`https://api.github.com${path}`, {
     ...options,
+    signal: AbortSignal.timeout(20_000),
     headers: {
       Accept: "application/vnd.github+json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -899,6 +950,8 @@ export async function runReconcileProjectValidationsCli({
     request,
     nowMs,
     publisherActorId,
+    loadAutomaticPublicationEnabled: async () =>
+      env.PROJECT_AUTO_PUBLICATION_ENABLED === "true",
   });
   write(JSON.stringify(summary, null, 2));
   return summary.results.some(

@@ -6,6 +6,7 @@ import { pathToFileURL } from "node:url";
 import { effectiveListingState } from "../../src/features/catalog/listing-state.mjs";
 import { parseKitIssueFields } from "./triage-kit-issue.mjs";
 import { validateKitSubmission } from "./validate-kit-submission.mjs";
+import { verifyTrustedEditor } from "../maintenance/trusted-editor-authority.mjs";
 
 const publishedOwnedLabels = [
   "issue-admitted",
@@ -76,6 +77,7 @@ export function classifyKitSubmissionHistory({
   snapshotsBySourceId = {},
   kits,
   blockedUsers,
+  trustedEditors,
 }) {
   const manifest = parseManifest(issue.body);
   const publishedCreate =
@@ -84,7 +86,11 @@ export function classifyKitSubmissionHistory({
       (kit) =>
         kit.status === "published" &&
         kit.source_issue_number === issue.number &&
-        kit.author.github_user_id === issue.user.id,
+        kit.author.github_user_id === issue.user.id &&
+        kit.title === manifest.title?.trim() &&
+        kit.description === manifest.description?.trim() &&
+        JSON.stringify(kit.project_ids) ===
+          JSON.stringify(manifest.project_ids),
     );
 
   if (publishedCreate) {
@@ -97,13 +103,35 @@ export function classifyKitSubmissionHistory({
     };
   }
 
+  if (
+    manifest?.operation === "create" &&
+    kits.some((kit) => kit.source_issue_number === issue.number)
+  ) {
+    return {
+      disposition: "invalid",
+      desiredOwnedLabels: [
+        "issue-admitted",
+        "kit-submission",
+        "needs-information",
+      ],
+      desiredState: issue.state,
+      desiredStateReason: null,
+      dispatch: false,
+    };
+  }
+
   const appliedEdit =
     manifest?.operation === "edit" &&
     kits.find(
       (kit) =>
         kit.id === manifest.kit_id &&
         kit.status === "published" &&
-        kit.author.github_user_id === issue.user.id &&
+        (kit.author.github_user_id === issue.user.id ||
+          verifyTrustedEditor({
+            actor: issue.user,
+            association: issue.author_association,
+            registry: trustedEditors,
+          }).authorized) &&
         typeof manifest.title === "string" &&
         typeof manifest.description === "string" &&
         Array.isArray(manifest.project_ids) &&
@@ -146,7 +174,7 @@ export function classifyKitSubmissionHistory({
 
   const validation = validateKitSubmission({
     manifest: parseKitIssueFields(issue.body ?? "").manifest,
-    actor: issue.user,
+    actor: { ...issue.user, association: issue.author_association },
     projects: projectsWithEffectiveListing(
       projects,
       sourcesById,
@@ -154,6 +182,7 @@ export function classifyKitSubmissionHistory({
     ),
     kits,
     blockedUsers,
+    trustedEditors,
     sourceIssueNumber: issue.number,
   });
   if (validation.valid) {

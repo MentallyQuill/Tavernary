@@ -5,6 +5,76 @@ import { expect, test } from "vitest";
 import { parse } from "yaml";
 
 const workflowDirectory = resolve(".github/workflows");
+test("weekly restore drills verify both browsers without publication credentials", async () => {
+  const drill = await workflow("restore-drill");
+  expect(drill.on.schedule).toHaveLength(1);
+  expect(drill.permissions).toEqual({ contents: "read" });
+  const source = await readFile(
+    resolve(workflowDirectory, "restore-drill.yml"),
+    "utf8",
+  );
+  expect(source).not.toContain("secrets.");
+  expect(source).not.toContain("permission-contents: write");
+  expect(source).not.toContain("environment: publisher");
+  expect(source).toContain("chromium webkit");
+  expect(source).toContain('TAVERNARY_OFFLINE_RESTORE_DRILL: "true"');
+  expect(source).toContain("tests/deployment-e2e/restore-bundle.spec.ts");
+});
+test("runtime compatibility is scheduled read-only and transition PRs test the current runtime", async () => {
+  const runtime = await workflow("check-runtime");
+  expect(runtime.on.schedule).toHaveLength(1);
+  expect(runtime.permissions).toEqual({ contents: "read" });
+  const source = await readFile(
+    resolve(workflowDirectory, "check-runtime.yml"),
+    "utf8",
+  );
+  expect(source).not.toContain("environment: publisher");
+  expect(source).not.toContain("secrets.");
+  for (const job of [runtime.jobs.linux, runtime.jobs.windows]) {
+    expect(job.strategy["fail-fast"]).toBe(false);
+    expect(job.strategy.matrix.major).toContain("fromJSON");
+    expect(
+      job.steps.some(
+        (step: { run?: string }) =>
+          step.run ===
+          "node scripts/automation/runtime-check-cli.mjs candidate",
+      ),
+    ).toBe(true);
+  }
+  const ci = await workflow("ci");
+  for (const name of ["runtime-current-linux", "runtime-current-windows"]) {
+    expect(ci.jobs[name].if).toContain("automation/runtime-node-");
+    expect(
+      ci.jobs[name].steps.some(
+        (step: { run?: string }) => step.run === "npm run check",
+      ),
+    ).toBe(true);
+  }
+  const policy = JSON.parse(
+    await readFile("config/supported-runtimes.json", "utf8"),
+  );
+  expect((await readFile(".node-version", "utf8")).trim()).toBe(
+    String(policy.productionMajor),
+  );
+  const paths = await readdir(workflowDirectory);
+  for (const path of paths.filter((path) => path.endsWith(".yml"))) {
+    const parsed = parse(
+      await readFile(resolve(workflowDirectory, path), "utf8"),
+    );
+    for (const job of Object.values(parsed.jobs) as Array<{
+      steps?: Array<{ uses?: string; with?: Record<string, unknown> }>;
+    }>)
+      for (const step of job.steps ?? [])
+        if (
+          step.uses?.startsWith("actions/setup-node@") &&
+          !["check-runtime.yml"].includes(path) &&
+          !String(step.with?.["node-version"]).includes(
+            "steps.runtime.outputs.major",
+          )
+        )
+          expect(step.with?.["node-version-file"], path).toBe(".node-version");
+  }
+});
 const pinnedActions = {
   "actions/checkout": "3d3c42e5aac5ba805825da76410c181273ba90b1",
   "actions/setup-node": "820762786026740c76f36085b0efc47a31fe5020",
@@ -28,10 +98,11 @@ const modelProviderEnvironment = {
 const modelProviderEnvironmentKeys = Object.keys(modelProviderEnvironment);
 
 const protectedPublisherJobs = {
+  "automation-writer": "write",
   "apply-kit-submission": "publish",
   "apply-kit-withdrawal": "withdraw",
   "backfill-repository-identities": "backfill",
-  "enrich-catalog": "enrich",
+
   "import-tavernkeeper-reports": "import",
   "publisher-verification": "verify",
   "refresh-catalog": "refresh",
@@ -42,15 +113,26 @@ const publisherActorExpression =
   "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID";
 
 const expectedPublisherConditions = {
+  "automation-writer":
+    "github.ref == 'refs/heads/main' && (github.actor_id == 2625904 || " +
+    `${publisherActorExpression})`,
+  "refresh-catalog":
+    "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || github.actor_id == 2625904 || " +
+    `${publisherActorExpression})`,
+
+  "apply-kit-submission":
+    "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.actor_id == 2625904 || " +
+    `${publisherActorExpression})`,
+  "apply-kit-withdrawal":
+    "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.actor_id == 2625904 || " +
+    `${publisherActorExpression})`,
   "publisher-verification":
     "github.ref == 'refs/heads/main' && github.actor_id == 2625904",
   "review-catalog-policy":
-    "github.event_name == 'workflow_dispatch' && " +
-    "github.ref == 'refs/heads/main' && " +
-    "(github.actor_id == 2625904 || " +
+    "inputs.operation_key == '' && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || github.actor_id == 2625904 || " +
     `${publisherActorExpression})`,
   "import-tavernkeeper-reports":
-    "github.ref == 'refs/heads/main' && " +
+    "inputs.operation_key == '' && github.ref == 'refs/heads/main' && " +
     "(github.event_name != 'workflow_dispatch' || " +
     "github.actor_id == 2625904 || " +
     `${publisherActorExpression} || ` +
@@ -102,6 +184,7 @@ function shellCommands(source = "") {
 
 function stepWritesMain(step: WorkflowStep) {
   if (step.run?.includes("catalog:enrichment-rollout")) return true;
+  if (step.run?.includes("node scripts/automation/writer-cli.mjs")) return true;
 
   return shellCommands(step.run).some((command) => {
     const pushesMain =
@@ -122,6 +205,8 @@ function stepWritesMain(step: WorkflowStep) {
 
 function workflowDispatchTargets(step: WorkflowStep) {
   const candidates: string[] = [];
+  if (step.run?.includes("node scripts/automation/prepared-wake.mjs"))
+    candidates.push("automation-writer.yml");
   const command = shellCommands(step.run).join(" ");
   for (const match of command.matchAll(
     /\bgh\s+workflow\s+run\s+(?:"([^"]+)"|'([^']+)'|([^\s\\]+))/gu,
@@ -195,10 +280,18 @@ test("identifies the object and action in every workflow run name", async () => 
   const expectedRunNameParts = {
     "admit-issue": ["Issue #", "Check submission eligibility"],
     "triage-submission": ["Project #", "Validate submission"],
-    "generate-project-submission": ["Project #", "Create review PR"],
+    "generate-project-submission": [
+      "Project #",
+      "Request review PR",
+      "Automation prepare",
+    ],
     "project-submission-lifecycle": ["Project review PR #", "Process result"],
     "triage-project-owner-request": ["Owner request #", "Validate authority"],
-    "generate-project-owner-request": ["Owner request #", "Create review PR"],
+    "generate-project-owner-request": [
+      "Owner request #",
+      "Request review PR",
+      "Automation prepare",
+    ],
     "project-owner-request-lifecycle": ["Owner review PR #", "Process result"],
     "generated-project-branch-cleanup": ["Generated branch cleanup for PR #"],
     "retry-frontend-dependencies": [
@@ -214,7 +307,7 @@ test("identifies the object and action in every workflow run name", async () => 
     "apply-kit-submission": ["Kit #", "Publish approved Kit"],
     "apply-kit-withdrawal": ["Kit #", "Withdraw published Kit"],
     "refresh-catalog": ["Catalog:", "Refresh"],
-    "enrich-catalog": ["Catalog:", "Enrich", "project metadata"],
+    "enrich-catalog": ["Automation prepare", "inputs.operation_key"],
     "backfill-repository-identities": ["Catalog:", "Backfill repository IDs"],
     ci: ["Site:", "Validate"],
     "deploy-pages": ["Site:", "Deploy"],
@@ -261,7 +354,19 @@ test("limits every main publisher to the protected Publisher App", async () => {
   }
 
   expect(discoveredPublishers.sort()).toEqual(
-    Object.keys(protectedPublisherJobs).sort(),
+    Object.keys(protectedPublisherJobs)
+      .filter(
+        (name) =>
+          !(
+            name.startsWith("apply-kit-") ||
+            name === "review-catalog-policy" ||
+            name === "refresh-catalog" ||
+            name === "import-tavernkeeper-reports" ||
+            name === "backfill-repository-identities" ||
+            name === "publisher-verification"
+          ),
+      )
+      .sort(),
   );
 
   for (const [name, jobName] of Object.entries(protectedPublisherJobs)) {
@@ -301,40 +406,71 @@ test("limits every main publisher to the protected Publisher App", async () => {
       `actions/create-github-app-token@${pinnedActions["actions/create-github-app-token"]}`,
     );
     expect(publisherToken, name).toMatchObject({
-      id: "publisher-token",
+      id: name === "automation-writer" ? "writer-token" : "publisher-token",
       with: {
         "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
         "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
-        "permission-contents": "write",
+        ...(name.startsWith("apply-kit-") ||
+        name === "review-catalog-policy" ||
+        name === "refresh-catalog" ||
+        name === "import-tavernkeeper-reports" ||
+        name === "backfill-repository-identities" ||
+        name === "publisher-verification"
+          ? { "permission-actions": "write" }
+          : { "permission-contents": "write" }),
       },
     });
-    expect(checkout?.with?.token, name).toBe(
-      "${{ steps.publisher-token.outputs.token }}",
-    );
+    if (
+      name.startsWith("apply-kit-") ||
+      name === "review-catalog-policy" ||
+      name === "refresh-catalog" ||
+      name === "import-tavernkeeper-reports" ||
+      name === "backfill-repository-identities" ||
+      name === "publisher-verification"
+    )
+      expect(publisherToken?.with?.["permission-contents"]).toBeUndefined();
+    if (
+      name === "automation-writer" ||
+      name.startsWith("apply-kit-") ||
+      name === "review-catalog-policy" ||
+      name === "refresh-catalog" ||
+      name === "import-tavernkeeper-reports" ||
+      name === "backfill-repository-identities" ||
+      name === "publisher-verification"
+    ) {
+      expect(checkout?.with).toMatchObject({
+        ref: "main",
+        "persist-credentials": false,
+      });
+      expect(checkout?.with?.token).toBeUndefined();
+      expect(job.steps.indexOf(publisherToken!)).toBeGreaterThan(
+        job.steps.indexOf(checkout!),
+      );
+    } else {
+      expect(checkout?.with?.token, name).toBe(
+        "${{ steps.publisher-token.outputs.token }}",
+      );
+    }
   }
 });
 
-test("keeps Publisher verification owner-only and content-neutral", async () => {
+test("keeps Publisher verification owner-only and delegates content-neutral proof", async () => {
   const document = await workflow("publisher-verification");
   const job = document.jobs.verify;
-  const token = job.steps.find((step: WorkflowStep) =>
-    step.uses?.startsWith("actions/create-github-app-token@"),
+  const token = job.steps.find(
+    (step: WorkflowStep) => step.id === "publisher-token",
   );
-  const checkout = job.steps.find((step: WorkflowStep) =>
-    step.uses?.startsWith("actions/checkout@"),
+  const dispatch = job.steps.find((step: WorkflowStep) =>
+    step.run?.includes("gh workflow run"),
   );
-  const push = job.steps.find((step: WorkflowStep) =>
-    step.run?.includes("git push origin HEAD:main"),
-  );
-
   expect(document.on).toEqual({ workflow_dispatch: null });
-  expect(document.permissions).toEqual({ contents: "read" });
+  expect(document.permissions).toEqual({ contents: "read", actions: "read" });
   expect(document.concurrency).toEqual({
     group: "tavernary-publisher-verification",
     "cancel-in-progress": false,
   });
   expect(job.environment).toBe("publisher");
-  expect(job.permissions).toEqual({ contents: "read" });
+  expect(job.permissions).toEqual({ contents: "read", actions: "read" });
   expect(job.if).toBe(
     "github.ref == 'refs/heads/main' && github.actor_id == 2625904",
   );
@@ -344,23 +480,14 @@ test("keeps Publisher verification owner-only and content-neutral", async () => 
     with: {
       "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
       "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
-      owner: "MentallyQuill",
-      repositories: "Tavernary",
-      "permission-contents": "write",
+      "permission-actions": "write",
     },
   });
-  expect(checkout).toMatchObject({
-    uses: `actions/checkout@${pinnedActions["actions/checkout"]}`,
-    with: {
-      ref: "main",
-      "fetch-depth": 0,
-      token: "${{ steps.publisher-token.outputs.token }}",
-    },
-  });
-  expect(push?.run).toContain("git commit --allow-empty");
-  expect(push?.run).toContain("git rebase --keep-empty origin/main");
-  expect(push?.run).toContain("git push origin HEAD:main");
-  expect(push?.run).not.toMatch(/--force|push\s+origin\s+\+HEAD/iu);
+  expect(token?.with?.["permission-contents"]).toBeUndefined();
+  expect(dispatch?.run).toContain("automation-writer.yml --ref main");
+  expect(dispatch?.run).toContain("mode=verify-publisher");
+  expect(dispatch?.env?.REQUEST_RUN_ID).toBe("${{ github.run_id }}");
+  expect(JSON.stringify(job)).not.toMatch(/git (?:push|commit|rebase)/u);
 });
 
 test("uses the Publisher App identity for every protected workflow dispatch", async () => {
@@ -420,10 +547,23 @@ test("uses the Publisher App identity for every protected workflow dispatch", as
   expect(dispatches.sort()).toEqual(
     [
       "admit-issue.yml:admit->apply-kit-withdrawal.yml",
-      "import-tavernkeeper-reports.yml:continue->import-tavernkeeper-reports.yml",
+      "apply-kit-submission.yml:publish->apply-kit-submission.yml",
+      "apply-kit-withdrawal.yml:withdraw->apply-kit-withdrawal.yml",
+      "automation-prepared.yml:wake->automation-writer.yml",
+      "generate-project-owner-request.yml:request->automation-writer.yml",
+      "generate-project-submission.yml:request->automation-writer.yml",
+      "backfill-repository-identities.yml:backfill->automation-writer.yml",
+      "publisher-verification.yml:verify->automation-writer.yml",
+      "publisher-automation-branch-verification.yml:verify->automation-writer.yml",
+      "import-tavernkeeper-reports.yml:import->import-tavernkeeper-reports.yml",
+      "import-tavernkeeper-reports.yml:import->automation-writer.yml",
       "publish-project-transaction.yml:publish->review-catalog-policy.yml",
-      "refresh-catalog.yml:refresh->review-catalog-policy.yml",
-      "review-catalog-policy.yml:retry->review-catalog-policy.yml",
+      "reconcile-automation.yml:reconcile->automation-writer.yml",
+      "retry-fork-dependencies.yml:retry->automation-writer.yml",
+      "retry-frontend-dependencies.yml:retry->automation-writer.yml",
+      "retry-project-submission-enrichment.yml:retry->automation-writer.yml",
+      "refresh-catalog.yml:refresh->refresh-catalog.yml",
+      "review-catalog-policy.yml:review->automation-writer.yml",
       "targeted-tavernkeeper-scan.yml:request->refresh-catalog.yml",
       "triage-kit-submission.yml:validate->apply-kit-submission.yml",
     ].sort(),
@@ -484,16 +624,16 @@ test("verifies advisory checkout SHAs against main before minting a Publisher to
     ({ name }) => name === "Verify exact published state",
   );
   const tokenIndex = steps.findIndex(
-    ({ name }) => name === "Create Tavernary Publisher token",
+    ({ name }) => name === "Create fresh Publisher dispatch token",
   );
   const checkoutIndex = steps.findIndex(
-    ({ name }) => name === "Check out exact published state",
+    ({ name }) => name === "Check out trusted current request code",
   );
   const verification = steps[verifyIndex]?.run ?? "";
 
   expect(verifyIndex).toBeGreaterThanOrEqual(0);
   expect(verifyIndex).toBeLessThan(tokenIndex);
-  expect(tokenIndex).toBeLessThan(checkoutIndex);
+  expect(checkoutIndex).toBeLessThan(verifyIndex);
   expect(verification).toContain("pulls/$PULL_NUMBER");
   expect(verification).toContain("compare/${MERGE_SHA}...main");
   expect(verification).toContain('"ahead"');
@@ -585,14 +725,15 @@ test("publishes Kits only by manual dispatch and serializes registry writes", as
       "cancel-in-progress": false,
     });
   }
-  expect(publicationSource.indexOf("catalog:validate")).toBeLessThan(
-    publicationSource.indexOf("git add"),
-  );
-  expect(withdrawalSource.indexOf("catalog:validate")).toBeLessThan(
-    withdrawalSource.indexOf("git add"),
-  );
-  expect(publicationSource).toContain("kit-published");
-  expect(publicationSource).toContain("workflow run deploy-pages.yml");
+  for (const source of [publicationSource, withdrawalSource]) {
+    expect(source).toContain("node scripts/automation/preparation-request.mjs");
+    expect(source).toContain(
+      "node scripts/automation/catalog-preparation-cli.mjs",
+    );
+    expect(source).not.toMatch(
+      /git push|git rebase|gh issue close|workflow run deploy-pages/,
+    );
+  }
   expect(withdrawalSource).toContain(
     "ISSUE_NUMBER: ${{ inputs.issue_number }}",
   );
@@ -604,153 +745,33 @@ test("publishes Kits only by manual dispatch and serializes registry writes", as
   );
 });
 
-test("gates Kit withdrawal writes behind manifest validation and synchronizes correction state", async () => {
-  const withdrawal = await workflow("apply-kit-withdrawal");
-  const source = await readFile(
-    resolve(workflowDirectory, "apply-kit-withdrawal.yml"),
-    "utf8",
-  );
-  const steps = withdrawal.jobs.withdraw.steps as Array<{
-    id?: string;
-    name?: string;
-    if?: string;
-  }>;
-  const apply = steps.find(
-    ({ name }) => name === "Verify numeric author and write tombstone",
-  );
-  expect(apply?.id).toBe("withdraw");
-  for (const name of [
-    "Validate withdrawal",
-    "Commit Kit tombstone",
-    "Close withdrawal request",
-    "Deploy updated catalog",
+test("Kit entrypoints bind data preparation to one immutable operation and leave publication to the shared writer", async () => {
+  for (const [name, requestJob] of [
+    ["apply-kit-submission", "publish"],
+    ["apply-kit-withdrawal", "withdraw"],
   ]) {
-    expect(steps.find((step) => step.name === name)?.if).toBe(
-      "steps.withdraw.outputs.status == 'applied'",
+    const document = await workflow(name);
+    const request = document.jobs[requestJob];
+    expect(request.permissions.contents).toBe("read");
+    expect(
+      request.steps.find((step: WorkflowStep) => step.id === "request").run,
+    ).toBe("node scripts/automation/preparation-request.mjs");
+    const producer = document.jobs.prepare;
+    expect(producer["timeout-minutes"]).toBe(45);
+    expect(Object.values(producer.permissions)).not.toContain("write");
+    expect(producer.steps[0].with.ref).toBe("${{ github.sha }}");
+    expect(producer.steps[0].with["persist-credentials"]).toBe(false);
+    const artifact = producer.steps.find((step: WorkflowStep) =>
+      step.with?.name?.startsWith("automation-prepared-"),
     );
-  }
-  expect(source).toContain("tavernary-kit-withdrawal-correction");
-  expect(source).toContain("needs-information");
-  expect(source).toContain("https://tavernary.org/menu/withdraw-kit/");
-  expect(source).toContain("STATUS: ${{ steps.withdraw.outputs.status }}");
-  expect(source).toContain('status === "needs-information"');
-  expect(source).toContain("steps.withdraw.outputs.status == 'applied'");
-});
-
-test("initializes Kit support before publishing the new registry record", async () => {
-  const publication = await workflow("apply-kit-submission");
-  const steps = publication.jobs.publish.steps as Array<{
-    id?: string;
-    name?: string;
-    run?: string;
-    env?: Record<string, string>;
-  }>;
-  const applyIndex = steps.findIndex(
-    ({ name }) => name === "Re-fetch, revalidate, and apply approved issue",
-  );
-  const supportIndex = steps.findIndex(
-    ({ name }) => name === "Initialize Kit community support",
-  );
-  const validationIndex = steps.findIndex(
-    ({ name }) => name === "Validate publication",
-  );
-  const apply = steps[applyIndex];
-  const support = steps[supportIndex];
-  const commit = steps.find(({ name }) => name === "Commit canonical Kit");
-
-  expect(applyIndex).toBeGreaterThanOrEqual(0);
-  expect(supportIndex).toBeGreaterThan(applyIndex);
-  expect(validationIndex).toBeGreaterThan(supportIndex);
-  expect(apply?.id).toBe("apply");
-  expect(support.run).toBe("node scripts/kits/refresh-reactions.mjs");
-  expect(support.env).toMatchObject({
-    GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
-    REQUIRED_KIT_ID: "${{ steps.apply.outputs.kit_id }}",
-  });
-  expect(support.env).not.toHaveProperty("REQUIRED_KIT_ISSUE_NUMBER");
-  expect(commit?.run).toContain(
-    "git add data/registry/kits data/snapshots/github/kits public/catalog/tavernary-catalog.json public/catalog/tavernary-catalog-v8.json",
-  );
-});
-
-test("publishes the canonical catalog after every rebased Kit mutation", async () => {
-  for (const name of ["apply-kit-submission", "apply-kit-withdrawal"]) {
-    const source = await readFile(
-      resolve(workflowDirectory, `${name}.yml`),
-      "utf8",
+    expect(artifact.with.path).toBe(
+      "${{ runner.temp }}/automation-prepared/result.json",
     );
-    const rebase = source.indexOf("git rebase origin/main");
-    const rebuild = source.indexOf("npm run catalog:build", rebase);
-    const stage = source.indexOf(
-      "git add public/catalog/tavernary-catalog.json public/catalog/tavernary-catalog-v8.json",
-      rebuild,
-    );
-    const push = source.indexOf("git push origin HEAD:main", stage);
-
-    expect(rebase).toBeGreaterThanOrEqual(0);
-    expect(rebuild).toBeGreaterThan(rebase);
-    expect(stage).toBeGreaterThan(rebuild);
-    expect(source.slice(stage, push)).toContain("git commit --amend --no-edit");
-    expect(push).toBeGreaterThan(stage);
+    expect(artifact.with["retention-days"]).toBe(90);
   }
 });
 
-test("rebases and revalidates Kit registry commits before pushing", async () => {
-  for (const name of ["apply-kit-submission", "apply-kit-withdrawal"]) {
-    const source = await readFile(
-      resolve(workflowDirectory, `${name}.yml`),
-      "utf8",
-    );
-    const commitBlock = source.slice(source.indexOf("git commit -m"));
-    const rebase = commitBlock.indexOf("git rebase origin/main");
-    const validate = commitBlock.indexOf("npm run catalog:validate");
-    const push = commitBlock.indexOf("git push origin HEAD:main");
-
-    expect(commitBlock).toContain("for attempt in 1 2 3");
-    expect(rebase).toBeGreaterThanOrEqual(0);
-    expect(rebase).toBeLessThan(validate);
-    expect(validate).toBeLessThan(push);
-  }
-});
-
-test("rebases no-op Kit retries before selecting their deployment commit", async () => {
-  for (const name of ["apply-kit-submission", "apply-kit-withdrawal"]) {
-    const source = await readFile(
-      resolve(workflowDirectory, `${name}.yml`),
-      "utf8",
-    );
-    const stage = source.indexOf("git add data/registry/kits");
-    const commitGuardEnd = source.indexOf("\n          fi", stage);
-    const retryLoop = source.indexOf("for attempt in 1 2 3", stage);
-    const publishedSha = source.indexOf(
-      'echo "sha=$(git rev-parse HEAD)"',
-      stage,
-    );
-
-    expect(commitGuardEnd).toBeGreaterThan(stage);
-    expect(retryLoop).toBeGreaterThan(commitGuardEnd);
-    expect(publishedSha).toBeGreaterThan(retryLoop);
-  }
-});
-
-test("dispatches Kit deployments for the exact published commit", async () => {
-  for (const name of ["apply-kit-submission", "apply-kit-withdrawal"]) {
-    const source = await readFile(
-      resolve(workflowDirectory, `${name}.yml`),
-      "utf8",
-    );
-
-    expect(source).toContain("id: commit");
-    expect(source).toContain(
-      'echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"',
-    );
-    expect(source).toContain(
-      'gh workflow run deploy-pages.yml --ref main -f source_sha="${{ steps.commit.outputs.sha }}"',
-    );
-  }
-});
-
-test("runs Kit registry writers from full main-branch history", async () => {
+test("runs Kit preparation requests from full main-branch history", async () => {
   for (const [name, jobName] of [
     ["apply-kit-submission", "publish"],
     ["apply-kit-withdrawal", "withdraw"],
@@ -774,25 +795,6 @@ test("runs Kit registry writers from full main-branch history", async () => {
 
     expect(job.if).toContain("github.ref == 'refs/heads/main'");
     expect(checkout?.with?.["fetch-depth"]).toBe(0);
-  }
-});
-
-test("synchronizes current main before mutating the Kit registry", async () => {
-  for (const [name, mutation] of [
-    ["apply-kit-submission", "node scripts/kits/apply-submission.mjs"],
-    ["apply-kit-withdrawal", "node scripts/kits/apply-withdrawal.mjs"],
-  ]) {
-    const source = await readFile(
-      resolve(workflowDirectory, `${name}.yml`),
-      "utf8",
-    );
-    const fetch = source.indexOf("git fetch origin main");
-    const checkout = source.indexOf("git checkout -B main origin/main");
-    const mutate = source.indexOf(mutation);
-
-    expect(fetch).toBeGreaterThanOrEqual(0);
-    expect(fetch).toBeLessThan(checkout);
-    expect(checkout).toBeLessThan(mutate);
   }
 });
 
@@ -956,6 +958,72 @@ test("runs Windows-specific visual baselines on a Windows runner", async () => {
   expect(visualCommands).toContain("npm run test:visual");
 });
 
+test("the final serialized Pages guard uses this run's exact manifest and fresh authoritative main", async () => {
+  const deploy = await workflow("deploy-pages");
+  const build = deploy.jobs.build.steps as Array<{
+    name?: string;
+    run?: string;
+    uses?: string;
+    with?: Record<string, unknown>;
+    env?: Record<string, string>;
+  }>;
+  const steps = deploy.jobs.deploy.steps as Array<{
+    name?: string;
+    run?: string;
+    uses?: string;
+    if?: string;
+  }>;
+  const guard = steps.findIndex(
+    (step) =>
+      step.name === "Recheck fresh main and confirmed deployment ancestry",
+  );
+  const publication = steps.findIndex(
+    (step) => step.name === "Deploy GitHub Pages",
+  );
+  expect(guard).toBeGreaterThan(-1);
+  expect(publication).toBe(guard + 1);
+  expect(steps[guard].run).toContain("git fetch --no-tags origin main");
+  expect(steps[guard].run).toContain("deployment-gate.mjs");
+  expect(steps[publication].if).toBe("steps.guard.outputs.action == 'deploy'");
+  expect(deploy.jobs.deploy.permissions).toEqual({
+    contents: "read",
+    actions: "read",
+    pages: "write",
+    "id-token": "write",
+  });
+  expect(
+    build.find((step) => step.name === "Retain revision integrity metadata")
+      ?.with,
+  ).toMatchObject({ path: "out/revision.json", "retention-days": 90 });
+  expect(
+    build.find((step) => step.name === "Verify static export")?.env,
+  ).toHaveProperty("TAVERNARY_EXPECTED_SOURCE_SHA");
+  const comparison = build.find(
+    (step) => step.name === "Compare public and built TavernKeeper targets",
+  )?.run;
+  expect(comparison).not.toContain('exit "$read_status"');
+  expect(comparison).toContain("if (( read_status != 0 )); then");
+});
+
+test("content deployment uses focused checks while implementation changes retain the full gate", async () => {
+  const deploy = await workflow("deploy-pages");
+  const steps = deploy.jobs.build.steps as Array<{
+    id?: string;
+    run?: string;
+    if?: string;
+  }>;
+  expect(steps.find((step) => step.id === "route")?.run).toContain(
+    "scripts/ci/classify-deployment.mjs",
+  );
+  expect(steps.find((step) => step.run === "npm run check:content")?.if).toBe(
+    "steps.route.outputs.route == 'content'",
+  );
+  expect(steps.find((step) => step.run === "npm run check")?.if).toBe(
+    "steps.route.outputs.route != 'content'",
+  );
+  expect(deploy.jobs["confirm-public"]).toBeDefined();
+});
+
 test("deploys only a verified static export to the Pages environment", async () => {
   const deploy = await workflow("deploy-pages");
   const build = deploy.jobs.build as {
@@ -1000,104 +1068,57 @@ test("deploys only a verified static export to the Pages environment", async () 
   );
 });
 
-test("reconciles reports independently and wakes TavernKeeper only after a changed public deployment", async () => {
+test("report preparation remains independent while TavernKeeper wakes after a changed public deployment", async () => {
   const reportImport = await workflow("import-tavernkeeper-reports");
   const deploy = await workflow("deploy-pages");
   const deploySource = await readFile(
     resolve(workflowDirectory, "deploy-pages.yml"),
     "utf8",
   );
-  const importSource = await readFile(
-    resolve(workflowDirectory, "import-tavernkeeper-reports.yml"),
-    "utf8",
-  );
   const wakeSteps = deploy.jobs["wake-tavernkeeper"].steps as Array<{
     name?: string;
     if?: string;
     run?: string;
+    "continue-on-error"?: boolean;
   }>;
   const wake = wakeSteps.find(
     (step) => step.name === "Wake TavernKeeper reconciliation (best effort)",
   );
   const token = wakeSteps.find(
     (step) => step.name === "Create destination-only TavernKeeper token",
-  ) as { "continue-on-error"?: boolean } | undefined;
-  const reportImportSteps = reportImport.jobs.import.steps as Array<{
-    name?: string;
-    env?: Record<string, string>;
-    run?: string;
-    "continue-on-error"?: boolean;
-  }>;
-  const synthesisStep = reportImportSteps.find(
-    (step) =>
-      step.name === "Import and synthesize validated TavernKeeper reports",
   );
-  const incidentStep = reportImportSteps.find(
-    (step) => step.name === "Reconcile report synthesis incidents",
-  );
-
   expect(reportImport.on.schedule).toEqual([{ cron: "41 */6 * * *" }]);
   expect(
     reportImport.on.workflow_dispatch.inputs.retry_report_digest,
   ).toMatchObject({ required: false, type: "string" });
-  expect(reportImport.permissions).toEqual({
-    actions: "write",
-    contents: "read",
-    issues: "write",
+  expect(reportImport.on.workflow_dispatch.inputs.budget_ticket).toMatchObject({
+    required: false,
+    type: "string",
   });
+  expect(reportImport.permissions).toEqual({
+    contents: "read",
+    actions: "read",
+    issues: "read",
+  });
+  expect(
+    reportImport.jobs.import.steps.some(exposesModelProviderEnvironment),
+  ).toBe(false);
+  expect(reportImport.jobs.prepare["timeout-minutes"]).toBe(45);
+  const producer = reportImport.jobs.prepare.steps.find(
+    (step: WorkflowStep) => step.id === "prepare",
+  );
+  expect(producer.env.TAVERNARY_REQUIRE_MODEL_BUDGET).toBe("true");
+  for (const key of modelProviderEnvironmentKeys.filter(
+    (key) => key !== "UTILITY_REASONING_EFFORT",
+  )) {
+    expect(producer.env[key]).toBe(
+      "${{ inputs.budget_ticket != '' && secrets." + key + " || '' }}",
+    );
+  }
   expect(deploy.jobs["wake-tavernkeeper"].needs).toEqual(["build", "deploy"]);
   expect(deploy.jobs["wake-tavernkeeper"].permissions).toEqual({
     contents: "read",
   });
-  expect(importSource).toContain("security:import-reports");
-  expect(importSource).toContain("tavernkeeper-import-state.json");
-  expect(reportImport.jobs.import.outputs).toMatchObject({
-    remaining: "${{ steps.import.outputs.remaining }}",
-    quarantined: "${{ steps.import.outputs.quarantined }}",
-  });
-  expect(reportImport.jobs.deploy.needs).toBe("import");
-  expect(reportImport.jobs.continue.needs).toBe("import");
-  expect(reportImport.jobs.continue.if).toContain(
-    "needs.import.outputs.remaining != '0'",
-  );
-  expect(reportImport.jobs.continue.if).toContain(
-    "inputs.retry_report_digest == ''",
-  );
-  expect(JSON.stringify(reportImport.jobs.continue)).not.toContain(
-    "needs.deploy",
-  );
-  expect(synthesisStep?.env).toEqual({
-    ...modelProviderEnvironment,
-    TAVERNARY_RETRY_REPORT_DIGEST: "${{ inputs.retry_report_digest || '' }}",
-  });
-  for (const output of [
-    "imported",
-    "retained",
-    "quarantined",
-    "skipped_quarantines",
-    "remaining",
-  ]) {
-    expect(synthesisStep?.run).toContain(
-      `.${output} | select(type == "number")`,
-    );
-  }
-  expect(synthesisStep?.run).toContain(".created_or_updated");
-  expect(synthesisStep?.run).toContain(".resolved");
-  expect(synthesisStep?.run).not.toContain('type == \\"number\\"');
-  expect(incidentStep?.run).toContain("incident_key");
-  expect(incidentStep?.run).toContain("Report incident key:");
-  expect(incidentStep?.run).toContain("narrative enrichment fallback");
-  expect(incidentStep?.run).not.toContain("report synthesis quarantined");
-  expect(incidentStep?.run).not.toContain("diagnostic in:body");
-  expect(incidentStep?.["continue-on-error"]).toBe(true);
-  expect(
-    reportImportSteps
-      .filter((step) => step !== synthesisStep)
-      .some(exposesModelProviderEnvironment),
-  ).toBe(false);
-  expect(importSource).toContain("for attempt in 1 2 3");
-  expect(importSource).toContain("-f source_sha=");
-  expect(importSource).not.toContain("reconcile.yml");
   expect(deploySource).toContain(
     "repos/MentallyQuill/TavernKeeper/actions/workflows/reconcile.yml/dispatches",
   );
@@ -1110,137 +1131,40 @@ test("reconciles reports independently and wakes TavernKeeper only after a chang
   expect(JSON.stringify(deploy)).not.toContain("actions: write");
 });
 
-test("redispatches Pages without gating the next due import", async () => {
+test("report import uses immutable preparation and shared publication instead of a second main writer or deploy chain", async () => {
   const reportImport = await workflow("import-tavernkeeper-reports");
-  const steps = reportImport.jobs.import.steps as Array<{
-    name?: string;
-    id?: string;
-    if?: string;
-    run?: string;
-    env?: Record<string, string>;
-    "continue-on-error"?: boolean;
-  }>;
-  const commit = steps.find(
-    (step) => step.name === "Commit and publish changed summaries",
-  );
-  const deploySteps = reportImport.jobs.deploy.steps as Array<{
-    name?: string;
-    id?: string;
-    if?: string;
-    run?: string;
-    env?: Record<string, string>;
-    "continue-on-error"?: boolean;
-  }>;
-  const deploy = deploySteps.find(
-    (step) => step.name === "Deploy the exact reconciled summary commit",
-  );
-  const commitSource = commit?.run ?? "";
-  const noDiffStart = commitSource.indexOf(
-    "if git diff --cached --quiet -- data/security/tavernkeeper-report-summaries.json",
-  );
-  const noDiffEnd = commitSource.indexOf("\nfi", noDiffStart);
-  const noDiffSource = commitSource.slice(noDiffStart, noDiffEnd);
-  const rebase = commitSource.indexOf("git rebase origin/main");
-  const validate = commitSource.indexOf("npm run check", rebase);
-  const finalFetch = commitSource.indexOf(
-    "git fetch --no-tags origin main",
-    validate,
-  );
-  const finalRebase = commitSource.indexOf(
-    "git rebase origin/main",
-    rebase + "git rebase origin/main".length,
-  );
-  const catalogValidate = commitSource.indexOf(
-    "npm run catalog:validate",
-    finalRebase,
-  );
-  const reportValidate = commitSource.indexOf(
-    "npm run security:validate-reports",
-    catalogValidate,
-  );
-  const push = commitSource.indexOf(
-    "git push origin HEAD:main",
-    reportValidate,
-  );
-
-  expect(commitSource).toContain(
-    "git add -- data/security/tavernkeeper-report-summaries.json data/security/tavernkeeper-import-state.json public/catalog/tavernary-catalog.json public/catalog/tavernary-catalog-v8.json",
-  );
-  expect(commitSource).toContain(
-    "git diff --cached --quiet -- data/security/tavernkeeper-report-summaries.json data/security/tavernkeeper-import-state.json public/catalog/tavernary-catalog.json public/catalog/tavernary-catalog-v8.json",
-  );
-  expect(noDiffStart).toBeGreaterThanOrEqual(0);
-  expect(noDiffSource).toContain("git fetch --no-tags origin main");
-  expect(noDiffSource).toContain("git merge --ff-only origin/main");
-  expect(noDiffSource).toContain("npm run check");
-  expect(noDiffSource).toContain('echo "sha=$(git rev-parse HEAD)"');
-  expect(commitSource).toContain("for attempt in 1 2 3");
-  expect(rebase).toBeGreaterThanOrEqual(0);
-  expect(rebase).toBeLessThan(validate);
-  expect(validate).toBeLessThan(finalFetch);
-  expect(finalFetch).toBeLessThan(finalRebase);
-  expect(finalRebase).toBeLessThan(catalogValidate);
-  expect(catalogValidate).toBeLessThan(reportValidate);
-  expect(reportValidate).toBeLessThan(push);
-
-  expect(reportImport.jobs.deploy.if).toContain(
-    "needs.import.result == 'success'",
-  );
-  expect(deploy?.env?.SOURCE_SHA).toBe("${{ needs.import.outputs.sha }}");
-  expect(deploy?.run).toContain(
-    'gh workflow run deploy-pages.yml --repo "$GITHUB_REPOSITORY" --ref main',
-  );
-  expect(deploy?.run).toContain('-f source_sha="$SOURCE_SHA"');
-  expect(deploy?.run).not.toContain("gh run watch");
-  expect(deploy?.run).not.toContain("sleep");
-  expect(deploy?.["continue-on-error"]).not.toBe(true);
-  expect(reportImport.jobs.continue.needs).toBe("import");
-  expect(reportImport.jobs.continue.if).not.toContain("needs.deploy");
-});
-
-test("refreshes snapshots daily without granting production-record writes", async () => {
-  const refresh = (await workflow("refresh-catalog")) as {
-    "run-name": string;
-    permissions: Record<string, string>;
-    concurrency: Record<string, unknown>;
-    on: {
-      workflow_dispatch: {
-        inputs: Record<string, { options?: string[]; default?: unknown }>;
-      };
-    };
-    jobs: Record<
-      string,
-      {
-        steps: Array<{
-          id?: string;
-          name?: string;
-          if?: string;
-          run?: string;
-        }>;
-      }
-    >;
-  };
   const source = await readFile(
-    resolve(workflowDirectory, "refresh-catalog.yml"),
+    resolve(workflowDirectory, "import-tavernkeeper-reports.yml"),
     "utf8",
   );
+  expect(reportImport.jobs.deploy).toBeUndefined();
+  expect(reportImport.jobs.continue).toBeUndefined();
+  expect(source).not.toMatch(/git (?:add|commit|rebase|push)\b/u);
+  expect(source).not.toContain("gh workflow run deploy-pages.yml");
+  expect(source).toContain("node scripts/automation/preparation-request.mjs");
+  expect(source).toContain(
+    "node scripts/automation/catalog-preparation-cli.mjs",
+  );
+  expect(source).toContain("automation-prepared-${{ inputs.operation_key }}");
+  expect(reportImport.concurrency).toEqual({
+    group:
+      "tavernkeeper-report-import-${{ inputs.operation_key || 'request' }}",
+    "cancel-in-progress": false,
+  });
+});
 
+test("daily refresh preserves the existing manual modes and bounded baseline input", async () => {
+  const refresh = await workflow("refresh-catalog");
   expect(refresh.permissions).toEqual({
     contents: "read",
-    actions: "write",
+    actions: "read",
     issues: "read",
   });
   expect(refresh.concurrency).toEqual({
-    group: "catalog-refresh",
+    group: "catalog-refresh-${{ inputs.operation_key || 'request' }}",
     "cancel-in-progress": false,
   });
-  const inputs = (
-    refresh.on as {
-      workflow_dispatch: {
-        inputs: Record<string, { options?: string[]; default?: unknown }>;
-      };
-    }
-  ).workflow_dispatch.inputs;
+  const inputs = refresh.on.workflow_dispatch.inputs;
   expect(inputs.mode.options).toEqual([
     "incremental",
     "baseline",
@@ -1251,121 +1175,63 @@ test("refreshes snapshots daily without granting production-record writes", asyn
   expect(inputs).toHaveProperty("source_id");
   expect(inputs).not.toHaveProperty("start_index");
   expect(refresh["run-name"]).toContain("Catalog: Refresh baseline queue");
-  const refreshSteps = refresh.jobs.refresh.steps;
-  expect(refreshSteps.map(({ name }) => name)).toEqual(
-    expect.arrayContaining([
-      "Advance baseline queue or refresh selected sources",
-    ]),
-  );
-  const advance = refreshSteps.find(
-    ({ name }) => name === "Advance baseline queue or refresh selected sources",
-  )?.run;
-  expect(advance).toContain("refresh_batch");
-  expect(advance).not.toContain("baseline-queue.mjs evaluate");
-  expect(advance).not.toContain("while (( remaining > 0 )); do");
-  expect(source).not.toContain("workflow run refresh-catalog.yml");
-  expect(source).toContain("data/snapshots/github/*.json");
-  expect(source).toContain("data/snapshots/codeberg/*.json");
-  expect(source).toContain("data/snapshots/github-refresh.json");
-  expect(source).toContain("data/snapshots/github/kits/*.json");
-  expect(source).toContain("data/snapshots/install/*.json");
-  expect(source).toContain("public/catalog/tavernary-catalog.json");
-  expect(source).toContain("public/catalog/tavernary-catalog-v8.json");
-  expect(source).toContain("refresh-reactions.mjs");
-  expect(source).not.toMatch(/git add (?:data\/registry|data\/catalog)/);
-  expect(source).not.toContain("git add src/generated/catalog.json");
-  expect(source).toContain("workflow run deploy-pages.yml");
-
-  const supportRefresh = refreshSteps.find(
-    ({ name }) => name === "Refresh Kit community support",
-  );
-  const validation = refreshSteps.find(
-    ({ name }) => name === "Validate refreshed catalog",
-  );
-  const commit = refreshSteps.find(
-    ({ name }) => name === "Commit snapshot changes",
-  );
-  const redeploy = refreshSteps.find(
-    ({ name }) => name === "Redeploy refreshed catalog",
-  );
-  expect(supportRefresh?.run).toBe("node scripts/kits/refresh-reactions.mjs");
-  expect(validation?.run).toBe("npm run check");
-  expect(commit?.run).toContain("data/snapshots/github/kits/*.json");
-  expect(redeploy?.run).toBe("gh workflow run deploy-pages.yml --ref main");
-  expect(source).not.toMatch(
-    /data\/snapshots\/github\/kits\/(?!\*\.json)[a-z0-9-]+\.json/,
-  );
+  expect(
+    refresh.jobs.prepare.steps.some((step: WorkflowStep) =>
+      step.run?.includes("catalog-preparation-cli.mjs"),
+    ),
+  ).toBe(true);
+  expect(
+    refresh.jobs.refresh.steps.some((step: WorkflowStep) =>
+      step.run?.includes("preparation-request.mjs"),
+    ),
+  ).toBe(true);
 });
 
-test("runs enrichment through one tested durable orchestrator", async () => {
-  const enrich = (await workflow("enrich-catalog")) as {
-    permissions: Record<string, string>;
-    concurrency: Record<string, unknown>;
-    on: {
-      workflow_dispatch: {
-        inputs: Record<string, unknown>;
-      };
-    };
-  };
+test("enrichment prepares one read-only checkpoint after a separate owner request", async () => {
+  const enrich = await workflow("enrich-catalog");
+  const request = await workflow("request-catalog-enrichment");
   const source = await readFile(
     resolve(workflowDirectory, "enrich-catalog.yml"),
     "utf8",
   );
-  const inputs = enrich.on.workflow_dispatch.inputs;
-
-  expect(inputs).not.toHaveProperty("mode");
-  expect(inputs).not.toHaveProperty("project_ids");
-  expect(inputs.enrichment_scope).toEqual({
-    description: "Choose pending records or re-enrich every automatic record.",
-    type: "choice",
-    options: ["pending", "all-automatic"],
-    default: "pending",
-  });
+  expect(Object.keys(enrich.jobs)).toEqual(["prepare"]);
+  expect(Object.keys(enrich.on.workflow_dispatch.inputs)).toEqual([
+    "operation_key",
+    "budget_ticket",
+  ]);
+  expect(enrich.on.workflow_dispatch.inputs.operation_key.required).toBe(true);
   expect(enrich.permissions).toEqual({
     contents: "read",
-    actions: "write",
-    issues: "write",
+    actions: "read",
+    issues: "read",
+    "pull-requests": "read",
   });
   expect(enrich.concurrency).toEqual({
-    group: "catalog-refresh",
+    group: "catalog-enrichment-preparation",
     "cancel-in-progress": false,
   });
-  expect(source).toContain("npm run catalog:enrichment-rollout");
-  expect(source).toContain(
-    "ENRICHMENT_SELECTION_MODE: ${{ inputs.enrichment_scope || 'pending' }}",
-  );
-  expect(inputs.model_timeout_seconds).toEqual({
-    description: "Per-model-request timeout in seconds.",
-    type: "number",
-    default: 120,
-  });
-  expect(inputs.model_concurrency).toEqual({
-    description: "Concurrent model calls, from 1 through 8.",
-    type: "number",
-    default: 6,
-  });
-  expect(source).toContain(
-    "MODEL_CONCURRENCY: ${{ inputs.model_concurrency || 6 }}",
+  expect(enrich.jobs.prepare["timeout-minutes"]).toBe(45);
+  expect(enrich.jobs.prepare.if.replace(/\s+/gu, " ").trim()).toBe(
+    "inputs.operation_key != '' && github.ref == 'refs/heads/main' && github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID",
   );
   expect(source).toContain(
-    "MODEL_TIMEOUT_SECONDS: ${{ inputs.model_timeout_seconds || 120 }}",
+    "node scripts/automation/catalog-preparation-cli.mjs",
   );
-  expect(source).toContain("npm run catalog:report-enrichment-errors");
-  expect(source).toContain("enrichment-rollout-result.json");
-  expect(source).toContain("Manual exclusions:");
-  expect(source).toContain("Model calls:");
-  expect(source).toContain("Repair calls:");
-  expect(source).toContain("Rate-limit events:");
-  expect(source).toContain("Total model latency:");
-  expect(source).toContain("manual_exclusions");
-  expect(source).toContain("data/reports/enrichment-canary.json");
-  expect(source).toContain("| Project | Outcome | Reason | Detail |");
-  expect(source).toContain(
-    "['source-not-ready','final-failure','skipped'].includes(entry.outcome)",
+  expect(source).toContain('TAVERNARY_REQUIRE_MODEL_BUDGET: "true"');
+  expect(source).not.toMatch(
+    /catalog:enrichment-rollout|create-github-app-token|git push|permission-contents/u,
   );
-  expect(source).not.toContain("publish_changes()");
+  expect(request.jobs.request["timeout-minutes"]).toBe(5);
+  expect(request.jobs.request.if).toBe(
+    "github.ref == 'refs/heads/main' && github.actor_id == 2625904",
+  );
+  expect(request.on.workflow_dispatch.inputs.enrichment_scope.options).toEqual([
+    "pending",
+    "all-automatic",
+  ]);
+  expect(request.on.workflow_dispatch.inputs.model_concurrency.default).toBe(2);
+  expect(JSON.stringify(request)).not.toContain("secrets.");
 });
-
 test("triage dispatches admitted projects without repository write access", async () => {
   const triage = await workflow("triage-submission");
   const source = await readFile(
@@ -1411,14 +1277,14 @@ test("retries frontend dependencies from read-only catalog changes", async () =>
   expect(retry.permissions).toEqual({
     contents: "read",
     issues: "read",
-    actions: "write",
+    actions: "read",
   });
   expect(retry.concurrency).toEqual({
     group: "retry-frontend-dependencies",
     "cancel-in-progress": false,
   });
   expect(source).toContain(
-    "node scripts/submissions/retry-frontend-dependencies.mjs",
+    "gh workflow run automation-writer.yml --ref main -f mode=reconcile",
   );
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
@@ -1443,18 +1309,16 @@ test("retries fork dependencies after registry or upstream review changes", asyn
   expect(retry.permissions).toEqual({
     contents: "read",
     issues: "read",
-    actions: "write",
+    actions: "read",
   });
   expect(retry.concurrency).toEqual({
     group: "retry-fork-dependencies",
     "cancel-in-progress": false,
   });
   expect(source).toContain(
-    "node scripts/submissions/retry-fork-dependencies.mjs",
+    "gh workflow run automation-writer.yml --ref main -f mode=reconcile",
   );
-  expect(source).toContain(
-    "UPSTREAM_ISSUE_NUMBER: ${{ inputs.upstream_issue_number }}",
-  );
+  expect(retry.jobs.retry.environment).toBe("publisher");
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
 
@@ -1645,7 +1509,7 @@ test("checks for due Reddit submissions once daily", async () => {
   expect(retry.permissions).toEqual({
     contents: "read",
     issues: "read",
-    actions: "write",
+    actions: "read",
   });
   expect(retry.concurrency).toEqual({
     group: "retry-project-submission-enrichment",
@@ -1654,7 +1518,7 @@ test("checks for due Reddit submissions once daily", async () => {
   expect(
     allSteps(retry).some((step) =>
       step.run?.includes(
-        "node scripts/submissions/retry-project-submission-enrichment.mjs",
+        "gh workflow run automation-writer.yml --ref main -f mode=reconcile",
       ),
     ),
   ).toBe(true);
@@ -1817,7 +1681,10 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
     group: "project-owner-generation",
     "cancel-in-progress": false,
   });
-  expect(checkout?.with).toMatchObject({ "fetch-depth": 0, ref: "main" });
+  expect(checkout?.with).toMatchObject({
+    "fetch-depth": 0,
+    ref: "${{ github.sha }}",
+  });
   expect(exposesModelProviderEnvironment(generationJob)).toBe(false);
   expect(modelStep?.env).toMatchObject(modelProviderEnvironment);
   expect(exposesModelProviderEnvironment(replayStep ?? {})).toBe(false);
@@ -2065,7 +1932,7 @@ test("triages Help reports from latest issue state with a read-only repository b
   ) as { with?: { ref?: string } } | undefined;
   const setupNode = steps.find((step) =>
     step.uses?.startsWith("actions/setup-node@"),
-  ) as { with?: { "node-version"?: number } } | undefined;
+  ) as { with?: { "node-version-file"?: string } } | undefined;
 
   expect(Object.keys(triage.on)).toEqual(["workflow_dispatch"]);
   expect(triage.on.workflow_dispatch.inputs.issue_number).toMatchObject({
@@ -2083,7 +1950,7 @@ test("triages Help reports from latest issue state with a read-only repository b
   expect(checkout?.with?.ref).toBe(
     "${{ github.event.repository.default_branch }}",
   );
-  expect(setupNode?.with?.["node-version"]).toBe(24);
+  expect(setupNode?.with?.["node-version-file"]).toBe(".node-version");
   expect(source).toContain("node scripts/help/triage-help-issue.mjs");
   expect(source).toContain("ISSUE_NUMBER: ${{ inputs.issue_number }}");
   expect(source.indexOf("actions/checkout@")).toBeLessThan(
@@ -2116,7 +1983,12 @@ test("groups coupled dependency updates into coherent pull requests", async () =
     (update) => update["package-ecosystem"] === "github-actions",
   );
 
-  expect(npm?.groups?.react.patterns).toEqual(["react", "react-dom"]);
+  expect(npm?.groups?.react.patterns).toEqual([
+    "react",
+    "react-dom",
+    "@types/react",
+    "@types/react-dom",
+  ]);
   expect(npm?.ignore).toContainEqual({
     "dependency-name": "eslint",
     "update-types": ["version-update:semver-major"],

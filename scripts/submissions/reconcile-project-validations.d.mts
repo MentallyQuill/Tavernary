@@ -2,6 +2,7 @@ import type {
   ProjectValidationState,
   ProjectValidationRun,
 } from "./project-validation-reconciliation.mjs";
+import type { RetryDecision } from "../automation/retry.mjs";
 
 export type GitHubRequest = (
   path: string,
@@ -11,6 +12,11 @@ export type GitHubRequest = (
     headers?: Record<string, string>;
   },
 ) => Promise<unknown>;
+export function githubRequest(
+  path: string,
+  options?: Parameters<GitHubRequest>[1],
+  token?: string,
+): Promise<unknown>;
 
 export type ReconciliationResult =
   | {
@@ -36,6 +42,7 @@ export type ReconciliationResult =
       runId: ProjectValidationRun["id"] | null;
       outcome: "applied" | "observed" | "superseded";
       projectionError?: string;
+      retry?: RetryDecision;
     }
   | {
       pullNumber: number;
@@ -63,6 +70,8 @@ export function reconcileProjectValidations(input: {
   request: GitHubRequest;
   nowMs: number;
   publisherActorId: number;
+  selectedPullNumber?: number;
+  loadAutomaticPublicationEnabled?: () => Promise<boolean>;
 }): Promise<ReconciliationSummary>;
 
 export function runReconcileProjectValidationsCli(input?: {

@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 
 const diagnostics = new Set([
+  "budget-exhausted",
   "response_schema",
   "public_text_references",
   "unknown_candidate_ids",

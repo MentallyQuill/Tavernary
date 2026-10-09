@@ -1,5 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
+import { classifyAutomationFailure } from "../automation/failure.mjs";
+import { planAutomationRetry } from "../automation/retry.mjs";
 
 import {
   ownerRequestBranch,
@@ -25,7 +27,44 @@ const QUEUE_LABELS = new Set([
   "waiting-on-fork-parent",
 ]);
 const BLOCKING_LABELS = new Set(["needs-information", "submission-declined"]);
-const DIAGNOSTIC_REASON_CODES = new Set(["output-invalid"]);
+const DIAGNOSTIC_REASON_CODES = new Set([
+  "output-invalid",
+  "generation-failed",
+  "reddit-source-retry-scheduled",
+  "provider-authentication-failed",
+  "publisher-authentication-failed",
+  "provider-configuration-invalid",
+  "provider-model-mismatch",
+  "budget-exhausted",
+  "provider-timeout",
+  "provider-network-error",
+  "provider-rate-limited",
+  "provider-server-error",
+  "provider-request-failed",
+  "provider-response-invalid",
+]);
+
+export function projectGenerationDiagnostic(error) {
+  return {
+    schema_version: 1,
+    reason_code: DIAGNOSTIC_REASON_CODES.has(error?.code)
+      ? error.code
+      : "generation-failed",
+  };
+}
+
+export function parseProjectGenerationDiagnostic(serialized) {
+  try {
+    const diagnostic = JSON.parse(serialized);
+    return diagnostic?.schema_version === 1 &&
+      Object.keys(diagnostic).length === 2 &&
+      DIAGNOSTIC_REASON_CODES.has(diagnostic.reason_code)
+      ? { schema_version: 1, reason_code: diagnostic.reason_code }
+      : null;
+  } catch {
+    return null;
+  }
+}
 
 async function generationDiagnosticReason(path) {
   if (!path) return null;
@@ -36,11 +75,7 @@ async function generationDiagnosticReason(path) {
     if (error?.code === "ENOENT") return null;
     throw error;
   }
-  const diagnostic = JSON.parse(serialized);
-  return diagnostic?.schema_version === 1 &&
-    DIAGNOSTIC_REASON_CODES.has(diagnostic.reason_code)
-    ? diagnostic.reason_code
-    : null;
+  return parseProjectGenerationDiagnostic(serialized)?.reason_code ?? null;
 }
 
 function labelNames(issue) {
@@ -75,6 +110,17 @@ export function planProjectGenerationFailure(input) {
     input.ownedPull?.state === "open"
       ? "submission-pr-open"
       : "submission-retryable";
+  const diagnostic = projectGenerationDiagnostic({ code: input.reasonCode });
+  const failure = classifyAutomationFailure({
+    diagnosticCode: diagnostic.reason_code,
+  });
+  const retry = planAutomationRetry({
+    failure,
+    nowMs: input.nowMs ?? Date.now(),
+    transientAttempts: input.transientAttempts ?? 0,
+    immediateAttempts: input.transientAttempts ?? 0,
+    jitterSeed: `${input.producer}:${input.issue.number}:${input.runUrl}`,
+  });
   const nextLabels = labels.filter((label) => !QUEUE_LABELS.has(label));
   nextLabels.push(desired);
   const commentMarker = `<!-- tavernary-project-generation-failure:${input.producer} -->`;
@@ -82,7 +128,7 @@ export function planProjectGenerationFailure(input) {
     commentMarker,
     "Generation stopped before publication, so no catalog change was published.",
     "",
-    `Reason category: \`${input.reasonCode ?? "generation-failed"}\``,
+    `Reason category: \`${diagnostic.reason_code}\``,
     "",
     `[View the failed GitHub Actions run](${input.runUrl})`,
     "",
@@ -90,7 +136,15 @@ export function planProjectGenerationFailure(input) {
       ? `Tavernary will retry automatically after ${input.redditRetryState.next_eligible_retry_at}.`
       : desired === "submission-pr-open"
         ? "An owned review pull request already exists, so review continues there."
-        : "This request is retryable after the generation problem is corrected.",
+        : `Tavernary will retry automatically after ${retry.nextEligibleAt}.`,
+    `<!-- tavernary-generation-recovery\n${JSON.stringify({
+      schema_version: 1,
+      issue_number: input.issue.number,
+      producer: input.producer,
+      failure_kind: failure.kind,
+      reason_code: failure.reasonCode,
+      next_eligible_at: retry.nextEligibleAt,
+    })}\n-->`,
     ...(input.producer === "project-submission" && input.redditRetryState
       ? ["", renderRedditRetryState(input.redditRetryState)]
       : []),
@@ -100,6 +154,8 @@ export function planProjectGenerationFailure(input) {
     labels: [...new Set(nextLabels)],
     commentMarker,
     commentBody,
+    failure,
+    nextEligibleAt: retry.nextEligibleAt,
   };
 }
 
@@ -131,6 +187,7 @@ async function issueComments(request, repository, issueNumber) {
 }
 
 export async function reconcileProjectGenerationFailure(input) {
+  const nowMs = input.nowMs ?? Date.now();
   const request = input?.request;
   if (typeof request !== "function") {
     throw new Error("Project generation failure reconciliation needs request.");
@@ -161,6 +218,8 @@ export async function reconcileProjectGenerationFailure(input) {
     runUrl: input.runUrl,
     reasonCode: input.reasonCode,
     redditRetryState: input.redditRetryState,
+    nowMs,
+    transientAttempts: input.transientAttempts,
   });
   if (plan.action === "noop") return plan;
 
@@ -179,6 +238,8 @@ export async function reconcileProjectGenerationFailure(input) {
     runUrl: input.runUrl,
     reasonCode: input.reasonCode,
     redditRetryState: input.redditRetryState,
+    nowMs,
+    transientAttempts: input.transientAttempts,
   });
   if (plan.action === "noop") return plan;
 

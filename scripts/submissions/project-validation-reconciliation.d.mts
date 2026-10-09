@@ -1,4 +1,9 @@
 import type { ProjectPublicationTransaction } from "../publication/project-publication-transaction.mjs";
+import type {
+  AutomationFailure,
+  AutomationFailureInput,
+} from "../automation/failure.mjs";
+import type { RetryDecision } from "../automation/retry.mjs";
 
 export type ProjectValidationRun = {
   id?: number;
@@ -9,6 +14,8 @@ export type ProjectValidationRun = {
   created_at?: string;
   updated_at?: string;
   html_url?: string;
+  failure?: AutomationFailureInput;
+  retryAfterMs?: number;
 };
 
 export type ProjectValidationState =
@@ -41,6 +48,8 @@ export type ProjectValidationPlan =
       run: ProjectValidationRun | null;
       validationRunId?: number;
       queuedAction?: "publish" | "retry-publication" | "regenerate";
+      failure?: AutomationFailure;
+      retry?: RetryDecision;
     };
 
 export const PROJECT_VALIDATION_RETRY_LIMIT: number;
@@ -56,6 +65,7 @@ export function planProjectValidationReconciliation(input: {
   generationRuns?: ProjectValidationRun[];
   nowMs: number;
   pull?: { updated_at?: string };
+  retryState?: ProjectValidationRetryState | null;
 }): ProjectValidationPlan;
 
 export function projectValidationStateComment(input: {
@@ -63,4 +73,19 @@ export function projectValidationStateComment(input: {
   headSha: string;
   attempts: number;
   run?: ProjectValidationRun | null;
+  failure?: AutomationFailure;
+  retry?: RetryDecision;
 }): string;
+
+export type ProjectValidationRetryState = {
+  headSha: string;
+  runId: number;
+  runAttempt: number;
+  state: ProjectValidationState;
+  reasonCode: string;
+  nextEligibleAt: string;
+};
+
+export function parseProjectValidationRetryState(
+  body: unknown,
+): ProjectValidationRetryState | null;

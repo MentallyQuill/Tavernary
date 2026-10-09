@@ -82,7 +82,7 @@ test("documents the runtime owner failure codes without invented aliases", () =>
   expect(operationsRunbook).not.toContain("owner-request-invalid-operation");
 });
 
-test("documents source-backed card maintenance and the transaction-v2 cutover", () => {
+test("documents source-backed card maintenance and identity preservation", () => {
   const contributorGuide = readFileSync(
     resolve(process.cwd(), "docs/contributing/submission-and-review.md"),
     "utf8",
@@ -104,12 +104,13 @@ test("documents source-backed card maintenance and the transaction-v2 cutover", 
     "retire or restore a card",
     "permanently delist a source",
     "schema version 2",
-    "migrate-source-registry-v1.mjs --write",
+    "source_ids",
   ]) {
     expect(corpus).toContain(phrase);
   }
   expect(corpus).toMatch(/rename or transfer.*source ID/is);
   expect(corpus).toMatch(/transaction version 1.*regenerat/is);
   expect(corpus).toMatch(/permanent delist.*every.*card/is);
-  expect(corpus).toMatch(/dry run.*rollback/is);
+  expect(corpus).toContain("-f dry_run=true");
+  expect(corpus).toContain("restore-site.yml");
 });

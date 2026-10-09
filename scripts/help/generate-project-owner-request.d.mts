@@ -96,6 +96,26 @@ export interface OwnerGenerationResult {
   reportPath: string;
   report: OwnerGenerationReport;
 }
+export interface OwnerGenerationCheckpoint {
+  schema_version: 1;
+  entries: Array<{
+    project_id: string;
+    field: "copy" | "automatic";
+    input_digest: string;
+    output: Record<string, unknown>;
+  }>;
+}
+export function validateOwnerGenerationCheckpoint(
+  value: unknown,
+): OwnerGenerationCheckpoint;
+export function loadOwnerGenerationCheckpoint(input: {
+  gh: import("../submissions/kit-submission-reconciliation.mjs").GhRunner;
+  download: (args: string[]) => Promise<Uint8Array>;
+  repository: string;
+  operationKey: string;
+  publisherActorId: number;
+  runIds: number[];
+}): Promise<OwnerGenerationCheckpoint>;
 
 export function generateProjectOwnerRequest(input: {
   issue: OwnerTriageIssue | { number: number };
@@ -123,8 +143,15 @@ export function generateProjectOwnerRequest(input: {
     input: Record<string, unknown>,
   ) => Promise<EnrichmentOutput>;
   enrichmentProvider?: unknown;
+  loadBudgetGuard?: () => Promise<
+    import("../automation/model-budget.mjs").ModelBudgetGuard
+  >;
   loadEnrichmentSource?: (...args: any[]) => Promise<any>;
   validatedReport?: OwnerGenerationReport;
+  generationCheckpoint?: OwnerGenerationCheckpoint;
+  saveGenerationCheckpoint?: (
+    checkpoint: OwnerGenerationCheckpoint,
+  ) => Promise<void>;
 }): Promise<OwnerGenerationResult>;
 
 export function fingerprintProjectOwnerManifest(
@@ -141,7 +168,24 @@ export function parseGenerateProjectOwnerCli(argv: string[]): {
   root: string;
   reportPath: string;
   validatedReportPath: string | null;
+  failureDiagnosticPath?: string;
 };
+
+export function runGenerateProjectOwnerCli(
+  options: ReturnType<typeof parseGenerateProjectOwnerCli> & {
+    hostRepository: string;
+    request: Parameters<typeof generateProjectOwnerRequest>[0]["request"];
+    now?: string | Date;
+    generationCheckpoint?: OwnerGenerationCheckpoint;
+    saveGenerationCheckpoint?: (
+      checkpoint: OwnerGenerationCheckpoint,
+    ) => Promise<void>;
+    loadBudgetGuard?: () => Promise<
+      import("../automation/model-budget.mjs").ModelBudgetGuard
+    >;
+    generate?: typeof generateProjectOwnerRequest;
+  },
+): Promise<OwnerGenerationResult>;
 
 export function readValidatedOwnerReport(
   reportPath: string,

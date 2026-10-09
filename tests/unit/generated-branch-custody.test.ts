@@ -256,7 +256,12 @@ describe("generated project branch workflow custody", () => {
         "pull-requests": "write",
         actions: "write",
       });
-      expect(normalizedExpression(job.if)).toBe(publisherCallerCondition);
+      expect(normalizedExpression(job.if)).toBe(
+        "inputs.operation_key != '' && github.ref == 'refs/heads/main' && github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID",
+      );
+      expect(
+        normalizedExpression((document.jobs.request as { if?: string }).if),
+      ).toBe(`inputs.operation_key == '' && ${publisherCallerCondition}`);
       expect(job.environment).toBe("publisher");
       expect(job.env?.GH_TOKEN).toBe("${{ secrets.GITHUB_TOKEN }}");
       expect(token).toMatchObject({
@@ -438,7 +443,7 @@ describe("generated project branch workflow custody", () => {
     );
   });
 
-  test("reserves an App-owned create-update-delete branch canary", async () => {
+  test("requests the App-owned create-update-delete probe through the shared writer", async () => {
     const document = await workflow("publisher-automation-branch-verification");
     const job = document.jobs.verify as {
       if?: string;
@@ -446,12 +451,11 @@ describe("generated project branch workflow custody", () => {
       steps: WorkflowStep[];
     };
     const token = job.steps.find((step) => step.id === "publisher-token");
-    const verify = job.steps.find(
-      (step) => step.name === "Verify Publisher automation branch custody",
+    const dispatch = job.steps.find((step) =>
+      step.run?.includes("gh workflow run"),
     );
-
     expect(document.on.workflow_dispatch).toBeNull();
-    expect(document.permissions).toEqual({ contents: "read" });
+    expect(document.permissions).toEqual({ contents: "read", actions: "read" });
     expect(job.if).toBe(
       "github.ref == 'refs/heads/main' && github.actor_id == 2625904",
     );
@@ -461,22 +465,17 @@ describe("generated project branch workflow custody", () => {
       with: {
         "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
         "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
-        owner: "MentallyQuill",
-        repositories: "Tavernary",
-        "permission-contents": "write",
+        "permission-actions": "write",
       },
     });
-    expect(verify?.env).toEqual({
+    expect(token?.with?.["permission-contents"]).toBeUndefined();
+    expect(dispatch?.env).toEqual({
       GH_TOKEN: "${{ steps.publisher-token.outputs.token }}",
+      REQUEST_RUN_ID: "${{ github.run_id }}",
     });
-    expect(verify?.run).toContain("branch=automation/project-submission-0");
-    expect(verify?.run).toContain("trap cleanup EXIT");
-    expect(verify?.run).toContain("/git/commits");
-    expect(verify?.run).toContain("--method POST");
-    expect(verify?.run).toContain("--method PATCH");
-    expect(verify?.run).toContain("-F force=false");
-    expect(verify?.run).toContain("published_sha");
-    expect(verify?.run).toContain("--method DELETE");
+    expect(dispatch?.run).toContain("automation-writer.yml --ref main");
+    expect(dispatch?.run).toContain("mode=verify-publisher");
+    expect(JSON.stringify(job)).not.toMatch(/--method (?:POST|PATCH|DELETE)/u);
   });
 
   test("never auto-publishes the reserved branch canary", async () => {
@@ -555,7 +554,7 @@ describe("generated project branch workflow custody", () => {
     },
   );
 
-  test("admits public issue events but reserves manual Publisher dispatch for the owner", async () => {
+  test("admits public issue events and limits manual dispatch to the owner or Publisher", async () => {
     const document = await workflow("admit-issue");
     const job = document.jobs.admit as {
       if?: string;
@@ -565,9 +564,10 @@ describe("generated project branch workflow custody", () => {
       (step) => step.id === "publisher-dispatch-token",
     );
 
-    expect(job.if).toBe(
+    expect(normalizedExpression(job.if)).toBe(
       "github.ref == 'refs/heads/main' && " +
-        "(github.event_name != 'workflow_dispatch' || github.actor_id == 2625904)",
+        "(github.event_name != 'workflow_dispatch' || github.actor_id == 2625904 || " +
+        "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)",
     );
     expect(token?.if).toContain("steps.admission.outputs.route == 'project'");
     expect(token?.if).toContain(

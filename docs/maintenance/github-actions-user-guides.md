@@ -64,35 +64,36 @@ This page maps Tavernary workflows to common operational tasks.
 
 ## 4) How to update Catalog Summaries (Enrich)
 
-1. Open `enrich-catalog.yml` from Actions.
-2. Select:
-   - `enrichment_scope`: `pending` (default) or `all-automatic`
-   - `batch_size` (default `20`)
-   - `model_concurrency` (default `6`, allowed range `1`-`8`)
-   - `model_timeout_seconds` (default `120` per provider request)
-3. Run on `main`. The workflow:
-   - writes only automatic summary/tag fields and `metadata_status` into catalog
-     records
-   - never changes `primary_function`; an optional intake-only classification
-     review can warn about a submitted Extension category
-   - emits summary in the workflow run
-   - commits enrichment changes on successful selection
-   - retries transient preflight calls three times after the initial attempt
-   - pauses new model work with bounded backoff when the provider returns `429`
-   - reports model-call, repair-call, rate-limit, and cumulative-latency totals
-   - keeps terminal project errors provisional and finishes
-     `complete-with-errors` without stopping later projects
-   - maintains one `Catalog enrichment errors` issue until a clean completed
-     run resolves every project
+1. Open `request-catalog-enrichment.yml` from Actions.
+2. Select `enrichment_scope`: `pending` (default) or `all-automatic`.
+   Use the existing scope when resuming a running rollout.
+3. Choose `batch_size` (default `20`, range `1`–`30`) and
+   `model_concurrency` (default `2`, range `1`–`8`). These settings apply to a
+   new frozen report; a running full report keeps its manifest, cursors and
+   original settings.
+4. Run on `main` as the repository owner. The short request Action records
+   the request. The scheduled shared writer then admits and resumes bounded
+   read-only preparation checkpoints under the global model allowance.
 
-A green `complete-with-errors` run means the automation completed safely but
-some projects remain provisional after retry. Configuration, authentication,
-model, state, publication, deployment, and issue-reporting failures still make
-the Action red.
+The first model calls validate a representative five-to-seven-project canary.
+The full rollout proceeds only after the canary's actual deployment passes
+the retained-bundle and browser checks. Provider outages and exhausted allowance
+pause model work with bounded retry; catalog facts continue independently.
+Only automatic summary/tag fields and `metadata_status` change. Manual field
+policies and `primary_function` retain their authority.
 
-Useful when:
-- pending summaries are stale/incomplete
-- you want to re-enrich only automatic records in a controlled batch.
+A green request means the request was recorded, not that the full rollout has
+finished. Inspect `data/reports/enrichment-canary.json` and
+`data/reports/enrichment-report.json` for status, frozen scope, cursors, manual
+exclusions and provider metrics. A terminal `complete-with-errors` report keeps
+affected projects provisional and creates one `[automation] Catalog enrichment
+has unresolved projects` incident with sanitized reasons in the private report.
+A later clean, verified full deployment resolves the incident. Owner edits and
+dismissals remain authoritative; historical `Catalog enrichment errors` issues
+are left for the owner to retain or close.
+
+Useful when automatic summaries are missing or a provider-contract change
+requires re-enriching automatic records.
 
 ## 5) How to update Catalog Source Data (Refresh)
 
@@ -121,6 +122,7 @@ Useful when:
    - deploy to the configured GitHub Pages environment.
 
 Typical callers:
+
 - `apply-kit-submission.yml` and `apply-kit-withdrawal.yml` after Kit publication/withdrawal.
 - `refresh-catalog.yml` after snapshot refresh changes.
 

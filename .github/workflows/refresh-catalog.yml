@@ -1,7 +1,9 @@
 name: "Catalog maintenance: Refresh source data"
 
 run-name: >-
-  ${{ github.event_name == 'schedule'
+  ${{ inputs.operation_key
+    && format('Automation prepare {0}', inputs.operation_key)
+    || github.event_name == 'schedule'
     && 'Catalog: Refresh scheduled incremental'
     || inputs.mode == 'baseline'
     && format('Catalog: Refresh baseline queue (up to {0} sources)', inputs.batch_size)
@@ -14,6 +16,11 @@ on:
     - cron: "17 7 * * *"
   workflow_dispatch:
     inputs:
+      operation_key:
+        description: Immutable operation selected by the reconciler; empty for an owner request.
+        type: string
+        required: false
+        default: ""
       mode:
         description: Select incremental observation, baseline queue, or one source.
         type: choice
@@ -34,145 +41,118 @@ on:
 
 permissions:
   contents: read
-  actions: write
+  actions: read
   issues: read
 
 concurrency:
-  group: catalog-refresh
+  group: catalog-refresh-${{ inputs.operation_key || 'request' }}
   cancel-in-progress: false
 
 jobs:
   refresh:
     if: >-
+      inputs.operation_key == '' &&
       github.ref == 'refs/heads/main' &&
       (github.event_name != 'workflow_dispatch' ||
       github.actor_id == 2625904 ||
       github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     environment: publisher
+    permissions:
+      contents: read
+      actions: read
+      issues: read
+      pull-requests: read
     steps:
-      - name: Create Tavernary Publisher token
+      - name: Check out trusted refresh request code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Select current refresh preparations
+        id: request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
+        run: node scripts/automation/preparation-request.mjs > "$RUNNER_TEMP/refresh-requests.json"
+      - name: Create fresh preparation dispatch token
+        if: steps.request.outputs.requests != '0'
         id: publisher-token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
           client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
           private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
           permission-actions: write
-          permission-contents: write
-      - name: Check out repository
+      - name: Request immutable source preparation
+        if: steps.request.outputs.requests != '0'
+        env:
+          GH_TOKEN: ${{ steps.publisher-token.outputs.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS=$'\t' read -r operation_key source_id mode; do
+            [[ "$operation_key" =~ ^[a-f0-9]{64}$ ]]
+            [[ "$source_id" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]
+            [[ "$mode" == 'project' || "$mode" == 'forensic' ]]
+            gh workflow run refresh-catalog.yml --repo "$GITHUB_REPOSITORY" --ref main \
+              -f operation_key="$operation_key" -f source_id="$source_id" -f mode="$mode"
+          done < <(jq -r '.[] | [.inputs.operation_key, .inputs.source_id, .inputs.mode] | @tsv' "$RUNNER_TEMP/refresh-requests.json")
+
+  prepare:
+    if: >-
+      inputs.operation_key != '' &&
+      github.ref == 'refs/heads/main' &&
+      github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      actions: read
+      issues: read
+      pull-requests: read
+    steps:
+      - name: Check out pinned trusted preparation code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
+          ref: ${{ github.sha }}
           fetch-depth: 0
-          token: ${{ steps.publisher-token.outputs.token }}
+          persist-credentials: false
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
-          node-version: 24
+          node-version-file: .node-version
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Advance baseline queue or refresh selected sources
-        shell: bash
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MODE: ${{ inputs.mode || 'incremental' }}
-          BATCH_SIZE: ${{ inputs.batch_size || 12 }}
-          SOURCE_ID: ${{ inputs.source_id || '' }}
-        run: |
-          refresh_batch() {
-            args=(--mode "$MODE" --batch-size "$BATCH_SIZE" --deployment-requested)
-            if [[ -n "$SOURCE_ID" ]]; then
-              args+=(--source-id "$SOURCE_ID")
-            fi
-            npm run catalog:refresh -- "${args[@]}"
-          }
-
-          if [[ "$MODE" != "baseline" ]]; then
-            refresh_batch
-            exit 0
-          fi
-
-          refresh_batch
-      - name: Refresh Kit community support
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node scripts/kits/refresh-reactions.mjs
-      - name: Validate refreshed catalog
-        run: npm run check
-      - name: Commit snapshot changes
-        id: commit
-        shell: bash
-        run: |
-          git diff --name-only -- \
-            data/snapshots/github \
-            data/snapshots/codeberg \
-            | grep -E '^data/snapshots/(github|codeberg)/[^/]+\.json$' \
-            > "${RUNNER_TEMP}/refreshed-policy-sources.txt" || true
-          git add data/snapshots/github/*.json
-          git add data/snapshots/codeberg/*.json
-          git add data/snapshots/install/*.json
-          git add data/snapshots/github-refresh.json
-          git add public/catalog/tavernary-catalog.json public/catalog/tavernary-catalog-v8.json
-          if compgen -G "data/snapshots/github/kits/*.json" > /dev/null; then
-            git add data/snapshots/github/kits/*.json
-          fi
-          if git diff --cached --quiet; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore(catalog): refresh repository snapshots"
-          for attempt in 1 2 3; do
-            if git fetch origin main &&
-              git rebase origin/main; then
-              if npm run check; then
-                git add public/catalog/tavernary-catalog.json public/catalog/tavernary-catalog-v8.json
-                if ! git diff --cached --quiet; then
-                  git commit --amend --no-edit
-                fi
-                if git push origin HEAD:main; then
-                  break
-                fi
-              fi
-            fi
-            conflicts="$(git diff --name-only --diff-filter=U)"
-            if [[ -n "$conflicts" ]]; then
-              echo "Snapshot publication conflict:"
-              echo "$conflicts"
-            fi
-            git rebase --abort || true
-            if (( attempt == 3 )); then
-              exit 1
-            fi
-          done
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-          echo "head_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-      - name: Dispatch advisory review for refreshed evidence
-        if: steps.commit.outputs.changed == 'true'
-        env:
-          GH_TOKEN: ${{ steps.publisher-token.outputs.token }}
-          MERGE_SHA: ${{ steps.commit.outputs.head_sha }}
-        shell: bash
-        run: |
-          while IFS= read -r snapshot_path; do
-            [[ -z "$snapshot_path" ]] && continue
-            source_id="$(basename "$snapshot_path" .json)"
-            while IFS= read -r project_id; do
-              [[ -z "$project_id" ]] && continue
-              gh workflow run review-catalog-policy.yml --ref main \
-                -f project_id="$project_id" \
-                -f transaction_issue_number=0 \
-                -f transaction_pull_number=0 \
-                -f merge_sha="$MERGE_SHA"
-            done < <(
-              jq -r --arg source_id "$source_id" \
-                'select(.source_id == $source_id) | .id' \
-                data/registry/projects/*.json
-            )
-          done < "${RUNNER_TEMP}/refreshed-policy-sources.txt"
-      - name: Redeploy refreshed catalog
-        if: steps.commit.outputs.changed == 'true'
+      - name: Prepare one current source operation
+        id: prepare
+        run: node scripts/automation/catalog-preparation-cli.mjs
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh workflow run deploy-pages.yml --ref main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
+      - name: Retain immutable data result for the shared writer
+        if: steps.prepare.outputs.result_available == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: automation-prepared-${{ inputs.operation_key }}
+          path: ${{ runner.temp }}/automation-prepared/result.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Retain safe preparation failure diagnostic
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: automation-failure-${{ inputs.operation_key }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/automation-prepared/diagnostic.json
+          if-no-files-found: ignore
+          retention-days: 90

@@ -12,6 +12,7 @@ export interface GitHubKitIssue {
   labels: Array<string | { name: string }>;
   body: string;
   user: { id: number; login: string };
+  author_association?: string;
   pull_request?: unknown;
 }
 
@@ -69,6 +70,7 @@ export interface KitReconciliationInput {
   snapshotsBySourceId?: Record<string, ReconciliationSnapshot>;
   kits: ReconciliationKit[];
   blockedUsers: ReconciliationBlockedUsers;
+  trustedEditors?: import("../maintenance/trusted-editor-authority.mjs").TrustedEditorRegistry;
 }
 
 export type GhRunner = (args: string[], stdin?: string) => Promise<string>;

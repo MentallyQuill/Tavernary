@@ -32,7 +32,7 @@ test("documents project submission automation and recovery controls", async () =
   }
 
   expect(runbook).toContain(
-    "Allow GitHub Actions to create and\napprove pull requests",
+    "Keep repository Actions defaults read-only and Actions review approval disabled.",
   );
   expect(runbook).toContain("PROJECT_AUTO_PUBLICATION_ENABLED");
   expect(runbook).toContain("publish-project-transaction.yml");

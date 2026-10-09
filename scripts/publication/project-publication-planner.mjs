@@ -6,6 +6,8 @@ const generatedBranches = [
 ];
 
 const safeConcurrentDataPaths = [
+  /^data\/maintenance\/automation\/(?:operations|publications|metadata)\/[a-f0-9]{64}\.json$/u,
+  /^data\/maintenance\/automation\/deployments\/[a-f0-9]{40}\.json$/u,
   /^data\/registry\/kits\/[^/]+\.json$/u,
   /^data\/registry\/projects\/[^/]+\.json$/u,
   /^data\/registry\/sources\/[^/]+\.json$/u,

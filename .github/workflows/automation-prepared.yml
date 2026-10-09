@@ -1,0 +1,70 @@
+name: "Automation: Publish completed preparation"
+
+on:
+  workflow_run:
+    workflows:
+      - "Catalog maintenance: Refresh source data"
+      - "Catalog maintenance: Enrich project metadata"
+      - "Catalog maintenance: Request metadata rollout"
+      - "Project submissions: Create review PR"
+      - "Project owner requests: Create review PR"
+      - "Catalog: Advisory policy review"
+      - "Security: Reconcile TavernKeeper reports"
+      - "Kit submissions: Publish approved Kit"
+      - "Kit submissions: Withdraw published Kit"
+      - "Site: Deploy to GitHub Pages"
+      - "Site: Restore verified bundle"
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  wake:
+    if: >-
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.head_repository.full_name == github.repository &&
+      ((github.event.workflow_run.event == 'workflow_dispatch' &&
+        github.event.workflow_run.actor.id == vars.TAVERNARY_PUBLISHER_BOT_ID) ||
+       (github.event.workflow_run.name == 'Site: Deploy to GitHub Pages' &&
+        (github.event.workflow_run.event == 'push' ||
+         (github.event.workflow_run.event == 'workflow_dispatch' &&
+          github.event.workflow_run.actor.id == 2625904)))
+       || (github.event.workflow_run.name == 'Site: Restore verified bundle' &&
+           github.event.workflow_run.event == 'workflow_dispatch' &&
+           github.event.workflow_run.actor.id == 2625904)
+       || (github.event.workflow_run.name == 'Catalog maintenance: Request metadata rollout' &&
+           github.event.workflow_run.event == 'workflow_dispatch' &&
+           github.event.workflow_run.actor.id == 2625904)
+       || ((github.event.workflow_run.name == 'Project submissions: Create review PR' ||
+            github.event.workflow_run.name == 'Project owner requests: Create review PR') &&
+           github.event.workflow_run.event == 'workflow_dispatch' &&
+           github.event.workflow_run.actor.id == 2625904))
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: publisher
+    steps:
+      - name: Check out trusted completion handler
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .node-version
+      - name: Install dependencies
+        run: npm ci
+      - name: Create fresh completion dispatch token
+        id: dispatch-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-actions: write
+      - name: Wake the shared writer from authoritative completed-run metadata
+        run: node scripts/automation/prepared-wake.mjs
+        env:
+          GH_TOKEN: ${{ steps.dispatch-token.outputs.token }}
+          TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}

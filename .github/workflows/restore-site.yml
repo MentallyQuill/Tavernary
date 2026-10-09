@@ -1,0 +1,140 @@
+name: "Site: Restore verified bundle"
+run-name: "Site restore ${{ inputs.release_id }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_id:
+        description: Immutable verified site bundle release ID
+        required: true
+        type: string
+      reason:
+        description: Owner reason for restoring this exact verified export
+        required: true
+        type: string
+      dry_run:
+        description: Verify locally without changing the public site
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/main' && github.actor_id == 2625904
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      source_sha: ${{ steps.restore.outputs.source_sha }}
+      build_id: ${{ steps.restore.outputs.build_id }}
+    steps:
+      - name: Check out current trusted restore code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - name: Install current verifier dependencies
+        run: npm ci
+      - name: Install verification browsers
+        run: npx playwright install --with-deps chromium webkit
+      - name: Verify retained bundle against current canonical data and owner removals
+        id: restore
+        run: node scripts/automation/restore-site-runtime.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
+      - name: Verify restored export with both browsers
+        run: npm run test:deployment-fixture
+        env:
+          TAVERNARY_DEPLOYMENT_FIXTURE_ORIGIN: http://127.0.0.1:3000
+      - name: Upload exact restored static export
+        if: ${{ !inputs.dry_run }}
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
+        with:
+          path: out
+      - name: Retain restore decision
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: site-restore-decision-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .tmp/restore-decision.json
+          retention-days: 90
+          if-no-files-found: warn
+
+  deploy:
+    needs: verify
+    if: ${{ !inputs.dry_run }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: canonical-publication
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      actions: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out fresh trusted restore controller
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - name: Install current controller dependencies
+        run: npm ci
+      - name: Install public verification browsers
+        run: npx playwright install --with-deps chromium webkit
+      - name: Configure Pages for the approved live restore
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
+      - name: Recheck exact retained bundle, fresh canonical data, and owner removals
+        id: guard
+        run: node scripts/automation/restore-site-runtime.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
+          TAVERNARY_EXPECTED_SOURCE_SHA: ${{ needs.verify.outputs.source_sha }}
+          TAVERNARY_EXPECTED_BUILD_ID: ${{ needs.verify.outputs.build_id }}
+      - name: Retain exact owner-authorized restore source
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: site-restore-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .tmp/restore-source.json
+          retention-days: 90
+          if-no-files-found: error
+      - name: Deploy exact verified restore
+        if: steps.guard.outputs.action == 'deploy'
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+      - name: Confirm restored public revision, assets, and both browsers
+        if: steps.guard.outputs.action == 'deploy'
+        run: node scripts/automation/confirm-deployment.mjs out/revision.json .tmp/confirmation.json
+      - name: Retain restored public verification result
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: site-restore-confirmation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .tmp/confirmation.json
+          retention-days: 90
+          if-no-files-found: warn

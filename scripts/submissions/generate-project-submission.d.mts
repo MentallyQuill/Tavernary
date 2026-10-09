@@ -109,6 +109,9 @@ export interface GenerationIssue {
 }
 
 export interface ProjectSubmissionSourceClients {
+  loadBudgetGuard?: () => Promise<
+    import("../automation/model-budget.mjs").ModelBudgetGuard
+  >;
   prepareDraft?: (input: {
     issue: GenerationIssue;
     now: string;

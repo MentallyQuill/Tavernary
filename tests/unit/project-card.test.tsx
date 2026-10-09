@@ -6,6 +6,12 @@ import { ProjectGrid } from "@/features/catalog/components/project-grid";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import type { ProjectSelectionBindings } from "@/features/kits/use-project-batch-selection";
 import { catalogSearchFields } from "../helpers/catalog-search-fields";
+import { draftProjectRecord } from "../../scripts/submissions/draft-project-record.mjs";
+import {
+  admittedGithubExtension,
+  observation,
+  snapshot,
+} from "../helpers/project-draft";
 
 const originalMatchMedia = window.matchMedia;
 
@@ -80,6 +86,36 @@ function project(
 }
 
 describe("project card", () => {
+  test("generated factual fallback remains visible with honest provisional and stale labels", async () => {
+    const draft = await draftProjectRecord({
+      admitted: admittedGithubExtension,
+      observation,
+      snapshot,
+      enrichment: {
+        status: "failed",
+        code: "budget-exhausted",
+        message: "unavailable",
+      },
+      copyRequired: true,
+      allowProvisionalFacts: true,
+      now: "2026-07-25T18:00:00.000Z",
+    });
+    render(
+      <ProjectCard
+        project={project(draft.record.id, {
+          name: draft.record.name,
+          summary: draft.record.summary,
+          metadataStatus: draft.record.metadata_status,
+          sourceStatus: "stale",
+          staleSince: "2026-07-26T00:00:00Z",
+        })}
+        now="2026-07-27T00:00:00Z"
+      />,
+    );
+    expect(screen.getByText(draft.record.summary)).toBeInTheDocument();
+    expect(screen.getByText("Provisional details")).toBeInTheDocument();
+    expect(screen.getByText("Source stale")).toBeInTheDocument();
+  });
   test.afterEach(() => {
     cleanup();
     Object.defineProperty(window, "matchMedia", {
