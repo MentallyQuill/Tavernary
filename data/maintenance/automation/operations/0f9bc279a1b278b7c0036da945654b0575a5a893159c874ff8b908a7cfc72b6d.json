@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0f9bc279a1b278b7c0036da945654b0575a5a893159c874ff8b908a7cfc72b6d",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1058915463:spicymarinara-sillytavern-spotify-music-extension",
+      "inputDigest": "81fc1a6ad669cfb22086f4054decc4d176458d90d64b852e632dd74d7c499ae4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T12:53:53.048Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T12:38:53.048Z",
+  "completedAt": null
+}
