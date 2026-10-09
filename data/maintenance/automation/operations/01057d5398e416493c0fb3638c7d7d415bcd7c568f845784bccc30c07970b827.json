@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "01057d5398e416493c0fb3638c7d7d415bcd7c568f845784bccc30c07970b827",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1226998015:amousepad-lumirealm",
+      "inputDigest": "15f22abee18a885565c94bb65bc2d0bcc1a2dc99c26f24d663ad5e9a2d2c7efa",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T09:12:53.329Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T08:57:53.329Z",
+  "completedAt": null
+}
