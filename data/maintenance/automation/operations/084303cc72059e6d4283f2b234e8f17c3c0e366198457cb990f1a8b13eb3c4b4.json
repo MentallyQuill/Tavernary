@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "084303cc72059e6d4283f2b234e8f17c3c0e366198457cb990f1a8b13eb3c4b4",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1100996755:zorgonatis-stabs-edh",
+      "inputDigest": "0a1fbc1666a2ab5bd4264081ae4d8d1a9afe98eef91b6477584cd78adbc948d1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T11:47:02.944Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 8,
+      "immediateAttempts": 9
+    }
+  },
+  "updatedAt": "2026-10-09T11:32:02.944Z",
+  "completedAt": null
+}
