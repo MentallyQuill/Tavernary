@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0cd1f54fb40afb4329b91e55f81bb522f3eebc568c3b4abed7f0229b92ab39bd",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-856585955:lenanderson-sillytavern-sendbutton",
+      "inputDigest": "e868203ed55261795c9bf03b601d1caaba4925501ddb355dffb3511e78564a96",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T11:47:02.944Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T11:32:02.944Z",
+  "completedAt": null
+}
