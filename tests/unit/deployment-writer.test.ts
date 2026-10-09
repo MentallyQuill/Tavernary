@@ -195,7 +195,7 @@ test("an explicitly selected run retains exact-run custody without automatic fal
 test("a completed deployment run confirms without unrelated issue or pull inventory", async () => {
   const data = recoveryFixture("missing");
   const loadSite = vi.fn(async () => ({
-    revision: data.state.local.revision,
+    revision: data.state.remote.mainHeadSha,
     nowMs: data.state.nowMs,
     deployments: [],
     activeDeployment: null,
