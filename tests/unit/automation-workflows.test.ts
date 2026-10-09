@@ -6,6 +6,20 @@ import { discoverReportOperations } from "../../scripts/automation/report-operat
 import { reportInventoryFixture } from "../helpers/automation-fixtures";
 import { parse } from "yaml";
 
+test("expired-archive retention has the browsers required by its public-proof fallback", () => {
+  const workflow = parse(
+    readFileSync(".github/workflows/automation-writer.yml", "utf8"),
+  );
+  const browsers = workflow.jobs.write.steps.find(
+    (step: { name?: string }) =>
+      step.name === "Install public verification browsers",
+  );
+  expect(browsers.run).toContain(
+    "playwright install --with-deps chromium webkit",
+  );
+  expect(browsers.if).toContain("inputs.mode == 'retain'");
+});
+
 test("owner rollouts use read-only native requests and enrichment has no privileged legacy writer", () => {
   const enrichment = parse(
     readFileSync(".github/workflows/enrich-catalog.yml", "utf8"),

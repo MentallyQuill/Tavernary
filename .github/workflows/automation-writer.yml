@@ -80,7 +80,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Install public verification browsers
-        if: inputs.mode == 'confirm' || inputs.mode == 'confirm-restore'
+        if: inputs.mode == 'confirm' || inputs.mode == 'confirm-restore' || inputs.mode == 'retain'
         run: npx playwright install --with-deps chromium webkit
       - name: Create fresh scoped writer token
         id: writer-token
