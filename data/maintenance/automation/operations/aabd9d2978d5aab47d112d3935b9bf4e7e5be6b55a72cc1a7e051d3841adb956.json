@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "aabd9d2978d5aab47d112d3935b9bf4e7e5be6b55a72cc1a7e051d3841adb956",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:url-reddit-1upgraz:reddit-1upgraz",
+      "inputDigest": "769373183c315632b8aa33d3826c6e98b2f08a4946247338419833a50e2339c0",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "1970-01-01T00:00:00.000Z",
+    "nextEligibleAt": "2026-10-09T04:57:20.862Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T04:42:20.862Z",
+  "completedAt": null
+}
