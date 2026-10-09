@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0003f45a3ed4621a43b71b2fca9b9c5c5209e14566e6f63691438d539b3c91a5",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1230298474:flaxify-st-hands-free-voice",
+      "inputDigest": "e9e7770c01f558465f53c406b110a95f6a6a91936b946c487cfd74e4ee7f271c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T09:12:53.329Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 3,
+      "immediateAttempts": 4
+    }
+  },
+  "updatedAt": "2026-10-09T08:57:53.329Z",
+  "completedAt": null
+}
