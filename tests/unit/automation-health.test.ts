@@ -62,19 +62,17 @@ test("the scheduled canonical lane reserves a bounded runtime maintenance slot",
     productionMajor: 24,
     warningDays: 90,
   };
-  const run = vi
-    .spyOn(runtimeWriter, "runRuntimeWriter")
-    .mockResolvedValue({
-      status: "idle",
+  const run = vi.spyOn(runtimeWriter, "runRuntimeWriter").mockResolvedValue({
+    status: "idle",
+    reason: "runtime-supported",
+    decision: {
+      action: "keep",
+      healthy: true,
       reason: "runtime-supported",
-      decision: {
-        action: "keep",
-        healthy: true,
-        reason: "runtime-supported",
-        currentMajor: 24,
-        supportEnds: "2028-04-30T00:00:00.000Z",
-      },
-    });
+      currentMajor: 24,
+      supportEnds: "2028-04-30T00:00:00.000Z",
+    },
+  });
   try {
     const result = await runAutomationWriterReconciliation({
       load: async () => state,

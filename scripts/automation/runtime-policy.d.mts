@@ -27,9 +27,7 @@ export interface RuntimeDecision {
   supportEnds: string;
 }
 export function validateSupportedRuntimes(value: unknown): SupportedRuntimes;
-export function validateOfficialNodeSchedule(
-  value: unknown,
-): Array<{
+export function validateOfficialNodeSchedule(value: unknown): Array<{
   major: number;
   start: number;
   lts: number | null;
