@@ -3,6 +3,7 @@ import { expect, test } from "vitest";
 import { zipSync, strToU8 } from "fflate";
 import {
   loadPreparedGithubResult,
+  loadPreparedGithubArtifact,
   loadPreparedGithubDiagnostic,
 } from "../../scripts/automation/prepared-github.mjs";
 import {
@@ -41,7 +42,7 @@ function effects() {
     runId: run.id,
     gh: async (args: string[]) => {
       calls.push(args);
-      return args.includes("--paginate")
+      return args.some((arg) => arg.endsWith("/artifacts"))
         ? JSON.stringify([{ total_count: 1, artifacts: [artifact] }])
         : JSON.stringify(run);
     },
@@ -52,6 +53,22 @@ function effects() {
   };
   return { result, run, artifact, input, downloads, calls };
 }
+test("a truncated artifact inventory cannot masquerade as a missing prepared result", async () => {
+  const fixture = effects();
+  const native = fixture.input.gh;
+  const calls: string[][] = [];
+  fixture.input.gh = async (args) => {
+    if (!args.some((arg) => /\/artifacts(?:\?|$)/u.test(arg)))
+      return native(args);
+    calls.push(args);
+    return JSON.stringify([{ total_count: 1001, artifacts: [] }]);
+  };
+  await expect(
+    loadPreparedGithubArtifact({ ...fixture.input, allowMissing: true }),
+  ).rejects.toThrow(/cap/u);
+  expect(calls).toHaveLength(1);
+  expect(fixture.downloads).toEqual([]);
+});
 
 function diagnosticEffects(value?: Record<string, unknown>) {
   const fixture = effects();
@@ -119,7 +136,8 @@ test("the writer downloads only the exact named artifact of the trusted producer
   expect(fixture.downloads).toEqual([
     ["api", "repos/MentallyQuill/Tavernary/actions/artifacts/501/zip"],
   ]);
-  expect(fixture.calls[1]).toContain("--paginate");
+  expect(fixture.calls[1]).toContain("page=1");
+  expect(fixture.calls[1]).not.toContain("--paginate");
 });
 test.each([
   "actor",
@@ -160,7 +178,7 @@ test("ambiguous repeated artifacts cannot select an arbitrary producer attempt",
   const fixture = effects();
   const original = fixture.input.gh;
   fixture.input.gh = async (args) =>
-    args.includes("--paginate")
+    args.some((arg) => arg.endsWith("/artifacts"))
       ? JSON.stringify([
           {
             total_count: 2,

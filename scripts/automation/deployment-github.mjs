@@ -5,6 +5,7 @@ import {
 } from "./prepared-artifact.mjs";
 import { decodeSiteBundle } from "./site-bundle.mjs";
 import { validateRevisionManifest } from "./revision-manifest.mjs";
+import { loadGithubRunArtifacts } from "./github-inventory.mjs";
 const sha = /^[a-f0-9]{40}$/u;
 function fail() {
   throw Object.assign(
@@ -68,35 +69,20 @@ async function loadArtifact({
       isAncestor(run.head_sha, currentMainSha) !== true)
   )
     fail();
-  const pages = parse(
-    await gh([
-      "api",
-      "--paginate",
-      "--slurp",
-      `${route}/actions/runs/${runId}/artifacts?per_page=100`,
-    ]),
-  );
-  if (
-    !Array.isArray(pages) ||
-    pages.length > 10 ||
-    pages.some((page) => !Array.isArray(page.artifacts))
-  )
-    fail();
+  const artifacts = await loadGithubRunArtifacts({ gh, repository, runId });
   const prefixes = {
     revision: "site-revision-",
     confirmation: "site-confirmation-",
     bundle: "site-bundle-",
   };
   const prefix = prefixes[kind];
-  const candidates = pages
-    .flatMap((page) => page.artifacts)
-    .filter(
-      (artifact) =>
-        typeof artifact.name === "string" &&
-        artifact.name.startsWith(prefix) &&
-        (expectedSourceSha === undefined ||
-          artifact.name === `${prefix}${expectedSourceSha}`),
-    );
+  const candidates = artifacts.filter(
+    (artifact) =>
+      typeof artifact.name === "string" &&
+      artifact.name.startsWith(prefix) &&
+      (expectedSourceSha === undefined ||
+        artifact.name === `${prefix}${expectedSourceSha}`),
+  );
   if (candidates.length === 0)
     throw Object.assign(
       new Error("Validated deployment metadata is not available."),

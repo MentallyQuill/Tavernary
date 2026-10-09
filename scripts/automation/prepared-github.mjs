@@ -5,6 +5,7 @@ import {
 } from "./prepared-result.mjs";
 import { validateAutomationOperation } from "./operation.mjs";
 import { decodePreparedArtifact } from "./prepared-artifact.mjs";
+import { loadGithubRunArtifacts } from "./github-inventory.mjs";
 import {
   AUTOMATION_FAILURE_REASON_KINDS,
   classifyAutomationFailure,
@@ -88,40 +89,18 @@ export async function loadPreparedGithubArtifact({
       !generationTitle.test(run.display_title ?? ""))
   )
     throw new Error("Generation usage producer is invalid.");
-  const pages = JSON.parse(
-    await gh([
-      "api",
-      "--paginate",
-      "--slurp",
-      "--method",
-      "GET",
-      `${root}/actions/runs/${runId}/artifacts`,
-      "-f",
-      "per_page=100",
-    ]),
+  const artifacts = await loadGithubRunArtifacts({ gh, repository, runId });
+  const matches = artifacts.filter(
+    (artifact) =>
+      artifact.name ===
+      (artifactKind === "result"
+        ? `automation-prepared-${operation.key}`
+        : artifactKind === "generation-usage"
+          ? `automation-generation-${operation.key}-${runId}`
+          : artifactKind === "generation-checkpoint"
+            ? `automation-generation-checkpoint-${operation.key}-${runId}`
+            : `automation-failure-${operation.key}-${runId}`),
   );
-  if (
-    !Array.isArray(pages) ||
-    pages.some(
-      (page) =>
-        !Array.isArray(page.artifacts) ||
-        !Number.isSafeInteger(page.total_count),
-    )
-  )
-    throw new Error("Prepared artifact inventory is invalid.");
-  const matches = pages
-    .flatMap((page) => page.artifacts)
-    .filter(
-      (artifact) =>
-        artifact.name ===
-        (artifactKind === "result"
-          ? `automation-prepared-${operation.key}`
-          : artifactKind === "generation-usage"
-            ? `automation-generation-${operation.key}-${runId}`
-            : artifactKind === "generation-checkpoint"
-              ? `automation-generation-checkpoint-${operation.key}-${runId}`
-              : `automation-failure-${operation.key}-${runId}`),
-    );
   if (!matches.length && allowMissing) return null;
   if (matches.length !== 1)
     throw new Error("Prepared artifact is missing or ambiguous.");

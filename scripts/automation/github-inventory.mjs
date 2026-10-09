@@ -160,6 +160,29 @@ export async function loadAutomationWorkerRuns({ gh, repository, nowMs }) {
     throw new Error("Final worker inventory exceeds GitHub's result cap.");
   return runPages(value);
 }
+export async function loadGithubRunArtifacts({ gh, repository, runId }) {
+  if (!Number.isSafeInteger(runId) || runId < 1)
+    throw new Error("GitHub artifact run identity is invalid.");
+  const path = `${repositoryPath(repository)}/actions/runs/${runId}/artifacts`;
+  const artifacts = [];
+  for (let page = 1; page <= 10; page++) {
+    const value = await inventoryPage(gh, path, [], page);
+    if (
+      !Array.isArray(value.artifacts) ||
+      value.artifacts.length > 100 ||
+      !Number.isSafeInteger(value.total_count) ||
+      value.total_count < value.artifacts.length
+    )
+      throw new Error("GitHub artifact inventory is invalid.");
+    if (value.total_count > 1000)
+      throw new Error("GitHub artifact inventory exceeds its result cap.");
+    artifacts.push(...value.artifacts);
+    if (page * 100 >= value.total_count) return artifacts;
+    if (value.artifacts.length < 100)
+      throw new Error("GitHub artifact inventory is truncated.");
+  }
+  throw new Error("GitHub artifact inventory exceeds its page cap.");
+}
 export async function loadGenerationOwnerRequestRuns({
   gh,
   repository,

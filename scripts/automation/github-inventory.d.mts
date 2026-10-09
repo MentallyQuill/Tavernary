@@ -13,6 +13,11 @@ export interface GithubAutomationInventory {
   mainHeadSha: string;
 }
 export function githubFailureStatus(error: unknown): number;
+export function loadGithubRunArtifacts(input: {
+  gh: GhRunner;
+  repository: string;
+  runId: number;
+}): Promise<Record<string, unknown>[]>;
 export function assertCanonicalWriterContext(
   env: Record<string, string | undefined>,
   repository: string,

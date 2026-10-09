@@ -45,8 +45,8 @@ export function deploymentArtifactFixture() {
     currentMainSha: "d".repeat(40),
     isAncestor: () => true,
     gh: async (args) =>
-      args.includes("--slurp")
-        ? JSON.stringify([{ artifacts: [artifact] }])
+      args.some((arg) => arg.endsWith("/artifacts"))
+        ? JSON.stringify([{ total_count: 1, artifacts: [artifact] }])
         : JSON.stringify(run),
     download: async () => archive,
   };

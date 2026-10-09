@@ -64,7 +64,7 @@ boundaries.
 | R13 | Scheduled changed metadata, cache, global budgets | Native scheduled enrichment, field/source checkpoints and model allowances cover all five automated credential-bearing workflows, including generation and repairs. Live progress proof remains. |
 | R14 | Gated dependency completion | Grouped packages, native NPM selector, exact-head merge gate and failed-check incidents implemented; critical Next.js findings addressed in the earlier maintenance checkpoint. Actual eligible maintenance PR completion remains. |
 | R15 | Verified supported-runtime policy | Implemented: official schedule validation, Node 24 manifest and declarations, shared workflow runtime file, weekly full compatibility checks, constrained recoverable Publisher PRs, native exact-head current/candidate CI merge gate and 90-day/EOL incidents. Head ec7fdd8c2 passes required full CI; actual scheduled proof remains. Node 26 becomes eligible only on its official LTS date. |
-| R16 | Safe bounded retention | Open/recently closed inventory and release pages now bounded before fetching; pending references and old declines remain visible. Eligible terminal receipt/publication pairs retire after ninety days with compact completion markers and exact Git-history replay. Cleanup shares the twenty-operation quota and protects pending/current/retained/canary deployment proof. Weekly offline drill implemented. Artifact pagination, interruption/restore edges and actual native drill proof remain. |
+| R16 | Safe bounded retention | Open/recently closed inventory, release pages and native run artifacts now bounded before fetching; pending references and old declines remain visible. Eligible terminal receipt/publication pairs retire after ninety days with compact completion markers and exact Git-history replay. Cleanup shares the twenty-operation quota and protects pending/current/retained/canary deployment proof. Weekly offline drill implemented. Interruption/restore edges and actual native drill proof remain. |
 | R17 | Owner runbook | Updated against current generation, refresh, Kit, identity, restore and shared-writer sources plus actual GitHub permissions. Includes token repair, exact recovery/rollback commands, switches, focused content/browser checks and owner responsibilities. Final merged native command/configuration proof remains. |
 | R18 | Attached PRs, CI, review, merge, production proof | PR #818 attached. Head 61cecc312 is fully green; the next retention checkpoint needs its exact-head CI. Independent review, merge, live canary/drill and public proof remain. |
 
@@ -149,9 +149,30 @@ typecheck, scoped lint, formatting and whitespace checks are recorded with this
 checkpoint. The subsequent closed-history growth regression failed, then passed
 with nineteen affected inventory checks in 4.39 seconds; it keeps a pending old
 reference even when two thousand recent closures fill the optional slice.
-No repeated local full-suite gate was added. Artifact-reader bounds,
-remaining interruption/restore recovery, native canary/drill, final review, exact-head
-CI, merge and production verification remain required.
+No repeated local full-suite gate was added. Remaining interruption/restore recovery,
+native canary/drill, final review, exact-head CI, merge and production verification
+remain required.
+
+## Native artifact bounds and CI runbook correction
+
+Both prepared-result and deployment artifact readers now reuse explicit bounded
+native run-artifact pages. They validate per-page bytes and counts, reject more
+than one thousand results on the first page, and reject an incomplete page rather
+than interpreting it as a missing result. Native origin, numeric actor, run,
+attempt, digest and archive checks remain intact. A real second-page selection
+and the `allowMissing` path reproduced failures before the fix: truncated inventory
+previously returned `null`, which could incorrectly look like a missing handoff.
+
+Eight affected suites passed 131 checks in 5.84 seconds; types, scoped lint,
+formatting and whitespace checks passed. CI on `14ca6a1f5` ran 3,485 unit checks:
+3,483 passed and two runbook assertions failed. They required the retired migration
+command and the obsolete Actions create/approve setting. The assertions now cover
+source-ID maintenance, read-only Actions defaults/disabled review approval, and
+the actual restore `dry_run=true` invocation. Both documentation suites passed
+six checks. This corrects stale assertions without changing repository protections.
+
+Remaining interruption/restore recovery, native canary/drill, independent review,
+exact-head CI, merge and production verification remain required.
 
 ## Owner runbook audit
 

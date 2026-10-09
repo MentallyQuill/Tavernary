@@ -8,6 +8,41 @@ test("exact Pages revision metadata is authenticated against main run, origin, n
     manifest: fixture.manifest,
   });
 });
+test("artifact inventory reads a later page explicitly and refuses an over-cap search before pagination", async () => {
+  const fixture = deploymentArtifactFixture();
+  const native = fixture.input.gh;
+  const calls: string[][] = [];
+  let overloaded = false;
+  fixture.input.gh = async (args) => {
+    if (!args.some((arg) => /\/artifacts(?:\?|$)/u.test(arg)))
+      return native(args);
+    calls.push(args);
+    return JSON.stringify([
+      {
+        total_count: overloaded ? 1001 : 101,
+        artifacts: args.includes("page=2")
+          ? [fixture.artifact]
+          : Array.from({ length: 100 }, (_, index) => ({
+              ...fixture.artifact,
+              id: index + 1000,
+              name: `unrelated-${index}`,
+            })),
+      },
+    ]);
+  };
+  expect(await loadGithubRevisionManifest(fixture.input)).toHaveProperty(
+    "manifest.sourceSha",
+    fixture.manifest.sourceSha,
+  );
+  expect(calls).toHaveLength(2);
+  expect(calls.every((args) => !args.includes("--paginate"))).toBe(true);
+  calls.length = 0;
+  overloaded = true;
+  await expect(loadGithubRevisionManifest(fixture.input)).rejects.toThrow(
+    /cap/u,
+  );
+  expect(calls).toHaveLength(1);
+});
 test.each([
   "actor",
   "fork",
