@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "d7817cc84bbda3418d01bfd1205565badf38c560d40565a3c833390ae92186be",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:url-reddit-1wnana0:reddit-1wnana0",
+      "inputDigest": "f3f9e6ac87d64d436c09ec9eca9191c7029d933952bd53b1f3c871eeff30ac76",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "1970-01-01T00:00:00.000Z",
+    "nextEligibleAt": "2026-10-09T04:57:20.862Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T04:42:20.862Z",
+  "completedAt": null
+}
