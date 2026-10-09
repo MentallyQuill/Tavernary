@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "07ecfe1b835622c8d6b836d0d69977d4651eb24d0ed5401da337b364f8bdc922",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1244970544:calamitousfelicitousness-sillytavern-reasoningprofiles",
+      "inputDigest": "9bb4df3f393ffd0fc94a8982f133f08af90a81e2f237d2bfdf898d0cf624e3cf",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T11:38:23.305Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T11:23:23.305Z",
+  "completedAt": null
+}
