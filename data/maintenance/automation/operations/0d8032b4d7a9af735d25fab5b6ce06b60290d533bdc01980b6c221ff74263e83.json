@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0d8032b4d7a9af735d25fab5b6ce06b60290d533bdc01980b6c221ff74263e83",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1073040696:bmen25124-sillytavern-flowchart",
+      "inputDigest": "a26a758daccfc3660d2836606989e56a4f0ebb51fcc306ea5cfeffc86cabf1be",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T12:41:39.875Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T12:26:39.875Z",
+  "completedAt": null
+}
