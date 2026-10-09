@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "49d1af9a2bf80796a49dff9b08c8c10f9c9a07f7f88c489c9010a8bfa9c329bb",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:url-writers-block-4:writers-block-4",
+      "inputDigest": "5e9bb38010e11328a136eb49f1c9c594f107a47bc9d3bdf5983da17824726484",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "1970-01-01T00:00:00.000Z",
+    "nextEligibleAt": "2026-10-09T04:36:19.198Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T04:21:19.198Z",
+  "completedAt": null
+}
