@@ -6,6 +6,7 @@ import {
   synchronizeWriterCheckout,
   downloadPreparedArtifact,
   runModelWriterPreparation,
+  runReconciledFinalization,
 } from "../../scripts/automation/writer-runtime.mjs";
 import {
   createModelBudgetState,
@@ -14,6 +15,54 @@ import {
 import { persistPreparedFailure } from "../../scripts/automation/prepared-failure.mjs";
 import { operationFixture } from "../helpers/automation-fixtures";
 import { metadataMaintenanceFixture } from "../helpers/automation-fixtures";
+import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
+import type { AutomationReceipt } from "../../scripts/automation/receipts.mjs";
+
+test("inline finalization recovers the actual terminal receipt after its successful write loses the response", async () => {
+  const operation = operationFixture({
+    identity: { ...operationFixture().identity, kind: "metadata" },
+    stage: "deployment-confirmed",
+  });
+  const state: AutomationInventoryState = {
+    root: process.cwd(),
+    repository: "MentallyQuill/Tavernary",
+    publisherActorId: 317929880,
+    nowMs: Date.parse("2026-10-08T12:00:00Z"),
+    receipts: [],
+    operations: [operation],
+    local: { revision: "b".repeat(40) },
+    remote: { issues: [], pulls: [], runs: [], mainHeadSha: "b".repeat(40) },
+  };
+  const persist = vi.fn(async (receipt: AutomationReceipt) => {
+    state.operations = [receipt.operation];
+    state.receipts = [receipt];
+    throw Object.assign(new Error("Terminal write response lost."), {
+      status: 503,
+    });
+  });
+  const gh = vi.fn(async () => {
+    throw new Error("No external metadata lifecycle mutation required.");
+  });
+  const result = await runReconciledFinalization({
+    operationKey: operation.key,
+    load: async () => structuredClone(state),
+    persist,
+    gh,
+    env: {
+      GITHUB_REPOSITORY: state.repository,
+      GITHUB_REF: "refs/heads/main",
+      GITHUB_EVENT_NAME: "workflow_dispatch",
+      GITHUB_ACTOR_ID: "2625904",
+      GITHUB_WORKFLOW_REF: `${state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
+    },
+  });
+  expect(result).toMatchObject({
+    operation: { key: operation.key, stage: "finalized", retry: null },
+    waiting: false,
+  });
+  expect(persist).toHaveBeenCalledOnce();
+  expect(gh).not.toHaveBeenCalled();
+});
 
 test("the writer checks normalized cache before reserving any allowance", async () => {
   const fixture = await metadataMaintenanceFixture({ unchanged: true });

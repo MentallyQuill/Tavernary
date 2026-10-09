@@ -78,6 +78,7 @@ export async function runReconcileAutomationCli(options = {}) {
       limit: args.limit,
       dryRun: !args.apply,
       revalidate,
+      finalize: options.finalize,
       dispatch:
         dispatch ??
         (async () => {

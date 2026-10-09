@@ -49,6 +49,7 @@ permissions:
 
 concurrency:
   group: canonical-publication
+  queue: max
   cancel-in-progress: false
 
 jobs:

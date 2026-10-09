@@ -1188,10 +1188,71 @@ export async function runPreparedWriterBatch({
     throw error;
   });
 }
+export async function runReconciledFinalization({
+  operationKey,
+  root = process.cwd(),
+  env = process.env,
+  gh = executeGh,
+  load = writerInventoryLoader({
+    root,
+    env,
+    gh,
+    finalizationOperationKey: operationKey,
+  }),
+  persist = (receipt) =>
+    persistGithubAutomationReceipt({
+      gh,
+      repository: env.GITHUB_REPOSITORY,
+      receipt,
+    }),
+}) {
+  let currentState, persisted;
+  try {
+    await runPublicationWriterFinalization({
+      operationKey,
+      root,
+      env,
+      gh,
+      load: async () => (currentState = await load()),
+      persist: async (receipt) => {
+        await persist(receipt);
+        persisted = receipt.operation;
+      },
+    });
+  } catch (error) {
+    const fresh = currentState?.operations.find(
+      (value) => value.key === operationKey,
+    );
+    // The native finalizer rereads authority before recording a failure.
+    // Accept a positively observed terminal receipt or durable retry, including
+    // a successful write whose response was lost. Uncertain state still fails.
+    if (
+      !persisted &&
+      fresh?.stage !== "finalized" &&
+      !(
+        fresh?.retry &&
+        (fresh.retry.failure.kind === "permanent" ||
+          (fresh.nextEligibleAt !== null &&
+            Date.parse(fresh.nextEligibleAt) > currentState.nowMs))
+      )
+    )
+      throw error;
+  }
+  const current =
+    persisted ??
+    currentState?.operations.find((value) => value.key === operationKey);
+  if (!current)
+    throw Object.assign(new Error("Finalization operation was superseded."), {
+      code: "input-superseded",
+    });
+  return { operation: current, waiting: current.stage !== "finalized" };
+}
 export async function runAutomationWriterReconciliation({
   root = process.cwd(),
   env = process.env,
   gh = executeGh,
+  finalize = (operation) =>
+    runReconciledFinalization({ operationKey: operation.key, root, env, gh }),
   load = async () => {
     await synchronizeWriterCheckout({ root, env });
     return loadAutomationInventory({
@@ -1448,6 +1509,7 @@ export async function runAutomationWriterReconciliation({
     gh,
     nowMs: state.nowMs,
     receipts: state.receipts,
+    finalize,
     inventory: async () =>
       state.operations.filter((operation) => !consumed.has(operation.key)),
     revalidate: (operation) =>

@@ -8,6 +8,10 @@ export interface ReconciliationInput {
     waiting?: boolean;
   }>;
   persist: (receipt: AutomationReceipt) => Promise<void>;
+  finalize?: (operation: AutomationOperation) => Promise<{
+    operation: AutomationOperation;
+    waiting?: boolean;
+  }>;
   revalidate?: (
     operation: AutomationOperation,
   ) => Promise<AutomationOperation | null>;
