@@ -31,6 +31,8 @@ jobs:
           node-version-file: .node-version
           cache: npm
       - run: npm ci
+      - name: Generate canonical catalog inputs for the recovery tests
+        run: npm run catalog:build
       - name: Verify interrupted flows, authority, native custody, races and budgets with owned fixtures
         shell: bash
         run: |

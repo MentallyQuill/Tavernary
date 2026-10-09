@@ -745,6 +745,14 @@ Expected Actions defaults are `default_workflow_permissions: read` and
 thread-resolution and exact-head requirements intact. Correct the scoped
 installation/environment permissions when a check fails.
 
+If token creation returns HTTP 422 with "The permissions requested are not
+granted to this installation", open the Tavernary Publisher App's Permissions
+and events settings. Repository Actions, Contents, Issues and Pull requests must
+each allow Read and write. Save the change and approve the pending installation
+permission update in GitHub installation settings. Request a fresh writer run
+and verify its token-creation step succeeds. This failure does not mean the
+owner's CLI token expired; replacing it does not repair the App installation.
+
 For model authentication, configured-model or billing failures, repair the
 identified existing provider secret/model/price configuration. Inspect the
 writer-owned global budget before changing a ceiling. Failed or interrupted
