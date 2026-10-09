@@ -3,8 +3,22 @@ import { resolve } from "node:path";
 
 import { expect, test } from "vitest";
 import { parse } from "yaml";
+import { configuredBasePath } from "../../scripts/verify-static-export.mjs";
 
 const workflowDirectory = resolve(".github/workflows");
+test.each(["verify-automation", "restore-drill"])(
+  "%s serves the production domain root under GitHub Actions",
+  async (name) => {
+    const verification = await workflow(name);
+    expect(
+      configuredBasePath({
+        GITHUB_ACTIONS: "true",
+        GITHUB_REPOSITORY: "MentallyQuill/Tavernary",
+        ...verification.jobs.verify.env,
+      }),
+    ).toBe("");
+  },
+);
 test("weekly restore drills verify both browsers without publication credentials", async () => {
   const drill = await workflow("restore-drill");
   expect(drill.on.schedule).toHaveLength(1);
