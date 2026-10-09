@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0e2482d3c12d33a04eb39b6a8954cf7c98a4a2b5a9c0eeb59a16528dd6cd045b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-997815977:doolijb-serene-pub",
+      "inputDigest": "57bcad02b4006a9255ce007c083b5e052aefb2cb707828461e0265605ef7ab5a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T12:53:53.048Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 2
+    }
+  },
+  "updatedAt": "2026-10-09T12:38:53.048Z",
+  "completedAt": null
+}
