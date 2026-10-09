@@ -482,14 +482,25 @@ export async function persistGithubAutomationReceipt({
   let prior;
   try {
     prior = JSON.parse(await gh(["api", `${path}?ref=main`]));
-    if (prior.encoding !== "base64" || !/^[a-f0-9]{40}$/u.test(prior.sha ?? ""))
+    if (
+      prior.encoding !== "base64" ||
+      typeof prior.content !== "string" ||
+      !/^[a-f0-9]{40}$/u.test(prior.sha ?? "")
+    )
       throw new Error("Stored receipt blob is invalid.");
-    const previous = validateAutomationReceipt(
-      JSON.parse(Buffer.from(prior.content, "base64").toString("utf8")),
-    );
-    if (previous.operation.key !== receipt.operation.key)
+    let previous = null;
+    try {
+      previous = validateAutomationReceipt(
+        JSON.parse(Buffer.from(prior.content, "base64").toString("utf8")),
+      );
+    } catch {
+      // A malformed sidecar supplies no authority. Replace only this reconstructed
+      // operation's exact path with the fresh native blob SHA below.
+    }
+    if (previous && previous.operation.key !== receipt.operation.key)
       throw new Error("Stored receipt path and operation identity disagree.");
     if (
+      previous &&
       JSON.stringify(previous.operation) ===
         JSON.stringify(receipt.operation) &&
       previous.completedAt === receipt.completedAt

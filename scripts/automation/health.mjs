@@ -15,6 +15,7 @@ export const HEALTH_TITLES = Object.freeze({
   "provider-circuit": "An automation credential or provider needs repair",
   "budget-exhausted": "The model allowance is exhausted",
   "unknown-failure": "An automation failure needs investigation",
+  "receipt-invalid": "An automation receipt needs recovery",
   "dependency-checks-failed": "A dependency update failed verification",
   "enrichment-unresolved": "Catalog enrichment has unresolved projects",
   "runtime-maintenance": "The Node runtime needs maintenance",
@@ -524,6 +525,22 @@ export function assessInventoryHealth(state) {
         inspectionFailures > 0,
         inspectionFailures > 0 ? "unclassified-failure" : "verified-recovery",
         inspectionFailures,
+      ),
+    );
+  }
+  const invalidReceipts = state.local.invalidReceiptKeys;
+  if (
+    state.local.receiptInspectionComplete === true &&
+    Array.isArray(invalidReceipts) &&
+    invalidReceipts.length <= 100_000
+  ) {
+    findings.push(
+      finding(
+        "receipt-invalid",
+        "dependency:publisher",
+        invalidReceipts.length > 0,
+        invalidReceipts.length ? "unclassified-failure" : "verified-recovery",
+        invalidReceipts.length,
       ),
     );
   }

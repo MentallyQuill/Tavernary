@@ -1,5 +1,6 @@
 import { readFile, readdir } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { resolve } from "node:path";
 import { readCanonicalPublicationEvidence } from "./publication-evidence.mjs";
 import { publicationHistory } from "./canonical-files.mjs";
@@ -56,7 +57,7 @@ async function readJson(root, path, fallback) {
     throw error;
   }
 }
-async function records(root, path, required = false) {
+async function records(root, path, required = false, invalidReceiptKeys) {
   let files;
   try {
     files = await readdir(resolve(root, path));
@@ -64,12 +65,32 @@ async function records(root, path, required = false) {
     if (!required && error.code === "ENOENT") return [];
     throw error;
   }
-  return Promise.all(
+  const values = await Promise.all(
     files
       .filter((file) => file.endsWith(".json"))
       .sort()
-      .map((file) => readJson(root, `${path}/${file}`)),
+      .map(async (file) => {
+        try {
+          const value = await readJson(root, `${path}/${file}`);
+          if (invalidReceiptKeys) {
+            validateAutomationReceipt(value);
+            if (file !== `${value.operation.key}.json`)
+              throw new Error("Stored receipt path and identity disagree.");
+          }
+          return value;
+        } catch (error) {
+          if (!invalidReceiptKeys || (error.code && error.code !== "ENOENT"))
+            throw error;
+          invalidReceiptKeys.push(
+            /^[a-f0-9]{64}\.json$/u.test(file)
+              ? file.slice(0, -5)
+              : createHash("sha256").update(file).digest("hex"),
+          );
+          return null;
+        }
+      }),
   );
+  return invalidReceiptKeys ? values.filter((value) => value !== null) : values;
 }
 export function discoverAutomationState(state) {
   const { remote, local, receipts, nowMs, publisherActorId, repository } =
@@ -224,6 +245,7 @@ export async function loadAutomationInventory({
     throw Object.assign(new Error("Publisher actor is not configured."), {
       code: "publisher-authentication-failed",
     });
+  const invalidReceiptKeys = [];
   const [
     projects,
     sources,
@@ -251,7 +273,12 @@ export async function loadAutomationInventory({
     records(root, "data/registry/sources", true),
     records(root, "data/snapshots/github", true),
     records(root, "data/registry/kits", true),
-    records(root, "data/maintenance/automation/operations"),
+    records(
+      root,
+      "data/maintenance/automation/operations",
+      false,
+      invalidReceiptKeys,
+    ),
     records(root, "data/snapshots/policy-review"),
     records(root, "data/maintenance/automation/metadata"),
     records(root, "data/maintenance/automation/deployments"),
@@ -274,7 +301,6 @@ export async function loadAutomationInventory({
     readJson(root, "config/supported-runtimes.json", { missing: true }),
   ]);
   snapshots.push(...codebergSnapshots);
-  receipts.forEach(validateAutomationReceipt);
   const validatedPublications = publicationRecords.map(
     validateCanonicalPublicationRecord,
   );
@@ -366,6 +392,8 @@ export async function loadAutomationInventory({
     }
   }
   const local = {
+    invalidReceiptKeys: invalidReceiptKeys.sort(),
+    receiptInspectionComplete: true,
     projects,
     sources,
     snapshots,
