@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "413193fb36508f321c00ba302eb03e62fe2dffd50f91875f40a388bdba09634b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:url-le-emotionalism-1-1-5-prompt:le-emotionalism-1-1-5-prompt",
+      "inputDigest": "8998fbcb92f935498704137089974865e20917087204e4419fd5ed56b50b0749",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "1970-01-01T00:00:00.000Z",
+    "nextEligibleAt": "2026-10-09T04:36:19.198Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T04:21:19.198Z",
+  "completedAt": null
+}
