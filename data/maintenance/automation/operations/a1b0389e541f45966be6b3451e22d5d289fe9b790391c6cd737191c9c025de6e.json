@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a1b0389e541f45966be6b3451e22d5d289fe9b790391c6cd737191c9c025de6e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:url-realistic-frankenstein-preset:realistic-frankenstein-preset",
+      "inputDigest": "69270e96a950cac8d2a2c5aab0f69db7fbed3f7ecbbc6ae2668f4151f9928b2a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "1970-01-01T00:00:00.000Z",
+    "nextEligibleAt": "2026-10-09T04:57:20.862Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T04:42:20.862Z",
+  "completedAt": null
+}
