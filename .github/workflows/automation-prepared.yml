@@ -27,18 +27,18 @@ jobs:
       github.event.workflow_run.head_repository.full_name == github.repository &&
       ((github.event.workflow_run.event == 'workflow_dispatch' &&
         github.event.workflow_run.actor.id == vars.TAVERNARY_PUBLISHER_BOT_ID) ||
-       (github.event.workflow_run.name == 'Site: Deploy to GitHub Pages' &&
+       (github.event.workflow_run.path == '.github/workflows/deploy-pages.yml' &&
         (github.event.workflow_run.event == 'push' ||
          (github.event.workflow_run.event == 'workflow_dispatch' &&
           github.event.workflow_run.actor.id == 2625904)))
-       || (github.event.workflow_run.name == 'Site: Restore verified bundle' &&
+       || (github.event.workflow_run.path == '.github/workflows/restore-site.yml' &&
            github.event.workflow_run.event == 'workflow_dispatch' &&
            github.event.workflow_run.actor.id == 2625904)
-       || (github.event.workflow_run.name == 'Catalog maintenance: Request metadata rollout' &&
+       || (github.event.workflow_run.path == '.github/workflows/request-catalog-enrichment.yml' &&
            github.event.workflow_run.event == 'workflow_dispatch' &&
            github.event.workflow_run.actor.id == 2625904)
-       || ((github.event.workflow_run.name == 'Project submissions: Create review PR' ||
-            github.event.workflow_run.name == 'Project owner requests: Create review PR') &&
+       || ((github.event.workflow_run.path == '.github/workflows/generate-project-submission.yml' ||
+            github.event.workflow_run.path == '.github/workflows/generate-project-owner-request.yml') &&
            github.event.workflow_run.event == 'workflow_dispatch' &&
            github.event.workflow_run.actor.id == 2625904))
     runs-on: ubuntu-latest
