@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0245af22022a6bdbae63b8d29ecfe0919faaf34b062b10ff6714d7884c442fec",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1182272252:ayvencore-sillytavern-another-character-library",
+      "inputDigest": "02cacd019406ab00a1538d931e4a3cecf000199612699a07134fc05d097b322e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T09:25:00.259Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T09:10:00.259Z",
+  "completedAt": null
+}
