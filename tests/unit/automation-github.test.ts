@@ -10,6 +10,7 @@ import {
 import { AUTOMATION_NOW, receiptFixture } from "../helpers/automation-fixtures";
 import { execFileSync } from "node:child_process";
 import { loadAutomationInventory } from "../../scripts/automation/inventory.mjs";
+import { productionInventoryRoot } from "../helpers/production-inventory-root.mjs";
 
 test("site recovery splits an over-cap completed search before pagination and reads every smaller window", async () => {
   const calls: string[][] = [];
@@ -477,48 +478,57 @@ test("a valid receipt stored under another operation key is rejected before over
 });
 
 test("the production loader reconstructs real canonical maintenance without writing generated assets", async () => {
-  const before = execFileSync("git", ["status", "--porcelain"], {
-    encoding: "utf8",
-  });
-  const head = execFileSync("git", ["rev-parse", "HEAD"], {
-    encoding: "utf8",
-  }).trim();
-  const gh = async (args: string[]) => {
-    const path = args.find((arg) => arg.startsWith("repos/"))!;
-    if (path.endsWith("/issues") || path.endsWith("/pulls")) return "[[]]";
-    if (path.endsWith("/git/ref/heads/main"))
-      return JSON.stringify({ object: { sha: head } });
-    return JSON.stringify([{ total_count: 0, workflow_runs: [] }]);
-  };
-  const state = await loadAutomationInventory({
-    root: process.cwd(),
-    gh,
-    repository: "MentallyQuill/Tavernary",
-    publisherActorId: 41_982_982,
-    nowMs: AUTOMATION_NOW,
-    reportIndex: {
-      schema_version: 5,
-      generated_at: new Date(AUTOMATION_NOW).toISOString(),
-      reports: [],
-    },
-  });
-  expect(
-    state.operations.some((operation) => operation.identity.kind === "refresh"),
-  ).toBe(true);
-  expect(
-    state.operations.some(
-      (operation) => operation.identity.kind === "advisory",
-    ),
-  ).toBe(true);
-  expect(
-    state.operations.filter(
-      (operation) => operation.identity.kind === "deployment",
-    ),
-  ).toHaveLength(1);
-  expect(
-    execFileSync("git", ["status", "--porcelain"], { encoding: "utf8" }),
-  ).toBe(before);
-});
+  const fixture = await productionInventoryRoot();
+  try {
+    const before = execFileSync("git", ["status", "--porcelain"], {
+      cwd: fixture.root,
+      encoding: "utf8",
+    });
+    const head = fixture.revision;
+    const gh = async (args: string[]) => {
+      const path = args.find((arg) => arg.startsWith("repos/"))!;
+      if (path.endsWith("/issues") || path.endsWith("/pulls")) return "[[]]";
+      if (path.endsWith("/git/ref/heads/main"))
+        return JSON.stringify({ object: { sha: head } });
+      return JSON.stringify([{ total_count: 0, workflow_runs: [] }]);
+    };
+    const state = await loadAutomationInventory({
+      root: fixture.root,
+      gh,
+      repository: "MentallyQuill/Tavernary",
+      publisherActorId: 41_982_982,
+      nowMs: AUTOMATION_NOW,
+      reportIndex: {
+        schema_version: 5,
+        generated_at: new Date(AUTOMATION_NOW).toISOString(),
+        reports: [],
+      },
+    });
+    expect(
+      state.operations.some(
+        (operation) => operation.identity.kind === "refresh",
+      ),
+    ).toBe(true);
+    expect(
+      state.operations.some(
+        (operation) => operation.identity.kind === "advisory",
+      ),
+    ).toBe(true);
+    expect(
+      state.operations.filter(
+        (operation) => operation.identity.kind === "deployment",
+      ),
+    ).toHaveLength(1);
+    expect(
+      execFileSync("git", ["status", "--porcelain"], {
+        cwd: fixture.root,
+        encoding: "utf8",
+      }),
+    ).toBe(before);
+  } finally {
+    await fixture.cleanup();
+  }
+}, 30_000);
 
 test("the final worker lookup paginates and refuses truncated filtered inventories", async () => {
   let captured: string[] = [];

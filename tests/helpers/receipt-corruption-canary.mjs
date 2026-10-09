@@ -1,10 +1,22 @@
 import { createRequire, syncBuiltinESMExports } from "node:module";
 import { execFileSync } from "node:child_process";
+import { productionInventoryRoot } from "./production-inventory-root.mjs";
 
 // Run in native Node: Vite's builtin wrappers cannot replace native ESM reads.
 const fs = createRequire(import.meta.url)("node:fs/promises");
 const original = { readFile: fs.readFile, readdir: fs.readdir };
-const [mode, content = ""] = process.argv.slice(2);
+const [mode, content = "", suppliedRoot] = process.argv.slice(2);
+const fixture = suppliedRoot
+  ? {
+      root: suppliedRoot,
+      revision: execFileSync("git", ["rev-parse", "HEAD"], {
+        cwd: suppliedRoot,
+        encoding: "utf8",
+        windowsHide: true,
+      }).trim(),
+      cleanup: async () => {},
+    }
+  : await productionInventoryRoot();
 const directory =
   mode === "receipt"
     ? "data/maintenance/automation/operations"
@@ -35,12 +47,9 @@ try {
     await import("../../scripts/automation/inventory.mjs");
   const { assessInventoryHealth } =
     await import("../../scripts/automation/health.mjs");
-  const revision = execFileSync("git", ["rev-parse", "HEAD"], {
-    encoding: "utf8",
-    windowsHide: true,
-  }).trim();
+  const { revision } = fixture;
   const state = await loadAutomationInventory({
-    root: process.cwd(),
+    root: fixture.root,
     repository: "MentallyQuill/Tavernary",
     publisherActorId: 41_982_982,
     nowMs: Date.parse("2026-10-08T12:00:00Z"),
@@ -89,4 +98,5 @@ try {
 } finally {
   Object.assign(fs, original);
   syncBuiltinESMExports();
+  await fixture.cleanup();
 }

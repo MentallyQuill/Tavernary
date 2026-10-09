@@ -1,6 +1,7 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { expect, test } from "vitest";
+import { afterAll, beforeAll, expect, test } from "vitest";
+import { productionInventoryRoot } from "../helpers/production-inventory-root.mjs";
 import { persistGithubAutomationReceipt } from "../../scripts/automation/github-inventory.mjs";
 import {
   receiptFixture,
@@ -8,10 +9,22 @@ import {
 } from "../helpers/automation-fixtures";
 
 const damagedKey = "a".repeat(64);
+let fixture: Awaited<ReturnType<typeof productionInventoryRoot>>;
+beforeAll(async () => {
+  fixture = await productionInventoryRoot();
+}, 30_000);
+afterAll(async () => {
+  await fixture?.cleanup();
+});
 async function inventory(mode = "healthy", content = "") {
   const { stdout } = await promisify(execFile)(
     process.execPath,
-    ["tests/helpers/receipt-corruption-canary.mjs", mode, content],
+    [
+      "tests/helpers/receipt-corruption-canary.mjs",
+      mode,
+      content,
+      fixture.root,
+    ],
     { encoding: "utf8", windowsHide: true, timeout: 15_000, maxBuffer: 32_768 },
   );
   return JSON.parse(stdout) as {

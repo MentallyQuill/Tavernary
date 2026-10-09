@@ -152,6 +152,10 @@ test("the canonical writer serializes receipt mutations and mints its write toke
   expect(writer).toContain("cancel-in-progress: false");
   expect(writer).toContain("ref: main");
   expect(writer).toContain("permission-contents: write");
+  expect(writer).toContain("permission-checks: read");
+  expect(writer).toContain(
+    "permission-workflows: ${{ inputs.mode == 'retain' && 'write' || '' }}",
+  );
   expect(writer.indexOf("Create fresh scoped writer token")).toBeGreaterThan(
     writer.indexOf("npm ci"),
   );

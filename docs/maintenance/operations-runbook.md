@@ -753,6 +753,17 @@ permission update in GitHub installation settings. Request a fresh writer run
 and verify its token-creation step succeeds. This failure does not mean the
 owner's CLI token expired; replacing it does not repair the App installation.
 
+The writer also requires repository Checks permission at Read-only for native
+dependency CI evidence. Retain mode alone requests Workflows at Read and write:
+GitHub requires that permission when creating or publishing a release for an
+older verified revision whose workflow files differ from current main. Without
+it, release creation can return HTTP 403 or 404 despite Contents write access.
+See the [release API permission requirement](https://docs.github.com/en/rest/releases/releases#create-a-release).
+Approve those installation permissions before deploying the scope change; the
+other writer modes do not request Workflows write access. After repair, require
+an actual Publisher-owned immutable release and a successful native restore
+drill before treating bundle retention as recovered.
+
 For model authentication, configured-model or billing failures, repair the
 identified existing provider secret/model/price configuration. Inspect the
 writer-owned global budget before changing a ceiling. Failed or interrupted

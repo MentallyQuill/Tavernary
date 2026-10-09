@@ -89,9 +89,11 @@ jobs:
           client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
           private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
           permission-actions: write
+          permission-checks: read
           permission-contents: write
           permission-issues: write
           permission-pull-requests: write
+          permission-workflows: ${{ inputs.mode == 'retain' && 'write' || '' }}
       - name: Apply current canonical operation
         run: node scripts/automation/writer-cli.mjs
         env:
