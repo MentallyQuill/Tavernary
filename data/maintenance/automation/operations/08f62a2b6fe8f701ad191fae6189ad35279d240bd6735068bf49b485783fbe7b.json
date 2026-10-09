@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "08f62a2b6fe8f701ad191fae6189ad35279d240bd6735068bf49b485783fbe7b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1302699300:myrkr146-chronicle-sillytavern",
+      "inputDigest": "e8dc5c3a6e75a2acfd34b07b028dee0ac5e3026e768644ac9783ca13d87f12bd",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T11:47:02.944Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 4,
+      "immediateAttempts": 5
+    }
+  },
+  "updatedAt": "2026-10-09T11:32:02.944Z",
+  "completedAt": null
+}
