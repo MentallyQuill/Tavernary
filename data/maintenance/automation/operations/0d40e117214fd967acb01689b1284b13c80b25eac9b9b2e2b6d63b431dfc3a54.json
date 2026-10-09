@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0d40e117214fd967acb01689b1284b13c80b25eac9b9b2e2b6d63b431dfc3a54",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-953212287:bmen25124-sillytavern-worldinfo-recommender",
+      "inputDigest": "4f874c514294a4bfec07879c9f31b03e4b93cff6ae9dee2542ebd145fcc3e380",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T12:41:39.875Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 5,
+      "immediateAttempts": 6
+    }
+  },
+  "updatedAt": "2026-10-09T12:26:39.875Z",
+  "completedAt": null
+}
