@@ -5,6 +5,7 @@ import { parseKitWithdrawalIssue } from "../kits/apply-withdrawal.mjs";
 import { fingerprintProjectPublicationInput } from "../publication/project-publication-transaction.mjs";
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
 import { operationKey } from "./operation.mjs";
+import { applyFinalizationReceipt } from "./finalization.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
 import {
   recoverInventoryWorker,
@@ -197,7 +198,7 @@ export function discoverKitOperations(input) {
           ...runs,
         ]);
     }
-    operations.push(operation);
+    operations.push(applyFinalizationReceipt(operation, input.receipts));
   }
   return operations;
 }
