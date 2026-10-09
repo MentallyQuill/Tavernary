@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "07bc0fa830c3460c254799e36138c4150a6efed062e4449926a1aee515ede019",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1309872055:xays-101-theme-studio-silly-tavern",
+      "inputDigest": "e62cc2a3af7cc6e83ac603ae9d011d1b25572ef058a3bdb3f390d7b05a6bc2e7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T11:38:23.305Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T11:23:23.305Z",
+  "completedAt": null
+}
