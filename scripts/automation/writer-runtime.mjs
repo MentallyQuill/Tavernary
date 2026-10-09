@@ -715,7 +715,9 @@ export async function runDeploymentWriterConfirmation({
       ? initial.operations.find((value) => value.key === operationKey)
       : null;
     if (operationKey && !operation) return { status: "superseded" };
-    if (runId === 0) {
+    const automatic = runId === 0;
+    let selectedRuns = [runId];
+    if (automatic) {
       if (!/^[a-f0-9]{40}$/u.test(operation?.expectedSha ?? ""))
         throw new Error("Confirmation has no trusted published revision.");
       const candidates = initial.remote.runs
@@ -737,8 +739,8 @@ export async function runDeploymentWriterConfirmation({
           (a, b) =>
             Date.parse(b.created_at) - Date.parse(a.created_at) || b.id - a.id,
         );
-      runId = candidates[0]?.id ?? 0;
-      if (runId === 0)
+      selectedRuns = candidates.slice(0, 8).map((run) => run.id);
+      if (!selectedRuns.length)
         throw Object.assign(
           new Error("Validated deployment metadata is not available yet."),
           { code: "provider-unavailable" },
@@ -760,67 +762,73 @@ export async function runDeploymentWriterConfirmation({
           null,
       };
     };
-    const result = await confirmCanonicalDeployment({
-      runId,
-      isAncestor,
-      load: async () => {
-        if (first) {
-          first = false;
-          return project(initial);
-        }
-        return project(await load());
-      },
-      loadManifest: async ({ runId, revision }) => {
-        const data = await loadGithubRevisionManifest({
-          gh,
-          download,
-          repository,
-          publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
-          runId,
-          currentMainSha: revision,
+    let result;
+    for (const selectedRunId of selectedRuns) {
+      let artifactUnavailable = false;
+      try {
+        result = await confirmCanonicalDeployment({
+          runId: selectedRunId,
           isAncestor,
+          load: async () => {
+            if (first) {
+              first = false;
+              return project(initial);
+            }
+            return project(await load());
+          },
+          loadManifest: async ({ runId, revision }) => {
+            let data;
+            try {
+              data = await loadGithubRevisionManifest({
+                gh,
+                download,
+                repository,
+                publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
+                runId,
+                currentMainSha: revision,
+                isAncestor,
+              });
+            } catch (error) {
+              artifactUnavailable = error?.code === "provider-unavailable";
+              throw error;
+            }
+            if (
+              operation &&
+              operation.expectedSha !== data.manifest.sourceSha &&
+              isAncestor(operation.expectedSha, data.manifest.sourceSha) !==
+                true
+            )
+              throw Object.assign(
+                new Error(
+                  "Deployment no longer covers the published operation.",
+                ),
+                { code: "input-superseded" },
+              );
+            return data;
+          },
+          probe: (input) =>
+            probe({ ...input, ...(automatic ? { maxAttempts: 1 } : {}) }),
+          commit: (input) => commit({ ...input, repository }),
         });
-        if (
-          operation &&
-          operation.expectedSha !== data.manifest.sourceSha &&
-          isAncestor(operation.expectedSha, data.manifest.sourceSha) !== true
-        )
-          throw Object.assign(
-            new Error("Deployment no longer covers the published operation."),
-            { code: "input-superseded" },
-          );
-        return data;
-      },
-      probe,
-      commit: (input) => commit({ ...input, repository }),
-    });
-    if (result.status === "waiting" || result.status === "incident")
+      } catch (error) {
+        if (automatic && artifactUnavailable) continue;
+        throw error;
+      }
+      if (
+        automatic &&
+        result.status === "waiting" &&
+        ["different-revision", "different-build"].includes(result.reason)
+      )
+        continue;
+      break;
+    }
+    if (!result || result.status === "waiting" || result.status === "incident")
       throw Object.assign(new Error("Public deployment remains unconfirmed."), {
         code:
-          result.status === "waiting"
-            ? "provider-unavailable"
-            : "validation-failed",
+          result?.status === "incident"
+            ? "validation-failed"
+            : "provider-unavailable",
       });
-    if (env.TAVERNARY_IMMUTABLE_RELEASES_ENABLED === "true") {
-      try {
-        const fresh = await load();
-        const { recoverSiteBundleRetention } =
-          await import("./site-writer-runtime.mjs");
-        const retention = await recoverSiteBundleRetention({
-          gh,
-          env,
-          isAncestor,
-          state: {
-            revision: fresh.local.revision,
-            nowMs: fresh.nowMs,
-            activeDeployment: fresh.local.activeDeployment ?? null,
-          },
-        });
-        return { ...result, retention };
-      } catch {
-        return { ...result, retention: { status: "unavailable" } };
-      }
-    }
     return result;
   } catch (error) {
     if (operationKey)
@@ -1278,8 +1286,17 @@ export async function runAutomationWriterReconciliation({
   const { selectDependencyPullNumbers } =
     await import("./dependency-update.mjs");
   const dependencyPullNumbers = selectDependencyPullNumbers(state.remote.pulls);
+  // Retention dispatch uses this lane, rather than an uncounted confirmation tail.
+  const retentionWanted =
+    env.TAVERNARY_IMMUTABLE_RELEASES_ENABLED === "true" &&
+    Number.isSafeInteger(
+      state.local.activeDeployment?.deployment?.workflowRunId,
+    ) &&
+    state.local.activeDeployment.deployment.workflowRunId > 0;
+  const retentionSlot =
+    retentionWanted && usedSlots + runtimeSlot + enrichmentSlot < 20 ? 1 : 0;
   const dependencySlot =
-    usedSlots + runtimeSlot + enrichmentSlot < 20 &&
+    usedSlots + runtimeSlot + enrichmentSlot + retentionSlot < 20 &&
     dependencyPullNumbers.length
       ? 1
       : 0;
@@ -1332,8 +1349,12 @@ export async function runAutomationWriterReconciliation({
     initialHealth = await healthInput(state);
     const proposals = planIncidentUpdates(initialHealth);
     healthSlot =
-      usedSlots + runtimeSlot + dependencySlot + enrichmentSlot < 20 &&
-      proposals.length
+      usedSlots +
+        runtimeSlot +
+        dependencySlot +
+        enrichmentSlot +
+        retentionSlot <
+        20 && proposals.length
         ? 1
         : 0;
     if (proposals.length && !healthSlot)
@@ -1352,7 +1373,8 @@ export async function runAutomationWriterReconciliation({
           runtimeSlot -
           dependencySlot -
           healthSlot -
-          enrichmentSlot,
+          enrichmentSlot -
+          retentionSlot,
       ),
     ],
     env,
@@ -1378,14 +1400,17 @@ export async function runAutomationWriterReconciliation({
     },
   });
   if (exitCode) throw new Error("Canonical reconciliation is unavailable.");
-  let retention = { status: "disabled" };
-  if (env.TAVERNARY_IMMUTABLE_RELEASES_ENABLED === "true") {
+  let retention = retentionWanted
+    ? { status: "waiting", reason: "operation-limit" }
+    : { status: "disabled" };
+  if (retentionSlot) {
     try {
       const { recoverSiteBundleRetention } =
         await import("./site-writer-runtime.mjs");
       retention = await recoverSiteBundleRetention({
         gh,
         env,
+        availableSlots: retentionSlot,
         state: {
           revision: state.local.revision,
           nowMs: state.nowMs,

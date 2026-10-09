@@ -283,3 +283,89 @@ test("retained-site recovery verifies immutable proof rather than using a receip
   await expect(recoverSiteBundleRetention(input)).rejects.toThrow();
   expect(data.gh.mock.calls.every(([args]) => args[0] === "api")).toBe(true);
 });
+
+function retentionRecoveryFixture(failures = 0) {
+  const data = fixture();
+  const state = {
+    ...data.state,
+    activeDeployment: {
+      schema_version: 1 as const,
+      mode: "ordinary" as const,
+      deployment: data.deployment,
+      observedAt: data.deployment.confirmedAt,
+      confirmingRunId: 42,
+      rollbackBaselineSha: null,
+      rollbackReason: null,
+      ownerActorId: null,
+    },
+  };
+  const runs = Array.from({ length: failures }, (_, index) => ({
+    ...data.run,
+    id: 900 - index,
+    path: ".github/workflows/automation-writer.yml",
+    display_title: "Site bundle retain 42",
+    actor: { id: 4624827 },
+    created_at: new Date(state.nowMs - (index + 1) * 60000).toISOString(),
+    updated_at: new Date(state.nowMs - index * 60000).toISOString(),
+  }));
+  const dispatches: string[][] = [];
+  const gh = vi.fn(async (args: string[]) => {
+    if (args[0] === "workflow") {
+      dispatches.push(args);
+      return "";
+    }
+    if (args[1].includes("/releases/tags/"))
+      throw Object.assign(new Error("HTTP 404"), { status: 404 });
+    if (args[1].includes("/actions/workflows/automation-writer.yml/runs"))
+      return JSON.stringify({ total_count: runs.length, workflow_runs: runs });
+    throw new Error(`Unexpected retention endpoint ${args[1]}`);
+  });
+  return {
+    input: { env, gh, state, isAncestor: data.isAncestor },
+    runs,
+    state,
+    gh,
+    dispatches,
+  };
+}
+
+test("retention recovery cannot dispatch after the canonical allowance is exhausted", async () => {
+  const data = retentionRecoveryFixture();
+  expect(
+    await recoverSiteBundleRetention({ ...data.input, availableSlots: 0 }),
+  ).toMatchObject({ status: "waiting", reason: "operation-limit" });
+  expect(data.dispatches).toEqual([]);
+  expect(data.gh).not.toHaveBeenCalled();
+});
+
+test("repeated native retention failures enter backoff and resume after their due time", async () => {
+  const data = retentionRecoveryFixture(3);
+  expect(await recoverSiteBundleRetention(data.input)).toMatchObject({
+    status: "waiting",
+    reason: "retention-backoff",
+    nextEligibleAt: "2026-10-09T12:00:00.000Z",
+  });
+  expect(data.dispatches).toEqual([]);
+  data.state.nowMs += 86400000;
+  expect(await recoverSiteBundleRetention(data.input)).toMatchObject({
+    status: "requested",
+  });
+  expect(data.dispatches).toHaveLength(1);
+  expect(data.dispatches[0]).toContain("result_run_id=42");
+});
+
+test("foreign retention history cannot defer canonical recovery", async () => {
+  const data = retentionRecoveryFixture(3);
+  for (const run of data.runs) run.actor.id = 2625904;
+  expect(await recoverSiteBundleRetention(data.input)).toMatchObject({
+    status: "requested",
+  });
+  expect(data.dispatches).toHaveLength(1);
+});
+
+test("malformed native completion clocks cannot trigger repeated retention dispatches", async () => {
+  const data = retentionRecoveryFixture(1);
+  data.runs[0].updated_at = "invalid";
+  await expect(recoverSiteBundleRetention(data.input)).rejects.toThrow();
+  expect(data.dispatches).toEqual([]);
+});

@@ -25,14 +25,13 @@ attached PRs, required checks, independent review, merge, and production proof.
 
 Current delivery: [draft PR #818](https://github.com/MentallyQuill/Tavernary/pull/818)
 is attached. The last fully successful required CI head is
-`522b79997e28363f1cd426d9866a45ce706dfdf5`
-([run 37861520769](https://github.com/MentallyQuill/Tavernary/actions/runs/37861520769)),
+`ec7fdd8c2a04b9baf1b0dc34ec65ba107b51ad92`
+([run 37865862658](https://github.com/MentallyQuill/Tavernary/actions/runs/37865862658)),
 with both `verify` and `visual` successful.
-Generation checkpoint `c87f40b32` exposed two stale custody assertions in full CI;
-head `522b79997e28363f1cd426d9866a45ce706dfdf5` repairs them and adds shared-lane
-dependency/Reddit retry recovery. Its
-[exact-head CI](https://github.com/MentallyQuill/Tavernary/actions/runs/37861520769)
-is successful. The subsequent runtime checkpoint still requires its own exact-head CI.
+This includes the supported-runtime and weekly restore-drill implementation.
+The subsequent bounded deployment/retention recovery checkpoint requires its own
+exact-head CI. A green implementation branch does not establish merge or native
+production drill evidence.
 
 The active delivery goal freezes the shared architecture. Finish the concrete
 runtime, retention, restore-drill and runbook requirements, remaining recovery
@@ -54,19 +53,19 @@ boundaries.
 | R3 | Eligible Kits/owner flows; preserve manual decisions | Domain-specific publication, withdrawal and owner validators; manual PR preparation and original divergence guards preserved. Live completion proof pending. |
 | R4 | Cancellation and 72-hour outage recovery | Worker recovery, authenticated incremental usage and multi-card owner checkpoints tested. One final production-adapter outage canary remains. |
 | R5 | Exact head, identity, authority, tombstones, paths | Native run/artifact/source custody and fresh publication authority tested; canonical identifiers and manual exceptions retained. Independent review remains. |
-| R6 | Serialize and deduplicate writes/deployments | Shared canonical writer and bounded controller quota implemented. Retention/restore quota and interruption edge cases remain in the final audit. |
+| R6 | Serialize and deduplicate writes/deployments | Shared canonical writer and bounded controller quota implemented. Retention dispatch now reserves one shared slot and no longer runs as an uncounted confirmation tail. Native failed attempts back off. Restore handoff/interruption edges remain. |
 | R7 | Prevent ordinary deployment regression | Planner, fresh serialized ancestry guard and queued-build tests; live canary pending. |
 | R8 | Recover when old hosted manifest is unavailable | Failed old-manifest reads are advisory; new export is strictly verified. Production recovery proof pending. |
-| R9 | Confirm public revision, digests, browser behavior | Fixed-origin integrity and Chromium/WebKit confirmation tested. Actual merged public revision and assets still required. |
+| R9 | Confirm public revision, digests, browser behavior | Fixed-origin integrity and Chromium/WebKit confirmation tested. Bounded automatic fallback accepts only the actually served verified build; a same-SHA rebuild requires its own build/digest/browser proof. Actual merged public revision and assets still required. |
 | R10 | Retained verified bundles and safe rollback | Full-export archives, immutable-release retention and owner-only current-data restore tested. Live setup and remaining retained-bundle fallback cases pending. |
 | R11 | GitHub health checks and bounded incidents | Native typed incidents, deduplication and positive-proof closure implemented; unreadable retry histories are visible. Live health verification remains. |
 | R12 | Trusted fields, factual fallback, deterministic scans | Report facts publish independently of optional narrative; cached/manual metadata and scan contracts preserved. Final consumer/browser proof remains. |
 | R13 | Scheduled changed metadata, cache, global budgets | Native scheduled enrichment, field/source checkpoints and model allowances cover all five automated credential-bearing workflows, including generation and repairs. Live progress proof remains. |
 | R14 | Gated dependency completion | Grouped packages, native NPM selector, exact-head merge gate and failed-check incidents implemented; critical Next.js findings addressed in the earlier maintenance checkpoint. Actual eligible maintenance PR completion remains. |
-| R15 | Verified supported-runtime policy | Implemented: official schedule validation, Node 24 manifest and declarations, shared workflow runtime file, weekly full compatibility checks, constrained recoverable Publisher PRs, native exact-head current/candidate CI merge gate and 90-day/EOL incidents. New-head CI and actual scheduled proof remain. Node 26 becomes eligible only on its official LTS date. |
+| R15 | Verified supported-runtime policy | Implemented: official schedule validation, Node 24 manifest and declarations, shared workflow runtime file, weekly full compatibility checks, constrained recoverable Publisher PRs, native exact-head current/candidate CI merge gate and 90-day/EOL incidents. Head ec7fdd8c2 passes required full CI; actual scheduled proof remains. Node 26 becomes eligible only on its official LTS date. |
 | R16 | Safe bounded retention | Weekly read-only retained-bundle drill implemented: verified immutable release, clean workspace, exact full-export restore and Chromium/WebKit with outbound requests blocked. Native step proof and an eight-day freshness limit gate incident recovery. Terminal-state cleanup, historical inventory bounds and retained-bundle interruption edges remain. Actual GitHub drill proof is still required. |
 | R17 | Owner runbook | Existing runbook retained; new shared-lane recovery, token repair, switches and manual exceptions still need final documentation. |
-| R18 | Attached PRs, CI, review, merge, production proof | PR #818 attached. Head 522b79997 is fully green; the runtime checkpoint needs its exact-head CI. Independent review, merge, live canary/drill and public proof remain. |
+| R18 | Attached PRs, CI, review, merge, production proof | PR #818 attached. Head ec7fdd8c2 is fully green; the next recovery checkpoint needs its exact-head CI. Independent review, merge, live canary/drill and public proof remain. |
 
 Generation checkpoint: 19 affected suites/311 checks passed. Retry checkpoint:
 13 affected suites/247 checks passed, followed by 16 final retry checks. Typecheck,
@@ -75,6 +74,34 @@ scoped zero-warning lint, formatting and whitespace checks passed. Full CI on
 for owner access to the model job. The corrected tests require owners to submit
 read-only requests and reserve actual model generation for the Publisher app.
 Repository protections and required checks remain unchanged.
+
+## Bounded deployment recovery checkpoint
+
+Automatic confirmation now inspects at most eight eligible native deployment
+runs, using one public probe per candidate. Missing or expired artifact metadata
+can be skipped; a different publicly served revision/build can select an older
+candidate only when its complete native archive and actual public/browser proof
+match. Artifact integrity and public verification incidents stop recovery.
+Explicit run requests retain exact-run custody.
+
+Same-SHA rebuilds previously reused an older build's confirmation without checking
+the new public export. Both served and unserved rebuild regressions reproduced
+this behavior. Exact build/digest proof now gates replay: a newly served rebuild
+records its own verified identity, while an unserved build remains waiting.
+
+Retention recovery reserves one slot inside the existing twenty-operation lane;
+the uncounted confirmation tail was removed. The real scheduled writer test
+selects nineteen ordinary operations plus one retention dispatch. Zero available
+slots produce no API call or dispatch. Trusted native failed attempts use the
+existing retry policy; repeated unknown failures wait twenty-four hours, foreign
+history cannot defer work, and invalid completion clocks cannot cause dispatch.
+
+Eight affected suites passed 74 checks in 4.46 seconds. TypeScript, scoped
+zero-warning lint, formatting and whitespace checks passed. No redundant local
+full-suite run was added; the new exact-head CI supplies its complete gate.
+Retained-bundle interruption fallback, dropped restore confirmation wakes, safe
+terminal cleanup/history bounds, final runbook, native canary/review/merge and
+production proof remain open.
 
 ## Rulings and task outcomes
 

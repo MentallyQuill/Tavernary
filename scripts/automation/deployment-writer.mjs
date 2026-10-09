@@ -12,7 +12,7 @@ function fail(code = "validation-failed") {
     { code },
   );
 }
-function validProof(record, expected, nowMs, matchBuild = true) {
+function validProof(record, expected, nowMs) {
   if (
     !record ||
     record.schema_version !== 1 ||
@@ -28,9 +28,8 @@ function validProof(record, expected, nowMs, matchBuild = true) {
   )
     return false;
   if (
-    matchBuild &&
-    (record.buildId !== expected.buildId ||
-      record.bundleDigest !== expected.buildDigest)
+    record.buildId !== expected.buildId ||
+    record.bundleDigest !== expected.buildDigest
   )
     return false;
   const rootKeys = [
@@ -93,10 +92,9 @@ export async function confirmCanonicalDeployment({
   const alreadyConfirmed = (state) => {
     const active = activeProof(state);
     return (
-      (!active ||
-        validProof(active.deployment, expected, state.nowMs, false)) &&
+      (!active || validProof(active.deployment, expected, state.nowMs)) &&
       state.deployments.some((record) =>
-        validProof(record, expected, state.nowMs, false),
+        validProof(record, expected, state.nowMs),
       )
     );
   };

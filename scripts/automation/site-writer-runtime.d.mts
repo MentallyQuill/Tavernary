@@ -28,7 +28,7 @@ export function protectedRestoreBundleIds(
   input: SiteRecoveryInput,
 ): Promise<number[]>;
 export function recoverSiteBundleRetention(
-  input: SiteRecoveryInput,
+  input: SiteRecoveryInput & { availableSlots?: number },
 ): Promise<Record<string, unknown>>;
 export function runSiteWriterRetention(
   input: SiteWriterInput & { retain?: typeof retainGithubSiteBundle },

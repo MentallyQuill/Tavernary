@@ -111,9 +111,10 @@ export function runDeploymentWriterConfirmation(input: {
   load?: () => Promise<AutomationInventoryState>;
   download?: (args: string[]) => Promise<Uint8Array>;
   isAncestor?: (ancestor: string, descendant: string) => boolean | null;
-  probe?: Parameters<
-    typeof import("./deployment-writer.mjs").confirmCanonicalDeployment
-  >[0]["probe"];
+  probe?: (input: {
+    expected: import("./revision-manifest.mjs").RevisionManifest;
+    maxAttempts?: number;
+  }) => Promise<import("./confirm-deployment.mjs").ConfirmationResult>;
   commit?: (
     input: Omit<Parameters<typeof commitCanonicalData>[0], "gh">,
   ) => Promise<{ sha: string }>;

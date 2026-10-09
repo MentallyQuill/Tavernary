@@ -21,6 +21,8 @@ import { loadGithubRestoreSource } from "./restore-source.mjs";
 import { confirmPublicDeployment } from "./confirm-deployment.mjs";
 import { commitCanonicalData } from "./canonical-data.mjs";
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
+import { classifyAutomationFailure } from "./failure.mjs";
+import { planAutomationRetry } from "./retry.mjs";
 const repositoryName = "MentallyQuill/Tavernary",
   sha = /^[a-f0-9]{40}$/u;
 function fail(code = "validation-failed") {
@@ -250,8 +252,16 @@ export async function recoverSiteBundleRetention({
   state,
   isAncestor,
   download = downloadSiteGithubBytes,
+  availableSlots = 1,
 }) {
   assertCanonicalWriterContext(env, env.GITHUB_REPOSITORY);
+  if (
+    !Number.isSafeInteger(availableSlots) ||
+    availableSlots < 0 ||
+    availableSlots > 20
+  )
+    fail();
+  if (!availableSlots) return { status: "waiting", reason: "operation-limit" };
   if (env.TAVERNARY_IMMUTABLE_RELEASES_ENABLED !== "true")
     return { status: "disabled" };
   const record = state.activeDeployment?.deployment;
@@ -301,24 +311,80 @@ export async function recoverSiteBundleRetention({
   );
   if (!Array.isArray(runs.workflow_runs) || runs.workflow_runs.length > 100)
     fail();
+  const trusted = runs.workflow_runs.filter(
+    (run) =>
+      run.display_title === title &&
+      run.path === ".github/workflows/automation-writer.yml" &&
+      run.event === "workflow_dispatch" &&
+      run.head_branch === "main" &&
+      run.actor?.id === Number(env.TAVERNARY_PUBLISHER_BOT_ID) &&
+      run.repository?.full_name === env.GITHUB_REPOSITORY &&
+      run.head_repository?.id === run.repository?.id &&
+      run.head_repository?.full_name === env.GITHUB_REPOSITORY &&
+      Number.isSafeInteger(run.id) &&
+      run.id > 0 &&
+      Number.isSafeInteger(run.repository?.id) &&
+      run.repository.id > 0 &&
+      Number.isSafeInteger(run.run_attempt) &&
+      run.run_attempt > 0 &&
+      sha.test(run.head_sha ?? "") &&
+      (run.head_sha === state.revision ||
+        isAncestor(run.head_sha, state.revision) === true),
+  );
   if (
-    runs.workflow_runs.some(
-      (run) =>
-        run.display_title === title &&
-        run.path === ".github/workflows/automation-writer.yml" &&
-        run.event === "workflow_dispatch" &&
-        run.head_branch === "main" &&
-        run.actor?.id === Number(env.TAVERNARY_PUBLISHER_BOT_ID) &&
-        run.repository?.full_name === env.GITHUB_REPOSITORY &&
-        run.head_repository?.id === run.repository?.id &&
-        run.head_repository?.full_name === env.GITHUB_REPOSITORY &&
-        run.status !== "completed" &&
-        sha.test(run.head_sha ?? "") &&
-        (run.head_sha === state.revision ||
-          isAncestor(run.head_sha, state.revision) === true),
+    trusted.some((run) =>
+      ["queued", "in_progress", "waiting", "pending", "requested"].includes(
+        run.status,
+      ),
     )
   )
     return { status: "already-requested" };
+  const completed = trusted.filter((run) => run.status === "completed");
+  for (const run of completed) {
+    const created = Date.parse(run.created_at),
+      updated = Date.parse(run.updated_at);
+    if (
+      !Number.isSafeInteger(state.nowMs) ||
+      !Number.isFinite(created) ||
+      !Number.isFinite(updated) ||
+      updated < created ||
+      updated > state.nowMs + 300000
+    )
+      fail();
+  }
+  completed.sort(
+    (a, b) =>
+      Date.parse(b.created_at) - Date.parse(a.created_at) || b.id - a.id,
+  );
+  if (completed.length) {
+    const latest = completed[0];
+    const firstSuccess = completed.findIndex(
+      (run) => run.conclusion === "success",
+    );
+    const failures =
+      latest.conclusion === "success"
+        ? 1
+        : firstSuccess < 0
+          ? completed.length
+          : firstSuccess;
+    const retry = planAutomationRetry({
+      failure: classifyAutomationFailure({
+        ...(latest.conclusion === "success"
+          ? { diagnosticCode: "provider-unavailable" }
+          : { conclusion: latest.conclusion }),
+      }),
+      transientAttempts: Math.max(0, failures - 1),
+      immediateAttempts: failures,
+      nowMs: Date.parse(latest.updated_at),
+      jitterSeed: title,
+    });
+    if (!retry.nextEligibleAt || Date.parse(retry.nextEligibleAt) > state.nowMs)
+      return {
+        status: "waiting",
+        reason: "retention-backoff",
+        nextEligibleAt: retry.nextEligibleAt,
+      };
+  }
   await gh([
     "workflow",
     "run",

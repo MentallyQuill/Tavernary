@@ -54,6 +54,67 @@ import {
 } from "../helpers/automation-fixtures";
 
 const nowMs = AUTOMATION_NOW;
+test("the actual scheduled writer reserves retention inside the twenty-operation lane", async () => {
+  const { state } = await metadataMaintenanceFixture();
+  state.operations = Array.from({ length: 20 }, (_, index) =>
+    operationFixture({
+      identity: {
+        kind: "project",
+        subject: `issue:${index + 100}`,
+        inputDigest: "a".repeat(64),
+        policyVersion: "1",
+      },
+      stage: "validated",
+      createdAt: new Date(state.nowMs).toISOString(),
+    }),
+  );
+  state.local = {
+    revision: "d".repeat(40),
+    deployments: [],
+    sources: [],
+    kits: [],
+    publishableRevision: "c".repeat(40),
+    publishableCommittedAt: new Date(state.nowMs).toISOString(),
+    activeDeployment: {
+      mode: "ordinary",
+      deployment: { sourceSha: "c".repeat(40), workflowRunId: 42 },
+    },
+  };
+  const dispatches: string[][] = [];
+  const result = await runAutomationWriterReconciliation({
+    load: async () => state,
+    gh: async (args) => {
+      if (args[0] === "workflow") {
+        dispatches.push(args);
+        return "";
+      }
+      if (args[1].includes("/releases/tags/"))
+        throw Object.assign(new Error("HTTP 404"), { status: 404 });
+      if (args[1].includes("/actions/workflows/automation-writer.yml/runs"))
+        return JSON.stringify({ total_count: 0, workflow_runs: [] });
+      throw new Error(`Unexpected fixture endpoint ${args[1]}`);
+    },
+    env: {
+      GITHUB_REF: "refs/heads/main",
+      GITHUB_REPOSITORY: state.repository,
+      GITHUB_EVENT_NAME: "workflow_dispatch",
+      GITHUB_ACTOR_ID: "2625904",
+      GITHUB_WORKFLOW_REF: `${state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
+      TAVERNARY_PUBLISHER_BOT_ID: String(state.publisherActorId),
+      TAVERNARY_IMMUTABLE_RELEASES_ENABLED: "true",
+    },
+  });
+  expect(result.controller).toMatchObject({
+    selectedKeys: expect.any(Array),
+    dispatched: 0,
+  });
+  expect(
+    (result.controller as { selectedKeys: string[] }).selectedKeys,
+  ).toHaveLength(19);
+  expect(dispatches).toHaveLength(1);
+  expect(dispatches[0]).toContain("mode=retain");
+  expect(result.retention).toMatchObject({ status: "requested" });
+});
 test("offline drill failures use a single recoverable operational incident", () => {
   const failed = assessAutomationHealth({
     nowMs,
