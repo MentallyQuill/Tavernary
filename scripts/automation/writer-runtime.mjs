@@ -45,7 +45,7 @@ import { reconcilePreparedOperations } from "./prepared-reconciliation.mjs";
 import { persistPreparedFailure } from "./prepared-failure.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
 import { runReconcileAutomationCli } from "./reconcile-cli.mjs";
-import { assessInventoryHealth } from "./health.mjs";
+import { assessInventoryHealth, assessAutomationHealth } from "./health.mjs";
 import { planIncidentUpdates, reconcileIncidentUpdates } from "./incidents.mjs";
 import {
   revalidateAutomationOperation,
@@ -1257,13 +1257,51 @@ export async function runAutomationWriterReconciliation({
   ]);
   const usedSlots =
     prepared.consumedKeys.length + generation.slots + generationRequests.slots;
+  let runtime = { status: "disabled" },
+    runtimeSlot = 0;
+  if (
+    state.local.runtimePolicy !== undefined &&
+    usedSlots + enrichmentSlot < 20
+  ) {
+    try {
+      const { runRuntimeWriter } = await import("./runtime-maintenance.mjs");
+      runtime = await runRuntimeWriter({ root, env, gh, availableSlots: 1 });
+      if (["proposed", "updated", "merged"].includes(runtime.status)) {
+        runtimeSlot = 1;
+        state = await load();
+      }
+    } catch {
+      runtime = { status: "unavailable", reason: "runtime-schedule-invalid" };
+      runtimeSlot = 1;
+    }
+  }
   const { selectDependencyPullNumbers } =
     await import("./dependency-update.mjs");
   const dependencyPullNumbers = selectDependencyPullNumbers(state.remote.pulls);
   const dependencySlot =
-    usedSlots + enrichmentSlot < 20 && dependencyPullNumbers.length ? 1 : 0;
+    usedSlots + runtimeSlot + enrichmentSlot < 20 &&
+    dependencyPullNumbers.length
+      ? 1
+      : 0;
   const healthInput = (state) => ({
-    findings: assessInventoryHealth(state),
+    findings: [
+      ...assessInventoryHealth(state),
+      ...assessAutomationHealth({
+        nowMs: state.nowMs,
+        runtime:
+          runtime.status === "disabled"
+            ? undefined
+            : {
+                reason:
+                  runtime.decision?.action === "incident"
+                    ? runtime.decision.reason
+                    : runtime.reason === "runtime-verification-failed" ||
+                        runtime.status === "unavailable"
+                      ? runtime.reason
+                      : runtime.decision?.reason,
+              },
+      }),
+    ],
     existingIssues: state.remote.issues,
     publisherActorId: state.publisherActorId,
   });
@@ -1274,7 +1312,8 @@ export async function runAutomationWriterReconciliation({
     initialHealth = healthInput(state);
     const proposals = planIncidentUpdates(initialHealth);
     healthSlot =
-      usedSlots + dependencySlot + enrichmentSlot < 20 && proposals.length
+      usedSlots + runtimeSlot + dependencySlot + enrichmentSlot < 20 &&
+      proposals.length
         ? 1
         : 0;
     if (proposals.length && !healthSlot)
@@ -1287,7 +1326,14 @@ export async function runAutomationWriterReconciliation({
     args: [
       "--apply",
       "--limit",
-      String(20 - usedSlots - dependencySlot - healthSlot - enrichmentSlot),
+      String(
+        20 -
+          usedSlots -
+          runtimeSlot -
+          dependencySlot -
+          healthSlot -
+          enrichmentSlot,
+      ),
     ],
     env,
     event: {},
@@ -1382,6 +1428,7 @@ export async function runAutomationWriterReconciliation({
     controller,
     retention,
     dependencies,
+    runtime,
     health,
     enrichment,
     generation,

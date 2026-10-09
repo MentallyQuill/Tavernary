@@ -531,60 +531,8 @@ export async function runDependencyWriter({
       );
     return actionVersions.get(key);
   };
-  const loadChecks = async (headSha) => {
-    const result = await api(
-      `commits/${headSha}/check-runs?filter=latest&per_page=100`,
-    );
-    if (
-      !Array.isArray(result.check_runs) ||
-      result.total_count > 100 ||
-      result.check_runs.length > 100
-    )
-      throw new Error("Dependency checks exceed their bound.");
-    const runs = new Map();
-    const checks = [];
-    for (const check of result.check_runs.filter((check) =>
-      ["verify", "visual"].includes(check.name),
-    )) {
-      let workflow = "";
-      if (check.app?.id === 15368 && check.head_sha === headSha) {
-        const url = new URL(check.details_url);
-        const prefix = `/${repository}/actions/runs/`;
-        const id = url.pathname.startsWith(prefix)
-          ? url.pathname.slice(prefix.length).split("/")[0]
-          : "";
-        if (
-          url.protocol === "https:" &&
-          url.host === "github.com" &&
-          !url.username &&
-          !url.password &&
-          /^[1-9]\d*$/u.test(id) &&
-          Number.isSafeInteger(Number(id))
-        ) {
-          if (!runs.has(id)) runs.set(id, await api(`actions/runs/${id}`));
-          const run = runs.get(id);
-          if (
-            run.id === Number(id) &&
-            run.path === ".github/workflows/ci.yml" &&
-            ["pull_request", "workflow_dispatch"].includes(run.event) &&
-            run.head_sha === headSha &&
-            run.head_repository?.full_name === repository &&
-            run.status === "completed" &&
-            run.conclusion === "success"
-          )
-            workflow = run.path;
-        }
-      }
-      checks.push({
-        name: check.name,
-        sha: check.head_sha,
-        appId: check.app?.id,
-        conclusion: check.conclusion,
-        workflow,
-      });
-    }
-    return checks;
-  };
+  const loadChecks = (headSha) =>
+    loadVerifiedDependencyChecks({ headSha, repository, request: api });
   for (const candidate of pulls) {
     if (
       candidate.user?.id !== 49699333 ||
@@ -729,4 +677,68 @@ export async function runDependencyWriter({
     }
   }
   return { status: "idle", decisions };
+}
+
+export async function loadVerifiedDependencyChecks({
+  headSha,
+  repository,
+  request: api,
+}) {
+  const result = await api(
+    `commits/${headSha}/check-runs?filter=latest&per_page=100`,
+  );
+  if (
+    !Array.isArray(result.check_runs) ||
+    result.total_count > 100 ||
+    result.check_runs.length > 100
+  )
+    throw new Error("Dependency checks exceed their bound.");
+  const runs = new Map();
+  const checks = [];
+  for (const check of result.check_runs.filter((check) =>
+    [
+      "verify",
+      "visual",
+      "runtime-current-linux",
+      "runtime-current-windows",
+    ].includes(check.name),
+  )) {
+    let workflow = "";
+    if (check.app?.id === 15368 && check.head_sha === headSha) {
+      const url = new URL(check.details_url);
+      const prefix = `/${repository}/actions/runs/`;
+      const id = url.pathname.startsWith(prefix)
+        ? url.pathname.slice(prefix.length).split("/")[0]
+        : "";
+      if (
+        url.protocol === "https:" &&
+        url.host === "github.com" &&
+        !url.username &&
+        !url.password &&
+        /^[1-9]\d*$/u.test(id) &&
+        Number.isSafeInteger(Number(id))
+      ) {
+        if (!runs.has(id)) runs.set(id, await api(`actions/runs/${id}`));
+        const run = runs.get(id);
+        if (
+          run.id === Number(id) &&
+          run.path === ".github/workflows/ci.yml" &&
+          ["pull_request", "workflow_dispatch"].includes(run.event) &&
+          run.head_sha === headSha &&
+          run.head_repository?.full_name === repository &&
+          run.status === "completed" &&
+          run.conclusion === "success"
+        )
+          workflow = run.path;
+      }
+    }
+    checks.push({
+      name: check.name,
+      sha: check.head_sha,
+      appId: check.app?.id,
+      conclusion: check.conclusion,
+      workflow,
+    });
+  }
+  return checks;
 }

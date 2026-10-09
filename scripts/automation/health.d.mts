@@ -13,6 +13,7 @@ export const HEALTH_TITLES: Readonly<Record<string, string>>;
 export function validateHealthFinding(value: unknown): HealthFinding;
 export interface HealthInput {
   nowMs: number;
+  runtime?: { reason: string };
   operations?: Array<
     AutomationOperation & { automatic: boolean; progressAt?: string }
   >;

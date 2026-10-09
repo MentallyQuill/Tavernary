@@ -30,7 +30,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
-          node-version: 24
+          node-version-file: .node-version
           cache: npm
       - name: Classify changed paths
         id: route
@@ -111,7 +111,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
-          node-version: 24
+          node-version-file: .node-version
           cache: npm
       - name: Install dependencies
         run: npm ci
@@ -129,6 +129,77 @@ jobs:
         run: npm run test:kits-e2e
       - name: Run Kit fixture layout regression tests
         run: npm run test:kits-visual
+
+  runtime-current-linux:
+    if: startsWith(github.event.pull_request.head.ref || github.ref_name, 'automation/runtime-node-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Read the current runtime from the verified base
+        id: runtime
+        shell: bash
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          base_sha="$PR_BASE_SHA"
+          if [[ -z "$base_sha" ]]; then
+            git fetch origin main
+            base_sha="$(git merge-base origin/main HEAD)"
+          fi
+          [[ "$base_sha" =~ ^[a-f0-9]{40}$ ]]
+          major="$(git show "${base_sha}:.node-version")"
+          [[ "$major" =~ ^[1-9][0-9]{1,3}$ && "$major" -ge 24 ]]
+          echo "major=$major" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: ${{ steps.runtime.outputs.major }}
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run test:e2e
+      - run: npm run test:scan-e2e
+
+  runtime-current-windows:
+    if: startsWith(github.event.pull_request.head.ref || github.ref_name, 'automation/runtime-node-')
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Read the current runtime from the verified base
+        id: runtime
+        shell: bash
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          base_sha="$PR_BASE_SHA"
+          if [[ -z "$base_sha" ]]; then
+            git fetch origin main
+            base_sha="$(git merge-base origin/main HEAD)"
+          fi
+          [[ "$base_sha" =~ ^[a-f0-9]{40}$ ]]
+          major="$(git show "${base_sha}:.node-version")"
+          [[ "$major" =~ ^[1-9][0-9]{1,3}$ && "$major" -ge 24 ]]
+          echo "major=$major" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: ${{ steps.runtime.outputs.major }}
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npx playwright install chromium
+      - run: npm run test:scan
+      - run: npm run test:visual
+      - run: npm run build:test-kits
+      - run: npm run test:kits-e2e
+      - run: npm run test:kits-visual
 
   reconcile-generated-validation:
     needs:

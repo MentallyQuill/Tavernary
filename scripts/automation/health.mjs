@@ -17,9 +17,10 @@ export const HEALTH_TITLES = Object.freeze({
   "unknown-failure": "An automation failure needs investigation",
   "dependency-checks-failed": "A dependency update failed verification",
   "enrichment-unresolved": "Catalog enrichment has unresolved projects",
+  "runtime-maintenance": "The Node runtime needs maintenance",
 });
 const subjectPattern =
-  /^(?:refresh:(?:github|codeberg)|operation:[a-f0-9]{64}|dependency:(?:model-provider|publisher|budget)|deployment:pages|enrichment:catalog|pull:[1-9]\d*)$/u;
+  /^(?:refresh:(?:github|codeberg)|operation:[a-f0-9]{64}|dependency:(?:model-provider|publisher|budget)|deployment:pages|enrichment:catalog|runtime:node|pull:[1-9]\d*)$/u;
 const reasons = new Set([
   ...AUTOMATION_FAILURE_REASON_CODES,
   "observation-stale",
@@ -27,6 +28,10 @@ const reasons = new Set([
   "deployment-unconfirmed",
   "checks-failed",
   "verified-recovery",
+  "runtime-eol",
+  "runtime-eol-soon",
+  "runtime-schedule-invalid",
+  "runtime-verification-failed",
 ]);
 
 export function validateHealthFinding(value) {
@@ -76,6 +81,7 @@ export function assessAutomationHealth({
   circuits = [],
   budget,
   dependencies = [],
+  runtime,
   nowMs,
 }) {
   if (
@@ -87,6 +93,28 @@ export function assessAutomationHealth({
   )
     throw new Error("Automation health observation is invalid.");
   const result = [];
+  if (runtime) {
+    const active = [
+      "runtime-eol",
+      "runtime-eol-soon",
+      "runtime-schedule-invalid",
+      "runtime-verification-failed",
+    ].includes(runtime.reason);
+    if (
+      active ||
+      ["runtime-supported", "runtime-transition-verified"].includes(
+        runtime.reason,
+      )
+    )
+      result.push(
+        finding(
+          "runtime-maintenance",
+          "runtime:node",
+          active,
+          active ? runtime.reason : "verified-recovery",
+        ),
+      );
+  }
   const age = (value) => {
     const time = Date.parse(value ?? "");
     return Number.isFinite(time) && time <= nowMs + 300_000

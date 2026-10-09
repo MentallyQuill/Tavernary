@@ -236,6 +236,7 @@ export async function loadAutomationInventory({
     modelBudget,
     enrichmentCanary,
     enrichmentFull,
+    runtimePolicy,
   ] = await Promise.all([
     records(root, "data/registry/projects", true),
     records(root, "data/registry/sources", true),
@@ -261,6 +262,7 @@ export async function loadAutomationInventory({
     ),
     readJson(root, "data/reports/enrichment-canary.json", null),
     readJson(root, "data/reports/enrichment-report.json", null),
+    readJson(root, "config/supported-runtimes.json", { missing: true }),
   ]);
   snapshots.push(...codebergSnapshots);
   receipts.forEach(validateAutomationReceipt);
@@ -364,6 +366,7 @@ export async function loadAutomationInventory({
     modelBudget,
     enrichmentCanary,
     enrichmentFull,
+    runtimePolicy,
   };
   const validatedPublications = publicationRecords.map(
     validateCanonicalPublicationRecord,

@@ -94,7 +94,7 @@ test("reconciles generated validation runs from trusted main code", async () => 
   );
   expect(reconcile.if).not.toContain("243524590");
   expect(checkout?.with?.ref).toBe("main");
-  expect(setupNode?.with?.["node-version"]).toBe(24);
+  expect(setupNode?.with?.["node-version-file"]).toBe(".node-version");
   expect(steps).toEqual(
     expect.arrayContaining([
       expect.objectContaining({

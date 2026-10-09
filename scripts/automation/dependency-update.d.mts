@@ -19,6 +19,11 @@ export interface DependencyCheck {
   appId: number;
   workflow: string;
 }
+export function loadVerifiedDependencyChecks(input: {
+  headSha: string;
+  repository: string;
+  request: (path: string) => Promise<any>;
+}): Promise<DependencyCheck[]>;
 export interface DependencyInput {
   pull: DependencyPull;
   metadata: DependencyMetadata;

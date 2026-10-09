@@ -1,4 +1,38 @@
 import { expect, test, vi } from "vitest";
+
+test("runtime incidents stay active at end of life and close only on a supported observation", () => {
+  const nowMs = Date.parse("2028-05-01T00:00:00Z");
+  const expired = assessAutomationHealth({
+    nowMs,
+    runtime: { reason: "runtime-eol" },
+  });
+  expect(expired).toEqual([
+    expect.objectContaining({
+      code: "runtime-maintenance",
+      subject: "runtime:node",
+      status: "active",
+      reason: "runtime-eol",
+    }),
+  ]);
+  expect(
+    assessAutomationHealth({
+      nowMs,
+      runtime: { reason: "runtime-schedule-invalid" },
+    })[0].status,
+  ).toBe("active");
+  expect(
+    assessAutomationHealth({
+      nowMs,
+      runtime: { reason: "runtime-supported" },
+    })[0].status,
+  ).toBe("recovered");
+  expect(
+    assessAutomationHealth({
+      nowMs,
+      runtime: { reason: "runtime-verification-pending" },
+    }),
+  ).toEqual([]);
+});
 import {
   createEnrichmentRunState,
   applyAttemptResults,
@@ -6,6 +40,7 @@ import {
 import { createEnrichmentReport } from "../../scripts/catalog/enrichment-report.mjs";
 import { planIncidentUpdates } from "../../scripts/automation/incidents.mjs";
 import * as dependencyWriter from "../../scripts/automation/dependency-update.mjs";
+import * as runtimeWriter from "../../scripts/automation/runtime-maintenance.mjs";
 import * as enrichmentRequests from "../../scripts/automation/enrichment-owner-request.mjs";
 import {
   assessAutomationHealth,
@@ -19,6 +54,53 @@ import {
 } from "../helpers/automation-fixtures";
 
 const nowMs = AUTOMATION_NOW;
+test("the scheduled canonical lane reserves a bounded runtime maintenance slot", async () => {
+  const { state } = await metadataMaintenanceFixture();
+  state.operations = [];
+  state.local.runtimePolicy = {
+    schemaVersion: 1,
+    productionMajor: 24,
+    warningDays: 90,
+  };
+  const run = vi
+    .spyOn(runtimeWriter, "runRuntimeWriter")
+    .mockResolvedValue({
+      status: "idle",
+      reason: "runtime-supported",
+      decision: {
+        action: "keep",
+        healthy: true,
+        reason: "runtime-supported",
+        currentMajor: 24,
+        supportEnds: "2028-04-30T00:00:00.000Z",
+      },
+    });
+  try {
+    const result = await runAutomationWriterReconciliation({
+      load: async () => state,
+      gh: async () => {
+        throw new Error("No mutation expected");
+      },
+      env: {
+        GITHUB_REF: "refs/heads/main",
+        GITHUB_REPOSITORY: state.repository,
+        GITHUB_EVENT_NAME: "workflow_dispatch",
+        GITHUB_ACTOR_ID: "2625904",
+        GITHUB_WORKFLOW_REF: `${state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
+        TAVERNARY_PUBLISHER_BOT_ID: String(state.publisherActorId),
+      },
+    });
+    expect(run).toHaveBeenCalledWith(
+      expect.objectContaining({ availableSlots: 1 }),
+    );
+    expect(result.runtime).toMatchObject({
+      status: "idle",
+      reason: "runtime-supported",
+    });
+  } finally {
+    run.mockRestore();
+  }
+});
 const before = (hours: number) =>
   new Date(nowMs - hours * 3_600_000).toISOString();
 

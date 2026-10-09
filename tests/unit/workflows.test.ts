@@ -5,6 +5,61 @@ import { expect, test } from "vitest";
 import { parse } from "yaml";
 
 const workflowDirectory = resolve(".github/workflows");
+test("runtime compatibility is scheduled read-only and transition PRs test the current runtime", async () => {
+  const runtime = await workflow("check-runtime");
+  expect(runtime.on.schedule).toHaveLength(1);
+  expect(runtime.permissions).toEqual({ contents: "read" });
+  const source = await readFile(
+    resolve(workflowDirectory, "check-runtime.yml"),
+    "utf8",
+  );
+  expect(source).not.toContain("environment: publisher");
+  expect(source).not.toContain("secrets.");
+  for (const job of [runtime.jobs.linux, runtime.jobs.windows]) {
+    expect(job.strategy["fail-fast"]).toBe(false);
+    expect(job.strategy.matrix.major).toContain("fromJSON");
+    expect(
+      job.steps.some(
+        (step: { run?: string }) =>
+          step.run ===
+          "node scripts/automation/runtime-check-cli.mjs candidate",
+      ),
+    ).toBe(true);
+  }
+  const ci = await workflow("ci");
+  for (const name of ["runtime-current-linux", "runtime-current-windows"]) {
+    expect(ci.jobs[name].if).toContain("automation/runtime-node-");
+    expect(
+      ci.jobs[name].steps.some(
+        (step: { run?: string }) => step.run === "npm run check",
+      ),
+    ).toBe(true);
+  }
+  const policy = JSON.parse(
+    await readFile("config/supported-runtimes.json", "utf8"),
+  );
+  expect((await readFile(".node-version", "utf8")).trim()).toBe(
+    String(policy.productionMajor),
+  );
+  const paths = await readdir(workflowDirectory);
+  for (const path of paths.filter((path) => path.endsWith(".yml"))) {
+    const parsed = parse(
+      await readFile(resolve(workflowDirectory, path), "utf8"),
+    );
+    for (const job of Object.values(parsed.jobs) as Array<{
+      steps?: Array<{ uses?: string; with?: Record<string, unknown> }>;
+    }>)
+      for (const step of job.steps ?? [])
+        if (
+          step.uses?.startsWith("actions/setup-node@") &&
+          !["check-runtime.yml"].includes(path) &&
+          !String(step.with?.["node-version"]).includes(
+            "steps.runtime.outputs.major",
+          )
+        )
+          expect(step.with?.["node-version-file"], path).toBe(".node-version");
+  }
+});
 const pinnedActions = {
   "actions/checkout": "3d3c42e5aac5ba805825da76410c181273ba90b1",
   "actions/setup-node": "820762786026740c76f36085b0efc47a31fe5020",
@@ -1862,7 +1917,7 @@ test("triages Help reports from latest issue state with a read-only repository b
   ) as { with?: { ref?: string } } | undefined;
   const setupNode = steps.find((step) =>
     step.uses?.startsWith("actions/setup-node@"),
-  ) as { with?: { "node-version"?: number } } | undefined;
+  ) as { with?: { "node-version-file"?: string } } | undefined;
 
   expect(Object.keys(triage.on)).toEqual(["workflow_dispatch"]);
   expect(triage.on.workflow_dispatch.inputs.issue_number).toMatchObject({
@@ -1880,7 +1935,7 @@ test("triages Help reports from latest issue state with a read-only repository b
   expect(checkout?.with?.ref).toBe(
     "${{ github.event.repository.default_branch }}",
   );
-  expect(setupNode?.with?.["node-version"]).toBe(24);
+  expect(setupNode?.with?.["node-version-file"]).toBe(".node-version");
   expect(source).toContain("node scripts/help/triage-help-issue.mjs");
   expect(source).toContain("ISSUE_NUMBER: ${{ inputs.issue_number }}");
   expect(source.indexOf("actions/checkout@")).toBeLessThan(
