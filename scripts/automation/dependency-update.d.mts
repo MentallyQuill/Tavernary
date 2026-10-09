@@ -31,6 +31,7 @@ export interface DependencyInput {
   checks: DependencyCheck[];
   currentMainSha: string;
   mergeBaseSha: string;
+  receiptOnlyBase?: boolean;
   allowedPackages: string[];
   deploymentHealthy: boolean;
 }
