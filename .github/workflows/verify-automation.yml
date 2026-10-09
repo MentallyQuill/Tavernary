@@ -86,4 +86,5 @@ jobs:
             out/revision.json
             test-results
           retention-days: 90
+          include-hidden-files: true
           if-no-files-found: warn

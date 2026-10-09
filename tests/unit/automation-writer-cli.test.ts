@@ -78,3 +78,33 @@ test("unknown writer modes fail without effects or raw diagnostics", async () =>
   ).toBe(1);
   expect(output.join("\n")).not.toContain("arbitrary-command");
 });
+
+test.each([false, true])(
+  "writer HTTP failures expose bounded status and rate-limit evidence without secrets (%s)",
+  async (rateLimited) => {
+    const output: string[] = [];
+    const message = `gh api repos/MentallyQuill/Tavernary/actions/runs?token=secret failed: ${rateLimited ? "API rate limit exceeded" : "Resource not accessible by integration"} (HTTP 403); sensitive-provider-response`;
+    expect(
+      await runAutomationWriterCli({
+        env,
+        event: { inputs: { mode: "reconcile" } },
+        handlers: {
+          reconcile: async () => {
+            throw new Error(message);
+          },
+        },
+        write: (value) => output.push(value),
+      }),
+    ).toBe(1);
+    expect(JSON.parse(output[0])).toMatchObject({
+      status: "unavailable",
+      diagnostic: {
+        httpStatus: 403,
+        githubRateLimited: rateLimited,
+        githubRequestPath: "repos/MentallyQuill/Tavernary/actions/runs",
+      },
+    });
+    expect(output.join("\n")).not.toContain("secret");
+    expect(output.join("\n")).not.toContain("sensitive-provider-response");
+  },
+);

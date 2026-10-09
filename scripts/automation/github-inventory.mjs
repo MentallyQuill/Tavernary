@@ -135,14 +135,29 @@ async function boundedRunPages(gh, path, fields) {
   const first = [await inventoryPage(gh, path, fields, 1)];
   runPages(first);
   if (first[0].total_count > 1000 || first[0].total_count <= 100) return first;
-  for (let page = 2; page <= 10; page++) {
-    const next = [await inventoryPage(gh, path, fields, page)];
+  for (let page = 2; page <= 10;) {
+    // Revalidation may reload this history several times. Read only pages
+    // already justified by the last observed total, with at most four in flight.
+    const end = Math.min(
+      page + 3,
+      10,
+      Math.ceil(first.at(-1).total_count / 100),
+    );
+    if (end < page) return first;
+    const next = await Promise.all(
+      Array.from({ length: end - page + 1 }, (_, index) =>
+        inventoryPage(gh, path, fields, page + index),
+      ),
+    );
     runPages(next);
-    if (next[0].total_count > 1000)
+    if (next.some((value) => value.total_count > 1000))
       throw new Error("Workflow inventory changed beyond GitHub's result cap.");
-    first.push(...next);
-    if (next[0].workflow_runs.length < 100 || page * 100 >= next[0].total_count)
-      return first;
+    for (const value of next) {
+      first.push(value);
+      if (value.workflow_runs.length < 100 || page * 100 >= value.total_count)
+        return first;
+      page++;
+    }
   }
   throw new Error("Workflow inventory exceeds its page bound.");
 }
