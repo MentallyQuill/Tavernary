@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0f5189fb8665df6a23c4d05eaa38c477643bcede4a9f29a4f0d17520bc8a4d7f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-609727033:agnaistic-agnai",
+      "inputDigest": "96aaaee9fff913a95afe2ac4b12a9da0e9038b889f71686ad5e6519a096403db",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T12:53:53.048Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 5,
+      "immediateAttempts": 6
+    }
+  },
+  "updatedAt": "2026-10-09T12:38:53.048Z",
+  "completedAt": null
+}
