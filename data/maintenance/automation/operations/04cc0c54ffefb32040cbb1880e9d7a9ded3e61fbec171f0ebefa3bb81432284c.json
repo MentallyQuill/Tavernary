@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "04cc0c54ffefb32040cbb1880e9d7a9ded3e61fbec171f0ebefa3bb81432284c",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1320029623:mezi99-sillytavern-internalstates",
+      "inputDigest": "6954f02f29004b5d1de1b15f56bb0a62923589d8089e5dab89c71a46a362df7c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-09-01T12:37:05.520Z",
+    "nextEligibleAt": "2026-10-09T06:15:22.677Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T06:00:22.677Z",
+  "completedAt": null
+}
