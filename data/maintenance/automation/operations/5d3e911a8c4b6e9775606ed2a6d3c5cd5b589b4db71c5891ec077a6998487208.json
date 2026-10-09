@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5d3e911a8c4b6e9775606ed2a6d3c5cd5b589b4db71c5891ec077a6998487208",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:url-purrfect-logic-4-max-mini:purrfect-logic-4-max-mini",
+      "inputDigest": "0cb9d6df7b6913daee0e244be8471ef500d88b584f17ef4123d3cf92c201df29",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "1970-01-01T00:00:00.000Z",
+    "nextEligibleAt": "2026-10-09T04:36:19.198Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T04:21:19.198Z",
+  "completedAt": null
+}
