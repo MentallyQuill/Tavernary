@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5b922e60b5a5128c97ae71407366bba4b9b99fae8f77ff0c1c5fb5aed83a1a92",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:url-village-maker-google-drive-prompt:village-maker-google-drive-prompt",
+      "inputDigest": "1ce4f45c87d52f556c0961b489b62406e48b6ba06e38a88d888e46b1e3672245",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "1970-01-01T00:00:00.000Z",
+    "nextEligibleAt": "2026-10-09T04:36:19.198Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T04:21:19.198Z",
+  "completedAt": null
+}
