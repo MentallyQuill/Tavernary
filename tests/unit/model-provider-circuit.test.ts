@@ -115,6 +115,77 @@ test("a shared credential failure blocks another due operation across daily and 
   expect(f.budget().tickets).toHaveLength(0);
 });
 
+function completedDispatchHandoff(f: ReturnType<typeof circuitFixture>) {
+  const run = {
+    id: 600,
+    path: ".github/workflows/automation-worker.yml",
+    event: "workflow_dispatch",
+    display_title: `Automation ${f.due.key}`,
+    head_branch: "main",
+    head_sha: String(f.state.local.revision),
+    head_repository: { full_name: f.state.repository },
+    actor: { id: f.state.publisherActorId, type: "Bot" },
+    status: "completed",
+    conclusion: "success",
+    created_at: new Date(f.state.nowMs - 120_000).toISOString(),
+    updated_at: new Date(f.state.nowMs - 60_000).toISOString(),
+  };
+  f.due.workerRunId = run.id;
+  f.state.remote.runs.push(run);
+  return run;
+}
+
+test("a successful dispatch wrapper hands preparation to the writer without bypassing the provider circuit", async () => {
+  const f = circuitFixture();
+  completedDispatchHandoff(f);
+  expect(await f.run()).toEqual({
+    status: "waiting",
+    reason: "provider-circuit-open",
+  });
+  expect(f.commit).not.toHaveBeenCalled();
+  expect(f.dispatch).not.toHaveBeenCalled();
+});
+
+test("a completed dispatch handoff permits one budgeted model preparation", async () => {
+  const f = circuitFixture();
+  f.state.nowMs = failedAt + day;
+  completedDispatchHandoff(f);
+  expect((await f.run()).status).toBe("dispatched");
+  expect(f.commit).toHaveBeenCalledTimes(2);
+  expect(f.dispatch).toHaveBeenCalledOnce();
+  expect(f.budget().tickets[0].producer).toEqual({ runId: 700, workflow });
+});
+
+test.each([
+  "active",
+  "failed",
+  "producer",
+  "foreign-actor",
+  "foreign-repository",
+  "wrong-key",
+  "future-clock",
+] as const)(
+  "%s worker proof cannot acknowledge the dispatch handoff",
+  async (variant) => {
+    const f = circuitFixture();
+    f.state.nowMs = failedAt + day;
+    const run = completedDispatchHandoff(f);
+    if (variant === "active") run.status = "in_progress";
+    if (variant === "failed") run.conclusion = "failure";
+    if (variant === "producer") run.path = workflow;
+    if (variant === "foreign-actor") run.actor.id++;
+    if (variant === "foreign-repository")
+      run.head_repository.full_name = "Other/Repo";
+    if (variant === "wrong-key")
+      run.display_title = `Automation ${f.other.key}`;
+    if (variant === "future-clock")
+      run.updated_at = new Date(f.state.nowMs + day).toISOString();
+    expect(await f.run()).toEqual({ status: "superseded" });
+    expect(f.commit).not.toHaveBeenCalled();
+    expect(f.dispatch).not.toHaveBeenCalled();
+  },
+);
+
 test("one due probe binds its own envelope and excludes other jobs even after expiry and midnight", async () => {
   const f = circuitFixture();
   f.state.nowMs = failedAt + day;

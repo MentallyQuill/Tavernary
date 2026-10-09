@@ -35,6 +35,7 @@ import {
   loadGenerationOwnerRequestRuns,
 } from "./github-inventory.mjs";
 import { loadAutomationInventory } from "./inventory.mjs";
+import { trustedOperationWorkerRuns } from "./inventory-worker.mjs";
 import { createPreparedPublicationContext } from "./publication-context.mjs";
 import {
   loadPreparedGithubResult,
@@ -498,7 +499,35 @@ export async function runModelWriterPreparation({
     const workflow = workflows[operation?.identity.kind];
     if (!operation) return { status: "superseded" };
     if (!workflow) throw new Error("Model preparation kind is invalid.");
-    if (operation.workerRunId !== null) return { status: "superseded" };
+    if (operation.workerRunId !== null) {
+      // The completed dispatch wrapper guards the controller, not its recipient.
+      // Actual model producers and unfinished/foreign handoffs remain blocked.
+      const handoff = trustedOperationWorkerRuns(
+        {
+          runs: initial.remote.runs,
+          publisherActorId: initial.publisherActorId,
+        },
+        operation,
+      ).find((run) => run.id === operation.workerRunId);
+      const created = Date.parse(handoff?.created_at ?? ""),
+        completed = Date.parse(handoff?.updated_at ?? "");
+      if (
+        !handoff ||
+        handoff.status !== "completed" ||
+        handoff.conclusion !== "success" ||
+        handoff.head_repository?.full_name !== repository ||
+        !/^[a-f0-9]{40}$/u.test(handoff.head_sha ?? "") ||
+        (handoff.head_sha !== initial.local.revision &&
+          isRequestAncestor(handoff.head_sha, initial.local.revision) !==
+            true) ||
+        !Number.isFinite(created) ||
+        created < Date.parse(operation.createdAt) ||
+        !Number.isFinite(completed) ||
+        completed < created ||
+        completed > initial.nowMs + 300_000
+      )
+        return { status: "superseded" };
+    }
     if (
       operation.identity.kind === "report-import" &&
       !isReportNarrativeRetry(operation)
