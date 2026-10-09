@@ -25,8 +25,8 @@ attached PRs, required checks, independent review, merge, and production proof.
 
 Current delivery: [draft PR #818](https://github.com/MentallyQuill/Tavernary/pull/818)
 is attached. The last fully successful required CI head is
-`61cecc312aa0b231378340e2fdb1061d73fcaa95`
-([run 37867288511](https://github.com/MentallyQuill/Tavernary/actions/runs/37867288511)),
+`4253b02bda417607f998b44f028645ff80c90028`
+([run 37875451088](https://github.com/MentallyQuill/Tavernary/actions/runs/37875451088)),
 with both `verify` and `visual` successful.
 This includes supported runtimes, the weekly restore drill, exact-build
 confirmation fallback and shared-quota retention retries.
@@ -35,7 +35,8 @@ assertions. Its repair, head `9736242859f1623833a8bab0c43cc9088c168d18`, failed
 [run 37872546212](https://github.com/MentallyQuill/Tavernary/actions/runs/37872546212)
 on seven deployment-recovery fixtures missing the native artifact `total_count`.
 The fixtures now match the bounded reader; integrity requirements remain intact.
-The recovery checkpoint below requires fresh exact-head CI. A green implementation
+The recovery checkpoint passed both required jobs; the new canary checkpoint
+requires its own exact-head CI. A green implementation
 branch does not establish merge or native production drill evidence.
 
 The active delivery goal freezes the shared architecture. Finish the concrete
@@ -54,15 +55,15 @@ boundaries.
 | ID | Required result | Current evidence/status |
 | --- | --- | --- |
 | R1 | Current main base; preserve original changes | Isolated branch; original user changes rechecked unchanged on October 8. Final main/conflict recheck pending. |
-| R2 | Recover every missed core handoff | Native writer/event/scheduled recovery covers prepared results, owner generation requests, model accounting and dependency retries. Final complete-flow canary remains. |
+| R2 | Recover every missed core handoff | Native writer/event/scheduled recovery covers prepared results, owner generation requests, model accounting and dependency retries. Complete-flow offline canary passed; trusted-main native run remains. |
 | R3 | Eligible Kits/owner flows; preserve manual decisions | Domain-specific publication, withdrawal and owner validators; manual PR preparation and original divergence guards preserved. Live completion proof pending. |
-| R4 | Cancellation and 72-hour outage recovery | Worker recovery, authenticated incremental usage and multi-card owner checkpoints tested. One final production-adapter outage canary remains. |
+| R4 | Cancellation and 72-hour outage recovery | Complete project, owner, Kit and refresh flows recover dropped durable publication, deployment, lifecycle and receipt responses after a simulated 72-hour outage, with inert replay. The existing budget matrix covers UTC day/month boundaries. Native trusted-main canary remains. |
 | R5 | Exact head, identity, authority, tombstones, paths | Native run/artifact/source custody and fresh publication authority tested; canonical identifiers and manual exceptions retained. Independent review remains. |
 | R6 | Serialize and deduplicate writes/deployments | Shared canonical writer and bounded controller quota implemented. Restore confirmation and bundle retention share one reserved slot, with bounded native history, active-run coalescing and failed-attempt backoff. Live complete-flow proof remains. |
 | R7 | Prevent ordinary deployment regression | Planner and fresh serialized ancestry guard tested against a queued build undoing an owner restore. New genuine publishable revisions resume normal deployment; live canary pending. |
 | R8 | Recover when old hosted manifest is unavailable | Failed old-manifest reads are advisory; new export is strictly verified. Production recovery proof pending. |
 | R9 | Confirm public revision, digests, browser behavior | Fixed-origin integrity and Chromium/WebKit confirmation tested. Bounded automatic fallback accepts only the actually served verified build; a same-SHA rebuild requires its own build/digest/browser proof. Actual merged public revision and assets still required. |
-| R10 | Retained verified bundles and safe rollback | Full-export archives, immutable-release retention and owner-only current-data restore tested. Interrupted empty drafts recover the exact served archive after Actions expiry, with all-file integrity, current-data and public/browser proof. Delayed restore confirmation rechecks owner removals and current data. Live configuration/bundle proof remains. |
+| R10 | Retained verified bundles and safe rollback | Full-export archives, immutable-release retention and owner-only current-data restore tested. Interrupted empty drafts recover the exact served archive after Actions expiry, with all-file integrity, current-data and public/browser proof. Delayed restore confirmation rechecks owner removals and current data. Native immutable releases and the enable variable are verified enabled; actual retained bundle and drill proof remains. |
 | R11 | GitHub health checks and bounded incidents | Native typed incidents, deduplication and positive-proof closure implemented; unreadable retry histories are visible. Live health verification remains. |
 | R12 | Trusted fields, factual fallback, deterministic scans | Report facts publish independently of optional narrative; cached/manual metadata and scan contracts preserved. Final consumer/browser proof remains. |
 | R13 | Scheduled changed metadata, cache, global budgets | Native scheduled enrichment, field/source checkpoints and model allowances cover all five automated credential-bearing workflows, including generation and repairs. Live progress proof remains. |
@@ -70,7 +71,7 @@ boundaries.
 | R15 | Verified supported-runtime policy | Implemented: official schedule validation, Node 24 manifest and declarations, shared workflow runtime file, weekly full compatibility checks, constrained recoverable Publisher PRs, native exact-head current/candidate CI merge gate and 90-day/EOL incidents. Head ec7fdd8c2 passes required full CI; actual scheduled proof remains. Node 26 becomes eligible only on its official LTS date. |
 | R16 | Safe bounded retention | Open/recently closed inventory, release pages and native run artifacts bounded before fetching; pending references and old declines remain visible. Eligible terminal pairs retire after ninety days with compact markers and exact Git-history replay. Cleanup shares the twenty-operation quota and protects pending/current/retained/canary proof plus completed unconfirmed owner restores. Weekly offline drill implemented; actual native drill proof remains. |
 | R17 | Owner runbook | Updated against current generation, refresh, Kit, identity, restore and shared-writer sources plus actual GitHub permissions. Includes token repair, exact recovery/rollback commands, switches, focused content/browser checks and owner responsibilities. Final merged native command/configuration proof remains. |
-| R18 | Attached PRs, CI, review, merge, production proof | PR #818 attached. Head 61cecc312 is fully green; the next retention checkpoint needs its exact-head CI. Independent review, merge, live canary/drill and public proof remain. |
+| R18 | Attached PRs, CI, review, merge, production proof | PR #818 attached. Head 4253b02b is fully green; the canary checkpoint needs its exact-head CI. Independent review, merge, live canary/drill and public proof remain. |
 
 Generation checkpoint: 19 affected suites/311 checks passed. Retry checkpoint:
 13 affected suites/247 checks passed, followed by 16 final retry checks. Typecheck,
@@ -79,6 +80,44 @@ scoped zero-warning lint, formatting and whitespace checks passed. Full CI on
 for owner access to the model job. The corrected tests require owners to submit
 read-only requests and reserve actual model generation for the Publisher app.
 Repository protections and required checks remain unchanged.
+
+## Complete-flow fixture canary and native configuration
+
+The owned Git fixture now runs production operation discovery, reconciliation,
+worker dispatch, exact-head project/owner merge, prepared Kit/refresh publication,
+authenticated artifact reads, public integrity confirmation, lifecycle projection
+and native receipt persistence together. Native responses are deliberately lost
+after durable publication, deployment, issue closure and finalization. Recovery
+advances the injected clock by seventy-two hours and finishes each eligible flow
+exactly once; subsequent replay adds no effects. Manual publication, owner decline,
+foreign Publisher identity and changed valid input make no canonical mutation.
+Counters and retained effect journals derive from actual injected API/Git effects.
+
+The read-only `verify-automation.yml` workflow uses trusted main code and no
+publication/model credentials. Its bounded matrix reuses existing tests for
+pagination, same-key races, receipt/artifact integrity, provider and credential
+failures, budget boundaries, deployment regression and owner-removal rollback
+guards. The twenty-two suites passed 245 checks in 25.50 seconds; typecheck and
+scoped zero-warning lint passed. The workflow also builds a real export and runs
+HTTP confirmation and Chromium/WebKit behavior checks with external resources
+blocked. Local fixture proof is separate from a live trusted-main workflow run,
+retained-release drill and the actual production deployment.
+
+The local command built 508 projects and 23 Kits and passed seven browser/CLI
+checks in 47.0 seconds. The one WebKit skip avoids running the same CLI case
+twice; that CLI itself launches both engines. This exercised the fresh local
+export, not a downloaded production release.
+
+Ruling: keep the flow factory in its dedicated canary module, consuming the
+existing typed shared builders. Re-exporting it from `automation-fixtures.ts`
+would create a cycle and load the complete writer graph into unrelated tests.
+Reuse the existing fault matrix rather than duplicate it in a new framework.
+
+Approved GitHub setup is live: `PUT immutable-releases` succeeded, and fresh
+`GET repos/MentallyQuill/Tavernary/immutable-releases` returned `enabled: true`.
+The native repository variable `TAVERNARY_IMMUTABLE_RELEASES_ENABLED` is verified
+`true`, created `2026-10-09T02:38:51Z`. Actual retained bundles and drill evidence
+remain required after merge.
 
 ## Owner restore and expired-archive recovery checkpoint
 

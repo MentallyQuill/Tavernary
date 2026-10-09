@@ -1,0 +1,83 @@
+name: "Maintenance: Verify recovery canary"
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-automation
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.actor_id == 2625904 ||
+       github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out trusted verification code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up supported Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - name: Verify interrupted flows, authority, native custody, races and budgets with owned fixtures
+        shell: bash
+        run: |
+          mkdir -p .tmp
+          npx vitest run --reporter=dot --reporter=json --outputFile=.tmp/automation-canary.json \
+            tests/unit/automation-end-to-end.test.ts \
+            tests/unit/production-inventory.test.ts \
+            tests/unit/project-operation-inventory.test.ts \
+            tests/unit/kit-operation-inventory.test.ts \
+            tests/unit/automation-controller.test.ts \
+            tests/unit/automation-worker.test.ts \
+            tests/unit/canonical-data.test.ts \
+            tests/unit/prepared-github.test.ts \
+            tests/unit/prepared-publication.test.ts \
+            tests/unit/prepared-failure.test.ts \
+            tests/unit/preparation-recovery.test.ts \
+            tests/unit/automation-finalization.test.ts \
+            tests/unit/lifecycle-github.test.ts \
+            tests/unit/model-budget.test.ts \
+            tests/unit/model-budget-github.test.ts \
+            tests/unit/generation-budget.test.ts \
+            tests/unit/deployment-writer.test.ts \
+            tests/unit/deployment-active-gate.test.ts \
+            tests/unit/rollback-plan.test.ts \
+            tests/unit/rollback-canonical.test.ts \
+            tests/unit/restore-writer.test.ts \
+            tests/unit/site-writer-runtime.test.ts
+      - name: Build the current static export and exact revision manifest
+        shell: bash
+        run: |
+          npm run build
+          node scripts/automation/revision-manifest.mjs write "$(git rev-parse HEAD)" "canary-${GITHUB_RUN_ID}-attempt-${GITHUB_RUN_ATTEMPT}"
+      - run: npx playwright install --with-deps chromium webkit
+      - name: Verify real HTTP confirmation and browser behavior without external resources
+        run: npm run test:deployment-fixture
+        env:
+          TAVERNARY_DEPLOYMENT_FIXTURE_ORIGIN: http://127.0.0.1:3000
+          TAVERNARY_OFFLINE_RESTORE_DRILL: "true"
+      - name: Retain fixture evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: automation-canary-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .tmp/automation-canary.json
+            .tmp/automation-canary-effects-*.json
+            out/revision.json
+            test-results
+          retention-days: 90
+          if-no-files-found: warn
