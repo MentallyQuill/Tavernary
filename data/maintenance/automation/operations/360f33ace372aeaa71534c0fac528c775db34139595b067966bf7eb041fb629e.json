@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "360f33ace372aeaa71534c0fac528c775db34139595b067966bf7eb041fb629e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:url-reddit-1ws8y8h:reddit-1ws8y8h",
+      "inputDigest": "7569c69c125836a276e66a36d85f893b3cf6cac1844f182a0489099b917b9c3d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "1970-01-01T00:00:00.000Z",
+    "nextEligibleAt": "2026-10-09T04:36:19.198Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-09T04:21:19.198Z",
+  "completedAt": null
+}
