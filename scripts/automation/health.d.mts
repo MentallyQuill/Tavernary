@@ -14,6 +14,7 @@ export function validateHealthFinding(value: unknown): HealthFinding;
 export interface HealthInput {
   nowMs: number;
   runtime?: { reason: string };
+  restoreDrill?: { status: "active" | "recovered" };
   operations?: Array<
     AutomationOperation & { automatic: boolean; progressAt?: string }
   >;

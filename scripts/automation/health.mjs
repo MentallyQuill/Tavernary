@@ -18,9 +18,10 @@ export const HEALTH_TITLES = Object.freeze({
   "dependency-checks-failed": "A dependency update failed verification",
   "enrichment-unresolved": "Catalog enrichment has unresolved projects",
   "runtime-maintenance": "The Node runtime needs maintenance",
+  "restore-drill-failed": "The retained site bundle failed its recovery drill",
 });
 const subjectPattern =
-  /^(?:refresh:(?:github|codeberg)|operation:[a-f0-9]{64}|dependency:(?:model-provider|publisher|budget)|deployment:pages|enrichment:catalog|runtime:node|pull:[1-9]\d*)$/u;
+  /^(?:refresh:(?:github|codeberg)|operation:[a-f0-9]{64}|dependency:(?:model-provider|publisher|budget)|deployment:(?:pages|restore-drill)|enrichment:catalog|runtime:node|pull:[1-9]\d*)$/u;
 const reasons = new Set([
   ...AUTOMATION_FAILURE_REASON_CODES,
   "observation-stale",
@@ -82,6 +83,7 @@ export function assessAutomationHealth({
   budget,
   dependencies = [],
   runtime,
+  restoreDrill,
   nowMs,
 }) {
   if (
@@ -93,6 +95,17 @@ export function assessAutomationHealth({
   )
     throw new Error("Automation health observation is invalid.");
   const result = [];
+  if (restoreDrill)
+    result.push(
+      finding(
+        "restore-drill-failed",
+        "deployment:restore-drill",
+        restoreDrill.status !== "recovered",
+        restoreDrill.status === "recovered"
+          ? "verified-recovery"
+          : "checks-failed",
+      ),
+    );
   if (runtime) {
     const active = [
       "runtime-eol",

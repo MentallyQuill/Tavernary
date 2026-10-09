@@ -10,6 +10,7 @@ on:
     workflows:
       - "Site: Validate changes"
       - "Maintenance: Verify supported runtimes"
+      - "Maintenance: Drill retained bundle"
       - "Projects: Publish validated transaction"
       - "Project submissions: Create review PR"
       - "Project owner requests: Create review PR"

@@ -1283,33 +1283,53 @@ export async function runAutomationWriterReconciliation({
     dependencyPullNumbers.length
       ? 1
       : 0;
-  const healthInput = (state) => ({
-    findings: [
-      ...assessInventoryHealth(state),
-      ...assessAutomationHealth({
-        nowMs: state.nowMs,
-        runtime:
-          runtime.status === "disabled"
-            ? undefined
-            : {
-                reason:
-                  runtime.decision?.action === "incident"
-                    ? runtime.decision.reason
-                    : runtime.reason === "runtime-verification-failed" ||
-                        runtime.status === "unavailable"
-                      ? runtime.reason
-                      : runtime.decision?.reason,
-              },
-      }),
-    ],
-    existingIssues: state.remote.issues,
-    publisherActorId: state.publisherActorId,
-  });
+  let restoreDrill;
+  const healthInput = async (state) => {
+    if (state.local.runtimePolicy !== undefined) {
+      try {
+        const { loadRestoreDrillHealth } = await import("./restore-drill.mjs");
+        restoreDrill = await loadRestoreDrillHealth({
+          gh,
+          repository,
+          revision: state.local.revision,
+          nowMs: state.nowMs,
+          isAncestor: (a, b) => enrichmentRequestAncestor(root, a, b),
+        });
+      } catch {
+        restoreDrill = { status: "active" };
+      }
+    }
+    return {
+      // The separate read-only drill has no publication authority. Only native
+      // completed restore/browser steps can recover its operational incident.
+      findings: [
+        ...assessInventoryHealth(state),
+        ...assessAutomationHealth({
+          nowMs: state.nowMs,
+          restoreDrill,
+          runtime:
+            runtime.status === "disabled"
+              ? undefined
+              : {
+                  reason:
+                    runtime.decision?.action === "incident"
+                      ? runtime.decision.reason
+                      : runtime.reason === "runtime-verification-failed" ||
+                          runtime.status === "unavailable"
+                        ? runtime.reason
+                        : runtime.decision?.reason,
+                },
+        }),
+      ],
+      existingIssues: state.remote.issues,
+      publisherActorId: state.publisherActorId,
+    };
+  };
   let health = { status: "idle" },
     initialHealth,
     healthSlot = 0;
   try {
-    initialHealth = healthInput(state);
+    initialHealth = await healthInput(state);
     const proposals = planIncidentUpdates(initialHealth);
     healthSlot =
       usedSlots + runtimeSlot + dependencySlot + enrichmentSlot < 20 &&

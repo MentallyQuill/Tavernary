@@ -5,6 +5,21 @@ import { expect, test } from "vitest";
 import { parse } from "yaml";
 
 const workflowDirectory = resolve(".github/workflows");
+test("weekly restore drills verify both browsers without publication credentials", async () => {
+  const drill = await workflow("restore-drill");
+  expect(drill.on.schedule).toHaveLength(1);
+  expect(drill.permissions).toEqual({ contents: "read" });
+  const source = await readFile(
+    resolve(workflowDirectory, "restore-drill.yml"),
+    "utf8",
+  );
+  expect(source).not.toContain("secrets.");
+  expect(source).not.toContain("permission-contents: write");
+  expect(source).not.toContain("environment: publisher");
+  expect(source).toContain("chromium webkit");
+  expect(source).toContain('TAVERNARY_OFFLINE_RESTORE_DRILL: "true"');
+  expect(source).toContain("tests/deployment-e2e/restore-bundle.spec.ts");
+});
 test("runtime compatibility is scheduled read-only and transition PRs test the current runtime", async () => {
   const runtime = await workflow("check-runtime");
   expect(runtime.on.schedule).toHaveLength(1);

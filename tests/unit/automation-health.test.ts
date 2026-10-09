@@ -54,6 +54,29 @@ import {
 } from "../helpers/automation-fixtures";
 
 const nowMs = AUTOMATION_NOW;
+test("offline drill failures use a single recoverable operational incident", () => {
+  const failed = assessAutomationHealth({
+    nowMs,
+    restoreDrill: { status: "active" },
+  });
+  expect(failed).toEqual([
+    expect.objectContaining({
+      code: "restore-drill-failed",
+      subject: "deployment:restore-drill",
+      status: "active",
+      reason: "checks-failed",
+    }),
+  ]);
+  expect(
+    assessAutomationHealth({ nowMs, restoreDrill: { status: "recovered" } }),
+  ).toEqual([
+    expect.objectContaining({
+      key: failed[0].key,
+      status: "recovered",
+      reason: "verified-recovery",
+    }),
+  ]);
+});
 test("the scheduled canonical lane reserves a bounded runtime maintenance slot", async () => {
   const { state } = await metadataMaintenanceFixture();
   state.operations = [];

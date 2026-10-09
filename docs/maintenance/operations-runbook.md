@@ -652,6 +652,38 @@ Deployment trigger sequence:
 
 ## GitHub operational incidents
 
+### Supported runtime and retained-bundle checks
+
+Production and workflow setup share `.node-version`, initially Node 24 LTS.
+The official Node release schedule determines eligible successors. Weekly
+compatibility checks run full verification on the current and next stable LTS;
+Node 26 is not eligible before its official October 28, 2026 LTS date. The
+serialized writer creates a constrained runtime PR and merges only after native
+CI proves its exact head on both current and candidate runtimes. Closing or
+drafting that PR preserves the owner's manual decision. Failed candidates retain
+the working runtime and public export. An incident warns 90 days before end of
+support; an expired runtime stays unhealthy until a supported transition merges.
+
+The weekly restore drill authenticates the immutable bundle for the active
+deployment, checks its integrity, restores it into a fresh temporary workspace,
+and verifies Chromium and WebKit with outbound browser/provider requests blocked.
+It has read-only credentials and performs no public deployment. A failed or
+missing drill raises one operational incident. Recovery needs a successful native
+restore and offline browser job less than eight days old.
+
+The owner can request either check on current main with the GitHub CLI:
+
+```powershell
+gh workflow run check-runtime.yml --repo MentallyQuill/Tavernary --ref main
+gh workflow run restore-drill.yml --repo MentallyQuill/Tavernary --ref main
+gh run list --repo MentallyQuill/Tavernary --workflow restore-drill.yml --limit 5
+```
+
+Inspect the retained `site-restore-drill-<run-id>-<attempt>` artifact and native
+job result. A local bundle round-trip is useful diagnosis; it does not replace
+the actual GitHub retained-bundle drill. If GitHub disables schedules or a token
+needs repair, the owner must re-enable automation or replace the credential.
+
 The scheduled shared writer checks individual repository observations at
 forty-eight hours, due factual report imports at twenty-four hours, and eligible
 automatic submission/publication progress at two hours. A fresh companion clock
