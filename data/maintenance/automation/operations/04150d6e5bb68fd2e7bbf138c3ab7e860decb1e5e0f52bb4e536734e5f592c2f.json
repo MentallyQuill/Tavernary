@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "04150d6e5bb68fd2e7bbf138c3ab7e860decb1e5e0f52bb4e536734e5f592c2f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1095739220:chesswoodspixel-sillytavern-lorebookstickysort",
+      "inputDigest": "87ca7550bb657e86dccb6b9385350e61beb270ca65f6e4b63d5865d385756514",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T09:25:00.259Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-09T09:10:00.259Z",
+  "completedAt": null
+}
