@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5f84af6945f9656e2b6d1d8493351d4d5c5255114927ab8b064e265145d70068",
+    "identity": {
+      "kind": "project",
+      "subject": "issue:620",
+      "inputDigest": "47ce75dd83cb7f72b9bfef0415093b3fd47acef7fee8c9c0ed2a2f3676443ecb",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-08-24T03:58:53.000Z",
+    "nextEligibleAt": "2026-10-09T06:15:22.677Z",
+    "expectedSha": "bd957f1a9c32f7812beac07c0f21c07bfaf3948b",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T06:00:22.677Z",
+  "completedAt": null
+}
