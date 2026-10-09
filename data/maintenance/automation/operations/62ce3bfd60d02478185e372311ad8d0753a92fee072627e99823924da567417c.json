@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "operation": {
-    "key": "c787a71e7169e20b81d8f44fd954ca27fa0facb55c6357e197b4fa9f0ecf4969",
+    "key": "62ce3bfd60d02478185e372311ad8d0753a92fee072627e99823924da567417c",
     "identity": {
-      "kind": "refresh",
-      "subject": "source:github-1170213715",
-      "inputDigest": "32df44db43cd020bb7963c2a349e6e04f78cefc1501dffc5f1e8afab13dd32ba",
+      "kind": "advisory",
+      "subject": "source:codeberg-2445404:targren-lumiverse-swipescrubber",
+      "inputDigest": "5d8cb1dac43037ae5873ee56eb88f8d7c68ffcd49bb33f4c478cdfaf9c26593c",
       "policyVersion": "2026-07-29"
     },
     "stage": "admitted",
-    "createdAt": "2026-09-18T12:16:22.415Z",
+    "createdAt": "2026-10-08T14:39:08.698Z",
     "nextEligibleAt": "2026-10-09T17:47:39.056Z",
     "expectedSha": null,
     "workerRunId": null,
@@ -18,8 +18,8 @@
         "kind": "unknown",
         "reasonCode": "unclassified-failure"
       },
-      "transientAttempts": 0,
-      "immediateAttempts": 1
+      "transientAttempts": 51,
+      "immediateAttempts": 52
     }
   },
   "updatedAt": "2026-10-09T17:32:39.056Z",

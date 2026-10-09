@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0959b6e451b1511f9045c1ff572df9f0b19e845f9081d857ea3b23b1bc988b87",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-841159088:lenanderson-sillytavern-charswitch",
+      "inputDigest": "bb8686a04827b19d5306a105853ac6d510f1f4171a00e53aaafaf9b661d3d71f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T12:41:39.875Z",
+    "expectedSha": null,
+    "workerRunId": 37924797650,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-09T12:26:39.875Z",
+  "completedAt": null
+}

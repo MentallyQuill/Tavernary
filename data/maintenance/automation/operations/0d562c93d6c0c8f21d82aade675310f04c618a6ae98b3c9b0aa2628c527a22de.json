@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0d562c93d6c0c8f21d82aade675310f04c618a6ae98b3c9b0aa2628c527a22de",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1366168231:kohz87-npc-state-delta",
+      "inputDigest": "b3549a63b4c255f28c6fc5f4ac9a39dfe46767a61b4fc3fedc603c4dbc4582fc",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T12:41:39.875Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T12:26:39.875Z",
+  "completedAt": null
+}

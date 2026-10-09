@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "10100bf12043522739abe2957f26ddbd4a9721d0b250acbee71b963b9506ec86",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1349176738:closuretxt-game-manager-st",
+      "inputDigest": "77f9cac0bbb287515b478801e98eaf1f223e6aae5ce751c76b37261e267bdbee",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T12:53:53.048Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T12:38:53.048Z",
+  "completedAt": null
+}

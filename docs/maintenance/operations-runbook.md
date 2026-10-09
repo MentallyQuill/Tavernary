@@ -685,6 +685,35 @@ receipt, it replaces only its own path using the freshly read GitHub blob SHA.
 Damaged publication records, model budgets and tombstones still stop unsafe work;
 do not delete them to bypass validation.
 
+For already-confirmed operations, workers and finalizers read the fresh issue,
+complete deterministic PR branch history and saved worker instead of repeatedly
+fetching global history. Canonical catalog, publication and deployment validation
+still run. Missing, unsupported or stale receipts, changed revisions and ordinary
+worker dispatch fall back to full discovery. A receipt cannot grant publication
+authority.
+
+Confirmation of a known completed deployment run reads fresh deployment and
+rollback state without fetching unrelated issue or PR inventory. Recovery tied
+to an operation still uses full discovery and exact publication authority.
+
+The canonical writer and the owner restore deploy job share GitHub's bounded FIFO
+queue: at most one runs, with up to one hundred pending runs in order. Pending
+confirmation, publication and finalization are no longer replaced by each newer
+reconciliation wake. The controller also completes at most one oldest eligible
+confirmed operation inside its current serialized pass, within the existing
+twenty-operation limit. It rereads authority and persists the actual resulting
+receipt; a lost response cannot write retry state from an earlier candidate.
+When the queue is full or a run is interrupted, durable state and scheduled
+reconciliation remain the recovery mechanism. Inspect native run state before
+issuing another manual wake.
+
+Recognized GitHub primary and secondary rate limits, including HTTP 403 responses,
+classify as `transient/provider-rate-limited`. Let the existing retry schedule back
+off rather than repeatedly dispatching the writer. Safe CLI diagnostics expose only
+HTTP status, a rate-limit flag and a bounded request path. An ordinary permission
+denial remains `configuration/authentication-unavailable`; inspect the actual
+diagnostic before changing App permissions or replacing credentials.
+
 Scheduled reconciliation recovers dropped restore-confirmation wakes from bounded
 native owner-run history within the ninety-day artifact window. Active confirmation
 runs coalesce; repeated failures back off. Confirmation and bundle retention share
@@ -811,7 +840,8 @@ removals before probing and before recording the override.
 ### Owner responsibilities
 
 The owner must maintain GitHub/App and provider credentials, available billing
-and intended budgets, and GitHub account/environment permissions. Major dependency
+and intended budgets, domain registration/renewal, and GitHub account/environment
+permissions. Major dependency
 or policy transitions that the constrained updater cannot safely verify require
 review. Re-enable scheduled workflows if GitHub disables them for inactivity,
 then request reconciliation and inspect native health/runtime/drill results.
@@ -821,6 +851,14 @@ while GitHub itself is unavailable.
 ## GitHub operational incidents
 
 ### Supported runtime and retained-bundle checks
+
+The constrained updater selects verified allowlisted Dependabot patch/minor
+changes and requires exact-head native `verify` and `visual` success before
+merging. It refreshes a stale substantive base. Operation-receipt bookkeeping
+alone can preserve already-green CI only when complete Git ancestry and regular
+receipt-file comparison prove equivalence; unknown paths, unsafe modes or missing
+history still require refresh. Major or unallowlisted changes and expanded policy
+remain owner review. Closed or drafted proposals preserve the owner's decision.
 
 Production and workflow setup share `.node-version`, initially Node 24 LTS.
 The official Node release schedule determines eligible successors. Weekly

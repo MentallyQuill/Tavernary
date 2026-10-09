@@ -1,4 +1,7 @@
-import { readFile } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
+import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { expect, test } from "vitest";
 import {
   inspectNpmDependencyUpdate,
@@ -375,6 +378,143 @@ test("the dependency writer authenticates native Git objects and CI before one h
     sha: "b".repeat(40),
     merge_method: "squash",
   });
+
+  // Green CI must survive controller bookkeeping without admitting substantive
+  // or non-regular changes. Use real Git ancestry, paths and modes for the proof.
+  const receiptRoot = await mkdtemp(
+    join(tmpdir(), "tavernary-dependency-base-"),
+  );
+  const receiptPath = `data/maintenance/automation/operations/${"1".repeat(64)}.json`;
+  const git = (...args: string[]) =>
+    execFileSync("git", args, {
+      cwd: receiptRoot,
+      encoding: "utf8",
+      windowsHide: true,
+      stdio: ["ignore", "pipe", "pipe"],
+    }).trim();
+  try {
+    git("init", "--quiet");
+    git("config", "user.name", "Tavernary owned test fixture");
+    git("config", "user.email", "fixture@example.invalid");
+    await mkdir(join(receiptRoot, "data/maintenance/automation/operations"), {
+      recursive: true,
+    });
+    await writeFile(join(receiptRoot, receiptPath), '{"stage":"confirmed"}\n');
+    git("add", ".");
+    git("commit", "--quiet", "-m", "Owned receipt baseline");
+    const base = git("rev-parse", "HEAD");
+    values[`git/commits/${base}`] = {
+      sha: base,
+      tree: { sha: "c".repeat(40) },
+    };
+    values["pulls/42/update-branch"] = { message: "Updating branch" };
+    await writeFile(join(receiptRoot, receiptPath), '{"stage":"finalized"}\n');
+    for (const scenario of [
+      { path: receiptPath, mode: "100644", expected: "merged" },
+      { path: "tests/changed.test.ts", mode: "100644", expected: "updated" },
+      { path: "scripts/changed.mjs", mode: "100644", expected: "updated" },
+      { path: receiptPath, mode: "100755", expected: "updated" },
+      { path: receiptPath, mode: "120000", expected: "updated" },
+      {
+        path: receiptPath,
+        mode: "100644",
+        missingHistory: true,
+        expected: "updated",
+      },
+      {
+        path: receiptPath,
+        mode: "100644",
+        mainMoved: true,
+        expected: "waiting",
+      },
+    ]) {
+      git("read-tree", base);
+      const blob = git("hash-object", "-w", join(receiptRoot, receiptPath));
+      git(
+        "update-index",
+        "--add",
+        "--cacheinfo",
+        scenario.mode,
+        blob,
+        scenario.path,
+      );
+      const tree = git("write-tree");
+      const main = git(
+        "commit-tree",
+        tree,
+        "-p",
+        base,
+        "-m",
+        "Owned base drift",
+      );
+      values["git/ref/heads/main"] = {
+        ref: "refs/heads/main",
+        object: { sha: main },
+      };
+      const comparedBase = scenario.missingHistory ? "f".repeat(40) : base;
+      values[`git/commits/${comparedBase}`] = {
+        sha: comparedBase,
+        tree: { sha: "c".repeat(40) },
+      };
+      values[`compare/${main}...${"b".repeat(40)}`] = {
+        merge_base_commit: { sha: comparedBase },
+      };
+      calls.length = 0;
+      let mainReads = 0;
+      const driftResult = await runDependencyWriter({
+        root: receiptRoot,
+        pullNumbers: [42],
+        env: {
+          GITHUB_REF: "refs/heads/main",
+          GITHUB_REPOSITORY: "MentallyQuill/Tavernary",
+          GITHUB_EVENT_NAME: "workflow_dispatch",
+          GITHUB_ACTOR_ID: "2625904",
+          GITHUB_WORKFLOW_REF:
+            "MentallyQuill/Tavernary/.github/workflows/automation-writer.yml@refs/heads/main",
+        },
+        gh: async (args, body) => {
+          const response = await gh(args, body);
+          if (
+            args.some((arg) => arg.endsWith("git/ref/heads/main")) &&
+            scenario.mainMoved &&
+            mainReads++ > 0
+          )
+            return JSON.stringify({
+              ref: "refs/heads/main",
+              object: { sha: "a".repeat(40) },
+            });
+          return response;
+        },
+        loadDeployment: async () => true,
+      });
+      expect(driftResult.status, `${scenario.path} ${scenario.mode}`).toBe(
+        scenario.expected,
+      );
+      const effects = calls.filter((call) => call.args.includes("PUT"));
+      if (scenario.expected === "waiting") {
+        expect(driftResult.reason).toBe("input-superseded");
+        expect(effects).toHaveLength(0);
+        continue;
+      }
+      expect(effects).toHaveLength(1);
+      expect(effects[0].args).toContain(
+        `repos/MentallyQuill/Tavernary/pulls/42/${scenario.expected === "merged" ? "merge" : "update-branch"}`,
+      );
+      expect(JSON.parse(effects[0].body!)).toMatchObject(
+        scenario.expected === "merged"
+          ? { sha: "b".repeat(40) }
+          : { expected_head_sha: "b".repeat(40) },
+      );
+    }
+  } finally {
+    if (!receiptRoot.startsWith(join(tmpdir(), "tavernary-dependency-base-")))
+      throw new Error("Owned fixture cleanup path is invalid.");
+    await rm(receiptRoot, { recursive: true, force: true });
+    values["git/ref/heads/main"] = {
+      ref: "refs/heads/main",
+      object: { sha: "a".repeat(40) },
+    };
+  }
 
   calls.length = 0;
   (values["actions/runs/123"] as { head_sha: string }).head_sha = "a".repeat(

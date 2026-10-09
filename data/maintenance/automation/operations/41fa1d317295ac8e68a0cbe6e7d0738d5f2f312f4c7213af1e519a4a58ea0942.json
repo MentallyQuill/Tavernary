@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "41fa1d317295ac8e68a0cbe6e7d0738d5f2f312f4c7213af1e519a4a58ea0942",
+    "identity": {
+      "kind": "refresh",
+      "subject": "source:codeberg-2445404",
+      "inputDigest": "8e4e9b571dc62b596bbedc973ad94554c9013d81a998dd5201209abdfdb8fa50",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.698Z",
+    "nextEligibleAt": "2026-10-09T17:47:39.056Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T17:32:39.056Z",
+  "completedAt": null
+}

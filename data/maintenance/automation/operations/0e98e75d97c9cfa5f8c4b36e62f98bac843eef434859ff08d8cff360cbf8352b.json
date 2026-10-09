@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0e98e75d97c9cfa5f8c4b36e62f98bac843eef434859ff08d8cff360cbf8352b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1168003843:eugenesdad-risuai-agent-plugin",
+      "inputDigest": "728dd2fc87095db7ed239ec298dfd9fe5f9643e3b21ef29fa7fe7999e99a03f2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T12:53:53.048Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 3
+    }
+  },
+  "updatedAt": "2026-10-09T12:38:53.048Z",
+  "completedAt": null
+}

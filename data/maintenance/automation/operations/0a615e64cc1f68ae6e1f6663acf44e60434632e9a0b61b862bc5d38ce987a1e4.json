@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0a615e64cc1f68ae6e1f6663acf44e60434632e9a0b61b862bc5d38ce987a1e4",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-830588458:splitclover-rewrite-extension",
+      "inputDigest": "40d120c051412de7c61db6b90b95e6d902336d88132e3132993fe414eccd0fa2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T12:41:39.875Z",
+    "expectedSha": null,
+    "workerRunId": 37924829372,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 2
+    }
+  },
+  "updatedAt": "2026-10-09T12:26:39.875Z",
+  "completedAt": null
+}

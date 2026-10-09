@@ -15,12 +15,12 @@
 Every linked plan inherits the approved specification. No external watchdog,
 off-site backup, new database, or new hosting service is included. Preserve
 manual decisions and existing authority/contract protections. Automatic discovery
-is conditional and has not been selected. Current production baseline is
+is conditional and has not been selected. The preflight production baseline was
 `a7139759edfb253bfeb43e6196ff00a7c7f07eb3`; use later main revisions when
 integrating rather than deploying an obsolete baseline.
 
 Worktree: `C:/Users/Keptin/.codex/worktrees/tavernary-longevity/Tavernary`.
-Branch: `codex/tavernary-longevity`. Original user changes remain in
+Initial branch: `codex/tavernary-longevity`; follow-up delivery is recorded in the ledger. Original user changes remain in
 `F:/git/Tavernary`.
 
 GitHub calls use `gh` with network permission enabled. If authentication
@@ -67,6 +67,13 @@ Read-only observations are recorded in [preflight evidence](2026-10-07-longevity
       Record concrete commits, commands, PRs, live runs, and verified public revisions.
 
 ## Delivery and completion
+
+The [current verification ledger](../../maintenance/longevity-verification.md)
+records the exact checked and merged implementation heads, native public proof,
+recovery canary effects, supported-runtime results, retained-release drill and
+owner responsibilities. Its current requirement table supersedes the historical
+checkpoints in the linked pre-closure ledger and Git history. The original
+checkout remains preserved.
 
 Use reviewable stage PRs when it reduces integration risk; retain the master
 specification, plan links, and ledger through each merged stage. Keep later

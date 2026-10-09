@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0e438f1c8ef9956cd3a60c2d3bbff2034fc8c0c1a98c32a2a64a260b2f95ec53",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1230298474:flaxify-st-hands-free-voice",
+      "inputDigest": "2d8acab326e53af79a4d564e3ea5e8b2632ca97c128d745a8d3a7f69be57a115",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T12:53:53.048Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T12:38:53.048Z",
+  "completedAt": null
+}

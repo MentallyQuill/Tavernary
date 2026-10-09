@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0c9e567580bbc66ea0dcf6bd6ef4bb4704525ce9b3901c2af87745e426747914",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1297079548:al4xdev-alex-tavern",
+      "inputDigest": "c47a6327846e156e05fc4103cedbbbd6229a85a1dd685678be7311a73a0f5f8b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T11:47:02.944Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 2
+    }
+  },
+  "updatedAt": "2026-10-09T11:32:02.944Z",
+  "completedAt": null
+}

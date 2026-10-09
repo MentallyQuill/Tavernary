@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0a8035c16f4b78d0a64505939e970cbafc394cb04a9f815075399885a1fd1765",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1128074609:mattjaybe-sillytavern-echochamber",
+      "inputDigest": "67fd02514ef5d24d3f08cd68934a7530917dc486e3c63fca8e55046ab50df44f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T12:41:39.875Z",
+    "expectedSha": null,
+    "workerRunId": 37924846197,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 2
+    }
+  },
+  "updatedAt": "2026-10-09T12:26:39.875Z",
+  "completedAt": null
+}

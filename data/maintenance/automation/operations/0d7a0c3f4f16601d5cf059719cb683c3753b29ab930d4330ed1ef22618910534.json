@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0d7a0c3f4f16601d5cf059719cb683c3753b29ab930d4330ed1ef22618910534",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1289246212:mignon-ui-mignon-ui",
+      "inputDigest": "1304b5b234c908f5b1d59805b3c41421c5c180e40da6be950725b6ef87695ad1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T12:41:39.875Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T12:26:39.875Z",
+  "completedAt": null
+}

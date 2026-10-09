@@ -1,4 +1,5 @@
 import { isDeepStrictEqual } from "node:util";
+import { execFileSync } from "node:child_process";
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 import { assertCanonicalWriterContext } from "./github-inventory.mjs";
 import { synchronizeWriterCheckout } from "./writer-runtime.mjs";
@@ -387,6 +388,59 @@ export async function inspectActionsDependencyUpdate({
   };
 }
 
+function hasReceiptOnlyBaseDrift({ root, baseSha, mainSha }) {
+  if (!sha.test(baseSha ?? "") || !sha.test(mainSha ?? "")) return false;
+  const options = {
+    cwd: root,
+    encoding: "utf8",
+    timeout: 30000,
+    maxBuffer: 1024 * 1024,
+    windowsHide: true,
+    stdio: ["ignore", "pipe", "pipe"],
+  };
+  try {
+    execFileSync(
+      "git",
+      ["merge-base", "--is-ancestor", baseSha, mainSha],
+      options,
+    );
+    const raw = execFileSync(
+      "git",
+      [
+        "diff",
+        "--raw",
+        "--no-abbrev",
+        "--no-renames",
+        "--no-ext-diff",
+        "-z",
+        baseSha,
+        mainSha,
+      ],
+      options,
+    );
+    if (!raw) return true;
+    const fields = raw.split("\0");
+    if (fields.pop() !== "" || fields.length % 2 || fields.length > 512)
+      return false;
+    for (let index = 0; index < fields.length; index += 2) {
+      if (
+        !/^:(?:000000|100644) (?:000000|100644) [a-f0-9]{40} [a-f0-9]{40} [AMD]$/u.test(
+          fields[index],
+        ) ||
+        !/^data\/maintenance\/automation\/operations\/[a-f0-9]{64}\.json$/u.test(
+          fields[index + 1],
+        )
+      )
+        return false;
+    }
+    return true;
+  } catch {
+    // Missing history, failed ancestry, oversized or incomplete output requires
+    // the original base refresh. No API or deployment ignore list is substituted.
+    return false;
+  }
+}
+
 export function planDependencyUpdate(input) {
   if (input.metadata.permissionsChanged)
     return { action: "owner-review", reason: "expanded-policy" };
@@ -441,7 +495,7 @@ export function planDependencyUpdate(input) {
     })
   )
     return { action: "wait", reason: "checks-unconfirmed" };
-  if (mergeBaseSha !== currentMainSha)
+  if (mergeBaseSha !== currentMainSha && input.receiptOnlyBase !== true)
     return { action: "refresh-base", reason: "stale-base" };
   return {
     action: "merge",
@@ -623,7 +677,18 @@ export async function runDependencyWriter({
           : ALLOWED_ACTION_DEPENDENCIES,
         deploymentHealthy: true,
       };
-      const decision = planDependencyUpdate(input);
+      let decision = planDependencyUpdate(input);
+      if (
+        decision.action === "refresh-base" &&
+        hasReceiptOnlyBaseDrift({
+          root,
+          baseSha: mergeBaseSha,
+          mainSha: revision,
+        })
+      ) {
+        input.receiptOnlyBase = true;
+        decision = planDependencyUpdate(input);
+      }
       decisions.push({ pullNumber: pull.number, ...decision });
       if (!["merge", "refresh-base"].includes(decision.action)) continue;
       const fresh = await api(`pulls/${pull.number}`);

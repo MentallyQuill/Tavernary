@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0e497aea00cfd4aaab1f6f11b671c81aefd19cd5d89b37d0855ed3baa0ee401e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1088452012:cha1latte-sillytavern-real-world-weather",
+      "inputDigest": "c014c1f8924a1ed0815cdaa735a5f31afe8eb492b373d2f3a719b9931f4b3db1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T12:53:53.048Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 2
+    }
+  },
+  "updatedAt": "2026-10-09T12:38:53.048Z",
+  "completedAt": null
+}
