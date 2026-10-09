@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "076d0415b51c42f5f3a4f048fb75b69ac2e36e6f9c1b9d2caeac14734e209905",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:url-reddit-1wl2pm6:reddit-1wl2pm6",
+      "inputDigest": "9f05cd2f7d5111ec293baaff4d75db21a7202f02583a526cbe880f6848d71b27",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "1970-01-01T00:00:00.000Z",
+    "nextEligibleAt": "2026-10-09T04:36:19.198Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-09T04:21:19.198Z",
+  "completedAt": null
+}
