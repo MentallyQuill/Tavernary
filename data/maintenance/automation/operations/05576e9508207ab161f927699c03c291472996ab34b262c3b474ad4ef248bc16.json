@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "05576e9508207ab161f927699c03c291472996ab34b262c3b474ad4ef248bc16",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1294619050:lsennn-deus-ex-machina",
+      "inputDigest": "89fb381871b2ad788e7de0664972ca2ac34cfcf9f72b1102ff66a35f860582c5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T10:45:14.113Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T10:30:14.113Z",
+  "completedAt": null
+}
