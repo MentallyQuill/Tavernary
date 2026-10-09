@@ -23,21 +23,38 @@ attached PRs, required checks, independent review, merge, and production proof.
 
 ## Requirement evidence
 
-Current delivery: [draft PR #818](https://github.com/MentallyQuill/Tavernary/pull/818)
-is attached. The last fully successful required CI head is
-`da0a707123d54e36d478c54cfe0511fd3a4a3a61`
-([run 37878152164](https://github.com/MentallyQuill/Tavernary/actions/runs/37878152164)),
-with both `verify` and `visual` successful.
-This includes supported runtimes, the weekly restore drill, exact-build
-confirmation fallback and shared-quota retention retries.
-The subsequent history/terminal-retention checkpoint failed CI on obsolete docs
-assertions. Its repair, head `9736242859f1623833a8bab0c43cc9088c168d18`, failed
-[run 37872546212](https://github.com/MentallyQuill/Tavernary/actions/runs/37872546212)
-on seven deployment-recovery fixtures missing the native artifact `total_count`.
-The fixtures now match the bounded reader; integrity requirements remain intact.
-The recovery checkpoint passed both required jobs; the new canary checkpoint
-passed its own exact-head CI. The subsequent review repairs require fresh CI. A green implementation
-branch does not establish merge or native production drill evidence.
+[PR #818](https://github.com/MentallyQuill/Tavernary/pull/818) merged on
+2026-10-09 at `77c2ce7886019900d63f7e66e034cb744a9cbc0d`. Its final head
+`e9683b9915156ab352ec7c891241ca061507c01b` passed both required jobs in
+[run 37881176591](https://github.com/MentallyQuill/Tavernary/actions/runs/37881176591).
+The fresh independent whole-branch review reported three Important findings;
+all three were repaired and verified before merge. Integration used the existing
+owner PR bypass after review and required CI; repository protections were not changed.
+
+[Production run 37882521773](https://github.com/MentallyQuill/Tavernary/actions/runs/37882521773)
+successfully built, deployed and confirmed that merged revision. The native
+confirmation artifact records build `run-37882521773-attempt-1`, bundle digest
+`a64aa76638b0ce611b49d07dafb82f647a6d661b74fc18701d81a5378d77a123`,
+catalog digest `7e8e9f84f5a379c873da1df64d056938b4722e75e9fa5395cf1784e99f3ebff6`,
+target digest `98161ca563fe0cf02e4978a826e863aaf67e1db0a8144c44070948f64568f9a3`,
+and successful Chromium/WebKit public behavior at `2026-10-09T04:15:16.415Z`.
+
+The first trusted-main canary exposed a missing clean-checkout prerequisite:
+261 checks passed, while a rollback fixture could not read generated catalog
+targets. The canary now runs the same `catalog:build` prerequisite as `check`.
+The first runtime run passed Linux/Node 24 but three Windows Git integration
+cases exceeded Vitest's five-second default. Only the complete-flow fixtures and
+the full-finalization fixture receive a thirty-second allowance; assertions and
+all other timeouts remain intact. The affected integration tests passed 21 checks,
+and the workflow contracts passed 10 checks locally. Both native workflows must
+pass again on the merged repair.
+
+The owner approved the Publisher installation's required Actions, Contents,
+Issues and Pull requests write permissions. Fresh
+[writer run 37883440844](https://github.com/MentallyQuill/Tavernary/actions/runs/37883440844)
+successfully minted its scoped App token and made Publisher-owned admission
+commits. Retained-release/drill proof, full native runtime/canary completion,
+eligible dependency completion and final requirement closure remain pending.
 
 The active delivery goal freezes the shared architecture. Finish the concrete
 runtime, retention, restore-drill and runbook requirements, remaining recovery

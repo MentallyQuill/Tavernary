@@ -39,6 +39,7 @@ test.each(["project", "owner-request", "kit", "refresh"] as const)(
       await canary.close();
     }
   },
+  30_000,
 );
 
 test.each([

@@ -549,7 +549,7 @@ test("full deployment finalization preserves its frozen manifest and records the
   } finally {
     await f.cleanup();
   }
-});
+}, 30_000);
 
 test.each(["browser", "bundle", "run", "history"])(
   "missing native %s proof cannot approve a canary or resume full work",
