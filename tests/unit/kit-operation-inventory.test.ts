@@ -149,6 +149,43 @@ test("completed Kit issue bookkeeping is idempotent while deployment remains ind
   expect(discoverKitOperations(input)[0].stage).toBe("published");
 });
 
+test.each(["create", "withdrawal"] as const)(
+  "completed %s bookkeeping keeps an exact pending terminal receipt discoverable",
+  (kind) => {
+    const input = kitInventoryFixture({
+      operation: kind,
+      canonicalPublished: true,
+      confirmedDeployment: true,
+    });
+    if (kind === "withdrawal") input.kits[0].status = "withdrawn";
+    const operation = discoverKitOperations(input)[0];
+    input.receipts = [receiptFixture({ operation })];
+    input.issues[0].state = "closed";
+    input.issues[0].state_reason = "completed";
+    input.issues[0].labels.push(
+      kind === "withdrawal" ? "kit-withdrawn" : "kit-published",
+    );
+    expect(discoverKitOperations(input)).toEqual([operation]);
+    input.receipts = [
+      receiptFixture({
+        operation: { ...operation, stage: "finalized" },
+        completedAt: new Date(input.nowMs).toISOString(),
+      }),
+    ];
+    expect(discoverKitOperations(input)).toEqual([]);
+    input.receipts = [
+      receiptFixture({
+        operation: { ...operation, expectedSha: "e".repeat(40) },
+      }),
+    ];
+    expect(discoverKitOperations(input)).toEqual([]);
+    input.receipts = [
+      receiptFixture({ operation: { ...operation, key: "f".repeat(64) } }),
+    ];
+    expect(discoverKitOperations(input)).toEqual([]);
+  },
+);
+
 test("matching active trusted Kit workers suppress duplicate publication", () => {
   const input = kitInventoryFixture();
   input.runs = [

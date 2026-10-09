@@ -1,8 +1,11 @@
 import { expect, test } from "vitest";
 import { projectAutomationLifecycle } from "../../scripts/automation/lifecycle-github.mjs";
+import { finalizeAutomationOperation } from "../../scripts/automation/finalization.mjs";
+import type { AutomationReceipt } from "../../scripts/automation/receipts.mjs";
 import {
   kitInventoryFixture,
   projectInventoryFixture,
+  receiptFixture,
 } from "../helpers/automation-fixtures";
 import { discoverKitOperations } from "../../scripts/automation/kit-operations.mjs";
 import { discoverProjectOperations } from "../../scripts/automation/project-operations.mjs";
@@ -298,6 +301,7 @@ function kitFixture() {
   };
   return {
     operation,
+    inventory: input,
     state,
     gh,
     load: async () => state,
@@ -325,6 +329,48 @@ test("Kit lifecycle retries only the remaining issue projection, preserves human
     status: "complete",
   });
   expect(input.writes).toHaveLength(count);
+});
+
+test("fresh Kit discovery survives completed issue projection until its terminal receipt is saved", async () => {
+  const input = kitFixture();
+  input.inventory.issues = [input.issue];
+  input.inventory.receipts = [receiptFixture({ operation: input.operation })];
+  const load = async () => ({
+    ...input.state,
+    receipts: input.inventory.receipts,
+    operations: discoverKitOperations(input.inventory),
+  });
+  const receipts: AutomationReceipt[] = [];
+  const finalizer = {
+    operationKey: input.operation.key,
+    load,
+    project: async () =>
+      projectAutomationLifecycle({ ...input, state: await load(), load }),
+    persist: async (receipt: AutomationReceipt) => {
+      receipts.push(receipt);
+      input.inventory.receipts = [receipt];
+    },
+  };
+  await expect(finalizeAutomationOperation(finalizer)).rejects.toThrow(
+    "Temporary failure",
+  );
+  expect(await finalizeAutomationOperation(finalizer)).toEqual({
+    status: "finalized",
+  });
+  expect(input.issue.state).toBe("closed");
+  expect(input.issue.state_reason).toBe("completed");
+  expect(receipts).toHaveLength(1);
+  expect(receipts[0].operation).toMatchObject({
+    key: input.operation.key,
+    expectedSha: input.operation.expectedSha,
+    stage: "finalized",
+  });
+  const writes = input.writes.length;
+  expect(await finalizeAutomationOperation(finalizer)).toEqual({
+    status: "superseded",
+  });
+  expect(input.writes).toHaveLength(writes);
+  expect(receipts).toHaveLength(1);
 });
 
 test("edited Kit input and a human decline cannot close a newer request", async () => {
