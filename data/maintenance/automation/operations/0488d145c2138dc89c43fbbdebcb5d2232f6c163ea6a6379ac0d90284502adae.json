@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0488d145c2138dc89c43fbbdebcb5d2232f6c163ea6a6379ac0d90284502adae",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1257302750:devemberteam-ops-pyre",
+      "inputDigest": "b954530e7a966800e1fa1b9d7a6338d5958055396deb669914f61e447efbeda1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T10:28:09.115Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 2
+    }
+  },
+  "updatedAt": "2026-10-09T10:13:09.115Z",
+  "completedAt": null
+}
