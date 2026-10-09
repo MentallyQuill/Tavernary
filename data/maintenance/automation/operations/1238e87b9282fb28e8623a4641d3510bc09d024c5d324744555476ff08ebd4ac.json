@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1238e87b9282fb28e8623a4641d3510bc09d024c5d324744555476ff08ebd4ac",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1354125356:shin-f-persona-multi-avatars",
+      "inputDigest": "1e25fc3e560aeeca691e8be19d89fec16a9de1b4771718f86d11b302e1fef9f5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T12:53:53.048Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T12:38:53.048Z",
+  "completedAt": null
+}
