@@ -409,6 +409,18 @@ async function readJsonDirectory(path) {
   );
 }
 
+export function createGithubCliFailure(args, code, stderr) {
+  const error = new Error(
+    `gh ${args.join(" ")} failed with exit ${code}: ${stderr.trim()}`,
+  );
+  if (
+    /\bHTTP (?:403|429)\b/u.test(stderr) &&
+    /(?:API rate limit exceeded|secondary rate limit)/iu.test(stderr)
+  )
+    error.code = "provider-rate-limited";
+  return error;
+}
+
 export function executeGh(args, stdin) {
   return new Promise((resolveCommand, rejectCommand) => {
     const command = process.platform === "win32" ? "gh.exe" : "gh";
@@ -432,11 +444,7 @@ export function executeGh(args, stdin) {
         resolveCommand(stdout);
         return;
       }
-      rejectCommand(
-        new Error(
-          `gh ${args.join(" ")} failed with exit ${code}: ${stderr.trim()}`,
-        ),
-      );
+      rejectCommand(createGithubCliFailure(args, code, stderr));
     });
     child.stdin.end(stdin);
   });

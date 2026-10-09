@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { execFileSync } from "node:child_process";
-import { readFile, rm, writeFile } from "node:fs/promises";
+import { readFile, rm, writeFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";
 import { productionInventoryRoot } from "../helpers/production-inventory-root.mjs";
 import {
@@ -13,9 +13,82 @@ import { createCanonicalPublicationRecord } from "../../scripts/automation/publi
 import {
   catalogInventoryFixture,
   preparedResultFixture,
+  receiptFixture,
 } from "../helpers/automation-fixtures";
 import { buildCatalog } from "../../scripts/catalog/build.mjs";
 import { automationDataDigests } from "../../scripts/automation/data-digests.mjs";
+
+test("scoping never grants publication authority and missing receipts retain full inventory discovery", async () => {
+  const fixture = await productionInventoryRoot();
+  try {
+    const receipt = receiptFixture();
+    Object.assign(receipt.operation, {
+      stage: "deployment-confirmed",
+      expectedSha: fixture.revision,
+    });
+    const directory = join(
+      fixture.root,
+      "data/maintenance/automation/operations",
+    );
+    await mkdir(directory, { recursive: true });
+    const path = join(directory, `${receipt.operation.key}.json`);
+    await writeFile(path, JSON.stringify(receipt));
+    const calls: string[][] = [];
+    const gh = async (args: string[]) => {
+      calls.push(args);
+      const route = args.find((arg) => arg.startsWith("repos/"))!;
+      if (route.endsWith("/git/ref/heads/main"))
+        return JSON.stringify({ object: { sha: fixture.revision } });
+      if (route.endsWith("/issues/42"))
+        return JSON.stringify({
+          number: 42,
+          state: "closed",
+          body: "removed request",
+          labels: [],
+          user: { id: 1, type: "User" },
+        });
+      if (route.endsWith("/issues") || route.endsWith("/pulls")) return "[[]]";
+      if (route.endsWith("/actions/runs"))
+        return JSON.stringify([{ total_count: 0, workflow_runs: [] }]);
+      throw new Error(`Unexpected fixture route ${route}`);
+    };
+    const input = {
+      root: fixture.root,
+      gh,
+      repository: "MentallyQuill/Tavernary",
+      publisherActorId: 41_982_982,
+      nowMs: Date.parse("2026-10-08T12:00:00Z"),
+      reportIndex: {
+        schema_version: 5 as const,
+        generated_at: "2026-10-08T12:00:00Z",
+        reports: [],
+      },
+      finalizationOperationKey: receipt.operation.key,
+    };
+    const scoped = await loadAutomationInventory(input);
+    expect(
+      calls.some((args) => args.some((arg) => arg.endsWith("/issues/42"))),
+    ).toBe(true);
+    expect(calls.some((args) => args.includes("state=open"))).toBe(true);
+    expect(scoped.remote.finalizationOperationKey).toBeUndefined();
+    expect(
+      scoped.operations.some(
+        (operation) => operation.key === receipt.operation.key,
+      ),
+    ).toBe(false);
+    await rm(path);
+    calls.length = 0;
+    const missing = await loadAutomationInventory(input);
+    expect(calls.some((args) => args.includes("state=open"))).toBe(true);
+    expect(missing.remote.finalizationOperationKey).toBeUndefined();
+    expect(missing.local.catalogDigest).toBe(scoped.local.catalogDigest);
+    expect(missing.local.targetDigest).toBe(scoped.local.targetDigest);
+    expect(missing.local.projects).toEqual(scoped.local.projects);
+    expect(missing.local.kits).toEqual(scoped.local.kits);
+  } finally {
+    await fixture.cleanup();
+  }
+}, 20_000);
 test("inventory fixtures preserve staged, unstaged, new and deleted canonical files", async () => {
   const source = await productionInventoryRoot();
   let fixture: Awaited<ReturnType<typeof productionInventoryRoot>> | undefined;

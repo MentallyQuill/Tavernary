@@ -20,6 +20,7 @@ export function loadAutomationInventory(input: {
   publisherActorId: number;
   nowMs: number;
   reportIndex?: TavernKeeperReportIndexV5;
+  finalizationOperationKey?: string;
 }): Promise<AutomationInventoryState>;
 export function discoverAutomationState(
   state: AutomationInventoryState,
