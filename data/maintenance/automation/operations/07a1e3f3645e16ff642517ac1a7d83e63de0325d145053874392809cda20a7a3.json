@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "07a1e3f3645e16ff642517ac1a7d83e63de0325d145053874392809cda20a7a3",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1289789562:getfroggyhoe-universal-immersion-engine-fugue",
+      "inputDigest": "33852b2b92c0cb79ade54be2e3bcc4750a0dd84111bcddccf01d4a87d2a28a19",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T11:38:23.305Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 2
+    }
+  },
+  "updatedAt": "2026-10-09T11:23:23.305Z",
+  "completedAt": null
+}
