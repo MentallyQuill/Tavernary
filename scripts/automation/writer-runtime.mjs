@@ -183,7 +183,12 @@ export async function runPublicationWriterFinalization({
   root = process.cwd(),
   env = process.env,
   gh = executeGh,
-  load = writerInventoryLoader({ root, env, gh }),
+  load = writerInventoryLoader({
+    root,
+    env,
+    gh,
+    finalizationOperationKey: operationKey,
+  }),
   persist = (receipt) =>
     persistGithubAutomationReceipt({
       gh,
@@ -716,7 +721,7 @@ export async function runModelWriterPreparation({
     throw error;
   }
 }
-function writerInventoryLoader({ root, env, gh }) {
+function writerInventoryLoader({ root, env, gh, finalizationOperationKey }) {
   return async () => {
     await synchronizeWriterCheckout({ root, env });
     return loadAutomationInventory({
@@ -725,6 +730,7 @@ function writerInventoryLoader({ root, env, gh }) {
       repository: env.GITHUB_REPOSITORY,
       publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
       nowMs: Date.now(),
+      finalizationOperationKey,
     });
   };
 }

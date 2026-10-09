@@ -317,16 +317,102 @@ export async function loadGenerationOwnerRequestRuns({
   }
   return [...found.values()];
 }
+async function loadFinalizationInventory({ gh, root, repository, operation }) {
+  const read = async (path) => {
+    const text = await gh(["api", `${root}/${path}`]);
+    if (Buffer.byteLength(text, "utf8") > 4 * 1024 * 1024)
+      throw new Error(
+        "Finalization inventory response exceeds its byte bound.",
+      );
+    return JSON.parse(text);
+  };
+  const optional = async (path) => {
+    try {
+      return await read(path);
+    } catch (error) {
+      if (githubFailureStatus(error) !== 404) throw error;
+      return null;
+    }
+  };
+  const number = Number(
+    /^issue:([1-9]\d*)$/u.exec(operation.identity.subject)?.[1],
+  );
+  const producer =
+    operation.identity.kind === "project"
+      ? "project-submission"
+      : "project-owner-request";
+  const [reference, issue, pullPages, worker] = await Promise.all([
+    read("git/ref/heads/main"),
+    Number.isSafeInteger(number) && number > 0
+      ? optional(`issues/${number}`)
+      : null,
+    ["project", "owner-request"].includes(operation.identity.kind)
+      ? pages(gh, `${root}/pulls`, [
+          "state=all",
+          `head=${repository.split("/")[0]}:automation/${producer}-${number}`,
+        ])
+      : [],
+    operation.workerRunId === null
+      ? null
+      : optional(`actions/runs/${operation.workerRunId}`),
+  ]);
+  if (
+    !/^[a-f0-9]{40}$/u.test(reference?.object?.sha ?? "") ||
+    (issue &&
+      (issue.number !== number || !["open", "closed"].includes(issue.state))) ||
+    (worker &&
+      (worker.id !== operation.workerRunId ||
+        typeof worker.status !== "string"))
+  )
+    throw new Error("GitHub returned an invalid finalization inventory.");
+  return {
+    issues: issue ? [issue] : [],
+    pulls: pullPages.flat(),
+    runs: worker ? [worker] : [],
+    mainHeadSha: reference.object.sha,
+    finalizationOperationKey: operation.key,
+  };
+}
+
 export async function loadGithubAutomationInventory({
   gh,
   repository,
   receipts,
   referencedOperations = [],
   nowMs,
+  finalizationOperation,
 }) {
   const root = repositoryPath(repository);
   if (!Number.isSafeInteger(nowMs) || nowMs < 90 * 86_400_000)
     throw new Error("GitHub inventory retention clock is invalid.");
+  if (finalizationOperation) {
+    validateAutomationOperation(finalizationOperation);
+    const kind = finalizationOperation.identity.kind;
+    const issueNumber = Number(
+      /^issue:([1-9]\d*)$/u.exec(finalizationOperation.identity.subject)?.[1],
+    );
+    if (
+      finalizationOperation.stage === "deployment-confirmed" &&
+      /^[a-f0-9]{40}$/u.test(finalizationOperation.expectedSha ?? "") &&
+      [
+        "project",
+        "owner-request",
+        "kit",
+        "withdrawal",
+        "refresh",
+        "metadata",
+        "deployment",
+      ].includes(kind) &&
+      (!["project", "owner-request", "kit", "withdrawal"].includes(kind) ||
+        (Number.isSafeInteger(issueNumber) && issueNumber > 0))
+    )
+      return loadFinalizationInventory({
+        gh,
+        root,
+        repository,
+        operation: finalizationOperation,
+      });
+  }
   const cutoff = nowMs - 90 * 86_400_000;
   const recentClosure = (row) => {
     const updated = Date.parse(row.updated_at);
