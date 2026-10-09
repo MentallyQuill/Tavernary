@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "59e15c23aa37d733e9446bb0071dc02b251a9b5ef8115bfe60ced003293bd63d",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:url-reddit-1uvp500:reddit-1uvp500",
+      "inputDigest": "01582e91e0bbf257cf95124f5982c34fa33f113c748564c2360131b107da6de4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "1970-01-01T00:00:00.000Z",
+    "nextEligibleAt": "2026-10-09T04:57:20.862Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T04:42:20.862Z",
+  "completedAt": null
+}
