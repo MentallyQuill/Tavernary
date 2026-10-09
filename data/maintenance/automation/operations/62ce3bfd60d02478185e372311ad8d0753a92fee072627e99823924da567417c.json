@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "62ce3bfd60d02478185e372311ad8d0753a92fee072627e99823924da567417c",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:codeberg-2445404:targren-lumiverse-swipescrubber",
+      "inputDigest": "5d8cb1dac43037ae5873ee56eb88f8d7c68ffcd49bb33f4c478cdfaf9c26593c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.698Z",
+    "nextEligibleAt": "2026-10-09T17:47:39.056Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 51,
+      "immediateAttempts": 52
+    }
+  },
+  "updatedAt": "2026-10-09T17:32:39.056Z",
+  "completedAt": null
+}
