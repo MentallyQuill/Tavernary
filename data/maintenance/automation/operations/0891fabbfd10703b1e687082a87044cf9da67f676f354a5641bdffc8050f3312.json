@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0891fabbfd10703b1e687082a87044cf9da67f676f354a5641bdffc8050f3312",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1307082738:jeka201216-silly-map",
+      "inputDigest": "41b9e4127d8e3f02d2c5ce1044c20ca924ade59914d584aa5f70efaed8dfe670",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T11:47:02.944Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T11:32:02.944Z",
+  "completedAt": null
+}
