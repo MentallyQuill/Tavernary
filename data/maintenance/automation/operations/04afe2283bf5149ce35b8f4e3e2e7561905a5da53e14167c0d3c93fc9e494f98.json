@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "04afe2283bf5149ce35b8f4e3e2e7561905a5da53e14167c0d3c93fc9e494f98",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1383785103:rustyorb-sillytavern-creativestudio",
+      "inputDigest": "2a1cb28501de58899423f5c0c650e6c168eb8a67baaac86bb2de30d6ef8a2d2b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T10:45:14.113Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T10:30:14.113Z",
+  "completedAt": null
+}
