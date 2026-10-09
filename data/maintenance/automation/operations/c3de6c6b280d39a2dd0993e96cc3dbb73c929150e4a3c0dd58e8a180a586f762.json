@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c3de6c6b280d39a2dd0993e96cc3dbb73c929150e4a3c0dd58e8a180a586f762",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:url-writers-block-4:writers-block-4",
+      "inputDigest": "2d6f401875258384d16b430c6f0c3daf515d8b56772e8b9c611eb46ff6e7472f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "1970-01-01T00:00:00.000Z",
+    "nextEligibleAt": "2026-10-09T04:57:20.862Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T04:42:20.862Z",
+  "completedAt": null
+}
