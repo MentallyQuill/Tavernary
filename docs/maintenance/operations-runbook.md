@@ -1,7 +1,8 @@
-# Maintainer operations runbook (V1)
+# Maintainer operations runbook
 
-This document captures live maintainer operations, submission automation, and
-release controls added after initial implementation.
+This document describes the GitHub-only unattended-operation workflows and
+the owner actions needed when credentials, permissions, or upstream policy need
+repair. Routine publication and recovery use the shared canonical writer.
 
 ## Repo boundaries
 
@@ -94,11 +95,11 @@ back to the retained Tavernary draft to open a fresh GitHub review.
 
 ## Project submission path
 
-Repository Actions settings must permit **Allow GitHub Actions to create and
-approve pull requests** so the workflow token can create the review PR.
-Project transaction PRs are merged by `publish-project-transaction.yml` only
-when `PROJECT_AUTO_PUBLICATION_ENABLED` equals `true` and every authoritative
-check matches the exact validated head SHA.
+Keep repository Actions defaults read-only and Actions review approval disabled.
+The Tavernary Publisher app creates generated review branches/PRs and the shared
+writer performs canonical publication. `publish-project-transaction.yml` requests
+that writer; automatic merge requires `PROJECT_AUTO_PUBLICATION_ENABLED=true`
+and every authoritative check matching the exact validated head SHA.
 
 1. The static Tavernary builder creates the authoritative manifest and opens
    `01-project-submission.yml` as a review mirror carrying
@@ -109,8 +110,10 @@ check matches the exact validated head SHA.
 3. A duplicate receives the triage explanation and closes before generation. A
    correctable failure remains open with `needs-information`; direct the author
    back to `/submit/project/` to open a fresh review.
-4. An admitted issue dispatches `generate-project-submission.yml` with its issue
-   number. The workflow creates
+4. An admitted issue requests `generate-project-submission.yml` with its issue
+   number. Its short owner/request job selects current work and wakes the shared
+   writer. The writer reserves primary and repair model allowance before
+   dispatching the authenticated budgeted generation job. That job creates
    `automation/project-submission-<issue-number>`, writes only declared registry,
    snapshot, and optional frontend-vocabulary files, validates/builds them, and
    opens one PR marked with `Closes #<issue-number>`.
@@ -119,21 +122,30 @@ check matches the exact validated head SHA.
 6. Successful dispatched CI triggers the serialized publisher, which refreshes
    current issue, authority, source, record, path, base, and head state before
    an exact-SHA merge publishes through `main` and closes the linked issue.
-   `project-submission-lifecycle.yml` removes transient review labels and deletes
-   the generated branch only when its SHA still matches the closed PR.
+   The shared writer then waits for exact public revision/assets and both-browser
+   confirmation before finalizing labels, notices and dependent recovery.
+   `project-submission-lifecycle.yml` is a writer request bridge; branch cleanup
+   retains the exact closed-PR head guard.
 7. Close without merging only when declining the submission. Lifecycle
    automation applies `submission-declined`, posts one marked explanation,
    closes the issue as not planned, and performs the same guarded branch cleanup.
 
 ### Manual generation and recovery
 
-Run **Generate project submission review** manually when an admitted issue did
+Run **Project submissions: Create review PR** manually when an admitted issue did
 not dispatch or a retryable dependency has recovered:
 
-1. Open Actions -> **Generate project submission review** -> **Run workflow** on
+1. Open Actions -> **Project submissions: Create review PR** -> **Run workflow** on
    `main`.
 2. Enter `issue_number`.
 3. Leave `force_regeneration` false for the normal non-destructive path.
+
+Leave `operation_key`, `request_run_id` and `budget_ticket` empty/default; the
+writer supplies them after authenticated admission and allowance reservation.
+For owner listing work, use **Project owner requests: Create review PR** with
+the same request defaults. Its force flag does not authorize overwriting
+maintainer changes. Successful native request history lets scheduled recovery
+resume a dropped wake without another owner request.
 
 The branch and PR are deterministic, so a safe rerun updates the existing
 proposal rather than creating a second review. If the PR head no longer matches
@@ -161,16 +173,18 @@ comment for the upstream issue number. If that upstream is still open, review
 its generated PR normally; do not remove the waiting label or generate the
 child early.
 
-When the upstream PR merges, `project-submission-lifecycle.yml` dispatches
-`retry-fork-dependencies.yml`. If the upstream is declined, deleted, private,
-or otherwise terminal, the same retry admits the child with name-only upstream
-provenance. The child is not blocked by the parent's publication outcome.
+After verified publication, lifecycle requests wake the shared writer.
+`retry-fork-dependencies.yml` also provides scheduled/manual wakes; it no longer
+runs an independent scanner or publisher. The writer re-fetches the marked
+upstream issue, numeric bot custody and current dependency state in a bounded
+rotating batch. A terminal declined/deleted/private upstream admits the child
+with name-only provenance; the parent's publication outcome does not block it.
 
 If the retry workflow fails:
 
 1. inspect the failed `retry-fork-dependencies.yml` run;
 2. fix the transient GitHub/API or workflow problem;
-3. rerun **Retry fork-dependent submissions** on `main`;
+3. rerun **Project submissions: Retry fork dependencies** on `main`;
 4. confirm the child moves from `waiting-on-fork-parent` to either another
    immediate-parent wait or `needs-maintainer-review`.
 
@@ -289,9 +303,12 @@ merge. Intake and generation continue while it is absent or false;
 queued transactions are reconstructed from current issues and current `main`
 when publication resumes.
 
-The repository ruleset must allow GitHub Actions to create and approve pull
-requests, permit the workflow token the declared contents/issues/pull-request/
-actions permissions, and require the stable `Site: Validate changes` check.
+Keep the active main ruleset's strict native `verify` and `visual` checks, review
+requirements and resolved-thread requirement. Keep Actions defaults read-only
+and Actions review approval disabled. The scoped Publisher app supplies canonical
+contents/PR/issue/dispatch authority; it must remain the allowed writer under
+the existing main and automation-branch rules. Individual jobs retain their
+declared limited Actions-token permissions.
 The publisher accepts only a successful `workflow_dispatch` validation run for
 an in-repository generated branch. It compares the common transaction marker,
 current admitted issue, immutable actor and source authority, normalized input
@@ -299,10 +316,12 @@ digest, record fingerprint, current base, exact path allowlist, and exact head
 SHA. A stale transaction regenerates; a temporary API or mergeability failure
 retries; a lost authority or invalid path is rejected.
 
-After GitHub confirms the merge, the publisher explicitly dispatches lifecycle,
-dependent recovery, `deploy-pages.yml` for the returned merge SHA, owner/copy
-notices, and the post-publication Catalog Policy advisory. Notification,
-advisory, and deployment failures never roll back canonical publication.
+After native merge proof, shared reconciliation reconstructs publication from
+co-committed canonical evidence, coalesces deployment work and confirms the
+actually served export. Finalization then projects lifecycle, dependent recovery,
+owner/copy notices and non-enforcing advisory work. Dropped wakes and missing
+receipts do not authorize a repeated publication. Notification, advisory and
+deployment failures preserve the canonical publication for recovery.
 Verified-owner delisting creates `owner-delist-notice`; staff acknowledge it
 only when follow-up is useful.
 
@@ -318,29 +337,14 @@ document the exception, restore the canonical source status, validate the
 catalog, and publish through an ordinary staff-maintained change. Do not reopen
 self-service submission for that repository.
 
-### Source-registry migration and transaction cutover
+### Current source-registry and transaction format
 
-The combined cutover starts with a dry run and preserves rollback:
-
-```powershell
-node scripts/catalog/migrate-source-registry-v1.mjs
-node scripts/catalog/migrate-source-registry-v1.mjs --write
-```
-
-The first command reports every planned source, card, snapshot, refresh
-manifest, and tag-policy change with `writes=0`. The `--write` command validates
-the complete staged candidate before committing any file. If a write or rename
-fails, rollback restores the prior version-5 card and project-keyed snapshot
-files; never repair a partial migration by hand.
-
-Publication transaction schema version 2 is required after cutover. A
-transaction version 1 PR must merge before the cutover or regenerate from its
-still-open issue afterward; the publisher rejects it rather than guessing how
-to map project-keyed paths. The read-only cutover audit on 2026-07-29 initially
-found four open version-1 submission PRs: #154 (issue #148), #155 (issue #150),
-#156 (issue #152), and #157 (issue #149). All four merged into `main` before
-cutover, so none requires regeneration. Issue #151 remained open without a
-generated PR and must be audited again immediately before the final migration.
+Sources live in `data/registry/sources/`; cards reference their stable source ID.
+Identity backfill changes source records, not card identifiers. Publication
+transaction schema version 2 binds the source, card, allowed paths and authority.
+A legacy version-1 PR must regenerate from its still-open issue; the publisher
+rejects it rather than guessing how to map old project-keyed paths. Historical
+cutover observations belong to the verification ledger, not a new migration run.
 
 ## Refresh automation
 
@@ -349,21 +353,23 @@ Workflow: `.github/workflows/refresh-catalog.yml`
 - Schedule: `17 7 * * *` UTC via `cron`.
 - Manual modes:
   - `incremental` (default)
-  - `baseline` with `--batch-size` (1-24)
-  - `project` with `--project-id`
-  - `forensic` with `--project-id`
-- `catalog-refresh` concurrency: `catalog-refresh`, non-canceling.
+  - `baseline` with `batch_size` (1-24)
+  - `project` with `source_id`
+  - `forensic` with `source_id`
+- Leave `operation_key` empty for scheduled/manual requests; the writer selects it.
+- Requests and individual preparations have separate non-canceling
+  `catalog-refresh-<request-or-operation-key>` concurrency.
 - `if` guard allows scheduled or `refs/heads/main` manual dispatch.
 - Steps:
-  1. `npm run catalog:refresh -- --mode ...`
-  2. `npm run check`
-  3. stage snapshot writes only
-  4. commit only when staged changes exist
-  5. bounded rebase/push retry (up to 3 attempts, no force-push)
-  6. dispatch `deploy-pages.yml` only when snapshots changed.
+  1. select current source requests from trusted main;
+  2. dispatch pinned read-only preparation for the selected source;
+  3. retain the immutable result/diagnostic artifact;
+  4. revalidate native producer, source identity, input and paths in the writer;
+  5. publish validated facts and observation times with current-main comparison;
+  6. coalesce publishable revisions and confirm their actual public exports.
 
-Baseline mode loops while provisional queue remains > 0 by reading
-`data/snapshots/github-refresh.json` counts.
+Baseline requests select a bounded provisional batch. Scheduled reconciliation
+continues due work; `data/snapshots/github-refresh.json` records progress.
 
 The refresh manifest uses schema version 3. Its aggregate counts remain the
 dashboard contract, while `providers.github` and `providers.codeberg` report
@@ -562,26 +568,26 @@ Workflow set:
     the reviewed immutable-ID registry plus current association
   - preserves Kit ID, canonical author, source issue, `published_at`, and
     support snapshot identity for a staff edit
-  - writes/updates `data/registry/kits/<kit-id>.json`
-  - validates and builds catalog
-  - commits `feat(kits): publish issue #<n>`
-  - serializes writes under `kit-registry` concurrency
+  - prepares an immutable `data/registry/kits/<kit-id>.json` result without
+    canonical write authority
+  - lets the shared writer validate/build and publish with fresh authority,
+    current-main and exact-path guards
+  - serializes canonical publication under `canonical-publication`
   - treats an unchanged edit retry as a timestamp-preserving no-op
   - dispatches the deploy workflow for the exact pushed SHA
-  - applies `kit-published` and closes the source issue only after deployment
-    dispatch succeeds
+  - applies `kit-published` and closes the source issue only after the exact
+    public revision/assets and Chromium/WebKit proof are confirmed
 - `.github/workflows/apply-kit-withdrawal.yml` + `scripts/kits/apply-withdrawal.mjs`:
   - only Kit author numeric ID may withdraw
-  - writes withdrawn tombstone status
-  - closes withdrawal issue and deploys.
+  - prepares withdrawn tombstone status without changing identity/history
+  - publishes through the same writer and closes only after public confirmation.
 
 If Kit validation fails, correct the manifest by editing the open issue.
-Automation reruns triage. If publication fails after valid triage, rerun the
-failed publisher from GitHub Actions; its current-`main` synchronization and
-idempotent apply rules make retries safe. Do not hand-edit generated registry
-or catalog artifacts. Label or issue-closure bookkeeping failures after the
-canonical push and exact-SHA deployment request appear as warnings and do not
-turn successful publication into a false failure.
+Automation reruns triage. After valid triage, scheduled reconciliation can
+recover dropped preparation/publication/confirmation wakes. Request a writer
+reconcile pass when an immediate wake is needed. Do not hand-edit generated
+registry or catalog artifacts. Verified publication evidence survives label or
+issue-closure failures; finalization resumes without publishing the Kit again.
 
 ## Identity and moderation maintenance
 
@@ -589,11 +595,11 @@ turn successful publication into a false failure.
 
 If `source_health: identity-change`:
 
-1. inspect canonical source mapping in `data/registry/projects/<id>.json`
-2. fix `source.repository` and `source.repository_id` if needed
-3. re-run targeted refresh with `npm run catalog:refresh -- --mode project --project-id <id>`
-4. backfill identity with `npm run catalog:backfill-identities -- --project-id <id> --write`
-5. run `npm run catalog:validate` and commit minimal fix PR
+1. inspect the card's `source_id` and corresponding `data/registry/sources/<source-id>.json`;
+2. verify the immutable upstream repository identity and owner authority;
+3. submit a minimal reviewed source correction, preserving source/card IDs and tombstones;
+4. request targeted refresh with `refresh-catalog.yml`, `mode=project`, and `source_id`;
+5. use the source identity backfill workflow only for missing verified identities.
 
 ### Repository identity backfill workflow
 
@@ -602,15 +608,16 @@ Use this workflow for reproducible identity persistence:
 - Workflow: `.github/workflows/backfill-repository-identities.yml`
 - Trigger: `workflow_dispatch` on `main`
 - Inputs:
-  - `project_ids`: optional newline-separated list of project IDs, empty means all
-- Runtime command: `npm run catalog:backfill-identities -- --write --project-id <id>`
-  for each provided ID (or no `--project-id` for full backfill)
-- Concurrency: `catalog-refresh`
-- Commit scope: only `data/registry/projects/*.json`
+  - `source_ids`: optional newline-separated source IDs, empty means all missing identities
+- The request bridge dispatches writer mode `backfill-identities`; at most 256
+  missing identities can be published per write.
+- Canonical concurrency: `canonical-publication`
+- Commit scope: only `data/registry/sources/*.json`
 - Validation + guardrails:
   - `npm run catalog:validate`
-  - unknown IDs, duplicate IDs, or validation failures block the run before write
-  - bounded 3-attempt rebase/push retry loop
+  - unknown/duplicate IDs, identity conflicts, or validation failures block writing
+  - fresh canonical validation and exact current-main comparison; a changed base
+    defers the write instead of rebasing stale identity data
 
 ### Transient stale handling
 
@@ -631,7 +638,11 @@ the focused content gate from the repository root:
 
 ```powershell
 npm run check:content
+npm run test:content-e2e
 ```
+
+The focused browser command covers both Chromium and WebKit. Required CI and
+public deployment confirmation still gate the exact submitted revision.
 
 For implementation, dependencies, schemas, vocabulary, configuration,
 workflow changes, or uncertain classification, run the full gate:
@@ -647,8 +658,117 @@ Deployment trigger sequence:
 - The deployment controller coalesces eligible revisions and publishes Pages.
   Every deployment still needs matching revision/assets and Chromium/WebKit
   confirmation.
-- The manual enrichment workflow remains on its previous path until the pending
-  approved rollout migration is complete.
+- Owner enrichment uses `request-catalog-enrichment.yml`; budgeted read-only
+  preparations and shared-writer canary/full admission preserve the frozen
+  manifest, checkpoints, owner field policy and manual publication decisions.
+
+## Recovery, credentials, and owner controls
+
+Request an immediate shared-writer pass from current main:
+
+```powershell
+gh workflow run automation-writer.yml --repo MentallyQuill/Tavernary --ref main -f mode=reconcile
+gh run list --repo MentallyQuill/Tavernary --workflow automation-writer.yml --limit 10
+```
+
+Inspect the selected native run with `gh run view <run-id> --log-failed`.
+The receipt under `data/maintenance/automation/operations/<operation-key>.json`
+records retry timing; co-committed publication and verified public deployment
+prove completion. Keep pending receipts, frozen rollout manifests, owner
+decisions and tombstones intact during diagnosis. A successful dispatch alone
+does not prove publication or incident recovery.
+
+If a restore completed but its confirmation wake was dropped, request the exact
+native restore run through the existing writer. Replace the placeholder with
+the authenticated `restore-site.yml` run ID:
+
+```powershell
+gh workflow run automation-writer.yml --repo MentallyQuill/Tavernary --ref main -f mode=confirm-restore -f 'result_run_id=<restore-run-id>'
+```
+
+The writer independently authenticates the owner, restore-source artifact,
+immutable release, current canonical state and actual public/browser proof.
+For an ordinary Pages run, use `mode=confirm` with its exact native deployment
+run ID. Automatic confirmation checks at most eight eligible native runs; missing
+or expired metadata cannot hide an older build that is actually served. Integrity
+failures stop recovery. Rebuilding one source SHA requires new exact build proof.
+Retention dispatch has its own shared-lane slot and native failed-attempt backoff.
+
+### Credentials and permissions
+
+Check local CLI authentication with `gh auth status --hostname github.com`.
+If that token expired, sign in again with `gh auth login --hostname github.com`.
+An endpoint-specific 403 can indicate missing App/API permission; verify the
+failed route and identity before replacing a valid token.
+
+For Publisher failures, verify the installed app, numeric
+`TAVERNARY_PUBLISHER_BOT_ID`, `TAVERNARY_PUBLISHER_CLIENT_ID`, and the
+`TAVERNARY_PUBLISHER_APP_PRIVATE_KEY` secret in the `publisher` environment.
+Repair the app installation or replace its key in GitHub settings, then use the
+existing secret prompt without putting a secret in command text or logs:
+
+```powershell
+gh secret set TAVERNARY_PUBLISHER_APP_PRIVATE_KEY --repo MentallyQuill/Tavernary --env publisher
+gh api repos/MentallyQuill/Tavernary/actions/permissions/workflow
+gh api repos/MentallyQuill/Tavernary/rulesets/19711101
+```
+
+Expected Actions defaults are `default_workflow_permissions: read` and
+`can_approve_pull_request_reviews: false`. Keep native `verify`/`visual`, review,
+thread-resolution and exact-head requirements intact. Correct the scoped
+installation/environment permissions when a check fails.
+
+For model authentication, configured-model or billing failures, repair the
+identified existing provider secret/model/price configuration. Inspect the
+writer-owned global budget before changing a ceiling. Failed or interrupted
+attempts remain conservatively charged; deleting budget state would permit
+duplicate spending. Request reconciliation after repair and require positive
+settled usage or verified progress before treating its notice as recovered.
+
+### Emergency publication switch
+
+Pause automatic project transaction merges, or resume after diagnosis:
+
+```powershell
+gh variable set PROJECT_AUTO_PUBLICATION_ENABLED --repo MentallyQuill/Tavernary --body false
+gh variable set PROJECT_AUTO_PUBLICATION_ENABLED --repo MentallyQuill/Tavernary --body true
+```
+
+Use the applicable command, then request reconciliation. Generation can continue
+while project merges are paused. Owner add-card batches and other manual
+publication decisions retain their review requirement. To stop all canonical
+work during a severe fault, disable `automation-writer.yml` in GitHub Actions;
+after repair, re-enable that workflow and request a fresh reconcile pass.
+
+### Verified presentation restore
+
+List the bounded native release inventory and select a Publisher-owned immutable
+verified site bundle:
+
+```powershell
+gh api 'repos/MentallyQuill/Tavernary/releases?per_page=100' --jq '.[] | select(.tag_name | startswith("site-bundle-")) | {id,tag_name,draft,immutable}'
+gh workflow run restore-site.yml --repo MentallyQuill/Tavernary --ref main -f 'release_id=<verified-release-id>' -f 'reason=Restore verified presentation after incident review' -f dry_run=true
+```
+
+Review the native `site-restore-decision-<run-id>-<attempt>` artifact and both
+browser results. Only the repository owner can request this workflow. A live
+restore uses the same release/reason with `dry_run=false`; it rechecks current
+canonical data and owner removals immediately before deployment. If current
+catalog/target digests or tombstones conflict with that bundle, create a fresh
+current-data export rather than overriding the guard. Restoration must never
+resurrect withdrawn content or downgrade owner decisions. The active rollback
+proof suppresses ordinary replay of the same canonical baseline; later genuine
+publishable changes can resume normal deployment.
+
+### Owner responsibilities
+
+The owner must maintain GitHub/App and provider credentials, available billing
+and intended budgets, and GitHub account/environment permissions. Major dependency
+or policy transitions that the constrained updater cannot safely verify require
+review. Re-enable scheduled workflows if GitHub disables them for inactivity,
+then request reconciliation and inspect native health/runtime/drill results.
+GitHub-only checks cannot detect or report GitHub automation stopping completely
+while GitHub itself is unavailable.
 
 ## GitHub operational incidents
 
@@ -705,14 +825,14 @@ diagnostics contain fixed reason codes and public operation identities, not raw
 provider errors or credentials. A human closure or body edit is preserved.
 Closing a notice as not planned explicitly dismisses it.
 
-Migrated metadata, advisory and optional report producers reserve global model
+Metadata, advisory, optional report, project submission and owner-request producers reserve global model
 allowance before dispatch. Their successful result carries safe usage evidence;
 the shared writer settles it with the content publication after checking the
 current producer and every bound ticket. Positive settled requests can prove
 provider recovery. Token evidence is a conservative requested bound, not a
 billing statement. Failed or interrupted requests and unused allowance remain
-charged; a lost response cannot create more allowance. Manual enrichment and
-intake producers remain pending migration until their native coverage is proved.
+charged; a lost response cannot create more allowance. Owner enrichment admission
+uses the same budgeted preparation and authenticated checkpoint/completion path.
 
 These checks run inside GitHub. If GitHub Actions stops running or the required
 GitHub credential cannot write issues, it cannot report that outage itself.

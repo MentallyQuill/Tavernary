@@ -64,7 +64,7 @@ boundaries.
 | R14 | Gated dependency completion | Grouped packages, native NPM selector, exact-head merge gate and failed-check incidents implemented; critical Next.js findings addressed in the earlier maintenance checkpoint. Actual eligible maintenance PR completion remains. |
 | R15 | Verified supported-runtime policy | Implemented: official schedule validation, Node 24 manifest and declarations, shared workflow runtime file, weekly full compatibility checks, constrained recoverable Publisher PRs, native exact-head current/candidate CI merge gate and 90-day/EOL incidents. Head ec7fdd8c2 passes required full CI; actual scheduled proof remains. Node 26 becomes eligible only on its official LTS date. |
 | R16 | Safe bounded retention | Weekly read-only retained-bundle drill implemented: verified immutable release, clean workspace, exact full-export restore and Chromium/WebKit with outbound requests blocked. Native step proof and an eight-day freshness limit gate incident recovery. Terminal-state cleanup, historical inventory bounds and retained-bundle interruption edges remain. Actual GitHub drill proof is still required. |
-| R17 | Owner runbook | Existing runbook retained; new shared-lane recovery, token repair, switches and manual exceptions still need final documentation. |
+| R17 | Owner runbook | Updated against current generation, refresh, Kit, identity, restore and shared-writer sources plus actual GitHub permissions. Includes token repair, exact recovery/rollback commands, switches, focused content/browser checks and owner responsibilities. Final merged native command/configuration proof remains. |
 | R18 | Attached PRs, CI, review, merge, production proof | PR #818 attached. Head ec7fdd8c2 is fully green; the next recovery checkpoint needs its exact-head CI. Independent review, merge, live canary/drill and public proof remain. |
 
 Generation checkpoint: 19 affected suites/311 checks passed. Retry checkpoint:
@@ -102,6 +102,25 @@ full-suite run was added; the new exact-head CI supplies its complete gate.
 Retained-bundle interruption fallback, dropped restore confirmation wakes, safe
 terminal cleanup/history bounds, final runbook, native canary/review/merge and
 production proof remain open.
+
+## Owner runbook audit
+
+The runbook now describes the actual request/budgeted generation split, shared
+canonical publication, confirmation-before-finalization, native retry wakes,
+source-ID identity backfill and migrated enrichment/provider accounting. Removed
+obsolete instructions to enable Actions review approval or grant the default
+workflow token canonical-write authority. Native GitHub reads confirm read-only
+Actions defaults, review approval disabled and main's strict `verify`/`visual`
+checks with required reviews/resolved threads. No settings were weakened.
+
+Recovery commands cover the existing writer, exact dropped restore confirmation,
+credential repair, the project merge switch, immutable bundle dry-run/live restore,
+runtime checks and offline drills. Manual add-card decisions, maintained branch
+edits, identity/tombstones and current-data restore guards remain explicit. The
+focused catalog checklist includes its essential Chromium/WebKit smoke. This is
+a human runbook change; no implementation-mirroring prose tests or redundant
+full-suite run were added. Actual command/configuration verification after merge
+remains required.
 
 ## Rulings and task outcomes
 
