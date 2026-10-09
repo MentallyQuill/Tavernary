@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "04f964a8a93a828005175546a1446c45ce2a243c7bf6f16a7f4a63c288a9f0a1",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1035324934:hikarushmz-fetch-retry",
+      "inputDigest": "ae09d4f4e7958e96c0b91e8638c32cfa3cb4609af1b5a52fb44836156e220fc0",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T10:45:14.113Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T10:30:14.113Z",
+  "completedAt": null
+}
