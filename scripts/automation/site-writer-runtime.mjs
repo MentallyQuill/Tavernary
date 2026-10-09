@@ -142,7 +142,7 @@ export async function protectedRestoreBundleIds({
   }
   return [...ids];
 }
-async function loadSiteWriterState({ root, env }) {
+export async function loadSiteWriterState({ root, env }) {
   await synchronizeWriterCheckout({ root, env });
   const revision = git(root, ["rev-parse", "HEAD"]),
     nowMs = Date.now();

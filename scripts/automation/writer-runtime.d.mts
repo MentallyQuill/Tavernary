@@ -120,6 +120,7 @@ export function runDeploymentWriterConfirmation(input: {
   env?: Record<string, string | undefined>;
   gh?: GhRunner;
   load?: () => Promise<AutomationInventoryState>;
+  loadSite?: () => Promise<import("./site-writer-runtime.mjs").SiteWriterState>;
   download?: (args: string[]) => Promise<Uint8Array>;
   isAncestor?: (ancestor: string, descendant: string) => boolean | null;
   probe?: (input: {
