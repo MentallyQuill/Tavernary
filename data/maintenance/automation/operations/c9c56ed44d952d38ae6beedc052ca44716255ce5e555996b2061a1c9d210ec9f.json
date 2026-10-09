@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c9c56ed44d952d38ae6beedc052ca44716255ce5e555996b2061a1c9d210ec9f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:url-reddit-1v9u18m:reddit-1v9u18m",
+      "inputDigest": "c43fd6c9ca2388f8a44a744918061044e80666001aca36ae4f4657426fc08904",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "1970-01-01T00:00:00.000Z",
+    "nextEligibleAt": "2026-10-09T04:57:20.862Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T04:42:20.862Z",
+  "completedAt": null
+}
