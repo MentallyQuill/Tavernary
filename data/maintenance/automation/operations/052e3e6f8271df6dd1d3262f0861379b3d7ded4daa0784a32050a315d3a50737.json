@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "052e3e6f8271df6dd1d3262f0861379b3d7ded4daa0784a32050a315d3a50737",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:url-reddit-1vqontp:reddit-1vqontp",
+      "inputDigest": "00996a6cb8303319a0621d7d56044d819fa195b18c247ad21113c2c02eae8259",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "1970-01-01T00:00:00.000Z",
+    "nextEligibleAt": "2026-10-09T04:36:19.198Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T04:21:19.198Z",
+  "completedAt": null
+}
