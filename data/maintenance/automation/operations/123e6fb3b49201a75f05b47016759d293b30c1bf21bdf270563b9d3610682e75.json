@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "123e6fb3b49201a75f05b47016759d293b30c1bf21bdf270563b9d3610682e75",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1251549736:enerccio-sillytavern-stickynote",
+      "inputDigest": "9bc5c258e5198604377f9662b02cb350e78f870a1cd6a67f40fc09562c1211f1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-09T12:53:53.048Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T12:38:53.048Z",
+  "completedAt": null
+}
