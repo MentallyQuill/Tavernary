@@ -741,7 +741,11 @@ export async function runDeploymentWriterConfirmation({
   root = process.cwd(),
   env = process.env,
   gh = executeGh,
-  load = writerInventoryLoader({ root, env, gh }),
+  load,
+  loadSite = async () => {
+    const { loadSiteWriterState } = await import("./site-writer-runtime.mjs");
+    return loadSiteWriterState({ root, env });
+  },
   download = downloadPreparedArtifact,
   probe = (input) => confirmPublicDeployment(input),
   commit = (input) => commitCanonicalData({ ...input, gh }),
@@ -766,8 +770,26 @@ export async function runDeploymentWriterConfirmation({
     runId < 0
   )
     throw new Error("Deployment confirmation request is invalid.");
+  // A trusted completed-run wake has no operation to reconstruct. Read the same
+  // fresh deployment/rollback state as retention, without issue/PR discovery.
+  const read =
+    load ??
+    (runId > 0 && !operationKey
+      ? async () => {
+          const state = await loadSite();
+          return {
+            nowMs: state.nowMs,
+            operations: [],
+            local: {
+              revision: state.revision,
+              deployments: state.deployments,
+              activeDeployment: state.activeDeployment,
+            },
+          };
+        }
+      : writerInventoryLoader({ root, env, gh }));
   try {
-    const initial = await load();
+    const initial = await read();
     const operation = operationKey
       ? initial.operations.find((value) => value.key === operationKey)
       : null;
@@ -831,7 +853,7 @@ export async function runDeploymentWriterConfirmation({
               first = false;
               return project(initial);
             }
-            return project(await load());
+            return project(await read());
           },
           loadManifest: async ({ runId, revision }) => {
             let data;
@@ -891,7 +913,7 @@ export async function runDeploymentWriterConfirmation({
     if (operationKey)
       await persistPreparedFailure({
         operationKey,
-        load,
+        load: read,
         error,
         persist: (receipt) =>
           persistGithubAutomationReceipt({ gh, repository, receipt }),

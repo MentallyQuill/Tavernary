@@ -8,6 +8,10 @@ import type { RestoreWriterInput } from "./restore-writer.mjs";
 export interface SiteWriterState extends RetentionState {
   activeDeployment: ActiveDeployment | null;
 }
+export function loadSiteWriterState(input: {
+  root: string;
+  env: Record<string, string | undefined>;
+}): Promise<SiteWriterState>;
 interface SiteWriterInput {
   runId: number;
   root?: string;

@@ -118,8 +118,16 @@ export function discoverKitOperations(input) {
         operation.stage === "deployment-confirmed" &&
         issue.state === "closed" &&
         issue.state_reason === "completed" &&
-        labels.includes(completeLabel)
+        labels.includes(completeLabel) &&
+        !input.receipts.some(
+          (receipt) =>
+            receipt.operation.key === operation.key &&
+            receipt.operation.expectedSha === operation.expectedSha &&
+            receipt.operation.stage === "deployment-confirmed",
+        )
       )
+        // Keep an exact pending receipt through the fresh post-projection read.
+        // Once finalized, completed issue bookkeeping becomes undiscoverable.
         continue;
     } else {
       if (
