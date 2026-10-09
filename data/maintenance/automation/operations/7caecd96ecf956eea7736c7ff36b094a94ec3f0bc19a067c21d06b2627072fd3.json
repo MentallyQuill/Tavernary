@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7caecd96ecf956eea7736c7ff36b094a94ec3f0bc19a067c21d06b2627072fd3",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1135415804:archkr-st-basicspotify",
+      "inputDigest": "6e99f25b73cf9b89f9dada2914ab1674c72195c0d45ada35837ac5c8e6c15fa8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-09-23T12:47:43.864Z",
+    "nextEligibleAt": "2026-10-09T07:57:47.103Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T07:42:47.103Z",
+  "completedAt": null
+}
