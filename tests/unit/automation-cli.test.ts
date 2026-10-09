@@ -2,6 +2,45 @@ import { expect, test } from "vitest";
 import { runReconcileAutomationCli } from "../../scripts/automation/reconcile-cli.mjs";
 import { operationFixture } from "../helpers/automation-fixtures";
 
+test("the authorized CLI forwards inline finalization without another workflow dispatch", async () => {
+  const operation = operationFixture({ stage: "deployment-confirmed" });
+  let finalized = false;
+  const output: string[] = [];
+  const code = await runReconcileAutomationCli({
+    args: ["--apply"],
+    env: {
+      GITHUB_REPOSITORY: "MentallyQuill/Tavernary",
+      GITHUB_REF: "refs/heads/main",
+      GITHUB_EVENT_NAME: "workflow_dispatch",
+      GITHUB_ACTOR_ID: "2625904",
+      GITHUB_WORKFLOW_REF:
+        "MentallyQuill/Tavernary/.github/workflows/automation-writer.yml@refs/heads/main",
+    },
+    inventory: async () => [operation],
+    receipts: [],
+    dispatch: async () => {
+      throw new Error("Confirmed work must not queue another workflow.");
+    },
+    finalize: async () => {
+      finalized = true;
+      return {
+        operation: {
+          ...operation,
+          stage: "finalized",
+          retry: null,
+          nextEligibleAt: null,
+          workerRunId: null,
+        },
+      };
+    },
+    persist: async () => {},
+    write: (value) => output.push(value),
+  });
+  expect(code).toBe(0);
+  expect(finalized).toBe(true);
+  expect(JSON.parse(output[0]).finished).toBe(1);
+});
+
 test("the CLI defaults to a mutation-free dry run with reviewable selected keys", async () => {
   let writes = 0;
   let dispatches = 0;

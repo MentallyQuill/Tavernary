@@ -1,4 +1,5 @@
 import type { GhRunner } from "../submissions/kit-submission-reconciliation.mjs";
+import type { ReconciliationInput } from "./reconcile.mjs";
 import type { PublicationResult } from "./publish.mjs";
 import type { AutomationInventoryState } from "./inventory.mjs";
 import type { GitHubRequest } from "../submissions/reconcile-project-validations.mjs";
@@ -48,6 +49,16 @@ export function runPublicationWriterFinalization(
     ) => Promise<{ status: "complete" | "superseded" | "waiting" }>;
   },
 ): Promise<Record<string, unknown>>;
+export function runReconciledFinalization(
+  input: ProjectWriterInput & {
+    persist?: (
+      receipt: import("./receipts.mjs").AutomationReceipt,
+    ) => Promise<void>;
+  },
+): Promise<{
+  operation: import("./operation.mjs").AutomationOperation;
+  waiting: boolean;
+}>;
 export function runGenerationModelWriterSettlement(
   input: ProjectWriterInput & {
     download?: (args: string[]) => Promise<Uint8Array>;
@@ -161,6 +172,7 @@ export function runAutomationWriterReconciliation(input?: {
   env?: Record<string, string | undefined>;
   gh?: GhRunner;
   load?: () => Promise<AutomationInventoryState>;
+  finalize?: ReconciliationInput["finalize"];
 }): Promise<Record<string, unknown>>;
 export function runPreparedWriterBatch(input: {
   wakes: { operationKey: string; runId: number }[];
