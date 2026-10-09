@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "94bec98c122620c6bf1243f8d7e42b04da88d7f18cc74b5b4f271087fcd02622",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:url-reddit-1vpv8nk:reddit-1vpv8nk",
+      "inputDigest": "ec49a0f6acc4cf5ecc18d06a01b6089b5b925263c49e331d84fcfe0f980175f5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "1970-01-01T00:00:00.000Z",
+    "nextEligibleAt": "2026-10-09T04:57:20.862Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-09T04:42:20.862Z",
+  "completedAt": null
+}
