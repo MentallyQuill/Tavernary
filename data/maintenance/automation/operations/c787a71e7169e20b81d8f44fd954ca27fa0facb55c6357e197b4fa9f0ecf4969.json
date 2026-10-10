@@ -12,7 +12,7 @@
     "createdAt": "2026-09-18T12:16:22.415Z",
     "nextEligibleAt": "2026-10-10T22:05:34.003Z",
     "expectedSha": null,
-    "workerRunId": null,
+    "workerRunId": 38086411731,
     "retry": {
       "failure": {
         "kind": "unknown",
