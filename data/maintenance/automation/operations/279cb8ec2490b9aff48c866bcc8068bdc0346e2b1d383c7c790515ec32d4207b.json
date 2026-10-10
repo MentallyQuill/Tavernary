@@ -10,11 +10,18 @@
     },
     "stage": "deployment-confirmed",
     "createdAt": "2026-09-19T03:37:02.000Z",
-    "nextEligibleAt": "2026-10-09T07:50:43.948Z",
+    "nextEligibleAt": "2026-10-10T13:55:44.545Z",
     "expectedSha": "7b10befd578629f9d2dc75285d639b868475a6d9",
     "workerRunId": null,
-    "retry": null
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 3
+    }
   },
-  "updatedAt": "2026-10-09T07:35:43.948Z",
+  "updatedAt": "2026-10-10T13:40:44.545Z",
   "completedAt": null
 }
