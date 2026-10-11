@@ -1080,7 +1080,12 @@ test("keeps search sort and order coherent through reload and history", async ({
 
   await expect(search).toHaveValue("preset freaky");
   await expect(sort).toHaveValue("relevance");
-  await expect(cardTitles.first()).toHaveText(freakySearchProjectName);
+  await expect(cardTitles).toHaveCount(
+    generatedProjectSearchCount("preset freaky"),
+  );
+  await expect(
+    page.getByRole("heading", { name: freakySearchProjectName, exact: true }),
+  ).toBeVisible();
   const relevanceOrder = await cardTitles.allTextContents();
 
   await page.goto(`${searchUrl}&sort=popularity`);

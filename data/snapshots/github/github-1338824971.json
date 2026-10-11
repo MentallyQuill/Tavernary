@@ -1,0 +1,73 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1338824971",
+  "repository": {
+    "id": 1338824971,
+    "owner": "ProjectChrysalis",
+    "name": "Chrysalis-Engine",
+    "url": "https://github.com/ProjectChrysalis/Chrysalis-Engine",
+    "description": "The AI frontend you can reshape just by asking.",
+    "default_branch": "main",
+    "head_sha": "1e4dc01329ee152f537560c3534114034e5c88f1",
+    "head_committed_at": "2026-10-04T04:34:33.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-08-18T20:46:35.000Z",
+    "size_kb": 2010
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-10-04T04:34:33.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-10-04T04:34:33.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-18T03:37:39.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-13T23:53:41.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-10-04T04:41:38.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-10-11T13:19:54.165Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "1e4dc01329ee152f537560c3534114034e5c88f1"
+  },
+  "community": {
+    "stars_count": 20,
+    "forks_count": 3,
+    "watchers_count": 0,
+    "aggregate": 23
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-10-11T13:19:54.165Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "cata02222", "type": "User", "provider": "github" },
+      { "login": "claude", "type": "User", "provider": "github" },
+      { "login": "dependabot[bot]", "type": "Bot", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-10-11T13:19:54.165Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

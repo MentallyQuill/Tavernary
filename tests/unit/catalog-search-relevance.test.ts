@@ -9,6 +9,7 @@ interface RelevanceScenario {
   mode: "projects" | "kits";
   query: string;
   top?: string[];
+  topGroup?: string[];
   required: string[];
   forbidden: string[];
   expectEmpty?: boolean;
@@ -49,6 +50,12 @@ describe("catalog relevance corpus", () => {
         expect(resultIds.slice(0, scenario.top.length), diagnostic).toEqual(
           scenario.top,
         );
+      }
+      if (scenario.topGroup) {
+        expect(
+          resultIds.slice(0, scenario.topGroup.length).sort(),
+          diagnostic,
+        ).toEqual([...scenario.topGroup].sort());
       }
       if (scenario.expectEmpty) {
         expect(resultIds, diagnostic).toEqual([]);

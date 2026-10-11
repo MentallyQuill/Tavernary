@@ -1,6 +1,6 @@
 {
   "schemaVersion": 8,
-  "generatedAt": "2026-10-08T14:42:21.687Z",
+  "generatedAt": "2026-10-11T13:20:01.871Z",
   "tagVocabulary": [
     {
       "id": "maintain-long-term-memory",
@@ -6753,7 +6753,7 @@
           false
         ],
         "evidenceStatus": "complete",
-        "dormant": false
+        "dormant": true
       },
       "latestReleaseAt": null,
       "community": {
@@ -7986,7 +7986,7 @@
           false
         ],
         "evidenceStatus": "complete",
-        "dormant": false
+        "dormant": true
       },
       "latestReleaseAt": null,
       "community": {
@@ -29623,7 +29623,7 @@
           false
         ],
         "evidenceStatus": "complete",
-        "dormant": false
+        "dormant": true
       },
       "latestReleaseAt": "2026-07-17T12:10:36.000Z",
       "community": {
@@ -33737,6 +33737,174 @@
         "compatibility": [],
         "maintainers": [
           "enclavum"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "enerccio-marginalia",
+      "name": "Marginalia",
+      "kind": "frontend",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": "A local writing frontend for long-form fiction, with branching stories, lorebooks, context summaries, backups, and runtime extensions. Connects to OpenAI-compatible APIs and local models.",
+      "canonicalUrl": "https://github.com/Enerccio/Marginalia",
+      "catalogedAt": "2026-10-11T13:19:44.671Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "marginalia",
+          "label": "Marginalia",
+          "description": "Works with the Marginalia roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "improve-writing-and-prose",
+          "label": "Improve writing and prose",
+          "description": "Strengthen prose, dialogue, style, pacing, subtext, or general writing quality.",
+          "facet": "goal"
+        },
+        {
+          "id": "local-first",
+          "label": "Local-first",
+          "description": "Keeps its primary data and workflow on the user's own device.",
+          "facet": "trait"
+        },
+        {
+          "id": "manage-context-limits",
+          "label": "Manage context limits",
+          "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
+          "facet": "goal"
+        },
+        {
+          "id": "model-agnostic",
+          "label": "Model-agnostic",
+          "description": "Works across a broad range of model providers rather than requiring one model family.",
+          "facet": "trait"
+        },
+        {
+          "id": "modular-and-extensible",
+          "label": "Modular and extensible",
+          "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
+          "facet": "trait"
+        },
+        {
+          "id": "retrieve-relevant-context",
+          "label": "Retrieve relevant context",
+          "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "d5fc70eaf342f0860b589c7da2c095fcf4b5b6d3",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Enerccio"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-10T19:53:04.000Z",
+        "activeWeeks12": 4,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 14851,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-10-11T13:19:54.165Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "Marginalia"
+        ],
+        "aliases": [],
+        "source": [
+          "enerccio-marginalia",
+          "github-1382026046",
+          "Enerccio/Marginalia",
+          "https://github.com/Enerccio/Marginalia"
+        ],
+        "summary": [
+          "A local writing frontend for long-form fiction, with branching stories, lorebooks, context summaries, backups, and runtime extensions. Connects to OpenAI-compatible APIs and local models."
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [
+          "Improve writing and prose",
+          "writing assistance",
+          "prose improvement",
+          "co-writing",
+          "Local-first",
+          "stored locally",
+          "on-device data",
+          "local data ownership",
+          "Manage context limits",
+          "context compression",
+          "context window management",
+          "token budgeting",
+          "Model-agnostic",
+          "bring your own model",
+          "BYOM",
+          "provider independent",
+          "Modular and extensible",
+          "plugin architecture",
+          "modular design",
+          "extensible system",
+          "Retrieve relevant context",
+          "context retrieval",
+          "relevant recall",
+          "knowledge retrieval"
+        ],
+        "frontends": [
+          "Marginalia"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Enerccio"
         ],
         "relationships": []
       }
@@ -39871,7 +40039,7 @@
           false
         ],
         "evidenceStatus": "complete",
-        "dormant": false
+        "dormant": true
       },
       "latestReleaseAt": null,
       "community": {
@@ -41292,7 +41460,7 @@
           false
         ],
         "evidenceStatus": "complete",
-        "dormant": false
+        "dormant": true
       },
       "latestReleaseAt": null,
       "community": {
@@ -86950,6 +87118,163 @@
       }
     },
     {
+      "id": "projectchrysalis-chrysalis-engine",
+      "name": "Chrysalis-Engine",
+      "kind": "frontend",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": "A local AI frontend with installable apps and a built-in agent that edits app files. Chats, characters, and model keys stay on your device; workspace changes are kept in Git.",
+      "canonicalUrl": "https://github.com/ProjectChrysalis/Chrysalis-Engine",
+      "catalogedAt": "2026-10-11T13:19:44.671Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "chrysalis-engine",
+          "label": "Chrysalis-Engine",
+          "description": "Works with the Chrysalis-Engine roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "agentic-tool-use",
+          "label": "Agentic tool use",
+          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
+          "facet": "trait"
+        },
+        {
+          "id": "local-first",
+          "label": "Local-first",
+          "description": "Keeps its primary data and workflow on the user's own device.",
+          "facet": "trait"
+        },
+        {
+          "id": "modular-and-extensible",
+          "label": "Modular and extensible",
+          "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "1e4dc01329ee152f537560c3534114034e5c88f1",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "ProjectChrysalis"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "cata02222",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "claude",
+            "botOrAi": true
+          },
+          {
+            "provider": "github",
+            "login": "dependabot[bot]",
+            "botOrAi": true
+          }
+        ],
+        "humanContributorCount": 1,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-04T04:34:33.000Z",
+        "activeWeeks12": 3,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          false,
+          true,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-10-04T04:41:38.000Z",
+      "community": {
+        "stars": 20,
+        "forks": 3,
+        "watchers": 0,
+        "aggregate": 23
+      },
+      "repositorySizeKb": 2010,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-10-11T13:19:54.165Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "Chrysalis-Engine"
+        ],
+        "aliases": [],
+        "source": [
+          "projectchrysalis-chrysalis-engine",
+          "github-1338824971",
+          "ProjectChrysalis/Chrysalis-Engine",
+          "https://github.com/ProjectChrysalis/Chrysalis-Engine"
+        ],
+        "summary": [
+          "A local AI frontend with installable apps and a built-in agent that edits app files. Chats, characters, and model keys stay on your device; workspace changes are kept in Git."
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [
+          "Agentic tool use",
+          "tool calling",
+          "AI agents",
+          "agent mode",
+          "Local-first",
+          "stored locally",
+          "on-device data",
+          "local data ownership",
+          "Modular and extensible",
+          "plugin architecture",
+          "modular design",
+          "extensible system"
+        ],
+        "frontends": [
+          "Chrysalis-Engine"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "ProjectChrysalis",
+          "cata02222",
+          "claude",
+          "dependabot[bot]"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "prolix-oc-lumiverse",
       "name": "Lumiverse",
       "kind": "frontend",
@@ -92484,6 +92809,147 @@
           "Kimi",
           "Moonshot",
           "Moonshot AI",
+          "Chat Completion"
+        ],
+        "maintainers": [],
+        "relationships": []
+      }
+    },
+    {
+      "id": "reddit-1x2m4oj",
+      "name": "Universal Preset Voyage V5",
+      "kind": "preset",
+      "metadataStatus": "curated",
+      "sourceStatus": "manual",
+      "primaryFunction": "preset",
+      "summary": "A lightweight SFW preset for small models to large models. Excels at slice of life, action, adventure and exploration roleplays. Designed for Gemma 4, works with many older and newer models.",
+      "canonicalUrl": "https://www.reddit.com/r/SillyTavernAI/comments/1x2m4oj/universal_preset_voyage_v5/",
+      "catalogedAt": "2026-10-11T13:19:44.671Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-structured-reasoning",
+          "label": "Add structured reasoning",
+          "description": "Introduce deliberate planning, reflection, critique, or multi-step thinking before output.",
+          "facet": "goal"
+        },
+        {
+          "id": "improve-writing-and-prose",
+          "label": "Improve writing and prose",
+          "description": "Strengthen prose, dialogue, style, pacing, subtext, or general writing quality.",
+          "facet": "goal"
+        },
+        {
+          "id": "model-agnostic",
+          "label": "Model-agnostic",
+          "description": "Works across a broad range of model providers rather than requiring one model family.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "unsupported",
+        "riskLevel": null,
+        "freshness": "unsupported",
+        "currentSha": null,
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "activity": {
+        "latestSourceActivityAt": null,
+        "activeWeeks12": null,
+        "weeklyActivity": null,
+        "evidenceStatus": null,
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": null,
+      "repositorySizeKb": null,
+      "license": {
+        "status": "pending",
+        "label": "Pending",
+        "tooltip": "License review is pending for this source."
+      },
+      "attribution": null,
+      "preset": {
+        "version": null,
+        "publishedAt": null,
+        "artifactSizeBytes": null,
+        "modelFamilies": [
+          {
+            "id": "gemma",
+            "label": "Gemma",
+            "description": "Designed for Google Gemma models."
+          },
+          {
+            "id": "model-agnostic",
+            "label": "Model-Agnostic",
+            "description": "Designed to work across model families."
+          }
+        ],
+        "completionFormats": [
+          {
+            "id": "chat-completion",
+            "label": "Chat Completion",
+            "description": "Uses role-based chat messages."
+          }
+        ]
+      },
+      "refreshedAt": null,
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "Universal Preset Voyage V5"
+        ],
+        "aliases": [],
+        "source": [
+          "reddit-1x2m4oj",
+          "url-reddit-1x2m4oj",
+          "www.reddit.com/r/SillyTavernAI/comments/1x2m4oj/universal_preset_voyage_v5",
+          "https://www.reddit.com/r/SillyTavernAI/comments/1x2m4oj/universal_preset_voyage_v5/"
+        ],
+        "summary": [
+          "A lightweight SFW preset for small models to large models. Excels at slice of life, action, adventure and exploration roleplays. Designed for Gemma 4, works with many older and newer models."
+        ],
+        "kind": [
+          "preset"
+        ],
+        "primaryFunction": [
+          "System Preset"
+        ],
+        "tags": [
+          "Add structured reasoning",
+          "reasoning pipelines",
+          "stepped thinking",
+          "planning reasoning",
+          "planning passes",
+          "Improve writing and prose",
+          "writing assistance",
+          "prose improvement",
+          "co-writing",
+          "Model-agnostic",
+          "bring your own model",
+          "BYOM",
+          "provider independent"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [
+          "Gemma",
+          "Google Gemma",
+          "Model-Agnostic",
+          "universal",
+          "any model",
           "Chat Completion"
         ],
         "maintainers": [],
@@ -98222,7 +98688,7 @@
           false
         ],
         "evidenceStatus": "complete",
-        "dormant": false
+        "dormant": true
       },
       "latestReleaseAt": "2026-06-01T06:22:47.000Z",
       "community": {
@@ -138062,7 +138528,7 @@
         }
       ],
       "supporterCount": 3,
-      "trendingScore": 1.223613593171694,
+      "trendingScore": 1.1431809909100317,
       "supportRefreshedAt": "2026-10-08T14:42:26.884Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
@@ -177468,7 +177934,7 @@
                 false
               ],
               "evidenceStatus": "complete",
-              "dormant": false
+              "dormant": true
             },
             "latestReleaseAt": null,
             "community": {
@@ -191734,7 +192200,7 @@
                 false
               ],
               "evidenceStatus": "complete",
-              "dormant": false
+              "dormant": true
             },
             "latestReleaseAt": null,
             "community": {
@@ -232999,7 +233465,7 @@
                 false
               ],
               "evidenceStatus": "complete",
-              "dormant": false
+              "dormant": true
             },
             "latestReleaseAt": null,
             "community": {
@@ -253180,7 +253646,7 @@
                 false
               ],
               "evidenceStatus": "complete",
-              "dormant": false
+              "dormant": true
             },
             "latestReleaseAt": null,
             "community": {
@@ -261613,7 +262079,7 @@
         }
       ],
       "supporterCount": 1,
-      "trendingScore": 0.18602176441644017,
+      "trendingScore": 0.17379387264340337,
       "supportRefreshedAt": "2026-10-08T14:42:26.884Z",
       "supportStale": false,
       "flaggedProjectCount": 0,

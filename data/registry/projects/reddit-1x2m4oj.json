@@ -1,0 +1,29 @@
+{
+  "schema_version": 6,
+  "id": "reddit-1x2m4oj",
+  "name": "Universal Preset Voyage V5",
+  "kind": "preset",
+  "summary": "A lightweight SFW preset for small models to large models. Excels at slice of life, action, adventure and exploration roleplays. Designed for Gemma 4, works with many older and newer models.",
+  "metadata_status": "curated",
+  "source_id": "url-reddit-1x2m4oj",
+  "frontends": ["sillytavern"],
+  "primary_function": "preset",
+  "tags": [
+    "add-structured-reasoning",
+    "improve-writing-and-prose",
+    "model-agnostic"
+  ],
+  "model_families": ["gemma", "model-agnostic"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-10-11T13:19:44.671Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Trusted Tavernary editor selection."
+    },
+    "tags": { "mode": "manual", "note": "Trusted Tavernary editor selection." }
+  }
+}
