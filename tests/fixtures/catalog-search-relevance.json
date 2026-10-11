@@ -2,14 +2,14 @@
   {
     "mode": "projects",
     "query": "preset freaky",
-    "top": ["reddit-1v9u18m"],
+    "topGroup": ["reddit-1v9u18m", "ryah-st-freaky-d20-preset"],
     "required": ["reddit-1v9u18m"],
     "forbidden": ["mentallyquill-recursion"]
   },
   {
     "mode": "projects",
     "query": "freaky preset",
-    "top": ["reddit-1v9u18m"],
+    "topGroup": ["reddit-1v9u18m", "ryah-st-freaky-d20-preset"],
     "required": ["reddit-1v9u18m"],
     "forbidden": ["mentallyquill-recursion"]
   },

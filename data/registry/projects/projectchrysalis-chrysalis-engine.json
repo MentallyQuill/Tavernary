@@ -1,0 +1,23 @@
+{
+  "schema_version": 6,
+  "id": "projectchrysalis-chrysalis-engine",
+  "name": "Chrysalis-Engine",
+  "kind": "frontend",
+  "summary": "A local AI frontend with installable apps and a built-in agent that edits app files. Chats, characters, and model keys stay on your device; workspace changes are kept in Git.",
+  "metadata_status": "curated",
+  "source_id": "github-1338824971",
+  "frontends": ["chrysalis-engine"],
+  "primary_function": "frontend",
+  "tags": ["agentic-tool-use", "local-first", "modular-and-extensible"],
+  "cataloged_at": "2026-10-11T13:19:44.671Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Trusted Tavernary editor selection."
+    },
+    "tags": { "mode": "manual", "note": "Trusted Tavernary editor selection." }
+  }
+}
