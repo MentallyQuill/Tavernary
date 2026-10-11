@@ -427,7 +427,7 @@ function hasReceiptOnlyBaseDrift({ root, baseSha, mainSha }) {
         !/^:(?:000000|100644) (?:000000|100644) [a-f0-9]{40} [a-f0-9]{40} [AMD]$/u.test(
           fields[index],
         ) ||
-        !/^data\/maintenance\/automation\/operations\/[a-f0-9]{64}\.json$/u.test(
+        !/^data\/maintenance\/automation\/(?:operations\/[a-f0-9]{64}|github-backoff)\.json$/u.test(
           fields[index + 1],
         )
       )

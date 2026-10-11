@@ -1,3 +1,13 @@
+import {
+  trustedOperationWorkerRuns,
+  matchingOperationReceipt,
+  receiptBindsWorker,
+  isInventoryWorkerActive,
+} from "./inventory-worker.mjs";
+import {
+  loadWorkerGithubDiagnostic,
+  trustedWorkerDiagnosticRun,
+} from "./worker-diagnostic.mjs";
 import { validateAutomationReceipt } from "./receipts.mjs";
 import { validateAutomationOperation } from "./operation.mjs";
 
@@ -161,14 +171,19 @@ async function boundedRunPages(gh, path, fields) {
   }
   throw new Error("Workflow inventory exceeds its page bound.");
 }
-export async function loadAutomationWorkerRuns({ gh, repository, nowMs }) {
+export async function loadAutomationWorkerRuns({
+  gh,
+  repository,
+  nowMs,
+  createdAfterMs = nowMs - 3_600_000,
+}) {
   const value = await boundedRunPages(
     gh,
     `${repositoryPath(repository)}/actions/workflows/automation-worker.yml/runs`,
     [
       "branch=main",
       "event=workflow_dispatch",
-      `created=>=${new Date(nowMs - 3_600_000).toISOString()}`,
+      `created=>=${new Date(createdAfterMs).toISOString()}`,
     ],
   );
   if ((value[0]?.total_count ?? 0) > 1000)
@@ -381,6 +396,12 @@ export async function loadGithubAutomationInventory({
   referencedOperations = [],
   nowMs,
   finalizationOperation,
+  publisherActorId,
+  downloadDiagnostic = async (args) => {
+    if (gh.download) return gh.download(args);
+    const { downloadPreparedArtifact } = await import("./writer-runtime.mjs");
+    return downloadPreparedArtifact(args);
+  },
 }) {
   const root = repositoryPath(repository);
   if (!Number.isSafeInteger(nowMs) || nowMs < 90 * 86_400_000)
@@ -563,6 +584,64 @@ export async function loadGithubAutomationInventory({
         `head=${repository.split("/")[0]}:automation/${kind}-${issue.number}`,
       ]);
       for (const pull of scoped.flat()) pulls.set(pull.number, pull);
+    }
+  }
+  const relevant = new Map(
+    [...referencedOperations, ...receipts.map((receipt) => receipt.operation)]
+      .filter((operation) => operation.stage !== "finalized")
+      .map((operation) => [operation.key, operation]),
+  );
+  let diagnosticReads = 0;
+  for (const [key, operation] of relevant) {
+    if (diagnosticReads >= 20) break;
+    const context = {
+      receipts,
+      runs: [...runs.values()],
+      repository,
+      publisherActorId,
+      nowMs,
+    };
+    const receipt = matchingOperationReceipt(context, operation);
+    const wrappers = trustedOperationWorkerRuns(context, operation).filter(
+      (run) =>
+        trustedWorkerDiagnosticRun({
+          run: { ...run, status: "completed", conclusion: "failure" },
+          repository,
+          operationKey: key,
+          publisherActorId,
+        }),
+    );
+    if (
+      wrappers.some(isInventoryWorkerActive) ||
+      wrappers[0]?.conclusion === "success"
+    )
+      continue;
+    const run = wrappers.find((candidate) =>
+      receiptBindsWorker(candidate, receipt),
+    );
+    if (
+      !run ||
+      run.conclusion !== "failure" ||
+      (Date.parse(receipt.updatedAt) >= Date.parse(run.updated_at) &&
+        receipt.operation.retry &&
+        (receipt.operation.retry.failure.kind !== "unknown" ||
+          receipt.operation.workerRunId !== run.id))
+    )
+      continue;
+    diagnosticReads++;
+    try {
+      const diagnostic = await loadWorkerGithubDiagnostic({
+        gh,
+        download: downloadDiagnostic,
+        run,
+        repository,
+        operationKey: key,
+        publisherActorId,
+      });
+      if (diagnostic) run.automationDiagnostic = diagnostic;
+    } catch (error) {
+      if (error.code !== "worker-diagnostic-invalid") throw error;
+      // Malformed or unauthenticated evidence cannot change failure authority.
     }
   }
   return {

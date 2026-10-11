@@ -8,6 +8,8 @@ export interface AutomationInventoryState {
   repository: string;
   publisherActorId: number;
   nowMs: number;
+  inventoryNowMs?: number;
+  executingWriterRunId?: number;
   remote: GithubAutomationInventory;
   local: Record<string, unknown>;
   receipts: AutomationReceipt[];
@@ -21,6 +23,7 @@ export function loadAutomationInventory(input: {
   nowMs: number;
   reportIndex?: TavernKeeperReportIndexV5;
   finalizationOperationKey?: string;
+  executingWriterRunId?: number;
 }): Promise<AutomationInventoryState>;
 export function discoverAutomationState(
   state: AutomationInventoryState,

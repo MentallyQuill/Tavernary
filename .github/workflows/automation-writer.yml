@@ -1,5 +1,5 @@
 name: "Automation: Publish canonical work"
-run-name: "${{ inputs.mode == 'retain' && format('Site bundle retain {0}', inputs.result_run_id) || inputs.mode == 'confirm-restore' && format('Site restore confirm {0}', inputs.result_run_id) || format('Automation write {0} {1}', inputs.mode, inputs.operation_key) }}"
+run-name: "${{ inputs.mode == 'reconcile' && 'Automation reconcile' || inputs.mode == 'retain' && format('Site bundle retain {0}', inputs.result_run_id) || inputs.mode == 'confirm-restore' && format('Site restore confirm {0}', inputs.result_run_id) || format('Automation write {0} {1}', inputs.mode, inputs.operation_key) }}"
 
 on:
   workflow_dispatch:

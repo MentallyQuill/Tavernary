@@ -5,6 +5,7 @@ export function decodePreparedArtifact(input: {
   filename?:
     | "result.json"
     | "diagnostic.json"
+    | "automation-diagnostic.json"
     | "revision.json"
     | "confirmation.json"
     | "restore-source.json";
@@ -15,6 +16,7 @@ export function decodePreparedArtifactBytes(input: {
   filename?:
     | "result.json"
     | "diagnostic.json"
+    | "automation-diagnostic.json"
     | "revision.json"
     | "confirmation.json"
     | "restore-source.json"

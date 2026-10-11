@@ -180,7 +180,7 @@ export async function runSiteWriterRetention({
   env = process.env,
   gh = executeGh,
   load = () => loadSiteWriterState({ root, env }),
-  download = downloadSiteGithubBytes,
+  download = gh.download ?? downloadSiteGithubBytes,
   isAncestor = ancestry(root),
   retain = retainGithubSiteBundle,
 }) {
@@ -212,8 +212,8 @@ export async function runSiteWriterRestoreConfirmation({
   env = process.env,
   gh = executeGh,
   load = () => loadSiteWriterState({ root, env }),
-  download = downloadPreparedArtifact,
-  bundleDownload = downloadSiteGithubBytes,
+  download = gh.download ?? downloadPreparedArtifact,
+  bundleDownload = gh.download ?? downloadSiteGithubBytes,
   isAncestor = ancestry(root),
   probe = confirmPublicDeployment,
   readCurrent = () => readRollbackCanonicalData({ root }),
@@ -340,7 +340,7 @@ export async function recoverSiteWriterHandoffs(input) {
     state,
     isAncestor,
     availableSlots = 1,
-    download = downloadPreparedArtifact,
+    download = gh.download ?? downloadPreparedArtifact,
   } = input;
   assertCanonicalWriterContext(env, env.GITHUB_REPOSITORY);
   if (
@@ -434,7 +434,7 @@ export async function recoverSiteBundleRetention({
   env,
   state,
   isAncestor,
-  download = downloadSiteGithubBytes,
+  download = gh.download ?? downloadSiteGithubBytes,
   availableSlots = 1,
 }) {
   assertCanonicalWriterContext(env, env.GITHUB_REPOSITORY);

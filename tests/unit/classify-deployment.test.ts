@@ -164,3 +164,14 @@ test("native deployment classification uses confirmed Git history and defaults s
     await rm(output, { force: true });
   }
 });
+
+test("shared GitHub cooldown is internal data without admitting other unknown automation files", () => {
+  expect(
+    classifyDeploymentPaths([
+      "data/maintenance/automation/github-backoff.json",
+    ]),
+  ).toBe("content");
+  expect(
+    classifyDeploymentPaths(["data/maintenance/automation/other-backoff.json"]),
+  ).toBe("full");
+});

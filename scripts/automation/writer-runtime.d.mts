@@ -150,6 +150,15 @@ export function synchronizeWriterCheckout(input: {
       timeout: number;
     },
   ) => Promise<string>;
+  apply?: (
+    run: NonNullable<Parameters<typeof synchronizeWriterCheckout>[0]["run"]>,
+    options: {
+      cwd: string;
+      encoding: string;
+      env: NodeJS.ProcessEnv;
+      timeout: number;
+    },
+  ) => Promise<void>;
 }): Promise<void>;
 export function downloadPreparedArtifact(
   args: string[],
