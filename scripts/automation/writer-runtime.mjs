@@ -320,7 +320,7 @@ export async function runGenerationModelWriterSettlement({
   env = process.env,
   gh = executeGh,
   load = () => loadGenerationBudgetSnapshot({ env, gh }),
-  download = downloadPreparedArtifact,
+  download = gh.download ?? downloadPreparedArtifact,
   commit = (input) => commitCanonicalData({ ...input, gh }),
 }) {
   const repository = env.GITHUB_REPOSITORY;
@@ -723,6 +723,8 @@ export async function runModelWriterPreparation({
 }
 function writerInventoryLoader({ root, env, gh, finalizationOperationKey }) {
   return async () => {
+    assertCanonicalWriterContext(env, env.GITHUB_REPOSITORY);
+    const currentRunId = Number(env.GITHUB_RUN_ID);
     await synchronizeWriterCheckout({ root, env });
     return loadAutomationInventory({
       root,
@@ -731,6 +733,10 @@ function writerInventoryLoader({ root, env, gh, finalizationOperationKey }) {
       publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
       nowMs: Date.now(),
       finalizationOperationKey,
+      executingWriterRunId:
+        Number.isSafeInteger(currentRunId) && currentRunId > 0
+          ? currentRunId
+          : undefined,
     });
   };
 }
@@ -746,7 +752,7 @@ export async function runDeploymentWriterConfirmation({
     const { loadSiteWriterState } = await import("./site-writer-runtime.mjs");
     return loadSiteWriterState({ root, env });
   },
-  download = downloadPreparedArtifact,
+  download = gh.download ?? downloadPreparedArtifact,
   probe = (input) => confirmPublicDeployment(input),
   commit = (input) => commitCanonicalData({ ...input, gh }),
   isAncestor = (ancestor, descendant) => {
@@ -1045,6 +1051,7 @@ export async function synchronizeWriterCheckout({
   root,
   env = process.env,
   run = command,
+  apply,
 }) {
   if (
     !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(env.GITHUB_REPOSITORY ?? "") ||
@@ -1127,6 +1134,7 @@ export async function synchronizeWriterCheckout({
         { code: "input-superseded" },
       );
     await run("git", ["checkout", "--detach", "FETCH_HEAD"], options);
+    if (apply) await apply(run, options);
   } finally {
     await rm(askpass, { force: true });
   }
@@ -1181,7 +1189,7 @@ export async function runPreparedWriterBatch({
     loadResult: async ({ operation, currentState, runId }) => {
       const result = await loadPreparedGithubResult({
         gh,
-        download: downloadPreparedArtifact,
+        download: gh.download ?? downloadPreparedArtifact,
         repository,
         runId,
         operation,
@@ -1361,7 +1369,7 @@ export async function runAutomationWriterReconciliation({
     readDiagnostic: (wake) =>
       loadPreparedGithubDiagnostic({
         gh,
-        download: downloadPreparedArtifact,
+        download: gh.download ?? downloadPreparedArtifact,
         repository,
         runId: wake.runId,
         publisherActorId,

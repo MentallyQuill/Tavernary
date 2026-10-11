@@ -405,6 +405,7 @@ export function discoverEnrichmentOperations(state) {
       runs: state.remote.runs,
       repository: state.repository,
       publisherActorId: state.publisherActorId,
+      executingWriterRunId: state.executingWriterRunId,
       nowMs: state.nowMs,
     },
     trustedOperationWorkerRuns(

@@ -229,7 +229,10 @@ function stepWritesMain(step: WorkflowStep) {
 
 function workflowDispatchTargets(step: WorkflowStep) {
   const candidates: string[] = [];
-  if (step.run?.includes("node scripts/automation/prepared-wake.mjs"))
+  if (
+    step.run?.includes("node scripts/automation/prepared-wake.mjs") ||
+    step.run?.includes("node scripts/automation/controller-wake.mjs")
+  )
     candidates.push("automation-writer.yml");
   const command = shellCommands(step.run).join(" ");
   for (const match of command.matchAll(

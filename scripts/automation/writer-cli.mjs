@@ -1,3 +1,4 @@
+import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 import { readFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import {
@@ -5,6 +6,12 @@ import {
   githubFailureStatus,
 } from "./github-inventory.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
+
+import {
+  loadGithubBackoff,
+  persistGithubBackoff,
+  runGithubWriterPass,
+} from "./github-backoff.mjs";
 
 const modes = new Set([
   "enrichment-request",
@@ -20,9 +27,10 @@ const modes = new Set([
   "backfill-identities",
   "verify-publisher",
 ]);
-export async function runAutomationWriterCli(options = {}) {
+async function runWriterMode(options = {}) {
   const env = options.env ?? process.env;
   const write = options.write ?? console.log;
+  const gh = options.gh;
   try {
     const repository = env.GITHUB_REPOSITORY;
     const event =
@@ -33,13 +41,15 @@ export async function runAutomationWriterCli(options = {}) {
     if (!modes.has(mode)) throw new Error("Writer mode is invalid.");
     const handler = options.handlers?.[mode];
     if (handler) {
-      write(JSON.stringify(await handler(event.inputs ?? {})));
+      write(JSON.stringify(await handler(event.inputs ?? {}, gh)));
       return 0;
     }
     if (mode === "reconcile") {
       const { runAutomationWriterReconciliation } =
         await import("./writer-runtime.mjs");
-      write(JSON.stringify(await runAutomationWriterReconciliation({ env })));
+      write(
+        JSON.stringify(await runAutomationWriterReconciliation({ env, gh })),
+      );
       return 0;
     }
     if (mode === "enrichment-request") {
@@ -49,6 +59,7 @@ export async function runAutomationWriterCli(options = {}) {
           await runEnrichmentOwnerWriter({
             runId: Number(event.inputs?.result_run_id),
             env,
+            gh,
           }),
         ),
       );
@@ -62,6 +73,7 @@ export async function runAutomationWriterCli(options = {}) {
           await runRepositoryIdentityWriter({
             sourceIds: event.inputs?.source_ids ?? "",
             env,
+            gh,
           }),
         ),
       );
@@ -75,6 +87,7 @@ export async function runAutomationWriterCli(options = {}) {
           await runPublisherWriterVerification({
             runId: Number(event.inputs?.result_run_id),
             env,
+            gh,
           }),
         ),
       );
@@ -89,6 +102,7 @@ export async function runAutomationWriterCli(options = {}) {
             operationKey: event.inputs?.operation_key,
             runId: Number(event.inputs?.result_run_id),
             env,
+            gh,
           }),
         ),
       );
@@ -102,6 +116,7 @@ export async function runAutomationWriterCli(options = {}) {
           await runProjectWriterReconciliation({
             operationKey: event.inputs?.operation_key,
             env,
+            gh,
           }),
         ),
       );
@@ -116,6 +131,7 @@ export async function runAutomationWriterCli(options = {}) {
             operationKey: event.inputs?.operation_key || undefined,
             runId: Number(event.inputs?.result_run_id || 0),
             env,
+            gh,
           }),
         ),
       );
@@ -130,6 +146,7 @@ export async function runAutomationWriterCli(options = {}) {
             operationKey: event.inputs?.operation_key,
             requestRunId: Number(event.inputs?.result_run_id || 0),
             env,
+            gh,
           }),
         ),
       );
@@ -144,6 +161,7 @@ export async function runAutomationWriterCli(options = {}) {
             operationKey: event.inputs?.operation_key,
             noticeOnly: mode === "advisory-notice",
             env,
+            gh,
           }),
         ),
       );
@@ -158,7 +176,11 @@ export async function runAutomationWriterCli(options = {}) {
           : runSiteWriterRestoreConfirmation;
       write(
         JSON.stringify(
-          await handler({ runId: Number(event.inputs?.result_run_id), env }),
+          await handler({
+            runId: Number(event.inputs?.result_run_id),
+            env,
+            gh,
+          }),
         ),
       );
       return 0;
@@ -191,6 +213,69 @@ export async function runAutomationWriterCli(options = {}) {
         ...(diagnostic ? { diagnostic } : {}),
       }),
     );
+    return 1;
+  }
+}
+export async function runAutomationWriterCli(options = {}) {
+  if (
+    options.handlers &&
+    !options.loadCooldown &&
+    !options.run &&
+    !options.root &&
+    !options.gh
+  )
+    return runWriterMode(options);
+  const env = options.env ?? process.env;
+  const write = options.write ?? console.log;
+  try {
+    const event =
+      options.event ??
+      JSON.parse(await readFile(env.GITHUB_EVENT_PATH, "utf8"));
+    assertCanonicalWriterContext(env, env.GITHUB_REPOSITORY, event);
+    const root = options.root ?? process.cwd();
+    if (!options.loadCooldown) {
+      const { synchronizeWriterCheckout } =
+        await import("./writer-runtime.mjs");
+      await synchronizeWriterCheckout({ root, env, run: options.run });
+    }
+    const output = [];
+    const result = await runGithubWriterPass({
+      nowMs: options.nowMs ?? Date.now(),
+      now: () => options.nowMs ?? Date.now(),
+      loadCooldown: options.loadCooldown ?? (() => loadGithubBackoff({ root })),
+      gh:
+        options.gh ??
+        ((args, stdin) =>
+          executeGh(args, stdin, { includeRateLimitHeaders: true })),
+      download:
+        options.download ??
+        ((args) =>
+          executeGh(args, undefined, {
+            includeRateLimitHeaders: true,
+            binary: true,
+          })),
+      requestLimit: options.requestLimit,
+      persistCooldown:
+        options.persistCooldown ??
+        ((cooldown) =>
+          persistGithubBackoff({ root, env, cooldown, run: options.run })),
+      run: (gh) =>
+        runWriterMode({
+          ...options,
+          env,
+          event,
+          gh,
+          write: (value) => output.push(value),
+        }),
+    });
+    if (typeof result === "number") {
+      for (const value of output) write(value);
+      return result;
+    }
+    write(JSON.stringify(result));
+    return 0;
+  } catch {
+    write(JSON.stringify({ status: "unavailable" }));
     return 1;
   }
 }

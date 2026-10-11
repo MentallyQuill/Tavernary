@@ -1,3 +1,4 @@
+import { validatedWorkerDiagnosticFailure } from "./worker-diagnostic.mjs";
 import { validateAutomationReceipt } from "./receipts.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
 import { planAutomationRetry } from "./retry.mjs";
@@ -67,7 +68,46 @@ export function receiptBindsWorker(run, receipt) {
   );
 }
 
+const writerModes = [
+  "prepare",
+  "publish",
+  "reconcile-project",
+  "confirm",
+  "finalize",
+  "advisory-notice",
+];
+export function trustedWriterHandoff(run, input, operation) {
+  return (
+    /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(input.repository ?? "") &&
+    Number.isSafeInteger(run.id) &&
+    run.id > 0 &&
+    Number.isSafeInteger(input.publisherActorId) &&
+    input.publisherActorId > 0 &&
+    run.path === ".github/workflows/automation-writer.yml" &&
+    run.event === "workflow_dispatch" &&
+    run.head_branch === "main" &&
+    run.head_repository?.full_name === input.repository &&
+    /^[a-f0-9]{40}$/u.test(run.head_sha ?? "") &&
+    run.actor?.id === input.publisherActorId &&
+    run.actor.type === "Bot" &&
+    writerModes.some(
+      (mode) =>
+        run.display_title === `Automation write ${mode} ${operation.key}`,
+    ) &&
+    Date.parse(run.created_at ?? "") >= Date.parse(operation.createdAt)
+  );
+}
 export function recoverInventoryWorker(operation, input, runs) {
+  const writerActive = (input.runs ?? []).find(
+    (run) =>
+      isInventoryWorkerActive(run) &&
+      trustedWriterHandoff(run, input, operation) &&
+      !(
+        Number.isSafeInteger(input.executingWriterRunId) &&
+        input.executingWriterRunId > 0 &&
+        run.id === input.executingWriterRunId
+      ),
+  );
   const preparationActive = (input.runs ?? []).find((run) => {
     if (
       !isInventoryWorkerActive(run) ||
@@ -87,7 +127,8 @@ export function recoverInventoryWorker(operation, input, runs) {
       return false;
     }
   });
-  const active = preparationActive ?? runs.find(isInventoryWorkerActive);
+  const active =
+    writerActive ?? preparationActive ?? runs.find(isInventoryWorkerActive);
   if (active) {
     operation.workerRunId = active.id;
     return;
@@ -174,18 +215,41 @@ export function recoverInventoryWorker(operation, input, runs) {
     operation.nextEligibleAt = new Date(terminalAt + 15 * 60_000).toISOString();
     return;
   }
+  const diagnostic = validatedWorkerDiagnosticFailure({
+    run,
+    operationKey: operation.key,
+    repository: input.repository,
+    publisherActorId: input.publisherActorId,
+  });
   const previous = receipt.operation.retry;
   if (
     previous &&
     (!Number.isFinite(terminalAt) ||
       Date.parse(receipt.updatedAt) >= terminalAt)
   ) {
-    operation.retry = previous;
-    operation.nextEligibleAt = receipt.operation.nextEligibleAt;
+    if (
+      previous.failure.kind === "unknown" &&
+      diagnostic &&
+      diagnostic.kind !== "unknown" &&
+      receipt.operation.workerRunId === run.id &&
+      Number.isFinite(terminalAt)
+    ) {
+      operation.retry = { ...previous, failure: diagnostic };
+      operation.nextEligibleAt = planAutomationRetry({
+        ...operation.retry,
+        nowMs: terminalAt,
+        retryAfterMs: run.retryAfterMs,
+        jitterSeed: `${operation.key}:${run.id}:${run.run_attempt ?? 1}`,
+      }).nextEligibleAt;
+    } else {
+      operation.retry = previous;
+      operation.nextEligibleAt = receipt.operation.nextEligibleAt;
+    }
     return;
   }
   const failure = classifyAutomationFailure({
     ...run.failure,
+    ...(diagnostic ? { diagnosticCode: diagnostic.reasonCode } : {}),
     conclusion: run.conclusion,
   });
   const retryState = {

@@ -508,3 +508,28 @@ test("scheduled native recovery finds a cancelled owner restore after a 72-hour 
   });
   expect(gh).not.toHaveBeenCalled();
 });
+
+test("restore defaults use the guarded downloader for both source ZIP and retained assets", async () => {
+  const data = fixture();
+  const gh = Object.assign(data.gh, { download: data.download });
+  expect(
+    await runSiteWriterRestoreConfirmation({
+      env,
+      runId: 88,
+      gh,
+      load: async () => data.state,
+      isAncestor: data.isAncestor,
+      probe: async () => ({
+        status: "confirmed" as const,
+        deployment: data.deployment,
+      }),
+      readCurrent: async () => ({
+        catalogDigest: data.source.catalogDigest,
+        targetDigest: data.source.targetDigest,
+        ownerTombstones: [],
+      }),
+      commit: async () => ({ sha: "e".repeat(40) }),
+    }),
+  ).toMatchObject({ status: "confirmed" });
+  expect(data.download).toHaveBeenCalledTimes(3);
+});

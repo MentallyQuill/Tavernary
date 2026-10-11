@@ -97,6 +97,9 @@ test("the actual scheduled writer reserves and binds a missed manual owner gener
     publisherActorId: p.publisherActorId,
     operations: [],
   });
+  Object.assign(f.state.local, {
+    modelBudget: createModelBudgetState(f.state.nowMs),
+  });
   Object.assign(f.state.remote, { issues: p.issues, pulls: p.pulls, runs: [] });
   const run = ownerGenerationRequest();
   const commit = vi
@@ -189,6 +192,9 @@ test("scheduled recovery finds an owner request older than the recent run invent
   Object.assign(f.state, {
     publisherActorId: p.publisherActorId,
     operations: [],
+  });
+  Object.assign(f.state.local, {
+    modelBudget: createModelBudgetState(f.state.nowMs),
   });
   Object.assign(f.state.remote, { issues: p.issues, pulls: p.pulls, runs: [] });
   const run = ownerGenerationRequest();
@@ -1273,4 +1279,18 @@ test("one generation process reuses one verified guard across every card and rep
     [{ ticketId: reserved.ticket.id, usage: { requests: 1 } }],
   );
   expect(loader.evidenceSaved()).toBe(true);
+});
+
+test("generation settlement uses the guarded ZIP downloader by default", async () => {
+  const f = await generationSettlementFixture();
+  const download = vi.fn(f.input.download);
+  const gh = Object.assign(f.input.gh, { download });
+  expect(
+    await writer.runGenerationModelWriterSettlement({
+      ...f.input,
+      gh,
+      download: undefined,
+    }),
+  ).toMatchObject({ status: "recovered" });
+  expect(download).toHaveBeenCalledOnce();
 });
