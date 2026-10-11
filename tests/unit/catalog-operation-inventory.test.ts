@@ -5,6 +5,7 @@ import { AUTOMATION_NOW, receiptFixture } from "../helpers/automation-fixtures";
 import { createPolicyEvidenceFingerprint } from "../../scripts/moderation/catalog-policy-review-contract.mjs";
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
 import { validateAutomationOperation } from "../../scripts/automation/operation.mjs";
+import { assessAutomationHealth } from "../../scripts/automation/health.mjs";
 import {
   createMetadataCache,
   metadataTraitsDigest,
@@ -133,7 +134,7 @@ test("unchanged reviewed evidence is skipped, while changed evidence or policy i
   ).toBe(true);
 });
 
-test("unavailable advisory state retains a stable daily probe after a 72-hour outage", () => {
+test("matching legacy review outage retains bounded recovery without an unknown incident", () => {
   const input = catalogInventoryFixture();
   input.advisoryState = [
     {
@@ -158,9 +159,23 @@ test("unavailable advisory state retains a stable daily probe after a 72-hour ou
   const operation = discoverCatalogOperations(input).find(
     (operation) => operation.identity.kind === "advisory",
   )!;
-  expect(operation.nextEligibleAt).toBe(
-    new Date(AUTOMATION_NOW + 86_400_000).toISOString(),
+  expect(operation.retry).toEqual({
+    failure: { kind: "transient", reasonCode: "policy-review-unavailable" },
+    transientAttempts: 2,
+    immediateAttempts: 0,
+  });
+  expect(Date.parse(operation.nextEligibleAt!)).toBeGreaterThanOrEqual(
+    AUTOMATION_NOW + 3_600_000,
   );
+  expect(Date.parse(operation.nextEligibleAt!)).toBeLessThanOrEqual(
+    AUTOMATION_NOW + 86_400_000,
+  );
+  expect(
+    assessAutomationHealth({
+      nowMs: input.nowMs,
+      operations: [{ ...operation, automatic: true }],
+    }).find((finding) => finding.code === "unknown-failure"),
+  ).toMatchObject({ status: "recovered", reason: "failure-classified" });
   input.nowMs += 72 * 3_600_000;
   expect(
     discoverCatalogOperations(input).find(
@@ -377,3 +392,81 @@ test.each(["refresh", "metadata", "advisory"])(
     expect(recovered.nextEligibleAt).toBe(deadline);
   },
 );
+
+test("current unknown receipt overrides matching legacy review outage", () => {
+  const input = catalogInventoryFixture();
+  input.advisoryState = [
+    {
+      project_id: "example-project",
+      source_id: "github-42",
+      source_identity: "github:owner/repo",
+      evidence_fingerprint: createPolicyEvidenceFingerprint({
+        projectId: "example-project",
+        sourceId: "github-42",
+        headSha: "a".repeat(40),
+        policyVersion: CATALOG_POLICY_VERSION,
+      }),
+      policy_version: CATALOG_POLICY_VERSION,
+      status: "review-unavailable",
+      reviewed_at: new Date(AUTOMATION_NOW).toISOString(),
+      retry: {
+        attempts: 8,
+        last_failure_at: new Date(AUTOMATION_NOW).toISOString(),
+      },
+    },
+  ];
+  const legacy = discoverCatalogOperations(input).find(
+    (operation) => operation.identity.kind === "advisory",
+  )!;
+  const currentFailure = {
+    failure: {
+      kind: "unknown" as const,
+      reasonCode: "unclassified-failure" as const,
+    },
+    transientAttempts: 2,
+    immediateAttempts: 3,
+  };
+  input.receipts = [
+    receiptFixture({
+      operation: {
+        ...legacy,
+        retry: currentFailure,
+        nextEligibleAt: new Date(AUTOMATION_NOW + 86_400_000).toISOString(),
+      },
+    }),
+  ];
+  const current = discoverCatalogOperations(input).find(
+    (operation) => operation.identity.kind === "advisory",
+  )!;
+  expect(current.retry).toEqual(currentFailure);
+  expect(
+    assessAutomationHealth({
+      nowMs: input.nowMs,
+      operations: [{ ...current, automatic: true }],
+    }).find((finding) => finding.code === "unknown-failure"),
+  ).toMatchObject({ status: "active", reason: "unclassified-failure" });
+});
+
+test("mismatched legacy review evidence supplies no failure authority", () => {
+  const input = catalogInventoryFixture();
+  input.advisoryState = [
+    {
+      project_id: "example-project",
+      source_id: "github-42",
+      source_identity: "github:owner/repo",
+      evidence_fingerprint: "stale-fingerprint",
+      policy_version: CATALOG_POLICY_VERSION,
+      status: "review-unavailable",
+      reviewed_at: new Date(AUTOMATION_NOW).toISOString(),
+      retry: {
+        attempts: 8,
+        last_failure_at: new Date(AUTOMATION_NOW).toISOString(),
+      },
+    },
+  ];
+  const operation = discoverCatalogOperations(input).find(
+    (operation) => operation.identity.kind === "advisory",
+  )!;
+  expect(operation.retry).toBeNull();
+  expect(operation.nextEligibleAt).toBeNull();
+});

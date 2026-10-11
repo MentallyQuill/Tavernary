@@ -213,7 +213,7 @@ test("changed inputs discard old configuration failures, counters and delays", (
   });
 });
 
-test("a generation that succeeds without creating its PR gets a daily unknown probe after grace", () => {
+test("a generation that succeeds without creating its PR retries the unavailable result after grace", () => {
   const input = projectInventoryFixture({
     generationRun: { status: "completed", conclusion: "success" },
   });
@@ -227,10 +227,17 @@ test("a generation that succeeds without creating its PR gets a daily unknown pr
   );
   input.nowMs += 20 * 60_000;
   const probe = discoverProjectOperations(input)[0];
-  expect(probe.retry?.failure.kind).toBe("unknown");
-  expect(probe.retry?.immediateAttempts).toBeGreaterThanOrEqual(3);
-  expect(Date.parse(probe.nextEligibleAt!)).toBe(
-    AUTOMATION_NOW - 60_000 + 86_400_000,
+  expect(probe.retry).toEqual({
+    failure: {
+      kind: "transient",
+      reasonCode: "workflow-result-unavailable",
+    },
+    transientAttempts: 0,
+    immediateAttempts: 0,
+  });
+  expect(Date.parse(probe.nextEligibleAt!)).toBeGreaterThan(input.nowMs);
+  expect(Date.parse(probe.nextEligibleAt!)).toBeLessThanOrEqual(
+    input.nowMs + 86_400_000,
   );
 });
 

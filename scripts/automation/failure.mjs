@@ -11,6 +11,8 @@ const TRANSIENT_DIAGNOSTICS = new Set([
   "provider-network-error",
   "provider-rate-limited",
   "provider-server-error",
+  "workflow-result-unavailable",
+  "policy-review-unavailable",
 ]);
 
 export const AUTOMATION_FAILURE_REASON_KINDS = Object.freeze({

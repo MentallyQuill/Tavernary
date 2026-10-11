@@ -232,3 +232,12 @@ test("malformed retry counters open an incident instead of resetting allowance",
     });
   }
 });
+
+test("a successful dispatch without a terminal result retries as transient", () => {
+  const evidence = { diagnosticCode: "workflow-result-unavailable" };
+  expect(classifyAutomationFailure(evidence)).toEqual({
+    kind: "transient",
+    reasonCode: "workflow-result-unavailable",
+  });
+  expect(retryDecision(evidence)).toMatchObject({ action: "retry" });
+});

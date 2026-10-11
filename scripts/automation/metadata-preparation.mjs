@@ -123,6 +123,18 @@ export async function observeProjectMetadataSource({
         },
       });
       if (response.status === 404 && allowMissing) return null;
+      if (response.status === 404 && path === repositoryPath)
+        throw unavailable("authorization-lost");
+      if (
+        response.status === 429 ||
+        (source.type === "github" &&
+          response.status === 403 &&
+          (response.headers.get("x-ratelimit-remaining") === "0" ||
+            response.headers.has("retry-after")))
+      )
+        throw Object.assign(unavailable("provider-rate-limited"), {
+          status: response.status,
+        });
       if (!response.ok)
         throw Object.assign(unavailable(), { status: response.status });
       if (Number(response.headers.get("content-length")) > 2097152)
@@ -143,7 +155,11 @@ export async function observeProjectMetadataSource({
       );
     } catch (error) {
       if (error?.name === "AbortError") throw unavailable("provider-timeout");
-      if (error?.status || error?.code === "source-invalid") throw error;
+      if (
+        error?.status ||
+        ["source-invalid", "authorization-lost"].includes(error?.code)
+      )
+        throw error;
       throw unavailable("provider-network-error");
     } finally {
       clearTimeout(timeout);
@@ -160,15 +176,33 @@ export async function observeProjectMetadataSource({
     String(repository.name ?? "").toLowerCase() !== name.toLowerCase()
   )
     throw unavailable("authorization-lost");
+  let readmeRequestFailure;
   const loaded = await loadReadmeSource(source, snapshot, {
     validateSnapshot: createSnapshotValidator(schema),
     providers: {
       [source.type]: {
         readRootReadme: async () => {
-          const result = await request(
-            `${repositoryPath}/readme?ref=${snapshot.repository.head_sha}`,
-            true,
-          );
+          let result;
+          try {
+            result = await request(
+              `${repositoryPath}/readme?ref=${snapshot.repository.head_sha}`,
+              true,
+            );
+          } catch (error) {
+            if (
+              [
+                "provider-rate-limited",
+                "provider-network-error",
+                "provider-timeout",
+              ].includes(error?.code)
+            )
+              readmeRequestFailure = unavailable(error.code);
+            else if (Number.isInteger(error?.status))
+              readmeRequestFailure = Object.assign(unavailable(), {
+                status: error.status,
+              });
+            throw error;
+          }
           if (result?.content && Buffer.byteLength(result.content) > 1500000)
             throw unavailable("source-invalid");
           return result;
@@ -176,8 +210,10 @@ export async function observeProjectMetadataSource({
       },
     },
   });
-  if (!["ready", "fallback"].includes(loaded.status))
+  if (!["ready", "fallback"].includes(loaded.status)) {
+    if (readmeRequestFailure) throw readmeRequestFailure;
     throw unavailable(loaded.reasonCode);
+  }
   const loadedSource = {
     ...loaded,
     sourceIdentity: `${source.type}:${source.repository.toLowerCase()}`,

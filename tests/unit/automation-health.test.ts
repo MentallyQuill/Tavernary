@@ -445,11 +445,183 @@ test("confirmed revision recovery is distinct from missing proof and owner rollb
   ).toHaveLength(0);
 });
 
+test("a classified retry closes its intact unknown-failure investigation", () => {
+  const unknown = {
+    ...operationFixture({
+      retry: {
+        failure: {
+          kind: "unknown" as const,
+          reasonCode: "unclassified-failure",
+        },
+        transientAttempts: 0,
+        immediateAttempts: 3,
+      },
+    }),
+    automatic: true,
+  };
+  const active = assessAutomationHealth({
+    nowMs,
+    operations: [unknown],
+  }).find((finding) => finding.code === "unknown-failure")!;
+  const created = planIncidentUpdates({
+    findings: [active],
+    existingIssues: [],
+    publisherActorId: 41,
+  })[0];
+  const issue = {
+    number: 860,
+    title: created.title,
+    body: created.body,
+    state: "open",
+    user: { id: 41, type: "Bot" },
+  };
+  const classified = {
+    ...unknown,
+    retry: {
+      failure: {
+        kind: "transient" as const,
+        reasonCode: "provider-rate-limited",
+      },
+      transientAttempts: 1,
+      immediateAttempts: 0,
+    },
+  };
+  const unrelated = {
+    ...operationFixture({
+      identity: { ...unknown.identity, subject: "issue:43" },
+      retry: unknown.retry,
+    }),
+    automatic: true,
+  };
+  const findings = assessAutomationHealth({
+    nowMs,
+    operations: [classified, unrelated],
+  });
+  expect(
+    findings.find((finding) => finding.subject === active.subject),
+  ).toMatchObject({
+    key: active.key,
+    status: "recovered",
+    reason: "failure-classified",
+  });
+  expect(
+    findings.find((finding) => finding.subject.endsWith(unrelated.key)),
+  ).toMatchObject({
+    code: "unknown-failure",
+    status: "active",
+    reason: "unclassified-failure",
+  });
+  expect(
+    planIncidentUpdates({
+      findings,
+      existingIssues: [issue],
+      publisherActorId: 41,
+    }),
+  ).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({ action: "close", number: 860 }),
+      expect.objectContaining({ action: "create" }),
+    ]),
+  );
+  expect(
+    planIncidentUpdates({
+      findings: [],
+      existingIssues: [issue],
+      publisherActorId: 41,
+    }),
+  ).toEqual([]);
+});
+test("known failure kinds resolve investigation without hiding active faults", () => {
+  const operation = {
+    ...operationFixture({ createdAt: before(72) }),
+    automatic: true,
+  };
+  for (const [kind, reasonCode] of [
+    ["transient", "provider-rate-limited"],
+    ["configuration", "authentication-unavailable"],
+    ["permanent", "authorization-lost"],
+    ["superseded", "input-superseded"],
+  ] as const) {
+    const findings = assessAutomationHealth({
+      nowMs,
+      operations: [
+        {
+          ...operation,
+          retry: {
+            failure: { kind, reasonCode },
+            transientAttempts: 1,
+            immediateAttempts: 0,
+          },
+        },
+      ],
+      ...(kind === "configuration"
+        ? {
+            circuits: [
+              {
+                subject: "dependency:model-provider",
+                reason: "authentication-unavailable",
+                recovered: false,
+              },
+            ],
+          }
+        : {}),
+    });
+    expect(
+      findings.find((finding) => finding.code === "unknown-failure"),
+    ).toMatchObject({
+      status: "recovered",
+      reason: "failure-classified",
+    });
+    if (kind === "permanent")
+      expect(
+        findings.some((finding) => finding.code === "submission-stalled"),
+      ).toBe(false);
+    if (kind === "configuration")
+      expect(
+        findings.find((finding) => finding.code === "provider-circuit"),
+      ).toMatchObject({
+        status: "active",
+        reason: "authentication-unavailable",
+      });
+  }
+  const unknown = {
+    ...operation,
+    retry: {
+      failure: { kind: "unknown" as const, reasonCode: "unclassified-failure" },
+      transientAttempts: 0,
+      immediateAttempts: 3,
+    },
+  };
+  expect(
+    assessAutomationHealth({ nowMs, operations: [unknown] }).find(
+      (finding) => finding.code === "unknown-failure",
+    ),
+  ).toMatchObject({ status: "active", reason: "unclassified-failure" });
+  expect(
+    assessAutomationHealth({ nowMs, operations: [operation] }).some(
+      (finding) => finding.code === "unknown-failure",
+    ),
+  ).toBe(false);
+  expect(
+    assessAutomationHealth({
+      nowMs,
+      operations: [{ ...operation, stage: "validated" }],
+    }).find((finding) => finding.code === "unknown-failure"),
+  ).toMatchObject({ status: "recovered", reason: "verified-recovery" });
+  expect(
+    assessAutomationHealth({ nowMs, operations: [] }).some(
+      (finding) => finding.code === "unknown-failure",
+    ),
+  ).toBe(false);
+});
 test("provider and unknown failures use bounded reason codes, never raw diagnostics", () => {
   const operation = {
     ...operationFixture({
       retry: {
-        failure: { kind: "unknown", reasonCode: "unclassified-failure" },
+        failure: {
+          kind: "unknown" as const,
+          reasonCode: "unclassified-failure",
+        },
         transientAttempts: 4,
         immediateAttempts: 3,
       },

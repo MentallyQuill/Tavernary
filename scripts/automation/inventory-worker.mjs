@@ -54,6 +54,15 @@ export function matchingOperationReceipt(input, operation) {
     )[0];
 }
 
+function expiredDispatchLease(receipt, nowMs) {
+  if (!receipt) return false;
+  const dispatchedAt = Date.parse(receipt.updatedAt);
+  return (
+    receipt.operation.nextEligibleAt ===
+      new Date(dispatchedAt + 15 * 60_000).toISOString() &&
+    dispatchedAt + 15 * 60_000 <= nowMs
+  );
+}
 export function receiptBindsWorker(run, receipt) {
   return (
     receipt &&
@@ -185,20 +194,33 @@ export function recoverInventoryWorker(operation, input, runs) {
     if (receipt?.operation.retry) {
       operation.retry = receipt.operation.retry;
       operation.nextEligibleAt = receipt.operation.nextEligibleAt;
+      if (expiredDispatchLease(receipt, input.nowMs)) {
+        operation.retry = {
+          ...operation.retry,
+          transientAttempts: operation.retry.transientAttempts + 1,
+        };
+        operation.nextEligibleAt = planAutomationRetry({
+          ...operation.retry,
+          nowMs: input.nowMs,
+          jitterSeed: operation.key,
+        }).nextEligibleAt;
+      }
     } else if (
       receipt?.operation.nextEligibleAt !== null &&
       receipt?.operation.nextEligibleAt !== undefined
     ) {
       operation.nextEligibleAt = receipt.operation.nextEligibleAt;
-      if (Date.parse(operation.nextEligibleAt) <= input.nowMs) {
+      if (expiredDispatchLease(receipt, input.nowMs)) {
         operation.retry = {
-          failure: classifyAutomationFailure(),
+          failure: classifyAutomationFailure({
+            diagnosticCode: "workflow-result-unavailable",
+          }),
           transientAttempts: 0,
-          immediateAttempts: 3,
+          immediateAttempts: 0,
         };
         operation.nextEligibleAt = planAutomationRetry({
           ...operation.retry,
-          nowMs: Date.parse(receipt.updatedAt),
+          nowMs: input.nowMs,
           jitterSeed: operation.key,
         }).nextEligibleAt;
       }
@@ -206,6 +228,48 @@ export function recoverInventoryWorker(operation, input, runs) {
     return;
   }
   const terminalAt = Date.parse(run.updated_at ?? run.created_at ?? "");
+  const previous = receipt.operation.retry;
+  if (run.conclusion === "success" && previous) {
+    const nextEligibleAt = receipt.operation.nextEligibleAt;
+    const leaseAt = terminalAt + 15 * 60_000;
+    if (Number.isFinite(terminalAt) && input.nowMs < leaseAt) {
+      operation.retry = previous;
+      operation.workerRunId = run.id;
+      operation.nextEligibleAt =
+        nextEligibleAt === null
+          ? null
+          : new Date(
+              Math.max(leaseAt, Date.parse(nextEligibleAt)),
+            ).toISOString();
+      return;
+    }
+    const receiptResolvedWrapper =
+      Date.parse(receipt.updatedAt) >= terminalAt &&
+      (receipt.operation.workerRunId !== run.id ||
+        Date.parse(receipt.updatedAt) >= leaseAt);
+    if (
+      !Number.isFinite(terminalAt) ||
+      receiptResolvedWrapper ||
+      nextEligibleAt === null ||
+      Date.parse(nextEligibleAt) > input.nowMs
+    ) {
+      operation.retry = previous;
+      operation.nextEligibleAt = nextEligibleAt;
+      return;
+    }
+    const retryState = {
+      ...previous,
+      transientAttempts: previous.transientAttempts + 1,
+    };
+    operation.retry = retryState;
+    operation.nextEligibleAt = planAutomationRetry({
+      ...retryState,
+      nowMs: input.nowMs,
+      retryAfterMs: run.retryAfterMs,
+      jitterSeed: `${operation.key}:${run.id}:${run.run_attempt ?? 1}`,
+    }).nextEligibleAt;
+    return;
+  }
   if (
     run.conclusion === "success" &&
     Number.isFinite(terminalAt) &&
@@ -221,7 +285,6 @@ export function recoverInventoryWorker(operation, input, runs) {
     repository: input.repository,
     publisherActorId: input.publisherActorId,
   });
-  const previous = receipt.operation.retry;
   if (
     previous &&
     (!Number.isFinite(terminalAt) ||
@@ -249,21 +312,25 @@ export function recoverInventoryWorker(operation, input, runs) {
   }
   const failure = classifyAutomationFailure({
     ...run.failure,
-    ...(diagnostic ? { diagnosticCode: diagnostic.reasonCode } : {}),
+    ...(run.conclusion === "success"
+      ? { diagnosticCode: "workflow-result-unavailable" }
+      : diagnostic
+        ? { diagnosticCode: diagnostic.reasonCode }
+        : {}),
     conclusion: run.conclusion,
   });
   const retryState = {
     failure,
     transientAttempts: (previous?.transientAttempts ?? -1) + 1,
     immediateAttempts:
-      run.conclusion === "success"
-        ? 3
-        : (previous?.immediateAttempts ?? 0) +
-          (failure.kind === "unknown" ? 1 : 0),
+      (previous?.immediateAttempts ?? 0) + (failure.kind === "unknown" ? 1 : 0),
   };
   const retry = planAutomationRetry({
     ...retryState,
-    nowMs: Number.isFinite(terminalAt) ? terminalAt : input.nowMs,
+    nowMs:
+      run.conclusion === "success" || !Number.isFinite(terminalAt)
+        ? input.nowMs
+        : terminalAt,
     retryAfterMs: run.retryAfterMs,
     jitterSeed: `${operation.key}:${run.id}:${run.run_attempt ?? 1}`,
   });
