@@ -417,12 +417,12 @@ export async function loadProjectSubmissionCatalogData() {
   return { projects, sources, vocabulary };
 }
 
-async function github(path, options = {}) {
+async function githubWithToken(token, path, options = {}) {
   const response = await fetch(`https://api.github.com${path}`, {
     ...options,
     headers: {
       Accept: "application/vnd.github+json",
-      Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
       "User-Agent": "Tavernary-submission-triage",
       "X-GitHub-Api-Version": "2022-11-28",
@@ -437,6 +437,18 @@ async function github(path, options = {}) {
     throw error;
   }
   return response.status === 204 ? null : response.json();
+}
+
+function github(path, options = {}) {
+  return githubWithToken(process.env.GITHUB_TOKEN, path, options);
+}
+
+function githubWorkflowDispatch(path, options = {}) {
+  const token = process.env.PUBLISHER_DISPATCH_TOKEN;
+  if (!token) {
+    throw new Error("Publisher workflow dispatch credential is required.");
+  }
+  return githubWithToken(token, path, options);
 }
 
 async function ensureLabels(repository, request = github) {
@@ -840,6 +852,7 @@ function triageApi(repository, request) {
 export async function processProjectSubmissionTriage({
   event,
   request,
+  dispatchRequest,
   probe = safeProbe,
   catalogData,
   writeOutput,
@@ -1079,7 +1092,12 @@ export async function processProjectSubmissionTriage({
     writeOutput,
   });
   if (upstreamTriageIssueNumber !== null) {
-    await request(
+    if (!dispatchRequest) {
+      throw new Error(
+        "Fork upstream triage requires a Publisher dispatch request.",
+      );
+    }
+    await dispatchRequest(
       `/repos/${repository}/actions/workflows/triage-submission.yml/dispatches`,
       {
         method: "POST",
@@ -1125,6 +1143,7 @@ async function main() {
   await processProjectSubmissionTriage({
     event,
     request: github,
+    dispatchRequest: githubWorkflowDispatch,
     writeOutput: process.env.GITHUB_OUTPUT
       ? (name, value) =>
           appendFile(process.env.GITHUB_OUTPUT, `${name}=${value}\n`, "utf8")

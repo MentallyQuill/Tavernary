@@ -137,6 +137,7 @@ export interface ProjectSubmissionEventContext {
 export function processProjectSubmissionTriage(input: {
   event: ProjectSubmissionEventContext;
   request: ProjectSubmissionGitHubRequest;
+  dispatchRequest?: ProjectSubmissionGitHubRequest;
   probe?: (url: string, options?: SafeProbeOptions) => Promise<SafeProbeResult>;
   catalogData?: {
     vocabulary: FrontendVocabulary;

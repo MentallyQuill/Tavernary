@@ -1282,7 +1282,7 @@ test("keeps the issue retryable when the admitted submission inventory is unavai
   expect(outputs.admitted).not.toBe("true");
 });
 
-test("persists a waiting child before dispatching its newly created upstream", async () => {
+test("keeps upstream issue mutations on triage credentials and dispatches after persisting the waiting child", async () => {
   const currentBody = [
     "### Project manifest",
     "",
@@ -1303,6 +1303,7 @@ test("persists a waiting child before dispatching its newly created upstream", a
     "```",
   ].join("\n");
   const requests: Array<{
+    credential: "triage" | "publisher";
     path: string;
     method: string;
     body?: string;
@@ -1310,7 +1311,7 @@ test("persists a waiting child before dispatching its newly created upstream", a
   let issueReads = 0;
   const request = vi.fn(async (path: string, options = {}) => {
     const method = options.method ?? "GET";
-    requests.push({ path, method, body: options.body });
+    requests.push({ credential: "triage", path, method, body: options.body });
     if (path === "/repos/Tavernary/Tavernary/issues/140" && method === "GET") {
       issueReads += 1;
       return {
@@ -1362,6 +1363,18 @@ test("persists a waiting child before dispatching its newly created upstream", a
     }
     return {};
   });
+  const dispatchRequest = async (
+    path: string,
+    options: { method?: string; body?: string } = {},
+  ) => {
+    requests.push({
+      credential: "publisher",
+      path,
+      method: options.method ?? "GET",
+      body: options.body,
+    });
+    return null;
+  };
   const outputs: Record<string, string> = {};
 
   const decision = await processProjectSubmissionTriage({
@@ -1370,6 +1383,7 @@ test("persists a waiting child before dispatching its newly created upstream", a
       issue: { number: 140 },
     },
     request,
+    dispatchRequest,
     catalogData: {
       vocabulary: {
         frontends: [
@@ -1415,6 +1429,19 @@ test("persists a waiting child before dispatching its newly created upstream", a
   expect(waitingLabelIndex).toBeGreaterThan(createIndex);
   expect(markerIndex).toBeGreaterThan(waitingLabelIndex);
   expect(dispatchIndex).toBeGreaterThan(markerIndex);
+  expect(
+    requests.filter(({ credential }) => credential === "publisher"),
+  ).toEqual([
+    {
+      credential: "publisher",
+      path: "/repos/Tavernary/Tavernary/actions/workflows/triage-submission.yml/dispatches",
+      method: "POST",
+      body: JSON.stringify({ ref: "main", inputs: { issue_number: "201" } }),
+    },
+  ]);
+  expect(requests[createIndex].credential).toBe("triage");
+  expect(requests[waitingLabelIndex].credential).toBe("triage");
+  expect(requests[markerIndex].credential).toBe("triage");
 });
 
 test("accepts a manually customized project title after routing", async () => {

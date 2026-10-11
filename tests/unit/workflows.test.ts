@@ -1284,6 +1284,39 @@ test("triage dispatches admitted projects without repository write access", asyn
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
 
+test("fork triage scopes Publisher authority to workflow dispatches", async () => {
+  const triage = await workflow("triage-submission");
+  const steps = triage.jobs.validate.steps as (WorkflowStep & {
+    if?: string;
+  })[];
+  const triageIndex = steps.findIndex(({ id }) => id === "triage");
+  const tokenIndex = steps.findIndex(
+    ({ id }) => id === "publisher-dispatch-token",
+  );
+  const token = steps[tokenIndex];
+
+  expect(tokenIndex).toBeGreaterThanOrEqual(0);
+  expect(tokenIndex).toBeLessThan(triageIndex);
+  expect(token.if).toBeUndefined();
+  expect(token.with).toMatchObject({
+    owner: "MentallyQuill",
+    repositories: "Tavernary",
+    "permission-actions": "write",
+  });
+  expect(
+    Object.keys(token.with ?? {}).filter((key) =>
+      key.startsWith("permission-"),
+    ),
+  ).toEqual(["permission-actions"]);
+  expect(steps[triageIndex].env?.GITHUB_TOKEN).toBe(
+    "${{ secrets.GITHUB_TOKEN }}",
+  );
+  expect(steps[triageIndex].env?.PUBLISHER_DISPATCH_TOKEN).toBe(
+    "${{ steps.publisher-dispatch-token.outputs.token }}",
+  );
+  expect(triage.permissions).toEqual({ contents: "read", issues: "write" });
+});
+
 test("retries frontend dependencies from read-only catalog changes", async () => {
   const retry = await workflow("retry-frontend-dependencies");
   const source = await readFile(
