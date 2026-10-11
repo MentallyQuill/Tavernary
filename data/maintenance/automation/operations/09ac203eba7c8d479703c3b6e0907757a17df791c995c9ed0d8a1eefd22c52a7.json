@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
   "operation": {
-    "key": "094f56c81cf236cdf467650a0fd0596aed94690da2cda89bdaf700393b816444",
+    "key": "09ac203eba7c8d479703c3b6e0907757a17df791c995c9ed0d8a1eefd22c52a7",
     "identity": {
       "kind": "refresh",
-      "subject": "source:github-1297772483",
-      "inputDigest": "5ffd249e5b92c40e58599e8c9ef593e382998de78035b7765b3e38ba001ded83",
+      "subject": "source:github-998536860",
+      "inputDigest": "50e295e46e68612c4b1d2cf0f02faa6819d4573c305720c24169968f6d5abc20",
       "policyVersion": "2026-07-29"
     },
     "stage": "admitted",
     "createdAt": "2026-10-08T14:39:08.801Z",
-    "nextEligibleAt": "2026-10-12T01:28:37.318Z",
+    "nextEligibleAt": "2026-10-11T04:06:59.648Z",
     "expectedSha": null,
     "workerRunId": null,
     "retry": {
@@ -18,10 +18,10 @@
         "kind": "unknown",
         "reasonCode": "unclassified-failure"
       },
-      "transientAttempts": 2,
-      "immediateAttempts": 3
+      "transientAttempts": 1,
+      "immediateAttempts": 2
     }
   },
-  "updatedAt": "2026-10-11T01:28:37.318Z",
+  "updatedAt": "2026-10-11T03:51:57.400Z",
   "completedAt": null
 }

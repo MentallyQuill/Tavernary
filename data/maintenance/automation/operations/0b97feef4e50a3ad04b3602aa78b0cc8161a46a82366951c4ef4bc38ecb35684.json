@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "operation": {
-    "key": "0b58db5f3d647b2a0ddc6be1a7511b853fb03c73d8966090b1d856b8d46ef2da",
+    "key": "0b97feef4e50a3ad04b3602aa78b0cc8161a46a82366951c4ef4bc38ecb35684",
     "identity": {
       "kind": "advisory",
-      "subject": "source:github-772263541:sillytavern-extension-groupgreetings",
-      "inputDigest": "bf27273ac9a0393564658fdf72cada41dbe1a339221d060f3c0d2fb7e9550196",
+      "subject": "source:github-1340852606:its-a-unixsystem-sillytavern-msgcompact",
+      "inputDigest": "1f2c154caaca3380ee9524fa5c15e5b7b9ea4c1250a3234aaf4279f4886670d6",
       "policyVersion": "2026-07-29"
     },
     "stage": "admitted",
@@ -18,8 +18,8 @@
         "kind": "unknown",
         "reasonCode": "unclassified-failure"
       },
-      "transientAttempts": 2,
-      "immediateAttempts": 3
+      "transientAttempts": 4,
+      "immediateAttempts": 5
     }
   },
   "updatedAt": "2026-10-11T01:45:57.341Z",
