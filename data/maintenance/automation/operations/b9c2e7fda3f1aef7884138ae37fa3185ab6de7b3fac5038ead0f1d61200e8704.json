@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b9c2e7fda3f1aef7884138ae37fa3185ab6de7b3fac5038ead0f1d61200e8704",
+    "identity": {
+      "kind": "project",
+      "subject": "issue:850",
+      "inputDigest": "8b1eddde1fa208118817b2575b8688f658a1b19fc970c0c1f7e24103a10430aa",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-10T21:25:38.000Z",
+    "nextEligibleAt": "2026-10-11T23:25:41.218Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "configuration",
+        "reasonCode": "budget-exhausted"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-10T23:25:41.218Z",
+  "completedAt": null
+}
