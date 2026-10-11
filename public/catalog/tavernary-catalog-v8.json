@@ -1,6 +1,6 @@
 {
   "schemaVersion": 8,
-  "generatedAt": "2026-10-11T13:20:01.871Z",
+  "generatedAt": "2026-10-11T13:56:41.174Z",
   "tagVocabulary": [
     {
       "id": "maintain-long-term-memory",
@@ -60383,7 +60383,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "SillyTavern-SendButton is a SillyTavern extension that adds custom send buttons to the chat interface. It lets users configure alternative ways to submit messages beyond the default send action.",
+      "summary": "Adds configurable send buttons to SillyTavern. Buttons can run selected Quick Replies or slash commands, and users can switch between custom buttons and the default send action.",
       "canonicalUrl": "https://github.com/LenAnderson/SillyTavern-SendButton",
       "catalogedAt": "2026-07-27T04:33:27.457Z",
       "catalogCohort": "standard",
@@ -60548,7 +60548,7 @@
           "https://github.com/LenAnderson/SillyTavern-SendButton"
         ],
         "summary": [
-          "SillyTavern-SendButton is a SillyTavern extension that adds custom send buttons to the chat interface. It lets users configure alternative ways to submit messages beyond the default send action."
+          "Adds configurable send buttons to SillyTavern. Buttons can run selected Quick Replies or slash commands, and users can switch between custom buttons and the default send action."
         ],
         "kind": [
           "extension"
@@ -75452,6 +75452,182 @@
           "mokimoko"
         ],
         "relationships": []
+      }
+    },
+    {
+      "id": "molfarwav-molfar-vertep",
+      "name": "Molfar.Vertep",
+      "kind": "frontend",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": "Local-first roleplay frontend with built-in agent Molfar that rebuilds the app on request. Cards, personas, lorebooks, dashboards, trackers, story memory. Bring any model or use Subscription plans.",
+      "canonicalUrl": "https://github.com/MolfarWav/Molfar.Vertep",
+      "catalogedAt": "2026-10-11T13:56:26.571Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "molfar-vertep",
+          "label": "Molfar.Vertep",
+          "description": "Works with the Molfar.Vertep roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "agentic-tool-use",
+          "label": "Agentic tool use",
+          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
+          "facet": "trait"
+        },
+        {
+          "id": "local-first",
+          "label": "Local-first",
+          "description": "Keeps its primary data and workflow on the user's own device.",
+          "facet": "trait"
+        },
+        {
+          "id": "maintain-long-term-memory",
+          "label": "Maintain long-term memory",
+          "description": "Preserve and recall important information across long chats or separate sessions.",
+          "facet": "goal"
+        },
+        {
+          "id": "model-agnostic",
+          "label": "Model-agnostic",
+          "description": "Works across a broad range of model providers rather than requiring one model family.",
+          "facet": "trait"
+        },
+        {
+          "id": "modular-and-extensible",
+          "label": "Modular and extensible",
+          "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
+          "facet": "trait"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "70bc6c3035b83c4058f1e1aa219da46d3fe66aa3",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "MolfarWav"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-11T10:23:36.000Z",
+        "activeWeeks12": 4,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          false,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-10-11T10:28:23.000Z",
+      "community": {
+        "stars": 10,
+        "forks": 1,
+        "watchers": 0,
+        "aggregate": 11
+      },
+      "repositorySizeKb": 17837,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-10-11T13:56:30.534Z",
+      "staleSince": null,
+      "install": null,
+      "fork": {
+        "parentName": "Chrysalis-Engine",
+        "parentProjectId": "projectchrysalis-chrysalis-engine",
+        "parentUrl": null,
+        "status": "published"
+      },
+      "search": {
+        "title": [
+          "Molfar.Vertep"
+        ],
+        "aliases": [],
+        "source": [
+          "molfarwav-molfar-vertep",
+          "github-1396079564",
+          "MolfarWav/Molfar.Vertep",
+          "https://github.com/MolfarWav/Molfar.Vertep"
+        ],
+        "summary": [
+          "Local-first roleplay frontend with built-in agent Molfar that rebuilds the app on request. Cards, personas, lorebooks, dashboards, trackers, story memory. Bring any model or use Subscription plans."
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [
+          "Agentic tool use",
+          "tool calling",
+          "AI agents",
+          "agent mode",
+          "Local-first",
+          "stored locally",
+          "on-device data",
+          "local data ownership",
+          "Maintain long-term memory",
+          "durable memory",
+          "persistent memory",
+          "remember across chats",
+          "Model-agnostic",
+          "bring your own model",
+          "BYOM",
+          "provider independent",
+          "Modular and extensible",
+          "plugin architecture",
+          "modular design",
+          "extensible system",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "Molfar.Vertep"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "MolfarWav"
+        ],
+        "relationships": [
+          "Chrysalis-Engine",
+          "projectchrysalis-chrysalis-engine"
+        ]
       }
     },
     {
@@ -138528,7 +138704,7 @@
         }
       ],
       "supporterCount": 3,
-      "trendingScore": 1.1431809909100317,
+      "trendingScore": 1.1425088461464297,
       "supportRefreshedAt": "2026-10-08T14:42:26.884Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
@@ -262079,7 +262255,7 @@
         }
       ],
       "supporterCount": 1,
-      "trendingScore": 0.17379387264340337,
+      "trendingScore": 0.17369168878767777,
       "supportRefreshedAt": "2026-10-08T14:42:26.884Z",
       "supportStale": false,
       "flaggedProjectCount": 0,

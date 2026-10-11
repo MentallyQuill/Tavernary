@@ -3,7 +3,7 @@
   "id": "lenanderson-sillytavern-sendbutton",
   "name": "SillyTavern-SendButton",
   "kind": "extension",
-  "summary": "SillyTavern-SendButton is a SillyTavern extension that adds custom send buttons to the chat interface. It lets users configure alternative ways to submit messages beyond the default send action.",
+  "summary": "Adds configurable send buttons to SillyTavern. Buttons can run selected Quick Replies or slash commands, and users can switch between custom buttons and the default send action.",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
@@ -14,7 +14,10 @@
   "listing_status": "active",
   "listing_status_reason": null,
   "metadata_policy": {
-    "summary": { "mode": "automatic" },
-    "tags": { "mode": "automatic" }
+    "summary": {
+      "mode": "manual",
+      "note": "Trusted Tavernary editor selection."
+    },
+    "tags": { "mode": "manual", "note": "Trusted Tavernary editor selection." }
   }
 }
