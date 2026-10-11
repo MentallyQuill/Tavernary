@@ -7,6 +7,7 @@ import { publicationHistory } from "./canonical-files.mjs";
 import {
   loadGithubAutomationInventory,
   loadAutomationWorkerRuns,
+  githubFailureStatus,
 } from "./github-inventory.mjs";
 import { discoverProjectOperations } from "./project-operations.mjs";
 import { discoverKitOperations } from "./kit-operations.mjs";
@@ -20,6 +21,7 @@ import {
   readAuthoritativeActiveDeployment,
 } from "./deployment-gate.mjs";
 import { validateAutomationReceipt } from "./receipts.mjs";
+import { assertTrustedPreparationOrigin } from "./prepared-result.mjs";
 import { validateAutomationOperation } from "./operation.mjs";
 import { loadRetiredAutomationReceipts } from "./retention.mjs";
 import {
@@ -39,7 +41,11 @@ import {
 } from "../security/tavernkeeper-reports.mjs";
 import { validateTavernKeeperImportState } from "../security/tavernkeeper-import-state.mjs";
 import { trustedOperationWorkerRuns } from "./inventory-worker.mjs";
-import { recoverInventoryWorker } from "./inventory-worker.mjs";
+import {
+  recoverInventoryWorker,
+  matchingOperationReceipt,
+  trustedWriterHandoff,
+} from "./inventory-worker.mjs";
 import {
   inspectProjectRetry,
   inspectProjectRetries,
@@ -101,6 +107,7 @@ export function discoverAutomationState(state) {
     runs: remote.runs,
     publisherActorId,
     repository,
+    executingWriterRunId: state.executingWriterRunId,
   };
   const confirmedRevisions = local.confirmedRevisions ?? [];
   const requestedRevisions = local.deployments
@@ -247,6 +254,7 @@ export async function loadAutomationInventory({
   nowMs,
   reportIndex,
   finalizationOperationKey,
+  executingWriterRunId,
 }) {
   if (
     finalizationOperationKey !== undefined &&
@@ -338,6 +346,7 @@ export async function loadAutomationInventory({
   const remote = await loadGithubAutomationInventory({
     gh,
     repository,
+    publisherActorId,
     receipts,
     referencedOperations: publicationProof.publications
       .filter(
@@ -500,6 +509,8 @@ export async function loadAutomationInventory({
     repository,
     publisherActorId,
     nowMs,
+    inventoryNowMs: nowMs,
+    executingWriterRunId,
     remote,
     local,
     receipts,
@@ -543,6 +554,7 @@ export async function loadAutomationInventory({
         publisherActorId,
         nowMs,
         reportIndex,
+        executingWriterRunId,
       });
   }
   return state;
@@ -586,9 +598,81 @@ export async function revalidateAutomationOperation({
       (pull) => replacements.get(pull.number) ?? pull,
     );
   }
-  const runs = await loadAutomationWorkerRuns({ gh, repository, nowMs });
+  // Keep the original inventory window while each candidate advances state.nowMs.
+  state.inventoryNowMs ??= state.nowMs;
+  const runs = await loadAutomationWorkerRuns({
+    gh,
+    repository,
+    nowMs,
+    createdAfterMs: state.inventoryNowMs - 1000,
+  });
   const replacementRuns = new Map(
-    [...state.remote.runs, ...runs].map((run) => [run.id, run]),
+    state.remote.runs.map((run) => [run.id, run]),
+  );
+  function replaceRun(run) {
+    const previous = replacementRuns.get(run.id);
+    if (
+      previous?.automationDiagnostic &&
+      Number.isSafeInteger(run.run_attempt) &&
+      run.run_attempt > 0 &&
+      previous.run_attempt === run.run_attempt &&
+      /^[a-f0-9]{40}$/u.test(run.head_sha ?? "") &&
+      previous.head_sha === run.head_sha
+    )
+      run.automationDiagnostic = previous.automationDiagnostic;
+    replacementRuns.set(run.id, run);
+  }
+  runs.forEach(replaceRun);
+  const latestWorker = trustedOperationWorkerRuns(
+    { runs: state.remote.runs, publisherActorId: state.publisherActorId },
+    operation,
+  )[0];
+  const latestPreparation = state.remote.runs
+    .filter((run) => {
+      if (run.display_title !== `Automation prepare ${operation.key}`)
+        return false;
+      try {
+        assertTrustedPreparationOrigin({
+          kind: operation.identity.kind,
+          repository,
+          run,
+          publisherActorId: state.publisherActorId,
+        });
+        return true;
+      } catch {
+        return false;
+      }
+    })
+    .sort((left, right) => right.id - left.id)[0];
+  const latestWriter = state.remote.runs
+    .filter((run) => trustedWriterHandoff(run, state, operation))
+    .sort((left, right) => right.id - left.id)[0];
+  const receipt = matchingOperationReceipt(state, operation);
+  const freshIds = new Set(runs.map((run) => run.id));
+  const knownIds = new Set(
+    [
+      operation.workerRunId,
+      receipt?.operation.workerRunId,
+      latestWorker?.id,
+      latestPreparation?.id,
+      latestWriter?.id,
+    ].filter((id) => Number.isSafeInteger(id) && id > 0 && !freshIds.has(id)),
+  );
+  // A rerun keeps its original creation time and can fall outside the delta.
+  await Promise.all(
+    [...knownIds].map(async (id) => {
+      try {
+        const run = JSON.parse(
+          await gh(["api", `repos/${repository}/actions/runs/${id}`]),
+        );
+        if (run.id !== id || typeof run.status !== "string")
+          throw new Error("GitHub returned an invalid saved worker.");
+        replaceRun(run);
+      } catch (error) {
+        if (githubFailureStatus(error) !== 404) throw error;
+        replacementRuns.delete(id);
+      }
+    }),
   );
   state.remote.runs = [...replacementRuns.values()];
   state.nowMs = nowMs;
@@ -641,17 +725,7 @@ export async function dispatchAutomationOperation({
     "-f",
     `operation_key=${operation.key}`,
   ]);
-  const recentRuns = await loadAutomationWorkerRuns({
-    gh,
-    repository,
-    nowMs: Date.now(),
-  });
-  const runs = trustedOperationWorkerRuns(
-    {
-      runs: recentRuns,
-      publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
-    },
-    operation,
-  );
-  return { workerRunId: runs[0]?.id ?? null };
+  // The persisted dispatch intent protects the operation until the next inventory
+  // observes its worker; GitHub may not expose the new run immediately.
+  return { workerRunId: null };
 }

@@ -100,3 +100,24 @@ test("a forged small uncompressed size cannot hide a decompression bomb", () => 
     decodePreparedArtifact({ archive, digest: archiveDigest(archive) }),
   ).toThrow();
 });
+
+test("the native worker diagnostic filename retains bounded archive integrity", () => {
+  const value = {
+    schema_version: 1,
+    operation_key: "a".repeat(64),
+    failure: {
+      kind: "configuration",
+      reasonCode: "publisher-authentication-failed",
+    },
+  };
+  const archive = zipSync({
+    "automation-diagnostic.json": strToU8(JSON.stringify(value)),
+  });
+  expect(
+    decodePreparedArtifact({
+      archive,
+      digest: archiveDigest(archive),
+      filename: "automation-diagnostic.json",
+    }),
+  ).toEqual(value);
+});

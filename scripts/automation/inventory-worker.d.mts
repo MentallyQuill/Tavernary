@@ -1,18 +1,21 @@
 import type { AutomationOperation } from "./operation.mjs";
 import type { AutomationReceipt } from "./receipts.mjs";
 import type { ProjectInventoryRun } from "./project-operations.mjs";
+import type { WorkerDiagnosticRun } from "./worker-diagnostic.mjs";
 export interface InventoryWorkerState {
   receipts: AutomationReceipt[];
   nowMs: number;
-  runs?: ProjectInventoryRun[];
+  runs?: WorkerDiagnosticRun[];
   publisherActorId?: number;
   defaultBranch?: string;
   repository?: string;
+  /** Set only by the authenticated canonical writer executing this run. */
+  executingWriterRunId?: number;
 }
 export function trustedOperationWorkerRuns(
   input: InventoryWorkerState,
   operation: AutomationOperation,
-): ProjectInventoryRun[];
+): WorkerDiagnosticRun[];
 export function isInventoryWorkerActive(run: ProjectInventoryRun): boolean;
 export function matchingOperationReceipt(
   input: InventoryWorkerState,
@@ -26,5 +29,14 @@ export function receiptBindsWorker(
 export function recoverInventoryWorker(
   operation: AutomationOperation,
   input: InventoryWorkerState,
-  runs: ProjectInventoryRun[],
+  runs: WorkerDiagnosticRun[],
 ): void;
+
+export function trustedWriterHandoff(
+  run: ProjectInventoryRun,
+  input: Pick<
+    InventoryWorkerState,
+    "repository" | "publisherActorId" | "defaultBranch"
+  >,
+  operation: AutomationOperation,
+): boolean;

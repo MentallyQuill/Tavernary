@@ -28,6 +28,7 @@ export function loadAutomationWorkerRuns(input: {
   gh: GhRunner;
   repository: string;
   nowMs: number;
+  createdAfterMs?: number;
 }): Promise<ProjectInventoryRun[]>;
 export function loadSiteWriterRecoveryRuns(input: {
   gh: GhRunner;
@@ -53,6 +54,8 @@ export function loadGithubAutomationInventory(input: {
   referencedOperations?: AutomationOperation[];
   nowMs: number;
   finalizationOperation?: AutomationOperation;
+  publisherActorId?: number;
+  downloadDiagnostic?: (args: string[]) => Promise<Uint8Array>;
 }): Promise<GithubAutomationInventory>;
 export function persistGithubAutomationReceipt(input: {
   gh: GhRunner;

@@ -5,6 +5,7 @@ import { classifyPullRequestPaths } from "./classify-pr-paths.mjs";
 import { readAuthoritativeActiveDeployment } from "../automation/deployment-gate.mjs";
 
 const generatedOrPrivateData = [
+  /^data\/maintenance\/automation\/github-backoff\.json$/u,
   /^public\/catalog\/tavernary-catalog(?:-v8)?\.json$/u,
   /^data\/snapshots\/(?:install|policy-review)\/[^/]+\.json$/u,
   /^data\/security\/tavernkeeper-(?:report-summaries|import-state)\.json$/u,

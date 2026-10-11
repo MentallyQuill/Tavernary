@@ -12,6 +12,7 @@ export function decodePreparedArtifactBytes({
   const limits = {
     "result.json": 33_554_432,
     "diagnostic.json": 16_384,
+    "automation-diagnostic.json": 16_384,
     "automation-generation-model-usage.json": 16_384,
     "owner-generation-checkpoint.json": 262_144,
     "revision.json": 16_777_216,

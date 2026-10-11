@@ -400,3 +400,18 @@ test.each([
     ).toBe(false);
   },
 );
+
+test("GitHub cooldown bookkeeping is safe base drift at only its fixed path", () => {
+  expect(
+    isSafeProjectPublicationBaseDrift({
+      transaction,
+      changedPaths: ["data/maintenance/automation/github-backoff.json"],
+    }),
+  ).toBe(true);
+  expect(
+    isSafeProjectPublicationBaseDrift({
+      transaction,
+      changedPaths: ["data/maintenance/automation/other-backoff.json"],
+    }),
+  ).toBe(false);
+});
