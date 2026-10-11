@@ -49,6 +49,11 @@ jobs:
     timeout-minutes: 15
     environment: publisher
     steps:
+      - name: Check out trusted controller code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          persist-credentials: false
       - name: Create scoped controller dispatch token
         id: controller-token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
@@ -57,6 +62,6 @@ jobs:
           private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
           permission-actions: write
       - name: Wake the serialized canonical controller
-        run: gh workflow run automation-writer.yml --repo "$GITHUB_REPOSITORY" --ref main -f mode=reconcile
+        run: node scripts/automation/controller-wake.mjs
         env:
           GH_TOKEN: ${{ steps.controller-token.outputs.token }}

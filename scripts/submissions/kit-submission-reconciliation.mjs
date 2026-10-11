@@ -409,7 +409,43 @@ async function readJsonDirectory(path) {
   );
 }
 
-export function createGithubCliFailure(args, code, stderr) {
+export function parseGithubCliResponse(stdout, { binary = false } = {}) {
+  const raw = Buffer.from(stdout);
+  const headers = {};
+  const capture = (source) => {
+    if (source.length > 16384)
+      throw new Error("GitHub response headers are invalid.");
+    for (const line of source.split(/\r?\n/u)) {
+      const match =
+        /^(retry-after|x-ratelimit-reset):\s*([^\r\n]{1,128})$/iu.exec(line);
+      if (match) headers[match[1].toLowerCase()] = match[2].trim();
+    }
+  };
+  if (!binary) {
+    const body = raw
+      .toString("utf8")
+      .replace(
+        /(^|[\r\n\[,])HTTP\/[0-9.]+ [^\r\n]*\r?\n((?:[^\r\n]*\r?\n)*?)\r?\n/gu,
+        (_block, prefix, fields) => {
+          capture(fields);
+          return prefix;
+        },
+      );
+    return { body: Buffer.from(body, "utf8"), headers };
+  }
+  let offset = 0;
+  while (raw.subarray(offset, offset + 5).toString() === "HTTP/") {
+    const end = raw.indexOf("\r\n\r\n", offset);
+    const lfEnd = raw.indexOf("\n\n", offset);
+    const boundary = end >= 0 ? end : lfEnd;
+    if (boundary < 0 || boundary - offset > 16384)
+      throw new Error("GitHub response headers are invalid.");
+    capture(raw.subarray(offset, boundary).toString("utf8"));
+    offset = boundary + (end >= 0 ? 4 : 2);
+  }
+  return { body: raw.subarray(offset), headers };
+}
+export function createGithubCliFailure(args, code, stderr, stdout) {
   const error = new Error(
     `gh ${args.join(" ")} failed with exit ${code}: ${stderr.trim()}`,
   );
@@ -418,33 +454,53 @@ export function createGithubCliFailure(args, code, stderr) {
     /(?:API rate limit exceeded|secondary rate limit)/iu.test(stderr)
   )
     error.code = "provider-rate-limited";
+  if (stdout) error.headers = parseGithubCliResponse(stdout).headers;
   return error;
 }
 
-export function executeGh(args, stdin) {
+export function executeGh(args, stdin, options = {}) {
   return new Promise((resolveCommand, rejectCommand) => {
     const command = process.platform === "win32" ? "gh.exe" : "gh";
-    const child = spawn(command, args, {
+    const capture = options.includeRateLimitHeaders && args[0] === "api";
+    const commandArgs =
+      capture && !args.includes("--include") ? [...args, "--include"] : args;
+    const child = spawn(command, commandArgs, {
       shell: false,
       stdio: ["pipe", "pipe", "pipe"],
     });
-    let stdout = "";
+    const stdoutChunks = [];
     let stderr = "";
-    child.stdout.setEncoding("utf8");
     child.stderr.setEncoding("utf8");
     child.stdout.on("data", (chunk) => {
-      stdout += chunk;
+      stdoutChunks.push(Buffer.from(chunk));
     });
     child.stderr.on("data", (chunk) => {
       stderr += chunk;
     });
     child.on("error", rejectCommand);
     child.on("close", (code) => {
-      if (code === 0) {
-        resolveCommand(stdout);
-        return;
+      try {
+        const stdout = Buffer.concat(stdoutChunks);
+        if (code === 0) {
+          const body = capture
+            ? parseGithubCliResponse(stdout, { binary: options.binary }).body
+            : stdout;
+          resolveCommand(
+            options.binary ? new Uint8Array(body) : body.toString("utf8"),
+          );
+          return;
+        }
+        rejectCommand(
+          createGithubCliFailure(
+            args,
+            code,
+            stderr,
+            capture ? stdout : undefined,
+          ),
+        );
+      } catch (error) {
+        rejectCommand(error);
       }
-      rejectCommand(createGithubCliFailure(args, code, stderr));
     });
     child.stdin.end(stdin);
   });

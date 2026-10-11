@@ -164,10 +164,10 @@ test("the controller runs every fifteen minutes using trusted main code and boun
     "utf8",
   );
   expect(workflow).toContain('cron: "3,18,33,48 * * * *"');
-  expect(workflow).toContain("--ref main");
+  expect(workflow).toContain("ref: main");
   expect(workflow).toContain("timeout-minutes: 15");
   expect(workflow).toContain("cancel-in-progress: false");
-  expect(workflow).toContain("gh workflow run automation-writer.yml");
+  expect(workflow).toContain("node scripts/automation/controller-wake.mjs");
   expect(workflow).not.toContain("permission-contents: write");
 });
 

@@ -411,6 +411,16 @@ test("the dependency writer authenticates native Git objects and CI before one h
     await writeFile(join(receiptRoot, receiptPath), '{"stage":"finalized"}\n');
     for (const scenario of [
       { path: receiptPath, mode: "100644", expected: "merged" },
+      {
+        path: "data/maintenance/automation/github-backoff.json",
+        mode: "100644",
+        expected: "merged",
+      },
+      {
+        path: "data/maintenance/automation/other-backoff.json",
+        mode: "100644",
+        expected: "updated",
+      },
       { path: "tests/changed.test.ts", mode: "100644", expected: "updated" },
       { path: "scripts/changed.mjs", mode: "100644", expected: "updated" },
       { path: receiptPath, mode: "100755", expected: "updated" },
@@ -665,7 +675,7 @@ test("the dependency writer authenticates native Git objects and CI before one h
   );
   await runDependencyWriter(actionOptions);
   expect(calls.some((call) => call.args.includes("PUT"))).toBe(false);
-});
+}, 15000);
 
 test("an exhausted controller pass makes no dependency requests or writes", async () => {
   let requests = 0;

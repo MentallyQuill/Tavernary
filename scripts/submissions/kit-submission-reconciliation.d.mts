@@ -109,9 +109,23 @@ export function parseReconciliationArgs(args: string[]): {
   apply: boolean;
 };
 
-export function executeGh(args: string[], stdin?: string): Promise<string>;
+export function executeGh(
+  args: string[],
+  stdin?: string,
+  options?: { includeRateLimitHeaders?: boolean; binary?: false },
+): Promise<string>;
+export function executeGh(
+  args: string[],
+  stdin: string | undefined,
+  options: { includeRateLimitHeaders?: boolean; binary: true },
+): Promise<Uint8Array>;
+export function parseGithubCliResponse(
+  stdout: Uint8Array | string,
+  options?: { binary?: boolean },
+): { body: Buffer; headers: Record<string, string> };
 export function createGithubCliFailure(
   args: string[],
   code: number | null,
   stderr: string,
-): Error & { code?: string };
+  stdout?: Uint8Array | string,
+): Error & { code?: string; headers?: Record<string, string> };
