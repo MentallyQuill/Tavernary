@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b8441594a57b0241cdccfafbe34218fcaf5a81540c120c6a52e1e2692fbb268f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1203878678:rustyorb-sillytavern-qrbuilder",
+      "inputDigest": "711abb04527ddd3441c3beec6f6082f23cfa0401143c55a8b0338739aa6a7cf3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-12T23:44:32.178Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "configuration",
+        "reasonCode": "budget-exhausted"
+      },
+      "transientAttempts": 4,
+      "immediateAttempts": 4
+    }
+  },
+  "updatedAt": "2026-10-11T23:44:32.178Z",
+  "completedAt": null
+}
