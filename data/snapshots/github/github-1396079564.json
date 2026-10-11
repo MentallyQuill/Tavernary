@@ -1,0 +1,81 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1396079564",
+  "repository": {
+    "id": 1396079564,
+    "owner": "MolfarWav",
+    "name": "Molfar.Vertep",
+    "url": "https://github.com/MolfarWav/Molfar.Vertep",
+    "description": "Local-first AI engine: the built-in agent Molfar reshapes your apps when you ask. Ships with Roleplay for RP sessions. A fork of Chrysalis Engine.",
+    "default_branch": "main",
+    "head_sha": "70bc6c3035b83c4058f1e1aa219da46d3fe66aa3",
+    "head_committed_at": "2026-10-11T10:23:36.000Z",
+    "archived": false,
+    "fork": true,
+    "parent": {
+      "id": 1338824971,
+      "owner": "ProjectChrysalis",
+      "name": "Chrysalis-Engine",
+      "url": "https://github.com/ProjectChrysalis/Chrysalis-Engine"
+    },
+    "created_at": "2026-09-29T17:01:48.000Z",
+    "size_kb": 17837
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-10-11T10:23:36.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-11T10:23:36.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-10-04T19:11:18.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-15T20:12:41.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-13T23:53:41.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-10-11T10:28:23.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-10-11T13:56:30.534Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "70bc6c3035b83c4058f1e1aa219da46d3fe66aa3"
+  },
+  "community": {
+    "stars_count": 10,
+    "forks_count": 1,
+    "watchers_count": 0,
+    "aggregate": 11
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-10-11T13:56:30.534Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "MolfarWav", "type": "User", "provider": "github" }
+    ],
+    "method": "merged-pull-requests",
+    "baseline_completed_at": "2026-10-11T13:56:30.534Z",
+    "scan": null,
+    "refreshed_at": "2026-10-11T13:56:30.534Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

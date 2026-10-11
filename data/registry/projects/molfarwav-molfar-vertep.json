@@ -1,0 +1,30 @@
+{
+  "schema_version": 6,
+  "id": "molfarwav-molfar-vertep",
+  "name": "Molfar.Vertep",
+  "kind": "frontend",
+  "summary": "Local-first roleplay frontend with built-in agent Molfar that rebuilds the app on request. Cards, personas, lorebooks, dashboards, trackers, story memory. Bring any model or use Subscription plans.",
+  "metadata_status": "curated",
+  "source_id": "github-1396079564",
+  "frontends": ["molfar-vertep"],
+  "primary_function": "frontend",
+  "tags": [
+    "agentic-tool-use",
+    "local-first",
+    "maintain-long-term-memory",
+    "model-agnostic",
+    "modular-and-extensible",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-10-11T13:56:26.571Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Trusted Tavernary editor selection."
+    },
+    "tags": { "mode": "manual", "note": "Trusted Tavernary editor selection." }
+  }
+}
