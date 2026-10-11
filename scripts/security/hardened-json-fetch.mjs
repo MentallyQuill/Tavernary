@@ -337,67 +337,74 @@ export async function fetchHardenedJson(options) {
   let redirects = 0;
 
   while (true) {
-    const signal = AbortSignal.timeout(timeoutMs);
-    const addresses = await resolvePublicDns(
-      current,
-      dnsLookup,
-      signal,
-      resourceLabel,
-    );
-    const response = await beforeDeadline(
-      requestImpl(current.toString(), {
-        headers: { accept: "application/json" },
-        signal,
-        lookup: createBoundLookup(current.hostname, addresses, resourceLabel),
-      }),
-      signal,
-      resourceLabel,
-    );
-
-    if (redirectStatuses.has(response.status)) {
-      cancelBody(response, signal, resourceLabel);
-      if (redirects >= 2) {
-        throw new Error(`${resourceLabel} redirect limit exceeded`);
-      }
-      const location = response.headers.get("location");
-      if (!location) {
-        throw new Error(`${resourceLabel} redirect has no location`);
-      }
-      current = new URL(location, current);
-      assertRedirectUrl(current);
-      redirects += 1;
-      continue;
-    }
-    if (response.status === 404 && options.notFoundError) {
-      cancelBody(response, signal, resourceLabel);
-      throw options.notFoundError();
-    }
-    if (response.status < 200 || response.status >= 300) {
-      cancelBody(response, signal, resourceLabel);
-      throw new Error(
-        `${resourceLabel} request returned HTTP ${response.status}`,
-      );
-    }
-    if (!isJsonResponse(response)) {
-      cancelBody(response, signal, resourceLabel);
-      throw new Error(`${resourceLabel} response is not JSON`);
-    }
-
+    const controller = new AbortController();
+    const signal = controller.signal;
+    // Keep the process alive until pending DNS, transport, or body work settles.
+    const deadline = setTimeout(() => controller.abort(), timeoutMs);
     try {
-      return JSON.parse(
-        await readBoundedResponse(
-          response,
-          signal,
-          DEFAULT_MAX_RESPONSE_BYTES,
-          resourceLabel,
-        ),
+      const addresses = await resolvePublicDns(
+        current,
+        dnsLookup,
+        signal,
+        resourceLabel,
       );
-    } catch (error) {
-      cancelBody(response, signal, resourceLabel);
-      if (error instanceof SyntaxError) {
-        throw new Error(`${resourceLabel} response is not valid JSON`);
+      const response = await beforeDeadline(
+        requestImpl(current.toString(), {
+          headers: { accept: "application/json" },
+          signal,
+          lookup: createBoundLookup(current.hostname, addresses, resourceLabel),
+        }),
+        signal,
+        resourceLabel,
+      );
+
+      if (redirectStatuses.has(response.status)) {
+        cancelBody(response, signal, resourceLabel);
+        if (redirects >= 2) {
+          throw new Error(`${resourceLabel} redirect limit exceeded`);
+        }
+        const location = response.headers.get("location");
+        if (!location) {
+          throw new Error(`${resourceLabel} redirect has no location`);
+        }
+        current = new URL(location, current);
+        assertRedirectUrl(current);
+        redirects += 1;
+        continue;
       }
-      throw error;
+      if (response.status === 404 && options.notFoundError) {
+        cancelBody(response, signal, resourceLabel);
+        throw options.notFoundError();
+      }
+      if (response.status < 200 || response.status >= 300) {
+        cancelBody(response, signal, resourceLabel);
+        throw new Error(
+          `${resourceLabel} request returned HTTP ${response.status}`,
+        );
+      }
+      if (!isJsonResponse(response)) {
+        cancelBody(response, signal, resourceLabel);
+        throw new Error(`${resourceLabel} response is not JSON`);
+      }
+
+      try {
+        return JSON.parse(
+          await readBoundedResponse(
+            response,
+            signal,
+            DEFAULT_MAX_RESPONSE_BYTES,
+            resourceLabel,
+          ),
+        );
+      } catch (error) {
+        cancelBody(response, signal, resourceLabel);
+        if (error instanceof SyntaxError) {
+          throw new Error(`${resourceLabel} response is not valid JSON`);
+        }
+        throw error;
+      }
+    } finally {
+      clearTimeout(deadline);
     }
   }
 }
