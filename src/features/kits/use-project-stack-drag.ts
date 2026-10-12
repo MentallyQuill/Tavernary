@@ -3,6 +3,7 @@
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type PointerEvent as ReactPointerEvent,
@@ -83,6 +84,16 @@ export function useProjectStackDrag({
   );
   const sessionRef = useRef<DragSession | null>(null);
   const cleanupRef = useRef<() => void>(() => undefined);
+  const callbacksRef = useRef({ onReorder, onRemove });
+  const orderKey = JSON.stringify(projectIds);
+
+  useLayoutEffect(() => {
+    callbacksRef.current = { onReorder, onRemove };
+  }, [onReorder, onRemove]);
+
+  useLayoutEffect(() => {
+    if (sessionRef.current) cleanupRef.current();
+  }, [orderKey, touchLayout]);
 
   const begin = useCallback(
     (
@@ -112,14 +123,20 @@ export function useProjectStackDrag({
       };
       sessionRef.current = initial;
       setDragState(initial);
+      let frame: number | null = null;
+      let latestPoint = point;
 
       const cleanup = () => {
+        if (frame !== null) window.cancelAnimationFrame(frame);
+        frame = null;
         const session = sessionRef.current;
         sessionRef.current = null;
         window.removeEventListener("pointermove", move);
         window.removeEventListener("pointerup", finish);
         window.removeEventListener("pointercancel", cancel);
         window.removeEventListener("keydown", keydown);
+        window.removeEventListener("scroll", scheduleMovement, true);
+        window.removeEventListener("resize", scheduleMovement);
         session?.handle.removeEventListener("lostpointercapture", cancel);
         if (session?.captured) {
           try {
@@ -131,26 +148,19 @@ export function useProjectStackDrag({
         setDragState(null);
       };
 
-      const move = (pointerEvent: PointerEvent) => {
+      const captureForMovement = (nextPoint: Point) => {
         const current = sessionRef.current;
-        if (!current || pointerEvent.pointerId !== current.pointerId) return;
-        const nextPoint = {
-          x: pointerEvent.clientX,
-          y: pointerEvent.clientY,
-        };
+        if (!current) return false;
         if (
-          current.phase === "pressed" &&
+          !current.captured &&
           !exceedsDragThreshold(current.origin, nextPoint)
         ) {
-          return;
+          return false;
         }
 
         if (!current.captured) {
           current.handle.setPointerCapture(current.pointerId);
           current.captured = true;
-          current.editorRect = editorRef.current
-            ? rectOf(editorRef.current)
-            : null;
           const source = current.handle.closest(
             "[data-project-id], .kit-frontend-slot",
           );
@@ -160,12 +170,21 @@ export function useProjectStackDrag({
             ? dragHandleAnchor(sourceRect, rectOf(current.handle))
             : { x: 0, y: 0 };
         }
+        return true;
+      };
+
+      const processMovement = (nextPoint: Point, publish = true) => {
+        const current = sessionRef.current;
+        if (!current || !captureForMovement(nextPoint)) return;
+        current.editorRect = editorRef.current
+          ? rectOf(editorRef.current)
+          : null;
 
         const outside =
           !touchLayout &&
           current.editorRect !== null &&
           isOutsideEditor(nextPoint, current.editorRect);
-        let phase: ProjectStackDragState["phase"] = outside
+        const phase: ProjectStackDragState["phase"] = outside
           ? "remove"
           : current.reorderable
             ? "reorder"
@@ -179,7 +198,7 @@ export function useProjectStackDrag({
             ) ?? [],
           ).map((row, index) => ({ index, rect: rectOf(row) }));
           targetIndex = stackTargetIndex(
-            pointerEvent.clientY,
+            nextPoint.y,
             rows,
             current.sourceIndex,
           );
@@ -192,21 +211,51 @@ export function useProjectStackDrag({
           targetIndex,
         };
         sessionRef.current = next;
-        setDragState(next);
+        if (publish) setDragState(next);
+      };
+
+      const scheduleMovement = () => {
+        if (!sessionRef.current?.captured || frame !== null) return;
+        frame = window.requestAnimationFrame(() => {
+          frame = null;
+          processMovement(latestPoint);
+        });
+      };
+
+      const move = (pointerEvent: PointerEvent) => {
+        const current = sessionRef.current;
+        if (!current || pointerEvent.pointerId !== current.pointerId) return;
+        latestPoint = { x: pointerEvent.clientX, y: pointerEvent.clientY };
+        // Capture synchronously after the threshold so the browser keeps routing
+        // the gesture to the handle, even before the next rendering frame.
+        if (captureForMovement(latestPoint)) scheduleMovement();
       };
 
       const finish = (pointerEvent: PointerEvent) => {
+        if (pointerEvent.pointerId !== sessionRef.current?.pointerId) return;
+        if (frame !== null) window.cancelAnimationFrame(frame);
+        frame = null;
+        // Pointerup can arrive before rAF, or at a newer position than the last
+        // move. Resolve its coordinates before committing, without rendering a
+        // ghost that is about to be removed.
+        if (sessionRef.current?.captured) {
+          processMovement(
+            { x: pointerEvent.clientX, y: pointerEvent.clientY },
+            false,
+          );
+        }
         const current = sessionRef.current;
-        if (!current || pointerEvent.pointerId !== current.pointerId) return;
+        if (!current) return;
         if (current.phase === "remove") {
-          onRemove(current.projectId);
+          callbacksRef.current.onRemove(current.projectId);
         } else if (current.phase === "reorder") {
           const reordered = reorderProject(
             projectIds,
             current.sourceIndex,
             current.targetIndex,
           );
-          if (reordered !== projectIds) onReorder([...reordered]);
+          if (reordered !== projectIds)
+            callbacksRef.current.onReorder([...reordered]);
         }
         cleanup();
       };
@@ -220,9 +269,14 @@ export function useProjectStackDrag({
       window.addEventListener("pointerup", finish);
       window.addEventListener("pointercancel", cancel);
       window.addEventListener("keydown", keydown);
+      window.addEventListener("scroll", scheduleMovement, {
+        capture: true,
+        passive: true,
+      });
+      window.addEventListener("resize", scheduleMovement);
       event.currentTarget.addEventListener("lostpointercapture", cancel);
     },
-    [editorRef, onRemove, onReorder, projectIds, stackRef, touchLayout],
+    [editorRef, projectIds, stackRef, touchLayout],
   );
 
   useEffect(() => () => cleanupRef.current(), []);

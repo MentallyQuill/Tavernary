@@ -198,10 +198,16 @@ export function KitBuilderPanel({
         window.innerHeight,
         workspace.getBoundingClientRect().top,
       );
-      workspace.style.setProperty(
-        "--kit-builder-visible-height",
-        `${height}px`,
-      );
+      const visibleHeight = `${height}px`;
+      if (
+        workspace.style.getPropertyValue("--kit-builder-visible-height") !==
+        visibleHeight
+      ) {
+        workspace.style.setProperty(
+          "--kit-builder-visible-height",
+          visibleHeight,
+        );
+      }
     };
     const scheduleUpdate = () => {
       if (!frame) {

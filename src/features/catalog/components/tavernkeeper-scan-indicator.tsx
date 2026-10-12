@@ -5,10 +5,8 @@ import Link from "next/link";
 import {
   useCallback,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
-  type CSSProperties,
   type FocusEvent as ReactFocusEvent,
   type KeyboardEvent as ReactKeyboardEvent,
   type PointerEvent as ReactPointerEvent,
@@ -17,6 +15,11 @@ import {
 import { TavernKeeperScanIcon } from "@/components/icons/tavernkeeper-scan-icon";
 import { TavernKeeperFreshnessClockIcon } from "@/components/icons/tavernkeeper-freshness-clock-icon";
 import type { TavernKeeperCardStatus } from "@/features/catalog/tavernkeeper-status";
+import {
+  isPositionAnchorHidden,
+  useFramePositioning,
+  usePositionState,
+} from "@/hooks/use-frame-positioning";
 import { TavernKeeperHistoryStrip } from "./tavernkeeper-history-strip";
 
 const encodedCitationPattern = /\s*\uE200cite\uE202[^\uE201]*\uE201/giu;
@@ -169,7 +172,7 @@ export function TavernKeeperScanIndicator({
   status: TavernKeeperCardStatus;
 }) {
   const [open, setOpen] = useState(false);
-  const [position, setPosition] = useState<CSSProperties | null>(null);
+  const [position, setPosition] = usePositionState();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
@@ -191,7 +194,7 @@ export function TavernKeeperScanIndicator({
     clearCloseTimer();
     setOpen(false);
     setPosition(null);
-  }, [clearCloseTimer]);
+  }, [clearCloseTimer, setPosition]);
 
   const openPopover = useCallback(() => {
     clearCloseTimer();
@@ -279,13 +282,16 @@ export function TavernKeeperScanIndicator({
 
   const updatePosition = useCallback(() => {
     if (!triggerRef.current || !popoverRef.current) return;
-    setPosition(
-      popoverPosition(
-        triggerRef.current.getBoundingClientRect(),
-        popoverRef.current.getBoundingClientRect(),
-      ),
+    if (isPositionAnchorHidden(triggerRef.current)) {
+      closePopover();
+      return;
+    }
+    const next = popoverPosition(
+      triggerRef.current.getBoundingClientRect(),
+      popoverRef.current.getBoundingClientRect(),
     );
-  }, []);
+    setPosition(next);
+  }, [closePopover, setPosition]);
 
   useEffect(() => {
     return () => clearCloseTimer();
@@ -299,23 +305,7 @@ export function TavernKeeperScanIndicator({
     };
   }, [closePopover, open]);
 
-  useLayoutEffect(() => {
-    if (!open) return;
-    updatePosition();
-    window.addEventListener("resize", updatePosition);
-    window.addEventListener("scroll", updatePosition, {
-      capture: true,
-      passive: true,
-    });
-    window.visualViewport?.addEventListener("resize", updatePosition);
-    window.visualViewport?.addEventListener("scroll", updatePosition);
-    return () => {
-      window.removeEventListener("resize", updatePosition);
-      window.removeEventListener("scroll", updatePosition, true);
-      window.visualViewport?.removeEventListener("resize", updatePosition);
-      window.visualViewport?.removeEventListener("scroll", updatePosition);
-    };
-  }, [open, updatePosition]);
+  useFramePositioning(open, updatePosition, true);
 
   useEffect(() => {
     if (!open) return;
@@ -324,8 +314,8 @@ export function TavernKeeperScanIndicator({
     };
     const dismissOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        closePopover();
         triggerRef.current?.focus();
+        closePopover();
       }
     };
     const dismissOnFocus = (event: globalThis.FocusEvent) => {

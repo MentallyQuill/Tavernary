@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { memo, type CSSProperties } from "react";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
 import { Tooltip } from "@/components/ui/tooltip";
@@ -162,7 +162,7 @@ function missingSourceActivityStatus(
   };
 }
 
-export function ProjectCard({
+export const ProjectCard = memo(function ProjectCard({
   project,
   now,
   licensePlacement = "card",
@@ -480,4 +480,4 @@ export function ProjectCard({
       </div>
     </article>
   );
-}
+});

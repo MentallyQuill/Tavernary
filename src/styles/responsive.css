@@ -528,6 +528,7 @@
     display: flex;
   }
 
+  .kit-builder-panel,
   .filter-sheet {
     transition: transform var(--kit-motion-panel) var(--kit-motion-ease);
   }

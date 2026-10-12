@@ -104,6 +104,59 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+test("reuses the catalog lookup across card bindings and selection updates", () => {
+  const availableProjects = [...fixtureProjects];
+  const catalogMap = vi.spyOn(availableProjects, "map");
+  const { rerender } = render(
+    <Harness availableProjects={availableProjects} />,
+  );
+
+  expect(catalogMap).toHaveBeenCalledOnce();
+  fireEvent.click(screen.getByRole("button", { name: "Toggle memory" }));
+  expect(screen.getByLabelText("Selected count")).toHaveTextContent("1");
+  rerender(<Harness availableProjects={availableProjects} />);
+  expect(catalogMap).toHaveBeenCalledOnce();
+
+  const replacement = fixtureProjects.filter(({ id }) => id !== "preset");
+  const replacementMap = vi.spyOn(replacement, "map");
+  rerender(<Harness availableProjects={replacement} />);
+  expect(replacementMap).toHaveBeenCalledOnce();
+  expect(screen.getByRole("button", { name: "Toggle preset" })).toBeDisabled();
+});
+
+test("refreshes project kinds and callbacks when the catalog input changes", () => {
+  const fullDraft = [
+    "frontend-a",
+    ...Array.from({ length: 49 }, (_, index) => `draft-${index}`),
+  ];
+  const onStatus = vi.fn();
+  const { rerender } = render(<Harness draftProjectIds={fullDraft} />);
+  expect(screen.getByRole("button", { name: "Toggle memory" })).toBeDisabled();
+
+  const replacement = fixtureProjects.map((project) =>
+    project.id === "memory"
+      ? { ...project, name: "Memory Frontend", kind: "frontend" as const }
+      : project,
+  );
+  rerender(
+    <Harness
+      availableProjects={replacement}
+      draftProjectIds={fullDraft}
+      onStatus={onStatus}
+    />,
+  );
+  const memory = screen.getByRole("button", { name: "Toggle memory" });
+  expect(memory).toBeEnabled();
+  fireEvent.click(memory);
+  expect(screen.getByLabelText("Selected Frontend")).toHaveTextContent(
+    "Memory Frontend",
+  );
+  expect(screen.getByLabelText("Replacement Frontend")).toHaveTextContent(
+    "Frontend A",
+  );
+  expect(onStatus).toHaveBeenCalledWith("Memory Frontend selected");
+});
+
 test("uses one explicit activation path for select and deselect", async () => {
   const user = userEvent.setup();
   const onFirstSelection = vi.fn();

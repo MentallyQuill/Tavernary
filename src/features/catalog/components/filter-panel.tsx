@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { isWithinDays, releaseTimestamp } from "@/features/catalog/activity";
 import { useModalSurface } from "@/hooks/use-modal-surface";
 import frontendVocabulary from "../../../../data/vocabularies/frontends.json";
@@ -67,18 +67,6 @@ const completionOptions = completionFormatVocabulary.completion_formats.map(
   ({ id, label }) => ({ id, label }),
 );
 const modalBackground = [".site-header", ".mobile-category", ".catalog-layout"];
-
-function uniqueLabels(projects: CatalogProject[], property: "frontends") {
-  const values = new Map<string, string>();
-  for (const project of projects) {
-    for (const item of project[property]) {
-      values.set(item.id, item.label);
-    }
-  }
-  return [...values]
-    .map(([id, label]) => ({ id, label }))
-    .sort((left, right) => left.label.localeCompare(right.label));
-}
 
 function countFor(
   projects: CatalogProject[],
@@ -154,6 +142,33 @@ export function FilterPanel({
   motionPhase?: "entering" | "entered" | "exiting";
 }) {
   const [frontendSearch, setFrontendSearch] = useState("");
+  const facets = useMemo(
+    () => ({
+      frontends: withCounts(
+        orderFrontendOptionsByPopularity(frontendOptions, projects),
+        projects,
+        "frontends",
+        now,
+      ),
+      kinds: withCounts(kindOptions, projects, "kinds", now),
+      tags: Object.fromEntries(
+        tagVocabulary.map(({ id }) => [
+          id,
+          countFor(projects, "tags", id, now),
+        ]),
+      ),
+      modelFamilies: withCounts(modelOptions, projects, "modelFamilies", now),
+      completionFormats: withCounts(
+        completionOptions,
+        projects,
+        "completionFormats",
+        now,
+      ),
+      development: withCounts(developmentOptions, projects, "development", now),
+      licenses: withCounts(licenseOptions, projects, "licenses", now),
+    }),
+    [projects, tagVocabulary, now],
+  );
   const sheetRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const dismiss = onClose ?? (() => undefined);
@@ -178,12 +193,7 @@ export function FilterPanel({
       )}
       <FilterGroup
         title="Compatible frontend"
-        options={withCounts(
-          orderFrontendOptionsByPopularity(frontendOptions, projects),
-          projects,
-          "frontends",
-          now,
-        )}
+        options={facets.frontends}
         selected={query.frontends}
         onToggle={(value) => onToggle("frontends", value)}
         search={frontendSearch}
@@ -193,7 +203,7 @@ export function FilterPanel({
       />
       <FilterGroup
         title="Project kind"
-        options={withCounts(kindOptions, projects, "kinds", now)}
+        options={facets.kinds}
         selected={query.kinds}
         onToggle={(value) => onToggle("kinds", value)}
         kindColors
@@ -208,43 +218,33 @@ export function FilterPanel({
           selected={query.tags}
           onToggle={(value) => onToggle("tags", value)}
           previewLimit={TAG_FACET_PREVIEW_LIMIT}
-          counts={Object.fromEntries(
-            tagVocabulary.map(({ id }) => [
-              id,
-              countFor(projects, "tags", id, now),
-            ]),
-          )}
+          counts={facets.tags}
           searchLabel="Search goals and traits"
         />
       </section>
       <FilterGroup
         title="Model family"
-        options={withCounts(modelOptions, projects, "modelFamilies", now)}
+        options={facets.modelFamilies}
         selected={query.modelFamilies ?? []}
         onToggle={(value) => onToggle("modelFamilies", value)}
         presentation="chips"
       />
       <FilterGroup
         title="Completion format"
-        options={withCounts(
-          completionOptions,
-          projects,
-          "completionFormats",
-          now,
-        )}
+        options={facets.completionFormats}
         selected={query.completionFormats ?? []}
         onToggle={(value) => onToggle("completionFormats", value)}
         presentation="chips"
       />
       <FilterGroup
         title="Development"
-        options={withCounts(developmentOptions, projects, "development", now)}
+        options={facets.development}
         selected={query.development}
         onToggle={(value) => onToggle("development", value)}
       />
       <FilterGroup
         title="License"
-        options={withCounts(licenseOptions, projects, "licenses", now)}
+        options={facets.licenses}
         selected={query.licenses}
         onToggle={(value) => onToggle("licenses", value)}
       />

@@ -124,6 +124,86 @@ describe("project card", () => {
     });
   });
 
+  test("keeps card facts stable while selection controls and search evidence update", () => {
+    let summaryReads = 0;
+    const stableProject = project("memo-card");
+    Object.defineProperty(stableProject, "summary", {
+      get: () => {
+        summaryReads += 1;
+        return "Stable summary";
+      },
+    });
+    const onActivate = vi.fn();
+    const bindings = (state: ProjectSelectionBindings["state"]) => ({
+      state,
+      disabled: false,
+      disabledReason: null,
+      onActivate,
+    });
+    const { rerender, container } = render(
+      <ProjectGrid
+        projects={[stableProject]}
+        now="2026-07-24T00:00:00Z"
+        selection={{ bindingsFor: () => bindings("available") }}
+      />,
+    );
+    const initialSummaryReads = summaryReads;
+    expect(initialSummaryReads).toBeGreaterThan(0);
+
+    rerender(
+      <ProjectGrid
+        projects={[stableProject]}
+        now="2026-07-24T00:00:00Z"
+        selection={{ bindingsFor: () => bindings("selected") }}
+      />,
+    );
+    expect(container.querySelector(".project-card-shell")).toHaveClass(
+      "selected",
+    );
+    expect(summaryReads).toBe(initialSummaryReads);
+
+    rerender(
+      <ProjectGrid
+        projects={[stableProject]}
+        now="2026-07-24T00:00:00Z"
+        selection={{ bindingsFor: () => bindings("in-kit") }}
+        searchEvidenceById={
+          new Map([
+            [
+              stableProject.id,
+              [
+                {
+                  field: "maintainers",
+                  value: "MentallyQuill",
+                  kind: "exact",
+                  queryTerm: "mentallyquill",
+                  matchedTerm: "mentallyquill",
+                },
+              ],
+            ],
+          ])
+        }
+      />,
+    );
+    expect(screen.getByText("In Kit")).toBeVisible();
+    expect(
+      screen.getByRole("link", { name: "memo-card" }),
+    ).toHaveAccessibleDescription(/Matched maintainer: MentallyQuill/u);
+    fireEvent.click(screen.getByRole("button", { name: /Remove memo-card/u }));
+    expect(onActivate).toHaveBeenCalledOnce();
+
+    rerender(
+      <ProjectGrid
+        projects={[{ ...stableProject, name: "Updated project" }]}
+        now="2026-07-30T00:00:00Z"
+        selection={{ bindingsFor: () => bindings("available") }}
+      />,
+    );
+    expect(screen.getByRole("link", { name: "Updated project" })).toBeVisible();
+    expect(screen.getByText("10d ago")).toBeVisible();
+    expect(screen.queryByText(/Matched maintainer/u)).not.toBeInTheDocument();
+  });
+
   test("renders only useful search evidence visually and accessibly", () => {
     const evidence = [
       {

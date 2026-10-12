@@ -499,6 +499,66 @@ describe("Kit Builder", () => {
     expect(availableBuilderHeight(900, -80)).toBe(900);
   });
 
+  test("writes the desktop visible height only when geometry changes", () => {
+    vi.useFakeTimers();
+    const { rerender, unmount } = render(
+      <KitBuilderPanel
+        state={{ mode: "intro", collapsed: false }}
+        kit={null}
+        onCollapse={() => undefined}
+      />,
+    );
+    const panel = screen.getByRole("complementary", { name: "Kit Builder" });
+    const writeHeight = vi.spyOn(panel.style, "setProperty");
+    const viewportHeight = window.innerHeight;
+    expect(panel.style.getPropertyValue("--kit-builder-visible-height")).toBe(
+      `${viewportHeight}px`,
+    );
+
+    fireEvent.scroll(window);
+    fireEvent.scroll(window);
+    fireEvent.resize(window);
+    act(() => vi.advanceTimersByTime(20));
+    expect(writeHeight).not.toHaveBeenCalled();
+
+    const rect = panel.getBoundingClientRect();
+    vi.spyOn(panel, "getBoundingClientRect").mockReturnValue({
+      ...rect,
+      top: 116,
+    });
+    fireEvent.scroll(window);
+    fireEvent.scroll(window);
+    act(() => vi.advanceTimersByTime(20));
+    expect(writeHeight).toHaveBeenCalledTimes(1);
+    expect(panel.style.getPropertyValue("--kit-builder-visible-height")).toBe(
+      `${viewportHeight - 116}px`,
+    );
+
+    rerender(
+      <KitBuilderPanel
+        state={{ mode: "intro", collapsed: true }}
+        kit={null}
+        onCollapse={() => undefined}
+      />,
+    );
+    fireEvent.scroll(window);
+    act(() => vi.advanceTimersByTime(20));
+    expect(writeHeight).toHaveBeenCalledTimes(1);
+
+    vi.spyOn(window, "innerHeight", "get").mockReturnValue(900);
+    fireEvent.resize(window);
+    act(() => vi.advanceTimersByTime(20));
+    expect(writeHeight).toHaveBeenCalledTimes(2);
+    expect(panel.style.getPropertyValue("--kit-builder-visible-height")).toBe(
+      "784px",
+    );
+
+    fireEvent.scroll(window);
+    unmount();
+    act(() => vi.advanceTimersByTime(20));
+    expect(writeHeight).toHaveBeenCalledTimes(2);
+  });
+
   test("uses a horizontal draft pill only for collapsed phone builds", async () => {
     mockMatchMedia({ phone: true, touchLayout: true });
     const user = userEvent.setup();
