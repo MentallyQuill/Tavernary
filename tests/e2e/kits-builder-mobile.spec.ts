@@ -115,6 +115,9 @@ test("mobile Kits controls meet the touch-target and overflow contract", async (
     await expectTouchTarget(page.getByRole("button", { name: "Create Kit" }));
     await expectTouchTarget(page.getByRole("button", { name: "Open filters" }));
     await page.getByRole("button", { name: "Create Kit" }).click();
+    const sheet = page.getByRole("dialog", { name: "Kit Builder" });
+    await expect(sheet).toHaveAttribute("data-motion-phase", "entered");
+    await expect(sheet).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 0)");
     await expectTouchTarget(
       page.getByRole("button", { name: "Close Kit Builder" }),
     );
