@@ -23,6 +23,14 @@ async function expectMobileTarget(locator: import("@playwright/test").Locator) {
   expect(box!.height, "mobile target height").toBeGreaterThanOrEqual(44);
 }
 
+async function expectPhoneBuilderSettled(
+  page: import("@playwright/test").Page,
+) {
+  const sheet = page.getByRole("dialog", { name: "Kit Builder" });
+  await expect(sheet).toHaveAttribute("data-motion-phase", "entered");
+  await expect(sheet).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 0)");
+}
+
 async function selectProject(
   page: import("@playwright/test").Page,
   projectName: string,
@@ -39,9 +47,7 @@ async function verifyFrontendDiscovery(
     await page.getByRole("button", { name: "Browse categories" }).click();
     await page.getByRole("button", { name: "Kits", exact: true }).click();
     await page.getByRole("button", { name: "Create Kit" }).click();
-    const sheet = page.getByRole("dialog", { name: "Kit Builder" });
-    await expect(sheet).toHaveAttribute("data-motion-phase", "entered");
-    await expect(sheet).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 0)");
+    await expectPhoneBuilderSettled(page);
   } else {
     await page.getByRole("button", { name: "Open Kit Builder" }).click();
     await page.getByRole("button", { name: "Create new Kit" }).click();
@@ -1623,6 +1629,7 @@ test("mobile 50-project builder keeps sticky controls usable", async ({
   await page.getByRole("button", { name: "Open Large Stack" }).click();
   await page.getByRole("button", { name: "Duplicate" }).click();
 
+  await expectPhoneBuilderSettled(page);
   const dialog = page.getByRole("dialog", { name: "Kit Builder" });
   const body = dialog.locator(".kit-builder-panel-body");
   const header = dialog.locator(".kit-builder-panel-header");
@@ -1676,6 +1683,7 @@ test("mobile Kit cards, filters, and inspection meet the touch contract", async 
   await filters.getByRole("button", { name: "Close Kit filters" }).click();
 
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();
+  await expectPhoneBuilderSettled(page);
   const dialog = page.getByRole("dialog", { name: "Kit Builder" });
   for (const action of ["Duplicate", "Edit", "Copy link"]) {
     await expectMobileTarget(dialog.getByRole("button", { name: action }));
@@ -1766,6 +1774,7 @@ test("complete mobile direct-manipulation workflow stays touch-safe", async ({
     })
     .click();
 
+  await expectPhoneBuilderSettled(page);
   const rows = page.locator(".kit-builder-row");
   const secondProject = (await rows.nth(1).locator("strong").textContent())!;
   const secondHandle = rows.nth(1).getByRole("button", {
