@@ -9,7 +9,7 @@ import {
 test("accepts the exact Graphite Teal palette", () => {
   expect(APPROVED_HEX).toContain("#0D1117");
   expect(APPROVED_HEX).toContain("#2DD4BF");
-  expect(APPROVED_HEX).toContain("#D62839");
+  expect(APPROVED_HEX).toContain("#B7A4EC");
   expect(APPROVED_HEX).toContain("#57C5A3");
   expect(APPROVED_HEX).toContain("#E18A24");
   expect(APPROVED_HEX).not.toContain("#07181D");
