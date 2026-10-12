@@ -1,8 +1,9 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, test } from "vitest";
 
 import { KitFilterPanel } from "@/features/kits/components/kit-filter-panel";
 import { DEFAULT_KIT_QUERY } from "@/features/kits/kit-query";
+import type { KitQuery } from "@/features/kits/kit-query";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import type { CatalogKit } from "@/features/kits/kit-types";
 import { catalogSearchFields } from "../helpers/catalog-search-fields";
@@ -96,6 +97,167 @@ const kit: CatalogKit = {
 };
 
 describe("KitFilterPanel", () => {
+  test.each([
+    { query: {}, search: "Routing", counts: [1, 1, 1, 1, 1, 1] },
+    {
+      query: { frontends: ["other"] },
+      search: "Routing",
+      counts: [1, 0, 0, 1, 0, 0],
+    },
+    {
+      query: { purposes: ["memory-retrieval"] },
+      search: "Routing",
+      counts: [0, 1, 0, 1, 0, 0],
+    },
+    {
+      query: { modelFamilies: ["gpt"] },
+      search: "Routing",
+      counts: [0, 0, 1, 1, 0, 0],
+    },
+    {
+      query: { includesProjectId: "other-project" },
+      search: "Routing",
+      counts: [0, 0, 0, 1, 1, 0],
+    },
+    {
+      query: { minProjects: 4, maxProjects: 4 },
+      search: "Routing",
+      counts: [0, 0, 0, 1, 0, 0],
+    },
+    {
+      query: { allComponentsAvailable: true },
+      search: "Routing",
+      counts: [1, 1, 1, 0, 1, 1],
+    },
+    { query: {}, search: "Routing + Other", counts: [2, 2, 1, 2, 2, 2] },
+    { query: {}, search: "Routin", counts: [0, 0, 0, 0, 0, 0] },
+  ])(
+    "retains contextual facet counts for $query and $search",
+    ({ query, search, counts }) => {
+      const otherProject = {
+        ...project,
+        id: "other-project",
+        name: "Other project",
+      };
+      const kits: CatalogKit[] = [
+        { ...kit, modelFamilies: [label("claude")] },
+        {
+          ...kit,
+          id: "flagged-kit",
+          frontends: [label("other")],
+          purposes: [label("memory-retrieval")],
+          modelFamilies: [label("gpt")],
+          flaggedProjectCount: 1,
+          components: [
+            ...kit.components.filter(
+              ({ projectId }) => projectId !== project.id,
+            ),
+            {
+              ...kit.components[1],
+              projectId: otherProject.id,
+            },
+            kit.components[0],
+          ],
+        },
+        {
+          ...kit,
+          id: "other-search",
+          search: catalogSearchFields("Other"),
+          modelFamilies: [label("gpt")],
+        },
+      ];
+      render(
+        <KitFilterPanel
+          projects={[project, otherProject]}
+          kits={kits}
+          query={{ ...DEFAULT_KIT_QUERY, ...query } as KitQuery}
+          search={search}
+          onChange={() => undefined}
+          onClear={() => undefined}
+        />,
+      );
+      const names = [
+        "sillytavern",
+        "generation-reasoning",
+        "Claude",
+        "GPT",
+        project.name,
+        "All components available",
+      ];
+      names.forEach((name, index) => {
+        const role = index === 4 ? "radio" : "checkbox";
+        expect(
+          screen.getByRole(role, { name }).closest("label"),
+        ).toHaveTextContent(`${name}${counts[index]}`);
+      });
+    },
+  );
+
+  test("shares text matches across facet counts and local filter searches", () => {
+    const observedKit = { ...kit };
+    let searchReads = 0;
+    Object.defineProperty(observedKit, "search", {
+      get: () => {
+        searchReads += 1;
+        return kit.search;
+      },
+    });
+    const props = {
+      projects: [project],
+      kits: [observedKit],
+      search: "Routing",
+      onChange: () => undefined,
+      onClear: () => undefined,
+    };
+    const query = { ...DEFAULT_KIT_QUERY, frontends: ["unknown"] };
+    const { rerender } = render(<KitFilterPanel {...props} query={query} />);
+
+    expect(searchReads).toBe(1);
+    expect(
+      screen.getByRole("checkbox", { name: "sillytavern" }).closest("label"),
+    ).toHaveTextContent("sillytavern1");
+    expect(
+      screen.getByRole("radio", { name: project.name }).closest("label"),
+    ).toHaveTextContent(`${project.name}0`);
+    fireEvent.change(
+      screen.getByRole("searchbox", { name: "Search compatible frontends" }),
+      {
+        target: { value: "silly" },
+      },
+    );
+    expect(searchReads).toBe(1);
+    rerender(
+      <KitFilterPanel
+        {...props}
+        query={{ ...query, includesProjectId: "missing" }}
+      />,
+    );
+    expect(searchReads).toBe(1);
+    expect(
+      screen.getByRole("checkbox", { name: "sillytavern" }).closest("label"),
+    ).toHaveTextContent("sillytavern0");
+
+    rerender(
+      <KitFilterPanel {...props} query={DEFAULT_KIT_QUERY} search="Missing" />,
+    );
+    expect(searchReads).toBe(1);
+    expect(
+      screen.getByRole("radio", { name: project.name }).closest("label"),
+    ).toHaveTextContent(`${project.name}0`);
+    rerender(
+      <KitFilterPanel
+        {...props}
+        query={DEFAULT_KIT_QUERY}
+        kits={[
+          { ...kit, id: "replacement", search: catalogSearchFields("Other") },
+        ]}
+      />,
+    );
+    expect(
+      screen.getByRole("radio", { name: project.name }).closest("label"),
+    ).toHaveTextContent(`${project.name}0`);
+  });
+
   test("uses the shared desktop Filters title row", () => {
     render(
       <KitFilterPanel

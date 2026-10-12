@@ -14,41 +14,42 @@ export function planKitProjectBatch({
   draftProjectIds,
   selectedProjectIds,
   projects,
+  projectsById,
   limit = 50,
 }: {
   draftProjectIds: string[];
   selectedProjectIds: string[];
   projects: ProjectIdentity[];
+  projectsById?: ReadonlyMap<string, ProjectIdentity>;
   limit?: number;
 }): KitBatchPlan {
-  const kindById = new Map(
-    projects.map((project) => [project.id, project.kind]),
-  );
+  const lookup =
+    projectsById ?? new Map(projects.map((project) => [project.id, project]));
   const currentFrontendId =
-    draftProjectIds.find((id) => kindById.get(id) === "frontend") ?? null;
+    draftProjectIds.find((id) => lookup.get(id)?.kind === "frontend") ?? null;
   let selectedFrontendId: string | null = null;
   for (let index = selectedProjectIds.length - 1; index >= 0; index -= 1) {
     const projectId = selectedProjectIds[index];
-    if (kindById.get(projectId) === "frontend") {
+    if (lookup.get(projectId)?.kind === "frontend") {
       selectedFrontendId = projectId;
       break;
     }
   }
   const frontendId = selectedFrontendId ?? currentFrontendId;
   const stackProjectIds = draftProjectIds.filter(
-    (id) => kindById.get(id) !== "frontend",
+    (id) => lookup.get(id)?.kind !== "frontend",
   );
   const addedProjectIds: string[] = [];
   const skippedProjectIds: string[] = [];
   let limitReached = false;
 
   for (const projectId of selectedProjectIds) {
-    if (!kindById.has(projectId)) {
+    if (!lookup.has(projectId)) {
       skippedProjectIds.push(projectId);
       continue;
     }
     if (
-      kindById.get(projectId) === "frontend" &&
+      lookup.get(projectId)?.kind === "frontend" &&
       projectId !== selectedFrontendId
     ) {
       skippedProjectIds.push(projectId);

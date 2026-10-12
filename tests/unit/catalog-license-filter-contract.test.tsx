@@ -83,6 +83,71 @@ describe("catalog license filter contract", () => {
     cleanup();
   });
 
+  test("reuses facet facts during local search and refreshes them for a new catalog", () => {
+    const stableProject = project("cached-facets");
+    const frontends = stableProject.frontends;
+    let frontendReads = 0;
+    Object.defineProperty(stableProject, "frontends", {
+      get: () => {
+        frontendReads += 1;
+        return frontends;
+      },
+    });
+    const projects = [stableProject];
+    const tagVocabulary: [] = [];
+    const props = {
+      projects,
+      tagVocabulary,
+      now: "2026-07-23T00:00:00Z",
+      onToggle: () => undefined,
+      onClear: () => undefined,
+    };
+    const { rerender } = render(
+      <FilterPanel {...props} query={DEFAULT_QUERY} />,
+    );
+    const initialReads = frontendReads;
+    expect(initialReads).toBeGreaterThan(0);
+    fireEvent.change(
+      screen.getByRole("searchbox", { name: "Search compatible frontends" }),
+      {
+        target: { value: "Silly" },
+      },
+    );
+    expect(frontendReads).toBe(initialReads);
+    rerender(
+      <FilterPanel
+        {...props}
+        query={{ ...DEFAULT_QUERY, kinds: ["extension"] }}
+      />,
+    );
+    expect(screen.getByRole("checkbox", { name: "Extension" })).toBeChecked();
+    expect(frontendReads).toBe(initialReads);
+
+    rerender(
+      <FilterPanel
+        {...props}
+        query={DEFAULT_QUERY}
+        projects={[
+          project("replacement", {
+            license: {
+              status: "missing",
+              label: "Unknown",
+              tooltip: "Missing",
+            },
+          }),
+        ]}
+      />,
+    );
+    expect(
+      screen.getByRole("checkbox", { name: "Open source" }).closest("label"),
+    ).toHaveTextContent("Open source0");
+    expect(
+      screen
+        .getByRole("checkbox", { name: "Missing license" })
+        .closest("label"),
+    ).toHaveTextContent("Missing license1");
+  });
+
   test("pending and missing license filters stay distinct in selection and facet counts", () => {
     const projects = [
       project("pending-license", {

@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { exactAllTermSearch } from "@tavernary/catalog-core/project-search";
 
 import { DualRange } from "@/components/ui/dual-range";
 import {
@@ -14,7 +15,7 @@ import { CATEGORY_OPTIONS } from "@/features/catalog/catalog-query";
 import { orderFrontendOptionsByPopularity } from "@/features/catalog/frontend-option-order";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import type { KitArrayFilter } from "@/features/kits/kit-selectors";
-import { countKitsForFilter, selectKits } from "@/features/kits/kit-selectors";
+import { selectKits } from "@/features/kits/kit-selectors";
 import type { KitQuery } from "@/features/kits/kit-query";
 import type { CatalogKit } from "@/features/kits/kit-types";
 import { useModalSurface } from "@/hooks/use-modal-surface";
@@ -56,13 +57,17 @@ function purposeOptions(projects: CatalogProject[], kits: CatalogKit[]) {
 function countedOptions(
   options: Array<{ id: string; label: string }>,
   kits: CatalogKit[],
-  query: KitQuery,
   group: KitArrayFilter,
-  search: string,
 ): FilterOption[] {
+  const counts = new Map<string, number>();
+  for (const kit of kits) {
+    for (const id of new Set((kit[group] ?? []).map(({ id }) => id))) {
+      counts.set(id, (counts.get(id) ?? 0) + 1);
+    }
+  }
   return options.map((option) => ({
     ...option,
-    count: countKitsForFilter(kits, query, group, option.id, search),
+    count: counts.get(option.id) ?? 0,
   }));
 }
 
@@ -90,17 +95,63 @@ export function KitFilterPanel({
   const [frontendSearch, setFrontendSearch] = useState("");
   const [purposeSearch, setPurposeSearch] = useState("");
   const [projectSearch, setProjectSearch] = useState("");
-  const includedProjectOptions = projects
-    .map((project) => ({
-      id: project.id,
-      label: project.name,
-      count: selectKits(
-        kits,
-        { ...query, includesProjectId: project.id },
-        search,
-      ).length,
-    }))
-    .sort((left, right) => left.label.localeCompare(right.label));
+  const options = useMemo(
+    () => ({
+      frontends: orderFrontendOptionsByPopularity(
+        frontendOptions(projects, kits),
+        projects,
+      ),
+      purposes: purposeOptions(projects, kits),
+      projects: projects
+        .map(({ id, name }) => ({ id, label: name }))
+        .sort((left, right) => left.label.localeCompare(right.label)),
+    }),
+    [projects, kits],
+  );
+  const searchDocuments = useMemo(
+    () => kits.map(({ id, search: fields }) => ({ id, ...fields })),
+    [kits],
+  );
+  // Facet counts retain the selectors' exact text matching semantics.
+  const searchResults = useMemo(
+    () => exactAllTermSearch(searchDocuments, search),
+    [searchDocuments, search],
+  );
+  const facets = useMemo(() => {
+    const candidates = (candidateQuery: KitQuery) =>
+      selectKits(kits, candidateQuery, search, searchResults);
+    const includedCounts = new Map<string, number>();
+    for (const kit of candidates({ ...query, includesProjectId: "" })) {
+      for (const id of new Set(
+        kit.components.map(({ projectId }) => projectId),
+      )) {
+        includedCounts.set(id, (includedCounts.get(id) ?? 0) + 1);
+      }
+    }
+    return {
+      frontends: countedOptions(
+        options.frontends,
+        candidates({ ...query, frontends: [] }),
+        "frontends",
+      ),
+      purposes: countedOptions(
+        options.purposes,
+        candidates({ ...query, purposes: [] }),
+        "purposes",
+      ),
+      modelFamilies: countedOptions(
+        modelFamilyVocabulary.model_families,
+        candidates({ ...query, modelFamilies: [] }),
+        "modelFamilies",
+      ),
+      projects: options.projects.map((option) => ({
+        ...option,
+        count: includedCounts.get(option.id) ?? 0,
+      })),
+      availableCount: candidates({ ...query, allComponentsAvailable: true })
+        .length,
+    };
+  }, [kits, options, query, search, searchResults]);
   const sheetRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const dismiss = onClose ?? (() => undefined);
@@ -120,12 +171,6 @@ export function KitFilterPanel({
         : [...current, value],
     });
   };
-  const availableCount = selectKits(
-    kits,
-    { ...query, allComponentsAvailable: true },
-    search,
-  ).length;
-
   const content = (
     <>
       {mobile ? (
@@ -140,16 +185,7 @@ export function KitFilterPanel({
       )}
       <FilterGroup
         title="Compatible frontend"
-        options={countedOptions(
-          orderFrontendOptionsByPopularity(
-            frontendOptions(projects, kits),
-            projects,
-          ),
-          kits,
-          query,
-          "frontends",
-          search,
-        )}
+        options={facets.frontends}
         selected={query.frontends}
         onToggle={(value) => updateArray("frontends", value)}
         search={frontendSearch}
@@ -159,13 +195,7 @@ export function KitFilterPanel({
       />
       <FilterGroup
         title="Purpose"
-        options={countedOptions(
-          purposeOptions(projects, kits),
-          kits,
-          query,
-          "purposes",
-          search,
-        )}
+        options={facets.purposes}
         selected={query.purposes}
         onToggle={(value) => updateArray("purposes", value)}
         search={purposeSearch}
@@ -175,20 +205,14 @@ export function KitFilterPanel({
       />
       <FilterGroup
         title="Model family"
-        options={countedOptions(
-          modelFamilyVocabulary.model_families,
-          kits,
-          query,
-          "modelFamilies",
-          search,
-        )}
+        options={facets.modelFamilies}
         selected={query.modelFamilies ?? []}
         onToggle={(value) => updateArray("modelFamilies", value)}
         presentation="chips"
       />
       <FilterGroup
         title="Includes project"
-        options={includedProjectOptions}
+        options={facets.projects}
         selected={query.includesProjectId ? [query.includesProjectId] : []}
         onToggle={(value) =>
           onChange({
@@ -228,7 +252,7 @@ export function KitFilterPanel({
             }
           />
           <span>All components available</span>
-          <b>{availableCount}</b>
+          <b>{facets.availableCount}</b>
         </label>
       </fieldset>
       <FilterLegal />

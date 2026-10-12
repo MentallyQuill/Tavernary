@@ -1,16 +1,13 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useId,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-} from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 import { SearchHelpIcon } from "@/components/icons/search-help-icon";
+import {
+  isPositionAnchorHidden,
+  useFramePositioning,
+  usePositionState,
+} from "@/hooks/use-frame-positioning";
 
 const VIEWPORT_MARGIN = 8;
 const POPOVER_GAP = 8;
@@ -50,7 +47,7 @@ function popoverPosition(trigger: DOMRect, popover: DOMRect) {
 
 export function SearchHelp() {
   const [open, setOpen] = useState(false);
-  const [position, setPosition] = useState<CSSProperties | null>(null);
+  const [position, setPosition] = usePositionState();
   const rootRef = useRef<HTMLSpanElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLElement>(null);
@@ -61,32 +58,22 @@ export function SearchHelp() {
   const closePopover = useCallback(() => {
     setOpen(false);
     setPosition(null);
-  }, []);
+  }, [setPosition]);
 
   const updatePosition = useCallback(() => {
     if (!triggerRef.current || !popoverRef.current) return;
-    setPosition(
-      popoverPosition(
-        triggerRef.current.getBoundingClientRect(),
-        popoverRef.current.getBoundingClientRect(),
-      ),
+    if (isPositionAnchorHidden(triggerRef.current)) {
+      closePopover();
+      return;
+    }
+    const next = popoverPosition(
+      triggerRef.current.getBoundingClientRect(),
+      popoverRef.current.getBoundingClientRect(),
     );
-  }, []);
+    setPosition(next);
+  }, [closePopover, setPosition]);
 
-  useLayoutEffect(() => {
-    if (!open) return;
-    updatePosition();
-    window.addEventListener("resize", updatePosition);
-    window.addEventListener("scroll", updatePosition, true);
-    window.visualViewport?.addEventListener("resize", updatePosition);
-    window.visualViewport?.addEventListener("scroll", updatePosition);
-    return () => {
-      window.removeEventListener("resize", updatePosition);
-      window.removeEventListener("scroll", updatePosition, true);
-      window.visualViewport?.removeEventListener("resize", updatePosition);
-      window.visualViewport?.removeEventListener("scroll", updatePosition);
-    };
-  }, [open, updatePosition]);
+  useFramePositioning(open, updatePosition, true);
 
   useEffect(() => {
     if (!open) return;

@@ -57,6 +57,9 @@ test("mobile Kits builder stays browse-first and retains its draft pill", async 
       name: "Open Kit Builder, 3 projects in draft",
     })
     .click();
+  const sheet = page.getByRole("dialog", { name: "Kit Builder" });
+  await expect(sheet).toHaveAttribute("data-motion-phase", "entered");
+  await expect(sheet).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 0)");
   const rows = page.locator(".kit-builder-row");
   const movedName = (await rows.nth(1).locator("strong").textContent())!;
   const handle = rows.nth(1).getByRole("button", {

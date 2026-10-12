@@ -16,6 +16,7 @@ import { KitBuilder as ProductionKitBuilder } from "@/features/kits/components/k
 import type { CatalogKit, KitDraft } from "@/features/kits/kit-types";
 import { useKitBuilder } from "@/features/kits/use-kit-builder";
 import { catalogSearchFields } from "../helpers/catalog-search-fields";
+import { animationFrames } from "../helpers/animation-frames";
 
 const originalMatchMedia = window.matchMedia;
 
@@ -1022,6 +1023,7 @@ describe("Kit builder controls", () => {
   });
 
   test("activates a stack drag only after four pixels of movement", () => {
+    const frames = animationFrames();
     const onUpdate = vi.fn();
     const setPointerCapture = vi.fn();
     Object.defineProperties(HTMLElement.prototype, {
@@ -1066,12 +1068,14 @@ describe("Kit builder controls", () => {
       clientX: 14,
       clientY: 10,
     });
+    frames.flush();
     expect(setPointerCapture).toHaveBeenCalledWith(7);
     expect(document.querySelector(".kit-drag-ghost")).not.toBeNull();
     expect(onUpdate).not.toHaveBeenCalled();
   });
 
   test("arms desktop drag-off removal outside the editor and commits on release", () => {
+    const frames = animationFrames();
     const onUpdate = vi.fn();
     Object.defineProperties(HTMLElement.prototype, {
       setPointerCapture: { configurable: true, value: vi.fn() },
@@ -1112,6 +1116,7 @@ describe("Kit builder controls", () => {
       clientX: 101,
       clientY: 50,
     });
+    frames.flush();
     expect(screen.getByText("Release to remove")).toBeVisible();
     expect(editor).toHaveAttribute("data-drag-intent", "remove");
 
@@ -1150,6 +1155,7 @@ describe("Kit builder controls", () => {
   });
 
   test("renders a source-sized drag ghost outside the editor", () => {
+    const frames = animationFrames();
     Object.defineProperties(HTMLElement.prototype, {
       setPointerCapture: { configurable: true, value: vi.fn() },
       releasePointerCapture: { configurable: true, value: vi.fn() },
@@ -1189,6 +1195,7 @@ describe("Kit builder controls", () => {
       clientX: 24,
       clientY: 30,
     });
+    frames.flush();
 
     expect(container.querySelector(".kit-drag-ghost")).toBeNull();
     const ghost = document.body.querySelector(".kit-drag-ghost") as HTMLElement;
@@ -1197,6 +1204,7 @@ describe("Kit builder controls", () => {
   });
 
   test("opens a card-sized physical gap at the reorder target", () => {
+    const frames = animationFrames();
     Object.defineProperties(HTMLElement.prototype, {
       setPointerCapture: { configurable: true, value: vi.fn() },
       releasePointerCapture: { configurable: true, value: vi.fn() },
@@ -1253,8 +1261,86 @@ describe("Kit builder controls", () => {
       clientX: 14,
       clientY: 80,
     });
+    frames.flush();
 
     expect(rows[0]).toHaveStyle({ transform: "translateY(47px)" });
     expect(rows[1]).toHaveStyle({ transform: "translateY(-47px)" });
+  });
+
+  test("keeps catalog-derived builder work stable during drag-only renders", () => {
+    const frames = animationFrames();
+    Object.defineProperties(HTMLElement.prototype, {
+      setPointerCapture: { configurable: true, value: vi.fn() },
+      releasePointerCapture: { configurable: true, value: vi.fn() },
+    });
+    const mapCatalog = vi.spyOn(projects, "map");
+    render(
+      <KitBuilder
+        draft={validDraft}
+        projects={projects}
+        originalProjectIds={[]}
+        onUpdate={() => undefined}
+        onSubmit={() => undefined}
+      />,
+    );
+    const initialMaps = mapCatalog.mock.calls.length;
+    const handle = screen.getByRole("button", {
+      name: "Drag memory to reorder or remove",
+    });
+    fireEvent.pointerDown(handle, { pointerId: 15, clientX: 10, clientY: 10 });
+    fireEvent.pointerMove(window, { pointerId: 15, clientX: 30, clientY: 30 });
+    frames.flush();
+    expect(document.querySelector(".kit-drag-ghost")).not.toBeNull();
+    expect(mapCatalog.mock.calls.length).toBe(initialMaps);
+  });
+
+  test("refreshes memoized builder layout and validation after catalog replacement", () => {
+    const onSubmit = vi.fn();
+    const props = {
+      draft: validDraft,
+      originalProjectIds: [],
+      onUpdate: () => undefined,
+      onSubmit,
+    };
+    const { rerender } = render(<KitBuilder {...props} projects={projects} />);
+    const replacement = projects.map((entry) =>
+      entry.id === "memory"
+        ? { ...entry, name: "New memory", kind: "frontend" as const }
+        : entry,
+    );
+    rerender(<KitBuilder {...props} projects={replacement} />);
+    expect(
+      screen.queryByRole("button", {
+        name: "Drag memory to reorder or remove",
+      }),
+    ).toBeNull();
+    fireEvent.submit(
+      screen
+        .getByRole("button", { name: "Review Kit request" })
+        .closest("form")!,
+    );
+    expect(
+      screen.getByText("A Kit requires exactly one Frontend."),
+    ).toBeVisible();
+    expect(onSubmit).not.toHaveBeenCalled();
+    rerender(
+      <KitBuilder
+        {...props}
+        projects={projects.map((entry) =>
+          entry.id === "memory" ? { ...entry, name: "New memory" } : entry,
+        )}
+      />,
+    );
+    expect(
+      screen.getByRole("button", {
+        name: "Drag New memory to reorder or remove",
+      }),
+    ).toBeVisible();
+    fireEvent.submit(
+      screen
+        .getByRole("button", { name: "Review Kit request" })
+        .closest("form")!,
+    );
+    expect(onSubmit).toHaveBeenCalledOnce();
   });
 });

@@ -97,6 +97,8 @@ test("mobile Kit surfaces remain visible and bounded through navigation", async 
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();
   const workspace = page.getByRole("dialog", { name: "Kit Builder" });
   await expect(workspace).toBeVisible();
+  await expect(workspace).toHaveAttribute("data-motion-phase", "entered");
+  await expect(workspace).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 0)");
   await expectWithinViewport(page, workspace);
   await expectNoHorizontalOverflow(page);
 });
@@ -305,6 +307,9 @@ test("Kit inspector Report link has button affordance", async ({ page }) => {
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();
 
   const panel = page.getByRole("complementary", { name: "Kit Builder" });
+  const frame = panel.locator(".kit-builder-panel-body-frame");
+  await expect(frame).toHaveCSS("opacity", "1");
+  await expect(frame).toHaveCSS("transform", "none");
   await panel.getByRole("link", { name: "Report Kit" }).hover();
   await expect(panel).toHaveScreenshot("kit-inspector-report-hover.png", {
     animations: "disabled",
@@ -318,6 +323,9 @@ test("Kit inspector withdrawal link has restrained danger affordance", async ({
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();
 
   const panel = page.getByRole("complementary", { name: "Kit Builder" });
+  const frame = panel.locator(".kit-builder-panel-body-frame");
+  await expect(frame).toHaveCSS("opacity", "1");
+  await expect(frame).toHaveCSS("transform", "none");
   await panel.getByRole("link", { name: "Request withdrawal" }).hover();
   await expect(panel).toHaveScreenshot("kit-inspector-withdrawal-hover.png", {
     animations: "disabled",
