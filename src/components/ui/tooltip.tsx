@@ -4,12 +4,17 @@ import { createPortal } from "react-dom";
 import {
   useCallback,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
   type CSSProperties,
   type ReactNode,
 } from "react";
+
+import {
+  isPositionAnchorHidden,
+  useFramePositioning,
+  usePositionState,
+} from "@/hooks/use-frame-positioning";
 
 const VIEWPORT_MARGIN = 8;
 const TOOLTIP_GAP = 8;
@@ -55,12 +60,12 @@ export function Tooltip({
   const triggerRef = useRef<HTMLSpanElement>(null);
   const tooltipRef = useRef<HTMLSpanElement>(null);
   const [open, setOpen] = useState(false);
-  const [position, setPosition] = useState<CSSProperties | null>(null);
+  const [position, setPosition] = usePositionState();
 
   const hide = useCallback(() => {
     setOpen(false);
     setPosition(null);
-  }, []);
+  }, [setPosition]);
 
   const show = useCallback(() => {
     if (window.matchMedia("(max-width: 760px)").matches) return;
@@ -82,24 +87,18 @@ export function Tooltip({
 
   const updatePosition = useCallback(() => {
     if (!triggerRef.current || !tooltipRef.current) return;
-    setPosition(
-      tooltipPosition(
-        triggerRef.current.getBoundingClientRect(),
-        tooltipRef.current.getBoundingClientRect(),
-      ),
+    if (isPositionAnchorHidden(triggerRef.current)) {
+      hide();
+      return;
+    }
+    const next = tooltipPosition(
+      triggerRef.current.getBoundingClientRect(),
+      tooltipRef.current.getBoundingClientRect(),
     );
-  }, []);
+    setPosition(next);
+  }, [hide, setPosition]);
 
-  useLayoutEffect(() => {
-    if (!open) return;
-    updatePosition();
-    window.addEventListener("resize", updatePosition);
-    window.addEventListener("scroll", updatePosition, true);
-    return () => {
-      window.removeEventListener("resize", updatePosition);
-      window.removeEventListener("scroll", updatePosition, true);
-    };
-  }, [open, updatePosition]);
+  useFramePositioning(open, updatePosition);
 
   useEffect(() => {
     if (!open) return;

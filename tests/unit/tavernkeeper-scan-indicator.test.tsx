@@ -17,6 +17,7 @@ import type {
   TavernKeeperCardStatus,
   TavernKeeperReportSummary,
 } from "@/features/catalog/tavernkeeper-status";
+import { animationFrames } from "../helpers/animation-frames";
 
 function scanReport(
   overrides: Partial<TavernKeeperReportSummary> = {},
@@ -450,6 +451,7 @@ describe("TavernKeeperScanIndicator", () => {
   });
 
   test("clamps the popover within the viewport margin and repositions on resize and scroll", () => {
+    const frames = animationFrames();
     let triggerRect = rectangle(0, 0, 18, 18);
     let panelRect = rectangle(0, 0, 390, 100);
     vi.spyOn(window, "innerWidth", "get").mockReturnValue(400);
@@ -476,10 +478,12 @@ describe("TavernKeeperScanIndicator", () => {
     panelRect = rectangle(0, 0, 200, 100);
     triggerRect = rectangle(200, 500, 20, 20);
     fireEvent.resize(window);
+    frames.flush();
     expect(panel).toHaveStyle({ left: "110px", top: "392px" });
 
     triggerRect = rectangle(300, 600, 20, 20);
     fireEvent.scroll(window);
+    frames.flush();
     expect(panel).toHaveStyle({ left: "192px", top: "492px" });
   });
 

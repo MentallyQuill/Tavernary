@@ -24,7 +24,7 @@
     "test:visual": "node scripts/run-playwright.mjs --project=chromium tests/visual",
     "test:scan-visual": "node scripts/run-playwright.mjs --scan-fixture --project=chromium tests/visual/catalog.visual.spec.ts --grep \"scan indicator\"",
     "build:test-kits": "node scripts/kits/build-test-export.mjs",
-    "test:kits-e2e": "node scripts/run-playwright.mjs --config playwright.kits.config.ts kits.spec.ts",
+    "test:kits-e2e": "node scripts/run-playwright.mjs --config playwright.kits.config.ts kits.spec.ts kit-builder-opening.spec.ts",
     "test:kits-visual": "node scripts/run-playwright.mjs --config playwright.kits.config.ts kits.visual.spec.ts",
     "palette:audit": "node scripts/audit-palette.mjs",
     "catalog:validate": "node scripts/catalog/validate.mjs",

@@ -39,6 +39,9 @@ async function verifyFrontendDiscovery(
     await page.getByRole("button", { name: "Browse categories" }).click();
     await page.getByRole("button", { name: "Kits", exact: true }).click();
     await page.getByRole("button", { name: "Create Kit" }).click();
+    const sheet = page.getByRole("dialog", { name: "Kit Builder" });
+    await expect(sheet).toHaveAttribute("data-motion-phase", "entered");
+    await expect(sheet).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 0)");
   } else {
     await page.getByRole("button", { name: "Open Kit Builder" }).click();
     await page.getByRole("button", { name: "Create new Kit" }).click();

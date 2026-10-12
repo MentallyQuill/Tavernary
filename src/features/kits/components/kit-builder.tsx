@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useId, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
@@ -48,12 +48,13 @@ export function KitBuilder({
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const editorRef = useRef<HTMLFormElement>(null);
   const stackRef = useRef<HTMLOListElement>(null);
-  const projectsById = new Map(
-    projects.map((project) => [project.id, project]),
+  const projectsById = useMemo(
+    () => new Map(projects.map((project) => [project.id, project])),
+    [projects],
   );
-  const { frontendId, stackProjectIds } = splitKitProjectIds(
-    draft.projectIds,
-    projects,
+  const { frontendId, stackProjectIds } = useMemo(
+    () => splitKitProjectIds(draft.projectIds, projects),
+    [draft.projectIds, projects],
   );
   const removeImmediately = (projectId: string) => {
     const removedStackIndex = stackProjectIds.indexOf(projectId);
@@ -107,10 +108,16 @@ export function KitBuilder({
       }),
     onRemove: (projectId) => removeImmediately(projectId),
   });
-  const validation = validateKitDraft(draft, projects);
-  const duplicateUnchanged =
-    originalProjectIds.length > 0 &&
-    kitSetKey(originalProjectIds) === kitSetKey(draft.projectIds);
+  const validation = useMemo(
+    () => validateKitDraft(draft, projects),
+    [draft, projects],
+  );
+  const duplicateUnchanged = useMemo(
+    () =>
+      originalProjectIds.length > 0 &&
+      kitSetKey(originalProjectIds) === kitSetKey(draft.projectIds),
+    [draft.projectIds, originalProjectIds],
+  );
   const errors = [
     ...validation.errors,
     ...(duplicateUnchanged

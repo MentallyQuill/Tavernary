@@ -93,6 +93,7 @@ export function useProjectBatchSelection({
         draftProjectIds,
         selectedProjectIds: candidate,
         projects,
+        projectsById,
       });
       if (!plan.addedProjectIds.includes(projectId)) {
         setLimitReached(plan.limitReached);
@@ -143,6 +144,7 @@ export function useProjectBatchSelection({
         draftProjectIds,
         selectedProjectIds: candidate,
         projects,
+        projectsById,
       });
       const disabled =
         !project ||

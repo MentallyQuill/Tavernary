@@ -6,7 +6,7 @@ import { expect, test } from "vitest";
 const root = resolve(import.meta.dirname, "../..");
 const read = (path: string) => readFileSync(resolve(root, path), "utf8");
 
-test("reveals a final-width desktop Kit Builder canvas during track expansion", () => {
+test("retains a final-width desktop Kit Builder canvas and fluid phone content", () => {
   const css = read("src/styles/catalog.css");
   const responsive = read("src/styles/responsive.css");
 
