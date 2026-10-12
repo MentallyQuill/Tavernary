@@ -30,6 +30,7 @@ const reasons = new Set([
   "operation-stalled",
   "deployment-unconfirmed",
   "checks-failed",
+  "failure-classified",
   "verified-recovery",
   "runtime-eol",
   "runtime-eol-soon",
@@ -167,13 +168,17 @@ export function assessAutomationHealth({
     );
   }
   for (const operation of operations) {
-    if (
-      !operation.automatic ||
-      operation.stage === "discovered" ||
-      operation.retry?.failure.kind === "permanent"
-    )
-      continue;
+    if (!operation.automatic || operation.stage === "discovered") continue;
     const subject = `operation:${operation.key}`;
+    if (
+      ["transient", "configuration", "permanent", "superseded"].includes(
+        operation.retry?.failure.kind,
+      )
+    )
+      result.push(
+        finding("unknown-failure", subject, false, "failure-classified"),
+      );
+    if (operation.retry?.failure.kind === "permanent") continue;
     if (
       ["project", "owner-request", "kit", "withdrawal"].includes(
         operation.identity.kind,

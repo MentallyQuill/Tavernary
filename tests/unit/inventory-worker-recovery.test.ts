@@ -1,6 +1,7 @@
 import { expect, test } from "vitest";
 import { recoverInventoryWorker } from "../../scripts/automation/inventory-worker.mjs";
 import { planAutomationWorker } from "../../scripts/automation/worker.mjs";
+import { reconcileAutomation } from "../../scripts/automation/reconcile.mjs";
 import type { WorkerDiagnosticRun } from "../../scripts/automation/worker-diagnostic.mjs";
 import {
   AUTOMATION_NOW,
@@ -430,5 +431,369 @@ test.each([
     );
     expect(operation.retry).toEqual(retry);
     expect(operation.nextEligibleAt).toBe(nextEligibleAt);
+  },
+);
+
+test("a saved provider retry survives a newer successful dispatch wrapper", () => {
+  const operation = operationFixture();
+  const retry = {
+    failure: {
+      kind: "transient" as const,
+      reasonCode: "provider-rate-limited",
+    },
+    transientAttempts: 2,
+    immediateAttempts: 0,
+  };
+  const nextEligibleAt = new Date(AUTOMATION_NOW + 15 * 60_000).toISOString();
+  const receipt = receiptFixture({
+    operation: { ...operation, workerRunId: 699, retry, nextEligibleAt },
+    updatedAt: new Date(AUTOMATION_NOW - 45 * 60_000).toISOString(),
+  });
+  const wrapper = writerRun(operation.key, {
+    id: 702,
+    path: ".github/workflows/automation-worker.yml",
+    display_title: `Automation ${operation.key}`,
+    status: "completed",
+    conclusion: "success",
+    created_at: new Date(AUTOMATION_NOW - 40 * 60_000).toISOString(),
+    updated_at: new Date(AUTOMATION_NOW - 39 * 60_000).toISOString(),
+  });
+
+  recoverInventoryWorker(
+    operation,
+    {
+      receipts: [receipt],
+      nowMs: AUTOMATION_NOW,
+      repository,
+      publisherActorId,
+      runs: [wrapper],
+    },
+    [wrapper],
+  );
+
+  expect(operation.retry).toEqual(retry);
+  expect(operation.nextEligibleAt).toBe(nextEligibleAt);
+});
+
+test("a successful wrapper without a result receives a bounded transient retry", () => {
+  const operation = operationFixture();
+  const wrapper = writerRun(operation.key, {
+    id: 702,
+    path: ".github/workflows/automation-worker.yml",
+    display_title: `Automation ${operation.key}`,
+    status: "completed",
+    conclusion: "success",
+    created_at: new Date(AUTOMATION_NOW - 40 * 60_000).toISOString(),
+    updated_at: new Date(AUTOMATION_NOW - 39 * 60_000).toISOString(),
+  });
+
+  recoverInventoryWorker(
+    operation,
+    {
+      receipts: [
+        receiptFixture({
+          operation: { ...operation, workerRunId: 702 },
+          updatedAt: new Date(AUTOMATION_NOW - 45 * 60_000).toISOString(),
+        }),
+      ],
+      nowMs: AUTOMATION_NOW,
+      repository,
+      publisherActorId,
+      runs: [wrapper],
+    },
+    [wrapper],
+  );
+
+  expect(operation.retry).toEqual({
+    failure: {
+      kind: "transient",
+      reasonCode: "workflow-result-unavailable",
+    },
+    transientAttempts: 0,
+    immediateAttempts: 0,
+  });
+  const eligibleAt = Date.parse(operation.nextEligibleAt!);
+  expect(eligibleAt).toBeGreaterThan(Date.parse(wrapper.updated_at!) + 300_000);
+  expect(eligibleAt).toBeLessThanOrEqual(
+    Date.parse(wrapper.updated_at!) + 86_400_000,
+  );
+});
+
+test("a new successful wrapper advances missing-result retry once", () => {
+  const operation = operationFixture();
+  const previousRetry = {
+    failure: {
+      kind: "transient" as const,
+      reasonCode: "workflow-result-unavailable",
+    },
+    transientAttempts: 0,
+    immediateAttempts: 0,
+  };
+  const dispatchedAt = AUTOMATION_NOW - 20 * 60_000;
+  const wrapper = writerRun(operation.key, {
+    id: 703,
+    path: ".github/workflows/automation-worker.yml",
+    display_title: `Automation ${operation.key}`,
+    status: "completed",
+    conclusion: "success",
+    created_at: new Date(dispatchedAt + 60_000).toISOString(),
+    updated_at: new Date(dispatchedAt + 2 * 60_000).toISOString(),
+  });
+  const receipt = receiptFixture({
+    operation: {
+      ...operation,
+      workerRunId: wrapper.id!,
+      retry: previousRetry,
+      nextEligibleAt: new Date(dispatchedAt + 15 * 60_000).toISOString(),
+    },
+    updatedAt: new Date(dispatchedAt).toISOString(),
+  });
+  const input = {
+    receipts: [receipt],
+    nowMs: AUTOMATION_NOW,
+    repository,
+    publisherActorId,
+    runs: [wrapper],
+  };
+
+  recoverInventoryWorker(operation, input, [wrapper]);
+
+  expect(operation.retry).toEqual({
+    ...previousRetry,
+    transientAttempts: 1,
+  });
+  expect(Date.parse(operation.nextEligibleAt!)).toBeGreaterThan(
+    AUTOMATION_NOW + 15 * 60_000,
+  );
+
+  const recoveredAgain = operationFixture();
+  recoverInventoryWorker(
+    recoveredAgain,
+    {
+      ...input,
+      receipts: [
+        receiptFixture({
+          operation: { ...operation },
+          updatedAt: new Date(AUTOMATION_NOW).toISOString(),
+        }),
+      ],
+      nowMs: Date.parse(operation.nextEligibleAt!) + 60_000,
+    },
+    [wrapper],
+  );
+  expect(recoveredAgain.retry).toEqual(operation.retry);
+  expect(recoveredAgain.nextEligibleAt).toBe(operation.nextEligibleAt);
+});
+
+test("a recent successful wrapper keeps a saved retry behind its grace lease", () => {
+  const operation = operationFixture();
+  const retry = {
+    failure: {
+      kind: "transient" as const,
+      reasonCode: "provider-rate-limited",
+    },
+    transientAttempts: 1,
+    immediateAttempts: 0,
+  };
+  const wrapper = writerRun(operation.key, {
+    id: 704,
+    path: ".github/workflows/automation-worker.yml",
+    display_title: `Automation ${operation.key}`,
+    status: "completed",
+    conclusion: "success",
+    created_at: new Date(AUTOMATION_NOW - 3 * 60_000).toISOString(),
+    updated_at: new Date(AUTOMATION_NOW - 2 * 60_000).toISOString(),
+  });
+  recoverInventoryWorker(
+    operation,
+    {
+      receipts: [
+        receiptFixture({
+          operation: {
+            ...operation,
+            retry,
+            nextEligibleAt: new Date(AUTOMATION_NOW - 60_000).toISOString(),
+          },
+          updatedAt: new Date(AUTOMATION_NOW - 4 * 60_000).toISOString(),
+        }),
+      ],
+      nowMs: AUTOMATION_NOW,
+      repository,
+      publisherActorId,
+      runs: [wrapper],
+    },
+    [wrapper],
+  );
+
+  expect(operation.retry).toEqual(retry);
+  expect(operation.workerRunId).toBe(704);
+  expect(Date.parse(operation.nextEligibleAt!)).toBeGreaterThan(AUTOMATION_NOW);
+  expect(planAutomationWorker(operation)).toEqual({ action: "wait" });
+});
+
+test("an expired dispatch lease without a visible result starts bounded transient recovery", () => {
+  const operation = operationFixture();
+  const dispatchedAt = AUTOMATION_NOW - 20 * 60_000;
+  const receipt = receiptFixture({
+    operation: {
+      ...operation,
+      nextEligibleAt: new Date(dispatchedAt + 15 * 60_000).toISOString(),
+    },
+    updatedAt: new Date(dispatchedAt).toISOString(),
+  });
+  recoverInventoryWorker(
+    operation,
+    {
+      receipts: [receipt],
+      nowMs: AUTOMATION_NOW,
+      repository,
+      publisherActorId,
+      runs: [],
+    },
+    [],
+  );
+  expect(operation.retry).toEqual({
+    failure: {
+      kind: "transient",
+      reasonCode: "workflow-result-unavailable",
+    },
+    transientAttempts: 0,
+    immediateAttempts: 0,
+  });
+  expect(Date.parse(operation.nextEligibleAt!)).toBeGreaterThan(AUTOMATION_NOW);
+  expect(Date.parse(operation.nextEligibleAt!)).toBeLessThanOrEqual(
+    AUTOMATION_NOW + 86_400_000,
+  );
+});
+
+test("lost dispatches without visible runs advance one bounded retry per expired lease", async () => {
+  const base = operationFixture();
+  const dispatchedAt = AUTOMATION_NOW - 20 * 60_000;
+  let receipt = receiptFixture({
+    operation: {
+      ...base,
+      nextEligibleAt: new Date(dispatchedAt + 15 * 60_000).toISOString(),
+    },
+    updatedAt: new Date(dispatchedAt).toISOString(),
+  });
+  let dispatches = 0;
+  const discover = (nowMs: number) => {
+    const operation = operationFixture();
+    recoverInventoryWorker(
+      operation,
+      {
+        receipts: [receipt],
+        nowMs,
+        repository,
+        publisherActorId,
+        runs: [],
+      },
+      [],
+    );
+    return operation;
+  };
+  const reconcileAt = async (nowMs: number) =>
+    reconcileAutomation({
+      nowMs,
+      inventory: async () => [discover(nowMs)],
+      receipts: [receipt],
+      persist: async (value) => {
+        receipt = value;
+      },
+      dispatch: async () => {
+        dispatches++;
+        return { workerRunId: null };
+      },
+    });
+
+  await reconcileAt(AUTOMATION_NOW);
+  const initialBackoff = receipt.operation.nextEligibleAt!;
+  expect(receipt.operation.retry).toMatchObject({
+    failure: { kind: "transient", reasonCode: "workflow-result-unavailable" },
+    transientAttempts: 0,
+    immediateAttempts: 0,
+  });
+  const firstDispatchAt = Date.parse(initialBackoff) + 1;
+  await reconcileAt(firstDispatchAt);
+  expect(dispatches).toBe(1);
+  const firstLeaseExpiry = Date.parse(receipt.operation.nextEligibleAt!);
+  expect(firstLeaseExpiry).toBe(firstDispatchAt + 15 * 60_000);
+
+  const firstLostAt = firstLeaseExpiry + 1;
+  await reconcileAt(firstLostAt);
+  expect(dispatches).toBe(1);
+  expect(receipt.operation.retry).toMatchObject({
+    failure: { kind: "transient", reasonCode: "workflow-result-unavailable" },
+    transientAttempts: 1,
+    immediateAttempts: 0,
+  });
+  expect(Date.parse(receipt.operation.nextEligibleAt!)).toBeGreaterThan(
+    firstLostAt,
+  );
+  const savedBackoff = receipt.operation.nextEligibleAt;
+  await reconcileAt(firstLostAt + 60_000);
+  expect(receipt.operation.retry?.transientAttempts).toBe(1);
+  expect(receipt.operation.nextEligibleAt).toBe(savedBackoff);
+  expect(dispatches).toBe(1);
+
+  const secondDispatchAt = Date.parse(savedBackoff!) + 1;
+  await reconcileAt(secondDispatchAt);
+  expect(dispatches).toBe(2);
+  const secondLostAt = Date.parse(receipt.operation.nextEligibleAt!) + 1;
+  await reconcileAt(secondLostAt);
+  expect(dispatches).toBe(2);
+  expect(receipt.operation.retry?.transientAttempts).toBe(2);
+  expect(receipt.operation.retry?.immediateAttempts).toBe(0);
+  expect(Date.parse(receipt.operation.nextEligibleAt!)).toBeGreaterThan(
+    secondLostAt,
+  );
+});
+
+test.each([
+  { lease: true, transientAttempts: 3 },
+  { lease: false, transientAttempts: 2 },
+])(
+  "a genuine unknown receipt keeps its failure authority without a visible run: %j",
+  ({ lease, transientAttempts }) => {
+    const operation = operationFixture();
+    const savedRetry = {
+      failure: {
+        kind: "unknown" as const,
+        reasonCode: "unclassified-failure" as const,
+      },
+      transientAttempts: 2,
+      immediateAttempts: 3,
+    };
+    const updatedAt = AUTOMATION_NOW - 20 * 60_000;
+    const deadline = new Date(
+      updatedAt + (lease ? 15 : 5) * 60_000,
+    ).toISOString();
+    recoverInventoryWorker(
+      operation,
+      {
+        receipts: [
+          receiptFixture({
+            operation: {
+              ...operation,
+              retry: savedRetry,
+              nextEligibleAt: deadline,
+            },
+            updatedAt: new Date(updatedAt).toISOString(),
+          }),
+        ],
+        nowMs: AUTOMATION_NOW,
+        repository,
+        publisherActorId,
+        runs: [],
+      },
+      [],
+    );
+    expect(operation.retry).toEqual({
+      ...savedRetry,
+      transientAttempts,
+    });
+    expect(operation.nextEligibleAt).toBe(
+      lease ? new Date(AUTOMATION_NOW + 86_400_000).toISOString() : deadline,
+    );
   },
 );

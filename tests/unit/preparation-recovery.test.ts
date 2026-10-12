@@ -88,7 +88,10 @@ test("a foreign preparation cannot release a stalled dispatch", () => {
   recoverInventoryWorker(input.context.operation, input.input, [
     input.dispatch,
   ]);
-  expect(input.context.operation.retry?.failure.kind).toBe("unknown");
+  expect(input.context.operation.retry?.failure).toEqual({
+    kind: "transient",
+    reasonCode: "workflow-result-unavailable",
+  });
 });
 
 test("a newer preparation can release a superseded artifact while the failed artifact stays ineligible", () => {

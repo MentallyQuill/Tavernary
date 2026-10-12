@@ -212,12 +212,14 @@ export function discoverCatalogOperations(input) {
     );
     if (previous?.status === "review-suggested") operation.stage = "validated";
     if (previous?.status === "review-unavailable") {
-      const failure = classifyAutomationFailure();
+      const failure = classifyAutomationFailure({
+        diagnosticCode: "policy-review-unavailable",
+      });
       const attempts = previous.retry?.attempts ?? 1;
       operation.retry = {
         failure,
         transientAttempts: Math.max(0, attempts - 1),
-        immediateAttempts: attempts,
+        immediateAttempts: 0,
       };
       const failedAt = Date.parse(
         previous.retry?.last_failure_at ?? previous.reviewed_at,
