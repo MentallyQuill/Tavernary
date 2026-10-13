@@ -567,7 +567,7 @@ export async function runModelWriterPreparation({
         operationKey,
         workflow,
         sourceSha: fresh.local.revision,
-        nowMs: fresh.nowMs,
+        nowMs: Date.now(),
       });
       return { status: "cache-dispatched", runId: run.runId };
     }
@@ -681,7 +681,7 @@ export async function runModelWriterPreparation({
           publisherActorId: initial.publisherActorId,
           operationKey,
           workflow,
-          nowMs: initial.nowMs,
+          nowMs: Date.now(),
           ...(request
             ? {
                 requestRunId: request.runId,
