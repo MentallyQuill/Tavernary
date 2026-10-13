@@ -1,6 +1,6 @@
 @media (min-width: 761px) and (max-width: 1050px) {
   .site-header {
-    grid-template-columns: 175px minmax(260px, 1fr) auto;
+    grid-template-columns: 175px minmax(0, 1fr) auto;
   }
 
   .catalog-layout {
@@ -60,10 +60,10 @@
     padding-inline: 8px;
   }
 
-  .site-search {
+  .site-search-controls {
     grid-area: search;
     grid-column: 1 / -1;
-    width: calc(100vw - 26px);
+    width: 100%;
   }
 
   .site-search > kbd {
