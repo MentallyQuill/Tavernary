@@ -1,3 +1,31 @@
+@media (max-width: 1299px) {
+  .site-header-with-companion {
+    grid-template-areas:
+      "brand search actions"
+      "companion companion companion";
+    grid-template-columns: 220px minmax(0, 1fr) auto;
+    row-gap: 10px;
+    padding-block: 10px;
+  }
+
+  .companion-callout-copy {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 12px;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 1050px) {
+  .site-header.site-header-with-companion {
+    grid-template-areas:
+      "brand actions"
+      "search search"
+      "companion companion";
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
 @media (min-width: 761px) and (max-width: 1050px) {
   .site-header {
     grid-template-columns: 175px minmax(0, 1fr) auto;
@@ -35,6 +63,19 @@
     padding: 11px 13px;
     border-bottom-color: var(--color-divider);
     background: var(--color-bg-header);
+  }
+
+  .site-header.site-header-with-companion {
+    grid-template-areas:
+      "brand actions"
+      "search search"
+      "companion companion";
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .companion-callout-copy {
+    display: grid;
+    gap: 3px;
   }
 
   .brand {
@@ -551,6 +592,13 @@
 }
 
 @media (max-width: 360px) {
+  .site-header.site-header-with-companion {
+    grid-template-areas:
+      "brand brand"
+      "actions actions"
+      "search search"
+      "companion companion";
+  }
   .site-header {
     grid-template-areas:
       "brand brand"

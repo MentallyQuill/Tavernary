@@ -18,7 +18,7 @@ export function ColorModeSwitch() {
     >
       <button
         aria-checked={enabled}
-        aria-label="Colorblind mode"
+        aria-label="Enhanced contrast"
         className="color-mode-switch"
         onClick={() => setMode(enabled ? "standard" : "accessible")}
         role="switch"
@@ -28,7 +28,7 @@ export function ColorModeSwitch() {
           <span className="color-mode-switch-thumb" />
         </span>
         <span aria-hidden="true" className="color-mode-switch-label">
-          CB
+          Enhanced contrast
         </span>
       </button>
     </Tooltip>
