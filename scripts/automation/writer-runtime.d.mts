@@ -160,16 +160,7 @@ export function synchronizeWriterCheckout(input: {
     },
   ) => Promise<void>;
 }): Promise<void>;
-export function downloadPreparedArtifact(
-  args: string[],
-  options?: {
-    run?: (
-      command: string,
-      args: string[],
-      options: { encoding: string; maxBuffer: number; timeout: number },
-    ) => Promise<Uint8Array>;
-  },
-): Promise<Uint8Array>;
+export { downloadPreparedArtifact } from "./prepared-artifact-download.mjs";
 export function runPreparedWriterPublication(input: {
   operationKey: string;
   runId: number;
