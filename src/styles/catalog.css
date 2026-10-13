@@ -214,9 +214,10 @@
 }
 
 .companion-callout-arrow {
+  display: block;
   flex: none;
-  font-size: 16px;
-  line-height: 20px;
+  width: 16px;
+  height: 16px;
 }
 
 .brand {

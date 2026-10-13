@@ -79,9 +79,18 @@ export function SiteHeader({
             Extension for SillyTavern and ST-compatible frontends.
           </span>
         </span>
-        <span aria-hidden="true" className="companion-callout-arrow">
-          ↗
-        </span>
+        <svg
+          aria-hidden="true"
+          className="companion-callout-arrow"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M7 17 17 7M7 7h10v10" />
+        </svg>
       </a>
       <nav className="header-actions" aria-label="Site actions">
         <a className="top-link about-link" href="./about/">
