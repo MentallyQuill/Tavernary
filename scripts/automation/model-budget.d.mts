@@ -3,6 +3,10 @@ export interface ModelPrice {
   inputUsdPerMillion: number;
   outputUsdPerMillion: number;
 }
+export const DEFAULT_MODEL_DAILY_TOKENS: number;
+export const MAX_MODEL_DAILY_TOKENS: number;
+export function validateModelDailyTokens(value: number): number;
+export function parseModelDailyTokens(value?: string): number;
 export interface ModelUsage {
   requests: number;
   tokens: number;

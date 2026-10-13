@@ -7,6 +7,7 @@ import {
   estimateRequestedTokens,
   bindModelBudgetTicket,
   createModelBudgetGuard,
+  validateModelUsageEvidence,
 } from "../../scripts/automation/model-budget.mjs";
 
 const nowMs = Date.parse("2026-10-08T12:00:00Z");
@@ -19,11 +20,117 @@ const request = {
 };
 const options = { nowMs };
 
+test("a configured daily allowance admits multiple bounded preparations", () => {
+  const first = reserveModelBudget(
+    createModelBudgetState(nowMs),
+    { ...request, requestedTokens: 195000 },
+    { nowMs, tokensPerDay: 2000000 },
+  );
+  if (!first.allowed) throw new Error("First preparation was refused");
+  const second = reserveModelBudget(
+    first.state,
+    { ...request, operationKey: "b".repeat(64), requestedTokens: 195000 },
+    { nowMs, tokensPerDay: 2000000 },
+  );
+  expect(second.allowed).toBe(true);
+  expect(second.state.days[0]).toMatchObject({ requests: 2, tokens: 390000 });
+  expect(second.state.months[0].unpricedTokens).toBe(390000);
+});
+
+test("unpriced reservations remain accounted across every UTC day of a full month", () => {
+  const start = Date.parse("2026-10-01T12:00:00Z");
+  let state = createModelBudgetState(start);
+  for (let day = 0; day < 31; day++) {
+    for (let index = 0; index < 10; index++) {
+      const decision = reserveModelBudget(
+        state,
+        {
+          ...request,
+          requestId: `request-${day}-${index}`,
+          requestedTokens: 200000,
+        },
+        { nowMs: start + day * 86400000, tokensPerDay: 2000000 },
+      );
+      if (!decision.allowed) throw new Error("Monthly reservation refused");
+      state = decision.state;
+    }
+  }
+  expect(validateModelBudgetState(state).months).toEqual([
+    { month: "2026-10", reservedMicrousd: 0, unpricedTokens: 62000000 },
+  ]);
+});
+
+test("the higher daily cap retains the per-ticket and usage token ceilings", () => {
+  expect(() =>
+    reserveModelBudget(
+      createModelBudgetState(nowMs),
+      { ...request, requestedTokens: 200001 },
+      { nowMs, tokensPerDay: 2000000 },
+    ),
+  ).toThrow("Model budget schema is invalid.");
+  expect(() =>
+    validateModelUsageEvidence([
+      { ticketId: key, usage: { requests: 1, tokens: 200001 } },
+    ]),
+  ).toThrow("Model usage evidence is invalid.");
+});
+
+test("reservations cannot exceed the configured daily ceiling", () => {
+  let state = createModelBudgetState(nowMs);
+  for (let index = 0; index < 10; index++) {
+    const decision = reserveModelBudget(
+      state,
+      { ...request, requestId: `request-${index}`, requestedTokens: 200000 },
+      { nowMs, tokensPerDay: 2000000 },
+    );
+    if (!decision.allowed) throw new Error("Reservation refused");
+    state = decision.state;
+  }
+  expect(
+    reserveModelBudget(
+      state,
+      { ...request, requestId: "request-10", requestedTokens: 1 },
+      { nowMs, tokensPerDay: 2000000 },
+    ),
+  ).toMatchObject({ allowed: false, reason: "daily-limit" });
+  expect(state.days[0]).toMatchObject({ requests: 10, tokens: 2000000 });
+});
+
+test("the higher daily cap preserves configured monthly USD and price checks", () => {
+  const options = { nowMs, tokensPerDay: 2000000, monthlyUsd: 0.4 };
+  const unpriced = { ...request, requestedTokens: 200000 };
+  expect(
+    reserveModelBudget(createModelBudgetState(nowMs), unpriced, options),
+  ).toMatchObject({ allowed: false, reason: "price-unavailable" });
+  const priced = {
+    ...unpriced,
+    price: {
+      model: request.model,
+      inputUsdPerMillion: 1,
+      outputUsdPerMillion: 2,
+    },
+  };
+  const first = reserveModelBudget(
+    createModelBudgetState(nowMs),
+    priced,
+    options,
+  );
+  if (!first.allowed) throw new Error("Priced reservation refused");
+  expect(
+    reserveModelBudget(
+      first.state,
+      { ...priced, operationKey: "b".repeat(64) },
+      options,
+    ),
+  ).toMatchObject({ allowed: false, reason: "monthly-limit" });
+});
+
 test("forty reserved requests exhaust the shared allowance without releasing unknown outcomes", () => {
+  const limits = { ...options, tokensPerDay: 2000000 };
   const filled = reserveModelBudget(
     createModelBudgetState(nowMs),
     { ...request, requestCount: 40 },
-    options,
+    limits,
   );
   expect(filled.allowed).toBe(true);
   if (!filled.allowed) throw new Error("Fixture reservation failed");
@@ -32,7 +139,7 @@ test("forty reserved requests exhaust the shared allowance without releasing unk
     reserveModelBudget(
       state,
       { ...request, operationKey: "b".repeat(64) },
-      options,
+      limits,
     ).allowed,
   ).toBe(false);
   expect(state.days[0].requests).toBe(40);

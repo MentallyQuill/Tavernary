@@ -131,6 +131,7 @@ export async function reserveModelPreparation({
   persist,
   dispatch,
   nowMs,
+  tokensPerDay,
   monthlyUsd,
 }) {
   if (
@@ -158,7 +159,7 @@ export async function reserveModelPreparation({
     const decision = reserveModelBudget(
       budget,
       { ...request, operationKey, requestId: `${requestId}:${index}` },
-      { nowMs, monthlyUsd },
+      { nowMs, tokensPerDay, monthlyUsd },
     );
     if (!decision.allowed)
       return { status: "waiting", reason: decision.reason };

@@ -29,6 +29,21 @@ function fixture() {
   };
   return { input, persist, getState: () => state };
 }
+test("configured daily allowance carries through atomic primary and repair reservations", async () => {
+  const effects = fixture();
+  effects.input.requests[0].requestedTokens = 180000;
+  effects.input.requests[1].requestedTokens = 15000;
+  const input = { ...effects.input, tokensPerDay: 2000000 };
+  expect((await reserveModelPreparation(input)).status).toBe("dispatched");
+  expect(
+    (await reserveModelPreparation({ ...input, requestId: "writer-801" }))
+      .status,
+  ).toBe("dispatched");
+  expect(effects.getState().budget.days[0]).toMatchObject({
+    requests: 8,
+    tokens: 390000,
+  });
+});
 test("primary, retries and repairs are atomically reserved before dispatch and bound to the resulting run", async () => {
   const effects = fixture();
   const result = await reserveModelPreparation(effects.input);

@@ -2,6 +2,24 @@ import { createHash } from "node:crypto";
 import { automationSchemaValidator } from "./operation.mjs";
 import schema from "../../data/schemas/automation-model-budget.schema.json" with { type: "json" };
 const validateSchema = automationSchemaValidator(schema);
+export const DEFAULT_MODEL_DAILY_TOKENS = 200000;
+export const MAX_MODEL_DAILY_TOKENS = 2000000;
+export function validateModelDailyTokens(value) {
+  if (!Number.isInteger(value) || value < 1 || value > MAX_MODEL_DAILY_TOKENS)
+    throw Object.assign(new Error("Model daily token limit is invalid."), {
+      code: "provider-configuration-invalid",
+    });
+  return value;
+}
+export function parseModelDailyTokens(value) {
+  return validateModelDailyTokens(
+    value === undefined || value === ""
+      ? DEFAULT_MODEL_DAILY_TOKENS
+      : typeof value === "string" && /^[1-9]\d*$/u.test(value)
+        ? Number(value)
+        : NaN,
+  );
+}
 export const MODEL_USAGE_SCHEMA = {
   type: "array",
   minItems: 1,
@@ -148,17 +166,15 @@ export function reserveModelBudget(state, request, options) {
   const {
     nowMs,
     requestsPerDay = 40,
-    tokensPerDay = 200000,
+    tokensPerDay = DEFAULT_MODEL_DAILY_TOKENS,
     monthlyUsd,
   } = options;
   const now = timestamp(nowMs);
+  validateModelDailyTokens(tokensPerDay);
   if (
     !Number.isInteger(requestsPerDay) ||
     requestsPerDay < 1 ||
     requestsPerDay > 40 ||
-    !Number.isInteger(tokensPerDay) ||
-    tokensPerDay < 1 ||
-    tokensPerDay > 200000 ||
     (monthlyUsd !== undefined &&
       (!Number.isFinite(monthlyUsd) || monthlyUsd < 0 || monthlyUsd > 1000000))
   )

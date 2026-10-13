@@ -408,14 +408,46 @@ digest before publishing the project and cache sidecar together. Advisory
 preparation follows the same ticket rules and emits only non-blocking review
 state. Manual transaction review inputs remain required.
 
-The global ceiling is forty requests and two hundred thousand conservatively
-requested tokens per UTC day, including repair allowance. The current primary
-reservation covers three attempts and up to 180,000 requested tokens; configured
+The shared allowance defaults to forty requests and 200,000 conservatively
+requested tokens per UTC day, including repair allowance. The optional repository
+variable `TAVERNARY_MODEL_DAILY_TOKENS` changes only the daily token allowance;
+it must be an integer from 1 through 2,000,000. An unset or empty variable keeps
+the 200,000-token default. Only the canonical writer receives this setting.
+Invalid values refuse model-requiring preparation before reservations or model
+dispatch and produce a sanitized configuration diagnostic; verified cached work
+and catalog facts remain publishable. Inventory health uses the configured token
+allowance when valid and its existing default when invalid.
+
+The current primary reservation covers three attempts and up to 180,000
+requested tokens; configured
 JSON repair reserves one further request and 15,000 tokens. Unused or unknown
-allowance stays charged, so this pessimistic envelope can limit optional
-metadata throughput to one operation per day. Required price accounting fails
-closed when a configured model has no matching price. Budget/configuration
-refusal saves a daily retry; transient provider failures use normal bounded
+allowance stays charged, including expired, cancelled, failed and settled
+reservations. No usage settlement refunds the reservation. With the default,
+this pessimistic envelope can limit optional metadata throughput to one
+operation per day. Each ticket and its usage evidence remain limited to
+200,000 tokens, and the daily request limit remains forty. Stored daily totals
+support at most 2,000,000 tokens; the unpriced monthly schema ceiling is
+62,000,000 tokens (31 maximum-sized days), rather than an additional spending
+allowance.
+
+After human review and merge of the allowance proposal, the owner can activate
+the proposed 2,000,000-token cap:
+
+```powershell
+gh variable set TAVERNARY_MODEL_DAILY_TOKENS --repo MentallyQuill/Tavernary --body 2000000
+```
+
+Seven preparations with 195,000-token envelopes plus a previously charged
+195,000-token preparation reserve 1,560,000 tokens and 32 requests. This fits
+the proposed cap and the unchanged request ceiling. Merging code alone keeps
+the default until the repository variable is set. Removing the variable
+restores the default without clearing earlier charges.
+
+The existing optional `TAVERNARY_MODEL_MONTHLY_USD` ceiling and
+`TAVERNARY_MODEL_PRICES` accounting still apply. Required price accounting fails
+closed when a configured model has no matching price or existing unpriced
+reservations prevent verified monthly accounting. Budget refusal saves a daily
+retry; transient provider failures use normal bounded
 backoff. Inspect sanitized failure receipts and the budget state before changing
 provider settings. Verified scan and catalog facts remain publishable without
 model calls.

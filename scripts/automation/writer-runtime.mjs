@@ -14,6 +14,8 @@ import {
   createModelBudgetState,
   validateModelBudgetState,
   settlePreparedModelUsage,
+  parseModelDailyTokens,
+  DEFAULT_MODEL_DAILY_TOKENS,
 } from "./model-budget.mjs";
 import {
   reserveModelPreparation,
@@ -569,6 +571,9 @@ export async function runModelWriterPreparation({
       });
       return { status: "cache-dispatched", runId: run.runId };
     }
+    const tokensPerDay = parseModelDailyTokens(
+      env.TAVERNARY_MODEL_DAILY_TOKENS,
+    );
     let prices;
     try {
       prices = env.TAVERNARY_MODEL_PRICES
@@ -648,6 +653,7 @@ export async function runModelWriterPreparation({
       workflow,
       requestId,
       requests,
+      tokensPerDay,
       monthlyUsd,
       nowMs: initial.nowMs,
       load: async () => budgetState(await load()),
@@ -1438,6 +1444,13 @@ export async function runAutomationWriterReconciliation({
       : 0;
   let restoreDrill;
   const healthInput = async (state) => {
+    let tokensPerDay;
+    try {
+      tokensPerDay = parseModelDailyTokens(env.TAVERNARY_MODEL_DAILY_TOKENS);
+    } catch {
+      // Invalid optional model configuration cannot block verified facts.
+      tokensPerDay = DEFAULT_MODEL_DAILY_TOKENS;
+    }
     if (state.local.runtimePolicy !== undefined) {
       try {
         const { loadRestoreDrillHealth } = await import("./restore-drill.mjs");
@@ -1456,7 +1469,7 @@ export async function runAutomationWriterReconciliation({
       // The separate read-only drill has no publication authority. Only native
       // completed restore/browser steps can recover its operational incident.
       findings: [
-        ...assessInventoryHealth(state),
+        ...assessInventoryHealth(state, { tokensPerDay }),
         ...assessAutomationHealth({
           nowMs: state.nowMs,
           restoreDrill,
