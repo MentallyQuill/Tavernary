@@ -189,10 +189,13 @@ test(
     );
 
     await page.setViewportSize({ width: 844, height: 390 });
-    const landscapeBox = await panel.boundingBox();
-    expect(landscapeBox).not.toBeNull();
-    expect(landscapeBox!.x + landscapeBox!.width).toBeLessThanOrEqual(845);
-    expect(landscapeBox!.y + landscapeBox!.height).toBeLessThanOrEqual(391);
+    // Resize positioning is asynchronous.
+    await expect(async () => {
+      const landscapeBox = await panel.boundingBox();
+      expect(landscapeBox).not.toBeNull();
+      expect(landscapeBox!.x + landscapeBox!.width).toBeLessThanOrEqual(845);
+      expect(landscapeBox!.y + landscapeBox!.height).toBeLessThanOrEqual(391);
+    }).toPass({ timeout: 5000 });
     await page.keyboard.press("Escape");
     await expect(trigger).toBeFocused();
   },

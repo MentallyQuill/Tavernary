@@ -19,11 +19,12 @@ beforeEach(() => {
   );
 });
 
-test("enables colorblind mode with its switch", async () => {
+test("enables enhanced contrast with its switch", async () => {
   const user = userEvent.setup();
   render(<ColorModeSwitch />);
-  const toggle = screen.getByRole("switch", { name: "Colorblind mode" });
+  const toggle = screen.getByRole("switch", { name: "Enhanced contrast" });
 
+  expect(toggle).toHaveTextContent("Enhanced contrast");
   expect(toggle).toHaveAttribute("aria-checked", "false");
   await user.click(toggle);
   expect(toggle).toHaveAttribute("aria-checked", "true");
@@ -33,10 +34,10 @@ test("enables colorblind mode with its switch", async () => {
   );
 });
 
-test("toggles colorblind mode with Space and Enter", async () => {
+test("toggles enhanced contrast with Space and Enter", async () => {
   const user = userEvent.setup();
   render(<ColorModeSwitch />);
-  const toggle = screen.getByRole("switch", { name: "Colorblind mode" });
+  const toggle = screen.getByRole("switch", { name: "Enhanced contrast" });
 
   await user.tab();
   expect(toggle).toHaveFocus();
@@ -44,6 +45,7 @@ test("toggles colorblind mode with Space and Enter", async () => {
   expect(toggle).toHaveAttribute("aria-checked", "true");
 
   await user.keyboard("{Enter}");
+  expect(toggle).toHaveTextContent("Enhanced contrast");
   expect(toggle).toHaveAttribute("aria-checked", "false");
   expect(document.documentElement).toHaveAttribute(
     "data-color-mode",

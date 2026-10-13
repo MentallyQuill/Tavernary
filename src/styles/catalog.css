@@ -148,6 +148,78 @@
   background: var(--color-bg-header);
 }
 
+.site-header-with-companion {
+  grid-template-areas: "brand search companion actions";
+  grid-template-columns: 220px minmax(320px, 1fr) 280px auto;
+  gap: 16px;
+}
+
+.site-header-with-companion > .brand {
+  grid-area: brand;
+}
+
+.site-header-with-companion > .site-search-controls {
+  grid-area: search;
+}
+
+.site-header-with-companion > .header-actions {
+  grid-area: actions;
+}
+
+.companion-callout {
+  display: flex;
+  grid-area: companion;
+  min-width: 0;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 4px;
+  padding: 6px 10px;
+  color: var(--color-text-primary);
+  background: var(--color-action-secondary-bg);
+  box-shadow:
+    inset 1px 1px 0 var(--color-border-default),
+    inset -1px -1px 0 var(--color-bg-canvas);
+  text-decoration: none;
+}
+
+.companion-callout:hover {
+  border-color: var(--color-border-hover);
+  background: var(--color-action-secondary-hover);
+}
+
+.companion-callout:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.companion-callout-copy {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.companion-callout-title {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 15px;
+}
+
+.companion-callout-description {
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  line-height: 15px;
+}
+
+.companion-callout-arrow {
+  display: block;
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
 .brand {
   display: inline-flex;
   align-items: center;
@@ -192,7 +264,7 @@
 .site-search-controls {
   display: grid;
   min-width: 0;
-  grid-template-columns: minmax(0, 1fr) 44px;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 8px;
 }
@@ -203,16 +275,16 @@
 
 .color-mode-switch {
   display: grid;
-  width: 44px;
+  width: auto;
   min-width: 44px;
   height: 44px;
-  grid-template-rows: 24px 10px;
+  grid-template-rows: 24px 14px;
   align-content: center;
   justify-items: center;
   gap: 2px;
   border: 0;
   border-radius: 4px;
-  padding: 0;
+  padding: 0 4px;
   color: var(--color-text-secondary);
   background: transparent;
   cursor: pointer;
@@ -250,9 +322,10 @@
 }
 
 .color-mode-switch-label {
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
-  line-height: 10px;
+  line-height: 14px;
+  white-space: nowrap;
 }
 
 .color-mode-switch[aria-checked="true"] .color-mode-switch-track {

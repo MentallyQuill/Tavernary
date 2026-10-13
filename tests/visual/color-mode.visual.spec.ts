@@ -18,7 +18,7 @@ for (const [name, width] of [
     await expect(header).toHaveScreenshot(`color-mode-${name}-standard.png`, {
       animations: "disabled",
     });
-    await page.getByRole("switch", { name: "Colorblind mode" }).click();
+    await page.getByRole("switch", { name: "Enhanced contrast" }).click();
     await expect(page.locator("html")).toHaveAttribute(
       "data-color-mode",
       "accessible",
