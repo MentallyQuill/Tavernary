@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "12aefd6d1133bb8b809fbdd5ff2366fe8f451446f3a59da239f70f1dcb91cce2",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-932215365:leandrojofre-sillytavern-mathcros",
+      "inputDigest": "480cc65812f5df898656e8ca8b01d94830954de7e7b458bd3aee028a9f80ae73",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-13T15:22:29.850Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-13T15:07:29.850Z",
+  "completedAt": null
+}
