@@ -378,7 +378,9 @@ export async function loadProducerBudgetGuard({
     await gh(["api", `repos/${input.repository}/actions/runs/${runId}`]),
   );
   if (run.id !== runId || !trustedRun(run, input)) throw fail();
-  for (let attempt = 0; attempt < 5; attempt++) {
+  // The writer revalidates full inventory before binding; allow its bounded read.
+  const bindingDeadline = nowMs() + 300_000;
+  for (let attempt = 0; attempt < 26; attempt++) {
     const state = validateModelBudgetState(
       json(
         await gh([
@@ -389,6 +391,7 @@ export async function loadProducerBudgetGuard({
         ]),
       ),
     );
+    if (nowMs() > bindingDeadline) throw fail();
     const tickets = ticketIds.map((id) =>
       state.tickets.find((ticket) => ticket.id === id),
     );
@@ -418,7 +421,9 @@ export async function loadProducerBudgetGuard({
         runAttempt: 1,
         nowMs,
       });
-    if (attempt < 4) await sleep(12000);
+    const remaining = bindingDeadline - nowMs();
+    if (attempt < 25 && remaining > 0) await sleep(Math.min(12_000, remaining));
+    else break;
   }
   throw fail();
 }
