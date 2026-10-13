@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
+import { ColorModeSwitch } from "@/features/accessibility/components/color-mode-switch";
 import { SearchHelp } from "@/features/search/components/search-help";
 
 export function SiteHeader({
@@ -36,22 +37,25 @@ export function SiteHeader({
           <span className="brand-tagline">Where AI roleplay tools gather</span>
         </span>
       </Link>
-      <div className="site-search" role="search">
-        <CategoryIcon name="search" />
-        <label className="visually-hidden" htmlFor="catalog-search">
-          Search projects
-        </label>
-        <input
-          id="catalog-search"
-          ref={searchRef}
-          type="search"
-          value={search}
-          onChange={(event) => onSearch(event.target.value)}
-          placeholder="Search projects or creators…"
-          aria-label="Search projects"
-        />
-        <kbd>/</kbd>
-        <SearchHelp />
+      <div className="site-search-controls">
+        <div className="site-search" role="search">
+          <CategoryIcon name="search" />
+          <label className="visually-hidden" htmlFor="catalog-search">
+            Search projects
+          </label>
+          <input
+            id="catalog-search"
+            ref={searchRef}
+            type="search"
+            value={search}
+            onChange={(event) => onSearch(event.target.value)}
+            placeholder="Search projects or creators…"
+            aria-label="Search projects"
+          />
+          <kbd>/</kbd>
+          <SearchHelp />
+        </div>
+        <ColorModeSwitch />
       </div>
       <nav className="header-actions" aria-label="Site actions">
         <a className="top-link about-link" href="./about/">

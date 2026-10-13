@@ -44,3 +44,17 @@ test("keeps site actions available without asking visitors for donations", () =>
   ).toBeInTheDocument();
   expect(actions.queryByRole("link", { name: /ko-fi|donat/i })).toBeNull();
 });
+
+test("places the colorblind mode switch immediately after search", () => {
+  render(
+    <SiteHeader
+      search=""
+      onSearch={() => undefined}
+      searchRef={createRef<HTMLInputElement>()}
+    />,
+  );
+
+  const search = screen.getByRole("search");
+  const toggle = screen.getByRole("switch", { name: "Colorblind mode" });
+  expect(search.nextElementSibling).toContainElement(toggle);
+});

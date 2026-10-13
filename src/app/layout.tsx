@@ -1,6 +1,9 @@
 import "@fontsource-variable/inter";
 import "./globals.css";
 
+import { COLOR_MODE_BOOTSTRAP } from "@/features/accessibility/color-mode";
+import { ColorModeSync } from "@/features/accessibility/components/color-mode-sync";
+
 const repositoryName = process.env.GITHUB_REPOSITORY?.split("/")[1] ?? "";
 const projectPage =
   process.env.GITHUB_ACTIONS === "true" &&
@@ -71,11 +74,20 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" style={{ backgroundColor: "#0D1117" }}>
+    <html
+      lang="en"
+      data-color-mode="standard"
+      suppressHydrationWarning
+      style={{ backgroundColor: "#0D1117" }}
+    >
       <head>
         <meta name="darkreader-lock" />
+        <script dangerouslySetInnerHTML={{ __html: COLOR_MODE_BOOTSTRAP }} />
       </head>
-      <body>{children}</body>
+      <body>
+        <ColorModeSync />
+        {children}
+      </body>
     </html>
   );
 }

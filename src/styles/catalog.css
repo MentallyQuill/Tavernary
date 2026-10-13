@@ -189,11 +189,93 @@
   white-space: nowrap;
 }
 
+.site-search-controls {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 8px;
+}
+
+.color-mode-tooltip {
+  display: inline-flex;
+}
+
+.color-mode-switch {
+  display: grid;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  grid-template-rows: 24px 10px;
+  align-content: center;
+  justify-items: center;
+  gap: 2px;
+  border: 0;
+  border-radius: 4px;
+  padding: 0;
+  color: var(--color-text-secondary);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+
+.color-mode-switch:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.color-mode-switch-track {
+  position: relative;
+  display: block;
+  width: 40px;
+  height: 24px;
+  border: 1px solid var(--color-control-border);
+  border-radius: 4px;
+  background: var(--color-control-bg);
+  box-shadow:
+    inset 1px 1px 0 var(--color-bg-canvas),
+    inset -1px -1px 0 var(--color-border-default);
+}
+
+.color-mode-switch-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 2px;
+  background: var(--color-text-secondary);
+  box-shadow: inset 0 1px 0 var(--color-text-primary);
+}
+
+.color-mode-switch-label {
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 10px;
+}
+
+.color-mode-switch[aria-checked="true"] .color-mode-switch-track {
+  border-color: var(--color-action-primary-bg);
+  background: var(--color-action-primary-bg);
+}
+
+.color-mode-switch[aria-checked="true"] .color-mode-switch-thumb {
+  border-color: var(--color-action-primary-text);
+  background: var(--color-action-primary-text);
+  transform: translateX(16px);
+}
+
+.color-mode-switch:hover .color-mode-switch-track {
+  border-color: var(--color-control-border-hover);
+}
+
 .site-search {
   position: relative;
   display: flex;
   align-items: center;
   height: 42px;
+  min-width: 0;
   gap: 10px;
   border: 1px solid var(--color-control-border);
   border-radius: 8px;
