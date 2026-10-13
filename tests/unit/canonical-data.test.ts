@@ -50,6 +50,86 @@ function fixture() {
     message: "chore(catalog): publish prepared refresh",
   };
 }
+
+test("canonical publication commits both generated catalogs above the per-record size limit", async () => {
+  const input = fixture();
+  const content = JSON.stringify({ projects: "x".repeat(12_000_000) });
+  const catalogs = [
+    "public/catalog/tavernary-catalog.json",
+    "public/catalog/tavernary-catalog-v8.json",
+  ].map((path) => ({
+    path,
+    type: "file" as const,
+    content,
+    bytes: Buffer.byteLength(content),
+    sha256: createHash("sha256").update(content).digest("hex"),
+    baseDigest: null,
+  }));
+  expect(
+    await commitCanonicalData({
+      ...input,
+      files: [...input.files, ...catalogs],
+    }),
+  ).toEqual({ sha: "e".repeat(40) });
+  expect(
+    input.requests.find((request) =>
+      request.args.includes("repos/Owner/Repo/git/trees"),
+    )?.body.tree,
+  ).toEqual([
+    {
+      path: input.files[0].path,
+      mode: "100644",
+      type: "blob",
+      sha: "c".repeat(40),
+    },
+    {
+      path: catalogs[0].path,
+      mode: "100644",
+      type: "blob",
+      sha: "c".repeat(40),
+    },
+    {
+      path: catalogs[1].path,
+      mode: "100644",
+      type: "blob",
+      sha: "c".repeat(40),
+    },
+  ]);
+});
+
+test.each(["record", "catalog", "batch"])(
+  "canonical publication rejects oversized valid JSON at its %s boundary before GitHub access",
+  async (variant) => {
+    const input = fixture();
+    const bytes =
+      variant === "record"
+        ? 8_388_609
+        : variant === "catalog"
+          ? 16_777_217
+          : 16_777_216;
+    const content = JSON.stringify({ payload: "x".repeat(bytes - 14) });
+    const file = {
+      ...input.files[0],
+      path:
+        variant === "record"
+          ? input.files[0].path
+          : "public/catalog/tavernary-catalog.json",
+      content,
+      bytes: Buffer.byteLength(content),
+      sha256: createHash("sha256").update(content).digest("hex"),
+    };
+    const files =
+      variant === "batch"
+        ? [
+            file,
+            { ...file, path: "public/catalog/tavernary-catalog-v8.json" },
+            ...input.files,
+          ]
+        : [file];
+    await expect(commitCanonicalData({ ...input, files })).rejects.toThrow();
+    expect(input.requests).toEqual([]);
+  },
+);
 test("canonical publication creates one parent-bound commit and never force-updates main", async () => {
   const input = fixture();
   expect(await commitCanonicalData(input)).toEqual({ sha: "e".repeat(40) });
@@ -230,4 +310,38 @@ test("canonical proof verifies large Contents API files through their pinned Git
         }),
   );
   expect(await verifyCanonicalData(proof)).toBe(false);
+});
+
+test("canonical proof verifies a generated catalog above eight MiB through wrapped base64", async () => {
+  const input = fixture();
+  const content = JSON.stringify({ projects: "x".repeat(12_000_000) });
+  input.files[0] = {
+    ...input.files[0],
+    path: "public/catalog/tavernary-catalog-v8.json",
+    content,
+    bytes: Buffer.byteLength(content),
+    sha256: createHash("sha256").update(content).digest("hex"),
+  };
+  const blobSha = "c".repeat(40);
+  input.gh.mockImplementation(async (args) => {
+    if (args[1]?.includes("/contents/"))
+      return JSON.stringify({ type: "file", encoding: "none", sha: blobSha });
+    if (args[1] !== `repos/Owner/Repo/git/blobs/${blobSha}`)
+      throw new Error("Unexpected proof request.");
+    return JSON.stringify({
+      sha: blobSha,
+      size: input.files[0].bytes,
+      encoding: "base64",
+      content: Buffer.from(content)
+        .toString("base64")
+        .replace(/.{60}/gu, "$&\r\n"),
+    });
+  });
+  expect(
+    await verifyCanonicalData({
+      ...input,
+      sha: "a".repeat(40),
+      mainSha: "a".repeat(40),
+    }),
+  ).toBe(true);
 });
