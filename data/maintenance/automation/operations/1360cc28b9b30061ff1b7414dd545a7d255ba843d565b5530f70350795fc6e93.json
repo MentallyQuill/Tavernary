@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1360cc28b9b30061ff1b7414dd545a7d255ba843d565b5530f70350795fc6e93",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1339877178:p08dev-sillytavern-chatmood",
+      "inputDigest": "82490a27060a7265df7ecbae0229f8133824be4b9471e80374f441f2c33ed239",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-13T15:22:29.850Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-13T15:07:29.850Z",
+  "completedAt": null
+}
