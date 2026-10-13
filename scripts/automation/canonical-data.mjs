@@ -2,6 +2,14 @@ import { createHash } from "node:crypto";
 import { githubFailureStatus } from "./github-inventory.mjs";
 
 const shaPattern = /^[a-f0-9]{40}$/u;
+function canonicalFileByteLimit(path) {
+  return [
+    "public/catalog/tavernary-catalog.json",
+    "public/catalog/tavernary-catalog-v8.json",
+  ].includes(path)
+    ? 16_777_216
+    : 8_388_608;
+}
 function validateContext(repository, sha) {
   if (
     !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(repository) ||
@@ -35,7 +43,7 @@ function validateFiles(files, allowEmpty = false) {
       file.type !== "file" ||
       typeof file.content !== "string" ||
       file.bytes < 1 ||
-      file.bytes > 8_388_608 ||
+      file.bytes > canonicalFileByteLimit(file.path) ||
       Buffer.byteLength(file.content) !== file.bytes ||
       createHash("sha256").update(file.content).digest("hex") !== file.sha256
     )
@@ -185,6 +193,9 @@ export async function verifyCanonicalData({
       return false;
   }
   for (const file of files) {
+    const encodedBytes = Math.ceil(file.bytes / 3) * 4;
+    // GitHub wraps blob base64 at 60 columns; allow CRLF as well as LF.
+    const encodedLimit = encodedBytes + Math.ceil(encodedBytes / 60) * 2;
     let blob = JSON.parse(
       await gh([
         "api",
@@ -204,7 +215,7 @@ export async function verifyCanonicalData({
     if (
       blob.encoding !== "base64" ||
       typeof blob.content !== "string" ||
-      blob.content.length > 11_535_000 ||
+      blob.content.length > encodedLimit ||
       Buffer.from(blob.content, "base64").byteLength !== file.bytes ||
       createHash("sha256")
         .update(Buffer.from(blob.content, "base64"))
