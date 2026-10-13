@@ -1,3 +1,4 @@
+import { isDeepStrictEqual } from "node:util";
 import {
   reserveModelBudget,
   bindModelBudgetTicket,
@@ -131,6 +132,8 @@ export async function reserveModelPreparation({
   persist,
   dispatch,
   nowMs,
+  now = Date.now,
+  sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
   tokensPerDay,
   monthlyUsd,
 }) {
@@ -200,20 +203,72 @@ export async function reserveModelPreparation({
     producer.workflow !== workflow
   )
     throw new Error("Model preparation producer is unconfirmed.");
-  state = await load();
-  if (!state.eligible) return { status: "superseded" };
-  budget = state.budget;
-  for (const ticket of tickets) {
-    const current = budget.tickets.find((value) => value.id === ticket.id);
+  const bindingDeadline = now() + 240_000;
+  const assertBindingDeadline = () => {
+    if (now() >= bindingDeadline)
+      throw Object.assign(
+        new Error("Model preparation binding deadline exceeded."),
+        {
+          code: "workflow-result-unavailable",
+        },
+      );
+  };
+  const retryBinding = async (error, attempt) => {
+    assertBindingDeadline();
+    if (attempt === 2) throw error;
+    await sleep(Math.min(2_000, bindingDeadline - now()));
+  };
+  // In-flight reads and commits finish normally; the deadline bounds new effects.
+  for (let attempt = 0; attempt < 3; attempt++) {
+    assertBindingDeadline();
+    try {
+      state = await load();
+    } catch (error) {
+      await retryBinding(error, attempt);
+      continue;
+    }
+    assertBindingDeadline();
+    if (!state.eligible) return { status: "superseded" };
+    budget = validateModelBudgetState(state.budget);
+    const currentTickets = tickets.map((ticket) => {
+      const current = budget.tickets.find((value) => value.id === ticket.id);
+      if (
+        !current ||
+        [
+          "id",
+          "operationKey",
+          "requestId",
+          "day",
+          "model",
+          "requestCount",
+          "requestedTokens",
+          "reservedMicrousd",
+          "createdAt",
+          "expiresAt",
+        ].some((field) => current[field] !== ticket[field]) ||
+        !isDeepStrictEqual(current.price, ticket.price)
+      )
+        throw new Error("Model preparation reservation changed.");
+      return current;
+    });
+    // Custody and settled-ticket refusals are authoritative, never retryable reads.
+    for (const ticket of currentTickets)
+      budget = bindModelBudgetTicket(budget, ticket.id, producer);
     if (
-      !current ||
-      current.model !== ticket.model ||
-      current.requestCount !== ticket.requestCount ||
-      current.requestedTokens !== ticket.requestedTokens
+      currentTickets.every(
+        (ticket) =>
+          ticket.producer?.runId === producer.runId &&
+          ticket.producer?.workflow === producer.workflow,
+      )
     )
-      throw new Error("Model preparation reservation changed.");
-    budget = bindModelBudgetTicket(budget, ticket.id, producer);
+      return { status: "dispatched", runId: producer.runId, ticketIds };
+    assertBindingDeadline();
+    try {
+      await persist({ ...state, budget });
+      return { status: "dispatched", runId: producer.runId, ticketIds };
+    } catch (error) {
+      // Reload and verify the same bindings before considering another CAS write.
+      await retryBinding(error, attempt);
+    }
   }
-  await persist({ ...state, budget });
-  return { status: "dispatched", runId: producer.runId, ticketIds };
 }

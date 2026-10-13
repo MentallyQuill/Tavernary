@@ -452,6 +452,15 @@ backoff. Inspect sanitized failure receipts and the budget state before changing
 provider settings. Verified scan and catalog facts remain publishable without
 model calls.
 
+After correcting budget configuration, a fresh maintainer-owned native generation
+request can retry an operation held by a `configuration/budget-exhausted` receipt.
+Its validated GitHub creation time must be strictly later than the current matching
+refusal receipt and must not be in the future. Existing retry history is retained;
+older, replayed and automatic requests keep their backoff. Every daily and monthly
+budget gate still applies, and all prior reservations remain charged. A new budget
+refusal records a newer receipt, preventing the same request from bypassing that
+refusal again. Other configuration failures retain their existing cooldown.
+
 ### Owner rollout and recovery
 
 The owner records a request on trusted main code. For example:

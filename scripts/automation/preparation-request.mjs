@@ -64,8 +64,22 @@ export function parseGenerationOwnerRequest(run, repository, publisherActorId) {
         run.conclusion === null)
   )
     return null;
+  const createdMs = Date.parse(run.created_at ?? "");
+  const createdAt =
+    typeof run.created_at === "string" &&
+    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/u.test(
+      run.created_at,
+    ) &&
+    Number.isFinite(createdMs) &&
+    [
+      new Date(createdMs).toISOString(),
+      new Date(createdMs).toISOString().replace(".000Z", "Z"),
+    ].includes(run.created_at)
+      ? new Date(createdMs).toISOString()
+      : undefined;
   return {
     runId: run.id,
+    ...(createdAt ? { createdAt } : {}),
     sourceSha: run.head_sha,
     issueNumber: Number(match[2]),
     kind,

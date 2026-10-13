@@ -4,6 +4,8 @@ export function persistPreparedFailure(input: {
   operationKey: string;
   error: unknown;
   phase?: "finalization";
+  generationRequest?: import("./preparation-request.mjs").GenerationOwnerRequest;
+  isRequestAncestor?: (ancestor: string, descendant: string) => boolean | null;
   load: () => Promise<AutomationInventoryState>;
   persist: (receipt: AutomationReceipt) => Promise<void>;
 }): Promise<{ persisted: boolean; incident: boolean }>;

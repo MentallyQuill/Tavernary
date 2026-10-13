@@ -28,6 +28,8 @@ export function reserveModelPreparation(input: {
     sourceSha: string;
   }) => Promise<{ runId: number; workflow: string }>;
   nowMs: number;
+  now?: () => number;
+  sleep?: (ms: number) => Promise<void>;
   tokensPerDay?: number;
   monthlyUsd?: number;
 }): Promise<

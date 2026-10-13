@@ -5,6 +5,7 @@ import {
 import { planAutomationRetry } from "./retry.mjs";
 import { githubFailureStatus } from "./github-inventory.mjs";
 import { validateAutomationReceipt } from "./receipts.mjs";
+import { generationRequestOperation } from "./preparation-request.mjs";
 
 export async function persistPreparedFailure({
   operationKey,
@@ -12,13 +13,32 @@ export async function persistPreparedFailure({
   persist,
   error,
   phase,
+  generationRequest,
+  isRequestAncestor,
 }) {
   if (!/^[a-f0-9]{64}$/u.test(operationKey ?? ""))
     throw new Error("Prepared failure key is invalid.");
   const state = await load();
-  const operation = state.operations.find(
+  let operation = state.operations.find(
     (operation) => operation.key === operationKey,
   );
+  if (generationRequest) {
+    if (
+      isRequestAncestor?.(generationRequest.sourceSha, state.local.revision) !==
+      true
+    )
+      return { persisted: false, incident: false };
+    const requested = generationRequestOperation(state, generationRequest);
+    if (!requested || requested.key !== operationKey)
+      return { persisted: false, incident: false };
+    if (
+      operation?.retry?.failure.kind === "configuration" &&
+      operation.retry.failure.reasonCode === "budget-exhausted" &&
+      requested.stage === operation.stage &&
+      requested.expectedSha === operation.expectedSha
+    )
+      operation = requested;
+  }
   if (
     !operation ||
     operation.retry?.failure.kind === "permanent" ||
