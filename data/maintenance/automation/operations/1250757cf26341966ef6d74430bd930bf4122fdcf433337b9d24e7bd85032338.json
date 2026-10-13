@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1250757cf26341966ef6d74430bd930bf4122fdcf433337b9d24e7bd85032338",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1216523143:ikarusv-cotautoclean",
+      "inputDigest": "5ef0217c3d4548ec81c592451951919fa5674efbd65056a43048e9bf83e6f54d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-13T15:22:29.850Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-13T15:07:29.850Z",
+  "completedAt": null
+}
