@@ -58,6 +58,76 @@ import {
 } from "../helpers/automation-fixtures";
 
 const nowMs = AUTOMATION_NOW;
+test("inventory health keeps the model allowance available below the configured daily token limit", async () => {
+  const { state } = await metadataMaintenanceFixture();
+  state.local.modelBudget = {
+    schema_version: 1,
+    updatedAt: new Date(state.nowMs).toISOString(),
+    days: [{ day: "2026-10-08", requests: 1, tokens: 200_000 }],
+    months: [],
+    tickets: [],
+  };
+
+  expect(
+    assessInventoryHealth(state, { tokensPerDay: 2_000_000 }).find(
+      (finding) => finding.code === "budget-exhausted",
+    ),
+  ).toMatchObject({ status: "recovered", reason: "verified-recovery" });
+});
+
+test("inventory health rejects a daily token limit above the supported allowance", async () => {
+  const { state } = await metadataMaintenanceFixture();
+
+  expect(() =>
+    assessInventoryHealth(state, { tokensPerDay: 2_000_001 }),
+  ).toThrow("Model daily token limit is invalid.");
+});
+
+test.each([
+  {
+    tokensPerDay: undefined,
+    requests: 1,
+    tokens: 200_000,
+    status: "active",
+  },
+  {
+    tokensPerDay: 2_000_000,
+    requests: 1,
+    tokens: 1_999_999,
+    status: "recovered",
+  },
+  {
+    tokensPerDay: 2_000_000,
+    requests: 1,
+    tokens: 2_000_000,
+    status: "active",
+  },
+  {
+    tokensPerDay: 2_000_000,
+    requests: 40,
+    tokens: 1,
+    status: "active",
+  },
+])(
+  "inventory health reports $status at daily use $requests requests and $tokens tokens (limit=$tokensPerDay)",
+  async ({ tokensPerDay, requests, tokens, status }) => {
+    const { state } = await metadataMaintenanceFixture();
+    state.local.modelBudget = {
+      schema_version: 1,
+      updatedAt: new Date(state.nowMs).toISOString(),
+      days: [{ day: "2026-10-08", requests, tokens }],
+      months: [],
+      tickets: [],
+    };
+
+    expect(
+      assessInventoryHealth(state, { tokensPerDay }).find(
+        (finding) => finding.code === "budget-exhausted",
+      ),
+    ).toMatchObject({ status });
+  },
+);
+
 test.each([false, true])(
   "the scheduled writer keeps bundle and terminal retention inside twenty operations (terminal=%s)",
   async (retireState) => {

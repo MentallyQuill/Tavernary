@@ -1,6 +1,10 @@
 import { createHash } from "node:crypto";
 import { AUTOMATION_FAILURE_REASON_CODES } from "./failure.mjs";
-import { validateModelBudgetState } from "./model-budget.mjs";
+import {
+  DEFAULT_MODEL_DAILY_TOKENS,
+  validateModelBudgetState,
+  validateModelDailyTokens,
+} from "./model-budget.mjs";
 import { assessModelProviderCircuit } from "./model-preparation.mjs";
 import {
   createEnrichmentReport,
@@ -274,7 +278,11 @@ export function assessAutomationHealth({
   return result;
 }
 
-export function assessInventoryHealth(state) {
+export function assessInventoryHealth(
+  state,
+  { tokensPerDay = DEFAULT_MODEL_DAILY_TOKENS } = {},
+) {
+  validateModelDailyTokens(tokensPerDay);
   const current = new Map(
     state.operations.map((operation) => [operation.key, operation]),
   );
@@ -492,7 +500,9 @@ export function assessInventoryHealth(state) {
       ? {
           budget: {
             exhausted:
-              Boolean(day && (day.requests >= 40 || day.tokens >= 200_000)) ||
+              Boolean(
+                day && (day.requests >= 40 || day.tokens >= tokensPerDay),
+              ) ||
               failures.some(
                 (operation) =>
                   operation.retry.failure.reasonCode === "budget-exhausted",

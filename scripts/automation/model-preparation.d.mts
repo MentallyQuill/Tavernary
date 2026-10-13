@@ -28,6 +28,7 @@ export function reserveModelPreparation(input: {
     sourceSha: string;
   }) => Promise<{ runId: number; workflow: string }>;
   nowMs: number;
+  tokensPerDay?: number;
   monthlyUsd?: number;
 }): Promise<
   | { status: "superseded" }

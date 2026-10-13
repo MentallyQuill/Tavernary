@@ -43,4 +43,5 @@ export interface HealthInput {
 export function assessAutomationHealth(input: HealthInput): HealthFinding[];
 export function assessInventoryHealth(
   state: AutomationInventoryState,
+  options?: { tokensPerDay?: number },
 ): HealthFinding[];
