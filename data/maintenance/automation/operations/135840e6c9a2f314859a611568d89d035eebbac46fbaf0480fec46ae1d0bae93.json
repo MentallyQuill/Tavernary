@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "135840e6c9a2f314859a611568d89d035eebbac46fbaf0480fec46ae1d0bae93",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1064216842:aikohanasaki-sillytavern-bookmarks",
+      "inputDigest": "2585d7832f69571d8256a4ffb8a43dcbdd9ff6604698b7e3e6223d96fb4b24df",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-13T15:22:29.850Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 8,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-13T15:07:29.850Z",
+  "completedAt": null
+}
