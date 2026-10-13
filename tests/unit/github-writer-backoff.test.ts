@@ -451,3 +451,43 @@ test("binary diagnostic rate limits share the request budget and durable cooldow
     reason: "github-rate-limit",
   });
 });
+
+test.each([
+  ["reconcile", 0, "superseded"],
+  ["backfill-identities", 1, "unavailable"],
+  ["verify-publisher", 1, "unavailable"],
+] as const)(
+  "trusted code advancing before %s respects native recovery",
+  async (mode, exitCode, status) => {
+    const root = await mkdtemp(join(tmpdir(), "tavernary-superseded-writer-"));
+    const output: string[] = [];
+    let applied = false;
+    try {
+      expect(
+        await runAutomationWriterCli({
+          root,
+          env: { ...env, GH_TOKEN: "test-only-token", RUNNER_TEMP: root },
+          event: { inputs: { mode } },
+          run: async (_command, args) =>
+            args[0] === "diff" ? "scripts/automation/writer-cli.mjs\n" : "",
+          handlers: {
+            [mode]: async () => {
+              applied = true;
+              return {};
+            },
+          },
+          write: (value) => output.push(value),
+        }),
+      ).toBe(exitCode);
+      expect(applied).toBe(false);
+      expect(JSON.parse(output[0])).toMatchObject({ status });
+      if (exitCode === 0)
+        expect(JSON.parse(output[0]).failure).toEqual({
+          kind: "superseded",
+          reasonCode: "input-superseded",
+        });
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  },
+);

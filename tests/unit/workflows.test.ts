@@ -1,4 +1,6 @@
-import { readdir, readFile } from "node:fs/promises";
+import { execFileSync, spawnSync } from "node:child_process";
+import { mkdtemp, readdir, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 
 import { expect, test } from "vitest";
@@ -1344,7 +1346,7 @@ test("retries frontend dependencies from read-only catalog changes", async () =>
     "cancel-in-progress": false,
   });
   expect(source).toContain(
-    "gh workflow run automation-writer.yml --ref main -f mode=reconcile",
+    'gh workflow run automation-writer.yml --repo "$GITHUB_REPOSITORY" --ref main -f mode=reconcile',
   );
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
@@ -1376,12 +1378,65 @@ test("retries fork dependencies after registry or upstream review changes", asyn
     "cancel-in-progress": false,
   });
   expect(source).toContain(
-    "gh workflow run automation-writer.yml --ref main -f mode=reconcile",
+    'gh workflow run automation-writer.yml --repo "$GITHUB_REPOSITORY" --ref main -f mode=reconcile',
   );
   expect(retry.jobs.retry.environment).toBe("publisher");
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
 
+test.each([
+  "retry-frontend-dependencies",
+  "retry-fork-dependencies",
+  "retry-project-submission-enrichment",
+])(
+  "%s dispatches to the current repository without a checkout",
+  async (name) => {
+    const retry = await workflow(name);
+    const steps = allSteps(retry);
+    const dispatch = steps.find((step) =>
+      step.run?.includes("gh workflow run automation-writer.yml"),
+    );
+    expect(
+      steps.some((step) => step.uses?.startsWith("actions/checkout@")),
+    ).toBe(false);
+    expect(dispatch?.run).toBeDefined();
+
+    const directory = await mkdtemp(
+      resolve(tmpdir(), "tavernary-retry-dispatch-"),
+    );
+    const bash =
+      process.platform === "win32"
+        ? resolve(
+            execFileSync("git", ["--exec-path"], { encoding: "utf8" }).trim(),
+            "../../../bin/bash.exe",
+          )
+        : "bash";
+    try {
+      // Capture only the external CLI boundary; execute the real workflow shell.
+      const result = spawnSync(bash, ["--noprofile", "--norc"], {
+        cwd: directory,
+        encoding: "utf8",
+        env: { ...process.env, GITHUB_REPOSITORY: "ExampleOrg/retry-fixture" },
+        input: `gh() { printf '%s\\n' "$@"; }\n${dispatch?.run}\n`,
+      });
+      expect(result.error).toBeUndefined();
+      expect(result.status, result.stderr).toBe(0);
+      expect(result.stdout.trim().split(/\r?\n/u)).toEqual([
+        "workflow",
+        "run",
+        "automation-writer.yml",
+        "--repo",
+        "ExampleOrg/retry-fixture",
+        "--ref",
+        "main",
+        "-f",
+        "mode=reconcile",
+      ]);
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
+  },
+);
 test("keeps Kit triage registry-read-only and dependency-free", async () => {
   const document = await workflow("triage-kit-submission");
   const source = await readFile(
@@ -1578,7 +1633,7 @@ test("checks for due Reddit submissions once daily", async () => {
   expect(
     allSteps(retry).some((step) =>
       step.run?.includes(
-        "gh workflow run automation-writer.yml --ref main -f mode=reconcile",
+        'gh workflow run automation-writer.yml --repo "$GITHUB_REPOSITORY" --ref main -f mode=reconcile',
       ),
     ),
   ).toBe(true);
