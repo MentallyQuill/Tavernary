@@ -14,7 +14,7 @@ test("remembers colorful colorblind mode across reloads and other site pages", a
 }) => {
   await page.goto(sitePath());
   await waitForHydration(page);
-  const toggle = page.getByRole("switch", { name: "Colorblind mode" });
+  const toggle = page.getByRole("switch", { name: "Enhanced contrast" });
   await expect(toggle).toHaveAttribute("aria-checked", "false");
   await expect(page.locator(".kind-frontend .card-identity").first()).toHaveCSS(
     "color",
@@ -84,15 +84,27 @@ test("applies the remembered palette before hydration even when application scri
   );
 });
 
-for (const width of [1440, 1024, 768, 760, 390, 320]) {
-  test(`keeps the color switch right of search with a full touch target at ${width}px`, async ({
+for (const width of [1440, 1300, 1299, 1051, 1050, 1024, 768, 760, 390, 320]) {
+  test(`keeps the contrast switch and Companion callout usable at ${width}px`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto(sitePath());
     await waitForHydration(page);
-    const toggle = page.getByRole("switch", { name: "Colorblind mode" });
+    const toggle = page.getByRole("switch", { name: "Enhanced contrast" });
     await expect(toggle).toBeVisible();
+    const companion = page.getByRole("link", { name: /^Tavernary Companion/ });
+    await expect(companion).toBeVisible();
+    await expect(
+      companion.getByText(
+        "Extension for SillyTavern and ST-compatible frontends.",
+      ),
+    ).toBeVisible();
+    const companionBox = await companion.boundingBox();
+    expect(companionBox).not.toBeNull();
+    expect(companionBox!.height).toBeGreaterThanOrEqual(44);
+    expect(companionBox!.x).toBeGreaterThanOrEqual(0);
+    expect(companionBox!.x + companionBox!.width).toBeLessThanOrEqual(width);
     const switchBox = await toggle.boundingBox();
     const searchBox = await page.locator(".site-search").boundingBox();
     expect(switchBox).not.toBeNull();

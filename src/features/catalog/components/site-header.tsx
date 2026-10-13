@@ -15,7 +15,7 @@ export function SiteHeader({
   searchRef: React.RefObject<HTMLInputElement | null>;
 }) {
   return (
-    <header className="site-header">
+    <header className="site-header site-header-with-companion">
       <Link
         className="brand"
         href="/"
@@ -57,6 +57,41 @@ export function SiteHeader({
         </div>
         <ColorModeSwitch />
       </div>
+      <a
+        aria-labelledby="tavernary-companion-label"
+        aria-describedby="tavernary-companion-description"
+        className="companion-callout"
+        href="https://github.com/MentallyQuill/TavernaryCompanion"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span className="companion-callout-copy">
+          <span
+            id="tavernary-companion-label"
+            className="companion-callout-title"
+          >
+            Tavernary Companion
+          </span>
+          <span
+            id="tavernary-companion-description"
+            className="companion-callout-description"
+          >
+            Extension for SillyTavern and ST-compatible frontends.
+          </span>
+        </span>
+        <svg
+          aria-hidden="true"
+          className="companion-callout-arrow"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M7 17 17 7M7 7h10v10" />
+        </svg>
+      </a>
       <nav className="header-actions" aria-label="Site actions">
         <a className="top-link about-link" href="./about/">
           About
