@@ -1294,3 +1294,322 @@ test("generation settlement uses the guarded ZIP downloader by default", async (
   ).toMatchObject({ status: "recovered" });
   expect(download).toHaveBeenCalledOnce();
 });
+
+async function freshOwnerBudgetCooldownFixture() {
+  const f = await metadataMaintenanceFixture();
+  const p = projectInventoryFixture({
+    generatedPull: null,
+    generationRun: null,
+  });
+  f.state.nowMs = Date.parse("2026-10-13T23:12:00.000Z");
+  f.state.publisherActorId = p.publisherActorId;
+  Object.assign(f.state.remote, { issues: p.issues, pulls: [], runs: [] });
+  Object.assign(f.state.local, {
+    projects: p.catalog.projects,
+    sources: p.catalog.sources,
+    modelBudget: createModelBudgetState(f.state.nowMs - 600000),
+  });
+  const run = ownerGenerationRequest(
+    ".github/workflows/generate-project-submission.yml",
+  );
+  run.created_at = new Date(f.state.nowMs - 1000).toISOString();
+  run.display_title = "Project #42: Request review PR force=false";
+  const current = requests.generationRequestOperation(f.state, {
+    issueNumber: 42,
+    kind: "project",
+    ownerAuthorized: false,
+  })!;
+  const receipt = {
+    schema_version: 1 as const,
+    operation: {
+      ...current,
+      nextEligibleAt: new Date(f.state.nowMs - 2000 + 86400000).toISOString(),
+      retry: {
+        failure: {
+          kind: "configuration" as const,
+          reasonCode: "budget-exhausted" as const,
+        },
+        transientAttempts: 2,
+        immediateAttempts: 2,
+      },
+    },
+    updatedAt: new Date(f.state.nowMs - 2000).toISOString(),
+    completedAt: null,
+  };
+  f.state.receipts = [receipt];
+  f.state.operations = [receipt.operation];
+  const env = {
+    GITHUB_REPOSITORY: f.state.repository,
+    GITHUB_REF: "refs/heads/main",
+    GITHUB_EVENT_NAME: "workflow_dispatch",
+    GITHUB_ACTOR_ID: "2625904",
+    GITHUB_WORKFLOW_REF: `${f.state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
+    GITHUB_RUN_ID: "810",
+    GITHUB_RUN_ATTEMPT: "1",
+    TAVERNARY_PUBLISHER_BOT_ID: String(f.state.publisherActorId),
+    TAVERNARY_MODEL_DAILY_TOKENS: "2000000",
+    UTILITY_MODEL: "primary",
+    TAVERNARY_ENRICHMENT_MODEL: "repair",
+  };
+  return { ...f, run, receipt, env, current };
+}
+
+test("a newer native owner request recovers only its stale budget cooldown and retains retry history", async () => {
+  const f = await freshOwnerBudgetCooldownFixture();
+  const request = requests.parseGenerationOwnerRequest(
+    f.run,
+    f.state.repository,
+    f.state.publisherActorId,
+  )!;
+  expect(request).toHaveProperty("createdAt", f.run.created_at);
+  const before = structuredClone(f.receipt);
+  expect(requests.generationRequestOperation(f.state, request)).toMatchObject({
+    key: f.current.key,
+    stage: "admitted",
+    nextEligibleAt: null,
+    retry: f.receipt.operation.retry,
+  });
+  expect(f.receipt).toEqual(before);
+});
+
+test.each([
+  "older",
+  "equal",
+  "bot",
+  "missing",
+  "invalid",
+  "future",
+  "authentication",
+  "unknown",
+  "newer-refusal",
+] as const)(
+  "fresh native owner budget recovery preserves %s backoff",
+  async (variant) => {
+    const f = await freshOwnerBudgetCooldownFixture();
+    if (variant === "older")
+      f.run.created_at = new Date(
+        Date.parse(f.receipt.updatedAt) - 1000,
+      ).toISOString();
+    if (variant === "equal") f.run.created_at = f.receipt.updatedAt;
+    if (variant === "bot")
+      f.run.actor = { id: f.state.publisherActorId, type: "Bot" };
+    if (variant === "missing") Reflect.deleteProperty(f.run, "created_at");
+    if (variant === "invalid") f.run.created_at = "2026-02-30T23:12:00Z";
+    if (variant === "future")
+      f.run.created_at = new Date(f.state.nowMs + 1000).toISOString();
+    if (variant === "authentication")
+      f.receipt.operation.retry.failure.reasonCode =
+        "provider-authentication-failed" as never;
+    if (variant === "unknown")
+      f.receipt.operation.retry.failure = {
+        kind: "unknown",
+        reasonCode: "unclassified-failure",
+      } as never;
+    if (variant === "newer-refusal")
+      f.receipt.updatedAt = new Date(f.state.nowMs).toISOString();
+    const request = requests.parseGenerationOwnerRequest(
+      f.run,
+      f.state.repository,
+      f.state.publisherActorId,
+    )!;
+    expect(request).not.toBeNull();
+    expect(
+      requests.generationRequestOperation(f.state, request)?.nextEligibleAt,
+    ).toBe(f.receipt.operation.nextEligibleAt);
+  },
+);
+
+test("a fresh owner request reserves ordinary allowance without refunding an older unbound request", async () => {
+  const f = await freshOwnerBudgetCooldownFixture();
+  for (const [index, model] of ["primary", "repair"].entries()) {
+    const reserved = reserveModelBudget(
+      validateModelBudgetState(f.state.local.modelBudget),
+      {
+        operationKey: f.current.key,
+        requestId: `generation-request-399:${index}`,
+        model,
+        requestCount: index ? 1 : 3,
+        requestedTokens: index ? 15000 : 180000,
+      },
+      { nowMs: f.state.nowMs - 600000, tokensPerDay: 2000000 },
+    );
+    if (!reserved.allowed) throw new Error("Invalid old request fixture");
+    f.state.local.modelBudget = reserved.state;
+  }
+  const oldTickets = structuredClone(
+    validateModelBudgetState(f.state.local.modelBudget).tickets,
+  );
+  const commit = vi.fn(async (input: { files: Array<{ content: string }> }) => {
+    f.state.local.modelBudget = JSON.parse(input.files[0].content);
+    return { sha: String(f.state.local.revision) };
+  });
+  const dispatch = vi.fn(async () => ({ runId: 700, workflow: f.run.path }));
+  expect(
+    await runModelWriterPreparation({
+      operationKey: f.current.key,
+      requestRunId: f.run.id,
+      env: f.env,
+      gh: async () => JSON.stringify(f.run),
+      load: async () => f.state,
+      commit,
+      dispatch,
+      projectGenerationEligible: async () => true,
+      isRequestAncestor: () => true,
+      persistFailure: vi.fn(async () => {}),
+    }),
+  ).toMatchObject({ status: "dispatched", runId: 700 });
+  expect(dispatch).toHaveBeenCalledOnce();
+  expect(validateModelBudgetState(f.state.local.modelBudget).days).toEqual([
+    { day: "2026-10-13", requests: 8, tokens: 390000 },
+  ]);
+  expect(
+    validateModelBudgetState(f.state.local.modelBudget).tickets.slice(0, 2),
+  ).toEqual(oldTickets);
+  expect(
+    validateModelBudgetState(f.state.local.modelBudget).tickets.slice(2),
+  ).toHaveLength(2);
+});
+
+test("a genuine quota denial after fresh owner recovery persists a newer refusal that blocks replay", async () => {
+  const f = await freshOwnerBudgetCooldownFixture();
+  const exhausted = reserveModelBudget(
+    validateModelBudgetState(f.state.local.modelBudget),
+    {
+      operationKey: "f".repeat(64),
+      model: "primary",
+      requestCount: 40,
+      requestedTokens: 200000,
+    },
+    { nowMs: f.state.nowMs },
+  );
+  if (!exhausted.allowed) throw new Error("Invalid exhausted fixture");
+  f.state.local.modelBudget = exhausted.state;
+  const beforeBudget = structuredClone(exhausted.state);
+  const persist = vi
+    .spyOn(githubInventory, "persistGithubAutomationReceipt")
+    .mockImplementation(async ({ receipt }) => {
+      f.state.receipts = [receipt];
+      f.state.operations = [receipt.operation];
+    });
+  const commit = vi.fn(async () => ({ sha: String(f.state.local.revision) }));
+  const dispatch = vi.fn(async () => ({ runId: 700, workflow: f.run.path }));
+  const input = {
+    operationKey: f.current.key,
+    requestRunId: f.run.id,
+    env: f.env,
+    gh: async () => JSON.stringify(f.run),
+    load: async () => f.state,
+    commit,
+    dispatch,
+    projectGenerationEligible: async () => true,
+    isRequestAncestor: () => true,
+  };
+  try {
+    expect(await runModelWriterPreparation(input)).toMatchObject({
+      status: "waiting",
+      reason: "daily-limit",
+    });
+    expect(persist).toHaveBeenCalledOnce();
+    expect(f.state.receipts[0]).toMatchObject({
+      updatedAt: new Date(f.state.nowMs).toISOString(),
+      operation: {
+        nextEligibleAt: new Date(f.state.nowMs + 86400000).toISOString(),
+        retry: {
+          failure: { kind: "configuration", reasonCode: "budget-exhausted" },
+          transientAttempts: 3,
+          immediateAttempts: 2,
+        },
+      },
+    });
+    expect(await runModelWriterPreparation(input)).toEqual({
+      status: "superseded",
+    });
+    expect(persist).toHaveBeenCalledOnce();
+    expect(commit).not.toHaveBeenCalled();
+    expect(dispatch).not.toHaveBeenCalled();
+    expect(f.state.local.modelBudget).toEqual(beforeBudget);
+  } finally {
+    persist.mockRestore();
+  }
+});
+
+test.each(["key", "stage", "expected-sha"] as const)(
+  "a foreign %s budget receipt cannot change the matching owner's refusal authority",
+  async (variant) => {
+    const f = await freshOwnerBudgetCooldownFixture();
+    const foreign = structuredClone(f.receipt);
+    foreign.updatedAt = new Date(f.state.nowMs).toISOString();
+    if (variant === "key") {
+      foreign.operation.identity.inputDigest = "c".repeat(64);
+      foreign.operation.key = operationKey(foreign.operation.identity);
+    }
+    if (variant === "stage") foreign.operation.stage = "generated";
+    if (variant === "expected-sha")
+      foreign.operation.expectedSha = "c".repeat(40);
+    f.state.receipts.push(foreign);
+    const request = requests.parseGenerationOwnerRequest(
+      f.run,
+      f.state.repository,
+      f.state.publisherActorId,
+    )!;
+    expect(
+      requests.generationRequestOperation(f.state, request)?.nextEligibleAt,
+    ).toBeNull();
+    f.receipt.operation.retry.failure.reasonCode =
+      "provider-authentication-failed" as never;
+    expect(
+      requests.generationRequestOperation(f.state, request)?.nextEligibleAt,
+    ).toBe(f.receipt.operation.nextEligibleAt);
+  },
+);
+
+test("fresh owner failure persistence rereads a newer refusal instead of replacing its backoff", async () => {
+  const f = await freshOwnerBudgetCooldownFixture();
+  const exhausted = reserveModelBudget(
+    validateModelBudgetState(f.state.local.modelBudget),
+    {
+      operationKey: "f".repeat(64),
+      model: "primary",
+      requestCount: 40,
+      requestedTokens: 200000,
+    },
+    { nowMs: f.state.nowMs },
+  );
+  if (!exhausted.allowed) throw new Error("Invalid exhausted fixture");
+  f.state.local.modelBudget = exhausted.state;
+  const newerReceipt = structuredClone(f.receipt);
+  newerReceipt.updatedAt = new Date(f.state.nowMs).toISOString();
+  newerReceipt.operation.nextEligibleAt = new Date(
+    f.state.nowMs + 86400000,
+  ).toISOString();
+  const persist = vi
+    .spyOn(githubInventory, "persistGithubAutomationReceipt")
+    .mockImplementation(async () => {});
+  let loads = 0;
+  try {
+    expect(
+      await runModelWriterPreparation({
+        operationKey: f.current.key,
+        requestRunId: f.run.id,
+        env: f.env,
+        gh: async () => JSON.stringify(f.run),
+        load: async () => {
+          if (++loads === 3) {
+            f.state.receipts = [newerReceipt];
+            f.state.operations = [newerReceipt.operation];
+          }
+          return f.state;
+        },
+        commit: vi.fn(async () => ({ sha: String(f.state.local.revision) })),
+        dispatch: vi.fn(async () => ({ runId: 700, workflow: f.run.path })),
+        projectGenerationEligible: async () => true,
+        isRequestAncestor: () => true,
+      }),
+    ).toMatchObject({ status: "waiting", reason: "daily-limit" });
+    expect(loads).toBe(3);
+    expect(persist).not.toHaveBeenCalled();
+    expect(f.state.receipts).toEqual([newerReceipt]);
+  } finally {
+    persist.mockRestore();
+  }
+});

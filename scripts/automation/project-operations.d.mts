@@ -63,6 +63,7 @@ export function discoverRequestedGeneration(
     issueNumber: number;
     kind: "project" | "owner-request";
     ownerAuthorized: boolean;
+    createdAt?: string;
   },
 ): AutomationOperation | null;
 export function projectIssueMatchesTransaction(input: {

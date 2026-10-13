@@ -404,19 +404,7 @@ export async function runModelWriterPreparation({
   commit = (input) => commitCanonicalData({ ...input, gh }),
   dispatch = (input) => dispatchReservedModelPreparation({ ...input, gh }),
   dispatchCached = (input) => dispatchUnbudgetedPreparation({ ...input, gh }),
-  persistFailure = async (error) => {
-    await persistPreparedFailure({
-      operationKey,
-      load,
-      error,
-      persist: (receipt) =>
-        persistGithubAutomationReceipt({
-          gh,
-          repository: env.GITHUB_REPOSITORY,
-          receipt,
-        }),
-    });
-  },
+  persistFailure,
   metadataCached = async (input) =>
     metadataObservationIsCached({
       ...input,
@@ -457,9 +445,20 @@ export async function runModelWriterPreparation({
     env.GITHUB_RUN_ATTEMPT !== "1"
   )
     throw new Error("Model writer context is invalid.");
+  let request = null;
+  persistFailure ??= async (error) => {
+    await persistPreparedFailure({
+      operationKey,
+      load,
+      error,
+      ...(request ? { generationRequest: request, isRequestAncestor } : {}),
+      persist: (receipt) =>
+        persistGithubAutomationReceipt({ gh, repository, receipt }),
+    });
+  };
   try {
     const initial = await load();
-    const request = requestRunId
+    const candidateRequest = requestRunId
       ? parseGenerationOwnerRequest(
           JSON.parse(
             await gh([
@@ -473,14 +472,18 @@ export async function runModelWriterPreparation({
       : null;
     if (
       requestRunId &&
-      (!request ||
-        request.runId !== requestRunId ||
-        isRequestAncestor(request.sourceSha, initial.local.revision) !== true)
+      (!candidateRequest ||
+        candidateRequest.runId !== requestRunId ||
+        isRequestAncestor(
+          candidateRequest.sourceSha,
+          initial.local.revision,
+        ) !== true)
     )
       throw Object.assign(
         new Error("Generation request authority is unavailable."),
         { code: "authorization-lost" },
       );
+    request = candidateRequest;
     if (
       request &&
       (await generationRequestCompleted({
@@ -717,7 +720,10 @@ export async function runModelWriterPreparation({
       outcome.status === "waiting" &&
       outcome.reason !== "provider-circuit-open"
     ) {
-      const bindingUnavailable = outcome.reason === "binding-unavailable";
+      const bindingUnavailable = [
+        "binding-unavailable",
+        "ticket-expired",
+      ].includes(outcome.reason);
       await persistFailure(
         Object.assign(
           new Error(

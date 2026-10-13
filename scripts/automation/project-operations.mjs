@@ -182,6 +182,23 @@ export function discoverRequestedGeneration(input, request) {
   if (operation.retry?.failure.kind === "permanent") {
     operation.retry = null;
     operation.nextEligibleAt = null;
+  } else if (
+    operation.retry?.failure.kind === "configuration" &&
+    operation.retry.failure.reasonCode === "budget-exhausted"
+  ) {
+    const receipt = matchingReceipt(input, operation);
+    const requestedAt = Date.parse(request.createdAt ?? "");
+    if (
+      receipt?.operation.retry?.failure.kind === "configuration" &&
+      receipt.operation.retry.failure.reasonCode === "budget-exhausted" &&
+      operation.nextEligibleAt === receipt.operation.nextEligibleAt &&
+      Date.parse(operation.nextEligibleAt ?? "") > input.nowMs &&
+      Number.isFinite(requestedAt) &&
+      new Date(requestedAt).toISOString() === request.createdAt &&
+      requestedAt > Date.parse(receipt.updatedAt) &&
+      requestedAt <= input.nowMs
+    )
+      operation.nextEligibleAt = null;
   }
   return operation;
 }

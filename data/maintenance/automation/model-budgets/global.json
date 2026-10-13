@@ -208,8 +208,11 @@
         "runId": 38478578077,
         "workflow": ".github/workflows/generate-project-submission.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 42748
+      }
     },
     {
       "id": "7910f347c8aedd576f4b6c8f5687cd5c79d16d30b0127e349ab15dd10b7fa78a",
@@ -227,8 +230,11 @@
         "runId": 38478578077,
         "workflow": ".github/workflows/generate-project-submission.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "7d9cdc589832b7fb0249d02aabfaa4902cbd884699615c624466a76d892cfcb2",
@@ -246,8 +252,11 @@
         "runId": 38479279175,
         "workflow": ".github/workflows/generate-project-submission.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 2,
+        "tokens": 92627
+      }
     },
     {
       "id": "f4e3fb3007d4cc032e08758b41e1a93f4e1facb426c942e240f883efb62e499d",
@@ -265,8 +274,11 @@
         "runId": 38479279175,
         "workflow": ".github/workflows/generate-project-submission.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "7851207a5db135ef3ea79a0701386dfc9551e0da04a0f10ccb467f7a1091012e",
@@ -284,8 +296,11 @@
         "runId": 38479953532,
         "workflow": ".github/workflows/generate-project-submission.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 2,
+        "tokens": 86533
+      }
     },
     {
       "id": "4e6a8fbda000a38afef68fd9bee52bb7e011cea60da9a50a3a835d0a938056c9",
@@ -303,8 +318,11 @@
         "runId": 38479953532,
         "workflow": ".github/workflows/generate-project-submission.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "0858d7d94af02d5d9085463c582a5d52cf4c7ea3d4f97e87bde995553ce55e7f",
@@ -322,8 +340,11 @@
         "runId": 38480671574,
         "workflow": ".github/workflows/generate-project-submission.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 2,
+        "tokens": 86760
+      }
     },
     {
       "id": "ccad64f63e5693380efbc5f489dc96fd29647f834ab98a9954ae81c2dd71678a",
@@ -341,8 +362,11 @@
         "runId": 38480671574,
         "workflow": ".github/workflows/generate-project-submission.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     }
   ]
 }

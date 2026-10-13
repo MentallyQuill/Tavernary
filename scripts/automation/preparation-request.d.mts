@@ -1,6 +1,7 @@
 import type { AutomationInventoryState } from "./inventory.mjs";
 export interface GenerationOwnerRequest {
   runId: number;
+  createdAt?: string;
   sourceSha: string;
   issueNumber: number;
   kind: "project" | "owner-request";
@@ -17,7 +18,7 @@ export function generationRequestOperation(
   state: AutomationInventoryState,
   request: Pick<
     GenerationOwnerRequest,
-    "issueNumber" | "kind" | "ownerAuthorized"
+    "issueNumber" | "kind" | "ownerAuthorized" | "createdAt"
   >,
 ): import("./operation.mjs").AutomationOperation | null;
 export function generationRequestCompleted(input: {
