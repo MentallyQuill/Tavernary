@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1320dedcfec98afffe68e0632a5763baa1b29c7268c6a22c86791d58b9ebb185",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1233011311:mangkoodkung-another-universe",
+      "inputDigest": "bd5bf0647582a2167d3a8019e758701c2f9e2b01febafdb5ebddfe8c2e18404b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-13T15:22:29.850Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-13T15:07:29.850Z",
+  "completedAt": null
+}
