@@ -716,13 +716,23 @@ export async function runModelWriterPreparation({
     if (
       outcome.status === "waiting" &&
       outcome.reason !== "provider-circuit-open"
-    )
+    ) {
+      const bindingUnavailable = outcome.reason === "binding-unavailable";
       await persistFailure(
         Object.assign(
-          new Error("Model preparation allowance is unavailable."),
-          { code: "budget-exhausted" },
+          new Error(
+            bindingUnavailable
+              ? "Model preparation binding is unavailable."
+              : "Model preparation allowance is unavailable.",
+          ),
+          {
+            code: bindingUnavailable
+              ? "workflow-result-unavailable"
+              : "budget-exhausted",
+          },
         ),
       );
+    }
     return outcome;
   } catch (error) {
     await persistFailure(error);

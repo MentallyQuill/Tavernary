@@ -9,6 +9,8 @@ import {
   runAutomationWriterReconciliation,
 } from "../../scripts/automation/writer-runtime.mjs";
 import { operationKey } from "../../scripts/automation/operation.mjs";
+import { classifyAutomationFailure } from "../../scripts/automation/failure.mjs";
+import { planAutomationRetry } from "../../scripts/automation/retry.mjs";
 import {
   metadataMaintenanceFixture,
   operationFixture,
@@ -152,6 +154,9 @@ test.each([undefined, "", "200000"])(
         operationKey: f.state.operations[0].key,
       }),
     ).toEqual({ status: "waiting", reason: "daily-limit" });
+    expect(f.input.persistFailure).toHaveBeenCalledWith(
+      expect.objectContaining({ code: "budget-exhausted" }),
+    );
     expect(f.commit).not.toHaveBeenCalled();
     expect(f.dispatch).not.toHaveBeenCalled();
     expect(
@@ -200,4 +205,60 @@ test("invalid optional model configuration leaves canonical reconciliation avail
   expect(result.controller).toMatchObject({ dispatched: 0 });
   expect(result.health).toMatchObject({ status: "idle" });
   expect(JSON.stringify(result)).not.toContain("private-value");
+});
+
+test("an unbound dispatched reservation stays charged without a false daily-budget cooldown", async () => {
+  const f = await fixture();
+  f.env.TAVERNARY_MODEL_DAILY_TOKENS = "2000000";
+  const operation = f.state.operations[0];
+  for (const [index, request] of [
+    { model: "primary", requestCount: 3, requestedTokens: 180000 },
+    { model: "repair", requestCount: 1, requestedTokens: 15000 },
+  ].entries()) {
+    const decision = reserveModelBudget(
+      validateModelBudgetState(f.state.local.modelBudget),
+      {
+        ...request,
+        operationKey: operation.key,
+        requestId: `writer-800:${index}`,
+      },
+      { nowMs: f.state.nowMs, tokensPerDay: 2000000 },
+    );
+    if (!decision.allowed) throw new Error("Fixture reservation failed");
+    f.state.local.modelBudget = decision.state;
+  }
+  const chargedBudget = structuredClone(f.state.local.modelBudget);
+  let failure: (Error & { code?: string }) | undefined;
+  expect(
+    await runModelWriterPreparation({
+      ...f.input,
+      operationKey: operation.key,
+      persistFailure: async (error) => {
+        failure = error as Error & { code?: string };
+      },
+    }),
+  ).toEqual({ status: "waiting", reason: "binding-unavailable" });
+  expect(failure).toMatchObject({ code: "workflow-result-unavailable" });
+  const classified = classifyAutomationFailure({
+    diagnosticCode: failure?.code,
+  });
+  expect(classified).toEqual({
+    kind: "transient",
+    reasonCode: "workflow-result-unavailable",
+  });
+  expect(
+    planAutomationRetry({
+      failure: classified,
+      transientAttempts: 0,
+      immediateAttempts: 0,
+      nowMs: f.state.nowMs,
+      jitterSeed: "",
+    }),
+  ).toMatchObject({
+    action: "retry",
+    nextEligibleAt: new Date(f.state.nowMs + 300000).toISOString(),
+  });
+  expect(f.state.local.modelBudget).toEqual(chargedBudget);
+  expect(f.commit).not.toHaveBeenCalled();
+  expect(f.dispatch).not.toHaveBeenCalled();
 });

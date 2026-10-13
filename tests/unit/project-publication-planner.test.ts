@@ -415,3 +415,49 @@ test("GitHub cooldown bookkeeping is safe base drift at only its fixed path", ()
     }),
   ).toBe(false);
 });
+
+test("fixed model budget bookkeeping preserves validated project publication", () => {
+  const budgetPath = "data/maintenance/automation/model-budgets/global.json";
+  const changedPaths = [
+    budgetPath,
+    "data/maintenance/automation/operations/9cd8810e46d919e0d982bb1282c7d0f7d0ea1b80296e3c51a20a5bc4dfbbf400.json",
+  ];
+  const baseDriftSafe = isSafeProjectPublicationBaseDrift({
+    transaction,
+    changedPaths,
+  });
+  expect(baseDriftSafe).toBe(true);
+  expect(
+    planProjectPublication(
+      input({
+        current: { ...input().current, mainSha: "e".repeat(40), baseDriftSafe },
+      }),
+    ),
+  ).toMatchObject({ action: "merge", expectedHeadSha: headSha });
+
+  for (const unsafePath of [
+    "data/maintenance/automation/model-budgets/other.json",
+    "data/maintenance/automation/model-budgets/nested/global.json",
+    "data/schemas/automation-model-budget.schema.json",
+    "scripts/automation/model-budget.mjs",
+    "data/maintenance/trusted-tavernary-editors.json",
+    ...transaction.generated_paths,
+  ]) {
+    expect(
+      isSafeProjectPublicationBaseDrift({
+        transaction,
+        changedPaths: [...changedPaths, unsafePath],
+      }),
+      unsafePath,
+    ).toBe(false);
+  }
+  expect(
+    isSafeProjectPublicationBaseDrift({
+      transaction: {
+        ...transaction,
+        generated_paths: [...transaction.generated_paths, budgetPath],
+      },
+      changedPaths,
+    }),
+  ).toBe(false);
+});
