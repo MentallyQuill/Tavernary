@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "104e41b38237d5f897ed3fcb2b0fe1c369a42cbbaab6148767977348feb4cabd",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1088452012:cha1latte-sillytavern-real-world-weather",
+      "inputDigest": "64a9a73924f78b8493f8d3649f1aa080dc5896fe6fdd41a423dc9a860db375bc",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-13T15:22:29.850Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-13T15:07:29.850Z",
+  "completedAt": null
+}
