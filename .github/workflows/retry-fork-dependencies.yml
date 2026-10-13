@@ -41,6 +41,6 @@ jobs:
           private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
           permission-actions: write
       - name: Recover retries through the shared writer
-        run: gh workflow run automation-writer.yml --ref main -f mode=reconcile
+        run: gh workflow run automation-writer.yml --repo "$GITHUB_REPOSITORY" --ref main -f mode=reconcile
         env:
           GH_TOKEN: ${{ steps.dispatch-token.outputs.token }}

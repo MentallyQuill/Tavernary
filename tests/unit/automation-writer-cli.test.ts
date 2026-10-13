@@ -108,3 +108,56 @@ test.each([false, true])(
     expect(output.join("\n")).not.toContain("sensitive-provider-response");
   },
 );
+
+test.each([
+  ["reconcile", 0, "superseded"],
+  ["prepare", 1, "unavailable"],
+  ["finalize", 1, "unavailable"],
+  ["backfill-identities", 1, "unavailable"],
+  ["verify-publisher", 1, "unavailable"],
+] as const)(
+  "a superseded %s writer wake preserves its recovery contract",
+  async (mode, exitCode, status) => {
+    const output: string[] = [];
+    expect(
+      await runAutomationWriterCli({
+        env,
+        event: { inputs: { mode } },
+        handlers: {
+          [mode]: async () => {
+            throw Object.assign(new Error("private stale input detail"), {
+              code: "input-superseded",
+            });
+          },
+        },
+        write: (value) => output.push(value),
+      }),
+    ).toBe(exitCode);
+    expect(JSON.parse(output[0])).toEqual({
+      status,
+      failure: { kind: "superseded", reasonCode: "input-superseded" },
+    });
+    expect(output.join("\n")).not.toContain("private stale input detail");
+  },
+);
+
+test.each(["provider-authentication-failed", "unexpected-failure"])(
+  "writer errors other than supersession remain failed (%s)",
+  async (code) => {
+    const output: string[] = [];
+    expect(
+      await runAutomationWriterCli({
+        env,
+        event: { inputs: { mode: "reconcile" } },
+        handlers: {
+          reconcile: async () => {
+            throw Object.assign(new Error("private failure detail"), { code });
+          },
+        },
+        write: (value) => output.push(value),
+      }),
+    ).toBe(1);
+    expect(JSON.parse(output[0]).status).toBe("unavailable");
+    expect(output.join("\n")).not.toContain("private failure detail");
+  },
+);

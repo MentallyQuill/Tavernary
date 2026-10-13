@@ -31,13 +31,14 @@ async function runWriterMode(options = {}) {
   const env = options.env ?? process.env;
   const write = options.write ?? console.log;
   const gh = options.gh;
+  let mode;
   try {
     const repository = env.GITHUB_REPOSITORY;
     const event =
       options.event ??
       JSON.parse(await readFile(env.GITHUB_EVENT_PATH, "utf8"));
     assertCanonicalWriterContext(env, repository, event);
-    const mode = event.inputs?.mode ?? "reconcile";
+    mode = event.inputs?.mode ?? "reconcile";
     if (!modes.has(mode)) throw new Error("Writer mode is invalid.");
     const handler = options.handlers?.[mode];
     if (handler) {
@@ -203,17 +204,19 @@ async function runWriterMode(options = {}) {
               )?.[1],
           }
         : undefined;
+    const failure = classifyAutomationFailure({
+      diagnosticCode: error?.code,
+      httpStatus,
+    });
+    const superseded = mode === "reconcile" && failure.kind === "superseded";
     write(
       JSON.stringify({
-        status: "unavailable",
-        failure: classifyAutomationFailure({
-          diagnosticCode: error?.code,
-          httpStatus,
-        }),
+        status: superseded ? "superseded" : "unavailable",
+        failure,
         ...(diagnostic ? { diagnostic } : {}),
       }),
     );
-    return 1;
+    return superseded ? 0 : 1;
   }
 }
 export async function runAutomationWriterCli(options = {}) {
@@ -227,11 +230,13 @@ export async function runAutomationWriterCli(options = {}) {
     return runWriterMode(options);
   const env = options.env ?? process.env;
   const write = options.write ?? console.log;
+  let mode;
   try {
     const event =
       options.event ??
       JSON.parse(await readFile(env.GITHUB_EVENT_PATH, "utf8"));
     assertCanonicalWriterContext(env, env.GITHUB_REPOSITORY, event);
+    mode = event.inputs?.mode ?? "reconcile";
     const root = options.root ?? process.cwd();
     if (!options.loadCooldown) {
       const { synchronizeWriterCheckout } =
@@ -274,7 +279,16 @@ export async function runAutomationWriterCli(options = {}) {
     }
     write(JSON.stringify(result));
     return 0;
-  } catch {
+  } catch (error) {
+    if (mode === "reconcile" && error?.code === "input-superseded") {
+      write(
+        JSON.stringify({
+          status: "superseded",
+          failure: classifyAutomationFailure({ diagnosticCode: error.code }),
+        }),
+      );
+      return 0;
+    }
     write(JSON.stringify({ status: "unavailable" }));
     return 1;
   }

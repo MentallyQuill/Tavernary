@@ -1,3 +1,4 @@
+import { downloadPreparedArtifact } from "./prepared-artifact-download.mjs";
 import {
   trustedOperationWorkerRuns,
   matchingOperationReceipt,
@@ -399,7 +400,6 @@ export async function loadGithubAutomationInventory({
   publisherActorId,
   downloadDiagnostic = async (args) => {
     if (gh.download) return gh.download(args);
-    const { downloadPreparedArtifact } = await import("./writer-runtime.mjs");
     return downloadPreparedArtifact(args);
   },
 }) {
