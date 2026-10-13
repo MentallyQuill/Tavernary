@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1836206a8ac7a2993037039c56b7fc76115d73313e0b938e1948423dd19a10da",
+    "identity": {
+      "kind": "refresh",
+      "subject": "source:github-1195775310",
+      "inputDigest": "3388b1cf3727b11f09fd44e45251d26a7e3005eb07e9417048126e200cf8678e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T15:26:28.412Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "configuration",
+        "reasonCode": "authentication-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-13T15:26:28.412Z",
+  "completedAt": null
+}
