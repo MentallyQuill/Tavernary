@@ -45,7 +45,7 @@ test("keeps site actions available without asking visitors for donations", () =>
   expect(actions.queryByRole("link", { name: /ko-fi|donat/i })).toBeNull();
 });
 
-test("places the colorblind mode switch immediately after search", () => {
+test("places the enhanced contrast switch immediately after search", () => {
   render(
     <SiteHeader
       search=""
@@ -55,6 +55,30 @@ test("places the colorblind mode switch immediately after search", () => {
   );
 
   const search = screen.getByRole("search");
-  const toggle = screen.getByRole("switch", { name: "Colorblind mode" });
+  const toggle = screen.getByRole("switch", { name: "Enhanced contrast" });
   expect(search.nextElementSibling).toContainElement(toggle);
+});
+
+test("introduces the Companion extension with a descriptive external link", () => {
+  render(
+    <SiteHeader
+      search=""
+      onSearch={() => undefined}
+      searchRef={createRef<HTMLInputElement>()}
+    />,
+  );
+
+  const companion = screen.getByRole("link", { name: "Tavernary Companion" });
+  expect(companion).toHaveAttribute(
+    "href",
+    "https://github.com/MentallyQuill/TavernaryCompanion",
+  );
+  expect(companion).toHaveAttribute("target", "_blank");
+  expect(companion).toHaveAttribute("rel", "noopener noreferrer");
+  expect(companion).toHaveAccessibleDescription(
+    "Extension for SillyTavern and ST-compatible frontends.",
+  );
+  expect(
+    screen.getByText("Extension for SillyTavern and ST-compatible frontends."),
+  ).toBeVisible();
 });
