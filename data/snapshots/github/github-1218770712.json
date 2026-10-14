@@ -9,21 +9,21 @@
     "url": "https://github.com/Noineri/vibe_tavern",
     "description": "A modern, local-first AI roleplay platform",
     "default_branch": "dev",
-    "head_sha": "cf99a2f805b0c62813ecca1dfb60b0e32a51779e",
-    "head_committed_at": "2026-10-06T18:17:25.000Z",
+    "head_sha": "3844bfe2d82d35177a3cf77ce8adfbc9051aeadd",
+    "head_committed_at": "2026-10-09T22:20:38.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-23T07:45:41.000Z",
-    "size_kb": 79025
+    "size_kb": 80900
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-06T17:57:35.000Z",
+    "latest_source_activity_at": "2026-10-09T21:31:15.000Z",
     "source_weeks": [
       {
         "week_start": "2026-10-05",
-        "latest_at": "2026-10-06T17:57:35.000Z",
+        "latest_at": "2026-10-09T21:31:15.000Z",
         "precision": "exact"
       },
       {
@@ -75,23 +75,18 @@
         "week_start": "2026-07-27",
         "latest_at": "2026-08-02T18:15:01.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-20",
-        "latest_at": "2026-07-26T20:47:18.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-04T22:31:40.000Z",
+    "latest_release_at": "2026-10-09T22:20:53.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-07T14:35:00.644Z",
+    "baseline_completed_at": "2026-10-14T12:59:06.620Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "cf99a2f805b0c62813ecca1dfb60b0e32a51779e"
+    "evidence_head_sha": "3844bfe2d82d35177a3cf77ce8adfbc9051aeadd"
   },
   "community": {
-    "stars_count": 77,
-    "forks_count": 5,
+    "stars_count": 78,
+    "forks_count": 4,
     "watchers_count": 0,
     "aggregate": 82
   },
@@ -100,7 +95,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-14T13:01:37.239Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -112,7 +107,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-14T12:59:06.620Z",
     "stale_since": null
   }
 }
