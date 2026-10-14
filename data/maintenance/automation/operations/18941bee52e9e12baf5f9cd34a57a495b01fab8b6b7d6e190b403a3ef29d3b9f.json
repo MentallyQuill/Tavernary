@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "18941bee52e9e12baf5f9cd34a57a495b01fab8b6b7d6e190b403a3ef29d3b9f",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1273118567:enerccio-sillytavern-loreentryvcs",
+      "inputDigest": "94e762fd8517b6840e8fa218b138a985ea788e4d6ca63d822dadcaf597e685c2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T04:08:43.483Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-14T03:53:43.483Z",
+  "completedAt": null
+}
