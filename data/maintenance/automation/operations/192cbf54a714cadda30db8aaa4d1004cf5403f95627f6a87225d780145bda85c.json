@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "192cbf54a714cadda30db8aaa4d1004cf5403f95627f6a87225d780145bda85c",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1314351595:xays-101-backup-cleaner-silly-tavern",
+      "inputDigest": "58db10f6abddfebbb5869ee5c8ded78416fa79a1bba6f45ad30c3fde2103930c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T05:18:05.284Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-14T05:03:05.284Z",
+  "completedAt": null
+}
