@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "19bbd590d53741d96e02d399b34b4d83932582792575b739ca3ddb245018aafd",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1100781311:kangjoseph90-risu-antigravity",
+      "inputDigest": "743d539e0f4ceda8898266a81628048fc9aeb5a7dfdcf7c200db45ab849a1156",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T05:18:05.284Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 3,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-14T05:03:05.284Z",
+  "completedAt": null
+}
