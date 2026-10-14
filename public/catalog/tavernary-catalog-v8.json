@@ -43728,6 +43728,174 @@
       }
     },
     {
+      "id": "horizonfps-project-lunar",
+      "name": "project-lunar",
+      "kind": "frontend",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": "An open-source AI storytelling engine where every choice reshapes the world, with a four-tier memory pyramid, independent NPC minds, creativity-based combat, bilingual narration, and runtime LLM switching (README).",
+      "canonicalUrl": "https://github.com/horizonfps/project-lunar",
+      "catalogedAt": "2026-10-14T03:03:24.343Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "project-lunar",
+          "label": "project-lunar",
+          "description": "Works with the project-lunar roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-rpg-gameplay",
+          "label": "Add RPG gameplay",
+          "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
+          "facet": "goal"
+        },
+        {
+          "id": "maintain-long-term-memory",
+          "label": "Maintain long-term memory",
+          "description": "Preserve and recall important information across long chats or separate sessions.",
+          "facet": "goal"
+        },
+        {
+          "id": "model-agnostic",
+          "label": "Model-agnostic",
+          "description": "Works across a broad range of model providers rather than requiring one model family.",
+          "facet": "trait"
+        },
+        {
+          "id": "multilingual",
+          "label": "Multilingual",
+          "description": "Explicitly supports use, authoring, or interfaces in multiple languages.",
+          "facet": "trait"
+        },
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "20a284eb91d9f3da5d670cc08b61c7ec11bff067",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "horizonfps"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-07T16:10:21.000Z",
+        "activeWeeks12": 3,
+        "weeklyActivity": [
+          false,
+          false,
+          true,
+          true,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 40,
+        "forks": 9,
+        "watchers": 1,
+        "aggregate": 50
+      },
+      "repositorySizeKb": 3200,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-10-14T03:03:24.343Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "project-lunar"
+        ],
+        "aliases": [],
+        "source": [
+          "horizonfps-project-lunar",
+          "github-1178444571",
+          "horizonfps/project-lunar",
+          "https://github.com/horizonfps/project-lunar"
+        ],
+        "summary": [
+          "An open-source AI storytelling engine where every choice reshapes the world, with a four-tier memory pyramid, independent NPC minds, creativity-based combat, bilingual narration, and runtime LLM switching (README)."
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [
+          "Add RPG gameplay",
+          "tabletop mechanics",
+          "game master tools",
+          "RPG systems",
+          "Maintain long-term memory",
+          "durable memory",
+          "persistent memory",
+          "remember across chats",
+          "Model-agnostic",
+          "bring your own model",
+          "BYOM",
+          "provider independent",
+          "Multilingual",
+          "multiple languages",
+          "internationalized",
+          "cross-language support",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "project-lunar"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "horizonfps"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "hornysilicon-charsaver",
       "name": "Character Saver",
       "kind": "extension",
@@ -53144,7 +53312,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-14T05:11:03.072Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -93121,6 +93289,121 @@
           "SillyTavern"
         ],
         "compatibility": [
+          "Gemma",
+          "Google Gemma",
+          "Model-Agnostic",
+          "universal",
+          "any model",
+          "Chat Completion"
+        ],
+        "maintainers": [],
+        "relationships": []
+      }
+    },
+    {
+      "id": "reddit-1x5h8xt",
+      "name": "Universal Preset Voyage V51",
+      "kind": "preset",
+      "metadataStatus": "curated",
+      "sourceStatus": "manual",
+      "primaryFunction": "preset",
+      "summary": "Universal Preset Voyage V51 is a SillyTavern roleplay preset shared on Reddit as 'Universal Preset - Voyage v5.1,' its universal framing signaling broad intended use across characters and models (source title).",
+      "canonicalUrl": "https://www.reddit.com/r/SillyTavernAI/comments/1x5h8xt/universal_preset_voyage_v51/",
+      "catalogedAt": "2026-10-14T07:41:44.176Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "unsupported",
+        "riskLevel": null,
+        "freshness": "unsupported",
+        "currentSha": null,
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "activity": {
+        "latestSourceActivityAt": null,
+        "activeWeeks12": null,
+        "weeklyActivity": null,
+        "evidenceStatus": null,
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": null,
+      "repositorySizeKb": null,
+      "license": {
+        "status": "pending",
+        "label": "Pending",
+        "tooltip": "License review is pending for this source."
+      },
+      "attribution": null,
+      "preset": {
+        "version": null,
+        "publishedAt": null,
+        "artifactSizeBytes": null,
+        "modelFamilies": [
+          {
+            "id": "gemini",
+            "label": "Gemini",
+            "description": "Designed for Google Gemini models."
+          },
+          {
+            "id": "gemma",
+            "label": "Gemma",
+            "description": "Designed for Google Gemma models."
+          },
+          {
+            "id": "model-agnostic",
+            "label": "Model-Agnostic",
+            "description": "Designed to work across model families."
+          }
+        ],
+        "completionFormats": [
+          {
+            "id": "chat-completion",
+            "label": "Chat Completion",
+            "description": "Uses role-based chat messages."
+          }
+        ]
+      },
+      "refreshedAt": null,
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "Universal Preset Voyage V51"
+        ],
+        "aliases": [],
+        "source": [
+          "reddit-1x5h8xt",
+          "url-reddit-1x5h8xt",
+          "www.reddit.com/r/SillyTavernAI/comments/1x5h8xt/universal_preset_voyage_v51",
+          "https://www.reddit.com/r/SillyTavernAI/comments/1x5h8xt/universal_preset_voyage_v51/"
+        ],
+        "summary": [
+          "Universal Preset Voyage V51 is a SillyTavern roleplay preset shared on Reddit as 'Universal Preset - Voyage v5.1,' its universal framing signaling broad intended use across characters and models (source title)."
+        ],
+        "kind": [
+          "preset"
+        ],
+        "primaryFunction": [
+          "System Preset"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [
+          "Gemini",
+          "Google Gemini",
           "Gemma",
           "Google Gemma",
           "Model-Agnostic",
