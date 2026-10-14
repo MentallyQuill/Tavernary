@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "16da318c93eacadd394eb28fa76ea2a2fffe6349b57e1e1c9d7ff5c393d6cb61",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1198459430:skyjinxx-sillytavern-finalpromptviewer",
+      "inputDigest": "b047178850c2221286ed9604bfc95e798d90942da25ac99c734b1ac3bb8b3b06",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T04:08:43.483Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-14T03:53:43.483Z",
+  "completedAt": null
+}
