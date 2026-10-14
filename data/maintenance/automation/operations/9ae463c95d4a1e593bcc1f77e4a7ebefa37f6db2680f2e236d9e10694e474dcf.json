@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "9ae463c95d4a1e593bcc1f77e4a7ebefa37f6db2680f2e236d9e10694e474dcf",
+    "identity": {
+      "kind": "project",
+      "subject": "issue:870",
+      "inputDigest": "695a83561975805c24bca35ca4fd6b33e68e23fc165fb98b6134255d1d179e4f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "validated",
+    "createdAt": "2026-10-13T11:32:33.000Z",
+    "nextEligibleAt": "2026-10-15T00:47:01.375Z",
+    "expectedSha": "b09f25bd1cc6bc137cd42b98874eebf2aa52280c",
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "configuration",
+        "reasonCode": "authentication-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-14T00:47:01.375Z",
+  "completedAt": null
+}
