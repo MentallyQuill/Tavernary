@@ -31,6 +31,12 @@ const activeStatuses = new Set([
   "requested",
   "waiting",
 ]);
+const pendingWriterStatuses = new Set([
+  "queued",
+  "pending",
+  "requested",
+  "waiting",
+]);
 export function isInventoryWorkerActive(run) {
   return activeStatuses.has(run.status) || run.conclusion == null;
 }
@@ -114,7 +120,8 @@ export function recoverInventoryWorker(operation, input, runs) {
       !(
         Number.isSafeInteger(input.executingWriterRunId) &&
         input.executingWriterRunId > 0 &&
-        run.id === input.executingWriterRunId
+        (run.id === input.executingWriterRunId ||
+          pendingWriterStatuses.has(run.status))
       ),
   );
   const preparationActive = (input.runs ?? []).find((run) => {

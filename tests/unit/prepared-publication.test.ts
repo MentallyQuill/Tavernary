@@ -9,11 +9,14 @@ import {
   preparedResultFixture,
   preparedResultContextFixture,
   operationFixture,
+  AUTOMATION_NOW,
 } from "../helpers/automation-fixtures";
 import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
-function fixture() {
-  const context = preparedResultContextFixture();
-  const result = preparedResultFixture();
+import type { AutomationOperation } from "../../scripts/automation/operation.mjs";
+function fixture(
+  context = preparedResultContextFixture(),
+  result = preparedResultFixture(),
+) {
   let state: AutomationInventoryState = {
     root: process.cwd(),
     repository: result.repository,
@@ -117,6 +120,107 @@ test("a superseded input has no artifact download or canonical mutation", async 
   expect((await publishPreparedOperation(input.input)).waiting).toBe(1);
   expect(input.input.loadResult).not.toHaveBeenCalled();
   expect(input.input.commit).not.toHaveBeenCalled();
+});
+
+test("a requested Kit handoff publishes despite twenty older unrelated due operations", async () => {
+  const original = preparedResultContextFixture();
+  const operation = operationFixture({
+    identity: {
+      ...original.operation.identity,
+      kind: "kit",
+      subject: "issue:327",
+    },
+  });
+  const result = preparedResultFixture({
+    operationKey: operation.key,
+    kind: "kit",
+    producer: {
+      ...preparedResultFixture().producer,
+      workflow: ".github/workflows/apply-kit-submission.yml",
+    },
+    paths: ["data/snapshots/github/kits/github-42.json"],
+  });
+  const context = preparedResultContextFixture({
+    operation,
+    run: { ...original.run, path: result.producer.workflow },
+    currentState: {
+      ...original.currentState,
+      allowedPaths: result.files.map((file) => file.path),
+    },
+  });
+  const input = fixture(context, result);
+  const older = Array.from({ length: 20 }, (_, index) =>
+    operationFixture({
+      identity: {
+        ...operation.identity,
+        kind: "health",
+        subject: `maintenance:older-${index}`,
+      },
+      createdAt: new Date(
+        Date.parse(operation.createdAt) - (index + 1) * 60_000,
+      ).toISOString(),
+    }),
+  );
+  input.setState({
+    ...input.getState(),
+    operations: [...older, operation],
+  });
+  expect(await publishPreparedOperation(input.input)).toMatchObject({
+    published: 1,
+    waiting: 0,
+    regenerated: 0,
+    rejected: 0,
+  });
+  expect(input.input.loadResult).toHaveBeenCalledTimes(1);
+  expect(input.input.commit).toHaveBeenCalledTimes(1);
+  expect(input.input.commit).toHaveBeenCalledWith(
+    expect.objectContaining({ operationKeys: [operation.key] }),
+    expect.objectContaining({ operations: [...older, operation] }),
+  );
+});
+
+test.each<[string, Partial<AutomationOperation>]>([
+  [
+    "retry cooldown",
+    { nextEligibleAt: new Date(AUTOMATION_NOW + 60_000).toISOString() },
+  ],
+  ["active worker", { workerRunId: 701 }],
+  [
+    "permanent rejection",
+    {
+      retry: {
+        failure: { kind: "permanent", reasonCode: "validation-failed" },
+        transientAttempts: 0,
+        immediateAttempts: 0,
+      },
+    },
+  ],
+  [
+    "superseded input",
+    {
+      retry: {
+        failure: { kind: "superseded", reasonCode: "input-superseded" },
+        transientAttempts: 0,
+        immediateAttempts: 0,
+      },
+    },
+  ],
+  ["finalized operation", { stage: "finalized" }],
+])("a requested handoff cannot bypass %s", async (_reason, overrides) => {
+  const input = fixture();
+  input.setState({
+    ...input.getState(),
+    nowMs: AUTOMATION_NOW,
+    operations: [{ ...input.getState().operations[0], ...overrides }],
+  });
+  expect(await publishPreparedOperation(input.input)).toMatchObject({
+    published: 0,
+    waiting: 1,
+  });
+  expect(input.input.loadResult).not.toHaveBeenCalled();
+  expect(input.input.build).not.toHaveBeenCalled();
+  expect(input.input.commit).not.toHaveBeenCalled();
+  expect(input.input.persist).not.toHaveBeenCalled();
 });
 
 function batchFixture() {

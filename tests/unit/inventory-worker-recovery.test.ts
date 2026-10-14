@@ -49,6 +49,74 @@ test("a trusted queued writer beyond the wrapper lease prevents duplicate dispat
   expect(operation.stage).toBe("admitted");
   expect(planAutomationWorker(operation)).toEqual({ action: "wait" });
 });
+
+test.each([undefined, 0, -1, 1.5, Number.NaN])(
+  "pending writer intents remain blockers without an authenticated execution ID: %s",
+  (executingWriterRunId) => {
+    const operation = operationFixture();
+    recoverInventoryWorker(
+      operation,
+      {
+        receipts: [],
+        nowMs: AUTOMATION_NOW,
+        repository,
+        publisherActorId,
+        executingWriterRunId,
+        runs: [writerRun(operation.key)],
+      },
+      [],
+    );
+    expect(operation.workerRunId).toBe(701);
+    expect(planAutomationWorker(operation)).toEqual({ action: "wait" });
+  },
+);
+
+test.each(["in_progress", "unknown"])(
+  "another %s writer still blocks an authenticated recipient",
+  (status) => {
+    const operation = operationFixture();
+    recoverInventoryWorker(
+      operation,
+      {
+        receipts: [],
+        nowMs: AUTOMATION_NOW,
+        repository,
+        publisherActorId,
+        executingWriterRunId: 800,
+        runs: [writerRun(operation.key, { status })],
+      },
+      [],
+    );
+    expect(operation.workerRunId).toBe(701);
+    expect(planAutomationWorker(operation)).toEqual({ action: "wait" });
+  },
+);
+
+test.each(["queued", "in_progress"])(
+  "a %s preparation worker still blocks an authenticated recipient",
+  (status) => {
+    const operation = operationFixture();
+    const producer = writerRun(operation.key, {
+      path: ".github/workflows/automation-worker.yml",
+      display_title: `Automation ${operation.key}`,
+      status,
+    });
+    recoverInventoryWorker(
+      operation,
+      {
+        receipts: [],
+        nowMs: AUTOMATION_NOW,
+        repository,
+        publisherActorId,
+        executingWriterRunId: 800,
+        runs: [producer],
+      },
+      [producer],
+    );
+    expect(operation.workerRunId).toBe(701);
+    expect(planAutomationWorker(operation)).toEqual({ action: "wait" });
+  },
+);
 test.each([
   { actor: { id: 9, type: "Bot" } },
   { actor: { id: publisherActorId, type: "User" } },
