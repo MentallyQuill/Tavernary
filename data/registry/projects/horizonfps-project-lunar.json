@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "horizonfps-project-lunar",
+  "name": "project-lunar",
+  "kind": "frontend",
+  "summary": "An open-source AI storytelling engine where every choice reshapes the world, with a four-tier memory pyramid, independent NPC minds, creativity-based combat, bilingual narration, and runtime LLM switching (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1178444571",
+  "frontends": ["project-lunar"],
+  "primary_function": "frontend",
+  "tags": [
+    "add-rpg-gameplay",
+    "maintain-long-term-memory",
+    "model-agnostic",
+    "multilingual",
+    "preserve-story-continuity",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-10-14T03:03:24.343Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
