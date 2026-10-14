@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1ae0d178f5522963926da56e9567b6ea45ae5df31be9930fb02395a430f7e719",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1327103953:0cyris-sillytavern-imagegen",
+      "inputDigest": "ae534767015c9bfffa1eedeea9081933c7cf3089e0bb7106d2bfe5e4d8459dbe",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T05:18:05.284Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-14T05:03:05.284Z",
+  "completedAt": null
+}
