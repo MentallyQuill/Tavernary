@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f817852393080fd2b2e7f59f9883f5cad561a71d0d10ab55da662d2de2698e47",
+    "identity": {
+      "kind": "kit",
+      "subject": "issue:896",
+      "inputDigest": "1df19d1b8d7ecaffe8edd8e5ae91e95f6dcf6b41f25dc4185fd0f7353d5e0351",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "validated",
+    "createdAt": "2026-10-14T18:06:13.000Z",
+    "nextEligibleAt": "2026-10-14T23:13:13.478Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-14T23:07:51.036Z",
+  "completedAt": null
+}
