@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "21942b9271153dd5bdeb5d86829084cbbf64a256f2740d3e51dfd50c0c2ab453",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1287253091:vadash-extension-summaryception",
+      "inputDigest": "9ffba09bd1bd657dcb5853397cb0d0801e184ea60cf32034ac3ef40c9a2728c9",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T17:08:04.150Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "configuration",
+        "reasonCode": "budget-exhausted"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-14T17:08:04.150Z",
+  "completedAt": null
+}
