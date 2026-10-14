@@ -19,14 +19,13 @@ on:
         type: string
 
 permissions:
-  actions: write
-  issues: write
-  pull-requests: read
-  statuses: write
   contents: read
+  actions: read
+  issues: read
+  pull-requests: read
 
 concurrency:
-  group: project-validation-reconciliation
+  group: automation-controller
   cancel-in-progress: false
 
 jobs:
@@ -49,14 +48,14 @@ jobs:
           github.event.workflow_run.path == '.github/workflows/generate-project-submission.yml' ||
           github.event.workflow_run.path == '.github/workflows/generate-project-owner-request.yml'))))
     runs-on: ubuntu-latest
-    env:
-      TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
-      PROJECT_AUTO_PUBLICATION_ENABLED: ${{ vars.PROJECT_AUTO_PUBLICATION_ENABLED }}
+    timeout-minutes: 15
+    environment: publisher
     steps:
       - name: Check out trusted default branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: main
+          persist-credentials: false
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
@@ -69,7 +68,14 @@ jobs:
         run: >-
           gh run watch "$VALIDATION_RUN_ID" --repo "$GITHUB_REPOSITORY"
           --interval 5
-      - name: Reconcile generated project validations
+      - name: Create scoped controller dispatch token
+        id: controller-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-actions: write
+      - name: Wake the serialized canonical controller
+        run: node scripts/automation/controller-wake.mjs
         env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: npm run submissions:reconcile-validations
+          GH_TOKEN: ${{ steps.controller-token.outputs.token }}
