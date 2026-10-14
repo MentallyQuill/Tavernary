@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "177853d34b2a16abfe290f2fc48dd867361f9b7332c7413f38f0bdffef077b72",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1268541624:enerccio-sillytavern-autosummary",
+      "inputDigest": "86d7fadc0de9f1df9a6a539f294f3c14e65ea229a0c96ac0c8cdc278657c1734",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T04:08:43.483Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 4,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-14T03:53:43.483Z",
+  "completedAt": null
+}
