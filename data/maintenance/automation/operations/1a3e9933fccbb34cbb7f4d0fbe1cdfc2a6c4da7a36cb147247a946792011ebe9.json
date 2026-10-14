@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1a3e9933fccbb34cbb7f4d0fbe1cdfc2a6c4da7a36cb147247a946792011ebe9",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1180932701:mindbound-lumiscript",
+      "inputDigest": "c18cdaf1154aa7377d92cdcfee4ae99200a62878432ac601f981114a0e6757e6",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T05:18:05.284Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-14T05:03:05.284Z",
+  "completedAt": null
+}
