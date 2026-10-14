@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1692ede91620f3896b509dff5e61f33ffa3c00eabeec9498fa223932c4691e28",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1194042343:hibanan-extension-quietprofileselector",
+      "inputDigest": "62cef8e327866d480d53222e82dd6c6f212357f5445d29c7c41fdb9e0dbaf435",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T04:08:43.483Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-14T03:53:43.483Z",
+  "completedAt": null
+}

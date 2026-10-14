@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1f1ad7e0be8afafe04ef5da3078c7624e4c4c2e6c838ff0c9d4810dd87ac46d0",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1047697678:dfaker-st-wordrunner",
+      "inputDigest": "811c99bc6f23367506aed5a5fb47f459541849432be64ce2bb657f0a2d6c01f2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T17:00:32.751Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "configuration",
+        "reasonCode": "budget-exhausted"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-14T17:00:32.751Z",
+  "completedAt": null
+}

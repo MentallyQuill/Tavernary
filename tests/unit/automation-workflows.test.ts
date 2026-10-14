@@ -3,6 +3,7 @@ import { readdirSync } from "node:fs";
 import { expect, test } from "vitest";
 import { planAutomationWorker } from "../../scripts/automation/worker.mjs";
 import { discoverReportOperations } from "../../scripts/automation/report-operations.mjs";
+import { readProjectPublicationEnabled } from "../../scripts/automation/publication-setting.mjs";
 import { reportInventoryFixture } from "../helpers/automation-fixtures";
 import { parse } from "yaml";
 import { runInNewContext } from "node:vm";
@@ -171,6 +172,50 @@ test("the controller runs every fifteen minutes using trusted main code and boun
   expect(workflow).not.toContain("permission-contents: write");
 });
 
+test("project validation completions wake the coalesced canonical controller with scoped dispatch authority", () => {
+  const workflow = parse(
+    readFileSync(".github/workflows/reconcile-project-validations.yml", "utf8"),
+  );
+  expect(workflow.concurrency).toEqual({
+    group: "automation-controller",
+    "cancel-in-progress": false,
+  });
+  expect(workflow.permissions).toEqual({
+    contents: "read",
+    actions: "read",
+    issues: "read",
+    "pull-requests": "read",
+  });
+  const job = workflow.jobs.reconcile;
+  expect(job["timeout-minutes"]).toBe(15);
+  expect(job.environment).toBe("publisher");
+  const token = job.steps.find(
+    (step: { id?: string }) => step.id === "controller-token",
+  );
+  expect(token.with).toEqual({
+    "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
+    "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
+    "permission-actions": "write",
+  });
+  const wake = job.steps.find(
+    (step: { run?: string }) =>
+      step.run === "node scripts/automation/controller-wake.mjs",
+  );
+  expect(wake.env.GH_TOKEN).toBe("${{ steps.controller-token.outputs.token }}");
+  expect(
+    job.steps.some((step: { run?: string }) =>
+      step.run?.includes("submissions:reconcile-validations"),
+    ),
+  ).toBe(false);
+  const watcher = job.steps.find((step: { run?: string }) =>
+    step.run?.startsWith("gh run watch"),
+  );
+  expect(watcher.if).toBe(
+    "github.event_name == 'workflow_dispatch' && inputs.validation_run_id != ''",
+  );
+  expect(watcher.env.VALIDATION_RUN_ID).toBe("${{ inputs.validation_run_id }}");
+});
+
 test("operation preparation is bound to a key and limited to forty-five minutes", () => {
   const workflow = readFileSync(
     ".github/workflows/automation-worker.yml",
@@ -264,10 +309,102 @@ test("publication settings use a separate optional read-only App token without w
   expect(apply.env).toMatchObject({
     GH_TOKEN: "${{ steps.writer-token.outputs.token }}",
     TAVERNARY_PUBLICATION_SETTINGS_TOKEN:
-      "${{ steps.publication-settings-token.outputs.token }}",
+      "${{ steps.publication-settings-token.outputs.token || secrets.TAVERNARY_PUBLICATION_SETTINGS_PAT }}",
   });
   expect(steps.indexOf(reader)).toBeLessThan(steps.indexOf(apply));
+  expect(workflow.env).toBeUndefined();
+  expect(workflow.jobs.write.env).toBeUndefined();
+  for (const step of steps)
+    expect(
+      JSON.stringify(step).includes("TAVERNARY_PUBLICATION_SETTINGS_PAT"),
+    ).toBe(step === apply);
+  expect(
+    Object.keys(apply.env!).filter((name) =>
+      name.includes("PUBLICATION_SETTINGS"),
+    ),
+  ).toEqual(["TAVERNARY_PUBLICATION_SETTINGS_TOKEN"]);
 });
+
+test.each([
+  [
+    "App reader wins when both are available",
+    "app-reader-credential",
+    "pat-reader-credential",
+    "app-reader-credential",
+  ],
+  [
+    "PAT reader is used after App mint failure",
+    "",
+    "pat-reader-credential",
+    "pat-reader-credential",
+  ],
+  [
+    "PAT reader is used when App output is missing",
+    undefined,
+    "pat-reader-credential",
+    "pat-reader-credential",
+  ],
+  ["neither reader remains unavailable", "", "", ""],
+] as const)(
+  "publication settings credential selection: %s",
+  async (_name, appToken, pat, expected) => {
+    const workflow = parse(
+      readFileSync(".github/workflows/automation-writer.yml", "utf8"),
+    );
+    const apply = workflow.jobs.write.steps.find(
+      (step: { name?: string }) =>
+        step.name === "Apply current canonical operation",
+    );
+    const expression = apply.env.TAVERNARY_PUBLICATION_SETTINGS_TOKEN;
+    const selected = runInNewContext(
+      expression
+        .slice(3, -2)
+        .replace(
+          "steps.publication-settings-token",
+          'steps["publication-settings-token"]',
+        ),
+      {
+        steps: {
+          "publication-settings-token": { outputs: { token: appToken } },
+        },
+        secrets: { TAVERNARY_PUBLICATION_SETTINGS_PAT: pat },
+      },
+      { timeout: 1000 },
+    );
+    expect(selected).toBe(expected);
+    const requests: string[][] = [];
+    const enabled = readProjectPublicationEnabled({
+      repository: "MentallyQuill/Tavernary",
+      env: {
+        TAVERNARY_PUBLICATION_SETTINGS_TOKEN: selected,
+        GH_TOKEN: "canonical-writer-credential",
+        GITHUB_TOKEN: "workflow-credential",
+        PROJECT_AUTO_PUBLICATION_ENABLED: "true",
+      },
+      gh: async (args, input, credential) => {
+        requests.push(args);
+        expect(input).toBeUndefined();
+        expect(credential).toEqual({ token: expected });
+        return JSON.stringify({ value: "true" });
+      },
+    });
+    if (expected) {
+      await expect(enabled).resolves.toBe(true);
+      expect(requests).toEqual([
+        [
+          "api",
+          "repos/MentallyQuill/Tavernary/actions/variables/PROJECT_AUTO_PUBLICATION_ENABLED",
+        ],
+      ]);
+    } else {
+      await expect(enabled).rejects.toMatchObject({
+        code: "publisher-authentication-failed",
+      });
+      expect(requests).toEqual([]);
+    }
+  },
+);
+
 test("reconciled refreshes prepare one pinned data artifact and cannot use the legacy direct publisher", () => {
   const workflow = readFileSync(
     ".github/workflows/refresh-catalog.yml",

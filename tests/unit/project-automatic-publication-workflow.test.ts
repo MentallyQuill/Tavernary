@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { expect, test } from "vitest";
 import { parse } from "yaml";
 
-test("reconciles generated validation runs from trusted main code", async () => {
+test("wakes canonical validation reconciliation from trusted main code", async () => {
   const source = await readFile(
     ".github/workflows/reconcile-project-validations.yml",
     "utf8",
@@ -47,14 +47,13 @@ test("reconciles generated validation runs from trusted main code", async () => 
     },
   });
   expect(workflow.permissions).toEqual({
-    actions: "write",
-    issues: "write",
-    "pull-requests": "read",
-    statuses: "write",
     contents: "read",
+    actions: "read",
+    issues: "read",
+    "pull-requests": "read",
   });
   expect(workflow.concurrency).toEqual({
-    group: "project-validation-reconciliation",
+    group: "automation-controller",
     "cancel-in-progress": false,
   });
   expect(reconcile.if).toContain("github.event_name == 'schedule'");
@@ -115,13 +114,13 @@ test("reconciles generated validation runs from trusted main code", async () => 
   expect(steps).toEqual(
     expect.arrayContaining([
       expect.objectContaining({
-        env: { GITHUB_TOKEN: "${{ github.token }}" },
-        run: "npm run submissions:reconcile-validations",
+        env: { GH_TOKEN: "${{ steps.controller-token.outputs.token }}" },
+        run: "node scripts/automation/controller-wake.mjs",
       }),
     ]),
   );
   expect(source).not.toMatch(/\bnpm (?:ci|install)\b/u);
-  expect(source).not.toContain("secrets.");
+  expect(source).toContain("secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY");
 });
 
 test("publishes successful generated project transactions by exact SHA", async () => {

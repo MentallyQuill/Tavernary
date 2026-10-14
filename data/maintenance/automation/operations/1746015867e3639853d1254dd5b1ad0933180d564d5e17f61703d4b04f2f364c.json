@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1746015867e3639853d1254dd5b1ad0933180d564d5e17f61703d4b04f2f364c",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-960096638:sillytavern-extension-customsliders",
+      "inputDigest": "8f1f6681a8c1c4b0b3d337b9e332c3d93f65f9e130a9a6edbc17bffc846a9292",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T04:08:43.483Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-14T03:53:43.483Z",
+  "completedAt": null
+}

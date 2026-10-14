@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1ab4779c08be2a7f0095714c92c00f61a20134e0c1e0a4ce1a8dd1f1fda60f9e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1130337079:dmitryplyaskin-sillytavern-persona-management-extended",
+      "inputDigest": "fbc8fda96843069ec599dd85485c680408d858065fddd4317cc1f96647c06af2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T05:18:05.284Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 4,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-14T05:03:05.284Z",
+  "completedAt": null
+}

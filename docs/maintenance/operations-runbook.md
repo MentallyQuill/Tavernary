@@ -823,6 +823,44 @@ permission update in GitHub installation settings. Request a fresh writer run
 and verify its token-creation step succeeds. This failure does not mean the
 owner's CLI token expired; replacing it does not repair the App installation.
 
+Stale project-PR regeneration also needs a fresh read of
+`PROJECT_AUTO_PUBLICATION_ENABLED`. Its separate App reader requests Repository
+Variables at Read-only. App registration settings and an installation's granted
+permissions can differ: the owner-only
+`publisher-setting-read-verification.yml` probe compares the live App and
+installation records and tests explicit Variables read-token scopes. A rejected
+scope does not establish that the owner's displayed App setting is wrong.
+
+If the installation cannot mint that reader, configure a dedicated fine-grained
+personal access token as the `publisher` environment secret
+`TAVERNARY_PUBLICATION_SETTINGS_PAT`. Select resource owner `MentallyQuill`,
+**Only select repositories** with `Tavernary`, and Repository **Variables:
+Read-only**. Use the token generation page in
+[GitHub settings](https://github.com/settings/personal-access-tokens/new).
+Metadata read access is automatic. Choose an expiration and replace the secret
+before the token expires. Supply the token through the CLI's secret prompt:
+
+```powershell
+gh secret set TAVERNARY_PUBLICATION_SETTINGS_PAT --repo MentallyQuill/Tavernary --env publisher
+```
+
+The Apply step prefers its scoped App reader, then this dedicated credential.
+The reader credential is used only for the fixed publication-setting GET;
+canonical writer credentials and model quotas remain separate. An absent reader
+fails closed as `publisher-authentication-failed`. Keep owner CLI credentials out
+of this secret. Verify the installed reader through the isolated owner/main-only
+probe before requesting generation:
+
+```powershell
+gh workflow run publication-settings-reader-verification.yml --repo MentallyQuill/Tavernary --ref main
+```
+
+Require native success and a `true` publication-switch result. A successful read
+proves endpoint access; establish the token's full scope in its configuration.
+This credential does not remove existing refusal history or refund reservations.
+A Publisher-authentication cooldown requires the supported fresh owner force
+request, newer than its matching refusal, or normal retry eligibility.
+
 The writer also requires repository Checks permission at Read-only for native
 dependency CI evidence. Retain mode alone requests Workflows at Read and write:
 GitHub requires that permission when creating or publishing a release for an

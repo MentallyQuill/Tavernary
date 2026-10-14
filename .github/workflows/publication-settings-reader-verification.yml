@@ -1,0 +1,74 @@
+name: "Publisher: Verify dedicated publication settings reader"
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: publication-settings-reader-verification
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: >-
+      github.ref == 'refs/heads/main' && github.actor_id == 2625904
+    runs-on: ubuntu-latest
+    environment: publisher
+    timeout-minutes: 5
+    steps:
+      - name: Verify the publication switch with the dedicated read-only credential
+        env:
+          TAVERNARY_PUBLICATION_SETTINGS_PAT: ${{ secrets.TAVERNARY_PUBLICATION_SETTINGS_PAT }}
+        run: |
+          node <<'NODE'
+          const { spawnSync } = require("node:child_process");
+
+          function fail(reason, status) {
+            console.error(JSON.stringify({
+              event: "publication-settings-reader-failed",
+              reason,
+              ...(status ? { status } : {}),
+            }));
+            process.exitCode = 1;
+          }
+
+          function probe() {
+            const credential = process.env.TAVERNARY_PUBLICATION_SETTINGS_PAT;
+            if (typeof credential !== "string" || credential === "") return fail("missing-settings-reader");
+            const childEnv = { ...process.env, GH_TOKEN: credential, GH_HOST: "github.com", GH_PROMPT_DISABLED: "1" };
+            delete childEnv.GH_DEBUG;
+            delete childEnv.GITHUB_TOKEN;
+            delete childEnv.GH_ENTERPRISE_TOKEN;
+            delete childEnv.GITHUB_ENTERPRISE_TOKEN;
+            delete childEnv.TAVERNARY_PUBLICATION_SETTINGS_PAT;
+
+            const result = spawnSync("gh", [
+              "api", "--method", "GET",
+              "repos/MentallyQuill/Tavernary/actions/variables/PROJECT_AUTO_PUBLICATION_ENABLED",
+              "--jq", '.value == "true"',
+            ], {
+              env: childEnv,
+              encoding: "utf8",
+              timeout: 15000,
+              killSignal: "SIGKILL",
+              maxBuffer: 65536,
+              windowsHide: true,
+            });
+            if (result.error?.code === "ETIMEDOUT") return fail("request-timeout");
+            if (result.error || result.status !== 0 || result.signal) {
+              const match = typeof result.stderr === "string" ? result.stderr.match(/\(HTTP ([1-5]\d{2})\)/u) : null;
+              return fail("request-failed", match ? Number(match[1]) : undefined);
+            }
+            const value = typeof result.stdout === "string" ? result.stdout.trim() : null;
+            if (value === "false") return fail("publication-disabled");
+            if (value !== "true") return fail("invalid-setting-response");
+            console.log("true");
+          }
+
+          try {
+            probe();
+          } catch {
+            fail("request-failed");
+          }
+          NODE

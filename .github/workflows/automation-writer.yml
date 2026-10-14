@@ -107,7 +107,7 @@ jobs:
         run: node scripts/automation/writer-cli.mjs
         env:
           GH_TOKEN: ${{ steps.writer-token.outputs.token }}
-          TAVERNARY_PUBLICATION_SETTINGS_TOKEN: ${{ steps.publication-settings-token.outputs.token }}
+          TAVERNARY_PUBLICATION_SETTINGS_TOKEN: ${{ steps.publication-settings-token.outputs.token || secrets.TAVERNARY_PUBLICATION_SETTINGS_PAT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
           TAVERNARY_IMMUTABLE_RELEASES_ENABLED: ${{ vars.TAVERNARY_IMMUTABLE_RELEASES_ENABLED }}

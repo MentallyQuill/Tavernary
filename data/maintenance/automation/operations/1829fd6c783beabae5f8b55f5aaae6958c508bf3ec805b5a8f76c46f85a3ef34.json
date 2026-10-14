@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1829fd6c783beabae5f8b55f5aaae6958c508bf3ec805b5a8f76c46f85a3ef34",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1267774290:myanadi-risuai-lorebook-manager",
+      "inputDigest": "0097deed2f5e424d09d33af109cd0e24ce675aa690ad55c6474318128cdcd20e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T04:08:43.483Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 3,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-14T03:53:43.483Z",
+  "completedAt": null
+}

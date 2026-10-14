@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "17cc8688dfebd6f3983fafeb6627ef2636c027c58c754ddcd96f61c4369f20ca",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-747254693:lenanderson-sillytavern-lalib",
+      "inputDigest": "385a229c439d1e6ace5e83a3f21beaac890e074148e187d16bd959d27eb62c39",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T04:08:43.483Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-14T03:53:43.483Z",
+  "completedAt": null
+}

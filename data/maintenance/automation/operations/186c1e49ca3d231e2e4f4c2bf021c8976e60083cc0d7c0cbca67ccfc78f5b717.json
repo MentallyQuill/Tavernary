@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "186c1e49ca3d231e2e4f4c2bf021c8976e60083cc0d7c0cbca67ccfc78f5b717",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1267079391:ephemera02-sillyloresmith2",
+      "inputDigest": "d8d4aa8d73615233f69674c1d97657e72635f118883bc7dde5f4119ebfca2568",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T04:08:43.483Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 3,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-14T03:53:43.483Z",
+  "completedAt": null
+}

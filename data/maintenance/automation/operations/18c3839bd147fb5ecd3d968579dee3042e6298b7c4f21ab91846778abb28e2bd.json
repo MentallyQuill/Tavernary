@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "18c3839bd147fb5ecd3d968579dee3042e6298b7c4f21ab91846778abb28e2bd",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-830588458:splitclover-rewrite-extension",
+      "inputDigest": "80eac41c8af199829a9b8118f19683e893d5afd2f9b8510bc51f70384d06cf1c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T05:18:05.284Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-14T05:03:05.284Z",
+  "completedAt": null
+}

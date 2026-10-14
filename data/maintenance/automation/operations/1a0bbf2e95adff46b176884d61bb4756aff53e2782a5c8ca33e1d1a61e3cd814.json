@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1a0bbf2e95adff46b176884d61bb4756aff53e2782a5c8ca33e1d1a61e3cd814",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1389927390:matdredalia-chat-to-epub",
+      "inputDigest": "77cec0db72e46279e081308098e81851d338a18ca842cb864aa3401ef915efff",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T05:18:05.284Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-14T05:03:05.284Z",
+  "completedAt": null
+}

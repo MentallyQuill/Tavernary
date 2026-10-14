@@ -1,0 +1,22 @@
+{
+  "schema_version": 6,
+  "id": "reddit-1x5h8xt",
+  "name": "Universal Preset Voyage V51",
+  "kind": "preset",
+  "summary": "Universal Preset Voyage V51 is a SillyTavern roleplay preset shared on Reddit as 'Universal Preset - Voyage v5.1,' its universal framing signaling broad intended use across characters and models (source title).",
+  "metadata_status": "curated",
+  "source_id": "url-reddit-1x5h8xt",
+  "frontends": ["sillytavern"],
+  "primary_function": "preset",
+  "tags": [],
+  "model_families": ["gemini", "gemma", "model-agnostic"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-10-14T07:41:44.176Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

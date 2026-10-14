@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1b02bcf3adfee337ee5855f26cf65c1c21c3e7a4c8ee0de6e3ea83f9faabbade",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-711475454:elthial-sillytavern-map",
+      "inputDigest": "44704617f08d265175fd75b7786179a8f3558e1bdaeb1cce4008b461174773be",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T05:18:05.284Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 6,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-14T05:03:05.284Z",
+  "completedAt": null
+}

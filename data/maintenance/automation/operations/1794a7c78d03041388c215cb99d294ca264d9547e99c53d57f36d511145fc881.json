@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1794a7c78d03041388c215cb99d294ca264d9547e99c53d57f36d511145fc881",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1047697678:dfaker-st-wordrunner",
+      "inputDigest": "7231c9d652199291d2b2a920e9c4fcfe5a112fd8a08015d1d2880cabdeee601b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T04:08:43.483Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-14T03:53:43.483Z",
+  "completedAt": null
+}
