@@ -7,23 +7,23 @@
     "owner": "starlitcode",
     "name": "Lumiverse-Auto-Retry",
     "url": "https://github.com/starlitcode/Lumiverse-Auto-Retry",
-    "description": "Retries Al replies that  fail, come back empty, stall, or get cut off. A  Lumiverse Spindle extension",
+    "description": "Lumiverse extension that retries a reply when something goes wrong: an error, an empty reply, a stream that stalls, a reply cut off mid-sentence, or a refusal. Every check, phrase and retry note can be read and changed in its settings.",
     "default_branch": "stable",
-    "head_sha": "53e6e5015ee9dbf0a9631ac03b095246c874d7be",
-    "head_committed_at": "2026-10-08T12:58:09.000Z",
+    "head_sha": "1e40ddb30ae92d5b5170df5400dcf5a35b94df7e",
+    "head_committed_at": "2026-10-10T19:51:20.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-08T17:04:25.000Z",
-    "size_kb": 15311
+    "size_kb": 17763
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-08T12:58:09.000Z",
+    "latest_source_activity_at": "2026-10-10T18:42:49.000Z",
     "source_weeks": [
       {
         "week_start": "2026-10-05",
-        "latest_at": "2026-10-08T12:58:09.000Z",
+        "latest_at": "2026-10-10T18:42:49.000Z",
         "precision": "exact"
       },
       {
@@ -85,9 +85,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-08T14:39:08.801Z",
+    "baseline_completed_at": "2026-10-10T21:57:26.129Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "53e6e5015ee9dbf0a9631ac03b095246c874d7be"
+    "evidence_head_sha": "1e40ddb30ae92d5b5170df5400dcf5a35b94df7e"
   },
   "community": {
     "stars_count": 4,
@@ -100,7 +100,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-10T21:59:47.654Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -111,7 +111,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-10T21:57:26.129Z",
     "stale_since": null
   }
 }
