@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "16386d05678dafaca7f6d3cab0f99d9c07a5094e099ee1b9d660aeb0baf87a19",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1110894472:helpfultoolscompany-lorevault-extension",
+      "inputDigest": "a9c3b3eb45864e1c0450a995f7d0c71107a5c6f5b80bfa622bdc6a627d39749c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T04:08:43.483Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-14T03:53:43.483Z",
+  "completedAt": null
+}
