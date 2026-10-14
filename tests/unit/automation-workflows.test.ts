@@ -172,6 +172,50 @@ test("the controller runs every fifteen minutes using trusted main code and boun
   expect(workflow).not.toContain("permission-contents: write");
 });
 
+test("project validation completions wake the coalesced canonical controller with scoped dispatch authority", () => {
+  const workflow = parse(
+    readFileSync(".github/workflows/reconcile-project-validations.yml", "utf8"),
+  );
+  expect(workflow.concurrency).toEqual({
+    group: "automation-controller",
+    "cancel-in-progress": false,
+  });
+  expect(workflow.permissions).toEqual({
+    contents: "read",
+    actions: "read",
+    issues: "read",
+    "pull-requests": "read",
+  });
+  const job = workflow.jobs.reconcile;
+  expect(job["timeout-minutes"]).toBe(15);
+  expect(job.environment).toBe("publisher");
+  const token = job.steps.find(
+    (step: { id?: string }) => step.id === "controller-token",
+  );
+  expect(token.with).toEqual({
+    "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
+    "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
+    "permission-actions": "write",
+  });
+  const wake = job.steps.find(
+    (step: { run?: string }) =>
+      step.run === "node scripts/automation/controller-wake.mjs",
+  );
+  expect(wake.env.GH_TOKEN).toBe("${{ steps.controller-token.outputs.token }}");
+  expect(
+    job.steps.some((step: { run?: string }) =>
+      step.run?.includes("submissions:reconcile-validations"),
+    ),
+  ).toBe(false);
+  const watcher = job.steps.find((step: { run?: string }) =>
+    step.run?.startsWith("gh run watch"),
+  );
+  expect(watcher.if).toBe(
+    "github.event_name == 'workflow_dispatch' && inputs.validation_run_id != ''",
+  );
+  expect(watcher.env.VALIDATION_RUN_ID).toBe("${{ inputs.validation_run_id }}");
+});
+
 test("operation preparation is bound to a key and limited to forty-five minutes", () => {
   const workflow = readFileSync(
     ".github/workflows/automation-worker.yml",

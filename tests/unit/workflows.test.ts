@@ -297,12 +297,12 @@ test("uses category-prefixed workflow display names", async () => {
   }
 });
 
-test("passes the configured Publisher bot ID to validation reconciliation", async () => {
+test("authorizes the configured Publisher bot for validation controller wakes", async () => {
   const document = await workflow("reconcile-project-validations");
 
-  expect(document.jobs.reconcile.env).toMatchObject({
-    TAVERNARY_PUBLISHER_BOT_ID: "${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}",
-  });
+  expect(document.jobs.reconcile.if).toContain(
+    "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID",
+  );
 });
 
 test("identifies the object and action in every workflow run name", async () => {
@@ -588,6 +588,7 @@ test("uses the Publisher App identity for every protected workflow dispatch", as
       "import-tavernkeeper-reports.yml:import->automation-writer.yml",
       "publish-project-transaction.yml:publish->review-catalog-policy.yml",
       "reconcile-automation.yml:reconcile->automation-writer.yml",
+      "reconcile-project-validations.yml:reconcile->automation-writer.yml",
       "retry-fork-dependencies.yml:retry->automation-writer.yml",
       "retry-frontend-dependencies.yml:retry->automation-writer.yml",
       "retry-project-submission-enrichment.yml:retry->automation-writer.yml",
