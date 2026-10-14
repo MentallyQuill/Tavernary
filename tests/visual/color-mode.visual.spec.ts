@@ -6,7 +6,9 @@ for (const [name, width] of [
   ["desktop", 1440],
   ["mobile", 390],
 ] as const) {
-  test(`beveled color-mode switch in the ${name} header`, async ({ page }) => {
+  test(`utility strip color-mode switch in the ${name} header`, async ({
+    page,
+  }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto(sitePath());
     await expect(page.locator(".catalog-shell")).toHaveAttribute(

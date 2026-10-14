@@ -85,7 +85,7 @@ test("applies the remembered palette before hydration even when application scri
 });
 
 for (const width of [1440, 1300, 1299, 1051, 1050, 1024, 768, 760, 390, 320]) {
-  test(`keeps the contrast switch and Companion callout usable at ${width}px`, async ({
+  test(`keeps the utility strip controls usable at ${width}px`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height: 900 });
@@ -95,14 +95,14 @@ for (const width of [1440, 1300, 1299, 1051, 1050, 1024, 768, 760, 390, 320]) {
     await expect(toggle).toBeVisible();
     const companion = page.getByRole("link", { name: /^Tavernary Companion/ });
     await expect(companion).toBeVisible();
-    await expect(
-      companion.getByText(
-        "Extension for SillyTavern and ST-compatible frontends.",
-      ),
-    ).toBeVisible();
+    const description = companion.getByText(
+      "Extension for SillyTavern and ST-compatible frontends.",
+    );
+    if (width > 760) await expect(description).toBeVisible();
+    else await expect(description).toBeHidden();
     const companionBox = await companion.boundingBox();
     expect(companionBox).not.toBeNull();
-    expect(companionBox!.height).toBeGreaterThanOrEqual(44);
+    expect(companionBox!.height).toBeGreaterThanOrEqual(34);
     expect(companionBox!.x).toBeGreaterThanOrEqual(0);
     expect(companionBox!.x + companionBox!.width).toBeLessThanOrEqual(width);
     const switchBox = await toggle.boundingBox();
@@ -110,19 +110,33 @@ for (const width of [1440, 1300, 1299, 1051, 1050, 1024, 768, 760, 390, 320]) {
     expect(switchBox).not.toBeNull();
     expect(searchBox).not.toBeNull();
     expect(switchBox!.width).toBeGreaterThanOrEqual(44);
-    expect(switchBox!.height).toBeGreaterThanOrEqual(44);
+    expect(switchBox!.height).toBeGreaterThanOrEqual(34);
     expect(switchBox!.x).toBeGreaterThanOrEqual(
-      searchBox!.x + searchBox!.width,
+      companionBox!.x + companionBox!.width,
     );
     expect(switchBox!.x + switchBox!.width).toBeLessThanOrEqual(width);
     expect(
       Math.abs(
         switchBox!.y +
           switchBox!.height / 2 -
-          searchBox!.y -
-          searchBox!.height / 2,
+          companionBox!.y -
+          companionBox!.height / 2,
       ),
     ).toBeLessThanOrEqual(1);
+    expect(switchBox!.y + switchBox!.height).toBeLessThanOrEqual(searchBox!.y);
+    const brandBox = await page
+      .getByRole("link", { name: "Tavernary home" })
+      .boundingBox();
+    const actionsBox = await page
+      .getByRole("navigation", { name: "Site actions" })
+      .boundingBox();
+    expect(brandBox).not.toBeNull();
+    expect(actionsBox).not.toBeNull();
+    expect(brandBox!.x + brandBox!.width).toBeLessThanOrEqual(actionsBox!.x);
+    await expect(toggle).toContainText("Off");
+    await toggle.click();
+    await expect(toggle).toContainText("On");
+    await expect(toggle).toHaveAttribute("aria-checked", "true");
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth),
     ).toBeLessThanOrEqual(width);

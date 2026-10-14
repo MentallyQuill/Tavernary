@@ -1,34 +1,7 @@
-@media (max-width: 1299px) {
-  .site-header-with-companion {
-    grid-template-areas:
-      "brand search actions"
-      "companion companion companion";
-    grid-template-columns: 220px minmax(0, 1fr) auto;
-    row-gap: 10px;
-    padding-block: 10px;
-  }
-
-  .companion-callout-copy {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 4px 12px;
-  }
-}
-
 @media (min-width: 761px) and (max-width: 1050px) {
-  .site-header.site-header-with-companion {
-    grid-template-areas:
-      "brand actions"
-      "search search"
-      "companion companion";
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-}
-
-@media (min-width: 761px) and (max-width: 1050px) {
-  .site-header {
-    grid-template-columns: 175px minmax(0, 1fr) auto;
+  .site-header-main {
+    grid-template-columns: max-content minmax(0, 1fr) auto;
+    gap: 16px;
   }
 
   .catalog-layout {
@@ -54,28 +27,30 @@
     max-height: min(320px, 42vh);
   }
 
-  .site-header {
+  .site-utility-strip {
+    gap: 10px;
+    padding-inline: 13px;
+  }
+
+  .companion-utility-description {
+    display: none;
+  }
+
+  .color-mode-switch-label-full {
+    display: none;
+  }
+
+  .color-mode-switch-label-short {
+    display: inline;
+  }
+
+  .site-header-main {
     grid-template-areas:
       "brand actions"
       "search search";
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: 10px;
     padding: 11px 13px;
-    border-bottom-color: var(--color-divider);
-    background: var(--color-bg-header);
-  }
-
-  .site-header.site-header-with-companion {
-    grid-template-areas:
-      "brand actions"
-      "search search"
-      "companion companion";
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-
-  .companion-callout-copy {
-    display: grid;
-    gap: 3px;
   }
 
   .brand {
@@ -101,7 +76,7 @@
     padding-inline: 8px;
   }
 
-  .site-search-controls {
+  .site-search {
     grid-area: search;
     grid-column: 1 / -1;
     width: 100%;
@@ -591,23 +566,56 @@
   }
 }
 
-@media (max-width: 360px) {
-  .site-header.site-header-with-companion {
-    grid-template-areas:
-      "brand brand"
-      "actions actions"
-      "search search"
-      "companion companion";
-  }
-  .site-header {
-    grid-template-areas:
-      "brand brand"
-      "actions actions"
-      "search search";
+@media (max-width: 420px) {
+  .site-header-main {
+    column-gap: 8px;
   }
 
-  .header-actions {
-    justify-content: flex-end;
+  .brand-name {
+    font-size: 26px;
+  }
+
+  .header-actions a {
+    padding-inline: 7px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 360px) {
+  .site-header-main {
+    column-gap: 6px;
+  }
+
+  .brand {
+    gap: 5px;
+  }
+
+  .brand-logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .brand-name {
+    font-size: 20px;
+  }
+
+  .brand-tagline {
+    display: none;
+  }
+
+  .companion-utility-link {
+    gap: 5px;
+    font-size: 10.5px;
+  }
+
+  .companion-utility-icon,
+  .companion-utility-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .color-mode-switch {
+    gap: 6px;
   }
 }
 
@@ -623,6 +631,17 @@
 }
 
 @media (pointer: coarse) {
+  .companion-utility-link,
+  .color-mode-switch {
+    min-height: 44px;
+  }
+
+  .header-actions a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+
   .project-kit-control-hit {
     width: 44px;
     height: 44px;

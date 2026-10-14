@@ -24,11 +24,17 @@ export function ColorModeSwitch() {
         role="switch"
         type="button"
       >
+        <span aria-hidden="true" className="color-mode-switch-label">
+          <span className="color-mode-switch-label-full">
+            Enhanced contrast
+          </span>
+          <span className="color-mode-switch-label-short">Contrast</span>
+        </span>
         <span aria-hidden="true" className="color-mode-switch-track">
           <span className="color-mode-switch-thumb" />
         </span>
-        <span aria-hidden="true" className="color-mode-switch-label">
-          Enhanced contrast
+        <span aria-hidden="true" className="color-mode-switch-state">
+          {enabled ? "On" : "Off"}
         </span>
       </button>
     </Tooltip>

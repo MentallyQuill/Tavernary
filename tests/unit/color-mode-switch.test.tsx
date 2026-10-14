@@ -25,8 +25,10 @@ test("enables enhanced contrast with its switch", async () => {
   const toggle = screen.getByRole("switch", { name: "Enhanced contrast" });
 
   expect(toggle).toHaveTextContent("Enhanced contrast");
+  expect(toggle).toHaveTextContent("Off");
   expect(toggle).toHaveAttribute("aria-checked", "false");
   await user.click(toggle);
+  expect(toggle).toHaveTextContent("On");
   expect(toggle).toHaveAttribute("aria-checked", "true");
   expect(document.documentElement).toHaveAttribute(
     "data-color-mode",
