@@ -17,6 +17,67 @@ jobs:
     environment: publisher
     timeout-minutes: 5
     steps:
+      - name: Inspect current Publisher installation grants
+        env:
+          PUBLISHER_CLIENT_ID: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
+          PUBLISHER_PRIVATE_KEY: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+        run: |
+          node <<'NODE'
+          const { sign } = require("node:crypto");
+
+          async function inspectInstallation() {
+            const now = Math.floor(Date.now() / 1000);
+            const header = Buffer.from(JSON.stringify({ alg: "RS256", typ: "JWT" })).toString("base64url");
+            const payload = Buffer.from(JSON.stringify({
+              iat: now - 60,
+              exp: now + 300,
+              iss: process.env.PUBLISHER_CLIENT_ID,
+            })).toString("base64url");
+            const unsigned = `${header}.${payload}`;
+            const privateKey = process.env.PUBLISHER_PRIVATE_KEY.replaceAll("\\n", "\n");
+            const signature = sign("RSA-SHA256", Buffer.from(unsigned), privateKey).toString("base64url");
+            const jwt = `${unsigned}.${signature}`;
+            const response = await fetch("https://api.github.com/repos/MentallyQuill/Tavernary/installation", {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${jwt}`,
+                Accept: "application/vnd.github+json",
+                "X-GitHub-Api-Version": "2022-11-28",
+                "User-Agent": "Tavernary-Publisher-Installation-Probe",
+              },
+              redirect: "error",
+              signal: AbortSignal.timeout(15000),
+            });
+            if (!response.ok) {
+              console.error(`Installation metadata read failed (HTTP ${response.status}).`);
+              process.exitCode = 1;
+              return;
+            }
+            const installation = await response.json();
+            if (!Number.isSafeInteger(installation.id) || installation.id <= 0 ||
+                !Number.isSafeInteger(installation.app_id) || installation.app_id <= 0 ||
+                typeof installation.account?.login !== "string" ||
+                !/^[a-z\d][a-z\d-]{0,38}$/iu.test(installation.account.login) ||
+                !installation.permissions || typeof installation.permissions !== "object" ||
+                Array.isArray(installation.permissions)) {
+              throw new Error("Invalid installation metadata");
+            }
+            const permissions = Object.fromEntries(Object.entries(installation.permissions).filter(
+              ([name, access]) => /^[a-z][a-z\d_]*$/u.test(name) && ["read", "write", "admin"].includes(access),
+            ));
+            console.log(JSON.stringify({
+              installation_id: installation.id,
+              app_id: installation.app_id,
+              account_login: installation.account.login,
+              permissions,
+            }));
+          }
+
+          inspectInstallation().catch(() => {
+            console.error("Installation metadata read failed.");
+            process.exitCode = 1;
+          });
+          NODE
       - name: Create scoped publication settings read token
         id: reader-token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
