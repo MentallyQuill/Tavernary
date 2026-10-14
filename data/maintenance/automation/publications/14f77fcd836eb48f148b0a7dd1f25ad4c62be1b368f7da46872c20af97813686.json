@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "14f77fcd836eb48f148b0a7dd1f25ad4c62be1b368f7da46872c20af97813686",
+    "identity": {
+      "kind": "refresh",
+      "subject": "source:github-1205995441",
+      "inputDigest": "7317a784c05582b2f30bbbc818eeeac1beb625893419e62fc4e27364e9f8fe43",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1205995441",
+    "identity": "github:1205995441"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/refresh-catalog.yml",
+    "runId": 38420673306,
+    "sourceSha": "24602ab744d4c7ae2f972d894c33325a084a24d9"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/github/github-1205995441.json",
+      "sha256": "aa2adc32f1635e400564b270c0b5907f240ee646016b53fe1e645f277524cde6",
+      "gitBlobSha": "48b49fdcae3624f7177eddce893812fde8352f9f"
+    }
+  ]
+}
