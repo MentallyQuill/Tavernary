@@ -142,7 +142,7 @@ export function discoverRequestedGeneration(input, request) {
         (value) =>
           value.identity.kind === request.kind &&
           value.identity.subject === `issue:${request.issueNumber}` &&
-          value.stage === "admitted",
+          ["admitted", "generated", "validated"].includes(value.stage),
       ) ?? null
     );
   const producer =

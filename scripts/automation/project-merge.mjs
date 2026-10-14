@@ -67,6 +67,7 @@ export async function loadProjectMergePlan({ state, operation, gh }) {
     transaction.producer !== producer ||
     transaction.policy_version !== operation.identity.policyVersion ||
     transaction.generated_head_sha !== operation.expectedSha ||
+    pull.head.sha !== operation.expectedSha ||
     fingerprintProjectPublicationInput({
       actor: transaction.actor,
       inputDigest: transaction.input_digest,

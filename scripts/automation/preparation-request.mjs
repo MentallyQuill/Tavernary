@@ -271,7 +271,9 @@ export function planPreparationRequest({
         (operation) =>
           operation.identity.kind === kind &&
           operation.identity.subject === `issue:${issueNumber}` &&
-          operation.stage === (generation ? "admitted" : "validated") &&
+          (generation
+            ? ["admitted", "generated", "validated"].includes(operation.stage)
+            : operation.stage === "validated") &&
           operation.retry?.failure.kind !== "permanent" &&
           operation.workerRunId === null,
       );
