@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "195872d7cad37804f5d5c75ce13423c5d153769acaaf66f325192de5de1c4502",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1069371232:tydorius-st-characterpreview",
+      "inputDigest": "4ddaaa4b19fae9a246f085ed9e056bf9b62464bd0035436c5e17f21d7d765279",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T05:18:05.284Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 7,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-14T05:03:05.284Z",
+  "completedAt": null
+}
