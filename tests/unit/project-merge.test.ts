@@ -76,7 +76,13 @@ function fixture() {
       return JSON.stringify({ id: 42, owner: { id: 1, type: "User" } });
     throw new Error(`Unexpected request ${path}`);
   });
-  return { state, operation, gh, input };
+  return {
+    state,
+    operation,
+    gh,
+    input,
+    env: { TAVERNARY_PUBLICATION_SETTINGS_TOKEN: "fixture-read-token" },
+  };
 }
 
 function writerEnv(state: AutomationInventoryState) {
@@ -89,6 +95,7 @@ function writerEnv(state: AutomationInventoryState) {
     GITHUB_WORKFLOW_REF: `${state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
     GITHUB_TOKEN: "test-status-token",
     GH_TOKEN: "test-publisher-token",
+    TAVERNARY_PUBLICATION_SETTINGS_TOKEN: "fixture-read-token",
   };
 }
 
@@ -151,6 +158,95 @@ test("the production merge adapter requires exact CI, numeric Publisher custody,
   input.input.issues[0].labels.pop();
   input.input.pulls[0].user.id = 99;
   expect((await loadProjectMergePlan(input)).action).toBe("reject");
+});
+
+test("only the fresh publication-setting GET receives the read credential", async () => {
+  const input = fixture();
+  expect((await loadProjectMergePlan(input)).action).toBe("merge");
+  expect(input.gh.mock.calls[0]).toEqual([
+    [
+      "api",
+      `repos/${input.state.repository}/actions/variables/PROJECT_AUTO_PUBLICATION_ENABLED`,
+    ],
+    undefined,
+    { token: "fixture-read-token" },
+  ]);
+  expect(input.gh.mock.calls.slice(1).every((call) => call.length === 1)).toBe(
+    true,
+  );
+});
+
+test("missing publication read authority never falls back to the write token or configured snapshot", async () => {
+  const input = fixture();
+  await expect(
+    loadProjectMergePlan({
+      ...input,
+      env: {
+        GH_TOKEN: "fixture-write-token",
+        PROJECT_AUTO_PUBLICATION_ENABLED: "true",
+      },
+    }),
+  ).rejects.toMatchObject({ code: "publisher-authentication-failed" });
+  expect(input.gh).not.toHaveBeenCalled();
+});
+
+test.each([401, 403])(
+  "a publication-setting HTTP %s failure identifies Publisher custody rather than model-provider authentication",
+  async (status) => {
+    const input = fixture();
+    const error = Object.assign(new Error(`gh api failed (HTTP ${status})`), {
+      status,
+      headers: { "x-ratelimit-reset": "123" },
+    });
+    input.gh.mockRejectedValue(error);
+    await expect(loadProjectMergePlan(input)).rejects.toMatchObject({
+      code: "publisher-authentication-failed",
+      status,
+      headers: error.headers,
+    });
+  },
+);
+
+test("publication-setting secondary rate limits retain their existing backoff classification", async () => {
+  const input = fixture();
+  const error = Object.assign(
+    new Error("gh api failed: secondary rate limit (HTTP 403)"),
+    { code: "provider-rate-limited", status: 403 },
+  );
+  input.gh.mockRejectedValue(error);
+  await expect(loadProjectMergePlan(input)).rejects.toBe(error);
+  expect(error.code).toBe("provider-rate-limited");
+});
+
+test("project reconciliation preserves the exact publication reader authentication failure", async () => {
+  const input = fixture();
+  input.state.operations[0].stage = "generated";
+  const error = Object.assign(
+    new Error("gh api publication setting failed (HTTP 403)"),
+    { status: 403, headers: { "x-ratelimit-reset": "123" } },
+  );
+  input.gh.mockRejectedValue(error);
+  const request = vi.fn(async (path: string) => {
+    if (path === `/repos/${input.state.repository}`)
+      return { default_branch: "main" };
+    if (path.endsWith("/pulls/84")) return input.input.pulls[0];
+    throw new Error(`Unexpected reconciliation request ${path}`);
+  });
+  await expect(
+    runProjectWriterReconciliation({
+      operationKey: input.operation.key,
+      env: writerEnv(input.state),
+      load: async () => input.state,
+      gh: input.gh,
+      request,
+    }),
+  ).rejects.toBe(error);
+  expect(error).toMatchObject({
+    code: "publisher-authentication-failed",
+    status: 403,
+    headers: { "x-ratelimit-reset": "123" },
+  });
+  expect(request).toHaveBeenCalledTimes(2);
 });
 
 test("a head changed after inventory loses custody before regeneration is planned", async () => {

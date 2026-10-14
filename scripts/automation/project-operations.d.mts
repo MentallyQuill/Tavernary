@@ -51,6 +51,7 @@ export interface ProjectInventoryInput {
   nowMs: number;
   repository?: string;
   defaultBranch?: string;
+  executingWriterRunId?: number;
   resolvedDependencies?: Set<number>;
   deferredRetries?: Map<number, string>;
 }
@@ -64,6 +65,7 @@ export function discoverRequestedGeneration(
     kind: "project" | "owner-request";
     ownerAuthorized: boolean;
     createdAt?: string;
+    forceRegeneration?: boolean;
   },
 ): AutomationOperation | null;
 export function projectIssueMatchesTransaction(input: {

@@ -73,7 +73,11 @@ export interface KitReconciliationInput {
   trustedEditors?: import("../maintenance/trusted-editor-authority.mjs").TrustedEditorRegistry;
 }
 
-export type GhRunner = (args: string[], stdin?: string) => Promise<string>;
+export type GhRunner = (
+  args: string[],
+  stdin?: string,
+  options?: { token?: string },
+) => Promise<string>;
 
 export function classifyKitSubmissionHistory(
   input: KitReconciliationInput,
@@ -112,12 +116,16 @@ export function parseReconciliationArgs(args: string[]): {
 export function executeGh(
   args: string[],
   stdin?: string,
-  options?: { includeRateLimitHeaders?: boolean; binary?: false },
+  options?: {
+    includeRateLimitHeaders?: boolean;
+    binary?: false;
+    token?: string;
+  },
 ): Promise<string>;
 export function executeGh(
   args: string[],
   stdin: string | undefined,
-  options: { includeRateLimitHeaders?: boolean; binary: true },
+  options: { includeRateLimitHeaders?: boolean; binary: true; token?: string },
 ): Promise<Uint8Array>;
 export function parseGithubCliResponse(
   stdout: Uint8Array | string,

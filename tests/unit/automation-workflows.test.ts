@@ -228,6 +228,46 @@ test("the canonical writer queues receipt mutations and mints its write token af
   );
   expect(writer).toContain("node scripts/automation/writer-cli.mjs");
 });
+
+test("publication settings use a separate optional read-only App token without widening writer custody", () => {
+  const workflow = parse(
+    readFileSync(".github/workflows/automation-writer.yml", "utf8"),
+  );
+  const steps = workflow.jobs.write.steps as Array<{
+    id?: string;
+    name?: string;
+    uses?: string;
+    with?: Record<string, unknown>;
+    env?: Record<string, unknown>;
+    "continue-on-error"?: boolean;
+  }>;
+  const writer = steps.find((step) => step.id === "writer-token")!;
+  const reader = steps.find(
+    (step) => step.id === "publication-settings-token",
+  )!;
+  expect(reader).toMatchObject({
+    "continue-on-error": true,
+    uses: writer.uses,
+    with: {
+      "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
+      "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
+      "permission-actions-variables": "read",
+    },
+  });
+  expect(
+    Object.keys(reader.with!).filter((key) => key.startsWith("permission-")),
+  ).toEqual(["permission-actions-variables"]);
+  expect(writer.with).not.toHaveProperty("permission-actions-variables");
+  const apply = steps.find(
+    (step) => step.name === "Apply current canonical operation",
+  )!;
+  expect(apply.env).toMatchObject({
+    GH_TOKEN: "${{ steps.writer-token.outputs.token }}",
+    TAVERNARY_PUBLICATION_SETTINGS_TOKEN:
+      "${{ steps.publication-settings-token.outputs.token }}",
+  });
+  expect(steps.indexOf(reader)).toBeLessThan(steps.indexOf(apply));
+});
 test("reconciled refreshes prepare one pinned data artifact and cannot use the legacy direct publisher", () => {
   const workflow = readFileSync(
     ".github/workflows/refresh-catalog.yml",

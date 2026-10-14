@@ -1354,6 +1354,104 @@ async function freshOwnerBudgetCooldownFixture() {
   return { ...f, run, receipt, env, current };
 }
 
+async function freshOwnerPublisherPrCooldownFixture() {
+  const f = await freshOwnerBudgetCooldownFixture();
+  const p = projectInventoryFixture({ generatedPull: {}, validationRun: {} });
+  Object.assign(f.state.remote, {
+    issues: p.issues,
+    pulls: p.pulls,
+    runs: p.runs,
+  });
+  const current = discoverProjectOperations({ ...p, nowMs: f.state.nowMs })[0];
+  const receipt = {
+    ...f.receipt,
+    operation: {
+      ...current,
+      nextEligibleAt: f.receipt.operation.nextEligibleAt,
+      retry: {
+        ...f.receipt.operation.retry,
+        failure: {
+          kind: "configuration" as const,
+          reasonCode: "publisher-authentication-failed" as const,
+        },
+      },
+    },
+  };
+  f.state.receipts = [receipt];
+  f.state.operations = [receipt.operation];
+  f.run.display_title = "Project #42: Request review PR force=true";
+  return { ...f, p, current, receipt };
+}
+
+test.each([false, true])(
+  "native Publisher preparation excludes its executing writer but preserves a different active peer (%s)",
+  async (peer) => {
+    const f = await freshOwnerBudgetCooldownFixture();
+    f.state.receipts = [];
+    f.state.operations = [f.current];
+    f.state.executingWriterRunId = 810;
+    f.run.actor = { id: f.state.publisherActorId, type: "Bot" };
+    f.env.GITHUB_ACTOR_ID = String(f.state.publisherActorId);
+    const currentWriter = {
+      id: 810,
+      path: ".github/workflows/automation-writer.yml",
+      event: "workflow_dispatch",
+      head_branch: "main",
+      head_sha: String(f.state.local.revision),
+      head_repository: { full_name: f.state.repository },
+      actor: { id: f.state.publisherActorId, type: "Bot" },
+      display_title: `Automation write prepare ${f.current.key}`,
+      status: "in_progress",
+      conclusion: null,
+      created_at: new Date(f.state.nowMs - 500).toISOString(),
+    };
+    f.state.remote.runs = [
+      currentWriter,
+      ...(peer ? [{ ...currentWriter, id: 811 }] : []),
+    ];
+    const beforeBudget = structuredClone(f.state.local.modelBudget);
+    const commit = vi.fn(
+      async (input: { files: Array<{ content: string }> }) => {
+        f.state.local.modelBudget = JSON.parse(input.files[0].content);
+        return { sha: String(f.state.local.revision) };
+      },
+    );
+    const dispatch = vi.fn(async () => ({ runId: 700, workflow: f.run.path }));
+    const result = await runModelWriterPreparation({
+      operationKey: f.current.key,
+      requestRunId: f.run.id,
+      env: f.env,
+      gh: async (args) => {
+        if (args[1] !== `repos/${f.state.repository}/actions/runs/${f.run.id}`)
+          throw new Error("Unexpected native preparation request");
+        return JSON.stringify(f.run);
+      },
+      load: async () => f.state,
+      commit,
+      dispatch,
+      isRequestAncestor: () => true,
+      persistFailure: vi.fn(async () => {}),
+    });
+    if (peer) {
+      expect(result).toEqual({ status: "superseded" });
+      expect(commit).not.toHaveBeenCalled();
+      expect(dispatch).not.toHaveBeenCalled();
+      expect(f.state.local.modelBudget).toEqual(beforeBudget);
+    } else {
+      expect(result).toMatchObject({ status: "dispatched", runId: 700 });
+      expect(dispatch).toHaveBeenCalledOnce();
+      expect(validateModelBudgetState(f.state.local.modelBudget).days).toEqual([
+        { day: "2026-10-13", requests: 4, tokens: 195000 },
+      ]);
+      expect(
+        validateModelBudgetState(f.state.local.modelBudget).tickets.every(
+          (ticket) => ticket.producer?.runId === 700,
+        ),
+      ).toBe(true);
+    }
+  },
+);
+
 test("a newer native owner request recovers only its stale budget cooldown and retains retry history", async () => {
   const f = await freshOwnerBudgetCooldownFixture();
   const request = requests.parseGenerationOwnerRequest(
@@ -1371,6 +1469,166 @@ test("a newer native owner request recovers only its stale budget cooldown and r
   });
   expect(f.receipt).toEqual(before);
 });
+
+test("a fresh forced owner request recovers its Publisher cooldown without changing refusal history or budget charges", async () => {
+  const f = await freshOwnerBudgetCooldownFixture();
+  f.run.display_title = "Project #42: Request review PR force=true";
+  f.receipt.operation.retry.failure.reasonCode =
+    "publisher-authentication-failed" as never;
+  const request = requests.parseGenerationOwnerRequest(
+    f.run,
+    f.state.repository,
+    f.state.publisherActorId,
+  )!;
+  const beforeReceipt = structuredClone(f.receipt);
+  const beforeBudget = structuredClone(f.state.local.modelBudget);
+  expect(requests.generationRequestOperation(f.state, request)).toMatchObject({
+    key: f.current.key,
+    stage: "admitted",
+    expectedSha: f.current.expectedSha,
+    nextEligibleAt: null,
+    retry: beforeReceipt.operation.retry,
+  });
+  expect(f.receipt).toEqual(beforeReceipt);
+  expect(f.state.local.modelBudget).toEqual(beforeBudget);
+});
+
+test("forced Publisher recovery retains the validated generated PR head and its exact refusal tuple", async () => {
+  const f = await freshOwnerPublisherPrCooldownFixture();
+  const request = requests.parseGenerationOwnerRequest(
+    f.run,
+    f.state.repository,
+    f.state.publisherActorId,
+  )!;
+  const beforeReceipt = structuredClone(f.receipt);
+  expect(f.current.stage).toBe("validated");
+  expect(requests.generationRequestOperation(f.state, request)).toMatchObject({
+    key: f.current.key,
+    stage: "validated",
+    expectedSha: f.p.pulls[0].head.sha,
+    nextEligibleAt: null,
+    retry: f.receipt.operation.retry,
+  });
+  expect(f.state.receipts).toEqual([beforeReceipt]);
+});
+
+test.each(["force-false", "nonowner", "older", "newer-refusal"] as const)(
+  "validated Publisher recovery preserves the generated head and %s cooldown",
+  async (variant) => {
+    const f = await freshOwnerPublisherPrCooldownFixture();
+    if (variant === "force-false" || variant === "nonowner")
+      f.run.display_title = "Project #42: Request review PR force=false";
+    if (variant === "nonowner")
+      f.run.actor = { id: f.state.publisherActorId, type: "Bot" };
+    if (variant === "older")
+      f.run.created_at = new Date(
+        Date.parse(f.receipt.updatedAt) - 1000,
+      ).toISOString();
+    if (variant === "newer-refusal")
+      f.receipt.updatedAt = new Date(f.state.nowMs).toISOString();
+    const request = requests.parseGenerationOwnerRequest(
+      f.run,
+      f.state.repository,
+      f.state.publisherActorId,
+    )!;
+    expect(requests.generationRequestOperation(f.state, request)).toMatchObject(
+      {
+        key: f.current.key,
+        stage: "validated",
+        expectedSha: f.p.pulls[0].head.sha,
+        nextEligibleAt: f.receipt.operation.nextEligibleAt,
+        retry: f.receipt.operation.retry,
+      },
+    );
+  },
+);
+
+test.each(["head-sha", "receipt-stage", "receipt-head"] as const)(
+  "owner reconstruction cannot discard a Publisher refusal with a mismatched %s tuple",
+  async (variant) => {
+    const f = await freshOwnerPublisherPrCooldownFixture();
+    if (variant === "head-sha")
+      f.state.remote.pulls[0].head.sha = "d".repeat(40);
+    if (variant === "receipt-stage") f.receipt.operation.stage = "generated";
+    if (variant === "receipt-head")
+      f.receipt.operation.expectedSha = "d".repeat(40);
+    const request = requests.parseGenerationOwnerRequest(
+      f.run,
+      f.state.repository,
+      f.state.publisherActorId,
+    )!;
+    const beforeReceipt = structuredClone(f.receipt);
+    expect(requests.generationRequestOperation(f.state, request)).toBeNull();
+    expect(f.state.receipts).toEqual([beforeReceipt]);
+  },
+);
+
+test.each([
+  "force-false",
+  "missing-force",
+  "nonowner",
+  "older",
+  "equal",
+  "missing-time",
+  "invalid-time",
+  "noncanonical-time",
+  "future",
+  "generic-authentication",
+  "provider-authentication",
+  "newer-refusal",
+  "different-issue",
+  "different-kind",
+] as const)(
+  "forced owner Publisher recovery preserves %s refusal authority",
+  async (variant) => {
+    const f = await freshOwnerBudgetCooldownFixture();
+    f.run.display_title = "Project #42: Request review PR force=true";
+    f.receipt.operation.retry.failure.reasonCode =
+      "publisher-authentication-failed" as never;
+    if (variant === "force-false")
+      f.run.display_title = "Project #42: Request review PR force=false";
+    if (variant === "older")
+      f.run.created_at = new Date(
+        Date.parse(f.receipt.updatedAt) - 1000,
+      ).toISOString();
+    if (variant === "equal") f.run.created_at = f.receipt.updatedAt;
+    if (variant === "missing-time") Reflect.deleteProperty(f.run, "created_at");
+    if (variant === "invalid-time") f.run.created_at = "2026-02-30T23:12:00Z";
+    if (variant === "future")
+      f.run.created_at = new Date(f.state.nowMs + 1000).toISOString();
+    if (variant === "generic-authentication")
+      f.receipt.operation.retry.failure.reasonCode =
+        "authentication-unavailable" as never;
+    if (variant === "provider-authentication")
+      f.receipt.operation.retry.failure.reasonCode =
+        "provider-authentication-failed" as never;
+    if (variant === "newer-refusal")
+      f.receipt.updatedAt = new Date(f.state.nowMs).toISOString();
+    const request = requests.parseGenerationOwnerRequest(
+      f.run,
+      f.state.repository,
+      f.state.publisherActorId,
+    )!;
+    if (variant === "noncanonical-time")
+      request.createdAt = request.createdAt!.replace(".000Z", "Z");
+    if (variant === "missing-force")
+      Reflect.deleteProperty(request, "forceRegeneration");
+    if (variant === "nonowner") request.ownerAuthorized = false;
+    if (variant === "different-issue") request.issueNumber = 43;
+    if (variant === "different-kind") request.kind = "owner-request";
+    const beforeReceipt = structuredClone(f.receipt);
+    const beforeBudget = structuredClone(f.state.local.modelBudget);
+    const recovered = requests.generationRequestOperation(f.state, request);
+    if (variant === "different-issue" || variant === "different-kind")
+      expect(recovered).toBeNull();
+    else
+      expect(recovered?.nextEligibleAt).toBe(
+        f.receipt.operation.nextEligibleAt,
+      );
+    expect(f.receipt).toEqual(beforeReceipt);
+    expect(f.state.local.modelBudget).toEqual(beforeBudget);
+  },
+);
 
 test.each([
   "older",
@@ -1470,68 +1728,75 @@ test("a fresh owner request reserves ordinary allowance without refunding an old
   ).toHaveLength(2);
 });
 
-test("a genuine quota denial after fresh owner recovery persists a newer refusal that blocks replay", async () => {
-  const f = await freshOwnerBudgetCooldownFixture();
-  const exhausted = reserveModelBudget(
-    validateModelBudgetState(f.state.local.modelBudget),
-    {
-      operationKey: "f".repeat(64),
-      model: "primary",
-      requestCount: 40,
-      requestedTokens: 200000,
-    },
-    { nowMs: f.state.nowMs },
-  );
-  if (!exhausted.allowed) throw new Error("Invalid exhausted fixture");
-  f.state.local.modelBudget = exhausted.state;
-  const beforeBudget = structuredClone(exhausted.state);
-  const persist = vi
-    .spyOn(githubInventory, "persistGithubAutomationReceipt")
-    .mockImplementation(async ({ receipt }) => {
-      f.state.receipts = [receipt];
-      f.state.operations = [receipt.operation];
-    });
-  const commit = vi.fn(async () => ({ sha: String(f.state.local.revision) }));
-  const dispatch = vi.fn(async () => ({ runId: 700, workflow: f.run.path }));
-  const input = {
-    operationKey: f.current.key,
-    requestRunId: f.run.id,
-    env: f.env,
-    gh: async () => JSON.stringify(f.run),
-    load: async () => f.state,
-    commit,
-    dispatch,
-    projectGenerationEligible: async () => true,
-    isRequestAncestor: () => true,
-  };
-  try {
-    expect(await runModelWriterPreparation(input)).toMatchObject({
-      status: "waiting",
-      reason: "daily-limit",
-    });
-    expect(persist).toHaveBeenCalledOnce();
-    expect(f.state.receipts[0]).toMatchObject({
-      updatedAt: new Date(f.state.nowMs).toISOString(),
-      operation: {
-        nextEligibleAt: new Date(f.state.nowMs + 86400000).toISOString(),
-        retry: {
-          failure: { kind: "configuration", reasonCode: "budget-exhausted" },
-          transientAttempts: 3,
-          immediateAttempts: 2,
-        },
+test.each(["budget-exhausted", "publisher-authentication-failed"] as const)(
+  "a genuine quota denial after fresh owner %s recovery persists a newer refusal that blocks replay",
+  async (reasonCode) => {
+    const f = await freshOwnerBudgetCooldownFixture();
+    if (reasonCode === "publisher-authentication-failed") {
+      f.run.display_title = "Project #42: Request review PR force=true";
+      f.receipt.operation.retry.failure.reasonCode = reasonCode as never;
+    }
+    const exhausted = reserveModelBudget(
+      validateModelBudgetState(f.state.local.modelBudget),
+      {
+        operationKey: "f".repeat(64),
+        model: "primary",
+        requestCount: 40,
+        requestedTokens: 200000,
       },
-    });
-    expect(await runModelWriterPreparation(input)).toEqual({
-      status: "superseded",
-    });
-    expect(persist).toHaveBeenCalledOnce();
-    expect(commit).not.toHaveBeenCalled();
-    expect(dispatch).not.toHaveBeenCalled();
-    expect(f.state.local.modelBudget).toEqual(beforeBudget);
-  } finally {
-    persist.mockRestore();
-  }
-});
+      { nowMs: f.state.nowMs },
+    );
+    if (!exhausted.allowed) throw new Error("Invalid exhausted fixture");
+    f.state.local.modelBudget = exhausted.state;
+    const beforeBudget = structuredClone(exhausted.state);
+    const persist = vi
+      .spyOn(githubInventory, "persistGithubAutomationReceipt")
+      .mockImplementation(async ({ receipt }) => {
+        f.state.receipts = [receipt];
+        f.state.operations = [receipt.operation];
+      });
+    const commit = vi.fn(async () => ({ sha: String(f.state.local.revision) }));
+    const dispatch = vi.fn(async () => ({ runId: 700, workflow: f.run.path }));
+    const input = {
+      operationKey: f.current.key,
+      requestRunId: f.run.id,
+      env: f.env,
+      gh: async () => JSON.stringify(f.run),
+      load: async () => f.state,
+      commit,
+      dispatch,
+      projectGenerationEligible: async () => true,
+      isRequestAncestor: () => true,
+    };
+    try {
+      expect(await runModelWriterPreparation(input)).toMatchObject({
+        status: "waiting",
+        reason: "daily-limit",
+      });
+      expect(persist).toHaveBeenCalledOnce();
+      expect(f.state.receipts[0]).toMatchObject({
+        updatedAt: new Date(f.state.nowMs).toISOString(),
+        operation: {
+          nextEligibleAt: new Date(f.state.nowMs + 86400000).toISOString(),
+          retry: {
+            failure: { kind: "configuration", reasonCode: "budget-exhausted" },
+            transientAttempts: 3,
+            immediateAttempts: 2,
+          },
+        },
+      });
+      expect(await runModelWriterPreparation(input)).toEqual({
+        status: "superseded",
+      });
+      expect(persist).toHaveBeenCalledOnce();
+      expect(commit).not.toHaveBeenCalled();
+      expect(dispatch).not.toHaveBeenCalled();
+      expect(f.state.local.modelBudget).toEqual(beforeBudget);
+    } finally {
+      persist.mockRestore();
+    }
+  },
+);
 
 test.each(["key", "stage", "expected-sha"] as const)(
   "a foreign %s budget receipt cannot change the matching owner's refusal authority",

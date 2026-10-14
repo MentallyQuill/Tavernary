@@ -250,8 +250,11 @@ export async function runAutomationWriterCli(options = {}) {
       loadCooldown: options.loadCooldown ?? (() => loadGithubBackoff({ root })),
       gh:
         options.gh ??
-        ((args, stdin) =>
-          executeGh(args, stdin, { includeRateLimitHeaders: true })),
+        ((args, stdin, requestOptions) =>
+          executeGh(args, stdin, {
+            ...requestOptions,
+            includeRateLimitHeaders: true,
+          })),
       download:
         options.download ??
         ((args) =>

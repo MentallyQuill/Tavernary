@@ -467,6 +467,9 @@ export function executeGh(args, stdin, options = {}) {
     const child = spawn(command, commandArgs, {
       shell: false,
       stdio: ["pipe", "pipe", "pipe"],
+      ...(options.token !== undefined
+        ? { env: { ...process.env, GH_TOKEN: options.token } }
+        : {}),
     });
     const stdoutChunks = [];
     let stderr = "";

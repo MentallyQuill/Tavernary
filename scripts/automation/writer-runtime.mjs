@@ -69,6 +69,7 @@ import {
   mergeExactProjectHead,
 } from "./project-merge.mjs";
 import { createProjectReconciliationRequest } from "./project-reconciliation-request.mjs";
+import { readProjectPublicationEnabled } from "./publication-setting.mjs";
 import {
   parseGenerationOwnerRequest,
   generationRequestOperation,
@@ -428,7 +429,7 @@ export async function runModelWriterPreparation({
     return (
       operation.stage === "admitted" ||
       (["generated", "validated"].includes(operation.stage) &&
-        (await loadProjectMergePlan({ state, operation, gh })).action ===
+        (await loadProjectMergePlan({ state, operation, gh, env })).action ===
           "regenerate")
     );
   },
@@ -964,7 +965,7 @@ export async function runProjectWriterPublication({
   const result = await publishProjectOperation({
     operationKey,
     load,
-    plan: (input) => loadProjectMergePlan({ ...input, gh }),
+    plan: (input) => loadProjectMergePlan({ ...input, gh, env }),
     merge: (action) => mergeExactProjectHead({ repository, gh, action }),
     persist: (receipt) =>
       persistGithubAutomationReceipt({ gh, repository, receipt }),
@@ -976,7 +977,7 @@ export async function runProjectWriterPublication({
     );
     if (
       operation &&
-      (await loadProjectMergePlan({ state, operation, gh })).action ===
+      (await loadProjectMergePlan({ state, operation, gh, env })).action ===
         "regenerate"
     )
       await runModelWriterPreparation({ operationKey, root, env, gh, load });
@@ -1042,22 +1043,27 @@ export async function runProjectWriterReconciliation({
     prepareGeneration: () =>
       runModelWriterPreparation({ operationKey, root, env, gh, load }),
   });
+  let publicationSettingFailure;
   const summary = await reconcileProjectValidations({
     repository,
     selectedPullNumber: pulls[0].number,
     publisherActorId: state.publisherActorId,
     nowMs: state.nowMs,
     request: bridge,
-    loadAutomaticPublicationEnabled: async () =>
-      JSON.parse(
-        await gh([
-          "api",
-          `repos/${repository}/actions/variables/PROJECT_AUTO_PUBLICATION_ENABLED`,
-        ]),
-      ).value === "true",
+    loadAutomaticPublicationEnabled: async () => {
+      try {
+        return await readProjectPublicationEnabled({ repository, gh, env });
+      } catch (error) {
+        publicationSettingFailure = error;
+        throw error;
+      }
+    },
   });
   if (summary.results.some((result) => result.action === "error"))
-    throw new Error("Project reconciliation is unavailable.");
+    throw (
+      publicationSettingFailure ??
+      new Error("Project reconciliation is unavailable.")
+    );
   return {
     scannedPulls: summary.scannedPulls,
     results: summary.results.map(({ pullNumber, action, outcome }) => ({

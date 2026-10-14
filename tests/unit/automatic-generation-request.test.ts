@@ -95,6 +95,7 @@ async function fixture(
     TAVERNARY_PUBLISHER_BOT_ID: String(state.publisherActorId),
     UTILITY_MODEL: "primary",
     TAVERNARY_ENRICHMENT_MODEL: "repair",
+    TAVERNARY_PUBLICATION_SETTINGS_TOKEN: "fixture-read-token",
   };
   const validation = {
     id: 701,
@@ -240,6 +241,54 @@ test("a native Bot request for a currently publishable head spends no allowance"
     [],
   );
 });
+
+test("missing publication-setting read custody rejects regeneration before any reservation", async () => {
+  const f = await fixture();
+  f.writerInput.env.TAVERNARY_PUBLICATION_SETTINGS_TOKEN = "";
+  await expect(runModelWriterPreparation(f.writerInput)).rejects.toMatchObject({
+    code: "publisher-authentication-failed",
+  });
+  expect(f.commit).not.toHaveBeenCalled();
+  expect(f.dispatch).not.toHaveBeenCalled();
+  expect(validateModelBudgetState(f.state.local.modelBudget).tickets).toEqual(
+    [],
+  );
+  expect(
+    f.writerInput.gh.mock.calls.every(
+      ([args]) => !args.some((arg) => arg.includes("/actions/variables/")),
+    ),
+  ).toBe(true);
+});
+
+test.each([401, 403])(
+  "publication read HTTP %s cannot reserve or dispatch model work",
+  async (status) => {
+    const f = await fixture();
+    const original = f.writerInput.gh.getMockImplementation()!;
+    f.writerInput.gh.mockImplementation((args) => {
+      if (args.some((arg) => arg.includes("/actions/variables/")))
+        throw Object.assign(
+          new Error(`GitHub setting read failed (HTTP ${status})`),
+          { status },
+        );
+      return original(args);
+    });
+    await expect(
+      runModelWriterPreparation(f.writerInput),
+    ).rejects.toMatchObject({
+      code: "publisher-authentication-failed",
+      status,
+    });
+    expect(f.commit).not.toHaveBeenCalled();
+    expect(f.dispatch).not.toHaveBeenCalled();
+    expect(validateModelBudgetState(f.state.local.modelBudget).tickets).toEqual(
+      [],
+    );
+    expect(f.writerInput.persistFailure).toHaveBeenCalledWith(
+      expect.objectContaining({ code: "publisher-authentication-failed" }),
+    );
+  },
+);
 
 test.each([
   "manual",

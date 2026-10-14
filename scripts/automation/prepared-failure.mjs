@@ -33,7 +33,9 @@ export async function persistPreparedFailure({
       return { persisted: false, incident: false };
     if (
       operation?.retry?.failure.kind === "configuration" &&
-      operation.retry.failure.reasonCode === "budget-exhausted" &&
+      ["budget-exhausted", "publisher-authentication-failed"].includes(
+        operation.retry.failure.reasonCode,
+      ) &&
       requested.stage === operation.stage &&
       requested.expectedSha === operation.expectedSha
     )

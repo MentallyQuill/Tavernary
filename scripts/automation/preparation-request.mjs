@@ -98,6 +98,7 @@ export function generationRequestOperation(state, request) {
       publisherActorId: state.publisherActorId,
       repository: state.repository,
       nowMs: state.nowMs,
+      executingWriterRunId: state.executingWriterRunId,
       catalog: { projects: state.local.projects, sources: state.local.sources },
     },
     request,

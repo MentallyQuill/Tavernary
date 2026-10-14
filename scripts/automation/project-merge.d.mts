@@ -9,6 +9,7 @@ export function loadProjectMergePlan(input: {
   state: AutomationInventoryState;
   operation: AutomationOperation;
   gh: GhRunner;
+  env?: Record<string, string | undefined>;
 }): Promise<ProjectPublicationPlan>;
 export function publishProjectOperation(input: {
   operationKey: string;

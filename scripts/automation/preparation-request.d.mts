@@ -19,7 +19,7 @@ export function generationRequestOperation(
   request: Pick<
     GenerationOwnerRequest,
     "issueNumber" | "kind" | "ownerAuthorized" | "createdAt"
-  >,
+  > & { forceRegeneration?: boolean },
 ): import("./operation.mjs").AutomationOperation | null;
 export function generationRequestCompleted(input: {
   state: AutomationInventoryState;
