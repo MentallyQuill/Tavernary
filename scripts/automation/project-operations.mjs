@@ -131,20 +131,50 @@ function trustedGenerationRuns(input, issue, producer, key) {
     );
 }
 
+function recoverOwnerConfigurationCooldown(operation, input, request) {
+  if (
+    operation.retry?.failure.kind === "configuration" &&
+    (operation.retry.failure.reasonCode === "budget-exhausted" ||
+      (operation.retry.failure.reasonCode ===
+        "publisher-authentication-failed" &&
+        request.ownerAuthorized === true &&
+        request.forceRegeneration === true))
+  ) {
+    const receipt = matchingReceipt(input, operation);
+    const requestedAt = Date.parse(request.createdAt ?? "");
+    if (
+      receipt?.operation.retry?.failure.kind === "configuration" &&
+      receipt.operation.retry.failure.reasonCode ===
+        operation.retry.failure.reasonCode &&
+      operation.nextEligibleAt === receipt.operation.nextEligibleAt &&
+      Date.parse(operation.nextEligibleAt ?? "") > input.nowMs &&
+      Number.isFinite(requestedAt) &&
+      new Date(requestedAt).toISOString() === request.createdAt &&
+      requestedAt > Date.parse(receipt.updatedAt) &&
+      requestedAt <= input.nowMs
+    )
+      operation.nextEligibleAt = null;
+  }
+  return operation;
+}
+
 export function discoverRequestedGeneration(input, request) {
   const issue = input.issues.find(
     (value) => value.number === request.issueNumber && value.state === "open",
   );
   if (!issue) return null;
-  if (!request.ownerAuthorized)
-    return (
-      discoverProjectOperations(input).find(
-        (value) =>
-          value.identity.kind === request.kind &&
-          value.identity.subject === `issue:${request.issueNumber}` &&
-          ["admitted", "generated", "validated"].includes(value.stage),
-      ) ?? null
-    );
+  const current = discoverProjectOperations(input).find(
+    (value) =>
+      value.identity.kind === request.kind &&
+      value.identity.subject === `issue:${request.issueNumber}` &&
+      ["admitted", "generated", "validated"].includes(value.stage),
+  );
+  if (!request.ownerAuthorized) return current ?? null;
+  if (
+    current?.retry?.failure.kind === "configuration" &&
+    current.retry.failure.reasonCode === "publisher-authentication-failed"
+  )
+    return recoverOwnerConfigurationCooldown(current, input, request);
   const producer =
     request.kind === "project" ? "project-submission" : "project-owner-request";
   const branch = `automation/${producer}-${request.issueNumber}`;
@@ -179,28 +209,24 @@ export function discoverRequestedGeneration(input, request) {
       value.stage === "admitted",
   );
   if (!operation) return null;
+  if (
+    input.receipts.some((receipt) => {
+      const refused = receipt?.operation;
+      return (
+        refused?.key === operation.key &&
+        refused.retry?.failure.kind === "configuration" &&
+        refused.retry.failure.reasonCode ===
+          "publisher-authentication-failed" &&
+        matchingReceipt(input, refused) !== undefined
+      );
+    })
+  )
+    return null;
   if (operation.retry?.failure.kind === "permanent") {
     operation.retry = null;
     operation.nextEligibleAt = null;
-  } else if (
-    operation.retry?.failure.kind === "configuration" &&
-    operation.retry.failure.reasonCode === "budget-exhausted"
-  ) {
-    const receipt = matchingReceipt(input, operation);
-    const requestedAt = Date.parse(request.createdAt ?? "");
-    if (
-      receipt?.operation.retry?.failure.kind === "configuration" &&
-      receipt.operation.retry.failure.reasonCode === "budget-exhausted" &&
-      operation.nextEligibleAt === receipt.operation.nextEligibleAt &&
-      Date.parse(operation.nextEligibleAt ?? "") > input.nowMs &&
-      Number.isFinite(requestedAt) &&
-      new Date(requestedAt).toISOString() === request.createdAt &&
-      requestedAt > Date.parse(receipt.updatedAt) &&
-      requestedAt <= input.nowMs
-    )
-      operation.nextEligibleAt = null;
   }
-  return operation;
+  return recoverOwnerConfigurationCooldown(operation, input, request);
 }
 export function discoverProjectOperations(input) {
   const operations = [];

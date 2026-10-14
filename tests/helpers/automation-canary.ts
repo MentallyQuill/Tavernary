@@ -57,6 +57,8 @@ type Guard = "manual" | "owner-decline" | "foreign-publisher" | "changed-input";
 type Effect = { type: string; path?: string; revision?: string };
 const repository = "MentallyQuill/Tavernary",
   publisherActorId = 41_982_982;
+const publicationReadToken = "owned-fixture-publication-read";
+const publicationSettingPath = `repos/${repository}/actions/variables/PROJECT_AUTO_PUBLICATION_ENABLED`;
 const hash = (bytes: Uint8Array | string) =>
   createHash("sha256").update(bytes).digest("hex");
 
@@ -328,7 +330,7 @@ export async function automationCanary({
       body: '<!-- tavernary-project-validation-state\n{"schema_version":1,"status":"validated","attempts":1}\n-->\nValidated',
     },
   ];
-  const nativeGh: GhRunner = async (args, body) => {
+  const nativeGh: GhRunner = async (args, body, requestOptions) => {
     const route =
       args.find(
         (arg) => arg.startsWith("repos/") || arg.startsWith("repositories/"),
@@ -336,6 +338,13 @@ export async function automationCanary({
     const method = args.includes("--method")
       ? args[args.indexOf("--method") + 1]
       : "GET";
+    if (
+      requestOptions?.token !== undefined &&
+      (route !== publicationSettingPath ||
+        method !== "GET" ||
+        requestOptions.token !== publicationReadToken)
+    )
+      throw new Error("Canary publication read credential changed scope.");
     if (args[0] === "workflow") {
       const workflow = args[2];
       effects.push({ type: "dispatch", path: workflow });
@@ -380,8 +389,11 @@ export async function automationCanary({
       }
       return "";
     }
-    if (route.endsWith("PROJECT_AUTO_PUBLICATION_ENABLED"))
+    if (route === publicationSettingPath) {
+      if (requestOptions?.token !== publicationReadToken)
+        throw new Error("Canary publication read requires explicit authority.");
       return JSON.stringify({ value: "true" });
+    }
     if (route.endsWith("/pulls/84")) return JSON.stringify(project.pulls[0]);
     if (route.includes("/issues/42/comments?")) return JSON.stringify(comments);
     if (route.endsWith("/issues/comments/103") && method === "PATCH") {
@@ -636,7 +648,12 @@ export async function automationCanary({
       await publishProjectOperation({
         operationKey: original?.key ?? state.operations[0].key,
         load: async () => recompute(),
-        plan: (input) => loadProjectMergePlan({ ...input, gh: nativeGh }),
+        plan: (input) =>
+          loadProjectMergePlan({
+            ...input,
+            gh: nativeGh,
+            env: { TAVERNARY_PUBLICATION_SETTINGS_TOKEN: publicationReadToken },
+          }),
         merge: (action) =>
           mergeExactProjectHead({ repository, gh: nativeGh, action }),
         persist,

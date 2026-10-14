@@ -16,7 +16,7 @@
     "retry": {
       "failure": {
         "kind": "configuration",
-        "reasonCode": "authentication-unavailable"
+        "reasonCode": "publisher-authentication-failed"
       },
       "transientAttempts": 0,
       "immediateAttempts": 0

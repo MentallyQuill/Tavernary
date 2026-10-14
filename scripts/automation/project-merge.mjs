@@ -20,8 +20,14 @@ import { tagVocabularyHash } from "../catalog/tag-vocabulary.mjs";
 import { verifyTrustedEditor } from "../maintenance/trusted-editor-authority.mjs";
 import { validateAutomationOperation } from "./operation.mjs";
 import { publishCanonicalBatch } from "./publish.mjs";
+import { readProjectPublicationEnabled } from "./publication-setting.mjs";
 
-export async function loadProjectMergePlan({ state, operation, gh }) {
+export async function loadProjectMergePlan({
+  state,
+  operation,
+  gh,
+  env = process.env,
+}) {
   validateAutomationOperation(operation);
   const deny = (reasonCode) => ({ action: "reject", reasonCode });
   if (
@@ -29,13 +35,13 @@ export async function loadProjectMergePlan({ state, operation, gh }) {
     state.local.revision !== state.remote.mainHeadSha
   )
     return deny("project-context-invalid");
-  const enabled = JSON.parse(
-    await gh([
-      "api",
-      `repos/${state.repository}/actions/variables/PROJECT_AUTO_PUBLICATION_ENABLED`,
-    ]),
-  );
-  if (enabled.value !== "true")
+  if (
+    !(await readProjectPublicationEnabled({
+      repository: state.repository,
+      gh,
+      env,
+    }))
+  )
     return { action: "paused", reasonCode: "automatic-publication-disabled" };
   const issueNumber = Number(
     /^issue:([1-9]\d*)$/u.exec(operation.identity.subject)?.[1],

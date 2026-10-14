@@ -95,10 +95,19 @@ jobs:
           permission-issues: write
           permission-pull-requests: write
           permission-workflows: ${{ inputs.mode == 'retain' && 'write' || '' }}
+      - name: Create optional publication settings read token
+        id: publication-settings-token
+        continue-on-error: true
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-actions-variables: read
       - name: Apply current canonical operation
         run: node scripts/automation/writer-cli.mjs
         env:
           GH_TOKEN: ${{ steps.writer-token.outputs.token }}
+          TAVERNARY_PUBLICATION_SETTINGS_TOKEN: ${{ steps.publication-settings-token.outputs.token }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
           TAVERNARY_IMMUTABLE_RELEASES_ENABLED: ${{ vars.TAVERNARY_IMMUTABLE_RELEASES_ENABLED }}
