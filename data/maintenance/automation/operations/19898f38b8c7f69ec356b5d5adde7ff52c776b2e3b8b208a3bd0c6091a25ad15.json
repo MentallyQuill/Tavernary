@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "19898f38b8c7f69ec356b5d5adde7ff52c776b2e3b8b208a3bd0c6091a25ad15",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1300836750:maxime-fleury-st-card-editor",
+      "inputDigest": "57f842d1858d21a164380ec604bb8fe3be1631a7e994cbc29d85241f2ae5b15d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T22:02:41.237Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-14T21:57:35.168Z",
+  "completedAt": null
+}
