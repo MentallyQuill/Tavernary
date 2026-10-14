@@ -115,7 +115,7 @@ jobs:
                   reject("token-mint-failed");
                 }
                 const minted = await mintResponse.json();
-                const token = typeof minted.token === "string" && minted.token.length > 0 ? minted.token : null;
+                const token = typeof minted.token === "string" && minted.token !== "" ? minted.token : null;
                 if (!token) reject("missing-minted-token");
                 let outcome;
                 try {
