@@ -68,10 +68,14 @@ export async function publishPreparedOperations({
   const satisfied = [];
   const waiting = [];
   const failures = [];
+  const requestedKeys = new Set(wakes.map((wake) => wake.operationKey));
   const dueKeys = new Set(
-    selectDueOperations(inventory.operations, { nowMs, limit: 20 }).map(
-      (operation) => operation.key,
-    ),
+    selectDueOperations(
+      inventory.operations.filter((operation) =>
+        requestedKeys.has(operation.key),
+      ),
+      { nowMs, limit: 20 },
+    ).map((operation) => operation.key),
   );
   for (const wake of wakes) {
     if (proven.has(wake.operationKey)) {
