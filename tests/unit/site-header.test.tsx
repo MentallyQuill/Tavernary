@@ -45,7 +45,7 @@ test("keeps site actions available without asking visitors for donations", () =>
   expect(actions.queryByRole("link", { name: /ko-fi|donat/i })).toBeNull();
 });
 
-test("places the enhanced contrast switch immediately after search", () => {
+test("groups Companion and contrast controls separately from catalog search", () => {
   render(
     <SiteHeader
       search=""
@@ -56,7 +56,12 @@ test("places the enhanced contrast switch immediately after search", () => {
 
   const search = screen.getByRole("search");
   const toggle = screen.getByRole("switch", { name: "Enhanced contrast" });
-  expect(search.nextElementSibling).toContainElement(toggle);
+  const utilities = screen.getByRole("group", { name: "Site utilities" });
+  expect(utilities).toContainElement(toggle);
+  expect(utilities).toContainElement(
+    screen.getByRole("link", { name: "Tavernary Companion" }),
+  );
+  expect(utilities).not.toContainElement(search);
 });
 
 test("introduces the Companion extension with a descriptive external link", () => {
