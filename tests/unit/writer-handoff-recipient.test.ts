@@ -4,7 +4,7 @@ import type { AutomationInventoryState } from "../../scripts/automation/inventor
 import { runModelWriterPreparation } from "../../scripts/automation/writer-runtime.mjs";
 import { metadataMaintenanceFixture } from "../helpers/automation-fixtures";
 
-async function recipient(otherWriter = false) {
+async function recipient(otherWriterStatus?: string) {
   const fixture = await metadataMaintenanceFixture();
   const state: AutomationInventoryState = {
     ...fixture.state,
@@ -33,7 +33,9 @@ async function recipient(otherWriter = false) {
   };
   state.remote.runs = [
     run,
-    ...(otherWriter ? [{ ...run, id: 801, status: "queued" }] : []),
+    ...(otherWriterStatus
+      ? [{ ...run, id: 801, status: otherWriterStatus }]
+      : []),
   ];
   let dispatches = 0;
   const result = await runModelWriterPreparation({
@@ -61,14 +63,23 @@ async function recipient(otherWriter = false) {
   return { result, dispatches };
 }
 
-test("the canonical prepare recipient executes after excluding only its own running handoff", async () => {
+test("the canonical prepare recipient executes after excluding its own running handoff", async () => {
   const { result, dispatches } = await recipient();
   expect(result.status).toBe("cache-dispatched");
   expect(dispatches).toBe(1);
 });
 
 test("another same-key active writer still blocks the canonical prepare recipient", async () => {
-  const { result, dispatches } = await recipient(true);
+  const { result, dispatches } = await recipient("in_progress");
   expect(result.status).toBe("superseded");
   expect(dispatches).toBe(0);
 });
+
+test.each(["queued", "pending", "requested", "waiting"])(
+  "a %s duplicate cannot block the executing canonical prepare recipient",
+  async (status) => {
+    const { result, dispatches } = await recipient(status);
+    expect(result.status).toBe("cache-dispatched");
+    expect(dispatches).toBe(1);
+  },
+);
