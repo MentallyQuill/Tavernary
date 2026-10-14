@@ -17,79 +17,161 @@ jobs:
     environment: publisher
     timeout-minutes: 5
     steps:
-      - name: Inspect current Publisher installation grants
+      - name: Inspect Publisher grants and verify explicit Variables read scopes
         env:
           PUBLISHER_CLIENT_ID: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
           PUBLISHER_PRIVATE_KEY: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
         run: |
           node <<'NODE'
           const { sign } = require("node:crypto");
+          const routes = {
+            app: ["GET", "/app"],
+            installation: ["GET", "/repos/MentallyQuill/Tavernary/installation"],
+            mint: ["POST", "/app/installations/154417139/access_tokens"],
+            repositories: ["GET", "/installation/repositories"],
+            setting: ["GET", "/repos/MentallyQuill/Tavernary/actions/variables/PROJECT_AUTO_PUBLICATION_ENABLED"],
+            revoke: ["DELETE", "/installation/token"],
+          };
+          let failure = { event: "probe-failed", stage: "initialize", reason: "request-failed" };
 
-          async function inspectInstallation() {
-            const now = Math.floor(Date.now() / 1000);
-            const header = Buffer.from(JSON.stringify({ alg: "RS256", typ: "JWT" })).toString("base64url");
-            const payload = Buffer.from(JSON.stringify({
-              iat: now - 60,
-              exp: now + 300,
-              iss: process.env.PUBLISHER_CLIENT_ID,
-            })).toString("base64url");
-            const unsigned = `${header}.${payload}`;
-            const privateKey = process.env.PUBLISHER_PRIVATE_KEY.replaceAll("\\n", "\n");
-            const signature = sign("RSA-SHA256", Buffer.from(unsigned), privateKey).toString("base64url");
-            const jwt = `${unsigned}.${signature}`;
-            const response = await fetch("https://api.github.com/repos/MentallyQuill/Tavernary/installation", {
-              method: "GET",
+          function context(stage, candidate, apiVersion) {
+            failure = { event: "probe-failed", stage, reason: "request-failed" };
+            if (candidate) failure.candidate = candidate;
+            if (apiVersion) failure.api_version = apiVersion;
+          }
+
+          function reject(reason) {
+            failure.reason = reason;
+            throw new Error("Publisher read-scope probe failed");
+          }
+
+          async function request(route, credential, apiVersion = "2022-11-28", body) {
+            const [method, path] = routes[route];
+            const response = await fetch(`https://api.github.com${path}`, {
+              method,
               headers: {
-                Authorization: `Bearer ${jwt}`,
+                Authorization: `Bearer ${credential}`,
                 Accept: "application/vnd.github+json",
-                "X-GitHub-Api-Version": "2022-11-28",
+                "Content-Type": "application/json",
+                "X-GitHub-Api-Version": apiVersion,
                 "User-Agent": "Tavernary-Publisher-Installation-Probe",
               },
+              ...(body ? { body: JSON.stringify(body) } : {}),
               redirect: "error",
               signal: AbortSignal.timeout(15000),
             });
-            if (!response.ok) {
-              console.error(`Installation metadata read failed (HTTP ${response.status}).`);
-              process.exitCode = 1;
-              return;
-            }
-            const installation = await response.json();
-            if (!Number.isSafeInteger(installation.id) || installation.id <= 0 ||
-                !Number.isSafeInteger(installation.app_id) || installation.app_id <= 0 ||
-                typeof installation.account?.login !== "string" ||
-                !/^[a-z\d][a-z\d-]{0,38}$/iu.test(installation.account.login) ||
-                !installation.permissions || typeof installation.permissions !== "object" ||
-                Array.isArray(installation.permissions)) {
-              throw new Error("Invalid installation metadata");
-            }
-            const permissions = Object.fromEntries(Object.entries(installation.permissions).filter(
-              ([name, access]) => /^[a-z][a-z\d_]*$/u.test(name) && ["read", "write", "admin"].includes(access),
-            ));
-            console.log(JSON.stringify({
-              installation_id: installation.id,
-              app_id: installation.app_id,
-              account_login: installation.account.login,
-              permissions,
-            }));
+            failure.status = response.status;
+            return response;
           }
 
-          inspectInstallation().catch(() => {
-            console.error("Installation metadata read failed.");
+          function grantSummary(permissions) {
+            if (!permissions || typeof permissions !== "object" || Array.isArray(permissions)) reject("invalid-grant-metadata");
+            const entries = Object.entries(permissions).filter(([name]) => /^[A-Za-z][A-Za-z0-9_-]{0,79}$/u.test(name));
+            return {
+              permission_names: entries.map(([name]) => name).sort(),
+              permissions: Object.fromEntries(entries.filter(([, access]) => ["read", "write", "admin"].includes(access))),
+            };
+          }
+
+          function exactRepositoryList(repositories) {
+            return Array.isArray(repositories) && repositories.length === 1 &&
+              repositories[0]?.id === 1309605115 && repositories[0]?.full_name === "MentallyQuill/Tavernary";
+          }
+
+          async function probe() {
+            const now = Math.floor(Date.now() / 1000);
+            const header = Buffer.from(JSON.stringify({ alg: "RS256", typ: "JWT" })).toString("base64url");
+            const payload = Buffer.from(JSON.stringify({ iat: now - 60, exp: now + 300, iss: process.env.PUBLISHER_CLIENT_ID })).toString("base64url");
+            const unsigned = `${header}.${payload}`;
+            const privateKey = process.env.PUBLISHER_PRIVATE_KEY.replaceAll("\\n", "\n");
+            const jwt = `${unsigned}.${sign("RSA-SHA256", Buffer.from(unsigned), privateKey).toString("base64url")}`;
+
+            context("app-registration");
+            const appResponse = await request("app", jwt);
+            if (!appResponse.ok) reject("app-read-failed");
+            const app = await appResponse.json();
+            if (app.id !== 4624827 || typeof app.slug !== "string" || !/^[a-z\d][a-z\d-]{0,99}$/iu.test(app.slug)) reject("unexpected-app-identity");
+            console.log(JSON.stringify({ event: "app-registration", app_id: app.id, app_slug: app.slug, ...grantSummary(app.permissions) }));
+
+            context("installation-grants");
+            const installationResponse = await request("installation", jwt);
+            if (!installationResponse.ok) reject("installation-read-failed");
+            const installation = await installationResponse.json();
+            if (installation.id !== 154417139 || installation.app_id !== app.id || installation.account?.login !== "MentallyQuill") reject("unexpected-installation-identity");
+            console.log(JSON.stringify({ event: "installation-grants", installation_id: installation.id, app_id: installation.app_id, account_login: installation.account.login, ...grantSummary(installation.permissions) }));
+
+            for (const apiVersion of ["2022-11-28", "2026-03-10"]) {
+              for (const candidate of ["actions_variables", "variables"]) {
+                context("mint-token", candidate, apiVersion);
+                const mintResponse = await request("mint", jwt, apiVersion, { repository_ids: [1309605115], permissions: { [candidate]: "read" } });
+                if (!mintResponse.ok) {
+                  if (mintResponse.status === 422) {
+                    const denial = await mintResponse.json();
+                    if (denial.message === "The permissions requested are not granted to this installation.") {
+                      console.log(JSON.stringify({ event: "scope-request-rejected", api_version: apiVersion, candidate, status: 422 }));
+                      continue;
+                    }
+                  }
+                  reject("token-mint-failed");
+                }
+                const minted = await mintResponse.json();
+                const token = typeof minted.token === "string" && minted.token.length > 0 ? minted.token : null;
+                if (!token) reject("missing-minted-token");
+                let outcome;
+                try {
+                  context("token-scope", candidate, apiVersion);
+                  failure.status = mintResponse.status;
+                  const permissions = minted.permissions;
+                  if (!permissions || typeof permissions !== "object" || Array.isArray(permissions) ||
+                      !Object.hasOwn(permissions, candidate) || permissions[candidate] !== "read" || Object.entries(permissions).some(
+                        ([name, access]) => access !== "read" || (name !== candidate && name !== "metadata"),
+                      )) reject("unsafe-token-permissions");
+                  if ((Object.hasOwn(minted, "repository_selection") && minted.repository_selection !== "selected") ||
+                      (Object.hasOwn(minted, "repositories") && !exactRepositoryList(minted.repositories))) reject("unsafe-token-repository-scope");
+
+                  context("token-repositories", candidate, apiVersion);
+                  const repositoriesResponse = await request("repositories", token, apiVersion);
+                  if (!repositoriesResponse.ok) reject("repository-scope-read-failed");
+                  const listing = await repositoriesResponse.json();
+                  if (listing.total_count !== 1 || !exactRepositoryList(listing.repositories)) reject("unsafe-accessible-repositories");
+
+                  context("publication-setting", candidate, apiVersion);
+                  const settingResponse = await request("setting", token, apiVersion);
+                  if (settingResponse.status === 403) {
+                    const denial = await settingResponse.json();
+                    if (!denial || typeof denial !== "object" || Array.isArray(denial) || typeof denial.message !== "string") reject("invalid-denial-response");
+                    const rateLimited = settingResponse.headers.get("x-ratelimit-remaining") === "0" ||
+                      settingResponse.headers.get("retry-after") !== null ||
+                      (typeof denial.message === "string" && /rate limit|abuse|secondary/iu.test(denial.message));
+                    if (rateLimited) reject("github-rate-limited");
+                    outcome = { event: "endpoint-denied", api_version: apiVersion, candidate, status: 403 };
+                  } else {
+                    if (!settingResponse.ok) reject("setting-read-failed");
+                    const setting = await settingResponse.json();
+                    if (!setting || !["true", "false"].includes(setting.value)) reject("invalid-setting-response");
+                    if (setting.value === "false") {
+                      failure.enabled = false;
+                      reject("publication-disabled");
+                    }
+                    outcome = { event: "scope-verified", api_version: apiVersion, candidate, status: settingResponse.status, enabled: true };
+                  }
+                } finally {
+                  const originalFailure = failure;
+                  context("revoke-token", candidate, apiVersion);
+                  const revokeResponse = await request("revoke", token, apiVersion);
+                  if (revokeResponse.status !== 204) reject("token-revocation-failed");
+                  failure = originalFailure;
+                }
+                console.log(JSON.stringify(outcome));
+                if (outcome.event === "scope-verified") return;
+              }
+            }
+            context("complete");
+            reject("no-verified-read-scope");
+          }
+
+          probe().catch(() => {
+            console.error(JSON.stringify(failure));
             process.exitCode = 1;
           });
           NODE
-      - name: Create scoped publication settings read token
-        id: reader-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
-        with:
-          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
-          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
-          owner: ${{ github.repository_owner }}
-          repositories: ${{ github.event.repository.name }}
-          permission-actions-variables: read
-      - name: Read current publication switch
-        env:
-          GH_TOKEN: ${{ steps.reader-token.outputs.token }}
-        run: >-
-          gh api --method GET "repos/${GITHUB_REPOSITORY}/actions/variables/PROJECT_AUTO_PUBLICATION_ENABLED"
-          --jq '.value == "true"'
