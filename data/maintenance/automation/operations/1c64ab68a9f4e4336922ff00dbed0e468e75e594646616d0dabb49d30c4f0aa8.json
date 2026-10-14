@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1c64ab68a9f4e4336922ff00dbed0e468e75e594646616d0dabb49d30c4f0aa8",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1311326828:sofizzticated-sillytavern-scrolltolast",
+      "inputDigest": "7e3a4446f1d9e9fc2b61a2e5750656f3fcf47b154da2f1838361cf0295fa4e00",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T22:48:53.218Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-14T22:43:50.046Z",
+  "completedAt": null
+}
