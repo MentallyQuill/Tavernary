@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "163e927a6d8db79c9756f80d1baff16125d648770ba15edaef2eaba8ff8ce737",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1289855929:sca255-lumiverse-autoimg",
+      "inputDigest": "7530836f52e14c2ed404afeea22dc2b0060ee72e221c39d7967ffbe25f115f6b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-14T04:08:43.483Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-14T03:53:43.483Z",
+  "completedAt": null
+}
