@@ -153,6 +153,25 @@ test("the production merge adapter requires exact CI, numeric Publisher custody,
   expect((await loadProjectMergePlan(input)).action).toBe("reject");
 });
 
+test("a head changed after inventory loses custody before regeneration is planned", async () => {
+  const input = fixture();
+  const original = input.gh.getMockImplementation()!;
+  input.gh.mockImplementation((args) =>
+    args.some((arg) => arg.endsWith("/pulls/84"))
+      ? Promise.resolve(
+          JSON.stringify({
+            ...input.input.pulls[0],
+            head: { ...input.input.pulls[0].head, sha: "e".repeat(40) },
+          }),
+        )
+      : original(args),
+  );
+  expect(await loadProjectMergePlan(input)).toEqual({
+    action: "reject",
+    reasonCode: "project-transaction-custody-invalid",
+  });
+});
+
 test("an emergency switch read at publication time pauses an otherwise valid generated head", async () => {
   const input = fixture();
   const original = input.gh.getMockImplementation()!;
