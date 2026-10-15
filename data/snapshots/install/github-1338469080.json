@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1338469080",
+  "head_sha": "a19eaf62cd26b64683a569381e1a64e80ff44666",
+  "observed_at": "2026-10-15T10:03:21.564Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "TavernaryCompanion",
+  "manifest": {
+    "display_name": "Tavernary Companion",
+    "key": "tavernary-companion",
+    "minimum_client_version": "1.12.0"
+  }
+}
