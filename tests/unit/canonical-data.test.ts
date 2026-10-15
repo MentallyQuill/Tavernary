@@ -52,6 +52,92 @@ function fixture() {
   };
 }
 
+test.each([
+  { withBudget: false, reverse: false, overflow: false },
+  { withBudget: false, reverse: true, overflow: false },
+  { withBudget: true, reverse: false, overflow: false },
+  { withBudget: true, reverse: true, overflow: false },
+  { withBudget: false, reverse: false, overflow: true },
+  { withBudget: false, reverse: true, overflow: true },
+  { withBudget: true, reverse: false, overflow: true },
+  { withBudget: true, reverse: true, overflow: true },
+])(
+  "canonical aggregate preserves ordinary32MiB and total56MiB boundaries (budget=$withBudget reversed=$reverse overflow=$overflow)",
+  async ({ withBudget, reverse, overflow }) => {
+    const input = fixture();
+    const file = (path: string, bytes: number) => {
+      const content =
+        bytes === 2
+          ? "{}"
+          : JSON.stringify({ payload: "x".repeat(bytes - 14) });
+      return {
+        path,
+        type: "file" as const,
+        content,
+        bytes,
+        sha256: createHash("sha256").update(content).digest("hex"),
+        baseDigest: null,
+      };
+    };
+    const files = [
+      file("public/catalog/tavernary-catalog.json", 16_777_216),
+      file(
+        "public/catalog/tavernary-catalog-v8.json",
+        overflow ? 16_777_215 : 16_777_216,
+      ),
+    ];
+    if (overflow) files.push(file("data/registry/projects/boundary.json", 2));
+    if (withBudget)
+      files.push(
+        file(
+          "data/maintenance/automation/model-budgets/global.json",
+          25_165_824,
+        ),
+      );
+    if (reverse) files.reverse();
+    const gh = vi.fn(async () => {
+      throw new Error("Validated byte boundary");
+    });
+    await expect(commitCanonicalData({ ...input, files, gh })).rejects.toThrow(
+      overflow
+        ? "Canonical data exceeds its contract."
+        : "Validated byte boundary",
+    );
+    expect(gh).toHaveBeenCalledTimes(overflow ? 0 : 1);
+  },
+);
+
+test.each(["lookalike", "duplicate"])(
+  "only one exact global model-ledger path receives aggregate allowance (%s)",
+  async (variant) => {
+    const input = fixture();
+    const content = JSON.stringify({ payload: "x".repeat(8_388_594) });
+    const file = {
+      path: "data/maintenance/automation/model-budgets/global.json",
+      type: "file" as const,
+      content,
+      bytes: Buffer.byteLength(content),
+      sha256: createHash("sha256").update(content).digest("hex"),
+      baseDigest: null,
+    };
+    const files =
+      variant === "duplicate"
+        ? [file, file]
+        : [
+            {
+              ...file,
+              path: "data/maintenance/automation/model-budgets/other.json",
+            },
+            { ...file, path: "data/registry/projects/first.json" },
+            { ...file, path: "data/registry/projects/second.json" },
+            { ...file, path: "data/registry/projects/third.json" },
+            { ...file, path: "data/registry/projects/fourth.json" },
+          ];
+    await expect(commitCanonicalData({ ...input, files })).rejects.toThrow();
+    expect(input.gh).not.toHaveBeenCalled();
+  },
+);
+
 test("canonical publication writes the full bounded global model ledger", async () => {
   const input = fixture();
   const content = `${JSON.stringify(maximumModelBudgetFixture(), null, 2)}\n`;
@@ -113,13 +199,13 @@ test.each(["global", "other", "batch"])(
       sha256: createHash("sha256").update(content).digest("hex"),
       baseDigest: null,
     };
-    let files = [file];
+    let files: typeof input.files = [file];
     if (variant === "batch") {
       const boundedContent = JSON.stringify({
         payload: "x".repeat(24_000_000),
       });
       const catalogContent = JSON.stringify({
-        payload: "x".repeat(12_000_000),
+        payload: "x".repeat(16_777_202),
       });
       files = [
         {
@@ -135,6 +221,14 @@ test.each(["global", "other", "batch"])(
           bytes: Buffer.byteLength(catalogContent),
           sha256: createHash("sha256").update(catalogContent).digest("hex"),
         },
+        {
+          ...file,
+          path: "public/catalog/tavernary-catalog-v8.json",
+          content: catalogContent,
+          bytes: Buffer.byteLength(catalogContent),
+          sha256: createHash("sha256").update(catalogContent).digest("hex"),
+        },
+        ...input.files,
       ];
     }
     await expect(commitCanonicalData({ ...input, files })).rejects.toThrow();

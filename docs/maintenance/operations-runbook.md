@@ -436,8 +436,10 @@ The ledger can retain up to 20,000 bounded ticket envelopes while preserving
 the existing ninety-day verification retention. Only
 `data/maintenance/automation/model-budgets/global.json` has a 24 MiB canonical
 file allowance. Its readers use the same bound and isolate its Git blob read
-from ordinary file batches; other record limits and the 32 MiB canonical write
-batch limit remain in effect.
+from ordinary file batches. Canonical writes count this one ledger separately
+from the unchanged 32 MiB aggregate allowance for all other files, with a hard
+56 MiB total. Other record limits remain in effect; duplicate ledger paths and
+neighboring budget filenames receive no additional allowance.
 
 After human review and merge of the allowance proposal, the owner can activate
 the approved 10,000,000-token cap:
