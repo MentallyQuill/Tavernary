@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1ca953e0ad904eb4ea9a3dbae430ea0fd1a9538b72ca199ad51476daae4b721d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1297591852:hornysilicon-innervoice",
+      "inputDigest": "acc1c9b691815947b14d8427441d0c67e492b5edc3e4f1622d909c50b9af796f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T01:25:05.908Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-15T01:19:54.315Z",
+  "completedAt": null
+}
