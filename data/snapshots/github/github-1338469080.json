@@ -1,0 +1,81 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1338469080",
+  "repository": {
+    "id": 1338469080,
+    "owner": "MentallyQuill",
+    "name": "TavernaryCompanion",
+    "url": "https://github.com/MentallyQuill/TavernaryCompanion",
+    "description": "Tavernary Companion Extension for SillyTavern",
+    "default_branch": "main",
+    "head_sha": "a19eaf62cd26b64683a569381e1a64e80ff44666",
+    "head_committed_at": "2026-10-15T06:04:57.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-08-18T13:57:49.000Z",
+    "size_kb": 14861
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-10-15T06:04:57.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-15T06:04:57.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-10T22:56:13.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-27T02:54:13.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-07T13:33:44.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-17",
+        "latest_at": "2026-08-22T06:21:26.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-10-15T10:01:12.564Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "a19eaf62cd26b64683a569381e1a64e80ff44666"
+  },
+  "community": {
+    "stars_count": 11,
+    "forks_count": 3,
+    "watchers_count": 1,
+    "aggregate": 15
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-10-15T10:01:12.564Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "MentallyQuill", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-10-15T10:01:12.564Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
