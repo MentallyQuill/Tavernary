@@ -17,6 +17,7 @@ import completionFormats from "../../data/vocabularies/completion-formats.json" 
 import { tagVocabularyHash } from "../catalog/tag-vocabulary.mjs";
 import { operationKey } from "./operation.mjs";
 import { applyFinalizationReceipt } from "./finalization.mjs";
+import { validateAutomationReceipt } from "./receipts.mjs";
 
 import {
   matchingOperationReceipt as matchingReceipt,
@@ -132,12 +133,42 @@ function trustedGenerationRuns(input, issue, producer, key) {
     );
 }
 
+function newestPreparationReceipt(input, key) {
+  const receipts = input.receipts
+    .flatMap((value) => {
+      try {
+        return [validateAutomationReceipt(value)];
+      } catch {
+        return [];
+      }
+    })
+    .filter((receipt) => receipt.operation.key === key)
+    .sort(
+      (left, right) => Date.parse(right.updatedAt) - Date.parse(left.updatedAt),
+    );
+  const latest = receipts[0];
+  return latest &&
+    !receipts.some(
+      (receipt) =>
+        receipt.updatedAt === latest.updatedAt &&
+        !isDeepStrictEqual(receipt, latest),
+    )
+    ? latest
+    : null;
+}
+
 function acknowledgedConfigurationRefusal(operation, input, request) {
-  const receipt = matchingReceipt(input, operation);
+  const receipt =
+    operation.retry?.failure.reasonCode === "publisher-authentication-failed"
+      ? newestPreparationReceipt(input, operation.key)
+      : matchingReceipt(input, operation);
   const requestedAt = Date.parse(request.createdAt ?? "");
   return Boolean(
     operation.retry?.failure.kind === "configuration" &&
     receipt &&
+    receipt.operation.stage === operation.stage &&
+    receipt.operation.expectedSha === operation.expectedSha &&
+    isDeepStrictEqual(receipt.operation.identity, operation.identity) &&
     isDeepStrictEqual(operation.retry, receipt.operation.retry) &&
     operation.nextEligibleAt === receipt.operation.nextEligibleAt &&
     Number.isFinite(Date.parse(operation.nextEligibleAt ?? "")) &&
@@ -161,6 +192,87 @@ export function ownerPublisherRecoveryAcknowledged(operation, input, request) {
     operation.retry.failure.reasonCode === "publisher-authentication-failed" &&
     acknowledgedConfigurationRefusal(operation, input, request),
   );
+}
+
+function canonicalRunTime(value) {
+  if (
+    typeof value !== "string" ||
+    !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/u.test(value)
+  )
+    return null;
+  const milliseconds = Date.parse(value);
+  return Number.isFinite(milliseconds) &&
+    [
+      new Date(milliseconds).toISOString(),
+      new Date(milliseconds).toISOString().replace(".000Z", "Z"),
+    ].includes(value)
+    ? milliseconds
+    : null;
+}
+
+export function ownerPublisherPreparationRecovery(input, request) {
+  if (!request?.ownerAuthorized || request.forceRegeneration !== true)
+    return null;
+  const rawOperation = discoverProjectOperations(input).find(
+    (operation) =>
+      operation.identity.kind === request.kind &&
+      operation.identity.subject === `issue:${request.issueNumber}`,
+  );
+  if (
+    rawOperation?.stage !== "generated" ||
+    rawOperation.workerRunId !== null ||
+    rawOperation.retry?.failure.kind !== "unknown" ||
+    rawOperation.retry.failure.reasonCode !== "unclassified-failure"
+  )
+    return null;
+  const receipt = newestPreparationReceipt(input, rawOperation.key);
+  if (
+    receipt?.operation.stage !== "validated" ||
+    receipt.operation.workerRunId !== null ||
+    receipt.operation.expectedSha !== rawOperation.expectedSha ||
+    !isDeepStrictEqual(receipt.operation.identity, rawOperation.identity) ||
+    !ownerPublisherRecoveryAcknowledged(receipt.operation, input, request)
+  )
+    return null;
+  const producer =
+    request.kind === "project" ? "project-submission" : "project-owner-request";
+  const branch = `automation/${producer}-${request.issueNumber}`;
+  const failedRuns = input.runs.filter((run) => {
+    const created = canonicalRunTime(run.created_at);
+    const updated = canonicalRunTime(run.updated_at);
+    return (
+      Number.isSafeInteger(run.id) &&
+      run.id > 0 &&
+      run.path === ".github/workflows/ci.yml" &&
+      run.event === "workflow_dispatch" &&
+      run.head_branch === branch &&
+      run.head_sha === rawOperation.expectedSha &&
+      run.repository?.full_name === input.repository &&
+      Number.isSafeInteger(run.repository?.id) &&
+      run.repository.id > 0 &&
+      run.head_repository?.full_name === input.repository &&
+      run.head_repository.id === run.repository.id &&
+      run.status === "completed" &&
+      run.conclusion === "failure" &&
+      run.failure == null &&
+      ((run.actor?.id === input.publisherActorId && run.actor.type === "Bot") ||
+        (run.actor?.id === 2625904 && run.actor.type === "User")) &&
+      created !== null &&
+      updated !== null &&
+      created > Date.parse(receipt.updatedAt) &&
+      updated >= created &&
+      updated <= input.nowMs
+    );
+  });
+  if (!failedRuns.length) return null;
+  const failedFacts = new Set(failedRuns);
+  const operation = discoverProjectOperations({
+    ...input,
+    runs: input.runs.filter((run) => !failedFacts.has(run)),
+  }).find((current) => current.key === rawOperation.key);
+  return operation && isDeepStrictEqual(operation, receipt.operation)
+    ? { operation, rawOperation }
+    : null;
 }
 
 function recoverOwnerConfigurationCooldown(operation, input, request) {
@@ -187,11 +299,39 @@ export function discoverRequestedGeneration(input, request) {
       ["admitted", "generated", "validated"].includes(value.stage),
   );
   if (!request.ownerAuthorized) return current ?? null;
+  const recovery = ownerPublisherPreparationRecovery(input, request);
+  if (recovery)
+    return recoverOwnerConfigurationCooldown(
+      recovery.operation,
+      input,
+      request,
+    );
   if (
     current?.retry?.failure.kind === "configuration" &&
     current.retry.failure.reasonCode === "publisher-authentication-failed"
-  )
+  ) {
+    if (
+      !isDeepStrictEqual(
+        newestPreparationReceipt(input, current.key)?.operation,
+        current,
+      )
+    )
+      return null;
     return recoverOwnerConfigurationCooldown(current, input, request);
+  }
+  const latestRefusal = current
+    ? newestPreparationReceipt(input, current.key)?.operation.retry
+    : null;
+  if (
+    current?.stage === "generated" &&
+    (current.workerRunId !== null ||
+      (current.retry !== null &&
+        current.retry.failure.reasonCode !== "budget-exhausted") ||
+      (current.retry?.failure.reasonCode !== "budget-exhausted" &&
+        latestRefusal &&
+        latestRefusal.failure.reasonCode !== "budget-exhausted"))
+  )
+    return null;
   const producer =
     request.kind === "project" ? "project-submission" : "project-owner-request";
   const branch = `automation/${producer}-${request.issueNumber}`;

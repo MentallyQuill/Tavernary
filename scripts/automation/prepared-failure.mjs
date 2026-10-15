@@ -5,7 +5,11 @@ import {
 import { planAutomationRetry } from "./retry.mjs";
 import { githubFailureStatus } from "./github-inventory.mjs";
 import { validateAutomationReceipt } from "./receipts.mjs";
-import { generationRequestOperation } from "./preparation-request.mjs";
+import {
+  generationRequestOperation,
+  generationRequestPublisherRecovery,
+} from "./preparation-request.mjs";
+import { isDeepStrictEqual } from "node:util";
 
 export async function persistPreparedFailure({
   operationKey,
@@ -31,7 +35,24 @@ export async function persistPreparedFailure({
     const requested = generationRequestOperation(state, generationRequest);
     if (!requested || requested.key !== operationKey)
       return { persisted: false, incident: false };
+    const recovery = generationRequestPublisherRecovery(
+      state,
+      generationRequest,
+    );
     if (
+      recovery &&
+      isDeepStrictEqual(
+        { ...recovery, nextEligibleAt: requested.nextEligibleAt },
+        requested,
+      )
+    )
+      operation = requested;
+    else if (
+      requested.stage !== operation?.stage ||
+      requested.expectedSha !== operation.expectedSha
+    )
+      return { persisted: false, incident: false };
+    else if (
       operation?.retry?.failure.kind === "configuration" &&
       ["budget-exhausted", "publisher-authentication-failed"].includes(
         operation.retry.failure.reasonCode,
