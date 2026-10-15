@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2b1fd6e6a022d07b265802b3cd201e88720cf55e474aab43d47e3e87d848a532",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1373485282:djonasus-sillytavern-compressor",
+      "inputDigest": "b4674c7b6fc1f5fe66d838b71382d17fc57850f7385de57eff302ac4215438a9",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T18:00:51.656Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T17:45:51.656Z",
+  "completedAt": null
+}
