@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1ce0b7bbb513174d21936b533a11f6647468b8bb77b4b4add31093e6c79ff133",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1194042343:hibanan-extension-quietprofileselector",
+      "inputDigest": "dd4b780577724bee7dfabbb0309ed367a4cc9d79cea826798384988e835b318d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T05:19:26.054Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T05:04:26.054Z",
+  "completedAt": null
+}
