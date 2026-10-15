@@ -9,65 +9,40 @@
     "url": "https://github.com/cfigure/Lumiverse-Shutter",
     "description": "A Lumiverse extension for quick-access and automated native ImageGen workflows, inline image controls, generation history, prompt tools, and optional image layout controls.",
     "default_branch": "main",
-    "head_sha": "f76ab246f266e80c1b46efaadfb189398d53d417",
-    "head_committed_at": "2026-07-28T17:41:50.000Z",
+    "head_sha": "9698e78125e682b602fa7de4a90f4aa25ce8a791",
+    "head_committed_at": "2026-10-10T14:24:34.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-10T15:30:53.000Z",
-    "size_kb": 581
+    "size_kb": 829
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-28T16:57:43.000Z",
+    "latest_source_activity_at": "2026-10-10T14:21:27.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-10T14:21:27.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-23T07:27:35.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-27",
         "latest_at": "2026-07-28T16:57:43.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-20",
-        "latest_at": "2026-07-26T19:49:40.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-06",
-        "latest_at": "2026-07-09T15:48:45.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-15",
-        "latest_at": "2026-06-21T12:44:56.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-10T19:33:51.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-25",
-        "latest_at": "2026-05-29T22:17:49.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-18",
-        "latest_at": "2026-05-23T12:08:56.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-11",
-        "latest_at": "2026-05-14T00:26:37.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-07-28T17:42:54.000Z",
+    "latest_release_at": "2026-10-10T14:28:42.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-29T10:00:10.862Z",
+    "baseline_completed_at": "2026-10-15T05:11:54.033Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "f76ab246f266e80c1b46efaadfb189398d53d417"
+    "evidence_head_sha": "9698e78125e682b602fa7de4a90f4aa25ce8a791"
   },
   "community": {
     "stars_count": 1,
@@ -80,7 +55,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-15T05:13:58.541Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -88,7 +63,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-15T05:11:54.033Z",
     "stale_since": null
   }
 }

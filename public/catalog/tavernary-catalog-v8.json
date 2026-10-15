@@ -20775,8 +20775,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "f76ab246f266e80c1b46efaadfb189398d53d417",
+        "freshness": "stale",
+        "currentSha": "9698e78125e682b602fa7de4a90f4aa25ce8a791",
         "report": {
           "reportId": "e52642631e9940ddd1271436e9448ae5343bcbd39ba94da2a2ab91ca567d31e6",
           "riskLevel": "low",
@@ -20863,40 +20863,40 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-07-28T16:57:43.000Z",
-        "activeWeeks12": 2,
+        "latestSourceActivityAt": "2026-10-10T14:21:27.000Z",
+        "activeWeeks12": 3,
         "weeklyActivity": [
+          false,
           true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
           true,
           false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-07-28T17:42:54.000Z",
+      "latestReleaseAt": "2026-10-10T14:28:42.000Z",
       "community": {
         "stars": 1,
         "forks": 0,
         "watchers": 0,
         "aggregate": 1
       },
-      "repositorySizeKb": 581,
+      "repositorySizeKb": 829,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-15T05:13:58.541Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -193351,8 +193351,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "f76ab246f266e80c1b46efaadfb189398d53d417",
+              "freshness": "stale",
+              "currentSha": "9698e78125e682b602fa7de4a90f4aa25ce8a791",
               "report": {
                 "reportId": "e52642631e9940ddd1271436e9448ae5343bcbd39ba94da2a2ab91ca567d31e6",
                 "riskLevel": "low",
@@ -193439,40 +193439,40 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-07-28T16:57:43.000Z",
-              "activeWeeks12": 2,
+              "latestSourceActivityAt": "2026-10-10T14:21:27.000Z",
+              "activeWeeks12": 3,
               "weeklyActivity": [
+                false,
                 true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
                 true,
                 false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
-            "latestReleaseAt": "2026-07-28T17:42:54.000Z",
+            "latestReleaseAt": "2026-10-10T14:28:42.000Z",
             "community": {
               "stars": 1,
               "forks": 0,
               "watchers": 0,
               "aggregate": 1
             },
-            "repositorySizeKb": 581,
+            "repositorySizeKb": 829,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-15T05:13:58.541Z",
             "staleSince": null,
             "install": null,
             "fork": null,
