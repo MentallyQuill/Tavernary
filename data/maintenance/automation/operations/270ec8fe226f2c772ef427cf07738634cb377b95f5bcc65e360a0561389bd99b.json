@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "270ec8fe226f2c772ef427cf07738634cb377b95f5bcc65e360a0561389bd99b",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1189004275:avilnetro-all-but-this-swipe",
+      "inputDigest": "eb766409f73c9c22b1c12758643290616773fe7ceaf1b933ffaa88e499202e88",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T12:56:17.686Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T12:41:17.686Z",
+  "completedAt": null
+}
