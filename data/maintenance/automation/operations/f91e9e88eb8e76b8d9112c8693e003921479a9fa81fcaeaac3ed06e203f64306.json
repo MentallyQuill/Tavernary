@@ -8,20 +8,13 @@
       "inputDigest": "d376c181240edb163f2817c3d824d9f1220cd005f4e6cc7bd22d8554958607df",
       "policyVersion": "2026-07-29"
     },
-    "stage": "validated",
+    "stage": "published",
     "createdAt": "2026-10-13T17:04:56.000Z",
-    "nextEligibleAt": "2026-10-15T03:16:36.486Z",
-    "expectedSha": "59b8b28fca0f00f941bc79d127b81a0886020039",
+    "nextEligibleAt": null,
+    "expectedSha": "d95372009a2abc64944d12866da5cbed6f9e09f7",
     "workerRunId": null,
-    "retry": {
-      "failure": {
-        "kind": "configuration",
-        "reasonCode": "publisher-authentication-failed"
-      },
-      "transientAttempts": 0,
-      "immediateAttempts": 0
-    }
+    "retry": null
   },
-  "updatedAt": "2026-10-14T03:16:36.486Z",
+  "updatedAt": "2026-10-15T14:18:54.126Z",
   "completedAt": null
 }
