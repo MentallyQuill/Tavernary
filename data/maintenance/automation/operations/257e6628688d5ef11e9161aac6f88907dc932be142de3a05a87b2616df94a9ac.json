@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "257e6628688d5ef11e9161aac6f88907dc932be142de3a05a87b2616df94a9ac",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1082708357:maxipawlowski-story-orchestrator",
+      "inputDigest": "65d28e00ecd437b9f2295e8db41d0a38bf499e01bfe2a29fe1bff0a9ca582ade",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T11:07:17.583Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T10:52:17.583Z",
+  "completedAt": null
+}
