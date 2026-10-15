@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2fdce3eeed28af097358195ec9c275ecdd13b8dea3bb8d2947cfe9fbb33475c9",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1126279204:aventurasteam-aventuras",
+      "inputDigest": "a473f421d7e6c0a1ab38666c44c108663ac98a7247155a0a8a405eaa149f330e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T21:05:29.400Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-15T20:50:29.400Z",
+  "completedAt": null
+}
