@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2f4cb73e48b9eaf9ae860038e8df79670bbd441e0802e152d4f492fc9267f2a4",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1158265980:sillytavern-sillytavern-greetingtools",
+      "inputDigest": "f6d05e0865207bfc4d6e9df32646794b9d7878222bff7e4e56f36b028a70c539",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T21:05:29.400Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T20:50:29.400Z",
+  "completedAt": null
+}
