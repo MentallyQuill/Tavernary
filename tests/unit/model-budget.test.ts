@@ -1,4 +1,5 @@
 import { expect, test } from "vitest";
+import { maximumModelBudgetFixture } from "../helpers/model-budget-fixtures";
 import {
   createModelBudgetState,
   reserveModelBudget,
@@ -8,6 +9,7 @@ import {
   bindModelBudgetTicket,
   createModelBudgetGuard,
   validateModelUsageEvidence,
+  parseModelDailyTokens,
 } from "../../scripts/automation/model-budget.mjs";
 
 const nowMs = Date.parse("2026-10-08T12:00:00Z");
@@ -19,6 +21,94 @@ const request = {
   model: "approved/model",
 };
 const options = { nowMs };
+
+test("twenty thousand bounded historical tickets remain readable within the canonical byte allowance", () => {
+  const state = maximumModelBudgetFixture();
+  expect(validateModelBudgetState(state).tickets).toHaveLength(20000);
+  const bytes = Buffer.byteLength(`${JSON.stringify(state, null, 2)}\n`);
+  expect(bytes + 20000 * 32).toBeLessThan(25_165_824);
+});
+
+test("ten million configured tokens admit bounded tickets exactly to the daily boundary", () => {
+  const tokensPerDay = parseModelDailyTokens("10000000");
+  expect(tokensPerDay).toBe(10000000);
+  expect(() => parseModelDailyTokens("10000001")).toThrow(
+    "Model daily token limit is invalid.",
+  );
+  expect(parseModelDailyTokens()).toBe(200000);
+  expect(parseModelDailyTokens("")).toBe(200000);
+  let state = createModelBudgetState(nowMs);
+  for (let index = 0; index < 50; index++) {
+    const decision = reserveModelBudget(
+      state,
+      { ...request, requestId: `request-${index}`, requestedTokens: 200000 },
+      { nowMs, tokensPerDay },
+    );
+    if (!decision.allowed) throw new Error("Token reservation refused");
+    state = decision.state;
+  }
+  expect(state.days[0]).toEqual({
+    day: "2026-10-08",
+    requests: 50,
+    tokens: 10000000,
+  });
+  const charged = JSON.stringify(state);
+  const refused = reserveModelBudget(
+    state,
+    { ...request, requestId: "one-token-over", requestedTokens: 1 },
+    { nowMs, tokensPerDay },
+  );
+  expect(refused).toMatchObject({ allowed: false, reason: "daily-limit" });
+  expect(refused.state).toBe(state);
+  expect(JSON.stringify(state)).toBe(charged);
+  expect(() =>
+    reserveModelBudget(state, request, { ...options, requestsPerDay: 201 }),
+  ).toThrow("Model budget limits are invalid.");
+});
+
+test("the default daily allowance preserves forty charged requests and admits up to two hundred", () => {
+  const first = reserveModelBudget(
+    createModelBudgetState(nowMs),
+    { ...request, requestCount: 40 },
+    { ...options, requestsPerDay: 40 },
+  );
+  if (!first.allowed) throw new Error("Existing reservation refused");
+  const previous = JSON.stringify(first.state);
+  let state = first.state;
+  for (let index = 1; index < 5; index++) {
+    const decision = reserveModelBudget(
+      state,
+      { ...request, requestId: `batch-${index}`, requestCount: 40 },
+      options,
+    );
+    expect(decision.allowed).toBe(true);
+    if (!decision.allowed) throw new Error("Daily reservation refused");
+    state = decision.state;
+  }
+  expect(JSON.stringify(first.state)).toBe(previous);
+  expect(state.tickets[0]).toEqual(first.ticket);
+  expect(state.days[0]).toEqual({
+    day: "2026-10-08",
+    requests: 200,
+    tokens: 5000,
+  });
+  expect(
+    reserveModelBudget(
+      state,
+      { ...request, requestId: "batch-4", requestCount: 40 },
+      { ...options, requestsPerDay: 200 },
+    ).allowed,
+  ).toBe(true);
+  const charged = JSON.stringify(state);
+  const refused = reserveModelBudget(
+    state,
+    { ...request, requestId: "request-201" },
+    options,
+  );
+  expect(refused).toMatchObject({ allowed: false, reason: "daily-limit" });
+  expect(refused.state).toBe(state);
+  expect(JSON.stringify(state)).toBe(charged);
+});
 
 test("a configured daily allowance admits multiple bounded preparations", () => {
   const first = reserveModelBudget(
@@ -60,7 +150,37 @@ test("unpriced reservations remain accounted across every UTC day of a full mont
   ]);
 });
 
+test("a full month of ten-million-token days retains unpriced accounting", () => {
+  const start = Date.parse("2026-10-01T12:00:00Z");
+  let state = createModelBudgetState(start);
+  for (let day = 0; day < 31; day++) {
+    for (let index = 0; index < 50; index++) {
+      const decision = reserveModelBudget(
+        state,
+        {
+          ...request,
+          requestId: `request-${day}-${index}`,
+          requestedTokens: 200000,
+        },
+        { nowMs: start + day * 86400000, tokensPerDay: 10000000 },
+      );
+      if (!decision.allowed) throw new Error("Monthly reservation refused");
+      state = decision.state;
+    }
+  }
+  expect(validateModelBudgetState(state).months).toEqual([
+    { month: "2026-10", reservedMicrousd: 0, unpricedTokens: 310000000 },
+  ]);
+}, 30000);
+
 test("the higher daily cap retains the per-ticket and usage token ceilings", () => {
+  expect(() =>
+    reserveModelBudget(
+      createModelBudgetState(nowMs),
+      { ...request, requestCount: 41 },
+      { nowMs, tokensPerDay: 10000000 },
+    ),
+  ).toThrow("Model budget schema is invalid.");
   expect(() =>
     reserveModelBudget(
       createModelBudgetState(nowMs),
@@ -86,13 +206,15 @@ test("reservations cannot exceed the configured daily ceiling", () => {
     if (!decision.allowed) throw new Error("Reservation refused");
     state = decision.state;
   }
-  expect(
-    reserveModelBudget(
-      state,
-      { ...request, requestId: "request-10", requestedTokens: 1 },
-      { nowMs, tokensPerDay: 2000000 },
-    ),
-  ).toMatchObject({ allowed: false, reason: "daily-limit" });
+  const charged = JSON.stringify(state);
+  const refused = reserveModelBudget(
+    state,
+    { ...request, requestId: "request-10", requestedTokens: 1 },
+    { nowMs, tokensPerDay: 2000000 },
+  );
+  expect(refused).toMatchObject({ allowed: false, reason: "daily-limit" });
+  expect(refused.state).toBe(state);
+  expect(JSON.stringify(state)).toBe(charged);
   expect(state.days[0]).toMatchObject({ requests: 10, tokens: 2000000 });
 });
 
@@ -126,7 +248,7 @@ test("the higher daily cap preserves configured monthly USD and price checks", (
 });
 
 test("forty reserved requests exhaust the shared allowance without releasing unknown outcomes", () => {
-  const limits = { ...options, tokensPerDay: 2000000 };
+  const limits = { ...options, requestsPerDay: 40, tokensPerDay: 2000000 };
   const filled = reserveModelBudget(
     createModelBudgetState(nowMs),
     { ...request, requestCount: 40 },
@@ -164,6 +286,7 @@ test("identical reservation replay is idempotent and changed requests cannot reu
 });
 
 test("two serialized workers compete for the final request, and cancelled work remains spent", () => {
+  const options = { nowMs, requestsPerDay: 40 };
   const first = reserveModelBudget(
     createModelBudgetState(nowMs),
     { ...request, requestCount: 39 },
@@ -231,6 +354,37 @@ test("known usage is validated and recorded without refunding requested allowanc
     settleModelBudget(first.state, first.ticket, { requests: 1, tokens: NaN }),
   ).toThrow();
   expect(() => settleModelBudget(settled, first.ticket, null)).toThrow();
+});
+
+test("expired reservations preserve their charges and retain verification envelopes for ninety days", () => {
+  const first = reserveModelBudget(
+    createModelBudgetState(nowMs),
+    request,
+    options,
+  );
+  if (!first.allowed) throw new Error("Initial reservation refused");
+  const expires = Date.parse(first.ticket.expiresAt);
+  const charged = JSON.stringify(first.state);
+  expect(
+    reserveModelBudget(first.state, request, { nowMs: expires }),
+  ).toMatchObject({ allowed: false, reason: "ticket-expired" });
+  expect(JSON.stringify(first.state)).toBe(charged);
+  const boundary = expires + 90 * 86400000;
+  const retained = reserveModelBudget(first.state, request, {
+    nowMs: boundary,
+    tokensPerDay: 10000000,
+  });
+  if (!retained.allowed) throw new Error("Retention reservation refused");
+  expect(retained.state.tickets).toContainEqual(first.ticket);
+  const aged = reserveModelBudget(
+    retained.state,
+    { ...request, requestId: "after-retention" },
+    { nowMs: boundary + 1, tokensPerDay: 10000000 },
+  );
+  if (!aged.allowed) throw new Error("Aged reservation refused");
+  expect(aged.state.tickets).not.toContainEqual(first.ticket);
+  expect(aged.state.days).toContainEqual(first.state.days[0]);
+  expect(aged.state.months).toContainEqual(first.state.months[0]);
 });
 
 test("new UTC days reopen daily limits, month accounting persists, and backward clocks refuse", () => {

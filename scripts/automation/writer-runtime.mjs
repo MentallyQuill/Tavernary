@@ -313,7 +313,7 @@ async function loadGenerationBudgetSnapshot({ env, gh }) {
     "--header",
     "Accept: application/vnd.github.raw+json",
   ]);
-  if (typeof text !== "string" || Buffer.byteLength(text) > 8_388_608)
+  if (typeof text !== "string" || Buffer.byteLength(text) > 25_165_824)
     throw new Error("Generation budget snapshot exceeds its bound.");
   return {
     publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),

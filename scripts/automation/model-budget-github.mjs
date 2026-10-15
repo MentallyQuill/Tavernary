@@ -221,8 +221,8 @@ function validateContext(input, allowEmptyTickets = false) {
   )
     throw fail();
 }
-function json(text) {
-  if (typeof text !== "string" || Buffer.byteLength(text) > 8388608)
+function json(text, maximumBytes = 8388608) {
+  if (typeof text !== "string" || Buffer.byteLength(text) > maximumBytes)
     throw fail();
   return JSON.parse(text);
 }
@@ -389,6 +389,7 @@ export async function loadProducerBudgetGuard({
           "--header",
           "Accept: application/vnd.github.raw+json",
         ]),
+        25_165_824,
       ),
     );
     if (nowMs() > bindingDeadline) throw fail();

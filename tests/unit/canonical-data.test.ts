@@ -6,6 +6,7 @@ import {
   verifyCanonicalData,
 } from "../../scripts/automation/canonical-data.mjs";
 import { preparedResultFixture } from "../helpers/automation-fixtures";
+import { maximumModelBudgetFixture } from "../helpers/model-budget-fixtures";
 function fixture() {
   const files = preparedResultFixture().files;
   const requests: Array<{ args: string[]; body: Record<string, unknown> }> = [];
@@ -50,6 +51,96 @@ function fixture() {
     message: "chore(catalog): publish prepared refresh",
   };
 }
+
+test("canonical publication writes the full bounded global model ledger", async () => {
+  const input = fixture();
+  const content = `${JSON.stringify(maximumModelBudgetFixture(), null, 2)}\n`;
+  const file = {
+    path: "data/maintenance/automation/model-budgets/global.json",
+    type: "file" as const,
+    content,
+    bytes: Buffer.byteLength(content),
+    sha256: createHash("sha256").update(content).digest("hex"),
+    baseDigest: null,
+  };
+  expect(await commitCanonicalData({ ...input, files: [file] })).toEqual({
+    sha: "e".repeat(40),
+  });
+  const blob = input.requests.find((request) =>
+    request.args.includes("repos/Owner/Repo/git/blobs"),
+  );
+  expect(
+    Buffer.from(String(blob?.body.content), "base64").toString("utf8"),
+  ).toBe(content);
+  const original = input.gh.getMockImplementation()!;
+  input.gh.mockImplementation(async (args, body) => {
+    if (args[1]?.includes("/contents/"))
+      return JSON.stringify({
+        type: "file",
+        encoding: "none",
+        sha: "c".repeat(40),
+      });
+    if (args[1]?.endsWith(`/git/blobs/${"c".repeat(40)}`))
+      return JSON.stringify({
+        sha: "c".repeat(40),
+        size: file.bytes,
+        encoding: "base64",
+        content: Buffer.from(content).toString("base64"),
+      });
+    return original(args, body);
+  });
+  expect(
+    await verifyCanonicalData({
+      ...input,
+      files: [file],
+      sha: "e".repeat(40),
+      mainSha: "e".repeat(40),
+    }),
+  ).toBe(true);
+});
+
+test.each(["global", "other", "batch"])(
+  "the model ledger byte allowance rejects an oversized %s before remote writes",
+  async (variant) => {
+    const input = fixture();
+    const bytes = variant === "other" ? 8_388_609 : 25_165_825;
+    const content = JSON.stringify({ payload: "x".repeat(bytes - 14) });
+    const file = {
+      path: `data/maintenance/automation/model-budgets/${variant === "other" ? "other" : "global"}.json`,
+      type: "file" as const,
+      content,
+      bytes: Buffer.byteLength(content),
+      sha256: createHash("sha256").update(content).digest("hex"),
+      baseDigest: null,
+    };
+    let files = [file];
+    if (variant === "batch") {
+      const boundedContent = JSON.stringify({
+        payload: "x".repeat(24_000_000),
+      });
+      const catalogContent = JSON.stringify({
+        payload: "x".repeat(12_000_000),
+      });
+      files = [
+        {
+          ...file,
+          content: boundedContent,
+          bytes: Buffer.byteLength(boundedContent),
+          sha256: createHash("sha256").update(boundedContent).digest("hex"),
+        },
+        {
+          ...file,
+          path: "public/catalog/tavernary-catalog.json",
+          content: catalogContent,
+          bytes: Buffer.byteLength(catalogContent),
+          sha256: createHash("sha256").update(catalogContent).digest("hex"),
+        },
+      ];
+    }
+    await expect(commitCanonicalData({ ...input, files })).rejects.toThrow();
+    expect(input.requests).toEqual([]);
+  },
+);
 
 test("canonical publication commits both generated catalogs above the per-record size limit", async () => {
   const input = fixture();

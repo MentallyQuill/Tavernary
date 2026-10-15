@@ -16,8 +16,8 @@
         "required": ["day", "requests", "tokens"],
         "properties": {
           "day": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
-          "requests": { "type": "integer", "minimum": 0, "maximum": 40 },
-          "tokens": { "type": "integer", "minimum": 0, "maximum": 2000000 }
+          "requests": { "type": "integer", "minimum": 0, "maximum": 200 },
+          "tokens": { "type": "integer", "minimum": 0, "maximum": 10000000 }
         }
       }
     },
@@ -38,14 +38,14 @@
           "unpricedTokens": {
             "type": "integer",
             "minimum": 0,
-            "maximum": 62000000
+            "maximum": 310000000
           }
         }
       }
     },
     "tickets": {
       "type": "array",
-      "maxItems": 4000,
+      "maxItems": 20000,
       "items": {
         "type": "object",
         "additionalProperties": false,

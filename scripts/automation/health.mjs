@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { AUTOMATION_FAILURE_REASON_CODES } from "./failure.mjs";
 import {
   DEFAULT_MODEL_DAILY_TOKENS,
+  MAX_MODEL_DAILY_REQUESTS,
   validateModelBudgetState,
   validateModelDailyTokens,
 } from "./model-budget.mjs";
@@ -501,7 +502,9 @@ export function assessInventoryHealth(
           budget: {
             exhausted:
               Boolean(
-                day && (day.requests >= 40 || day.tokens >= tokensPerDay),
+                day &&
+                (day.requests >= MAX_MODEL_DAILY_REQUESTS ||
+                  day.tokens >= tokensPerDay),
               ) ||
               failures.some(
                 (operation) =>

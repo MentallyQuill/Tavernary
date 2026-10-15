@@ -1,4 +1,5 @@
 import { expect, test, vi } from "vitest";
+import { maximumModelBudgetFixture } from "../helpers/model-budget-fixtures";
 import { readFileSync } from "node:fs";
 import { parse } from "yaml";
 import { runModelWriterPreparation } from "../../scripts/automation/writer-runtime.mjs";
@@ -783,39 +784,72 @@ async function generationSettlementFixture() {
   };
 }
 
-test("native generation accounting reads a pinned budget snapshot without loading issue, pull or catalog history", async () => {
-  const f = await generationSettlementFixture();
-  const sha = String(f.f.state.local.revision);
-  const gh = vi.fn(async (args: string[]) => {
-    if (args.some((arg) => arg.endsWith("/git/ref/heads/main")))
-      return JSON.stringify({ object: { sha } });
-    if (
-      args.some((arg) =>
-        arg.includes(
-          "/contents/data/maintenance/automation/model-budgets/global.json",
-        ),
-      )
-    ) {
-      expect(args).toContain(
-        `repos/${f.f.state.repository}/contents/data/maintenance/automation/model-budgets/global.json?ref=${sha}`,
-      );
-      return JSON.stringify(f.f.state.local.modelBudget);
+test.each([false, true])(
+  "native generation accounting reads a pinned budget snapshot without loading issue, pull or catalog history (full ledger=%s)",
+  async (fullLedger) => {
+    const f = await generationSettlementFixture();
+    if (fullLedger) {
+      const bound = validateModelBudgetState(f.f.state.local.modelBudget);
+      const state = maximumModelBudgetFixture();
+      state.updatedAt = bound.updatedAt;
+      state.days.pop();
+      state.days.push(...bound.days);
+      state.months.shift();
+      state.months.push(...bound.months);
+      state.tickets.splice(state.tickets.length - bound.tickets.length);
+      state.tickets.push(...bound.tickets);
+      f.f.state.local.modelBudget = state;
     }
-    return f.input.gh(args);
-  });
-  expect(
-    await writer.runGenerationModelWriterSettlement({
-      operationKey: f.operation.key,
-      env: f.input.env,
-      gh,
-      download: f.input.download,
-      commit: f.commit,
-    }),
-  ).toMatchObject({ status: "recovered" });
-  expect(gh.mock.calls.flat(2).join(" ")).not.toMatch(
-    /\/issues|\/pulls|workflow_runs|git fetch/u,
-  );
-});
+    const sha = String(f.f.state.local.revision);
+    const gh = vi.fn(async (args: string[]) => {
+      if (args.some((arg) => arg.endsWith("/git/ref/heads/main")))
+        return JSON.stringify({ object: { sha } });
+      if (
+        args.some((arg) =>
+          arg.includes(
+            "/contents/data/maintenance/automation/model-budgets/global.json",
+          ),
+        )
+      ) {
+        expect(args).toContain(
+          `repos/${f.f.state.repository}/contents/data/maintenance/automation/model-budgets/global.json?ref=${sha}`,
+        );
+        return JSON.stringify(f.f.state.local.modelBudget);
+      }
+      return f.input.gh(args);
+    });
+    expect(
+      await writer.runGenerationModelWriterSettlement({
+        operationKey: f.operation.key,
+        env: f.input.env,
+        gh,
+        download: f.input.download,
+        commit: f.commit,
+      }),
+    ).toMatchObject({ status: "recovered" });
+    expect(gh.mock.calls.flat(2).join(" ")).not.toMatch(
+      /\/issues|\/pulls|workflow_runs|git fetch/u,
+    );
+    if (!fullLedger) {
+      const commits = f.commit.mock.calls.length;
+      await expect(
+        writer.runGenerationModelWriterSettlement({
+          operationKey: f.operation.key,
+          env: f.input.env,
+          gh: async (args) => {
+            const content = await gh(args);
+            return args[1]?.includes("/contents/")
+              ? content.padEnd(25_165_825, " ")
+              : content;
+          },
+          download: f.input.download,
+          commit: f.commit,
+        }),
+      ).rejects.toThrow("Generation budget snapshot exceeds its bound.");
+      expect(f.commit).toHaveBeenCalledTimes(commits);
+    }
+  },
+);
 
 test("an interrupted native generator settles completed calls once despite a lost commit response, without refunding unused allowance", async () => {
   const f = await generationSettlementFixture();
@@ -1295,6 +1329,29 @@ test("generation settlement uses the guarded ZIP downloader by default", async (
   expect(download).toHaveBeenCalledOnce();
 });
 
+function reserveFullDailyCallAllowance(
+  state: ReturnType<typeof createModelBudgetState>,
+  nowMs: number,
+) {
+  let budget = state;
+  for (let index = 0; index < 5; index++) {
+    const decision = reserveModelBudget(
+      budget,
+      {
+        operationKey: "f".repeat(64),
+        requestId: `quota-${index}`,
+        model: "primary",
+        requestCount: 40,
+        requestedTokens: 200000,
+      },
+      { nowMs, tokensPerDay: 2000000 },
+    );
+    if (!decision.allowed) throw new Error("Invalid exhausted fixture");
+    budget = decision.state;
+  }
+  return budget;
+}
+
 async function freshOwnerBudgetCooldownFixture() {
   const f = await metadataMaintenanceFixture();
   const p = projectInventoryFixture({
@@ -1736,19 +1793,12 @@ test.each(["budget-exhausted", "publisher-authentication-failed"] as const)(
       f.run.display_title = "Project #42: Request review PR force=true";
       f.receipt.operation.retry.failure.reasonCode = reasonCode as never;
     }
-    const exhausted = reserveModelBudget(
+    const exhausted = reserveFullDailyCallAllowance(
       validateModelBudgetState(f.state.local.modelBudget),
-      {
-        operationKey: "f".repeat(64),
-        model: "primary",
-        requestCount: 40,
-        requestedTokens: 200000,
-      },
-      { nowMs: f.state.nowMs },
+      f.state.nowMs,
     );
-    if (!exhausted.allowed) throw new Error("Invalid exhausted fixture");
-    f.state.local.modelBudget = exhausted.state;
-    const beforeBudget = structuredClone(exhausted.state);
+    f.state.local.modelBudget = exhausted;
+    const beforeBudget = structuredClone(exhausted);
     const persist = vi
       .spyOn(githubInventory, "persistGithubAutomationReceipt")
       .mockImplementation(async ({ receipt }) => {
@@ -1830,18 +1880,11 @@ test.each(["key", "stage", "expected-sha"] as const)(
 
 test("fresh owner failure persistence rereads a newer refusal instead of replacing its backoff", async () => {
   const f = await freshOwnerBudgetCooldownFixture();
-  const exhausted = reserveModelBudget(
+  const exhausted = reserveFullDailyCallAllowance(
     validateModelBudgetState(f.state.local.modelBudget),
-    {
-      operationKey: "f".repeat(64),
-      model: "primary",
-      requestCount: 40,
-      requestedTokens: 200000,
-    },
-    { nowMs: f.state.nowMs },
+    f.state.nowMs,
   );
-  if (!exhausted.allowed) throw new Error("Invalid exhausted fixture");
-  f.state.local.modelBudget = exhausted.state;
+  f.state.local.modelBudget = exhausted;
   const newerReceipt = structuredClone(f.receipt);
   newerReceipt.updatedAt = new Date(f.state.nowMs).toISOString();
   newerReceipt.operation.nextEligibleAt = new Date(

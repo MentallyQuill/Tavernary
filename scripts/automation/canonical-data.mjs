@@ -3,6 +3,8 @@ import { githubFailureStatus } from "./github-inventory.mjs";
 
 const shaPattern = /^[a-f0-9]{40}$/u;
 function canonicalFileByteLimit(path) {
+  if (path === "data/maintenance/automation/model-budgets/global.json")
+    return 25_165_824;
   return [
     "public/catalog/tavernary-catalog.json",
     "public/catalog/tavernary-catalog-v8.json",

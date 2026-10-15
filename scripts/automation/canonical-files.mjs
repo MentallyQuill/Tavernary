@@ -34,10 +34,15 @@ export function readCanonicalFiles({ root, revision, paths }) {
       throw new Error("Canonical data is not a regular non-executable file.");
     objects.set(match[4], match[3]);
   }
-  const entries = [...objects];
+  const budgetPath = "data/maintenance/automation/model-budgets/global.json";
+  const entries = [...objects].filter(([path]) => path !== budgetPath);
+  const batches = objects.has(budgetPath)
+    ? [[[budgetPath, objects.get(budgetPath)]]]
+    : [];
+  for (let start = 0; start < entries.length; start += 8)
+    batches.push(entries.slice(start, start + 8));
   const result = {};
-  for (let start = 0; start < entries.length; start += 8) {
-    const batch = entries.slice(start, start + 8);
+  for (const batch of batches) {
     const raw = execFileSync("git", ["cat-file", "--batch"], {
       cwd: root,
       input: batch.map(([, sha]) => `${sha}\n`).join(""),
@@ -56,7 +61,7 @@ export function readCanonicalFiles({ root, revision, paths }) {
         match?.[1] !== sha ||
         !Number.isSafeInteger(bytes) ||
         bytes < 0 ||
-        bytes > 8_388_608 ||
+        bytes > (path === budgetPath ? 25_165_824 : 8_388_608) ||
         end + bytes + 1 >= raw.length ||
         raw[end + bytes + 1] !== 10
       )
