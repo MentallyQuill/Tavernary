@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2515423dea283501213b760e578a0936fba24f684e5a2915f11b6d67d1b5c56e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1271548133:tavernai-tavernai",
+      "inputDigest": "59275905a9b0d5da0ccb4dc31b8c750160ae9795cf3d04c81b33306607e9ca53",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T14:12:05.957Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-15T14:07:05.017Z",
+  "completedAt": null
+}
