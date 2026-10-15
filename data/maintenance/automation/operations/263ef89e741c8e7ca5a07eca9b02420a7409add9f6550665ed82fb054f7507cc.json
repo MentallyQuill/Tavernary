@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "263ef89e741c8e7ca5a07eca9b02420a7409add9f6550665ed82fb054f7507cc",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1220986145:xays-101-smart-chat-manager-silly-tavern",
+      "inputDigest": "e9453b1718238a2768405173adc97476982fcc0f31aeb751c6de4f68a1913a38",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T12:56:17.686Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T12:41:17.686Z",
+  "completedAt": null
+}
