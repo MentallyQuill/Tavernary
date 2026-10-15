@@ -5,6 +5,8 @@ export async function reconcilePreparedOperations({
   publish,
   onFailure,
   readDiagnostic,
+  readDiagnosticEvidence,
+  isDiagnosticObsolete,
   limit = 20,
 }) {
   const wakes = selectPreparedWakes({
@@ -20,15 +22,27 @@ export async function reconcilePreparedOperations({
   const ready = [];
   for (const wake of wakes) {
     let error;
+    let evidence;
     let available = false;
     try {
       if (wake.diagnostic) {
-        if (!readDiagnostic)
+        if (!readDiagnostic && !readDiagnosticEvidence)
           throw new Error("Prepared diagnostic adapter is unavailable.");
-        error = { failure: await readDiagnostic(wake) };
+        if (readDiagnosticEvidence) {
+          evidence = await readDiagnosticEvidence(wake);
+          error = { failure: evidence.failure };
+        } else error = { failure: await readDiagnostic(wake) };
       } else available = await hasResult(wake);
     } catch (caught) {
       error = caught;
+    }
+    if (
+      evidence &&
+      isDiagnosticObsolete &&
+      (await isDiagnosticObsolete({ wake, evidence }))
+    ) {
+      result.reloadRequired = true;
+      continue;
     }
     if (error) {
       result.consumedKeys.push(wake.operationKey);
