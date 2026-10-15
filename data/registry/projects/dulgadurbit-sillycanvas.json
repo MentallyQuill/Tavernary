@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "dulgadurbit-sillycanvas",
+  "name": "SillyCanvas",
+  "kind": "extension",
+  "summary": "SillyCanvas for SillyTavern turns prompts into a canvas of blocks and wires, giving users control over exactly what the AI sees and letting them read the exact messages before a token is spent (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1382809106",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "guide-model-responses",
+    "inspect-prompts-and-generations",
+    "manage-prompts-and-presets",
+    "visual-workflow"
+  ],
+  "cataloged_at": "2026-10-15T06:56:17.623Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
