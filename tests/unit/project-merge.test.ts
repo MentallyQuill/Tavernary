@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { expect, test, vi } from "vitest";
 import {
   loadProjectMergePlan,
+  loadProjectRegenerationPlan,
   publishProjectOperation,
   mergeExactProjectHead,
 } from "../../scripts/automation/project-merge.mjs";
@@ -14,8 +15,12 @@ import {
 import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
 import { runProjectWriterReconciliation } from "../../scripts/automation/writer-runtime.mjs";
 
-function fixture() {
+function fixture(
+  producer:
+    "project-submission" | "project-owner-request" = "project-submission",
+) {
   const input = projectInventoryFixture({
+    producer,
     generatedPull: { mergeable: true } as never,
     validationRun: {},
   });
@@ -158,6 +163,240 @@ test("the production merge adapter requires exact CI, numeric Publisher custody,
   input.input.issues[0].labels.pop();
   input.input.pulls[0].user.id = 99;
   expect((await loadProjectMergePlan(input)).action).toBe("reject");
+});
+
+test("the production merge adapter accepts the dynamic name of an exact trusted CI dispatch", async () => {
+  const input = fixture();
+  const original = input.gh.getMockImplementation()!;
+  input.gh.mockImplementation(async (args) => {
+    const response = await original(args);
+    return args.some((arg) => arg.endsWith("/runs/701"))
+      ? JSON.stringify({
+          ...JSON.parse(response),
+          name: `Site: Validate ${input.input.pulls[0].head.ref}`,
+        })
+      : response;
+  });
+  expect(await loadProjectMergePlan(input)).toMatchObject({
+    action: "merge",
+    pullNumber: 84,
+    expectedHeadSha: input.input.pulls[0].head.sha,
+  });
+});
+
+test.each([
+  ["native GitHub Actions actor", { actor: { id: 41898282, type: "Bot" } }],
+  ["wrong actor type", { actor: { id: 2625904, type: "Bot" } }],
+  ["wrong workflow", { path: ".github/workflows/other.yml" }],
+  ["wrong event", { event: "pull_request" }],
+  ["foreign repository", { head_repository: { full_name: "Other/Tavernary" } }],
+  ["wrong branch", { head_branch: "main" }],
+  ["wrong head", { head_sha: "d".repeat(40) }],
+  ["unfinished run", { status: "in_progress" }],
+  ["failed run", { conclusion: "failure" }],
+  ["wrong run identity", { id: 702 }],
+] as const)("dynamic CI names do not excuse %s", async (_name, changes) => {
+  const input = fixture();
+  const original = input.gh.getMockImplementation()!;
+  input.gh.mockImplementation(async (args) => {
+    const response = await original(args);
+    return args.some((arg) => arg.endsWith("/runs/701"))
+      ? JSON.stringify({
+          ...JSON.parse(response),
+          name: `Site: Validate ${input.input.pulls[0].head.ref}`,
+          ...changes,
+        })
+      : response;
+  });
+  expect(await loadProjectMergePlan(input)).toEqual({
+    action: "reject",
+    reasonCode: "validation-run-custody-invalid",
+  });
+});
+
+test("fresh regeneration preflight permits preparation with failed old CI but publication still waits", async () => {
+  const input = fixture();
+  input.state.remote.runs[0].conclusion = "failure";
+  const original = input.gh.getMockImplementation()!;
+  input.gh.mockImplementation((args) => {
+    if (args.some((arg) => arg.endsWith("/runs/701")))
+      throw new Error("Regeneration must not read old CI");
+    return original(args);
+  });
+  expect(await loadProjectMergePlan(input)).toEqual({
+    action: "retry",
+    reasonCode: "ci-unavailable",
+  });
+  expect(await loadProjectRegenerationPlan(input)).toEqual({
+    action: "regenerate",
+    reasonCode: "owner-force-regeneration",
+    producer: "project-submission",
+    issueNumber: 42,
+  });
+});
+
+test.each([
+  [
+    "lost Publisher custody",
+    "/pulls/84",
+    { user: { id: 99, type: "Bot" } },
+    "project-transaction-custody-invalid",
+  ],
+  [
+    "changed native head",
+    "/pulls/84",
+    {
+      head: {
+        ref: "automation/project-submission-42",
+        sha: "d".repeat(40),
+        repo: { full_name: "MentallyQuill/Tavernary" },
+      },
+    },
+    "project-transaction-custody-invalid",
+  ],
+  [
+    "foreign native repository",
+    "/pulls/84",
+    {
+      head: {
+        ref: "automation/project-submission-42",
+        sha: "c".repeat(40),
+        repo: { full_name: "Other/Tavernary" },
+      },
+    },
+    "project-transaction-custody-invalid",
+  ],
+  [
+    "wrong native branch",
+    "/pulls/84",
+    {
+      head: {
+        ref: "automation/project-submission-43",
+        sha: "c".repeat(40),
+        repo: { full_name: "MentallyQuill/Tavernary" },
+      },
+    },
+    "project-transaction-custody-invalid",
+  ],
+  [
+    "wrong base branch",
+    "/pulls/84",
+    { base: { ref: "other", repo: { full_name: "MentallyQuill/Tavernary" } } },
+    "project-transaction-custody-invalid",
+  ],
+  [
+    "closed pull",
+    "/pulls/84",
+    { state: "closed" },
+    "project-transaction-custody-invalid",
+  ],
+  ["lost admission", "/issues/42", { labels: [] }, "issue-no-longer-admitted"],
+  [
+    "closed issue",
+    "/issues/42",
+    { state: "closed" },
+    "issue-no-longer-admitted",
+  ],
+  [
+    "changed issue actor",
+    "/issues/42",
+    { user: { id: 99, login: "Other", type: "User" } },
+    "authority-lost",
+  ],
+  [
+    "invalid issue input",
+    "/issues/42",
+    { body: "invalid" },
+    "project-input-invalid",
+  ],
+  [
+    "changed source identity",
+    "repositories/42",
+    { id: 43, owner: { id: 1, type: "User" } },
+    "source-identity-changed",
+  ],
+  [
+    "unapproved paths",
+    "/pulls/84/files",
+    [[{ filename: "scripts/unapproved.mjs" }]],
+    "path-mismatch",
+  ],
+] as const)(
+  "fresh regeneration preflight refuses %s without relying on old CI",
+  async (_name, path, changes, reasonCode) => {
+    const input = fixture();
+    input.state.remote.runs = [];
+    const original = input.gh.getMockImplementation()!;
+    input.gh.mockImplementation(async (args) => {
+      const response = await original(args);
+      return args.some((arg) => arg.endsWith(path))
+        ? JSON.stringify(
+            Array.isArray(changes)
+              ? changes
+              : { ...JSON.parse(response), ...changes },
+          )
+        : response;
+    });
+    expect(await loadProjectRegenerationPlan(input)).toEqual({
+      action: "reject",
+      reasonCode,
+    });
+  },
+);
+
+test("fresh regeneration preflight preserves manual publication custody", async () => {
+  const input = fixture();
+  const transaction = parseProjectPublicationTransaction(
+    input.input.pulls[0].body,
+  )!;
+  transaction.publication_mode = "manual";
+  transaction.authority_type = "repository-owner";
+  input.input.pulls[0].body = `${PROJECT_PUBLICATION_TRANSACTION_MARKER}\n${JSON.stringify(transaction)}\n-->`;
+  expect(await loadProjectRegenerationPlan(input)).toEqual({
+    action: "reject",
+    reasonCode: "manual-approval-required",
+  });
+});
+
+test("fresh regeneration preflight handles owner requests without reading old CI", async () => {
+  const input = fixture("project-owner-request");
+  input.state.remote.runs = [];
+  expect(await loadProjectRegenerationPlan(input)).toEqual({
+    action: "regenerate",
+    reasonCode: "owner-force-regeneration",
+    producer: "project-owner-request",
+    issueNumber: 42,
+  });
+});
+
+test("fresh regeneration preflight rechecks live repository-owner authority", async () => {
+  const input = fixture();
+  const transaction = parseProjectPublicationTransaction(
+    input.input.pulls[0].body,
+  )!;
+  transaction.authority_type = "repository-owner";
+  input.input.pulls[0].body = `${PROJECT_PUBLICATION_TRANSACTION_MARKER}\n${JSON.stringify(transaction)}\n-->`;
+  const original = input.gh.getMockImplementation()!;
+  input.gh.mockImplementation((args) =>
+    args.includes("repositories/42")
+      ? Promise.resolve(
+          JSON.stringify({ id: 42, owner: { id: 99, type: "User" } }),
+        )
+      : original(args),
+  );
+  expect(await loadProjectRegenerationPlan(input)).toEqual({
+    action: "reject",
+    reasonCode: "authority-lost",
+  });
+});
+
+test("fresh regeneration preflight refuses a fork dependency hold added after inventory", async () => {
+  const input = fixture();
+  input.input.issues[0].labels.push("waiting-on-fork-parent");
+  expect(await loadProjectRegenerationPlan(input)).toEqual({
+    action: "reject",
+    reasonCode: "project-manual-decision",
+  });
 });
 
 test("only the fresh publication-setting GET receives the read credential", async () => {

@@ -96,6 +96,8 @@ export function runModelWriterPreparation(
     projectGenerationEligible?: (input: {
       state: AutomationInventoryState;
       operation: import("./operation.mjs").AutomationOperation;
+      generationRequest?:
+        import("./preparation-request.mjs").GenerationOwnerRequest | null;
     }) => Promise<boolean>;
     dispatchCached?: (
       input: Omit<

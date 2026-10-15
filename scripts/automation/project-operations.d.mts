@@ -68,6 +68,11 @@ export function discoverRequestedGeneration(
     forceRegeneration?: boolean;
   },
 ): AutomationOperation | null;
+export function ownerPublisherRecoveryAcknowledged(
+  operation: AutomationOperation,
+  input: Pick<ProjectInventoryInput, "receipts" | "nowMs">,
+  request?: Parameters<typeof discoverRequestedGeneration>[1] | null,
+): boolean;
 export function projectIssueMatchesTransaction(input: {
   issue: ProjectInventoryIssue;
   transaction: import("../publication/project-publication-transaction.mjs").ProjectPublicationTransaction;

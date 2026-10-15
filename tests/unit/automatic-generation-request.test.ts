@@ -20,6 +20,7 @@ import {
   PROJECT_PUBLICATION_TRANSACTION_MARKER,
 } from "../../scripts/publication/project-publication-transaction.mjs";
 import { fingerprintProjectRecord } from "../../src/features/help/project-owner-record.mjs";
+import * as githubInventory from "../../scripts/automation/github-inventory.mjs";
 
 async function fixture(
   producer:
@@ -240,6 +241,269 @@ test("a native Bot request for a currently publishable head spends no allowance"
   expect(validateModelBudgetState(f.state.local.modelBudget).tickets).toEqual(
     [],
   );
+});
+
+async function publisherRecoveryFixture() {
+  const recovery = await fixture();
+  const original = structuredClone(recovery.state.operations[0]);
+  recovery.run.actor = { id: 2625904, type: "User" };
+  recovery.run.display_title = "Project #42: Request review PR force=true";
+  recovery.validation.conclusion = "failure";
+  const refusal = {
+    schema_version: 1 as const,
+    operation: {
+      ...original,
+      nextEligibleAt: new Date(
+        recovery.state.nowMs + 86400000,
+      ).toISOString() as string | null,
+      retry: {
+        failure: {
+          kind: "configuration" as const,
+          reasonCode: "publisher-authentication-failed" as const,
+        },
+        transientAttempts: 2,
+        immediateAttempts: 1,
+      },
+    },
+    updatedAt: new Date(recovery.state.nowMs - 1000).toISOString(),
+    completedAt: null,
+  };
+  recovery.state.receipts = [refusal];
+  recovery.state.operations = discoverAutomationState(recovery.state);
+  return { ...recovery, original, refusal };
+}
+
+test("a fresh owner Publisher recovery regenerates an unchanged head without requiring its failing old CI", async () => {
+  const recovery = await publisherRecoveryFixture();
+  const before = structuredClone(recovery.refusal);
+  expect(await runModelWriterPreparation(recovery.writerInput)).toMatchObject({
+    status: "dispatched",
+    runId: 900,
+  });
+  expect(recovery.state.receipts).toEqual([before]);
+  expect(
+    validateModelBudgetState(recovery.state.local.modelBudget),
+  ).toMatchObject({
+    days: [{ requests: 4, tokens: 195000 }],
+    tickets: [
+      { operationKey: recovery.original.key },
+      { operationKey: recovery.original.key },
+    ],
+  });
+  expect(recovery.dispatch).toHaveBeenCalledWith(
+    expect.objectContaining({
+      operationKey: recovery.original.key,
+      requestRunId: 800,
+      forceRegeneration: true,
+    }),
+  );
+});
+
+test("owner recovery binds its reserved allowance when its own active producer becomes visible", async () => {
+  const recovery = await publisherRecoveryFixture();
+  recovery.dispatch.mockImplementation(async () => {
+    recovery.state.remote.runs.push({
+      ...recovery.run,
+      id: 900,
+      display_title: `Automation prepare ${recovery.original.key} request800`,
+      actor: { id: recovery.state.publisherActorId, type: "Bot" },
+      status: "in_progress",
+      conclusion: null as never,
+    });
+    recovery.state.operations = discoverAutomationState(recovery.state);
+    return { runId: 900, workflow: recovery.run.path };
+  });
+  expect(await runModelWriterPreparation(recovery.writerInput)).toMatchObject({
+    status: "dispatched",
+    runId: 900,
+  });
+  expect(recovery.commit).toHaveBeenCalledTimes(2);
+  expect(
+    validateModelBudgetState(recovery.state.local.modelBudget),
+  ).toMatchObject({
+    days: [{ requests: 4, tokens: 195000 }],
+    tickets: [
+      { producer: { runId: 900, workflow: recovery.run.path } },
+      { producer: { runId: 900, workflow: recovery.run.path } },
+    ],
+  });
+});
+
+test("owner recovery never excludes a different active producer while binding its own allowance", async () => {
+  const recovery = await publisherRecoveryFixture();
+  recovery.dispatch.mockImplementation(async () => {
+    recovery.state.remote.runs.push(
+      ...[900, 901].map((runId) => ({
+        ...recovery.run,
+        id: runId,
+        display_title: `Automation prepare ${recovery.original.key} request${runId === 900 ? 800 : 799}`,
+        actor: { id: recovery.state.publisherActorId, type: "Bot" },
+        status: "in_progress",
+        conclusion: null,
+      })),
+    );
+    recovery.state.operations = discoverAutomationState(recovery.state);
+    return { runId: 900, workflow: recovery.run.path };
+  });
+  expect(await runModelWriterPreparation(recovery.writerInput)).toEqual({
+    status: "superseded",
+  });
+  expect(recovery.commit).toHaveBeenCalledOnce();
+  expect(
+    validateModelBudgetState(recovery.state.local.modelBudget),
+  ).toMatchObject({
+    days: [{ requests: 4, tokens: 195000 }],
+    tickets: [{ producer: null }, { producer: null }],
+  });
+});
+
+test("a Publisher refusal deadline preceding its receipt cannot authorize preparation", async () => {
+  const recovery = await publisherRecoveryFixture();
+  recovery.refusal.operation.nextEligibleAt = new Date(
+    Date.parse(recovery.refusal.updatedAt) - 1000,
+  ).toISOString();
+  recovery.state.operations = discoverAutomationState(recovery.state);
+  expect(await runModelWriterPreparation(recovery.writerInput)).toEqual({
+    status: "superseded",
+  });
+  expect(recovery.commit).not.toHaveBeenCalled();
+  expect(recovery.dispatch).not.toHaveBeenCalled();
+});
+
+test("owner recovery rechecks request ancestry before reserving model allowance", async () => {
+  const recovery = await publisherRecoveryFixture();
+  let reads = 0;
+  expect(
+    await runModelWriterPreparation({
+      ...recovery.writerInput,
+      isRequestAncestor: (_ancestor, descendant) =>
+        descendant === recovery.run.head_sha,
+      load: async () => {
+        reads += 1;
+        if (reads === 2) {
+          recovery.state.local.revision = "e".repeat(40);
+          recovery.state.remote.mainHeadSha = "e".repeat(40);
+        }
+        return recovery.state;
+      },
+    }),
+  ).toEqual({ status: "superseded" });
+  expect(recovery.commit).not.toHaveBeenCalled();
+  expect(recovery.dispatch).not.toHaveBeenCalled();
+});
+
+test("a fresh owner can acknowledge a valid expired Publisher refusal without clearing its history", async () => {
+  const recovery = await publisherRecoveryFixture();
+  recovery.refusal.operation.nextEligibleAt = new Date(
+    recovery.state.nowMs - 500,
+  ).toISOString();
+  recovery.state.operations = discoverAutomationState(recovery.state);
+  const before = structuredClone(recovery.refusal);
+  expect(await runModelWriterPreparation(recovery.writerInput)).toMatchObject({
+    status: "dispatched",
+    runId: 900,
+  });
+  expect(recovery.state.receipts).toEqual([before]);
+});
+
+test.each([
+  "equal-deadline",
+  "null-deadline",
+  "older-request",
+  "future-request",
+  "newer-refusal",
+  "different-counters",
+  "different-stage",
+  "different-head",
+  "bot-request",
+  "force-false",
+  "provider-failure",
+] as const)(
+  "owner preparation preserves the %s refusal boundary",
+  async (variant) => {
+    const recovery = await publisherRecoveryFixture();
+    if (variant === "equal-deadline")
+      recovery.refusal.operation.nextEligibleAt = recovery.refusal.updatedAt;
+    if (variant === "null-deadline")
+      recovery.refusal.operation.nextEligibleAt = null;
+    if (variant === "older-request")
+      recovery.run.created_at = recovery.refusal.updatedAt;
+    if (variant === "future-request")
+      recovery.run.created_at = new Date(
+        recovery.state.nowMs + 1000,
+      ).toISOString();
+    if (variant === "newer-refusal")
+      recovery.refusal.updatedAt = new Date(recovery.state.nowMs).toISOString();
+    if (variant === "different-stage")
+      recovery.refusal.operation.stage = "generated";
+    if (variant === "different-head")
+      recovery.refusal.operation.expectedSha = "e".repeat(40);
+    if (variant === "bot-request")
+      recovery.run.actor = { id: recovery.state.publisherActorId, type: "Bot" };
+    if (variant === "force-false" || variant === "bot-request")
+      recovery.run.display_title = "Project #42: Request review PR force=false";
+    if (variant === "provider-failure")
+      recovery.refusal.operation.retry.failure.reasonCode =
+        "provider-authentication-failed" as never;
+    recovery.state.operations = discoverAutomationState(recovery.state);
+    if (variant === "different-counters")
+      recovery.state.operations[0].retry = {
+        ...recovery.state.operations[0].retry!,
+        transientAttempts: 99,
+      };
+    expect(await runModelWriterPreparation(recovery.writerInput)).toEqual(
+      variant === "provider-failure"
+        ? { status: "waiting", reason: "provider-circuit-open" }
+        : { status: "superseded" },
+    );
+    expect(recovery.commit).not.toHaveBeenCalled();
+    expect(recovery.dispatch).not.toHaveBeenCalled();
+  },
+);
+
+test("a renewed Publisher refusal preserves the original head and counters and blocks the acknowledged request", async () => {
+  const recovery = await publisherRecoveryFixture();
+  const persist = vi
+    .spyOn(githubInventory, "persistGithubAutomationReceipt")
+    .mockImplementation(async ({ receipt }) => {
+      recovery.state.receipts = [receipt];
+      recovery.state.operations = discoverAutomationState(recovery.state);
+    });
+  try {
+    recovery.writerInput.env.TAVERNARY_PUBLICATION_SETTINGS_TOKEN = "";
+    await expect(
+      runModelWriterPreparation({
+        ...recovery.writerInput,
+        persistFailure: undefined,
+      }),
+    ).rejects.toMatchObject({ code: "publisher-authentication-failed" });
+    expect(recovery.state.receipts[0]).toMatchObject({
+      operation: {
+        key: recovery.original.key,
+        stage: "validated",
+        expectedSha: recovery.original.expectedSha,
+        retry: {
+          failure: {
+            kind: "configuration",
+            reasonCode: "publisher-authentication-failed",
+          },
+          transientAttempts: 3,
+          immediateAttempts: 1,
+        },
+      },
+      updatedAt: new Date(recovery.state.nowMs).toISOString(),
+    });
+    recovery.writerInput.env.TAVERNARY_PUBLICATION_SETTINGS_TOKEN =
+      "fixture-read-token";
+    expect(await runModelWriterPreparation(recovery.writerInput)).toEqual({
+      status: "superseded",
+    });
+    expect(recovery.commit).not.toHaveBeenCalled();
+    expect(recovery.dispatch).not.toHaveBeenCalled();
+    expect(persist).toHaveBeenCalledOnce();
+  } finally {
+    persist.mockRestore();
+  }
 });
 
 test("missing publication-setting read custody rejects regeneration before any reservation", async () => {
