@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1d9e412cf272273a937a6daaf4a880e3b96ee68562010717b787c64381d3a610",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-884053465:kaldigo-sillytavern-tracker",
+      "inputDigest": "00cb1359fc19d605d98be7319d6133a3ce3c5253a68a3641e1fae602dec55409",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T02:18:10.250Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-15T02:12:53.515Z",
+  "completedAt": null
+}
