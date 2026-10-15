@@ -103,6 +103,31 @@ test("the reviewed two-million cap reserves seven submissions after today's char
   expect(f.dispatch).toHaveBeenCalledTimes(7);
 });
 
+test("the native writer admits submissions above forty charged calls with the ten-million setting", async () => {
+  const fixtureState = await fixture();
+  const previous = validateModelBudgetState(
+    fixtureState.state.local.modelBudget,
+  );
+  previous.days[0].requests = 40;
+  previous.tickets[0].requestCount = 40;
+  const charged = JSON.stringify(previous.tickets[0]);
+  fixtureState.env.TAVERNARY_MODEL_DAILY_TOKENS = "10000000";
+  for (const operation of fixtureState.state.operations) {
+    expect(
+      await runModelWriterPreparation({
+        ...fixtureState.input,
+        operationKey: operation.key,
+      }),
+    ).toMatchObject({ status: "dispatched" });
+  }
+  const budget = validateModelBudgetState(fixtureState.state.local.modelBudget);
+  expect(budget.days).toEqual([
+    { day: "2026-10-08", requests: 68, tokens: 1560000 },
+  ]);
+  expect(JSON.stringify(budget.tickets[0])).toBe(charged);
+  expect(fixtureState.dispatch).toHaveBeenCalledTimes(7);
+});
+
 test("scheduled health uses the configured cap before proposing an exhausted-budget incident", async () => {
   const f = await fixture();
   f.state.operations = [];
@@ -165,7 +190,7 @@ test.each([undefined, "", "200000"])(
   },
 );
 
-test.each(["0", "-1", "1.5", "2e6", "2000001", "NaN", "private-value"])(
+test.each(["0", "-1", "1.5", "2e6", "10000001", "NaN", "private-value"])(
   "invalid daily configuration refuses model-requiring preparation before reservations (%s)",
   async (dailyTokens) => {
     const f = await fixture();

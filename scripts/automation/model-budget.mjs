@@ -3,7 +3,8 @@ import { automationSchemaValidator } from "./operation.mjs";
 import schema from "../../data/schemas/automation-model-budget.schema.json" with { type: "json" };
 const validateSchema = automationSchemaValidator(schema);
 export const DEFAULT_MODEL_DAILY_TOKENS = 200000;
-export const MAX_MODEL_DAILY_TOKENS = 2000000;
+export const MAX_MODEL_DAILY_REQUESTS = 200;
+export const MAX_MODEL_DAILY_TOKENS = 10000000;
 export function validateModelDailyTokens(value) {
   if (!Number.isInteger(value) || value < 1 || value > MAX_MODEL_DAILY_TOKENS)
     throw Object.assign(new Error("Model daily token limit is invalid."), {
@@ -165,7 +166,7 @@ export function reserveModelBudget(state, request, options) {
   validateModelBudgetState(state);
   const {
     nowMs,
-    requestsPerDay = 40,
+    requestsPerDay = MAX_MODEL_DAILY_REQUESTS,
     tokensPerDay = DEFAULT_MODEL_DAILY_TOKENS,
     monthlyUsd,
   } = options;
@@ -174,7 +175,7 @@ export function reserveModelBudget(state, request, options) {
   if (
     !Number.isInteger(requestsPerDay) ||
     requestsPerDay < 1 ||
-    requestsPerDay > 40 ||
+    requestsPerDay > MAX_MODEL_DAILY_REQUESTS ||
     (monthlyUsd !== undefined &&
       (!Number.isFinite(monthlyUsd) || monthlyUsd < 0 || monthlyUsd > 1000000))
   )

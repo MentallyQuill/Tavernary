@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { createHash } from "node:crypto";
 import { expect, test } from "vitest";
+import { maximumModelBudgetFixture } from "../helpers/model-budget-fixtures";
 import { readCanonicalPublicationEvidence } from "../../scripts/automation/publication-evidence.mjs";
 import { createCanonicalPublicationRecord } from "../../scripts/automation/publication-record.mjs";
 import {
@@ -16,6 +17,72 @@ import {
   canonicalFileDigests,
   publicationHistory,
 } from "../../scripts/automation/canonical-files.mjs";
+
+test("canonical reads isolate the full global ledger from an otherwise full eight-file batch", async () => {
+  const root = await mkdtemp(join(tmpdir(), "tavernary-budget-files-"));
+  const git = (args: string[]) =>
+    execFileSync("git", args, { cwd: root, encoding: "utf8" }).trim();
+  const path = "data/maintenance/automation/model-budgets/global.json";
+  const content = `${JSON.stringify(maximumModelBudgetFixture(), null, 2)}\n`;
+  try {
+    git(["init", "-q"]);
+    git(["config", "user.name", "Test"]);
+    git(["config", "user.email", "test@example.org"]);
+    git(["config", "core.autocrlf", "false"]);
+    await mkdir(join(root, dirname(path)), { recursive: true });
+    await mkdir(join(root, "data/registry/projects"), { recursive: true });
+    await writeFile(join(root, path), content);
+    const paths = [path];
+    const ordinaryContent = JSON.stringify({ payload: "x".repeat(8_388_594) });
+    for (let index = 0; index < 7; index++) {
+      const ordinaryPath = `data/registry/projects/project-${index}.json`;
+      paths.push(ordinaryPath);
+      await writeFile(join(root, ordinaryPath), ordinaryContent);
+    }
+    git(["add", "data"]);
+    git(["commit", "-qm", "bounded budget fixture"]);
+    const files = readCanonicalFiles({
+      root,
+      revision: git(["rev-parse", "HEAD"]),
+      paths,
+    });
+    expect(files[path].toString("utf8")).toBe(content);
+    expect(files[paths[7]].toString("utf8")).toBe(ordinaryContent);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+}, 30000);
+
+test.each(["global", "other"])(
+  "canonical reads reject an oversized %s model-budget blob",
+  async (variant) => {
+    const root = await mkdtemp(join(tmpdir(), "tavernary-budget-bound-"));
+    const git = (args: string[]) =>
+      execFileSync("git", args, { cwd: root, encoding: "utf8" }).trim();
+    const path = `data/maintenance/automation/model-budgets/${variant}.json`;
+    try {
+      git(["init", "-q"]);
+      git(["config", "user.name", "Test"]);
+      git(["config", "user.email", "test@example.org"]);
+      await mkdir(join(root, dirname(path)), { recursive: true });
+      await writeFile(
+        join(root, path),
+        Buffer.alloc(variant === "global" ? 25_165_825 : 8_388_609, 32),
+      );
+      git(["add", "data"]);
+      git(["commit", "-qm", "oversized budget fixture"]);
+      expect(() =>
+        readCanonicalFiles({
+          root,
+          revision: git(["rev-parse", "HEAD"]),
+          paths: [path],
+        }),
+      ).toThrow("Canonical blob data is invalid or oversized.");
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  },
+);
 
 test("Kit publication history stays at the Kit mutation when bookkeeping and another Kit advance main", async () => {
   const root = await mkdtemp(join(tmpdir(), "tavernary-kit-history-"));

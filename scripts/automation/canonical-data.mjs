@@ -2,7 +2,9 @@ import { createHash } from "node:crypto";
 import { githubFailureStatus } from "./github-inventory.mjs";
 
 const shaPattern = /^[a-f0-9]{40}$/u;
+const modelBudgetPath = "data/maintenance/automation/model-budgets/global.json";
 function canonicalFileByteLimit(path) {
+  if (path === modelBudgetPath) return 25_165_824;
   return [
     "public/catalog/tavernary-catalog.json",
     "public/catalog/tavernary-catalog-v8.json",
@@ -26,6 +28,7 @@ function validateFiles(files, allowEmpty = false) {
     throw new Error("Canonical data batch is invalid.");
   const seen = new Set();
   let total = 0;
+  let ordinaryTotal = 0;
   for (const file of files) {
     if (
       (!/^data\/maintenance\/automation\/terminal\/([a-f0-9]{2})\/\1[a-f0-9]{62}\.json$/u.test(
@@ -50,12 +53,14 @@ function validateFiles(files, allowEmpty = false) {
       throw new Error("Canonical file is invalid.");
     seen.add(file.path);
     total += file.bytes;
+    if (file.path !== modelBudgetPath) ordinaryTotal += file.bytes;
     const data = JSON.parse(file.content);
     if (
       !data ||
       typeof data !== "object" ||
       Array.isArray(data) ||
-      total > 33_554_432
+      ordinaryTotal > 33_554_432 ||
+      total > 58_720_256
     )
       throw new Error("Canonical data exceeds its contract.");
   }

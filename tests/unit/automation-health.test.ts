@@ -79,7 +79,7 @@ test("inventory health rejects a daily token limit above the supported allowance
   const { state } = await metadataMaintenanceFixture();
 
   expect(() =>
-    assessInventoryHealth(state, { tokensPerDay: 2_000_001 }),
+    assessInventoryHealth(state, { tokensPerDay: 10_000_001 }),
   ).toThrow("Model daily token limit is invalid.");
 });
 
@@ -105,6 +105,12 @@ test.each([
   {
     tokensPerDay: 2_000_000,
     requests: 40,
+    tokens: 1,
+    status: "recovered",
+  },
+  {
+    tokensPerDay: 10_000_000,
+    requests: 200,
     tokens: 1,
     status: "active",
   },
