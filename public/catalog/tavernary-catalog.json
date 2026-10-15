@@ -82530,7 +82530,7 @@
           },
           {
             "provider": "github",
-            "login": "bobneumann77-hub",
+            "login": "ylli-selmani",
             "botOrAi": false
           },
           {
@@ -82854,9 +82854,9 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-10-07T08:14:57.000Z",
-        "activeWeeks12": 12,
+        "activeWeeks12": 11,
         "weeklyActivity": [
-          true,
+          false,
           true,
           true,
           true,
@@ -82869,24 +82869,24 @@
           true,
           true
         ],
-        "evidenceStatus": "provisional",
+        "evidenceStatus": "complete",
         "dormant": false
       },
       "latestReleaseAt": "2026-10-06T15:47:34.000Z",
       "community": {
-        "stars": 700,
-        "forks": 197,
+        "stars": 713,
+        "forks": 207,
         "watchers": 9,
-        "aggregate": 906
+        "aggregate": 929
       },
-      "repositorySizeKb": 392065,
+      "repositorySizeKb": 415597,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-15T12:51:07.852Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -82956,7 +82956,7 @@
           "LukaTheHero",
           "TheLonelyDevil9",
           "coxde",
-          "bobneumann77-hub",
+          "ylli-selmani",
           "SonaGat3",
           "Minsklatte",
           "aeriondyseti",
