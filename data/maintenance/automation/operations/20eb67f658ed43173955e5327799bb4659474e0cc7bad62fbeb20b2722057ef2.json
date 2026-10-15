@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "20eb67f658ed43173955e5327799bb4659474e0cc7bad62fbeb20b2722057ef2",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1373670288:penitentfleece-sillytavern-showtime",
+      "inputDigest": "c0bddf04ce27ea839e9b622b4639625351ac2186987857fd1faa0ba7b9f9bbfb",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T05:19:26.054Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T05:04:26.054Z",
+  "completedAt": null
+}
