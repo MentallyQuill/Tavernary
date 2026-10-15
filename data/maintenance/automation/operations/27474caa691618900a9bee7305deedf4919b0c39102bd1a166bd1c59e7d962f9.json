@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "27474caa691618900a9bee7305deedf4919b0c39102bd1a166bd1c59e7d962f9",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-980324649:nemovonnirgend-sillytavern-moodmusic-extension",
+      "inputDigest": "3028bfb3398cf0d9be45b2b1d6e809d4ca4a3ef1e4c441ddd41b0f981f38fc07",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T12:56:17.686Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T12:41:17.686Z",
+  "completedAt": null
+}
