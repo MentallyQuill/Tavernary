@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "247132317ba2ce9338196ebfc0757353652d0527e0d3541769b93507cfc07fa1",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1225316984:vectricity-st-aspect-evolutia",
+      "inputDigest": "279ff36018daabe799a696ff06094c7d432c83b53deb8851be15dbb7e144777c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T11:07:17.583Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T10:52:17.583Z",
+  "completedAt": null
+}
