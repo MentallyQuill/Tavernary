@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2f7182c07836ee557380ad81fc3f6a2395b299580c48190abba5cb311c01f5f6",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1223260183:jake9000-me-nord",
+      "inputDigest": "57a18d4bdc17e8681b792128d6ac82937784552b1c3852f35cda361d1a1358fc",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T21:05:29.400Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T20:50:29.400Z",
+  "completedAt": null
+}
