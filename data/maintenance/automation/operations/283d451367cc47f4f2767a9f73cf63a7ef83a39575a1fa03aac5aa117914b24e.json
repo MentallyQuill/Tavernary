@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "283d451367cc47f4f2767a9f73cf63a7ef83a39575a1fa03aac5aa117914b24e",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1006298514:bronya-rand-garden-of-recollection",
+      "inputDigest": "b3e60cc2753326188bf8fc97e9f7fedf8aff39bbe9fa7f7d9722b909a8aa2499",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T12:56:17.686Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T12:41:17.686Z",
+  "completedAt": null
+}
