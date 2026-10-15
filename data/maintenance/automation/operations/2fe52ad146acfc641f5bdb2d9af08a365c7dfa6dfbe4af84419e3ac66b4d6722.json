@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2fe52ad146acfc641f5bdb2d9af08a365c7dfa6dfbe4af84419e3ac66b4d6722",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-795258518:sillytavern-extension-topinfobar",
+      "inputDigest": "c70c048ab080df1e2c60b34266ba3b2f1941ffd6140f42f52a4396f99801f372",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T21:05:29.400Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-15T20:50:29.400Z",
+  "completedAt": null
+}
