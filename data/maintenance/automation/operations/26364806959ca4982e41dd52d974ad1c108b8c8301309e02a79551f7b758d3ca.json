@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "26364806959ca4982e41dd52d974ad1c108b8c8301309e02a79551f7b758d3ca",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1059754623:aikohanasaki-sillytavern-lorebookordering",
+      "inputDigest": "083826e4fd6cae507e6c266e12b2f184caa3e31515d9233f8215b7d5997d34d1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T13:21:32.185Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-15T13:16:27.857Z",
+  "completedAt": null
+}
