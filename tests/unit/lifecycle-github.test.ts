@@ -367,7 +367,7 @@ test("fresh Kit discovery survives completed issue projection until its terminal
   });
   const writes = input.writes.length;
   expect(await finalizeAutomationOperation(finalizer)).toEqual({
-    status: "superseded",
+    status: "already-finalized",
   });
   expect(input.writes).toHaveLength(writes);
   expect(receipts).toHaveLength(1);

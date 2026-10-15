@@ -113,20 +113,62 @@ export function discoverAutomationState(state) {
   const requestedRevisions = local.deployments
     .filter((record) => record.status === "requested")
     .map((record) => record.sourceSha);
+  const kitOperations = discoverKitOperations({
+    ...common,
+    issues: remote.issues,
+    kits: local.kits,
+    projects: local.projects,
+    sourcesById: Object.fromEntries(
+      local.sources.map((source) => [source.id, source]),
+    ),
+    snapshotsBySourceId: Object.fromEntries(
+      local.snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
+    ),
+    blockedUsers: local.blockedUsers,
+    trustedEditors: local.trustedEditors,
+    canonicalRevision: local.revision,
+    canonicalRevisions: local.canonicalKitRevisions,
+    confirmedRevisions,
+    requestedRevisions,
+  });
+  const currentKits = new Map(
+    kitOperations.map((operation) => [operation.key, operation]),
+  );
+  const kitPublications = new Map(
+    (local.publications ?? [])
+      .filter(
+        ({ record }) =>
+          record.operation.identity.kind === "kit" ||
+          (record.operation.identity.kind === "withdrawal" &&
+            record.files.some((file) =>
+              file.path.startsWith("data/registry/kits/"),
+            )),
+      )
+      .map(({ record }) => [record.operation.key, record]),
+  );
   const canonicalPublications = discoverCanonicalPublications({
     records: local.publications ?? [],
     fileDigests: local.publicationFileDigests ?? {},
-    receipts,
+    receipts: receipts.filter(
+      (receipt) =>
+        receipt.operation.stage !== "finalized" ||
+        !kitPublications.has(receipt.operation.key),
+    ),
     confirmedRevisions,
     requestedRevisions,
     nowMs,
   }).map((operation) => {
+    const currentKit = currentKits.get(operation.key);
+    const current =
+      currentKit && currentKit.expectedSha !== operation.expectedSha
+        ? currentKit
+        : operation;
     recoverInventoryWorker(
-      operation,
+      current,
       common,
-      trustedOperationWorkerRuns(common, operation),
+      trustedOperationWorkerRuns(common, current),
     );
-    return operation;
+    return current;
   });
   const publishedKeys = new Set(
     canonicalPublications.map((operation) => operation.key),
@@ -147,24 +189,7 @@ export function discoverAutomationState(state) {
         requestedRevisions,
       },
     }),
-    ...discoverKitOperations({
-      ...common,
-      issues: remote.issues,
-      kits: local.kits,
-      projects: local.projects,
-      sourcesById: Object.fromEntries(
-        local.sources.map((source) => [source.id, source]),
-      ),
-      snapshotsBySourceId: Object.fromEntries(
-        local.snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
-      ),
-      blockedUsers: local.blockedUsers,
-      trustedEditors: local.trustedEditors,
-      canonicalRevision: local.revision,
-      canonicalRevisions: local.canonicalKitRevisions,
-      confirmedRevisions,
-      requestedRevisions,
-    }),
+    ...kitOperations,
     ...discoverCatalogOperations({
       ...common,
       catalog: {
@@ -238,7 +263,63 @@ export function discoverAutomationState(state) {
     ...canonicalPublications,
     ...discovered.filter((operation) => !publishedKeys.has(operation.key)),
   ]
-    .map((operation) => retired.get(operation.key) ?? operation)
+    .map((operation) => {
+      const kitFamily =
+        operation.identity.kind === "kit" ||
+        currentKits.has(operation.key) ||
+        kitPublications.has(operation.key);
+      if (!kitFamily) return retired.get(operation.key) ?? operation;
+      if (
+        operation.expectedSha === null ||
+        ![
+          "published",
+          "deployment-requested",
+          "deployment-confirmed",
+          "finalized",
+        ].includes(operation.stage)
+      )
+        return operation;
+      const currentKit = currentKits.get(operation.key);
+      if (currentKit) {
+        if (currentKit.expectedSha !== operation.expectedSha) return operation;
+      } else {
+        if (
+          remote.issues.some(
+            (issue) => operation.identity.subject === `issue:${issue.number}`,
+          )
+        )
+          return operation;
+        const kitFiles = kitPublications
+          .get(operation.key)
+          ?.files.filter((file) => file.path.startsWith("data/registry/kits/"));
+        if (
+          !kitFiles?.length ||
+          kitFiles.some((file) => {
+            const kitId = file.path.slice("data/registry/kits/".length, -5);
+            return (
+              !local.kits.some((kit) => kit.id === kitId) ||
+              local.canonicalKitRevisions?.[kitId] !== operation.expectedSha
+            );
+          })
+        )
+          return operation;
+      }
+      const terminal = [...receipts, ...(local.retiredReceipts ?? [])]
+        .map(validateAutomationReceipt)
+        .find(
+          (receipt) =>
+            receipt.operation.stage === "finalized" &&
+            receipt.operation.key === operation.key &&
+            receipt.operation.expectedSha === operation.expectedSha &&
+            receipt.operation.identity.kind === operation.identity.kind &&
+            receipt.operation.identity.subject === operation.identity.subject &&
+            receipt.operation.identity.inputDigest ===
+              operation.identity.inputDigest &&
+            receipt.operation.identity.policyVersion ===
+              operation.identity.policyVersion,
+        );
+      return terminal?.operation ?? operation;
+    })
     .filter(
       (operation) =>
         !remote.finalizationOperationKey ||

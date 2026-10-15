@@ -114,22 +114,6 @@ export function discoverKitOperations(input) {
         : input.requestedRevisions?.includes(operation.expectedSha)
           ? "deployment-requested"
           : "published";
-      const completeLabel = route === "kit" ? "kit-published" : "kit-withdrawn";
-      if (
-        operation.stage === "deployment-confirmed" &&
-        issue.state === "closed" &&
-        issue.state_reason === "completed" &&
-        labels.includes(completeLabel) &&
-        !input.receipts.some(
-          (receipt) =>
-            receipt.operation.key === operation.key &&
-            receipt.operation.expectedSha === operation.expectedSha &&
-            receipt.operation.stage === "deployment-confirmed",
-        )
-      )
-        // Keep an exact pending receipt through the fresh post-projection read.
-        // Once finalized, completed issue bookkeeping becomes undiscoverable.
-        continue;
     } else {
       if (
         issue.state !== "open" ||

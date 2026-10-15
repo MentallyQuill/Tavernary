@@ -18,7 +18,10 @@ import {
   kitInventoryFixture,
   receiptFixture,
 } from "../helpers/automation-fixtures";
-import { validateAutomationOperation } from "../../scripts/automation/operation.mjs";
+import {
+  operationKey,
+  validateAutomationOperation,
+} from "../../scripts/automation/operation.mjs";
 import { selectDueOperations } from "../../scripts/automation/operation.mjs";
 import { reconcileAutomation } from "../../scripts/automation/reconcile.mjs";
 
@@ -138,7 +141,7 @@ test("withdrawal tombstones recover deployment and cleanup without another withd
   ).not.toThrow();
 });
 
-test("completed Kit issue bookkeeping is idempotent while deployment remains independently recoverable", () => {
+test("completed Kit issue bookkeeping remains pending until a durable terminal receipt exists", () => {
   const input = kitInventoryFixture({
     canonicalPublished: true,
     issueOpen: false,
@@ -146,7 +149,7 @@ test("completed Kit issue bookkeeping is idempotent while deployment remains ind
   });
   input.issues[0].labels.push("kit-published");
   input.issues[0].state_reason = "completed";
-  expect(discoverKitOperations(input)).toEqual([]);
+  expect(discoverKitOperations(input)[0].stage).toBe("deployment-confirmed");
   input.confirmedRevisions = [];
   expect(discoverKitOperations(input)[0].stage).toBe("published");
 });
@@ -174,17 +177,26 @@ test.each(["create", "withdrawal"] as const)(
         completedAt: new Date(input.nowMs).toISOString(),
       }),
     ];
-    expect(discoverKitOperations(input)).toEqual([]);
+    expect(discoverKitOperations(input)[0].stage).toBe("finalized");
     input.receipts = [
       receiptFixture({
         operation: { ...operation, expectedSha: "e".repeat(40) },
       }),
     ];
-    expect(discoverKitOperations(input)).toEqual([]);
+    expect(discoverKitOperations(input)[0].stage).toBe("deployment-confirmed");
     input.receipts = [
-      receiptFixture({ operation: { ...operation, key: "f".repeat(64) } }),
+      receiptFixture({
+        operation: {
+          ...operation,
+          key: operationKey({
+            ...operation.identity,
+            inputDigest: "f".repeat(64),
+          }),
+          identity: { ...operation.identity, inputDigest: "f".repeat(64) },
+        },
+      }),
     ];
-    expect(discoverKitOperations(input)).toEqual([]);
+    expect(discoverKitOperations(input)[0].stage).toBe("deployment-confirmed");
   },
 );
 

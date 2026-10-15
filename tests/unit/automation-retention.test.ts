@@ -13,12 +13,29 @@ import {
   AUTOMATION_NOW,
   preparedResultFixture,
   preparedResultContextFixture,
+  kitInventoryFixture,
 } from "../helpers/automation-fixtures";
 import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
+import { discoverAutomationState } from "../../scripts/automation/inventory.mjs";
+import { discoverKitOperations } from "../../scripts/automation/kit-operations.mjs";
+import { assessInventoryHealth } from "../../scripts/automation/health.mjs";
 const json = (value: unknown) => `${JSON.stringify(value, null, 2)}\n`;
-function fixture() {
-  const result = preparedResultFixture();
-  const operation = preparedResultContextFixture().operation;
+function fixture(kind: "refresh" | "kit" = "refresh") {
+  const kitInput = kitInventoryFixture({ canonicalPublished: true });
+  const operation =
+    kind === "kit"
+      ? discoverKitOperations(kitInput)[0]
+      : preparedResultContextFixture().operation;
+  const result =
+    kind === "kit"
+      ? preparedResultFixture({
+          operationKey: operation.key,
+          kind: "kit",
+          inputDigest: operation.identity.inputDigest,
+          policyVersion: operation.identity.policyVersion,
+          paths: ["data/registry/kits/example-kit-42.json"],
+        })
+      : preparedResultFixture();
   const publication = createCanonicalPublicationRecord({ operation, result });
   const revision = "d".repeat(40);
   const finalized = {
@@ -248,66 +265,117 @@ afterEach(async () => {
   for (const path of temporary.splice(0))
     await rm(path, { recursive: true, force: true });
 });
-test("a fresh checkout recovers the exact finalized receipt from a canonical retirement marker", async () => {
-  const data = fixture();
-  const root = await mkdtemp(join(tmpdir(), "tavernary-retention-"));
-  temporary.push(root);
-  const git = (...args: string[]) =>
-    execFileSync("git", args, {
-      cwd: root,
-      encoding: "utf8",
-      windowsHide: true,
-    }).trim();
-  git("init", "-q");
-  git("config", "core.autocrlf", "false");
-  git("config", "user.email", "retention@example.invalid");
-  git("config", "user.name", "Retention fixture");
-  const receiptPath = `data/maintenance/automation/operations/${data.operation.key}.json`;
-  const publicationPath = `data/maintenance/automation/publications/${data.operation.key}.json`;
-  for (const [path, content] of [[publicationPath, json(data.publication)]]) {
-    await mkdir(join(root, path, ".."), { recursive: true });
-    await writeFile(join(root, path), content);
-  }
-  git("add", ".");
-  git("commit", "-qm", "canonical publication");
-  const publishedSha = git("rev-parse", "HEAD");
-  data.receipt.operation.expectedSha = publishedSha;
-  data.state.local.publications = [
-    { record: data.publication, revision: publishedSha },
-  ];
-  data.state.local.confirmedRevisions = [publishedSha];
-  data.state.local.publicationFileDigests = Object.fromEntries(
-    data.result.files.map((file) => [
-      `${publishedSha}:${file.path}`,
-      file.sha256,
-    ]),
-  );
-  await mkdir(join(root, receiptPath, ".."), { recursive: true });
-  await writeFile(join(root, receiptPath), json(data.receipt));
-  git("add", ".");
-  git("commit", "-qm", "canonical terminal receipt");
-  data.state.local.revision = git("rev-parse", "HEAD");
-  const plan = planAutomationRetention({ state: data.state });
-  for (const file of plan.files) {
-    await mkdir(join(root, file.path, ".."), { recursive: true });
-    await writeFile(join(root, file.path), file.content);
-  }
-  for (const file of plan.removeFiles) await rm(join(root, file.path));
-  git("add", ".");
-  git("commit", "-qm", "retire confirmed terminal state");
-  const revision = git("rev-parse", "HEAD");
-  const input = {
-    root,
-    revision,
-    operations: [data.operation],
-    nowMs: data.state.nowMs,
-  };
-  expect(await loadRetiredAutomationReceipts(input)).toEqual([data.receipt]);
-  expect(await loadRetiredAutomationReceipts(input)).toEqual([data.receipt]);
-  // Dirty or forged markers cannot turn pending work into completed work.
-  await writeFile(
-    join(root, plan.files[0].path),
-    plan.files[0].content.replace(data.operation.key, "f".repeat(64)),
-  );
-  await expect(loadRetiredAutomationReceipts(input)).rejects.toThrow();
-});
+test.each(["refresh", "kit"] as const)(
+  "a fresh checkout recovers the exact finalized %s receipt from a canonical retirement marker",
+  async (kind) => {
+    const data = fixture(kind);
+    const root = await mkdtemp(join(tmpdir(), "tavernary-retention-"));
+    temporary.push(root);
+    const git = (...args: string[]) =>
+      execFileSync("git", args, {
+        cwd: root,
+        encoding: "utf8",
+        windowsHide: true,
+      }).trim();
+    git("init", "-q");
+    git("config", "core.autocrlf", "false");
+    git("config", "user.email", "retention@example.invalid");
+    git("config", "user.name", "Retention fixture");
+    const receiptPath = `data/maintenance/automation/operations/${data.operation.key}.json`;
+    const publicationPath = `data/maintenance/automation/publications/${data.operation.key}.json`;
+    for (const [path, content] of [[publicationPath, json(data.publication)]]) {
+      await mkdir(join(root, path, ".."), { recursive: true });
+      await writeFile(join(root, path), content);
+    }
+    git("add", ".");
+    git("commit", "-qm", "canonical publication");
+    const publishedSha = git("rev-parse", "HEAD");
+    data.receipt.operation.expectedSha = publishedSha;
+    data.state.local.publications = [
+      { record: data.publication, revision: publishedSha },
+    ];
+    data.state.local.confirmedRevisions = [publishedSha];
+    data.state.local.publicationFileDigests = Object.fromEntries(
+      data.result.files.map((file) => [
+        `${publishedSha}:${file.path}`,
+        file.sha256,
+      ]),
+    );
+    await mkdir(join(root, receiptPath, ".."), { recursive: true });
+    await writeFile(join(root, receiptPath), json(data.receipt));
+    git("add", ".");
+    git("commit", "-qm", "canonical terminal receipt");
+    data.state.local.revision = git("rev-parse", "HEAD");
+    const plan = planAutomationRetention({ state: data.state });
+    for (const file of plan.files) {
+      await mkdir(join(root, file.path, ".."), { recursive: true });
+      await writeFile(join(root, file.path), file.content);
+    }
+    for (const file of plan.removeFiles) await rm(join(root, file.path));
+    git("add", ".");
+    git("commit", "-qm", "retire confirmed terminal state");
+    const revision = git("rev-parse", "HEAD");
+    const input = {
+      root,
+      revision,
+      operations: [data.operation],
+      nowMs: data.state.nowMs,
+    };
+    expect(await loadRetiredAutomationReceipts(input)).toEqual([data.receipt]);
+    expect(await loadRetiredAutomationReceipts(input)).toEqual([data.receipt]);
+    if (kind === "kit") {
+      const kitInput = kitInventoryFixture({
+        canonicalPublished: true,
+        issueOpen: false,
+      });
+      kitInput.issues[0].state_reason = "completed";
+      kitInput.issues[0].labels.push("kit-published");
+      data.state.remote.issues = kitInput.issues.map((issue) => ({
+        ...issue,
+        user: { ...issue.user, type: "User" as const },
+      }));
+      data.state.local = {
+        ...data.state.local,
+        projects: kitInput.projects,
+        sources: Object.values(kitInput.sourcesById),
+        snapshots: [],
+        kits: kitInput.kits,
+        blockedUsers: kitInput.blockedUsers,
+        metadataState: [],
+        advisoryState: [],
+        publications: [],
+        confirmedRevisions: [],
+        canonicalKitRevisions: { "example-kit-42": publishedSha },
+        retiredReceipts: await loadRetiredAutomationReceipts(input),
+      };
+      data.state.receipts = await loadRetiredAutomationReceipts(input);
+      data.state.operations = discoverAutomationState(data.state);
+      expect(
+        data.state.operations.find(
+          (operation) => operation.key === data.operation.key,
+        ),
+      ).toEqual(data.receipt.operation);
+      expect(
+        assessInventoryHealth(data.state).find(
+          (finding) =>
+            finding.code === "submission-stalled" &&
+            finding.subject === `operation:${data.operation.key}`,
+        ),
+      ).toMatchObject({ status: "recovered" });
+      data.state.local.canonicalKitRevisions = {
+        "example-kit-42": "e".repeat(40),
+      };
+      expect(
+        discoverAutomationState(data.state).find(
+          (operation) => operation.key === data.operation.key,
+        ),
+      ).toMatchObject({ stage: "published", expectedSha: "e".repeat(40) });
+    }
+    // Dirty or forged markers cannot turn pending work into completed work.
+    await writeFile(
+      join(root, plan.files[0].path),
+      plan.files[0].content.replace(data.operation.key, "f".repeat(64)),
+    );
+    await expect(loadRetiredAutomationReceipts(input)).rejects.toThrow();
+  },
+);
