@@ -830,8 +830,11 @@
         "runId": 38717123301,
         "workflow": ".github/workflows/generate-project-submission.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 2,
+        "tokens": 87320
+      }
     },
     {
       "id": "eb5389131bc7ee0051239164c3141e8949cc3eeb68642eab2712da58e6111732",
@@ -849,8 +852,11 @@
         "runId": 38717123301,
         "workflow": ".github/workflows/generate-project-submission.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "e812f3222312e7b15243a20c3d93df970dfa624013c014cf877be8326cda1461",
