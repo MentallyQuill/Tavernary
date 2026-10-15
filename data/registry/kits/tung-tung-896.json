@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "id": "tung-tung-896",
+  "status": "published",
+  "title": "Tung Tung",
+  "description": "Tung Tung",
+  "author": { "github_user_id": 204538361, "login": "MrAlucard0" },
+  "source_issue_number": 896,
+  "project_ids": [
+    "sillytavern-sillytavern",
+    "starlitcode-lumiverse-auto-retry",
+    "samueras-guidedgenerations-extension",
+    "rivelledays-sillytavern-moonlitechoestheme",
+    "sillytavern-sillytavern-timelines",
+    "kaldigo-sillytavern-tracker",
+    "splitclover-rewrite-extension",
+    "icefog72-sillytavern-probablytoomanytabs",
+    "blueprintcoding-sillytavern-character-tag-manager",
+    "prompt-and-circumstance-storymode",
+    "sakhavhyand-sillytavern-anothercharmanager"
+  ],
+  "published_at": "2026-10-14T18:10:39.929Z",
+  "updated_at": "2026-10-14T18:10:39.929Z"
+}

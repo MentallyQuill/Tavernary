@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f817852393080fd2b2e7f59f9883f5cad561a71d0d10ab55da662d2de2698e47",
+    "identity": {
+      "kind": "kit",
+      "subject": "issue:896",
+      "inputDigest": "1df19d1b8d7ecaffe8edd8e5ae91e95f6dcf6b41f25dc4185fd0f7353d5e0351",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "validated",
+    "createdAt": "2026-10-14T18:06:13.000Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "tung-tung-896",
+    "identity": "github-issue:896"
+  },
+  "authorId": 204538361,
+  "producer": {
+    "workflow": ".github/workflows/apply-kit-submission.yml",
+    "runId": 38612780893,
+    "sourceSha": "9db9cdcf616d36dcc8a01ebe790f1b67c30b46d4"
+  },
+  "files": [
+    {
+      "path": "data/registry/kits/tung-tung-896.json",
+      "sha256": "2b858f94e1adc040016a4bfb6517baf825921c4f0bd5227ce2d22fe6bfac79e4",
+      "gitBlobSha": "236f67bf73a032890344148bec5a7446bedfa090"
+    },
+    {
+      "path": "data/snapshots/github/kits/tung-tung-896.json",
+      "sha256": "9ef4649cb23afdb2e6e9a397f60fe85c2af1833b293fb90f6cfcef952e4b80c2",
+      "gitBlobSha": "a0104e1ade9f317083c9698dfb636019ca9168a1"
+    }
+  ]
+}
