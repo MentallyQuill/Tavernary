@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1382809106",
+  "head_sha": "dc5b6034ac7e202ecb40f33fb8d84d5dc6b8c475",
+  "observed_at": "2026-10-15T06:57:54.794Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyCanvas",
+  "manifest": {
+    "display_name": "Silly Canvas",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
