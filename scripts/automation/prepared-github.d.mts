@@ -1,5 +1,6 @@
 import type { GhRunner } from "../submissions/kit-submission-reconciliation.mjs";
 import type { AutomationFailure } from "./failure.mjs";
+import type { AutomationOperation } from "./operation.mjs";
 import type {
   PreparedResult,
   PreparedResultContext,
@@ -45,3 +46,17 @@ export function loadPreparedGithubDiagnostic(
     runId: number;
   },
 ): Promise<AutomationFailure>;
+export interface PreparedDiagnosticEvidence {
+  failure: AutomationFailure;
+  operation: AutomationOperation;
+  run: TrustedPreparationRun & {
+    run_attempt?: number;
+    created_at?: string;
+    updated_at?: string;
+    display_title?: string;
+  };
+  artifact: { id: number; digest: string } | null;
+}
+export function loadPreparedGithubDiagnosticEvidence(
+  input: Parameters<typeof loadPreparedGithubDiagnostic>[0],
+): Promise<PreparedDiagnosticEvidence>;

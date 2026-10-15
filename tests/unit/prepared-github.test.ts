@@ -5,6 +5,7 @@ import {
   loadPreparedGithubResult,
   loadPreparedGithubArtifact,
   loadPreparedGithubDiagnostic,
+  loadPreparedGithubDiagnosticEvidence,
 } from "../../scripts/automation/prepared-github.mjs";
 import {
   preparedResultFixture,
@@ -93,6 +94,46 @@ function diagnosticEffects(value?: Record<string, unknown>) {
   };
   return { ...fixture, diagnostic };
 }
+
+test("verified diagnostic evidence retains the native producer and archive custody", async () => {
+  const fixture = diagnosticEffects();
+  Object.assign(fixture.run, {
+    run_attempt: 1,
+    updated_at: "2026-10-13T15:15:38.000Z",
+    display_title: `Automation prepare ${fixture.input.operation.key}`,
+  });
+  expect(await loadPreparedGithubDiagnosticEvidence(fixture.input)).toEqual({
+    failure: fixture.diagnostic.failure,
+    run: fixture.run,
+    artifact: fixture.artifact,
+    operation: fixture.input.operation,
+  });
+  expect(fixture.downloads).toHaveLength(1);
+});
+
+test.each([undefined, 1, 2])(
+  "missing archives retain legacy fallback for native attempt %s and cannot provide archive evidence",
+  async (attempt) => {
+    const fixture = diagnosticEffects();
+    Object.assign(fixture.run, { run_attempt: attempt });
+    const original = fixture.input.gh;
+    fixture.input.gh = async (args) =>
+      args.some((argument) => /\/artifacts(?:\?|$)/u.test(argument))
+        ? JSON.stringify([{ total_count: 0, artifacts: [] }])
+        : original(args);
+    expect(await loadPreparedGithubDiagnostic(fixture.input)).toEqual({
+      kind: "unknown",
+      reasonCode: "unclassified-failure",
+    });
+    expect(
+      await loadPreparedGithubDiagnosticEvidence(fixture.input),
+    ).toMatchObject({
+      failure: { kind: "unknown", reasonCode: "unclassified-failure" },
+      artifact: null,
+    });
+    expect(fixture.downloads).toEqual([]);
+  },
+);
 
 test("an authenticated failed preparation recovers its sanitized failure classification without permitting publication", async () => {
   const fixture = diagnosticEffects();

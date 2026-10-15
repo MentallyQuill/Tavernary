@@ -1,11 +1,123 @@
 import { expect, test, vi } from "vitest";
-import { persistPreparedFailure } from "../../scripts/automation/prepared-failure.mjs";
+import {
+  persistPreparedFailure,
+  isPreparedDiagnosticObsolete,
+} from "../../scripts/automation/prepared-failure.mjs";
+import { loadPreparedGithubDiagnosticEvidence } from "../../scripts/automation/prepared-github.mjs";
+import {
+  preparedReplayFixture,
+  auditedRefreshReplayFixtures,
+} from "../helpers/prepared-replay-fixtures";
 import {
   AUTOMATION_NOW,
   operationFixture,
 } from "../helpers/automation-fixtures";
 import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
 import type { AutomationReceipt } from "../../scripts/automation/receipts.mjs";
+
+test("the verified old #900 failure is strictly obsolete at its saved daily probe deadline", async () => {
+  const input = preparedReplayFixture();
+  const evidence = await loadPreparedGithubDiagnosticEvidence(input.reader);
+  const before = JSON.stringify(input.state);
+  expect(isPreparedDiagnosticObsolete({ state: input.state, evidence })).toBe(
+    true,
+  );
+  expect(JSON.stringify(input.state)).toBe(before);
+});
+
+test.each([
+  "equal-clock",
+  "newer-producer",
+  "missing-archive",
+  "missing-attempt",
+  "rerun",
+  "late-controlled",
+  "different-reason",
+  "foreign-kind",
+  "foreign-actor",
+  "foreign-head",
+  "observed-native-origin",
+  "changed-input",
+  "changed-stage",
+  "changed-counters",
+  "changed-deadline",
+  "current-worker",
+  "receipt-worker",
+  "active-preparation",
+  "unresolved-worker",
+  "missing-receipt",
+  "corrupt-receipt",
+  "duplicate-receipt",
+  "future-receipt",
+  "invalid-terminal",
+])("unproven %s evidence cannot exclude a diagnostic", async (variant) => {
+  const input =
+    variant === "different-reason"
+      ? auditedRefreshReplayFixtures()[0]
+      : preparedReplayFixture();
+  const evidence = await loadPreparedGithubDiagnosticEvidence(input.reader);
+  const operation = input.state.operations[0];
+  const receipt = input.state.receipts[0];
+  if (variant === "equal-clock") receipt.updatedAt = input.run.updated_at;
+  if (variant === "newer-producer")
+    receipt.updatedAt = "2026-10-14T16:20:15.000Z";
+  if (variant === "missing-archive") evidence.artifact = null;
+  if (variant === "missing-attempt") delete evidence.run.run_attempt;
+  if (variant === "rerun") evidence.run.run_attempt = 2;
+  if (variant === "late-controlled")
+    evidence.failure = {
+      kind: "configuration",
+      reasonCode: "provider-authentication-failed",
+    };
+  if (variant === "different-reason")
+    evidence.failure = { kind: "transient", reasonCode: "provider-timeout" };
+  if (variant === "foreign-kind") evidence.operation = operationFixture();
+  if (variant === "foreign-actor") evidence.run.actor.id++;
+  if (variant === "observed-native-origin") input.run.actor.id++;
+  if (variant === "foreign-head")
+    evidence.operation = { ...operation, expectedSha: "c".repeat(40) };
+  if (variant === "changed-input")
+    evidence.operation = operationFixture({
+      identity: { ...operation.identity, inputDigest: "c".repeat(64) },
+    });
+  if (variant === "changed-stage")
+    evidence.operation = { ...operation, stage: "generated" };
+  if (variant === "changed-counters")
+    receipt.operation.retry!.immediateAttempts++;
+  if (variant === "changed-deadline")
+    receipt.operation.nextEligibleAt = "2026-10-17T00:25:23.917Z";
+  if (variant === "current-worker") operation.workerRunId = 777;
+  if (variant === "receipt-worker") receipt.operation.workerRunId = 777;
+  if (variant === "active-preparation")
+    input.state.remote.runs.push({
+      ...input.run,
+      id: 777,
+      status: "in_progress",
+      conclusion: null,
+    });
+  if (variant === "unresolved-worker")
+    input.state.remote.runs.push({
+      ...input.run,
+      id: 777,
+      path: ".github/workflows/automation-worker.yml",
+      display_title: `Automation ${operation.key}`,
+      conclusion: "success",
+      updated_at: "2026-10-15T00:25:24.000Z",
+    });
+  if (variant === "missing-receipt") input.state.receipts = [];
+  if (variant === "corrupt-receipt")
+    Object.assign(receipt, { schema_version: 2 });
+  if (variant === "duplicate-receipt")
+    input.state.receipts.push(structuredClone(receipt));
+  if (variant === "future-receipt")
+    receipt.updatedAt = "2026-10-17T00:25:23.917Z";
+  if (variant === "invalid-terminal") evidence.run.updated_at = "invalid";
+  const before = JSON.stringify(input.state);
+  expect(isPreparedDiagnosticObsolete({ state: input.state, evidence })).toBe(
+    false,
+  );
+  expect(JSON.stringify(input.state)).toBe(before);
+});
 function fixture() {
   let operation = operationFixture();
   let nowMs = AUTOMATION_NOW;

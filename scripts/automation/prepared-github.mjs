@@ -155,6 +155,10 @@ export async function loadPreparedGithubResult({
 }
 
 export async function loadPreparedGithubDiagnostic(input) {
+  return (await loadPreparedGithubDiagnosticEvidence(input)).failure;
+}
+
+export async function loadPreparedGithubDiagnosticEvidence(input) {
   const context = await loadPreparedGithubArtifact({
     ...input,
     artifactKind: "diagnostic",
@@ -175,7 +179,12 @@ export async function loadPreparedGithubDiagnostic(input) {
       requireSuccess: false,
     });
     if (run.id !== input.runId) throw new Error("Diagnostic run changed.");
-    return classifyAutomationFailure({ conclusion: run.conclusion });
+    return {
+      failure: classifyAutomationFailure({ conclusion: run.conclusion }),
+      run,
+      artifact: null,
+      operation: input.operation,
+    };
   }
   const archive = await input.download([
     "api",
@@ -200,5 +209,9 @@ export async function loadPreparedGithubDiagnostic(input) {
     throw Object.assign(new Error("Prepared diagnostic is invalid."), {
       code: "prepared-diagnostic-invalid",
     });
-  return value.failure;
+  return {
+    failure: value.failure,
+    ...context,
+    operation: input.operation,
+  };
 }
