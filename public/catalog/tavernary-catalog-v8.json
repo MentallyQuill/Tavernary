@@ -51907,8 +51907,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "89ddbc4f2cd747a0073d563cd69a75cccea7389b",
+        "freshness": "stale",
+        "currentSha": "fa726dcf9dcbf2e350c02f942a6c2e58ee77da46",
         "report": {
           "reportId": "45d2e6eacb22b718746b5625c1e04bceae6440795d448861db819ad43b81322b",
           "riskLevel": "low",
@@ -52244,10 +52244,10 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-03T07:06:56.000Z",
-        "activeWeeks12": 4,
+        "latestSourceActivityAt": "2026-10-14T08:54:59.000Z",
+        "activeWeeks12": 3,
         "weeklyActivity": [
-          true,
+          false,
           false,
           false,
           true,
@@ -52263,21 +52263,21 @@
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-10-03T07:07:00.000Z",
+      "latestReleaseAt": "2026-10-14T08:57:07.000Z",
       "community": {
         "stars": 11,
         "forks": 3,
         "watchers": 1,
         "aggregate": 15
       },
-      "repositorySizeKb": 305,
+      "repositorySizeKb": 343,
       "license": {
         "status": "missing",
         "label": "Missing",
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-15T11:03:30.761Z",
       "staleSince": null,
       "install": null,
       "fork": null,
