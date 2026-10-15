@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "iamarxs-anyworld",
+  "name": "AnyWorld",
+  "kind": "frontend",
+  "summary": "A multiplayer text adventure where players type actions in their own words while an AI acts as dungeon master and weaves choices into an unfolding story, per the README.",
+  "metadata_status": "curated",
+  "source_id": "github-1372071122",
+  "frontends": ["anyworld"],
+  "primary_function": "frontend",
+  "tags": ["add-rpg-gameplay", "multi-user"],
+  "cataloged_at": "2026-10-15T10:17:30.782Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
