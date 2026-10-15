@@ -124225,7 +124225,7 @@
         },
         "contributors": [],
         "humanContributorCount": 0,
-        "status": "current"
+        "status": "stale"
       },
       "activity": {
         "latestSourceActivityAt": "2026-07-29T11:09:08.000Z",
@@ -124261,7 +124261,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-15T12:47:44.541Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
