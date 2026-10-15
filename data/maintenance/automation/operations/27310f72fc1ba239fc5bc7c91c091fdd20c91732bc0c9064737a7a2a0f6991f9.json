@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "27310f72fc1ba239fc5bc7c91c091fdd20c91732bc0c9064737a7a2a0f6991f9",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1132564534:platberlitz-sillytavern-image-gen",
+      "inputDigest": "20d6d73d866d93cb2f48dc454d95f78fbee9272ca5312be123ccf365539358ea",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T12:56:17.686Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T12:41:17.686Z",
+  "completedAt": null
+}
