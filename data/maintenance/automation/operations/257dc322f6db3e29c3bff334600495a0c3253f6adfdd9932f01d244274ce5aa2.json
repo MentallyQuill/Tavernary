@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "257dc322f6db3e29c3bff334600495a0c3253f6adfdd9932f01d244274ce5aa2",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1282097657:dan0dandeleon11-dandeleon-multiverse",
+      "inputDigest": "25383d9f45465806b6f4da4a285092cf3c301a0eb7fbc1797821feaf5323cff2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T14:15:05.671Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-15T14:09:44.341Z",
+  "completedAt": null
+}
