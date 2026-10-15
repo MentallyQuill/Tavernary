@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2f388cf358f0c32d8677ba44ebdcabe0d628d371b0ed86549c86a0ece616e3b3",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-875709373:lackyas-sillytavern-presence",
+      "inputDigest": "29d7cd616ce981e3459348c4cd97f9793a36b9f280e8e63a28bfc5e4c9d23f95",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T21:05:29.400Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T20:50:29.400Z",
+  "completedAt": null
+}
