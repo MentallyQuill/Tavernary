@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2c0d303d7e350c36f7b729ff0c89b661c74bca6536f2768e443e4e07df300375",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1221894927:cha1latte-win95-theme-marinara",
+      "inputDigest": "5f3c53a07658177afa3caba0cb5d1be955e3de4ca32cf3ada42706aeb9734c1d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T21:05:29.400Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T20:50:29.400Z",
+  "completedAt": null
+}
