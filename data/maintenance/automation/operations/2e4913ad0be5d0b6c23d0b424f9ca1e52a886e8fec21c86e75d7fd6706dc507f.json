@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2e4913ad0be5d0b6c23d0b424f9ca1e52a886e8fec21c86e75d7fd6706dc507f",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1265967518:remixcamera-remix-camera-sillytavern-companion-images",
+      "inputDigest": "3369264fa158baeab8f3d16ed826a9eab2036f4b61b335e977f015f6d7ba7244",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T21:05:29.400Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T20:50:29.400Z",
+  "completedAt": null
+}
