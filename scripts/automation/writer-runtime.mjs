@@ -74,6 +74,7 @@ import { readProjectPublicationEnabled } from "./publication-setting.mjs";
 import {
   parseGenerationOwnerRequest,
   generationRequestOperation,
+  generationRequestPublisherRecovery,
   generationRequestCompleted,
 } from "./preparation-request.mjs";
 import { enrichmentRequestAncestor } from "./enrichment-owner-request.mjs";
@@ -432,12 +433,13 @@ export async function runModelWriterPreparation({
       if (retry.notBefore && Date.parse(retry.notBefore) > state.nowMs)
         return false;
     }
-    const original = state.operations.find(
-      (value) =>
-        value.key === operation.key &&
-        value.stage === operation.stage &&
-        value.expectedSha === operation.expectedSha,
-    );
+    const original =
+      state.operations.find(
+        (value) =>
+          value.key === operation.key &&
+          value.stage === operation.stage &&
+          value.expectedSha === operation.expectedSha,
+      ) ?? generationRequestPublisherRecovery(state, generationRequest);
     if (
       ["generated", "validated"].includes(operation.stage) &&
       operation.workerRunId === null &&
@@ -452,6 +454,13 @@ export async function runModelWriterPreparation({
         (await loadProjectRegenerationPlan({ state, operation, gh, env }))
           .action === "regenerate"
       );
+    if (
+      generationRequest?.ownerAuthorized === true &&
+      generationRequest.forceRegeneration === true &&
+      operation.retry?.failure.kind === "configuration" &&
+      operation.retry.failure.reasonCode === "publisher-authentication-failed"
+    )
+      return false;
     return (
       operation.stage === "admitted" ||
       (["generated", "validated"].includes(operation.stage) &&

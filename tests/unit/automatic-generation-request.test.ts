@@ -7,6 +7,7 @@ import {
 import { discoverAutomationState } from "../../scripts/automation/inventory.mjs";
 import {
   generationRequestOperation,
+  generationRequestPublisherRecovery,
   parseGenerationOwnerRequest,
   runPreparationRequestCli,
 } from "../../scripts/automation/preparation-request.mjs";
@@ -21,6 +22,9 @@ import {
 } from "../../scripts/publication/project-publication-transaction.mjs";
 import { fingerprintProjectRecord } from "../../src/features/help/project-owner-record.mjs";
 import * as githubInventory from "../../scripts/automation/github-inventory.mjs";
+import { operationKey } from "../../scripts/automation/operation.mjs";
+import type { ProjectInventoryRun } from "../../scripts/automation/project-operations.mjs";
+import { persistPreparedFailure } from "../../scripts/automation/prepared-failure.mjs";
 
 async function fixture(
   producer:
@@ -243,8 +247,10 @@ test("a native Bot request for a currently publishable head spends no allowance"
   );
 });
 
-async function publisherRecoveryFixture() {
-  const recovery = await fixture();
+async function publisherRecoveryFixture(
+  stage: "generated" | "validated" = "validated",
+) {
+  const recovery = await fixture("project-submission", stage);
   const original = structuredClone(recovery.state.operations[0]);
   recovery.run.actor = { id: 2625904, type: "User" };
   recovery.run.display_title = "Project #42: Request review PR force=true";
@@ -272,6 +278,634 @@ async function publisherRecoveryFixture() {
   recovery.state.operations = discoverAutomationState(recovery.state);
   return { ...recovery, original, refusal };
 }
+
+async function failedCiPublisherRecoveryFixture() {
+  const recovery = await publisherRecoveryFixture();
+  const olderSuccess = {
+    ...recovery.validation,
+    conclusion: "success",
+    actor: { id: 41898282, type: "Bot" },
+    repository: { id: 1309605115, full_name: recovery.state.repository },
+    head_repository: { id: 1309605115, full_name: recovery.state.repository },
+  };
+  const newerFailure: ProjectInventoryRun = {
+    ...olderSuccess,
+    id: 702,
+    conclusion: "failure",
+    actor: { id: 2625904, type: "User" },
+    created_at: new Date(recovery.state.nowMs - 500).toISOString(),
+    updated_at: new Date(recovery.state.nowMs - 100).toISOString(),
+  };
+  recovery.state.remote.runs = [olderSuccess, newerFailure];
+  recovery.state.operations = discoverAutomationState(recovery.state);
+  return { ...recovery, olderSuccess, newerFailure };
+}
+
+test("default owner preparation bridges actual newer failed CI and binds only its newly dispatched producer", async () => {
+  const recovery = await failedCiPublisherRecoveryFixture();
+  expect(recovery.state.operations[0]).toMatchObject({
+    stage: "generated",
+    expectedSha: recovery.refusal.operation.expectedSha,
+    retry: { failure: { kind: "unknown", reasonCode: "unclassified-failure" } },
+  });
+  const nativeRuns = structuredClone(recovery.state.remote.runs);
+  const canonicalRefusal = structuredClone(recovery.refusal);
+  const request = parseGenerationOwnerRequest(
+    recovery.run,
+    recovery.state.repository,
+    recovery.state.publisherActorId,
+  )!;
+  expect(generationRequestPublisherRecovery(recovery.state, request)).toEqual(
+    canonicalRefusal.operation,
+  );
+  expect(generationRequestOperation(recovery.state, request)).toEqual({
+    ...canonicalRefusal.operation,
+    nextEligibleAt: null,
+  });
+  recovery.dispatch.mockImplementation(async () => {
+    recovery.state.remote.runs.push({
+      ...recovery.run,
+      id: 900,
+      display_title: `Automation prepare ${recovery.original.key} request800`,
+      actor: { id: recovery.state.publisherActorId, type: "Bot" },
+      status: "in_progress",
+      conclusion: null as never,
+    });
+    recovery.state.operations = discoverAutomationState(recovery.state);
+    return { runId: 900, workflow: recovery.run.path };
+  });
+  expect(await runModelWriterPreparation(recovery.writerInput)).toMatchObject({
+    status: "dispatched",
+    runId: 900,
+  });
+  expect(recovery.commit).toHaveBeenCalledTimes(2);
+  expect(
+    validateModelBudgetState(recovery.state.local.modelBudget),
+  ).toMatchObject({
+    days: [{ requests: 4, tokens: 195000 }],
+    tickets: [
+      { producer: { runId: 900, workflow: recovery.run.path } },
+      { producer: { runId: 900, workflow: recovery.run.path } },
+    ],
+  });
+  expect(recovery.state.remote.runs.slice(0, 2)).toEqual(nativeRuns);
+  expect(recovery.state.receipts).toEqual([canonicalRefusal]);
+});
+
+test("a bridged preflight failure preserves canonical history and blocks the older acknowledgement", async () => {
+  const recovery = await failedCiPublisherRecoveryFixture();
+  expect(recovery.state.operations[0].stage).toBe("generated");
+  const persist = vi
+    .spyOn(githubInventory, "persistGithubAutomationReceipt")
+    .mockImplementation(async ({ receipt }) => {
+      recovery.state.receipts = [receipt];
+      recovery.state.operations = discoverAutomationState(recovery.state);
+    });
+  try {
+    recovery.writerInput.env.TAVERNARY_PUBLICATION_SETTINGS_TOKEN = "";
+    await expect(
+      runModelWriterPreparation({
+        ...recovery.writerInput,
+        persistFailure: undefined,
+      }),
+    ).rejects.toMatchObject({ code: "publisher-authentication-failed" });
+    expect(recovery.state.receipts[0]).toMatchObject({
+      operation: {
+        stage: "validated",
+        expectedSha: recovery.refusal.operation.expectedSha,
+        retry: {
+          failure: {
+            kind: "configuration",
+            reasonCode: "publisher-authentication-failed",
+          },
+          transientAttempts: 3,
+          immediateAttempts: 1,
+        },
+      },
+      updatedAt: new Date(recovery.state.nowMs).toISOString(),
+    });
+    recovery.writerInput.env.TAVERNARY_PUBLICATION_SETTINGS_TOKEN =
+      "fixture-read-token";
+    expect(await runModelWriterPreparation(recovery.writerInput)).toEqual({
+      status: "superseded",
+    });
+    expect(persist).toHaveBeenCalledOnce();
+    expect(recovery.commit).not.toHaveBeenCalled();
+    expect(recovery.dispatch).not.toHaveBeenCalled();
+  } finally {
+    persist.mockRestore();
+  }
+});
+
+test("a bridged quota refusal preserves canonical history without reserving allowance", async () => {
+  const recovery = await failedCiPublisherRecoveryFixture();
+  const persist = vi
+    .spyOn(githubInventory, "persistGithubAutomationReceipt")
+    .mockImplementation(async ({ receipt }) => {
+      recovery.state.receipts = [receipt];
+      recovery.state.operations = discoverAutomationState(recovery.state);
+    });
+  try {
+    recovery.writerInput.env = {
+      ...recovery.writerInput.env,
+      TAVERNARY_MODEL_DAILY_TOKENS: "1",
+    } as typeof recovery.writerInput.env;
+    expect(
+      await runModelWriterPreparation({
+        ...recovery.writerInput,
+        persistFailure: undefined,
+      }),
+    ).toEqual({ status: "waiting", reason: "daily-limit" });
+    expect(recovery.state.receipts[0]).toMatchObject({
+      operation: {
+        stage: "validated",
+        expectedSha: recovery.refusal.operation.expectedSha,
+        retry: {
+          failure: { kind: "configuration", reasonCode: "budget-exhausted" },
+          transientAttempts: 3,
+          immediateAttempts: 1,
+        },
+      },
+      updatedAt: new Date(recovery.state.nowMs).toISOString(),
+    });
+    expect(await runModelWriterPreparation(recovery.writerInput)).toEqual({
+      status: "superseded",
+    });
+    expect(persist).toHaveBeenCalledOnce();
+    expect(recovery.commit).not.toHaveBeenCalled();
+    expect(recovery.dispatch).not.toHaveBeenCalled();
+    expect(
+      validateModelBudgetState(recovery.state.local.modelBudget).tickets,
+    ).toEqual([]);
+  } finally {
+    persist.mockRestore();
+  }
+});
+
+test.each([
+  ["unknown", "unclassified-failure"],
+  ["permanent", "validation-failed"],
+  ["configuration", "provider-authentication-failed"],
+] as const)(
+  "fresh failure persistence cannot overwrite a newer %s refusal after CI history disappears",
+  async (kind, reasonCode) => {
+    const recovery = await failedCiPublisherRecoveryFixture();
+    const newer = {
+      ...structuredClone(recovery.refusal),
+      operation: {
+        ...recovery.refusal.operation,
+        stage: "generated" as const,
+        expectedSha: "e".repeat(40),
+        retry: {
+          failure: { kind, reasonCode },
+          transientAttempts: 9,
+          immediateAttempts: 3,
+        },
+      },
+      updatedAt: new Date(recovery.state.nowMs).toISOString(),
+    };
+    const persist = vi
+      .spyOn(githubInventory, "persistGithubAutomationReceipt")
+      .mockImplementation(async () => {});
+    let reads = 0;
+    try {
+      recovery.writerInput.env.TAVERNARY_PUBLICATION_SETTINGS_TOKEN = "";
+      await expect(
+        runModelWriterPreparation({
+          ...recovery.writerInput,
+          persistFailure: undefined,
+          load: async () => {
+            reads += 1;
+            if (reads === 3) {
+              recovery.state.remote.runs = [];
+              recovery.state.receipts = [newer];
+              recovery.state.operations = discoverAutomationState(
+                recovery.state,
+              );
+            }
+            return recovery.state;
+          },
+        }),
+      ).rejects.toMatchObject({ code: "publisher-authentication-failed" });
+      expect(reads).toBe(3);
+      expect(recovery.state.receipts).toEqual([newer]);
+      expect(persist).not.toHaveBeenCalled();
+      expect(recovery.commit).not.toHaveBeenCalled();
+      expect(recovery.dispatch).not.toHaveBeenCalled();
+    } finally {
+      persist.mockRestore();
+    }
+  },
+);
+
+test("failure persistence refuses a cross-stage canonical tuple when raw counters do not match discovery", async () => {
+  const recovery = await failedCiPublisherRecoveryFixture();
+  recovery.state.operations[0].retry!.transientAttempts = 99;
+  const request = parseGenerationOwnerRequest(
+    recovery.run,
+    recovery.state.repository,
+    recovery.state.publisherActorId,
+  )!;
+  const persist = vi.fn();
+  expect(
+    await persistPreparedFailure({
+      operationKey: recovery.original.key,
+      generationRequest: request,
+      isRequestAncestor: (ancestor, descendant) => ancestor === descendant,
+      load: async () => recovery.state,
+      persist,
+      error: { code: "publisher-authentication-failed" },
+    }),
+  ).toEqual({ persisted: false, incident: false });
+  expect(persist).not.toHaveBeenCalled();
+});
+
+test("a newer unknown receipt alone cannot fall through to owner-admitted preparation", async () => {
+  const recovery = await failedCiPublisherRecoveryFixture();
+  recovery.state.receipts = [
+    {
+      ...structuredClone(recovery.refusal),
+      operation: {
+        ...recovery.refusal.operation,
+        stage: "generated",
+        retry: {
+          failure: { kind: "unknown", reasonCode: "unclassified-failure" },
+          transientAttempts: 7,
+          immediateAttempts: 3,
+        },
+      },
+      updatedAt: new Date(recovery.state.nowMs).toISOString(),
+    },
+  ];
+  recovery.state.operations = discoverAutomationState(recovery.state);
+  expect(await runModelWriterPreparation(recovery.writerInput)).toEqual({
+    status: "superseded",
+  });
+  expect(recovery.commit).not.toHaveBeenCalled();
+  expect(recovery.dispatch).not.toHaveBeenCalled();
+});
+
+test("a foreign canonical identity cannot authorize failed-CI owner preparation", async () => {
+  const recovery = await failedCiPublisherRecoveryFixture();
+  recovery.refusal.operation.identity = {
+    ...recovery.refusal.operation.identity,
+    inputDigest: "e".repeat(64),
+  };
+  recovery.refusal.operation.key = operationKey(
+    recovery.refusal.operation.identity,
+  );
+  recovery.state.operations = discoverAutomationState(recovery.state);
+  expect(await runModelWriterPreparation(recovery.writerInput)).toEqual({
+    status: "superseded",
+  });
+  expect(recovery.commit).not.toHaveBeenCalled();
+  expect(recovery.dispatch).not.toHaveBeenCalled();
+});
+
+test("a permanent CI diagnostic and sole permanent receipt never fall through to owner admission", async () => {
+  const recovery = await failedCiPublisherRecoveryFixture();
+  recovery.newerFailure.failure = { diagnosticCode: "validation-failed" };
+  recovery.state.receipts = [
+    {
+      ...structuredClone(recovery.refusal),
+      operation: {
+        ...recovery.refusal.operation,
+        retry: {
+          failure: { kind: "permanent", reasonCode: "validation-failed" },
+          transientAttempts: 7,
+          immediateAttempts: 3,
+        },
+      },
+      updatedAt: new Date(recovery.state.nowMs).toISOString(),
+    },
+  ];
+  recovery.state.operations = discoverAutomationState(recovery.state);
+  expect(recovery.state.operations[0]).toMatchObject({
+    stage: "generated",
+    retry: { failure: { kind: "permanent", reasonCode: "validation-failed" } },
+  });
+  expect(await runModelWriterPreparation(recovery.writerInput)).toEqual({
+    status: "superseded",
+  });
+  expect(recovery.commit).not.toHaveBeenCalled();
+  expect(recovery.dispatch).not.toHaveBeenCalled();
+});
+
+test("the preparation bridge preserves a diagnostic fact sharing a failed run identity", async () => {
+  const recovery = await failedCiPublisherRecoveryFixture();
+  recovery.state.remote.runs.push({
+    ...recovery.newerFailure,
+    failure: { diagnosticCode: "validation-failed" },
+  });
+  recovery.state.operations = discoverAutomationState(recovery.state);
+  expect(await runModelWriterPreparation(recovery.writerInput)).toEqual({
+    status: "superseded",
+  });
+  expect(recovery.commit).not.toHaveBeenCalled();
+  expect(recovery.dispatch).not.toHaveBeenCalled();
+});
+
+test.each([
+  "missing-success",
+  "receipt-stage",
+  "receipt-head",
+  "receipt-created-time",
+  "deadline-equal",
+  "older-request",
+  "future-request",
+  "newer-refusal",
+  "older-failure",
+  "equal-failure-time",
+  "future-failure",
+  "noncanonical-failure-time",
+  "reverse-failure-time",
+  "active-ci",
+  "foreign-ci-actor",
+  "foreign-ci-repository",
+  "foreign-ci-head-repository",
+  "foreign-ci-repository-id",
+  "permanent-diagnostic",
+  "provider-diagnostic",
+  "force-false",
+  "bot-request",
+  "active-producer",
+  "active-worker",
+  "active-writer",
+  "different-raw-counters",
+] as const)(
+  "failed-CI owner preparation preserves the %s boundary",
+  async (variant) => {
+    const recovery = await failedCiPublisherRecoveryFixture();
+    if (variant === "missing-success")
+      recovery.state.remote.runs = [recovery.newerFailure];
+    if (variant === "receipt-stage")
+      recovery.refusal.operation.stage = "generated";
+    if (variant === "receipt-head")
+      recovery.refusal.operation.expectedSha = "e".repeat(40);
+    if (variant === "receipt-created-time")
+      recovery.refusal.operation.createdAt = new Date(
+        recovery.state.nowMs - 2000,
+      ).toISOString();
+    if (variant === "deadline-equal")
+      recovery.refusal.operation.nextEligibleAt = recovery.refusal.updatedAt;
+    if (variant === "older-request")
+      recovery.run.created_at = recovery.refusal.updatedAt;
+    if (variant === "future-request")
+      recovery.run.created_at = new Date(
+        recovery.state.nowMs + 1000,
+      ).toISOString();
+    if (variant === "newer-refusal")
+      recovery.refusal.updatedAt = new Date(recovery.state.nowMs).toISOString();
+    if (variant === "older-failure") {
+      recovery.newerFailure.created_at = new Date(
+        recovery.state.nowMs - 2000,
+      ).toISOString();
+      recovery.newerFailure.updated_at = new Date(
+        recovery.state.nowMs - 1500,
+      ).toISOString();
+    }
+    if (variant === "equal-failure-time")
+      recovery.newerFailure.created_at = recovery.refusal.updatedAt;
+    if (variant === "future-failure") {
+      recovery.newerFailure.created_at = new Date(
+        recovery.state.nowMs + 1000,
+      ).toISOString();
+      recovery.newerFailure.updated_at = new Date(
+        recovery.state.nowMs + 2000,
+      ).toISOString();
+    }
+    if (variant === "noncanonical-failure-time")
+      recovery.newerFailure.created_at = new Date(
+        recovery.state.nowMs - 500,
+      ).toUTCString();
+    if (variant === "reverse-failure-time")
+      recovery.newerFailure.updated_at = new Date(
+        recovery.state.nowMs - 600,
+      ).toISOString();
+    if (variant === "active-ci") {
+      recovery.newerFailure.status = "in_progress";
+      recovery.newerFailure.conclusion = null;
+    }
+    if (variant === "foreign-ci-actor")
+      recovery.newerFailure.actor = { id: 41898282, type: "Bot" };
+    if (variant === "foreign-ci-repository")
+      recovery.newerFailure.repository = {
+        id: 1309605115,
+        full_name: "Other/Tavernary",
+      };
+    if (variant === "foreign-ci-head-repository")
+      recovery.newerFailure.head_repository = {
+        id: 1309605115,
+        full_name: "Other/Tavernary",
+      };
+    if (variant === "foreign-ci-repository-id")
+      recovery.newerFailure.head_repository = {
+        id: 7,
+        full_name: recovery.state.repository,
+      };
+    if (variant === "permanent-diagnostic")
+      recovery.newerFailure.failure = { diagnosticCode: "validation-failed" };
+    if (variant === "provider-diagnostic")
+      recovery.newerFailure.failure = {
+        diagnosticCode: "provider-authentication-failed",
+      };
+    if (variant === "force-false" || variant === "bot-request")
+      recovery.run.display_title = "Project #42: Request review PR force=false";
+    if (variant === "bot-request")
+      recovery.run.actor = { id: recovery.state.publisherActorId, type: "Bot" };
+    if (
+      ["active-producer", "active-worker", "active-writer"].includes(variant)
+    ) {
+      const workflow =
+        variant === "active-worker"
+          ? "automation-worker"
+          : variant === "active-writer"
+            ? "automation-writer"
+            : "generate-project-submission";
+      recovery.state.remote.runs.push({
+        ...recovery.run,
+        id: 901,
+        path: `.github/workflows/${workflow}.yml`,
+        display_title:
+          variant === "active-worker"
+            ? `Automation ${recovery.original.key}`
+            : variant === "active-writer"
+              ? `Automation write prepare ${recovery.original.key}`
+              : `Automation prepare ${recovery.original.key} request799`,
+        actor: { id: recovery.state.publisherActorId, type: "Bot" },
+        status: "in_progress",
+        conclusion: null,
+      });
+    }
+    recovery.state.operations = discoverAutomationState(recovery.state);
+    if (variant === "active-producer")
+      expect(recovery.state.operations[0].workerRunId).toBeNull();
+    if (variant === "different-raw-counters")
+      recovery.state.operations[0].retry!.transientAttempts = 99;
+    expect(await runModelWriterPreparation(recovery.writerInput)).toEqual({
+      status: "superseded",
+    });
+    expect(recovery.commit).not.toHaveBeenCalled();
+    expect(recovery.dispatch).not.toHaveBeenCalled();
+  },
+);
+
+test.each([
+  ["unknown", "unclassified-failure"],
+  ["permanent", "validation-failed"],
+  ["configuration", "provider-authentication-failed"],
+] as const)(
+  "a newer sole %s receipt wins across stages and heads",
+  async (kind, reasonCode) => {
+    const recovery = await failedCiPublisherRecoveryFixture();
+    recovery.newerFailure.failure = { diagnosticCode: reasonCode };
+    recovery.state.receipts = [
+      {
+        ...structuredClone(recovery.refusal),
+        operation: {
+          ...recovery.refusal.operation,
+          stage: "generated",
+          expectedSha: "e".repeat(40),
+          retry: {
+            failure: { kind, reasonCode },
+            transientAttempts: 9,
+            immediateAttempts: 3,
+          },
+        },
+        updatedAt: new Date(recovery.state.nowMs).toISOString(),
+      },
+    ];
+    recovery.state.operations = discoverAutomationState(recovery.state);
+    expect(await runModelWriterPreparation(recovery.writerInput)).toEqual({
+      status: "superseded",
+    });
+    expect(recovery.commit).not.toHaveBeenCalled();
+    expect(recovery.dispatch).not.toHaveBeenCalled();
+  },
+);
+
+test.each([
+  ["unknown", "unclassified-failure"],
+  ["permanent", "validation-failed"],
+  ["configuration", "provider-authentication-failed"],
+] as const)(
+  "a newer canonical %s refusal remains authoritative without CI history",
+  async (kind, reasonCode) => {
+    const recovery = await failedCiPublisherRecoveryFixture();
+    recovery.state.remote.runs = [];
+    recovery.run.created_at = new Date(
+      recovery.state.nowMs - 250,
+    ).toISOString();
+    recovery.state.receipts = [
+      {
+        ...structuredClone(recovery.refusal),
+        operation: {
+          ...recovery.refusal.operation,
+          retry: {
+            failure: { kind, reasonCode },
+            transientAttempts: 9,
+            immediateAttempts: 3,
+          },
+        },
+        updatedAt: new Date(recovery.state.nowMs).toISOString(),
+      },
+    ];
+    recovery.state.operations = discoverAutomationState(recovery.state);
+    expect(recovery.state.operations[0]).toMatchObject({
+      stage: "generated",
+      retry: null,
+    });
+    expect(await runModelWriterPreparation(recovery.writerInput)).toEqual({
+      status: "superseded",
+    });
+    expect(recovery.commit).not.toHaveBeenCalled();
+    expect(recovery.dispatch).not.toHaveBeenCalled();
+  },
+);
+
+test("a failed-CI bridge cannot hide a foreign producer during its own binding", async () => {
+  const recovery = await failedCiPublisherRecoveryFixture();
+  recovery.dispatch.mockImplementation(async () => {
+    recovery.state.remote.runs.push(
+      ...[900, 901].map((runId) => ({
+        ...recovery.run,
+        id: runId,
+        display_title: `Automation prepare ${recovery.original.key} request${runId === 900 ? 800 : 799}`,
+        actor: { id: recovery.state.publisherActorId, type: "Bot" },
+        status: "in_progress",
+        conclusion: null,
+      })),
+    );
+    recovery.state.operations = discoverAutomationState(recovery.state);
+    expect(recovery.state.operations[0].workerRunId).toBeNull();
+    return { runId: 900, workflow: recovery.run.path };
+  });
+  expect(await runModelWriterPreparation(recovery.writerInput)).toEqual({
+    status: "superseded",
+  });
+  expect(recovery.commit).toHaveBeenCalledOnce();
+  expect(
+    validateModelBudgetState(recovery.state.local.modelBudget),
+  ).toMatchObject({
+    days: [{ requests: 4, tokens: 195000 }],
+    tickets: [{ producer: null }, { producer: null }],
+  });
+});
+
+test("same-stage generated Publisher refusal recovery retains its existing guarded path", async () => {
+  const recovery = await publisherRecoveryFixture("generated");
+  expect(recovery.state.operations[0]).toMatchObject({
+    stage: "generated",
+    retry: {
+      failure: {
+        kind: "configuration",
+        reasonCode: "publisher-authentication-failed",
+      },
+    },
+  });
+  expect(await runModelWriterPreparation(recovery.writerInput)).toMatchObject({
+    status: "dispatched",
+    runId: 900,
+  });
+  expect(recovery.commit).toHaveBeenCalledTimes(2);
+});
+
+test.each(["counter-mismatch", "newer-unknown-refusal"] as const)(
+  "expired same-stage Publisher recovery cannot bypass %s through ordinary merge eligibility",
+  async (variant) => {
+    const recovery = await publisherRecoveryFixture();
+    recovery.validation.conclusion = "success";
+    recovery.refusal.operation.nextEligibleAt = new Date(
+      recovery.state.nowMs - 500,
+    ).toISOString();
+    if (variant === "newer-unknown-refusal") {
+      recovery.state.receipts.push({
+        ...structuredClone(recovery.refusal),
+        operation: {
+          ...recovery.refusal.operation,
+          stage: "generated",
+          retry: {
+            failure: { kind: "unknown", reasonCode: "unclassified-failure" },
+            transientAttempts: 9,
+            immediateAttempts: 3,
+          },
+        },
+        updatedAt: new Date(recovery.state.nowMs).toISOString(),
+      });
+    }
+    recovery.state.operations = discoverAutomationState(recovery.state);
+    if (variant === "counter-mismatch")
+      recovery.state.operations[0].retry = {
+        ...recovery.state.operations[0].retry!,
+        transientAttempts: 99,
+      };
+    expect(await runModelWriterPreparation(recovery.writerInput)).toEqual({
+      status: "superseded",
+    });
+    expect(recovery.commit).not.toHaveBeenCalled();
+    expect(recovery.dispatch).not.toHaveBeenCalled();
+  },
+);
 
 test("a fresh owner Publisher recovery regenerates an unchanged head without requiring its failing old CI", async () => {
   const recovery = await publisherRecoveryFixture();

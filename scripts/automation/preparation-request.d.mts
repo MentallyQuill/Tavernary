@@ -21,6 +21,10 @@ export function generationRequestOperation(
     "issueNumber" | "kind" | "ownerAuthorized" | "createdAt"
   > & { forceRegeneration?: boolean },
 ): import("./operation.mjs").AutomationOperation | null;
+export function generationRequestPublisherRecovery(
+  state: AutomationInventoryState,
+  request?: Parameters<typeof generationRequestOperation>[1] | null,
+): import("./operation.mjs").AutomationOperation | null;
 export function generationRequestCompleted(input: {
   state: AutomationInventoryState;
   request: GenerationOwnerRequest;

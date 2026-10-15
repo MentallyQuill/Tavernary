@@ -32,7 +32,8 @@ export interface ProjectInventoryRun extends ProjectValidationRun {
   event?: string;
   display_title?: string;
   head_branch?: string;
-  head_repository?: { full_name: string };
+  repository?: { id?: number; full_name?: string };
+  head_repository?: { id?: number; full_name: string };
   actor?: { id: number; type: string };
 }
 export interface ProjectInventoryInput {
@@ -73,6 +74,10 @@ export function ownerPublisherRecoveryAcknowledged(
   input: Pick<ProjectInventoryInput, "receipts" | "nowMs">,
   request?: Parameters<typeof discoverRequestedGeneration>[1] | null,
 ): boolean;
+export function ownerPublisherPreparationRecovery(
+  input: ProjectInventoryInput,
+  request?: Parameters<typeof discoverRequestedGeneration>[1] | null,
+): { operation: AutomationOperation; rawOperation: AutomationOperation } | null;
 export function projectIssueMatchesTransaction(input: {
   issue: ProjectInventoryIssue;
   transaction: import("../publication/project-publication-transaction.mjs").ProjectPublicationTransaction;

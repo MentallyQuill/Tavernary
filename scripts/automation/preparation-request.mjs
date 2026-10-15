@@ -12,7 +12,11 @@ import {
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 import { synchronizeWithdrawalFeedback } from "./withdrawal-feedback.mjs";
 import { REFRESH_COMPANION_SOURCE_ID } from "./catalog-operations.mjs";
-import { discoverRequestedGeneration } from "./project-operations.mjs";
+import {
+  discoverRequestedGeneration,
+  ownerPublisherPreparationRecovery,
+} from "./project-operations.mjs";
+import { isDeepStrictEqual } from "node:util";
 import { parseProjectPublicationTransaction } from "../publication/project-publication-transaction.mjs";
 import { selectRefreshSources } from "../catalog/refresh-repositories.mjs";
 import {
@@ -103,6 +107,28 @@ export function generationRequestOperation(state, request) {
     },
     request,
   );
+}
+export function generationRequestPublisherRecovery(state, request) {
+  const recovery = ownerPublisherPreparationRecovery(
+    {
+      issues: state.remote.issues,
+      pulls: state.remote.pulls,
+      runs: state.remote.runs,
+      receipts: state.receipts,
+      publisherActorId: state.publisherActorId,
+      repository: state.repository,
+      nowMs: state.nowMs,
+      executingWriterRunId: state.executingWriterRunId,
+      catalog: { projects: state.local.projects, sources: state.local.sources },
+    },
+    request,
+  );
+  return recovery &&
+    state.operations.some((operation) =>
+      isDeepStrictEqual(operation, recovery.rawOperation),
+    )
+    ? recovery.operation
+    : null;
 }
 export async function generationRequestCompleted({
   state,
