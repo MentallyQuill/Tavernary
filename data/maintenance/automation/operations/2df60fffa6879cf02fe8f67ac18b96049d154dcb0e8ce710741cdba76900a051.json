@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2df60fffa6879cf02fe8f67ac18b96049d154dcb0e8ce710741cdba76900a051",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1248922425:amousepad-lumibooks",
+      "inputDigest": "ee4055ba1c317bd167892a88f665804c1461fb45eb7ceaf2a2103b62ae78f4b8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T21:05:29.400Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T20:50:29.400Z",
+  "completedAt": null
+}
