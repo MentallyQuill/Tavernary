@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1e3712f623b20bc6961a28493101ab91e048bff307afc2c0ec4aecaf119a5cf9",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1354538739:brutalkoala-sillynpc",
+      "inputDigest": "718fc0ea7cf136fe8a63b870dea815b39236d79f1f7170906272ebddc10a6072",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T05:19:26.054Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T05:04:26.054Z",
+  "completedAt": null
+}
