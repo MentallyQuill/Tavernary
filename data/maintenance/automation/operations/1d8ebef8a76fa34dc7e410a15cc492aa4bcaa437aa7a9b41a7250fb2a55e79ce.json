@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1d8ebef8a76fa34dc7e410a15cc492aa4bcaa437aa7a9b41a7250fb2a55e79ce",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1221907257:decidetto-me-accent-color-changer",
+      "inputDigest": "9f31fa06cfdb6b10687171939b98c9831ede66c03f267086cc3e65e731f58524",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T05:19:26.054Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T05:04:26.054Z",
+  "completedAt": null
+}
