@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "mentallyquill-tavernarycompanion",
+  "name": "TavernaryCompanion",
+  "kind": "extension",
+  "summary": "Tavernary Companion is a SillyTavern extension (README) for finding, installing, updating, and organizing Tavernary catalog extensions, letting users review project details and version changes before acting.",
+  "metadata_status": "curated",
+  "source_id": "github-1338469080",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["build-extensions-and-scripts"],
+  "cataloged_at": "2026-10-15T10:01:12.564Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

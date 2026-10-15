@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "29d74f8abeab51b8c34105f5f30fc542014e776f15309ff70e2b3ef89df49c3b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1317590696:i5031337-sillytavern-contextual-scene-painter",
+      "inputDigest": "738b6656a094ffac89c78e6c4c36380858516b90b6b62b46ef24ae750e7839c7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T13:57:10.449Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "configuration",
+        "reasonCode": "budget-exhausted"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-15T13:57:10.449Z",
+  "completedAt": null
+}
