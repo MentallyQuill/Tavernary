@@ -1,5 +1,10 @@
 import type { AutomationInventoryState } from "./inventory.mjs";
 import type { AutomationReceipt } from "./receipts.mjs";
+import type { PreparedDiagnosticEvidence } from "./prepared-github.mjs";
+export function isPreparedDiagnosticObsolete(input: {
+  state: AutomationInventoryState;
+  evidence: PreparedDiagnosticEvidence;
+}): boolean;
 export function persistPreparedFailure(input: {
   operationKey: string;
   error: unknown;

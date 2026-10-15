@@ -7,6 +7,7 @@ import {
   downloadPreparedArtifact,
   runModelWriterPreparation,
   runReconciledFinalization,
+  runAutomationWriterReconciliation,
 } from "../../scripts/automation/writer-runtime.mjs";
 import {
   createModelBudgetState,
@@ -17,6 +18,256 @@ import { operationFixture } from "../helpers/automation-fixtures";
 import { metadataMaintenanceFixture } from "../helpers/automation-fixtures";
 import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
 import type { AutomationReceipt } from "../../scripts/automation/receipts.mjs";
+import { preparedReplayFixture } from "../helpers/prepared-replay-fixtures";
+import * as inventory from "../../scripts/automation/inventory.mjs";
+import * as githubInventory from "../../scripts/automation/github-inventory.mjs";
+import { recoverInventoryWorker } from "../../scripts/automation/inventory-worker.mjs";
+
+test("a lost successful failure-write response can later be superseded by its newer canonical decision", async () => {
+  const input = preparedReplayFixture();
+  input.receipt.updatedAt = "2026-10-14T16:19:00.000Z";
+  input.receipt.operation.retry!.immediateAttempts = 2;
+  input.receipt.operation.retry!.transientAttempts = 1;
+  input.state.receipts = [structuredClone(input.receipt)];
+  input.state.operations = [structuredClone(input.receipt.operation)];
+  recoverInventoryWorker(
+    input.state.operations[0],
+    { ...input.state, runs: [input.run] },
+    [],
+  );
+  const persist = vi
+    .spyOn(githubInventory, "persistGithubAutomationReceipt")
+    .mockImplementation(async ({ receipt }) => {
+      input.state.receipts = [structuredClone(receipt)];
+      input.state.operations = [structuredClone(receipt.operation)];
+      throw new Error("Successful write response lost");
+    });
+  const revalidate = vi
+    .spyOn(inventory, "revalidateAutomationOperation")
+    .mockResolvedValue(null);
+  const gh = Object.assign(
+    vi.fn(async (args: string[]) => {
+      if (
+        args.some((argument) =>
+          argument.includes(`/actions/runs/${input.run.id}`),
+        )
+      )
+        return input.reader.gh(args);
+      throw new Error("No dispatch expected");
+    }),
+    { download: input.reader.download },
+  );
+  const options = {
+    load: async () => structuredClone(input.state),
+    gh,
+    env: {
+      GITHUB_REPOSITORY: input.state.repository,
+      GITHUB_REF: "refs/heads/main",
+      GITHUB_EVENT_NAME: "workflow_dispatch",
+      GITHUB_ACTOR_ID: "2625904",
+      GITHUB_WORKFLOW_REF: `${input.state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
+      TAVERNARY_PUBLISHER_BOT_ID: String(input.state.publisherActorId),
+    },
+  };
+  try {
+    await expect(runAutomationWriterReconciliation(options)).rejects.toThrow(
+      "Successful write response lost",
+    );
+    expect(input.state.receipts[0].operation.retry).toMatchObject({
+      immediateAttempts: 3,
+      transientAttempts: 2,
+    });
+    input.state.nowMs = Date.parse(input.state.operations[0].nextEligibleAt!);
+    recoverInventoryWorker(
+      input.state.operations[0],
+      { ...input.state, runs: [input.run] },
+      [],
+    );
+    const before = JSON.stringify(input.state.receipts);
+    const result = await runAutomationWriterReconciliation(options);
+    expect(result.prepared).toMatchObject({
+      failures: 0,
+      consumedKeys: [],
+      reloadRequired: true,
+    });
+    expect(result.controller).toMatchObject({
+      selectedKeys: [input.receipt.operation.key],
+      dispatched: 0,
+    });
+    expect(JSON.stringify(input.state.receipts)).toBe(before);
+    expect(persist).toHaveBeenCalledOnce();
+  } finally {
+    persist.mockRestore();
+    revalidate.mockRestore();
+  }
+});
+
+test("a new unknown producer after its prior receipt still reaches the daily incident threshold in the actual writer", async () => {
+  const input = preparedReplayFixture();
+  input.receipt.operation.retry!.immediateAttempts = 2;
+  input.receipt.operation.retry!.transientAttempts = 1;
+  input.state.receipts = [structuredClone(input.receipt)];
+  input.state.operations = [structuredClone(input.receipt.operation)];
+  input.state.receipts[0].updatedAt = "2026-10-16T09:45:00.000Z";
+  input.state.receipts[0].operation.nextEligibleAt = "2026-10-16T10:00:26.370Z";
+  input.state.operations = [structuredClone(input.state.receipts[0].operation)];
+  input.run.updated_at = "2026-10-16T10:06:00.000Z";
+  input.run.created_at = "2026-10-16T10:05:00.000Z";
+  input.state.nowMs = Date.parse("2026-10-16T12:00:00.000Z");
+  recoverInventoryWorker(
+    input.state.operations[0],
+    { ...input.state, runs: [input.run] },
+    [],
+  );
+  expect(input.state.operations[0].nextEligibleAt).toBeNull();
+  const persist = vi
+    .spyOn(githubInventory, "persistGithubAutomationReceipt")
+    .mockImplementation(async ({ receipt }) => {
+      input.state.receipts = [structuredClone(receipt)];
+      input.state.operations = [structuredClone(receipt.operation)];
+    });
+  const revalidate = vi
+    .spyOn(inventory, "revalidateAutomationOperation")
+    .mockResolvedValue(null);
+  const gh = Object.assign(
+    vi.fn(async (args: string[]) => {
+      if (
+        args.some((argument) =>
+          argument.includes(`/actions/runs/${input.run.id}`),
+        )
+      )
+        return input.reader.gh(args);
+      throw new Error("No dispatch expected");
+    }),
+    { download: input.reader.download },
+  );
+  try {
+    const result = await runAutomationWriterReconciliation({
+      load: async () => structuredClone(input.state),
+      gh,
+      env: {
+        GITHUB_REPOSITORY: input.state.repository,
+        GITHUB_REF: "refs/heads/main",
+        GITHUB_EVENT_NAME: "workflow_dispatch",
+        GITHUB_ACTOR_ID: "2625904",
+        GITHUB_WORKFLOW_REF: `${input.state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
+        TAVERNARY_PUBLISHER_BOT_ID: String(input.state.publisherActorId),
+      },
+    });
+    expect(result.prepared).toMatchObject({
+      failures: 1,
+      consumedKeys: [input.receipt.operation.key],
+    });
+    expect(input.state.receipts[0]).toMatchObject({
+      operation: {
+        retry: {
+          failure: { kind: "unknown", reasonCode: "unclassified-failure" },
+          immediateAttempts: 3,
+          transientAttempts: 2,
+        },
+        nextEligibleAt: "2026-10-17T12:00:00.000Z",
+      },
+    });
+    expect(persist).toHaveBeenCalledOnce();
+    expect(revalidate).not.toHaveBeenCalled();
+    expect(result.controller).toMatchObject({
+      dispatched: 0,
+      selectedKeys: [],
+    });
+  } finally {
+    persist.mockRestore();
+    revalidate.mockRestore();
+  }
+});
+
+test.each(["due", "future", "permanent", "head"])(
+  "the actual writer reloads an obsolete no-effect result before guarded %s selection",
+  async (freshDecision) => {
+    const input = preparedReplayFixture();
+    let loads = 0;
+    const load = vi.fn(async () => {
+      const state = structuredClone(input.state);
+      loads++;
+      if (loads >= 3) {
+        if (freshDecision === "future")
+          state.operations[0].nextEligibleAt = "2026-10-17T00:25:23.917Z";
+        if (freshDecision === "permanent") {
+          state.operations[0].retry!.failure = {
+            kind: "permanent",
+            reasonCode: "authorization-lost",
+          };
+          state.operations[0].nextEligibleAt = null;
+        }
+        if (freshDecision === "head")
+          state.operations[0].expectedSha = "c".repeat(40);
+        state.receipts[0].operation = structuredClone(state.operations[0]);
+      }
+      state.local.observedLoad = loads;
+      return state;
+    });
+    const persist = vi
+      .spyOn(githubInventory, "persistGithubAutomationReceipt")
+      .mockResolvedValue(undefined);
+    const revalidate = vi
+      .spyOn(inventory, "revalidateAutomationOperation")
+      .mockResolvedValue(null);
+    const gh = Object.assign(
+      vi.fn(async (args: string[]) => {
+        if (
+          args.some((argument) =>
+            argument.includes(`/actions/runs/${input.run.id}`),
+          )
+        )
+          return input.reader.gh(args);
+        throw new Error("No other remote effects expected");
+      }),
+      { download: input.reader.download },
+    );
+    try {
+      const result = await runAutomationWriterReconciliation({
+        load,
+        gh,
+        env: {
+          GITHUB_REPOSITORY: input.state.repository,
+          GITHUB_REF: "refs/heads/main",
+          GITHUB_EVENT_NAME: "workflow_dispatch",
+          GITHUB_ACTOR_ID: "2625904",
+          GITHUB_WORKFLOW_REF: `${input.state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
+          TAVERNARY_PUBLISHER_BOT_ID: String(input.state.publisherActorId),
+        },
+      });
+      expect(result.prepared).toEqual({
+        published: 0,
+        recovered: 0,
+        failures: 0,
+        consumedKeys: [],
+        reloadRequired: true,
+      });
+      expect(result.controller).toMatchObject({
+        selectedKeys: ["due", "head"].includes(freshDecision)
+          ? [input.receipt.operation.key]
+          : [],
+        dispatched: 0,
+      });
+      if (["due", "head"].includes(freshDecision))
+        expect(revalidate).toHaveBeenCalledWith(
+          expect.objectContaining({
+            state: expect.objectContaining({
+              local: expect.objectContaining({ observedLoad: 3 }),
+            }),
+            operation: expect.objectContaining({
+              expectedSha: freshDecision === "head" ? "c".repeat(40) : null,
+            }),
+          }),
+        );
+      else expect(revalidate).not.toHaveBeenCalled();
+      expect(persist).not.toHaveBeenCalled();
+    } finally {
+      persist.mockRestore();
+      revalidate.mockRestore();
+    }
+  },
+);
 
 test("inline finalization recovers the actual terminal receipt after its successful write loses the response", async () => {
   const operation = operationFixture({

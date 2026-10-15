@@ -44,7 +44,7 @@ import { createPreparedPublicationContext } from "./publication-context.mjs";
 import {
   loadPreparedGithubResult,
   loadPreparedGithubArtifact,
-  loadPreparedGithubDiagnostic,
+  loadPreparedGithubDiagnosticEvidence,
 } from "./prepared-github.mjs";
 import { publishPreparedOperations } from "./prepared-publication.mjs";
 import { buildPreparedCatalogPublication } from "./publication-build.mjs";
@@ -54,7 +54,10 @@ import {
   runAutomationStateRetention,
 } from "./retention.mjs";
 import { reconcilePreparedOperations } from "./prepared-reconciliation.mjs";
-import { persistPreparedFailure } from "./prepared-failure.mjs";
+import {
+  persistPreparedFailure,
+  isPreparedDiagnosticObsolete,
+} from "./prepared-failure.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
 import { runReconcileAutomationCli } from "./reconcile-cli.mjs";
 import { assessInventoryHealth, assessAutomationHealth } from "./health.mjs";
@@ -1447,8 +1450,8 @@ export async function runAutomationWriterReconciliation({
       ),
     },
     limit: 20 - enrichmentSlot - generation.slots - generationRequests.slots,
-    readDiagnostic: (wake) =>
-      loadPreparedGithubDiagnostic({
+    readDiagnosticEvidence: (wake) =>
+      loadPreparedGithubDiagnosticEvidence({
         gh,
         download: gh.download ?? downloadPreparedArtifact,
         repository,
@@ -1458,6 +1461,8 @@ export async function runAutomationWriterReconciliation({
           (operation) => operation.key === wake.operationKey,
         ),
       }),
+    isDiagnosticObsolete: async ({ evidence }) =>
+      isPreparedDiagnosticObsolete({ state: await load(), evidence }),
     onFailure: (input) =>
       persistPreparedFailure({
         ...input,
@@ -1486,7 +1491,8 @@ export async function runAutomationWriterReconciliation({
         gh,
       }),
   });
-  if (prepared.consumedKeys.length) state = await load();
+  if (prepared.consumedKeys.length || prepared.reloadRequired)
+    state = await load();
   const consumed = new Set([
     ...prepared.consumedKeys,
     ...generation.consumedKeys,
