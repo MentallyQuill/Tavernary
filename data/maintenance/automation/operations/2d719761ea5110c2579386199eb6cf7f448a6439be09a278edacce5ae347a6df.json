@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2d719761ea5110c2579386199eb6cf7f448a6439be09a278edacce5ae347a6df",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1289162242:hibanan-css-default-scoped",
+      "inputDigest": "94896e7970c49334d5201863aa7b5ee59f47ccc186d02a3c7bae22ab642ac9dd",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T21:05:29.400Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T20:50:29.400Z",
+  "completedAt": null
+}
