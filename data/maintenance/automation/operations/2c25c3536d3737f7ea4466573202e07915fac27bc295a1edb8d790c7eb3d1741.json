@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2c25c3536d3737f7ea4466573202e07915fac27bc295a1edb8d790c7eb3d1741",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1258163299:enerccio-sillytavern-mangagenerator",
+      "inputDigest": "e0bd1bef1a8f6579620fcfd61f928677151d4f40c40a5a1ffbd27809b635f8ee",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T21:05:29.400Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 3,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-15T20:50:29.400Z",
+  "completedAt": null
+}
