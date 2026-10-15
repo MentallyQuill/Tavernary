@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2a52f4f8adbbb2674473e6675689f28c1ebc00c6a997dc7abe5f95c52e67b92d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1228484987:retrovioletred-sillytavern-pictureprompt",
+      "inputDigest": "11cccfad2094e15f634fad9b0fcac8ef82fd0b6a498085481bf26ba7f52c4360",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T18:00:51.656Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-15T17:45:51.656Z",
+  "completedAt": null
+}

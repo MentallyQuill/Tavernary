@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2a83250473d0d04315b1c1b3975ddf11df50b27de22c7106ef6bc9cace8d58ed",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1224601278:bbw3000-simplesummary",
+      "inputDigest": "2d786d72f86d288757d52bf977d9a5d0361205aea740289f1d0376dcdae97c59",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T18:00:51.656Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T17:45:51.656Z",
+  "completedAt": null
+}

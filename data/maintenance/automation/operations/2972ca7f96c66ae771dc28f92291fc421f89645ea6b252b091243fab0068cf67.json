@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2972ca7f96c66ae771dc28f92291fc421f89645ea6b252b091243fab0068cf67",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-999180993:subzero5544-preset-search",
+      "inputDigest": "c0c7f3b96d8dff2389e3c5b7d0015bfcf98a4e6c8969a1ccad5815b986ac0bb5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T18:00:51.656Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T17:45:51.656Z",
+  "completedAt": null
+}
