@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "258b7ab25eea3305cc2cb87a5d817c9b31117cdedaa91031d4cff63fdb1b8e2c",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1311326828:sofizzticated-sillytavern-scrolltolast",
+      "inputDigest": "56e6fd6a5f676501f0f14066cd32ee73a88a07e07fffa6a55ccbca68165b9722",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T11:07:17.583Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T10:52:17.583Z",
+  "completedAt": null
+}
