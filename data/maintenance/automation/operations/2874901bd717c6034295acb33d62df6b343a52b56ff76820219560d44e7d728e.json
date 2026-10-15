@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2874901bd717c6034295acb33d62df6b343a52b56ff76820219560d44e7d728e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1303700120:thexyzzyone-stgroupresponderselector",
+      "inputDigest": "7ad750fa4faa3abd14f5f30928793e6b0f1f9e043b8d8c247a01dfb994711ae1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T13:49:05.415Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "configuration",
+        "reasonCode": "budget-exhausted"
+      },
+      "transientAttempts": 5,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-15T13:49:05.415Z",
+  "completedAt": null
+}
