@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "23e28e758b9fc1cd8c97e88b992083d2419475090b462f97400f4a2b8f58ad9d",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-929287817:bronya-rand-guinevere-ui-extension",
+      "inputDigest": "74443f7d67a94217365905edccc2b0b69c8fdc3b078767cda516b085043ee26a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T11:07:17.583Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T10:52:17.583Z",
+  "completedAt": null
+}
