@@ -715,9 +715,18 @@ jobs:
           name: project-owner-request-${{ inputs.issue_number }}-generation
           path: ${{ runner.temp }}/project-owner-generation-report.json
           if-no-files-found: error
+      - name: Create Publisher CI dispatch token
+        id: ci-dispatch-token
+        if: steps.plan.outputs.action != 'noop'
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
+        with:
+          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
+          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-actions: write
       - name: Dispatch CI for generated owner branch
         if: steps.plan.outputs.action != 'noop'
         env:
+          GH_TOKEN: ${{ steps.ci-dispatch-token.outputs.token }}
           BRANCH: ${{ steps.state.outputs.branch }}
         run: gh workflow run ci.yml --ref "$BRANCH"
       - name: Reconcile failed generation

@@ -1461,6 +1461,33 @@ test("keeps Kit triage registry-read-only and dependency-free", async () => {
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
 
+test("submission generation dispatches branch CI with an Actions-only Publisher token", async () => {
+  const generation = await workflow("generate-project-submission");
+  const steps = generation.jobs.generate.steps as Array<
+    WorkflowStep & { if?: string }
+  >;
+  const dispatch = steps.find((step) =>
+    step.run?.includes("gh workflow run ci.yml"),
+  );
+  const tokenId = dispatch?.env?.GH_TOKEN?.match(
+    /^\$\{\{ steps\.([a-z0-9-]+)\.outputs\.token \}\}$/u,
+  )?.[1];
+  expect(tokenId).toBeTruthy();
+  const token = steps.find((step) => step.id === tokenId);
+  expect(token?.uses).toBe(
+    `actions/create-github-app-token@${pinnedActions["actions/create-github-app-token"]}`,
+  );
+  expect(token?.with).toEqual({
+    "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
+    "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
+    "permission-actions": "write",
+  });
+  expect(token?.if).toBe("steps.commit.outputs.changed == 'true'");
+  expect(dispatch?.if).toBe(token?.if);
+  expect(steps.indexOf(token!)).toBeLessThan(steps.indexOf(dispatch!));
+  expect(dispatch?.env?.BRANCH).toBe("${{ steps.state.outputs.branch }}");
+});
+
 test("generates submission PRs with scoped permissions and manual recovery", async () => {
   const generation = await workflow("generate-project-submission");
   const source = await readFile(
@@ -1898,6 +1925,33 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   expect(source).toContain("renderCopyReviewDiagnosticSummary");
   expect(source).toContain('entry.review_status === "unavailable"');
   expect(source).toContain("entry.diagnostic");
+});
+
+test("owner generation dispatches branch CI with an Actions-only Publisher token", async () => {
+  const generation = await workflow("generate-project-owner-request");
+  const steps = generation.jobs.generate.steps as Array<
+    WorkflowStep & { if?: string }
+  >;
+  const dispatch = steps.find((step) =>
+    step.run?.includes("gh workflow run ci.yml"),
+  );
+  const tokenId = dispatch?.env?.GH_TOKEN?.match(
+    /^\$\{\{ steps\.([a-z0-9-]+)\.outputs\.token \}\}$/u,
+  )?.[1];
+  expect(tokenId).toBeTruthy();
+  const token = steps.find((step) => step.id === tokenId);
+  expect(token?.uses).toBe(
+    `actions/create-github-app-token@${pinnedActions["actions/create-github-app-token"]}`,
+  );
+  expect(token?.with).toEqual({
+    "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
+    "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
+    "permission-actions": "write",
+  });
+  expect(token?.if).toBe("steps.plan.outputs.action != 'noop'");
+  expect(dispatch?.if).toBe(token?.if);
+  expect(steps.indexOf(token!)).toBeLessThan(steps.indexOf(dispatch!));
+  expect(dispatch?.env?.BRANCH).toBe("${{ steps.state.outputs.branch }}");
 });
 
 test.each([

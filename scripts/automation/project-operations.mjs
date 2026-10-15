@@ -1,4 +1,5 @@
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
+import { isDeepStrictEqual } from "node:util";
 import { effectiveIssueRoute } from "../submissions/admit-issue.mjs";
 import { parseProjectSubmissionIssue } from "../submissions/parse-project-submission.mjs";
 import { parseProjectOwnerManifestIssue } from "../help/triage-project-owner-request.mjs";
@@ -131,30 +132,46 @@ function trustedGenerationRuns(input, issue, producer, key) {
     );
 }
 
+function acknowledgedConfigurationRefusal(operation, input, request) {
+  const receipt = matchingReceipt(input, operation);
+  const requestedAt = Date.parse(request.createdAt ?? "");
+  return Boolean(
+    operation.retry?.failure.kind === "configuration" &&
+    receipt &&
+    isDeepStrictEqual(operation.retry, receipt.operation.retry) &&
+    operation.nextEligibleAt === receipt.operation.nextEligibleAt &&
+    Number.isFinite(Date.parse(operation.nextEligibleAt ?? "")) &&
+    new Date(operation.nextEligibleAt).toISOString() ===
+      operation.nextEligibleAt &&
+    Date.parse(operation.nextEligibleAt) > Date.parse(receipt.updatedAt) &&
+    Number.isFinite(requestedAt) &&
+    new Date(requestedAt).toISOString() === request.createdAt &&
+    requestedAt > Date.parse(receipt.updatedAt) &&
+    requestedAt <= input.nowMs,
+  );
+}
+
+export function ownerPublisherRecoveryAcknowledged(operation, input, request) {
+  return Boolean(
+    request?.ownerAuthorized === true &&
+    request.forceRegeneration === true &&
+    request.kind === operation.identity.kind &&
+    operation.identity.subject === `issue:${request.issueNumber}` &&
+    operation.retry?.failure.kind === "configuration" &&
+    operation.retry.failure.reasonCode === "publisher-authentication-failed" &&
+    acknowledgedConfigurationRefusal(operation, input, request),
+  );
+}
+
 function recoverOwnerConfigurationCooldown(operation, input, request) {
   if (
     operation.retry?.failure.kind === "configuration" &&
     (operation.retry.failure.reasonCode === "budget-exhausted" ||
-      (operation.retry.failure.reasonCode ===
-        "publisher-authentication-failed" &&
-        request.ownerAuthorized === true &&
-        request.forceRegeneration === true))
-  ) {
-    const receipt = matchingReceipt(input, operation);
-    const requestedAt = Date.parse(request.createdAt ?? "");
-    if (
-      receipt?.operation.retry?.failure.kind === "configuration" &&
-      receipt.operation.retry.failure.reasonCode ===
-        operation.retry.failure.reasonCode &&
-      operation.nextEligibleAt === receipt.operation.nextEligibleAt &&
-      Date.parse(operation.nextEligibleAt ?? "") > input.nowMs &&
-      Number.isFinite(requestedAt) &&
-      new Date(requestedAt).toISOString() === request.createdAt &&
-      requestedAt > Date.parse(receipt.updatedAt) &&
-      requestedAt <= input.nowMs
-    )
-      operation.nextEligibleAt = null;
-  }
+      ownerPublisherRecoveryAcknowledged(operation, input, request)) &&
+    acknowledgedConfigurationRefusal(operation, input, request) &&
+    Date.parse(operation.nextEligibleAt) > input.nowMs
+  )
+    operation.nextEligibleAt = null;
   return operation;
 }
 

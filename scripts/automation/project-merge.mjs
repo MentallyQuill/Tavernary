@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import {
   parseProjectPublicationTransaction,
   fingerprintProjectPublicationInput,
+  expectedTransactionPaths,
 } from "../publication/project-publication-transaction.mjs";
 import {
   planProjectPublication,
@@ -22,17 +23,16 @@ import { validateAutomationOperation } from "./operation.mjs";
 import { publishCanonicalBatch } from "./publish.mjs";
 import { readProjectPublicationEnabled } from "./publication-setting.mjs";
 
-export async function loadProjectMergePlan({
-  state,
-  operation,
-  gh,
-  env = process.env,
-}) {
+async function loadProjectPlan(
+  { state, operation, gh, env = process.env },
+  regeneration = false,
+) {
   validateAutomationOperation(operation);
   const deny = (reasonCode) => ({ action: "reject", reasonCode });
   if (
     !["project", "owner-request"].includes(operation.identity.kind) ||
-    state.local.revision !== state.remote.mainHeadSha
+    state.local.revision !== state.remote.mainHeadSha ||
+    (regeneration && !["generated", "validated"].includes(operation.stage))
   )
     return deny("project-context-invalid");
   if (
@@ -65,10 +65,14 @@ export async function loadProjectMergePlan({
   const transaction = parseProjectPublicationTransaction(pull.body ?? "");
   if (
     !transaction ||
+    pull.number !== candidates[0].number ||
+    pull.state !== "open" ||
     pull.user?.id !== state.publisherActorId ||
     pull.user.type !== "Bot" ||
     pull.base?.repo?.full_name !== state.repository ||
     pull.head?.repo?.full_name !== state.repository ||
+    pull.base.ref !== "main" ||
+    pull.head.ref !== `automation/${producer}-${issueNumber}` ||
     transaction.issue_number !== issueNumber ||
     transaction.producer !== producer ||
     transaction.policy_version !== operation.identity.policyVersion ||
@@ -93,6 +97,7 @@ export async function loadProjectMergePlan({
         "submission-declined",
         "needs-information",
         "issue-limit-reached",
+        "waiting-on-fork-parent",
       ].includes(label),
     )
   )
@@ -159,40 +164,43 @@ export async function loadProjectMergePlan({
       });
     }
   }
-  const validations = state.remote.runs
-    .filter(
-      (run) =>
-        run.path === ".github/workflows/ci.yml" &&
-        run.event === "workflow_dispatch" &&
-        run.head_branch === pull.head.ref &&
-        run.head_sha === pull.head.sha &&
-        run.conclusion === "success",
+  let run;
+  if (!regeneration) {
+    const validations = state.remote.runs
+      .filter(
+        (run) =>
+          run.path === ".github/workflows/ci.yml" &&
+          run.event === "workflow_dispatch" &&
+          run.head_branch === pull.head.ref &&
+          run.head_sha === pull.head.sha &&
+          run.conclusion === "success",
+      )
+      .sort((left, right) => right.id - left.id);
+    if (!validations.length)
+      return { action: "retry", reasonCode: "ci-unavailable" };
+    run = JSON.parse(
+      await gh([
+        "api",
+        `repos/${state.repository}/actions/runs/${validations[0].id}`,
+      ]),
+    );
+    if (
+      run.id !== validations[0].id ||
+      run.path !== ".github/workflows/ci.yml" ||
+      run.event !== "workflow_dispatch" ||
+      run.head_repository?.full_name !== state.repository ||
+      run.head_branch !== pull.head.ref ||
+      run.head_sha !== transaction.generated_head_sha ||
+      run.status !== "completed" ||
+      run.conclusion !== "success" ||
+      !(
+        (run.actor?.id === state.publisherActorId &&
+          run.actor.type === "Bot") ||
+        (run.actor?.id === 2625904 && run.actor.type === "User")
+      )
     )
-    .sort((a, b) => b.id - a.id);
-  if (!validations.length)
-    return { action: "retry", reasonCode: "ci-unavailable" };
-  const run = JSON.parse(
-    await gh([
-      "api",
-      `repos/${state.repository}/actions/runs/${validations[0].id}`,
-    ]),
-  );
-  if (
-    run.id !== validations[0].id ||
-    run.name !== "Site: Validate changes" ||
-    run.path !== ".github/workflows/ci.yml" ||
-    run.event !== "workflow_dispatch" ||
-    run.head_repository?.full_name !== state.repository ||
-    run.head_branch !== pull.head.ref ||
-    run.head_sha !== transaction.generated_head_sha ||
-    run.status !== "completed" ||
-    run.conclusion !== "success" ||
-    !(
-      (run.actor?.id === state.publisherActorId && run.actor.type === "Bot") ||
-      (run.actor?.id === 2625904 && run.actor.type === "User")
-    )
-  )
-    return deny("validation-run-custody-invalid");
+      return deny("validation-run-custody-invalid");
+  }
   const pages = JSON.parse(
     await gh([
       "api",
@@ -207,6 +215,49 @@ export async function loadProjectMergePlan({
   );
   if (!Array.isArray(pages) || pages.some((page) => !Array.isArray(page)))
     return deny("project-path-inventory-invalid");
+  if (regeneration) {
+    const routeLabel =
+      producer === "project-submission"
+        ? "project-submission"
+        : "project-owner-request";
+    if (
+      issue.number !== issueNumber ||
+      issue.state !== "open" ||
+      !labels.includes("issue-admitted") ||
+      !labels.includes(routeLabel) ||
+      !labels.includes("submission-pr-open")
+    )
+      return deny("issue-no-longer-admitted");
+    if (transaction.publication_mode !== "automatic")
+      return deny("manual-approval-required");
+    if (!authorityValid) return deny("authority-lost");
+    if (
+      transaction.source_identity?.repository_id &&
+      repository?.id !== transaction.source_identity.repository_id
+    )
+      return deny("source-identity-changed");
+    if (
+      !parsed?.valid ||
+      fingerprintProjectPublicationInput(parsed.manifest) !==
+        transaction.input_digest
+    )
+      return deny("project-input-invalid");
+    const changedPaths = pages
+      .flat()
+      .map((file) => file.filename)
+      .sort((left, right) => left.localeCompare(right));
+    if (
+      JSON.stringify(changedPaths) !==
+      JSON.stringify(expectedTransactionPaths(transaction))
+    )
+      return deny("path-mismatch");
+    return {
+      action: "regenerate",
+      reasonCode: "owner-force-regeneration",
+      producer,
+      issueNumber,
+    };
+  }
   let baseDriftSafe = state.local.revision === transaction.base_sha;
   if (!baseDriftSafe) {
     try {
@@ -272,6 +323,14 @@ export async function loadProjectMergePlan({
       ),
     },
   });
+}
+
+export function loadProjectMergePlan(input) {
+  return loadProjectPlan(input);
+}
+
+export function loadProjectRegenerationPlan(input) {
+  return loadProjectPlan(input, true);
 }
 
 export async function publishProjectOperation({

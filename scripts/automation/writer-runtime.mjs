@@ -1,7 +1,7 @@
 import { downloadPreparedArtifact } from "./prepared-artifact-download.mjs";
 export { downloadPreparedArtifact } from "./prepared-artifact-download.mjs";
 import { execFile, execFileSync } from "node:child_process";
-import { promisify } from "node:util";
+import { isDeepStrictEqual, promisify } from "node:util";
 import { readFile, writeFile, rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import { randomUUID, createHash } from "node:crypto";
@@ -65,6 +65,7 @@ import {
 } from "./inventory.mjs";
 import {
   loadProjectMergePlan,
+  loadProjectRegenerationPlan,
   publishProjectOperation,
   mergeExactProjectHead,
 } from "./project-merge.mjs";
@@ -77,6 +78,7 @@ import {
 } from "./preparation-request.mjs";
 import { enrichmentRequestAncestor } from "./enrichment-owner-request.mjs";
 import { inspectProjectRetry } from "./project-retries.mjs";
+import { ownerPublisherRecoveryAcknowledged } from "./project-operations.mjs";
 import {
   reconcileProjectValidations,
   githubRequest,
@@ -416,7 +418,11 @@ export async function runModelWriterPreparation({
       ...input,
       model: env.UTILITY_MODEL,
     })),
-  projectGenerationEligible = async ({ state, operation }) => {
+  projectGenerationEligible = async ({
+    state,
+    operation,
+    generationRequest,
+  }) => {
     if (operation.identity.kind === "project") {
       const issue = state.remote.issues.find(
         (value) => value.number === Number(operation.identity.subject.slice(6)),
@@ -426,6 +432,26 @@ export async function runModelWriterPreparation({
       if (retry.notBefore && Date.parse(retry.notBefore) > state.nowMs)
         return false;
     }
+    const original = state.operations.find(
+      (value) =>
+        value.key === operation.key &&
+        value.stage === operation.stage &&
+        value.expectedSha === operation.expectedSha,
+    );
+    if (
+      ["generated", "validated"].includes(operation.stage) &&
+      operation.workerRunId === null &&
+      original?.workerRunId === null &&
+      original.key === operation.key &&
+      original.stage === operation.stage &&
+      original.expectedSha === operation.expectedSha &&
+      isDeepStrictEqual(operation.retry, original.retry) &&
+      ownerPublisherRecoveryAcknowledged(original, state, generationRequest)
+    )
+      return (
+        (await loadProjectRegenerationPlan({ state, operation, gh, env }))
+          .action === "regenerate"
+      );
     return (
       operation.stage === "admitted" ||
       (["generated", "validated"].includes(operation.stage) &&
@@ -613,6 +639,7 @@ export async function runModelWriterPreparation({
     const requestId = request
       ? `generation-request-${request.runId}`
       : `writer-${env.GITHUB_RUN_ID}`;
+    let dispatchedProducer = null;
     const budgetState = async (state) => {
       let budget = state.local.modelBudget;
       if (!budget) {
@@ -623,8 +650,29 @@ export async function runModelWriterPreparation({
           budget = createModelBudgetState(0);
         }
       }
+      const preparationState =
+        request && dispatchedProducer
+          ? {
+              ...state,
+              remote: {
+                ...state.remote,
+                runs: state.remote.runs.filter(
+                  (run) => run.id !== dispatchedProducer.runId,
+                ),
+              },
+            }
+          : state;
+      if (request && dispatchedProducer) {
+        const original = generationRequestOperation(preparationState, {
+          ...request,
+          ownerAuthorized: false,
+        });
+        preparationState.operations = state.operations.map((value) =>
+          value.key === operationKey && original ? original : value,
+        );
+      }
       const current = request
-        ? generationRequestOperation(state, request)
+        ? generationRequestOperation(preparationState, request)
         : state.operations.find((value) => value.key === operationKey);
       validateModelBudgetState(budget);
       const circuit = assessModelProviderCircuit({
@@ -641,9 +689,16 @@ export async function runModelWriterPreparation({
         budget,
         ...(circuit.blocked ? { waitReason: "provider-circuit-open" } : {}),
         eligible: Boolean(
+          (!request ||
+            isRequestAncestor(request.sourceSha, state.local.revision) ===
+              true) &&
           current &&
           (["project", "owner-request"].includes(current.identity.kind)
-            ? await projectGenerationEligible({ state, operation: current })
+            ? await projectGenerationEligible({
+                state: preparationState,
+                operation: current,
+                generationRequest: request,
+              })
             : current.stage === "admitted") &&
           current.retry?.failure.kind !== "permanent" &&
           (!current.retry ||
@@ -678,8 +733,8 @@ export async function runModelWriterPreparation({
           ],
         });
       },
-      dispatch: (input) =>
-        dispatch({
+      dispatch: async (input) => {
+        const producer = await dispatch({
           ...input,
           repository,
           publisherActorId: initial.publisherActorId,
@@ -715,7 +770,15 @@ export async function runModelWriterPreparation({
                   .slice(0, 10),
               }
             : {}),
-        }),
+        });
+        if (
+          Number.isSafeInteger(producer?.runId) &&
+          producer.runId > 0 &&
+          producer.workflow === workflow
+        )
+          dispatchedProducer = producer;
+        return producer;
+      },
     });
     if (
       outcome.status === "waiting" &&
