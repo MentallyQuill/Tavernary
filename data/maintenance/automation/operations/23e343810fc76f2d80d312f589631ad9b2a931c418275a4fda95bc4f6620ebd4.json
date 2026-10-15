@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "23e343810fc76f2d80d312f589631ad9b2a931c418275a4fda95bc4f6620ebd4",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1248549303:thejackals-sillytavern-mapregionslocator",
+      "inputDigest": "fcb3c4115084cdc9518392c26acb0fa261c6f6346369cbb3e112fcbdbc1f4b15",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T11:07:17.583Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T10:52:17.583Z",
+  "completedAt": null
+}
