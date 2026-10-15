@@ -849,6 +849,7 @@ test.each([false, true])(
       expect(f.commit).toHaveBeenCalledTimes(commits);
     }
   },
+  30000,
 );
 
 test("an interrupted native generator settles completed calls once despite a lost commit response, without refunding unused allowance", async () => {

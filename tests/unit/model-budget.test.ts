@@ -1,4 +1,5 @@
 import { expect, test } from "vitest";
+import { createHash } from "node:crypto";
 import { maximumModelBudgetFixture } from "../helpers/model-budget-fixtures";
 import {
   createModelBudgetState,
@@ -152,25 +153,72 @@ test("unpriced reservations remain accounted across every UTC day of a full mont
 
 test("a full month of ten-million-token days retains unpriced accounting", () => {
   const start = Date.parse("2026-10-01T12:00:00Z");
-  let state = createModelBudgetState(start);
-  for (let day = 0; day < 31; day++) {
-    for (let index = 0; index < 50; index++) {
-      const decision = reserveModelBudget(
-        state,
-        {
-          ...request,
-          requestId: `request-${day}-${index}`,
-          requestedTokens: 200000,
-        },
-        { nowMs: start + day * 86400000, tokensPerDay: 10000000 },
-      );
-      if (!decision.allowed) throw new Error("Monthly reservation refused");
-      state = decision.state;
-    }
+  const template = reserveModelBudget(
+    createModelBudgetState(start),
+    { ...request, requestId: "template", requestedTokens: 200000 },
+    { nowMs: start, tokensPerDay: 10000000 },
+  );
+  if (!template.allowed) throw new Error("Template reservation refused");
+  const seed = createModelBudgetState(start + 29 * 86400000);
+  seed.days = Array.from({ length: 30 }, (_, day) => ({
+    day: new Date(start + day * 86400000).toISOString().slice(0, 10),
+    requests: 50,
+    tokens: 10000000,
+  }));
+  seed.months = [
+    { month: "2026-10", reservedMicrousd: 0, unpricedTokens: 300000000 },
+  ];
+  seed.tickets = Array.from({ length: 1500 }, (_, index) => {
+    const created = start + Math.floor(index / 50) * 86400000;
+    const day = new Date(created).toISOString().slice(0, 10);
+    const requestId = `request-${index}`;
+    return {
+      ...template.ticket,
+      id: createHash("sha256")
+        .update(JSON.stringify([day, request.operationKey, requestId]))
+        .digest("hex"),
+      day,
+      requestId,
+      createdAt: new Date(created).toISOString(),
+      expiresAt: new Date(created + 45 * 60000).toISOString(),
+    };
+  });
+  expect(validateModelBudgetState(seed).tickets).toHaveLength(1500);
+  expect(
+    seed.tickets.reduce((total, ticket) => total + ticket.requestedTokens, 0),
+  ).toBe(300000000);
+  const previous = JSON.stringify(seed);
+  const finalDay = start + 30 * 86400000;
+  let state = seed;
+  for (let index = 0; index < 50; index++) {
+    const decision = reserveModelBudget(
+      state,
+      { ...request, requestId: `final-${index}`, requestedTokens: 200000 },
+      { nowMs: finalDay, tokensPerDay: 10000000 },
+    );
+    if (!decision.allowed) throw new Error("Monthly reservation refused");
+    state = decision.state;
   }
   expect(validateModelBudgetState(state).months).toEqual([
     { month: "2026-10", reservedMicrousd: 0, unpricedTokens: 310000000 },
   ]);
+  expect(state.days.slice(0, 30)).toEqual(seed.days);
+  expect(state.days[30]).toEqual({
+    day: "2026-10-31",
+    requests: 50,
+    tokens: 10000000,
+  });
+  expect(state.tickets.slice(0, 1500)).toEqual(seed.tickets);
+  expect(JSON.stringify(seed)).toBe(previous);
+  const charged = JSON.stringify(state);
+  const refused = reserveModelBudget(
+    state,
+    { ...request, requestId: "month-overflow", requestedTokens: 1 },
+    { nowMs: finalDay, tokensPerDay: 10000000 },
+  );
+  expect(refused).toMatchObject({ allowed: false, reason: "daily-limit" });
+  expect(refused.state).toBe(state);
+  expect(JSON.stringify(state)).toBe(charged);
 }, 30000);
 
 test("the higher daily cap retains the per-ticket and usage token ceilings", () => {
