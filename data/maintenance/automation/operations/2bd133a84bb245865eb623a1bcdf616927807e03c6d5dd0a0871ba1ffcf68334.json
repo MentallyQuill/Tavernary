@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2bd133a84bb245865eb623a1bcdf616927807e03c6d5dd0a0871ba1ffcf68334",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-692674090:vegu-ai-talemate",
+      "inputDigest": "b6b2ffff69e5cf0f6dc0b01170d49a7e25b877f4a33a8db3b27ff197be948078",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T21:05:29.400Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-15T20:50:29.400Z",
+  "completedAt": null
+}
