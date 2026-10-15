@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "28590373382b2570ea2833c116a57a936d74e3f1260c8715b9d156ad364b8142",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-686411772:frostbd-st-custom-fonts",
+      "inputDigest": "f09baa102e600c31523a08d7aec9e8663fbddce46666356180dc1b09d67e2794",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T13:41:08.856Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "configuration",
+        "reasonCode": "budget-exhausted"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-15T13:41:08.856Z",
+  "completedAt": null
+}
