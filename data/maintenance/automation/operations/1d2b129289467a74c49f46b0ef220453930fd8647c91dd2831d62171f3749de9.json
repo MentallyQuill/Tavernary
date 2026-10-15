@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1d2b129289467a74c49f46b0ef220453930fd8647c91dd2831d62171f3749de9",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1140216653:landozo-extension-slidermacros",
+      "inputDigest": "ffc83906c41e2188133941b7307b51a2ad4fb01e28a7a8376f6f5f0ccb86cbcf",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T05:19:26.054Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T05:04:26.054Z",
+  "completedAt": null
+}
