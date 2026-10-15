@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "264e1d2583d31e35629f5bc1364437923e51cbee6885dd4dc983ec40a39249c4",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1158227036:linux4life1-front-porch-ai",
+      "inputDigest": "6af64190969901c0aa05e1fcef9b3d6261428e176100e04145899137db54a7b1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T14:17:52.928Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-15T14:12:23.884Z",
+  "completedAt": null
+}
