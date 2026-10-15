@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "231f0db98ef8979cfeefcac22e450fd6b7bbc0b1e9d9223fb03f431542c1f19b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1147155100:rurijian-deep-swipe",
+      "inputDigest": "5dba63efe29a426f194fb6068259c3704b0546af555ae61286cc576c42665f5b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T13:05:28.001Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "provider-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-15T12:49:58.363Z",
+  "completedAt": null
+}
