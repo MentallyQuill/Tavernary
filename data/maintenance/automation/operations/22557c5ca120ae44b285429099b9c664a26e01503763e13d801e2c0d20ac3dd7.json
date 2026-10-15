@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "22557c5ca120ae44b285429099b9c664a26e01503763e13d801e2c0d20ac3dd7",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1203878678:rustyorb-sillytavern-qrbuilder",
+      "inputDigest": "53f2b23a7622340e888d40bccdfb7ebe12e661756ecdd0547d373dc8e2b1dd51",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T07:16:47.010Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T07:01:47.010Z",
+  "completedAt": null
+}
