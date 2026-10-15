@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "225dba0f50f493c2ac7769c2eff408972c71c75f118a426a04363344901880f2",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1389930261:matdredalia-extension-sets",
+      "inputDigest": "6ca691295f5300bac4dff0a56df8698f77edba63ef7f1bb0360f9b1fdedb7345",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T07:16:47.010Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T07:01:47.010Z",
+  "completedAt": null
+}
