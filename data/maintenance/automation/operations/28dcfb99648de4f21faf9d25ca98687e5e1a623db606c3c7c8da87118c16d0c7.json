@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "28dcfb99648de4f21faf9d25ca98687e5e1a623db606c3c7c8da87118c16d0c7",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1240388057:icefog72-sillytavern-everytextlineeditor",
+      "inputDigest": "e983af0acfefafdf8b62be4c6cb72c2c12860ccae7fdf6a1aa0e851f4851bd08",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-15T18:00:51.656Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-15T17:45:51.656Z",
+  "completedAt": null
+}
