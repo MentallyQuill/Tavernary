@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "42749f7d783662447b12c663277b31bf14e51877edcfcecce0bd8a43621b007a",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1372058245:pyrxpia-sola-hub",
+      "inputDigest": "b9ad3b146a1a68cf0eb4ccc8ece9c0dc1984cbdd418f577b1298e62d241576a9",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:45:15.484Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T14:30:15.484Z",
+  "completedAt": null
+}
