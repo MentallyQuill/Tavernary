@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4822b4f5e3b917fda5ccc12085cd9d98b6f074934fec2c0a4840425217d707ac",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1104616181:sammcheese-sillytavern-discordia",
+      "inputDigest": "c3c8f49140e99768764ea250e309971860cb67bb21480cf0fd7bd34504f9af0b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T15:59:03.107Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T15:44:03.107Z",
+  "completedAt": null
+}
