@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3a22c6510d80818e2e6b0d1e90d87013daac4cf507ee17101ebccd2c1f71b12e",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1305306157:ganon3264-focus",
+      "inputDigest": "d2aef0b31ff5bc50aee2aabfb0991e51307398b2d4041e4c5d41540bd9433915",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T12:58:07.477Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T12:43:07.477Z",
+  "completedAt": null
+}
