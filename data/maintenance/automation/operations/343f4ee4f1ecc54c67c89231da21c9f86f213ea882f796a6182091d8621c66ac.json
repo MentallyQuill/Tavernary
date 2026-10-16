@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "343f4ee4f1ecc54c67c89231da21c9f86f213ea882f796a6182091d8621c66ac",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1300808393:enchantedrobot-sillytavern-character-tools",
+      "inputDigest": "d42f2b157be4960b32e486f471563155bedb01e8f063b1d0ae743b5ac9f69791",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T07:10:25.314Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T06:55:25.314Z",
+  "completedAt": null
+}
