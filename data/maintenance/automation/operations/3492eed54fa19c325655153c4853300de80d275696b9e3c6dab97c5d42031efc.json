@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3492eed54fa19c325655153c4853300de80d275696b9e3c6dab97c5d42031efc",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1282097657:dan0dandeleon11-dandeleon-multiverse",
+      "inputDigest": "243d77fbfed0f2f625e87959d42a3004e14be1d3ee2b76cc679ce66a8fcaab6b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T09:11:09.275Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T08:56:09.275Z",
+  "completedAt": null
+}
