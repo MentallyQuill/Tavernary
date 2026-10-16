@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "44fbccd54a898cff9ca125d2d29b8bf9e251b77885f547aaf38d1f9f963017a6",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1191978638:ikarusv-ikarusautoimage",
+      "inputDigest": "a627512139e7f2c3893d7b28caf666b808e860a4575cd2f8fc743d2730e906d0",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:54:50.169Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T14:39:50.169Z",
+  "completedAt": null
+}
