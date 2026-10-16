@@ -356,6 +356,28 @@ test("identifies the object and action in every workflow run name", async () => 
   }
 });
 
+test.each([
+  ["generate-project-submission", "Project"],
+  ["generate-project-owner-request", "Owner request"],
+])(
+  "%s attaches a native request suffix only for a positive numeric request ID",
+  async (name, ownerTitle) => {
+    const document = await workflow(name);
+    expect(document.on.workflow_dispatch.inputs.request_run_id).toMatchObject({
+      type: "number",
+      default: 0,
+      required: false,
+    });
+    expect(String(document["run-name"]).replace(/\s+/gu, " ")).toBe(
+      "${{ inputs.operation_key " +
+        "&& (inputs.request_run_id > 0 " +
+        "&& format('Automation prepare {0} request{1}', inputs.operation_key, inputs.request_run_id) " +
+        "|| format('Automation prepare {0}', inputs.operation_key)) " +
+        `|| format('${ownerTitle} #{0}: Request review PR force={1}', inputs.issue_number, inputs.force_regeneration) }}`,
+    );
+  },
+);
+
 test("pins every first-party action to its resolved commit", async () => {
   const names = (await readdir(workflowDirectory))
     .filter((name) => /\.ya?ml$/u.test(name))
