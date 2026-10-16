@@ -38,7 +38,10 @@ import {
   persistGithubAutomationReceipt,
   loadGenerationOwnerRequestRuns,
 } from "./github-inventory.mjs";
-import { loadAutomationInventory } from "./inventory.mjs";
+import {
+  loadAutomationInventory,
+  loadPreparedDiagnosticInventory,
+} from "./inventory.mjs";
 import { trustedOperationWorkerRuns } from "./inventory-worker.mjs";
 import { createPreparedPublicationContext } from "./publication-context.mjs";
 import {
@@ -1367,17 +1370,36 @@ export async function runAutomationWriterReconciliation({
   gh = executeGh,
   finalize = (operation) =>
     runReconciledFinalization({ operationKey: operation.key, root, env, gh }),
-  load = async () => {
-    await synchronizeWriterCheckout({ root, env });
-    return loadAutomationInventory({
-      root,
-      gh,
-      repository: env.GITHUB_REPOSITORY,
-      publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
-      nowMs: Date.now(),
-    });
-  },
+  load: injectedLoad,
+  loadDiagnostic,
 } = {}) {
+  const load =
+    injectedLoad ??
+    (async () => {
+      await synchronizeWriterCheckout({ root, env });
+      return loadAutomationInventory({
+        root,
+        gh,
+        repository: env.GITHUB_REPOSITORY,
+        publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
+        nowMs: Date.now(),
+      });
+    });
+  const diagnosticLoader =
+    loadDiagnostic ??
+    (injectedLoad
+      ? null
+      : async (input) => {
+          await synchronizeWriterCheckout({ root, env });
+          return loadPreparedDiagnosticInventory({
+            ...input,
+            root,
+            gh,
+            repository: env.GITHUB_REPOSITORY,
+            publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
+            nowMs: Date.now(),
+          });
+        });
   const repository = env.GITHUB_REPOSITORY;
   const publisherActorId = Number(env.TAVERNARY_PUBLISHER_BOT_ID);
   assertCanonicalWriterContext(env, repository);
@@ -1440,6 +1462,28 @@ export async function runAutomationWriterReconciliation({
   } catch {
     generationRequests = { status: "unavailable", slots: 0, consumedKeys: [] };
   }
+  const diagnosticEvidence = new Map();
+  const loadDiagnosticState = async (evidence) => {
+    const operation = state.operations.find(
+      (value) => value.key === evidence.operation.key,
+    );
+    if (
+      diagnosticLoader &&
+      Number.isSafeInteger(evidence.artifact?.id) &&
+      evidence.artifact.id > 0 &&
+      /^sha256:[a-f0-9]{64}$/u.test(evidence.artifact.digest ?? "") &&
+      ["refresh", "metadata", "advisory"].includes(operation?.identity.kind)
+    ) {
+      const scoped = await diagnosticLoader({
+        operation,
+        knownRuns: state.remote.runs,
+        evidenceRun: evidence.run,
+        history: state.remote,
+      });
+      if (scoped) return scoped;
+    }
+    return load();
+  };
   const prepared = await reconcilePreparedOperations({
     state: {
       ...state,
@@ -1461,12 +1505,20 @@ export async function runAutomationWriterReconciliation({
           (operation) => operation.key === wake.operationKey,
         ),
       }),
-    isDiagnosticObsolete: async ({ evidence }) =>
-      isPreparedDiagnosticObsolete({ state: await load(), evidence }),
+    isDiagnosticObsolete: async ({ evidence }) => {
+      diagnosticEvidence.set(evidence.operation.key, evidence);
+      return isPreparedDiagnosticObsolete({
+        state: await loadDiagnosticState(evidence),
+        evidence,
+      });
+    },
     onFailure: (input) =>
       persistPreparedFailure({
         ...input,
-        load,
+        load: diagnosticEvidence.has(input.operationKey)
+          ? () =>
+              loadDiagnosticState(diagnosticEvidence.get(input.operationKey))
+          : load,
         persist: (receipt) =>
           persistGithubAutomationReceipt({ gh, repository, receipt }),
       }).then(() => {}),

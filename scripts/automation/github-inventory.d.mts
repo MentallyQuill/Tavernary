@@ -14,6 +14,9 @@ export interface GithubAutomationInventory {
   finalizationOperationKey?: string;
 }
 export function githubFailureStatus(error: unknown): number;
+export function retainedAutomationRunIds(
+  receipts: AutomationReceipt[],
+): number[];
 export function loadGithubRunArtifacts(input: {
   gh: GhRunner;
   repository: string;
@@ -30,6 +33,20 @@ export function loadAutomationWorkerRuns(input: {
   nowMs: number;
   createdAfterMs?: number;
 }): Promise<ProjectInventoryRun[]>;
+export interface PreparedDiagnosticRunsInput {
+  gh: GhRunner;
+  repository: string;
+  publisherActorId: number;
+  nowMs: number;
+  operation: AutomationOperation;
+  knownRuns?: ProjectInventoryRun[];
+  evidenceRun: ProjectInventoryRun;
+  history?: GithubAutomationInventory;
+  retainedRunIds?: number[];
+}
+export function loadPreparedDiagnosticRuns(
+  input: PreparedDiagnosticRunsInput,
+): Promise<Pick<GithubAutomationInventory, "runs" | "mainHeadSha"> | null>;
 export function loadSiteWriterRecoveryRuns(input: {
   gh: GhRunner;
   repository: string;
