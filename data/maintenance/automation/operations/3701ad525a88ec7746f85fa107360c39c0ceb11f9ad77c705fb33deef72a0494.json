@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3701ad525a88ec7746f85fa107360c39c0ceb11f9ad77c705fb33deef72a0494",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1158265980:sillytavern-sillytavern-greetingtools",
+      "inputDigest": "7cd09b34336f35458517f4f8341475a7dc3b04878dc24aa0ef0670424643698d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T09:11:09.275Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 5,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T08:56:09.275Z",
+  "completedAt": null
+}
