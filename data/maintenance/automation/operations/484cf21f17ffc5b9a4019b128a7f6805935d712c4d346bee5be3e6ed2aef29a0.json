@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "484cf21f17ffc5b9a4019b128a7f6805935d712c4d346bee5be3e6ed2aef29a0",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1068908642:sillytavern-sillytavern-pronouns",
+      "inputDigest": "e9245f95b8d0dcec3f04cc86fd090f73545f2806498990818032093656e12ac6",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T15:59:03.107Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 3,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T15:44:03.107Z",
+  "completedAt": null
+}
