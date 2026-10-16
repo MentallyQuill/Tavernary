@@ -175,6 +175,12 @@ export function runAutomationWriterReconciliation(input?: {
   env?: Record<string, string | undefined>;
   gh?: GhRunner;
   load?: () => Promise<AutomationInventoryState>;
+  loadDiagnostic?: (
+    input: Pick<
+      import("./github-inventory.mjs").PreparedDiagnosticRunsInput,
+      "operation" | "knownRuns" | "evidenceRun" | "history"
+    >,
+  ) => Promise<AutomationInventoryState | null>;
   finalize?: ReconciliationInput["finalize"];
 }): Promise<Record<string, unknown>>;
 export function runPreparedWriterBatch(input: {

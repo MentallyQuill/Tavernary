@@ -1,4 +1,4 @@
-import { readFile, readdir } from "node:fs/promises";
+import { readFile, readdir, lstat } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { resolve } from "node:path";
@@ -8,6 +8,8 @@ import {
   loadGithubAutomationInventory,
   loadAutomationWorkerRuns,
   githubFailureStatus,
+  loadPreparedDiagnosticRuns,
+  retainedAutomationRunIds,
 } from "./github-inventory.mjs";
 import { discoverProjectOperations } from "./project-operations.mjs";
 import { discoverKitOperations } from "./kit-operations.mjs";
@@ -21,7 +23,10 @@ import {
   readAuthoritativeActiveDeployment,
 } from "./deployment-gate.mjs";
 import { validateAutomationReceipt } from "./receipts.mjs";
-import { assertTrustedPreparationOrigin } from "./prepared-result.mjs";
+import {
+  assertTrustedPreparationOrigin,
+  assertTrustedPreparedProducer,
+} from "./prepared-result.mjs";
 import { validateAutomationOperation } from "./operation.mjs";
 import { loadRetiredAutomationReceipts } from "./retention.mjs";
 import {
@@ -327,16 +332,38 @@ export function discoverAutomationState(state) {
     );
 }
 
-export async function loadAutomationInventory({
-  root,
-  gh,
-  repository,
-  publisherActorId,
-  nowMs,
-  reportIndex,
-  finalizationOperationKey,
-  executingWriterRunId,
-}) {
+export async function loadAutomationInventory(input) {
+  return loadInventory(input);
+}
+
+export async function loadPreparedDiagnosticInventory(input) {
+  if (
+    !["refresh", "metadata", "advisory"].includes(
+      input.operation?.identity?.kind,
+    )
+  )
+    return null;
+  try {
+    validateAutomationOperation(input.operation);
+  } catch {
+    return null;
+  }
+  return loadInventory(input, input);
+}
+
+async function loadInventory(
+  {
+    root,
+    gh,
+    repository,
+    publisherActorId,
+    nowMs,
+    reportIndex,
+    finalizationOperationKey,
+    executingWriterRunId,
+  },
+  diagnostic,
+) {
   if (
     finalizationOperationKey !== undefined &&
     !/^[a-f0-9]{64}$/u.test(finalizationOperationKey)
@@ -405,6 +432,26 @@ export async function loadAutomationInventory({
   const validatedPublications = publicationRecords.map(
     validateCanonicalPublicationRecord,
   );
+  if (diagnostic) {
+    const key = diagnostic.operation.key;
+    if (
+      validatedPublications.some((record) => record.operation.key === key) ||
+      invalidReceiptKeys.includes(key) ||
+      receipts.filter((receipt) => receipt.operation.key === key).length !== 1
+    )
+      return null;
+    try {
+      await lstat(
+        resolve(
+          root,
+          `data/maintenance/automation/terminal/${key.slice(0, 2)}/${key}.json`,
+        ),
+      );
+      return null;
+    } catch (error) {
+      if (error.code !== "ENOENT") throw error;
+    }
+  }
   validateTavernKeeperImportState(importState);
   const stored = validateStoredReportIndex(storedReports, sources);
   const revision = execFileSync("git", ["rev-parse", "HEAD"], {
@@ -424,7 +471,7 @@ export async function loadAutomationInventory({
           `${receipt.operation.key}:${receipt.operation.expectedSha}`,
       ),
   );
-  const remote = await loadGithubAutomationInventory({
+  const remoteInput = {
     gh,
     repository,
     publisherActorId,
@@ -442,7 +489,27 @@ export async function loadAutomationInventory({
         : receipts.find(
             (receipt) => receipt.operation.key === finalizationOperationKey,
           )?.operation,
-  });
+  };
+  const scopedRemote = diagnostic
+    ? await loadPreparedDiagnosticRuns({
+        gh,
+        repository,
+        publisherActorId,
+        nowMs,
+        operation: receipts.find(
+          (receipt) => receipt.operation.key === diagnostic.operation.key,
+        ).operation,
+        knownRuns: diagnostic.knownRuns,
+        evidenceRun: diagnostic.evidenceRun,
+        history: diagnostic.history,
+        retainedRunIds: retainedAutomationRunIds(receipts),
+      })
+    : null;
+  if (diagnostic && (!scopedRemote || scopedRemote.mainHeadSha !== revision))
+    return null;
+  const remote = diagnostic
+    ? { ...scopedRemote, issues: [], pulls: [] }
+    : await loadGithubAutomationInventory(remoteInput);
   const committedAt = new Date(
     execFileSync("git", ["show", "-s", "--format=%cI", revision], {
       cwd: root,
@@ -489,7 +556,7 @@ export async function loadAutomationInventory({
     generatedAt: refreshManifest.completed_at,
   });
   let index = reportIndex;
-  if (!index) {
+  if (!index && !diagnostic) {
     try {
       index = await fetchAndValidateTavernKeeperIndex({
         registry: sources,
@@ -597,6 +664,64 @@ export async function loadAutomationInventory({
     receipts,
     operations: [],
   };
+  if (diagnostic) {
+    const operations = discoverCatalogOperations({
+      receipts,
+      nowMs,
+      runs: remote.runs,
+      publisherActorId,
+      repository,
+      executingWriterRunId,
+      catalog: {
+        projects,
+        sources,
+        revision,
+        vocabularyHash: local.vocabularyHash,
+        kits,
+        kitSnapshots,
+        blockedUsers,
+        refreshManifest,
+      },
+      evidence: snapshots,
+      advisoryState,
+      metadataState,
+    }).filter((operation) => operation.key === diagnostic.operation.key);
+    if (
+      operations.length !== 1 ||
+      operations[0].identity.kind !== diagnostic.operation.identity.kind
+    )
+      return null;
+    const operation = operations[0];
+    const prepared = remote.runs.some((run) => {
+      if (
+        run.display_title !== `Automation prepare ${operation.key}` ||
+        !Number.isFinite(Date.parse(run.updated_at ?? "")) ||
+        Date.parse(run.created_at ?? "") < Date.parse(operation.createdAt)
+      )
+        return false;
+      try {
+        assertTrustedPreparedProducer({
+          kind: operation.identity.kind,
+          repository,
+          publisherActorId,
+          run,
+          requireSuccess: false,
+        });
+        return true;
+      } catch {
+        return false;
+      }
+    });
+    if (!prepared) return null;
+    const reference = JSON.parse(
+      await gh(["api", `repos/${repository}/git/ref/heads/main`]),
+    );
+    if (!/^[a-f0-9]{40}$/u.test(reference?.object?.sha ?? ""))
+      throw new Error("GitHub returned an invalid authoritative inventory.");
+    if (reference.object.sha !== revision) return null;
+    state.operations = operations;
+    return state;
+  }
   const retries = await inspectProjectRetries({ state, gh });
   local.resolvedProjectWaits = [...retries.resolvedDependencies];
   local.deferredProjectRetries = [...retries.deferredRetries];
