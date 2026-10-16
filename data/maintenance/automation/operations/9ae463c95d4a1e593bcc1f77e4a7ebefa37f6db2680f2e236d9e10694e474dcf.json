@@ -10,18 +10,18 @@
     },
     "stage": "validated",
     "createdAt": "2026-10-13T11:32:33.000Z",
-    "nextEligibleAt": "2026-10-15T00:47:01.375Z",
-    "expectedSha": "b09f25bd1cc6bc137cd42b98874eebf2aa52280c",
+    "nextEligibleAt": "2026-10-17T05:52:07.462Z",
+    "expectedSha": "0de76458b934c8d4986340f8d918264d51685753",
     "workerRunId": null,
     "retry": {
       "failure": {
         "kind": "configuration",
-        "reasonCode": "publisher-authentication-failed"
+        "reasonCode": "budget-exhausted"
       },
       "transientAttempts": 0,
       "immediateAttempts": 0
     }
   },
-  "updatedAt": "2026-10-14T00:47:01.375Z",
+  "updatedAt": "2026-10-16T05:52:07.462Z",
   "completedAt": null
 }
