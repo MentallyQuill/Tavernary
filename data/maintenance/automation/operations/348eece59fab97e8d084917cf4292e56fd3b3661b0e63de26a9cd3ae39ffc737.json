@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "348eece59fab97e8d084917cf4292e56fd3b3661b0e63de26a9cd3ae39ffc737",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1110894472:helpfultoolscompany-lorevault-extension",
+      "inputDigest": "363a28f28fa30900a39c2a1f2888c0642e39ee224234f45e4f039748789da3d7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T09:11:09.275Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T08:56:09.275Z",
+  "completedAt": null
+}
