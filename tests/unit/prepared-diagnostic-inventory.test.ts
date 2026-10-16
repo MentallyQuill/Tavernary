@@ -497,6 +497,137 @@ test("nested exposed full rows cannot poison the independent native membership s
   ).toBe(false);
 });
 
+test("a matching handle with malformed fresh creation metadata cannot become absent through retention", async () => {
+  const fixture = await nativeFixture();
+  const peer = {
+    ...fixture.run,
+    id: 702,
+    created_at: "2026-10-12T12:00:00.000Z",
+    updated_at: new Date(
+      Date.parse(fixture.receipt.updatedAt) + 1000,
+    ).toISOString(),
+  };
+  fixture.state.remote.runs.push(peer);
+  fixture.input.history = await loadGithubAutomationInventory({
+    ...fixture.input,
+    receipts: fixture.state.receipts,
+  });
+  fixture.setRead(async (args) =>
+    args.some((value) => value.endsWith("/actions/runs/702"))
+      ? JSON.stringify({ ...peer, created_at: "malformed native clock" })
+      : fixture.read(args),
+  );
+  await expect(loadPreparedDiagnosticRuns(fixture.input)).rejects.toThrow(
+    /invalid/u,
+  );
+});
+
+test("a later page's larger total prevents an incomplete full inventory from minting a scoped seed", async () => {
+  const fixture = await nativeFixture();
+  fixture.setRead(async (args) => {
+    if (!args.some((value) => value.startsWith("created=")))
+      return fixture.read(args);
+    const second = args.includes("page=2");
+    return JSON.stringify([
+      {
+        total_count: second ? 200 : 101,
+        workflow_runs: Array.from({ length: second ? 1 : 100 }, (_, index) => ({
+          ...fixture.run,
+          id: 1000 + (second ? 100 : index),
+          display_title: "Unrelated completed producer",
+        })),
+      },
+    ]);
+  });
+  const history = await loadGithubAutomationInventory({
+    ...fixture.input,
+    receipts: fixture.state.receipts,
+  });
+  expect(history.runs).toHaveLength(101);
+  fixture.setRead(fixture.read);
+  fixture.calls.length = 0;
+  expect(
+    await loadPreparedDiagnosticRuns({ ...fixture.input, history }),
+  ).toBeNull();
+  expect(fixture.calls).toEqual([]);
+});
+
+test.each(["delta", "active"])(
+  "a later page's larger total refuses incomplete scoped %s authority",
+  async (source) => {
+    const fixture = await nativeFixture();
+    fixture.setRead(async (args) => {
+      const selected =
+        source === "delta"
+          ? args.some((value) => value.startsWith("created="))
+          : args.includes("status=in_progress");
+      if (!selected) return fixture.read(args);
+      const second = args.includes("page=2");
+      return JSON.stringify([
+        {
+          total_count: second ? 200 : 101,
+          workflow_runs: Array.from(
+            { length: second ? 1 : 100 },
+            (_, index) => ({
+              ...fixture.run,
+              id: 1000 + (second ? 100 : index),
+              display_title: "Unrelated producer",
+            }),
+          ),
+        },
+      ]);
+    });
+    await expect(loadPreparedDiagnosticRuns(fixture.input)).rejects.toThrow(
+      /incomplete|truncated/u,
+    );
+  },
+);
+
+test("a post-invocation peer observed active then completed remains present and non-obsolete", async () => {
+  const fixture = await nativeFixture();
+  const peer = {
+    ...fixture.run,
+    id: 702,
+    created_at: new Date(fixture.input.nowMs + 1).toISOString(),
+    updated_at: new Date(fixture.input.nowMs + 2).toISOString(),
+  };
+  fixture.state.remote.runs.push(peer);
+  fixture.setRead(async (args) =>
+    args.includes("status=in_progress")
+      ? JSON.stringify([
+          {
+            total_count: 1,
+            workflow_runs: [
+              { ...peer, status: "in_progress", conclusion: null },
+            ],
+          },
+        ])
+      : fixture.read(args),
+  );
+  const full = await loadGithubAutomationInventory({
+    ...fixture.input,
+    receipts: fixture.state.receipts,
+  });
+  const scoped = await loadPreparedDiagnosticRuns(fixture.input);
+  expect(scoped?.runs.find((run) => run.id === peer.id)).toEqual(peer);
+  const evidence = {
+    operation: fixture.receipt.operation,
+    run: fixture.run,
+    artifact: fixture.artifact,
+    failure: fixture.diagnostic.failure,
+  };
+  const obsolete = (runs: ProjectInventoryRun[]) =>
+    isPreparedDiagnosticObsolete({
+      state: {
+        ...fixture.state,
+        remote: { ...fixture.state.remote, runs },
+      },
+      evidence,
+    });
+  expect(obsolete(full.runs)).toBe(false);
+  expect(obsolete(scoped!.runs)).toBe(obsolete(full.runs));
+});
+
 test("incomplete full and finalization-only results never mint scoped seeds", async () => {
   const fixture = await nativeFixture();
   fixture.setRead(async (args) =>

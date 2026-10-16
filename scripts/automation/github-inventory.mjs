@@ -279,7 +279,10 @@ export async function loadPreparedDiagnosticRuns({
     if (value.some((page) => page.total_count < page.workflow_runs.length))
       throw new Error("GitHub returned an invalid run inventory.");
     const rows = runPages(value);
-    if (value[0].total_count <= 1000 && rows.length < value[0].total_count)
+    if (
+      value[0].total_count <= 1000 &&
+      rows.length < Math.max(...value.map((page) => page.total_count))
+    )
       throw new Error("GitHub workflow inventory is truncated.");
     if (new Set(rows.map((run) => run.id)).size !== rows.length)
       throw new Error("GitHub workflow inventory contains duplicate rows.");
@@ -362,7 +365,11 @@ export async function loadPreparedDiagnosticRuns({
       if (Buffer.byteLength(raw, "utf8") > 4 * 1024 * 1024)
         throw new Error("GitHub inventory page exceeds its byte bound.");
       const run = JSON.parse(raw);
-      if (run.id !== id || typeof run.status !== "string")
+      if (
+        run.id !== id ||
+        typeof run.status !== "string" ||
+        !Number.isFinite(Date.parse(run.created_at ?? ""))
+      )
         throw new Error("GitHub returned an invalid saved worker.");
       delete run.automationDiagnostic;
       refreshedIds.add(id);
@@ -377,7 +384,7 @@ export async function loadPreparedDiagnosticRuns({
   for (const [id, run] of found) {
     const createdAt = Date.parse(run.created_at ?? "");
     if (
-      !(createdAt >= cutoff && createdAt <= nowMs) &&
+      !(createdAt >= cutoff && (createdAt <= nowMs || activeIds.has(id))) &&
       !(
         (activeIds.has(id) || refreshedIds.has(id)) &&
         isInventoryWorkerActive(run)
@@ -688,7 +695,7 @@ export async function loadGithubAutomationInventory({
       historyComplete = false;
     if (
       value[0].total_count <= 1000 &&
-      (rows.length < value[0].total_count ||
+      (rows.length < Math.max(...value.map((page) => page.total_count)) ||
         new Set(rows.map((run) => run.id)).size !== rows.length ||
         value.some((page) => page.total_count < page.workflow_runs.length))
     )
