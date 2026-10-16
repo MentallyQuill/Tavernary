@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "36d4b7e70c0b3a9ee0b1c07767b7cb70db42106b5564e232548bda8c674506a0",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1168534011:samueras-sillytavern-multipersonacomposer",
+      "inputDigest": "c52982baee8c3324b83c1d8d8c0728f6951bc0832f590481da05a33712936785",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T09:11:09.275Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T08:56:09.275Z",
+  "completedAt": null
+}
