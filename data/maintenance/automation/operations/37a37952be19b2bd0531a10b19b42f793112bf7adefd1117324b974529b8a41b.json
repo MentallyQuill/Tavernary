@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "37a37952be19b2bd0531a10b19b42f793112bf7adefd1117324b974529b8a41b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1373670288:penitentfleece-sillytavern-showtime",
+      "inputDigest": "967716980ade78b2d446d2f0f9c6324e5a54122cbe4cc6f8ed998a51b5884698",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T09:11:09.275Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T08:56:09.275Z",
+  "completedAt": null
+}
