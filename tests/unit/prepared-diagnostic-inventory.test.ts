@@ -9,8 +9,12 @@ import {
   isPreparedDiagnosticObsolete,
   persistPreparedFailure,
 } from "../../scripts/automation/prepared-failure.mjs";
-import { loadPreparedDiagnosticRuns } from "../../scripts/automation/github-inventory.mjs";
-import type { PreparedDiagnosticRunsInput } from "../../scripts/automation/github-inventory.mjs";
+import {
+  loadPreparedDiagnosticRuns,
+  loadGithubAutomationInventory,
+  retainedAutomationRunIds,
+} from "../../scripts/automation/github-inventory.mjs";
+import type { GithubAutomationInventory } from "../../scripts/automation/github-inventory.mjs";
 import {
   preparedReplayFixture,
   diagnosticReplayFixture,
@@ -20,8 +24,9 @@ import { preparedResultFixture } from "../helpers/automation-fixtures";
 import { createCanonicalPublicationRecord } from "../../scripts/automation/publication-record.mjs";
 import { createMetadataCache } from "../../scripts/automation/metadata-refresh.mjs";
 import { runAutomationWriterReconciliation } from "../../scripts/automation/writer-runtime.mjs";
-import * as githubInventory from "../../scripts/automation/github-inventory.mjs";
 import * as health from "../../scripts/automation/health.mjs";
+import { runGithubWriterPass } from "../../scripts/automation/github-backoff.mjs";
+import { createPolicyEvidenceFingerprint } from "../../scripts/moderation/catalog-policy-review-contract.mjs";
 
 const repository = "MentallyQuill/Tavernary";
 const publisherActorId = 41_982_982;
@@ -36,7 +41,7 @@ async function diagnosticFixture(kind: keyof typeof workflows = "metadata") {
   const canonical = await productionInventoryRoot();
   const calls: string[][] = [];
   const runs: ProjectInventoryRun[] = [];
-  const gh = async (args: string[]) => {
+  const read = async (args: string[]) => {
     calls.push(args);
     const route = args.find((value) => value.startsWith("repos/"))!;
     if (route.endsWith("/git/ref/heads/main"))
@@ -77,12 +82,15 @@ async function diagnosticFixture(kind: keyof typeof workflows = "metadata") {
     }
     throw new Error(`Unexpected fixture route ${route}`);
   };
+  let override: typeof read | undefined;
+  const gh = (args: string[]) => (override ?? read)(args);
   const input = {
     root: canonical.root,
     gh,
     repository,
     publisherActorId,
     nowMs,
+    history: undefined as GithubAutomationInventory | undefined,
     reportIndex: {
       schema_version: 5 as const,
       generated_at: new Date(nowMs).toISOString(),
@@ -139,6 +147,7 @@ async function diagnosticFixture(kind: keyof typeof workflows = "metadata") {
     );
   };
   await saveReceipt();
+  input.history = (await inventory.loadAutomationInventory(input)).remote;
   const evidence = {
     operation: receipt.operation,
     run,
@@ -155,24 +164,69 @@ async function diagnosticFixture(kind: keyof typeof workflows = "metadata") {
     receipt,
     evidence,
     saveReceipt,
+    read,
+    setRead: (value: typeof read) => {
+      override = value;
+    },
   };
 }
 
-function nativeFixture() {
+async function nativeFixture() {
   const fixture = preparedReplayFixture();
   const calls: string[][] = [];
-  const gh = async (args: string[]) => {
+  const read = async (args: string[]) => {
     calls.push(args);
     const route = args.find((value) => value.startsWith("repos/"))!;
     if (route.endsWith("/git/ref/heads/main"))
       return JSON.stringify({ object: { sha: fixture.state.local.revision } });
-    if (/\/actions\/runs\/[1-9]\d*$/u.test(route))
-      return JSON.stringify(fixture.run);
-    return JSON.stringify([{ total_count: 0, workflow_runs: [] }]);
+    if (route.endsWith("/issues") || route.endsWith("/pulls")) return "[[]]";
+    const directId = Number(/\/actions\/runs\/([1-9]\d*)$/u.exec(route)?.[1]);
+    if (directId) {
+      const run = fixture.state.remote.runs.find(
+        (value) => value.id === directId,
+      );
+      if (!run) throw Object.assign(new Error("HTTP 404"), { status: 404 });
+      return JSON.stringify(run);
+    }
+    const status = args.find((value) => value.startsWith("status="))?.slice(7);
+    const range = args
+      .find((value) => value.startsWith("created="))
+      ?.slice(8)
+      .split("..");
+    const rows = fixture.state.remote.runs.filter(
+      (run) =>
+        (!status || status === run.status) &&
+        (!range ||
+          (Date.parse(run.created_at ?? "") >= Date.parse(range[0]) &&
+            Date.parse(run.created_at ?? "") <= Date.parse(range[1]))),
+    );
+    const page = Number(
+      args.find((value) => value.startsWith("page="))?.slice(5) ?? 1,
+    );
+    return JSON.stringify([
+      {
+        total_count: rows.length,
+        workflow_runs: rows.slice((page - 1) * 100, page * 100),
+      },
+    ]);
   };
+  let override: typeof read | undefined;
+  const gh = (args: string[]) => (override ?? read)(args);
+  const history = await loadGithubAutomationInventory({
+    gh,
+    repository: fixture.state.repository,
+    publisherActorId: fixture.state.publisherActorId,
+    receipts: fixture.state.receipts,
+    nowMs: fixture.state.nowMs,
+  });
+  calls.length = 0;
   return {
     ...fixture,
     calls,
+    read,
+    setRead: (value: typeof read) => {
+      override = value;
+    },
     input: {
       gh,
       repository: fixture.state.repository,
@@ -180,205 +234,1180 @@ function nativeFixture() {
       nowMs: fixture.state.nowMs,
       operation: fixture.receipt.operation,
       evidenceRun: fixture.run,
+      history,
     },
   };
 }
 
-test("twenty obsolete writer diagnostics page complete large workflow histories without per-row global census", async () => {
-  const fixture = await diagnosticFixture("advisory");
-  const revalidate = vi
-    .spyOn(inventory, "revalidateAutomationOperation")
-    .mockResolvedValue(null);
-  const assess = vi.spyOn(health, "assessInventoryHealth").mockReturnValue([]);
-  const persist = vi
-    .spyOn(githubInventory, "persistGithubAutomationReceipt")
-    .mockResolvedValue(undefined);
+test("a malformed full native row cannot mint scoped history authority", async () => {
+  const fixture = await nativeFixture();
+  fixture.setRead(async (args) =>
+    args.some((value) => value.startsWith("created="))
+      ? JSON.stringify([
+          {
+            total_count: 2,
+            workflow_runs: [fixture.run, { id: -1, status: "completed" }],
+          },
+        ])
+      : fixture.read(args),
+  );
+  const history = await loadGithubAutomationInventory({
+    ...fixture.input,
+    receipts: fixture.state.receipts,
+  });
+  fixture.setRead(fixture.read);
+  expect(
+    await loadPreparedDiagnosticRuns({ ...fixture.input, history }),
+  ).toBeNull();
+});
+
+test("only the original full handle with exact adapter, repository, actor and monotonic clock supplies history", async () => {
+  const fixture = await nativeFixture();
+  const scoped = await loadPreparedDiagnosticRuns(fixture.input);
+  expect(scoped).not.toBeNull();
+  fixture.calls.length = 0;
+  for (const change of [
+    { history: undefined },
+    { history: structuredClone(fixture.input.history) },
+    { history: { ...fixture.input.history } },
+    { history: { ...scoped!, issues: [], pulls: [] } },
+    { gh: (args: string[]) => fixture.input.gh(args) },
+    { repository: "Lookalike/Tavernary" },
+    { publisherActorId: 7 },
+    { nowMs: fixture.input.nowMs - 1 },
+  ])
+    expect(
+      await loadPreparedDiagnosticRuns({ ...fixture.input, ...change }),
+    ).toBeNull();
+  expect(fixture.calls).toEqual([]);
+});
+
+test("a later scoped observation cannot move backwards behind a prior observation on the same seed", async () => {
+  const fixture = await nativeFixture();
+  expect(
+    await loadPreparedDiagnosticRuns({
+      ...fixture.input,
+      nowMs: fixture.input.nowMs + 1000,
+    }),
+  ).not.toBeNull();
+  expect(
+    await loadPreparedDiagnosticRuns({
+      ...fixture.input,
+      nowMs: fixture.input.nowMs + 999,
+    }),
+  ).toBeNull();
+});
+
+test.each(["prefix", "new-reference"])(
+  "a cross-key saved old matching peer in %s retains full authority until its global reference is cleared",
+  async (variant) => {
+    const fixture = await nativeFixture();
+    const peer = {
+      ...fixture.run,
+      id: 702,
+      created_at: "2026-10-08T15:00:00.000Z",
+      updated_at: new Date(
+        Date.parse(fixture.receipt.updatedAt) + 1000,
+      ).toISOString(),
+    };
+    const identity = {
+      ...fixture.receipt.operation.identity,
+      subject: "source:github-7:other-project",
+    };
+    const other = {
+      ...fixture.receipt,
+      operation: {
+        ...fixture.receipt.operation,
+        identity,
+        key: operationKey(identity),
+        workerRunId: peer.id,
+      },
+    };
+    const history = fixture.input.history;
+    fixture.state.remote.runs.push(peer);
+    const full = await loadGithubAutomationInventory({
+      ...fixture.input,
+      receipts: [fixture.receipt, other],
+    });
+    const expected = isPreparedDiagnosticObsolete({
+      state: { ...fixture.state, remote: full },
+      evidence: {
+        operation: fixture.receipt.operation,
+        run: fixture.run,
+        artifact: fixture.artifact,
+        failure: fixture.diagnostic.failure,
+      },
+    });
+    expect(expected).toBe(false);
+    const native = await loadPreparedDiagnosticRuns({
+      ...fixture.input,
+      history: variant === "prefix" ? full : history,
+      retainedRunIds: [peer.id],
+    } as Parameters<typeof loadPreparedDiagnosticRuns>[0]);
+    if (native)
+      expect(
+        isPreparedDiagnosticObsolete({
+          state: {
+            ...fixture.state,
+            remote: { ...fixture.state.remote, runs: native.runs },
+          },
+          evidence: {
+            operation: fixture.receipt.operation,
+            run: fixture.run,
+            artifact: fixture.artifact,
+            failure: fixture.diagnostic.failure,
+          },
+        }),
+      ).toBe(expected);
+    const cleared = await loadPreparedDiagnosticRuns({
+      ...fixture.input,
+      history: variant === "prefix" ? full : history,
+      retainedRunIds: [],
+    } as Parameters<typeof loadPreparedDiagnosticRuns>[0]);
+    expect(cleared?.runs.some((run) => run.id === peer.id)).toBe(false);
+  },
+);
+
+test("the shared retained-handle rule preserves report narrative references and excludes finalized receipts", async () => {
+  const fixture = await nativeFixture();
+  const identity = {
+    ...fixture.receipt.operation.identity,
+    kind: "report-import" as const,
+    policyVersion: "2026-07-29.narrative-702",
+  };
+  const receipt: AutomationReceipt = {
+    ...fixture.receipt,
+    operation: {
+      ...fixture.receipt.operation,
+      identity,
+      key: operationKey(identity),
+      workerRunId: 703,
+    },
+  };
+  expect(retainedAutomationRunIds([receipt])).toEqual([703, 702]);
+  receipt.operation.workerRunId = null;
+  expect(retainedAutomationRunIds([receipt])).toEqual([702]);
+  expect(
+    retainedAutomationRunIds([
+      {
+        ...receipt,
+        operation: {
+          ...receipt.operation,
+          stage: "finalized",
+          expectedSha: "b".repeat(40),
+        },
+        completedAt: receipt.updatedAt,
+      },
+    ]),
+  ).toEqual([]);
+});
+
+test("fresh global receipt additions, changed handles and cleared references preserve exact full diagnostic decisions", async () => {
+  const fixture = await diagnosticFixture();
   try {
-    const initial = await inventory.loadAutomationInventory(fixture.input);
-    const selected = initial.operations
-      .filter((operation) => operation.identity.kind === "advisory")
-      .slice(0, 20);
-    const fixtures = selected.map((operation, index) =>
-      diagnosticReplayFixture(
-        {
+    const load = () =>
+      inventory.loadPreparedDiagnosticInventory({
+        ...fixture.input,
+        operation: fixture.operation,
+        evidenceRun: fixture.run,
+      });
+    expect(
+      isPreparedDiagnosticObsolete({
+        state: (await load())!,
+        evidence: fixture.evidence,
+      }),
+    ).toBe(true);
+    const identity = {
+      ...fixture.receipt.operation.identity,
+      subject: "source:github-999:other-project",
+    };
+    const other: AutomationReceipt = {
+      ...fixture.receipt,
+      operation: {
+        ...fixture.receipt.operation,
+        identity,
+        key: operationKey(identity),
+        workerRunId: 702,
+      },
+    };
+    const path = join(
+      fixture.root,
+      `data/maintenance/automation/operations/${other.operation.key}.json`,
+    );
+    for (const id of [702, 703])
+      fixture.runs.push({
+        ...fixture.run,
+        id,
+        created_at: new Date(nowMs - 8 * 86_400_000).toISOString(),
+        updated_at: new Date(nowMs - 30 * 60_000).toISOString(),
+        path: ".github/workflows/automation-worker.yml",
+        display_title: `Automation ${fixture.operation.key}`,
+      });
+    for (const workerRunId of [702, 703, null]) {
+      other.operation.workerRunId = workerRunId;
+      await writeFile(path, JSON.stringify(other));
+      const full = await inventory.loadAutomationInventory(fixture.input);
+      const scoped = await load();
+      expect(scoped?.operations).toEqual(
+        full.operations.filter(
+          (operation) => operation.key === fixture.operation.key,
+        ),
+      );
+      expect(
+        isPreparedDiagnosticObsolete({
+          state: scoped!,
+          evidence: fixture.evidence,
+        }),
+      ).toBe(
+        isPreparedDiagnosticObsolete({
+          state: full,
+          evidence: fixture.evidence,
+        }),
+      );
+      expect(
+        isPreparedDiagnosticObsolete({
+          state: scoped!,
+          evidence: fixture.evidence,
+        }),
+      ).toBe(workerRunId === null);
+    }
+  } finally {
+    await fixture.cleanup();
+  }
+}, 30_000);
+
+test("nested exposed full rows cannot poison the independent native membership seed", async () => {
+  const fixture = await nativeFixture();
+  fixture.input.history.runs[0].actor!.id = 7;
+  fixture.input.history.runs[0].head_repository!.full_name =
+    "Lookalike/Tavernary";
+  fixture.input.history.runs[0].display_title = "Forged title";
+  fixture.input.history.runs.push({
+    ...fixture.run,
+    id: 702,
+    status: "in_progress",
+    conclusion: null,
+  });
+  const state = await loadPreparedDiagnosticRuns(fixture.input);
+  expect(state?.runs).toEqual([fixture.run]);
+  expect(
+    fixture.calls.some((args) =>
+      args.some((value) => value.endsWith("/actions/runs/702")),
+    ),
+  ).toBe(false);
+});
+
+test("incomplete full and finalization-only results never mint scoped seeds", async () => {
+  const fixture = await nativeFixture();
+  fixture.setRead(async (args) =>
+    args.some((value) => value.startsWith("created="))
+      ? JSON.stringify([{ total_count: 101, workflow_runs: [] }])
+      : fixture.read(args),
+  );
+  const incomplete = await loadGithubAutomationInventory({
+    ...fixture.input,
+    receipts: fixture.state.receipts,
+  });
+  fixture.setRead(fixture.read);
+  expect(
+    await loadPreparedDiagnosticRuns({ ...fixture.input, history: incomplete }),
+  ).toBeNull();
+  const identity = {
+    ...fixture.input.operation.identity,
+    kind: "metadata" as const,
+  };
+  const finalizationOperation = {
+    ...fixture.input.operation,
+    identity,
+    key: operationKey(identity),
+    stage: "deployment-confirmed" as const,
+    expectedSha: "b".repeat(40),
+  };
+  const finalization = await loadGithubAutomationInventory({
+    ...fixture.input,
+    receipts: [],
+    finalizationOperation,
+  });
+  expect(finalization.finalizationOperationKey).toBe(finalizationOperation.key);
+  expect(
+    await loadPreparedDiagnosticRuns({
+      ...fixture.input,
+      history: finalization,
+    }),
+  ).toBeNull();
+});
+
+test("fixed original coverage overlaps its boundary second and splits new creations without advancing after a read", async () => {
+  const fixture = await nativeFixture();
+  const boundary = Math.floor(fixture.input.nowMs / 1000) * 1000;
+  const current = fixture.input.nowMs + 60_000;
+  const peer = {
+    ...fixture.run,
+    id: 702,
+    created_at: new Date(boundary + 500).toISOString(),
+    updated_at: new Date(current).toISOString(),
+    path: ".github/workflows/automation-worker.yml",
+    display_title: `Automation ${fixture.input.operation.key}`,
+    status: "in_progress",
+    conclusion: null,
+  };
+  fixture.state.remote.runs.push(peer);
+  for (let index = 0; index < 1002; index++)
+    fixture.state.remote.runs.push({
+      ...fixture.run,
+      id: 1000 + index,
+      display_title: "Unrelated new work",
+      created_at: new Date(boundary + 1000 + index * 50).toISOString(),
+    });
+  const native = await loadPreparedDiagnosticRuns({
+    ...fixture.input,
+    nowMs: current,
+  });
+  expect(native?.runs).toHaveLength(1004);
+  expect(native?.runs.find((run) => run.id === peer.id)).toEqual(peer);
+  expect(fixture.calls.some((args) => args.includes("page=6"))).toBe(true);
+  const firstRange = fixture.calls
+    .find((args) => args.some((value) => value.startsWith("created=")))!
+    .find((value) => value.startsWith("created="));
+  fixture.calls.length = 0;
+  await loadPreparedDiagnosticRuns({ ...fixture.input, nowMs: current + 1000 });
+  expect(
+    fixture.calls
+      .find((args) => args.some((value) => value.startsWith("created=")))!
+      .find((value) => value.startsWith("created="))
+      ?.split("..")[0],
+  ).toBe(firstRange?.split("..")[0]);
+});
+
+test("a peer added while the short delta paginates is retained with its latest direct state", async () => {
+  const fixture = await nativeFixture();
+  const current = fixture.input.nowMs + 60_000;
+  for (let index = 0; index < 101; index++)
+    fixture.state.remote.runs.push({
+      ...fixture.run,
+      id: 1000 + index,
+      display_title: "Unrelated new work",
+      created_at: new Date(fixture.input.nowMs + index * 100 + 1).toISOString(),
+    });
+  const peer = {
+    ...fixture.run,
+    id: 702,
+    created_at: new Date(current - 1000).toISOString(),
+    updated_at: new Date(current).toISOString(),
+    status: "waiting",
+    conclusion: null,
+    path: ".github/workflows/automation-writer.yml",
+    display_title: `Automation write publish ${fixture.input.operation.key}`,
+  };
+  let added = false;
+  fixture.setRead(async (args) => {
+    const value = await fixture.read(args);
+    if (
+      !added &&
+      args.includes("page=1") &&
+      args.some((part) => part.startsWith("created="))
+    ) {
+      added = true;
+      fixture.state.remote.runs.push(peer);
+    }
+    return value;
+  });
+  const native = await loadPreparedDiagnosticRuns({
+    ...fixture.input,
+    nowMs: current,
+  });
+  expect(native?.runs).toHaveLength(103);
+  expect(native?.runs.find((run) => run.id === peer.id)).toEqual(peer);
+});
+
+test("a fresh peer between comparison and failure persistence produces the exact full failure receipt", async () => {
+  const fixture = await diagnosticFixture();
+  try {
+    let observed: Awaited<
+      ReturnType<typeof inventory.loadPreparedDiagnosticInventory>
+    >;
+    const load = async () => {
+      observed = await inventory.loadPreparedDiagnosticInventory({
+        ...fixture.input,
+        operation: fixture.operation,
+        evidenceRun: fixture.run,
+      });
+      return (
+        observed ?? (await inventory.loadAutomationInventory(fixture.input))
+      );
+    };
+    await load();
+    const peer = {
+      ...fixture.run,
+      id: 702,
+      created_at: new Date(nowMs + 1000).toISOString(),
+      updated_at: new Date(nowMs + 1000).toISOString(),
+      status: "pending",
+      conclusion: null,
+      path: ".github/workflows/automation-worker.yml",
+      display_title: `Automation ${fixture.operation.key}`,
+    };
+    fixture.runs.push(peer);
+    fixture.input.nowMs += 2000;
+    const full = await inventory.loadAutomationInventory(fixture.input);
+    const expected: AutomationReceipt[] = [];
+    const actual: AutomationReceipt[] = [];
+    await persistPreparedFailure({
+      operationKey: fixture.operation.key,
+      error: { failure: fixture.evidence.failure },
+      load: async () => full,
+      persist: async (receipt) => {
+        expected.push(receipt);
+      },
+    });
+    await persistPreparedFailure({
+      operationKey: fixture.operation.key,
+      error: { failure: fixture.evidence.failure },
+      load,
+      persist: async (receipt) => {
+        actual.push(receipt);
+      },
+    });
+    expect(observed!.remote.runs.find((run) => run.id === peer.id)).toEqual(
+      peer,
+    );
+    expect(actual).toEqual(expected);
+    expect(actual).toHaveLength(1);
+  } finally {
+    await fixture.cleanup();
+  }
+}, 25_000);
+
+test("an initially untrusted older matching peer is refreshed before custody filtering even when a newer peer exists", async () => {
+  const fixture = await nativeFixture();
+  const older = {
+    ...fixture.run,
+    id: 702,
+    actor: { id: 7, type: "Bot" },
+    created_at: "2026-10-12T12:00:00.000Z",
+  };
+  const newer = {
+    ...fixture.run,
+    id: 703,
+    created_at: "2026-10-13T12:00:00.000Z",
+  };
+  fixture.state.remote.runs.push(older, newer);
+  fixture.input.history = await loadGithubAutomationInventory({
+    ...fixture.input,
+    receipts: fixture.state.receipts,
+  });
+  Object.assign(older, {
+    actor: { id: fixture.input.publisherActorId, type: "Bot" },
+    status: "in_progress",
+    conclusion: null,
+    run_attempt: 2,
+  });
+  fixture.calls.length = 0;
+  const native = await loadPreparedDiagnosticRuns(fixture.input);
+  expect(native?.runs.find((run) => run.id === older.id)).toEqual(older);
+  for (const id of [fixture.run.id, older.id, newer.id])
+    expect(
+      fixture.calls.filter((args) =>
+        args.some((value) => value.endsWith(`/actions/runs/${id}`)),
+      ),
+    ).toHaveLength(1);
+  expect(
+    isPreparedDiagnosticObsolete({
+      state: {
+        ...fixture.state,
+        remote: { ...fixture.state.remote, runs: native!.runs },
+      },
+      evidence: {
+        operation: fixture.receipt.operation,
+        run: fixture.run,
+        artifact: fixture.artifact,
+        failure: fixture.diagnostic.failure,
+      },
+    }),
+  ).toBe(false);
+});
+
+test("current retention drops completed old active handles and a cleared saved handle without resurrecting expired evidence", async () => {
+  const fixture = await nativeFixture();
+  const old = {
+    ...fixture.run,
+    id: 702,
+    created_at: "2026-10-01T12:00:00.000Z",
+    status: "in_progress",
+    conclusion: null,
+    path: ".github/workflows/automation-worker.yml",
+    display_title: `Automation ${fixture.input.operation.key}`,
+  };
+  fixture.state.remote.runs.push(old);
+  fixture.input.history = await loadGithubAutomationInventory({
+    ...fixture.input,
+    receipts: fixture.state.receipts,
+  });
+  Object.assign(old, { status: "completed", conclusion: "failure" });
+  const recent = await loadPreparedDiagnosticRuns({
+    ...fixture.input,
+    nowMs: fixture.input.nowMs + 1000,
+  });
+  expect(recent?.runs.some((run) => run.id === old.id)).toBe(false);
+  const saved = await loadPreparedDiagnosticRuns({
+    ...fixture.input,
+    operation: { ...fixture.input.operation, workerRunId: old.id },
+    nowMs: fixture.input.nowMs + 2000,
+  });
+  expect(saved?.runs.find((run) => run.id === old.id)).toEqual(old);
+  const cleared = await loadPreparedDiagnosticRuns({
+    ...fixture.input,
+    nowMs: fixture.input.nowMs + 3000,
+  });
+  expect(cleared?.runs.some((run) => run.id === old.id)).toBe(false);
+  const expired = fixture.input.nowMs + 7 * 86_400_000;
+  expect(
+    await loadPreparedDiagnosticRuns({ ...fixture.input, nowMs: expired }),
+  ).toBeNull();
+  expect(
+    (
+      await loadGithubAutomationInventory({
+        ...fixture.input,
+        receipts: fixture.state.receipts,
+        nowMs: expired,
+      })
+    ).runs,
+  ).toEqual([]);
+});
+
+test("failure persistence reloads canonical receipt changes between comparison and persistence and after an earlier write", async () => {
+  const fixture = await diagnosticFixture();
+  try {
+    const load = async () =>
+      (await inventory.loadPreparedDiagnosticInventory({
+        ...fixture.input,
+        operation: fixture.operation,
+        evidenceRun: fixture.run,
+      })) ?? (await inventory.loadAutomationInventory(fixture.input));
+    const compared = await load();
+    expect(compared.operations[0].nextEligibleAt).toBe(
+      fixture.receipt.operation.nextEligibleAt,
+    );
+    const writes: AutomationReceipt[] = [];
+    const persist = async (receipt: AutomationReceipt) => {
+      writes.push(receipt);
+      Object.assign(fixture.receipt, receipt);
+      await fixture.saveReceipt();
+    };
+    fixture.receipt.operation.nextEligibleAt = new Date(
+      nowMs + 86_400_000,
+    ).toISOString();
+    fixture.receipt.updatedAt = new Date(nowMs).toISOString();
+    await fixture.saveReceipt();
+    expect(
+      await persistPreparedFailure({
+        operationKey: fixture.operation.key,
+        error: { failure: fixture.evidence.failure },
+        load,
+        persist,
+      }),
+    ).toMatchObject({ persisted: false });
+    expect(writes).toEqual([]);
+    fixture.receipt.operation.nextEligibleAt = new Date(
+      nowMs - 60_000,
+    ).toISOString();
+    fixture.receipt.operation.retry!.transientAttempts = 3;
+    fixture.receipt.operation.retry!.immediateAttempts = 1;
+    await fixture.saveReceipt();
+    await persistPreparedFailure({
+      operationKey: fixture.operation.key,
+      error: { failure: fixture.evidence.failure },
+      load,
+      persist,
+    });
+    expect(writes).toHaveLength(1);
+    expect(writes[0].operation.retry).toMatchObject({
+      transientAttempts: 4,
+      immediateAttempts: 2,
+    });
+    const afterWrite = await load();
+    expect(afterWrite.operations[0]).toEqual(writes[0].operation);
+    fixture.receipt.operation.retry!.failure = {
+      kind: "permanent",
+      reasonCode: "authorization-lost",
+    };
+    fixture.receipt.operation.nextEligibleAt = null;
+    await fixture.saveReceipt();
+    const later = await load();
+    expect(later.operations[0].retry?.failure.kind).toBe("permanent");
+    expect(
+      await persistPreparedFailure({
+        operationKey: fixture.operation.key,
+        error: { failure: fixture.evidence.failure },
+        load,
+        persist,
+      }),
+    ).toMatchObject({ persisted: false });
+    expect(writes).toHaveLength(1);
+  } finally {
+    await fixture.cleanup();
+  }
+}, 30_000);
+
+test("advisory review-state changes are freshly classified before the exact key can be used", async () => {
+  const fixture = await diagnosticFixture("advisory");
+  try {
+    const [, sourceId, projectId] =
+      fixture.operation.identity.subject.split(":");
+    const source = JSON.parse(
+      await readFile(
+        join(fixture.root, `data/registry/sources/${sourceId}.json`),
+        "utf8",
+      ),
+    );
+    const snapshot = JSON.parse(
+      await readFile(
+        join(fixture.root, `data/snapshots/${source.type}/${sourceId}.json`),
+        "utf8",
+      ),
+    );
+    const path = join(
+      fixture.root,
+      `data/snapshots/policy-review/${projectId}.json`,
+    );
+    for (const status of ["review-suggested", "clear"]) {
+      await writeFile(
+        path,
+        JSON.stringify({
+          schema_version: 1,
+          project_id: projectId,
+          source_id: sourceId,
+          source_identity: `${source.type}:${source.repository.toLowerCase()}`,
+          policy_version: fixture.operation.identity.policyVersion,
+          evidence_fingerprint: createPolicyEvidenceFingerprint({
+            projectId,
+            sourceId,
+            headSha: snapshot.repository.head_sha,
+            policyVersion: fixture.operation.identity.policyVersion,
+          }),
+          status,
+          maintenance_issue_number: null,
+          category: null,
+          reviewed_at: new Date(nowMs).toISOString(),
+        }),
+      );
+      const full = await inventory.loadAutomationInventory(fixture.input);
+      const scoped = await inventory.loadPreparedDiagnosticInventory({
+        ...fixture.input,
+        operation: fixture.operation,
+        evidenceRun: fixture.run,
+      });
+      if (status === "clear") {
+        expect(
+          full.operations.some(
+            (operation) => operation.key === fixture.operation.key,
+          ),
+        ).toBe(false);
+        expect(scoped).toBeNull();
+      } else {
+        expect(scoped?.operations).toEqual(
+          full.operations.filter(
+            (operation) => operation.key === fixture.operation.key,
+          ),
+        );
+        expect(scoped?.operations[0].stage).toBe("validated");
+        expect(
+          isPreparedDiagnosticObsolete({
+            state: scoped!,
+            evidence: fixture.evidence,
+          }),
+        ).toBe(false);
+      }
+    }
+  } finally {
+    await fixture.cleanup();
+  }
+}, 25_000);
+
+test("missing or invalid exact receipts and retired keys with no live receipt have no scoped authority", async () => {
+  const fixture = await diagnosticFixture();
+  try {
+    const path = join(
+      fixture.root,
+      `data/maintenance/automation/operations/${fixture.operation.key}.json`,
+    );
+    await rm(path);
+    expect(
+      await inventory.loadPreparedDiagnosticInventory({
+        ...fixture.input,
+        operation: fixture.operation,
+        evidenceRun: fixture.run,
+      }),
+    ).toBeNull();
+    await writeFile(path, "invalid receipt JSON");
+    expect(
+      await inventory.loadPreparedDiagnosticInventory({
+        ...fixture.input,
+        operation: fixture.operation,
+        evidenceRun: fixture.run,
+      }),
+    ).toBeNull();
+    await rm(path);
+    const directory = join(
+      fixture.root,
+      "data/maintenance/automation/terminal",
+      fixture.operation.key.slice(0, 2),
+    );
+    await mkdir(directory, { recursive: true });
+    await writeFile(
+      join(directory, `${fixture.operation.key}.json`),
+      JSON.stringify({
+        schema_version: 1,
+        operationKey: fixture.operation.key,
+        expectedSha: fixture.revision,
+        completedAt: new Date(nowMs).toISOString(),
+        retiredFromSha: fixture.revision,
+        receiptBlobSha: "a".repeat(40),
+        publicationBlobSha: "b".repeat(40),
+      }),
+    );
+    expect(
+      await inventory.loadPreparedDiagnosticInventory({
+        ...fixture.input,
+        operation: fixture.operation,
+        evidenceRun: fixture.run,
+      }),
+    ).toBeNull();
+  } finally {
+    await fixture.cleanup();
+  }
+}, 20_000);
+
+test("a target beyond the global twenty worker diagnostics falls back when its completed-producer guard is invalidated", async () => {
+  const fixture = await diagnosticFixture();
+  try {
+    const otherReceipts: AutomationReceipt[] = [];
+    for (let index = 1; otherReceipts.length < 20; index++) {
+      const identity = {
+        ...fixture.operation.identity,
+        subject: `source:github-${index}:prefix-${index}`,
+      };
+      const key = operationKey(identity);
+      if (key < fixture.operation.key)
+        otherReceipts.push({
           ...fixture.receipt,
           operation: {
-            ...operation,
-            workerRunId: null,
-            nextEligibleAt: new Date(nowMs - 60_000).toISOString(),
-            retry: {
-              failure: {
-                kind: "transient",
-                reasonCode: "provider-rate-limited",
-              },
-              transientAttempts: 1,
-              immediateAttempts: 0,
-            },
+            ...fixture.receipt.operation,
+            identity,
+            key,
+            workerRunId: 1000 + otherReceipts.length,
           },
-        },
-        10_000 + index * 2,
-        new Date(nowMs - 2 * 3_600_000).toISOString(),
-      ),
-    );
-    await rm(
-      join(
-        fixture.root,
-        `data/maintenance/automation/operations/${fixture.operation.key}.json`,
-      ),
-    );
-    for (const value of fixtures)
+        });
+    }
+    fixture.receipt.operation.workerRunId = 2000;
+    await fixture.saveReceipt();
+    const receipts = [...otherReceipts, fixture.receipt];
+    for (const receipt of otherReceipts)
       await writeFile(
         join(
           fixture.root,
-          `data/maintenance/automation/operations/${value.receipt.operation.key}.json`,
+          `data/maintenance/automation/operations/${receipt.operation.key}.json`,
         ),
-        JSON.stringify(value.receipt),
+        JSON.stringify(receipt),
       );
-    fixture.runs.splice(
-      0,
-      fixture.runs.length,
-      ...fixtures.map((value) => value.run),
-    );
-    for (const [workflow, count] of [
-      ["automation-writer.yml", 1980],
-      ["automation-worker.yml", 808],
-      ["refresh-catalog.yml", 240],
-      ["review-catalog-policy.yml", 6],
-    ] as const) {
-      for (let index = 0; index < count; index++)
-        fixture.runs.push({
-          ...fixtures[0].run,
-          id: 100_000 + fixture.runs.length,
-          path: `.github/workflows/${workflow}`,
-          display_title: "Unrelated native work",
-          created_at: new Date(
-            nowMs -
-              7 * 86_400_000 +
-              1000 +
-              Math.floor((index * (7 * 86_400_000 - 2000)) / count),
-          ).toISOString(),
-        });
-    }
-    const gh = Object.assign(
-      async (args: string[]) => {
-        const runId = Number(
-          /\/actions\/runs\/([1-9]\d*)\/artifacts$/u.exec(
-            args.find((value) => value.startsWith("repos/")) ?? "",
-          )?.[1],
-        );
-        if (runId)
-          return fixtures
-            .find((value) => value.run.id === runId)!
-            .reader.gh(args);
-        return fixture.input.gh(args);
-      },
-      {
-        download: async (args: string[]) => {
-          const artifactId = Number(
-            /\/actions\/artifacts\/([1-9]\d*)/u.exec(args.join(" "))?.[1],
-          );
-          return fixtures
-            .find((value) => value.artifact.id === artifactId)!
-            .reader.download();
-        },
-      },
-    );
-    const input = {
-      ...fixture.input,
-      gh,
-      publisherActorId: fixtures[0].state.publisherActorId,
-    };
-    const keys = new Set(selected.map((operation) => operation.key));
-    const load = vi.fn(async () => {
-      const state = await inventory.loadAutomationInventory(input);
-      state.operations = state.operations.filter((operation) =>
-        keys.has(operation.key),
+    for (const receipt of receipts)
+      fixture.runs.push({
+        ...fixture.run,
+        id: receipt.operation.workerRunId!,
+        path: ".github/workflows/automation-worker.yml",
+        display_title: `Automation ${receipt.operation.key}`,
+        updated_at: new Date(nowMs - 30 * 60_000).toISOString(),
+        repository: { id: 42, full_name: repository },
+        head_repository: { id: 42, full_name: repository },
+      });
+    fixture.run.actor = { id: 7, type: "Bot" };
+    const reads: number[] = [];
+    fixture.setRead(async (args) => {
+      const id = Number(
+        /\/actions\/runs\/([1-9]\d*)\/artifacts$/u.exec(
+          args.find((value) => value.startsWith("repos/")) ?? "",
+        )?.[1],
       );
-      delete state.local.runtimePolicy;
-      return state;
+      if (id) {
+        reads.push(id);
+        return JSON.stringify([{ total_count: 0, artifacts: [] }]);
+      }
+      return fixture.read(args);
     });
-    const scopedCalls: string[][] = [];
-    const loadDiagnostic = vi.fn(
-      async (
-        context: Pick<
-          PreparedDiagnosticRunsInput,
-          "operation" | "knownRuns" | "evidenceRun"
-        >,
-      ) => {
-        const start = fixture.calls.length;
-        const state = await inventory.loadPreparedDiagnosticInventory({
-          ...input,
-          ...context,
-        });
-        scopedCalls.push(...fixture.calls.slice(start));
-        return state;
-      },
-    );
-    const result = await runAutomationWriterReconciliation({
-      load,
-      loadDiagnostic,
-      gh,
-      env: {
-        GITHUB_REPOSITORY: repository,
-        GITHUB_REF: "refs/heads/main",
-        GITHUB_EVENT_NAME: "workflow_dispatch",
-        GITHUB_ACTOR_ID: "2625904",
-        GITHUB_WORKFLOW_REF: `${repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
-        TAVERNARY_PUBLISHER_BOT_ID: String(input.publisherActorId),
-      },
-    });
-    expect(result.prepared).toMatchObject({
-      failures: 0,
-      published: 0,
-      consumedKeys: [],
-      reloadRequired: true,
-    });
-    expect(load).toHaveBeenCalledTimes(2);
-    expect(loadDiagnostic).toHaveBeenCalledTimes(20);
-    expect(persist).not.toHaveBeenCalled();
-    const routes = scopedCalls.map((args) =>
-      args.find((value) => value.startsWith("repos/"))!,
-    );
+    const full = await inventory.loadAutomationInventory(fixture.input);
+    expect(reads).toHaveLength(20);
+    expect(reads).not.toContain(2000);
     expect(
-      routes.filter((route) =>
-        /\/(?:issues|pulls|actions\/runs)$/u.test(route),
-      ),
-    ).toEqual([]);
+      full.operations.find(
+        (operation) => operation.key === fixture.operation.key,
+      )?.retry?.failure.kind,
+    ).toBe("unknown");
     expect(
-      routes.filter((route) =>
-        route.includes("/actions/workflows/automation-writer.yml/"),
-      ),
-    ).toHaveLength(520);
-    expect(
-      routes.filter((route) =>
-        route.includes("/actions/workflows/automation-worker.yml/"),
-      ),
-    ).toHaveLength(280);
-    expect(
-      routes.filter((route) =>
-        route.includes("/actions/workflows/review-catalog-policy.yml/"),
-      ),
-    ).toHaveLength(120);
-    expect(
-      routes.filter((route) => route.endsWith("/git/ref/heads/main")),
-    ).toHaveLength(60);
-    expect(
-      routes.filter((route) => /\/actions\/runs\/[1-9]\d*$/u.test(route)),
-    ).toHaveLength(20);
-    expect(
-      scopedCalls.some(
-        (args) =>
-          args.includes("page=10") &&
-          args.some((value) => value.includes("automation-writer.yml")),
-      ),
-    ).toBe(true);
+      await inventory.loadPreparedDiagnosticInventory({
+        ...fixture.input,
+        history: full.remote,
+        operation: fixture.operation,
+        evidenceRun: fixture.evidence.run,
+      }),
+    ).toBeNull();
+    expect(reads).toHaveLength(20);
   } finally {
-    revalidate.mockRestore();
-    assess.mockRestore();
-    persist.mockRestore();
     await fixture.cleanup();
   }
-}, 120_000);
+}, 20_000);
+
+test.each(["obsolete", "equal-clock"])(
+  "twenty %s writer diagnostics complete real controller effects within the whole-pass request budget",
+  async (variant) => {
+    const fixture = await diagnosticFixture("advisory");
+    const assess = vi
+      .spyOn(health, "assessInventoryHealth")
+      .mockReturnValue([]);
+    const clock = vi.spyOn(Date, "now").mockReturnValue(nowMs);
+    const fetch = vi
+      .spyOn(globalThis, "fetch")
+      .mockRejectedValue(new Error("No external report-index fetch expected"));
+    try {
+      const initial = await inventory.loadAutomationInventory(fixture.input);
+      const selected = initial.operations
+        .filter((operation) => operation.identity.kind === "advisory")
+        .slice(0, 20);
+      const fixtures = selected.map((operation, index) =>
+        diagnosticReplayFixture(
+          {
+            ...fixture.receipt,
+            updatedAt:
+              variant === "equal-clock"
+                ? new Date(nowMs - 2 * 3_600_000).toISOString()
+                : fixture.receipt.updatedAt,
+            operation: {
+              ...operation,
+              workerRunId: null,
+              nextEligibleAt: new Date(nowMs - 60_000).toISOString(),
+              retry: {
+                failure: {
+                  kind: variant === "equal-clock" ? "unknown" : "transient",
+                  reasonCode:
+                    variant === "equal-clock"
+                      ? "unclassified-failure"
+                      : "provider-rate-limited",
+                },
+                transientAttempts: 1,
+                immediateAttempts: variant === "equal-clock" ? 2 : 0,
+              },
+            },
+          },
+          10_000 + index * 2,
+          new Date(nowMs - 2 * 3_600_000).toISOString(),
+        ),
+      );
+      await rm(
+        join(
+          fixture.root,
+          `data/maintenance/automation/operations/${fixture.operation.key}.json`,
+        ),
+      );
+      for (const value of fixtures)
+        await writeFile(
+          join(
+            fixture.root,
+            `data/maintenance/automation/operations/${value.receipt.operation.key}.json`,
+          ),
+          JSON.stringify(value.receipt),
+        );
+      fixture.runs.splice(
+        0,
+        fixture.runs.length,
+        ...fixtures.map((value) => value.run),
+      );
+      for (const [workflow, count] of [
+        ["automation-writer.yml", 1980],
+        ["automation-worker.yml", 808],
+        ["refresh-catalog.yml", 240],
+        ["review-catalog-policy.yml", 6],
+      ] as const) {
+        for (let index = 0; index < count; index++)
+          fixture.runs.push({
+            ...fixtures[0].run,
+            id: 100_000 + fixture.runs.length,
+            path: `.github/workflows/${workflow}`,
+            display_title: "Unrelated native work",
+            created_at: new Date(
+              nowMs -
+                7 * 86_400_000 +
+                1000 +
+                Math.floor((index * (7 * 86_400_000 - 2000)) / count),
+            ).toISOString(),
+          });
+      }
+      const receipts = new Map(
+        fixtures.map((value) => [value.receipt.operation.key, value.receipt]),
+      );
+      const requests: string[][] = [];
+      let writes = 0;
+      let dispatches = 0;
+      const gh = Object.assign(
+        async (args: string[], body?: string) => {
+          requests.push(args);
+          if (args[0] === "workflow") {
+            dispatches++;
+            return "";
+          }
+          const listPath =
+            args.find((value) => value.startsWith("repos/")) ?? "";
+          if (listPath.endsWith("/issues") || listPath.endsWith("/pulls")) {
+            const rows = Array.from({ length: 240 }, (_, index) => ({
+              number: 100_000 + index,
+              state: args.includes("state=closed") ? "closed" : "open",
+              title: "Unrelated canonical work",
+              body: "Unrelated canonical work",
+              labels: [],
+              user: { id: 9, type: "User", login: "fixture" },
+              created_at: new Date(nowMs - 86_400_000).toISOString(),
+              updated_at: new Date(nowMs - 3_600_000).toISOString(),
+              head: {
+                sha: "b".repeat(40),
+                ref: `unrelated-${index}`,
+                repo: { full_name: "Lookalike/Tavernary" },
+              },
+              base: { ref: "main", repo: { full_name: repository } },
+            }));
+            const page = Number(
+              args.find((value) => value.startsWith("page="))?.slice(5) ?? 1,
+            );
+            return JSON.stringify([rows.slice((page - 1) * 100, page * 100)]);
+          }
+          const receiptKey =
+            /\/contents\/data\/maintenance\/automation\/operations\/([a-f0-9]{64})\.json(?:\?ref=main)?$/u.exec(
+              args.find((value) => value.startsWith("repos/")) ?? "",
+            )?.[1];
+          if (receiptKey) {
+            if (args.includes("PUT")) {
+              const request = JSON.parse(body!);
+              expect(request.sha).toBe("d".repeat(40));
+              const receipt = JSON.parse(
+                Buffer.from(request.content, "base64").toString("utf8"),
+              );
+              receipts.set(receiptKey, receipt);
+              await writeFile(
+                join(
+                  fixture.root,
+                  `data/maintenance/automation/operations/${receiptKey}.json`,
+                ),
+                JSON.stringify(receipt),
+              );
+              writes++;
+              return "{}";
+            }
+            return JSON.stringify({
+              sha: "d".repeat(40),
+              encoding: "base64",
+              content: Buffer.from(
+                JSON.stringify(receipts.get(receiptKey)),
+              ).toString("base64"),
+            });
+          }
+          const runId = Number(
+            /\/actions\/runs\/([1-9]\d*)\/artifacts$/u.exec(
+              args.find((value) => value.startsWith("repos/")) ?? "",
+            )?.[1],
+          );
+          if (runId)
+            return fixtures
+              .find((value) => value.run.id === runId)!
+              .reader.gh(args);
+          return fixture.input.gh(args);
+        },
+        {
+          download: async (args: string[]) => {
+            requests.push(["download", ...args]);
+            const artifactId = Number(
+              /\/actions\/artifacts\/([1-9]\d*)/u.exec(args.join(" "))?.[1],
+            );
+            return fixtures
+              .find((value) => value.artifact.id === artifactId)!
+              .reader.download();
+          },
+        },
+      );
+      const keys = new Set(selected.map((operation) => operation.key));
+      const scopedCalls: string[][] = [];
+      let fullLoads = 0;
+      let scopedLoads = 0;
+      const result = await runGithubWriterPass({
+        gh,
+        download: gh.download,
+        nowMs,
+        loadCooldown: async () => null,
+        persistCooldown: async () => {
+          throw new Error("No cooldown expected");
+        },
+        run: async (guardedGh) => {
+          const input = {
+            ...fixture.input,
+            gh: guardedGh,
+            publisherActorId: fixtures[0].state.publisherActorId,
+          };
+          return runAutomationWriterReconciliation({
+            gh: guardedGh,
+            load: async () => {
+              fullLoads++;
+              const state = await inventory.loadAutomationInventory(input);
+              state.operations = state.operations.filter((operation) =>
+                keys.has(operation.key),
+              );
+              delete state.local.runtimePolicy;
+              return state;
+            },
+            loadDiagnostic: async (context) => {
+              scopedLoads++;
+              const start = requests.length;
+              const state = await inventory.loadPreparedDiagnosticInventory({
+                root: input.root,
+                gh: guardedGh,
+                repository,
+                publisherActorId: input.publisherActorId,
+                nowMs,
+                ...context,
+              });
+              scopedCalls.push(...requests.slice(start));
+              return state;
+            },
+            env: {
+              GITHUB_REPOSITORY: repository,
+              GITHUB_REF: "refs/heads/main",
+              GITHUB_EVENT_NAME: "workflow_dispatch",
+              GITHUB_ACTOR_ID: "2625904",
+              GITHUB_WORKFLOW_REF: `${repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
+              TAVERNARY_PUBLISHER_BOT_ID: String(input.publisherActorId),
+            },
+          });
+        },
+      });
+      expect(result).not.toMatchObject({ reason: "github-request-budget" });
+      if (!("prepared" in result && "controller" in result))
+        throw new Error("Whole-pass controller was not reached.");
+      expect(result.prepared).toMatchObject(
+        variant === "obsolete"
+          ? {
+              failures: 0,
+              published: 0,
+              consumedKeys: [],
+              reloadRequired: true,
+            }
+          : {
+              failures: 20,
+              published: 0,
+              consumedKeys: expect.arrayContaining([...keys]),
+            },
+      );
+      expect(fullLoads).toBe(2);
+      expect(scopedLoads).toBe(variant === "obsolete" ? 20 : 40);
+      expect(dispatches).toBe(variant === "obsolete" ? 20 : 0);
+      expect(writes).toBe(20);
+      expect(fetch).not.toHaveBeenCalled();
+      expect(result.controller).toMatchObject(
+        variant === "obsolete"
+          ? { dispatched: 20, selectedKeys: expect.arrayContaining([...keys]) }
+          : { dispatched: 0, selectedKeys: [] },
+      );
+      for (const receipt of receipts.values())
+        expect(receipt.operation).toMatchObject(
+          variant === "obsolete"
+            ? {
+                workerRunId: null,
+                nextEligibleAt: "2026-10-16T12:15:00.000Z",
+                retry: { transientAttempts: 1, immediateAttempts: 0 },
+              }
+            : {
+                workerRunId: null,
+                nextEligibleAt: "2026-10-17T12:00:00.000Z",
+                retry: {
+                  transientAttempts: 2,
+                  immediateAttempts: 3,
+                  failure: {
+                    kind: "unknown",
+                    reasonCode: "unclassified-failure",
+                  },
+                },
+              },
+        );
+      expect(requests.length).toBeLessThan(1000);
+      const routes = scopedCalls.map((args) =>
+        args.find((value) => value.startsWith("repos/"))!,
+      );
+      expect(
+        routes.filter((route) => /\/(?:issues|pulls)$/u.test(route)),
+      ).toEqual([]);
+      expect(
+        routes.filter((route) => route.includes("/actions/workflows/")),
+      ).toHaveLength(0);
+      expect(
+        routes.filter((route) => route.endsWith("/actions/runs")),
+      ).toHaveLength(variant === "obsolete" ? 120 : 240);
+      expect(
+        routes.filter((route) => route.endsWith("/git/ref/heads/main")),
+      ).toHaveLength(variant === "obsolete" ? 60 : 120);
+      expect(
+        routes.filter((route) => /\/actions\/runs\/[1-9]\d*$/u.test(route)),
+      ).toHaveLength(variant === "obsolete" ? 20 : 40);
+      const allRoutes = requests.map(
+        (args) => args.find((value) => value.startsWith("repos/")) ?? "",
+      );
+      const counts = {
+        total: requests.length,
+        issues: allRoutes.filter((route) => route.endsWith("/issues")).length,
+        pulls: allRoutes.filter((route) => route.endsWith("/pulls")).length,
+        main: allRoutes.filter((route) => route.endsWith("/git/ref/heads/main"))
+          .length,
+        repositoryRuns: allRoutes.filter((route) =>
+          route.endsWith("/actions/runs"),
+        ).length,
+        workflowRuns: allRoutes.filter((route) =>
+          route.includes("/actions/workflows/"),
+        ).length,
+        directRuns: allRoutes.filter((route) =>
+          /\/actions\/runs\/[1-9]\d*$/u.test(route),
+        ).length,
+        artifactLists: allRoutes.filter((route) =>
+          /\/actions\/runs\/[1-9]\d*\/artifacts$/u.test(route),
+        ).length,
+        downloads: requests.filter((args) => args[0] === "download").length,
+        receiptReads: allRoutes.filter((route) =>
+          route.endsWith(".json?ref=main"),
+        ).length,
+        writes,
+        dispatches,
+        scoped: scopedCalls.length,
+      };
+      expect(counts).toEqual({
+        total: variant === "obsolete" ? 467 : 607,
+        issues: 12,
+        pulls: 12,
+        main: variant === "obsolete" ? 62 : 122,
+        repositoryRuns: variant === "obsolete" ? 200 : 320,
+        workflowRuns: variant === "obsolete" ? 21 : 1,
+        directRuns: 60,
+        artifactLists: 20,
+        downloads: 20,
+        receiptReads: 20,
+        writes: 20,
+        dispatches: variant === "obsolete" ? 20 : 0,
+        scoped: variant === "obsolete" ? 200 : 400,
+      });
+      console.info(
+        `Whole-pass ${variant} endpoint counts`,
+        JSON.stringify(counts),
+      );
+    } finally {
+      assess.mockRestore();
+      clock.mockRestore();
+      fetch.mockRestore();
+      await fixture.cleanup();
+    }
+  },
+  120_000,
+);
 
 test("metadata cache, visibility, source, repository and vocabulary changes are freshly reconstructed", async () => {
   const fixture = await diagnosticFixture();
@@ -490,7 +1519,7 @@ test("metadata cache, visibility, source, repository and vocabulary changes are 
 test.each(["kit", "withdrawal", "enrichment", "report-import"] as const)(
   "the unsupported %s prepared family has no scoped authority",
   async (kind) => {
-    const fixture = nativeFixture();
+    const fixture = await nativeFixture();
     const identity = { ...fixture.input.operation.identity, kind };
     const operation = {
       ...fixture.input.operation,
@@ -597,7 +1626,8 @@ test("lost completed producer custody falls back before worker diagnostic recons
     const newer = {
       ...original,
       id: 702,
-      updated_at: new Date(nowMs - 30_000).toISOString(),
+      created_at: new Date(nowMs).toISOString(),
+      updated_at: new Date(nowMs).toISOString(),
     };
     fixture.runs.splice(
       0,
@@ -637,12 +1667,12 @@ test("main drift never joins fresh workflow authority to a different canonical r
             },
           });
         }
-        return fixture.input.gh(args);
+        return fixture.read(args);
       };
+      fixture.setRead(gh);
       expect(
         await inventory.loadPreparedDiagnosticInventory({
           ...fixture.input,
-          gh,
           operation: fixture.operation,
           evidenceRun: fixture.run,
         }),
@@ -665,10 +1695,10 @@ test.each([
 ])(
   "scoped %s history remains a visible inspection failure",
   async (variant) => {
-    const fixture = nativeFixture();
+    const fixture = await nativeFixture();
     const gh = async (args: string[]) => {
-      if (!args.some((value) => value.includes("/actions/workflows/")))
-        return fixture.input.gh(args);
+      if (!args.some((value) => value.endsWith("/actions/runs")))
+        return fixture.read(args);
       if (variant === "malformed")
         return JSON.stringify([{ total_count: 1, workflow_runs: {} }]);
       if (variant === "oversized") return " ".repeat(4 * 1024 * 1024 + 1);
@@ -699,8 +1729,12 @@ test.each([
         { total_count: overcap ? 1001 : 0, workflow_runs: [] },
       ]);
     };
+    fixture.setRead(gh);
     await expect(
-      loadPreparedDiagnosticRuns({ ...fixture.input, gh }),
+      loadPreparedDiagnosticRuns({
+        ...fixture.input,
+        nowMs: fixture.input.nowMs + 7 * 86_400_000,
+      }),
     ).rejects.toThrow(
       variant === "search-budget"
         ? /search budget/u
@@ -712,8 +1746,8 @@ test.each([
 );
 
 test("known older handles are directly reread and fresh attempts discard decoded worker evidence", async () => {
-  const fixture = nativeFixture();
-  const created_at = "2026-10-08T15:00:00.000Z";
+  const fixture = await nativeFixture();
+  const created_at = "2026-10-10T15:00:00.000Z";
   const knownRuns = [
     { ...fixture.run, id: 702, created_at },
     {
@@ -738,6 +1772,11 @@ test("known older handles are directly reread and fresh attempts discard decoded
     run_attempt: 2,
     automationDiagnostic: { stale: true },
   }));
+  fixture.state.remote.runs.push(...knownRuns);
+  fixture.input.history = await loadGithubAutomationInventory({
+    ...fixture.input,
+    receipts: fixture.state.receipts,
+  });
   const gh = async (args: string[]) => {
     const id = Number(
       /\/actions\/runs\/([1-9]\d*)$/u.exec(
@@ -746,12 +1785,13 @@ test("known older handles are directly reread and fresh attempts discard decoded
     );
     return latest.some((run) => run.id === id)
       ? JSON.stringify(latest.find((run) => run.id === id))
-      : fixture.input.gh(args);
+      : fixture.read(args);
   };
+  fixture.setRead(gh);
   const native = await loadPreparedDiagnosticRuns({
     ...fixture.input,
-    gh,
     knownRuns,
+    nowMs: fixture.input.nowMs + 2 * 86_400_000,
   });
   for (const run of latest)
     expect(native?.runs.find((value) => value.id === run.id)).toEqual({
@@ -894,14 +1934,19 @@ test("a fresh metadata diagnostic reconstructs exactly its full inventory decisi
     );
     expect(
       fixture.calls.filter((args) =>
-        args.some((value) => /\/(?:issues|pulls|actions\/runs)$/u.test(value)),
+        args.some((value) => /\/(?:issues|pulls)$/u.test(value)),
       ),
     ).toEqual([]);
     expect(
       fixture.calls.filter((args) =>
         args.some((value) => value.includes("/actions/workflows/")),
       ),
-    ).toHaveLength(18);
+    ).toHaveLength(0);
+    expect(
+      fixture.calls.filter((args) =>
+        args.some((value) => value.endsWith("/actions/runs")),
+      ),
+    ).toHaveLength(6);
   } finally {
     await fixture.cleanup();
   }
@@ -952,13 +1997,13 @@ test("a run page cannot contain more rows than its declared inventory total", as
   const fixture = await diagnosticFixture();
   try {
     const gh = async (args: string[]) =>
-      args.some((value) => value.includes("/actions/workflows/"))
+      args.some((value) => value.endsWith("/actions/runs"))
         ? JSON.stringify([{ total_count: 0, workflow_runs: [fixture.run] }])
-        : fixture.input.gh(args);
+        : fixture.read(args);
+    fixture.setRead(gh);
     await expect(
       loadPreparedDiagnosticRuns({
         ...fixture.input,
-        gh,
         operation: fixture.operation,
         evidenceRun: fixture.run,
       }),
@@ -972,7 +2017,7 @@ test("a repeated run page cannot establish complete scoped history", async () =>
   const fixture = await diagnosticFixture();
   try {
     const gh = async (args: string[]) =>
-      args.some((value) => value.includes("/actions/workflows/"))
+      args.some((value) => value.endsWith("/actions/runs"))
         ? JSON.stringify([
             {
               total_count: 101,
@@ -982,11 +2027,11 @@ test("a repeated run page cannot establish complete scoped history", async () =>
               ),
             },
           ])
-        : fixture.input.gh(args);
+        : fixture.read(args);
+    fixture.setRead(gh);
     await expect(
       loadPreparedDiagnosticRuns({
         ...fixture.input,
-        gh,
         operation: fixture.operation,
         evidenceRun: fixture.run,
       }),

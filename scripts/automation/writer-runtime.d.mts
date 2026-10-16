@@ -178,7 +178,7 @@ export function runAutomationWriterReconciliation(input?: {
   loadDiagnostic?: (
     input: Pick<
       import("./github-inventory.mjs").PreparedDiagnosticRunsInput,
-      "operation" | "knownRuns" | "evidenceRun"
+      "operation" | "knownRuns" | "evidenceRun" | "history"
     >,
   ) => Promise<AutomationInventoryState | null>;
   finalize?: ReconciliationInput["finalize"];

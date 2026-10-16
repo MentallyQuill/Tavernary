@@ -214,58 +214,189 @@ test("twenty equal-clock diagnostics each reread failure authority and retain ex
   }
 });
 
-test("an unverifiable diagnostic artifact keeps both comparison and ordinary failure on full authority", async () => {
-  const input = preparedReplayFixture();
-  input.state.operations[0].retry!.immediateAttempts = 1;
-  input.state.receipts[0].operation.retry!.immediateAttempts = 1;
-  const load = vi.fn(async () => structuredClone(input.state));
-  const loadDiagnostic = vi.fn(async () => structuredClone(input.state));
-  const persist = vi
-    .spyOn(githubInventory, "persistGithubAutomationReceipt")
-    .mockResolvedValue(undefined);
-  const revalidate = vi
-    .spyOn(inventory, "revalidateAutomationOperation")
-    .mockResolvedValue(null);
-  const gh = Object.assign(
-    async (args: string[]) => {
-      if (
-        args.some((value) =>
-          value.includes(`/actions/runs/${input.run.id}/artifacts`),
+test.each(["missing", "corrupt"])(
+  "an unverifiable %s diagnostic artifact keeps both comparison and ordinary failure on full authority",
+  async (variant) => {
+    const input = preparedReplayFixture();
+    input.state.operations[0].retry!.immediateAttempts = 1;
+    input.state.receipts[0].operation.retry!.immediateAttempts = 1;
+    const load = vi.fn(async () => structuredClone(input.state));
+    const loadDiagnostic = vi.fn(async () => structuredClone(input.state));
+    const persist = vi
+      .spyOn(githubInventory, "persistGithubAutomationReceipt")
+      .mockResolvedValue(undefined);
+    const revalidate = vi
+      .spyOn(inventory, "revalidateAutomationOperation")
+      .mockResolvedValue(null);
+    const gh = Object.assign(
+      async (args: string[]) => {
+        if (
+          args.some((value) =>
+            value.includes(`/actions/runs/${input.run.id}/artifacts`),
+          )
         )
-      )
-        return JSON.stringify([{ total_count: 0, artifacts: [] }]);
-      if (args.some((value) => value.endsWith(`/actions/runs/${input.run.id}`)))
-        return input.reader.gh(args);
-      throw new Error("No other remote effects expected");
-    },
-    { download: input.reader.download },
-  );
-  try {
-    const result = await runAutomationWriterReconciliation({
-      load,
-      loadDiagnostic,
-      gh,
-      env: {
-        GITHUB_REPOSITORY: input.state.repository,
-        GITHUB_REF: "refs/heads/main",
-        GITHUB_EVENT_NAME: "workflow_dispatch",
-        GITHUB_ACTOR_ID: "2625904",
-        GITHUB_WORKFLOW_REF: `${input.state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
-        TAVERNARY_PUBLISHER_BOT_ID: String(input.state.publisherActorId),
+          return variant === "missing"
+            ? JSON.stringify([{ total_count: 0, artifacts: [] }])
+            : input.reader.gh(args);
+        if (
+          args.some((value) => value.endsWith(`/actions/runs/${input.run.id}`))
+        )
+          return input.reader.gh(args);
+        throw new Error("No other remote effects expected");
       },
+      {
+        download:
+          variant === "corrupt"
+            ? async () => new Uint8Array([0, 1])
+            : input.reader.download,
+      },
+    );
+    try {
+      const result = await runAutomationWriterReconciliation({
+        load,
+        loadDiagnostic,
+        gh,
+        env: {
+          GITHUB_REPOSITORY: input.state.repository,
+          GITHUB_REF: "refs/heads/main",
+          GITHUB_EVENT_NAME: "workflow_dispatch",
+          GITHUB_ACTOR_ID: "2625904",
+          GITHUB_WORKFLOW_REF: `${input.state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
+          TAVERNARY_PUBLISHER_BOT_ID: String(input.state.publisherActorId),
+        },
+      });
+      expect(result.prepared).toMatchObject({
+        failures: 1,
+        consumedKeys: [input.receipt.operation.key],
+      });
+      expect(loadDiagnostic).not.toHaveBeenCalled();
+      expect(load.mock.calls.length).toBeGreaterThanOrEqual(3);
+      expect(persist).toHaveBeenCalledOnce();
+    } finally {
+      persist.mockRestore();
+      revalidate.mockRestore();
+    }
+  },
+);
+
+test.each(["comparison", "persistence"])(
+  "a scoped %s outage stays visible without fabricating a producer failure",
+  async (phase) => {
+    const input = preparedReplayFixture();
+    input.state.receipts[0].updatedAt = input.run.updated_at;
+    let observations = 0;
+    const loadDiagnostic = vi.fn(async () => {
+      observations++;
+      if (phase === "comparison" || observations === 2)
+        throw new Error("Fresh scoped inspection unavailable");
+      return structuredClone(input.state);
     });
-    expect(result.prepared).toMatchObject({
-      failures: 1,
-      consumedKeys: [input.receipt.operation.key],
-    });
-    expect(loadDiagnostic).not.toHaveBeenCalled();
-    expect(load.mock.calls.length).toBeGreaterThanOrEqual(3);
-    expect(persist).toHaveBeenCalledOnce();
-  } finally {
-    persist.mockRestore();
-    revalidate.mockRestore();
-  }
-});
+    const persist = vi
+      .spyOn(githubInventory, "persistGithubAutomationReceipt")
+      .mockResolvedValue(undefined);
+    const gh = Object.assign(
+      async (args: string[]) => {
+        if (
+          args.some((value) => value.includes(`/actions/runs/${input.run.id}`))
+        )
+          return input.reader.gh(args);
+        throw new Error("No other remote effects expected");
+      },
+      { download: input.reader.download },
+    );
+    try {
+      await expect(
+        runAutomationWriterReconciliation({
+          load: async () => structuredClone(input.state),
+          loadDiagnostic,
+          gh,
+          env: {
+            GITHUB_REPOSITORY: input.state.repository,
+            GITHUB_REF: "refs/heads/main",
+            GITHUB_EVENT_NAME: "workflow_dispatch",
+            GITHUB_ACTOR_ID: "2625904",
+            GITHUB_WORKFLOW_REF: `${input.state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
+            TAVERNARY_PUBLISHER_BOT_ID: String(input.state.publisherActorId),
+          },
+        }),
+      ).rejects.toThrow("Fresh scoped inspection unavailable");
+      expect(observations).toBe(phase === "comparison" ? 1 : 2);
+      expect(persist).not.toHaveBeenCalled();
+    } finally {
+      persist.mockRestore();
+    }
+  },
+);
+
+test.each(["kit", "withdrawal", "enrichment", "report-import"] as const)(
+  "the unsupported %s collector family keeps full runtime comparison authority",
+  async (kind) => {
+    const base = preparedReplayFixture();
+    const identity = { ...base.receipt.operation.identity, kind };
+    const input = diagnosticReplayFixture(
+      {
+        ...base.receipt,
+        operation: {
+          ...base.receipt.operation,
+          identity,
+          key: operationKey(identity),
+          retry: {
+            failure: { kind: "transient", reasonCode: "provider-rate-limited" },
+            transientAttempts: 1,
+            immediateAttempts: 0,
+          },
+        },
+      },
+      base.run.id,
+      base.run.updated_at,
+    );
+    input.run.path = `.github/workflows/${{ kit: "apply-kit-submission", withdrawal: "apply-kit-withdrawal", enrichment: "enrich-catalog", "report-import": "import-tavernkeeper-reports" }[kind]}.yml`;
+    const load = vi.fn(async () => structuredClone(input.state));
+    const loadDiagnostic = vi.fn(async () => structuredClone(input.state));
+    const persist = vi
+      .spyOn(githubInventory, "persistGithubAutomationReceipt")
+      .mockResolvedValue(undefined);
+    const revalidate = vi
+      .spyOn(inventory, "revalidateAutomationOperation")
+      .mockResolvedValue(null);
+    const gh = Object.assign(
+      async (args: string[]) => {
+        if (
+          args.some((value) => value.includes(`/actions/runs/${input.run.id}`))
+        )
+          return input.reader.gh(args);
+        throw new Error("No other remote effects expected");
+      },
+      { download: input.reader.download },
+    );
+    try {
+      const result = await runAutomationWriterReconciliation({
+        load,
+        loadDiagnostic,
+        gh,
+        env: {
+          GITHUB_REPOSITORY: input.state.repository,
+          GITHUB_REF: "refs/heads/main",
+          GITHUB_EVENT_NAME: "workflow_dispatch",
+          GITHUB_ACTOR_ID: "2625904",
+          GITHUB_WORKFLOW_REF: `${input.state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
+          TAVERNARY_PUBLISHER_BOT_ID: String(input.state.publisherActorId),
+        },
+      });
+      expect(result.prepared).toMatchObject({
+        failures: 0,
+        consumedKeys: [],
+        reloadRequired: true,
+      });
+      expect(loadDiagnostic).not.toHaveBeenCalled();
+      expect(load.mock.calls.length).toBeGreaterThanOrEqual(3);
+      expect(persist).not.toHaveBeenCalled();
+    } finally {
+      persist.mockRestore();
+      revalidate.mockRestore();
+    }
+  },
+);
 
 test("a lost successful failure-write response can later be superseded by its newer canonical decision", async () => {
   const input = preparedReplayFixture();

@@ -9,6 +9,7 @@ import {
   loadAutomationWorkerRuns,
   githubFailureStatus,
   loadPreparedDiagnosticRuns,
+  retainedAutomationRunIds,
 } from "./github-inventory.mjs";
 import { discoverProjectOperations } from "./project-operations.mjs";
 import { discoverKitOperations } from "./kit-operations.mjs";
@@ -500,6 +501,8 @@ async function loadInventory(
         ).operation,
         knownRuns: diagnostic.knownRuns,
         evidenceRun: diagnostic.evidenceRun,
+        history: diagnostic.history,
+        retainedRunIds: retainedAutomationRunIds(receipts),
       })
     : null;
   if (diagnostic && (!scopedRemote || scopedRemote.mainHeadSha !== revision))

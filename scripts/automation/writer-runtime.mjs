@@ -1478,6 +1478,7 @@ export async function runAutomationWriterReconciliation({
         operation,
         knownRuns: state.remote.runs,
         evidenceRun: evidence.run,
+        history: state.remote,
       });
       if (scoped) return scoped;
     }

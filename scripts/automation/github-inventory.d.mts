@@ -14,6 +14,9 @@ export interface GithubAutomationInventory {
   finalizationOperationKey?: string;
 }
 export function githubFailureStatus(error: unknown): number;
+export function retainedAutomationRunIds(
+  receipts: AutomationReceipt[],
+): number[];
 export function loadGithubRunArtifacts(input: {
   gh: GhRunner;
   repository: string;
@@ -38,6 +41,8 @@ export interface PreparedDiagnosticRunsInput {
   operation: AutomationOperation;
   knownRuns?: ProjectInventoryRun[];
   evidenceRun: ProjectInventoryRun;
+  history?: GithubAutomationInventory;
+  retainedRunIds?: number[];
 }
 export function loadPreparedDiagnosticRuns(
   input: PreparedDiagnosticRunsInput,
