@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "31fc22ccdfb25ea5ab074df662cc695214b7b4cacb43d1e3a4a2b825cc6b64fb",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1287253091:vadash-extension-summaryception",
+      "inputDigest": "9080a2258981b6cf804c2f5b7e10cf6ae0ca279cf9a070953ab574e1172bbce7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T07:10:25.314Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T06:55:25.314Z",
+  "completedAt": null
+}
