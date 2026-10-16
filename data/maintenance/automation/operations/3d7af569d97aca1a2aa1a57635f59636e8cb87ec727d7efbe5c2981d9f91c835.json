@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3d7af569d97aca1a2aa1a57635f59636e8cb87ec727d7efbe5c2981d9f91c835",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-875709373:lackyas-sillytavern-presence",
+      "inputDigest": "5c4d1a1e7d2138e08e34716b44a784fcb6f2c1e10b48e27b5bda7d07fa0f518f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T15:59:03.107Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T15:44:03.107Z",
+  "completedAt": null
+}
