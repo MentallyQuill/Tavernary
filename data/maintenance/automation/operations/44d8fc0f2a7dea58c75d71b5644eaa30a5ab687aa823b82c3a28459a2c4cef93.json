@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "44d8fc0f2a7dea58c75d71b5644eaa30a5ab687aa823b82c3a28459a2c4cef93",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1374177758:driderr-sillytavern-contextspeedhud",
+      "inputDigest": "19959ebc12edd260d75c3c60c15041e77f674b3f47f80aa72a25ef9bdea5c5e8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:54:50.169Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T14:39:50.169Z",
+  "completedAt": null
+}
