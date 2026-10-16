@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "385d77e9c96436de4cd6ce355fa21e96268c7f440dbddf94a7b2ed56248d6818",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1332039402:rendyuwu-sillytavern-sidethread",
+      "inputDigest": "6e4f8f2f0ee682c890a9be0fb04eb035c41c0561709755331b7fe6c24d5f5bfa",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T15:59:03.107Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T15:44:03.107Z",
+  "completedAt": null
+}
