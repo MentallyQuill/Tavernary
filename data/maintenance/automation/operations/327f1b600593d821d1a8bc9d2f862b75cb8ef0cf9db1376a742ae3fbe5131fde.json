@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "327f1b600593d821d1a8bc9d2f862b75cb8ef0cf9db1376a742ae3fbe5131fde",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1305418059:manjove1-forged-by-primus-portfolio",
+      "inputDigest": "de097a3abcb900e26183857efd80d3a657a30279601af3b15bed0417602ae0fc",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T07:10:25.314Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T06:55:25.314Z",
+  "completedAt": null
+}
