@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3c0a6878e1f3e35e6e1aea4a2433d945725a11e6411188f0f7938a3d3780eb8f",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1213247381:virgilianshailer-autobackgound",
+      "inputDigest": "fac2b0e2fbff60deedbf11c0cf77f714ac7ba0ecfc44766adca78fa7fcb9d1e4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T12:58:07.477Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T12:43:07.477Z",
+  "completedAt": null
+}
