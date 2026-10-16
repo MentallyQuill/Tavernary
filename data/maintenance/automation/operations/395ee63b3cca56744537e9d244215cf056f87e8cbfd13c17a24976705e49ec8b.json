@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "395ee63b3cca56744537e9d244215cf056f87e8cbfd13c17a24976705e49ec8b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-929287817:bronya-rand-guinevere-ui-extension",
+      "inputDigest": "099d4a75995d13a15155b8e7d01e027393c9d1d661c11b53ac2a99ffe03b2325",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T15:59:03.107Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T15:44:03.107Z",
+  "completedAt": null
+}
