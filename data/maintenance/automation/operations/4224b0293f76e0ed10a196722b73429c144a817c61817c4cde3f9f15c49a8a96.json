@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4224b0293f76e0ed10a196722b73429c144a817c61817c4cde3f9f15c49a8a96",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1105308117:b4bysw0rld-sillytavern-typefacer",
+      "inputDigest": "aa6578eae7bb265e6058287b7e478dea156dc6261c6d4d98491e7821d80e54b3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:45:15.484Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 3,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T14:30:15.484Z",
+  "completedAt": null
+}
