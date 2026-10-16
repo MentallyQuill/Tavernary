@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4612278ff3453f50c1b0be016c946218f2596b4b89842ee7708185c104ce3118",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1388970601:atlas4285-sillytavern-statesmith",
+      "inputDigest": "da31398d1c63d174cf312eed0a61b4b2b77bf591434d89d98e10ab6e09cd39ad",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:54:50.169Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T14:39:50.169Z",
+  "completedAt": null
+}
