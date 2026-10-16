@@ -9,7 +9,12 @@ import { confirmCanonicalDeployment } from "./deployment-writer.mjs";
 import { finalizeAutomationOperation } from "./finalization.mjs";
 import { projectAutomationLifecycle } from "./lifecycle-github.mjs";
 import { loadGithubRevisionManifest } from "./deployment-github.mjs";
-import { confirmPublicDeployment } from "./confirm-deployment.mjs";
+import {
+  confirmPublicDeployment,
+  createPublicAssetReader,
+} from "./confirm-deployment.mjs";
+import { validateRevisionManifest } from "./revision-manifest.mjs";
+import { validateActiveDeployment } from "./deployment-state.mjs";
 import {
   createModelBudgetState,
   validateModelBudgetState,
@@ -856,6 +861,7 @@ export async function runDeploymentWriterConfirmation({
     return loadSiteWriterState({ root, env });
   },
   download = gh.download ?? downloadPreparedArtifact,
+  fetchImpl = fetch,
   probe = (input) => confirmPublicDeployment(input),
   commit = (input) => commitCanonicalData({ ...input, gh }),
   isAncestor = (ancestor, descendant) => {
@@ -951,6 +957,7 @@ export async function runDeploymentWriterConfirmation({
       };
     };
     let result;
+    let originalManifest;
     for (const selectedRunId of selectedRuns) {
       let artifactUnavailable = false;
       try {
@@ -992,6 +999,7 @@ export async function runDeploymentWriterConfirmation({
                 ),
                 { code: "input-superseded" },
               );
+            if (runId > 0 && !operationKey) originalManifest = data.manifest;
             return data;
           },
           probe: (input) =>
@@ -1009,6 +1017,91 @@ export async function runDeploymentWriterConfirmation({
       )
         continue;
       break;
+    }
+    if (
+      runId > 0 &&
+      !operationKey &&
+      originalManifest &&
+      result?.status === "waiting" &&
+      result.reason === "different-revision"
+    ) {
+      const failFallback = (code = "validation-failed") => {
+        throw Object.assign(
+          new Error(
+            "Public descendant confirmation is unavailable or invalid.",
+          ),
+          { code },
+        );
+      };
+      const ordinary = (state) => {
+        if (
+          state.activeDeployment != null &&
+          validateActiveDeployment(state.activeDeployment, {
+            nowMs: state.nowMs,
+          }).mode === "rollback"
+        )
+          failFallback("input-superseded");
+        return state;
+      };
+      ordinary(project(initial));
+      const discovery = ordinary(project(await read()));
+      let bytes;
+      try {
+        bytes = await createPublicAssetReader({ fetchImpl })("revision.json");
+      } catch (error) {
+        failFallback(
+          error?.code === "public-integrity-failed"
+            ? "validation-failed"
+            : "provider-unavailable",
+        );
+      }
+      let hinted;
+      try {
+        hinted = validateRevisionManifest(
+          JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)),
+        );
+      } catch {
+        failFallback();
+      }
+      const identity = hinted.buildId.match(
+        /^run-([1-9]\d*)-attempt-([1-9]\d*)$/u,
+      );
+      const candidateRunId = Number(identity?.[1]);
+      const candidateAttempt = Number(identity?.[2]);
+      if (
+        !Number.isSafeInteger(candidateRunId) ||
+        candidateRunId < 1 ||
+        !Number.isSafeInteger(candidateAttempt) ||
+        candidateAttempt < 1
+      )
+        failFallback();
+      const candidate = await loadGithubRevisionManifest({
+        gh,
+        download,
+        repository,
+        publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
+        runId: candidateRunId,
+        currentMainSha: discovery.revision,
+        expectedSourceSha: hinted.sourceSha,
+        isAncestor,
+      });
+      if (!isDeepStrictEqual(candidate.manifest, hinted)) failFallback();
+      if (
+        candidate.manifest.sourceSha === originalManifest.sourceSha ||
+        isAncestor(originalManifest.sourceSha, candidate.manifest.sourceSha) !==
+          true ||
+        (candidate.manifest.sourceSha !== discovery.revision &&
+          isAncestor(candidate.manifest.sourceSha, discovery.revision) !== true)
+      )
+        failFallback("input-superseded");
+      result = await confirmCanonicalDeployment({
+        runId: candidateRunId,
+        isAncestor,
+        load: async () => ordinary(project(await read())),
+        loadManifest: async () => candidate,
+        probe: (input) => probe({ ...input, maxAttempts: 1 }),
+        commit: (input) => commit({ ...input, repository }),
+      });
     }
     if (!result || result.status === "waiting" || result.status === "incident")
       throw Object.assign(new Error("Public deployment remains unconfirmed."), {

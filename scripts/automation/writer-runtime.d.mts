@@ -124,6 +124,7 @@ export function runDeploymentWriterConfirmation(input: {
   load?: () => Promise<AutomationInventoryState>;
   loadSite?: () => Promise<import("./site-writer-runtime.mjs").SiteWriterState>;
   download?: (args: string[]) => Promise<Uint8Array>;
+  fetchImpl?: typeof fetch;
   isAncestor?: (ancestor: string, descendant: string) => boolean | null;
   probe?: (input: {
     expected: import("./revision-manifest.mjs").RevisionManifest;
