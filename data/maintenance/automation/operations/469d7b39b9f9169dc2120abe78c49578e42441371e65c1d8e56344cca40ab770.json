@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "469d7b39b9f9169dc2120abe78c49578e42441371e65c1d8e56344cca40ab770",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1126279204:aventurasteam-aventuras",
+      "inputDigest": "a3f2422a1616ecdceae32c69e9829601d0c8ac6f1830ebd49ac7ba2e525fa9b7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:54:50.169Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T14:39:50.169Z",
+  "completedAt": null
+}
