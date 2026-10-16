@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3ff0665b6e6d416d0ff851a603a33e42077bb1d38fe403bfbf4f6179530a3443",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-819124467:lenanderson-sillytavern-messagevariables",
+      "inputDigest": "b285d07d4dea3fb2124af4283994f518ec8cdb632368c267f6a4a5935224cc7e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:45:15.484Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T14:30:15.484Z",
+  "completedAt": null
+}
