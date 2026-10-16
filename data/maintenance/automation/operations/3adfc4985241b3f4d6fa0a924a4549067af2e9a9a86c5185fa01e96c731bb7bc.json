@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3adfc4985241b3f4d6fa0a924a4549067af2e9a9a86c5185fa01e96c731bb7bc",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-850754623:sillytavern-extension-mermaid",
+      "inputDigest": "1e1f0f848d41e1c4470cd8e8a0bafa1513f8b8dc5dcfb8442e4eb93f9acf90b5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T15:59:03.107Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T15:44:03.107Z",
+  "completedAt": null
+}
