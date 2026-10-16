@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3e95b30e9c2e370a82e31376fb12be1501cf3678bd5c3c39d8b1a94ebc4494cf",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1128225923:zompiexx-st-hands-free-voice",
+      "inputDigest": "ba90079789c42f593fc8f2bde78256254dd919cd539672b8f8bacf7423738672",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T12:58:07.477Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 8,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T12:43:07.477Z",
+  "completedAt": null
+}
