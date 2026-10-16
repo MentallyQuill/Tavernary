@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "457d16b3b4bb409d3053926c1387f093272f60c1b3ace544cc407222d8cc7f66",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1111979731:quackified-floating-viewer",
+      "inputDigest": "e82b6ba9511a12a71b813d959c83e7c12148c796384bdeb8331086a59983af10",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:54:50.169Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T14:39:50.169Z",
+  "completedAt": null
+}
