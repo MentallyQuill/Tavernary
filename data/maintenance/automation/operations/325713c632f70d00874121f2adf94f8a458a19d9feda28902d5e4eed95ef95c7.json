@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "325713c632f70d00874121f2adf94f8a458a19d9feda28902d5e4eed95ef95c7",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1203226910:wewwaistyping-slayimages",
+      "inputDigest": "3e477f14d8591b10c74d0ee8c6987a714c360f8cec67077a972469647f9d20b6",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T07:10:25.314Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T06:55:25.314Z",
+  "completedAt": null
+}
