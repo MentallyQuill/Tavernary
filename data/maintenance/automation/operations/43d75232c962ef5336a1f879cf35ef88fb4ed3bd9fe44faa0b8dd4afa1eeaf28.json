@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "43d75232c962ef5336a1f879cf35ef88fb4ed3bd9fe44faa0b8dd4afa1eeaf28",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1211877451:enerccio-sillytavern-persistentitemizedprompts",
+      "inputDigest": "299d02c6e38f0e2354b96992ef9a400d93be1ca32058600533f168a83991a678",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:45:15.484Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T14:30:15.484Z",
+  "completedAt": null
+}
