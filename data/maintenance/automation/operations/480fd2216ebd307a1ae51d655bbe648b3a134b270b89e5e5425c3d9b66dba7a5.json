@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "480fd2216ebd307a1ae51d655bbe648b3a134b270b89e5e5425c3d9b66dba7a5",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1310625840:willasaywhat-sillytavern-voicebox-tts",
+      "inputDigest": "742c15c050d15d5466fc30a79b7a809db354a6de4c07b584cd98fbf682caa2b8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T15:59:03.107Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T15:44:03.107Z",
+  "completedAt": null
+}
