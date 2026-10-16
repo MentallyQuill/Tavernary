@@ -1,7 +1,9 @@
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 import { metadataMaintenanceFixture } from "../helpers/automation-fixtures";
 import { acquirePreparedAdvisoryData } from "../../scripts/automation/advisory-preparation.mjs";
 import { createCatalogPolicyReviewProvider } from "../../scripts/moderation/catalog-policy-review-provider.mjs";
+import { EnrichmentProviderError } from "../../scripts/catalog/enrichment-provider.mjs";
+import type { observeMetadataSource } from "../../scripts/automation/metadata-preparation.mjs";
 import {
   bindModelBudgetTicket,
   createModelBudgetGuard,
@@ -52,6 +54,7 @@ async function realAdvisoryPreparationFixture(
     output?: unknown;
     budgetGuard?: ModelBudgetGuard;
     jsonRepair?: boolean;
+    onAcquisitionPhase?: (phase: string) => void;
   } = {},
 ) {
   const fixture = await metadataMaintenanceFixture();
@@ -107,6 +110,7 @@ async function realAdvisoryPreparationFixture(
         options: {
           observe: fixture.observe,
           provider: createCatalogPolicyReviewProvider(configuration),
+          onAcquisitionPhase: options.onAcquisitionPhase,
           sleep: async (delay) => {
             calls.delays.push(delay);
           },
@@ -114,6 +118,260 @@ async function realAdvisoryPreparationFixture(
       }),
   };
 }
+
+test("rejected advisory review retains the original error, receiver, input and review boundary", async () => {
+  const fixture = await metadataMaintenanceFixture();
+  const operation = fixture.state.operations.find(
+    (value) => value.identity.kind === "advisory",
+  )!;
+  const failure = new Error("private provider failure");
+  const phases: string[] = [];
+  const budgetGuard = vi.fn();
+  const review = vi.fn(async function (this: unknown, input: unknown) {
+    expect(this).toBe(provider);
+    expect(input).toMatchObject({
+      project: { id: fixture.project.id },
+      readme: expect.any(String),
+    });
+    throw failure;
+  });
+  const provider = { review };
+  await expect(
+    acquirePreparedAdvisoryData({
+      state: fixture.state,
+      operation,
+      options: {
+        observe: fixture.observe,
+        provider,
+        budgetGuard,
+        onAcquisitionPhase: (phase) => phases.push(phase),
+      },
+    }),
+  ).rejects.toBe(failure);
+  expect(phases).toEqual([
+    "operation-records",
+    "observe-source",
+    "provider-config",
+    "provider-input",
+    "provider-review",
+  ]);
+  expect(review).toHaveBeenCalledOnce();
+  expect(budgetGuard).not.toHaveBeenCalled();
+});
+
+test("fulfilled semantic advisory rejection stays at provider-output without a typed provider error", async () => {
+  const budget = verifiedAdvisoryBudget();
+  const charged = JSON.stringify(budget.state);
+  const phases: string[] = [];
+  const fixture = await realAdvisoryPreparationFixture({
+    budgetGuard: budget.guard,
+    output: {
+      status: "clear",
+      category: "potential-other-catalog-policy-conflict",
+      explanation: "private semantic inconsistency",
+    },
+    onAcquisitionPhase: (phase) => phases.push(phase),
+  });
+  const failure = await fixture.prepare().catch((error: unknown) => error);
+  expect(failure).toMatchObject({ code: "provider-response-invalid" });
+  expect(failure).not.toBeInstanceOf(EnrichmentProviderError);
+  expect(phases.at(-1)).toBe("provider-output");
+  expect(phases).not.toContain("acquisition-output");
+  expect(fixture.calls).toEqual({ requests: 1, delays: [] });
+  expect(budget.guard.usage()[0].usage.requests).toBe(1);
+  expect(JSON.stringify(budget.state)).toBe(charged);
+});
+
+test("successful advisory review enters acquisition-output before existing serialization failure", async () => {
+  const fixture = await metadataMaintenanceFixture();
+  const operation = fixture.state.operations.find(
+    (value) => value.identity.kind === "advisory",
+  )!;
+  const phases: string[] = [];
+  const failure = new Error("private serialization failure");
+  const stringify = JSON.stringify;
+  const serializer = vi
+    .spyOn(JSON, "stringify")
+    .mockImplementation((value, replacer, space) => {
+      if (
+        value?.schema_version === 1 &&
+        value.project_id === fixture.project.id
+      )
+        throw failure;
+      return stringify(value, replacer, space);
+    });
+  try {
+    await expect(
+      acquirePreparedAdvisoryData({
+        state: fixture.state,
+        operation,
+        options: {
+          observe: fixture.observe,
+          provider: {
+            review: async () => ({
+              status: "clear",
+              category: null,
+              explanation: null,
+            }),
+          },
+          onAcquisitionPhase: (phase) => phases.push(phase),
+        },
+      }),
+    ).rejects.toBe(failure);
+    expect(phases.slice(-3)).toEqual([
+      "provider-review",
+      "provider-output",
+      "acquisition-output",
+    ]);
+  } finally {
+    serializer.mockRestore();
+  }
+});
+
+test.each(["budget-guard", "provider-config", "provider-input"] as const)(
+  "advisory local failure retains %s without a provider request",
+  async (phase) => {
+    const fixture = await metadataMaintenanceFixture();
+    const operation = fixture.state.operations.find(
+      (value) => value.identity.kind === "advisory",
+    )!;
+    const failure = new Error("private local failure");
+    const phases: string[] = [];
+    const review = vi.fn();
+    const options = {
+      observe: fixture.observe,
+      onAcquisitionPhase: (value: string) => phases.push(value),
+      ...(phase === "provider-input" ? { provider: { review } } : {}),
+      budgetGuard: vi.fn(async () => {
+        throw failure;
+      }),
+    };
+    if (phase === "provider-config")
+      Object.defineProperty(options, "provider", {
+        get() {
+          throw failure;
+        },
+      });
+    if (phase === "provider-input")
+      Object.defineProperty(fixture.state.local, "advisoryState", {
+        get() {
+          throw failure;
+        },
+      });
+    await expect(
+      acquirePreparedAdvisoryData({ state: fixture.state, operation, options }),
+    ).rejects.toBe(failure);
+    expect(phases.at(-1)).toBe(phase);
+    expect(review).not.toHaveBeenCalled();
+    expect(options.budgetGuard).toHaveBeenCalledTimes(
+      phase === "budget-guard" ? 1 : 0,
+    );
+  },
+);
+
+test.each(["operation-records", "observe-source"] as const)(
+  "advisory failure before provider setup retains %s",
+  async (phase) => {
+    const fixture = await metadataMaintenanceFixture();
+    const operation = fixture.state.operations.find(
+      (value) => value.identity.kind === "advisory",
+    )!;
+    const failure = new Error("private early failure");
+    const phases: string[] = [];
+    const budgetGuard = vi.fn();
+    if (phase === "operation-records")
+      Object.defineProperty(fixture.state.local, "sources", {
+        get() {
+          throw failure;
+        },
+      });
+    await expect(
+      acquirePreparedAdvisoryData({
+        state: fixture.state,
+        operation,
+        options: {
+          observe: async () => {
+            throw failure;
+          },
+          budgetGuard,
+          onAcquisitionPhase: (value) => phases.push(value),
+        },
+      }),
+    ).rejects.toBe(failure);
+    expect(phases.at(-1)).toBe(phase);
+    expect(budgetGuard).not.toHaveBeenCalled();
+  },
+);
+
+test.each(["getter", "callback"] as const)(
+  "hostile advisory marker %s preserves source rejection and avoids budget loading",
+  async (kind) => {
+    const fixture = await metadataMaintenanceFixture();
+    const operation = fixture.state.operations.find(
+      (value) => value.identity.kind === "advisory",
+    )!;
+    const failure = new Error("private source failure");
+    let markerReads = 0;
+    const options = {
+      observe: async (input: Parameters<typeof observeMetadataSource>[0]) => {
+        input.onAcquisitionPhase?.("source-readme-request");
+        throw failure;
+      },
+      budgetGuard: vi.fn(),
+    };
+    Object.defineProperty(options, "onAcquisitionPhase", {
+      get() {
+        markerReads++;
+        if (kind === "getter") throw new Error("private marker getter");
+        return () => {
+          throw new Error("private marker callback");
+        };
+      },
+    });
+    await expect(
+      acquirePreparedAdvisoryData({ state: fixture.state, operation, options }),
+    ).rejects.toBe(failure);
+    expect(markerReads).toBe(3);
+    expect(options.budgetGuard).not.toHaveBeenCalled();
+  },
+);
+
+test("throwing advisory telemetry preserves exact successful output and provider calls", async () => {
+  const fixture = await metadataMaintenanceFixture();
+  const operation = fixture.state.operations.find(
+    (value) => value.identity.kind === "advisory",
+  )!;
+  const review = vi.fn(async () => ({
+    status: "clear" as const,
+    category: null,
+    explanation: null,
+  }));
+  const options = { observe: fixture.observe, provider: { review } };
+  const baseline = await acquirePreparedAdvisoryData({
+    state: fixture.state,
+    operation,
+    options,
+  });
+  for (const kind of ["getter", "callback"] as const) {
+    const hostile = Object.create(options);
+    Object.defineProperty(hostile, "onAcquisitionPhase", {
+      get() {
+        if (kind === "getter") throw new Error("private marker getter");
+        return () => {
+          throw new Error("private marker callback");
+        };
+      },
+    });
+    expect(
+      await acquirePreparedAdvisoryData({
+        state: fixture.state,
+        operation,
+        options: hostile,
+      }),
+    ).toEqual(baseline);
+  }
+  expect(review).toHaveBeenCalledTimes(3);
+});
 
 test("advisory provider failures retain the typed circuit diagnostic", async () => {
   const fixture = await metadataMaintenanceFixture();

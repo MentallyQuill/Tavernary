@@ -4,11 +4,17 @@ import type {
 } from "./metadata-preparation.mjs";
 import type { createCatalogPolicyReviewProvider } from "../moderation/catalog-policy-review-provider.mjs";
 import type { ModelBudgetGuard } from "./model-budget.mjs";
+import type { AcquisitionPhaseCallback } from "./acquisition-phase.mjs";
 export interface ModelPreparationOptions {
   env?: Record<string, string | undefined>;
-  observe?: (input: MetadataPreparationInput) => Promise<MetadataObservation>;
+  observe?: (
+    input: MetadataPreparationInput & {
+      onAcquisitionPhase?: AcquisitionPhaseCallback;
+    },
+  ) => Promise<MetadataObservation>;
   budgetGuard?: () => Promise<ModelBudgetGuard>;
   sleep?: (ms: number) => Promise<void>;
+  onAcquisitionPhase?: AcquisitionPhaseCallback;
 }
 export function acquirePreparedAdvisoryData(
   input: MetadataPreparationInput & {

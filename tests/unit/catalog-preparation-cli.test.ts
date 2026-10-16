@@ -7,10 +7,14 @@ import { EnrichmentProviderError } from "../../scripts/catalog/enrichment-provid
 import {
   preparedResultFixture,
   preparedResultContextFixture,
+  metadataMaintenanceFixture,
 } from "../helpers/automation-fixtures";
 import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
 import * as catalogPreparation from "../../scripts/automation/catalog-preparation.mjs";
 import * as modelBudgetGithub from "../../scripts/automation/model-budget-github.mjs";
+import * as policyReviewProvider from "../../scripts/moderation/catalog-policy-review-provider.mjs";
+import * as metadataProvider from "../../scripts/catalog/enrichment-provider.mjs";
+import * as metadataPreparation from "../../scripts/automation/metadata-preparation.mjs";
 import {
   createModelBudgetState,
   reserveModelBudget,
@@ -88,6 +92,576 @@ function preparationStage(operationKey: string) {
     }),
   ];
 }
+async function acquisitionFixture(kind: "advisory" | "metadata" = "advisory") {
+  const maintenance = await metadataMaintenanceFixture();
+  const operation = maintenance.state.operations.find(
+    (value) => value.identity.kind === kind,
+  )!;
+  const input = fixture();
+  input.state = maintenance.state;
+  input.load.mockImplementation(async () => maintenance.state);
+  input.event.inputs.operation_key = operation.key;
+  input.env.GITHUB_SHA = String(maintenance.state.local.revision);
+  input.env.GITHUB_WORKFLOW_REF = `${maintenance.state.repository}/.github/workflows/${kind === "advisory" ? "review-catalog-policy" : "enrich-catalog"}.yml@refs/heads/main`;
+  input.prepare.mockImplementation(async ({ acquire }) => {
+    await acquire!({ state: maintenance.state, operation });
+    return null;
+  });
+  return { ...maintenance, input, operation };
+}
+
+async function markedAcquisitionFailure(
+  error: unknown,
+  markers: unknown[],
+  input = fixture(),
+) {
+  const acquire = vi
+    .spyOn(catalogPreparation, "acquireCatalogData")
+    .mockImplementation(async ({ options }) => {
+      for (const marker of markers)
+        options?.onAcquisitionPhase?.(marker as never);
+      throw error;
+    });
+  input.prepare.mockImplementation(async ({ acquire }) => {
+    await acquire!({
+      state: input.state,
+      operation: input.state.operations[0],
+    });
+    return null;
+  });
+  const directory = await mkdtemp(join(tmpdir(), "tavernary-prepared-cli-"));
+  const stderr = vi.spyOn(console, "error").mockImplementation(() => {});
+  try {
+    const exitCode = await runCatalogPreparationCli({
+      ...input,
+      outputDirectory: directory,
+    });
+    return {
+      exitCode,
+      input,
+      stderr: stderr.mock.calls,
+      stdout: input.write.mock.calls,
+      diagnostic: await readFile(join(directory, "diagnostic.json"), "utf8"),
+    };
+  } finally {
+    stderr.mockRestore();
+    acquire.mockRestore();
+    await rm(directory, { recursive: true, force: true });
+  }
+}
+
+test("invalid acquisition markers never coerce or leak and cannot replace the last safe boundary", async () => {
+  const coercions = vi.fn(() => {
+    throw new Error("private marker coercion");
+  });
+  const invalid = [
+    null,
+    undefined,
+    7,
+    true,
+    "source-readme-request ",
+    "metadata-cache",
+    "private-marker",
+    { toString: coercions, toJSON: coercions },
+    new String("source-readme-request"),
+  ];
+  for (const markers of [invalid, ["provider-review", ...invalid]]) {
+    const result = await markedAcquisitionFailure(
+      new Error("private failure"),
+      markers,
+    );
+    expect(result.exitCode).toBe(1);
+    expect(result.stdout).toEqual([
+      [
+        '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
+      ],
+    ]);
+    expect(result.diagnostic).toBe(
+      `{"schema_version":1,"operation_key":"${result.input.event.inputs.operation_key}","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}\n`,
+    );
+    expect(result.stderr).toEqual([
+      [
+        JSON.stringify({
+          event: "catalog-preparation-stage-diagnostic",
+          phase: "acquire-data",
+          operation_key: result.input.event.inputs.operation_key,
+        }),
+      ],
+      ...(markers[0] === "provider-review"
+        ? [
+            [
+              JSON.stringify({
+                event: "catalog-preparation-acquisition-diagnostic",
+                phase: "provider-review",
+                operation_key: result.input.event.inputs.operation_key,
+              }),
+            ],
+          ]
+        : []),
+    ]);
+  }
+  expect(coercions).not.toHaveBeenCalled();
+});
+
+test("acquisition logging preserves exact legacy error getter reads", async () => {
+  const reads = { code: 0, status: 0, message: 0, private: 0 };
+  const failure = Object.create(null);
+  for (const field of ["code", "status", "message"] as const)
+    Object.defineProperty(failure, field, {
+      get() {
+        reads[field]++;
+        return undefined;
+      },
+    });
+  for (const field of [
+    "name",
+    "constructor",
+    "cause",
+    "stack",
+    "diagnosticCode",
+    "phase",
+    "url",
+    "headers",
+    Symbol.toPrimitive,
+  ])
+    Object.defineProperty(failure, field, {
+      get() {
+        reads.private++;
+        throw new Error("private error accessor");
+      },
+    });
+  const result = await markedAcquisitionFailure(failure, ["provider-review"]);
+  expect(result.exitCode).toBe(1);
+  expect(reads).toEqual({ code: 1, status: 1, message: 1, private: 0 });
+  expect(result.stderr).toHaveLength(2);
+});
+
+test.each([
+  "budget-exhausted",
+  "provider-timeout",
+  "provider-authentication-failed",
+  "authorization-lost",
+  "input-superseded",
+])("known acquisition failure %s adds no supplementary event", async (code) => {
+  const result = await markedAcquisitionFailure(
+    Object.assign(new Error("private known failure"), { code }),
+    ["provider-review"],
+  );
+  expect(result.exitCode).toBe(1);
+  expect(result.stderr).toEqual([]);
+  expect(JSON.parse(result.diagnostic).failure.kind).not.toBe("unknown");
+});
+
+test("an acquisition-only serialization failure preserves the broad line and legacy result", async () => {
+  const stringify = JSON.stringify;
+  const serializer = vi
+    .spyOn(JSON, "stringify")
+    .mockImplementation((value, replacer, space) => {
+      if (value?.event === "catalog-preparation-acquisition-diagnostic")
+        throw new Error("private acquisition serializer failure");
+      return stringify(value, replacer, space);
+    });
+  let result;
+  try {
+    result = await markedAcquisitionFailure(
+      new Error("private original failure"),
+      ["provider-review"],
+    );
+  } finally {
+    serializer.mockRestore();
+  }
+  expect(result.exitCode).toBe(1);
+  expect(result.stderr).toEqual([
+    [
+      JSON.stringify({
+        event: "catalog-preparation-stage-diagnostic",
+        phase: "acquire-data",
+        operation_key: result.input.event.inputs.operation_key,
+      }),
+    ],
+  ]);
+  expect(result.stdout).toEqual([
+    [
+      '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
+    ],
+  ]);
+  expect(result.diagnostic).toBe(
+    `{"schema_version":1,"operation_key":"${result.input.event.inputs.operation_key}","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}\n`,
+  );
+});
+
+test("a nonprimitive cached key adds no acquisition event or new coercion", async () => {
+  const input = fixture();
+  const operationKey = input.event.inputs.operation_key;
+  const key = {
+    toString: vi.fn(() => operationKey),
+    toJSON: vi.fn(() => operationKey),
+  };
+  Object.defineProperty(input.event.inputs, "operation_key", { value: key });
+  Object.defineProperty(input.state.operations[0], "key", { value: key });
+  const result = await markedAcquisitionFailure(
+    new Error("private failure"),
+    ["provider-review"],
+    input,
+  );
+  expect(result.exitCode).toBe(1);
+  expect(result.stderr).toEqual([
+    ['{"event":"catalog-preparation-stage-diagnostic","phase":"acquire-data"}'],
+  ]);
+  expect(key.toString).toHaveBeenCalledTimes(2);
+  expect(key.toJSON).toHaveBeenCalledOnce();
+});
+
+test("a later unmarked acquisition cannot inherit an earlier advisory boundary", async () => {
+  const input = fixture();
+  let calls = 0;
+  const acquire = vi
+    .spyOn(catalogPreparation, "acquireCatalogData")
+    .mockImplementation(async ({ options }) => {
+      calls++;
+      if (calls === 1) {
+        options?.onAcquisitionPhase?.("acquisition-output");
+        return {};
+      }
+      throw new Error("private later acquisition failure");
+    });
+  input.prepare.mockImplementation(async ({ acquire }) => {
+    const acquisitionInput = {
+      state: input.state,
+      operation: input.state.operations[0],
+    };
+    await acquire!(acquisitionInput);
+    await acquire!(acquisitionInput);
+    return null;
+  });
+  const stderr = vi.spyOn(console, "error").mockImplementation(() => {});
+  const directory = await mkdtemp(join(tmpdir(), "tavernary-prepared-cli-"));
+  try {
+    expect(
+      await runCatalogPreparationCli({ ...input, outputDirectory: directory }),
+    ).toBe(1);
+    expect(stderr.mock.calls).toEqual([
+      [
+        JSON.stringify({
+          event: "catalog-preparation-stage-diagnostic",
+          phase: "acquire-data",
+          operation_key: input.event.inputs.operation_key,
+        }),
+      ],
+    ]);
+  } finally {
+    stderr.mockRestore();
+    acquire.mockRestore();
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test.each(["getter", "call"] as const)(
+  "an acquisition stderr %s failure preserves original stdout and artifact bytes",
+  async (kind) => {
+    const input = fixture();
+    const acquire = vi
+      .spyOn(catalogPreparation, "acquireCatalogData")
+      .mockImplementation(async ({ options }) => {
+        options?.onAcquisitionPhase?.("provider-review");
+        throw new Error("private acquisition failure");
+      });
+    input.prepare.mockImplementation(async ({ acquire }) => {
+      await acquire!({
+        state: input.state,
+        operation: input.state.operations[0],
+      });
+      return null;
+    });
+    const descriptor = Object.getOwnPropertyDescriptor(console, "error")!;
+    const lines: string[] = [];
+    let sinkReads = 0;
+    Object.defineProperty(console, "error", {
+      configurable: true,
+      get() {
+        sinkReads++;
+        if (sinkReads === 2 && kind === "getter")
+          throw new Error("private sink getter");
+        return (line: string) => {
+          if (line.includes("catalog-preparation-acquisition-diagnostic"))
+            throw new Error("private sink call");
+          lines.push(line);
+        };
+      },
+    });
+    const directory = await mkdtemp(join(tmpdir(), "tavernary-prepared-cli-"));
+    try {
+      expect(
+        await runCatalogPreparationCli({
+          ...input,
+          outputDirectory: directory,
+        }),
+      ).toBe(1);
+      expect(sinkReads).toBe(2);
+      expect(lines).toEqual([
+        JSON.stringify({
+          event: "catalog-preparation-stage-diagnostic",
+          phase: "acquire-data",
+          operation_key: input.event.inputs.operation_key,
+        }),
+      ]);
+      expect(input.write.mock.calls).toEqual([
+        [
+          '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
+        ],
+      ]);
+      expect(await readFile(join(directory, "diagnostic.json"), "utf8")).toBe(
+        `{"schema_version":1,"operation_key":"${input.event.inputs.operation_key}","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}\n`,
+      );
+    } finally {
+      Object.defineProperty(console, "error", descriptor);
+      acquire.mockRestore();
+      await rm(directory, { recursive: true, force: true });
+    }
+  },
+);
+
+test("real advisory semantic rejection emits provider-output without typed provider logging", async () => {
+  const fixture = await acquisitionFixture();
+  const observe = vi
+    .spyOn(metadataPreparation, "observeMetadataSource")
+    .mockImplementation(fixture.observe);
+  let providerRequests = 0;
+  const provider = policyReviewProvider.createCatalogPolicyReviewProvider({
+    apiUrl: "https://provider.example/v1/chat/completions",
+    apiKey: "private-fixture-key",
+    model: "approved",
+    fetchImpl: async () => {
+      providerRequests++;
+      return new Response(
+        JSON.stringify({
+          model: "approved",
+          choices: [
+            {
+              message: {
+                content: JSON.stringify({
+                  status: "clear",
+                  category: "potential-other-catalog-policy-conflict",
+                  explanation: "private semantic inconsistency",
+                }),
+              },
+            },
+          ],
+        }),
+      );
+    },
+  });
+  const providerFactory = vi
+    .spyOn(policyReviewProvider, "createCatalogPolicyReviewProvider")
+    .mockReturnValue(provider);
+  const budgetLoader = vi
+    .spyOn(modelBudgetGithub, "loadProducerBudgetGuard")
+    .mockResolvedValue({ beforeRequest: () => {}, usage: () => [] });
+  const stderr = vi.spyOn(console, "error").mockImplementation(() => {});
+  const directory = await mkdtemp(join(tmpdir(), "tavernary-prepared-cli-"));
+  try {
+    expect(
+      await runCatalogPreparationCli({
+        ...fixture.input,
+        outputDirectory: directory,
+      }),
+    ).toBe(1);
+    expect(providerRequests).toBe(1);
+    expect(budgetLoader).toHaveBeenCalledOnce();
+    expect(stderr.mock.calls).toEqual([
+      [
+        JSON.stringify({
+          event: "catalog-preparation-stage-diagnostic",
+          phase: "acquire-data",
+          operation_key: fixture.operation.key,
+        }),
+      ],
+      [
+        JSON.stringify({
+          event: "catalog-preparation-acquisition-diagnostic",
+          phase: "provider-output",
+          operation_key: fixture.operation.key,
+        }),
+      ],
+    ]);
+    expect(fixture.input.write.mock.calls).toEqual([
+      [
+        '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
+      ],
+    ]);
+    expect(await readFile(join(directory, "diagnostic.json"), "utf8")).toBe(
+      `{"schema_version":1,"operation_key":"${fixture.operation.key}","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}\n`,
+    );
+  } finally {
+    observe.mockRestore();
+    providerFactory.mockRestore();
+    budgetLoader.mockRestore();
+    stderr.mockRestore();
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test.each(["source", "provider"] as const)(
+  "real metadata %s acquisition failures emit no advisory acquisition event",
+  async (boundary) => {
+    const { input, source, snapshot } = await acquisitionFixture("metadata");
+    const budgetLoader = vi
+      .spyOn(modelBudgetGithub, "loadProducerBudgetGuard")
+      .mockResolvedValue({ beforeRequest: () => {}, usage: () => [] });
+    const providerFactory = vi
+      .spyOn(metadataProvider, "createEnrichmentProvider")
+      .mockReturnValue({
+        generate: async () => {
+          throw new Error("private metadata provider failure");
+        },
+      });
+    const requests: string[] = [];
+    vi.stubGlobal("fetch", async (url: string | URL | Request) => {
+      requests.push(String(url));
+      if (boundary === "source")
+        return new Response("private source", { status: 422 });
+      const [owner, name] = source.repository.split("/");
+      return new Response(
+        JSON.stringify(
+          requests.length === 1
+            ? {
+                id: source.repository_id,
+                owner: { login: owner },
+                name,
+                private: false,
+              }
+            : {
+                type: "file",
+                encoding: "base64",
+                path: "README.md",
+                content: Buffer.from(
+                  "# Project\nLocal fixture readme",
+                ).toString("base64"),
+                sha: snapshot.repository.head_sha,
+              },
+        ),
+      );
+    });
+    const stderr = vi.spyOn(console, "error").mockImplementation(() => {});
+    const directory = await mkdtemp(join(tmpdir(), "tavernary-prepared-cli-"));
+    try {
+      expect(
+        await runCatalogPreparationCli({
+          ...input,
+          outputDirectory: directory,
+        }),
+      ).toBe(1);
+      expect(stderr.mock.calls).toEqual([
+        [
+          JSON.stringify({
+            event: "catalog-preparation-stage-diagnostic",
+            phase: "acquire-data",
+            operation_key: input.event.inputs.operation_key,
+          }),
+        ],
+      ]);
+      expect(requests).toHaveLength(boundary === "source" ? 1 : 2);
+      expect(budgetLoader).toHaveBeenCalledTimes(boundary === "source" ? 0 : 1);
+      expect(providerFactory).toHaveBeenCalledTimes(
+        boundary === "source" ? 0 : 1,
+      );
+      expect(input.write.mock.calls).toEqual([
+        [
+          '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
+        ],
+      ]);
+    } finally {
+      vi.unstubAllGlobals();
+      stderr.mockRestore();
+      budgetLoader.mockRestore();
+      providerFactory.mockRestore();
+      await rm(directory, { recursive: true, force: true });
+    }
+  },
+);
+
+test.each(["source-repository-request", "source-readme-request"] as const)(
+  "real advisory %s failures retain legacy bytes with distinct acquisition boundaries",
+  async (phase) => {
+    const budgetLoader = vi
+      .spyOn(modelBudgetGithub, "loadProducerBudgetGuard")
+      .mockRejectedValue(new Error("Unexpected budget load"));
+    const providerFactory = vi.spyOn(
+      policyReviewProvider,
+      "createCatalogPolicyReviewProvider",
+    );
+    const stderr = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const { input, source } = await acquisitionFixture();
+      const requests: string[] = [];
+      const fetchStub = vi.fn(async (url: string | URL | Request) => {
+        requests.push(String(url));
+        if (requests.length === 1 && phase === "source-readme-request") {
+          const [owner, name] = source.repository.split("/");
+          return new Response(
+            JSON.stringify({
+              id: source.repository_id,
+              owner: { login: owner },
+              name,
+              private: false,
+            }),
+          );
+        }
+        return new Response("private source response", { status: 422 });
+      });
+      vi.stubGlobal("fetch", fetchStub);
+      const directory = await mkdtemp(
+        join(tmpdir(), "tavernary-prepared-cli-"),
+      );
+      stderr.mockClear();
+      try {
+        expect(
+          await runCatalogPreparationCli({
+            ...input,
+            outputDirectory: directory,
+          }),
+        ).toBe(1);
+        expect(input.write.mock.calls).toEqual([
+          [
+            '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
+          ],
+        ]);
+        expect(await readdir(directory)).toEqual(["diagnostic.json"]);
+        expect(await readFile(join(directory, "diagnostic.json"), "utf8")).toBe(
+          `{"schema_version":1,"operation_key":"${input.event.inputs.operation_key}","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}\n`,
+        );
+        expect(requests).toHaveLength(
+          phase === "source-readme-request" ? 2 : 1,
+        );
+        expect(budgetLoader).not.toHaveBeenCalled();
+        expect(providerFactory).not.toHaveBeenCalled();
+        expect(stderr.mock.calls).toEqual([
+          [
+            JSON.stringify({
+              event: "catalog-preparation-stage-diagnostic",
+              phase: "acquire-data",
+              operation_key: input.event.inputs.operation_key,
+            }),
+          ],
+          [
+            JSON.stringify({
+              event: "catalog-preparation-acquisition-diagnostic",
+              phase,
+              operation_key: input.event.inputs.operation_key,
+            }),
+          ],
+        ]);
+      } finally {
+        await rm(directory, { recursive: true, force: true });
+      }
+    } finally {
+      vi.unstubAllGlobals();
+      stderr.mockRestore();
+      budgetLoader.mockRestore();
+      providerFactory.mockRestore();
+    }
+  },
+);
 test("unknown inventory and verified preparation failures retain identical legacy outcomes with distinct stages", async () => {
   const inventory = fixture();
   inventory.load.mockRejectedValue(new Error("secret inventory failure"));
@@ -148,8 +722,11 @@ test("the existing acquisition callback distinguishes rejection from real prepar
       if (phase === "acquire-data")
         acquire.mockRejectedValue(new Error("secret acquisition failure"));
       else
-        acquire.mockResolvedValue({
-          ".github/workflows/private.yml": "secret executable output",
+        acquire.mockImplementation(async ({ options }) => {
+          options?.onAcquisitionPhase?.("acquisition-output");
+          return {
+            ".github/workflows/private.yml": "secret executable output",
+          };
         });
       const directory = await mkdtemp(
         join(tmpdir(), "tavernary-prepared-cli-"),

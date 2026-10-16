@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { format } from "prettier";
+import { markAcquisitionPhase } from "./acquisition-phase.mjs";
 import { validateAutomationOperation } from "./operation.mjs";
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
 import { effectiveListingState } from "../../src/features/catalog/listing-state.mjs";
@@ -57,11 +58,8 @@ export function metadataOperationRecords({ state, operation }) {
   return { project, source, snapshot };
 }
 
-export async function observeMetadataSource({
-  state,
-  operation,
-  fetchImpl = fetch,
-}) {
+export async function observeMetadataSource(input) {
+  const { state, operation, fetchImpl = fetch } = input;
   const { project, source, snapshot } = metadataOperationRecords({
     state,
     operation,
@@ -73,16 +71,19 @@ export async function observeMetadataSource({
     snapshot,
     fetchImpl,
     policyVersion: operation.identity.policyVersion,
+    onAcquisitionPhase: (phase) => markAcquisitionPhase(input, phase),
   });
 }
-export async function observeProjectMetadataSource({
-  state,
-  project,
-  source,
-  snapshot,
-  fetchImpl = fetch,
-  policyVersion = CATALOG_POLICY_VERSION,
-}) {
+export async function observeProjectMetadataSource(input) {
+  const {
+    state,
+    project,
+    source,
+    snapshot,
+    fetchImpl = fetch,
+    policyVersion = CATALOG_POLICY_VERSION,
+  } = input;
+  markAcquisitionPhase(input, "source-setup");
   const vocabulary = JSON.parse(
     await readFile(resolve(state.root, "data/vocabularies/tags.json"), "utf8"),
   );
@@ -166,7 +167,9 @@ export async function observeProjectMetadataSource({
       if (reader) await reader.cancel().catch(() => {});
     }
   };
+  markAcquisitionPhase(input, "source-repository-request");
   const repository = await request(repositoryPath);
+  markAcquisitionPhase(input, "source-setup");
   if (
     repository?.id !== source.repository_id ||
     repository.private === true ||
@@ -177,17 +180,20 @@ export async function observeProjectMetadataSource({
   )
     throw unavailable("authorization-lost");
   let readmeRequestFailure;
+  markAcquisitionPhase(input, "source-readme-prepare");
   const loaded = await loadReadmeSource(source, snapshot, {
     validateSnapshot: createSnapshotValidator(schema),
     providers: {
       [source.type]: {
         readRootReadme: async () => {
           let result;
+          markAcquisitionPhase(input, "source-readme-request");
           try {
             result = await request(
               `${repositoryPath}/readme?ref=${snapshot.repository.head_sha}`,
               true,
             );
+            markAcquisitionPhase(input, "source-readme-prepare");
           } catch (error) {
             if (
               [
@@ -214,6 +220,7 @@ export async function observeProjectMetadataSource({
     if (readmeRequestFailure) throw readmeRequestFailure;
     throw unavailable(loaded.reasonCode);
   }
+  markAcquisitionPhase(input, "source-normalize");
   const loadedSource = {
     ...loaded,
     sourceIdentity: `${source.type}:${source.repository.toLowerCase()}`,
