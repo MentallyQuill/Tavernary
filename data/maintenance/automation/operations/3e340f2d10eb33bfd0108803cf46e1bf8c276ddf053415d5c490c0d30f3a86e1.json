@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3e340f2d10eb33bfd0108803cf46e1bf8c276ddf053415d5c490c0d30f3a86e1",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1204673207:lodactio-extension-summaryception",
+      "inputDigest": "bd7bf3505f73d82df514b3bb183a3bf480a30de880d01c2f0f6e4de31edd5468",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T12:58:07.477Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T12:43:07.477Z",
+  "completedAt": null
+}
