@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "42cd3855eca15071bb9c0652c185ded3b42272f89ff6c7ead372fd284167a44e",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1296928830:prolix-oc-lumiverse-xtimeline",
+      "inputDigest": "2ebf8786675a3e89723fd561e1c84715d34ee841baf3b097649cd3edf329ab8a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:45:15.484Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T14:30:15.484Z",
+  "completedAt": null
+}
