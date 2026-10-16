@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3e51ad951878cb7a0a0cd8d8d737e9ffcc32ec3aeb43feaa79171c9b011d9970",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1302699300:myrkr146-chronicle-sillytavern",
+      "inputDigest": "336d5a766ffaa5c18c7ba5bd7f8fdf0b39bf3f2f0cbe048ae2e60fbe5329f311",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T12:58:07.477Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T12:43:07.477Z",
+  "completedAt": null
+}
