@@ -63075,32 +63075,34 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "115c95a3cd2273d43dc5ea3cef76e75137792233",
         "report": {
-          "reportId": "2b4c6e6f27afb70bf4836c85fc920502bafe896e7a115f3e25752fe17ce534ad",
+          "reportId": "95420e50a14802878bb7ee2c28f1bdac77323d2ddc770bd7856b189f8df8f4e7",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
-          "minorCautions": 2,
+          "minorCautions": 4,
           "materialConcerns": 0,
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
           "citedFindingIds": [
+            "ac1028f4054f53913f272c3777367f55101398662f50f703f4a02beb68415bdf",
             "af7a7475ab74d54e8606e60ead72d1f22f3748a8f10e4a7d764dba8578f1e850",
-            "af8d225a69d1f6be14414110009ad6226ff45c7707ace90e78a820158161d159"
+            "af8d225a69d1f6be14414110009ad6226ff45c7707ace90e78a820158161d159",
+            "bdbbd90e55c5ae481167cc176154289cb45818e209337c19252b777e44f41981"
           ],
-          "scannedSha": "875efd20096b00a0a08c0b5650785aa6d283f8c6",
-          "treeUrl": "https://github.com/LordElMelonII/LoreStitch/tree/875efd20096b00a0a08c0b5650785aa6d283f8c6",
-          "scannedAt": "2026-10-02T10:19:35.276Z",
-          "assessedAt": "2026-10-02T10:22:01.850Z",
+          "scannedSha": "115c95a3cd2273d43dc5ea3cef76e75137792233",
+          "treeUrl": "https://github.com/LordElMelonII/LoreStitch/tree/115c95a3cd2273d43dc5ea3cef76e75137792233",
+          "scannedAt": "2026-10-09T10:21:59.002Z",
+          "assessedAt": "2026-10-16T14:13:26.465Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
           "synthesisModel": "deterministic-policy-v5",
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1370298869/875efd20096b00a0a08c0b5650785aa6d283f8c6/5/2b4c6e6f27afb70bf4836c85fc920502bafe896e7a115f3e25752fe17ce534ad/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1370298869/115c95a3cd2273d43dc5ea3cef76e75137792233/5/95420e50a14802878bb7ee2c28f1bdac77323d2ddc770bd7856b189f8df8f4e7/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1370298869/history/"
         },
         "history": [
@@ -63151,6 +63153,34 @@
             "dangerBasis": "none",
             "assessmentSource": "deterministic_regrade",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1370298869/875efd20096b00a0a08c0b5650785aa6d283f8c6/5/2b4c6e6f27afb70bf4836c85fc920502bafe896e7a115f3e25752fe17ce534ad/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1370298869/history/"
+          },
+          {
+            "reportId": "95420e50a14802878bb7ee2c28f1bdac77323d2ddc770bd7856b189f8df8f4e7",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 4,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "ac1028f4054f53913f272c3777367f55101398662f50f703f4a02beb68415bdf",
+              "af7a7475ab74d54e8606e60ead72d1f22f3748a8f10e4a7d764dba8578f1e850",
+              "af8d225a69d1f6be14414110009ad6226ff45c7707ace90e78a820158161d159",
+              "bdbbd90e55c5ae481167cc176154289cb45818e209337c19252b777e44f41981"
+            ],
+            "scannedSha": "115c95a3cd2273d43dc5ea3cef76e75137792233",
+            "treeUrl": "https://github.com/LordElMelonII/LoreStitch/tree/115c95a3cd2273d43dc5ea3cef76e75137792233",
+            "scannedAt": "2026-10-09T10:21:59.002Z",
+            "assessedAt": "2026-10-16T14:13:26.465Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1370298869/115c95a3cd2273d43dc5ea3cef76e75137792233/5/95420e50a14802878bb7ee2c28f1bdac77323d2ddc770bd7856b189f8df8f4e7/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1370298869/history/"
           }
         ],
