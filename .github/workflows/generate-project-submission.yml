@@ -1,7 +1,7 @@
 name: "Project submissions: Create review PR"
 run-name: >-
   ${{ inputs.operation_key
-    && (inputs.request_run_id
+    && (inputs.request_run_id > 0
         && format('Automation prepare {0} request{1}', inputs.operation_key, inputs.request_run_id)
         || format('Automation prepare {0}', inputs.operation_key))
     || format('Project #{0}: Request review PR force={1}', inputs.issue_number, inputs.force_regeneration) }}
