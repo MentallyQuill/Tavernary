@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4501127a4cf0f4c1a40d3dafa280440ccd94b8328fdafbf0c2d842a804c0abda",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1190858079:archkr-lumiverse-lumiweather",
+      "inputDigest": "02b4cfc412afce9b586b3fe5d7101e9308111835acb1336fef626b5b23047319",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:54:50.169Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T14:39:50.169Z",
+  "completedAt": null
+}
