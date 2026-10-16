@@ -10,7 +10,10 @@ import {
   acquireCatalogData,
 } from "./catalog-preparation.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
-import { githubFailureStatus } from "./github-inventory.mjs";
+import {
+  GithubInventoryUnavailableError,
+  githubFailureStatus,
+} from "./github-inventory.mjs";
 import { loadProducerBudgetGuard } from "./model-budget-github.mjs";
 import { validateModelUsageEvidence } from "./model-budget.mjs";
 import { isAcquisitionPhase } from "./acquisition-phase.mjs";
@@ -227,11 +230,17 @@ export async function runCatalogPreparationCli(options = {}) {
     );
     return 0;
   } catch (error) {
-    const providerCode = error?.code;
-    const failure = classifyAutomationFailure({
-      diagnosticCode: providerCode,
-      httpStatus: githubFailureStatus(error),
-    });
+    const inventoryUnavailable =
+      error instanceof GithubInventoryUnavailableError;
+    const providerCode = inventoryUnavailable
+      ? "github-inventory-unavailable"
+      : error?.code;
+    const failure = inventoryUnavailable
+      ? { kind: "transient", reasonCode: "github-inventory-unavailable" }
+      : classifyAutomationFailure({
+          diagnosticCode: providerCode,
+          httpStatus: githubFailureStatus(error),
+        });
     if (producerContextVerified)
       logSafeProviderDiagnostic(error, providerCode, operationKey);
     if (stageDiagnosticsEnabled && failure.kind === "unknown")

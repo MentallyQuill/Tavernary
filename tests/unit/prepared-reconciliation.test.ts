@@ -364,6 +364,65 @@ test("scheduled recovery submits compatible handoffs as one bounded publication 
   expect(input.publish).toHaveBeenCalledTimes(1);
   expect(input.publish.mock.calls[0][0]).toHaveLength(2);
 });
+
+test("prepared reconciliation honors protected wake rank and inspects each admitted exact key once", async () => {
+  const input = fixture();
+  const original = input.state.operations[0];
+  const background = operationFixture({
+    identity: { ...original.identity, subject: "source:github-101" },
+    createdAt: "2026-10-01T00:00:00.000Z",
+  });
+  const kit = operationFixture({
+    identity: { ...original.identity, kind: "kit", subject: "issue:102" },
+    createdAt: "2026-10-02T00:00:00.000Z",
+  });
+  const report = operationFixture({
+    identity: {
+      ...original.identity,
+      kind: "report-import",
+      subject: "report:103",
+    },
+    createdAt: "2026-10-03T00:00:00.000Z",
+  });
+  const template = input.state.remote.runs[0];
+  input.state.operations = [background, kit, report];
+  input.state.remote.runs = [
+    {
+      ...template,
+      id: 701,
+      display_title: `Automation prepare ${background.key}`,
+    },
+    {
+      ...template,
+      id: 702,
+      path: ".github/workflows/apply-kit-submission.yml",
+      display_title: `Automation prepare ${kit.key}`,
+    },
+    {
+      ...template,
+      id: 703,
+      path: ".github/workflows/import-tavernkeeper-reports.yml",
+      display_title: `Automation prepare ${report.key}`,
+    },
+  ];
+  const inspected: string[] = [];
+  const result = await reconcilePreparedOperations({
+    ...input,
+    limit: 2,
+    priorityKeys: [report.key, kit.key],
+    hasResult: async (wake) => {
+      inspected.push(wake.operationKey);
+      return true;
+    },
+  });
+  expect(inspected).toEqual([report.key, kit.key]);
+  expect(result.consumedKeys).toEqual([report.key, kit.key]);
+  expect(input.publish).toHaveBeenCalledOnce();
+  expect(input.publish).toHaveBeenCalledWith([
+    { operationKey: report.key, runId: 703 },
+    { operationKey: kit.key, runId: 702 },
+  ]);
+});
 test("a completed preparation with no artifact cannot count as publication or block ordinary due work", async () => {
   const input = fixture();
   input.hasResult.mockResolvedValue(false);

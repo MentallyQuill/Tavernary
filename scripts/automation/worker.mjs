@@ -5,7 +5,10 @@ import {
   loadAutomationInventory,
   discoverAutomationState,
 } from "./inventory.mjs";
-import { assertTrustedAutomationContext } from "./github-inventory.mjs";
+import {
+  GithubInventoryUnavailableError,
+  assertTrustedAutomationContext,
+} from "./github-inventory.mjs";
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
 import { isReportNarrativeRetry } from "./report-operations.mjs";
@@ -171,45 +174,58 @@ export async function loadAutomationWorkerOperations({
   return operations;
 }
 
-async function main() {
-  const env = process.env;
+export async function runAutomationWorkerCli(options = {}) {
+  const env = options.env ?? process.env;
+  const gh = options.gh ?? executeGh;
+  const write = options.write ?? console.log;
   const repository = env.GITHUB_REPOSITORY;
-  const event = JSON.parse(await readFile(env.GITHUB_EVENT_PATH, "utf8"));
+  const event =
+    options.event ?? JSON.parse(await readFile(env.GITHUB_EVENT_PATH, "utf8"));
   assertTrustedAutomationContext(env, repository, event);
   try {
     const operations = await loadAutomationWorkerOperations({
       operationKey: env.OPERATION_KEY,
       runId: Number(env.GITHUB_RUN_ID),
-      load: (finalizationOperationKey) =>
-        loadAutomationInventory({
-          root: process.cwd(),
-          gh: executeGh,
-          repository,
-          publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
-          nowMs: Date.now(),
-          finalizationOperationKey,
-        }),
+      load:
+        options.load ??
+        ((finalizationOperationKey) =>
+          loadAutomationInventory({
+            root: process.cwd(),
+            gh,
+            repository,
+            publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
+            nowMs: Date.now(),
+            finalizationOperationKey,
+          })),
     });
     const result = await runAutomationWorker({
       operationKey: env.OPERATION_KEY,
       load: async () => operations,
-      gh: executeGh,
+      gh,
       repository,
     });
-    console.log(JSON.stringify(result));
+    write(JSON.stringify(result));
+    return 0;
   } catch (error) {
-    const failure = classifyAutomationFailure({
-      diagnosticCode: error?.code,
-      httpStatus: error?.status,
-    });
+    const failure =
+      error instanceof GithubInventoryUnavailableError
+        ? { kind: "transient", reasonCode: "github-inventory-unavailable" }
+        : classifyAutomationFailure({
+            diagnosticCode: error?.code,
+            httpStatus: error?.status,
+          });
     if (env.AUTOMATION_DIAGNOSTIC_PATH)
       await writeFile(
         env.AUTOMATION_DIAGNOSTIC_PATH,
         `${JSON.stringify({ schema_version: 1, operation_key: env.OPERATION_KEY, failure })}\n`,
       );
     console.error(JSON.stringify({ status: "unavailable", failure }));
-    process.exitCode = 1;
+    return 1;
   }
+}
+async function main() {
+  const exitCode = await runAutomationWorkerCli();
+  if (exitCode) process.exitCode = exitCode;
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href)
   await main();

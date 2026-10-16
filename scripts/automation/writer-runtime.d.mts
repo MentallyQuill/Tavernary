@@ -171,6 +171,15 @@ export function runPreparedWriterPublication(input: {
   env?: Record<string, string | undefined>;
   gh?: GhRunner;
 }): Promise<PublicationResult>;
+export function selectWriterAdmissionReservations(
+  operations: import("./operation.mjs").AutomationOperation[],
+  options: {
+    nowMs: number;
+    limit: number;
+    consumedKeys?: readonly string[];
+    consumedSubjects?: readonly string[];
+  },
+): import("./operation.mjs").AutomationOperation[];
 export function runAutomationWriterReconciliation(input?: {
   root?: string;
   env?: Record<string, string | undefined>;
@@ -183,6 +192,12 @@ export function runAutomationWriterReconciliation(input?: {
     >,
   ) => Promise<AutomationInventoryState | null>;
   finalize?: ReconciliationInput["finalize"];
+  earlyPhases?: {
+    loadEnrichmentRequest?: typeof import("./enrichment-owner-request.mjs").loadLatestEnrichmentOwnerRequest;
+    admitEnrichment?: typeof runEnrichmentOwnerWriter;
+    settleGeneration?: typeof reconcileGenerationModelUsage;
+    reconcileOwnerRequests?: typeof reconcileGenerationOwnerRequests;
+  };
 }): Promise<Record<string, unknown>>;
 export function runPreparedWriterBatch(input: {
   wakes: { operationKey: string; runId: number }[];

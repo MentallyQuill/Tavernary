@@ -8,6 +8,7 @@ export async function reconcilePreparedOperations({
   readDiagnosticEvidence,
   isDiagnosticObsolete,
   limit = 20,
+  priorityKeys,
 }) {
   const wakes = selectPreparedWakes({
     runs: state.remote.runs,
@@ -17,6 +18,7 @@ export async function reconcilePreparedOperations({
     limit,
     nowMs: state.nowMs,
     includeDiagnostics: true,
+    priorityKeys,
   });
   const result = { published: 0, recovered: 0, failures: 0, consumedKeys: [] };
   const ready = [];

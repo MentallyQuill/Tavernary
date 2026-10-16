@@ -112,8 +112,42 @@ test("authorized apply executes the production controller and keeps unsafe error
 });
 
 test("the CLI rejects unknown arguments and limits above twenty", async () => {
-  for (const args of [["--unknown"], ["--limit", "21"]])
+  for (const args of [
+    ["--unknown"],
+    ["--limit", "21"],
+    ["--admission-plan", "{}"],
+  ])
     expect(await runReconcileAutomationCli({ args, write: () => {} })).toBe(1);
+});
+
+test("the real CLI applies internal admission membership and rank without a CLI flag", async () => {
+  const outside = operationFixture();
+  const first = operationFixture({
+    identity: { ...outside.identity, subject: "issue:first-member" },
+    createdAt: "2026-10-07T11:59:00.000Z",
+  });
+  const second = operationFixture({
+    identity: { ...outside.identity, subject: "issue:second-member" },
+    createdAt: "2026-10-07T11:59:30.000Z",
+  });
+  const output: string[] = [];
+  const code = await runReconcileAutomationCli({
+    args: ["--limit", "2"],
+    inventory: async () => [outside, first, second],
+    admissionPlan: {
+      admissionKeys: [first.key, second.key],
+      orderedKeys: [second.key, first.key],
+      consumedKeys: [],
+      consumedSubjects: [],
+    },
+    write: (value) => output.push(value),
+  });
+  expect(code).toBe(0);
+  expect(JSON.parse(output[0])).toMatchObject({
+    dryRun: true,
+    selectedKeys: [second.key, first.key],
+    waiting: 1,
+  });
 });
 
 test("privileged controller execution cannot bypass the serialized writer", async () => {

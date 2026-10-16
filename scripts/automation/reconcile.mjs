@@ -7,14 +7,75 @@ import { classifyAutomationFailure } from "./failure.mjs";
 import { planAutomationRetry } from "./retry.mjs";
 import { githubFailureStatus } from "./github-inventory.mjs";
 
+function validateAdmissionPlan(plan, operations, limit) {
+  if (
+    !plan ||
+    typeof plan !== "object" ||
+    ![plan.admissionKeys, plan.orderedKeys, plan.consumedKeys].every(
+      (keys) =>
+        Array.isArray(keys) &&
+        Array.from(keys).every(
+          (key) => typeof key === "string" && /^[a-f0-9]{64}$/.test(key),
+        ) &&
+        new Set(keys).size === keys.length,
+    ) ||
+    !Array.isArray(plan.consumedSubjects) ||
+    !Array.from(plan.consumedSubjects).every(
+      (subject) =>
+        typeof subject === "string" &&
+        /^(issue|source|report|revision|dependency|runtime|maintenance):[A-Za-z0-9][A-Za-z0-9._:-]{0,199}$/.test(
+          subject,
+        ),
+    ) ||
+    plan.admissionKeys.length > Math.min(limit, 20) ||
+    plan.orderedKeys.length !== plan.admissionKeys.length
+  )
+    throw new Error("Reconciliation admission plan is invalid.");
+  const inventoryKeys = new Set(operations.map((operation) => operation.key));
+  const admissionKeys = new Set(plan.admissionKeys);
+  if (
+    !plan.admissionKeys.every((key) => inventoryKeys.has(key)) ||
+    !plan.orderedKeys.every((key) => admissionKeys.has(key))
+  )
+    throw new Error("Reconciliation admission plan is invalid.");
+  return plan;
+}
+
 export async function reconcileAutomation(input) {
   if (!Number.isFinite(input.nowMs))
     throw new Error("Reconciliation clock is invalid.");
   const operations = await input.inventory();
-  const selected = selectDueOperations(operations, {
-    nowMs: input.nowMs,
-    limit: input.limit ?? 20,
-  });
+  const admissionPlan =
+    input.admissionPlan === undefined
+      ? null
+      : validateAdmissionPlan(
+          input.admissionPlan,
+          operations.map(validateAutomationOperation),
+          input.limit ?? 20,
+        );
+  const admissionKeys = admissionPlan && new Set(admissionPlan.admissionKeys);
+  const consumedKeys = new Set(admissionPlan?.consumedKeys ?? []);
+  const consumedSubjects = new Set(admissionPlan?.consumedSubjects ?? []);
+  const selected = selectDueOperations(
+    admissionPlan
+      ? operations.filter(
+          (operation) =>
+            admissionKeys.has(operation.key) &&
+            !consumedKeys.has(operation.key) &&
+            !consumedSubjects.has(operation.identity.subject),
+        )
+      : operations,
+    {
+      nowMs: input.nowMs,
+      limit: input.limit ?? 20,
+    },
+  );
+  if (admissionPlan) {
+    const ranks = new Map(
+      admissionPlan.orderedKeys.map((key, index) => [key, index]),
+    );
+    selected.sort((left, right) => ranks.get(left.key) - ranks.get(right.key));
+  }
   const result = {
     dispatched: 0,
     waiting: 0,
@@ -64,6 +125,8 @@ export async function reconcileAutomation(input) {
     if (
       observationSlots > 0 &&
       !selected.includes(operation) &&
+      !consumedKeys.has(operation.key) &&
+      !consumedSubjects.has(operation.identity.subject) &&
       peers.every(
         (peer) => JSON.stringify(peer) === JSON.stringify(operation),
       ) &&

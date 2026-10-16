@@ -119,9 +119,25 @@ export function selectPreparedWakes({
   limit = 20,
   nowMs = Date.now(),
   includeDiagnostics = false,
+  priorityKeys,
 }) {
   if (!Number.isSafeInteger(limit) || limit < 0 || limit > 20)
     throw new Error("Prepared wake quota is invalid.");
+  if (
+    priorityKeys !== undefined &&
+    (!Array.isArray(priorityKeys) || priorityKeys.length > 20)
+  )
+    throw new Error("Prepared wake priority keys are invalid.");
+  const priorityRank = new Map();
+  for (const key of priorityKeys ?? []) {
+    if (
+      typeof key !== "string" ||
+      !/^[a-f0-9]{64}$/u.test(key) ||
+      priorityRank.has(key)
+    )
+      throw new Error("Prepared wake priority keys are invalid.");
+    priorityRank.set(key, priorityRank.size);
+  }
   operations.forEach(validateAutomationOperation);
   const current = new Map(
     selectDueOperations(operations, { nowMs, limit: 20 })
@@ -161,11 +177,13 @@ export function selectPreparedWakes({
   }
   return [...selected.values()]
     .sort(
-      (a, b) =>
+      (left, right) =>
+        (priorityRank.get(left.operationKey) ?? priorityRank.size) -
+          (priorityRank.get(right.operationKey) ?? priorityRank.size) ||
         current
-          .get(a.operationKey)
-          .createdAt.localeCompare(current.get(b.operationKey).createdAt) ||
-        a.operationKey.localeCompare(b.operationKey),
+          .get(left.operationKey)
+          .createdAt.localeCompare(current.get(right.operationKey).createdAt) ||
+        left.operationKey.localeCompare(right.operationKey),
     )
     .slice(0, limit);
 }

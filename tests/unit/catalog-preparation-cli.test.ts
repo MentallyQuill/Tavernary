@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { expect, test, vi } from "vitest";
 import { runCatalogPreparationCli } from "../../scripts/automation/catalog-preparation-cli.mjs";
+import { GithubInventoryUnavailableError } from "../../scripts/automation/github-inventory.mjs";
 import { EnrichmentProviderError } from "../../scripts/catalog/enrichment-provider.mjs";
 import {
   preparedResultFixture,
@@ -83,6 +84,52 @@ async function failedPreparation(error: unknown, input = fixture()) {
     await rm(directory, { recursive: true, force: true });
   }
 }
+test.each([false, true])(
+  "a branded catalog inventory preflight emits the fixed transient v1 diagnostic and stays failed (unreadable=%s)",
+  async (unreadable) => {
+    const input = fixture();
+    const error = new GithubInventoryUnavailableError();
+    if (unreadable)
+      Object.defineProperty(error, "code", {
+        get() {
+          throw new Error("Unexpected branded error read");
+        },
+      });
+    input.load.mockRejectedValue(error);
+    const budget = vi.spyOn(modelBudgetGithub, "loadProducerBudgetGuard");
+    try {
+      const result = await failedPreparation(
+        new Error("Unexpected preparation"),
+        input,
+      );
+      expect(result.exitCode).toBe(1);
+      expect(result.files).toEqual(["diagnostic.json"]);
+      expect(JSON.parse(result.diagnostic!)).toEqual({
+        schema_version: 1,
+        operation_key: input.event.inputs.operation_key,
+        failure: {
+          kind: "transient",
+          reasonCode: "github-inventory-unavailable",
+        },
+      });
+      expect(input.prepare).not.toHaveBeenCalled();
+      expect(budget).not.toHaveBeenCalled();
+      expect(result.stdout).toEqual([
+        [
+          JSON.stringify({
+            status: "unavailable",
+            failure: {
+              kind: "transient",
+              reasonCode: "github-inventory-unavailable",
+            },
+          }),
+        ],
+      ]);
+    } finally {
+      budget.mockRestore();
+    }
+  },
+);
 function preparationStage(operationKey: string) {
   return [
     JSON.stringify({

@@ -8,6 +8,7 @@ export function reconcilePreparedOperations(input: {
   hasResult: (wake: PreparedWake) => Promise<boolean>;
   publish: (wakes: PreparedWake[]) => Promise<PublicationResult>;
   limit?: number;
+  priorityKeys?: readonly string[];
   readDiagnostic?: (wake: PreparedWake) => Promise<AutomationFailure>;
   readDiagnosticEvidence?: (
     wake: PreparedWake,
