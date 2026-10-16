@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3caa959984daa7e114ab4675358827a9f9f2fed53d0585880146022b595d7c2a",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1087458216:archkr-sillytavern-outfitswitch",
+      "inputDigest": "3a0be41f3ed1fd226665e046d1187ac4aa06bd733521e49d1ef3d0c673d6caf4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T12:58:07.477Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T12:43:07.477Z",
+  "completedAt": null
+}
