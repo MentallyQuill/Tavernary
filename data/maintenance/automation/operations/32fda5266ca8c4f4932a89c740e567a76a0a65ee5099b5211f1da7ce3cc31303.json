@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "32fda5266ca8c4f4932a89c740e567a76a0a65ee5099b5211f1da7ce3cc31303",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1147155100:rurijian-deep-swipe",
+      "inputDigest": "33752bc112c557f6c5fcc538b702ee20bb55a1d635a3df9ad299b593690ac4b3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T07:10:25.314Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T06:55:25.314Z",
+  "completedAt": null
+}
