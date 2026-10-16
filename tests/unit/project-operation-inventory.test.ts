@@ -5,7 +5,10 @@ import {
   receiptFixture,
 } from "../helpers/automation-fixtures";
 import { AUTOMATION_NOW } from "../helpers/automation-fixtures";
-import { validateAutomationOperation } from "../../scripts/automation/operation.mjs";
+import {
+  selectDueOperations,
+  validateAutomationOperation,
+} from "../../scripts/automation/operation.mjs";
 
 test("verified merged projects remain finalized on later ticks only while public proof covers their revision", () => {
   const input = projectInventoryFixture({
@@ -221,6 +224,10 @@ test("a generation that succeeds without creating its PR retries the unavailable
   input.receipts = [
     receiptFixture({ operation: { ...operation, workerRunId: 700 } }),
   ];
+  const retainedBytes = JSON.stringify({
+    receipts: input.receipts,
+    runs: input.runs,
+  });
   const waiting = discoverProjectOperations(input)[0];
   expect(waiting.nextEligibleAt).toBe(
     new Date(AUTOMATION_NOW + 14 * 60_000).toISOString(),
@@ -235,9 +242,20 @@ test("a generation that succeeds without creating its PR retries the unavailable
     transientAttempts: 0,
     immediateAttempts: 0,
   });
-  expect(Date.parse(probe.nextEligibleAt!)).toBeGreaterThan(input.nowMs);
-  expect(Date.parse(probe.nextEligibleAt!)).toBeLessThanOrEqual(
-    input.nowMs + 86_400_000,
+  const eligibleAt = Date.parse(probe.nextEligibleAt!);
+  const graceAt = AUTOMATION_NOW + 14 * 60_000;
+  expect(eligibleAt).toBeGreaterThanOrEqual(graceAt + 300_000);
+  expect(eligibleAt).toBeLessThanOrEqual(graceAt + 330_000);
+  expect(selectDueOperations([probe], { nowMs: eligibleAt - 1 })).toEqual([]);
+  expect(selectDueOperations([probe], { nowMs: eligibleAt })).toEqual([probe]);
+  const observedAgain = discoverProjectOperations({
+    ...input,
+    nowMs: input.nowMs + 86_400_001,
+  })[0];
+  expect(observedAgain.retry).toEqual(probe.retry);
+  expect(observedAgain.nextEligibleAt).toBe(probe.nextEligibleAt);
+  expect(JSON.stringify({ receipts: input.receipts, runs: input.runs })).toBe(
+    retainedBytes,
   );
 });
 
