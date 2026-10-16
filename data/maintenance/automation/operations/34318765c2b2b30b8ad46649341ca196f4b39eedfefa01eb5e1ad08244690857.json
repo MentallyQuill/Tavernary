@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "34318765c2b2b30b8ad46649341ca196f4b39eedfefa01eb5e1ad08244690857",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1174672121:sillyanonymous-sillytavern-ui-shortcuts",
+      "inputDigest": "1d6ad384beafd924dbcb7f0a660117ce3557e28975e53c861840ad5008c97db5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T07:10:25.314Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T06:55:25.314Z",
+  "completedAt": null
+}
