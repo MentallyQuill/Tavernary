@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "40ac9db960ca4ff7ba6782f2772f178654546b9887ffa7257d13e680bd56f3c9",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1131052854:haide-d-sillytavern-echocore",
+      "inputDigest": "34df76660244538d96b6aaf9d6e66be124b96c773e513467337fb0b1749fb0d3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:45:15.484Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T14:30:15.484Z",
+  "completedAt": null
+}
