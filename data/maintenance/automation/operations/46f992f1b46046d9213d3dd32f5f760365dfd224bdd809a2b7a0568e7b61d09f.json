@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "46f992f1b46046d9213d3dd32f5f760365dfd224bdd809a2b7a0568e7b61d09f",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1116087330:bf-gith-bf-ooc-injection",
+      "inputDigest": "647706ee695bd72c4479a3743e47ab09ca05810beb7edd86794e7329384f9b66",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T15:59:03.107Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T15:44:03.107Z",
+  "completedAt": null
+}
