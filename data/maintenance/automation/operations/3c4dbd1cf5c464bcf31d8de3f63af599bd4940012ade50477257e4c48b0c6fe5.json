@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3c4dbd1cf5c464bcf31d8de3f63af599bd4940012ade50477257e4c48b0c6fe5",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1257302750:devemberteam-ops-pyre",
+      "inputDigest": "7f0d72ba8c37a4c1d4f801e060b8ad6d81bb1d086dc22a1e7e45e7c211c94e53",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T12:58:07.477Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T12:43:07.477Z",
+  "completedAt": null
+}
