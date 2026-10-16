@@ -41437,8 +41437,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "f87151f003bd9e24790fc423d9dd112d963632e6",
+        "freshness": "stale",
+        "currentSha": "37d76c84436d0c374ee841a285cc28be7c9aec5e",
         "report": {
           "reportId": "7d6a669b9d2e8b1ae8d2bbfcbabd6e3a063e9125da640e4dc863645f23f9ceb1",
           "riskLevel": "low",
@@ -41815,7 +41815,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-16T06:53:30.441Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
