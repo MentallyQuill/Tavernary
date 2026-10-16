@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "34cd23db8bcef4a1c885baf8336c33e5135203d40f8e5d1d45e5996a460c709b",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1186081011:zapoverde-sillytavern-canonize",
+      "inputDigest": "858a7c8bd4fae9a77ace9db9c7fa639169ebc628f4d2bb359de070663a79a79b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T09:11:09.275Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T08:56:09.275Z",
+  "completedAt": null
+}
