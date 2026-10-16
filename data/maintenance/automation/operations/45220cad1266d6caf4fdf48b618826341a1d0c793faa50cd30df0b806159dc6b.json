@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "45220cad1266d6caf4fdf48b618826341a1d0c793faa50cd30df0b806159dc6b",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1063754811:kawaii-wolf-sillytavern-evenmoreflexiblecontinues",
+      "inputDigest": "51ac5318096fb853c7bd7a171ce7e43793da64c50c5401ce86d0b225e9f8c378",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:54:50.169Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T14:39:50.169Z",
+  "completedAt": null
+}
