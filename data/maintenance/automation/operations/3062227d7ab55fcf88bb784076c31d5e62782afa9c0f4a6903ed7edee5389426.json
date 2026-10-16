@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3062227d7ab55fcf88bb784076c31d5e62782afa9c0f4a6903ed7edee5389426",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-692674090:vegu-ai-talemate",
+      "inputDigest": "eae4275911393658de8cb9fd78819e3beebe3f15f225934ce4fd1a0e98d62249",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T07:10:25.314Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T06:55:25.314Z",
+  "completedAt": null
+}

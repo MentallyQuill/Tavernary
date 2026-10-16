@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "330dcf20ed463fb9cf4516c72f3a7b578a167af9523256016161704b0040eebd",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1268032451:zapoverde-sillytavern-triggeryze",
+      "inputDigest": "b155fda3807a66460c51faf3d9b5ee1c311d2ae17c536e3cd56acd092e448eb3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T07:10:25.314Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T06:55:25.314Z",
+  "completedAt": null
+}
