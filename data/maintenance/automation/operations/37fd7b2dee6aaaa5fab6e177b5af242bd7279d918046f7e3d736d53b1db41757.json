@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "37fd7b2dee6aaaa5fab6e177b5af242bd7279d918046f7e3d736d53b1db41757",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1375527477:diamond-shark-art-sillytavern-castkeeper",
+      "inputDigest": "f6f3079009fd258c3a9f99c19ef180e507ee0472368aef907c99f7fd131213b5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T15:59:03.107Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T15:44:03.107Z",
+  "completedAt": null
+}
