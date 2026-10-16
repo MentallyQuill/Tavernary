@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3e6394d3b6b5290e462e55e4f6f5c82846629d6f95ae2a2ffd906fced5d136ac",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1268616226:extensionmuncher-memoryloom",
+      "inputDigest": "200346c5d008db50723f63f2dc08c45145f3862c2a60a22b48a32f19b7f14f94",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T12:58:07.477Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T12:43:07.477Z",
+  "completedAt": null
+}
