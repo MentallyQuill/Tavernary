@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "400c4c52f4a454f79336fb99cc3663d0a43e9475ce15c6d4001cf1b001ed1a97",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1260345718:syfr512-sweetrolllm",
+      "inputDigest": "34f9c253d259a1ceadc1776616247be60ab45b322e42d136c023bf864226d59e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:45:15.484Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T14:30:15.484Z",
+  "completedAt": null
+}
