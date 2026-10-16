@@ -36,7 +36,7 @@ export function createCatalogPolicyReviewProvider(configuration) {
   const transport = createStructuredProviderTransport(configuration);
   return {
     async review(input) {
-      return transport.request({
+      const response = await transport.request({
         model: transport.configuration.model,
         temperature: 0,
         messages: [
@@ -62,6 +62,7 @@ export function createCatalogPolicyReviewProvider(configuration) {
           },
         },
       });
+      return response.output;
     },
   };
 }
