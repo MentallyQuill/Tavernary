@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "38a744b4f2a0ca687da2e0353a93b4192edae91bd91c01b06cf64dd85ea61ad2",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-983108844:inspectorcaracal-sillytavern-rememory",
+      "inputDigest": "73340ded75be5c7dbc3051b0819c0b81856d8c5de5d49302f60db9d157a9608d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T12:58:07.477Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T12:43:07.477Z",
+  "completedAt": null
+}
