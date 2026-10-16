@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "301361a4010e9c0c455d4c034de7b6e129c65eb9d9a81a8db45030587ffa24e3",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1317590696:i5031337-sillytavern-contextual-scene-painter",
+      "inputDigest": "3aa1beafa0ed810a465edfe194311b29d05d6db1e22ded9c174bb73c25292fa3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T07:10:25.314Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T06:55:25.314Z",
+  "completedAt": null
+}
