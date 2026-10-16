@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "47b8983389484cb172f5f503b9821bad062b639e750382e1e2ccd6169531a6e7",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1275541730:nattaphat010447-nutho-autocloser",
+      "inputDigest": "f7876723b4487a263a119ab0b0ca25bc1ecca29c63928ea5f0887f4a3f1203ae",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T15:59:03.107Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-16T15:44:03.107Z",
+  "completedAt": null
+}
