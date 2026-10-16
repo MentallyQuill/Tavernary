@@ -9,18 +9,23 @@
     "url": "https://github.com/serioos/Gallery-Plus-Plus",
     "description": "A community fork of SillyTavern's Gallery extension with left/right click image placement and optimizations. The UI layers over the gallery and its pictures now and the page flipping is much faster with no spills or losing the pagination to the spill if the pictures are have too many long dimensions.",
     "default_branch": "main",
-    "head_sha": "85cebef9a1f7c43e51df04fefdd9e7d411d35279",
-    "head_committed_at": "2026-09-30T19:31:32.000Z",
+    "head_sha": "5d9b2e4f8516f419662f78cab1c80c696ed92076",
+    "head_committed_at": "2026-10-16T08:53:14.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-30T18:31:26.000Z",
-    "size_kb": 187
+    "size_kb": 349
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-30T19:31:32.000Z",
+    "latest_source_activity_at": "2026-10-16T08:53:14.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-16T08:53:14.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-28",
         "latest_at": "2026-09-30T19:31:32.000Z",
@@ -30,9 +35,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-30T19:46:28.216Z",
+    "baseline_completed_at": "2026-10-16T12:33:53.275Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "85cebef9a1f7c43e51df04fefdd9e7d411d35279"
+    "evidence_head_sha": "5d9b2e4f8516f419662f78cab1c80c696ed92076"
   },
   "community": {
     "stars_count": 0,
@@ -45,7 +50,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-16T12:35:50.021Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -53,7 +58,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-16T12:33:53.275Z",
     "stale_since": null
   }
 }
