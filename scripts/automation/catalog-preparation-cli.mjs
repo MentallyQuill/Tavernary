@@ -1,6 +1,7 @@
 import { readFile, writeFile, mkdir, appendFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { EnrichmentProviderError } from "../catalog/enrichment-provider.mjs";
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 import { loadAutomationInventory } from "./inventory.mjs";
 import {
@@ -13,6 +14,50 @@ import { githubFailureStatus } from "./github-inventory.mjs";
 import { loadProducerBudgetGuard } from "./model-budget-github.mjs";
 import { validateModelUsageEvidence } from "./model-budget.mjs";
 
+const safeProviderDetails = {
+  "provider-timeout": [],
+  "provider-rate-limited": [],
+  "provider-server-error": [],
+  "provider-authentication-failed": ["http-401", "http-403"],
+  "provider-request-failed": ["unsupported_value:temperature"],
+  "provider-network-error": [],
+  "provider-response-invalid": [
+    "tool-calls-present",
+    "content-parts-invalid",
+    "content-missing",
+    "json-invalid",
+    "json-not-object",
+    "json-schema-invalid",
+    "response-too-large",
+    "provider-envelope-invalid",
+  ],
+  "provider-model-mismatch": [],
+};
+
+function logSafeProviderDiagnostic(error, providerCode, operationKey) {
+  try {
+    if (
+      !(error instanceof EnrichmentProviderError) ||
+      typeof providerCode !== "string" ||
+      !Object.hasOwn(safeProviderDetails, providerCode)
+    )
+      return null;
+    const diagnosticCode = error.diagnosticCode;
+    console.error(
+      JSON.stringify({
+        event: "catalog-preparation-provider-diagnostic",
+        operation_key: operationKey,
+        provider_code: providerCode,
+        detail: safeProviderDetails[providerCode].includes(diagnosticCode)
+          ? diagnosticCode
+          : null,
+      }),
+    );
+  } catch {
+    return null;
+  }
+}
+
 export async function runCatalogPreparationCli(options = {}) {
   const env = options.env ?? process.env;
   const write = options.write ?? console.log;
@@ -20,6 +65,7 @@ export async function runCatalogPreparationCli(options = {}) {
     options.outputDirectory ??
     (env.RUNNER_TEMP ? resolve(env.RUNNER_TEMP, "automation-prepared") : null);
   let operationKey;
+  let producerContextVerified = false;
   try {
     if (
       env.GITHUB_REF !== "refs/heads/main" ||
@@ -56,6 +102,7 @@ export async function runCatalogPreparationCli(options = {}) {
       return 0;
     }
     const producer = assertCatalogPreparationContext({ state, operation, env });
+    producerContextVerified = true;
     let budgetGuard, budgetGuardPromise;
     const loadBudget = () =>
       (budgetGuardPromise ??= loadProducerBudgetGuard({
@@ -108,10 +155,13 @@ export async function runCatalogPreparationCli(options = {}) {
     );
     return 0;
   } catch (error) {
+    const providerCode = error?.code;
     const failure = classifyAutomationFailure({
-      diagnosticCode: error?.code,
+      diagnosticCode: providerCode,
       httpStatus: githubFailureStatus(error),
     });
+    if (producerContextVerified)
+      logSafeProviderDiagnostic(error, providerCode, operationKey);
     if (outputDirectory && /^[a-f0-9]{64}$/u.test(operationKey ?? "")) {
       await mkdir(outputDirectory, { recursive: true });
       await writeFile(
