@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "436fc263096d96f1fb0ba6266bb807defbef467a0a67c86df5dfbcd138003ee8",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1034747621:dfaker-st-clickable-actions",
+      "inputDigest": "5d30850d6304a2b38bf2eb2d6bae0c606007870e957f75a6e264898525ad5f95",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:45:15.484Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T14:30:15.484Z",
+  "completedAt": null
+}
