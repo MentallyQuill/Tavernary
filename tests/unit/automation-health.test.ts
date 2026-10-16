@@ -44,6 +44,19 @@ import * as runtimeWriter from "../../scripts/automation/runtime-maintenance.mjs
 import * as enrichmentRequests from "../../scripts/automation/enrichment-owner-request.mjs";
 import * as stateRetention from "../../scripts/automation/retention.mjs";
 import { createCanonicalPublicationRecord } from "../../scripts/automation/publication-record.mjs";
+import { discoverProjectOperations } from "../../scripts/automation/project-operations.mjs";
+import { validateAutomationReceipt } from "../../scripts/automation/receipts.mjs";
+import {
+  AUTOMATION_STAGES,
+  operationKey,
+  validateAutomationOperation,
+  type AutomationOperation,
+} from "../../scripts/automation/operation.mjs";
+import {
+  createProjectPublicationTransaction,
+  parseProjectPublicationTransaction,
+  PROJECT_PUBLICATION_TRANSACTION_MARKER,
+} from "../../scripts/publication/project-publication-transaction.mjs";
 import {
   assessAutomationHealth,
   assessInventoryHealth,
@@ -55,6 +68,7 @@ import {
   metadataMaintenanceFixture,
   preparedResultFixture,
   preparedResultContextFixture,
+  projectInventoryFixture,
 } from "../helpers/automation-fixtures";
 
 const nowMs = AUTOMATION_NOW;
@@ -320,6 +334,650 @@ test("the scheduled canonical lane reserves a bounded runtime maintenance slot",
 });
 const before = (hours: number) =>
   new Date(nowMs - hours * 3_600_000).toISOString();
+
+async function finalizedProjectHealthFixture(
+  issueNumber = 606,
+  expectedSha = "cdc37a8114a0d9366832eec7675f2c5861249c9b",
+) {
+  const input = projectInventoryFixture({
+    merged: true,
+    confirmedDeployment: true,
+  });
+  const issue = Object.assign(input.issues[0], {
+    number: issueNumber,
+    state: "closed",
+    state_reason: "completed",
+  });
+  const pull = input.pulls[0];
+  const transaction = parseProjectPublicationTransaction(pull.body);
+  if (!transaction) throw new Error("Merged project transaction is missing");
+  pull.head.ref = `automation/project-submission-${issueNumber}`;
+  pull.merge_commit_sha = expectedSha;
+  pull.body = `${PROJECT_PUBLICATION_TRANSACTION_MARKER}\n${JSON.stringify(
+    createProjectPublicationTransaction({
+      ...transaction,
+      issue_number: issueNumber,
+    }),
+  )}\n-->`;
+  input.catalog.confirmedRevisions = [expectedSha];
+  const confirmed = discoverProjectOperations(input)[0];
+  expect(confirmed.stage).toBe("deployment-confirmed");
+  const completedAt = new Date(input.nowMs).toISOString();
+  const receipt = validateAutomationReceipt({
+    schema_version: 1,
+    operation: { ...confirmed, stage: "finalized" },
+    updatedAt: completedAt,
+    completedAt,
+  });
+  input.receipts = [receipt];
+  expect(discoverProjectOperations(input)[0].stage).toBe("finalized");
+  input.catalog.confirmedRevisions = [];
+  const operation = discoverProjectOperations(input)[0];
+  expect(operation.stage).toBe("published");
+  const { state } = await metadataMaintenanceFixture();
+  state.operations = [operation];
+  state.receipts = [receipt];
+  state.remote.issues = [issue];
+  state.remote.pulls = input.pulls;
+  state.remote.runs = [];
+  return { state, input, operation, receipt, issue };
+}
+
+test.each([
+  [606, "cdc37a8114a0d9366832eec7675f2c5861249c9b", 905],
+  [761, "5140aaad9b5a1f20b2d817ced38ace18aa523049", 907],
+] as const)(
+  "exact finalized project history recovers submission %i while rediscovery stays published",
+  async (issueNumber, expectedSha, incidentNumber) => {
+    const { state, operation } = await finalizedProjectHealthFixture(
+      issueNumber,
+      expectedSha,
+    );
+    const subject = `operation:${operation.key}`;
+    const baseline = assessInventoryHealth({ ...state, receipts: [] });
+    const active = baseline.find(
+      (value) =>
+        value.code === "submission-stalled" && value.subject === subject,
+    )!;
+    expect(active).toMatchObject({ status: "active", count: 1 });
+    const created = planIncidentUpdates({
+      findings: [active],
+      existingIssues: [],
+      publisherActorId: state.publisherActorId,
+    })[0];
+    const existingIssue = {
+      number: incidentNumber,
+      title: created.title,
+      body: created.body,
+      state: "open",
+      user: { id: state.publisherActorId, type: "Bot" },
+    };
+    const original = JSON.stringify(state);
+    const findings = assessInventoryHealth(state);
+    const recovered = findings.find((value) => value.key === active.key)!;
+    expect(recovered).toEqual({
+      ...active,
+      status: "recovered",
+      reason: "verified-recovery",
+      count: 0,
+    });
+    expect(findings.filter((value) => value.key !== active.key)).toEqual(
+      baseline.filter((value) => value.key !== active.key),
+    );
+    expect(
+      planIncidentUpdates({
+        findings: [recovered],
+        existingIssues: [existingIssue],
+        publisherActorId: state.publisherActorId,
+      }),
+    ).toMatchObject([{ action: "close", number: incidentNumber }]);
+    expect(operation.stage).toBe("published");
+    expect(JSON.stringify(state)).toBe(original);
+  },
+);
+
+test.each<Partial<AutomationOperation>>([
+  ...(
+    [
+      ["transient", "provider-rate-limited"],
+      ["configuration", "authentication-unavailable"],
+      ["unknown", "unclassified-failure"],
+      ["permanent", "authorization-lost"],
+      ["superseded", "input-superseded"],
+    ] as const
+  ).map(([kind, reasonCode]) => ({
+    retry: {
+      failure: { kind, reasonCode },
+      transientAttempts: 1,
+      immediateAttempts: 3,
+    },
+  })),
+  { workerRunId: 700 },
+  { nextEligibleAt: before(1) },
+  { nextEligibleAt: new Date(nowMs + 48 * 3_600_000).toISOString() },
+])(
+  "terminal history preserves current failure or intent markers: %j",
+  async (patch) => {
+    const { state, operation } = await finalizedProjectHealthFixture();
+    Object.assign(operation, patch);
+    const baseline = assessInventoryHealth({ ...state, receipts: [] });
+    expect(assessInventoryHealth(state)).toEqual(baseline);
+    expect(
+      assessInventoryHealth(state).filter(
+        (value) =>
+          value.code === "submission-stalled" &&
+          value.subject === `operation:${operation.key}` &&
+          value.status === "recovered",
+      ),
+    ).toEqual([]);
+  },
+);
+
+type FinalizedProjectHealthFixture = Awaited<
+  ReturnType<typeof finalizedProjectHealthFixture>
+>;
+
+test.each(
+  (["worker", "unknown failure", "different revision"] as const).flatMap(
+    (peerKind) => [false, true].map((peerFirst) => ({ peerKind, peerFirst })),
+  ),
+)(
+  "terminal history refuses ambiguous current $peerKind peers (peerFirst=$peerFirst)",
+  async ({ peerKind, peerFirst }) => {
+    const { state, operation } = await finalizedProjectHealthFixture();
+    const peer = structuredClone(operation);
+    if (peerKind === "worker") peer.workerRunId = 700;
+    else if (peerKind === "different revision")
+      peer.expectedSha = "e".repeat(40);
+    else
+      peer.retry = {
+        failure: { kind: "unknown", reasonCode: "unclassified-failure" },
+        transientAttempts: 0,
+        immediateAttempts: 3,
+      };
+    validateAutomationOperation(peer);
+    state.operations = peerFirst ? [peer, operation] : [operation, peer];
+    const findings = assessInventoryHealth(state);
+    expect(findings).toEqual(assessInventoryHealth({ ...state, receipts: [] }));
+    expect(
+      findings.find(
+        (value) =>
+          value.code === "submission-stalled" &&
+          value.subject === `operation:${operation.key}`,
+      ),
+    ).toMatchObject({
+      status: "active",
+      reason: "operation-stalled",
+      count: 1,
+    });
+  },
+);
+
+test("same-key published health cannot use a marked retired terminal candidate", async () => {
+  const { state, operation, receipt } = await finalizedProjectHealthFixture();
+  state.local.retiredReceipts = [structuredClone(receipt)];
+  const original = JSON.stringify(state);
+  expect(assessInventoryHealth(state)).toEqual(
+    assessInventoryHealth({ ...state, receipts: [] }),
+  );
+  expect(
+    assessInventoryHealth(state).find(
+      (value) =>
+        value.code === "submission-stalled" &&
+        value.subject === `operation:${operation.key}`,
+    ),
+  ).toMatchObject({ status: "active", reason: "operation-stalled", count: 1 });
+  expect(JSON.stringify(state)).toBe(original);
+});
+
+test.each<{
+  name: string;
+  change: (fixture: FinalizedProjectHealthFixture) => void;
+}>([
+  { name: "missing receipt", change: ({ state }) => (state.receipts = []) },
+  {
+    name: "duplicate terminal candidates",
+    change: ({ state, receipt }) =>
+      state.receipts.push(structuredClone(receipt)),
+  },
+  {
+    name: "malformed duplicate candidate",
+    change: ({ state, receipt }) =>
+      state.receipts.push({ ...receipt, completedAt: "invalid" }),
+  },
+  {
+    name: "nonterminal receipt",
+    change: ({ receipt }) => {
+      receipt.operation.stage = "published";
+      receipt.completedAt = null;
+    },
+  },
+  {
+    name: "malformed completion",
+    change: ({ receipt }) => (receipt.completedAt = "invalid"),
+  },
+  {
+    name: "mismatched completion progress",
+    change: ({ receipt }) => (receipt.completedAt = before(1)),
+  },
+  {
+    name: "future completion",
+    change: ({ state, receipt }) => {
+      receipt.completedAt = new Date(state.nowMs + 3_600_000).toISOString();
+      receipt.updatedAt = receipt.completedAt;
+    },
+  },
+  {
+    name: "terminal retry",
+    change: ({ receipt }) => {
+      receipt.operation.retry = {
+        failure: { kind: "transient", reasonCode: "provider-rate-limited" },
+        transientAttempts: 1,
+        immediateAttempts: 0,
+      };
+      expect(() => validateAutomationReceipt(receipt)).not.toThrow();
+    },
+  },
+  {
+    name: "terminal worker",
+    change: ({ receipt }) => (receipt.operation.workerRunId = 700),
+  },
+  {
+    name: "terminal eligibility",
+    change: ({ receipt }) => {
+      receipt.operation.nextEligibleAt = before(1);
+      expect(() => validateAutomationReceipt(receipt)).not.toThrow();
+    },
+  },
+  {
+    name: "different publication revision",
+    change: ({ receipt }) => (receipt.operation.expectedSha = "e".repeat(40)),
+  },
+  {
+    name: "missing terminal publication revision",
+    change: ({ receipt }) => (receipt.operation.expectedSha = null),
+  },
+  {
+    name: "missing terminal completion",
+    change: ({ receipt }) => (receipt.completedAt = null),
+  },
+  {
+    name: "forged terminal key",
+    change: ({ receipt }) => (receipt.operation.key = "f".repeat(64)),
+  },
+  {
+    name: "invalid receipt schema",
+    change: ({ receipt }) => Object.assign(receipt, { schema_version: 2 }),
+  },
+  {
+    name: "missing current publication revision",
+    change: ({ operation }) => (operation.expectedSha = null),
+  },
+  {
+    name: "invalid current publication revision",
+    change: ({ operation, receipt }) => {
+      operation.expectedSha = "not-a-revision";
+      receipt.operation.expectedSha = operation.expectedSha;
+    },
+  },
+  {
+    name: "different creation time",
+    change: ({ operation }) => (operation.createdAt = before(2)),
+  },
+  ...(["kind", "subject", "inputDigest", "policyVersion"] as const).map(
+    (field) => ({
+      name: `inconsistent current identity ${field}`,
+      change: ({ operation }: FinalizedProjectHealthFixture) =>
+        Object.assign(operation.identity, {
+          [field]:
+            field === "kind"
+              ? "kit"
+              : field === "inputDigest"
+                ? "e".repeat(64)
+                : "different",
+        }),
+    }),
+  ),
+])(
+  "terminal history refuses insufficient evidence: $name",
+  async ({ change }) => {
+    const fixture = await finalizedProjectHealthFixture();
+    change(fixture);
+    expect(
+      assessInventoryHealth(fixture.state).find(
+        (value) =>
+          value.code === "submission-stalled" &&
+          value.subject === `operation:${fixture.operation.key}`,
+      ),
+    ).toMatchObject({
+      status: "active",
+      reason: "operation-stalled",
+      count: 1,
+    });
+  },
+);
+
+test.each<{
+  name: string;
+  change: (fixture: FinalizedProjectHealthFixture) => void;
+}>([
+  {
+    name: "missing original issue",
+    change: ({ state }) => (state.remote.issues = []),
+  },
+  {
+    name: "duplicate original issues",
+    change: ({ state, issue }) =>
+      state.remote.issues.push(structuredClone(issue)),
+  },
+  {
+    name: "reopened original issue",
+    change: ({ issue }) => (issue.state = "open"),
+  },
+  {
+    name: "unknown original state",
+    change: ({ issue }) => (issue.state = "unknown"),
+  },
+  ...(["not_planned", "unknown", null, undefined] as const).map(
+    (stateReason) => ({
+      name: `unproven completion ${stateReason}`,
+      change: ({ issue }: FinalizedProjectHealthFixture) =>
+        Object.assign(issue, { state_reason: stateReason }),
+    }),
+  ),
+  {
+    name: "pull request posing as original issue",
+    change: ({ issue }) => Object.assign(issue, { pull_request: {} }),
+  },
+  {
+    name: "invalid original issue number",
+    change: ({ issue }) =>
+      Object.assign(issue, { number: String(issue.number) }),
+  },
+  ...[
+    "needs-information",
+    "submission-declined",
+    "issue-limit-reached",
+    "waiting-on-fork-parent",
+  ].flatMap((label) =>
+    [label, { name: label }].map((value) => ({
+      name: `protected label ${JSON.stringify(value)}`,
+      change: ({ issue }: FinalizedProjectHealthFixture) =>
+        issue.labels.push(value),
+    })),
+  ),
+  ...[
+    undefined,
+    null,
+    "project-submission",
+    {},
+    [null],
+    [{}],
+    [{ name: 7 }],
+    [7],
+    [""],
+  ].map((labels) => ({
+    name: `malformed labels ${JSON.stringify(labels)}`,
+    change: ({ issue }: FinalizedProjectHealthFixture) =>
+      Object.assign(issue, { labels }),
+  })),
+])(
+  "terminal history respects original human evidence: $name",
+  async ({ change }) => {
+    const fixture = await finalizedProjectHealthFixture();
+    change(fixture);
+    expect(
+      assessInventoryHealth(fixture.state).find(
+        (value) =>
+          value.code === "submission-stalled" &&
+          value.subject === `operation:${fixture.operation.key}`,
+      ),
+    ).toMatchObject({
+      status: "active",
+      reason: "operation-stalled",
+      count: 1,
+    });
+  },
+);
+
+test.each(["key", "kind", "subject", "inputDigest", "policyVersion"] as const)(
+  "a new current %s cannot inherit another operation's terminal history",
+  async (field) => {
+    const { state, operation, receipt } = await finalizedProjectHealthFixture();
+    if (field === "key") operation.key = "f".repeat(64);
+    else {
+      Object.assign(operation.identity, {
+        [field]:
+          field === "kind"
+            ? "owner-request"
+            : field === "subject"
+              ? "issue:762"
+              : field === "inputDigest"
+                ? "f".repeat(64)
+                : "next-policy",
+      });
+      operation.key = operationKey(operation.identity);
+    }
+    const findings = assessInventoryHealth(state);
+    expect(
+      findings.find(
+        (value) =>
+          value.code === "submission-stalled" &&
+          value.subject === `operation:${operation.key}`,
+      ),
+    ).toMatchObject({
+      status: "active",
+      reason: "operation-stalled",
+      count: 1,
+    });
+    expect(
+      findings.find(
+        (value) =>
+          value.code === "submission-stalled" &&
+          value.subject === `operation:${receipt.operation.key}`,
+      ),
+    ).toMatchObject({
+      status: "recovered",
+      reason: "verified-recovery",
+      count: 0,
+    });
+  },
+);
+
+test.each(AUTOMATION_STAGES.filter((stage) => stage !== "published"))(
+  "terminal history preserves existing health behavior at current stage %s",
+  async (stage) => {
+    const { state, operation } = await finalizedProjectHealthFixture();
+    operation.stage = stage;
+    expect(assessInventoryHealth(state)).toEqual(
+      assessInventoryHealth({ ...state, receipts: [] }),
+    );
+  },
+);
+
+test.each(["owner-request", "kit", "withdrawal"] as const)(
+  "exact finalized history does not expand recovery to %s",
+  async (kind) => {
+    const { state, operation, receipt } = await finalizedProjectHealthFixture();
+    for (const value of [operation, receipt.operation]) {
+      value.identity.kind = kind;
+      value.key = operationKey(value.identity);
+    }
+    validateAutomationReceipt(receipt);
+    expect(assessInventoryHealth(state)).toEqual(
+      assessInventoryHealth({ ...state, receipts: [] }),
+    );
+    expect(
+      assessInventoryHealth(state).find(
+        (value) =>
+          value.code === "submission-stalled" &&
+          value.subject === `operation:${operation.key}`,
+      ),
+    ).toMatchObject({ status: "active", count: 1 });
+  },
+);
+
+test.each([716, 31])(
+  "published Kit %i without terminal history retains its active submission finding",
+  async (issueNumber) => {
+    const { state } = await metadataMaintenanceFixture();
+    const operation = operationFixture({
+      identity: {
+        kind: "kit",
+        subject: `issue:${issueNumber}`,
+        inputDigest: "a".repeat(64),
+        policyVersion: "1",
+      },
+      stage: "published",
+    });
+    state.operations = [operation];
+    state.receipts = [];
+    expect(
+      assessInventoryHealth(state).find(
+        (value) =>
+          value.code === "submission-stalled" &&
+          value.subject === `operation:${operation.key}`,
+      ),
+    ).toMatchObject({
+      status: "active",
+      reason: "operation-stalled",
+      count: 1,
+    });
+  },
+);
+
+test("terminal history keeps absent-current recovery without adding a native issue requirement", async () => {
+  const { state, receipt } = await finalizedProjectHealthFixture();
+  state.operations = [];
+  state.remote.issues = [];
+  state.local.retiredReceipts = [structuredClone(receipt)];
+  expect(
+    assessInventoryHealth(state).find(
+      (value) =>
+        value.code === "submission-stalled" &&
+        value.subject === `operation:${receipt.operation.key}`,
+    ),
+  ).toMatchObject({
+    status: "recovered",
+    reason: "verified-recovery",
+    count: 0,
+  });
+});
+
+test("completed original issues accept native object labels including needs-maintainer-review", async () => {
+  const { state, operation, issue } = await finalizedProjectHealthFixture();
+  issue.labels = issue.labels.map((label) =>
+    typeof label === "string" ? { name: label } : label,
+  );
+  expect(
+    assessInventoryHealth(state).find(
+      (value) =>
+        value.code === "submission-stalled" &&
+        value.subject === `operation:${operation.key}`,
+    ),
+  ).toMatchObject({
+    status: "recovered",
+    reason: "verified-recovery",
+    count: 0,
+  });
+});
+
+test("historical submission recovery preserves unrelated active health findings and input bytes", async () => {
+  const { state, operation } = await finalizedProjectHealthFixture();
+  const unknown = operationFixture({
+    identity: { ...operation.identity, subject: "issue:43" },
+    retry: {
+      failure: { kind: "unknown", reasonCode: "unclassified-failure" },
+      transientAttempts: 0,
+      immediateAttempts: 3,
+    },
+  });
+  state.operations.push(unknown);
+  for (const [subject, reasonCode] of [
+    ["source:publisher", "publisher-authentication-failed"],
+    ["source:budget", "budget-exhausted"],
+  ])
+    state.operations.push(
+      operationFixture({
+        identity: { ...operation.identity, kind: "metadata", subject },
+        retry: {
+          failure: { kind: "configuration", reasonCode },
+          transientAttempts: 0,
+          immediateAttempts: 1,
+        },
+      }),
+    );
+  state.local.publishableRevision = "e".repeat(40);
+  state.local.publishableCommittedAt = before(72);
+  state.local.activeDeployment = {
+    mode: "ordinary",
+    deployment: { sourceSha: "f".repeat(40) },
+  };
+  state.local.invalidReceiptKeys = ["f".repeat(64)];
+  state.local.receiptInspectionComplete = true;
+  const original = JSON.stringify(state);
+  const baseline = assessInventoryHealth({ ...state, receipts: [] });
+  const findings = assessInventoryHealth(state);
+  const unrelated = (values: typeof findings) =>
+    values.filter(
+      (value) =>
+        value.code !== "submission-stalled" ||
+        value.subject !== `operation:${operation.key}`,
+    );
+  expect(unrelated(findings)).toEqual(unrelated(baseline));
+  expect(findings).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({ code: "unknown-failure", status: "active" }),
+      expect.objectContaining({ code: "provider-circuit", status: "active" }),
+      expect.objectContaining({ code: "budget-exhausted", status: "active" }),
+      expect.objectContaining({ code: "deployment-stalled", status: "active" }),
+      expect.objectContaining({ code: "receipt-invalid", status: "active" }),
+    ]),
+  );
+  expect(JSON.stringify(state)).toBe(original);
+});
+
+test.each([
+  { state_reason: "not_planned" },
+  { body: "human-edited incident body" },
+  { title: "Human incident title" },
+  { user: { id: 1, type: "User" } },
+  { pull_request: {} },
+])(
+  "historical recovery retains ordinary native incident protections: %j",
+  async (patch) => {
+    const { state, operation } = await finalizedProjectHealthFixture();
+    const active = assessInventoryHealth({ ...state, receipts: [] }).find(
+      (value) =>
+        value.code === "submission-stalled" &&
+        value.subject === `operation:${operation.key}`,
+    )!;
+    const created = planIncidentUpdates({
+      findings: [active],
+      existingIssues: [],
+      publisherActorId: state.publisherActorId,
+    })[0];
+    const incident = {
+      number: 905,
+      state: "open",
+      title: created.title,
+      body: created.body,
+      user: { id: state.publisherActorId, type: "Bot" },
+    };
+    Object.assign(incident, patch);
+    const recovered = assessInventoryHealth(state).find(
+      (value) => value.key === active.key,
+    )!;
+    expect(recovered.status).toBe("recovered");
+    expect(
+      planIncidentUpdates({
+        findings: [recovered],
+        existingIssues: [incident],
+        publisherActorId: state.publisherActorId,
+      }),
+    ).toEqual([]);
+  },
+);
 
 test("terminal enrichment errors use one actionable native incident and unverified clean reports cannot close it", async () => {
   const { state } = await metadataMaintenanceFixture();

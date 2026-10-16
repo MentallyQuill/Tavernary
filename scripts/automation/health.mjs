@@ -12,6 +12,7 @@ import {
   validateEnrichmentReport,
 } from "../catalog/enrichment-report.mjs";
 import { hasConfirmedEnrichmentFull } from "./enrichment-preparation.mjs";
+import { validateAutomationReceipt } from "./receipts.mjs";
 
 export const HEALTH_TITLES = Object.freeze({
   "refresh-stale": "Repository refresh is stale",
@@ -41,6 +42,12 @@ const reasons = new Set([
   "runtime-eol-soon",
   "runtime-schedule-invalid",
   "runtime-verification-failed",
+]);
+const protectedSubmissionLabels = new Set([
+  "needs-information",
+  "submission-declined",
+  "issue-limit-reached",
+  "waiting-on-fork-parent",
 ]);
 
 export function validateHealthFinding(value) {
@@ -277,6 +284,78 @@ export function assessAutomationHealth({
     );
   }
   return result;
+}
+
+function finalizedSubmissionReceipt(operation, state) {
+  if (
+    operation?.identity.kind !== "project" ||
+    operation.stage !== "published" ||
+    operation.retry !== null ||
+    operation.workerRunId !== null ||
+    operation.nextEligibleAt !== null ||
+    typeof operation.expectedSha !== "string" ||
+    !/^[a-f0-9]{40}$/u.test(operation.expectedSha)
+  )
+    return null;
+  if (
+    state.operations.filter((value) => value.key === operation.key).length !==
+      1 ||
+    (Array.isArray(state.local.retiredReceipts) &&
+      state.local.retiredReceipts.some(
+        (value) => value?.operation?.key === operation.key,
+      ))
+  )
+    return null;
+  const originals = state.remote.issues.filter(
+    (issue) => `issue:${issue.number}` === operation.identity.subject,
+  );
+  if (originals.length !== 1) return null;
+  const issue = originals[0];
+  if (
+    !Number.isSafeInteger(issue.number) ||
+    issue.number < 1 ||
+    issue.pull_request ||
+    issue.state !== "closed" ||
+    issue.state_reason !== "completed" ||
+    !Array.isArray(issue.labels) ||
+    issue.labels.some((label) => {
+      const name =
+        typeof label === "string"
+          ? label
+          : label && typeof label === "object" && !Array.isArray(label)
+            ? label.name
+            : null;
+      return (
+        typeof name !== "string" ||
+        !name.trim() ||
+        protectedSubmissionLabels.has(name)
+      );
+    })
+  )
+    return null;
+  const candidates = state.receipts.filter(
+    (value) => value?.operation?.key === operation.key,
+  );
+  if (candidates.length !== 1) return null;
+  const receipt = candidates[0];
+  try {
+    validateAutomationReceipt(receipt);
+    const terminal = receipt.operation;
+    return terminal.stage === "finalized" &&
+      terminal.retry === null &&
+      terminal.workerRunId === null &&
+      terminal.nextEligibleAt === null &&
+      terminal.expectedSha === operation.expectedSha &&
+      terminal.createdAt === operation.createdAt &&
+      ["kind", "subject", "inputDigest", "policyVersion"].every(
+        (field) => terminal.identity[field] === operation.identity[field],
+      ) &&
+      Date.parse(receipt.completedAt) <= state.nowMs
+      ? receipt
+      : null;
+  } catch {
+    return null;
+  }
 }
 
 export function assessInventoryHealth(
@@ -575,5 +654,10 @@ export function assessInventoryHealth(
       ),
     );
   }
-  return findings;
+  return findings.map((value) =>
+    value.code === "submission-stalled" &&
+    finalizedSubmissionReceipt(current.get(value.subject.slice(10)), state)
+      ? finding(value.code, value.subject, false, "verified-recovery")
+      : value,
+  );
 }
