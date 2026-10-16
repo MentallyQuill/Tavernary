@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3f2dc38daede21e4f3d9dac48b8c3a7c4159b480a5d1a177b5f50ff204a3306a",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1135979547:phampyk-sillytavern-avatarbanner",
+      "inputDigest": "596ab737af2a0652a9530e3502e25eac4c4100abdece27954e1770d34d162d1f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:45:15.484Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T14:30:15.484Z",
+  "completedAt": null
+}
