@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4297815eead84b211a85078c327b441416ec9b2f9e14245b41337426241c522f",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1289789562:getfroggyhoe-universal-immersion-engine-fugue",
+      "inputDigest": "037221754f93f369767be7a70ecd212720170626ed9fd6e08c483c4068de550e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:45:15.484Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T14:30:15.484Z",
+  "completedAt": null
+}
