@@ -79,6 +79,236 @@ async function failedPreparation(error: unknown, input = fixture()) {
     await rm(directory, { recursive: true, force: true });
   }
 }
+function preparationStage(operationKey: string) {
+  return [
+    JSON.stringify({
+      event: "catalog-preparation-stage-diagnostic",
+      phase: "prepare-operation",
+      operation_key: operationKey,
+    }),
+  ];
+}
+test("unknown inventory and verified preparation failures retain identical legacy outcomes with distinct stages", async () => {
+  const inventory = fixture();
+  inventory.load.mockRejectedValue(new Error("secret inventory failure"));
+  const inventoryFailure = await failedPreparation(
+    new Error("Unexpected preparation"),
+    inventory,
+  );
+  const preparationFailure = await failedPreparation(
+    new Error("secret preparation failure"),
+  );
+  expect(inventoryFailure.exitCode).toBe(1);
+  expect(preparationFailure.exitCode).toBe(1);
+  expect(inventory.prepare).not.toHaveBeenCalled();
+  expect(preparationFailure.input.prepare).toHaveBeenCalledOnce();
+  expect(inventoryFailure.stdout).toEqual([
+    [
+      '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
+    ],
+  ]);
+  expect(preparationFailure.stdout).toEqual(inventoryFailure.stdout);
+  expect(inventoryFailure.files).toEqual(["diagnostic.json"]);
+  expect(preparationFailure.files).toEqual(inventoryFailure.files);
+  expect(inventoryFailure.diagnostic).toBe(
+    `{"schema_version":1,"operation_key":"${inventory.event.inputs.operation_key}","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}\n`,
+  );
+  expect(preparationFailure.diagnostic).toBe(inventoryFailure.diagnostic);
+  expect(inventoryFailure.stderr).toEqual([
+    [
+      '{"event":"catalog-preparation-stage-diagnostic","phase":"inventory-load"}',
+    ],
+  ]);
+  expect(preparationFailure.stderr).toEqual([
+    [
+      JSON.stringify({
+        event: "catalog-preparation-stage-diagnostic",
+        phase: "prepare-operation",
+        operation_key: preparationFailure.input.event.inputs.operation_key,
+      }),
+    ],
+  ]);
+});
+test("the existing acquisition callback distinguishes rejection from real preparation output rejection", async () => {
+  const acquire = vi.spyOn(catalogPreparation, "acquireCatalogData");
+  const budgetLoader = vi
+    .spyOn(modelBudgetGithub, "loadProducerBudgetGuard")
+    .mockRejectedValue(new Error("Unexpected budget load"));
+  const stderr = vi.spyOn(console, "error").mockImplementation(() => {});
+  try {
+    for (const phase of ["acquire-data", "prepare-output"] as const) {
+      const input = fixture();
+      const context = preparedResultContextFixture();
+      input.prepare.mockImplementation((options) =>
+        catalogPreparation.prepareCatalogOperation({
+          ...options,
+          context: async () => context.currentState,
+        }),
+      );
+      if (phase === "acquire-data")
+        acquire.mockRejectedValue(new Error("secret acquisition failure"));
+      else
+        acquire.mockResolvedValue({
+          ".github/workflows/private.yml": "secret executable output",
+        });
+      const directory = await mkdtemp(
+        join(tmpdir(), "tavernary-prepared-cli-"),
+      );
+      stderr.mockClear();
+      acquire.mockClear();
+      try {
+        expect(
+          await runCatalogPreparationCli({
+            ...input,
+            outputDirectory: directory,
+          }),
+          phase,
+        ).toBe(1);
+        expect(input.write.mock.calls, phase).toEqual([
+          [
+            '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
+          ],
+        ]);
+        expect(await readdir(directory), phase).toEqual(["diagnostic.json"]);
+        expect(await readFile(join(directory, "diagnostic.json"), "utf8")).toBe(
+          `{"schema_version":1,"operation_key":"${input.event.inputs.operation_key}","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}\n`,
+        );
+        expect(stderr.mock.calls, phase).toEqual([
+          [
+            JSON.stringify({
+              event: "catalog-preparation-stage-diagnostic",
+              phase,
+              operation_key: input.event.inputs.operation_key,
+            }),
+          ],
+        ]);
+        expect(input.prepare, phase).toHaveBeenCalledOnce();
+        expect(acquire, phase).toHaveBeenCalledOnce();
+        expect(budgetLoader, phase).not.toHaveBeenCalled();
+      } finally {
+        await rm(directory, { recursive: true, force: true });
+      }
+    }
+  } finally {
+    stderr.mockRestore();
+    acquire.mockRestore();
+    budgetLoader.mockRestore();
+  }
+});
+test("unknown usage and output failures report only the last entered existing boundary", async () => {
+  const budgetGuard = {
+    beforeRequest: vi.fn(() => {
+      throw new Error("Unexpected provider request");
+    }),
+    usage: vi.fn(() => {
+      throw new Error("secret usage failure");
+    }),
+  };
+  const budgetLoader = vi
+    .spyOn(modelBudgetGithub, "loadProducerBudgetGuard")
+    .mockResolvedValue(budgetGuard);
+  const acquire = vi
+    .spyOn(catalogPreparation, "acquireCatalogData")
+    .mockImplementation(async (options) => {
+      await options.options?.budgetGuard?.();
+      return {};
+    });
+  const stderr = vi.spyOn(console, "error").mockImplementation(() => {});
+  try {
+    for (const phase of [
+      "usage-validation",
+      "result-output",
+      "workflow-output",
+      "summary-output",
+    ] as const) {
+      const input = fixture();
+      const result = preparedResultFixture();
+      if (phase === "usage-validation")
+        input.prepare.mockImplementation(async (options) => {
+          await options.acquire?.({
+            state: input.state,
+            operation: input.state.operations[0],
+          });
+          return result;
+        });
+      if (phase === "result-output") {
+        Object.defineProperty(result, "toJSON", {
+          value() {
+            throw new Error("secret result serialization failure");
+          },
+        });
+        input.prepare.mockResolvedValue(result);
+      }
+      if (phase === "workflow-output")
+        Object.defineProperty(input.env, "GITHUB_OUTPUT", {
+          get() {
+            throw new Error("secret workflow output failure");
+          },
+        });
+      if (phase === "summary-output")
+        input.write.mockImplementationOnce(() => {
+          throw new Error("secret success summary failure");
+        });
+      const directory = await mkdtemp(
+        join(tmpdir(), "tavernary-prepared-cli-"),
+      );
+      stderr.mockClear();
+      acquire.mockClear();
+      budgetLoader.mockClear();
+      budgetGuard.usage.mockClear();
+      try {
+        expect(
+          await runCatalogPreparationCli({
+            ...input,
+            outputDirectory: directory,
+          }),
+          phase,
+        ).toBe(1);
+        expect(input.write.mock.calls.at(-1), phase).toEqual([
+          '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
+        ]);
+        expect(await readFile(join(directory, "diagnostic.json"), "utf8")).toBe(
+          `{"schema_version":1,"operation_key":"${input.event.inputs.operation_key}","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}\n`,
+        );
+        expect(await readdir(directory), phase).toEqual(
+          ["workflow-output", "summary-output"].includes(phase)
+            ? ["diagnostic.json", "result.json"]
+            : ["diagnostic.json"],
+        );
+        if (["workflow-output", "summary-output"].includes(phase))
+          expect(await readFile(join(directory, "result.json"), "utf8")).toBe(
+            `${JSON.stringify(preparedResultFixture())}\n`,
+          );
+        expect(stderr.mock.calls, phase).toEqual([
+          [
+            JSON.stringify({
+              event: "catalog-preparation-stage-diagnostic",
+              phase,
+              operation_key: input.event.inputs.operation_key,
+            }),
+          ],
+        ]);
+        expect(input.prepare, phase).toHaveBeenCalledOnce();
+        expect(acquire, phase).toHaveBeenCalledTimes(
+          phase === "usage-validation" ? 1 : 0,
+        );
+        expect(budgetLoader, phase).toHaveBeenCalledTimes(
+          phase === "usage-validation" ? 1 : 0,
+        );
+        expect(budgetGuard.usage, phase).toHaveBeenCalledTimes(
+          phase === "usage-validation" ? 1 : 0,
+        );
+        expect(budgetGuard.beforeRequest, phase).not.toHaveBeenCalled();
+      } finally {
+        await rm(directory, { recursive: true, force: true });
+      }
+    }
+  } finally {
+    stderr.mockRestore();
+    acquire.mockRestore();
+    budgetLoader.mockRestore();
+  }
+});
 test("the production preparation CLI saves a single validated result with its operation identity", async () => {
   const root = await mkdtemp(join(tmpdir(), "tavernary-prepared-cli-"));
   const input = fixture();
@@ -161,6 +391,7 @@ test("verified provider failures retain a safe log detail without changing the v
           detail: "unsupported_value:temperature",
         }),
       ],
+      preparationStage(input.event.inputs.operation_key),
     ]);
   } finally {
     stderr.mockRestore();
@@ -191,6 +422,7 @@ test("invalid provider responses retain only the approved structured-response de
         detail: "json-schema-invalid",
       }),
     ],
+    preparationStage(result.input.event.inputs.operation_key),
   ]);
 });
 
@@ -241,6 +473,9 @@ test("all current provider codes keep their original classifications while emitt
           detail,
         }),
       ],
+      ...(kind === "unknown"
+        ? [preparationStage(result.input.event.inputs.operation_key)]
+        : []),
     ]);
   }
 });
@@ -273,6 +508,9 @@ test("the approved provider-detail pairs survive without broadening their failur
           detail,
         }),
       ],
+      ...(code !== "provider-authentication-failed"
+        ? [preparationStage(result.input.event.inputs.operation_key)]
+        : []),
     ]);
     expect(JSON.parse(result.diagnostic!).failure, detail).toEqual(
       code === "provider-authentication-failed"
@@ -324,6 +562,7 @@ test("provider-controlled detail and exception fields never escape the literal l
           detail: null,
         }),
       ],
+      preparationStage(result.input.event.inputs.operation_key),
     ]);
     expect(result.stdout).toEqual([
       [
@@ -361,6 +600,11 @@ test("a safe detail from another provider-code pair is replaced with null", asyn
           detail: null,
         }),
       ],
+      ...(["provider-request-failed", "provider-response-invalid"].includes(
+        code,
+      )
+        ? [preparationStage(result.input.event.inputs.operation_key)]
+        : []),
     ]);
   }
 });
@@ -397,7 +641,9 @@ test("lookalikes and missing or unknown provider codes never emit provider-detai
   for (const error of errors) {
     const result = await failedPreparation(error);
     expect(result.exitCode).toBe(1);
-    expect(result.stderr).toEqual([]);
+    expect(result.stderr).toEqual([
+      preparationStage(result.input.event.inputs.operation_key),
+    ]);
     expect(result.stdout).toEqual([
       [
         '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
@@ -434,6 +680,12 @@ test("provider diagnostics require the complete real producer-context assertion 
   failedLoad.load.mockRejectedValue(
     new EnrichmentProviderError("provider-response-invalid", "json-invalid"),
   );
+  const failedSelection = fixture();
+  Object.defineProperty(failedSelection.state, "operations", {
+    get() {
+      throw new Error("secret operation selection failure");
+    },
+  });
   const failedAssertion = fixture();
   Object.defineProperty(failedAssertion.state.local, "revision", {
     get() {
@@ -443,22 +695,34 @@ test("provider diagnostics require the complete real producer-context assertion 
       );
     },
   });
-  for (const input of [
-    foreignRepository,
-    foreignSource,
-    foreignWorkflow,
-    owner,
-    invalidKey,
-    failedLoad,
-    failedAssertion,
-  ]) {
+  for (const [input, phase] of [
+    [foreignRepository, "producer-context"],
+    [foreignSource, "producer-context"],
+    [foreignWorkflow, "producer-context"],
+    [owner, null],
+    [invalidKey, "input-read"],
+    [failedLoad, "inventory-load"],
+    [failedSelection, "operation-select"],
+    [failedAssertion, "producer-context"],
+  ] as const) {
     const result = await failedPreparation(
       new EnrichmentProviderError("provider-response-invalid", "json-invalid"),
       input,
     );
     expect(result.exitCode).toBe(1);
     expect(input.prepare).not.toHaveBeenCalled();
-    expect(result.stderr).toEqual([]);
+    expect(result.stderr).toEqual(
+      phase
+        ? [
+            [
+              JSON.stringify({
+                event: "catalog-preparation-stage-diagnostic",
+                phase,
+              }),
+            ],
+          ]
+        : [],
+    );
     expect(result.stdout).toEqual([
       [
         '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
@@ -467,6 +731,93 @@ test("provider diagnostics require the complete real producer-context assertion 
     expect(result.files).not.toContain("result.json");
     expect(result.diagnostic ?? "").not.toContain("secret prompt key");
   }
+});
+
+test("a coercible non-string cached key stays anonymous without new coercion after context verification", async () => {
+  const input = fixture();
+  const operationKey = input.event.inputs.operation_key;
+  const key = {
+    toString: vi.fn(() => operationKey),
+    toJSON: vi.fn(() => operationKey),
+  };
+  Object.defineProperty(input.event.inputs, "operation_key", { value: key });
+  Object.defineProperty(input.state.operations[0], "key", { value: key });
+  const result = await failedPreparation(new Error("secret failure"), input);
+  expect(input.prepare).toHaveBeenCalledOnce();
+  expect(result.exitCode).toBe(1);
+  expect(result.stderr).toEqual([
+    [
+      '{"event":"catalog-preparation-stage-diagnostic","phase":"prepare-operation"}',
+    ],
+  ]);
+  expect(key.toString).toHaveBeenCalledTimes(2);
+  expect(key.toJSON).toHaveBeenCalledOnce();
+  expect(result.stdout).toEqual([
+    [
+      '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
+    ],
+  ]);
+  expect(result.diagnostic).toBe(
+    `{"schema_version":1,"operation_key":"${operationKey}","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}\n`,
+  );
+});
+
+test("unknown stage logging preserves legacy error getter reads and never inspects private fields", async () => {
+  const reads = { code: 0, status: 0, message: 0, private: 0 };
+  const error = new Error();
+  Object.defineProperties(error, {
+    code: {
+      get() {
+        reads.code++;
+        return "secret unknown code";
+      },
+    },
+    status: {
+      get() {
+        reads.status++;
+        return undefined;
+      },
+    },
+    message: {
+      get() {
+        reads.message++;
+        return "secret message";
+      },
+    },
+  });
+  for (const field of [
+    "name",
+    "constructor",
+    "stack",
+    "cause",
+    "diagnosticCode",
+    "phase",
+    "schemaErrors",
+    "model",
+    "endpoint",
+    "apiKey",
+    Symbol.toPrimitive,
+  ])
+    Object.defineProperty(error, field, {
+      get() {
+        reads.private++;
+        throw new Error("secret forbidden getter");
+      },
+    });
+  const result = await failedPreparation(error);
+  expect(reads).toEqual({ code: 1, status: 1, message: 1, private: 0 });
+  expect(result.exitCode).toBe(1);
+  expect(result.stderr).toEqual([
+    preparationStage(result.input.event.inputs.operation_key),
+  ]);
+  expect(result.stdout).toEqual([
+    [
+      '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
+    ],
+  ]);
+  expect(result.diagnostic).toBe(
+    `{"schema_version":1,"operation_key":"${result.input.event.inputs.operation_key}","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}\n`,
+  );
 });
 
 test("provider labels use the same single field reads as classification without getter re-reads", async () => {
@@ -562,6 +913,7 @@ test("an unavailable supplementary stderr sink cannot interrupt the v1 failure p
       `{"schema_version":1,"operation_key":"${input.event.inputs.operation_key}","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}\n`,
     );
     expect(input.prepare).toHaveBeenCalledOnce();
+    expect(stderr).toHaveBeenCalledTimes(2);
     expect(budgetLoader).not.toHaveBeenCalled();
     expect(acquire).not.toHaveBeenCalled();
   } finally {
@@ -570,6 +922,68 @@ test("an unavailable supplementary stderr sink cannot interrupt the v1 failure p
     acquire.mockRestore();
     await rm(directory, { recursive: true, force: true });
   }
+});
+
+test("a throwing supplementary console getter cannot interrupt the original unknown failure path", async () => {
+  const input = fixture();
+  input.prepare.mockRejectedValue(new Error("secret preparation failure"));
+  const directory = await mkdtemp(join(tmpdir(), "tavernary-prepared-cli-"));
+  const descriptor = Object.getOwnPropertyDescriptor(console, "error")!;
+  let sinkReads = 0;
+  Object.defineProperty(console, "error", {
+    configurable: true,
+    get() {
+      sinkReads++;
+      throw new Error("secret supplementary getter failure");
+    },
+  });
+  try {
+    expect(
+      await runCatalogPreparationCli({ ...input, outputDirectory: directory }),
+    ).toBe(1);
+    expect(sinkReads).toBe(1);
+    expect(input.prepare).toHaveBeenCalledOnce();
+    expect(input.write.mock.calls).toEqual([
+      [
+        '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
+      ],
+    ]);
+    expect(await readdir(directory)).toEqual(["diagnostic.json"]);
+    expect(await readFile(join(directory, "diagnostic.json"), "utf8")).toBe(
+      `{"schema_version":1,"operation_key":"${input.event.inputs.operation_key}","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}\n`,
+    );
+  } finally {
+    Object.defineProperty(console, "error", descriptor);
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("a stage-only serialization failure preserves the original stdout and v1 diagnostic bytes", async () => {
+  const stringify = JSON.stringify;
+  const serializer = vi
+    .spyOn(JSON, "stringify")
+    .mockImplementation((value, replacer, space) => {
+      if (value?.event === "catalog-preparation-stage-diagnostic")
+        throw new Error("secret supplementary serialization failure");
+      return stringify(value, replacer, space);
+    });
+  let result;
+  try {
+    result = await failedPreparation(new Error("secret preparation failure"));
+  } finally {
+    serializer.mockRestore();
+  }
+  expect(result.exitCode).toBe(1);
+  expect(result.stderr).toEqual([]);
+  expect(result.stdout).toEqual([
+    [
+      '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
+    ],
+  ]);
+  expect(result.files).toEqual(["diagnostic.json"]);
+  expect(result.diagnostic).toBe(
+    `{"schema_version":1,"operation_key":"${result.input.event.inputs.operation_key}","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}\n`,
+  );
 });
 
 test("unreadable supplemental provider identity cannot break readable legacy failure fields", async () => {
@@ -646,6 +1060,10 @@ test("success, unchanged and superseded paths add no failure log or acquisition 
         expect(await readdir(directory), status).toEqual(
           status === "prepared" ? ["result.json"] : [],
         );
+        if (status === "prepared")
+          expect(await readFile(join(directory, "result.json"), "utf8")).toBe(
+            `${JSON.stringify(preparedResultFixture())}\n`,
+          );
         expect(input.prepare, status).toHaveBeenCalledTimes(
           status === "superseded" ? 0 : 1,
         );

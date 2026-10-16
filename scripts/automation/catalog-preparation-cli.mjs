@@ -33,6 +33,35 @@ const safeProviderDetails = {
   ],
   "provider-model-mismatch": [],
 };
+const safePreparationPhases = [
+  "input-read",
+  "inventory-load",
+  "operation-select",
+  "producer-context",
+  "prepare-operation",
+  "acquire-data",
+  "prepare-output",
+  "usage-validation",
+  "result-output",
+  "workflow-output",
+  "summary-output",
+];
+
+function logSafeStageDiagnostic(phase, producerContextVerified, operationKey) {
+  try {
+    if (!safePreparationPhases.includes(phase)) return null;
+    const diagnostic = { event: "catalog-preparation-stage-diagnostic", phase };
+    if (
+      producerContextVerified &&
+      typeof operationKey === "string" &&
+      /^[a-f0-9]{64}$/u.test(operationKey)
+    )
+      diagnostic.operation_key = operationKey;
+    console.error(JSON.stringify(diagnostic));
+  } catch {
+    return null;
+  }
+}
 
 function logSafeProviderDiagnostic(error, providerCode, operationKey) {
   try {
@@ -66,6 +95,8 @@ export async function runCatalogPreparationCli(options = {}) {
     (env.RUNNER_TEMP ? resolve(env.RUNNER_TEMP, "automation-prepared") : null);
   let operationKey;
   let producerContextVerified = false;
+  let stageDiagnosticsEnabled = false;
+  let phase;
   try {
     if (
       env.GITHUB_REF !== "refs/heads/main" ||
@@ -74,6 +105,8 @@ export async function runCatalogPreparationCli(options = {}) {
       env.GITHUB_ACTOR_ID !== env.TAVERNARY_PUBLISHER_BOT_ID
     )
       throw new Error("Preparation requires a trusted publisher dispatch.");
+    stageDiagnosticsEnabled = true;
+    phase = "input-read";
     const event =
       options.event ??
       JSON.parse(await readFile(env.GITHUB_EVENT_PATH, "utf8"));
@@ -83,6 +116,7 @@ export async function runCatalogPreparationCli(options = {}) {
     const mode = event.inputs?.mode ?? "project";
     if (!["project", "forensic"].includes(mode))
       throw new Error("Preparation mode is invalid.");
+    phase = "inventory-load";
     const state = await (
       options.load ??
       (() =>
@@ -94,6 +128,7 @@ export async function runCatalogPreparationCli(options = {}) {
           nowMs: Date.now(),
         }))
     )();
+    phase = "operation-select";
     const operation = state.operations.find(
       (operation) => operation.key === operationKey,
     );
@@ -101,6 +136,7 @@ export async function runCatalogPreparationCli(options = {}) {
       write(JSON.stringify({ status: "superseded", operationKey }));
       return 0;
     }
+    phase = "producer-context";
     const producer = assertCatalogPreparationContext({ state, operation, env });
     producerContextVerified = true;
     let budgetGuard, budgetGuardPromise;
@@ -116,23 +152,31 @@ export async function runCatalogPreparationCli(options = {}) {
         budgetGuard = guard;
         return guard;
       }));
+    phase = "prepare-operation";
     const result = await (options.prepare ?? prepareCatalogOperation)({
       state,
       operation,
       producer,
-      acquire: (input) =>
-        acquireCatalogData({
+      acquire: async (input) => {
+        phase = "acquire-data";
+        const outputs = await acquireCatalogData({
           ...input,
           mode,
           options: {
             env,
             budgetGuard: loadBudget,
           },
-        }),
+        });
+        phase = "prepare-output";
+        return outputs;
+      },
     });
     if (result) {
-      if (budgetGuard)
+      if (budgetGuard) {
+        phase = "usage-validation";
         result.modelUsage = validateModelUsageEvidence(budgetGuard.usage());
+      }
+      phase = "result-output";
       if (!outputDirectory)
         throw new Error("Preparation output directory is unavailable.");
       await mkdir(outputDirectory, { recursive: true });
@@ -142,11 +186,13 @@ export async function runCatalogPreparationCli(options = {}) {
         { flag: "wx" },
       );
     }
+    phase = "workflow-output";
     if (env.GITHUB_OUTPUT)
       await appendFile(
         env.GITHUB_OUTPUT,
         `operation_key=${operationKey}\nresult_available=${Boolean(result)}\n`,
       );
+    phase = "summary-output";
     write(
       JSON.stringify({
         status: result ? "prepared" : "unchanged",
@@ -162,6 +208,8 @@ export async function runCatalogPreparationCli(options = {}) {
     });
     if (producerContextVerified)
       logSafeProviderDiagnostic(error, providerCode, operationKey);
+    if (stageDiagnosticsEnabled && failure.kind === "unknown")
+      logSafeStageDiagnostic(phase, producerContextVerified, operationKey);
     if (outputDirectory && /^[a-f0-9]{64}$/u.test(operationKey ?? "")) {
       await mkdir(outputDirectory, { recursive: true });
       await writeFile(
