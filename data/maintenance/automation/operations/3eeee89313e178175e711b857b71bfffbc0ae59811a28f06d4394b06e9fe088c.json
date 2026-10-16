@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3eeee89313e178175e711b857b71bfffbc0ae59811a28f06d4394b06e9fe088c",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1239088102:mitaska-weathertweaker",
+      "inputDigest": "116734f7da6532529a21b7ab6696891129b474ded55357e005359bb79305b6ed",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-16T14:45:15.484Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-16T14:30:15.484Z",
+  "completedAt": null
+}
