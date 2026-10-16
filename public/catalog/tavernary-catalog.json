@@ -23167,7 +23167,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "f60223b8b0e015556636f0f4b5d3b8344d311f59",
+        "currentSha": "f36576a61c8676ebd7199cae002d4147223807ab",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -23182,7 +23182,7 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-07T09:03:34.000Z",
+        "latestSourceActivityAt": "2026-10-09T09:02:05.000Z",
         "activeWeeks12": 3,
         "weeklyActivity": [
           false,
@@ -23204,18 +23204,18 @@
       "latestReleaseAt": "2026-09-16T20:24:48.000Z",
       "community": {
         "stars": 3,
-        "forks": 0,
+        "forks": 1,
         "watchers": 1,
-        "aggregate": 4
+        "aggregate": 5
       },
-      "repositorySizeKb": 1650,
+      "repositorySizeKb": 1739,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-16T06:53:43.233Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
