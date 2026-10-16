@@ -4,7 +4,9 @@ import {
   matchingOperationReceipt,
   receiptBindsWorker,
   isInventoryWorkerActive,
+  trustedWriterHandoff,
 } from "./inventory-worker.mjs";
+import { assertTrustedPreparationOrigin } from "./prepared-result.mjs";
 import {
   loadWorkerGithubDiagnostic,
   trustedWorkerDiagnosticRun,
@@ -172,6 +174,21 @@ async function boundedRunPages(gh, path, fields) {
   }
   throw new Error("Workflow inventory exceeds its page bound.");
 }
+async function boundedRunWindow(read, start, end) {
+  const { rows, total } = await read([
+    `created=${new Date(start).toISOString()}..${new Date(end).toISOString()}`,
+  ]);
+  if (total <= 1000) return rows;
+  if (end - start <= 1000)
+    throw new Error(
+      "Workflow inventory exceeds GitHub's result cap in one second.",
+    );
+  const middle = Math.floor((start + end) / 2);
+  return [
+    ...(await boundedRunWindow(read, start, middle)),
+    ...(await boundedRunWindow(read, middle, end)),
+  ];
+}
 export async function loadAutomationWorkerRuns({
   gh,
   repository,
@@ -190,6 +207,132 @@ export async function loadAutomationWorkerRuns({
   if ((value[0]?.total_count ?? 0) > 1000)
     throw new Error("Final worker inventory exceeds GitHub's result cap.");
   return runPages(value);
+}
+export async function loadPreparedDiagnosticRuns({
+  gh,
+  repository,
+  publisherActorId,
+  nowMs,
+  operation,
+  knownRuns = [],
+  evidenceRun,
+}) {
+  const workflow = {
+    refresh: "refresh-catalog.yml",
+    metadata: "enrich-catalog.yml",
+    advisory: "review-catalog-policy.yml",
+  }[operation?.identity?.kind];
+  if (!workflow) return null;
+  validateAutomationOperation(operation);
+  if (!Number.isSafeInteger(nowMs) || nowMs < 90 * 86_400_000)
+    throw new Error("GitHub inventory retention clock is invalid.");
+  const root = repositoryPath(repository);
+  const main = async () => {
+    const reference = JSON.parse(
+      await gh(["api", `${root}/git/ref/heads/main`]),
+    );
+    if (!/^[a-f0-9]{40}$/u.test(reference?.object?.sha ?? ""))
+      throw new Error("GitHub returned an invalid authoritative inventory.");
+    return reference.object.sha;
+  };
+  const mainHeadSha = await main();
+  const found = new Map();
+  let searches = 0;
+  const read = async (path, fields) => {
+    if (++searches > 64)
+      throw new Error("Workflow inventory exceeded its bounded search budget.");
+    const value = await boundedRunPages(gh, path, fields);
+    if (value.some((page) => page.total_count < page.workflow_runs.length))
+      throw new Error("GitHub returned an invalid run inventory.");
+    const rows = runPages(value);
+    if (value[0].total_count <= 1000 && rows.length < value[0].total_count)
+      throw new Error("GitHub workflow inventory is truncated.");
+    if (new Set(rows.map((run) => run.id)).size !== rows.length)
+      throw new Error("GitHub workflow inventory contains duplicate rows.");
+    for (const run of rows) {
+      if (
+        !Number.isSafeInteger(run.id) ||
+        run.id < 1 ||
+        typeof run.status !== "string"
+      )
+        throw new Error("GitHub returned an invalid workflow run.");
+    }
+    return { rows, total: value[0].total_count };
+  };
+  for (const selected of [
+    workflow,
+    "automation-worker.yml",
+    "automation-writer.yml",
+  ]) {
+    const path = `${root}/actions/workflows/${selected}/runs`;
+    const recent = await boundedRunWindow(
+      (fields) => read(path, fields),
+      nowMs - 7 * 86_400_000,
+      nowMs,
+    );
+    for (const run of recent) found.set(run.id, run);
+    for (const status of [
+      "queued",
+      "in_progress",
+      "waiting",
+      "requested",
+      "pending",
+    ]) {
+      const { rows, total } = await read(path, [`status=${status}`]);
+      if (total > 1000)
+        throw new Error(
+          "Active workflow inventory exceeds GitHub's result cap.",
+        );
+      for (const run of rows) found.set(run.id, run);
+    }
+  }
+  const context = {
+    runs: [...knownRuns, ...found.values()],
+    repository,
+    publisherActorId,
+  };
+  const matching = context.runs.filter((run) => {
+    if (trustedWriterHandoff(run, context, operation)) return true;
+    if (run.display_title !== `Automation prepare ${operation.key}`)
+      return false;
+    try {
+      assertTrustedPreparationOrigin({
+        kind: operation.identity.kind,
+        repository,
+        publisherActorId,
+        run,
+      });
+      return true;
+    } catch {
+      return false;
+    }
+  });
+  const ids = new Set(
+    [
+      evidenceRun?.id,
+      operation.workerRunId,
+      ...matching.map((run) => run.id),
+      ...trustedOperationWorkerRuns(context, operation).map((run) => run.id),
+    ].filter((id) => Number.isSafeInteger(id) && id > 0),
+  );
+  for (const id of ids) {
+    try {
+      const raw = await gh(["api", `${root}/actions/runs/${id}`]);
+      if (Buffer.byteLength(raw, "utf8") > 4 * 1024 * 1024)
+        throw new Error("GitHub inventory page exceeds its byte bound.");
+      const run = JSON.parse(raw);
+      if (run.id !== id || typeof run.status !== "string")
+        throw new Error("GitHub returned an invalid saved worker.");
+      delete run.automationDiagnostic;
+      found.set(id, run);
+    } catch (error) {
+      if (githubFailureStatus(error) !== 404) throw error;
+      if (id === evidenceRun?.id) return null;
+      found.delete(id);
+    }
+  }
+  if ((await main()) !== mainHeadSha) return null;
+  return { runs: [...found.values()], mainHeadSha };
 }
 export async function loadSiteWriterRecoveryRuns({
   gh,
@@ -475,23 +618,18 @@ export async function loadGithubAutomationInventory({
   )
     throw new Error("GitHub returned an invalid authoritative inventory.");
   let searches = 0;
-  async function window(start, end) {
-    if (++searches > 64)
-      throw new Error("Workflow inventory exceeded its bounded search budget.");
-    const value = await boundedRunPages(gh, `${root}/actions/runs`, [
-      `created=${new Date(start).toISOString()}..${new Date(end).toISOString()}`,
-    ]);
-    if ((value[0]?.total_count ?? 0) > 1000) {
-      if (end - start <= 1000)
+  const recent = await boundedRunWindow(
+    async (fields) => {
+      if (++searches > 64)
         throw new Error(
-          "Workflow inventory exceeds GitHub's result cap in one second.",
+          "Workflow inventory exceeded its bounded search budget.",
         );
-      const middle = Math.floor((start + end) / 2);
-      return [...(await window(start, middle)), ...(await window(middle, end))];
-    }
-    return runPages(value);
-  }
-  const recent = await window(nowMs - 7 * 86_400_000, nowMs);
+      const value = await boundedRunPages(gh, `${root}/actions/runs`, fields);
+      return { rows: runPages(value), total: value[0]?.total_count ?? 0 };
+    },
+    nowMs - 7 * 86_400_000,
+    nowMs,
+  );
   const active = [];
   for (const status of [
     "queued",

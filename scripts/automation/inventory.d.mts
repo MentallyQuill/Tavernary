@@ -2,6 +2,7 @@ import type { AutomationOperation } from "./operation.mjs";
 import type { AutomationReceipt } from "./receipts.mjs";
 import type { GhRunner } from "../submissions/kit-submission-reconciliation.mjs";
 import type { GithubAutomationInventory } from "./github-inventory.mjs";
+import type { PreparedDiagnosticRunsInput } from "./github-inventory.mjs";
 import type { TavernKeeperReportIndexV5 } from "../security/tavernkeeper-reports.mjs";
 export interface AutomationInventoryState {
   root: string;
@@ -25,6 +26,12 @@ export function loadAutomationInventory(input: {
   finalizationOperationKey?: string;
   executingWriterRunId?: number;
 }): Promise<AutomationInventoryState>;
+export function loadPreparedDiagnosticInventory(
+  input: PreparedDiagnosticRunsInput & {
+    root: string;
+    executingWriterRunId?: number;
+  },
+): Promise<AutomationInventoryState | null>;
 export function discoverAutomationState(
   state: AutomationInventoryState,
 ): AutomationOperation[];

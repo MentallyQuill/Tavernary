@@ -30,6 +30,18 @@ export function loadAutomationWorkerRuns(input: {
   nowMs: number;
   createdAfterMs?: number;
 }): Promise<ProjectInventoryRun[]>;
+export interface PreparedDiagnosticRunsInput {
+  gh: GhRunner;
+  repository: string;
+  publisherActorId: number;
+  nowMs: number;
+  operation: AutomationOperation;
+  knownRuns?: ProjectInventoryRun[];
+  evidenceRun: ProjectInventoryRun;
+}
+export function loadPreparedDiagnosticRuns(
+  input: PreparedDiagnosticRunsInput,
+): Promise<Pick<GithubAutomationInventory, "runs" | "mainHeadSha"> | null>;
 export function loadSiteWriterRecoveryRuns(input: {
   gh: GhRunner;
   repository: string;
