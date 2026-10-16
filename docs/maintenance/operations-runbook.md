@@ -757,13 +757,41 @@ to an operation still uses full discovery and exact publication authority.
 The canonical writer and the owner restore deploy job share GitHub's bounded FIFO
 queue: at most one runs, with up to one hundred pending runs in order. Pending
 confirmation, publication and finalization are no longer replaced by each newer
-reconciliation wake. The controller also completes at most one oldest eligible
-confirmed operation inside its current serialized pass, within the existing
-twenty-operation limit. It rereads authority and persists the actual resulting
-receipt; a lost response cannot write retry state from an earlier candidate.
+reconciliation wake. The controller also attempts inline completion for at most
+the first selected eligible confirmed operation inside its current serialized
+pass, within the existing twenty-operation limit. Selection does not guarantee
+the globally oldest confirmed operation. It rereads authority and persists the
+actual resulting receipt; a lost response cannot write retry state from an earlier
+candidate.
 When the queue is full or a run is interrupted, durable state and scheduled
 reconciliation remain the recovery mechanism. Inspect native run state before
 issuing another manual wake.
+
+Future shared-writer passes reserve bounded candidate capacity after the unchanged
+early phases. With all twenty slots available, the combined initial class
+(project, owner-request, Kit and withdrawal) receives four reserved seats,
+report-import receives two, and fourteen remain unreserved. Six early slot charges
+leave fourteen slots: four initial, two report and eight unreserved. The protected
+seats survive prepared recovery and service allocation while their exact current
+candidates remain eligible. Unreserved capacity follows the existing flow through
+prepared recovery, maintenance services and ordinary admission; it is not a
+guaranteed ordinary admission.
+
+For any remaining capacity from zero through twenty, allocate that many positions
+from this fixed prefix: unreserved, initial, report, unreserved, initial,
+unreserved, unreserved, initial, unreserved, report, unreserved, initial, then eight
+unreserved positions. Every positive capacity has an unreserved seat; capacity one
+has no protected reservation, and capacity two has no report reservation. Choose
+the oldest eligible candidates within each reserved class, sharing subject
+deduplication. Unused class demand immediately becomes unreserved capacity, and
+the final ordinary selection backfills genuinely unused eligible capacity. A late
+revalidation refusal does not trigger another controller pass or refill.
+
+This admission policy preserves native FIFO order, current-input, actor, custody,
+source, CI, worker, replay, retry-deadline and budget gates. The shared 1,000-call
+GitHub budget and fifteen-minute workflow deadline still stop the pass, including
+before protected generic work executes. Reserved seats do not supply model
+allowance or guarantee publication, a wall-clock SLA or admission in every pass.
 
 Recognized GitHub primary and secondary rate limits, including HTTP 403 responses,
 classify as `transient/provider-rate-limited`. Let the existing retry schedule back

@@ -14,6 +14,136 @@ import {
 } from "../helpers/automation-fixtures";
 import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
 import type { AutomationReceipt } from "../../scripts/automation/receipts.mjs";
+import { GithubInventoryUnavailableError } from "../../scripts/automation/github-inventory.mjs";
+import { runModelWriterPreparation } from "../../scripts/automation/writer-runtime.mjs";
+
+test("an actual writer preflight outage cannot be laundered by a successful second inventory load", async () => {
+  const operation = operationFixture();
+  const state = {
+    operations: [operation],
+    nowMs: AUTOMATION_NOW,
+  } as AutomationInventoryState;
+  const before = JSON.stringify(state);
+  const error = new GithubInventoryUnavailableError();
+  const load = vi
+    .fn<() => Promise<AutomationInventoryState>>()
+    .mockRejectedValueOnce(error)
+    .mockResolvedValue(state);
+  const gh = vi.fn(async () => {
+    throw new Error("Unexpected receipt or native effect");
+  });
+  const commit = vi.fn(async () => ({ sha: "c".repeat(40) }));
+  const dispatch = vi.fn(async () => ({
+    runId: 701,
+    workflow: ".github/workflows/enrich-catalog.yml",
+  }));
+  const metadataCached = vi.fn(async () => false);
+  await expect(
+    runModelWriterPreparation({
+      operationKey: operation.key,
+      load,
+      gh,
+      commit,
+      dispatch,
+      dispatchCached: dispatch,
+      metadataCached,
+      env: {
+        GITHUB_REPOSITORY: "MentallyQuill/Tavernary",
+        GITHUB_REF: "refs/heads/main",
+        GITHUB_EVENT_NAME: "workflow_dispatch",
+        GITHUB_ACTOR_ID: "2625904",
+        GITHUB_WORKFLOW_REF:
+          "MentallyQuill/Tavernary/.github/workflows/automation-writer.yml@refs/heads/main",
+        GITHUB_RUN_ID: "800",
+        GITHUB_RUN_ATTEMPT: "1",
+      },
+    }),
+  ).rejects.toBe(error);
+  expect(load).toHaveBeenCalledOnce();
+  expect(gh).not.toHaveBeenCalled();
+  expect(commit).not.toHaveBeenCalled();
+  expect(dispatch).not.toHaveBeenCalled();
+  expect(metadataCached).not.toHaveBeenCalled();
+  expect(JSON.stringify(state)).toBe(before);
+});
+
+test.each([undefined, "finalization"] as const)(
+  "a branded inventory preflight failure skips reload and persistence (%s)",
+  async (phase) => {
+    const input = fixture();
+    const load = vi.fn(input.load);
+    const before = JSON.stringify(await input.load());
+    expect(
+      await persistPreparedFailure({
+        ...input,
+        load,
+        phase,
+        error: new GithubInventoryUnavailableError(),
+      }),
+    ).toEqual({ persisted: false, incident: false });
+    expect(load).not.toHaveBeenCalled();
+    expect(input.persist).not.toHaveBeenCalled();
+    expect(JSON.stringify(await input.load())).toBe(before);
+  },
+);
+
+test("only actual internally constructed inventory errors receive the preflight exemption", async () => {
+  const genuine = new GithubInventoryUnavailableError();
+  const hostile = new Proxy(
+    {},
+    {
+      getPrototypeOf() {
+        throw new Error("Unexpected prototype read");
+      },
+    },
+  );
+  const revoked = Proxy.revocable({}, {});
+  revoked.revoke();
+  expect(genuine).toBeInstanceOf(Error);
+  expect(genuine instanceof GithubInventoryUnavailableError).toBe(true);
+  for (const value of [
+    { code: "github-inventory-unavailable" },
+    Object.create(GithubInventoryUnavailableError.prototype),
+    hostile,
+    revoked.proxy,
+    null,
+    "github-inventory-unavailable",
+  ])
+    expect(value instanceof GithubInventoryUnavailableError).toBe(false);
+});
+
+test.each([
+  { code: "github-inventory-unavailable" },
+  {
+    failure: { kind: "transient", reasonCode: "github-inventory-unavailable" },
+  },
+  Object.create(GithubInventoryUnavailableError.prototype),
+])(
+  "plain or prototype-forged inventory errors still follow ordinary failure persistence (%#)",
+  async (error) => {
+    const input = fixture();
+    const load = vi.fn(input.load);
+    const outcome = await persistPreparedFailure({ ...input, load, error });
+    expect(outcome).toEqual({ persisted: true, incident: false });
+    expect(load).toHaveBeenCalledOnce();
+    expect(input.persist).toHaveBeenCalledOnce();
+  },
+);
+
+test("a branded inventory failure does not bypass operation-key validation", async () => {
+  const input = fixture();
+  const load = vi.fn(input.load);
+  await expect(
+    persistPreparedFailure({
+      ...input,
+      load,
+      operationKey: "invalid",
+      error: new GithubInventoryUnavailableError(),
+    }),
+  ).rejects.toThrow("key is invalid");
+  expect(load).not.toHaveBeenCalled();
+  expect(input.persist).not.toHaveBeenCalled();
+});
 
 test("the verified old #900 failure is strictly obsolete at its saved daily probe deadline", async () => {
   const input = preparedReplayFixture();

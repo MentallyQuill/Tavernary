@@ -4,7 +4,10 @@ import { join } from "node:path";
 import { productionInventoryRoot } from "../helpers/production-inventory-root.mjs";
 import * as inventory from "../../scripts/automation/inventory.mjs";
 import type { ProjectInventoryRun } from "../../scripts/automation/project-operations.mjs";
-import type { AutomationReceipt } from "../../scripts/automation/receipts.mjs";
+import {
+  validateAutomationReceipt,
+  type AutomationReceipt,
+} from "../../scripts/automation/receipts.mjs";
 import {
   isPreparedDiagnosticObsolete,
   persistPreparedFailure,
@@ -1194,7 +1197,7 @@ test.each(["obsolete", "equal-clock"])(
     const assess = vi
       .spyOn(health, "assessInventoryHealth")
       .mockReturnValue([]);
-    const clock = vi.spyOn(Date, "now").mockReturnValue(nowMs);
+    const clock = vi.spyOn(Date, "now");
     const fetch = vi
       .spyOn(globalThis, "fetch")
       .mockRejectedValue(new Error("No external report-index fetch expected"));
@@ -1203,18 +1206,27 @@ test.each(["obsolete", "equal-clock"])(
       const selected = initial.operations
         .filter((operation) => operation.identity.kind === "advisory")
         .slice(0, 20);
+      expect(selected).toHaveLength(20);
+      const scenarioNowMs = Math.max(
+        nowMs,
+        Math.max(
+          ...selected.map((operation) => Date.parse(operation.createdAt)),
+        ) +
+          3 * 3_600_000,
+      );
+      clock.mockReturnValue(scenarioNowMs);
       const fixtures = selected.map((operation, index) =>
         diagnosticReplayFixture(
           {
             ...fixture.receipt,
             updatedAt:
               variant === "equal-clock"
-                ? new Date(nowMs - 2 * 3_600_000).toISOString()
-                : fixture.receipt.updatedAt,
+                ? new Date(scenarioNowMs - 2 * 3_600_000).toISOString()
+                : new Date(scenarioNowMs - 3_600_000).toISOString(),
             operation: {
               ...operation,
               workerRunId: null,
-              nextEligibleAt: new Date(nowMs - 60_000).toISOString(),
+              nextEligibleAt: new Date(scenarioNowMs - 60_000).toISOString(),
               retry: {
                 failure: {
                   kind: variant === "equal-clock" ? "unknown" : "transient",
@@ -1229,9 +1241,16 @@ test.each(["obsolete", "equal-clock"])(
             },
           },
           10_000 + index * 2,
-          new Date(nowMs - 2 * 3_600_000).toISOString(),
+          new Date(scenarioNowMs - 2 * 3_600_000).toISOString(),
         ),
       );
+      expect(fixtures).toHaveLength(20);
+      for (const value of fixtures) {
+        expect(Date.parse(value.run.created_at!)).toBeGreaterThanOrEqual(
+          Date.parse(value.receipt.operation.createdAt),
+        );
+        expect(validateAutomationReceipt(value.receipt)).toEqual(value.receipt);
+      }
       await rm(
         join(
           fixture.root,
@@ -1264,7 +1283,7 @@ test.each(["obsolete", "equal-clock"])(
             path: `.github/workflows/${workflow}`,
             display_title: "Unrelated native work",
             created_at: new Date(
-              nowMs -
+              scenarioNowMs -
                 7 * 86_400_000 +
                 1000 +
                 Math.floor((index * (7 * 86_400_000 - 2000)) / count),
@@ -1294,8 +1313,8 @@ test.each(["obsolete", "equal-clock"])(
               body: "Unrelated canonical work",
               labels: [],
               user: { id: 9, type: "User", login: "fixture" },
-              created_at: new Date(nowMs - 86_400_000).toISOString(),
-              updated_at: new Date(nowMs - 3_600_000).toISOString(),
+              created_at: new Date(scenarioNowMs - 86_400_000).toISOString(),
+              updated_at: new Date(scenarioNowMs - 3_600_000).toISOString(),
               head: {
                 sha: "b".repeat(40),
                 ref: `unrelated-${index}`,
@@ -1368,7 +1387,7 @@ test.each(["obsolete", "equal-clock"])(
       const result = await runGithubWriterPass({
         gh,
         download: gh.download,
-        nowMs,
+        nowMs: scenarioNowMs,
         loadCooldown: async () => null,
         persistCooldown: async () => {
           throw new Error("No cooldown expected");
@@ -1376,6 +1395,7 @@ test.each(["obsolete", "equal-clock"])(
         run: async (guardedGh) => {
           const input = {
             ...fixture.input,
+            nowMs: scenarioNowMs,
             gh: guardedGh,
             publisherActorId: fixtures[0].state.publisherActorId,
           };
@@ -1398,7 +1418,7 @@ test.each(["obsolete", "equal-clock"])(
                 gh: guardedGh,
                 repository,
                 publisherActorId: input.publisherActorId,
-                nowMs,
+                nowMs: scenarioNowMs,
                 ...context,
               });
               scopedCalls.push(...requests.slice(start));
@@ -1442,17 +1462,22 @@ test.each(["obsolete", "equal-clock"])(
           ? { dispatched: 20, selectedKeys: expect.arrayContaining([...keys]) }
           : { dispatched: 0, selectedKeys: [] },
       );
-      for (const receipt of receipts.values())
+      for (const receipt of receipts.values()) {
+        expect(validateAutomationReceipt(receipt)).toEqual(receipt);
         expect(receipt.operation).toMatchObject(
           variant === "obsolete"
             ? {
                 workerRunId: null,
-                nextEligibleAt: "2026-10-16T12:15:00.000Z",
+                nextEligibleAt: new Date(
+                  scenarioNowMs + 15 * 60_000,
+                ).toISOString(),
                 retry: { transientAttempts: 1, immediateAttempts: 0 },
               }
             : {
                 workerRunId: null,
-                nextEligibleAt: "2026-10-17T12:00:00.000Z",
+                nextEligibleAt: new Date(
+                  scenarioNowMs + 86_400_000,
+                ).toISOString(),
                 retry: {
                   transientAttempts: 2,
                   immediateAttempts: 3,
@@ -1463,6 +1488,7 @@ test.each(["obsolete", "equal-clock"])(
                 },
               },
         );
+      }
       expect(requests.length).toBeLessThan(1000);
       const routes = scopedCalls.map((args) =>
         args.find((value) => value.startsWith("repos/"))!,
@@ -1945,21 +1971,21 @@ test("known older handles are directly reread and fresh attempts discard decoded
   ).toBe(false);
 });
 
-test("scoped native histories preserve every active producer, worker and writer handoff decision", async () => {
-  const fixture = await diagnosticFixture();
-  try {
-    const baseline = await inventory.loadAutomationInventory(fixture.input);
-    const modes = [
-      "producer",
-      "worker",
-      "prepare",
-      "publish",
-      "reconcile-project",
-      "confirm",
-      "finalize",
-      "advisory-notice",
-    ];
-    for (const mode of modes) {
+test.each([
+  "producer",
+  "worker",
+  "prepare",
+  "publish",
+  "reconcile-project",
+  "confirm",
+  "finalize",
+  "advisory-notice",
+])(
+  "scoped native histories preserve every active %s handoff decision",
+  async (mode) => {
+    const fixture = await diagnosticFixture();
+    try {
+      const baseline = await inventory.loadAutomationInventory(fixture.input);
       for (const status of [
         "queued",
         "in_progress",
@@ -2034,11 +2060,12 @@ test("scoped native histories preserve every active producer, worker and writer 
             ).toBe(false);
         }
       }
+    } finally {
+      await fixture.cleanup();
     }
-  } finally {
-    await fixture.cleanup();
-  }
-}, 30_000);
+  },
+  30_000,
+);
 
 test("a fresh metadata diagnostic reconstructs exactly its full inventory decision without unrelated remote census", async () => {
   const fixture = await diagnosticFixture();

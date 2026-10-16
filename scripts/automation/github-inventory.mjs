@@ -14,6 +14,18 @@ import { validateAutomationOperation } from "./operation.mjs";
 
 const repositoryPattern = /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u;
 const preparedDiagnosticHistories = new WeakMap();
+const unavailableInventoryErrors = new WeakSet();
+export class GithubInventoryUnavailableError extends Error {
+  static [Symbol.hasInstance](error) {
+    return unavailableInventoryErrors.has(error);
+  }
+  constructor() {
+    super("GitHub workflow inventory is incomplete.");
+    unavailableInventoryErrors.add(this);
+    this.name = "GithubInventoryUnavailableError";
+    this.code = "github-inventory-unavailable";
+  }
+}
 function repositoryPath(repository) {
   if (!repositoryPattern.test(repository))
     throw new Error("Automation repository is invalid.");
@@ -209,13 +221,34 @@ async function boundedRunWindow(read, start, end) {
     ...(await boundedRunWindow(read, middle, end)),
   ];
 }
+async function completeRunPages(gh, path, fields) {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const value = await boundedRunPages(gh, path, fields);
+    const rows = runPages(value);
+    const validRows = rows.every(
+      (run) =>
+        Number.isSafeInteger(run?.id) &&
+        run.id > 0 &&
+        typeof run.status === "string",
+    );
+    if (
+      value.some((page) => page.total_count > 1000) ||
+      (validRows &&
+        new Set(rows.map((run) => run.id)).size === rows.length &&
+        value.every((page) => page.total_count >= page.workflow_runs.length) &&
+        rows.length >= Math.max(...value.map((page) => page.total_count)))
+    )
+      return value;
+  }
+  throw new GithubInventoryUnavailableError();
+}
 export async function loadAutomationWorkerRuns({
   gh,
   repository,
   nowMs,
   createdAfterMs = nowMs - 3_600_000,
 }) {
-  const value = await boundedRunPages(
+  const value = await completeRunPages(
     gh,
     `${repositoryPath(repository)}/actions/workflows/automation-worker.yml/runs`,
     [
@@ -272,10 +305,14 @@ export async function loadPreparedDiagnosticRuns({
     structuredClone(prefix.runs).map((run) => [run.id, run]),
   );
   let searches = 0;
-  const read = async (path, fields) => {
+  const read = async (path, fields, complete = false) => {
     if (++searches > 64)
       throw new Error("Workflow inventory exceeded its bounded search budget.");
-    const value = await boundedRunPages(gh, path, fields);
+    const value = await (complete ? completeRunPages : boundedRunPages)(
+      gh,
+      path,
+      fields,
+    );
     if (value.some((page) => page.total_count < page.workflow_runs.length))
       throw new Error("GitHub returned an invalid run inventory.");
     const rows = runPages(value);
@@ -311,7 +348,7 @@ export async function loadPreparedDiagnosticRuns({
     "requested",
     "pending",
   ]) {
-    const { rows, total } = await read(path, [`status=${status}`]);
+    const { rows, total } = await read(path, [`status=${status}`], true);
     if (total > 1000)
       throw new Error("Active workflow inventory exceeds GitHub's result cap.");
     for (const run of rows) {
@@ -722,7 +759,7 @@ export async function loadGithubAutomationInventory({
     "requested",
     "pending",
   ]) {
-    const value = await boundedRunPages(gh, `${root}/actions/runs`, [
+    const value = await completeRunPages(gh, `${root}/actions/runs`, [
       `status=${status}`,
     ]);
     if ((value[0]?.total_count ?? 0) > 1000)

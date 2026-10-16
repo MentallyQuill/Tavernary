@@ -76,6 +76,7 @@ export async function runReconcileAutomationCli(options = {}) {
       receipts,
       nowMs,
       limit: args.limit,
+      admissionPlan: options.admissionPlan,
       dryRun: !args.apply,
       revalidate,
       finalize: options.finalize,

@@ -7,12 +7,14 @@ import { createCatalogPolicyReviewProvider } from "../moderation/catalog-policy-
 import { reviewCatalogPolicy } from "../moderation/review-catalog-policy.mjs";
 import { modelProviderOptionsFromEnvironment } from "../catalog/model-provider-configuration.mjs";
 import { generateWithTransientProviderRetries } from "../catalog/enrichment-attempts.mjs";
+import { markAcquisitionPhase } from "./acquisition-phase.mjs";
 
 export async function acquirePreparedAdvisoryData({
   state,
   operation,
   options = {},
 }) {
+  markAcquisitionPhase(options, "operation-records");
   if (operation.identity.kind !== "advisory")
     throw Object.assign(new Error("Advisory preparation is superseded."), {
       code: "input-superseded",
@@ -21,17 +23,22 @@ export async function acquirePreparedAdvisoryData({
     state,
     operation,
   });
+  markAcquisitionPhase(options, "observe-source");
   const observation = await (options.observe ?? observeMetadataSource)({
     state,
     operation,
+    onAcquisitionPhase: (phase) => markAcquisitionPhase(options, phase),
   });
   if (observation.source.status !== "ready")
     throw Object.assign(new Error("Advisory source is unavailable."), {
       code: "provider-unavailable",
     });
+  markAcquisitionPhase(options, "provider-config");
   let provider = options.provider;
   if (!provider) {
+    markAcquisitionPhase(options, "budget-guard");
     const budgetGuard = await options.budgetGuard?.();
+    markAcquisitionPhase(options, "provider-config");
     try {
       provider = createCatalogPolicyReviewProvider({
         ...modelProviderOptionsFromEnvironment(options.env),
@@ -45,6 +52,7 @@ export async function acquirePreparedAdvisoryData({
       );
     }
   }
+  markAcquisitionPhase(options, "provider-input");
   const previous = (state.local.advisoryState ?? []).find(
     (value) => value.project_id === project.id && value.source_id === source.id,
   );
@@ -61,11 +69,14 @@ export async function acquirePreparedAdvisoryData({
     provider: {
       review: async (input) => {
         try {
-          return await generateWithTransientProviderRetries({
+          markAcquisitionPhase(options, "provider-review");
+          const output = await generateWithTransientProviderRetries({
             input,
             generate: (candidate) => provider.review(candidate),
             sleep: options.sleep,
           });
+          markAcquisitionPhase(options, "provider-output");
+          return output;
         } catch (error) {
           providerFailure = error;
           throw error;
@@ -80,6 +91,7 @@ export async function acquirePreparedAdvisoryData({
         code: "provider-response-invalid",
       })
     );
+  markAcquisitionPhase(options, "acquisition-output");
   return {
     [`data/snapshots/policy-review/${project.id}.json`]: await format(
       JSON.stringify(result.state),

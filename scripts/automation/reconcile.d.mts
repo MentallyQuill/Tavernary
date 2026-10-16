@@ -1,5 +1,11 @@
 import type { AutomationOperation } from "./operation.mjs";
 import type { AutomationReceipt } from "./receipts.mjs";
+export interface ReconciliationAdmissionPlan {
+  admissionKeys: readonly string[];
+  orderedKeys: readonly string[];
+  consumedKeys: readonly string[];
+  consumedSubjects: readonly string[];
+}
 export interface ReconciliationInput {
   inventory: () => Promise<AutomationOperation[]>;
   dispatch: (operation: AutomationOperation) => Promise<{
@@ -16,6 +22,7 @@ export interface ReconciliationInput {
     operation: AutomationOperation,
   ) => Promise<AutomationOperation | null>;
   receipts?: AutomationReceipt[];
+  admissionPlan?: ReconciliationAdmissionPlan;
   nowMs: number;
   limit?: number;
   dryRun?: boolean;

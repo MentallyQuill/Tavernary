@@ -9,6 +9,7 @@ import type {
 } from "../catalog/enrich-readmes.mjs";
 import type { EnrichmentSource } from "../catalog/enrichment-source.mjs";
 import type { ModelBudgetGuard } from "./model-budget.mjs";
+import type { AcquisitionPhaseCallback } from "./acquisition-phase.mjs";
 export interface MetadataPreparationInput {
   state: AutomationInventoryState;
   operation: AutomationOperation;
@@ -23,7 +24,10 @@ export function metadataOperationRecords(input: MetadataPreparationInput): {
   snapshot: RepositorySnapshot;
 };
 export function observeMetadataSource(
-  input: MetadataPreparationInput & { fetchImpl?: typeof fetch },
+  input: MetadataPreparationInput & {
+    fetchImpl?: typeof fetch;
+    onAcquisitionPhase?: AcquisitionPhaseCallback;
+  },
 ): Promise<MetadataObservation>;
 export function observeProjectMetadataSource(input: {
   state: AutomationInventoryState;
@@ -32,6 +36,7 @@ export function observeProjectMetadataSource(input: {
   snapshot: RepositorySnapshot;
   fetchImpl?: typeof fetch;
   policyVersion?: string;
+  onAcquisitionPhase?: AcquisitionPhaseCallback;
 }): Promise<MetadataObservation>;
 export function metadataObservationIsCached(
   input: MetadataPreparationInput & { observation: MetadataObservation },

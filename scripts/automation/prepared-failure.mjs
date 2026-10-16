@@ -3,7 +3,10 @@ import {
   AUTOMATION_FAILURE_REASON_KINDS,
 } from "./failure.mjs";
 import { planAutomationRetry } from "./retry.mjs";
-import { githubFailureStatus } from "./github-inventory.mjs";
+import {
+  GithubInventoryUnavailableError,
+  githubFailureStatus,
+} from "./github-inventory.mjs";
 import { validateAutomationReceipt } from "./receipts.mjs";
 import {
   generationRequestOperation,
@@ -160,6 +163,8 @@ export async function persistPreparedFailure({
 }) {
   if (!/^[a-f0-9]{64}$/u.test(operationKey ?? ""))
     throw new Error("Prepared failure key is invalid.");
+  if (error instanceof GithubInventoryUnavailableError)
+    return { persisted: false, incident: false };
   const state = await load();
   let operation = state.operations.find(
     (operation) => operation.key === operationKey,

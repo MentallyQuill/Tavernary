@@ -12,6 +12,7 @@ const TRANSIENT_DIAGNOSTICS = new Set([
   "provider-rate-limited",
   "provider-server-error",
   "workflow-result-unavailable",
+  "github-inventory-unavailable",
   "policy-review-unavailable",
 ]);
 

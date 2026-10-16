@@ -20,6 +20,7 @@ export function selectPreparedWakes(input: {
   limit?: number;
   nowMs?: number;
   includeDiagnostics?: boolean;
+  priorityKeys?: readonly string[];
 }): PreparedWake[];
 export function runPreparedWakeCli(options?: {
   env?: Record<string, string | undefined>;

@@ -6,6 +6,10 @@ import type {
   ProjectInventoryRun,
 } from "./project-operations.mjs";
 import type { GhRunner } from "../submissions/kit-submission-reconciliation.mjs";
+export class GithubInventoryUnavailableError extends Error {
+  readonly code: "github-inventory-unavailable";
+  constructor();
+}
 export interface GithubAutomationInventory {
   issues: ProjectInventoryIssue[];
   pulls: ProjectInventoryPull[];

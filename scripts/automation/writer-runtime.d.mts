@@ -124,6 +124,7 @@ export function runDeploymentWriterConfirmation(input: {
   load?: () => Promise<AutomationInventoryState>;
   loadSite?: () => Promise<import("./site-writer-runtime.mjs").SiteWriterState>;
   download?: (args: string[]) => Promise<Uint8Array>;
+  fetchImpl?: typeof fetch;
   isAncestor?: (ancestor: string, descendant: string) => boolean | null;
   probe?: (input: {
     expected: import("./revision-manifest.mjs").RevisionManifest;
@@ -170,6 +171,15 @@ export function runPreparedWriterPublication(input: {
   env?: Record<string, string | undefined>;
   gh?: GhRunner;
 }): Promise<PublicationResult>;
+export function selectWriterAdmissionReservations(
+  operations: import("./operation.mjs").AutomationOperation[],
+  options: {
+    nowMs: number;
+    limit: number;
+    consumedKeys?: readonly string[];
+    consumedSubjects?: readonly string[];
+  },
+): import("./operation.mjs").AutomationOperation[];
 export function runAutomationWriterReconciliation(input?: {
   root?: string;
   env?: Record<string, string | undefined>;
@@ -182,6 +192,12 @@ export function runAutomationWriterReconciliation(input?: {
     >,
   ) => Promise<AutomationInventoryState | null>;
   finalize?: ReconciliationInput["finalize"];
+  earlyPhases?: {
+    loadEnrichmentRequest?: typeof import("./enrichment-owner-request.mjs").loadLatestEnrichmentOwnerRequest;
+    admitEnrichment?: typeof runEnrichmentOwnerWriter;
+    settleGeneration?: typeof reconcileGenerationModelUsage;
+    reconcileOwnerRequests?: typeof reconcileGenerationOwnerRequests;
+  };
 }): Promise<Record<string, unknown>>;
 export function runPreparedWriterBatch(input: {
   wakes: { operationKey: string; runId: number }[];

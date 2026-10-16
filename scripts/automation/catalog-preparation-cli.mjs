@@ -10,9 +10,13 @@ import {
   acquireCatalogData,
 } from "./catalog-preparation.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
-import { githubFailureStatus } from "./github-inventory.mjs";
+import {
+  GithubInventoryUnavailableError,
+  githubFailureStatus,
+} from "./github-inventory.mjs";
 import { loadProducerBudgetGuard } from "./model-budget-github.mjs";
 import { validateModelUsageEvidence } from "./model-budget.mjs";
+import { isAcquisitionPhase } from "./acquisition-phase.mjs";
 
 const safeProviderDetails = {
   "provider-timeout": [],
@@ -87,6 +91,26 @@ function logSafeProviderDiagnostic(error, providerCode, operationKey) {
   }
 }
 
+function logSafeAcquisitionDiagnostic(phase, operationKey) {
+  try {
+    if (
+      !isAcquisitionPhase(phase) ||
+      typeof operationKey !== "string" ||
+      !/^[a-f0-9]{64}$/u.test(operationKey)
+    )
+      return;
+    console.error(
+      JSON.stringify({
+        event: "catalog-preparation-acquisition-diagnostic",
+        phase,
+        operation_key: operationKey,
+      }),
+    );
+  } catch {
+    return;
+  }
+}
+
 export async function runCatalogPreparationCli(options = {}) {
   const env = options.env ?? process.env;
   const write = options.write ?? console.log;
@@ -97,6 +121,7 @@ export async function runCatalogPreparationCli(options = {}) {
   let producerContextVerified = false;
   let stageDiagnosticsEnabled = false;
   let phase;
+  let acquisitionPhase;
   try {
     if (
       env.GITHUB_REF !== "refs/heads/main" ||
@@ -159,12 +184,16 @@ export async function runCatalogPreparationCli(options = {}) {
       producer,
       acquire: async (input) => {
         phase = "acquire-data";
+        acquisitionPhase = undefined;
         const outputs = await acquireCatalogData({
           ...input,
           mode,
           options: {
             env,
             budgetGuard: loadBudget,
+            onAcquisitionPhase: (nextPhase) => {
+              if (isAcquisitionPhase(nextPhase)) acquisitionPhase = nextPhase;
+            },
           },
         });
         phase = "prepare-output";
@@ -201,15 +230,28 @@ export async function runCatalogPreparationCli(options = {}) {
     );
     return 0;
   } catch (error) {
-    const providerCode = error?.code;
-    const failure = classifyAutomationFailure({
-      diagnosticCode: providerCode,
-      httpStatus: githubFailureStatus(error),
-    });
+    const inventoryUnavailable =
+      error instanceof GithubInventoryUnavailableError;
+    const providerCode = inventoryUnavailable
+      ? "github-inventory-unavailable"
+      : error?.code;
+    const failure = inventoryUnavailable
+      ? { kind: "transient", reasonCode: "github-inventory-unavailable" }
+      : classifyAutomationFailure({
+          diagnosticCode: providerCode,
+          httpStatus: githubFailureStatus(error),
+        });
     if (producerContextVerified)
       logSafeProviderDiagnostic(error, providerCode, operationKey);
     if (stageDiagnosticsEnabled && failure.kind === "unknown")
       logSafeStageDiagnostic(phase, producerContextVerified, operationKey);
+    if (
+      stageDiagnosticsEnabled &&
+      producerContextVerified &&
+      failure.kind === "unknown" &&
+      phase === "acquire-data"
+    )
+      logSafeAcquisitionDiagnostic(acquisitionPhase, operationKey);
     if (outputDirectory && /^[a-f0-9]{64}$/u.test(operationKey ?? "")) {
       await mkdir(outputDirectory, { recursive: true });
       await writeFile(

@@ -1,6 +1,15 @@
 import type { AutomationOperation } from "./operation.mjs";
 import type { GhRunner } from "../submissions/kit-submission-reconciliation.mjs";
 import type { AutomationInventoryState } from "./inventory.mjs";
+export function runAutomationWorkerCli(options?: {
+  env?: Record<string, string | undefined>;
+  event?: unknown;
+  load?: (
+    finalizationOperationKey?: string,
+  ) => Promise<AutomationInventoryState>;
+  gh?: GhRunner;
+  write?: (value: string) => void;
+}): Promise<number>;
 export function loadAutomationWorkerOperations(input: {
   operationKey: string;
   runId: number;

@@ -69,6 +69,21 @@ function expiredDispatchLease(receipt, nowMs) {
     dispatchedAt + 15 * 60_000 <= nowMs
   );
 }
+function successfulWrapperRecoveryClock(run, receipt, nowMs) {
+  const createdAt = Date.parse(run.created_at ?? "");
+  const terminalAt = Date.parse(run.updated_at ?? "");
+  if (
+    !Number.isFinite(createdAt) ||
+    !Number.isFinite(terminalAt) ||
+    terminalAt < createdAt
+  )
+    return nowMs;
+  const graceAt = terminalAt + 15 * 60_000;
+  const savedDeadline = Date.parse(receipt.operation.nextEligibleAt ?? "");
+  return Number.isFinite(savedDeadline)
+    ? Math.max(graceAt, savedDeadline)
+    : graceAt;
+}
 export function receiptBindsWorker(run, receipt) {
   return (
     receipt &&
@@ -208,7 +223,7 @@ export function recoverInventoryWorker(operation, input, runs) {
         };
         operation.nextEligibleAt = planAutomationRetry({
           ...operation.retry,
-          nowMs: input.nowMs,
+          nowMs: Date.parse(receipt.operation.nextEligibleAt),
           jitterSeed: operation.key,
         }).nextEligibleAt;
       }
@@ -227,7 +242,7 @@ export function recoverInventoryWorker(operation, input, runs) {
         };
         operation.nextEligibleAt = planAutomationRetry({
           ...operation.retry,
-          nowMs: input.nowMs,
+          nowMs: Date.parse(receipt.operation.nextEligibleAt),
           jitterSeed: operation.key,
         }).nextEligibleAt;
       }
@@ -271,7 +286,7 @@ export function recoverInventoryWorker(operation, input, runs) {
     operation.retry = retryState;
     operation.nextEligibleAt = planAutomationRetry({
       ...retryState,
-      nowMs: input.nowMs,
+      nowMs: successfulWrapperRecoveryClock(run, receipt, input.nowMs),
       retryAfterMs: run.retryAfterMs,
       jitterSeed: `${operation.key}:${run.id}:${run.run_attempt ?? 1}`,
     }).nextEligibleAt;
@@ -335,9 +350,11 @@ export function recoverInventoryWorker(operation, input, runs) {
   const retry = planAutomationRetry({
     ...retryState,
     nowMs:
-      run.conclusion === "success" || !Number.isFinite(terminalAt)
-        ? input.nowMs
-        : terminalAt,
+      run.conclusion === "success"
+        ? successfulWrapperRecoveryClock(run, receipt, input.nowMs)
+        : Number.isFinite(terminalAt)
+          ? terminalAt
+          : input.nowMs,
     retryAfterMs: run.retryAfterMs,
     jitterSeed: `${operation.key}:${run.id}:${run.run_attempt ?? 1}`,
   });

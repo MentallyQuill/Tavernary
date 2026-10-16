@@ -9,7 +9,12 @@ import { confirmCanonicalDeployment } from "./deployment-writer.mjs";
 import { finalizeAutomationOperation } from "./finalization.mjs";
 import { projectAutomationLifecycle } from "./lifecycle-github.mjs";
 import { loadGithubRevisionManifest } from "./deployment-github.mjs";
-import { confirmPublicDeployment } from "./confirm-deployment.mjs";
+import {
+  confirmPublicDeployment,
+  createPublicAssetReader,
+} from "./confirm-deployment.mjs";
+import { validateRevisionManifest } from "./revision-manifest.mjs";
+import { validateActiveDeployment } from "./deployment-state.mjs";
 import {
   createModelBudgetState,
   validateModelBudgetState,
@@ -37,6 +42,7 @@ import {
   assertCanonicalWriterContext,
   persistGithubAutomationReceipt,
   loadGenerationOwnerRequestRuns,
+  GithubInventoryUnavailableError,
 } from "./github-inventory.mjs";
 import {
   loadAutomationInventory,
@@ -57,6 +63,11 @@ import {
   runAutomationStateRetention,
 } from "./retention.mjs";
 import { reconcilePreparedOperations } from "./prepared-reconciliation.mjs";
+import { selectPreparedWakes } from "./prepared-wake.mjs";
+import {
+  selectDueOperations,
+  validateAutomationOperation,
+} from "./operation.mjs";
 import {
   persistPreparedFailure,
   isPreparedDiagnosticObsolete,
@@ -856,6 +867,7 @@ export async function runDeploymentWriterConfirmation({
     return loadSiteWriterState({ root, env });
   },
   download = gh.download ?? downloadPreparedArtifact,
+  fetchImpl = fetch,
   probe = (input) => confirmPublicDeployment(input),
   commit = (input) => commitCanonicalData({ ...input, gh }),
   isAncestor = (ancestor, descendant) => {
@@ -951,6 +963,7 @@ export async function runDeploymentWriterConfirmation({
       };
     };
     let result;
+    let originalManifest;
     for (const selectedRunId of selectedRuns) {
       let artifactUnavailable = false;
       try {
@@ -992,6 +1005,7 @@ export async function runDeploymentWriterConfirmation({
                 ),
                 { code: "input-superseded" },
               );
+            if (runId > 0 && !operationKey) originalManifest = data.manifest;
             return data;
           },
           probe: (input) =>
@@ -1009,6 +1023,91 @@ export async function runDeploymentWriterConfirmation({
       )
         continue;
       break;
+    }
+    if (
+      runId > 0 &&
+      !operationKey &&
+      originalManifest &&
+      result?.status === "waiting" &&
+      result.reason === "different-revision"
+    ) {
+      const failFallback = (code = "validation-failed") => {
+        throw Object.assign(
+          new Error(
+            "Public descendant confirmation is unavailable or invalid.",
+          ),
+          { code },
+        );
+      };
+      const ordinary = (state) => {
+        if (
+          state.activeDeployment != null &&
+          validateActiveDeployment(state.activeDeployment, {
+            nowMs: state.nowMs,
+          }).mode === "rollback"
+        )
+          failFallback("input-superseded");
+        return state;
+      };
+      ordinary(project(initial));
+      const discovery = ordinary(project(await read()));
+      let bytes;
+      try {
+        bytes = await createPublicAssetReader({ fetchImpl })("revision.json");
+      } catch (error) {
+        failFallback(
+          error?.code === "public-integrity-failed"
+            ? "validation-failed"
+            : "provider-unavailable",
+        );
+      }
+      let hinted;
+      try {
+        hinted = validateRevisionManifest(
+          JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)),
+        );
+      } catch {
+        failFallback();
+      }
+      const identity = hinted.buildId.match(
+        /^run-([1-9]\d*)-attempt-([1-9]\d*)$/u,
+      );
+      const candidateRunId = Number(identity?.[1]);
+      const candidateAttempt = Number(identity?.[2]);
+      if (
+        !Number.isSafeInteger(candidateRunId) ||
+        candidateRunId < 1 ||
+        !Number.isSafeInteger(candidateAttempt) ||
+        candidateAttempt < 1
+      )
+        failFallback();
+      const candidate = await loadGithubRevisionManifest({
+        gh,
+        download,
+        repository,
+        publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
+        runId: candidateRunId,
+        currentMainSha: discovery.revision,
+        expectedSourceSha: hinted.sourceSha,
+        isAncestor,
+      });
+      if (!isDeepStrictEqual(candidate.manifest, hinted)) failFallback();
+      if (
+        candidate.manifest.sourceSha === originalManifest.sourceSha ||
+        isAncestor(originalManifest.sourceSha, candidate.manifest.sourceSha) !==
+          true ||
+        (candidate.manifest.sourceSha !== discovery.revision &&
+          isAncestor(candidate.manifest.sourceSha, discovery.revision) !== true)
+      )
+        failFallback("input-superseded");
+      result = await confirmCanonicalDeployment({
+        runId: candidateRunId,
+        isAncestor,
+        load: async () => ordinary(project(await read())),
+        loadManifest: async () => candidate,
+        probe: (input) => probe({ ...input, maxAttempts: 1 }),
+        commit: (input) => commit({ ...input, repository }),
+      });
     }
     if (!result || result.status === "waiting" || result.status === "incident")
       throw Object.assign(new Error("Public deployment remains unconfirmed."), {
@@ -1364,6 +1463,60 @@ export async function runReconciledFinalization({
     });
   return { operation: current, waiting: current.stage !== "finalized" };
 }
+export function selectWriterAdmissionReservations(
+  operations,
+  { nowMs, limit, consumedKeys = [], consumedSubjects = [] },
+) {
+  if (!Number.isSafeInteger(limit) || limit < 0 || limit > 20)
+    throw new Error("Writer admission quota is invalid.");
+  operations.forEach(validateAutomationOperation);
+  selectDueOperations([], { nowMs, limit });
+  const initialSeats = [1, 4, 7, 11].filter((seat) => seat < limit).length;
+  const reportSeats = [2, 9].filter((seat) => seat < limit).length;
+  const consumed = new Set(consumedKeys);
+  const subjects = new Set(consumedSubjects);
+  const selected = [];
+  for (const [kinds, quota] of [
+    [["project", "owner-request", "kit", "withdrawal"], initialSeats],
+    [["report-import"], reportSeats],
+  ]) {
+    const familyKeys = new Set(
+      operations
+        .filter((operation) => kinds.includes(operation.identity.kind))
+        .map((operation) => operation.key),
+    );
+    const candidates = selectDueOperations(
+      operations.filter(
+        (operation) =>
+          familyKeys.has(operation.key) &&
+          !consumed.has(operation.key) &&
+          !subjects.has(operation.identity.subject),
+      ),
+      { nowMs, limit: quota },
+    );
+    for (const operation of candidates) {
+      subjects.add(operation.identity.subject);
+      selected.push(operation);
+    }
+  }
+  return selected;
+}
+
+function currentWriterReservations(state, reservations, consumed, subjects) {
+  state.operations.forEach(validateAutomationOperation);
+  return reservations.flatMap((reservation) => {
+    if (
+      consumed.has(reservation.key) ||
+      subjects.has(reservation.identity.subject)
+    )
+      return [];
+    return selectDueOperations(
+      state.operations.filter((operation) => operation.key === reservation.key),
+      { nowMs: state.nowMs, limit: 1 },
+    );
+  });
+}
+
 export async function runAutomationWriterReconciliation({
   root = process.cwd(),
   env = process.env,
@@ -1372,6 +1525,7 @@ export async function runAutomationWriterReconciliation({
     runReconciledFinalization({ operationKey: operation.key, root, env, gh }),
   load: injectedLoad,
   loadDiagnostic,
+  earlyPhases = {},
 } = {}) {
   const load =
     injectedLoad ??
@@ -1404,19 +1558,39 @@ export async function runAutomationWriterReconciliation({
   const publisherActorId = Number(env.TAVERNARY_PUBLISHER_BOT_ID);
   assertCanonicalWriterContext(env, repository);
   let state = await load();
+  const consumed = new Set();
+  const consumedSubjects = new Set();
+  const recordConsumed = (keys) => {
+    for (const key of keys) {
+      consumed.add(key);
+      for (const operation of [
+        ...state.operations,
+        ...state.receipts.map((receipt) => receipt.operation),
+      ]) {
+        if (operation.key === key)
+          consumedSubjects.add(
+            validateAutomationOperation(operation).identity.subject,
+          );
+      }
+    }
+  };
   let enrichment = { status: "idle" },
     enrichmentSlot = 0;
   try {
     const { loadLatestEnrichmentOwnerRequest } =
       await import("./enrichment-owner-request.mjs");
-    const request = await loadLatestEnrichmentOwnerRequest({ gh, repository });
+    const request = await (
+      earlyPhases.loadEnrichmentRequest ?? loadLatestEnrichmentOwnerRequest
+    )({ gh, repository });
     const admittedId = Number(
       /^owner-enrichment-([1-9]\d*)$/u.exec(
         state.local.enrichmentCanary?.run_id ?? "",
       )?.[1] ?? 0,
     );
     if (request && request.id > admittedId) {
-      enrichment = await runEnrichmentOwnerWriter({
+      enrichment = await (
+        earlyPhases.admitEnrichment ?? runEnrichmentOwnerWriter
+      )({
         runId: request.id,
         root,
         env,
@@ -1429,12 +1603,15 @@ export async function runAutomationWriterReconciliation({
       }
     }
   } catch (error) {
+    if (error instanceof GithubInventoryUnavailableError) throw error;
     enrichment = {
       status: "unavailable",
       failure: classifyAutomationFailure({ diagnosticCode: error?.code }),
     };
   }
-  const generation = await reconcileGenerationModelUsage({
+  const generation = await (
+    earlyPhases.settleGeneration ?? reconcileGenerationModelUsage
+  )({
     state,
     limit: 20 - enrichmentSlot,
     settle: ({ operationKey }) =>
@@ -1447,10 +1624,13 @@ export async function runAutomationWriterReconciliation({
           persistGithubAutomationReceipt({ gh, repository, receipt }),
       }),
   });
+  recordConsumed(generation.consumedKeys);
   if (generation.consumedKeys.length) state = await load();
   let generationRequests = { status: "idle", slots: 0, consumedKeys: [] };
   try {
-    generationRequests = await reconcileGenerationOwnerRequests({
+    generationRequests = await (
+      earlyPhases.reconcileOwnerRequests ?? reconcileGenerationOwnerRequests
+    )({
       state,
       gh,
       limit: 20 - enrichmentSlot - generation.slots,
@@ -1458,10 +1638,40 @@ export async function runAutomationWriterReconciliation({
       prepare: ({ requestRunId }) =>
         runModelWriterPreparation({ requestRunId, root, env, gh, load }),
     });
+    recordConsumed(generationRequests.consumedKeys);
     if (generationRequests.consumedKeys.length) state = await load();
-  } catch {
+  } catch (error) {
+    if (error instanceof GithubInventoryUnavailableError) throw error;
     generationRequests = { status: "unavailable", slots: 0, consumedKeys: [] };
   }
+  const availableSlots =
+    20 - enrichmentSlot - generation.slots - generationRequests.slots;
+  const reservations = selectWriterAdmissionReservations(state.operations, {
+    nowMs: state.nowMs,
+    limit: availableSlots,
+    consumedKeys: [...consumed],
+    consumedSubjects: [...consumedSubjects],
+  });
+  const reservedSubjects = new Set(
+    reservations.map((operation) => operation.identity.subject),
+  );
+  const preparedKeys = new Set([
+    ...reservations.map((operation) => operation.key),
+    ...selectPreparedWakes({
+      runs: state.remote.runs,
+      operations: state.operations.filter(
+        (operation) =>
+          !consumed.has(operation.key) &&
+          !consumedSubjects.has(operation.identity.subject) &&
+          !reservedSubjects.has(operation.identity.subject),
+      ),
+      repository: state.repository,
+      publisherActorId: state.publisherActorId,
+      nowMs: state.nowMs,
+      limit: availableSlots - reservations.length,
+      includeDiagnostics: true,
+    }).map((wake) => wake.operationKey),
+  ]);
   const diagnosticEvidence = new Map();
   const loadDiagnosticState = async (evidence) => {
     const operation = state.operations.find(
@@ -1487,13 +1697,12 @@ export async function runAutomationWriterReconciliation({
   const prepared = await reconcilePreparedOperations({
     state: {
       ...state,
-      operations: state.operations.filter(
-        (operation) =>
-          !generation.consumedKeys.includes(operation.key) &&
-          !generationRequests.consumedKeys.includes(operation.key),
+      operations: state.operations.filter((operation) =>
+        preparedKeys.has(operation.key),
       ),
     },
-    limit: 20 - enrichmentSlot - generation.slots - generationRequests.slots,
+    limit: availableSlots,
+    priorityKeys: reservations.map((operation) => operation.key),
     readDiagnosticEvidence: (wake) =>
       loadPreparedGithubDiagnosticEvidence({
         gh,
@@ -1543,20 +1752,29 @@ export async function runAutomationWriterReconciliation({
         gh,
       }),
   });
+  recordConsumed(prepared.consumedKeys);
+  let heldReservations = reservations.filter(
+    (operation) => !consumed.has(operation.key),
+  );
   if (prepared.consumedKeys.length || prepared.reloadRequired)
     state = await load();
-  const consumed = new Set([
-    ...prepared.consumedKeys,
-    ...generation.consumedKeys,
-    ...generationRequests.consumedKeys,
-  ]);
+  if (prepared.consumedKeys.length || prepared.reloadRequired)
+    heldReservations = currentWriterReservations(
+      state,
+      heldReservations,
+      consumed,
+      consumedSubjects,
+    );
   const usedSlots =
     prepared.consumedKeys.length + generation.slots + generationRequests.slots;
-  let runtime = { status: "disabled" },
+  let runtime =
+      state.local.runtimePolicy === undefined
+        ? { status: "disabled" }
+        : { status: "waiting", reason: "operation-limit" },
     runtimeSlot = 0;
   if (
     state.local.runtimePolicy !== undefined &&
-    usedSlots + enrichmentSlot < 20
+    usedSlots + enrichmentSlot + heldReservations.length < 20
   ) {
     try {
       const { runRuntimeWriter } = await import("./runtime-maintenance.mjs");
@@ -1564,8 +1782,15 @@ export async function runAutomationWriterReconciliation({
       if (["proposed", "updated", "merged"].includes(runtime.status)) {
         runtimeSlot = 1;
         state = await load();
+        heldReservations = currentWriterReservations(
+          state,
+          heldReservations,
+          consumed,
+          consumedSubjects,
+        );
       }
-    } catch {
+    } catch (error) {
+      if (error instanceof GithubInventoryUnavailableError) throw error;
       runtime = { status: "unavailable", reason: "runtime-schedule-invalid" };
       runtimeSlot = 1;
     }
@@ -1576,7 +1801,10 @@ export async function runAutomationWriterReconciliation({
   // Retention dispatch uses this lane, rather than an uncounted confirmation tail.
   const retentionWanted = env.TAVERNARY_IMMUTABLE_RELEASES_ENABLED === "true";
   const retentionSlot =
-    retentionWanted && usedSlots + runtimeSlot + enrichmentSlot < 20 ? 1 : 0;
+    retentionWanted &&
+    usedSlots + runtimeSlot + enrichmentSlot + heldReservations.length < 20
+      ? 1
+      : 0;
   const initialRetirement = planAutomationRetention({
     state,
     pruneDeployments: env.TAVERNARY_IMMUTABLE_RELEASES_ENABLED === "true",
@@ -1586,11 +1814,21 @@ export async function runAutomationWriterReconciliation({
     initialRetirement.removeFiles.length > 0;
   const retirementSlot =
     retirementWanted &&
-    usedSlots + runtimeSlot + enrichmentSlot + retentionSlot < 20
+    usedSlots +
+      runtimeSlot +
+      enrichmentSlot +
+      retentionSlot +
+      heldReservations.length <
+      20
       ? 1
       : 0;
   const dependencySlot =
-    usedSlots + runtimeSlot + enrichmentSlot + retentionSlot + retirementSlot <
+    usedSlots +
+      runtimeSlot +
+      enrichmentSlot +
+      retentionSlot +
+      retirementSlot +
+      heldReservations.length <
       20 && dependencyPullNumbers.length
       ? 1
       : 0;
@@ -1655,7 +1893,8 @@ export async function runAutomationWriterReconciliation({
         dependencySlot +
         enrichmentSlot +
         retentionSlot +
-        retirementSlot <
+        retirementSlot +
+        heldReservations.length <
         20 && proposals.length
         ? 1
         : 0;
@@ -1664,30 +1903,53 @@ export async function runAutomationWriterReconciliation({
   } catch {
     health = { status: "unavailable" };
   }
+  const genericLimit =
+    20 -
+    usedSlots -
+    runtimeSlot -
+    dependencySlot -
+    healthSlot -
+    enrichmentSlot -
+    retentionSlot -
+    retirementSlot;
+  const protectedCandidates = currentWriterReservations(
+    state,
+    heldReservations,
+    consumed,
+    consumedSubjects,
+  );
+  const selectedSubjects = new Set([
+    ...consumedSubjects,
+    ...protectedCandidates.map((operation) => operation.identity.subject),
+  ]);
+  const admission = [
+    ...protectedCandidates,
+    ...selectDueOperations(
+      state.operations.filter(
+        (operation) =>
+          !consumed.has(operation.key) &&
+          !selectedSubjects.has(operation.identity.subject),
+      ),
+      { nowMs: state.nowMs, limit: genericLimit - protectedCandidates.length },
+    ),
+  ];
+  const admissionKeys = admission.map((operation) => operation.key);
   let controller;
   const exitCode = await runReconcileAutomationCli({
-    args: [
-      "--apply",
-      "--limit",
-      String(
-        20 -
-          usedSlots -
-          runtimeSlot -
-          dependencySlot -
-          healthSlot -
-          enrichmentSlot -
-          retentionSlot -
-          retirementSlot,
-      ),
-    ],
+    args: ["--apply", "--limit", String(genericLimit)],
     env,
     event: {},
     gh,
     nowMs: state.nowMs,
     receipts: state.receipts,
     finalize,
-    inventory: async () =>
-      state.operations.filter((operation) => !consumed.has(operation.key)),
+    inventory: async () => state.operations,
+    admissionPlan: {
+      admissionKeys,
+      orderedKeys: admissionKeys,
+      consumedKeys: [...consumed],
+      consumedSubjects: [...consumedSubjects],
+    },
     revalidate: (operation) =>
       revalidateAutomationOperation({
         state,
@@ -1772,7 +2034,9 @@ export async function runAutomationWriterReconciliation({
       health = { status: "unavailable" };
     }
   }
-  let dependencies = { status: "idle" };
+  let dependencies = dependencyPullNumbers.length
+    ? { status: "waiting", reason: "operation-limit" }
+    : { status: "idle" };
   if (dependencySlot) {
     try {
       const { runDependencyWriter } = await import("./dependency-update.mjs");

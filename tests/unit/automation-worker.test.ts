@@ -1,9 +1,14 @@
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
 import {
   planAutomationWorker,
   runAutomationWorker,
   loadAutomationWorkerOperations,
+  runAutomationWorkerCli,
 } from "../../scripts/automation/worker.mjs";
+import { GithubInventoryUnavailableError } from "../../scripts/automation/github-inventory.mjs";
 import {
   operationFixture,
   projectInventoryFixture,
@@ -11,6 +16,101 @@ import {
 } from "../helpers/automation-fixtures";
 import { discoverProjectOperations } from "../../scripts/automation/project-operations.mjs";
 import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
+
+test.each([
+  {
+    name: "branded preflight",
+    error: Object.assign(new GithubInventoryUnavailableError(), {
+      code: "provider-model-mismatch",
+    }),
+    failure: { kind: "transient", reasonCode: "github-inventory-unavailable" },
+  },
+  {
+    name: "unexpected legacy",
+    error: new Error("secret unexpected failure"),
+    failure: { kind: "unknown", reasonCode: "unclassified-failure" },
+  },
+  {
+    name: "plain same-code",
+    error: {
+      code: "github-inventory-unavailable",
+      failure: { kind: "permanent", reasonCode: "authorization-lost" },
+    },
+    failure: { kind: "transient", reasonCode: "github-inventory-unavailable" },
+  },
+])(
+  "the worker CLI preserves $name diagnostics and a failed attempt without dispatch",
+  async ({ error, failure }) => {
+    const directory = await mkdtemp(
+      join(tmpdir(), "tavernary-worker-preflight-"),
+    );
+    const diagnosticPath = join(directory, "automation-diagnostic.json");
+    const operation = operationFixture();
+    const load = vi.fn(async () => {
+      throw error;
+    });
+    const gh = vi.fn(async () => {
+      throw new Error("Unexpected native effect");
+    });
+    const write = vi.fn();
+    const stderr = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      expect(
+        await runAutomationWorkerCli({
+          env: {
+            GITHUB_REPOSITORY: "MentallyQuill/Tavernary",
+            GITHUB_REF: "refs/heads/main",
+            GITHUB_EVENT_NAME: "workflow_dispatch",
+            GITHUB_ACTOR_ID: "2625904",
+            OPERATION_KEY: operation.key,
+            GITHUB_RUN_ID: "800",
+            AUTOMATION_DIAGNOSTIC_PATH: diagnosticPath,
+          },
+          event: {},
+          load,
+          gh,
+          write,
+        }),
+      ).toBe(1);
+      expect(JSON.parse(await readFile(diagnosticPath, "utf8"))).toEqual({
+        schema_version: 1,
+        operation_key: operation.key,
+        failure,
+      });
+      expect(load).toHaveBeenCalledOnce();
+      expect(gh).not.toHaveBeenCalled();
+      expect(write).not.toHaveBeenCalled();
+      expect(stderr.mock.calls).toEqual([
+        [
+          JSON.stringify({
+            status: "unavailable",
+            failure,
+          }),
+        ],
+      ]);
+    } finally {
+      stderr.mockRestore();
+      await rm(directory, { recursive: true, force: true });
+    }
+  },
+);
+
+test("the worker CLI default entry still requires trusted main context before loading inventory", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "tavernary-worker-context-"));
+  const eventPath = join(directory, "event.json");
+  await writeFile(eventPath, "{}");
+  vi.stubEnv("GITHUB_EVENT_PATH", eventPath);
+  vi.stubEnv("GITHUB_REPOSITORY", "MentallyQuill/Tavernary");
+  vi.stubEnv("GITHUB_REF", "refs/heads/feature");
+  vi.stubEnv("GITHUB_EVENT_NAME", "workflow_dispatch");
+  vi.stubEnv("GITHUB_ACTOR_ID", "2625904");
+  try {
+    await expect(runAutomationWorkerCli()).rejects.toThrow("trusted main code");
+  } finally {
+    vi.unstubAllEnvs();
+    await rm(directory, { recursive: true, force: true });
+  }
+});
 
 test("a stale confirmed receipt cannot redispatch normal work from a sparse inventory after worker exclusions", async () => {
   const input = projectInventoryFixture({ generationRun: { id: 702 } });

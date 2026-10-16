@@ -1,7 +1,11 @@
 import { createHash } from "node:crypto";
 import { expect, test } from "vitest";
 import { zipSync, strToU8 } from "fflate";
-import { loadGithubAutomationInventory } from "../../scripts/automation/github-inventory.mjs";
+import {
+  GithubInventoryUnavailableError,
+  loadGithubAutomationInventory,
+  loadPreparedDiagnosticRuns,
+} from "../../scripts/automation/github-inventory.mjs";
 import {
   AUTOMATION_NOW,
   receiptFixture,
@@ -9,9 +13,109 @@ import {
 } from "../helpers/automation-fixtures";
 import { operationKey } from "../../scripts/automation/operation.mjs";
 
-test.each([false, true])(
-  "inventory attaches a newer native failure diagnostic despite a prior classified retry (%s)",
-  async (previousFailure) => {
+test("scoped diagnostic active scans retry an inconsistent slice without treating it as absence", async () => {
+  let incomplete = false;
+  let activeReads = 0;
+  const gh = async (args: string[]) => {
+    const path = args.find((argument) => argument.startsWith("repos/"))!;
+    if (path.endsWith("/git/ref/heads/main"))
+      return JSON.stringify({ object: { sha: "d".repeat(40) } });
+    if (path.endsWith("/issues") || path.endsWith("/pulls")) return "[[]]";
+    const inconsistent = incomplete && args.includes("status=queued");
+    if (inconsistent) activeReads++;
+    return JSON.stringify([
+      { total_count: inconsistent ? 1 : 0, workflow_runs: [] },
+    ]);
+  };
+  const input = {
+    gh,
+    repository: "MentallyQuill/Tavernary",
+    publisherActorId: 317929880,
+    nowMs: AUTOMATION_NOW,
+  };
+  const history = await loadGithubAutomationInventory({
+    ...input,
+    receipts: [],
+  });
+  incomplete = true;
+  const operation = operationFixture({
+    identity: {
+      ...operationFixture().identity,
+      kind: "metadata",
+      subject: "source:github-42:example-project",
+    },
+  });
+  await expect(
+    loadPreparedDiagnosticRuns({
+      ...input,
+      history,
+      operation,
+      evidenceRun: { id: 702, status: "completed", conclusion: "failure" },
+    }),
+  ).rejects.toBeInstanceOf(GithubInventoryUnavailableError);
+  expect(activeReads).toBe(2);
+});
+
+test("truncated completed history stays usable while withholding scoped diagnostic history", async () => {
+  let reads = 0;
+  const gh = async (args: string[]) => {
+    reads++;
+    const path = args.find((argument) => argument.startsWith("repos/"))!;
+    if (path.endsWith("/git/ref/heads/main"))
+      return JSON.stringify({ object: { sha: "d".repeat(40) } });
+    if (path.endsWith("/issues") || path.endsWith("/pulls")) return "[[]]";
+    const completed = args.some((argument) => argument.startsWith("created="));
+    return JSON.stringify([
+      {
+        total_count: completed ? 2 : 0,
+        workflow_runs: completed
+          ? [{ id: 702, status: "completed", conclusion: "success" }]
+          : [],
+      },
+    ]);
+  };
+  const input = {
+    gh,
+    repository: "MentallyQuill/Tavernary",
+    publisherActorId: 317929880,
+    nowMs: AUTOMATION_NOW,
+  };
+  const history = await loadGithubAutomationInventory({
+    ...input,
+    receipts: [],
+  });
+  expect(history.runs).toEqual([
+    { id: 702, status: "completed", conclusion: "success" },
+  ]);
+  const before = reads;
+  const operation = operationFixture({
+    identity: {
+      ...operationFixture().identity,
+      kind: "metadata",
+      subject: "source:github-42:example-project",
+    },
+  });
+  expect(
+    await loadPreparedDiagnosticRuns({
+      ...input,
+      history,
+      operation,
+      evidenceRun: history.runs[0],
+    }),
+  ).toBeNull();
+  expect(reads).toBe(before);
+});
+
+test.each(
+  [false, true].flatMap((previousFailure) =>
+    [
+      { kind: "configuration", reasonCode: "publisher-authentication-failed" },
+      { kind: "transient", reasonCode: "github-inventory-unavailable" },
+    ].map((failure) => ({ previousFailure, failure })),
+  ),
+)(
+  "inventory attaches a newer native $failure.reasonCode diagnostic despite prior retry ($previousFailure)",
+  async ({ previousFailure, failure }) => {
     const repository = "MentallyQuill/Tavernary";
     const publisherActorId = 317929880;
     const receipt = receiptFixture();
@@ -41,10 +145,7 @@ test.each([false, true])(
     const value = {
       schema_version: 1,
       operation_key: receipt.operation.key,
-      failure: {
-        kind: "configuration",
-        reasonCode: "publisher-authentication-failed",
-      },
+      failure,
     };
     const archive = zipSync({
       "automation-diagnostic.json": strToU8(JSON.stringify(value)),
