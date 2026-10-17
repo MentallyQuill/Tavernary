@@ -1903,6 +1903,25 @@ export async function runAutomationWriterReconciliation({
   } catch {
     health = { status: "unavailable" };
   }
+  if (healthSlot) {
+    let useInitial = true;
+    try {
+      health = await reconcileIncidentUpdates({
+        env,
+        gh,
+        availableSlots: healthSlot,
+        load: async () => {
+          if (useInitial) {
+            useInitial = false;
+            return initialHealth;
+          }
+          return healthInput(await load());
+        },
+      });
+    } catch {
+      health = { status: "unavailable" };
+    }
+  }
   const genericLimit =
     20 -
     usedSlots -
@@ -2013,25 +2032,6 @@ export async function runAutomationWriterReconciliation({
       });
     } catch {
       stateRetention = { status: "unavailable" };
-    }
-  }
-  if (healthSlot) {
-    let useInitial = true;
-    try {
-      health = await reconcileIncidentUpdates({
-        env,
-        gh,
-        availableSlots: healthSlot,
-        load: async () => {
-          if (useInitial) {
-            useInitial = false;
-            return initialHealth;
-          }
-          return healthInput(await load());
-        },
-      });
-    } catch {
-      health = { status: "unavailable" };
     }
   }
   let dependencies = dependencyPullNumbers.length
