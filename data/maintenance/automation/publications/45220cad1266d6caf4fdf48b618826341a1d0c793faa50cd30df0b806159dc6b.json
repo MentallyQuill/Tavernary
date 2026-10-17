@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "45220cad1266d6caf4fdf48b618826341a1d0c793faa50cd30df0b806159dc6b",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1063754811:kawaii-wolf-sillytavern-evenmoreflexiblecontinues",
+      "inputDigest": "51ac5318096fb853c7bd7a171ce7e43793da64c50c5401ce86d0b225e9f8c378",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1063754811",
+    "identity": "github:1063754811"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 38984027284,
+    "sourceSha": "7add22964a8013f47a3cfbebcf4c931011743675"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/kawaii-wolf-sillytavern-evenmoreflexiblecontinues.json",
+      "sha256": "64c77ddd92568ca75f03f08322fbd3011cc9ca9733ec1b4c7111755a73092194",
+      "gitBlobSha": "7c753b1b331ab4f37bf898067568b38887b72903"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/45220cad1266d6caf4fdf48b618826341a1d0c793faa50cd30df0b806159dc6b.json",
+      "sha256": "5e46fabe80adb20b46baf5fc7eedf4e145f7bd07f9a537bfca0054edc13a1ba5",
+      "gitBlobSha": "e62e052835f7ac5e88cfdd03d514184395e39d49"
+    }
+  ]
+}

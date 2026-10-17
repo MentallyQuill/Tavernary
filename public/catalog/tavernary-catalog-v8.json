@@ -53477,10 +53477,10 @@
       "id": "kawaii-wolf-sillytavern-evenmoreflexiblecontinues",
       "name": "Even More Flexible Continues",
       "kind": "extension",
-      "metadataStatus": "provisional",
+      "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "generation-reasoning",
-      "summary": "A modernized rewrite of More Flexible Continues.",
+      "summary": "SillyTavern extension reworking message continues: undo, regenerate, redo earlier continues from a list, and browse full continue history, plus /emfc- slash commands (README Usage).",
       "canonicalUrl": "https://github.com/kawaii-wolf/SillyTavern-EvenMoreFlexibleContinues",
       "catalogedAt": "2026-07-28T16:36:12.999Z",
       "catalogCohort": "standard",
@@ -53491,7 +53491,20 @@
           "description": "Works with the SillyTavern roleplay frontend."
         }
       ],
-      "tags": [],
+      "tags": [
+        {
+          "id": "edit-and-refine-messages",
+          "label": "Edit and refine messages",
+          "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
+          "facet": "goal"
+        },
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+          "facet": "trait"
+        }
+      ],
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
@@ -53653,7 +53666,7 @@
           "https://github.com/kawaii-wolf/SillyTavern-EvenMoreFlexibleContinues"
         ],
         "summary": [
-          "A modernized rewrite of More Flexible Continues."
+          "SillyTavern extension reworking message continues: undo, regenerate, redo earlier continues from a list, and browse full continue history, plus /emfc- slash commands (README Usage)."
         ],
         "kind": [
           "extension"
@@ -53661,7 +53674,16 @@
         "primaryFunction": [
           "Generation and reasoning"
         ],
-        "tags": [],
+        "tags": [
+          "Edit and refine messages",
+          "message rewriting",
+          "chat editing",
+          "response refinement",
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay"
+        ],
         "frontends": [
           "SillyTavern"
         ],
@@ -259865,10 +259887,10 @@
             "id": "kawaii-wolf-sillytavern-evenmoreflexiblecontinues",
             "name": "Even More Flexible Continues",
             "kind": "extension",
-            "metadataStatus": "provisional",
+            "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "generation-reasoning",
-            "summary": "A modernized rewrite of More Flexible Continues.",
+            "summary": "SillyTavern extension reworking message continues: undo, regenerate, redo earlier continues from a list, and browse full continue history, plus /emfc- slash commands (README Usage).",
             "canonicalUrl": "https://github.com/kawaii-wolf/SillyTavern-EvenMoreFlexibleContinues",
             "catalogedAt": "2026-07-28T16:36:12.999Z",
             "catalogCohort": "standard",
@@ -259879,7 +259901,20 @@
                 "description": "Works with the SillyTavern roleplay frontend."
               }
             ],
-            "tags": [],
+            "tags": [
+              {
+                "id": "edit-and-refine-messages",
+                "label": "Edit and refine messages",
+                "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
+                "facet": "goal"
+              },
+              {
+                "id": "non-destructive",
+                "label": "Non-destructive",
+                "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+                "facet": "trait"
+              }
+            ],
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
@@ -260041,7 +260076,7 @@
                 "https://github.com/kawaii-wolf/SillyTavern-EvenMoreFlexibleContinues"
               ],
               "summary": [
-                "A modernized rewrite of More Flexible Continues."
+                "SillyTavern extension reworking message continues: undo, regenerate, redo earlier continues from a list, and browse full continue history, plus /emfc- slash commands (README Usage)."
               ],
               "kind": [
                 "extension"
@@ -260049,7 +260084,16 @@
               "primaryFunction": [
                 "Generation and reasoning"
               ],
-              "tags": [],
+              "tags": [
+                "Edit and refine messages",
+                "message rewriting",
+                "chat editing",
+                "response refinement",
+                "Non-destructive",
+                "reversible workflow",
+                "preserves originals",
+                "safe overlay"
+              ],
               "frontends": [
                 "SillyTavern"
               ],
