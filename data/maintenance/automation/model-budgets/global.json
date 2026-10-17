@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updatedAt": "2026-10-17T18:01:07.736Z",
+  "updatedAt": "2026-10-17T19:17:33.264Z",
   "days": [
     {
       "day": "2026-10-10",
@@ -34,15 +34,15 @@
     },
     {
       "day": "2026-10-17",
-      "requests": 128,
-      "tokens": 6240000
+      "requests": 132,
+      "tokens": 6435000
     }
   ],
   "months": [
     {
       "month": "2026-10",
       "reservedMicrousd": 0,
-      "unpricedTokens": 17940000
+      "unpricedTokens": 18135000
     }
   ],
   "tickets": [
@@ -3622,6 +3622,44 @@
       "producer": {
         "runId": 39056533283,
         "workflow": ".github/workflows/enrich-catalog.yml"
+      },
+      "settled": false,
+      "usage": null
+    },
+    {
+      "id": "bd29b7c43b8f5ad3ed13e8d2c671e4bf0ce324110fccf5444b199fac2c91a387",
+      "operationKey": "01f3e7ceebb54312ef0b96b941d2357b5adf23d9755d7f8a54dcce270ffa0f78",
+      "requestId": "writer-39053797749:0",
+      "day": "2026-10-17",
+      "model": "z-ai/glm-5.3-flash",
+      "requestCount": 3,
+      "requestedTokens": 180000,
+      "price": null,
+      "reservedMicrousd": 0,
+      "createdAt": "2026-10-17T19:17:33.264Z",
+      "expiresAt": "2026-10-17T20:02:33.264Z",
+      "producer": {
+        "runId": 39062137197,
+        "workflow": ".github/workflows/review-catalog-policy.yml"
+      },
+      "settled": false,
+      "usage": null
+    },
+    {
+      "id": "ed6c82cb68c3b03f256aa68d00736f112c9a656adbc694892f1ea8fe760e327d",
+      "operationKey": "01f3e7ceebb54312ef0b96b941d2357b5adf23d9755d7f8a54dcce270ffa0f78",
+      "requestId": "writer-39053797749:1",
+      "day": "2026-10-17",
+      "model": "gpt-5.6-luna",
+      "requestCount": 1,
+      "requestedTokens": 15000,
+      "price": null,
+      "reservedMicrousd": 0,
+      "createdAt": "2026-10-17T19:17:33.264Z",
+      "expiresAt": "2026-10-17T20:02:33.264Z",
+      "producer": {
+        "runId": 39062137197,
+        "workflow": ".github/workflows/review-catalog-policy.yml"
       },
       "settled": false,
       "usage": null
