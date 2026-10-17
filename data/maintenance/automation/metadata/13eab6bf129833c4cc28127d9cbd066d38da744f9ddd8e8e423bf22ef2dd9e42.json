@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "therosin-st-extension-lua",
+  "sourceId": "github-826008663",
+  "sourceIdentity": "github:826008663",
+  "inputDigest": "8e740be6695cfdc358e709879939c0e6449ec21c36731647de97a7a9509579b2",
+  "fingerprint": "c1bd0bfbd32265e3fc400f860c14ca11ee99552a67396fcb9ac89a9274705eff",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "c9fd6e26879c0477cee358dfd7807ad2339d69c54d92f39dfcc3e9808f9d81fe",
+  "outputDigest": "1bbdfb765674284a75ab80fa2381164f5b35acecfc085a0b91342cec2d35cbc7",
+  "headSha": "fc972dd8e663c6e922d56f3dc756114e7f7f2434",
+  "observedAt": "2026-10-17T20:52:35.826Z"
+}

@@ -117367,7 +117367,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "ST-Extension-Lua is a SillyTavern extension that adds Lua scripting support to the frontend. It enables users to write and run custom scripts to automate tasks and extend the platform's behavior.",
+      "summary": "ST-Extension-Lua by therosin adds Lua scripting support to SillyTavern, letting users extend their roleplay setup with custom scripts built on the wasmoon Lua runtime. (README)",
       "canonicalUrl": "https://github.com/Therosin/ST-Extension-Lua",
       "catalogedAt": "2026-07-26T00:00:00Z",
       "catalogCohort": "standard",
@@ -117380,22 +117380,10 @@
       ],
       "tags": [
         {
-          "id": "automate-roleplay-workflows",
-          "label": "Automate roleplay workflows",
-          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
-          "facet": "goal"
-        },
-        {
           "id": "build-extensions-and-scripts",
           "label": "Build extensions and scripts",
           "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
           "facet": "goal"
-        },
-        {
-          "id": "modular-and-extensible",
-          "label": "Modular and extensible",
-          "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
-          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -117478,7 +117466,7 @@
           "https://github.com/Therosin/ST-Extension-Lua"
         ],
         "summary": [
-          "ST-Extension-Lua is a SillyTavern extension that adds Lua scripting support to the frontend. It enables users to write and run custom scripts to automate tasks and extend the platform's behavior."
+          "ST-Extension-Lua by therosin adds Lua scripting support to SillyTavern, letting users extend their roleplay setup with custom scripts built on the wasmoon Lua runtime. (README)"
         ],
         "kind": [
           "extension"
@@ -117487,19 +117475,10 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Automate roleplay workflows",
-          "automation",
-          "workflow automation",
-          "task automation",
-          "triggered actions",
           "Build extensions and scripts",
           "extension development",
           "custom scripting",
-          "plugin development",
-          "Modular and extensible",
-          "plugin architecture",
-          "modular design",
-          "extensible system"
+          "plugin development"
         ],
         "frontends": [
           "SillyTavern"
