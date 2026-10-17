@@ -58151,7 +58151,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "developer-infrastructure",
-      "summary": "SillyTavern-Mathcros is a SillyTavern extension that enables inline math operations within prompts. It integrates with SillyTavern's macro system to perform arithmetic calculations directly in prompt text.",
+      "summary": "SillyTavern-Mathcros is a simple extension that lets you perform inline math operations in your prompts using SillyTavern's macros.",
       "canonicalUrl": "https://github.com/leandrojofre/SillyTavern-Mathcros",
       "catalogedAt": "2026-07-29T22:02:06.912Z",
       "catalogCohort": "standard",
@@ -58164,22 +58164,10 @@
       ],
       "tags": [
         {
-          "id": "run-group-roleplay",
-          "label": "Run group roleplay",
-          "description": "Coordinate scenes involving several AI characters in the same conversation.",
+          "id": "build-extensions-and-scripts",
+          "label": "Build extensions and scripts",
+          "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
           "facet": "goal"
-        },
-        {
-          "id": "track-characters-and-world-state",
-          "label": "Track characters and world state",
-          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
-          "facet": "goal"
-        },
-        {
-          "id": "persistent-state",
-          "label": "Persistent state",
-          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
-          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -58346,7 +58334,7 @@
           "https://github.com/leandrojofre/SillyTavern-Mathcros"
         ],
         "summary": [
-          "SillyTavern-Mathcros is a SillyTavern extension that enables inline math operations within prompts. It integrates with SillyTavern's macro system to perform arithmetic calculations directly in prompt text."
+          "SillyTavern-Mathcros is a simple extension that lets you perform inline math operations in your prompts using SillyTavern's macros."
         ],
         "kind": [
           "extension"
@@ -58355,18 +58343,10 @@
           "Developer infrastructure"
         ],
         "tags": [
-          "Run group roleplay",
-          "multi-character roleplay",
-          "group chats",
-          "ensemble scenes",
-          "Track characters and world state",
-          "state tracking",
-          "stat trackers",
-          "world state tracking",
-          "Persistent state",
-          "durable state",
-          "state persistence",
-          "cross-session state"
+          "Build extensions and scripts",
+          "extension development",
+          "custom scripting",
+          "plugin development"
         ],
         "frontends": [
           "SillyTavern"

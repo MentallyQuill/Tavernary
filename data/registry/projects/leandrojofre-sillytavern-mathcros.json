@@ -3,18 +3,14 @@
   "id": "leandrojofre-sillytavern-mathcros",
   "name": "SillyTavern-Mathcros",
   "kind": "extension",
-  "summary": "SillyTavern-Mathcros is a SillyTavern extension that enables inline math operations within prompts. It integrates with SillyTavern's macro system to perform arithmetic calculations directly in prompt text.",
+  "summary": "SillyTavern-Mathcros is a simple extension that lets you perform inline math operations in your prompts using SillyTavern's macros.",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "developer-infrastructure",
   "cataloged_at": "2026-07-29T22:02:06.912Z",
   "catalog_cohort": "standard",
   "source_id": "github-932215365",
-  "tags": [
-    "run-group-roleplay",
-    "track-characters-and-world-state",
-    "persistent-state"
-  ],
+  "tags": ["build-extensions-and-scripts"],
   "listing_status": "active",
   "listing_status_reason": null,
   "metadata_policy": {

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "12aefd6d1133bb8b809fbdd5ff2366fe8f451446f3a59da239f70f1dcb91cce2",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-932215365:leandrojofre-sillytavern-mathcros",
+      "inputDigest": "480cc65812f5df898656e8ca8b01d94830954de7e7b458bd3aee028a9f80ae73",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-932215365",
+    "identity": "github:932215365"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39068047401,
+    "sourceSha": "89288cb5a2f9da465cc806375a9b6673925aa5a6"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/leandrojofre-sillytavern-mathcros.json",
+      "sha256": "06e3cce570e69bd027d385f454d8902a24d43bc70007964c038fb366e3366604",
+      "gitBlobSha": "ad1495359480f2a15d1e690c8b618eca0590a2ee"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/12aefd6d1133bb8b809fbdd5ff2366fe8f451446f3a59da239f70f1dcb91cce2.json",
+      "sha256": "fef06efc53980ce89d3d7b418f233f4199354103254ef186a40bca5d8b2351b4",
+      "gitBlobSha": "0aad9077492c1ae527f6b5c6d00de1b60eb1e46d"
+    }
+  ]
+}
