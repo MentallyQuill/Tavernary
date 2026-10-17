@@ -42599,6 +42599,112 @@
       }
     },
     {
+      "id": "hec-ovi-gamentic",
+      "name": "gamentic",
+      "kind": "frontend",
+      "metadataStatus": "provisional",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": "Self-hosted, browser-based AI dungeon RPG, fully local on an AMD Strix Halo APU: narrator + per-character agents on one local LLM (Gemma 4 26B MoE via llama.cpp/Vulkan), local images (FLUX.2 klein/ComfyUI), expressive",
+      "canonicalUrl": "https://github.com/hec-ovi/gamentic",
+      "catalogedAt": "2026-10-17T02:20:16.370Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "gamentic",
+          "label": "gamentic",
+          "description": "Works with the gamentic roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "c0f2ca20c73b714036364ea2a1abf32e621888ab",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "hec-ovi"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-07-25T22:08:48.000Z",
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 27,
+        "forks": 6,
+        "watchers": 1,
+        "aggregate": 34
+      },
+      "repositorySizeKb": 16469,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-10-17T02:20:16.370Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "gamentic"
+        ],
+        "aliases": [],
+        "source": [
+          "hec-ovi-gamentic",
+          "github-1264165303",
+          "hec-ovi/gamentic",
+          "https://github.com/hec-ovi/gamentic"
+        ],
+        "summary": [
+          "Self-hosted, browser-based AI dungeon RPG, fully local on an AMD Strix Halo APU: narrator + per-character agents on one local LLM (Gemma 4 26B MoE via llama.cpp/Vulkan), local images (FLUX.2 klein/ComfyUI), expressive"
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [],
+        "frontends": [
+          "gamentic"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "hec-ovi"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "heikouidou-chara-color-filter",
       "name": "Chara Color Filter",
       "kind": "extension",
@@ -62938,7 +63044,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "memory-retrieval",
-      "summary": "Summaryception is a SillyTavern extension designed to summarize conversation history. The tool extends the frontend with summary-focused workflow features to help manage long roleplay sessions.",
+      "summary": "Summaryception, a Sillytavern memory plug-in extension by Lodactio; its README (title-only stub) offers no further documented detail.",
       "canonicalUrl": "https://github.com/Lodactio/Extension-Summaryception",
       "catalogedAt": "2026-07-27T22:03:20.782Z",
       "catalogCohort": "standard",
@@ -62954,12 +63060,6 @@
           "id": "maintain-long-term-memory",
           "label": "Maintain long-term memory",
           "description": "Preserve and recall important information across long chats or separate sessions.",
-          "facet": "goal"
-        },
-        {
-          "id": "manage-context-limits",
-          "label": "Manage context limits",
-          "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
           "facet": "goal"
         }
       ],
@@ -63207,7 +63307,7 @@
           "https://github.com/Lodactio/Extension-Summaryception"
         ],
         "summary": [
-          "Summaryception is a SillyTavern extension designed to summarize conversation history. The tool extends the frontend with summary-focused workflow features to help manage long roleplay sessions."
+          "Summaryception, a Sillytavern memory plug-in extension by Lodactio; its README (title-only stub) offers no further documented detail."
         ],
         "kind": [
           "extension"
@@ -63219,11 +63319,7 @@
           "Maintain long-term memory",
           "durable memory",
           "persistent memory",
-          "remember across chats",
-          "Manage context limits",
-          "context compression",
-          "context window management",
-          "token budgeting"
+          "remember across chats"
         ],
         "frontends": [
           "SillyTavern"
@@ -71528,6 +71624,169 @@
           "MentallyQuill"
         ],
         "relationships": []
+      }
+    },
+    {
+      "id": "mentallyquill-lattice",
+      "name": "Lattice",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "generation-reasoning",
+      "summary": "Lattice is a visual story workshop for SillyTavern where you connect small tools to prepare scenes, track story facts, and route jobs to other models, reviewing changes before accepting (README: visual story workshop).",
+      "canonicalUrl": "https://github.com/MentallyQuill/Lattice",
+      "catalogedAt": "2026-10-17T03:22:38.450Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "inspect-prompts-and-generations",
+          "label": "Inspect prompts and generations",
+          "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+          "facet": "goal"
+        },
+        {
+          "id": "plan-stories-and-scenes",
+          "label": "Plan stories and scenes",
+          "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
+          "facet": "goal"
+        },
+        {
+          "id": "route-tasks-across-models",
+          "label": "Route tasks across models",
+          "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
+          "facet": "goal"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "c0a994ba2b250d24ca8c7114a4e77865e03ab855",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "MentallyQuill"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-16T17:51:05.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 14,
+        "forks": 1,
+        "watchers": 1,
+        "aggregate": 16
+      },
+      "repositorySizeKb": 35743,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-10-17T03:22:38.450Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/MentallyQuill/Lattice.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "Lattice"
+      },
+      "fork": {
+        "parentName": "SillyCanvas",
+        "parentProjectId": "dulgadurbit-sillycanvas",
+        "parentUrl": null,
+        "status": "published"
+      },
+      "search": {
+        "title": [
+          "Lattice"
+        ],
+        "aliases": [],
+        "source": [
+          "mentallyquill-lattice",
+          "github-1409624682",
+          "MentallyQuill/Lattice",
+          "https://github.com/MentallyQuill/Lattice"
+        ],
+        "summary": [
+          "Lattice is a visual story workshop for SillyTavern where you connect small tools to prepare scenes, track story facts, and route jobs to other models, reviewing changes before accepting (README: visual story workshop)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Generation and reasoning"
+        ],
+        "tags": [
+          "Inspect prompts and generations",
+          "prompt inspection",
+          "generation diagnostics",
+          "review validation",
+          "request debugging",
+          "Plan stories and scenes",
+          "story planning",
+          "plot direction",
+          "scene planning",
+          "Route tasks across models",
+          "model routing",
+          "task routing",
+          "connection routing",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "MentallyQuill"
+        ],
+        "relationships": [
+          "SillyCanvas",
+          "dulgadurbit-sillycanvas"
+        ]
       }
     },
     {

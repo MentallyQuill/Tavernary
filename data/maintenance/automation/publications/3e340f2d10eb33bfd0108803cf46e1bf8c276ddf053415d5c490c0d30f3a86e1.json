@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3e340f2d10eb33bfd0108803cf46e1bf8c276ddf053415d5c490c0d30f3a86e1",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1204673207:lodactio-extension-summaryception",
+      "inputDigest": "bd7bf3505f73d82df514b3bb183a3bf480a30de880d01c2f0f6e4de31edd5468",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1204673207",
+    "identity": "github:1204673207"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 38964447846,
+    "sourceSha": "b15afe7c6c2dd978c1d43b92f1de1672933828fc"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/lodactio-extension-summaryception.json",
+      "sha256": "7b9c42768f72c4316f4b825eedf3d16fc0999ec2ae22426ad2319f5d133baec8",
+      "gitBlobSha": "d7aefe016c2eb6ded353c15dac3ae81d88e9aa43"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/3e340f2d10eb33bfd0108803cf46e1bf8c276ddf053415d5c490c0d30f3a86e1.json",
+      "sha256": "3de34a44d569ba054f94bb13e8c51aa9c9a74c6485a871647d3ebad60df2f6ba",
+      "gitBlobSha": "be4c3d698707ac96ff447697b8e0a00334dd4aa2"
+    }
+  ]
+}
