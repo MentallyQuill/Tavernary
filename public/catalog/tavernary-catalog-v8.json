@@ -103667,7 +103667,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "6c6b611274540ae118cc71d4c16b00f67842ae63",
+        "currentSha": "da9ea06d696910524eebb9574f6413377073ee53",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -104215,6 +104215,41 @@
           },
           {
             "provider": "github",
+            "login": "tincansimagine",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "isaac-mcfadyen",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "smirgol",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "m-petra-fn",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "snowby666",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Ph0rk0z",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Esalarc",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "SolidSnacke",
             "botOrAi": false
           },
@@ -104225,12 +104260,7 @@
           },
           {
             "provider": "github",
-            "login": "sakhavhyand",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "johnbenac",
+            "login": "ptm0000",
             "botOrAi": false
           },
           {
@@ -104240,62 +104270,12 @@
           },
           {
             "provider": "github",
-            "login": "ptm0000",
+            "login": "johnbenac",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "snowby666",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "m-petra-fn",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "isaac-mcfadyen",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "Ph0rk0z",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "smirgol",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "tincansimagine",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "Esalarc",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "zerofata",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "wrvsrx",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "mightytribble",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "fizzAI",
+            "login": "sakhavhyand",
             "botOrAi": false
           },
           {
@@ -104316,6 +104296,26 @@
           {
             "provider": "github",
             "login": "BahamutRU",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "mightytribble",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "wrvsrx",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "zerofata",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "fizzAI",
             "botOrAi": false
           },
           {
@@ -104385,16 +104385,6 @@
           },
           {
             "provider": "github",
-            "login": "Trahloc",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "Vhallo",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
             "login": "augusteo",
             "botOrAi": false
           },
@@ -104435,6 +104425,16 @@
           },
           {
             "provider": "github",
+            "login": "Vhallo",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Trahloc",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "drake1138",
             "botOrAi": false
           },
@@ -104445,12 +104445,7 @@
           },
           {
             "provider": "github",
-            "login": "bal-spec",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "P3il4",
+            "login": "AzureKarasuba",
             "botOrAi": false
           },
           {
@@ -104461,16 +104456,6 @@
           {
             "provider": "github",
             "login": "gakada",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "Kas1o",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "Ivruix",
             "botOrAi": false
           },
           {
@@ -104495,17 +104480,7 @@
           },
           {
             "provider": "github",
-            "login": "henk717",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
             "login": "powercaller",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "qHiyokop",
             "botOrAi": false
           },
           {
@@ -104525,12 +104500,32 @@
           },
           {
             "provider": "github",
-            "login": "junshanxu",
+            "login": "A1KESH1",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "A1KESH1",
+            "login": "henk717",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Ivruix",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Kas1o",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "P3il4",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "bal-spec",
             "botOrAi": false
           },
           {
@@ -104580,6 +104575,11 @@
           },
           {
             "provider": "github",
+            "login": "Cyberes",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "dvejmz",
             "botOrAi": false
           },
@@ -104610,12 +104610,12 @@
           },
           {
             "provider": "github",
-            "login": "KhreedAI",
+            "login": "SammCheese",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "AzureKarasuba",
+            "login": "PeterDaveHello",
             "botOrAi": false
           },
           {
@@ -104626,16 +104626,6 @@
           {
             "provider": "github",
             "login": "rsxdalv",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "SammCheese",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "PeterDaveHello",
             "botOrAi": false
           },
           {
@@ -104691,6 +104681,11 @@
           {
             "provider": "github",
             "login": "Kristyku",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "KhreedAI",
             "botOrAi": false
           },
           {
@@ -105619,13 +105614,14 @@
             "botOrAi": false
           }
         ],
-        "humanContributorCount": 384,
+        "humanContributorCount": 383,
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-04T20:03:02.000Z",
+        "latestSourceActivityAt": "2026-10-10T10:37:06.000Z",
         "activeWeeks12": 11,
         "weeklyActivity": [
+          false,
           true,
           true,
           true,
@@ -105636,27 +105632,26 @@
           true,
           true,
           true,
-          true,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
       "latestReleaseAt": "2026-10-01T21:41:32.000Z",
       "community": {
-        "stars": 137,
-        "forks": 23,
+        "stars": 139,
+        "forks": 24,
         "watchers": 4,
-        "aggregate": 164
+        "aggregate": 167
       },
-      "repositorySizeKb": 328473,
+      "repositorySizeKb": 329058,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-17T11:45:22.622Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -105816,27 +105811,27 @@
           "h-a-s-k",
           "Xrystallized",
           "IkariDevGIT",
+          "tincansimagine",
+          "isaac-mcfadyen",
+          "smirgol",
+          "m-petra-fn",
+          "snowby666",
+          "Ph0rk0z",
+          "Esalarc",
           "SolidSnacke",
           "CasualAutopsy",
-          "sakhavhyand",
-          "johnbenac",
-          "lucyknada",
           "ptm0000",
-          "snowby666",
-          "m-petra-fn",
-          "isaac-mcfadyen",
-          "Ph0rk0z",
-          "smirgol",
-          "tincansimagine",
-          "Esalarc",
-          "zerofata",
-          "wrvsrx",
-          "mightytribble",
-          "fizzAI",
+          "lucyknada",
+          "johnbenac",
+          "sakhavhyand",
           "docfail",
           "blueswolf",
           "YunZLu",
           "BahamutRU",
+          "mightytribble",
+          "wrvsrx",
+          "zerofata",
+          "fizzAI",
           "Boof2015",
           "Deathspike",
           "eugencowie",
@@ -105850,8 +105845,6 @@
           "octo-patch",
           "LenAnderson",
           "Hydroerotic",
-          "Trahloc",
-          "Vhallo",
           "augusteo",
           "X00LA",
           "ZhenyaPav",
@@ -105860,26 +105853,27 @@
           "caesarw",
           "cloudskytian",
           "dllt98",
+          "Vhallo",
+          "Trahloc",
           "drake1138",
           "error-usernotavailable",
-          "bal-spec",
-          "P3il4",
+          "AzureKarasuba",
           "gd1551",
           "gakada",
-          "Kas1o",
-          "Ivruix",
           "my-alt-acct",
           "oobabooga",
           "ouoertheo",
           "parsedone",
-          "henk717",
           "powercaller",
-          "qHiyokop",
           "Pardeshx",
           "uberubert",
           "wickedcode01",
-          "junshanxu",
           "A1KESH1",
+          "henk717",
+          "Ivruix",
+          "Kas1o",
+          "P3il4",
+          "bal-spec",
           "BooleanWhale",
           "bubfix",
           "andrempiva",
@@ -105889,18 +105883,17 @@
           "chungchandev",
           "AliceRabbit",
           "CoryG89",
+          "Cyberes",
           "dvejmz",
           "Hakirus",
           "Finadil",
           "eltociear",
           "Scarlet-t",
           "KTibow",
-          "KhreedAI",
-          "AzureKarasuba",
-          "iarna",
-          "rsxdalv",
           "SammCheese",
           "PeterDaveHello",
+          "iarna",
+          "rsxdalv",
           "Pavdig",
           "paniphons",
           "NijikaMyWaifu",
@@ -105912,6 +105905,7 @@
           "toby3d",
           "racinmat",
           "Kristyku",
+          "KhreedAI",
           "allo-",
           "allen9441",
           "axAilotl",
@@ -148670,7 +148664,7 @@
               "state": "gray",
               "riskLevel": null,
               "freshness": "unassessed",
-              "currentSha": "6c6b611274540ae118cc71d4c16b00f67842ae63",
+              "currentSha": "da9ea06d696910524eebb9574f6413377073ee53",
               "report": null,
               "history": [],
               "historyUrl": null
@@ -149218,6 +149212,41 @@
                 },
                 {
                   "provider": "github",
+                  "login": "tincansimagine",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "isaac-mcfadyen",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "smirgol",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "m-petra-fn",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "snowby666",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Ph0rk0z",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Esalarc",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
                   "login": "SolidSnacke",
                   "botOrAi": false
                 },
@@ -149228,12 +149257,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "sakhavhyand",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "johnbenac",
+                  "login": "ptm0000",
                   "botOrAi": false
                 },
                 {
@@ -149243,62 +149267,12 @@
                 },
                 {
                   "provider": "github",
-                  "login": "ptm0000",
+                  "login": "johnbenac",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
-                  "login": "snowby666",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "m-petra-fn",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "isaac-mcfadyen",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "Ph0rk0z",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "smirgol",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "tincansimagine",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "Esalarc",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "zerofata",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "wrvsrx",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "mightytribble",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "fizzAI",
+                  "login": "sakhavhyand",
                   "botOrAi": false
                 },
                 {
@@ -149319,6 +149293,26 @@
                 {
                   "provider": "github",
                   "login": "BahamutRU",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "mightytribble",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "wrvsrx",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "zerofata",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "fizzAI",
                   "botOrAi": false
                 },
                 {
@@ -149388,16 +149382,6 @@
                 },
                 {
                   "provider": "github",
-                  "login": "Trahloc",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "Vhallo",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
                   "login": "augusteo",
                   "botOrAi": false
                 },
@@ -149438,6 +149422,16 @@
                 },
                 {
                   "provider": "github",
+                  "login": "Vhallo",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Trahloc",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
                   "login": "drake1138",
                   "botOrAi": false
                 },
@@ -149448,12 +149442,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "bal-spec",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "P3il4",
+                  "login": "AzureKarasuba",
                   "botOrAi": false
                 },
                 {
@@ -149464,16 +149453,6 @@
                 {
                   "provider": "github",
                   "login": "gakada",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "Kas1o",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "Ivruix",
                   "botOrAi": false
                 },
                 {
@@ -149498,17 +149477,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "henk717",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
                   "login": "powercaller",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "qHiyokop",
                   "botOrAi": false
                 },
                 {
@@ -149528,12 +149497,32 @@
                 },
                 {
                   "provider": "github",
-                  "login": "junshanxu",
+                  "login": "A1KESH1",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
-                  "login": "A1KESH1",
+                  "login": "henk717",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Ivruix",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Kas1o",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "P3il4",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "bal-spec",
                   "botOrAi": false
                 },
                 {
@@ -149583,6 +149572,11 @@
                 },
                 {
                   "provider": "github",
+                  "login": "Cyberes",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
                   "login": "dvejmz",
                   "botOrAi": false
                 },
@@ -149613,12 +149607,12 @@
                 },
                 {
                   "provider": "github",
-                  "login": "KhreedAI",
+                  "login": "SammCheese",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
-                  "login": "AzureKarasuba",
+                  "login": "PeterDaveHello",
                   "botOrAi": false
                 },
                 {
@@ -149629,16 +149623,6 @@
                 {
                   "provider": "github",
                   "login": "rsxdalv",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "SammCheese",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "PeterDaveHello",
                   "botOrAi": false
                 },
                 {
@@ -149694,6 +149678,11 @@
                 {
                   "provider": "github",
                   "login": "Kristyku",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "KhreedAI",
                   "botOrAi": false
                 },
                 {
@@ -150622,13 +150611,14 @@
                   "botOrAi": false
                 }
               ],
-              "humanContributorCount": 384,
+              "humanContributorCount": 383,
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-04T20:03:02.000Z",
+              "latestSourceActivityAt": "2026-10-10T10:37:06.000Z",
               "activeWeeks12": 11,
               "weeklyActivity": [
+                false,
                 true,
                 true,
                 true,
@@ -150639,27 +150629,26 @@
                 true,
                 true,
                 true,
-                true,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": "2026-10-01T21:41:32.000Z",
             "community": {
-              "stars": 137,
-              "forks": 23,
+              "stars": 139,
+              "forks": 24,
               "watchers": 4,
-              "aggregate": 164
+              "aggregate": 167
             },
-            "repositorySizeKb": 328473,
+            "repositorySizeKb": 329058,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-17T11:45:22.622Z",
             "staleSince": null,
             "install": null,
             "fork": null,
@@ -150819,27 +150808,27 @@
                 "h-a-s-k",
                 "Xrystallized",
                 "IkariDevGIT",
+                "tincansimagine",
+                "isaac-mcfadyen",
+                "smirgol",
+                "m-petra-fn",
+                "snowby666",
+                "Ph0rk0z",
+                "Esalarc",
                 "SolidSnacke",
                 "CasualAutopsy",
-                "sakhavhyand",
-                "johnbenac",
-                "lucyknada",
                 "ptm0000",
-                "snowby666",
-                "m-petra-fn",
-                "isaac-mcfadyen",
-                "Ph0rk0z",
-                "smirgol",
-                "tincansimagine",
-                "Esalarc",
-                "zerofata",
-                "wrvsrx",
-                "mightytribble",
-                "fizzAI",
+                "lucyknada",
+                "johnbenac",
+                "sakhavhyand",
                 "docfail",
                 "blueswolf",
                 "YunZLu",
                 "BahamutRU",
+                "mightytribble",
+                "wrvsrx",
+                "zerofata",
+                "fizzAI",
                 "Boof2015",
                 "Deathspike",
                 "eugencowie",
@@ -150853,8 +150842,6 @@
                 "octo-patch",
                 "LenAnderson",
                 "Hydroerotic",
-                "Trahloc",
-                "Vhallo",
                 "augusteo",
                 "X00LA",
                 "ZhenyaPav",
@@ -150863,26 +150850,27 @@
                 "caesarw",
                 "cloudskytian",
                 "dllt98",
+                "Vhallo",
+                "Trahloc",
                 "drake1138",
                 "error-usernotavailable",
-                "bal-spec",
-                "P3il4",
+                "AzureKarasuba",
                 "gd1551",
                 "gakada",
-                "Kas1o",
-                "Ivruix",
                 "my-alt-acct",
                 "oobabooga",
                 "ouoertheo",
                 "parsedone",
-                "henk717",
                 "powercaller",
-                "qHiyokop",
                 "Pardeshx",
                 "uberubert",
                 "wickedcode01",
-                "junshanxu",
                 "A1KESH1",
+                "henk717",
+                "Ivruix",
+                "Kas1o",
+                "P3il4",
+                "bal-spec",
                 "BooleanWhale",
                 "bubfix",
                 "andrempiva",
@@ -150892,18 +150880,17 @@
                 "chungchandev",
                 "AliceRabbit",
                 "CoryG89",
+                "Cyberes",
                 "dvejmz",
                 "Hakirus",
                 "Finadil",
                 "eltociear",
                 "Scarlet-t",
                 "KTibow",
-                "KhreedAI",
-                "AzureKarasuba",
-                "iarna",
-                "rsxdalv",
                 "SammCheese",
                 "PeterDaveHello",
+                "iarna",
+                "rsxdalv",
                 "Pavdig",
                 "paniphons",
                 "NijikaMyWaifu",
@@ -150915,6 +150902,7 @@
                 "toby3d",
                 "racinmat",
                 "Kristyku",
+                "KhreedAI",
                 "allo-",
                 "allen9441",
                 "axAilotl",
