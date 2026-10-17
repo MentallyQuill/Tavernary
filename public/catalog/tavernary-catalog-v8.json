@@ -2199,6 +2199,200 @@
       }
     },
     {
+      "id": "ackness-covel",
+      "name": "covel",
+      "kind": "frontend",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": " is an agentic AI RPG framework and playable studio where NPC relationships, quests, inventory, memory, and lore evolve between turns, with mechanics composed as plugins and settings as world packs (README intro).",
+      "canonicalUrl": "https://github.com/ackness/covel",
+      "catalogedAt": "2026-10-17T09:12:38.059Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "covel",
+          "label": "covel",
+          "description": "Works with the covel roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-rpg-gameplay",
+          "label": "Add RPG gameplay",
+          "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
+          "facet": "goal"
+        },
+        {
+          "id": "agentic-tool-use",
+          "label": "Agentic tool use",
+          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
+          "facet": "trait"
+        },
+        {
+          "id": "build-worlds-and-lore",
+          "label": "Build worlds and lore",
+          "description": "Create fictional settings, lore, locations, factions, or other world material.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-inventory-and-quests",
+          "label": "Manage inventory and quests",
+          "description": "Track equipment, items, objectives, quests, or progression records.",
+          "facet": "goal"
+        },
+        {
+          "id": "modular-and-extensible",
+          "label": "Modular and extensible",
+          "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
+          "facet": "trait"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "1d5e9ba0fe6cc4980a745a49763703fae4ce5992",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "ackness"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "claude",
+            "botOrAi": true
+          },
+          {
+            "provider": "github",
+            "login": "charlesli1989",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "github-actions[bot]",
+            "botOrAi": true
+          },
+          {
+            "provider": "github",
+            "login": "dependabot[bot]",
+            "botOrAi": true
+          }
+        ],
+        "humanContributorCount": 1,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-16T09:49:31.000Z",
+        "activeWeeks12": 10,
+        "weeklyActivity": [
+          false,
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-10-16T10:08:43.000Z",
+      "community": {
+        "stars": 58,
+        "forks": 20,
+        "watchers": 2,
+        "aggregate": 80
+      },
+      "repositorySizeKb": 436825,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-10-17T09:12:38.059Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "covel"
+        ],
+        "aliases": [],
+        "source": [
+          "ackness-covel",
+          "github-1190560481",
+          "ackness/covel",
+          "https://github.com/ackness/covel"
+        ],
+        "summary": [
+          "is an agentic AI RPG framework and playable studio where NPC relationships, quests, inventory, memory, and lore evolve between turns, with mechanics composed as plugins and settings as world packs (README intro)."
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [
+          "Add RPG gameplay",
+          "tabletop mechanics",
+          "game master tools",
+          "RPG systems",
+          "Agentic tool use",
+          "tool calling",
+          "AI agents",
+          "agent mode",
+          "Build worlds and lore",
+          "worldbuilding",
+          "character worldbuilding",
+          "lore creation",
+          "setting design",
+          "Manage inventory and quests",
+          "quest tracking",
+          "inventory management",
+          "equipment tracking",
+          "Modular and extensible",
+          "plugin architecture",
+          "modular design",
+          "extensible system",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "covel"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "ackness",
+          "claude",
+          "charlesli1989",
+          "github-actions[bot]",
+          "dependabot[bot]"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "adnv3k-sillytavern-inline-generated-media",
       "name": "SillyTavern-Inline-Generated-Media",
       "kind": "extension",
@@ -82883,10 +83077,10 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "23d82eca5b175c19efc013ab1ccae6153701a50e",
         "report": {
-          "reportId": "5265c24c69829012a68bef6900e3a830eb466b8d02a09e10ff80330bcf04a7c3",
+          "reportId": "8e1b2b64f4d43942f7b4f95b672d5767a83af3e7f816178467263edaefc44bc9",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -82895,10 +83089,10 @@
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
           "citedFindingIds": [],
-          "scannedSha": "9ca44f48b8f7d3004291f4e973291308ffdcc675",
-          "treeUrl": "https://github.com/owler-tavern/context-image-generation/tree/9ca44f48b8f7d3004291f4e973291308ffdcc675",
-          "scannedAt": "2026-10-07T14:48:54.890Z",
-          "assessedAt": "2026-10-07T14:51:43.106Z",
+          "scannedSha": "23d82eca5b175c19efc013ab1ccae6153701a50e",
+          "treeUrl": "https://github.com/owler-tavern/context-image-generation/tree/23d82eca5b175c19efc013ab1ccae6153701a50e",
+          "scannedAt": "2026-10-14T14:51:43.480Z",
+          "assessedAt": "2026-10-17T08:20:25.333Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
@@ -82906,7 +83100,7 @@
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
           "javascriptAnalysisStatus": "complete",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1298579218/9ca44f48b8f7d3004291f4e973291308ffdcc675/5/5265c24c69829012a68bef6900e3a830eb466b8d02a09e10ff80330bcf04a7c3/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1298579218/23d82eca5b175c19efc013ab1ccae6153701a50e/5/8e1b2b64f4d43942f7b4f95b672d5767a83af3e7f816178467263edaefc44bc9/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1298579218/history/"
         },
         "history": [
@@ -83004,6 +83198,30 @@
             "assessmentSource": "deterministic_regrade",
             "javascriptAnalysisStatus": "complete",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1298579218/9ca44f48b8f7d3004291f4e973291308ffdcc675/5/5265c24c69829012a68bef6900e3a830eb466b8d02a09e10ff80330bcf04a7c3/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1298579218/history/"
+          },
+          {
+            "reportId": "8e1b2b64f4d43942f7b4f95b672d5767a83af3e7f816178467263edaefc44bc9",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "23d82eca5b175c19efc013ab1ccae6153701a50e",
+            "treeUrl": "https://github.com/owler-tavern/context-image-generation/tree/23d82eca5b175c19efc013ab1ccae6153701a50e",
+            "scannedAt": "2026-10-14T14:51:43.480Z",
+            "assessedAt": "2026-10-17T08:20:25.333Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1298579218/23d82eca5b175c19efc013ab1ccae6153701a50e/5/8e1b2b64f4d43942f7b4f95b672d5767a83af3e7f816178467263edaefc44bc9/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1298579218/history/"
           }
         ],
