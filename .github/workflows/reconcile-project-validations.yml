@@ -17,6 +17,21 @@ on:
         description: "Generated validation run to await and reconcile"
         required: false
         type: string
+      submission_issue_number:
+        description: Specific submission to finalize; zero for the automatic candidate pass
+        required: false
+        type: number
+        default: 0
+      submission_operation_key:
+        description: Optional exact submission operation identity
+        required: false
+        type: string
+        default: ""
+      site_run_id:
+        description: Completed Site run whose public proof should be accepted
+        required: false
+        type: number
+        default: 0
 
 permissions:
   contents: read
@@ -25,7 +40,7 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: automation-controller
+  group: submission-reconciliation
   cancel-in-progress: false
 
 jobs:
@@ -50,16 +65,28 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: publisher
+    permissions:
+      contents: read
+      actions: read
+      issues: write
+      pull-requests: write
+      statuses: write
     steps:
       - name: Check out trusted default branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: main
+          fetch-depth: 0
           persist-credentials: false
       - name: Set up Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version-file: .node-version
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Install public verification browsers
+        run: npx playwright install --with-deps chromium webkit
       - name: Await dispatched validation completion
         if: github.event_name == 'workflow_dispatch' && inputs.validation_run_id != ''
         env:
@@ -68,14 +95,26 @@ jobs:
         run: >-
           gh run watch "$VALIDATION_RUN_ID" --repo "$GITHUB_REPOSITORY"
           --interval 5
-      - name: Create scoped controller dispatch token
+      - name: Create scoped submission reconciliation token
         id: controller-token
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
           private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
           permission-actions: write
-      - name: Wake the serialized canonical controller
-        run: node scripts/automation/controller-wake.mjs
+          permission-contents: write
+          permission-issues: write
+          permission-pull-requests: read
+      - name: Recover exact-head project validation and publication
+        run: node scripts/submissions/reconcile-project-validations.mjs
         env:
           GH_TOKEN: ${{ steps.controller-token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
+          PROJECT_AUTO_PUBLICATION_ENABLED: ${{ vars.PROJECT_AUTO_PUBLICATION_ENABLED }}
+      - name: Confirm public submission completion and recover missed handoffs
+        if: always() && !cancelled() && steps.controller-token.outputs.token != '' && !(github.event_name == 'workflow_dispatch' && github.actor == 'github-actions[bot]')
+        run: node scripts/submissions/reconcile-submission-finalization.mjs
+        env:
+          GH_TOKEN: ${{ steps.controller-token.outputs.token }}
+          TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}

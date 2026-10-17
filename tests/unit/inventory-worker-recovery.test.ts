@@ -11,8 +11,19 @@ import { planAutomationRetry } from "../../scripts/automation/retry.mjs";
 import type { WorkerDiagnosticRun } from "../../scripts/automation/worker-diagnostic.mjs";
 import {
   AUTOMATION_NOW,
-  operationFixture,
+  operationFixture as baseOperationFixture,
 } from "../helpers/automation-fixtures";
+import type { AutomationOperation } from "../../scripts/automation/operation.mjs";
+function operationFixture(overrides: Partial<AutomationOperation> = {}) {
+  return baseOperationFixture({
+    ...overrides,
+    identity: {
+      ...baseOperationFixture().identity,
+      kind: "metadata",
+      ...overrides.identity,
+    },
+  });
+}
 
 const repository = "MentallyQuill/Tavernary";
 const publisherActorId = 41_982_982;

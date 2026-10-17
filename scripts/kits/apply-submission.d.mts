@@ -38,3 +38,24 @@ export function writeAppliedKitOutput(
   path: string,
   kit: CanonicalKit,
 ): Promise<void>;
+export function runDirectKitPublication(input?: {
+  env?: Record<string, string | undefined>;
+  gh?: import("../submissions/kit-submission-reconciliation.mjs").GhRunner;
+  load?: () => Promise<
+    import("../automation/inventory.mjs").AutomationInventoryState
+  >;
+  commit?: (
+    input: Omit<
+      Parameters<
+        typeof import("../automation/canonical-data.mjs").commitCanonicalData
+      >[0],
+      "gh"
+    >,
+  ) => Promise<{ sha: string }>;
+  build?: typeof import("../automation/publication-build.mjs").buildPreparedCatalogPublication;
+}): Promise<{
+  status: string;
+  sha?: string;
+  operationKey?: string;
+  reason?: string;
+}>;

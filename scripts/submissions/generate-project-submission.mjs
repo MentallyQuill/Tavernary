@@ -13,6 +13,7 @@ import {
   createProducerBudgetLoader,
   runGenerationWithBudgetEvidence,
 } from "../automation/model-budget-github.mjs";
+import { generationRequestMode } from "../automation/submission-routing.mjs";
 import { EXTENSION_PRIMARY_FUNCTION_IDS } from "../../src/features/catalog/primary-function-contract.mjs";
 import {
   createInitialRepositorySnapshot,
@@ -735,7 +736,6 @@ export async function prepareProjectSubmissionDraft({
           sourceClients.enrichmentProvider ??
           createEnrichmentProvider({
             ...modelProviderOptionsFromEnvironment(),
-            requireBudget: true,
             budgetGuard: await sourceClients.loadBudgetGuard?.(),
           });
         const output = await enrichRecord(
@@ -916,7 +916,6 @@ export async function prepareProjectSubmissionDraft({
         sourceClients.enrichmentProvider ??
         createEnrichmentProvider({
           ...modelProviderOptionsFromEnvironment(),
-          requireBudget: true,
           budgetGuard: await sourceClients.loadBudgetGuard?.(),
         });
       const output = await enrichRecord(
@@ -1066,13 +1065,26 @@ export async function runGenerateProjectSubmissionCli(options) {
   return generated;
 }
 
-async function main() {
-  const cli = parseGenerateProjectSubmissionCli(process.argv.slice(2));
-  const loader = createProducerBudgetLoader();
-  await runGenerationWithBudgetEvidence({
+export async function runGenerateProjectSubmissionEntrypoint(options = {}) {
+  const cli =
+    options.cli ?? parseGenerateProjectSubmissionCli(process.argv.slice(2));
+  const env = options.env ?? process.env;
+  const event =
+    options.event ??
+    (env.GITHUB_EVENT_PATH
+      ? JSON.parse(await readFile(env.GITHUB_EVENT_PATH, "utf8"))
+      : { inputs: {} });
+  const run = options.run ?? runGenerateProjectSubmissionCli;
+  if (generationRequestMode(event.inputs) === "direct") return run(cli);
+  const loader = (options.createBudgetLoader ?? createProducerBudgetLoader)({
+    env,
+    event,
+  });
+  return runGenerationWithBudgetEvidence({
     loader,
+    env,
     generate: () =>
-      runGenerateProjectSubmissionCli({
+      run({
         ...cli,
         sourceClients: { loadBudgetGuard: loader.load },
       }),
@@ -1083,5 +1095,5 @@ if (
   process.argv[1] &&
   import.meta.url === pathToFileURL(process.argv[1]).href
 ) {
-  await main();
+  await runGenerateProjectSubmissionEntrypoint();
 }

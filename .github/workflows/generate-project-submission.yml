@@ -4,7 +4,7 @@ run-name: >-
     && (inputs.request_run_id > 0
         && format('Automation prepare {0} request{1}', inputs.operation_key, inputs.request_run_id)
         || format('Automation prepare {0}', inputs.operation_key))
-    || format('Project #{0}: Request review PR force={1}', inputs.issue_number, inputs.force_regeneration) }}
+    || format('Project #{0}: Create review PR', inputs.issue_number) }}
 
 on:
   workflow_dispatch:
@@ -45,71 +45,16 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  request:
-    if: >-
-      inputs.operation_key == '' && github.ref == 'refs/heads/main' &&
-      (github.actor_id == 2625904 || github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)
-    runs-on: ubuntu-latest
-    environment: publisher
-    timeout-minutes: 5
-    permissions:
-      contents: read
-      actions: read
-      issues: read
-      pull-requests: read
-    steps:
-      - name: Check out trusted request code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          ref: ${{ github.sha }}
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Set up Node.js
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
-        with:
-          node-version-file: .node-version
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Select current admitted generation
-        id: request
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
-        run: |
-          node scripts/automation/preparation-request.mjs > "$RUNNER_TEMP/generation-request.json"
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          const plan = JSON.parse(fs.readFileSync(`${process.env.RUNNER_TEMP}/generation-request.json`, 'utf8'));
-          if (plan.action === 'dispatch') fs.appendFileSync(process.env.GITHUB_OUTPUT, `operation_key=${plan.inputs.operation_key}\n`);
-          NODE
-      - name: Create scoped Publisher dispatch token
-        id: dispatch-token
-        if: steps.request.outputs.operation_key != ''
-        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
-        with:
-          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
-          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
-          permission-actions: write
-      - name: Request writer-owned generation allowance
-        if: steps.request.outputs.operation_key != ''
-        env:
-          GH_TOKEN: ${{ steps.dispatch-token.outputs.token }}
-          OPERATION_KEY: ${{ steps.request.outputs.operation_key }}
-        run: >-
-          gh workflow run automation-writer.yml --ref main
-          -f mode=prepare -f operation_key="$OPERATION_KEY"
-          -f result_run_id="$GITHUB_RUN_ID"
-
   generate:
     if: >-
-      inputs.operation_key != '' && github.ref == 'refs/heads/main' &&
-      github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID
+      github.ref == 'refs/heads/main' &&
+      (github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID ||
+       (inputs.operation_key == '' && github.actor_id == 2625904))
     runs-on: ubuntu-latest
     environment: publisher
     timeout-minutes: 45
     env:
-      TAVERNARY_REQUIRE_MODEL_BUDGET: "true"
+      TAVERNARY_REQUIRE_MODEL_BUDGET: ${{ inputs.operation_key != '' && 'true' || 'false' }}
       TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
       ISSUE_NUMBER: ${{ inputs.issue_number }}
       REQUEST_RUN_ID: ${{ inputs.request_run_id }}
@@ -140,7 +85,11 @@ jobs:
           cache: npm
       - name: Install repository dependencies
         run: npm ci
+      - name: Reuse existing submission work
+        id: route
+        run: node scripts/automation/submission-routing.mjs
       - name: Inspect existing generated state
+        if: steps.route.outputs.generate == 'true'
         id: state
         shell: bash
         run: |
@@ -183,6 +132,7 @@ jobs:
             echo "remote_sha=$remote_sha"
           } >> "$GITHUB_OUTPUT"
       - name: Protect maintainer corrections
+        if: steps.route.outputs.generate == 'true'
         shell: bash
         env:
           PR_NUMBER: ${{ steps.state.outputs.pr_number }}
@@ -195,6 +145,7 @@ jobs:
             exit 1
           fi
       - name: Regenerate declared project files
+        if: steps.route.outputs.generate == 'true'
         shell: bash
         env:
           UTILITY_API_ENDPOINT: ${{ secrets.UTILITY_API_ENDPOINT }}
@@ -244,12 +195,14 @@ jobs:
             --retry-state-path "${RUNNER_TEMP}/project-submission-retry-state.json" \
             --failure-diagnostic-path "${RUNNER_TEMP}/project-submission-generation-failure.json"
       - name: Generate install evidence
+        if: steps.route.outputs.generate == 'true'
         shell: bash
         run: |
           set -euo pipefail
           source_id="$(node -p "JSON.parse(require('fs').readFileSync(process.env.RUNNER_TEMP + '/admission-report.json','utf8')).source_id")"
           npm run catalog:install-evidence:backfill -- --source-id "$source_id"
       - name: Summarize copy review diagnostic
+        if: steps.route.outputs.generate == 'true'
         shell: bash
         run: |
           node --input-type=module <<'NODE'
@@ -268,11 +221,13 @@ jobs:
           }
           NODE
       - name: Validate proposed catalog and card
+        if: steps.route.outputs.generate == 'true'
         run: |
           npm run catalog:validate
           npm run catalog:build
           git restore -- public/catalog/tavernary-catalog.json public/catalog/tavernary-catalog-v8.json
       - name: Synchronize classification review notice
+        if: steps.route.outputs.generate == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -364,6 +319,7 @@ jobs:
             fi
           done < "${RUNNER_TEMP}/classification-review-comment-ids-to-delete.txt"
       - name: Prepare generated path set
+        if: steps.route.outputs.generate == 'true'
         id: paths
         shell: bash
         run: |
@@ -407,6 +363,7 @@ jobs:
           printf '%s\n' "${generated_paths[@]}" > "${RUNNER_TEMP}/generated-paths.txt"
           echo "project_id=$project_id" >> "$GITHUB_OUTPUT"
       - name: Reject conflicting open submission paths
+        if: steps.route.outputs.generate == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -435,6 +392,7 @@ jobs:
             }
           " "$pulls_path" "${RUNNER_TEMP}/generated-paths.txt"
       - name: Commit generated paths
+        if: steps.route.outputs.generate == 'true'
         id: commit
         shell: bash
         env:
@@ -464,7 +422,7 @@ jobs:
             echo "project_id=$PROJECT_ID"
           } >> "$GITHUB_OUTPUT"
       - name: Prepare maintainer review PR
-        if: steps.commit.outputs.changed == 'true' || steps.state.outputs.pr_number != ''
+        if: steps.route.outputs.generate == 'true' && (steps.commit.outputs.changed == 'true' || steps.state.outputs.pr_number != '')
         shell: bash
         env:
           HEAD_SHA: ${{ steps.commit.outputs.head_sha }}
@@ -529,7 +487,7 @@ jobs:
             }
           " "${RUNNER_TEMP}/project-submission-issue.json"
       - name: Create or update maintainer review PR
-        if: steps.commit.outputs.changed == 'true' || steps.state.outputs.pr_number != ''
+        if: steps.route.outputs.generate == 'true' && (steps.commit.outputs.changed == 'true' || steps.state.outputs.pr_number != '')
         shell: bash
         env:
           BRANCH: ${{ steps.state.outputs.branch }}
@@ -545,7 +503,7 @@ jobs:
             gh pr create --base main --head "$BRANCH" --title "$title" --body-file "${RUNNER_TEMP}/project-submission-pr.md"
           fi
       - name: Synchronize submission issue review state
-        if: steps.commit.outputs.changed == 'true' || steps.state.outputs.pr_number != ''
+        if: steps.route.outputs.generate == 'true' && (steps.commit.outputs.changed == 'true' || steps.state.outputs.pr_number != '')
         shell: bash
         run: |
           set -euo pipefail
@@ -594,13 +552,14 @@ jobs:
             "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/labels" \
             --input "${RUNNER_TEMP}/project-submission-labels.json"
       - name: Reconcile Reddit retry success
-        if: steps.commit.outputs.changed == 'true' || steps.state.outputs.pr_number != ''
+        if: steps.route.outputs.generate == 'true' && (steps.commit.outputs.changed == 'true' || steps.state.outputs.pr_number != '')
         env:
           ADMISSION_REPORT_PATH: ${{ runner.temp }}/admission-report.json
           GENERATION_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/submissions/project-submission-retry-state.mjs
       - name: Upload admission report
+        if: steps.route.outputs.generate == 'true'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: project-submission-${{ inputs.issue_number }}-admission
@@ -608,20 +567,20 @@ jobs:
           if-no-files-found: error
       - name: Create Publisher CI dispatch token
         id: ci-dispatch-token
-        if: steps.commit.outputs.changed == 'true'
+        if: steps.route.outputs.generate == 'true' && (steps.commit.outputs.changed == 'true')
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510
         with:
           client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
           private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
           permission-actions: write
       - name: Dispatch CI for generated branch
-        if: steps.commit.outputs.changed == 'true'
+        if: steps.route.outputs.generate == 'true' && (steps.commit.outputs.changed == 'true')
         env:
           GH_TOKEN: ${{ steps.ci-dispatch-token.outputs.token }}
           BRANCH: ${{ steps.state.outputs.branch }}
         run: gh workflow run ci.yml --ref "$BRANCH"
       - name: Reconcile failed generation
-        if: failure() && !cancelled()
+        if: steps.route.outputs.generate == 'true' && (failure() && !cancelled())
         env:
           ISSUE_NUMBER: ${{ inputs.issue_number }}
           GENERATION_PRODUCER: project-submission
@@ -633,7 +592,7 @@ jobs:
         run: node scripts/submissions/project-generation-failure.mjs
 
       - name: Retain immutable generation model usage
-        if: always()
+        if: steps.route.outputs.generate == 'true' && (always())
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: automation-generation-${{ inputs.operation_key }}-${{ github.run_id }}

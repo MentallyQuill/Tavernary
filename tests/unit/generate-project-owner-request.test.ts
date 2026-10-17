@@ -1238,6 +1238,50 @@ test("loads shared source evidence once while generating sibling cards independe
   ]);
 });
 
+test("ordinary direct owner generation reaches the configured provider without a custom model ticket", async () => {
+  const manifest = addManifest();
+  for (const card of manifest.proposed_cards)
+    card.metadata = {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    };
+  vi.stubEnv(
+    "UTILITY_API_ENDPOINT",
+    "https://provider.invalid/v1/chat/completions",
+  );
+  vi.stubEnv("UTILITY_API_KEY", "fixture-key");
+  vi.stubEnv("UTILITY_MODEL", "fixture-model");
+  vi.stubEnv("TAVERNARY_REQUIRE_MODEL_BUDGET", "false");
+  for (const key of [
+    "TAVERNARY_ENRICHMENT_API_URL",
+    "TAVERNARY_ENRICHMENT_API_KEY",
+    "TAVERNARY_ENRICHMENT_MODEL",
+  ])
+    vi.stubEnv(key, "");
+  const fetch = vi.fn(
+    async () => new Response("Fixture provider refusal", { status: 401 }),
+  );
+  vi.stubGlobal("fetch", fetch);
+  try {
+    await expect(
+      generate(harness(manifest), {
+        loadEnrichmentSource: async () => ({
+          status: "ready",
+          sourceKind: "readme",
+          sourceIdentity: "github:owner/alpha",
+          text: "Shared README evidence.",
+          readmeText: "Shared README evidence.",
+          repositoryDescription: "Repository description.",
+        }),
+      }),
+    ).rejects.toMatchObject({ code: "provider-authentication-failed" });
+    expect(fetch).toHaveBeenCalled();
+  } finally {
+    vi.unstubAllGlobals();
+    vi.unstubAllEnvs();
+  }
+});
+
 test("blocks the atomic batch when automatic summary evidence has no usable copy", async () => {
   const manifest = addManifest();
   for (const card of manifest.proposed_cards) {

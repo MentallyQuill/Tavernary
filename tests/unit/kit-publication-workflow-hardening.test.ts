@@ -9,7 +9,7 @@ import {
   kitInventoryFixture,
 } from "../helpers/automation-fixtures";
 
-test("published Kits await the global deployment before the writer can close their issues", async () => {
+test("published Kits await public confirmation and broad workers leave finalization to the submission lane", async () => {
   const operation = discoverKitOperations(
     kitInventoryFixture({ canonicalPublished: true }),
   )[0];
@@ -32,18 +32,14 @@ test("published Kits await the global deployment before the writer can close the
       confirmedDeployment: true,
     }),
   )[0];
-  expect(planAutomationWorker(confirmed)).toEqual({
-    action: "dispatch",
-    workflow: "automation-writer.yml",
-    inputs: { mode: "finalize", operation_key: confirmed.key },
-  });
+  expect(planAutomationWorker(confirmed)).toEqual({ action: "wait" });
 });
 
 test.each([
   ["apply-kit-submission", "publish"],
   ["apply-kit-withdrawal", "withdraw"],
 ])(
-  "%s mints only a fresh dispatch token after current validation",
+  "%s mints its fresh direct publication token after current validation",
   async (name, jobName) => {
     const document = parse(
       await readFile(`.github/workflows/${name}.yml`, "utf8"),
@@ -58,12 +54,9 @@ test.each([
     expect(requestIndex).toBeGreaterThan(0);
     expect(tokenIndex).toBeGreaterThan(requestIndex);
     expect(job.steps[tokenIndex].with["permission-actions"]).toBe("write");
-    expect(job.steps[tokenIndex].with["permission-contents"]).toBeUndefined();
-    expect(job.steps[tokenIndex].if).toBe(
-      "steps.request.outputs.prepare == 'true'",
-    );
-    expect(JSON.stringify(job)).not.toMatch(
-      /git push|gh issue close|deploy-pages|--force/,
-    );
+    expect(job.steps[tokenIndex].with["permission-contents"]).toBe("write");
+    expect(job.steps[tokenIndex].if).toBeUndefined();
+    expect(JSON.stringify(job)).not.toMatch(/git push|gh issue close|--force/);
+    expect(JSON.stringify(job)).toContain("runDirectKitPublication");
   },
 );

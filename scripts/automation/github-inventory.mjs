@@ -640,6 +640,7 @@ export async function loadGithubAutomationInventory({
   referencedOperations = [],
   nowMs,
   finalizationOperation,
+  submissionIssueNumber,
   publisherActorId,
   downloadDiagnostic = async (args) => {
     if (gh.download) return gh.download(args);
@@ -649,6 +650,132 @@ export async function loadGithubAutomationInventory({
   const root = repositoryPath(repository);
   if (!Number.isSafeInteger(nowMs) || nowMs < 90 * 86_400_000)
     throw new Error("GitHub inventory retention clock is invalid.");
+  if (submissionIssueNumber !== undefined) {
+    if (
+      !Number.isSafeInteger(submissionIssueNumber) ||
+      submissionIssueNumber < 1
+    )
+      throw new Error("Submission inventory identity is invalid.");
+    const issue = JSON.parse(
+      await gh(["api", `${root}/issues/${submissionIssueNumber}`]),
+    );
+    if (
+      issue.number !== submissionIssueNumber ||
+      issue.pull_request ||
+      !Array.isArray(issue.labels)
+    )
+      throw new Error("Submission inventory issue is invalid.");
+    const labels = issue.labels.map((label) => label.name ?? label);
+    const workflow = labels.includes("project-submission")
+      ? "generate-project-submission"
+      : labels.includes("project-owner-request")
+        ? "generate-project-owner-request"
+        : labels.includes("kit-withdrawal")
+          ? "apply-kit-withdrawal"
+          : labels.includes("kit-submission")
+            ? "apply-kit-submission"
+            : null;
+    if (!workflow) throw new Error("Submission inventory route is invalid.");
+    const runQueries = [
+      "queued",
+      "pending",
+      "requested",
+      "waiting",
+      "in_progress",
+    ].map((status) => ({ workflow, status, extra: [] }));
+    if (
+      workflow === "generate-project-submission" &&
+      labels.some((label) =>
+        ["needs-information", "waiting-on-fork-parent"].includes(label),
+      )
+    )
+      for (const status of [
+        "queued",
+        "pending",
+        "requested",
+        "waiting",
+        "in_progress",
+        "completed",
+      ])
+        runQueries.push({
+          workflow: "triage-submission",
+          status,
+          extra:
+            status === "completed"
+              ? [`created=>=${new Date(nowMs - 86400000).toISOString()}`]
+              : [],
+        });
+    const retainedIds = [
+      ...new Set(
+        receipts
+          .filter(
+            (receipt) =>
+              receipt.operation.identity.subject ===
+                `issue:${submissionIssueNumber}` &&
+              receipt.operation.stage !== "finalized",
+          )
+          .map((receipt) => receipt.operation.workerRunId)
+          .filter((id) => Number.isSafeInteger(id) && id > 0),
+      ),
+    ];
+    if (retainedIds.length > 20)
+      throw new Error("Submission handoff inventory exceeds its bound.");
+    const [reference, pullPages, runPages, retained] = await Promise.all([
+      gh(["api", `${root}/git/ref/heads/main`]).then(JSON.parse),
+      workflow.startsWith("generate-")
+        ? pages(gh, `${root}/pulls`, [
+            "state=all",
+            `head=${repository.split("/")[0]}:automation/${workflow.slice(9)}-${submissionIssueNumber}`,
+          ])
+        : [],
+      Promise.all(
+        runQueries.map(async ({ workflow: runWorkflow, status, extra }) => {
+          const runs = [];
+          for (let page = 1; page <= 10; page++) {
+            const response = await inventoryPage(
+              gh,
+              `${root}/actions/workflows/${runWorkflow}.yml/runs`,
+              [
+                "event=workflow_dispatch",
+                "branch=main",
+                `status=${status}`,
+                ...extra,
+              ],
+              page,
+            );
+            if (!Array.isArray(response.workflow_runs))
+              throw new Error("Submission run inventory is invalid.");
+            runs.push(...response.workflow_runs);
+            if (response.workflow_runs.length < 100) return runs;
+          }
+          throw new Error("Submission run inventory exceeds its bound.");
+        }),
+      ),
+      Promise.all(
+        retainedIds.map(async (id) => {
+          const run = JSON.parse(
+            await gh(["api", `${root}/actions/runs/${id}`]),
+          );
+          if (run.id !== id || typeof run.status !== "string")
+            throw new Error("Submission handoff identity is invalid.");
+          return run;
+        }),
+      ),
+    ]);
+    if (!/^[a-f0-9]{40}$/u.test(reference?.object?.sha ?? ""))
+      throw new Error("Submission main revision is invalid.");
+    return {
+      issues: [issue],
+      pulls: pullPages.flat(),
+      runs: [
+        ...new Map(
+          [...runPages.flat(), ...retained].map((run) => [run.id, run]),
+        ).values(),
+      ],
+      mainHeadSha: reference.object.sha,
+      submissionIssueNumber,
+    };
+  }
   if (finalizationOperation) {
     validateAutomationOperation(finalizationOperation);
     const kind = finalizationOperation.identity.kind;

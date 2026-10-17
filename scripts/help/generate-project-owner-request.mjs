@@ -22,6 +22,7 @@ import {
   createProducerBudgetLoader,
   runGenerationWithBudgetEvidence,
 } from "../automation/model-budget-github.mjs";
+import { generationRequestMode } from "../automation/submission-routing.mjs";
 import { loadPreparedGithubArtifact } from "../automation/prepared-github.mjs";
 import { decodePreparedArtifact } from "../automation/prepared-artifact.mjs";
 import {
@@ -529,7 +530,6 @@ async function generatedMetadataOutput(
     input.enrichmentProvider ??
     createEnrichmentProvider({
       ...modelProviderOptionsFromEnvironment(),
-      requireBudget: true,
       budgetGuard: await input.loadBudgetGuard?.(),
     });
   return enrichRecord(context.record, final.source, snapshot, provider, {
@@ -1365,25 +1365,42 @@ export async function runGenerateProjectOwnerCli(options) {
   }
 }
 
-async function main() {
-  const cli = parseGenerateProjectOwnerCli(process.argv.slice(2));
-  const repository = process.env.GITHUB_REPOSITORY;
+export async function runGenerateProjectOwnerEntrypoint(options = {}) {
+  const cli =
+    options.cli ?? parseGenerateProjectOwnerCli(process.argv.slice(2));
+  const env = options.env ?? process.env;
+  const repository = env.GITHUB_REPOSITORY;
   if (!repository) throw new Error("GITHUB_REPOSITORY is required.");
-  const loader = createProducerBudgetLoader();
-  await runGenerationWithBudgetEvidence({
+  const event =
+    options.event ??
+    (env.GITHUB_EVENT_PATH
+      ? JSON.parse(await defaultReadFile(env.GITHUB_EVENT_PATH, "utf8"))
+      : { inputs: {} });
+  const run = options.run ?? runGenerateProjectOwnerCli;
+  if (generationRequestMode(event.inputs) === "direct")
+    return run({
+      ...cli,
+      hostRepository: repository,
+      request: options.request ?? github,
+      generationCheckpoint: options.generationCheckpoint,
+      saveGenerationCheckpoint: options.saveGenerationCheckpoint,
+    });
+  const loader = (options.createBudgetLoader ?? createProducerBudgetLoader)({
+    env,
+    event,
+  });
+  return runGenerationWithBudgetEvidence({
     loader,
+    env,
     emit: !cli.validatedReportPath,
     generate: async () => {
       let generationCheckpoint, saveGenerationCheckpoint;
       if (
         !cli.validatedReportPath &&
-        process.env.RUNNER_TEMP &&
-        process.env.GITHUB_EVENT_PATH
+        env.RUNNER_TEMP &&
+        env.GITHUB_EVENT_PATH
       ) {
         await loader.load();
-        const event = JSON.parse(
-          await defaultReadFile(process.env.GITHUB_EVENT_PATH, "utf8"),
-        );
         const { executeGh } =
           await import("../submissions/kit-submission-reconciliation.mjs");
         const { downloadPreparedArtifact } =
@@ -1393,7 +1410,7 @@ async function main() {
           download: downloadPreparedArtifact,
           repository,
           operationKey: event.inputs?.operation_key,
-          publisherActorId: Number(process.env.TAVERNARY_PUBLISHER_BOT_ID),
+          publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
           runIds: String(event.inputs?.checkpoint_run_ids ?? "")
             .split(",")
             .filter(Boolean)
@@ -1401,19 +1418,16 @@ async function main() {
         });
         saveGenerationCheckpoint = async (value) =>
           defaultWriteFile(
-            resolve(
-              process.env.RUNNER_TEMP,
-              "owner-generation-checkpoint.json",
-            ),
+            resolve(env.RUNNER_TEMP, "owner-generation-checkpoint.json"),
             `${JSON.stringify(validateOwnerGenerationCheckpoint(value))}\n`,
             "utf8",
           );
         await saveGenerationCheckpoint(generationCheckpoint);
       }
-      return runGenerateProjectOwnerCli({
+      return run({
         ...cli,
         hostRepository: repository,
-        request: github,
+        request: options.request ?? github,
         loadBudgetGuard: loader.load,
         generationCheckpoint,
         saveGenerationCheckpoint,
@@ -1426,5 +1440,5 @@ if (
   process.argv[1] &&
   import.meta.url === pathToFileURL(process.argv[1]).href
 ) {
-  await main();
+  await runGenerateProjectOwnerEntrypoint();
 }

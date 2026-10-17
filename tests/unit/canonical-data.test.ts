@@ -52,6 +52,49 @@ function fixture() {
   };
 }
 
+test("independent Kit and background publications from one parent cannot overwrite each other", async () => {
+  const input = fixture();
+  let main = input.expectedMainSha,
+    count = 0;
+  const candidates = new Map<string, string>();
+  const original = input.gh.getMockImplementation()!;
+  input.gh.mockImplementation(async (args, stdin) => {
+    if (
+      args.includes("POST") &&
+      args.includes("repos/Owner/Repo/git/commits")
+    ) {
+      const value = JSON.parse(stdin!);
+      const sha = (++count === 1 ? "e" : "f").repeat(40);
+      candidates.set(sha, value.parents[0]);
+      return JSON.stringify({ sha });
+    }
+    if (args.includes("PATCH")) {
+      const value = JSON.parse(stdin!);
+      expect(value.force).toBe(false);
+      if (candidates.get(value.sha) !== main)
+        throw Object.assign(new Error("GitHub HTTP 422"), { status: 422 });
+      main = value.sha;
+      return JSON.stringify({ ref: "refs/heads/main", object: { sha: main } });
+    }
+    return original(args, stdin);
+  });
+  const kit = {
+    ...input.files[0],
+    path: "data/registry/kits/example-kit.json",
+  };
+  const results = await Promise.allSettled([
+    commitCanonicalData({ ...input, files: [kit] }),
+    commitCanonicalData(input),
+  ]);
+  expect(
+    results.filter((result) => result.status === "fulfilled"),
+  ).toHaveLength(1);
+  expect(results.find((result) => result.status === "rejected")).toMatchObject({
+    reason: { code: "input-superseded" },
+  });
+  expect(candidates.size).toBe(2);
+});
+
 test.each([
   { withBudget: false, reverse: false, overflow: false },
   { withBudget: false, reverse: true, overflow: false },

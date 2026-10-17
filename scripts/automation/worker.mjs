@@ -12,9 +12,12 @@ import {
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
 import { isReportNarrativeRetry } from "./report-operations.mjs";
+import { isDirectSubmissionKind } from "./submission-routing.mjs";
 
 export function planAutomationWorker(operation) {
   validateAutomationOperation(operation);
+  if (isDirectSubmissionKind(operation.identity.kind))
+    return { action: "wait" };
   if (
     operation.workerRunId !== null ||
     operation.retry?.failure.kind === "permanent"

@@ -1,4 +1,5 @@
 import { downloadPreparedArtifact } from "./prepared-artifact-download.mjs";
+import { isDirectSubmissionKind } from "./submission-routing.mjs";
 export { downloadPreparedArtifact } from "./prepared-artifact-download.mjs";
 import { execFile, execFileSync } from "node:child_process";
 import { isDeepStrictEqual, promisify } from "node:util";
@@ -156,6 +157,7 @@ export async function reconcileGenerationOwnerRequests({
       continue;
     try {
       const outcome = await prepare({ requestRunId: request.runId });
+      if (outcome.status === "direct-owned") continue;
       return {
         status: outcome.status,
         slots: 1,
@@ -553,6 +555,14 @@ export async function runModelWriterPreparation({
     if (request && operationKey && operation?.key !== operationKey)
       return { status: "superseded" };
     if (operation) operationKey = operation.key;
+    // A verified historical wrapper may finish its existing handoff. New direct
+    // run titles cannot parse as that envelope; unbound generic admissions stop here.
+    if (
+      operation &&
+      isDirectSubmissionKind(operation.identity.kind) &&
+      !request
+    )
+      return { status: "direct-owned" };
     const workflows = {
       project: ".github/workflows/generate-project-submission.yml",
       "owner-request": ".github/workflows/generate-project-owner-request.yml",
@@ -1471,15 +1481,11 @@ export function selectWriterAdmissionReservations(
     throw new Error("Writer admission quota is invalid.");
   operations.forEach(validateAutomationOperation);
   selectDueOperations([], { nowMs, limit });
-  const initialSeats = [1, 4, 7, 11].filter((seat) => seat < limit).length;
   const reportSeats = [2, 9].filter((seat) => seat < limit).length;
   const consumed = new Set(consumedKeys);
   const subjects = new Set(consumedSubjects);
   const selected = [];
-  for (const [kinds, quota] of [
-    [["project", "owner-request", "kit", "withdrawal"], initialSeats],
-    [["report-import"], reportSeats],
-  ]) {
+  for (const [kinds, quota] of [[["report-import"], reportSeats]]) {
     const familyKeys = new Set(
       operations
         .filter((operation) => kinds.includes(operation.identity.kind))
@@ -1947,6 +1953,7 @@ export async function runAutomationWriterReconciliation({
       state.operations.filter(
         (operation) =>
           !consumed.has(operation.key) &&
+          !isDirectSubmissionKind(operation.identity.kind) &&
           !selectedSubjects.has(operation.identity.subject),
       ),
       { nowMs: state.nowMs, limit: genericLimit - protectedCandidates.length },

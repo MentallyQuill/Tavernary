@@ -2,8 +2,40 @@ import { readFile } from "node:fs/promises";
 import { expect, test } from "vitest";
 import { parse } from "yaml";
 
+test("the existing scheduled submission workflow performs guarded completion and direct recovery independently", async () => {
+  const workflow = parse(
+    await readFile(
+      ".github/workflows/reconcile-project-validations.yml",
+      "utf8",
+    ),
+  );
+  expect(workflow.on.schedule).toEqual([{ cron: "7,22,37,52 * * * *" }]);
+  expect(workflow.concurrency).toEqual({
+    group: "submission-reconciliation",
+    "cancel-in-progress": false,
+  });
+  for (const name of [
+    "submission_issue_number",
+    "submission_operation_key",
+    "site_run_id",
+  ])
+    expect(workflow.on.workflow_dispatch.inputs[name].required).toBe(false);
+  const source = JSON.stringify(workflow.jobs.reconcile);
+  expect(source).toContain("reconcile-submission-finalization.mjs");
+  expect(source).toContain("reconcile-project-validations.mjs");
+  expect(source).not.toContain("controller-wake.mjs");
+  const courier = await readFile(
+    ".github/workflows/automation-prepared.yml",
+    "utf8",
+  );
+  expect(courier).toContain(
+    "gh workflow run reconcile-project-validations.yml",
+  );
+  expect(courier).toContain('site_run_id="$SITE_RUN_ID"');
+});
+
 test.each(["apply-kit-submission", "apply-kit-withdrawal"])(
-  "%s preserves existing entrypoints while its immutable producer emits only data",
+  "%s publishes directly while its legacy immutable producer emits only data",
   async (name) => {
     const source = await readFile(`.github/workflows/${name}.yml`, "utf8");
     const workflow = parse(source);
@@ -13,7 +45,7 @@ test.each(["apply-kit-submission", "apply-kit-withdrawal"])(
     expect(existing.if).toContain("inputs.operation_key == ''");
     expect(existing.if).toContain("github.actor_id == 2625904");
     expect(JSON.stringify(existing)).not.toMatch(
-      /permission-contents.*write|git push|git rebase|gh issue close|deploy-pages/,
+      /git push|git rebase|gh issue close/,
     );
     expect(
       existing.steps.some((step: { run?: string }) =>
@@ -24,8 +56,14 @@ test.each(["apply-kit-submission", "apply-kit-withdrawal"])(
       (step: { id?: string }) => step.id === "publisher-token",
     );
     expect(token.with["permission-actions"]).toBe("write");
-    expect(token.with["permission-contents"]).toBeUndefined();
-    expect(token.if).toContain("steps.request.outputs.prepare == 'true'");
+    expect(token.with["permission-contents"]).toBe("write");
+    expect(token.if).toBeUndefined();
+    expect(JSON.stringify(existing)).toContain("runDirectKitPublication");
+    expect(JSON.stringify(existing)).toContain("deploy-pages.yml");
+    expect(workflow.concurrency).toEqual({
+      group: "kit-registry",
+      "cancel-in-progress": false,
+    });
     const job = workflow.jobs.prepare;
     expect(job.if).toContain(
       "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID",

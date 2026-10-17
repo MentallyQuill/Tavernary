@@ -159,4 +159,16 @@ export function runGenerateProjectSubmissionCli(
     clock?: () => string;
   },
 ): Promise<GeneratedSubmission>;
+
+export function runGenerateProjectSubmissionEntrypoint<
+  T = GeneratedSubmission,
+>(options?: {
+  cli?: GenerateProjectSubmissionCliOptions;
+  env?: Record<string, string | undefined>;
+  event?: { inputs?: Record<string, unknown> };
+  run?: (
+    options: Parameters<typeof runGenerateProjectSubmissionCli>[0],
+  ) => Promise<T>;
+  createBudgetLoader?: typeof import("../automation/model-budget-github.mjs").createProducerBudgetLoader;
+}): Promise<T>;
 import type { GeneratedClassificationReview } from "./draft-project-record.mjs";

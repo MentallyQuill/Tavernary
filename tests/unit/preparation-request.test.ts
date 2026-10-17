@@ -78,21 +78,12 @@ test.each([false, true])(
         write,
       }),
     ).toBe(0);
-    expect(JSON.parse(write.mock.calls[0][0]).action).toBe(
-      peer ? "wait" : "dispatch",
-    );
+    expect(JSON.parse(write.mock.calls[0][0]).action).toBe("wait");
   },
 );
-test("an existing approved Kit entrypoint dispatches only its immutable current operation", () => {
+test("an existing generic Kit request yields to direct submission ownership", () => {
   const input = fixture();
-  expect(planPreparationRequest(input)).toEqual({
-    action: "dispatch",
-    workflow: input.workflow,
-    inputs: {
-      issue_number: "42",
-      operation_key: input.state.operations[0].key,
-    },
-  });
+  expect(planPreparationRequest(input)).toEqual({ action: "wait" });
 });
 test("manual, declined, superseded, or already published operations cannot trigger another preparation", () => {
   for (const stage of ["admitted", "published", "finalized"] as const) {

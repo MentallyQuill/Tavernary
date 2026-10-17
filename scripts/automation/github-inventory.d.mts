@@ -16,6 +16,7 @@ export interface GithubAutomationInventory {
   runs: ProjectInventoryRun[];
   mainHeadSha: string;
   finalizationOperationKey?: string;
+  submissionIssueNumber?: number;
 }
 export function githubFailureStatus(error: unknown): number;
 export function retainedAutomationRunIds(
@@ -75,6 +76,7 @@ export function loadGithubAutomationInventory(input: {
   referencedOperations?: AutomationOperation[];
   nowMs: number;
   finalizationOperation?: AutomationOperation;
+  submissionIssueNumber?: number;
   publisherActorId?: number;
   downloadDiagnostic?: (args: string[]) => Promise<Uint8Array>;
 }): Promise<GithubAutomationInventory>;

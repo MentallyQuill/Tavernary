@@ -179,7 +179,13 @@ test("a stale confirmed receipt cannot redispatch normal work from a sparse inve
 });
 
 test("worker dispatch uses the current reconstructed operation and never a receipt as authority", async () => {
-  const operation = operationFixture();
+  const operation = operationFixture({
+    identity: {
+      ...operationFixture().identity,
+      kind: "metadata",
+      subject: "source:github-42",
+    },
+  });
   const calls: string[][] = [];
   const result = await runAutomationWorker({
     operationKey: operation.key,
@@ -190,8 +196,8 @@ test("worker dispatch uses the current reconstructed operation and never a recei
     },
   });
   expect(result.action).toBe("dispatch");
-  expect(calls[0]).toContain("triage-submission.yml");
-  expect(calls[0]).toContain("issue_number=42");
+  expect(calls[0]).toContain("automation-writer.yml");
+  expect(calls[0]).toContain("mode=prepare");
   const stale = await runAutomationWorker({
     operationKey: operation.key,
     load: async () => [],
@@ -228,7 +234,7 @@ test("published domain operations wait for the coalesced deployment instead of d
 });
 
 test.each(["kit", "withdrawal"] as const)(
-  "%s preparation carries its current immutable operation key",
+  "%s generic preparation yields to its direct publisher",
   (kind) => {
     const operation = operationFixture({
       stage: "validated",
@@ -239,10 +245,7 @@ test.each(["kit", "withdrawal"] as const)(
         policyVersion: "1",
       },
     });
-    expect(planAutomationWorker(operation)).toMatchObject({
-      action: "dispatch",
-      inputs: { issue_number: "42", operation_key: operation.key },
-    });
+    expect(planAutomationWorker(operation)).toEqual({ action: "wait" });
   },
 );
 
@@ -264,7 +267,14 @@ test("active workers and permanent failures remain protected", () => {
 });
 
 test("confirmed deployment routes finalization through the privileged writer", () => {
-  const operation = operationFixture({ stage: "deployment-confirmed" });
+  const operation = operationFixture({
+    stage: "deployment-confirmed",
+    identity: {
+      ...operationFixture().identity,
+      kind: "metadata",
+      subject: "source:github-42",
+    },
+  });
   expect(planAutomationWorker(operation)).toMatchObject({
     workflow: "automation-writer.yml",
     inputs: { mode: "finalize", operation_key: operation.key },

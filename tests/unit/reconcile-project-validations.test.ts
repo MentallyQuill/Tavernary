@@ -2267,3 +2267,206 @@ test("CLI exits nonzero after a required state projection fails", async () => {
 
   expect(exitCode).toBe(1);
 });
+
+test("the default submission CLI uses the Publisher transport for protected dispatch and the issue token for projections", async () => {
+  const pull = pullFixture();
+  const fake = new FakeGitHub([pull]);
+  fake.validationPages.set(pull.head.ref, [[]]);
+  const gh = vi.fn(async (_args: string[], _stdin?: string) => "");
+  vi.stubGlobal("fetch", async (url: string, options: RequestInit = {}) => {
+    expect((options.headers as Record<string, string>).Authorization).toBe(
+      "Bearer issue-token",
+    );
+    const path = String(url).replace("https://api.github.com", "");
+    if (path.endsWith("/dispatches"))
+      throw new Error("Protected dispatch must use the Publisher CLI token");
+    const value = await fake.request(path, {
+      method: options.method,
+      body: typeof options.body === "string" ? options.body : undefined,
+    });
+    return new Response(JSON.stringify(value ?? null));
+  });
+  try {
+    expect(
+      await runReconcileProjectValidationsCli({
+        gh,
+        env: {
+          GITHUB_REPOSITORY: REPOSITORY,
+          GITHUB_TOKEN: "issue-token",
+          GH_TOKEN: "publisher-token",
+          TAVERNARY_PUBLISHER_BOT_ID: String(PUBLISHER_ACTOR_ID),
+          PROJECT_AUTO_PUBLICATION_ENABLED: "true",
+        },
+        nowMs: NOW,
+        write: vi.fn(),
+      }),
+    ).toBe(0);
+    expect(gh).toHaveBeenCalledOnce();
+    expect(gh.mock.calls[0][0]).toContain(
+      `repos/${REPOSITORY}/actions/workflows/ci.yml/dispatches`,
+    );
+  } finally {
+    vi.unstubAllGlobals();
+  }
+});
+import * as recovery from "../../scripts/submissions/reconcile-project-validations.mjs";
+import {
+  projectInventoryFixture,
+  metadataMaintenanceFixture,
+  kitInventoryFixture,
+} from "../helpers/automation-fixtures";
+import { discoverProjectOperations } from "../../scripts/automation/project-operations.mjs";
+import { discoverKitOperations } from "../../scripts/automation/kit-operations.mjs";
+
+test.each(["project-submission", "project-owner-request", "kit"] as const)(
+  "the scheduled pass recovers a missed %s handoff once without writer admission",
+  async (producer) => {
+    const f = await metadataMaintenanceFixture();
+    const p =
+      producer === "kit"
+        ? kitInventoryFixture()
+        : projectInventoryFixture({ producer });
+    f.state.remote.issues = p.issues.map((issue) => ({
+      ...issue,
+      user: { ...issue.user!, type: "User" as const },
+    }));
+    f.state.remote.pulls = [];
+    f.state.remote.runs = [];
+    f.state.operations =
+      producer === "kit"
+        ? discoverKitOperations(p as ReturnType<typeof kitInventoryFixture>)
+        : discoverProjectOperations(
+            p as ReturnType<typeof projectInventoryFixture>,
+          );
+    const gh = vi.fn(async (args: string[]) =>
+      args[0] === "api" ? JSON.stringify(p.issues) : "",
+    );
+    const finalize = vi.fn();
+    const result = await recovery.reconcileSubmissionHandoffs({
+      repository: f.state.repository,
+      gh,
+      load: async () => f.state,
+      finalize,
+    });
+    expect(result.dispatched).toBe(1);
+    const dispatches = gh.mock.calls.filter(([args]) => args[0] === "workflow");
+    expect(dispatches).toHaveLength(1);
+    expect(dispatches[0][0]).toContain(
+      producer === "kit"
+        ? "apply-kit-submission.yml"
+        : `generate-${producer}.yml`,
+    );
+    expect(dispatches[0][0].join(" ")).not.toMatch(
+      /operation_key|automation-writer/u,
+    );
+    expect(finalize).not.toHaveBeenCalled();
+    f.state.operations[0].workerRunId = 700;
+    expect(
+      (
+        await recovery.reconcileSubmissionHandoffs({
+          repository: f.state.repository,
+          gh,
+          load: async () => f.state,
+          finalize,
+        })
+      ).dispatched,
+    ).toBe(0);
+    expect(
+      gh.mock.calls.filter(([args]) => args[0] === "workflow"),
+    ).toHaveLength(1);
+  },
+);
+
+test.each(["producer", "retry", "published", "changed"])(
+  "automatic submission recovery preserves %s custody without duplicate generation",
+  async (variant) => {
+    const f = await metadataMaintenanceFixture();
+    const p = projectInventoryFixture();
+    f.state.remote.issues = p.issues;
+    f.state.remote.pulls = [];
+    f.state.operations = discoverProjectOperations(p);
+    const operation = f.state.operations[0];
+    if (variant === "producer") operation.workerRunId = 700;
+    if (variant === "retry")
+      operation.nextEligibleAt = new Date(f.state.nowMs + 60000).toISOString();
+    if (variant === "published") operation.stage = "published";
+    const listed = structuredClone(p.issues);
+    if (variant === "changed") f.state.remote.issues[0].body += " changed";
+    const gh = vi.fn(async (_args: string[]) => JSON.stringify(listed));
+    const finalize = vi.fn(async () => ({ status: "waiting" }));
+    expect(
+      (
+        await recovery.reconcileSubmissionHandoffs({
+          repository: f.state.repository,
+          gh,
+          load: async () => f.state,
+          finalize,
+        })
+      ).dispatched,
+    ).toBe(0);
+    expect(gh.mock.calls.every(([args]) => args[0] === "api")).toBe(true);
+  },
+);
+
+test.each(["waiting-on-fork-parent", "needs-information"])(
+  "resolved %s dependency resumes native triage before generation",
+  async (label) => {
+    const f = await metadataMaintenanceFixture();
+    const p = projectInventoryFixture();
+    p.issues[0].labels.push(label);
+    f.state.remote.issues = p.issues;
+    f.state.remote.pulls = [];
+    f.state.operations = discoverProjectOperations({
+      ...p,
+      resolvedDependencies: new Set([42]),
+    });
+    const gh = vi.fn(async (args: string[]) =>
+      args[0] === "api" ? JSON.stringify(p.issues) : "",
+    );
+    expect(
+      (
+        await recovery.reconcileSubmissionHandoffs({
+          repository: f.state.repository,
+          gh,
+          load: async () => f.state,
+          finalize: vi.fn(),
+        })
+      ).dispatched,
+    ).toBe(1);
+    expect(
+      gh.mock.calls.find(([args]) => args[0] === "workflow")?.[0],
+    ).toContain("triage-submission.yml");
+  },
+);
+
+test("twenty completions waiting on public proof do not starve the next missed intake handoff", async () => {
+  const f = await metadataMaintenanceFixture();
+  const p = projectInventoryFixture();
+  const issues = Array.from({ length: 21 }, (_, index) => ({
+    ...p.issues[0],
+    number: index + 1,
+  }));
+  const load = async ({ issueNumber }: { issueNumber: number }) => {
+    const issue = issues[issueNumber - 1];
+    const operations = discoverProjectOperations({ ...p, issues: [issue] });
+    if (issueNumber <= 20) operations[0].stage = "published";
+    return {
+      ...f.state,
+      remote: { ...f.state.remote, issues: [issue], pulls: [] },
+      operations,
+    };
+  };
+  const gh = vi.fn(async (args: string[]) =>
+    args[0] === "api" ? JSON.stringify(issues) : "",
+  );
+  const result = await recovery.reconcileSubmissionHandoffs({
+    repository: f.state.repository,
+    gh,
+    load,
+    finalize: async () => ({ status: "waiting" }),
+  });
+  expect(result).toMatchObject({ processed: 1, dispatched: 1 });
+  expect(gh.mock.calls.find(([args]) => args[0] === "workflow")?.[0]).toContain(
+    "issue_number=21",
+  );
+});

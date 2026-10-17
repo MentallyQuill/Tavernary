@@ -68,3 +68,9 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.dispatch-token.outputs.token }}
           TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
+      - name: Route Site proof to automatic submission completion
+        if: github.event.workflow_run.path == '.github/workflows/deploy-pages.yml'
+        env:
+          GH_TOKEN: ${{ steps.dispatch-token.outputs.token }}
+          SITE_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: gh workflow run reconcile-project-validations.yml --repo "$GITHUB_REPOSITORY" --ref main -f site_run_id="$SITE_RUN_ID"

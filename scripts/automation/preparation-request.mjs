@@ -19,6 +19,7 @@ import {
 import { isDeepStrictEqual } from "node:util";
 import { parseProjectPublicationTransaction } from "../publication/project-publication-transaction.mjs";
 import { selectRefreshSources } from "../catalog/refresh-repositories.mjs";
+import { isDirectSubmissionKind } from "./submission-routing.mjs";
 import {
   isReportNarrativeRetry,
   reportOperationDigest,
@@ -283,6 +284,7 @@ export function planPreparationRequest({
   if (!kind || !Number.isSafeInteger(issueNumber) || issueNumber < 1)
     throw new Error("Preparation request context is invalid.");
   state.operations.forEach(validateAutomationOperation);
+  if (isDirectSubmissionKind(kind)) return { action: "wait" };
   const generation = ["project", "owner-request"].includes(kind);
   const requested =
     generation && ownerAuthorized
@@ -364,6 +366,9 @@ export async function runPreparationRequestCli(options = {}) {
           repository,
           publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
           nowMs: Date.now(),
+          ...(isDirectSubmissionKind(workflowKinds[workflow])
+            ? { submissionIssueNumber: Number(event.inputs?.issue_number) }
+            : {}),
         }))
     )();
     const requestRunId = Number(env.GITHUB_RUN_ID);

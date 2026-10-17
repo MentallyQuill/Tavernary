@@ -218,6 +218,50 @@ function repositorySubmissionFixture({
   };
 }
 
+test("ordinary direct intake reaches the configured provider without a custom model ticket", async () => {
+  const fixture = repositorySubmissionFixture({
+    user: { id: 23, login: "Contributor" },
+    ownerId: 11,
+    metadata: { summary: { mode: "automatic" }, tags: { mode: "automatic" } },
+    enrich: vi.fn(),
+    copySummary: vi.fn(),
+  });
+  const clients = fixture.sourceClients as Record<string, unknown>;
+  delete clients.enrich;
+  clients.loadEnrichmentSource = async () => ({
+    status: "ready",
+    sourceKind: "readme",
+    sourceIdentity: "github:owner/repo",
+    text: "Repo provides source-grounded tools.",
+    readmeText: "Repo provides source-grounded tools.",
+    repositoryDescription: "Repository description.",
+  });
+  vi.stubEnv(
+    "UTILITY_API_ENDPOINT",
+    "https://provider.invalid/v1/chat/completions",
+  );
+  vi.stubEnv("UTILITY_API_KEY", "fixture-key");
+  vi.stubEnv("UTILITY_MODEL", "fixture-model");
+  vi.stubEnv("TAVERNARY_REQUIRE_MODEL_BUDGET", "false");
+  for (const key of [
+    "TAVERNARY_ENRICHMENT_API_URL",
+    "TAVERNARY_ENRICHMENT_API_KEY",
+    "TAVERNARY_ENRICHMENT_MODEL",
+  ])
+    vi.stubEnv(key, "");
+  const fetch = vi.fn(
+    async () => new Response("Fixture provider refusal", { status: 401 }),
+  );
+  vi.stubGlobal("fetch", fetch);
+  try {
+    await prepareProjectSubmissionDraft(fixture);
+    expect(fetch).toHaveBeenCalled();
+  } finally {
+    vi.unstubAllGlobals();
+    vi.unstubAllEnvs();
+  }
+});
+
 test("actual repository intake with no model allowance publishes verified provisional facts and makes zero model HTTP calls", async () => {
   const fixture = repositorySubmissionFixture({
     user: { id: 23, login: "Contributor" },

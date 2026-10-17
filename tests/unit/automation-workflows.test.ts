@@ -172,12 +172,12 @@ test("the controller runs every fifteen minutes using trusted main code and boun
   expect(workflow).not.toContain("permission-contents: write");
 });
 
-test("project validation completions wake the coalesced canonical controller with scoped dispatch authority", () => {
+test("project validation completions use the existing automatic submission lane with scoped authority", () => {
   const workflow = parse(
     readFileSync(".github/workflows/reconcile-project-validations.yml", "utf8"),
   );
   expect(workflow.concurrency).toEqual({
-    group: "automation-controller",
+    group: "submission-reconciliation",
     "cancel-in-progress": false,
   });
   expect(workflow.permissions).toEqual({
@@ -196,10 +196,14 @@ test("project validation completions wake the coalesced canonical controller wit
     "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
     "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
     "permission-actions": "write",
+    "permission-contents": "write",
+    "permission-issues": "write",
+    "permission-pull-requests": "read",
   });
   const wake = job.steps.find(
     (step: { run?: string }) =>
-      step.run === "node scripts/automation/controller-wake.mjs",
+      step.run ===
+      "node scripts/submissions/reconcile-submission-finalization.mjs",
   );
   expect(wake.env.GH_TOKEN).toBe("${{ steps.controller-token.outputs.token }}");
   expect(

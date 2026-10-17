@@ -327,8 +327,11 @@ export function discoverAutomationState(state) {
     })
     .filter(
       (operation) =>
-        !remote.finalizationOperationKey ||
-        operation.key === remote.finalizationOperationKey,
+        (!remote.finalizationOperationKey ||
+          operation.key === remote.finalizationOperationKey) &&
+        (!remote.submissionIssueNumber ||
+          operation.identity.subject ===
+            `issue:${remote.submissionIssueNumber}`),
     );
 }
 
@@ -360,6 +363,7 @@ async function loadInventory(
     nowMs,
     reportIndex,
     finalizationOperationKey,
+    submissionIssueNumber,
     executingWriterRunId,
   },
   diagnostic,
@@ -483,6 +487,7 @@ async function loadInventory(
       )
       .map(({ record }) => record.operation),
     nowMs,
+    submissionIssueNumber,
     finalizationOperation:
       finalizationOperationKey === undefined
         ? undefined
@@ -510,6 +515,11 @@ async function loadInventory(
   const remote = diagnostic
     ? { ...scopedRemote, issues: [], pulls: [] }
     : await loadGithubAutomationInventory(remoteInput);
+  if (submissionIssueNumber) {
+    remote.runs = remote.runs.filter((run) => run.id !== executingWriterRunId);
+    if (finalizationOperationKey)
+      remote.finalizationOperationKey = finalizationOperationKey;
+  }
   const committedAt = new Date(
     execFileSync("git", ["show", "-s", "--format=%cI", revision], {
       cwd: root,
@@ -556,7 +566,7 @@ async function loadInventory(
     generatedAt: refreshManifest.completed_at,
   });
   let index = reportIndex;
-  if (!index && !diagnostic) {
+  if (!index && !diagnostic && !submissionIssueNumber) {
     try {
       index = await fetchAndValidateTavernKeeperIndex({
         registry: sources,
@@ -741,7 +751,7 @@ async function loadInventory(
     state.receipts.push(...local.retiredReceipts);
     state.operations = discoverAutomationState(state);
   }
-  if (remote.finalizationOperationKey) {
+  if (remote.finalizationOperationKey && !submissionIssueNumber) {
     const operation = state.operations.find(
       (current) => current.key === remote.finalizationOperationKey,
     );

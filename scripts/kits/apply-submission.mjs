@@ -118,6 +118,164 @@ export async function writeAppliedKitOutput(path, kit) {
   await appendFile(path, `kit_id=${kit.id}\n`, "utf8");
 }
 
+export async function runDirectKitPublication({
+  env = process.env,
+  load,
+  gh,
+  commit,
+  build,
+} = {}) {
+  const { executeGh } =
+    await import("../submissions/kit-submission-reconciliation.mjs");
+  const { assertTrustedAutomationContext } =
+    await import("../automation/github-inventory.mjs");
+  const { loadAutomationInventory } =
+    await import("../automation/inventory.mjs");
+  const { synchronizeWriterCheckout } =
+    await import("../automation/writer-runtime.mjs");
+  const { acquirePreparedKitData } =
+    await import("../automation/kit-preparation.mjs");
+  const { createPreparedKitRecord } =
+    await import("../automation/kit-publication-context.mjs");
+  const { buildPreparedCatalogPublication } =
+    await import("../automation/publication-build.mjs");
+  const { commitCanonicalData } =
+    await import("../automation/canonical-data.mjs");
+  const { createHash } = await import("node:crypto");
+  const repository = env.GITHUB_REPOSITORY;
+  assertTrustedAutomationContext(env, repository);
+  const withdrawal =
+    env.GITHUB_WORKFLOW_REF ===
+    `${repository}/.github/workflows/apply-kit-withdrawal.yml@refs/heads/main`;
+  if (
+    (!withdrawal &&
+      env.GITHUB_WORKFLOW_REF !==
+        `${repository}/.github/workflows/apply-kit-submission.yml@refs/heads/main`) ||
+    env.GITHUB_EVENT_NAME !== "workflow_dispatch"
+  )
+    throw new Error("Direct Kit publication context is invalid.");
+  const issueNumber = Number(env.ISSUE_NUMBER);
+  if (!Number.isSafeInteger(issueNumber) || issueNumber < 1)
+    throw new Error("Kit issue identity is invalid.");
+  gh ??= executeGh;
+  load ??= async () => {
+    await synchronizeWriterCheckout({ root: process.cwd(), env });
+    return loadAutomationInventory({
+      root: process.cwd(),
+      gh,
+      repository,
+      publisherActorId: Number(env.TAVERNARY_PUBLISHER_BOT_ID),
+      nowMs: Date.now(),
+      submissionIssueNumber: issueNumber,
+      executingWriterRunId: Number(env.GITHUB_RUN_ID),
+    });
+  };
+  const select = (state) =>
+    state.operations.find(
+      (operation) =>
+        operation.identity.subject === `issue:${issueNumber}` &&
+        operation.identity.kind === (withdrawal ? "withdrawal" : "kit"),
+    );
+  const initial = await load();
+  const operation = select(initial);
+  if (!operation) return { status: "superseded" };
+  if (
+    [
+      "published",
+      "deployment-requested",
+      "deployment-confirmed",
+      "finalized",
+    ].includes(operation.stage)
+  )
+    return { status: "already-published", sha: operation.expectedSha };
+  if (
+    operation.stage !== "validated" ||
+    operation.workerRunId !== null ||
+    operation.retry?.failure.kind === "permanent" ||
+    (operation.nextEligibleAt &&
+      Date.parse(operation.nextEligibleAt) > initial.nowMs)
+  )
+    return { status: "waiting" };
+  const expected = createPreparedKitRecord({ state: initial, operation });
+  const outputs = await acquirePreparedKitData({
+    state: initial,
+    operation,
+    gh,
+  });
+  const kitPaths = [
+    `data/registry/kits/${expected.id}.json`,
+    `data/snapshots/github/kits/${expected.id}.json`,
+  ];
+  if (Object.keys(outputs).some((path) => !kitPaths.includes(path)))
+    throw new Error("Direct Kit output path is invalid.");
+  const files = Object.entries(outputs).map(([path, content]) => ({
+    path,
+    content,
+    type: "file",
+    bytes: Buffer.byteLength(content),
+    sha256: createHash("sha256").update(content).digest("hex"),
+    baseDigest: null,
+  }));
+  const publication = await (build ?? buildPreparedCatalogPublication)({
+    state: initial,
+    action: {
+      action: "commit",
+      files,
+      expectedMainSha: initial.local.revision,
+      operationKeys: [operation.key],
+    },
+  });
+  const allowed = [
+    ...kitPaths,
+    "public/catalog/tavernary-catalog.json",
+    "public/catalog/tavernary-catalog-v8.json",
+  ];
+  if (
+    publication.some((file) => !allowed.includes(file.path)) ||
+    !publication.some((file) => file.path === kitPaths[0])
+  )
+    throw new Error("Direct Kit publication path is invalid.");
+  const fresh = await load();
+  const current = select(fresh);
+  if (
+    fresh.local.revision !== initial.local.revision ||
+    fresh.remote.mainHeadSha !== fresh.local.revision ||
+    current?.key !== operation.key ||
+    current.stage !== "validated" ||
+    current.workerRunId !== null ||
+    current.retry?.failure.kind === "permanent" ||
+    (current.nextEligibleAt &&
+      Date.parse(current.nextEligibleAt) > fresh.nowMs) ||
+    JSON.stringify(
+      createPreparedKitRecord({
+        state: fresh,
+        operation: current,
+        now: new Date(initial.nowMs).toISOString(),
+      }),
+    ) !== JSON.stringify(expected)
+  )
+    return { status: "waiting", reason: "input-superseded" };
+  try {
+    const result = await (
+      commit ?? ((input) => commitCanonicalData({ ...input, gh }))
+    )({
+      repository,
+      expectedMainSha: initial.local.revision,
+      files: publication,
+      message: `feat(kits): apply issue #${issueNumber}`,
+    });
+    return {
+      status: "published",
+      sha: result.sha,
+      operationKey: operation.key,
+    };
+  } catch (error) {
+    if (error.code === "input-superseded")
+      return { status: "waiting", reason: error.code };
+    throw error;
+  }
+}
+
 async function readJsonDirectory(path) {
   const files = (await readdir(path))
     .filter((file) => file.endsWith(".json"))

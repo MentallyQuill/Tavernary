@@ -177,7 +177,7 @@ test.each([
   ["project-owner-request", "generated"],
   ["project-owner-request", "validated"],
 ] as const)(
-  "native Bot %s regeneration preserves the %s transaction through request admission and reserved dispatch",
+  "historical Bot %s handoff preserves the %s transaction while current request admission waits",
   async (producer, stage) => {
     const f = await fixture(producer, stage);
     const original = structuredClone(f.state.operations[0]);
@@ -190,10 +190,7 @@ test.each([
         write,
       }),
     ).toBe(0);
-    expect(JSON.parse(write.mock.calls[0][0])).toMatchObject({
-      action: "dispatch",
-      inputs: { operation_key: original.key, result_run_id: "800" },
-    });
+    expect(JSON.parse(write.mock.calls[0][0])).toEqual({ action: "wait" });
     const request = parseGenerationOwnerRequest(
       f.run,
       f.state.repository,

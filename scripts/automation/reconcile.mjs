@@ -6,6 +6,7 @@ import { validateAutomationReceipt } from "./receipts.mjs";
 import { classifyAutomationFailure } from "./failure.mjs";
 import { planAutomationRetry } from "./retry.mjs";
 import { githubFailureStatus } from "./github-inventory.mjs";
+import { isDirectSubmissionKind } from "./submission-routing.mjs";
 
 function validateAdmissionPlan(plan, operations, limit) {
   if (
@@ -61,10 +62,13 @@ export async function reconcileAutomation(input) {
       ? operations.filter(
           (operation) =>
             admissionKeys.has(operation.key) &&
+            !isDirectSubmissionKind(operation.identity.kind) &&
             !consumedKeys.has(operation.key) &&
             !consumedSubjects.has(operation.identity.subject),
         )
-      : operations,
+      : operations.filter(
+          (operation) => !isDirectSubmissionKind(operation.identity.kind),
+        ),
     {
       nowMs: input.nowMs,
       limit: input.limit ?? 20,
@@ -124,6 +128,7 @@ export async function reconcileAutomation(input) {
     const peers = operations.filter((peer) => peer.key === operation.key);
     if (
       observationSlots > 0 &&
+      !isDirectSubmissionKind(operation.identity.kind) &&
       !selected.includes(operation) &&
       !consumedKeys.has(operation.key) &&
       !consumedSubjects.has(operation.identity.subject) &&
@@ -150,6 +155,7 @@ export async function reconcileAutomation(input) {
       : candidate;
     if (
       !operation ||
+      isDirectSubmissionKind(operation.identity.kind) ||
       operation.key !== candidate.key ||
       !selectDueOperations([operation], { nowMs: input.nowMs, limit: 1 }).length
     ) {

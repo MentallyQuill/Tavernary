@@ -572,15 +572,7 @@ test("a newer Kit canonical head with an active trusted worker cannot enter inli
   });
   expect(result.selectedKeys).toEqual([]);
   expect(effects).toEqual([]);
-  expect(saved).toMatchObject([
-    {
-      operation: {
-        stage: "deployment-confirmed",
-        expectedSha: "e".repeat(40),
-        workerRunId: 700,
-      },
-    },
-  ]);
+  expect(saved).toEqual([]);
   expect((await load()).operations[0].workerRunId).toBe(700);
 });
 
@@ -591,8 +583,8 @@ test.each([0, 20])(
     const occupied = Array.from({ length: 20 }, (_, index) =>
       operationFixture({
         identity: {
-          kind: "project",
-          subject: `issue:${100 + index}`,
+          kind: "metadata",
+          subject: `source:occupied-${100 + index}`,
           inputDigest: "a".repeat(64),
           policyVersion: "1",
         },

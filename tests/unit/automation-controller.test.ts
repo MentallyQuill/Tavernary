@@ -1,6 +1,7 @@
 import { expect, test } from "vitest";
 import type { AutomationReceipt } from "../../scripts/automation/receipts.mjs";
 import type { AutomationOperation } from "../../scripts/automation/operation.mjs";
+import { operationKey } from "../../scripts/automation/operation.mjs";
 
 test("a lost inline finalization response cannot overwrite the remote terminal receipt with a stale retry", async () => {
   const effects = controllerFixture();
@@ -39,9 +40,32 @@ test("a lost inline finalization response cannot overwrite the remote terminal r
 import { reconcileAutomation } from "../../scripts/automation/reconcile.mjs";
 import {
   AUTOMATION_NOW,
-  controllerFixture,
-  operationFixture,
+  controllerFixture as baseControllerFixture,
+  operationFixture as baseOperationFixture,
 } from "../helpers/automation-fixtures";
+
+function operationFixture(overrides: Partial<AutomationOperation> = {}) {
+  return baseOperationFixture({
+    ...overrides,
+    identity: {
+      ...baseOperationFixture().identity,
+      kind: "metadata",
+      ...overrides.identity,
+    },
+  });
+}
+function controllerFixture(
+  options: Parameters<typeof baseControllerFixture>[0] = {},
+) {
+  const fixture = baseControllerFixture(options);
+  const inventory = fixture.input.inventory;
+  fixture.input.inventory = async () =>
+    (await inventory()).map((operation) => {
+      const identity = { ...operation.identity, kind: "metadata" as const };
+      return { ...operation, identity, key: operationKey(identity) };
+    });
+  return fixture;
+}
 
 test("one oldest confirmed operation finishes in the canonical pass without a replaceable worker handoff or future intent", async () => {
   const effects = controllerFixture();
@@ -135,7 +159,7 @@ test("a pass selects at most twenty oldest subjects with no duplicate dispatch",
   const operations = Array.from({ length: 30 }, (_, index) =>
     operationFixture({
       identity: {
-        kind: "project",
+        kind: "metadata",
         subject: `issue:${index + 1}`,
         inputDigest: "a".repeat(64),
         policyVersion: "1",
@@ -296,7 +320,7 @@ test("an invalid dispatch effect cannot persist an unrelated operation", async (
   effects.input.dispatch = async () => ({
     operation: operationFixture({
       identity: {
-        kind: "project",
+        kind: "metadata",
         subject: "issue:999",
         inputDigest: "e".repeat(64),
         policyVersion: "1",
@@ -316,7 +340,7 @@ test("observation writes share the twenty-operation quota and a zero limit produ
   const operations = Array.from({ length: 30 }, (_, index) =>
     operationFixture({
       identity: {
-        kind: "project",
+        kind: "metadata",
         subject: `issue:${index + 1}`,
         inputDigest: "a".repeat(64),
         policyVersion: "1",
@@ -342,7 +366,7 @@ function admissionPlanFixture(keys: readonly string[]) {
   };
 }
 
-test("an internal admission plan selects its six ranked members while counting the full 1693-operation inventory", async () => {
+test("an internal admission plan cannot reclaim four direct submissions while counting the full 1693-operation inventory", async () => {
   const effects = controllerFixture();
   const backgrounds = Array.from({ length: 1685 }, (_, index) =>
     operationFixture({
@@ -389,6 +413,11 @@ test("an internal admission plan selects its six ranked members while counting t
   });
   const operations = [...backgrounds, ...members, finalized, permanent];
   const orderedKeys = [...members].reverse().map((operation) => operation.key);
+  const backgroundKeys = orderedKeys.filter(
+    (key) =>
+      members.find((operation) => operation.key === key)?.identity.kind ===
+      "report-import",
+  );
   effects.input.inventory = async () => operations;
   const result = await reconcileAutomation({
     ...effects.input,
@@ -399,14 +428,14 @@ test("an internal admission plan selects its six ranked members while counting t
     },
   });
   expect(result).toMatchObject({
-    selectedKeys: orderedKeys,
-    dispatched: 6,
-    waiting: 1685,
+    selectedKeys: backgroundKeys,
+    dispatched: 2,
+    waiting: 1689,
     finished: 1,
     permanentFailures: 1,
   });
   expect(effects.dispatches.map((operation) => operation.key)).toEqual(
-    orderedKeys,
+    backgroundKeys,
   );
   expect(
     result.waiting +
@@ -528,7 +557,7 @@ test("admission membership remains bounded at twenty when the controller limit i
   const operations = Array.from({ length: 21 }, (_, index) =>
     operationFixture({
       identity: {
-        kind: "project",
+        kind: "metadata",
         subject: `issue:member-${index}`,
         inputDigest: "a".repeat(64),
         policyVersion: "1",
@@ -683,7 +712,7 @@ test.each(["throws", "waits"] as const)(
     const members = Array.from({ length: 3 }, (_, index) =>
       operationFixture({
         identity: {
-          kind: "project",
+          kind: "metadata",
           subject: `issue:confirmed-${index}`,
           inputDigest: "a".repeat(64),
           policyVersion: "1",

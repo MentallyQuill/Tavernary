@@ -45,6 +45,13 @@ import * as reconcileCli from "../../scripts/automation/reconcile-cli.mjs";
 import * as automationController from "../../scripts/automation/reconcile.mjs";
 import { recoverInventoryWorker } from "../../scripts/automation/inventory-worker.mjs";
 import type { AutomationOperation } from "../../scripts/automation/operation.mjs";
+import { isDirectSubmissionKind } from "../../scripts/automation/submission-routing.mjs";
+
+function genericKeys(operations: AutomationOperation[]) {
+  return operations
+    .filter((operation) => !isDirectSubmissionKind(operation.identity.kind))
+    .map((operation) => operation.key);
+}
 
 function writerAdmissionFixture() {
   const base = preparedReplayFixture();
@@ -461,7 +468,7 @@ test.each([
   },
 );
 
-test("global reconciliation preserves four initial and two report admissions after six early slots and fourteen older prepared results", async () => {
+test("global reconciliation preserves report admissions while direct submissions release capacity for background results", async () => {
   const fixture = writerAdmissionFixture();
   try {
     const result = (await runAutomationWriterReconciliation(
@@ -470,9 +477,9 @@ test("global reconciliation preserves four initial and two report admissions aft
       prepared: { consumedKeys: string[] };
       controller: { selectedKeys: string[] };
     };
-    expect(result.prepared.consumedKeys).toHaveLength(8);
+    expect(result.prepared.consumedKeys).toHaveLength(12);
     expect(result.controller.selectedKeys).toEqual(
-      fixture.protectedOperations.map((operation) => operation.key),
+      genericKeys(fixture.protectedOperations),
     );
     expect(
       6 +
@@ -482,7 +489,7 @@ test("global reconciliation preserves four initial and two report admissions aft
     expect(fixture.prepared).toHaveBeenCalledOnce();
     expect(fixture.cli).toHaveBeenCalledOnce();
     expect(fixture.controller).toHaveBeenCalledOnce();
-    expect(fixture.revalidate).toHaveBeenCalledTimes(6);
+    expect(fixture.revalidate).toHaveBeenCalledTimes(2);
     expect(
       fixture.dispatch.mock.calls.map(([input]) => input.operation.key),
     ).toEqual(result.controller.selectedKeys);
@@ -508,9 +515,6 @@ test("writer reservations follow every zero-to-twenty prefix quota", () => {
       },
     }),
   );
-  const initialCounts = [
-    0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-  ];
   const reportCounts = [
     0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
   ];
@@ -521,7 +525,7 @@ test("writer reservations follow every zero-to-twenty prefix quota", () => {
     });
     expect(
       selected.filter((operation) => operation.identity.kind === "project"),
-    ).toHaveLength(initialCounts[limit]);
+    ).toHaveLength(0);
     expect(
       selected.filter(
         (operation) => operation.identity.kind === "report-import",
@@ -564,11 +568,9 @@ test("writer reservations preserve deterministic family ordering and all due gat
       (operation) => operation.key,
     ),
   );
-  expect(selected.slice(0, 4)).toEqual(
-    [...initial]
-      .sort((left, right) => left.key.localeCompare(right.key))
-      .slice(0, 4),
-  );
+  expect(
+    selected.every((operation) => operation.identity.kind === "report-import"),
+  ).toBe(true);
   expect(
     new Set(selected.map((operation) => operation.identity.subject)).size,
   ).toBe(selected.length);
@@ -593,7 +595,9 @@ test("writer reservations preserve deterministic family ordering and all due gat
     initial[0].key,
   );
   expect(eligible.map((operation) => operation.key)).not.toContain(future.key);
-  expect(eligible.map((operation) => operation.key)).toContain(boundary.key);
+  expect(eligible.map((operation) => operation.key)).not.toContain(
+    boundary.key,
+  );
   expect(eligible.map((operation) => operation.key)).not.toContain(
     initial[3].key,
   );
@@ -612,9 +616,7 @@ test("writer reservations preserve deterministic family ordering and all due gat
     selectWriterAdmissionReservations([...operations, invalid], options),
   ).toThrow("invalid");
   expect(selectWriterAdmissionReservations([], options)).toEqual([]);
-  expect(selectWriterAdmissionReservations([initial[0]], options)).toEqual([
-    initial[0],
-  ]);
+  expect(selectWriterAdmissionReservations([initial[0]], options)).toEqual([]);
   expect(selectWriterAdmissionReservations([reports[0]], options)).toEqual([
     reports[0],
   ]);
@@ -663,12 +665,12 @@ test("global admission retains truthful full inventory metrics for 1693 operatio
       };
     };
     expect(result.controller.selectedKeys).toEqual(
-      fixture.protectedOperations.map((operation) => operation.key),
+      genericKeys(fixture.protectedOperations),
     );
     expect(result.controller).toMatchObject({
       finished: 1,
       permanentFailures: 1,
-      dispatched: 6,
+      dispatched: 2,
     });
     expect(
       result.controller.waiting +
@@ -688,7 +690,7 @@ test("consumed subjects survive changed-key early reloads and spare observations
   const fixture = writerAdmissionFixture();
   fixture.state.operations = [
     ...fixture.earlyOperations,
-    fixture.protectedOperations[0],
+    fixture.protectedOperations[4],
   ];
   fixture.state.remote.runs = [];
   fixture.state.receipts = [];
@@ -731,7 +733,7 @@ test("consumed subjects survive changed-key early reloads and spare observations
       fixture.options,
     )) as { controller: { selectedKeys: string[] } };
     expect(result.controller.selectedKeys).toEqual([
-      fixture.protectedOperations[0].key,
+      fixture.protectedOperations[4].key,
     ]);
     expect(
       fixture.controller.mock.calls[0][0].admissionPlan?.consumedSubjects,
@@ -788,11 +790,13 @@ test.each(["missing", "obsolete", "diagnostic", "publication"] as const)(
         variant === "obsolete" ? true : undefined,
       );
       const remaining = fixture.protectedOperations
-        .filter((operation) => operation.key !== prepared.receipt.operation.key)
+        .filter(
+          (operation) =>
+            operation.key !== prepared.receipt.operation.key &&
+            !isDirectSubmissionKind(operation.identity.kind),
+        )
         .map((operation) => operation.key);
-      expect(result.controller.selectedKeys).toEqual(
-        consumed ? remaining : [prepared.receipt.operation.key, ...remaining],
-      );
+      expect(result.controller.selectedKeys).toEqual(remaining);
       expect(fixture.load).toHaveBeenCalledTimes(
         { missing: 4, obsolete: 6, diagnostic: 7, publication: 6 }[variant],
       );
@@ -802,7 +806,7 @@ test.each(["missing", "obsolete", "diagnostic", "publication"] as const)(
         fixture.writes.filter(
           (receipt) => receipt.operation.key === prepared.receipt.operation.key,
         ),
-      ).toHaveLength(consumed ? 1 : 2);
+      ).toHaveLength(consumed ? 1 : 0);
       expect(
         fixture.gh.mock.calls.every(
           ([args]) =>
@@ -830,8 +834,8 @@ test("missing background artifacts leave generic backfill without an extra full 
       controller: { selectedKeys: string[] };
     };
     expect(result.prepared.consumedKeys).toEqual([]);
-    expect(result.controller.selectedKeys.slice(0, 6)).toEqual(
-      fixture.protectedOperations.map((operation) => operation.key),
+    expect(result.controller.selectedKeys.slice(0, 2)).toEqual(
+      genericKeys(fixture.protectedOperations),
     );
     expect(result.controller.selectedKeys).toHaveLength(14);
     expect(fixture.load).toHaveBeenCalledTimes(4);
@@ -839,7 +843,7 @@ test("missing background artifacts leave generic backfill without an extra full 
       fixture.gh.mock.calls.filter(([args]) =>
         args.some((value) => value.includes("/artifacts")),
       ),
-    ).toHaveLength(8);
+    ).toHaveLength(12);
   } finally {
     fixture.restore();
   }
@@ -850,7 +854,7 @@ test.each(["null", "changed-key", "future", "worker"] as const)(
   async (variant) => {
     const fixture = writerAdmissionFixture();
     fixture.revalidate.mockImplementation(async ({ operation }) => {
-      if (operation.key !== fixture.protectedOperations[0].key)
+      if (operation.key !== fixture.protectedOperations[4].key)
         return structuredClone(operation);
       if (variant === "null") return null;
       if (variant === "future")
@@ -867,16 +871,16 @@ test.each(["null", "changed-key", "future", "worker"] as const)(
         fixture.options,
       )) as { controller: { selectedKeys: string[]; dispatched: number } };
       expect(result.controller.selectedKeys).toEqual(
-        fixture.protectedOperations.map((operation) => operation.key),
+        genericKeys(fixture.protectedOperations),
       );
-      expect(result.controller.dispatched).toBe(5);
-      expect(fixture.revalidate).toHaveBeenCalledTimes(6);
-      expect(fixture.dispatch).toHaveBeenCalledTimes(5);
+      expect(result.controller.dispatched).toBe(1);
+      expect(fixture.revalidate).toHaveBeenCalledTimes(2);
+      expect(fixture.dispatch).toHaveBeenCalledTimes(1);
       expect(fixture.controller).toHaveBeenCalledOnce();
       expect(
         fixture.writes.some(
           (receipt) =>
-            receipt.operation.key === fixture.protectedOperations[0].key,
+            receipt.operation.key === fixture.protectedOperations[4].key,
         ),
       ).toBe(false);
     } finally {
@@ -924,9 +928,9 @@ test.each(["success", "waiting", "throw"] as const)(
         ...fixture.options,
         finalize,
       })) as { controller: { selectedKeys: string[]; dispatched: number } };
-      expect(result.controller.selectedKeys).toHaveLength(8);
+      expect(result.controller.selectedKeys).toHaveLength(4);
       expect(finalize).toHaveBeenCalledOnce();
-      expect(fixture.dispatch).toHaveBeenCalledTimes(7);
+      expect(fixture.dispatch).toHaveBeenCalledTimes(3);
       expect(fixture.controller).toHaveBeenCalledOnce();
       const finalizedKey = finalize.mock.calls[0][0].key;
       const writes = fixture.writes.filter(
@@ -958,11 +962,13 @@ test.each(AUTOMATION_KINDS)(
         fixture.options,
       )) as { controller: { selectedKeys: string[]; dispatched: number } };
       expect(result.controller).toMatchObject({
-        selectedKeys: [operation.key],
-        dispatched: 1,
+        selectedKeys: isDirectSubmissionKind(kind) ? [] : [operation.key],
+        dispatched: isDirectSubmissionKind(kind) ? 0 : 1,
       });
       expect(fixture.load).toHaveBeenCalledOnce();
-      expect(fixture.dispatch).toHaveBeenCalledOnce();
+      expect(fixture.dispatch).toHaveBeenCalledTimes(
+        isDirectSubmissionKind(kind) ? 0 : 1,
+      );
     } finally {
       fixture.restore();
     }
@@ -971,7 +977,15 @@ test.each(AUTOMATION_KINDS)(
 
 test("reserved incident updates complete before an interrupted generic controller", async () => {
   const fixture = writerAdmissionFixture();
-  useWriterOperations(fixture, [operationFixture()]);
+  useWriterOperations(fixture, [
+    operationFixture({
+      identity: {
+        ...operationFixture().identity,
+        kind: "metadata",
+        subject: "source:health-check",
+      },
+    }),
+  ]);
   fixture.state.local.runtimePolicy = {};
   vi.spyOn(restoreDrill, "loadRestoreDrillHealth").mockResolvedValue({
     status: "active",
@@ -1006,7 +1020,15 @@ test("reserved incident updates complete before an interrupted generic controlle
 
 test("an unavailable reserved incident update does not block generic dispatch", async () => {
   const fixture = writerAdmissionFixture();
-  useWriterOperations(fixture, [operationFixture()]);
+  useWriterOperations(fixture, [
+    operationFixture({
+      identity: {
+        ...operationFixture().identity,
+        kind: "metadata",
+        subject: "source:health-check",
+      },
+    }),
+  ]);
   fixture.state.local.runtimePolicy = {};
   vi.spyOn(restoreDrill, "loadRestoreDrillHealth").mockResolvedValue({
     status: "active",
@@ -1137,7 +1159,7 @@ test("all late services defer while six protected holds occupy the final seats",
     ).toBe(20);
     expect(fixture.load).toHaveBeenCalledTimes(5);
     expect(result.controller.selectedKeys).toEqual(
-      fixture.protectedOperations.map((operation) => operation.key),
+      genericKeys(fixture.protectedOperations),
     );
   } finally {
     fixture.restore();
@@ -1179,9 +1201,9 @@ test("a failed runtime service keeps its existing charge without spending protec
     };
     expect(result.runtime.status).toBe("unavailable");
     expect(runtime).toHaveBeenCalledOnce();
-    expect(result.health.status).toBe("waiting");
+    expect(result.health.status).toBe("unavailable");
     expect(result.prepared.consumedKeys).toHaveLength(7);
-    expect(result.controller.selectedKeys).toHaveLength(6);
+    expect(result.controller.selectedKeys).toHaveLength(2);
     expect(
       6 +
         1 +
@@ -1205,7 +1227,7 @@ test.each([
   "refreshed %s evidence releases only the exact protected hold",
   async (variant) => {
     const fixture = writerAdmissionFixture();
-    const target = fixture.protectedOperations[0];
+    const target = fixture.protectedOperations[4];
     fixture.load.mockImplementation(async () => {
       const state = structuredClone(fixture.state);
       if (fixture.load.mock.calls.length < 5) return state;
@@ -1248,10 +1270,10 @@ test.each([
         fixture.options,
       )) as { controller: { selectedKeys: string[] } };
       expect(result.controller.selectedKeys).not.toContain(target.key);
-      expect(result.controller.selectedKeys.slice(0, 5)).toEqual(
-        fixture.protectedOperations.slice(1).map((operation) => operation.key),
+      expect(result.controller.selectedKeys.slice(0, 1)).toEqual(
+        fixture.protectedOperations.slice(5).map((operation) => operation.key),
       );
-      expect(result.controller.selectedKeys).toHaveLength(6);
+      expect(result.controller.selectedKeys).toHaveLength(2);
       expect(fixture.controller).toHaveBeenCalledOnce();
       expect(fixture.load).toHaveBeenCalledTimes(5);
     } finally {
@@ -1274,7 +1296,7 @@ test("prepared consumed subject identity survives the effect reload and excludes
   });
   fixture.state.operations = [
     background.state.operations[0],
-    fixture.protectedOperations[0],
+    fixture.protectedOperations[4],
     ...fixture.earlyOperations,
     unrelated,
   ];
@@ -1300,7 +1322,7 @@ test("prepared consumed subject identity survives the effect reload and excludes
       fixture.options,
     )) as { controller: { selectedKeys: string[] } };
     expect(result.controller.selectedKeys).toEqual([
-      fixture.protectedOperations[0].key,
+      fixture.protectedOperations[4].key,
     ]);
     expect(
       fixture.writes.filter(
@@ -1335,7 +1357,7 @@ test.each(["none", "initial", "report", "sparse"] as const)(
           ? fixture.protectedOperations.slice(0, 4)
           : variant === "report"
             ? fixture.protectedOperations.slice(4)
-            : [fixture.protectedOperations[0], fixture.protectedOperations[4]];
+            : [fixture.protectedOperations[2], fixture.protectedOperations[4]];
     const ordinary = Array.from({ length: 24 }, (_, index) =>
       operationFixture({
         identity: {
@@ -1351,9 +1373,9 @@ test.each(["none", "initial", "report", "sparse"] as const)(
       const result = (await runAutomationWriterReconciliation(
         fixture.options,
       )) as { controller: { selectedKeys: string[] } };
-      expect(result.controller.selectedKeys.slice(0, families.length)).toEqual(
-        families.map((operation) => operation.key),
-      );
+      expect(
+        result.controller.selectedKeys.slice(0, genericKeys(families).length),
+      ).toEqual(genericKeys(families));
       expect(result.controller.selectedKeys).toHaveLength(20);
       expect(fixture.dispatch).toHaveBeenCalledTimes(20);
       expect(fixture.load).toHaveBeenCalledOnce();
@@ -1445,9 +1467,9 @@ test("waiting generation settlements retain attempted slot charges without consu
       controller: { selectedKeys: string[] };
     };
     expect(result.generation).toMatchObject({ slots: 4, consumedKeys: [] });
-    expect(result.prepared.consumedKeys).toHaveLength(8);
+    expect(result.prepared.consumedKeys).toHaveLength(12);
     expect(result.controller.selectedKeys).toEqual(
-      fixture.protectedOperations.map((operation) => operation.key),
+      genericKeys(fixture.protectedOperations),
     );
     expect(
       1 +
@@ -1467,7 +1489,7 @@ test("consumed identity falls back to an authenticated receipt when the current 
   const consumed = fixture.earlyOperations[0];
   fixture.state.operations = [
     ...fixture.earlyOperations.slice(1),
-    fixture.protectedOperations[0],
+    fixture.protectedOperations[4],
   ];
   fixture.state.remote.runs = [];
   fixture.state.receipts = [
@@ -1498,7 +1520,7 @@ test("consumed identity falls back to an authenticated receipt when the current 
       fixture.options,
     )) as { controller: { selectedKeys: string[] } };
     expect(result.controller.selectedKeys).toEqual([
-      fixture.protectedOperations[0].key,
+      fixture.protectedOperations[4].key,
     ]);
     expect(
       fixture.controller.mock.calls[0][0].admissionPlan?.consumedSubjects,
@@ -1533,12 +1555,12 @@ test("ready Kit and factual and narrative report recipients consume exact seats 
       controller: { selectedKeys: string[] };
     };
     const requestedKeys = [
-      prepared[0],
       ...prepared
         .slice(1)
         .sort((left, right) =>
           left.receipt.operation.key.localeCompare(right.receipt.operation.key),
         ),
+      prepared[0],
     ].map((value) => value.receipt.operation.key);
     expect(result.prepared).toMatchObject({
       consumedKeys: requestedKeys,
@@ -1551,7 +1573,11 @@ test("ready Kit and factual and narrative report recipients consume exact seats 
     ).toEqual(requestedKeys);
     expect(result.controller.selectedKeys).toEqual(
       fixture.protectedOperations
-        .filter((operation) => !requestedKeys.includes(operation.key))
+        .filter(
+          (operation) =>
+            !requestedKeys.includes(operation.key) &&
+            !isDirectSubmissionKind(operation.identity.kind),
+        )
         .map((operation) => operation.key),
     );
     expect(

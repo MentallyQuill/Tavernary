@@ -191,3 +191,20 @@ export function readValidatedOwnerReport(
   reportPath: string,
   readFile?: (path: string, encoding: "utf8") => Promise<string>,
 ): Promise<OwnerGenerationReport>;
+
+export function runGenerateProjectOwnerEntrypoint<
+  T = OwnerGenerationResult,
+>(options?: {
+  cli?: ReturnType<typeof parseGenerateProjectOwnerCli>;
+  env?: Record<string, string | undefined>;
+  event?: { inputs?: Record<string, unknown> };
+  request?: Parameters<typeof generateProjectOwnerRequest>[0]["request"];
+  generationCheckpoint?: OwnerGenerationCheckpoint;
+  saveGenerationCheckpoint?: (
+    checkpoint: OwnerGenerationCheckpoint,
+  ) => Promise<void>;
+  run?: (
+    options: Parameters<typeof runGenerateProjectOwnerCli>[0],
+  ) => Promise<T>;
+  createBudgetLoader?: typeof import("../automation/model-budget-github.mjs").createProducerBudgetLoader;
+}): Promise<T>;
