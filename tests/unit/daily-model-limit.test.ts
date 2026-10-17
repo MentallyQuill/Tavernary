@@ -22,8 +22,8 @@ async function fixture() {
     const operation = operationFixture({
       identity: {
         ...operationFixture().identity,
-        kind: "project",
-        subject: `issue:${42 + index}`,
+        kind: "advisory",
+        subject: `source:github-${42 + index}`,
       },
       stage: "admitted",
       expectedSha: null,
@@ -63,7 +63,7 @@ async function fixture() {
   let nextRun = 900;
   const dispatch = vi.fn(async () => ({
     runId: nextRun++,
-    workflow: ".github/workflows/generate-project-submission.yml",
+    workflow: ".github/workflows/review-catalog-policy.yml",
   }));
   const input = {
     env,
@@ -83,7 +83,7 @@ async function fixture() {
   return { state: f.state, input, env, commit, dispatch };
 }
 
-test("the reviewed two-million cap reserves seven submissions after today's charged preparation", async () => {
+test("the reviewed two-million cap reserves seven background reviews after today's charged preparation", async () => {
   const f = await fixture();
   f.env.TAVERNARY_MODEL_DAILY_TOKENS = "2000000";
   for (const operation of f.state.operations) {
@@ -103,7 +103,7 @@ test("the reviewed two-million cap reserves seven submissions after today's char
   expect(f.dispatch).toHaveBeenCalledTimes(7);
 });
 
-test("the native writer admits submissions above forty charged calls with the ten-million setting", async () => {
+test("the native writer admits background reviews above forty charged calls with the ten-million setting", async () => {
   const fixtureState = await fixture();
   const previous = validateModelBudgetState(
     fixtureState.state.local.modelBudget,

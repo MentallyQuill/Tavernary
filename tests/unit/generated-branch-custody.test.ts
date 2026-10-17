@@ -257,11 +257,9 @@ describe("generated project branch workflow custody", () => {
         actions: "write",
       });
       expect(normalizedExpression(job.if)).toBe(
-        "inputs.operation_key != '' && github.ref == 'refs/heads/main' && github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID",
+        "github.ref == 'refs/heads/main' && (github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID || (inputs.operation_key == '' && github.actor_id == 2625904))",
       );
-      expect(
-        normalizedExpression((document.jobs.request as { if?: string }).if),
-      ).toBe(`inputs.operation_key == '' && ${publisherCallerCondition}`);
+      expect(document.jobs).not.toHaveProperty("request");
       expect(job.environment).toBe("publisher");
       expect(job.env?.GH_TOKEN).toBe("${{ secrets.GITHUB_TOKEN }}");
       expect(token).toMatchObject({

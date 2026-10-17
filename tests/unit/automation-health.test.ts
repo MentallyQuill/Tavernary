@@ -1,4 +1,5 @@
 import { expect, test, vi } from "vitest";
+import * as inventory from "../../scripts/automation/inventory.mjs";
 
 test("runtime incidents stay active at end of life and close only on a supported observation", () => {
   const nowMs = Date.parse("2028-05-01T00:00:00Z");
@@ -157,7 +158,7 @@ test.each([false, true])(
     state.operations = Array.from({ length: 20 }, (_, index) =>
       operationFixture({
         identity: {
-          kind: "project",
+          kind: "metadata",
           subject: `issue:${index + 100}`,
           inputDigest: "a".repeat(64),
           policyVersion: "1",
@@ -215,6 +216,9 @@ test.each([false, true])(
         sha: "f".repeat(40),
         removed: 2,
       });
+    const revalidate = vi
+      .spyOn(inventory, "revalidateAutomationOperation")
+      .mockResolvedValue(null);
     try {
       const dispatches: string[][] = [];
       const result = await runAutomationWriterReconciliation({
@@ -261,6 +265,7 @@ test.each([false, true])(
         );
     } finally {
       retire.mockRestore();
+      revalidate.mockRestore();
     }
   },
 );
