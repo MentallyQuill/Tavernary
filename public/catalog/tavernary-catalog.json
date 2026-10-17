@@ -57396,8 +57396,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "176ca1c5f49c92087c5666f282e65121c7562fd7",
+        "freshness": "stale",
+        "currentSha": "0db1a3c55509cc81ff6f4a9b02ee21c014d9252c",
         "report": {
           "reportId": "cee3aeadaf0c652e9675894a2c09c477c84a316649558fbf9a254145bab7a4b3",
           "riskLevel": "low",
@@ -57571,8 +57571,8 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-09-28T03:32:41.000Z",
-        "activeWeeks12": 4,
+        "latestSourceActivityAt": "2026-10-11T04:31:49.000Z",
+        "activeWeeks12": 5,
         "weeklyActivity": [
           false,
           false,
@@ -57585,26 +57585,26 @@
           true,
           false,
           true,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 24,
+        "stars": 25,
         "forks": 4,
         "watchers": 1,
-        "aggregate": 29
+        "aggregate": 30
       },
-      "repositorySizeKb": 20829,
+      "repositorySizeKb": 20860,
       "license": {
         "status": "missing",
         "label": "Missing",
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-17T11:45:27.257Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",

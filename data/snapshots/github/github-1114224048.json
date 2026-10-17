@@ -9,18 +9,23 @@
     "url": "https://github.com/lazuli-s/SillyTavern-WorldInfoDrawer",
     "description": "A fork of LenAnderson's WorldInfoDrawer extension for SillyTavern. This version keeps the lorebook editing experience while adding quality-of-life tweaks to make organizing World Info entries faster and less error-prone.",
     "default_branch": "main",
-    "head_sha": "176ca1c5f49c92087c5666f282e65121c7562fd7",
-    "head_committed_at": "2026-09-28T03:32:41.000Z",
+    "head_sha": "0db1a3c55509cc81ff6f4a9b02ee21c014d9252c",
+    "head_committed_at": "2026-10-11T04:31:49.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-12-11T04:31:25.000Z",
-    "size_kb": 20829
+    "size_kb": 20860
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-28T03:32:41.000Z",
+    "latest_source_activity_at": "2026-10-11T04:31:49.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-11T04:31:49.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-28",
         "latest_at": "2026-09-28T03:32:41.000Z",
@@ -40,28 +45,23 @@
         "week_start": "2026-08-17",
         "latest_at": "2026-08-19T01:15:31.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-13",
-        "latest_at": "2026-07-19T18:33:56.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-28T15:35:58.871Z",
+    "baseline_completed_at": "2026-10-17T11:43:16.624Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "176ca1c5f49c92087c5666f282e65121c7562fd7"
+    "evidence_head_sha": "0db1a3c55509cc81ff6f4a9b02ee21c014d9252c"
   },
   "community": {
-    "stars_count": 24,
+    "stars_count": 25,
     "forks_count": 4,
     "watchers_count": 1,
-    "aggregate": 29
+    "aggregate": 30
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-17T11:45:27.257Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -75,7 +75,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-17T11:43:16.624Z",
     "stale_since": null
   }
 }
