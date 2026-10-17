@@ -14539,7 +14539,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "BF OOC Injection is a SillyTavern extension that randomizes LLM responses to prevent repetition. It automatically injects varying prompts for narrative variety without manual configuration.",
+      "summary": "SillyTavern extension that injects randomized prompts into LLM calls to prevent repetitive output and boost narrative variety (README Overview; repo description).",
       "canonicalUrl": "https://github.com/BF-GitH/bf-ooc-injection",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -14552,21 +14552,15 @@
       ],
       "tags": [
         {
-          "id": "guide-model-responses",
-          "label": "Guide model responses",
-          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-          "facet": "goal"
-        },
-        {
-          "id": "automate-roleplay-workflows",
-          "label": "Automate roleplay workflows",
-          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
-          "facet": "goal"
-        },
-        {
           "id": "increase-narrative-variety",
           "label": "Increase narrative variety",
           "description": "Reduce repetition and introduce fresh actions, beats, twists, or response patterns.",
+          "facet": "goal"
+        },
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
           "facet": "goal"
         }
       ],
@@ -14724,7 +14718,7 @@
           "https://github.com/BF-GitH/bf-ooc-injection"
         ],
         "summary": [
-          "BF OOC Injection is a SillyTavern extension that randomizes LLM responses to prevent repetition. It automatically injects varying prompts for narrative variety without manual configuration."
+          "SillyTavern extension that injects randomized prompts into LLM calls to prevent repetitive output and boost narrative variety (README Overview; repo description)."
         ],
         "kind": [
           "extension"
@@ -14733,19 +14727,14 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Guide model responses",
-          "response steering",
-          "generation control",
-          "instruction control",
-          "Automate roleplay workflows",
-          "automation",
-          "workflow automation",
-          "task automation",
-          "triggered actions",
           "Increase narrative variety",
           "prevent repetition",
           "plot variety",
-          "response diversity"
+          "response diversity",
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control"
         ],
         "frontends": [
           "SillyTavern"

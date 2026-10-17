@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "46f992f1b46046d9213d3dd32f5f760365dfd224bdd809a2b7a0568e7b61d09f",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1116087330:bf-gith-bf-ooc-injection",
+      "inputDigest": "647706ee695bd72c4479a3743e47ab09ca05810beb7edd86794e7329384f9b66",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T12:35:27.898Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1116087330",
+    "identity": "github:1116087330"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 38991737473,
+    "sourceSha": "a466847c4cad40fa18653a0bb13844ca4adb0f6f"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/bf-gith-bf-ooc-injection.json",
+      "sha256": "e23de985acad786f75aaad7242b9fa83cdf199f06680f176d8166ffff2a008f8",
+      "gitBlobSha": "95865d3247d19d5a2eae8e1835298fbe481dc9ce"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/46f992f1b46046d9213d3dd32f5f760365dfd224bdd809a2b7a0568e7b61d09f.json",
+      "sha256": "22478bb5ec693a84f374b265f0772eabc9a9adfecbaff8eb8cae5daa01039b8b",
+      "gitBlobSha": "a11f26f7e23b84a0f5b77bfbdb0859319ac4f3ce"
+    }
+  ]
+}
