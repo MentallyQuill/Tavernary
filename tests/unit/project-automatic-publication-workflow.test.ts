@@ -286,7 +286,7 @@ test("regenerates stale transactions with Publisher identity", async () => {
 
   expect(token).toMatchObject({
     if: "steps.plan.outputs.action == 'regenerate'",
-    uses: "actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1",
+    uses: "actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510",
     with: {
       "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
       "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
@@ -339,7 +339,7 @@ test("merges validated project transactions with the Publisher App", async () =>
 
   expect(token).toMatchObject({
     if: "steps.plan.outputs.action == 'merge'",
-    uses: "actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1",
+    uses: "actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510",
     with: {
       "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
       "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",

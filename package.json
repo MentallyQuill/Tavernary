@@ -58,12 +58,12 @@
     "@tavernary/catalog-core": "file:packages/catalog-core",
     "ajv": "^8.20.0",
     "minisearch": "^7.2.0",
-    "next": "^16.3.8",
+    "next": "^16.4.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.63.0",
+    "@playwright/test": "^1.64.0",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.7",
@@ -73,12 +73,12 @@
     "ajv-formats": "^3.0.1",
     "color-name": "^2.1.1",
     "eslint": "^9.39.5",
-    "eslint-config-next": "^16.3.8",
+    "eslint-config-next": "^16.4.0",
     "fflate": "0.8.3",
     "jsdom": "^29.1.1",
-    "prettier": "^3.9.9",
+    "prettier": "^3.9.10",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.11",
+    "vitest": "^5.0.4",
     "yaml": "^2.9.1"
   }
 }

@@ -103,12 +103,12 @@ test("runtime compatibility is scheduled read-only and transition PRs test the c
 });
 const pinnedActions = {
   "actions/checkout": "3d3c42e5aac5ba805825da76410c181273ba90b1",
-  "actions/setup-node": "820762786026740c76f36085b0efc47a31fe5020",
+  "actions/setup-node": "949feb2413d6458794dcd2491c4babbbce0c15c1",
   "actions/configure-pages": "45bfe0192ca1faeb007ade9deae92b16b8254a0d",
   "actions/upload-pages-artifact": "fc324d3547104276b827a68afc52ff2a11cc49c9",
   "actions/deploy-pages": "368f82528645a54fb793d4d04e342629a3f51346",
-  "actions/upload-artifact": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
-  "actions/create-github-app-token": "bcd2ba49218906704ab6c1aa796996da409d3eb1",
+  "actions/upload-artifact": "cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+  "actions/create-github-app-token": "64ab729a6294000f5aa4a4bc0b73d1f32bc45510",
 };
 
 const modelProviderEnvironment = {
