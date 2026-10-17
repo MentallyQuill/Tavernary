@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f98b6d2ef235850f2b08f93c5264545c34412f0c5b433c6969ac68d318248e4a",
+    "identity": {
+      "kind": "kit",
+      "subject": "issue:932",
+      "inputDigest": "dc46df73296811c9602d04ef96429ca93e2e9476a9b6a06b59567467cee5433c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "validated",
+    "createdAt": "2026-10-17T03:05:15.000Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "111-932",
+    "identity": "github-issue:932"
+  },
+  "authorId": 311300165,
+  "producer": {
+    "workflow": ".github/workflows/apply-kit-submission.yml",
+    "runId": 38997628835,
+    "sourceSha": "9894332a3c41bc55c3cb259db337672c420b3139"
+  },
+  "files": [
+    {
+      "path": "data/registry/kits/111-932.json",
+      "sha256": "7ef11e0513fafa7a5ce620d5c74a926b9338f7cb57db34e4405fb48b306c5856",
+      "gitBlobSha": "0f2f1c3b76d88d294fce142df76d61601873f132"
+    },
+    {
+      "path": "data/snapshots/github/kits/111-932.json",
+      "sha256": "52b8d29f3c083f51456b5daaf876ad8d86aa7ebe2be184dfa3b61489b9b1098a",
+      "gitBlobSha": "7332ad67c788206c727dd9cff25ad6810451b9cd"
+    }
+  ]
+}
