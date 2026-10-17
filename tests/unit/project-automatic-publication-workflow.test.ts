@@ -25,7 +25,7 @@ test("wakes canonical validation reconciliation from trusted main code", async (
   );
 
   expect(workflow.name).toBe("Submissions: Reconcile project validations");
-  expect(workflow.on).toEqual({
+  expect(workflow.on).toMatchObject({
     workflow_run: {
       workflows: [
         "Site: Validate changes",
@@ -46,6 +46,11 @@ test("wakes canonical validation reconciliation from trusted main code", async (
       },
     },
   });
+  expect(workflow.on.workflow_dispatch.inputs).toMatchObject({
+    submission_issue_number: { required: false, type: "number", default: 0 },
+    submission_operation_key: { required: false, type: "string", default: "" },
+    site_run_id: { required: false, type: "number", default: 0 },
+  });
   expect(workflow.permissions).toEqual({
     contents: "read",
     actions: "read",
@@ -53,7 +58,8 @@ test("wakes canonical validation reconciliation from trusted main code", async (
     "pull-requests": "read",
   });
   expect(workflow.concurrency).toEqual({
-    group: "automation-controller",
+    group:
+      "${{ github.event_name == 'issues' && format('submission-finalization-{0}', github.event.issue.number) || 'submission-reconciliation' }}",
     "cancel-in-progress": false,
   });
   expect(reconcile.if).toContain("github.event_name == 'schedule'");
@@ -114,12 +120,14 @@ test("wakes canonical validation reconciliation from trusted main code", async (
   expect(steps).toEqual(
     expect.arrayContaining([
       expect.objectContaining({
-        env: { GH_TOKEN: "${{ steps.controller-token.outputs.token }}" },
-        run: "node scripts/automation/controller-wake.mjs",
+        env: expect.objectContaining({
+          GH_TOKEN: "${{ steps.controller-token.outputs.token }}",
+        }),
+        run: "node scripts/submissions/reconcile-submission-finalization.mjs",
       }),
     ]),
   );
-  expect(source).not.toMatch(/\bnpm (?:ci|install)\b/u);
+  expect(source).toContain("npm ci");
   expect(source).toContain("secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY");
 });
 
@@ -312,8 +320,9 @@ test("regenerates stale transactions with Publisher identity", async () => {
     const generated = parse(
       await readFile(`.github/workflows/${generator}.yml`, "utf8"),
     ) as any;
-    expect(generated.jobs.request.if).toContain("github.actor_id == 2625904");
-    expect(generated.jobs.generate.if).toContain("inputs.operation_key != ''");
+    expect(generated.jobs).not.toHaveProperty("request");
+    expect(generated.jobs.generate.if).toContain("github.actor_id == 2625904");
+    expect(generated.jobs.generate.if).toContain("inputs.operation_key == ''");
     expect(generated.jobs.generate.if).toContain(
       "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID",
     );

@@ -30,6 +30,178 @@ import * as requests from "../../scripts/automation/preparation-request.mjs";
 import * as enrichmentAuthority from "../../scripts/automation/enrichment-owner-request.mjs";
 import * as canonical from "../../scripts/automation/canonical-data.mjs";
 import * as githubInventory from "../../scripts/automation/github-inventory.mjs";
+import * as submissionGeneration from "../../scripts/submissions/generate-project-submission.mjs";
+import * as ownerGeneration from "../../scripts/help/generate-project-owner-request.mjs";
+
+test("ordinary project generation reaches its CLI without loading model allowance", async () => {
+  const result =
+    await submissionGeneration.runGenerateProjectSubmissionEntrypoint({
+      env: { GITHUB_REPOSITORY: "MentallyQuill/Tavernary" },
+      event: { inputs: { issue_number: "42" } },
+      cli: {
+        issueNumber: 42,
+        outputDirectory: ".tmp/draft",
+        reportPath: ".tmp/report.json",
+      },
+      run: async (options) => ({
+        issueNumber: options.issueNumber,
+        hasBudgetLoader:
+          typeof options.sourceClients?.loadBudgetGuard === "function",
+      }),
+      createBudgetLoader: () => {
+        throw new Error("Direct generation must not request a model ticket.");
+      },
+    });
+  expect(result).toEqual({ issueNumber: 42, hasBudgetLoader: false });
+});
+
+test("partial legacy envelopes cannot fall back to unbudgeted generation", async () => {
+  for (const inputs of [
+    { budget_ticket: "a".repeat(64) },
+    { operation_key: "b".repeat(64) },
+    { request_run_id: "12" },
+    { checkpoint_run_ids: "12" },
+    { operation_key: "not-an-operation", budget_ticket: "a".repeat(64) },
+    { operation_key: "b".repeat(64), budget_ticket: "bad-ticket" },
+  ]) {
+    await expect(
+      submissionGeneration.runGenerateProjectSubmissionEntrypoint({
+        env: {},
+        event: { inputs },
+        cli: {
+          issueNumber: 42,
+          outputDirectory: ".tmp/draft",
+          reportPath: ".tmp/report.json",
+        },
+        run: async () => "unexpected generation",
+        createBudgetLoader: () => {
+          throw new Error("Malformed envelope reached its loader.");
+        },
+      }),
+    ).rejects.toThrow("Legacy generation envelope is incomplete.");
+  }
+});
+
+test("ordinary owner generation reaches its CLI without loading model allowance", async () => {
+  const checkpoint = ownerGeneration.validateOwnerGenerationCheckpoint({
+    schema_version: 1,
+    entries: [],
+  });
+  const result = await ownerGeneration.runGenerateProjectOwnerEntrypoint({
+    env: { GITHUB_REPOSITORY: "MentallyQuill/Tavernary" },
+    event: { inputs: { issue_number: "42" } },
+    cli: {
+      issueNumber: 42,
+      root: ".tmp/owner",
+      reportPath: ".tmp/owner-report.json",
+      validatedReportPath: null,
+    },
+    generationCheckpoint: checkpoint,
+    run: async (options) => ({
+      issueNumber: options.issueNumber,
+      hasBudgetLoader: typeof options.loadBudgetGuard === "function",
+      checkpoint: options.generationCheckpoint,
+    }),
+    createBudgetLoader: () => {
+      throw new Error(
+        "Direct owner generation must not request a model ticket.",
+      );
+    },
+  });
+  expect(result).toEqual({
+    issueNumber: 42,
+    hasBudgetLoader: false,
+    checkpoint,
+  });
+});
+
+test.each(["project", "owner"])(
+  "a complete legacy %s envelope retains its original budget loader",
+  async (kind) => {
+    const load = vi.fn(async () => ({ beforeRequest: vi.fn() }) as never);
+    const factory = vi.fn(() => ({
+      load,
+      usage: () => [],
+      evidenceSaved: () => false,
+    }));
+    const event = {
+      inputs: {
+        operation_key: "b".repeat(64),
+        budget_ticket: "a".repeat(64),
+        request_run_id: "12",
+      },
+    };
+    const common = {
+      env: { GITHUB_REPOSITORY: "MentallyQuill/Tavernary" },
+      event,
+      createBudgetLoader: factory,
+    };
+    if (kind === "project")
+      await submissionGeneration.runGenerateProjectSubmissionEntrypoint({
+        ...common,
+        cli: {
+          issueNumber: 42,
+          outputDirectory: ".tmp/draft",
+          reportPath: ".tmp/report.json",
+        },
+        run: async (options) => {
+          await options.sourceClients?.loadBudgetGuard?.();
+          return null;
+        },
+      });
+    else
+      await ownerGeneration.runGenerateProjectOwnerEntrypoint({
+        ...common,
+        cli: {
+          issueNumber: 42,
+          root: ".tmp/owner",
+          reportPath: ".tmp/report.json",
+          validatedReportPath: null,
+        },
+        run: async (options) => {
+          await options.loadBudgetGuard?.();
+          return null;
+        },
+      });
+    expect(factory).toHaveBeenCalledExactlyOnceWith({ env: common.env, event });
+    expect(load).toHaveBeenCalledOnce();
+  },
+);
+
+test("completed direct generation titles cannot be re-admitted as legacy request wrappers", () => {
+  for (const name of [
+    "generate-project-submission",
+    "generate-project-owner-request",
+  ]) {
+    const workflow = parse(
+      readFileSync(`.github/workflows/${name}.yml`, "utf8"),
+    );
+    const expression = workflow["run-name"].trim().slice(3, -2);
+    const title = new Function("inputs", "format", `return (${expression});`)(
+      {
+        operation_key: "",
+        request_run_id: 0,
+        issue_number: 42,
+        force_regeneration: false,
+      },
+      (pattern: string, ...parts: unknown[]) =>
+        pattern.replace(/\{(\d+)\}/gu, (_match, index) =>
+          String(parts[Number(index)]),
+        ),
+    );
+    const run = {
+      ...ownerGenerationRequest(`.github/workflows/${name}.yml`),
+      display_title: title,
+    };
+    expect(
+      requests.parseGenerationOwnerRequest(
+        run,
+        "MentallyQuill/Tavernary",
+        317929880,
+      ),
+    ).toBeNull();
+  }
+});
 
 test("native owner request history searches old open issues beyond GitHub's result cap without unbounded pagination", async () => {
   const nowMs = Date.parse("2026-10-08T12:00:00Z");
@@ -321,10 +493,8 @@ test.each([
       "number",
     );
     expect(workflow["run-name"]).toContain("request{1}");
-    expect(workflow["run-name"]).toContain("force={1}");
-    expect(workflow.jobs.request.steps.at(-1).run).toContain(
-      'result_run_id="$GITHUB_RUN_ID"',
-    );
+    expect(workflow["run-name"]).toContain("Create review PR");
+    expect(workflow.jobs.request).toBeUndefined();
     expect(
       workflow.jobs.generate.steps.filter((step: { uses?: string }) =>
         step.uses?.startsWith("actions/checkout@"),
@@ -852,6 +1022,36 @@ test.each([false, true])(
   30000,
 );
 
+test("direct owner copy review can reach its configured provider without a ledger ticket", async () => {
+  vi.stubEnv(
+    "UTILITY_API_ENDPOINT",
+    "https://provider.invalid/v1/chat/completions",
+  );
+  vi.stubEnv("UTILITY_API_KEY", "fixture-key");
+  vi.stubEnv("UTILITY_MODEL", "fixture-model");
+  vi.stubEnv("TAVERNARY_REQUIRE_MODEL_BUDGET", "false");
+  for (const key of [
+    "TAVERNARY_ENRICHMENT_API_URL",
+    "TAVERNARY_ENRICHMENT_API_KEY",
+    "TAVERNARY_ENRICHMENT_MODEL",
+  ])
+    vi.stubEnv(key, "");
+  const fetch = vi.fn(async () => {
+    throw new Error("Fixture provider outage");
+  });
+  vi.stubGlobal("fetch", fetch);
+  try {
+    await preserveCatalogSummary({
+      authorityType: "repository-owner",
+      submittedSummary: "An owner supplied factual summary.",
+    });
+    expect(fetch).toHaveBeenCalledOnce();
+  } finally {
+    vi.unstubAllGlobals();
+    vi.unstubAllEnvs();
+  }
+});
+
 test("an interrupted native generator settles completed calls once despite a lost commit response, without refunding unused allowance", async () => {
   const f = await generationSettlementFixture();
   expect(
@@ -939,7 +1139,7 @@ test.each(["generated", "validated"] as const)(
         ...input,
         projectGenerationEligible: async () => false,
       }),
-    ).toEqual({ status: "superseded" });
+    ).toEqual({ status: "direct-owned" });
     expect(commit).not.toHaveBeenCalled();
     expect(dispatch).not.toHaveBeenCalled();
     expect(
@@ -947,8 +1147,8 @@ test.each(["generated", "validated"] as const)(
         ...input,
         projectGenerationEligible: async () => true,
       }),
-    ).toMatchObject({ status: "dispatched", runId: 700 });
-    expect(dispatch).toHaveBeenCalledOnce();
+    ).toEqual({ status: "direct-owned" });
+    expect(dispatch).not.toHaveBeenCalled();
   },
 );
 
@@ -1000,156 +1200,25 @@ test.each([false, true])(
 );
 
 test.each(["project-submission", "project-owner-request"])(
-  "%s workflow routes empty owner requests to the writer and requires tickets for bounded generation",
+  "%s workflow generates directly and preserves tickets for legacy generation",
   (producer) => {
     const workflow = parse(
       readFileSync(`.github/workflows/generate-${producer}.yml`, "utf8"),
     );
-    expect(workflow.jobs.request["timeout-minutes"]).toBe(5);
-    expect(workflow.jobs.request.if).toContain("inputs.operation_key == ''");
-    expect(workflow.jobs.generate.if).toContain("inputs.operation_key != ''");
+    expect(workflow.jobs.request).toBeUndefined();
+    expect(workflow.jobs.generate.if).toContain("inputs.operation_key == ''");
     expect(workflow.jobs.generate.if).toContain(
       "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID",
     );
     expect(workflow.jobs.generate["timeout-minutes"]).toBe(45);
     expect(workflow.jobs.generate.env.TAVERNARY_REQUIRE_MODEL_BUDGET).toBe(
-      "true",
+      "${{ inputs.operation_key != '' && 'true' || 'false' }}",
     );
     expect(workflow.on.workflow_dispatch.inputs).toHaveProperty(
       "budget_ticket",
     );
-    expect(JSON.stringify(workflow.jobs.request)).not.toMatch(
-      /UTILITY_API_KEY|TAVERNARY_ENRICHMENT_API_KEY|permission-contents/u,
-    );
-    expect(JSON.stringify(workflow.jobs.request)).toContain(
-      "automation-writer.yml",
-    );
     expect(JSON.stringify(workflow.jobs.generate)).toContain(
       "automation-generation-model-usage.json",
-    );
-  },
-);
-
-test.each(["project", "owner-request"] as const)(
-  "%s generation reserves shared allowance before one authenticated dispatch",
-  async (kind) => {
-    const f = await metadataMaintenanceFixture();
-    const operation = operationFixture({
-      identity: { ...operationFixture().identity, kind, subject: "issue:42" },
-      stage: "admitted",
-      expectedSha: null,
-    });
-    operation.key = operationKey(operation.identity);
-    f.state.operations = [operation];
-    f.state.remote.issues = projectInventoryFixture().issues;
-    f.state.local.modelBudget = createModelBudgetState(f.state.nowMs);
-    const workflow = `.github/workflows/generate-${kind === "project" ? "project-submission" : "project-owner-request"}.yml`;
-    const commit = vi.fn(
-      async (input: { files: Array<{ content: string }> }) => {
-        f.state.local.modelBudget = JSON.parse(input.files[0].content);
-        return { sha: String(f.state.local.revision) };
-      },
-    );
-    const dispatch = vi.fn(async () => {
-      operation.workerRunId = 700;
-      return { runId: 700, workflow };
-    });
-    const gh = vi.fn(async () => {
-      throw new Error("Unexpected remote transport in fixture");
-    });
-    const persistFailure = vi.fn(async () => {});
-    const env = {
-      GITHUB_REPOSITORY: f.state.repository,
-      GITHUB_REF: "refs/heads/main",
-      GITHUB_EVENT_NAME: "workflow_dispatch",
-      GITHUB_ACTOR_ID: "2625904",
-      GITHUB_WORKFLOW_REF: `${f.state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
-      GITHUB_RUN_ID: "800",
-      GITHUB_RUN_ATTEMPT: "1",
-      TAVERNARY_PUBLISHER_BOT_ID: String(f.state.publisherActorId),
-      UTILITY_MODEL: "primary",
-      TAVERNARY_ENRICHMENT_MODEL: "repair",
-    };
-    expect(
-      await runModelWriterPreparation({
-        operationKey: operation.key,
-        env,
-        load: async () => f.state,
-        commit,
-        dispatch,
-        gh,
-        persistFailure,
-      }),
-    ).toMatchObject({ status: "dispatched", runId: 700 });
-    expect(commit.mock.invocationCallOrder[0]).toBeLessThan(
-      dispatch.mock.invocationCallOrder[0],
-    );
-    expect(dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({
-        operationKey: operation.key,
-        workflow,
-        issueNumber: 42,
-      }),
-    );
-    expect(
-      validateModelBudgetState(f.state.local.modelBudget).tickets.every(
-        (ticket) =>
-          ticket.producer?.runId === 700 &&
-          ticket.producer.workflow === workflow,
-      ),
-    ).toBe(true);
-    operation.workerRunId = null;
-    const plan = planPreparationRequest({
-      state: f.state,
-      workflow: workflow.split("/").at(-1)!,
-      issueNumber: 42,
-    });
-    expect(plan).toEqual({
-      action: "dispatch",
-      workflow: "automation-writer.yml",
-      inputs: { mode: "prepare", operation_key: operation.key },
-    });
-    operation.workerRunId = 700;
-    expect(
-      await runModelWriterPreparation({
-        operationKey: operation.key,
-        env,
-        load: async () => f.state,
-        commit,
-        dispatch,
-        gh,
-        persistFailure,
-      }),
-    ).toEqual({ status: "superseded" });
-    expect(dispatch).toHaveBeenCalledOnce();
-    operation.workerRunId = null;
-    const exhausted = reserveModelBudget(
-      createModelBudgetState(f.state.nowMs),
-      {
-        operationKey: "f".repeat(64),
-        model: "primary",
-        requestCount: 40,
-        requestedTokens: 200000,
-      },
-      { nowMs: f.state.nowMs },
-    );
-    if (!exhausted.allowed) throw new Error("Invalid fixture allowance");
-    f.state.local.modelBudget = exhausted.state;
-    const refusal = vi.fn(async () => {});
-    expect(
-      await runModelWriterPreparation({
-        operationKey: operation.key,
-        env,
-        load: async () => f.state,
-        commit,
-        dispatch,
-        gh,
-        persistFailure: refusal,
-      }),
-    ).toMatchObject({ status: "waiting" });
-    expect(dispatch).toHaveBeenCalledOnce();
-    expect(refusal).toHaveBeenCalledWith(
-      expect.objectContaining({ code: "budget-exhausted" }),
     );
   },
 );

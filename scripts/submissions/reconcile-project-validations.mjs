@@ -1,4 +1,6 @@
 import { pathToFileURL } from "node:url";
+import { isDirectSubmissionKind } from "../automation/submission-routing.mjs";
+import { executeGh } from "./kit-submission-reconciliation.mjs";
 
 import { parseProjectPublicationTransaction } from "../publication/project-publication-transaction.mjs";
 import {
@@ -937,7 +939,8 @@ function publisherActorIdFromEnv(env) {
 
 export async function runReconcileProjectValidationsCli({
   env = process.env,
-  request = githubRequest,
+  request,
+  gh = executeGh,
   nowMs = Date.now(),
   write = (output) => console.log(output),
 } = {}) {
@@ -945,6 +948,21 @@ export async function runReconcileProjectValidationsCli({
     throw new Error("GITHUB_TOKEN or GH_TOKEN is required.");
   }
   const publisherActorId = publisherActorIdFromEnv(env);
+  request ??= async (path, options = {}) => {
+    if (
+      options.method === "POST" &&
+      /^\/repos\/[^/]+\/[^/]+\/actions\/workflows\/[a-z0-9-]+\.yml\/dispatches$/u.test(
+        path,
+      )
+    ) {
+      await gh(
+        ["api", "--method", "POST", path.slice(1), "--input", "-"],
+        options.body,
+      );
+      return null;
+    }
+    return githubRequest(path, options, env.GITHUB_TOKEN ?? env.GH_TOKEN);
+  };
   const summary = await reconcileProjectValidations({
     repository: env.GITHUB_REPOSITORY ?? "",
     request,
@@ -959,6 +977,177 @@ export async function runReconcileProjectValidationsCli({
   )
     ? 1
     : 0;
+}
+
+export async function reconcileSubmissionHandoffs({
+  repository,
+  gh,
+  load,
+  finalize,
+  limit = 20,
+}) {
+  if (
+    repository !== "MentallyQuill/Tavernary" ||
+    !Number.isSafeInteger(limit) ||
+    limit < 0 ||
+    limit > 20
+  )
+    throw new Error("Submission recovery scope is invalid.");
+  const issues = [];
+  for (let page = 1; ; page++) {
+    const batch = JSON.parse(
+      await gh([
+        "api",
+        `repos/${repository}/issues?state=open&sort=created&direction=asc&per_page=100&page=${page}`,
+      ]),
+    );
+    if (!Array.isArray(batch))
+      throw new Error("Submission issue inventory is invalid.");
+    issues.push(
+      ...batch.filter(
+        (issue) =>
+          !issue.pull_request &&
+          labelNames(issue.labels).some((label) =>
+            [
+              "project-submission",
+              "project-owner-request",
+              "kit-submission",
+              "kit-withdrawal",
+            ].includes(label),
+          ),
+      ),
+    );
+    if (batch.length < 100) break;
+    if (page >= 50)
+      throw new Error("Submission issue inventory exceeds its bound.");
+  }
+  const results = [];
+  let dispatched = 0,
+    processed = 0;
+  const due = (state, operation) =>
+    operation &&
+    isDirectSubmissionKind(operation.identity.kind) &&
+    operation.workerRunId === null &&
+    operation.retry?.failure.kind !== "permanent" &&
+    (!operation.nextEligibleAt ||
+      Date.parse(operation.nextEligibleAt) <= state.nowMs);
+  const sameIssue = (listed, state) =>
+    state.remote.issues.some(
+      (issue) =>
+        issue.number === listed.number &&
+        issue.state === "open" &&
+        issue.body === listed.body &&
+        issue.user?.id === listed.user?.id,
+    );
+  for (const listed of issues.sort(
+    (a, b) =>
+      Date.parse(a.created_at) - Date.parse(b.created_at) ||
+      a.number - b.number,
+  )) {
+    if (processed >= limit) break;
+    const processedBefore = processed;
+    try {
+      const state = await load({ issueNumber: listed.number });
+      const operation = state.operations.find(
+        (operation) =>
+          operation.identity.subject === `issue:${listed.number}` &&
+          isDirectSubmissionKind(operation.identity.kind),
+      );
+      if (!sameIssue(listed, state) || !due(state, operation)) continue;
+      if (
+        [
+          "published",
+          "deployment-requested",
+          "deployment-confirmed",
+          "finalized",
+        ].includes(operation.stage)
+      ) {
+        const result = await finalize({
+          issueNumber: listed.number,
+          operationKey: operation.key,
+        });
+        if (result.status === "waiting") continue;
+        processed++;
+        results.push({
+          issueNumber: listed.number,
+          ...result,
+        });
+        continue;
+      }
+      if (
+        state.remote.pulls.some(
+          (pull) =>
+            pull.state === "open" ||
+            (pull.state === "closed" && !pull.merged_at),
+        )
+      )
+        continue;
+      const workflow =
+        operation.stage === "discovered"
+          ? "admit-issue.yml"
+          : operation.identity.kind === "project" &&
+              operation.stage === "admitted"
+            ? labelNames(state.remote.issues[0].labels).some((label) =>
+                ["needs-information", "waiting-on-fork-parent"].includes(label),
+              )
+              ? "triage-submission.yml"
+              : "generate-project-submission.yml"
+            : operation.identity.kind === "owner-request" &&
+                operation.stage === "admitted"
+              ? "generate-project-owner-request.yml"
+              : operation.identity.kind === "kit" &&
+                  operation.stage === "admitted"
+                ? "triage-kit-submission.yml"
+                : operation.identity.kind === "kit" &&
+                    operation.stage === "validated"
+                  ? "apply-kit-submission.yml"
+                  : operation.identity.kind === "withdrawal" &&
+                      operation.stage === "validated"
+                    ? "apply-kit-withdrawal.yml"
+                    : null;
+      if (!workflow) continue;
+      const fresh = await load({
+        issueNumber: listed.number,
+        operationKey: operation.key,
+      });
+      const current = fresh.operations.find(
+        (value) => value.key === operation.key,
+      );
+      if (
+        !sameIssue(listed, fresh) ||
+        !due(fresh, current) ||
+        current.stage !== operation.stage ||
+        fresh.remote.pulls.some((pull) => pull.state === "open")
+      )
+        continue;
+      processed++;
+      await gh([
+        "workflow",
+        "run",
+        workflow,
+        "--repo",
+        repository,
+        "--ref",
+        "main",
+        "-f",
+        `issue_number=${listed.number}`,
+      ]);
+      dispatched++;
+      results.push({
+        issueNumber: listed.number,
+        status: "dispatched",
+        workflow,
+      });
+    } catch (error) {
+      processed = processedBefore + 1;
+      results.push({
+        issueNumber: listed.number,
+        status: "waiting",
+        error: errorMessage(error),
+      });
+    }
+  }
+  return { dispatched, processed, results };
 }
 
 async function main() {

@@ -8,6 +8,26 @@ import { parse } from "yaml";
 import { configuredBasePath } from "../../scripts/verify-static-export.mjs";
 
 const workflowDirectory = resolve(".github/workflows");
+test.each(["generate-project-submission", "generate-project-owner-request"])(
+  "ordinary %s dispatch starts generation without a writer request job",
+  async (name) => {
+    const document = await workflow(name);
+    const accepts = new Function(
+      "inputs",
+      "github",
+      "vars",
+      `return (${document.jobs.generate.if});`,
+    );
+    expect(
+      accepts(
+        { operation_key: "", force_regeneration: false },
+        { ref: "refs/heads/main", actor_id: "317929880" },
+        { TAVERNARY_PUBLISHER_BOT_ID: "317929880" },
+      ),
+    ).toBe(true);
+    expect(document.jobs.request).toBeUndefined();
+  },
+);
 test("the recovery canary retains its hidden fault report and effect journals", async () => {
   const canary = await workflow("verify-automation");
   const artifact = canary.jobs.verify.steps.find((step: WorkflowStep) =>
@@ -127,6 +147,7 @@ const protectedPublisherJobs = {
   "automation-writer": "write",
   "apply-kit-submission": "publish",
   "apply-kit-withdrawal": "withdraw",
+  "reconcile-project-validations": "reconcile",
   "backfill-repository-identities": "backfill",
 
   "import-tavernkeeper-reports": "import",
@@ -211,6 +232,13 @@ function shellCommands(source = "") {
 function stepWritesMain(step: WorkflowStep) {
   if (step.run?.includes("catalog:enrichment-rollout")) return true;
   if (step.run?.includes("node scripts/automation/writer-cli.mjs")) return true;
+  if (
+    step.run?.includes("runDirectKitPublication") ||
+    step.run?.includes(
+      "node scripts/submissions/reconcile-submission-finalization.mjs",
+    )
+  )
+    return true;
 
   return shellCommands(step.run).some((command) => {
     const pushesMain =
@@ -311,14 +339,14 @@ test("identifies the object and action in every workflow run name", async () => 
     "triage-submission": ["Project #", "Validate submission"],
     "generate-project-submission": [
       "Project #",
-      "Request review PR",
+      "Create review PR",
       "Automation prepare",
     ],
     "project-submission-lifecycle": ["Project review PR #", "Process result"],
     "triage-project-owner-request": ["Owner request #", "Validate authority"],
     "generate-project-owner-request": [
       "Owner request #",
-      "Request review PR",
+      "Create review PR",
       "Automation prepare",
     ],
     "project-owner-request-lifecycle": ["Owner review PR #", "Process result"],
@@ -373,7 +401,7 @@ test.each([
         "&& (inputs.request_run_id > 0 " +
         "&& format('Automation prepare {0} request{1}', inputs.operation_key, inputs.request_run_id) " +
         "|| format('Automation prepare {0}', inputs.operation_key)) " +
-        `|| format('${ownerTitle} #{0}: Request review PR force={1}', inputs.issue_number, inputs.force_regeneration) }}`,
+        `|| format('${ownerTitle} #{0}: Create review PR', inputs.issue_number) }}`,
     );
   },
 );
@@ -409,7 +437,6 @@ test("limits every main publisher to the protected Publisher App", async () => {
       .filter(
         (name) =>
           !(
-            name.startsWith("apply-kit-") ||
             name === "review-catalog-policy" ||
             name === "refresh-catalog" ||
             name === "import-tavernkeeper-reports" ||
@@ -447,17 +474,29 @@ test("limits every main publisher to the protected Publisher App", async () => {
 
     expect(document.permissions.contents, name).toBe("read");
     expect(job.environment, name).toBe("publisher");
-    expect(job.if?.replace(/\s+/gu, " ").trim(), name).toBe(
-      expectedPublisherConditions[
-        name as keyof typeof expectedPublisherConditions
-      ] ?? expectedPublisherConditions.default,
-    );
+    if (name === "reconcile-project-validations") {
+      expect(job.if).toContain("github.event_name == 'schedule'");
+      expect(job.if).toContain(
+        "github.event.workflow_run.head_repository.full_name == github.repository",
+      );
+      expect(job.if).toContain(publisherActorExpression);
+    } else
+      expect(job.if?.replace(/\s+/gu, " ").trim(), name).toBe(
+        expectedPublisherConditions[
+          name as keyof typeof expectedPublisherConditions
+        ] ?? expectedPublisherConditions.default,
+      );
     expect(job.permissions?.contents, name).not.toBe("write");
     expect(publisherToken?.uses, name).toBe(
       `actions/create-github-app-token@${pinnedActions["actions/create-github-app-token"]}`,
     );
     expect(publisherToken, name).toMatchObject({
-      id: name === "automation-writer" ? "writer-token" : "publisher-token",
+      id:
+        name === "automation-writer"
+          ? "writer-token"
+          : name === "reconcile-project-validations"
+            ? "controller-token"
+            : "publisher-token",
       with: {
         "client-id": "${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}",
         "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
@@ -472,7 +511,6 @@ test("limits every main publisher to the protected Publisher App", async () => {
       },
     });
     if (
-      name.startsWith("apply-kit-") ||
       name === "review-catalog-policy" ||
       name === "refresh-catalog" ||
       name === "import-tavernkeeper-reports" ||
@@ -481,7 +519,13 @@ test("limits every main publisher to the protected Publisher App", async () => {
     )
       expect(publisherToken?.with?.["permission-contents"]).toBeUndefined();
     if (
+      name.startsWith("apply-kit-") ||
+      name === "reconcile-project-validations"
+    )
+      expect(publisherToken?.with?.["permission-contents"]).toBe("write");
+    if (
       name === "automation-writer" ||
+      name === "reconcile-project-validations" ||
       name.startsWith("apply-kit-") ||
       name === "review-catalog-policy" ||
       name === "refresh-catalog" ||
@@ -576,6 +620,19 @@ test("uses the Publisher App identity for every protected workflow dispatch", as
           );
           if (!protectedTargets.has(target)) continue;
           dispatches.push(`${file}:${jobName}->${target}`);
+          if (
+            file === "ci.yml" &&
+            jobName === "reconcile-generated-validation" &&
+            target === "reconcile-project-validations.yml"
+          ) {
+            expect(job.environment).toBeUndefined();
+            expect(step.env?.GH_TOKEN).toBe("${{ github.token }}");
+            expect(step.run).toContain('validation_run_id="$GITHUB_RUN_ID"');
+            expect(step.run).not.toMatch(
+              /site_run_id|submission_issue_number|submission_operation_key/u,
+            );
+            continue;
+          }
           expect(job.environment, `${file}:${jobName}`).toBe("publisher");
           const tokenExpression = step.env?.GH_TOKEN;
           const tokenId = tokenExpression?.match(
@@ -598,11 +655,9 @@ test("uses the Publisher App identity for every protected workflow dispatch", as
   expect(dispatches.sort()).toEqual(
     [
       "admit-issue.yml:admit->apply-kit-withdrawal.yml",
-      "apply-kit-submission.yml:publish->apply-kit-submission.yml",
-      "apply-kit-withdrawal.yml:withdraw->apply-kit-withdrawal.yml",
       "automation-prepared.yml:wake->automation-writer.yml",
-      "generate-project-owner-request.yml:request->automation-writer.yml",
-      "generate-project-submission.yml:request->automation-writer.yml",
+      "automation-prepared.yml:wake->reconcile-project-validations.yml",
+      "ci.yml:reconcile-generated-validation->reconcile-project-validations.yml",
       "backfill-repository-identities.yml:backfill->automation-writer.yml",
       "publisher-verification.yml:verify->automation-writer.yml",
       "publisher-automation-branch-verification.yml:verify->automation-writer.yml",
@@ -610,7 +665,6 @@ test("uses the Publisher App identity for every protected workflow dispatch", as
       "import-tavernkeeper-reports.yml:import->automation-writer.yml",
       "publish-project-transaction.yml:publish->review-catalog-policy.yml",
       "reconcile-automation.yml:reconcile->automation-writer.yml",
-      "reconcile-project-validations.yml:reconcile->automation-writer.yml",
       "retry-fork-dependencies.yml:retry->automation-writer.yml",
       "retry-frontend-dependencies.yml:retry->automation-writer.yml",
       "retry-project-submission-enrichment.yml:retry->automation-writer.yml",
@@ -746,7 +800,7 @@ test("targeted TavernKeeper scans are actor-gated and accept only an exact repos
   );
 });
 
-test("publishes Kits only by manual dispatch and serializes registry writes", async () => {
+test("publishes Kits through trusted automatic dispatch and serializes registry writes", async () => {
   const publication = await workflow("apply-kit-submission");
   const withdrawal = await workflow("apply-kit-withdrawal");
   const publicationSource = await readFile(
@@ -782,9 +836,9 @@ test("publishes Kits only by manual dispatch and serializes registry writes", as
     expect(source).toContain(
       "node scripts/automation/catalog-preparation-cli.mjs",
     );
-    expect(source).not.toMatch(
-      /git push|git rebase|gh issue close|workflow run deploy-pages/,
-    );
+    expect(source).not.toMatch(/git push|git rebase|gh issue close/);
+    expect(source).toContain("runDirectKitPublication");
+    expect(source).toContain("workflow run deploy-pages");
   }
   expect(withdrawalSource).toContain(
     "ISSUE_NUMBER: ${{ inputs.issue_number }}",
@@ -1496,7 +1550,9 @@ test("submission generation dispatches branch CI with an Actions-only Publisher 
     "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
     "permission-actions": "write",
   });
-  expect(token?.if).toBe("steps.commit.outputs.changed == 'true'");
+  expect(token?.if).toBe(
+    "steps.route.outputs.generate == 'true' && (steps.commit.outputs.changed == 'true')",
+  );
   expect(dispatch?.if).toBe(token?.if);
   expect(steps.indexOf(token!)).toBeLessThan(steps.indexOf(dispatch!));
   expect(dispatch?.env?.BRANCH).toBe("${{ steps.state.outputs.branch }}");
@@ -1835,7 +1891,7 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
     generation.on.workflow_dispatch.inputs.force_regeneration,
   ).toMatchObject({ required: false, type: "boolean", default: false });
   expect(generation.concurrency).toEqual({
-    group: "project-owner-generation",
+    group: "project-owner-request-${{ inputs.issue_number }}",
     "cancel-in-progress": false,
   });
   expect(checkout?.with).toMatchObject({
@@ -1962,7 +2018,9 @@ test("owner generation dispatches branch CI with an Actions-only Publisher token
     "private-key": "${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}",
     "permission-actions": "write",
   });
-  expect(token?.if).toBe("steps.plan.outputs.action != 'noop'");
+  expect(token?.if).toBe(
+    "steps.route.outputs.generate == 'true' && (steps.plan.outputs.action != 'noop')",
+  );
   expect(dispatch?.if).toBe(token?.if);
   expect(steps.indexOf(token!)).toBeLessThan(steps.indexOf(dispatch!));
   expect(dispatch?.env?.BRANCH).toBe("${{ steps.state.outputs.branch }}");
@@ -1984,7 +2042,7 @@ test.each([
   );
 
   expect(reconcile).toMatchObject({
-    if: "failure() && !cancelled()",
+    if: "steps.route.outputs.generate == 'true' && (failure() && !cancelled())",
     run: "node scripts/submissions/project-generation-failure.mjs",
     env: {
       ISSUE_NUMBER: "${{ inputs.issue_number }}",

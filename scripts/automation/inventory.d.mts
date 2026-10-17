@@ -24,6 +24,7 @@ export function loadAutomationInventory(input: {
   nowMs: number;
   reportIndex?: TavernKeeperReportIndexV5;
   finalizationOperationKey?: string;
+  submissionIssueNumber?: number;
   executingWriterRunId?: number;
 }): Promise<AutomationInventoryState>;
 export function loadPreparedDiagnosticInventory(

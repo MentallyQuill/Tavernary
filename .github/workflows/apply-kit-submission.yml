@@ -62,23 +62,35 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
-      - name: Create fresh Publisher dispatch token
+      - name: Create fresh Publisher token
         id: publisher-token
-        if: steps.request.outputs.prepare == 'true'
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
           private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-issues: read
           permission-actions: write
-      - name: Dispatch immutable read-only preparation
-        if: steps.request.outputs.prepare == 'true'
-        run: >-
-          gh workflow run apply-kit-submission.yml --repo "$GITHUB_REPOSITORY" --ref main
-          -f issue_number="$ISSUE_NUMBER" -f operation_key="$OPERATION_KEY"
+      - name: Publish current validated Kit with an exact-parent write
+        id: commit
         env:
           GH_TOKEN: ${{ steps.publisher-token.outputs.token }}
           ISSUE_NUMBER: ${{ inputs.issue_number }}
-          OPERATION_KEY: ${{ steps.request.outputs.operation_key }}
+          TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
+        run: |
+          node --input-type=module <<'NODE'
+          import { appendFile } from "node:fs/promises";
+          import { runDirectKitPublication } from "./scripts/kits/apply-submission.mjs";
+          const result = await runDirectKitPublication();
+          console.log(JSON.stringify(result));
+          await appendFile(process.env.GITHUB_OUTPUT, `published=${result.status === "published"}\nsha=${result.sha ?? ""}\n`);
+          NODE
+      - name: Deploy the published Kit revision
+        if: steps.commit.outputs.published == 'true'
+        env:
+          GH_TOKEN: ${{ steps.publisher-token.outputs.token }}
+          SOURCE_SHA: ${{ steps.commit.outputs.sha }}
+        run: gh workflow run deploy-pages.yml --repo "$GITHUB_REPOSITORY" --ref main -f source_sha="$SOURCE_SHA"
 
   prepare:
     if: >-

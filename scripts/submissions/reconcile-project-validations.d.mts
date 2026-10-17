@@ -77,6 +77,22 @@ export function reconcileProjectValidations(input: {
 export function runReconcileProjectValidationsCli(input?: {
   env?: Record<string, string | undefined>;
   request?: GitHubRequest;
+  gh?: import("./kit-submission-reconciliation.mjs").GhRunner;
   nowMs?: number;
   write?: (output: string) => void;
 }): Promise<number>;
+export function reconcileSubmissionHandoffs(input: {
+  repository: string;
+  gh: import("./kit-submission-reconciliation.mjs").GhRunner;
+  load: (
+    target: import("./reconcile-submission-finalization.mjs").SubmissionTarget,
+  ) => Promise<import("../automation/inventory.mjs").AutomationInventoryState>;
+  finalize: (
+    target: import("./reconcile-submission-finalization.mjs").SubmissionTarget,
+  ) => Promise<{ status: string }>;
+  limit?: number;
+}): Promise<{
+  dispatched: number;
+  processed: number;
+  results: Array<Record<string, unknown>>;
+}>;

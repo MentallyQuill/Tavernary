@@ -24,7 +24,7 @@ function unavailableCopyReview(submittedSummary, diagnostic) {
 async function defaultCopySummary(input) {
   const provider = createCatalogCopyProvider({
     ...modelProviderOptionsFromEnvironment(),
-    requireBudget: true,
+    requireBudget: process.env.TAVERNARY_REQUIRE_MODEL_BUDGET !== "false",
     budgetGuard: await input.loadBudgetGuard?.(),
   });
   const generated = await provider.generate({

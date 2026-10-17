@@ -276,7 +276,7 @@ test("a trusted pending Reddit wave delays the normal controller and budget rese
         UTILITY_MODEL: "primary",
       },
     }),
-  ).resolves.toMatchObject({ status: "superseded" });
+  ).resolves.toMatchObject({ status: "direct-owned" });
   expect(commit).not.toHaveBeenCalled();
   expect(dispatch).not.toHaveBeenCalled();
   f.comment.user.id = 1;

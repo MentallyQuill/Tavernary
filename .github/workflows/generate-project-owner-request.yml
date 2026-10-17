@@ -4,7 +4,7 @@ run-name: >-
     && (inputs.request_run_id > 0
         && format('Automation prepare {0} request{1}', inputs.operation_key, inputs.request_run_id)
         || format('Automation prepare {0}', inputs.operation_key))
-    || format('Owner request #{0}: Request review PR force={1}', inputs.issue_number, inputs.force_regeneration) }}
+    || format('Owner request #{0}: Create review PR', inputs.issue_number) }}
 
 on:
   workflow_dispatch:
@@ -46,75 +46,20 @@ permissions:
   actions: write
 
 concurrency:
-  group: project-owner-generation
+  group: project-owner-request-${{ inputs.issue_number }}
   cancel-in-progress: false
 
 jobs:
-  request:
-    if: >-
-      inputs.operation_key == '' && github.ref == 'refs/heads/main' &&
-      (github.actor_id == 2625904 || github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID)
-    runs-on: ubuntu-latest
-    environment: publisher
-    timeout-minutes: 5
-    permissions:
-      contents: read
-      actions: read
-      issues: read
-      pull-requests: read
-    steps:
-      - name: Check out trusted request code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          ref: ${{ github.sha }}
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Set up Node.js
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
-        with:
-          node-version-file: .node-version
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Select current admitted generation
-        id: request
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
-        run: |
-          node scripts/automation/preparation-request.mjs > "$RUNNER_TEMP/generation-request.json"
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          const plan = JSON.parse(fs.readFileSync(`${process.env.RUNNER_TEMP}/generation-request.json`, 'utf8'));
-          if (plan.action === 'dispatch') fs.appendFileSync(process.env.GITHUB_OUTPUT, `operation_key=${plan.inputs.operation_key}\n`);
-          NODE
-      - name: Create scoped Publisher dispatch token
-        id: dispatch-token
-        if: steps.request.outputs.operation_key != ''
-        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
-        with:
-          client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
-          private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
-          permission-actions: write
-      - name: Request writer-owned generation allowance
-        if: steps.request.outputs.operation_key != ''
-        env:
-          GH_TOKEN: ${{ steps.dispatch-token.outputs.token }}
-          OPERATION_KEY: ${{ steps.request.outputs.operation_key }}
-        run: >-
-          gh workflow run automation-writer.yml --ref main
-          -f mode=prepare -f operation_key="$OPERATION_KEY"
-          -f result_run_id="$GITHUB_RUN_ID"
-
   generate:
     if: >-
-      inputs.operation_key != '' && github.ref == 'refs/heads/main' &&
-      github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID
+      github.ref == 'refs/heads/main' &&
+      (github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID ||
+       (inputs.operation_key == '' && github.actor_id == 2625904))
     runs-on: ubuntu-latest
     environment: publisher
     timeout-minutes: 45
     env:
-      TAVERNARY_REQUIRE_MODEL_BUDGET: "true"
+      TAVERNARY_REQUIRE_MODEL_BUDGET: ${{ inputs.operation_key != '' && 'true' || 'false' }}
       TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
       ISSUE_NUMBER: ${{ inputs.issue_number }}
       REQUEST_RUN_ID: ${{ inputs.request_run_id }}
@@ -145,7 +90,11 @@ jobs:
           cache: npm
       - name: Install repository dependencies
         run: npm ci
+      - name: Reuse existing submission work
+        id: route
+        run: node scripts/automation/submission-routing.mjs
       - name: Inspect exact existing owner state
+        if: steps.route.outputs.generate == 'true'
         id: state
         shell: bash
         run: |
@@ -200,6 +149,7 @@ jobs:
             echo "remote_sha=$remote_sha"
           } >> "$GITHUB_OUTPUT"
       - name: Protect marked owner branches
+        if: steps.route.outputs.generate == 'true'
         shell: bash
         env:
           PR_NUMBER: ${{ steps.state.outputs.pr_number }}
@@ -217,6 +167,7 @@ jobs:
             exit 1
           fi
       - name: Generate from latest main and issue state
+        if: steps.route.outputs.generate == 'true'
         shell: bash
         env:
           UTILITY_API_ENDPOINT: ${{ secrets.UTILITY_API_ENDPOINT }}
@@ -265,6 +216,7 @@ jobs:
             --report-path "${RUNNER_TEMP}/project-owner-generation-report.json" \
             --failure-diagnostic-path "${RUNNER_TEMP}/project-owner-generation-failure.json"
       - name: Summarize copy review diagnostics
+        if: steps.route.outputs.generate == 'true'
         shell: bash
         run: |
           node --input-type=module <<'NODE'
@@ -285,6 +237,7 @@ jobs:
           }
           NODE
       - name: Prepare and verify exact operation paths
+        if: steps.route.outputs.generate == 'true'
         id: paths
         shell: bash
         run: |
@@ -346,6 +299,7 @@ jobs:
           }
           NODE
       - name: Validate owner proposal and content build
+        if: steps.route.outputs.generate == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -406,6 +360,7 @@ jobs:
           );
           NODE
       - name: Reject conflicting open owner paths
+        if: steps.route.outputs.generate == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -433,6 +388,7 @@ jobs:
             }
           " "$pulls_path" "${RUNNER_TEMP}/owner-generated-paths.txt"
       - name: Regenerate final owner state before branch mutation
+        if: steps.route.outputs.generate == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -511,6 +467,7 @@ jobs:
           }
           NODE
       - name: Plan safe owner branch update
+        if: steps.route.outputs.generate == 'true'
         id: plan
         shell: bash
         env:
@@ -563,7 +520,7 @@ jobs:
           NODE
       - name: Commit and push exact owner paths
         id: commit
-        if: steps.plan.outputs.action != 'noop'
+        if: steps.route.outputs.generate == 'true' && (steps.plan.outputs.action != 'noop')
         shell: bash
         env:
           BRANCH: ${{ steps.state.outputs.branch }}
@@ -596,7 +553,7 @@ jobs:
           fi
           echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
       - name: Create or update owner review PR
-        if: steps.plan.outputs.action != 'noop'
+        if: steps.route.outputs.generate == 'true' && (steps.plan.outputs.action != 'noop')
         shell: bash
         env:
           BRANCH: ${{ steps.state.outputs.branch }}
@@ -668,7 +625,7 @@ jobs:
               --body-file "${RUNNER_TEMP}/project-owner-pr.md"
           fi
       - name: Synchronize owner issue review state
-        if: steps.plan.outputs.action != 'noop' || steps.plan.outputs.has_pr == 'true'
+        if: steps.route.outputs.generate == 'true' && (steps.plan.outputs.action != 'noop' || steps.plan.outputs.has_pr == 'true')
         shell: bash
         run: |
           set -euo pipefail
@@ -710,6 +667,7 @@ jobs:
             "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/labels" \
             --input "$labels_path"
       - name: Upload sanitized owner generation report
+        if: steps.route.outputs.generate == 'true'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: project-owner-request-${{ inputs.issue_number }}-generation
@@ -717,20 +675,20 @@ jobs:
           if-no-files-found: error
       - name: Create Publisher CI dispatch token
         id: ci-dispatch-token
-        if: steps.plan.outputs.action != 'noop'
+        if: steps.route.outputs.generate == 'true' && (steps.plan.outputs.action != 'noop')
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510
         with:
           client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
           private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
           permission-actions: write
       - name: Dispatch CI for generated owner branch
-        if: steps.plan.outputs.action != 'noop'
+        if: steps.route.outputs.generate == 'true' && (steps.plan.outputs.action != 'noop')
         env:
           GH_TOKEN: ${{ steps.ci-dispatch-token.outputs.token }}
           BRANCH: ${{ steps.state.outputs.branch }}
         run: gh workflow run ci.yml --ref "$BRANCH"
       - name: Reconcile failed generation
-        if: failure() && !cancelled()
+        if: steps.route.outputs.generate == 'true' && (failure() && !cancelled())
         env:
           ISSUE_NUMBER: ${{ inputs.issue_number }}
           GENERATION_PRODUCER: project-owner-request
@@ -741,7 +699,7 @@ jobs:
         run: node scripts/submissions/project-generation-failure.mjs
 
       - name: Retain immutable generation model usage
-        if: always()
+        if: steps.route.outputs.generate == 'true' && (always())
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: automation-generation-${{ inputs.operation_key }}-${{ github.run_id }}
@@ -749,7 +707,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 90
       - name: Retain validated owner metadata checkpoint
-        if: always()
+        if: steps.route.outputs.generate == 'true' && (always())
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: automation-generation-checkpoint-${{ inputs.operation_key }}-${{ github.run_id }}

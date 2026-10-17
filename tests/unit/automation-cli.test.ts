@@ -1,6 +1,19 @@
 import { expect, test } from "vitest";
 import { runReconcileAutomationCli } from "../../scripts/automation/reconcile-cli.mjs";
-import { operationFixture } from "../helpers/automation-fixtures";
+import { operationFixture as baseOperationFixture } from "../helpers/automation-fixtures";
+
+function operationFixture(
+  overrides: Parameters<typeof baseOperationFixture>[0] = {},
+) {
+  return baseOperationFixture({
+    ...overrides,
+    identity: {
+      ...baseOperationFixture().identity,
+      kind: "metadata",
+      ...overrides.identity,
+    },
+  });
+}
 
 test("the authorized CLI forwards inline finalization without another workflow dispatch", async () => {
   const operation = operationFixture({ stage: "deployment-confirmed" });

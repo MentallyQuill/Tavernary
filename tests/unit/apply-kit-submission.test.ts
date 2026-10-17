@@ -2,7 +2,144 @@ import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
+import * as publication from "../../scripts/kits/apply-submission.mjs";
+import { kitInventoryFixture } from "../helpers/automation-fixtures";
+import { discoverKitOperations } from "../../scripts/automation/kit-operations.mjs";
+import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
+
+function directFixture(
+  operation: "create" | "edit" | "withdrawal" = "create",
+  published = false,
+) {
+  const input = kitInventoryFixture({
+    operation,
+    canonicalPublished: published,
+  });
+  if (operation === "edit" && !published)
+    input.kits[0].title = "Previous title";
+  const state = {
+    root: process.cwd(),
+    repository: "MentallyQuill/Tavernary",
+    publisherActorId: input.publisherActorId,
+    nowMs: input.nowMs,
+    operations: discoverKitOperations(input),
+    receipts: [],
+    remote: {
+      issues: input.issues,
+      pulls: [],
+      runs: [],
+      mainHeadSha: "b".repeat(40),
+    },
+    local: {
+      revision: "b".repeat(40),
+      kits: input.kits,
+      projects: input.projects,
+      sources: Object.values(input.sourcesById),
+      snapshots: Object.values(input.snapshotsBySourceId),
+      blockedUsers: input.blockedUsers,
+      trustedEditors: input.trustedEditors,
+      kitSnapshots: [],
+    },
+  } as unknown as AutomationInventoryState;
+  const workflow =
+    operation === "withdrawal"
+      ? "apply-kit-withdrawal"
+      : "apply-kit-submission";
+  return {
+    state,
+    env: {
+      GITHUB_REPOSITORY: state.repository,
+      GITHUB_REF: "refs/heads/main",
+      GITHUB_EVENT_NAME: "workflow_dispatch",
+      GITHUB_ACTOR_ID: String(input.publisherActorId),
+      TAVERNARY_PUBLISHER_BOT_ID: String(input.publisherActorId),
+      GITHUB_WORKFLOW_REF: `${state.repository}/.github/workflows/${workflow}.yml@refs/heads/main`,
+      ISSUE_NUMBER: "42",
+    },
+  };
+}
+
+test.each(["create", "edit", "withdrawal"] as const)(
+  "direct Kit %s validates and commits only its Kit/support/catalog paths",
+  async (operation) => {
+    const f = directFixture(operation);
+    const commit = vi.fn<
+      NonNullable<
+        NonNullable<
+          Parameters<typeof publication.runDirectKitPublication>[0]
+        >["commit"]
+      >
+    >(async () => ({ sha: "c".repeat(40) }));
+    const gh = vi.fn(async (_args: string[]) => "[]");
+    const result = await publication.runDirectKitPublication({
+      ...f,
+      load: async () => f.state,
+      gh,
+      commit,
+      build: async ({ action }) => action.files,
+    });
+    expect(result).toMatchObject({ status: "published", sha: "c".repeat(40) });
+    expect(commit).toHaveBeenCalledOnce();
+    const request = commit.mock.calls[0][0];
+    expect(request.expectedMainSha).toBe("b".repeat(40));
+    expect(request.files.map((file) => file.path)).toContain(
+      "data/registry/kits/example-kit-42.json",
+    );
+    expect(
+      request.files.every((file) =>
+        /^data\/(registry\/kits|snapshots\/github\/kits)\/example-kit-42\.json$/u.test(
+          file.path,
+        ),
+      ),
+    ).toBe(true);
+    expect(
+      gh.mock.calls.every(([args]) => args[1].includes("/reactions?")),
+    ).toBe(true);
+  },
+);
+
+test("an already-published matching Kit reaches completion without a second publication", async () => {
+  const f = directFixture("create", true);
+  const commit = vi.fn(),
+    gh = vi.fn(),
+    build = vi.fn();
+  expect(
+    await publication.runDirectKitPublication({
+      ...f,
+      load: async () => f.state,
+      commit,
+      gh,
+      build,
+    }),
+  ).toMatchObject({ status: "already-published" });
+  expect(commit).not.toHaveBeenCalled();
+  expect(gh).not.toHaveBeenCalled();
+  expect(build).not.toHaveBeenCalled();
+});
+
+test("a concurrent background write makes the Kit reconstruction wait without rebasing or retrying its stale files", async () => {
+  const f = directFixture();
+  const load = vi.fn(async () => structuredClone(f.state));
+  const commit = vi.fn(async () => {
+    throw Object.assign(new Error("Main advanced"), {
+      code: "input-superseded",
+    });
+  });
+  const result = await publication.runDirectKitPublication({
+    ...f,
+    load,
+    commit,
+    gh: async () => "[]",
+    build: async ({ action }) => action.files,
+  });
+  expect(result).toMatchObject({
+    status: "waiting",
+    reason: "input-superseded",
+  });
+  expect(commit).toHaveBeenCalledOnce();
+  expect(load).toHaveBeenCalledTimes(2);
+});
 
 import {
   applyKitSubmission,
