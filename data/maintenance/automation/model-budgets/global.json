@@ -2944,7 +2944,10 @@
       "reservedMicrousd": 0,
       "createdAt": "2026-10-17T03:17:51.403Z",
       "expiresAt": "2026-10-17T04:02:51.403Z",
-      "producer": null,
+      "producer": {
+        "runId": 38998486878,
+        "workflow": ".github/workflows/generate-project-submission.yml"
+      },
       "settled": false,
       "usage": null
     },
@@ -2960,7 +2963,10 @@
       "reservedMicrousd": 0,
       "createdAt": "2026-10-17T03:17:51.403Z",
       "expiresAt": "2026-10-17T04:02:51.403Z",
-      "producer": null,
+      "producer": {
+        "runId": 38998486878,
+        "workflow": ".github/workflows/generate-project-submission.yml"
+      },
       "settled": false,
       "usage": null
     }
