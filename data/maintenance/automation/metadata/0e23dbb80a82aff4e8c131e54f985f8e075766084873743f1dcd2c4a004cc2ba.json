@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "amiantos-writers-guild",
+  "sourceId": "github-1091890012",
+  "sourceIdentity": "github:1091890012",
+  "inputDigest": "cba7ccb2ef71fda69b9e80cbfe40488cc8021ac02bc012fb70f194b6ac6761b2",
+  "fingerprint": "3c8b488f4ada0959087695109ed163a1656b765022ae769a0bdb02f881b5664e",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "8c6d6a619486556ee39b88dc471c3fa1ddfb2b709be9b2658bab52d35ee071f8",
+  "outputDigest": "f27cd538a97551d94c5c67f26c0fb5e4a5facee7bc3ba05b873e0d7010f2a344",
+  "headSha": "a8a27c131e08426222b5e85d1586577e4569aa0c",
+  "observedAt": "2026-10-17T18:05:36.594Z"
+}
