@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "ackness-covel",
+  "name": "covel",
+  "kind": "frontend",
+  "summary": " is an agentic AI RPG framework and playable studio where NPC relationships, quests, inventory, memory, and lore evolve between turns, with mechanics composed as plugins and settings as world packs (README intro).",
+  "metadata_status": "curated",
+  "source_id": "github-1190560481",
+  "frontends": ["covel"],
+  "primary_function": "frontend",
+  "tags": [
+    "add-rpg-gameplay",
+    "agentic-tool-use",
+    "build-worlds-and-lore",
+    "manage-inventory-and-quests",
+    "modular-and-extensible",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-10-17T09:12:38.059Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
