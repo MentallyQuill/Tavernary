@@ -11,6 +11,85 @@ import { confirmationFixture } from "../helpers/confirmation-fixtures";
 import { confirmDeployment } from "../../scripts/automation/confirm-deployment.mjs";
 import { createActiveDeployment } from "../../scripts/automation/deployment-state.mjs";
 import type { AutomationInventoryState } from "../../scripts/automation/inventory.mjs";
+import { readFileSync } from "node:fs";
+import { parse } from "yaml";
+
+test("a successful automated closure followed by a failed receipt write can finish without closing twice", async () => {
+  const f = await finalizationFixture();
+  f.persist.mockRejectedValueOnce(new Error("Receipt parent advanced"));
+  await expect(finalization.finalizeSubmissionTarget(f)).rejects.toThrow(
+    "Receipt parent advanced",
+  );
+  expect(f.issue.state).toBe("closed");
+  expect(await finalization.finalizeSubmissionTarget(f)).toEqual({
+    status: "finalized",
+  });
+  expect(
+    f.gh.mock.calls.filter(
+      ([, body]) => body && JSON.parse(body).state === "closed",
+    ),
+  ).toHaveLength(1);
+});
+
+test.each(["publisher", "owner", "open", "foreign-route"])(
+  "the %s closure event is restricted to the exact published submission",
+  async (variant) => {
+    const f = await finalizationFixture();
+    const env = {
+      GITHUB_REPOSITORY: f.state.repository,
+      GITHUB_REF: "refs/heads/main",
+      GITHUB_EVENT_NAME: "issues",
+      GITHUB_ACTOR_ID: String(f.state.publisherActorId),
+      TAVERNARY_PUBLISHER_BOT_ID: String(f.state.publisherActorId),
+      GITHUB_WORKFLOW_REF: `${f.state.repository}/.github/workflows/reconcile-project-validations.yml@refs/heads/main`,
+    };
+    const issue = { ...f.issue, state: "closed" };
+    if (variant === "owner") env.GITHUB_ACTOR_ID = "2625904";
+    if (variant === "open") issue.state = "open";
+    if (variant === "foreign-route") issue.labels = ["issue-admitted"];
+    const load = vi.fn(async () => ({ ...f.state, operations: [] }));
+    const gh = vi.fn();
+    expect(
+      await finalization.runSubmissionFinalizationCli({
+        env,
+        gh,
+        load,
+        event: { action: "closed", issue },
+        confirmSite: async () => ({ status: "confirmed" }),
+        write: vi.fn(),
+      }),
+    ).toBe(variant === "publisher" ? 0 : 1);
+    expect(gh).not.toHaveBeenCalled();
+    if (variant === "publisher")
+      expect(load).toHaveBeenCalledWith({
+        issueNumber: 42,
+        operationKey: undefined,
+      });
+    else expect(load).not.toHaveBeenCalled();
+  },
+);
+
+test("the existing completion workflow automatically wakes for Publisher-owned issue closure", () => {
+  const workflow = parse(
+    readFileSync(".github/workflows/reconcile-project-validations.yml", "utf8"),
+  );
+  expect(workflow.on.issues).toEqual({ types: ["closed"] });
+  // A later issue closure must not replace another issue's pending receipt retry.
+  expect(workflow.concurrency).toEqual({
+    group:
+      "${{ github.event_name == 'issues' && format('submission-finalization-{0}', github.event.issue.number) || 'submission-reconciliation' }}",
+    "cancel-in-progress": false,
+  });
+  expect(workflow.jobs.reconcile.if).toContain("github.event_name == 'issues'");
+  expect(workflow.jobs.reconcile.if).toContain(
+    "github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID",
+  );
+  const validation = workflow.jobs.reconcile.steps.find(
+    (step: { run?: string }) =>
+      step.run === "node scripts/submissions/reconcile-project-validations.mjs",
+  );
+  expect(validation.if).toBe("github.event_name != 'issues'");
+});
 
 async function finalizationFixture() {
   const site = confirmationFixture();

@@ -58,7 +58,8 @@ test("wakes canonical validation reconciliation from trusted main code", async (
     "pull-requests": "read",
   });
   expect(workflow.concurrency).toEqual({
-    group: "submission-reconciliation",
+    group:
+      "${{ github.event_name == 'issues' && format('submission-finalization-{0}', github.event.issue.number) || 'submission-reconciliation' }}",
     "cancel-in-progress": false,
   });
   expect(reconcile.if).toContain("github.event_name == 'schedule'");

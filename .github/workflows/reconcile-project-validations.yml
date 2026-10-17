@@ -1,6 +1,9 @@
 name: "Submissions: Reconcile project validations"
 
 on:
+  issues:
+    types:
+      - closed
   workflow_run:
     workflows:
       - "Site: Validate changes"
@@ -40,13 +43,19 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: submission-reconciliation
+  group: ${{ github.event_name == 'issues' && format('submission-finalization-{0}', github.event.issue.number) || 'submission-reconciliation' }}
   cancel-in-progress: false
 
 jobs:
   reconcile:
     if: >-
       github.event_name == 'schedule' ||
+      (github.event_name == 'issues' &&
+       github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID &&
+       (contains(github.event.issue.labels.*.name, 'project-submission') ||
+        contains(github.event.issue.labels.*.name, 'project-owner-request') ||
+        contains(github.event.issue.labels.*.name, 'kit-submission') ||
+        contains(github.event.issue.labels.*.name, 'kit-withdrawal'))) ||
       (github.event_name == 'workflow_dispatch' &&
        (github.actor_id == 2625904 ||
         github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID ||
@@ -106,6 +115,7 @@ jobs:
           permission-issues: write
           permission-pull-requests: read
       - name: Recover exact-head project validation and publication
+        if: github.event_name != 'issues'
         run: node scripts/submissions/reconcile-project-validations.mjs
         env:
           GH_TOKEN: ${{ steps.controller-token.outputs.token }}

@@ -20,7 +20,12 @@ export function finalizeSubmissionTarget(
 export function runSubmissionFinalizationCli(input?: {
   env?: Record<string, string | undefined>;
   gh?: GhRunner;
-  event?: { inputs?: Record<string, unknown>; workflow_run?: unknown };
+  event?: {
+    inputs?: Record<string, unknown>;
+    workflow_run?: unknown;
+    action?: unknown;
+    issue?: unknown;
+  };
   load?: (target: SubmissionTarget) => Promise<AutomationInventoryState>;
   write?: (output: string) => void;
   confirmSite?: (input: {

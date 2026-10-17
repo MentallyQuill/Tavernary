@@ -230,6 +230,24 @@ export async function runSubmissionFinalizationCli(options = {}) {
       !/^[1-9]\d*$/u.test(env.TAVERNARY_PUBLISHER_BOT_ID ?? "")
     )
       throw new Error("Submission reconciliation context is invalid.");
+    const closure = env.GITHUB_EVENT_NAME === "issues";
+    if (
+      closure &&
+      (event.action !== "closed" ||
+        event.issue?.state !== "closed" ||
+        event.issue.pull_request ||
+        env.GITHUB_ACTOR_ID !== env.TAVERNARY_PUBLISHER_BOT_ID ||
+        !Array.isArray(event.issue.labels) ||
+        !event.issue.labels.some((label) =>
+          [
+            "project-submission",
+            "project-owner-request",
+            "kit-submission",
+            "kit-withdrawal",
+          ].includes(label.name ?? label),
+        ))
+    )
+      throw new Error("Submission closure context is invalid.");
     const integer = (value) => {
       if (value === undefined || value === "" || value === 0 || value === "0")
         return 0;
@@ -240,8 +258,12 @@ export async function runSubmissionFinalizationCli(options = {}) {
         throw new Error("Submission reconciliation input is invalid.");
       return Number(value);
     };
-    const issueNumber = integer(event.inputs?.submission_issue_number),
+    const issueNumber = integer(
+        closure ? event.issue.number : event.inputs?.submission_issue_number,
+      ),
       runId = integer(event.inputs?.site_run_id);
+    if (closure && !issueNumber)
+      throw new Error("Submission closure identity is invalid.");
     const operationKey = event.inputs?.submission_operation_key || undefined;
     if (operationKey && (!issueNumber || !/^[a-f0-9]{64}$/u.test(operationKey)))
       throw new Error("Submission reconciliation operation is invalid.");
