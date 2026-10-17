@@ -65,7 +65,7 @@ jobs:
           git merge-base --is-ancestor "$SOURCE_SHA" origin/main
           git checkout --detach "$SOURCE_SHA"
       - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version-file: .node-version
           cache: npm
@@ -118,7 +118,7 @@ jobs:
           TAVERNARY_EXPECTED_BUILD_ID: run-${{ github.run_id }}-attempt-${{ github.run_attempt }}
         run: npm run verify:export
       - name: Retain revision integrity metadata
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: site-revision-${{ steps.revision.outputs.source_sha }}
           path: out/revision.json
@@ -132,7 +132,7 @@ jobs:
           set -euo pipefail
           node scripts/automation/site-bundle.mjs create "$RUNNER_TEMP/site-bundle.tsb.gz" "$SOURCE_SHA" "run-${GITHUB_RUN_ID}-attempt-${GITHUB_RUN_ATTEMPT}"
       - name: Retain complete verified restore bundle
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: site-bundle-${{ steps.revision.outputs.source_sha }}
           path: ${{ runner.temp }}/site-bundle.tsb.gz
@@ -167,7 +167,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version-file: .node-version
           cache: npm
@@ -209,7 +209,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version-file: .node-version
           cache: npm
@@ -229,7 +229,7 @@ jobs:
         run: node scripts/automation/confirm-deployment.mjs .tmp/site-revision/revision.json .tmp/confirmation.json
       - name: Retain public verification result
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: site-confirmation-${{ needs.build.outputs.source_sha }}
           path: .tmp/confirmation.json
@@ -268,7 +268,7 @@ jobs:
       - name: Create destination-only TavernKeeper token
         id: tavernkeeper-token
         continue-on-error: true
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           app-id: ${{ secrets.TAVERNKEEPER_WAKE_APP_ID }}
           private-key: ${{ secrets.TAVERNKEEPER_WAKE_APP_PRIVATE_KEY }}
