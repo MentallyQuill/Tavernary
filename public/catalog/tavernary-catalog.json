@@ -6498,7 +6498,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "frontend",
-      "summary": "AI-powered short story writing with Tavern character cards and SillyTavern lorebooks, supporting interactive multi-character adventures and perspective-controlled generation.",
+      "summary": "writers-guild is an AI short story writing app supporting Tavern V2 cards and SillyTavern lorebooks; pick characters as companions, steer generation, or try experimental chats (README Features)",
       "canonicalUrl": "https://github.com/amiantos/writers-guild",
       "catalogedAt": "2026-08-05T05:53:36.356Z",
       "catalogCohort": "standard",
@@ -6511,21 +6511,21 @@
       ],
       "tags": [
         {
-          "id": "create-character-cards",
-          "label": "Create character cards",
-          "description": "Generate or author ready-to-use AI roleplay character cards.",
+          "id": "manage-lorebooks",
+          "label": "Manage lorebooks",
+          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-character-libraries",
+          "label": "Manage character libraries",
+          "description": "Discover, search, browse, categorize, import, or maintain collections of character cards.",
           "facet": "goal"
         },
         {
           "id": "guide-model-responses",
           "label": "Guide model responses",
           "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-          "facet": "goal"
-        },
-        {
-          "id": "manage-lorebooks",
-          "label": "Manage lorebooks",
-          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
           "facet": "goal"
         },
         {
@@ -6699,7 +6699,7 @@
           "https://github.com/amiantos/writers-guild"
         ],
         "summary": [
-          "AI-powered short story writing with Tavern character cards and SillyTavern lorebooks, supporting interactive multi-character adventures and perspective-controlled generation."
+          "writers-guild is an AI short story writing app supporting Tavern V2 cards and SillyTavern lorebooks; pick characters as companions, steer generation, or try experimental chats (README Features)"
         ],
         "kind": [
           "frontend"
@@ -6708,18 +6708,18 @@
           "Frontend"
         ],
         "tags": [
-          "Create character cards",
-          "character card generation",
-          "character creator",
-          "make characters",
-          "Guide model responses",
-          "response steering",
-          "generation control",
-          "instruction control",
           "Manage lorebooks",
           "World Info management",
           "worldbook organization",
           "loredeck management",
+          "Manage character libraries",
+          "character browsing",
+          "card library",
+          "character discovery",
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control",
           "Run group roleplay",
           "multi-character roleplay",
           "group chats",

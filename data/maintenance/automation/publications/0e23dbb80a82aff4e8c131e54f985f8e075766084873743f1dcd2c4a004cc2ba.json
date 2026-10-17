@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0e23dbb80a82aff4e8c131e54f985f8e075766084873743f1dcd2c4a004cc2ba",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1091890012:amiantos-writers-guild",
+      "inputDigest": "cba7ccb2ef71fda69b9e80cbfe40488cc8021ac02bc012fb70f194b6ac6761b2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1091890012",
+    "identity": "github:1091890012"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39056533283,
+    "sourceSha": "ce9d518371f9c1cad5bd305bbcdf33284c345f11"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/amiantos-writers-guild.json",
+      "sha256": "990559712f8fcd221b74eddfef8dcce93760e7f4f29ab89608697df0a5a2f185",
+      "gitBlobSha": "3df3db1be33894b4595bf39b864171cc27d44878"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/0e23dbb80a82aff4e8c131e54f985f8e075766084873743f1dcd2c4a004cc2ba.json",
+      "sha256": "04e719d6587c908c3f471b05189187da26cd2831db19cc4f9e3b74a66109d0cf",
+      "gitBlobSha": "4f3e69707251e943cd430af87c36c113252c801a"
+    }
+  ]
+}
