@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "480fd2216ebd307a1ae51d655bbe648b3a134b270b89e5e5425c3d9b66dba7a5",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1310625840:willasaywhat-sillytavern-voicebox-tts",
+      "inputDigest": "742c15c050d15d5466fc30a79b7a809db354a6de4c07b584cd98fbf682caa2b8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1310625840",
+    "identity": "github:1310625840"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 38992731383,
+    "sourceSha": "dc4fe491a3f284414e8ea1a7bc7c26f9159e4722"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/willasaywhat-sillytavern-voicebox-tts.json",
+      "sha256": "77e84049643f5244ecf191512a8e398cac03a075e53ff622e6df44a603b993e9",
+      "gitBlobSha": "86334bc968bde43ef0a0574055cef5e1595faab5"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/480fd2216ebd307a1ae51d655bbe648b3a134b270b89e5e5425c3d9b66dba7a5.json",
+      "sha256": "b6606e21f0487973c603c9a6a7b322b606d36b35ab9ac060f496884e658bf2f9",
+      "gitBlobSha": "8ad47eae94459e26e48ff3c37e34e783e2cb2942"
+    }
+  ]
+}

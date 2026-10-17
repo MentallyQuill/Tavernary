@@ -125680,7 +125680,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Adds Voicebox as a local Text-to-Speech provider for SillyTavern, loading cloned or preset voice profiles from Voicebox and mapping them to characters for narration.",
+      "summary": "Third-party SillyTavern extension that adds Voicebox as a TTS provider, loading voice profiles from a local Voicebox REST API with no API key or cloud round-trip.",
       "canonicalUrl": "https://github.com/willasaywhat/SillyTavern-Voicebox-TTS",
       "catalogedAt": "2026-08-08T05:58:37.464Z",
       "catalogCohort": "standard",
@@ -125708,12 +125708,6 @@
           "id": "local-first",
           "label": "Local-first",
           "description": "Keeps its primary data and workflow on the user's own device.",
-          "facet": "trait"
-        },
-        {
-          "id": "self-hosted",
-          "label": "Self-hosted",
-          "description": "Runs as infrastructure that users deploy and operate themselves.",
           "facet": "trait"
         }
       ],
@@ -125863,7 +125857,7 @@
           "https://github.com/willasaywhat/SillyTavern-Voicebox-TTS"
         ],
         "summary": [
-          "Adds Voicebox as a local Text-to-Speech provider for SillyTavern, loading cloned or preset voice profiles from Voicebox and mapping them to characters for narration."
+          "Third-party SillyTavern extension that adds Voicebox as a TTS provider, loading voice profiles from a local Voicebox REST API with no API key or cloud round-trip."
         ],
         "kind": [
           "extension"
@@ -125883,11 +125877,7 @@
           "Local-first",
           "stored locally",
           "on-device data",
-          "local data ownership",
-          "Self-hosted",
-          "self-hostable",
-          "run your own server",
-          "local deployment"
+          "local data ownership"
         ],
         "frontends": [
           "SillyTavern"
