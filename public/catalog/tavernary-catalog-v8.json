@@ -102636,7 +102636,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "character-worldbuilding",
-      "summary": "A SillyTavern extension that gives a single Persona multiple avatars, automatically selecting the right one per character, chat, or message with per-message attribution and context-aware priority (README: Features).",
+      "summary": "SillyTavern extension (README) that gives one Persona multiple avatars, auto-picked per character, per chat, or per message, with export/import and multi-device library merging.",
       "canonicalUrl": "https://github.com/Shin-F/Persona-Multi-Avatars",
       "catalogedAt": "2026-09-02T22:25:43.158Z",
       "catalogCohort": "standard",
@@ -102648,12 +102648,6 @@
         }
       ],
       "tags": [
-        {
-          "id": "add-visual-immersion",
-          "label": "Add visual immersion",
-          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
-          "facet": "goal"
-        },
         {
           "id": "manage-characters-and-personas",
           "label": "Manage characters and personas",
@@ -102667,10 +102661,10 @@
           "facet": "goal"
         },
         {
-          "id": "persistent-state",
-          "label": "Persistent state",
-          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
-          "facet": "trait"
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
         }
       ],
       "tavernKeeper": {
@@ -102795,7 +102789,7 @@
           "https://github.com/Shin-F/Persona-Multi-Avatars"
         ],
         "summary": [
-          "A SillyTavern extension that gives a single Persona multiple avatars, automatically selecting the right one per character, chat, or message with per-message attribution and context-aware priority (README: Features)."
+          "SillyTavern extension (README) that gives one Persona multiple avatars, auto-picked per character, per chat, or per message, with export/import and multi-device library merging."
         ],
         "kind": [
           "extension"
@@ -102804,10 +102798,6 @@
           "Character and worldbuilding"
         ],
         "tags": [
-          "Add visual immersion",
-          "roleplay visuals",
-          "visual novel presentation",
-          "scene visuals",
           "Manage characters and personas",
           "persona management",
           "character management",
@@ -102816,10 +102806,10 @@
           "data portability",
           "backup and restore",
           "import and export",
-          "Persistent state",
-          "durable state",
-          "state persistence",
-          "cross-session state"
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals"
         ],
         "frontends": [
           "SillyTavern"

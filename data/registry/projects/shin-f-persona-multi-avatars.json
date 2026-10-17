@@ -3,16 +3,15 @@
   "id": "shin-f-persona-multi-avatars",
   "name": "Persona-Multi-Avatars",
   "kind": "extension",
-  "summary": "A SillyTavern extension that gives a single Persona multiple avatars, automatically selecting the right one per character, chat, or message with per-message attribution and context-aware priority (README: Features).",
+  "summary": "SillyTavern extension (README) that gives one Persona multiple avatars, auto-picked per character, per chat, or per message, with export/import and multi-device library merging.",
   "metadata_status": "curated",
   "source_id": "github-1354125356",
   "frontends": ["sillytavern"],
   "primary_function": "character-worldbuilding",
   "tags": [
-    "add-visual-immersion",
     "manage-characters-and-personas",
     "move-and-back-up-data",
-    "persistent-state"
+    "add-visual-immersion"
   ],
   "cataloged_at": "2026-09-02T22:25:43.158Z",
   "catalog_cohort": "standard",

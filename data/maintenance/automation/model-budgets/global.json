@@ -3686,8 +3686,11 @@
         "runId": 39067019498,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 46102
+      }
     },
     {
       "id": "598b8b8009a47ef6e85b6e32b640f59893f807ebd278c98989d11ab93bcfa1e7",
@@ -3705,8 +3708,11 @@
         "runId": 39067019498,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "266d75abe8f595b377453ffc159fb874dd75e66118f5fb155f7b17ef85fb7ff5",

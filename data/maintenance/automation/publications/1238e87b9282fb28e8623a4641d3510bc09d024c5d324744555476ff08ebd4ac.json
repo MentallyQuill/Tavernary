@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1238e87b9282fb28e8623a4641d3510bc09d024c5d324744555476ff08ebd4ac",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1354125356:shin-f-persona-multi-avatars",
+      "inputDigest": "1e25fc3e560aeeca691e8be19d89fec16a9de1b4771718f86d11b302e1fef9f5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1354125356",
+    "identity": "github:1354125356"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39067019498,
+    "sourceSha": "87d6554d9abf4b4b54bc1a8fd17a4fd81615fd85"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/shin-f-persona-multi-avatars.json",
+      "sha256": "6e55ab91fc54034fad05adc1ad4fac98c9d0dabd4a0d2f16f16d7d0e30324385",
+      "gitBlobSha": "d24ab03068ccc10a0db5abe85bfb6bde2f1f6055"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/1238e87b9282fb28e8623a4641d3510bc09d024c5d324744555476ff08ebd4ac.json",
+      "sha256": "0e5bd727362fd7e162e1cf458c46842c938f816d86bc0f9fad68765550f754d9",
+      "gitBlobSha": "58d8466f9f3b6801778320df396b7dddef28956d"
+    }
+  ]
+}
