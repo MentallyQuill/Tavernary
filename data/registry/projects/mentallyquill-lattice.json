@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "mentallyquill-lattice",
+  "name": "Lattice",
+  "kind": "extension",
+  "summary": "Lattice is a visual story workshop for SillyTavern where you connect small tools to prepare scenes, track story facts, and route jobs to other models, reviewing changes before accepting (README: visual story workshop).",
+  "metadata_status": "curated",
+  "source_id": "github-1409624682",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [
+    "inspect-prompts-and-generations",
+    "plan-stories-and-scenes",
+    "route-tasks-across-models",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-10-17T03:22:38.450Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

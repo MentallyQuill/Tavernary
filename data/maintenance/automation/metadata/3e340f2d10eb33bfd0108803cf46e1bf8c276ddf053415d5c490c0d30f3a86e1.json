@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "lodactio-extension-summaryception",
+  "sourceId": "github-1204673207",
+  "sourceIdentity": "github:1204673207",
+  "inputDigest": "bd7bf3505f73d82df514b3bb183a3bf480a30de880d01c2f0f6e4de31edd5468",
+  "fingerprint": "a120d920973a2648896b2d1f2ac4cdfbe3f90838cd099cd4017110cf58d86309",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "3c470fedcd0ecedbfbb56f446dff8b5ec2d7b8b4f1982e7aabdb1d948fe5400b",
+  "outputDigest": "2e13aeb155f40e350a30c40d5ac6e3e9db64b93307b02e412a4e5544ac25246d",
+  "headSha": "6a0afdc84fbd8f410db53738fa0f91d6a009eeb6",
+  "observedAt": "2026-10-16T20:45:35.163Z"
+}

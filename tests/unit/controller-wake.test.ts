@@ -1,5 +1,38 @@
 import { expect, test } from "vitest";
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
+import { parse } from "yaml";
 import * as controller from "../../scripts/automation/controller-wake.mjs";
+
+test.each(["frontend", "fork"])(
+  "push-triggered %s retries use the trusted coalescing controller",
+  async (kind) => {
+    const workflow = parse(
+      await readFile(
+        resolve(`.github/workflows/retry-${kind}-dependencies.yml`),
+        "utf8",
+      ),
+    );
+    const steps = workflow.jobs.retry.steps;
+    const checkout = steps.find((step: { uses?: string }) =>
+      step.uses?.startsWith("actions/checkout@"),
+    );
+    const wake = steps.find((step: { run?: string }) =>
+      step.run?.includes("node scripts/automation/controller-wake.mjs"),
+    );
+    expect(wake).toBeDefined();
+    expect(checkout?.with).toMatchObject({
+      ref: "main",
+      "persist-credentials": false,
+    });
+    expect(workflow.jobs.retry.environment).toBe("publisher");
+    expect(
+      steps.some((step: { run?: string }) =>
+        step.run?.includes("gh workflow run automation-writer.yml"),
+      ),
+    ).toBe(false);
+  },
+);
 
 test("pending reconciliation coalesces worker wakes while preserving distinct canonical writes", async () => {
   const calls: string[][] = [];

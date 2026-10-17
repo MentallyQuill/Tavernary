@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1409624682",
+  "head_sha": "c0a994ba2b250d24ca8c7114a4e77865e03ab855",
+  "observed_at": "2026-10-17T03:24:24.035Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Lattice",
+  "manifest": {
+    "display_name": "Lattice",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

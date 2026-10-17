@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0b20d2275646bcf3f5494ecc684ce6197ba5dcb8581f035dd732bd086f34bde2",
+    "identity": {
+      "kind": "report-import",
+      "subject": "report:72947abfc9b963bddc66915b38115687b3738ccba1172bceaa986a10a042d218",
+      "inputDigest": "88c20a64265597d0f921bb13aa3bbd647418d31e0646074deac5bcc4054bc186",
+      "policyVersion": "5.5"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T20:36:43.540Z",
+    "nextEligibleAt": null,
+    "expectedSha": "cf84ad17ed0f9c9a57d0be5f219cba163706c876",
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "superseded",
+        "reasonCode": "input-superseded"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-17T03:52:22.891Z",
+  "completedAt": null
+}

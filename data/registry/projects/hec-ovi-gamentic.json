@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "hec-ovi-gamentic",
+  "name": "gamentic",
+  "kind": "frontend",
+  "summary": "Self-hosted, browser-based AI dungeon RPG, fully local on an AMD Strix Halo APU: narrator + per-character agents on one local LLM (Gemma 4 26B MoE via llama.cpp/Vulkan), local images (FLUX.2 klein/ComfyUI), expressive",
+  "metadata_status": "provisional",
+  "source_id": "github-1264165303",
+  "frontends": ["gamentic"],
+  "primary_function": "frontend",
+  "tags": [],
+  "cataloged_at": "2026-10-17T02:20:16.370Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

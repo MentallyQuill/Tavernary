@@ -1368,9 +1368,7 @@ test("retries frontend dependencies from read-only catalog changes", async () =>
     group: "retry-frontend-dependencies",
     "cancel-in-progress": false,
   });
-  expect(source).toContain(
-    'gh workflow run automation-writer.yml --repo "$GITHUB_REPOSITORY" --ref main -f mode=reconcile',
-  );
+  expect(source).toContain("node scripts/automation/controller-wake.mjs");
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
 
@@ -1400,18 +1398,12 @@ test("retries fork dependencies after registry or upstream review changes", asyn
     group: "retry-fork-dependencies",
     "cancel-in-progress": false,
   });
-  expect(source).toContain(
-    'gh workflow run automation-writer.yml --repo "$GITHUB_REPOSITORY" --ref main -f mode=reconcile',
-  );
+  expect(source).toContain("node scripts/automation/controller-wake.mjs");
   expect(retry.jobs.retry.environment).toBe("publisher");
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
 
-test.each([
-  "retry-frontend-dependencies",
-  "retry-fork-dependencies",
-  "retry-project-submission-enrichment",
-])(
+test.each(["retry-project-submission-enrichment"])(
   "%s dispatches to the current repository without a checkout",
   async (name) => {
     const retry = await workflow(name);

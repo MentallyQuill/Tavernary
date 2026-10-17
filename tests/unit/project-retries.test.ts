@@ -63,10 +63,18 @@ test.each([
         (step: { id?: string }) => step.id === "dispatch-token",
       ).with["permission-actions"],
     ).toBe("write");
-    expect(workflow.jobs.retry.steps.at(-1).run).toContain(
-      "automation-writer.yml",
-    );
-    expect(workflow.jobs.retry.steps.at(-1).run).toContain("-f mode=reconcile");
+    if (name === "retry-project-submission-enrichment") {
+      expect(workflow.jobs.retry.steps.at(-1).run).toContain(
+        "automation-writer.yml",
+      );
+      expect(workflow.jobs.retry.steps.at(-1).run).toContain(
+        "-f mode=reconcile",
+      );
+    } else {
+      expect(workflow.jobs.retry.steps.at(-1).run).toBe(
+        "node scripts/automation/controller-wake.mjs",
+      );
+    }
     expect(JSON.stringify(workflow.jobs.retry)).not.toContain(
       "scripts/submissions/retry-",
     );
