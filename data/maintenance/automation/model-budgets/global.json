@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updatedAt": "2026-10-17T20:41:06.590Z",
+  "updatedAt": "2026-10-17T20:48:00.415Z",
   "days": [
     {
       "day": "2026-10-10",
@@ -34,15 +34,15 @@
     },
     {
       "day": "2026-10-17",
-      "requests": 144,
-      "tokens": 7020000
+      "requests": 148,
+      "tokens": 7215000
     }
   ],
   "months": [
     {
       "month": "2026-10",
       "reservedMicrousd": 0,
-      "unpricedTokens": 18720000
+      "unpricedTokens": 18915000
     }
   ],
   "tickets": [
@@ -3781,6 +3781,38 @@
         "runId": 39068047401,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
+      "settled": false,
+      "usage": null
+    },
+    {
+      "id": "798b341ebea40c0aafecced1a84a6cf2f78220a11fecf8b718e546fd8b123aa0",
+      "operationKey": "13eab6bf129833c4cc28127d9cbd066d38da744f9ddd8e8e423bf22ef2dd9e42",
+      "requestId": "writer-39061251486:0",
+      "day": "2026-10-17",
+      "model": "z-ai/glm-5.3-flash",
+      "requestCount": 3,
+      "requestedTokens": 180000,
+      "price": null,
+      "reservedMicrousd": 0,
+      "createdAt": "2026-10-17T20:48:00.415Z",
+      "expiresAt": "2026-10-17T21:33:00.415Z",
+      "producer": null,
+      "settled": false,
+      "usage": null
+    },
+    {
+      "id": "1ffd9298a586c61c5771f96078027b91200b92d6576ec7344140baf7cea9cbf6",
+      "operationKey": "13eab6bf129833c4cc28127d9cbd066d38da744f9ddd8e8e423bf22ef2dd9e42",
+      "requestId": "writer-39061251486:1",
+      "day": "2026-10-17",
+      "model": "gpt-5.6-luna",
+      "requestCount": 1,
+      "requestedTokens": 15000,
+      "price": null,
+      "reservedMicrousd": 0,
+      "createdAt": "2026-10-17T20:48:00.415Z",
+      "expiresAt": "2026-10-17T21:33:00.415Z",
+      "producer": null,
       "settled": false,
       "usage": null
     }
