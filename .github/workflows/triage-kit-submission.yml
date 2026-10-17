@@ -26,7 +26,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version-file: .node-version
       - name: Validate and label Kit submission
@@ -38,7 +38,7 @@ jobs:
       - name: Create Tavernary Publisher dispatch token
         id: publisher-dispatch-token
         if: steps.triage.outputs.publish == 'true'
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           client-id: ${{ vars.TAVERNARY_PUBLISHER_CLIENT_ID }}
           private-key: ${{ secrets.TAVERNARY_PUBLISHER_APP_PRIVATE_KEY }}
