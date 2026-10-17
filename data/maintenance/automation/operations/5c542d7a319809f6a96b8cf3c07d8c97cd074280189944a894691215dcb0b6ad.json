@@ -10,11 +10,18 @@
     },
     "stage": "admitted",
     "createdAt": "1970-01-01T00:00:00.000Z",
-    "nextEligibleAt": "2026-10-15T01:53:09.083Z",
+    "nextEligibleAt": "2026-10-17T00:38:42.293Z",
     "expectedSha": null,
     "workerRunId": null,
-    "retry": null
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "workflow-result-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
   },
-  "updatedAt": "2026-10-15T01:38:09.083Z",
+  "updatedAt": "2026-10-17T00:23:42.293Z",
   "completedAt": null
 }
