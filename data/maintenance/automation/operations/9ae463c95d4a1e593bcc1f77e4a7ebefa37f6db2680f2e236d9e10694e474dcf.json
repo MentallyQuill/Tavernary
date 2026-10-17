@@ -10,18 +10,18 @@
     },
     "stage": "validated",
     "createdAt": "2026-10-13T11:32:33.000Z",
-    "nextEligibleAt": "2026-10-17T06:13:17.449Z",
+    "nextEligibleAt": "2026-10-17T07:47:14.467Z",
     "expectedSha": "0de76458b934c8d4986340f8d918264d51685753",
     "workerRunId": null,
     "retry": {
       "failure": {
-        "kind": "configuration",
-        "reasonCode": "budget-exhausted"
+        "kind": "transient",
+        "reasonCode": "github-inventory-unavailable"
       },
-      "transientAttempts": 0,
+      "transientAttempts": 1,
       "immediateAttempts": 0
     }
   },
-  "updatedAt": "2026-10-17T05:58:17.449Z",
+  "updatedAt": "2026-10-17T07:32:14.467Z",
   "completedAt": null
 }
