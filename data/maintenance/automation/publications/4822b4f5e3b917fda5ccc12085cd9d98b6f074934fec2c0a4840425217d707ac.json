@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4822b4f5e3b917fda5ccc12085cd9d98b6f074934fec2c0a4840425217d707ac",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1104616181:sammcheese-sillytavern-discordia",
+      "inputDigest": "c3c8f49140e99768764ea250e309971860cb67bb21480cf0fd7bd34504f9af0b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1104616181",
+    "identity": "github:1104616181"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 38993626599,
+    "sourceSha": "3d2dcaf1211cfbf779b8a16e2bc20f5d96952a5f"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/sammcheese-sillytavern-discordia.json",
+      "sha256": "74380018cee363467743b1a47d248badc583b3ae7403af9780b2fdecd40ad4f8",
+      "gitBlobSha": "befb74393ddeae64e48c6ffcf95ddfdf8cbbf2e8"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/4822b4f5e3b917fda5ccc12085cd9d98b6f074934fec2c0a4840425217d707ac.json",
+      "sha256": "cb4ef677a6ccad1c3358f292a5ed4c82e7c7ab007ecf4a618f601c60b7e938dc",
+      "gitBlobSha": "ee59d9e88cec3e2e543d6927f3f11841cadc675a"
+    }
+  ]
+}

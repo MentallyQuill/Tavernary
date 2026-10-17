@@ -98965,7 +98965,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "SillyTavern Discordia is a work-in-progress Discord-inspired theme for the SillyTavern frontend. It redesigns the interface to mimic Discord's visual style for chat roleplay sessions.",
+      "summary": "SillyTavern Discordia is a work-in-progress Discord theme that restyles the SillyTavern interface; the README warns it is very early in development, may have bugs, and advises backing up your data.",
       "canonicalUrl": "https://github.com/SammCheese/SillyTavern-Discordia",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -99134,7 +99134,7 @@
           "https://github.com/SammCheese/SillyTavern-Discordia"
         ],
         "summary": [
-          "SillyTavern Discordia is a work-in-progress Discord-inspired theme for the SillyTavern frontend. It redesigns the interface to mimic Discord's visual style for chat roleplay sessions."
+          "SillyTavern Discordia is a work-in-progress Discord theme that restyles the SillyTavern interface; the README warns it is very early in development, may have bugs, and advises backing up your data."
         ],
         "kind": [
           "extension"
