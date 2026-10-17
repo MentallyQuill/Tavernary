@@ -969,6 +969,79 @@ test.each(AUTOMATION_KINDS)(
   },
 );
 
+test("reserved incident updates complete before an interrupted generic controller", async () => {
+  const fixture = writerAdmissionFixture();
+  useWriterOperations(fixture, [operationFixture()]);
+  fixture.state.local.runtimePolicy = {};
+  vi.spyOn(restoreDrill, "loadRestoreDrillHealth").mockResolvedValue({
+    status: "active",
+  });
+  const events: string[] = [];
+  const health = vi
+    .spyOn(incidents, "reconcileIncidentUpdates")
+    .mockImplementation(async () => {
+      events.push("health");
+      return { status: "updated", number: 935 };
+    });
+  fixture.cli.mockImplementation(async () => {
+    events.push("controller");
+    throw new Error("simulated controller interruption");
+  });
+  try {
+    await expect(
+      runAutomationWriterReconciliation(fixture.options),
+    ).rejects.toThrow("simulated controller interruption");
+    expect(health).toHaveBeenCalledOnce();
+    expect(health.mock.calls[0][0].availableSlots).toBe(1);
+    expect(events).toEqual(["health", "controller"]);
+    expect(fixture.cli.mock.calls[0][0]?.args).toEqual([
+      "--apply",
+      "--limit",
+      "18",
+    ]);
+  } finally {
+    fixture.restore();
+  }
+});
+
+test("an unavailable reserved incident update does not block generic dispatch", async () => {
+  const fixture = writerAdmissionFixture();
+  useWriterOperations(fixture, [operationFixture()]);
+  fixture.state.local.runtimePolicy = {};
+  vi.spyOn(restoreDrill, "loadRestoreDrillHealth").mockResolvedValue({
+    status: "active",
+  });
+  const events: string[] = [];
+  vi.spyOn(incidents, "reconcileIncidentUpdates").mockImplementation(
+    async () => {
+      events.push("health");
+      throw new Error("incident API unavailable");
+    },
+  );
+  fixture.dispatch.mockImplementation(async () => {
+    events.push("dispatch");
+    return { workerRunId: 900 };
+  });
+  try {
+    const result = (await runAutomationWriterReconciliation(
+      fixture.options,
+    )) as {
+      health: { status: string };
+      controller: { dispatched: number };
+    };
+    expect(result.health.status).toBe("unavailable");
+    expect(result.controller.dispatched).toBe(1);
+    expect(events).toEqual(["health", "dispatch"]);
+    expect(fixture.cli.mock.calls[0][0]?.args).toEqual([
+      "--apply",
+      "--limit",
+      "18",
+    ]);
+  } finally {
+    fixture.restore();
+  }
+});
+
 test("all late services defer while six protected holds occupy the final seats", async () => {
   const fixture = writerAdmissionFixture();
   fixture.state.local.runtimePolicy = {};
