@@ -36,6 +36,36 @@ const generationWakeEnv = {
     "MentallyQuill/Tavernary/.github/workflows/automation-prepared.yml@refs/heads/main",
   TAVERNARY_PUBLISHER_BOT_ID: "900",
 };
+test("a generation result coalesces its accounting wake without losing a future pass", async () => {
+  const run = generationWakeFixture(false);
+  const gh = vi.fn(async (args: string[]) =>
+    args[0] !== "api"
+      ? ""
+      : JSON.stringify(
+          args[1].endsWith(`/runs/${run.id}`)
+            ? run
+            : {
+                total_count: 1,
+                workflow_runs: [{ display_title: "Automation reconcile" }],
+              },
+        ),
+  );
+  const write = vi.fn();
+  expect(
+    await runPreparedWakeCli({
+      env: generationWakeEnv,
+      runId: run.id,
+      gh,
+      write,
+    }),
+  ).toBe(0);
+  expect(gh.mock.calls.some(([args]) => args[0] === "workflow")).toBe(false);
+  expect(JSON.parse(write.mock.calls[0][0])).toMatchObject({
+    status: "coalesced",
+    mode: "reconcile",
+    runId: run.id,
+  });
+});
 test.each([true, false])(
   "a completed explicit generation request survives a lost direct handoff (project=%s)",
   async (project) => {
@@ -65,8 +95,14 @@ test.each(["success", "failure", "cancelled"])(
   "a %s generation completion reconciles accounting without publishing an artifact",
   async (conclusion) => {
     const run = { ...generationWakeFixture(false), conclusion };
-    const gh = vi.fn<(args: string[]) => Promise<string>>(async () =>
-      JSON.stringify(run),
+    const gh = vi.fn(async (args: string[]) =>
+      args[0] !== "api"
+        ? ""
+        : JSON.stringify(
+            args[1].endsWith(`/runs/${run.id}`)
+              ? run
+              : { total_count: 0, workflow_runs: [] },
+          ),
     );
     expect(
       await runPreparedWakeCli({
@@ -76,8 +112,11 @@ test.each(["success", "failure", "cancelled"])(
         write: () => {},
       }),
     ).toBe(0);
-    expect(gh.mock.calls[1][0]).toContain("mode=reconcile");
-    expect(gh.mock.calls[1][0]).not.toContain("mode=publish");
+    expect(gh.mock.calls.at(-1)?.[0]).toContain("mode=reconcile");
+    expect(gh.mock.calls.at(-1)?.[0]).not.toContain("mode=publish");
+    expect(
+      gh.mock.calls.filter(([args]) => args[0] === "workflow"),
+    ).toHaveLength(1);
     expect(
       planPreparedWake({
         run,
@@ -471,7 +510,13 @@ test("a trusted failed completion wakes reconciliation for diagnostics without d
   const input = fixture();
   input.run.conclusion = "failure";
   const gh = vi.fn(async (args: string[]) =>
-    args[0] === "api" ? JSON.stringify(input.run) : "",
+    args[0] !== "api"
+      ? ""
+      : JSON.stringify(
+          args[1].endsWith(`/runs/${input.run.id}`)
+            ? input.run
+            : { total_count: 0, workflow_runs: [] },
+        ),
   );
   const env = {
     GITHUB_REPOSITORY: input.repository,
@@ -482,6 +527,79 @@ test("a trusted failed completion wakes reconciliation for diagnostics without d
   expect(
     await runPreparedWakeCli({ env, runId: input.run.id, gh, write: () => {} }),
   ).toBe(0);
-  expect(gh.mock.calls[1][0]).toContain("mode=reconcile");
-  expect(gh.mock.calls[1][0]).not.toContain("mode=publish");
+  expect(gh.mock.calls.at(-1)?.[0]).toContain("mode=reconcile");
+  expect(gh.mock.calls.at(-1)?.[0]).not.toContain("mode=publish");
+  expect(gh.mock.calls.filter(([args]) => args[0] === "workflow")).toHaveLength(
+    1,
+  );
 });
+
+test("a failed preparation preserves an existing future reconciliation without another dispatch", async () => {
+  const input = fixture();
+  input.run.conclusion = "failure";
+  const gh = vi.fn(async (args: string[]) =>
+    args[0] !== "api"
+      ? ""
+      : JSON.stringify(
+          args[1].endsWith(`/runs/${input.run.id}`)
+            ? input.run
+            : {
+                total_count: 1,
+                workflow_runs: [{ display_title: "Automation reconcile" }],
+              },
+        ),
+  );
+  const write = vi.fn();
+  expect(
+    await runPreparedWakeCli({
+      env: {
+        ...generationWakeEnv,
+        GITHUB_REPOSITORY: input.repository,
+        TAVERNARY_PUBLISHER_BOT_ID: String(input.publisherActorId),
+      },
+      runId: input.run.id,
+      gh,
+      write,
+    }),
+  ).toBe(0);
+  expect(gh.mock.calls.some(([args]) => args[0] === "workflow")).toBe(false);
+  expect(JSON.parse(write.mock.calls[0][0])).toMatchObject({
+    status: "coalesced",
+  });
+});
+
+test.each(["generation", "diagnostic"])(
+  "an incomplete future-wake inventory refuses a %s completion dispatch",
+  async (kind) => {
+    const input = fixture();
+    input.run.conclusion = "failure";
+    const run =
+      kind === "generation" ? generationWakeFixture(false) : input.run;
+    const gh = vi.fn(async (args: string[]) =>
+      args[0] !== "api"
+        ? ""
+        : JSON.stringify(
+            args[1].endsWith(`/runs/${run.id}`)
+              ? run
+              : { total_count: 101, workflow_runs: [] },
+          ),
+    );
+    const write = vi.fn();
+    expect(
+      await runPreparedWakeCli({
+        env: {
+          ...generationWakeEnv,
+          TAVERNARY_PUBLISHER_BOT_ID:
+            kind === "generation" ? "900" : String(input.publisherActorId),
+        },
+        runId: run.id,
+        gh,
+        write,
+      }),
+    ).toBe(1);
+    expect(gh.mock.calls.some(([args]) => args[0] === "workflow")).toBe(false);
+    expect(JSON.parse(write.mock.calls[0][0])).toEqual({
+      status: "unavailable",
+    });
+  },
+);

@@ -9,6 +9,7 @@ import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
 import { trustedRestoreRun } from "./restore-source.mjs";
 import { parseEnrichmentOwnerRequest } from "./enrichment-owner-request.mjs";
 import { parseGenerationOwnerRequest } from "./preparation-request.mjs";
+import { wakeAutomationWriter } from "./controller-wake.mjs";
 
 const kinds = {
   "refresh-catalog": "refresh",
@@ -227,8 +228,13 @@ export async function runPreparedWakeCli(options = {}) {
         repository,
         Number(env.TAVERNARY_PUBLISHER_BOT_ID),
       );
-      if (request || generation) {
-        const mode = request ? "prepare" : "reconcile";
+      if (generation) {
+        const outcome = await wakeAutomationWriter({ repository, gh });
+        write(JSON.stringify({ ...outcome, mode: "reconcile", runId }));
+        return 0;
+      }
+      if (request) {
+        const mode = "prepare";
         await gh([
           "workflow",
           "run",
@@ -239,7 +245,8 @@ export async function runPreparedWakeCli(options = {}) {
           "main",
           "-f",
           `mode=${mode}`,
-          ...(request ? ["-f", `result_run_id=${runId}`] : []),
+          "-f",
+          `result_run_id=${runId}`,
         ]);
         write(JSON.stringify({ status: "dispatched", mode, runId }));
         return 0;
@@ -335,6 +342,11 @@ export async function runPreparedWakeCli(options = {}) {
       write(JSON.stringify({ status: "ignored" }));
       return 0;
     }
+    if (wake.diagnostic) {
+      const outcome = await wakeAutomationWriter({ repository, gh });
+      write(JSON.stringify({ ...wake, ...outcome }));
+      return 0;
+    }
     await gh([
       "workflow",
       "run",
@@ -344,7 +356,7 @@ export async function runPreparedWakeCli(options = {}) {
       "--ref",
       "main",
       "-f",
-      wake.diagnostic ? "mode=reconcile" : "mode=publish",
+      "mode=publish",
       "-f",
       `operation_key=${wake.operationKey}`,
       "-f",
