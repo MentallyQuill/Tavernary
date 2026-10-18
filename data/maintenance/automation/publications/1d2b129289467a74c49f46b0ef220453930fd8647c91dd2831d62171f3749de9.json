@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1d2b129289467a74c49f46b0ef220453930fd8647c91dd2831d62171f3749de9",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1140216653:landozo-extension-slidermacros",
+      "inputDigest": "ffc83906c41e2188133941b7307b51a2ad4fb01e28a7a8376f6f5f0ccb86cbcf",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1140216653",
+    "identity": "github:1140216653"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39111316297,
+    "sourceSha": "eab4e370bec0bf20cb954a0515dddd84bddebd0d"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/landozo-extension-slidermacros.json",
+      "sha256": "4a5382a0f8277679ccf6b0252c1cf0fad53aa4a4f8c27e0d5f3ff800981c882e",
+      "gitBlobSha": "3949641e6ce766f06cd5fd8dd872c59f09c739da"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/1d2b129289467a74c49f46b0ef220453930fd8647c91dd2831d62171f3749de9.json",
+      "sha256": "ca6780999948b789e2103a403b2189c9b489000d2a4beb0137263115d82421c5",
+      "gitBlobSha": "362296c52592e04e79d525ce215f4b1b3548fb3c"
+    }
+  ]
+}

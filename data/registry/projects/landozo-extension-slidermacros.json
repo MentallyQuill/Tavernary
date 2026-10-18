@@ -3,14 +3,18 @@
   "id": "landozo-extension-slidermacros",
   "name": "Extension-SliderMacros",
   "kind": "extension",
-  "summary": "A SillyTavern extension providing custom slider controls for macros and variables. Forked from Custom Sliders, it adapts the slider interface to let users adjust macro values directly in their chat setup.",
+  "summary": "Extension-SliderMacros by Landozo adds customizable sliders, checkboxes, hue pickers, and dropdowns in SillyTavern's Chat Completion panel that output real-time values to user-set macros, per the README Features list.",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
   "source_id": "github-1140216653",
-  "tags": ["customize-the-interface"],
+  "tags": [
+    "customize-the-interface",
+    "guide-model-responses",
+    "move-and-back-up-data"
+  ],
   "listing_status": "active",
   "listing_status_reason": null,
   "metadata_policy": {

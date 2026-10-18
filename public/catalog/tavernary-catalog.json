@@ -57171,7 +57171,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "A SillyTavern extension providing custom slider controls for macros and variables. Forked from Custom Sliders, it adapts the slider interface to let users adjust macro values directly in their chat setup.",
+      "summary": "Extension-SliderMacros by Landozo adds customizable sliders, checkboxes, hue pickers, and dropdowns in SillyTavern's Chat Completion panel that output real-time values to user-set macros, per the README Features list.",
       "canonicalUrl": "https://github.com/Landozo/Extension-SliderMacros",
       "catalogedAt": "2026-07-26T00:00:00Z",
       "catalogCohort": "standard",
@@ -57187,6 +57187,18 @@
           "id": "customize-the-interface",
           "label": "Customize the interface",
           "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
+          "facet": "goal"
+        },
+        {
+          "id": "move-and-back-up-data",
+          "label": "Move and back up data",
+          "description": "Import, export, synchronize, migrate, restore, or back up roleplay data.",
           "facet": "goal"
         }
       ],
@@ -57437,7 +57449,7 @@
           "https://github.com/Landozo/Extension-SliderMacros"
         ],
         "summary": [
-          "A SillyTavern extension providing custom slider controls for macros and variables. Forked from Custom Sliders, it adapts the slider interface to let users adjust macro values directly in their chat setup."
+          "Extension-SliderMacros by Landozo adds customizable sliders, checkboxes, hue pickers, and dropdowns in SillyTavern's Chat Completion panel that output real-time values to user-set macros, per the README Features list."
         ],
         "kind": [
           "extension"
@@ -57449,7 +57461,15 @@
           "Customize the interface",
           "interface theming",
           "layout customization",
-          "UI personalization"
+          "UI personalization",
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control",
+          "Move and back up data",
+          "data portability",
+          "backup and restore",
+          "import and export"
         ],
         "frontends": [
           "SillyTavern"
