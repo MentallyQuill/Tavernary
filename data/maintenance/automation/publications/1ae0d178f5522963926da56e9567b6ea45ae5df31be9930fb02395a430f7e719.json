@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1ae0d178f5522963926da56e9567b6ea45ae5df31be9930fb02395a430f7e719",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1327103953:0cyris-sillytavern-imagegen",
+      "inputDigest": "ae534767015c9bfffa1eedeea9081933c7cf3089e0bb7106d2bfe5e4d8459dbe",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1327103953",
+    "identity": "github:1327103953"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39106518886,
+    "sourceSha": "e71a2f0b49c1804e78e7b62746ff44843359cb58"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/0cyris-sillytavern-imagegen.json",
+      "sha256": "9c1017c4e0ce385be7381373859f6a59dae5573a905be1fe24e5efe6dc5e50bc",
+      "gitBlobSha": "88e60152d93dc7508ccde4ef2d93565b4d36a932"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/1ae0d178f5522963926da56e9567b6ea45ae5df31be9930fb02395a430f7e719.json",
+      "sha256": "e8a42429eb4787237ee1d3278dd61685598806e29d432ef780619c37f0fca5f4",
+      "gitBlobSha": "9fc50bcfeee1e8a0e9ae46b2358b4ae397817862"
+    }
+  ]
+}

@@ -1075,7 +1075,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "SillyTavern-ImageGen improves image generation by using a dedicated prompt connection and final user instruction, while exposing OpenRouter image controls such as resolution, quality, seed, and format.",
+      "summary": "A SillyTavern-ImageGen fork that fixes the built-in image generation extension by routing image prompts to a dedicated Connection Profile and exposing OpenRouter /v1/images controls (README: flaws 1-2).",
       "canonicalUrl": "https://github.com/0cyris/SillyTavern-ImageGen",
       "catalogedAt": "2026-08-07T22:08:22.010Z",
       "catalogCohort": "standard",
@@ -1088,21 +1088,9 @@
       ],
       "tags": [
         {
-          "id": "build-extensions-and-scripts",
-          "label": "Build extensions and scripts",
-          "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
-          "facet": "goal"
-        },
-        {
           "id": "generate-images",
           "label": "Generate images",
           "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
-          "facet": "goal"
-        },
-        {
-          "id": "guide-model-responses",
-          "label": "Guide model responses",
-          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
           "facet": "goal"
         },
         {
@@ -1110,6 +1098,12 @@
           "label": "Route tasks across models",
           "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
           "facet": "goal"
+        },
+        {
+          "id": "secondary-model",
+          "label": "Secondary-model workflow",
+          "description": "Delegates supporting tasks to a separately configured model or connection.",
+          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -1324,7 +1318,7 @@
           "https://github.com/0cyris/SillyTavern-ImageGen"
         ],
         "summary": [
-          "SillyTavern-ImageGen improves image generation by using a dedicated prompt connection and final user instruction, while exposing OpenRouter image controls such as resolution, quality, seed, and format."
+          "A SillyTavern-ImageGen fork that fixes the built-in image generation extension by routing image prompts to a dedicated Connection Profile and exposing OpenRouter /v1/images controls (README: flaws 1-2)."
         ],
         "kind": [
           "extension"
@@ -1333,23 +1327,19 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Build extensions and scripts",
-          "extension development",
-          "custom scripting",
-          "plugin development",
           "Generate images",
           "image generation",
           "AI art generation",
           "scene illustration",
           "picture generation",
-          "Guide model responses",
-          "response steering",
-          "generation control",
-          "instruction control",
           "Route tasks across models",
           "model routing",
           "task routing",
-          "connection routing"
+          "connection routing",
+          "Secondary-model workflow",
+          "helper model",
+          "auxiliary model",
+          "separate connection profile"
         ],
         "frontends": [
           "SillyTavern"
@@ -200577,7 +200567,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "SillyTavern-ImageGen improves image generation by using a dedicated prompt connection and final user instruction, while exposing OpenRouter image controls such as resolution, quality, seed, and format.",
+            "summary": "A SillyTavern-ImageGen fork that fixes the built-in image generation extension by routing image prompts to a dedicated Connection Profile and exposing OpenRouter /v1/images controls (README: flaws 1-2).",
             "canonicalUrl": "https://github.com/0cyris/SillyTavern-ImageGen",
             "catalogedAt": "2026-08-07T22:08:22.010Z",
             "catalogCohort": "standard",
@@ -200590,21 +200580,9 @@
             ],
             "tags": [
               {
-                "id": "build-extensions-and-scripts",
-                "label": "Build extensions and scripts",
-                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
-                "facet": "goal"
-              },
-              {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
                 "facet": "goal"
               },
               {
@@ -200612,6 +200590,12 @@
                 "label": "Route tasks across models",
                 "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
                 "facet": "goal"
+              },
+              {
+                "id": "secondary-model",
+                "label": "Secondary-model workflow",
+                "description": "Delegates supporting tasks to a separately configured model or connection.",
+                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -200826,7 +200810,7 @@
                 "https://github.com/0cyris/SillyTavern-ImageGen"
               ],
               "summary": [
-                "SillyTavern-ImageGen improves image generation by using a dedicated prompt connection and final user instruction, while exposing OpenRouter image controls such as resolution, quality, seed, and format."
+                "A SillyTavern-ImageGen fork that fixes the built-in image generation extension by routing image prompts to a dedicated Connection Profile and exposing OpenRouter /v1/images controls (README: flaws 1-2)."
               ],
               "kind": [
                 "extension"
@@ -200835,23 +200819,19 @@
                 "Interface and workflow"
               ],
               "tags": [
-                "Build extensions and scripts",
-                "extension development",
-                "custom scripting",
-                "plugin development",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
                 "Route tasks across models",
                 "model routing",
                 "task routing",
-                "connection routing"
+                "connection routing",
+                "Secondary-model workflow",
+                "helper model",
+                "auxiliary model",
+                "separate connection profile"
               ],
               "frontends": [
                 "SillyTavern"
@@ -225316,7 +225296,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "SillyTavern-ImageGen improves image generation by using a dedicated prompt connection and final user instruction, while exposing OpenRouter image controls such as resolution, quality, seed, and format.",
+            "summary": "A SillyTavern-ImageGen fork that fixes the built-in image generation extension by routing image prompts to a dedicated Connection Profile and exposing OpenRouter /v1/images controls (README: flaws 1-2).",
             "canonicalUrl": "https://github.com/0cyris/SillyTavern-ImageGen",
             "catalogedAt": "2026-08-07T22:08:22.010Z",
             "catalogCohort": "standard",
@@ -225329,21 +225309,9 @@
             ],
             "tags": [
               {
-                "id": "build-extensions-and-scripts",
-                "label": "Build extensions and scripts",
-                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
-                "facet": "goal"
-              },
-              {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
                 "facet": "goal"
               },
               {
@@ -225351,6 +225319,12 @@
                 "label": "Route tasks across models",
                 "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
                 "facet": "goal"
+              },
+              {
+                "id": "secondary-model",
+                "label": "Secondary-model workflow",
+                "description": "Delegates supporting tasks to a separately configured model or connection.",
+                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -225565,7 +225539,7 @@
                 "https://github.com/0cyris/SillyTavern-ImageGen"
               ],
               "summary": [
-                "SillyTavern-ImageGen improves image generation by using a dedicated prompt connection and final user instruction, while exposing OpenRouter image controls such as resolution, quality, seed, and format."
+                "A SillyTavern-ImageGen fork that fixes the built-in image generation extension by routing image prompts to a dedicated Connection Profile and exposing OpenRouter /v1/images controls (README: flaws 1-2)."
               ],
               "kind": [
                 "extension"
@@ -225574,23 +225548,19 @@
                 "Interface and workflow"
               ],
               "tags": [
-                "Build extensions and scripts",
-                "extension development",
-                "custom scripting",
-                "plugin development",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
                 "Route tasks across models",
                 "model routing",
                 "task routing",
-                "connection routing"
+                "connection routing",
+                "Secondary-model workflow",
+                "helper model",
+                "auxiliary model",
+                "separate connection profile"
               ],
               "frontends": [
                 "SillyTavern"
