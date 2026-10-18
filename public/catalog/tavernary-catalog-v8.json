@@ -114712,7 +114712,7 @@
         "freshness": "stale",
         "currentSha": "1e40ddb30ae92d5b5170df5400dcf5a35b94df7e",
         "report": {
-          "reportId": "6ccdcbc030e143cb5e2af4fc1b7a0cdfe237188dab70b035b9f68ee0a123da54",
+          "reportId": "75e68dd3f372c2b2b9886e691685377153460445f45742d0f8cc05e19816b55b",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -114721,12 +114721,12 @@
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
           "citedFindingIds": [
-            "06c60f37875f6d5b79311219a4b304d532890f07ffea4386d3c78b58a49f3bb1"
+            "992cefd8d952f0cafda4f70649bab88c0499e1f9e39a491cffc0c9c9fc796d8c"
           ],
-          "scannedSha": "03b30318b447b20b48281f3c9b45f729aea5745c",
-          "treeUrl": "https://github.com/starlitcode/Lumiverse-Auto-Retry/tree/03b30318b447b20b48281f3c9b45f729aea5745c",
-          "scannedAt": "2026-10-07T19:45:52.619Z",
-          "assessedAt": "2026-10-07T19:48:27.085Z",
+          "scannedSha": "53e6e5015ee9dbf0a9631ac03b095246c874d7be",
+          "treeUrl": "https://github.com/starlitcode/Lumiverse-Auto-Retry/tree/53e6e5015ee9dbf0a9631ac03b095246c874d7be",
+          "scannedAt": "2026-10-14T19:51:35.988Z",
+          "assessedAt": "2026-10-18T11:46:29.863Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
@@ -114734,41 +114734,10 @@
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
           "javascriptAnalysisStatus": "incomplete",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/03b30318b447b20b48281f3c9b45f729aea5745c/5/6ccdcbc030e143cb5e2af4fc1b7a0cdfe237188dab70b035b9f68ee0a123da54/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/53e6e5015ee9dbf0a9631ac03b095246c874d7be/5/75e68dd3f372c2b2b9886e691685377153460445f45742d0f8cc05e19816b55b/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/history/"
         },
         "history": [
-          {
-            "reportId": "9efa49cb96e470c1cb6d05ddfcdaa402b8adf17d6b69cbe2de98f90271281bff",
-            "riskLevel": "material",
-            "headline": "No confirmed malicious behavior, but this review cannot provide a clean security clearance",
-            "summary": "The validated findings are six low-impact workflow security weaknesses: CI actions use movable version tags, and checkout may leave a temporary read-only token in the build environment. These do not appear readily exploitable and are not evidence of a malicious project. However, JavaScript analysis was incomplete because some files could not be parsed, so the review cannot establish that no unknown behavior exists. The material advisory level reflects that unresolved review limitation, not a,;la",
-            "minorCautions": 6,
-            "materialConcerns": 0,
-            "highDanger": 0,
-            "maliciousEvidence": "No credible malicious behavior, API-key theft, harmful payload, or hidden remote-code delivery was validated. Several scanner alerts were confirmed as ordinary test code, refusal-detection logic, browser helpers, or development setup behavior.",
-            "citedFindingIds": [
-              "0854d348bdbe16f8938bf431a9da95ca05b9ce03854c943fed9585beb78e1e5e",
-              "0ed4b4581961467092117cc44a6cbd7d4a23204c512aef701091d47212b248fa",
-              "4917c017bc73a93bf2c6905fc159957dea6ae5d90ecc429753236bdb72c9c7f8",
-              "723a9affbe206f3412f3220af1bc0e87566aa7a1a8201f5aa46ca8068982c808",
-              "802c76a1cb7359ce9c5c930f51ee82d24e46a4b3b1f168abceea1ba9bb993a21",
-              "afd70ee1deb12945077689fc777ad3ae9d44afd32cc1a4c497f24d0264a6770a"
-            ],
-            "scannedSha": "71e617060a6b1945895a2985ffdf4772efdc7dc7",
-            "treeUrl": "https://github.com/starlitcode/Lumiverse-Auto-Retry/tree/71e617060a6b1945895a2985ffdf4772efdc7dc7",
-            "scannedAt": "2026-08-09T12:02:33.401Z",
-            "assessedAt": "2026-08-09T12:04:25.248Z",
-            "scannerPolicyVersion": "4",
-            "contextualReviewPolicyVersion": "2",
-            "synthesisPolicyVersion": "4",
-            "synthesisModel": "gpt-5.6-luna",
-            "dangerBasis": "none",
-            "assessmentSource": "model",
-            "javascriptAnalysisStatus": "incomplete",
-            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/71e617060a6b1945895a2985ffdf4772efdc7dc7/4/9efa49cb96e470c1cb6d05ddfcdaa402b8adf17d6b69cbe2de98f90271281bff/",
-            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/history/"
-          },
           {
             "reportId": "797fea36eaa6fd43a4809f91aa8fef9ec63c8932976a26e7c2b7b688d5d55ae7",
             "riskLevel": "low",
@@ -115059,6 +115028,32 @@
             "assessmentSource": "deterministic_regrade",
             "javascriptAnalysisStatus": "incomplete",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/03b30318b447b20b48281f3c9b45f729aea5745c/5/6ccdcbc030e143cb5e2af4fc1b7a0cdfe237188dab70b035b9f68ee0a123da54/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/history/"
+          },
+          {
+            "reportId": "75e68dd3f372c2b2b9886e691685377153460445f45742d0f8cc05e19816b55b",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 1,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "992cefd8d952f0cafda4f70649bab88c0499e1f9e39a491cffc0c9c9fc796d8c"
+            ],
+            "scannedSha": "53e6e5015ee9dbf0a9631ac03b095246c874d7be",
+            "treeUrl": "https://github.com/starlitcode/Lumiverse-Auto-Retry/tree/53e6e5015ee9dbf0a9631ac03b095246c874d7be",
+            "scannedAt": "2026-10-14T19:51:35.988Z",
+            "assessedAt": "2026-10-18T11:46:29.863Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "incomplete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/53e6e5015ee9dbf0a9631ac03b095246c874d7be/5/75e68dd3f372c2b2b9886e691685377153460445f45742d0f8cc05e19816b55b/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/history/"
           }
         ],
@@ -271285,7 +271280,7 @@
               "freshness": "stale",
               "currentSha": "1e40ddb30ae92d5b5170df5400dcf5a35b94df7e",
               "report": {
-                "reportId": "6ccdcbc030e143cb5e2af4fc1b7a0cdfe237188dab70b035b9f68ee0a123da54",
+                "reportId": "75e68dd3f372c2b2b9886e691685377153460445f45742d0f8cc05e19816b55b",
                 "riskLevel": "low",
                 "headline": "Low concern",
                 "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -271294,12 +271289,12 @@
                 "highDanger": 0,
                 "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
                 "citedFindingIds": [
-                  "06c60f37875f6d5b79311219a4b304d532890f07ffea4386d3c78b58a49f3bb1"
+                  "992cefd8d952f0cafda4f70649bab88c0499e1f9e39a491cffc0c9c9fc796d8c"
                 ],
-                "scannedSha": "03b30318b447b20b48281f3c9b45f729aea5745c",
-                "treeUrl": "https://github.com/starlitcode/Lumiverse-Auto-Retry/tree/03b30318b447b20b48281f3c9b45f729aea5745c",
-                "scannedAt": "2026-10-07T19:45:52.619Z",
-                "assessedAt": "2026-10-07T19:48:27.085Z",
+                "scannedSha": "53e6e5015ee9dbf0a9631ac03b095246c874d7be",
+                "treeUrl": "https://github.com/starlitcode/Lumiverse-Auto-Retry/tree/53e6e5015ee9dbf0a9631ac03b095246c874d7be",
+                "scannedAt": "2026-10-14T19:51:35.988Z",
+                "assessedAt": "2026-10-18T11:46:29.863Z",
                 "scannerPolicyVersion": "5",
                 "contextualReviewPolicyVersion": "5",
                 "synthesisPolicyVersion": "5",
@@ -271307,41 +271302,10 @@
                 "dangerBasis": "none",
                 "assessmentSource": "deterministic_regrade",
                 "javascriptAnalysisStatus": "incomplete",
-                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/03b30318b447b20b48281f3c9b45f729aea5745c/5/6ccdcbc030e143cb5e2af4fc1b7a0cdfe237188dab70b035b9f68ee0a123da54/",
+                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/53e6e5015ee9dbf0a9631ac03b095246c874d7be/5/75e68dd3f372c2b2b9886e691685377153460445f45742d0f8cc05e19816b55b/",
                 "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/history/"
               },
               "history": [
-                {
-                  "reportId": "9efa49cb96e470c1cb6d05ddfcdaa402b8adf17d6b69cbe2de98f90271281bff",
-                  "riskLevel": "material",
-                  "headline": "No confirmed malicious behavior, but this review cannot provide a clean security clearance",
-                  "summary": "The validated findings are six low-impact workflow security weaknesses: CI actions use movable version tags, and checkout may leave a temporary read-only token in the build environment. These do not appear readily exploitable and are not evidence of a malicious project. However, JavaScript analysis was incomplete because some files could not be parsed, so the review cannot establish that no unknown behavior exists. The material advisory level reflects that unresolved review limitation, not a,;la",
-                  "minorCautions": 6,
-                  "materialConcerns": 0,
-                  "highDanger": 0,
-                  "maliciousEvidence": "No credible malicious behavior, API-key theft, harmful payload, or hidden remote-code delivery was validated. Several scanner alerts were confirmed as ordinary test code, refusal-detection logic, browser helpers, or development setup behavior.",
-                  "citedFindingIds": [
-                    "0854d348bdbe16f8938bf431a9da95ca05b9ce03854c943fed9585beb78e1e5e",
-                    "0ed4b4581961467092117cc44a6cbd7d4a23204c512aef701091d47212b248fa",
-                    "4917c017bc73a93bf2c6905fc159957dea6ae5d90ecc429753236bdb72c9c7f8",
-                    "723a9affbe206f3412f3220af1bc0e87566aa7a1a8201f5aa46ca8068982c808",
-                    "802c76a1cb7359ce9c5c930f51ee82d24e46a4b3b1f168abceea1ba9bb993a21",
-                    "afd70ee1deb12945077689fc777ad3ae9d44afd32cc1a4c497f24d0264a6770a"
-                  ],
-                  "scannedSha": "71e617060a6b1945895a2985ffdf4772efdc7dc7",
-                  "treeUrl": "https://github.com/starlitcode/Lumiverse-Auto-Retry/tree/71e617060a6b1945895a2985ffdf4772efdc7dc7",
-                  "scannedAt": "2026-08-09T12:02:33.401Z",
-                  "assessedAt": "2026-08-09T12:04:25.248Z",
-                  "scannerPolicyVersion": "4",
-                  "contextualReviewPolicyVersion": "2",
-                  "synthesisPolicyVersion": "4",
-                  "synthesisModel": "gpt-5.6-luna",
-                  "dangerBasis": "none",
-                  "assessmentSource": "model",
-                  "javascriptAnalysisStatus": "incomplete",
-                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/71e617060a6b1945895a2985ffdf4772efdc7dc7/4/9efa49cb96e470c1cb6d05ddfcdaa402b8adf17d6b69cbe2de98f90271281bff/",
-                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/history/"
-                },
                 {
                   "reportId": "797fea36eaa6fd43a4809f91aa8fef9ec63c8932976a26e7c2b7b688d5d55ae7",
                   "riskLevel": "low",
@@ -271632,6 +271596,32 @@
                   "assessmentSource": "deterministic_regrade",
                   "javascriptAnalysisStatus": "incomplete",
                   "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/03b30318b447b20b48281f3c9b45f729aea5745c/5/6ccdcbc030e143cb5e2af4fc1b7a0cdfe237188dab70b035b9f68ee0a123da54/",
+                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/history/"
+                },
+                {
+                  "reportId": "75e68dd3f372c2b2b9886e691685377153460445f45742d0f8cc05e19816b55b",
+                  "riskLevel": "low",
+                  "headline": "Low concern",
+                  "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+                  "minorCautions": 1,
+                  "materialConcerns": 0,
+                  "highDanger": 0,
+                  "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+                  "citedFindingIds": [
+                    "992cefd8d952f0cafda4f70649bab88c0499e1f9e39a491cffc0c9c9fc796d8c"
+                  ],
+                  "scannedSha": "53e6e5015ee9dbf0a9631ac03b095246c874d7be",
+                  "treeUrl": "https://github.com/starlitcode/Lumiverse-Auto-Retry/tree/53e6e5015ee9dbf0a9631ac03b095246c874d7be",
+                  "scannedAt": "2026-10-14T19:51:35.988Z",
+                  "assessedAt": "2026-10-18T11:46:29.863Z",
+                  "scannerPolicyVersion": "5",
+                  "contextualReviewPolicyVersion": "5",
+                  "synthesisPolicyVersion": "5",
+                  "synthesisModel": "deterministic-policy-v5",
+                  "dangerBasis": "none",
+                  "assessmentSource": "deterministic_regrade",
+                  "javascriptAnalysisStatus": "incomplete",
+                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/53e6e5015ee9dbf0a9631ac03b095246c874d7be/5/75e68dd3f372c2b2b9886e691685377153460445f45742d0f8cc05e19816b55b/",
                   "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1263145747/history/"
                 }
               ],
