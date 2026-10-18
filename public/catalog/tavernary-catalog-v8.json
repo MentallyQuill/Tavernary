@@ -46502,13 +46502,61 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "25b45e3486948baad7cb9460e53a61bf9dfd9819",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "d083449fc007c10f0acfe7d1da4ab4e8e28ddfed9d566154098340371b0e626a",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "25b45e3486948baad7cb9460e53a61bf9dfd9819",
+          "treeUrl": "https://github.com/iamarxs/AnyWorld/tree/25b45e3486948baad7cb9460e53a61bf9dfd9819",
+          "scannedAt": "2026-10-15T15:11:40.639Z",
+          "assessedAt": "2026-10-18T16:11:26.460Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "javascriptAnalysisStatus": "complete",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372071122/25b45e3486948baad7cb9460e53a61bf9dfd9819/5/d083449fc007c10f0acfe7d1da4ab4e8e28ddfed9d566154098340371b0e626a/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372071122/history/"
+        },
+        "history": [
+          {
+            "reportId": "d083449fc007c10f0acfe7d1da4ab4e8e28ddfed9d566154098340371b0e626a",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "25b45e3486948baad7cb9460e53a61bf9dfd9819",
+            "treeUrl": "https://github.com/iamarxs/AnyWorld/tree/25b45e3486948baad7cb9460e53a61bf9dfd9819",
+            "scannedAt": "2026-10-15T15:11:40.639Z",
+            "assessedAt": "2026-10-18T16:11:26.460Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372071122/25b45e3486948baad7cb9460e53a61bf9dfd9819/5/d083449fc007c10f0acfe7d1da4ab4e8e28ddfed9d566154098340371b0e626a/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372071122/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1372071122/"
       },
       "attribution": {
         "owner": {
