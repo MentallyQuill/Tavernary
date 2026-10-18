@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "163e927a6d8db79c9756f80d1baff16125d648770ba15edaef2eaba8ff8ce737",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1289855929:sca255-lumiverse-autoimg",
+      "inputDigest": "7530836f52e14c2ed404afeea22dc2b0060ee72e221c39d7967ffbe25f115f6b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1289855929",
+    "identity": "github:1289855929"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39069004034,
+    "sourceSha": "268b717ea32f19d4ef195502e225b3e82fbdef05"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/sca255-lumiverse-autoimg.json",
+      "sha256": "b1e5566bd29fe42899959bbc4209cf1b5f0f40a5d4fe10cfd00b4069a9b19fde",
+      "gitBlobSha": "d1fb2b7c34e27dad085e333a2dac498621397287"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/163e927a6d8db79c9756f80d1baff16125d648770ba15edaef2eaba8ff8ce737.json",
+      "sha256": "d92157dcd5b80d8b208115724d258efe236e18c495c36c015ec56b6d99122c86",
+      "gitBlobSha": "d59df7c3c4fe06cf3086b0d2fe538eec1da699f2"
+    }
+  ]
+}

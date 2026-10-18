@@ -99178,7 +99178,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Lumiverse AutoImg is a Lumiverse extension that automatically generates images when triggered by AI demand. It streamlines visual content creation by producing images on demand without manual prompting.",
+      "summary": "Lumiverse AutoImg is a Lumiverse/Spindle backend extension that generates images only when the assistant intentionally emits a tag, then replaces that tag with generated image markdown in the message.",
       "canonicalUrl": "https://github.com/sca255/lumiverse-autoimg",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -99190,12 +99190,6 @@
         }
       ],
       "tags": [
-        {
-          "id": "automate-roleplay-workflows",
-          "label": "Automate roleplay workflows",
-          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
-          "facet": "goal"
-        },
         {
           "id": "generate-images",
           "label": "Generate images",
@@ -99340,7 +99334,7 @@
           "https://github.com/sca255/lumiverse-autoimg"
         ],
         "summary": [
-          "Lumiverse AutoImg is a Lumiverse extension that automatically generates images when triggered by AI demand. It streamlines visual content creation by producing images on demand without manual prompting."
+          "Lumiverse AutoImg is a Lumiverse/Spindle backend extension that generates images only when the assistant intentionally emits a tag, then replaces that tag with generated image markdown in the message."
         ],
         "kind": [
           "extension"
@@ -99349,11 +99343,6 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Automate roleplay workflows",
-          "automation",
-          "workflow automation",
-          "task automation",
-          "triggered actions",
           "Generate images",
           "image generation",
           "AI art generation",
@@ -195679,7 +195668,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "Lumiverse AutoImg is a Lumiverse extension that automatically generates images when triggered by AI demand. It streamlines visual content creation by producing images on demand without manual prompting.",
+            "summary": "Lumiverse AutoImg is a Lumiverse/Spindle backend extension that generates images only when the assistant intentionally emits a tag, then replaces that tag with generated image markdown in the message.",
             "canonicalUrl": "https://github.com/sca255/lumiverse-autoimg",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -195691,12 +195680,6 @@
               }
             ],
             "tags": [
-              {
-                "id": "automate-roleplay-workflows",
-                "label": "Automate roleplay workflows",
-                "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
-                "facet": "goal"
-              },
               {
                 "id": "generate-images",
                 "label": "Generate images",
@@ -195841,7 +195824,7 @@
                 "https://github.com/sca255/lumiverse-autoimg"
               ],
               "summary": [
-                "Lumiverse AutoImg is a Lumiverse extension that automatically generates images when triggered by AI demand. It streamlines visual content creation by producing images on demand without manual prompting."
+                "Lumiverse AutoImg is a Lumiverse/Spindle backend extension that generates images only when the assistant intentionally emits a tag, then replaces that tag with generated image markdown in the message."
               ],
               "kind": [
                 "extension"
@@ -195850,11 +195833,6 @@
                 "Interface and workflow"
               ],
               "tags": [
-                "Automate roleplay workflows",
-                "automation",
-                "workflow automation",
-                "task automation",
-                "triggered actions",
                 "Generate images",
                 "image generation",
                 "AI art generation",
