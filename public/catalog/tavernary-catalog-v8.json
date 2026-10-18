@@ -36326,7 +36326,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "SillyTavern extension injecting sticky notes into prompts to preserve context variables and world state across chats. It offers dual active/unused storage with swapping plus timeline alerts for context shifts.",
+      "summary": "Enerccio's SillyTavern StickyNote extension adds context-preserving sticky notes for variables, world state, and narrative details, injected into prompts on user generation cycles (README intro).",
       "canonicalUrl": "https://github.com/Enerccio/SillyTavern-StickyNote",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -36339,28 +36339,16 @@
       ],
       "tags": [
         {
-          "id": "maintain-long-term-memory",
-          "label": "Maintain long-term memory",
-          "description": "Preserve and recall important information across long chats or separate sessions.",
-          "facet": "goal"
-        },
-        {
-          "id": "guide-model-responses",
-          "label": "Guide model responses",
-          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-          "facet": "goal"
-        },
-        {
           "id": "track-characters-and-world-state",
           "label": "Track characters and world state",
           "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
           "facet": "goal"
         },
         {
-          "id": "persistent-state",
-          "label": "Persistent state",
-          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
-          "facet": "trait"
+          "id": "maintain-long-term-memory",
+          "label": "Maintain long-term memory",
+          "description": "Preserve and recall important information across long chats or separate sessions.",
+          "facet": "goal"
         }
       ],
       "tavernKeeper": {
@@ -36509,7 +36497,7 @@
           "https://github.com/Enerccio/SillyTavern-StickyNote"
         ],
         "summary": [
-          "SillyTavern extension injecting sticky notes into prompts to preserve context variables and world state across chats. It offers dual active/unused storage with swapping plus timeline alerts for context shifts."
+          "Enerccio's SillyTavern StickyNote extension adds context-preserving sticky notes for variables, world state, and narrative details, injected into prompts on user generation cycles (README intro)."
         ],
         "kind": [
           "extension"
@@ -36518,22 +36506,14 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Maintain long-term memory",
-          "durable memory",
-          "persistent memory",
-          "remember across chats",
-          "Guide model responses",
-          "response steering",
-          "generation control",
-          "instruction control",
           "Track characters and world state",
           "state tracking",
           "stat trackers",
           "world state tracking",
-          "Persistent state",
-          "durable state",
-          "state persistence",
-          "cross-session state"
+          "Maintain long-term memory",
+          "durable memory",
+          "persistent memory",
+          "remember across chats"
         ],
         "frontends": [
           "SillyTavern"

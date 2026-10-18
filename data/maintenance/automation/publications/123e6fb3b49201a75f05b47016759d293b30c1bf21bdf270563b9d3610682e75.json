@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "123e6fb3b49201a75f05b47016759d293b30c1bf21bdf270563b9d3610682e75",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1251549736:enerccio-sillytavern-stickynote",
+      "inputDigest": "9bc5c258e5198604377f9662b02cb350e78f870a1cd6a67f40fc09562c1211f1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1251549736",
+    "identity": "github:1251549736"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39088368407,
+    "sourceSha": "d14c98d342304378c969ff456b098cd4f5adf9a8"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/enerccio-sillytavern-stickynote.json",
+      "sha256": "a6754d5bb8abbcd17c92b3c563e17d0e23501b508dcb9f9eb1851972d34b9d72",
+      "gitBlobSha": "6e95ca64834a49c6667096b43b334841ab9f78ea"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/123e6fb3b49201a75f05b47016759d293b30c1bf21bdf270563b9d3610682e75.json",
+      "sha256": "c9b304c43a281ea6dbff85189b6ef5952e49df6515725d32e4f1fbccc65cf032",
+      "gitBlobSha": "47b82f0aec97cf8a623855f9daff6a283d75d991"
+    }
+  ]
+}
