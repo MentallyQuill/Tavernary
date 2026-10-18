@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "182f3d76e5a7882209d9181f4b3609e5a910afd7622009330278341346e324ab",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1230539972:vectricity-st-aspect-vocalia",
+      "inputDigest": "7f73f2f70afd05fec74cd5672417ace52e3d1952384083b45e2a99c36d6c119b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1230539972",
+    "identity": "github:1230539972"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39109043901,
+    "sourceSha": "647651e6f9e0087115fa26849293ea0653f83869"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/vectricity-st-aspect-vocalia.json",
+      "sha256": "ce8765974904514afefa4911ffd1ad6b16fc19c5a55793c25b13c02fdc72a180",
+      "gitBlobSha": "b1e19bb8984763e5825004dc0466046ef17cd09c"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/182f3d76e5a7882209d9181f4b3609e5a910afd7622009330278341346e324ab.json",
+      "sha256": "efe0be4410ea36b189a17228659716a85845cb8b35995270434cc9cb76da8eba",
+      "gitBlobSha": "aa6068a5c2738e0166555f40c1466dd11a847767"
+    }
+  ]
+}

@@ -122133,7 +122133,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "SillyTavern extension that automates scene-aware speaker routing and structured replies for group chats with presence tracking.",
+      "summary": "SillyTavern extension that automates group chat character responses, using scene-aware presence tracking to route who speaks next, including multi-character turns, with structured replies and per-turn limits, per README.",
       "canonicalUrl": "https://github.com/Vectricity/st-aspect-vocalia",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -122146,27 +122146,15 @@
       ],
       "tags": [
         {
-          "id": "guide-model-responses",
-          "label": "Guide model responses",
-          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-          "facet": "goal"
-        },
-        {
-          "id": "automate-roleplay-workflows",
-          "label": "Automate roleplay workflows",
-          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
-          "facet": "goal"
-        },
-        {
           "id": "run-group-roleplay",
           "label": "Run group roleplay",
           "description": "Coordinate scenes involving several AI characters in the same conversation.",
           "facet": "goal"
         },
         {
-          "id": "track-characters-and-world-state",
-          "label": "Track characters and world state",
-          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "id": "automate-roleplay-workflows",
+          "label": "Automate roleplay workflows",
+          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
           "facet": "goal"
         }
       ],
@@ -122320,7 +122308,7 @@
           "https://github.com/Vectricity/st-aspect-vocalia"
         ],
         "summary": [
-          "SillyTavern extension that automates scene-aware speaker routing and structured replies for group chats with presence tracking."
+          "SillyTavern extension that automates group chat character responses, using scene-aware presence tracking to route who speaks next, including multi-character turns, with structured replies and per-turn limits, per README."
         ],
         "kind": [
           "extension"
@@ -122329,23 +122317,15 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Guide model responses",
-          "response steering",
-          "generation control",
-          "instruction control",
-          "Automate roleplay workflows",
-          "automation",
-          "workflow automation",
-          "task automation",
-          "triggered actions",
           "Run group roleplay",
           "multi-character roleplay",
           "group chats",
           "ensemble scenes",
-          "Track characters and world state",
-          "state tracking",
-          "stat trackers",
-          "world state tracking"
+          "Automate roleplay workflows",
+          "automation",
+          "workflow automation",
+          "task automation",
+          "triggered actions"
         ],
         "frontends": [
           "SillyTavern"
@@ -233068,7 +233048,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "SillyTavern extension that automates scene-aware speaker routing and structured replies for group chats with presence tracking.",
+            "summary": "SillyTavern extension that automates group chat character responses, using scene-aware presence tracking to route who speaks next, including multi-character turns, with structured replies and per-turn limits, per README.",
             "canonicalUrl": "https://github.com/Vectricity/st-aspect-vocalia",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -233081,27 +233061,15 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "automate-roleplay-workflows",
-                "label": "Automate roleplay workflows",
-                "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
-                "facet": "goal"
-              },
-              {
                 "id": "run-group-roleplay",
                 "label": "Run group roleplay",
                 "description": "Coordinate scenes involving several AI characters in the same conversation.",
                 "facet": "goal"
               },
               {
-                "id": "track-characters-and-world-state",
-                "label": "Track characters and world state",
-                "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+                "id": "automate-roleplay-workflows",
+                "label": "Automate roleplay workflows",
+                "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
                 "facet": "goal"
               }
             ],
@@ -233255,7 +233223,7 @@
                 "https://github.com/Vectricity/st-aspect-vocalia"
               ],
               "summary": [
-                "SillyTavern extension that automates scene-aware speaker routing and structured replies for group chats with presence tracking."
+                "SillyTavern extension that automates group chat character responses, using scene-aware presence tracking to route who speaks next, including multi-character turns, with structured replies and per-turn limits, per README."
               ],
               "kind": [
                 "extension"
@@ -233264,23 +233232,15 @@
                 "Interface and workflow"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Automate roleplay workflows",
-                "automation",
-                "workflow automation",
-                "task automation",
-                "triggered actions",
                 "Run group roleplay",
                 "multi-character roleplay",
                 "group chats",
                 "ensemble scenes",
-                "Track characters and world state",
-                "state tracking",
-                "stat trackers",
-                "world state tracking"
+                "Automate roleplay workflows",
+                "automation",
+                "workflow automation",
+                "task automation",
+                "triggered actions"
               ],
               "frontends": [
                 "SillyTavern"

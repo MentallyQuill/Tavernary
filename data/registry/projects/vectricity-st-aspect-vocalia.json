@@ -3,19 +3,14 @@
   "id": "vectricity-st-aspect-vocalia",
   "name": "ST Aspect Vocalia",
   "kind": "extension",
-  "summary": "SillyTavern extension that automates scene-aware speaker routing and structured replies for group chats with presence tracking.",
+  "summary": "SillyTavern extension that automates group chat character responses, using scene-aware presence tracking to route who speaks next, including multi-character turns, with structured replies and per-turn limits, per README.",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "source_id": "github-1230539972",
-  "tags": [
-    "guide-model-responses",
-    "automate-roleplay-workflows",
-    "run-group-roleplay",
-    "track-characters-and-world-state"
-  ],
+  "tags": ["run-group-roleplay", "automate-roleplay-workflows"],
   "listing_status": "active",
   "listing_status_reason": null,
   "metadata_policy": {
