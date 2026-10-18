@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "02221272917aa92f36587c9e0956b7e1d6cff2be0244836468835a28eff6c86f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1232282077:lukathehero-sillytavern-claudesubscription",
+      "inputDigest": "2898feebb1b95c51740f54f88cbf86c5d6911e5bed0de2e7f136d8571decff28",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1232282077",
+    "identity": "github:1232282077"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39125028078,
+    "sourceSha": "2fd7a605305172173107fd3a933920a419bb35c7"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/lukathehero-sillytavern-claudesubscription.json",
+      "sha256": "23db2cbf066e6f75a9d7580d9ea5de99e0f047fa6fe9a5528eb896a297731ffd",
+      "gitBlobSha": "629848c567203a2c5d75a04809a18c1bd789cc4d"
+    }
+  ]
+}

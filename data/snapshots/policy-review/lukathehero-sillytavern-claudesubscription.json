@@ -5,12 +5,9 @@
   "source_identity": "github:lukathehero/sillytavern-claudesubscription",
   "evidence_fingerprint": "09c149026dc3dccb7a587f8e55d933ab831e514ecc9f3506a02df35098f0d471",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
-  "category": null,
-  "reviewed_at": "2026-09-09T12:36:08.023Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-09T12:36:08.023Z"
-  },
+  "status": "review-suggested",
+  "category": "potential-other-catalog-policy-conflict",
+  "reviewed_at": "2026-10-18T11:53:51.537Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
