@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "16da318c93eacadd394eb28fa76ea2a2fffe6349b57e1e1c9d7ff5c393d6cb61",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1198459430:skyjinxx-sillytavern-finalpromptviewer",
+      "inputDigest": "b047178850c2221286ed9604bfc95e798d90942da25ac99c734b1ac3bb8b3b06",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1198459430",
+    "identity": "github:1198459430"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39095240776,
+    "sourceSha": "092bd830030fbc5e89807c9e4ea9dafb133a6bf7"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/skyjinxx-sillytavern-finalpromptviewer.json",
+      "sha256": "603b96ed699965e19a187d0583eec5a1b9e85a6c31ed4a54c6a77b74cf47b77e",
+      "gitBlobSha": "bb07820e42f5a8f213ed5e39a2d9cd4bf434ac0a"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/16da318c93eacadd394eb28fa76ea2a2fffe6349b57e1e1c9d7ff5c393d6cb61.json",
+      "sha256": "5afec845821751c075a73d6e026f9bf801ad5def1aa85b06bc203f32c792b74d",
+      "gitBlobSha": "e59b75a847cc42fbb58cd2bb730029e81540705b"
+    }
+  ]
+}
