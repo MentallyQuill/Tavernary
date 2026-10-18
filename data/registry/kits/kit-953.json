@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "id": "kit-953",
+  "status": "published",
+  "title": "KIT",
+  "description": "ty",
+  "author": { "github_user_id": 138078173, "login": "NeonHaunter" },
+  "source_issue_number": 953,
+  "project_ids": [
+    "sillytavern-sillytavern",
+    "bmen25124-sillytavern-character-creator",
+    "sillyanonymous-sillytavern-characterlibrary",
+    "0cyris-sillytavern-imagegen",
+    "mokimoko-sillytavern-storymanager"
+  ],
+  "published_at": "2026-10-18T07:18:08.255Z",
+  "updated_at": "2026-10-18T07:18:08.255Z"
+}
