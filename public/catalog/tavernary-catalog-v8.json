@@ -24502,7 +24502,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Recast is a SillyTavern extension that applies prose post-processing to generated roleplay text. It refines model output after generation to improve readability and flow.",
+      "summary": "Recast Post-Processing is a SillyTavern extension dedicated to improving generated prose through post-processing (README: \"SillyTavern Prose Post-Processing\").",
       "canonicalUrl": "https://github.com/closuretxt/recast-post-processing",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -24518,12 +24518,6 @@
           "id": "improve-writing-and-prose",
           "label": "Improve writing and prose",
           "description": "Strengthen prose, dialogue, style, pacing, subtext, or general writing quality.",
-          "facet": "goal"
-        },
-        {
-          "id": "edit-and-refine-messages",
-          "label": "Edit and refine messages",
-          "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
           "facet": "goal"
         }
       ],
@@ -24703,7 +24697,7 @@
           "https://github.com/closuretxt/recast-post-processing"
         ],
         "summary": [
-          "Recast is a SillyTavern extension that applies prose post-processing to generated roleplay text. It refines model output after generation to improve readability and flow."
+          "Recast Post-Processing is a SillyTavern extension dedicated to improving generated prose through post-processing (README: \"SillyTavern Prose Post-Processing\")."
         ],
         "kind": [
           "extension"
@@ -24715,11 +24709,7 @@
           "Improve writing and prose",
           "writing assistance",
           "prose improvement",
-          "co-writing",
-          "Edit and refine messages",
-          "message rewriting",
-          "chat editing",
-          "response refinement"
+          "co-writing"
         ],
         "frontends": [
           "SillyTavern"
@@ -231607,7 +231597,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "Recast is a SillyTavern extension that applies prose post-processing to generated roleplay text. It refines model output after generation to improve readability and flow.",
+            "summary": "Recast Post-Processing is a SillyTavern extension dedicated to improving generated prose through post-processing (README: \"SillyTavern Prose Post-Processing\").",
             "canonicalUrl": "https://github.com/closuretxt/recast-post-processing",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -231623,12 +231613,6 @@
                 "id": "improve-writing-and-prose",
                 "label": "Improve writing and prose",
                 "description": "Strengthen prose, dialogue, style, pacing, subtext, or general writing quality.",
-                "facet": "goal"
-              },
-              {
-                "id": "edit-and-refine-messages",
-                "label": "Edit and refine messages",
-                "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
                 "facet": "goal"
               }
             ],
@@ -231808,7 +231792,7 @@
                 "https://github.com/closuretxt/recast-post-processing"
               ],
               "summary": [
-                "Recast is a SillyTavern extension that applies prose post-processing to generated roleplay text. It refines model output after generation to improve readability and flow."
+                "Recast Post-Processing is a SillyTavern extension dedicated to improving generated prose through post-processing (README: \"SillyTavern Prose Post-Processing\")."
               ],
               "kind": [
                 "extension"
@@ -231820,11 +231804,7 @@
                 "Improve writing and prose",
                 "writing assistance",
                 "prose improvement",
-                "co-writing",
-                "Edit and refine messages",
-                "message rewriting",
-                "chat editing",
-                "response refinement"
+                "co-writing"
               ],
               "frontends": [
                 "SillyTavern"

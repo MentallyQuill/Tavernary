@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "17a8d0f5f3904577cda153740d069ac507ccd53ed588dd841aee3e844fb6ba8d",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1188318311:closuretxt-recast-post-processing",
+      "inputDigest": "89ad3f44d133eeeb91bcb496c4d9c3201f2b79e8592a52c6a80def1b3a528d5f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1188318311",
+    "identity": "github:1188318311"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39108170066,
+    "sourceSha": "3e4ba6a0ed581f0ca492e6adc381e935a8288430"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/closuretxt-recast-post-processing.json",
+      "sha256": "f8cbc66ee0869c43edeaf758f05fc737ed6de0cc5048f23a1d285ce8c48f862b",
+      "gitBlobSha": "22448b3d06bc15c6762123fda4b4e5eea86f490d"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/17a8d0f5f3904577cda153740d069ac507ccd53ed588dd841aee3e844fb6ba8d.json",
+      "sha256": "65441b74d8918ca278eaad449d6a48871044888ddb90649317a09bbf37d9f178",
+      "gitBlobSha": "01cc13e5c90dbebfd0164d743d65da3afe79a7c6"
+    }
+  ]
+}
