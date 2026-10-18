@@ -73,6 +73,358 @@ import {
 } from "../helpers/automation-fixtures";
 
 const nowMs = AUTOMATION_NOW;
+test.each([
+  { requests: 200, tokens: 0, dailyTokenLimitKnown: false, expected: "active" },
+  {
+    requests: 0,
+    tokens: 200_000,
+    dailyTokenLimitKnown: true,
+    expected: "active",
+  },
+  {
+    requests: 0,
+    tokens: 200_000,
+    dailyTokenLimitKnown: false,
+    expected: undefined,
+  },
+])(
+  "invalid optional policy retains independently proven quota exhaustion: %j",
+  async ({ requests, tokens, dailyTokenLimitKnown, expected }) => {
+    const { state } = await metadataMaintenanceFixture();
+    state.local.modelBudget = {
+      schema_version: 1,
+      updatedAt: new Date(state.nowMs).toISOString(),
+      days: [{ day: "2026-10-08", requests, tokens }],
+      months: [],
+      tickets: [],
+    };
+    const budgetFinding = assessInventoryHealth(state, {
+      reservation: null,
+      dailyTokenLimitKnown,
+    }).find((value) => value.code === "budget-exhausted");
+    expect(budgetFinding?.status).toBe(expected);
+  },
+);
+
+test("invalid optional reservation configuration cannot claim recovery of a saved budget incident", async () => {
+  const { state } = await metadataMaintenanceFixture();
+  state.operations[0].retry = {
+    failure: { kind: "configuration", reasonCode: "budget-exhausted" },
+    transientAttempts: 0,
+    immediateAttempts: 0,
+  };
+  state.local.modelBudget = {
+    schema_version: 1,
+    updatedAt: new Date(state.nowMs).toISOString(),
+    days: [],
+    months: [],
+    tickets: [],
+  };
+  expect(
+    assessInventoryHealth(state, { reservation: null }).filter(
+      (value) => value.code === "budget-exhausted",
+    ),
+  ).toEqual([]);
+});
+
+test.each([
+  {
+    name: "remaining daily requests cannot fit the batch",
+    requests: 199,
+    monthlyUsd: undefined,
+    price: true,
+    repairPrice: true,
+    status: "active",
+  },
+  {
+    name: "monthly accounting requires primary pricing",
+    requests: 0,
+    monthlyUsd: 1,
+    price: false,
+    repairPrice: true,
+    status: "active",
+  },
+  {
+    name: "monthly accounting requires repair pricing",
+    requests: 0,
+    monthlyUsd: 1,
+    price: true,
+    repairPrice: false,
+    status: "active",
+  },
+  {
+    name: "the entire priced batch fits",
+    requests: 0,
+    monthlyUsd: 1,
+    price: true,
+    repairPrice: true,
+    status: "recovered",
+  },
+])(
+  "reservation health: $name",
+  async ({ requests, monthlyUsd, price, repairPrice, status }) => {
+    const { state } = await metadataMaintenanceFixture();
+    state.local.modelBudget = {
+      schema_version: 1,
+      updatedAt: new Date(state.nowMs).toISOString(),
+      days: [{ day: "2026-10-08", requests, tokens: 0 }],
+      months: [],
+      tickets: [],
+    };
+    const original = JSON.stringify(state);
+    const policy = {
+      monthlyUsd,
+      requests: [
+        {
+          model: "primary",
+          requestCount: 3,
+          requestedTokens: 180_000,
+          ...(price
+            ? {
+                price: {
+                  model: "primary",
+                  inputUsdPerMillion: 1,
+                  outputUsdPerMillion: 1,
+                },
+              }
+            : {}),
+        },
+        {
+          model: "repair",
+          requestCount: 1,
+          requestedTokens: 15_000,
+          ...(repairPrice
+            ? {
+                price: {
+                  model: "repair",
+                  inputUsdPerMillion: 1,
+                  outputUsdPerMillion: 1,
+                },
+              }
+            : {}),
+        },
+      ],
+    };
+    expect(
+      assessInventoryHealth(state, {
+        tokensPerDay: 10_000_000,
+        reservation: policy,
+      }),
+    ).toContainEqual(
+      expect.objectContaining({ code: "budget-exhausted", status }),
+    );
+    expect(JSON.stringify(state)).toBe(original);
+  },
+);
+
+test("the scheduled writer uses monthly prices when deciding whether allowance recovered", async () => {
+  const { state } = await metadataMaintenanceFixture();
+  state.operations = [];
+  state.local.kits = [];
+  state.local.publishableRevision = "a".repeat(40);
+  state.local.publishableCommittedAt = new Date(state.nowMs).toISOString();
+  state.local.activeDeployment = {
+    mode: "ordinary",
+    deployment: { sourceSha: "a".repeat(40) },
+  };
+  state.local.modelBudget = {
+    schema_version: 1,
+    updatedAt: new Date(state.nowMs).toISOString(),
+    days: [],
+    months: [
+      { month: "2026-10", reservedMicrousd: 1_000_000, unpricedTokens: 0 },
+    ],
+    tickets: [],
+  };
+  const bodies: string[] = [];
+  const result = await runAutomationWriterReconciliation({
+    load: async () => state,
+    env: {
+      GITHUB_REF: "refs/heads/main",
+      GITHUB_REPOSITORY: state.repository,
+      GITHUB_EVENT_NAME: "workflow_dispatch",
+      GITHUB_ACTOR_ID: "2625904",
+      GITHUB_WORKFLOW_REF: `${state.repository}/.github/workflows/automation-writer.yml@refs/heads/main`,
+      TAVERNARY_PUBLISHER_BOT_ID: String(state.publisherActorId),
+      TAVERNARY_MODEL_DAILY_TOKENS: "10000000",
+      TAVERNARY_MODEL_MONTHLY_USD: "1",
+      UTILITY_MODEL: "approved",
+      TAVERNARY_MODEL_PRICES:
+        '{"approved":{"inputUsdPerMillion":1,"outputUsdPerMillion":1}}',
+    },
+    gh: async (args, payload) => {
+      if (!args.includes("POST") || !payload)
+        throw new Error("Unexpected GitHub request");
+      bodies.push(payload);
+      return JSON.stringify({
+        ...JSON.parse(payload),
+        number: 7,
+        state: "open",
+        user: { id: state.publisherActorId, type: "Bot" },
+      });
+    },
+  });
+  expect(result.health).toMatchObject({ status: "updated", number: 7 });
+  expect(bodies).toHaveLength(1);
+  expect(JSON.parse(bodies[0]).body).toContain('"subject":"dependency:budget"');
+});
+
+test("monthly spending exhaustion cannot be cleared by available daily counters", async () => {
+  const { state } = await metadataMaintenanceFixture();
+  state.operations[0].retry = {
+    failure: { kind: "configuration", reasonCode: "budget-exhausted" },
+    transientAttempts: 0,
+    immediateAttempts: 0,
+  };
+  state.local.modelBudget = {
+    schema_version: 1,
+    updatedAt: new Date(state.nowMs).toISOString(),
+    days: [],
+    months: [
+      { month: "2026-10", reservedMicrousd: 1_000_000, unpricedTokens: 0 },
+    ],
+    tickets: [],
+  };
+  const original = JSON.stringify(state);
+  expect(
+    assessInventoryHealth(state, {
+      tokensPerDay: 10_000_000,
+      reservation: {
+        monthlyUsd: 1,
+        requests: [
+          {
+            model: "approved",
+            requestCount: 3,
+            requestedTokens: 180_000,
+            price: {
+              model: "approved",
+              inputUsdPerMillion: 1,
+              outputUsdPerMillion: 1,
+            },
+          },
+        ],
+      },
+    }),
+  ).toContainEqual(
+    expect.objectContaining({ code: "budget-exhausted", status: "active" }),
+  );
+  expect(JSON.stringify(state)).toBe(original);
+});
+
+test("persistent classified metadata failures still escalate after bounded retries", () => {
+  const operation = operationFixture({
+    identity: {
+      kind: "metadata",
+      subject: "source:invalid-output",
+      inputDigest: "a".repeat(64),
+      policyVersion: "1",
+    },
+    retry: {
+      failure: { kind: "transient", reasonCode: "provider-response-invalid" },
+      transientAttempts: 3,
+      immediateAttempts: 0,
+    },
+  });
+  const findings = assessAutomationHealth({
+    nowMs,
+    operations: [{ ...operation, automatic: true }],
+  });
+  expect(
+    findings.filter((value) => value.subject === `operation:${operation.key}`),
+  ).toEqual([
+    expect.objectContaining({
+      status: "active",
+      reason: "provider-response-invalid",
+    }),
+  ]);
+});
+
+test("classified advisory output failures remain visible in the shared investigation", async () => {
+  const { state } = await metadataMaintenanceFixture();
+  const advisory = state.operations.find(
+    (value) => value.identity.kind === "advisory",
+  )!;
+  advisory.retry = {
+    failure: { kind: "transient", reasonCode: "provider-response-invalid" },
+    transientAttempts: 3,
+    immediateAttempts: 0,
+  };
+  expect(assessInventoryHealth(state)).toContainEqual(
+    expect.objectContaining({
+      subject: "automation:advisory",
+      status: "active",
+      reason: "provider-response-invalid",
+      count: 1,
+    }),
+  );
+});
+
+test("repeated advisory failures share one investigation while legacy incidents are superseded", async () => {
+  const { state } = await metadataMaintenanceFixture();
+  const advisory = state.operations.find(
+    (value) => value.identity.kind === "advisory",
+  )!;
+  advisory.retry = {
+    failure: { kind: "unknown", reasonCode: "unclassified-failure" },
+    transientAttempts: 3,
+    immediateAttempts: 3,
+  };
+  const second = operationFixture({
+    identity: { ...advisory.identity, subject: "source:second-advisory" },
+    retry: structuredClone(advisory.retry),
+  });
+  state.operations.push(second);
+  const findings = assessInventoryHealth(state).filter(
+    (value) => value.code === "unknown-failure",
+  );
+
+  expect(findings.filter((value) => value.status === "active")).toEqual([
+    expect.objectContaining({ subject: "automation:advisory", count: 2 }),
+  ]);
+  for (const operation of [advisory, second])
+    expect(findings).toContainEqual(
+      expect.objectContaining({
+        subject: `operation:${operation.key}`,
+        status: "recovered",
+        reason: "incident-grouped",
+      }),
+    );
+  advisory.retry = null;
+  second.retry = null;
+  expect(assessInventoryHealth(state)).toContainEqual(
+    expect.objectContaining({
+      code: "unknown-failure",
+      subject: "automation:advisory",
+      status: "recovered",
+      count: 0,
+    }),
+  );
+});
+
+test("a saved budget refusal cannot keep a recovered daily allowance incident active", async () => {
+  const { state } = await metadataMaintenanceFixture();
+  state.operations[0].retry = {
+    failure: { kind: "configuration", reasonCode: "budget-exhausted" },
+    transientAttempts: 0,
+    immediateAttempts: 0,
+  };
+  state.local.modelBudget = {
+    schema_version: 1,
+    updatedAt: new Date(state.nowMs).toISOString(),
+    days: [{ day: "2026-10-08", requests: 116, tokens: 5_655_000 }],
+    months: [],
+    tickets: [],
+  };
+  const before = JSON.stringify(state);
+
+  expect(
+    assessInventoryHealth(state, { tokensPerDay: 10_000_000 }).find(
+      (value) => value.code === "budget-exhausted",
+    ),
+  ).toMatchObject({ status: "recovered", reason: "verified-recovery" });
+  expect(JSON.stringify(state)).toBe(before);
+});
+
 test("inventory health keeps the model allowance available below the configured daily token limit", async () => {
   const { state } = await metadataMaintenanceFixture();
   state.local.modelBudget = {

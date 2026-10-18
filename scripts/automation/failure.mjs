@@ -11,6 +11,7 @@ const TRANSIENT_DIAGNOSTICS = new Set([
   "provider-network-error",
   "provider-rate-limited",
   "provider-server-error",
+  "provider-response-invalid",
   "workflow-result-unavailable",
   "github-inventory-unavailable",
   "policy-review-unavailable",

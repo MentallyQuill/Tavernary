@@ -7,6 +7,7 @@ import { createCatalogPolicyReviewProvider } from "../moderation/catalog-policy-
 import { reviewCatalogPolicy } from "../moderation/review-catalog-policy.mjs";
 import { modelProviderOptionsFromEnvironment } from "../catalog/model-provider-configuration.mjs";
 import { generateWithTransientProviderRetries } from "../catalog/enrichment-attempts.mjs";
+import { EnrichmentProviderError } from "../catalog/enrichment-provider.mjs";
 import { markAcquisitionPhase } from "./acquisition-phase.mjs";
 
 export async function acquirePreparedAdvisoryData({
@@ -87,9 +88,10 @@ export async function acquirePreparedAdvisoryData({
   if (result.status === "review-unavailable")
     throw (
       providerFailure ??
-      Object.assign(new Error("Advisory output is unavailable."), {
-        code: "provider-response-invalid",
-      })
+      new EnrichmentProviderError(
+        "provider-response-invalid",
+        "policy-review-output-invalid",
+      )
     );
   markAcquisitionPhase(options, "acquisition-output");
   return {

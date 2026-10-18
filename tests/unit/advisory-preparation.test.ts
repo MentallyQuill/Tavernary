@@ -159,7 +159,7 @@ test("rejected advisory review retains the original error, receiver, input and r
   expect(budgetGuard).not.toHaveBeenCalled();
 });
 
-test("fulfilled semantic advisory rejection stays at provider-output without a typed provider error", async () => {
+test("semantic advisory rejection exposes a fixed diagnostic without response text", async () => {
   const budget = verifiedAdvisoryBudget();
   const charged = JSON.stringify(budget.state);
   const phases: string[] = [];
@@ -173,8 +173,11 @@ test("fulfilled semantic advisory rejection stays at provider-output without a t
     onAcquisitionPhase: (phase) => phases.push(phase),
   });
   const failure = await fixture.prepare().catch((error: unknown) => error);
-  expect(failure).toMatchObject({ code: "provider-response-invalid" });
-  expect(failure).not.toBeInstanceOf(EnrichmentProviderError);
+  expect(failure).toBeInstanceOf(EnrichmentProviderError);
+  expect(failure).toMatchObject({
+    code: "provider-response-invalid",
+    diagnosticCode: "policy-review-output-invalid",
+  });
   expect(phases.at(-1)).toBe("provider-output");
   expect(phases).not.toContain("acquisition-output");
   expect(fixture.calls).toEqual({ requests: 1, delays: [] });

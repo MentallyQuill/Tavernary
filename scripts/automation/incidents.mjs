@@ -14,9 +14,11 @@ function body(finding) {
     ...(finding.revision ? { revision: finding.revision } : {}),
   };
   const guidance =
-    finding.code === "enrichment-unresolved"
-      ? "Inspect `data/reports/enrichment-report.json` for the frozen run, project IDs and sanitized terminal reasons. Repair the affected source or provider, then request enrichment from the owner-only Catalog enrichment request Action. A later clean, verified full deployment closes this incident."
-      : "Inspect the corresponding Actions run and repair the reported dependency or operation. Catalog processing continues independently.";
+    finding.subject === "automation:advisory"
+      ? "Repeated advisory failures are tracked together here. Inspect the Catalog: Advisory policy review Actions runs and their fixed provider diagnostics. Affected counts operations still failing; older per-operation investigations are superseded by this issue. Catalog processing continues independently."
+      : finding.code === "enrichment-unresolved"
+        ? "Inspect `data/reports/enrichment-report.json` for the frozen run, project IDs and sanitized terminal reasons. Repair the affected source or provider, then request enrichment from the owner-only Catalog enrichment request Action. A later clean, verified full deployment closes this incident."
+        : "Inspect the corresponding Actions run and repair the reported dependency or operation. Catalog processing continues independently.";
   return `<!-- tavernary-automation-incident:v1:${finding.key} -->\n\n${HEALTH_TITLES[finding.code]}. ${guidance}\n\nSubject: \`${finding.subject}\`\nReason: \`${finding.reason}\`\nAffected: ${finding.count}\n\n<!-- evidence:${JSON.stringify(evidence)} -->`;
 }
 function intact(issue, key) {
@@ -126,7 +128,7 @@ export function planIncidentUpdates({
       });
   }
   return mutations.sort((left, right) => {
-    const order = { create: 0, close: 1, reopen: 2, update: 3 };
+    const order = { create: 0, reopen: 1, close: 2, update: 3 };
     return (
       order[left.action] - order[right.action] ||
       (left.number ?? Number.MAX_SAFE_INTEGER) -
