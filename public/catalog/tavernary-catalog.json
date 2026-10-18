@@ -112284,7 +112284,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "The Rewrite Extension for SillyTavern dynamically rewrites, shortens, or expands selected chat text via AI. Custom macros and streaming output with undo and abort controls enable flexible in-place modifications.",
+      "summary": "SillyTavern extension for selecting text in a chat message and rewriting, shortening, or expanding it with AI, with custom macros, real-time streaming, undo, and abort controls (README Overview).",
       "canonicalUrl": "https://github.com/splitclover/rewrite-extension",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -112297,22 +112297,10 @@
       ],
       "tags": [
         {
-          "id": "improve-writing-and-prose",
-          "label": "Improve writing and prose",
-          "description": "Strengthen prose, dialogue, style, pacing, subtext, or general writing quality.",
-          "facet": "goal"
-        },
-        {
           "id": "edit-and-refine-messages",
           "label": "Edit and refine messages",
           "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
           "facet": "goal"
-        },
-        {
-          "id": "non-destructive",
-          "label": "Non-destructive",
-          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
-          "facet": "trait"
         },
         {
           "id": "streaming-aware",
@@ -112475,7 +112463,7 @@
           "https://github.com/splitclover/rewrite-extension"
         ],
         "summary": [
-          "The Rewrite Extension for SillyTavern dynamically rewrites, shortens, or expands selected chat text via AI. Custom macros and streaming output with undo and abort controls enable flexible in-place modifications."
+          "SillyTavern extension for selecting text in a chat message and rewriting, shortening, or expanding it with AI, with custom macros, real-time streaming, undo, and abort controls (README Overview)."
         ],
         "kind": [
           "extension"
@@ -112484,18 +112472,10 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Improve writing and prose",
-          "writing assistance",
-          "prose improvement",
-          "co-writing",
           "Edit and refine messages",
           "message rewriting",
           "chat editing",
           "response refinement",
-          "Non-destructive",
-          "reversible workflow",
-          "preserves originals",
-          "safe overlay",
           "Streaming-aware",
           "live token processing",
           "stream processing",
@@ -270181,7 +270161,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "The Rewrite Extension for SillyTavern dynamically rewrites, shortens, or expands selected chat text via AI. Custom macros and streaming output with undo and abort controls enable flexible in-place modifications.",
+            "summary": "SillyTavern extension for selecting text in a chat message and rewriting, shortening, or expanding it with AI, with custom macros, real-time streaming, undo, and abort controls (README Overview).",
             "canonicalUrl": "https://github.com/splitclover/rewrite-extension",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -270194,22 +270174,10 @@
             ],
             "tags": [
               {
-                "id": "improve-writing-and-prose",
-                "label": "Improve writing and prose",
-                "description": "Strengthen prose, dialogue, style, pacing, subtext, or general writing quality.",
-                "facet": "goal"
-              },
-              {
                 "id": "edit-and-refine-messages",
                 "label": "Edit and refine messages",
                 "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
                 "facet": "goal"
-              },
-              {
-                "id": "non-destructive",
-                "label": "Non-destructive",
-                "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
-                "facet": "trait"
               },
               {
                 "id": "streaming-aware",
@@ -270372,7 +270340,7 @@
                 "https://github.com/splitclover/rewrite-extension"
               ],
               "summary": [
-                "The Rewrite Extension for SillyTavern dynamically rewrites, shortens, or expands selected chat text via AI. Custom macros and streaming output with undo and abort controls enable flexible in-place modifications."
+                "SillyTavern extension for selecting text in a chat message and rewriting, shortening, or expanding it with AI, with custom macros, real-time streaming, undo, and abort controls (README Overview)."
               ],
               "kind": [
                 "extension"
@@ -270381,18 +270349,10 @@
                 "Interface and workflow"
               ],
               "tags": [
-                "Improve writing and prose",
-                "writing assistance",
-                "prose improvement",
-                "co-writing",
                 "Edit and refine messages",
                 "message rewriting",
                 "chat editing",
                 "response refinement",
-                "Non-destructive",
-                "reversible workflow",
-                "preserves originals",
-                "safe overlay",
                 "Streaming-aware",
                 "live token processing",
                 "stream processing",

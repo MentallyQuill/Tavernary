@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "splitclover-rewrite-extension",
+  "sourceId": "github-830588458",
+  "sourceIdentity": "github:830588458",
+  "inputDigest": "80eac41c8af199829a9b8118f19683e893d5afd2f9b8510bc51f70384d06cf1c",
+  "fingerprint": "7fb7564464dabd58b7aaa1e47189cfff665437436bf8a57218d1ed16fac50054",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "992924f29c444323a0ee378faaa4d2592fd3f714ad89f84dd902a06b0bdabe25",
+  "outputDigest": "162f43821851485ae5e265b0216125c6dc861d731a96e491a5efba2a42bc8779",
+  "headSha": "019f5f53a6feb3eb9b8015136d175254954ba7c9",
+  "observedAt": "2026-10-18T06:08:50.086Z"
+}

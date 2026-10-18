@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "18c3839bd147fb5ecd3d968579dee3042e6298b7c4f21ab91846778abb28e2bd",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-830588458:splitclover-rewrite-extension",
+      "inputDigest": "80eac41c8af199829a9b8118f19683e893d5afd2f9b8510bc51f70384d06cf1c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-830588458",
+    "identity": "github:830588458"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39102959542,
+    "sourceSha": "84a44fe858376de67c8bf5c0bf867e6a216f0b55"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/splitclover-rewrite-extension.json",
+      "sha256": "f3735cdbafc1669ff1c2dddf19c1fe4f812e81bc44fab214275ebca55a329857",
+      "gitBlobSha": "efec2643be469bbb1493f0905cf5ec6fd9e0b18b"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/18c3839bd147fb5ecd3d968579dee3042e6298b7c4f21ab91846778abb28e2bd.json",
+      "sha256": "9a53f37c7186e2eeaa3298fe3da51c40231aeb36a0b0762cb4847a805bb91a36",
+      "gitBlobSha": "c323dade879b45f7912981bb434f592a5cfe6033"
+    }
+  ]
+}
