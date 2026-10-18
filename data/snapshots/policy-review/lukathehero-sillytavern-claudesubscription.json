@@ -8,6 +8,9 @@
   "status": "review-suggested",
   "category": "potential-other-catalog-policy-conflict",
   "reviewed_at": "2026-10-18T11:53:51.537Z",
-  "retry": { "attempts": 0, "last_failure_at": null },
-  "maintenance_issue_number": null
+  "retry": {
+    "attempts": 0,
+    "last_failure_at": null
+  },
+  "maintenance_issue_number": 971
 }
