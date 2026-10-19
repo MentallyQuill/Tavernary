@@ -56115,7 +56115,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "2a511a31b987a22cdf474acf23d8513ddf3259d7",
+        "currentSha": "e773240bfab72f3704f3efa52722ec7d105cdcf3",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -56168,12 +56168,12 @@
           },
           {
             "provider": "github",
-            "login": "bangonicdd2",
+            "login": "poroyo",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "poroyo",
+            "login": "bangonicdd2",
             "botOrAi": false
           },
           {
@@ -56203,17 +56203,17 @@
           },
           {
             "provider": "github",
+            "login": "rsyumi",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "tammy3211",
             "botOrAi": false
           },
           {
             "provider": "github",
             "login": "bangonicdd",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "rsyumi",
             "botOrAi": false
           },
           {
@@ -56333,6 +56333,11 @@
           },
           {
             "provider": "github",
+            "login": "G4tsby",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "niceandneat",
             "botOrAi": false
           },
@@ -56348,22 +56353,17 @@
           },
           {
             "provider": "github",
-            "login": "EugenesDad",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
             "login": "dohyun-ko",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "yaa19212-droid",
+            "login": "EugenesDad",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "G4tsby",
+            "login": "yaa19212-droid",
             "botOrAi": false
           },
           {
@@ -56393,12 +56393,12 @@
           },
           {
             "provider": "github",
-            "login": "iicdii",
+            "login": "Hakjeong",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "Hakjeong",
+            "login": "iicdii",
             "botOrAi": false
           },
           {
@@ -56423,6 +56423,11 @@
           },
           {
             "provider": "github",
+            "login": "kamukande",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "eltociear",
             "botOrAi": false
           },
@@ -56438,7 +56443,7 @@
           },
           {
             "provider": "github",
-            "login": "kamukande",
+            "login": "kasparovabi",
             "botOrAi": false
           },
           {
@@ -56464,11 +56469,6 @@
           {
             "provider": "github",
             "login": "kmou424",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "kasparovabi",
             "botOrAi": false
           },
           {
@@ -56523,6 +56523,11 @@
           },
           {
             "provider": "github",
+            "login": "MalrangH",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "rndka9-alt",
             "botOrAi": false
           },
@@ -56542,15 +56547,15 @@
             "botOrAi": false
           }
         ],
-        "humanContributorCount": 81,
+        "humanContributorCount": 82,
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-08T06:20:11.000Z",
-        "activeWeeks12": 12,
+        "latestSourceActivityAt": "2026-10-16T03:05:09.000Z",
+        "activeWeeks12": 10,
         "weeklyActivity": [
-          true,
-          true,
+          false,
+          false,
           true,
           true,
           true,
@@ -56567,19 +56572,19 @@
       },
       "latestReleaseAt": "2026-08-25T23:02:13.000Z",
       "community": {
-        "stars": 1714,
-        "forks": 355,
+        "stars": 1736,
+        "forks": 357,
         "watchers": 24,
-        "aggregate": 2093
+        "aggregate": 2117
       },
-      "repositorySizeKb": 78394,
+      "repositorySizeKb": 77854,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-19T14:51:39.856Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -56640,16 +56645,16 @@
           "Bo26fhmC5M",
           "tasoo-oos",
           "kangjoseph90",
-          "bangonicdd2",
           "poroyo",
+          "bangonicdd2",
           "HyperBlaze456",
           "hashcoko",
           "joonsoome",
           "ljh5650",
           "miladiashe",
+          "rsyumi",
           "tammy3211",
           "bangonicdd",
-          "rsyumi",
           "aegkmq",
           "Decikingship",
           "shirosaki-hana",
@@ -56673,34 +56678,34 @@
           "nbsp1221",
           "HopeJourney",
           "cloak1505",
+          "G4tsby",
           "niceandneat",
           "justpain02",
           "RivelleDays",
-          "EugenesDad",
           "dohyun-ko",
+          "EugenesDad",
           "yaa19212-droid",
-          "G4tsby",
           "phyyou",
           "nevaeh5379",
           "xCrossss",
           "green1052",
           "luyiourwong",
-          "iicdii",
           "Hakjeong",
+          "iicdii",
           "Amoeba1234",
           "tiamatiramisu",
           "sduoooh",
           "murloctinyfin-oss",
+          "kamukande",
           "eltociear",
           "LLMLover452",
           "rhplus0831",
-          "kamukande",
+          "kasparovabi",
           "dootaang",
           "alattalatta",
           "namda-on",
           "misisipir",
           "kmou424",
-          "kasparovabi",
           "jinook518",
           "hush27",
           "donmarble",
@@ -56711,6 +56716,7 @@
           "Yvonne-Aizawa",
           "jgreiner1024",
           "SeA-luby",
+          "MalrangH",
           "rndka9-alt",
           "LI-NA",
           "kurohomeless",

@@ -9,26 +9,31 @@
     "url": "https://github.com/kwaroran/Risuai",
     "description": "Make your own story. User-friendly software for LLM roleplaying",
     "default_branch": "main",
-    "head_sha": "2a511a31b987a22cdf474acf23d8513ddf3259d7",
-    "head_committed_at": "2026-10-08T06:20:11.000Z",
+    "head_sha": "e773240bfab72f3704f3efa52722ec7d105cdcf3",
+    "head_committed_at": "2026-10-17T02:16:27.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2023-04-12T13:08:52.000Z",
-    "size_kb": 78394
+    "size_kb": 77854
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-08T06:20:11.000Z",
+    "latest_source_activity_at": "2026-10-16T03:05:09.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-16T03:05:09.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-05",
-        "latest_at": "2026-10-08T06:20:11.000Z",
-        "precision": "interval"
+        "latest_at": "2026-10-10T11:57:27.000Z",
+        "precision": "exact"
       },
       {
         "week_start": "2026-09-28",
-        "latest_at": "2026-10-03T17:34:34.000Z",
+        "latest_at": "2026-10-03T23:59:50.000Z",
         "precision": "exact"
       },
       {
@@ -53,7 +58,7 @@
       },
       {
         "week_start": "2026-08-24",
-        "latest_at": "2026-08-30T15:59:07.000Z",
+        "latest_at": "2026-08-30T15:59:29.000Z",
         "precision": "exact"
       },
       {
@@ -70,37 +75,27 @@
         "week_start": "2026-08-03",
         "latest_at": "2026-08-09T09:55:49.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-08-02T04:00:12.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-20",
-        "latest_at": "2026-07-25T10:25:16.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-08-25T23:02:13.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-06T14:16:03.206Z",
+    "baseline_completed_at": "2026-10-19T14:48:29.790Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "2a511a31b987a22cdf474acf23d8513ddf3259d7"
+    "evidence_head_sha": "e773240bfab72f3704f3efa52722ec7d105cdcf3"
   },
   "community": {
-    "stars_count": 1714,
-    "forks_count": 355,
+    "stars_count": 1736,
+    "forks_count": 357,
     "watchers_count": 24,
-    "aggregate": 2093
+    "aggregate": 2117
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-19T14:51:39.856Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -114,16 +109,16 @@
       { "login": "Bo26fhmC5M", "type": "User", "provider": "github" },
       { "login": "tasoo-oos", "type": "User", "provider": "github" },
       { "login": "kangjoseph90", "type": "User", "provider": "github" },
-      { "login": "bangonicdd2", "type": "User", "provider": "github" },
       { "login": "poroyo", "type": "User", "provider": "github" },
+      { "login": "bangonicdd2", "type": "User", "provider": "github" },
       { "login": "HyperBlaze456", "type": "User", "provider": "github" },
       { "login": "hashcoko", "type": "User", "provider": "github" },
       { "login": "joonsoome", "type": "User", "provider": "github" },
       { "login": "ljh5650", "type": "User", "provider": "github" },
       { "login": "miladiashe", "type": "User", "provider": "github" },
+      { "login": "rsyumi", "type": "User", "provider": "github" },
       { "login": "tammy3211", "type": "User", "provider": "github" },
       { "login": "bangonicdd", "type": "User", "provider": "github" },
-      { "login": "rsyumi", "type": "User", "provider": "github" },
       { "login": "aegkmq", "type": "User", "provider": "github" },
       { "login": "Decikingship", "type": "User", "provider": "github" },
       { "login": "shirosaki-hana", "type": "User", "provider": "github" },
@@ -147,34 +142,34 @@
       { "login": "nbsp1221", "type": "User", "provider": "github" },
       { "login": "HopeJourney", "type": "User", "provider": "github" },
       { "login": "cloak1505", "type": "User", "provider": "github" },
+      { "login": "G4tsby", "type": "User", "provider": "github" },
       { "login": "niceandneat", "type": "User", "provider": "github" },
       { "login": "justpain02", "type": "User", "provider": "github" },
       { "login": "RivelleDays", "type": "User", "provider": "github" },
-      { "login": "EugenesDad", "type": "User", "provider": "github" },
       { "login": "dohyun-ko", "type": "User", "provider": "github" },
+      { "login": "EugenesDad", "type": "User", "provider": "github" },
       { "login": "yaa19212-droid", "type": "User", "provider": "github" },
-      { "login": "G4tsby", "type": "User", "provider": "github" },
       { "login": "phyyou", "type": "User", "provider": "github" },
       { "login": "nevaeh5379", "type": "User", "provider": "github" },
       { "login": "xCrossss", "type": "User", "provider": "github" },
       { "login": "green1052", "type": "User", "provider": "github" },
       { "login": "luyiourwong", "type": "User", "provider": "github" },
-      { "login": "iicdii", "type": "User", "provider": "github" },
       { "login": "Hakjeong", "type": "User", "provider": "github" },
+      { "login": "iicdii", "type": "User", "provider": "github" },
       { "login": "Amoeba1234", "type": "User", "provider": "github" },
       { "login": "tiamatiramisu", "type": "User", "provider": "github" },
       { "login": "sduoooh", "type": "User", "provider": "github" },
       { "login": "murloctinyfin-oss", "type": "User", "provider": "github" },
+      { "login": "kamukande", "type": "User", "provider": "github" },
       { "login": "eltociear", "type": "User", "provider": "github" },
       { "login": "LLMLover452", "type": "User", "provider": "github" },
       { "login": "rhplus0831", "type": "User", "provider": "github" },
-      { "login": "kamukande", "type": "User", "provider": "github" },
+      { "login": "kasparovabi", "type": "User", "provider": "github" },
       { "login": "dootaang", "type": "User", "provider": "github" },
       { "login": "alattalatta", "type": "User", "provider": "github" },
       { "login": "namda-on", "type": "User", "provider": "github" },
       { "login": "misisipir", "type": "User", "provider": "github" },
       { "login": "kmou424", "type": "User", "provider": "github" },
-      { "login": "kasparovabi", "type": "User", "provider": "github" },
       { "login": "jinook518", "type": "User", "provider": "github" },
       { "login": "hush27", "type": "User", "provider": "github" },
       { "login": "donmarble", "type": "User", "provider": "github" },
@@ -185,6 +180,7 @@
       { "login": "Yvonne-Aizawa", "type": "User", "provider": "github" },
       { "login": "jgreiner1024", "type": "User", "provider": "github" },
       { "login": "SeA-luby", "type": "User", "provider": "github" },
+      { "login": "MalrangH", "type": "User", "provider": "github" },
       { "login": "rndka9-alt", "type": "User", "provider": "github" },
       { "login": "LI-NA", "type": "User", "provider": "github" },
       { "login": "kurohomeless", "type": "User", "provider": "github" },
@@ -193,7 +189,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-19T14:48:29.790Z",
     "stale_since": null
   }
 }
