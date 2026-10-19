@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "04150d6e5bb68fd2e7bbf138c3ab7e860decb1e5e0f52bb4e536734e5f592c2f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1095739220:chesswoodspixel-sillytavern-lorebookstickysort",
+      "inputDigest": "87ca7550bb657e86dccb6b9385350e61beb270ca65f6e4b63d5865d385756514",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1095739220",
+    "identity": "github:1095739220"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39325815504,
+    "sourceSha": "c4e70e0056267c14f79e46b777b770d638163c50"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/chesswoodspixel-sillytavern-lorebookstickysort.json",
+      "sha256": "d618e478054617b80d2eb03fa3a12f692ad240bf4ecc7e9d549a7cfbcb3ba905",
+      "gitBlobSha": "0f07c3d610b10d801fd2e018a1eb509c5021f0b8"
+    }
+  ]
+}
