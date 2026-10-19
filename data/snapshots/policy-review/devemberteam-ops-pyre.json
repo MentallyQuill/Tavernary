@@ -5,12 +5,9 @@
   "source_identity": "github:devemberteam-ops/pyre",
   "evidence_fingerprint": "a854c97980454124fa95cda7f25d2e09d5a21893c2aecf5f9bfecd8ffa1d2b78",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-06T11:55:09.380Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-06T11:55:09.380Z"
-  },
+  "reviewed_at": "2026-10-19T21:06:12.431Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

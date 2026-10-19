@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0488d145c2138dc89c43fbbdebcb5d2232f6c163ea6a6379ac0d90284502adae",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1257302750:devemberteam-ops-pyre",
+      "inputDigest": "b954530e7a966800e1fa1b9d7a6338d5958055396deb669914f61e447efbeda1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1257302750",
+    "identity": "github:1257302750"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39324679377,
+    "sourceSha": "885460e14d178669a61464df2f99162a18c18d4c"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/devemberteam-ops-pyre.json",
+      "sha256": "d564ff64008c3b1b67116110fbda97dd38879ce28d213e426fefaaa4aaa2a726",
+      "gitBlobSha": "faede1062f721eeabc1d64a1ee9e25e78de38852"
+    }
+  ]
+}
