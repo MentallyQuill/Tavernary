@@ -447,7 +447,8 @@
     "75e68dd3f372c2b2b9886e691685377153460445f45742d0f8cc05e19816b55b",
     "d083449fc007c10f0acfe7d1da4ab4e8e28ddfed9d566154098340371b0e626a",
     "805158d73384419c2e98120066e7b29a46f48fced55bf89cdde4ddcac6e4c7b9",
-    "72947abfc9b963bddc66915b38115687b3738ccba1172bceaa986a10a042d218"
+    "72947abfc9b963bddc66915b38115687b3738ccba1172bceaa986a10a042d218",
+    "41b78dfc2ebb76ee2e1b5f9195cde27b523b25f82d92eae451d5e5aed697282d"
   ],
   "reports": [
     {
@@ -96157,6 +96158,83 @@
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1234743592/9698e78125e682b602fa7de4a90f4aa25ce8a791/5/8ef84bbc2080d0258acc97975cecda8796a9724609a84e3145650c22d811ccf7/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1234743592/history/",
       "assessed_at": "2026-10-15T08:26:46.611Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
+      "danger_basis": "none",
+      "assessment_source": "deterministic_regrade",
+      "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 0,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
+        "cited_finding_ids": [],
+        "interaction_chains": []
+      }
+    },
+    {
+      "report_id": "41b78dfc2ebb76ee2e1b5f9195cde27b523b25f82d92eae451d5e5aed697282d",
+      "report_digest": "41b78dfc2ebb76ee2e1b5f9195cde27b523b25f82d92eae451d5e5aed697282d",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "5",
+      "rule_catalog_version": "2",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "5",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v7",
+      "assessment_schema_version": "contextual-assessment-v2",
+      "source_id": "github-1382809106",
+      "provider": "github",
+      "repository_id": 1382809106,
+      "repository": "Dulgadurbit/SillyCanvas",
+      "target_sha": "dc5b6034ac7e202ecb40f33fb8d84d5dc6b8c475",
+      "completed_at": "2026-10-15T12:06:43.794Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 8,
+        "assessments": 8,
+        "observations": 1,
+        "items": 9,
+        "disposition": {
+          "expected_behavior": 9,
+          "minor_weakness": 0,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 9,
+          "low": 0,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 9,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": { "low": 0, "medium": 0, "high": 9 },
+        "recommended_risk": { "low": 9, "material": 0, "high": 0 }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 66,
+        "inventory_bytes": 1737150,
+        "tools_completed": 6,
+        "tools_not_applicable": 2,
+        "evidence_validated": 8,
+        "metadata_only_candidates": 0,
+        "review_required": 8,
+        "review_completed": 8,
+        "javascript_analysis_status": "incomplete"
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1382809106/dc5b6034ac7e202ecb40f33fb8d84d5dc6b8c475/5/41b78dfc2ebb76ee2e1b5f9195cde27b523b25f82d92eae451d5e5aed697282d/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1382809106/history/",
+      "assessed_at": "2026-10-19T05:23:03.483Z",
       "synthesis_policy_version": "5",
       "synthesis_model": "deterministic-policy-v5",
       "danger_basis": "none",
