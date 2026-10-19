@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "siliconlotus-st-worldsapart",
+  "name": "st-worldsapart",
+  "kind": "extension",
+  "summary": "WorldsApart for SillyTavern is an extension for managing lorebooks, entry keywords, and the selection and insertion of lorebook entries into the prompt (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1344136924",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": ["manage-lorebooks", "retrieve-relevant-context"],
+  "cataloged_at": "2026-10-19T03:07:04.640Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
