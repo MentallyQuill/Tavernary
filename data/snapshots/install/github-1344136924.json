@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1344136924",
+  "head_sha": "dcf23aeb2402d6c7ae42c74bffbd999a16e45bb3",
+  "observed_at": "2026-10-19T03:07:12.511Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "st-worldsapart",
+  "manifest": {
+    "display_name": "WorldsApart",
+    "key": null,
+    "minimum_client_version": "1.17.0"
+  }
+}
