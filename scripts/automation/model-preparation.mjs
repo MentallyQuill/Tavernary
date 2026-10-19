@@ -17,6 +17,42 @@ const MODEL_KINDS = new Set([
 ]);
 const PROBE_WINDOW_MS = 86_400_000;
 
+export function modelPreparationBudgetPolicy(env) {
+  let prices;
+  try {
+    prices = env.TAVERNARY_MODEL_PRICES
+      ? JSON.parse(env.TAVERNARY_MODEL_PRICES)
+      : {};
+  } catch {
+    throw Object.assign(new Error("Model prices are invalid."), {
+      code: "provider-configuration-invalid",
+    });
+  }
+  if (!prices || typeof prices !== "object" || Array.isArray(prices))
+    throw Object.assign(new Error("Model prices are invalid."), {
+      code: "provider-configuration-invalid",
+    });
+  const modelRequest = (model, requestCount, requestedTokens) => ({
+    model,
+    requestCount,
+    requestedTokens,
+    ...(Object.hasOwn(prices, model)
+      ? { price: { model, ...prices[model] } }
+      : {}),
+  });
+  return {
+    monthlyUsd: env.TAVERNARY_MODEL_MONTHLY_USD
+      ? Number(env.TAVERNARY_MODEL_MONTHLY_USD)
+      : undefined,
+    requests: [
+      modelRequest(env.UTILITY_MODEL, 3, 180000),
+      ...(env.TAVERNARY_ENRICHMENT_MODEL
+        ? [modelRequest(env.TAVERNARY_ENRICHMENT_MODEL, 1, 15000)]
+        : []),
+    ],
+  };
+}
+
 // Receipts carry the existing shared model-provider circuit; reservations are its
 // durable probe claim. Neither a new budget day nor an expired envelope clears it.
 export function assessModelProviderCircuit({

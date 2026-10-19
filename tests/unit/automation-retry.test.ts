@@ -43,6 +43,28 @@ function retryDecision(
   });
 }
 
+test("invalid structured provider output retains its cause and follows bounded retry delays", () => {
+  expect(
+    classifyAutomationFailure({ diagnosticCode: "provider-response-invalid" }),
+  ).toEqual({
+    kind: "transient",
+    reasonCode: "provider-response-invalid",
+  });
+  expect(
+    retryDecision(
+      { diagnosticCode: "provider-response-invalid" },
+      {
+        transientAttempts: 4,
+        immediateAttempts: 3,
+      },
+    ),
+  ).toEqual({
+    action: "retry",
+    nextEligibleAt: "1970-01-02T00:00:00.000Z",
+    reasonCode: "provider-response-invalid",
+  });
+});
+
 test("deterministic validation failure stops mutation for unchanged input", () => {
   expect(
     retryDecision({ validationErrors: ["invalid-manifest"] }),

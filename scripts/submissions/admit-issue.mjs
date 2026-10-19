@@ -143,9 +143,31 @@ async function synchronizeLimitComment(repository, issueNumber, request) {
   });
 }
 
-export async function processIssueAdmission({ event, request }) {
+export async function processIssueAdmission({
+  event,
+  request,
+  publisherActorId,
+}) {
   const repository = event.repository.full_name;
   const currentIssue = event.issue;
+  if (
+    Number.isSafeInteger(publisherActorId) &&
+    publisherActorId > 0 &&
+    currentIssue.user?.id === publisherActorId &&
+    currentIssue.user.type === "Bot" &&
+    !currentIssue.pull_request &&
+    typeof currentIssue.body === "string" &&
+    /^<!-- tavernary-automation-incident:v1:[a-f0-9]{64} -->\n/u.test(
+      currentIssue.body,
+    )
+  )
+    return {
+      admitted: false,
+      reason: "publisher-incident",
+      openIssueCount: 0,
+      admittedIssueNumbers: [],
+      route: "none",
+    };
   let decision;
 
   if (event.action === "edited") {
@@ -301,7 +323,11 @@ async function main() {
     issueNumber: process.env.ISSUE_NUMBER,
     request: github,
   });
-  const decision = await processIssueAdmission({ event, request: github });
+  const decision = await processIssueAdmission({
+    event,
+    request: github,
+    publisherActorId: Number(process.env.TAVERNARY_PUBLISHER_BOT_ID),
+  });
   if (process.env.GITHUB_OUTPUT) {
     const outputs = issueAdmissionOutputs(decision, event);
     await appendFile(

@@ -6,7 +6,7 @@ export function catalogPolicyReviewInstructions() {
 
 Suggest review only when the project's apparent purpose, supported use, or promoted theme may conflict with the public Catalog Policy. Consensual adult sexual content, adult roleplay, kink, fetish content, and ordinary profanity are explicitly permitted and are not reasons for review. Quotations, historical discussion, fictional antagonists, security documentation, incidental terms, and isolated words do not establish a project's purpose. Do not use keyword matching.
 
-The controlled advisory categories are: ${CATALOG_POLICY_REVIEW_CATEGORIES.join(", ")}. Return clear when the bounded evidence does not contextually support one category. Return only the required structured object.`;
+The controlled advisory categories are: ${CATALOG_POLICY_REVIEW_CATEGORIES.join(", ")}. Return clear when the bounded evidence does not contextually support one category. For clear, category and explanation must both be null. For review-suggested, category must be one controlled category and explanation must be a nonempty single-line plain-text explanation of at most 320 characters, with no angle brackets. Return only the required structured object.`;
 }
 
 function responseSchema() {

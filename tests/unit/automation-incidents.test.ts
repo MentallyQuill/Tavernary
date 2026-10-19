@@ -1,5 +1,9 @@
 import { expect, test } from "vitest";
-import { assessAutomationHealth } from "../../scripts/automation/health.mjs";
+import {
+  assessAutomationHealth,
+  assessInventoryHealth,
+} from "../../scripts/automation/health.mjs";
+import { metadataMaintenanceFixture } from "../helpers/automation-fixtures";
 import {
   planIncidentUpdates,
   reconcileIncidentUpdates,
@@ -18,6 +22,58 @@ const env = {
   GITHUB_WORKFLOW_REF:
     "Owner/Repo/.github/workflows/automation-writer.yml@refs/heads/main",
 };
+
+test("a recurring shared investigation reopens before legacy investigations close", async () => {
+  const { state } = await metadataMaintenanceFixture();
+  const advisory = state.operations.find(
+    (value) => value.identity.kind === "advisory",
+  )!;
+  advisory.retry = {
+    failure: { kind: "unknown", reasonCode: "unclassified-failure" },
+    transientAttempts: 3,
+    immediateAttempts: 3,
+  };
+  const oldFindings = assessAutomationHealth({
+    nowMs: state.nowMs,
+    operations: [{ ...advisory, automatic: true }],
+  });
+  const legacy = planIncidentUpdates({
+    findings: oldFindings,
+    existingIssues: [],
+    publisherActorId: state.publisherActorId,
+  })[0];
+  const findings = assessInventoryHealth(state);
+  const shared = planIncidentUpdates({
+    findings,
+    existingIssues: [],
+    publisherActorId: state.publisherActorId,
+  })[0];
+  const issues = [
+    {
+      ...legacy,
+      number: 7,
+      state: "open",
+      user: { id: state.publisherActorId, type: "Bot" },
+    },
+    {
+      ...shared,
+      number: 8,
+      state: "closed",
+      state_reason: "completed",
+      user: { id: state.publisherActorId, type: "Bot" },
+      closed_by: { id: state.publisherActorId, type: "Bot" },
+    },
+  ];
+  const mutations = planIncidentUpdates({
+    findings,
+    existingIssues: issues,
+    publisherActorId: state.publisherActorId,
+  });
+  expect(mutations.map(({ action, number }) => ({ action, number }))).toEqual([
+    { action: "reopen", number: 8 },
+    { action: "close", number: 7 },
+  ]);
+});
 
 test("incidents deduplicate, preserve owner edits and close only observed recovery", () => {
   const input = {

@@ -1,6 +1,12 @@
 import type { ModelBudgetState, ModelBudgetRequest } from "./model-budget.mjs";
 import type { AutomationOperation } from "./operation.mjs";
 import type { AutomationReceipt } from "./receipts.mjs";
+export function modelPreparationBudgetPolicy(
+  env: Record<string, string | undefined>,
+): {
+  monthlyUsd?: number;
+  requests: Array<Omit<ModelBudgetRequest, "operationKey" | "requestId">>;
+};
 export function assessModelProviderCircuit(input: {
   operations: AutomationOperation[];
   receipts: AutomationReceipt[];

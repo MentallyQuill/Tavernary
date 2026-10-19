@@ -1,5 +1,6 @@
 import type { AutomationOperation } from "./operation.mjs";
 import type { AutomationInventoryState } from "./inventory.mjs";
+import type { ModelBudgetRequest } from "./model-budget.mjs";
 export interface HealthFinding {
   key: string;
   code: string;
@@ -43,5 +44,12 @@ export interface HealthInput {
 export function assessAutomationHealth(input: HealthInput): HealthFinding[];
 export function assessInventoryHealth(
   state: AutomationInventoryState,
-  options?: { tokensPerDay?: number },
+  options?: {
+    tokensPerDay?: number;
+    dailyTokenLimitKnown?: boolean;
+    reservation?: {
+      requests: Array<Omit<ModelBudgetRequest, "operationKey">>;
+      monthlyUsd?: number;
+    } | null;
+  },
 ): HealthFinding[];

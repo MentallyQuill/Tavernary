@@ -418,6 +418,24 @@ dispatch and produce a sanitized configuration diagnostic; verified cached work
 and catalog facts remain publishable. Inventory health uses the configured token
 allowance when valid and its existing default when invalid.
 
+The exhausted-allowance incident reflects whether the current preparation batch
+can be reserved under the current daily and optional monthly/price controls.
+Health checks probe the same reservation rules without saving tickets, consuming
+allowance, refunding charges or moving retry deadlines. A saved refusal from an
+older operation does not itself prove that today's allowance is exhausted. Missing
+or invalid budget evidence cannot establish recovery.
+
+Repeated advisory failures share one `automation:advisory` investigation with an
+affected-operation count. The shared investigation is created or reopened before
+intact older per-operation investigations are superseded. Human edits and human
+closures remain protected. Persistent invalid model output keeps an investigation
+active after three bounded retries; metadata and other non-advisory operations
+retain their own investigations. `provider-response-invalid` and the fixed
+`policy-review-output-invalid` detail distinguish invalid structured content from
+an unclassified failure without exposing model output or credentials. Only
+incident reports authored by the configured numeric Publisher Bot identity bypass
+the public intake limit; ordinary users and other bots keep the existing policy.
+
 The current primary reservation covers three attempts and up to 180,000
 requested tokens; configured
 JSON repair reserves one further request and 15,000 tokens. Unused or unknown
