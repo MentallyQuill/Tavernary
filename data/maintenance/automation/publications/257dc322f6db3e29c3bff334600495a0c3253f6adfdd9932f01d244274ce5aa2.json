@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "257dc322f6db3e29c3bff334600495a0c3253f6adfdd9932f01d244274ce5aa2",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1282097657:dan0dandeleon11-dandeleon-multiverse",
+      "inputDigest": "25383d9f45465806b6f4da4a285092cf3c301a0eb7fbc1797821feaf5323cff2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1282097657",
+    "identity": "github:1282097657"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39422545389,
+    "sourceSha": "c02266e0bee4d93bdfc22bdf9a096aa8ab6c5286"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/dan0dandeleon11-dandeleon-multiverse.json",
+      "sha256": "a6650b1a4eba65ce03f0195d117906092c2ffcb779ff76ecf72572e10db8637c",
+      "gitBlobSha": "4734ba78c61080482688c95dd0bb0bc4e231c663"
+    }
+  ]
+}
