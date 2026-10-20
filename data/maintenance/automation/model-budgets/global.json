@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updatedAt": "2026-10-20T08:54:27.256Z",
+  "updatedAt": "2026-10-20T11:36:51.449Z",
   "days": [
     {
       "day": "2026-10-10",
@@ -49,15 +49,15 @@
     },
     {
       "day": "2026-10-20",
-      "requests": 96,
-      "tokens": 4680000
+      "requests": 100,
+      "tokens": 4875000
     }
   ],
   "months": [
     {
       "month": "2026-10",
       "reservedMicrousd": 0,
-      "unpricedTokens": 36270000
+      "unpricedTokens": 36465000
     }
   ],
   "tickets": [
@@ -7404,6 +7404,38 @@
         "requests": 0,
         "tokens": 0
       }
+    },
+    {
+      "id": "ddef33dafd02ca2c67c679a107d92fd46a83126456c26b8a622fa63eae060bc4",
+      "operationKey": "5b922e60b5a5128c97ae71407366bba4b9b99fae8f77ff0c1c5fb5aed83a1a92",
+      "requestId": "writer-39408013568:0",
+      "day": "2026-10-20",
+      "model": "z-ai/glm-5.3-flash",
+      "requestCount": 3,
+      "requestedTokens": 180000,
+      "price": null,
+      "reservedMicrousd": 0,
+      "createdAt": "2026-10-20T11:36:51.449Z",
+      "expiresAt": "2026-10-20T12:21:51.449Z",
+      "producer": null,
+      "settled": false,
+      "usage": null
+    },
+    {
+      "id": "3ee48a7499cfa6d68cedda5b71db5f0157c2a5871b43397ca2e0f5f1445ba3f3",
+      "operationKey": "5b922e60b5a5128c97ae71407366bba4b9b99fae8f77ff0c1c5fb5aed83a1a92",
+      "requestId": "writer-39408013568:1",
+      "day": "2026-10-20",
+      "model": "gpt-5.6-luna",
+      "requestCount": 1,
+      "requestedTokens": 15000,
+      "price": null,
+      "reservedMicrousd": 0,
+      "createdAt": "2026-10-20T11:36:51.449Z",
+      "expiresAt": "2026-10-20T12:21:51.449Z",
+      "producer": null,
+      "settled": false,
+      "usage": null
     }
   ]
 }
