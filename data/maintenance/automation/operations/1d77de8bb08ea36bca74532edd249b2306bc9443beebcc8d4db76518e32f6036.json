@@ -10,7 +10,7 @@
     },
     "stage": "admitted",
     "createdAt": "2026-10-08T14:39:08.801Z",
-    "nextEligibleAt": "2026-10-20T04:19:15.300Z",
+    "nextEligibleAt": "2026-10-20T04:44:57.613Z",
     "expectedSha": null,
     "workerRunId": null,
     "retry": {
@@ -22,6 +22,6 @@
       "immediateAttempts": 0
     }
   },
-  "updatedAt": "2026-10-20T04:14:00.917Z",
+  "updatedAt": "2026-10-20T04:29:57.613Z",
   "completedAt": null
 }
