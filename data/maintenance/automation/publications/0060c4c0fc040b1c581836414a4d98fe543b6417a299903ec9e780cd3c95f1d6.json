@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0060c4c0fc040b1c581836414a4d98fe543b6417a299903ec9e780cd3c95f1d6",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1281058203:soyo5800-rpg-tracker-for-sillytavern",
+      "inputDigest": "db0e6ef6fb1991449cf4fa0b918ad2905a35205310e3dc74756ba083f91c9a76",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1281058203",
+    "identity": "github:1281058203"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39373340022,
+    "sourceSha": "cf6015460636962fee4882841a2d9110c44c18ea"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/soyo5800-rpg-tracker-for-sillytavern.json",
+      "sha256": "26687dce8ace9c34b289dda39d782c7b9ca6586dea888ea29cc57e843b21f424",
+      "gitBlobSha": "31bf09828cd087cd33321b6ee35684805422c048"
+    }
+  ]
+}
