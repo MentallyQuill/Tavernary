@@ -64722,7 +64722,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "SillyTavern ImagePdf is an extension that attaches PDF files as images by converting each page. It adds an Image Pdf button to the wand menu for uploading PDFs into chat messages.",
+      "summary": "SillyTavern extension that adds an Image Pdf wand-menu button to attach PDFs by converting each page into an image (README usage notes; repo description).",
       "canonicalUrl": "https://github.com/lukasstraub2/SillyTavern-ImagePdf",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -64868,7 +64868,7 @@
           "https://github.com/lukasstraub2/SillyTavern-ImagePdf"
         ],
         "summary": [
-          "SillyTavern ImagePdf is an extension that attaches PDF files as images by converting each page. It adds an Image Pdf button to the wand menu for uploading PDFs into chat messages."
+          "SillyTavern extension that adds an Image Pdf wand-menu button to attach PDFs by converting each page into an image (README usage notes; repo description)."
         ],
         "kind": [
           "extension"
