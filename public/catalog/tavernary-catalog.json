@@ -124240,7 +124240,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "generation-reasoning",
-      "summary": "SillyTavern-Narrator uses a configured LLM to propose six paragraph-long next-story scenarios from chat context, which you can revise, publish, copy, or dismiss to guide the plot.",
+      "summary": "A SillyTavern extension acting as a DM/narrator assistant that uses a configured LLM to propose six paragraph-long story scenarios for a 1d6 roll, with publish, revise, copy, and dismiss controls.",
       "canonicalUrl": "https://github.com/welvet/SillyTavern-Narrator",
       "catalogedAt": "2026-08-10T17:20:00.361Z",
       "catalogCohort": "standard",
@@ -124253,27 +124253,15 @@
       ],
       "tags": [
         {
-          "id": "edit-and-refine-messages",
-          "label": "Edit and refine messages",
-          "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
+          "id": "plan-stories-and-scenes",
+          "label": "Plan stories and scenes",
+          "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
           "facet": "goal"
         },
         {
           "id": "guide-model-responses",
           "label": "Guide model responses",
           "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-          "facet": "goal"
-        },
-        {
-          "id": "increase-narrative-variety",
-          "label": "Increase narrative variety",
-          "description": "Reduce repetition and introduce fresh actions, beats, twists, or response patterns.",
-          "facet": "goal"
-        },
-        {
-          "id": "plan-stories-and-scenes",
-          "label": "Plan stories and scenes",
-          "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
           "facet": "goal"
         }
       ],
@@ -124525,7 +124513,7 @@
           "https://github.com/welvet/SillyTavern-Narrator"
         ],
         "summary": [
-          "SillyTavern-Narrator uses a configured LLM to propose six paragraph-long next-story scenarios from chat context, which you can revise, publish, copy, or dismiss to guide the plot."
+          "A SillyTavern extension acting as a DM/narrator assistant that uses a configured LLM to propose six paragraph-long story scenarios for a 1d6 roll, with publish, revise, copy, and dismiss controls."
         ],
         "kind": [
           "extension"
@@ -124534,22 +124522,14 @@
           "Generation and reasoning"
         ],
         "tags": [
-          "Edit and refine messages",
-          "message rewriting",
-          "chat editing",
-          "response refinement",
-          "Guide model responses",
-          "response steering",
-          "generation control",
-          "instruction control",
-          "Increase narrative variety",
-          "prevent repetition",
-          "plot variety",
-          "response diversity",
           "Plan stories and scenes",
           "story planning",
           "plot direction",
-          "scene planning"
+          "scene planning",
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control"
         ],
         "frontends": [
           "SillyTavern"
@@ -171458,7 +171438,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "generation-reasoning",
-            "summary": "SillyTavern-Narrator uses a configured LLM to propose six paragraph-long next-story scenarios from chat context, which you can revise, publish, copy, or dismiss to guide the plot.",
+            "summary": "A SillyTavern extension acting as a DM/narrator assistant that uses a configured LLM to propose six paragraph-long story scenarios for a 1d6 roll, with publish, revise, copy, and dismiss controls.",
             "canonicalUrl": "https://github.com/welvet/SillyTavern-Narrator",
             "catalogedAt": "2026-08-10T17:20:00.361Z",
             "catalogCohort": "standard",
@@ -171471,27 +171451,15 @@
             ],
             "tags": [
               {
-                "id": "edit-and-refine-messages",
-                "label": "Edit and refine messages",
-                "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
+                "id": "plan-stories-and-scenes",
+                "label": "Plan stories and scenes",
+                "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
                 "facet": "goal"
               },
               {
                 "id": "guide-model-responses",
                 "label": "Guide model responses",
                 "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "increase-narrative-variety",
-                "label": "Increase narrative variety",
-                "description": "Reduce repetition and introduce fresh actions, beats, twists, or response patterns.",
-                "facet": "goal"
-              },
-              {
-                "id": "plan-stories-and-scenes",
-                "label": "Plan stories and scenes",
-                "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
                 "facet": "goal"
               }
             ],
@@ -171743,7 +171711,7 @@
                 "https://github.com/welvet/SillyTavern-Narrator"
               ],
               "summary": [
-                "SillyTavern-Narrator uses a configured LLM to propose six paragraph-long next-story scenarios from chat context, which you can revise, publish, copy, or dismiss to guide the plot."
+                "A SillyTavern extension acting as a DM/narrator assistant that uses a configured LLM to propose six paragraph-long story scenarios for a 1d6 roll, with publish, revise, copy, and dismiss controls."
               ],
               "kind": [
                 "extension"
@@ -171752,22 +171720,14 @@
                 "Generation and reasoning"
               ],
               "tags": [
-                "Edit and refine messages",
-                "message rewriting",
-                "chat editing",
-                "response refinement",
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Increase narrative variety",
-                "prevent repetition",
-                "plot variety",
-                "response diversity",
                 "Plan stories and scenes",
                 "story planning",
                 "plot direction",
-                "scene planning"
+                "scene planning",
+                "Guide model responses",
+                "response steering",
+                "generation control",
+                "instruction control"
               ],
               "frontends": [
                 "SillyTavern"
@@ -236377,7 +236337,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "generation-reasoning",
-            "summary": "SillyTavern-Narrator uses a configured LLM to propose six paragraph-long next-story scenarios from chat context, which you can revise, publish, copy, or dismiss to guide the plot.",
+            "summary": "A SillyTavern extension acting as a DM/narrator assistant that uses a configured LLM to propose six paragraph-long story scenarios for a 1d6 roll, with publish, revise, copy, and dismiss controls.",
             "canonicalUrl": "https://github.com/welvet/SillyTavern-Narrator",
             "catalogedAt": "2026-08-10T17:20:00.361Z",
             "catalogCohort": "standard",
@@ -236390,27 +236350,15 @@
             ],
             "tags": [
               {
-                "id": "edit-and-refine-messages",
-                "label": "Edit and refine messages",
-                "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
+                "id": "plan-stories-and-scenes",
+                "label": "Plan stories and scenes",
+                "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
                 "facet": "goal"
               },
               {
                 "id": "guide-model-responses",
                 "label": "Guide model responses",
                 "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "increase-narrative-variety",
-                "label": "Increase narrative variety",
-                "description": "Reduce repetition and introduce fresh actions, beats, twists, or response patterns.",
-                "facet": "goal"
-              },
-              {
-                "id": "plan-stories-and-scenes",
-                "label": "Plan stories and scenes",
-                "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
                 "facet": "goal"
               }
             ],
@@ -236662,7 +236610,7 @@
                 "https://github.com/welvet/SillyTavern-Narrator"
               ],
               "summary": [
-                "SillyTavern-Narrator uses a configured LLM to propose six paragraph-long next-story scenarios from chat context, which you can revise, publish, copy, or dismiss to guide the plot."
+                "A SillyTavern extension acting as a DM/narrator assistant that uses a configured LLM to propose six paragraph-long story scenarios for a 1d6 roll, with publish, revise, copy, and dismiss controls."
               ],
               "kind": [
                 "extension"
@@ -236671,22 +236619,14 @@
                 "Generation and reasoning"
               ],
               "tags": [
-                "Edit and refine messages",
-                "message rewriting",
-                "chat editing",
-                "response refinement",
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Increase narrative variety",
-                "prevent repetition",
-                "plot variety",
-                "response diversity",
                 "Plan stories and scenes",
                 "story planning",
                 "plot direction",
-                "scene planning"
+                "scene planning",
+                "Guide model responses",
+                "response steering",
+                "generation control",
+                "instruction control"
               ],
               "frontends": [
                 "SillyTavern"

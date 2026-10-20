@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1cfb6df29a2d2d7941cde1150ddbc703e3883a0d423f6c3fef3b5302320243dc",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1058500059:welvet-sillytavern-narrator",
+      "inputDigest": "557189308de337be43351d13d10df249c66efff82d9151a3b0699cfecbb1dc60",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1058500059",
+    "identity": "github:1058500059"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39350389719,
+    "sourceSha": "79a67eef5d76853b59c0cffd8da4b9457c6b237a"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/welvet-sillytavern-narrator.json",
+      "sha256": "5d904904260652a22046377e708ce82bb3db18c40bf65e9ca4f6f88a93ae41cf",
+      "gitBlobSha": "05e56b5f480d61e1995fd2eae7072d2fa218605e"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/1cfb6df29a2d2d7941cde1150ddbc703e3883a0d423f6c3fef3b5302320243dc.json",
+      "sha256": "29ed8f7866169d51d4af4d962e05153eb0d13cf048ef0522e4e32649e967ace6",
+      "gitBlobSha": "91995df52a3dd258c604b42ce5ade626a214d072"
+    }
+  ]
+}
