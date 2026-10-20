@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "226873ac0c6bba08c6c643a6f6964e8c6d27963353b602383f16cc9b698a4719",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1239116905:tclowe1982-marinara-extender",
+      "inputDigest": "905ee628ac463b703b39e8cc86a7de0b6dbcf80dfff252546ca0066a37392476",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1239116905",
+    "identity": "github:1239116905"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39388141314,
+    "sourceSha": "d84f45c68f9bc0d7945de3a072115f21c378b828"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/tclowe1982-marinara-extender.json",
+      "sha256": "ec67453d4e3f480a55730766632c5cbfd988379f10242c62ddadcb5b3c35eecd",
+      "gitBlobSha": "ed573f0727337f5c89b02c4ae62785e5f1e91bc1"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/226873ac0c6bba08c6c643a6f6964e8c6d27963353b602383f16cc9b698a4719.json",
+      "sha256": "93e480f7ea4f1abb43eb60f54e203795146a9a5bd7e093db230bf6434c3d1b44",
+      "gitBlobSha": "de2d9e3fa662b930ab601083a8e82ea3fb25645f"
+    }
+  ]
+}

@@ -3,7 +3,7 @@
   "id": "tclowe1982-marinara-extender",
   "name": "Marinara Extender",
   "kind": "extension",
-  "summary": "Marinara Extender provides persistent scoped memory for characters used with the Marinara Engine frontend. It stores character-specific memories across sessions, enabling continuity in ongoing roleplay interactions.",
+  "summary": "Persistent scoped memory for Marinara Engine characters: YAML files on disk loaded surgically each turn to keep the context window lean, with mid-reply bookmarks that decay and resurface naturally.",
   "metadata_status": "curated",
   "frontends": ["marinara-engine"],
   "primary_function": "memory-retrieval",
@@ -12,7 +12,8 @@
   "source_id": "github-1239116905",
   "tags": [
     "maintain-long-term-memory",
-    "preserve-story-continuity",
+    "manage-context-limits",
+    "retrieve-relevant-context",
     "persistent-state"
   ],
   "listing_status": "active",
