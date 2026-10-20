@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0045f728cdaba0724a2ed6e5c83d5654e16f5b4df98bcbb0653fcb245d3ebcb6",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1289563434:brucestarkallen-sillytavern-arbiter-fight-and-battle",
+      "inputDigest": "33a6c31a47258539d020c5cbd21ebbc014b1dd4260345ab640eaadbebb2b0d3a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1289563434",
+    "identity": "github:1289563434"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39384873653,
+    "sourceSha": "7b9f144d93b48b8ebbeec2f83856c31058a026a0"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/brucestarkallen-sillytavern-arbiter-fight-and-battle.json",
+      "sha256": "a35178c159261bb892cafbdbabe7b81109aa82fe1ff892977ce50e5c00ec9c8b",
+      "gitBlobSha": "5d60f1aa99b7d2d198e9665450f120c30c5e1efa"
+    }
+  ]
+}

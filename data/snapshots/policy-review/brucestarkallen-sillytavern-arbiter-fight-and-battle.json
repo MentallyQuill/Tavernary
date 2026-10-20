@@ -5,12 +5,9 @@
   "source_identity": "github:brucestarkallen/sillytavern-arbiter-fight-and-battle",
   "evidence_fingerprint": "013a36fd26f5c4e33c7f8c8f59d7ae2fa32f28145499c41ff0bc2e474f08c714",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-19T12:15:42.463Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-19T12:15:42.463Z"
-  },
+  "reviewed_at": "2026-10-20T07:12:00.282Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
