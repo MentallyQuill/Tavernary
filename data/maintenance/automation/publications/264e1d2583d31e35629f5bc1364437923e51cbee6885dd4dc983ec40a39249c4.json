@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "264e1d2583d31e35629f5bc1364437923e51cbee6885dd4dc983ec40a39249c4",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1158227036:linux4life1-front-porch-ai",
+      "inputDigest": "6af64190969901c0aa05e1fcef9b3d6261428e176100e04145899137db54a7b1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1158227036",
+    "identity": "github:1158227036"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39424991095,
+    "sourceSha": "8758cc73edfb3e5b4c4e9c946fb297b3678fc1e0"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/linux4life1-front-porch-ai.json",
+      "sha256": "bc4e58d34673fd5489324dee1fbb697f91a73f3d6243ec6e4651544aa04ad5cf",
+      "gitBlobSha": "85097c33882f38587a2774c6048ef74c2c5d74ce"
+    }
+  ]
+}

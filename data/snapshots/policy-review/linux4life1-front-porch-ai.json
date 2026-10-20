@@ -3,14 +3,11 @@
   "project_id": "linux4life1-front-porch-ai",
   "source_id": "github-1158227036",
   "source_identity": "github:linux4life1/front-porch-ai",
-  "evidence_fingerprint": "abffb00c18d0ff043986e9044886f932909a86445d1003027c44481a91e91697",
+  "evidence_fingerprint": "9d0ff1d63b33e4732b9b59a383e056222ca5369edc3949202af6d5cced9fbb41",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-26T12:32:05.886Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-26T12:32:05.886Z"
-  },
+  "reviewed_at": "2026-10-20T12:47:52.539Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
