@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1e3712f623b20bc6961a28493101ab91e048bff307afc2c0ec4aecaf119a5cf9",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1354538739:brutalkoala-sillynpc",
+      "inputDigest": "718fc0ea7cf136fe8a63b870dea815b39236d79f1f7170906272ebddc10a6072",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1354538739",
+    "identity": "github:1354538739"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39357210822,
+    "sourceSha": "f037045c44696053b6e668433b399472040a9200"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/brutalkoala-sillynpc.json",
+      "sha256": "7430bf6905bf398c443d64648eb4c11fe5678676fb4630aa254890c15c55d961",
+      "gitBlobSha": "0c176e70200eac558b9e7af6ff6ddb0f07f373cb"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/1e3712f623b20bc6961a28493101ab91e048bff307afc2c0ec4aecaf119a5cf9.json",
+      "sha256": "ab2beed3709b68089af6089075dca8d23ba8c419ceba4ea54ed1628328f5bc64",
+      "gitBlobSha": "ac69d8373cc62e874cba4784198f20ee01be3d3f"
+    }
+  ]
+}

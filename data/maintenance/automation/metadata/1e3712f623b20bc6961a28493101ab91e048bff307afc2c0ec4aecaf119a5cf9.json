@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "brutalkoala-sillynpc",
+  "sourceId": "github-1354538739",
+  "sourceIdentity": "github:1354538739",
+  "inputDigest": "718fc0ea7cf136fe8a63b870dea815b39236d79f1f7170906272ebddc10a6072",
+  "fingerprint": "0c436b04e14f4c340c701eeb09fd327cc407650b93b1511831eb2e6d85b92141",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "7428edf6b920aa2c65ec8a5511e21b4d162325b14fab500576d2a2de2906ef38",
+  "outputDigest": "a4ed3210472bf5d58bace922d9445db42bcc777c2bd7851f8d82c64fc3469dc0",
+  "headSha": "449fb5a98408e63a82c1267e51a20366b8f153ea",
+  "observedAt": "2026-10-20T02:08:20.413Z"
+}
