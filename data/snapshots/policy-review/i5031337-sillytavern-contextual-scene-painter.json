@@ -3,14 +3,11 @@
   "project_id": "i5031337-sillytavern-contextual-scene-painter",
   "source_id": "github-1317590696",
   "source_identity": "github:i5031337/sillytavern-contextual-scene-painter",
-  "evidence_fingerprint": "d92329b2d6b70d7cbe7dfc65e527a08d730e158de939a094bb96f0a3c2a7733e",
+  "evidence_fingerprint": "f3cb85395d96e43ad67edc959e3a9d00e9bcf28d6ad97311997a1ed0c36f12e9",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-07-31T06:40:20.182Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-07-31T06:40:20.182Z"
-  },
+  "reviewed_at": "2026-10-20T13:02:55.246Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

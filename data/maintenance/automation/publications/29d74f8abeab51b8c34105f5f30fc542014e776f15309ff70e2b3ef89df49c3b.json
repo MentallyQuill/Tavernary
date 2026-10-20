@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "29d74f8abeab51b8c34105f5f30fc542014e776f15309ff70e2b3ef89df49c3b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1317590696:i5031337-sillytavern-contextual-scene-painter",
+      "inputDigest": "738b6656a094ffac89c78e6c4c36380858516b90b6b62b46ef24ae750e7839c7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1317590696",
+    "identity": "github:1317590696"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39427008083,
+    "sourceSha": "9d7fc9e13094ea902b95437744ce5995fc919b22"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/i5031337-sillytavern-contextual-scene-painter.json",
+      "sha256": "2129489e225d01c39cafd267db4ed541d9625ca5cedf0e13deef4741d6a96a62",
+      "gitBlobSha": "942c1f3bcd373ce7af92aa3ce32838056daf94bd"
+    }
+  ]
+}
