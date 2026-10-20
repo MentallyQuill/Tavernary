@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1d77de8bb08ea36bca74532edd249b2306bc9443beebcc8d4db76518e32f6036",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-949765337:kawaii-wolf-st-koboldcpp-loader-standalone",
+      "inputDigest": "5ab335a1d72784d4882f3aea896465f2aab65520500c98e452439ca704c22c6e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-949765337",
+    "identity": "github:949765337"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39394610689,
+    "sourceSha": "7ca4a0b9709b1045b2f9075fbd1dc73563a07633"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/kawaii-wolf-st-koboldcpp-loader-standalone.json",
+      "sha256": "6ec08fa38225f48704ea59cb5fb385e551fe3f81a8bec0450591c15a4c79c769",
+      "gitBlobSha": "9907083b545df8537958dffe9281eb7e955664b0"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/1d77de8bb08ea36bca74532edd249b2306bc9443beebcc8d4db76518e32f6036.json",
+      "sha256": "cfcdca7947422b7ee9437e3c2f3ec9d0446cf5c4609efd5440d4264559902337",
+      "gitBlobSha": "b008a3976b4cccf09bb360bd09bccde85f909922"
+    }
+  ]
+}

@@ -54154,7 +54154,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "This SillyTavern extension uses KoboldCPP's admin API to load and switch .kcpps configuration files. Users pick a config from a dropdown, reload KoboldCPP, or apply it as a template when loading a .gguf model directly.",
+      "summary": "A SillyTavern extension that calls KoboldCPP's admin API to reload a selected .kcpps config from a dropdown via the Reload button or /kcpp-load, and applies templates to direct .gguf loads (README).",
       "canonicalUrl": "https://github.com/kawaii-wolf/ST-koboldcpp-loader-standalone",
       "catalogedAt": "2026-07-26T00:00:00Z",
       "catalogCohort": "standard",
@@ -54165,20 +54165,7 @@
           "description": "Works with the SillyTavern roleplay frontend."
         }
       ],
-      "tags": [
-        {
-          "id": "route-tasks-across-models",
-          "label": "Route tasks across models",
-          "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
-          "facet": "goal"
-        },
-        {
-          "id": "automate-roleplay-workflows",
-          "label": "Automate roleplay workflows",
-          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
-          "facet": "goal"
-        }
-      ],
+      "tags": [],
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
@@ -54341,7 +54328,7 @@
           "https://github.com/kawaii-wolf/ST-koboldcpp-loader-standalone"
         ],
         "summary": [
-          "This SillyTavern extension uses KoboldCPP's admin API to load and switch .kcpps configuration files. Users pick a config from a dropdown, reload KoboldCPP, or apply it as a template when loading a .gguf model directly."
+          "A SillyTavern extension that calls KoboldCPP's admin API to reload a selected .kcpps config from a dropdown via the Reload button or /kcpp-load, and applies templates to direct .gguf loads (README)."
         ],
         "kind": [
           "extension"
@@ -54349,17 +54336,7 @@
         "primaryFunction": [
           "Interface and workflow"
         ],
-        "tags": [
-          "Route tasks across models",
-          "model routing",
-          "task routing",
-          "connection routing",
-          "Automate roleplay workflows",
-          "automation",
-          "workflow automation",
-          "task automation",
-          "triggered actions"
-        ],
+        "tags": [],
         "frontends": [
           "SillyTavern"
         ],
