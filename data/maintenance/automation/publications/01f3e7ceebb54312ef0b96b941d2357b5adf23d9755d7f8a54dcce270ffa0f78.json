@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "01f3e7ceebb54312ef0b96b941d2357b5adf23d9755d7f8a54dcce270ffa0f78",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-983108844:inspectorcaracal-sillytavern-rememory",
+      "inputDigest": "b8caf3b223b955f8bf8d8e92aa3ab8d70cd554352477f023718d98ad4874a185",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-983108844",
+    "identity": "github:983108844"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39346150581,
+    "sourceSha": "59a48e343f9a289391a8fdcf9b56f7d3f24390f5"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/inspectorcaracal-sillytavern-rememory.json",
+      "sha256": "33e90929342eef78e68946b15e7042c28e717d2419ea207fc68c572ea0d11888",
+      "gitBlobSha": "47c1d9bd0079c0fc4f63ed3e7870baf7a6bdab1a"
+    }
+  ]
+}
