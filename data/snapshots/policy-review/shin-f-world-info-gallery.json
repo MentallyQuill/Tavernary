@@ -5,12 +5,9 @@
   "source_identity": "github:shin-f/world-info-gallery",
   "evidence_fingerprint": "2c429a46947a3f698a04688ef8ca24243f065820985b2e9c1d64179cd0923538",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-02T12:28:20.322Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-02T12:28:20.322Z"
-  },
+  "reviewed_at": "2026-10-20T07:26:04.501Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
