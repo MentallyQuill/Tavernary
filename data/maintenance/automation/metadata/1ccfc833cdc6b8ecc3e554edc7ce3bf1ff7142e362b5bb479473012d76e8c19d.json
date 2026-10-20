@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "qvink-sillytavern-rightclickmessagemenu",
+  "sourceId": "github-1069373058",
+  "sourceIdentity": "github:1069373058",
+  "inputDigest": "941c15fd8e2fcd8bc79a3f8e7f41fbdc9bc4677cd3bef7c650331cd7ecd22d71",
+  "fingerprint": "0a2eea81acef54fd60b0a9c1a0e5dfd8447aae026c0c7e4d20e3f29316069c2d",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "33a295391640044b8a87a08a34085f41a5bce05382a6da01df54f40395cd8de7",
+  "outputDigest": "62925029e61faee164309af58dd03764ddb0a2319adbb8e760bb62046119d732",
+  "headSha": "c28b4f218478043fa1cbcdd53c84702148e09991",
+  "observedAt": "2026-10-20T03:10:57.949Z"
+}
