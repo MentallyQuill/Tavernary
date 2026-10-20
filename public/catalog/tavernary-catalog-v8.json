@@ -97188,7 +97188,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "rpg-systems",
-      "summary": "SillyTavern-DualModel-Engine adds a Git-installable extension for local one-to-one roleplay, using a separate Recorder model to version and restore narrative state per swipe, with optional D20 and custom rules.",
+      "summary": "A Git-installable SillyTavern extension for local one-to-one roleplay that keeps versioned narrative state with a separate Recorder model, restores state per swipe, and adds code-authoritative D20 rules (README).",
       "canonicalUrl": "https://github.com/Roderickwqz/SillyTavern-DualModel-Engine",
       "catalogedAt": "2026-08-08T02:18:30.690Z",
       "catalogCohort": "standard",
@@ -97201,10 +97201,16 @@
       ],
       "tags": [
         {
-          "id": "add-rpg-gameplay",
-          "label": "Add RPG gameplay",
-          "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
           "facet": "goal"
+        },
+        {
+          "id": "secondary-model",
+          "label": "Secondary-model workflow",
+          "description": "Delegates supporting tasks to a separately configured model or connection.",
+          "facet": "trait"
         },
         {
           "id": "persistent-state",
@@ -97213,9 +97219,9 @@
           "facet": "trait"
         },
         {
-          "id": "preserve-story-continuity",
-          "label": "Preserve story continuity",
-          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "id": "add-rpg-gameplay",
+          "label": "Add RPG gameplay",
+          "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
           "facet": "goal"
         },
         {
@@ -97225,9 +97231,9 @@
           "facet": "trait"
         },
         {
-          "id": "secondary-model",
-          "label": "Secondary-model workflow",
-          "description": "Delegates supporting tasks to a separately configured model or connection.",
+          "id": "local-first",
+          "label": "Local-first",
+          "description": "Keeps its primary data and workflow on the user's own device.",
           "facet": "trait"
         }
       ],
@@ -97305,7 +97311,7 @@
           "https://github.com/Roderickwqz/SillyTavern-DualModel-Engine"
         ],
         "summary": [
-          "SillyTavern-DualModel-Engine adds a Git-installable extension for local one-to-one roleplay, using a separate Recorder model to version and restore narrative state per swipe, with optional D20 and custom rules."
+          "A Git-installable SillyTavern extension for local one-to-one roleplay that keeps versioned narrative state with a separate Recorder model, restores state per swipe, and adds code-authoritative D20 rules (README)."
         ],
         "kind": [
           "extension"
@@ -97314,26 +97320,30 @@
           "RPG systems and suites"
         ],
         "tags": [
-          "Add RPG gameplay",
-          "tabletop mechanics",
-          "game master tools",
-          "RPG systems",
-          "Persistent state",
-          "durable state",
-          "state persistence",
-          "cross-session state",
           "Preserve story continuity",
           "continuity tracking",
           "canon consistency",
           "story coherence",
+          "Secondary-model workflow",
+          "helper model",
+          "auxiliary model",
+          "separate connection profile",
+          "Persistent state",
+          "durable state",
+          "state persistence",
+          "cross-session state",
+          "Add RPG gameplay",
+          "tabletop mechanics",
+          "game master tools",
+          "RPG systems",
           "Rules-driven",
           "deterministic mechanics",
           "rule based",
           "schema driven",
-          "Secondary-model workflow",
-          "helper model",
-          "auxiliary model",
-          "separate connection profile"
+          "Local-first",
+          "stored locally",
+          "on-device data",
+          "local data ownership"
         ],
         "frontends": [
           "SillyTavern"

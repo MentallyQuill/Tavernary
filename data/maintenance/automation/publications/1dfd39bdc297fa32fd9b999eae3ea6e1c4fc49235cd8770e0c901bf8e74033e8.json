@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1dfd39bdc297fa32fd9b999eae3ea6e1c4fc49235cd8770e0c901bf8e74033e8",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1321898165:roderickwqz-sillytavern-dualmodel-engine",
+      "inputDigest": "454610573684665ddad451c944e3fb1f5abea9f6bf27a1c5c98c2ba910ada945",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1321898165",
+    "identity": "github:1321898165"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39378608497,
+    "sourceSha": "6f2d5fbb245a483a3fa266c7d82070f12dee658d"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/roderickwqz-sillytavern-dualmodel-engine.json",
+      "sha256": "96217a1d4977c3a51d96afda2163a49c9e61021d28408b77f987829c09f791ad",
+      "gitBlobSha": "6f8f2ad743d2876ba0b6bbb57e89aec7b2fbfec7"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/1dfd39bdc297fa32fd9b999eae3ea6e1c4fc49235cd8770e0c901bf8e74033e8.json",
+      "sha256": "67126db0c4ef15d2e69efd8ff9b05c05617497da7967e0901945132c6e6b1f57",
+      "gitBlobSha": "ee0931298d267f1d45b51ff5c08cc2827eef666d"
+    }
+  ]
+}
