@@ -3,7 +3,7 @@
   "id": "cha1latte-marinara-theme-maker",
   "name": "Marinara Theme Maker",
   "kind": "extension",
-  "summary": "Provides prompts and sample themes for generating importable custom themes for the Marinara Engine frontend.",
+  "summary": "Marinara Theme Maker provides a self-contained prompt that generates importable Marinara Engine custom themes covering the full app surface, not just chat recoloring. Evidence: README lines 1-4.",
   "metadata_status": "curated",
   "frontends": ["marinara-engine"],
   "primary_function": "interface-workflow",
