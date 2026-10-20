@@ -45263,7 +45263,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "frontend",
-      "summary": "Glaze is a local AI roleplay chat client for mobile devices, connecting to any OpenAI-compatible Chat Completion provider while keeping data on your device.",
+      "summary": "Glaze is a local AI roleplay chat client that keeps data on your device and works with any OpenAI-compatible Chat Completion LLM provider (README: \"Glaze is a local, user-friendly AI roleplay chat client\").",
       "canonicalUrl": "https://github.com/hydall/Glaze",
       "catalogedAt": "2026-08-05T21:02:03.409Z",
       "catalogCohort": "standard",
@@ -45401,7 +45401,7 @@
           "https://github.com/hydall/Glaze"
         ],
         "summary": [
-          "Glaze is a local AI roleplay chat client for mobile devices, connecting to any OpenAI-compatible Chat Completion provider while keeping data on your device."
+          "Glaze is a local AI roleplay chat client that keeps data on your device and works with any OpenAI-compatible Chat Completion LLM provider (README: \"Glaze is a local, user-friendly AI roleplay chat client\")."
         ],
         "kind": [
           "frontend"

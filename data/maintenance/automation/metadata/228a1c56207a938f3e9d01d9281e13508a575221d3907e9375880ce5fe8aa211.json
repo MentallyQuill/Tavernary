@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "hydall-glaze",
+  "sourceId": "github-1195300925",
+  "sourceIdentity": "github:1195300925",
+  "inputDigest": "bafc5dda39fa33de4865aec6e0be7820d1eb0dcb98b22d92b549ad897a79df87",
+  "fingerprint": "dd9aa51e59dce41f372f7665d470de825d16bb5dc2e7ba7af1af154151b536fd",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary"],
+  "traitsDigest": "83e68557aa9c33a86272ddc4cf4d1608e8185dbff0025fe41d86540ab929482a",
+  "outputDigest": "14627cecd7e895c8cfb741e6c68199fe682cc4330985b9c22b3f679d03818a40",
+  "headSha": "0232e134c2e8ad375d2d458bf57e3f1ab58bb359",
+  "observedAt": "2026-10-20T09:00:18.360Z"
+}
