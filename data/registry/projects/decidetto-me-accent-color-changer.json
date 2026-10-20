@@ -3,7 +3,7 @@
   "id": "decidetto-me-accent-color-changer",
   "name": "ME Accent Color Changer",
   "kind": "extension",
-  "summary": "ME Accent Color Changer is a Marinara Engine extension for adjusting accent colors in built-in and compatible themes. Two absolute-hue sliders re-anchor dynamically when switching themes.",
+  "summary": "ME Accent Color Changer is a Marinara Engine extension that changes accent colors of built-in and compatible themes via dual absolute-hue sliders, dynamic per-theme defaults, and auto-contrast tuning (README Features).",
   "metadata_status": "curated",
   "frontends": ["marinara-engine"],
   "primary_function": "interface-workflow",
