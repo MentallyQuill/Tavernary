@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0a8035c16f4b78d0a64505939e970cbafc394cb04a9f815075399885a1fd1765",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1128074609:mattjaybe-sillytavern-echochamber",
+      "inputDigest": "67fd02514ef5d24d3f08cd68934a7530917dc486e3c63fca8e55046ab50df44f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1128074609",
+    "identity": "github:1128074609"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39508772464,
+    "sourceSha": "afa4e3e31ca8a02e0e1af222812287df8da7258d"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/mattjaybe-sillytavern-echochamber.json",
+      "sha256": "8fa5fea7ad1c3c7581de62863ee87c4785b7f24e6dcf4c24a673f0b5e1715729",
+      "gitBlobSha": "fa31e05eb80bb701fa606344e66e9d850e2adf31"
+    }
+  ]
+}
