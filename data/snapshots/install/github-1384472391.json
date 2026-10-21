@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1384472391",
+  "head_sha": "59047b66fbc8a6520edf1b5ab863f5c73e1af6eb",
+  "observed_at": "2026-10-21T11:45:10.623Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "ST-Castward",
+  "manifest": {
+    "display_name": "Castward - Character Profiles & RPG Tracking",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
