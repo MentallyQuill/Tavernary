@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0d562c93d6c0c8f21d82aade675310f04c618a6ae98b3c9b0aa2628c527a22de",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1366168231:kohz87-npc-state-delta",
+      "inputDigest": "b3549a63b4c255f28c6fc5f4ac9a39dfe46767a61b4fc3fedc603c4dbc4582fc",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1366168231",
+    "identity": "github:1366168231"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39515376842,
+    "sourceSha": "3317c7061aa09cb5f1e7ef58e712d87aaabefc4f"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/kohz87-npc-state-delta.json",
+      "sha256": "8bf9c815a11ebfe29404efe1233e309da473bc09eb614067a55104e928553eb7",
+      "gitBlobSha": "4972df3837ab4040d24d33af09d3c61cc9a40d2c"
+    }
+  ]
+}
