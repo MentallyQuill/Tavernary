@@ -9,8 +9,8 @@
     "url": "https://github.com/MolfarWav/Molfar.Vertep",
     "description": "Local-first AI engine: the built-in agent Molfar reshapes your apps when you ask. Ships with Roleplay for RP sessions. A fork of Chrysalis Engine.",
     "default_branch": "main",
-    "head_sha": "70bc6c3035b83c4058f1e1aa219da46d3fe66aa3",
-    "head_committed_at": "2026-10-11T10:23:36.000Z",
+    "head_sha": "0c235041feea98484e47a850d4641663c758e5eb",
+    "head_committed_at": "2026-10-21T12:37:40.000Z",
     "archived": false,
     "fork": true,
     "parent": {
@@ -20,15 +20,25 @@
       "url": "https://github.com/ProjectChrysalis/Chrysalis-Engine"
     },
     "created_at": "2026-09-29T17:01:48.000Z",
-    "size_kb": 17837
+    "size_kb": 21443
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-11T10:23:36.000Z",
+    "latest_source_activity_at": "2026-10-21T11:43:45.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-21T11:43:45.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-18T21:54:09.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-05",
-        "latest_at": "2026-10-11T10:23:36.000Z",
+        "latest_at": "2026-10-11T23:01:05.000Z",
         "precision": "exact"
       },
       {
@@ -48,25 +58,26 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-11T10:28:23.000Z",
+    "latest_release_at": "2026-10-21T14:38:19.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-11T13:56:30.534Z",
+    "baseline_completed_at": "2026-10-21T16:25:55.792Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "70bc6c3035b83c4058f1e1aa219da46d3fe66aa3"
+    "evidence_head_sha": "0c235041feea98484e47a850d4641663c758e5eb"
   },
   "community": {
-    "stars_count": 10,
+    "stars_count": 26,
     "forks_count": 1,
-    "watchers_count": 0,
-    "aggregate": 11
+    "watchers_count": 1,
+    "aggregate": 28
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-11T13:56:30.534Z",
+  "refreshed_at": "2026-10-21T16:28:23.140Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "MolfarWav", "type": "User", "provider": "github" }
@@ -74,8 +85,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-10-11T13:56:30.534Z",
     "scan": null,
-    "refreshed_at": "2026-10-11T13:56:30.534Z",
+    "refreshed_at": "2026-10-21T16:25:55.792Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }
