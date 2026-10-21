@@ -1251,6 +1251,7 @@ test(
       "data-hydrated",
       "true",
     );
+    const search = page.getByRole("searchbox", { name: "Search projects" });
     for (const [
       state,
       accessibleCopy,
@@ -1284,11 +1285,18 @@ test(
         "Credible malicious or compromised behavior",
       ],
     ] as const) {
+      await search.fill("");
       const indicator = page
         .getByRole("button", {
           name: `TavernKeeper scan: ${accessibleCopy}`,
         })
         .first();
+      const controls = await indicator.getAttribute("aria-controls");
+      if (!controls) throw new Error("Missing scan fixture project ID");
+      // Render the fixture card before opening its portal. Scrolling the full
+      // lazy-rendered catalog can hide the anchor while WebKit enters the panel.
+      await search.fill(controls.replace(/^tavernkeeper-scan-/u, ""));
+      await expect(page.locator(".project-card")).toHaveCount(1);
 
       await expect(indicator).toHaveCSS(
         "color",
