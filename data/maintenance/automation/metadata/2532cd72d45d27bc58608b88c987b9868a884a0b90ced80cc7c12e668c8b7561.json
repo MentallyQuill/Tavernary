@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "dmitryplyaskin-sillytavern-persona-management-extended",
+  "sourceId": "github-1130337079",
+  "sourceIdentity": "github:1130337079",
+  "inputDigest": "81ec28064c4af040a2bd35550abff0baae3569f2629b6d5e117552c762b0603a",
+  "fingerprint": "3e9e1e254c37cd7acfff01349b00bc00327bb4c16bdc5769d8d9b540435e5d76",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "6d041ec1a81082e46e5d05f77ab56f77870c169947db8bbea9a51b6de3297abc",
+  "outputDigest": "b0b101e6e07dd121c40615cc28320fdb75d4f783373076bb1fd6539f640e4262",
+  "headSha": "01498daab8c18bbc4b2625f482153f8171dd387f",
+  "observedAt": "2026-10-21T07:00:38.670Z"
+}

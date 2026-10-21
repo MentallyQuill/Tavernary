@@ -31470,7 +31470,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "character-worldbuilding",
-      "summary": "Persona Management Extended upgrades SillyTavern’s Persona Management with an optional Advanced mode for expanded persona management capabilities.",
+      "summary": "SillyTavern extension that upgrades SillyTavern's built-in Persona Management with an optional Advanced mode for extended persona handling (README).",
       "canonicalUrl": "https://github.com/dmitryplyaskin/SillyTavern-Persona-Management-Extended",
       "catalogedAt": "2026-08-10T17:24:05.744Z",
       "catalogCohort": "standard",
@@ -31615,7 +31615,7 @@
           "https://github.com/dmitryplyaskin/SillyTavern-Persona-Management-Extended"
         ],
         "summary": [
-          "Persona Management Extended upgrades SillyTavern’s Persona Management with an optional Advanced mode for expanded persona management capabilities."
+          "SillyTavern extension that upgrades SillyTavern's built-in Persona Management with an optional Advanced mode for extended persona handling (README)."
         ],
         "kind": [
           "extension"

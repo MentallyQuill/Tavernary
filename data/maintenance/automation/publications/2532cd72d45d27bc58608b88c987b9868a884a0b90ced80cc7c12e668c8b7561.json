@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2532cd72d45d27bc58608b88c987b9868a884a0b90ced80cc7c12e668c8b7561",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1130337079:dmitryplyaskin-sillytavern-persona-management-extended",
+      "inputDigest": "81ec28064c4af040a2bd35550abff0baae3569f2629b6d5e117552c762b0603a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1130337079",
+    "identity": "github:1130337079"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39558944986,
+    "sourceSha": "10124db130fa62fcb9059b924659bac8318bcb73"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/dmitryplyaskin-sillytavern-persona-management-extended.json",
+      "sha256": "07f7aa453cd0ada97d63cd614816deb774d02bf09765064dbd9597ada1e420cf",
+      "gitBlobSha": "a5576dc0c8b46ae54ddebc5fa5d8e9d0543ad531"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/2532cd72d45d27bc58608b88c987b9868a884a0b90ced80cc7c12e668c8b7561.json",
+      "sha256": "c497b4b965a56ddea331e21cb8195faa7ec8aea861f671a09ea6b23f54c8ea1c",
+      "gitBlobSha": "2612daf5610b0b0a7bd9d03f591ef9c32bdfd459"
+    }
+  ]
+}
