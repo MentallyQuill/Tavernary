@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1ce0b7bbb513174d21936b533a11f6647468b8bb77b4b4add31093e6c79ff133",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1194042343:hibanan-extension-quietprofileselector",
+      "inputDigest": "dd4b780577724bee7dfabbb0309ed367a4cc9d79cea826798384988e835b318d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1194042343",
+    "identity": "github:1194042343"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39536580545,
+    "sourceSha": "74c336032755e4a1c4bb84ed1b434cf33b7834fa"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/hibanan-extension-quietprofileselector.json",
+      "sha256": "1c0047d87ee00db64f0eb1b6d2ba99439f5f74eb75b12a927170bff302794265",
+      "gitBlobSha": "64ddb1ea5a0451339868e40e6d33e9c7ec6b849d"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/1ce0b7bbb513174d21936b533a11f6647468b8bb77b4b4add31093e6c79ff133.json",
+      "sha256": "e878003ab585234813b0e28bcd9c67945a3bd4196ad585140e9b0738ea1308d7",
+      "gitBlobSha": "67ffd1efdeecadb287dba32d982299596e629d06"
+    }
+  ]
+}

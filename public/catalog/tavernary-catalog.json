@@ -43635,7 +43635,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Quiet Profile Selector is a SillyTavern extension that assigns a dedicated Connection Profile to quiet or background generations. It swaps profiles during quiet prompts and restores the original once the task finishes.",
+      "summary": "A SillyTavern extension that assigns a dedicated Connection Profile to quiet/background generations for /autobg (README: What it does), switching on quiet-type requests and restoring your previous profile afterward.",
       "canonicalUrl": "https://github.com/Hibanan/Extension-QuietProfileSelector",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -43648,12 +43648,6 @@
       ],
       "tags": [
         {
-          "id": "route-tasks-across-models",
-          "label": "Route tasks across models",
-          "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
-          "facet": "goal"
-        },
-        {
           "id": "background-operation",
           "label": "Background operation",
           "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
@@ -43664,6 +43658,12 @@
           "label": "Secondary-model workflow",
           "description": "Delegates supporting tasks to a separately configured model or connection.",
           "facet": "trait"
+        },
+        {
+          "id": "automate-roleplay-workflows",
+          "label": "Automate roleplay workflows",
+          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
+          "facet": "goal"
         }
       ],
       "tavernKeeper": {
@@ -43809,7 +43809,7 @@
           "https://github.com/Hibanan/Extension-QuietProfileSelector"
         ],
         "summary": [
-          "Quiet Profile Selector is a SillyTavern extension that assigns a dedicated Connection Profile to quiet or background generations. It swaps profiles during quiet prompts and restores the original once the task finishes."
+          "A SillyTavern extension that assigns a dedicated Connection Profile to quiet/background generations for /autobg (README: What it does), switching on quiet-type requests and restoring your previous profile afterward."
         ],
         "kind": [
           "extension"
@@ -43818,10 +43818,6 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Route tasks across models",
-          "model routing",
-          "task routing",
-          "connection routing",
           "Background operation",
           "asynchronous processing",
           "quiet generation",
@@ -43829,7 +43825,12 @@
           "Secondary-model workflow",
           "helper model",
           "auxiliary model",
-          "separate connection profile"
+          "separate connection profile",
+          "Automate roleplay workflows",
+          "automation",
+          "workflow automation",
+          "task automation",
+          "triggered actions"
         ],
         "frontends": [
           "SillyTavern"
