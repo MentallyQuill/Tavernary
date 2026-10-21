@@ -126305,7 +126305,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Smart Chat Manager organizes SillyTavern chats with automatic titles, tags, folders, search, bulk operations, and badges, plus a prompt library and multi-profile API manager.",
+      "summary": "SillyTavern extension adding real chat management: auto-titles and tags chats, organizes folders, and overhauls the past-chats panel with tag search, bulk operations, and inline badges, plus a prompt library (README).",
       "canonicalUrl": "https://github.com/XaYS-101/Smart-Chat-Manager-Silly-Tavern",
       "catalogedAt": "2026-08-08T04:50:18.435Z",
       "catalogCohort": "standard",
@@ -126318,6 +126318,12 @@
       ],
       "tags": [
         {
+          "id": "organize-chats-and-messages",
+          "label": "Organize chats and messages",
+          "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
+          "facet": "goal"
+        },
+        {
           "id": "manage-prompts-and-presets",
           "label": "Manage prompts and presets",
           "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
@@ -126328,18 +126334,6 @@
           "label": "Non-destructive",
           "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
           "facet": "trait"
-        },
-        {
-          "id": "organize-chats-and-messages",
-          "label": "Organize chats and messages",
-          "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
-          "facet": "goal"
-        },
-        {
-          "id": "route-tasks-across-models",
-          "label": "Route tasks across models",
-          "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
-          "facet": "goal"
         }
       ],
       "tavernKeeper": {
@@ -126485,7 +126479,7 @@
           "https://github.com/XaYS-101/Smart-Chat-Manager-Silly-Tavern"
         ],
         "summary": [
-          "Smart Chat Manager organizes SillyTavern chats with automatic titles, tags, folders, search, bulk operations, and badges, plus a prompt library and multi-profile API manager."
+          "SillyTavern extension adding real chat management: auto-titles and tags chats, organizes folders, and overhauls the past-chats panel with tag search, bulk operations, and inline badges, plus a prompt library (README)."
         ],
         "kind": [
           "extension"
@@ -126494,6 +126488,10 @@
           "Interface and workflow"
         ],
         "tags": [
+          "Organize chats and messages",
+          "chat organization",
+          "message bookmarks",
+          "conversation search",
           "Manage prompts and presets",
           "prompt management",
           "prompt engineering",
@@ -126502,15 +126500,7 @@
           "Non-destructive",
           "reversible workflow",
           "preserves originals",
-          "safe overlay",
-          "Organize chats and messages",
-          "chat organization",
-          "message bookmarks",
-          "conversation search",
-          "Route tasks across models",
-          "model routing",
-          "task routing",
-          "connection routing"
+          "safe overlay"
         ],
         "frontends": [
           "SillyTavern"
@@ -182478,7 +182468,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "Smart Chat Manager organizes SillyTavern chats with automatic titles, tags, folders, search, bulk operations, and badges, plus a prompt library and multi-profile API manager.",
+            "summary": "SillyTavern extension adding real chat management: auto-titles and tags chats, organizes folders, and overhauls the past-chats panel with tag search, bulk operations, and inline badges, plus a prompt library (README).",
             "canonicalUrl": "https://github.com/XaYS-101/Smart-Chat-Manager-Silly-Tavern",
             "catalogedAt": "2026-08-08T04:50:18.435Z",
             "catalogCohort": "standard",
@@ -182491,6 +182481,12 @@
             ],
             "tags": [
               {
+                "id": "organize-chats-and-messages",
+                "label": "Organize chats and messages",
+                "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
+                "facet": "goal"
+              },
+              {
                 "id": "manage-prompts-and-presets",
                 "label": "Manage prompts and presets",
                 "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
@@ -182501,18 +182497,6 @@
                 "label": "Non-destructive",
                 "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
                 "facet": "trait"
-              },
-              {
-                "id": "organize-chats-and-messages",
-                "label": "Organize chats and messages",
-                "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
-                "facet": "goal"
-              },
-              {
-                "id": "route-tasks-across-models",
-                "label": "Route tasks across models",
-                "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
-                "facet": "goal"
               }
             ],
             "tavernKeeper": {
@@ -182658,7 +182642,7 @@
                 "https://github.com/XaYS-101/Smart-Chat-Manager-Silly-Tavern"
               ],
               "summary": [
-                "Smart Chat Manager organizes SillyTavern chats with automatic titles, tags, folders, search, bulk operations, and badges, plus a prompt library and multi-profile API manager."
+                "SillyTavern extension adding real chat management: auto-titles and tags chats, organizes folders, and overhauls the past-chats panel with tag search, bulk operations, and inline badges, plus a prompt library (README)."
               ],
               "kind": [
                 "extension"
@@ -182667,6 +182651,10 @@
                 "Interface and workflow"
               ],
               "tags": [
+                "Organize chats and messages",
+                "chat organization",
+                "message bookmarks",
+                "conversation search",
                 "Manage prompts and presets",
                 "prompt management",
                 "prompt engineering",
@@ -182675,15 +182663,7 @@
                 "Non-destructive",
                 "reversible workflow",
                 "preserves originals",
-                "safe overlay",
-                "Organize chats and messages",
-                "chat organization",
-                "message bookmarks",
-                "conversation search",
-                "Route tasks across models",
-                "model routing",
-                "task routing",
-                "connection routing"
+                "safe overlay"
               ],
               "frontends": [
                 "SillyTavern"

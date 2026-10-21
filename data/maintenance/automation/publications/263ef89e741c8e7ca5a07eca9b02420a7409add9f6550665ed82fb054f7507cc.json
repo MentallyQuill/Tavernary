@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "263ef89e741c8e7ca5a07eca9b02420a7409add9f6550665ed82fb054f7507cc",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1220986145:xays-101-smart-chat-manager-silly-tavern",
+      "inputDigest": "e9453b1718238a2768405173adc97476982fcc0f31aeb751c6de4f68a1913a38",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1220986145",
+    "identity": "github:1220986145"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39596153676,
+    "sourceSha": "5bae51a3e0ea45f07631124026869fca6d6e5d5c"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/xays-101-smart-chat-manager-silly-tavern.json",
+      "sha256": "1274edb7db8aa8707dbe3de83771a24377c21a37bbc192bbd3fb91f870bd4948",
+      "gitBlobSha": "23fa9d6412706fcc9b915e2927d9e359c3f50ee8"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/263ef89e741c8e7ca5a07eca9b02420a7409add9f6550665ed82fb054f7507cc.json",
+      "sha256": "46fa1006f2390e7941f511963bffa8f3b3a3c6db0d569066f370aff5b3f46e47",
+      "gitBlobSha": "1205f708f4cab85fb72035729e95567c9758bd48"
+    }
+  ]
+}
