@@ -4,6 +4,7 @@ import { pathToFileURL } from "node:url";
 import {
   discoverProjectOperations,
   projectIssueMatchesTransaction,
+  retryableCopyReviewPull,
 } from "./project-operations.mjs";
 import { parseProjectPublicationTransaction } from "../publication/project-publication-transaction.mjs";
 import { executeGh } from "../submissions/kit-submission-reconciliation.mjs";
@@ -85,6 +86,7 @@ export function planDirectGeneration(input) {
       return { action: "wait", reason: "maintainer-review" };
     if (
       !input.forceRegeneration &&
+      !retryableCopyReviewPull({ ...input, issue, pull }) &&
       (!input.currentMainSha ||
         transaction.base_sha === input.currentMainSha) &&
       projectIssueMatchesTransaction({

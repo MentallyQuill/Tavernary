@@ -74,7 +74,7 @@ function renderClassificationReview(report) {
     "> [!WARNING]",
     `> The submitter selected **${primaryFunctionLabel(review.submitted_primary_function)}** (\`${submittedId}\`), while the optional intake review suggested **${primaryFunctionLabel(review.suggested_primary_function)}** (\`${suggestedId}\`).`,
     `> Review reason: ${safeText(review.explanation, 240)}`,
-    "> The submitted value remains in the generated record unless a maintainer deliberately changes it during review.",
+    "> The submitted value remains in the generated record. This advisory warning does not block automatic publication.",
     "",
   ];
 }
@@ -157,17 +157,23 @@ export function renderSubmissionPullRequest(input) {
     "",
     warningLines,
     "",
-    "## Maintainer checklist",
+    manualCopyFallback ? "## Maintainer checklist" : "## Automated publication",
     "",
-    "- [ ] Canonical source and permanent identity are correct",
-    "- [ ] Project kind and supported frontends are correct",
-    "- [ ] Name and summary are factual",
-    "- [ ] Primary function and Goals and traits tags are appropriate",
-    ...(classificationReview
-      ? ["- [ ] Possible primary-function mismatch was reviewed"]
-      : []),
-    "- [ ] License, archival, and source warnings were reviewed",
-    "- [ ] The generated card passes CI",
+    ...(manualCopyFallback
+      ? [
+          "- [ ] Canonical source and permanent identity are correct",
+          "- [ ] Project kind and supported frontends are correct",
+          "- [ ] Name and summary are factual",
+          "- [ ] Primary function and Goals and traits tags are appropriate",
+          ...(classificationReview
+            ? ["- [ ] Possible primary-function mismatch was reviewed"]
+            : []),
+          "- [ ] License, archival, and source warnings were reviewed",
+          "- [ ] The generated card passes CI",
+        ]
+      : [
+          "Tavernary validates the source, submitted authority, generated paths, catalog data, and CI before publication. Temporary review failures retry automatically; no maintainer approval is required.",
+        ]),
     "",
   ].join("\n");
 }

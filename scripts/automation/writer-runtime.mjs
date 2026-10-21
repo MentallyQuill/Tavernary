@@ -1848,7 +1848,8 @@ export async function runAutomationWriterReconciliation({
     }
     return {
       // The separate read-only drill has no publication authority. Only native
-      // completed restore/browser steps can recover its operational incident.
+      // completed restore/browser steps can verify its health recovery.
+      issueReportingEnabled: false,
       findings: [
         ...assessInventoryHealth(state, {
           tokensPerDay,
@@ -1915,6 +1916,40 @@ export async function runAutomationWriterReconciliation({
       });
     } catch {
       health = { status: "unavailable" };
+    }
+  }
+  health = { ...health, findings: initialHealth?.findings ?? [] };
+  if (env.GITHUB_STEP_SUMMARY) {
+    const active = health.findings.filter(
+      (finding) => finding.status === "active",
+    );
+    const details = active.length
+      ? [
+          "| Finding | Subject | Reason | Affected |",
+          "| --- | --- | --- | --- |",
+          ...active
+            .slice(0, 100)
+            .map(
+              (finding) =>
+                `| ${finding.code} | ${finding.subject} | ${finding.reason} | ${finding.count} |`,
+            ),
+          ...(active.length > 100
+            ? [
+                `\nShowing 100 of ${active.length} active findings; see the writer output for all findings.`,
+              ]
+            : []),
+        ].join("\n")
+      : health.status === "unavailable"
+        ? "Automation health diagnostics are unavailable."
+        : "No active automation health findings.";
+    try {
+      await writeFile(
+        env.GITHUB_STEP_SUMMARY,
+        `### Automation health\n\n${details}\n\n`,
+        { flag: "a" },
+      );
+    } catch {
+      // Summary presentation cannot block durable retries or incident retirement.
     }
   }
   const genericLimit =

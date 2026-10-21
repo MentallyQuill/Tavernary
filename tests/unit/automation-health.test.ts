@@ -264,9 +264,17 @@ test("the scheduled writer uses monthly prices when deciding whether allowance r
       });
     },
   });
-  expect(result.health).toMatchObject({ status: "updated", number: 7 });
-  expect(bodies).toHaveLength(1);
-  expect(JSON.parse(bodies[0]).body).toContain('"subject":"dependency:budget"');
+  expect(result.health).toMatchObject({
+    status: "idle",
+    findings: expect.arrayContaining([
+      expect.objectContaining({
+        code: "budget-exhausted",
+        subject: "dependency:budget",
+        status: "active",
+      }),
+    ]),
+  });
+  expect(bodies).toHaveLength(0);
 });
 
 test("monthly spending exhaustion cannot be cleared by available daily counters", async () => {
@@ -1781,7 +1789,7 @@ test("unchanged findings keep a stable fingerprint and dependency recovery needs
   ).toMatchObject({ key: first.key, status: "recovered" });
 });
 
-test("the scheduled writer projects actual source facts and retains controller results when incident writes fail", async () => {
+test("the scheduled writer projects actual source facts without creating incident issues", async () => {
   const { state } = await metadataMaintenanceFixture();
   state.operations = [];
   state.local.kits = [];
@@ -1803,7 +1811,7 @@ test("the scheduled writer projects actual source facts and retains controller r
     TAVERNARY_PUBLISHER_BOT_ID: String(state.publisherActorId),
   };
   const calls: string[][] = [];
-  const failed = await runAutomationWriterReconciliation({
+  const result = await runAutomationWriterReconciliation({
     env,
     load: async () => state,
     gh: async (args) => {
@@ -1811,24 +1819,20 @@ test("the scheduled writer projects actual source facts and retains controller r
       throw new Error("Incident service temporarily unavailable");
     },
   });
-  expect(failed.health).toMatchObject({ status: "unavailable" });
-  expect(failed.controller).toMatchObject({ selectedKeys: [], dispatched: 0 });
-  expect(calls.filter((args) => args.includes("POST"))).toHaveLength(1);
-  const result = await runAutomationWriterReconciliation({
-    env,
-    load: async () => state,
-    gh: async (_args, payload) => {
-      const issue = {
-        ...JSON.parse(payload!),
-        number: 7,
-        state: "open",
-        user: { id: state.publisherActorId, type: "Bot" },
-      };
-      expect(issue.body).toContain("refresh:github");
-      return JSON.stringify(issue);
-    },
+  expect(result.health).toMatchObject({
+    status: "idle",
+    findings: expect.arrayContaining([
+      expect.objectContaining({
+        code: "refresh-stale",
+        subject: "refresh:github",
+        status: "active",
+      }),
+    ]),
   });
-  expect(result.health).toMatchObject({ status: "updated", number: 7 });
+  expect(result.controller).toMatchObject({ selectedKeys: [], dispatched: 0 });
+  expect(
+    calls.filter((args) => args.includes("POST") || args.includes("PATCH")),
+  ).toHaveLength(0);
 });
 
 test("the actual scheduled writer selects open dependency work after closed history", async () => {

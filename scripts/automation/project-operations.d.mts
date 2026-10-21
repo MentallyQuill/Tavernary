@@ -59,6 +59,15 @@ export interface ProjectInventoryInput {
 export function discoverProjectOperations(
   input: ProjectInventoryInput,
 ): AutomationOperation[];
+export function retryableCopyReviewPull(
+  input: Pick<
+    ProjectInventoryInput,
+    "repository" | "defaultBranch" | "publisherActorId" | "catalog"
+  > & {
+    issue: ProjectInventoryIssue;
+    pull: ProjectInventoryPull;
+  },
+): boolean;
 export function discoverRequestedGeneration(
   input: ProjectInventoryInput,
   request: {

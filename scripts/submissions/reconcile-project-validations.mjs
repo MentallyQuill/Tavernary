@@ -1,5 +1,6 @@
 import { pathToFileURL } from "node:url";
 import { isDirectSubmissionKind } from "../automation/submission-routing.mjs";
+import { retryableCopyReviewPull } from "../automation/project-operations.mjs";
 import { executeGh } from "./kit-submission-reconciliation.mjs";
 
 import { parseProjectPublicationTransaction } from "../publication/project-publication-transaction.mjs";
@@ -1039,6 +1040,26 @@ export async function reconcileSubmissionHandoffs({
         issue.body === listed.body &&
         issue.user?.id === listed.user?.id,
     );
+  const retryCopyReview = (state, operation) => {
+    const issue = state.remote.issues.find(
+      (issue) => operation.identity.subject === `issue:${issue.number}`,
+    );
+    const pulls = state.remote.pulls.filter((pull) => pull.state === "open");
+    return (
+      operation.identity.kind === "project" &&
+      operation.stage === "admitted" &&
+      issue &&
+      pulls.length === 1 &&
+      operation.expectedSha === pulls[0].head.sha &&
+      retryableCopyReviewPull({
+        repository,
+        publisherActorId: state.publisherActorId,
+        catalog: state.local,
+        issue,
+        pull: pulls[0],
+      })
+    );
+  };
   for (const listed of issues.sort(
     (a, b) =>
       Date.parse(a.created_at) - Date.parse(b.created_at) ||
@@ -1075,6 +1096,7 @@ export async function reconcileSubmissionHandoffs({
         continue;
       }
       if (
+        !retryCopyReview(state, operation) &&
         state.remote.pulls.some(
           (pull) =>
             pull.state === "open" ||
@@ -1117,7 +1139,9 @@ export async function reconcileSubmissionHandoffs({
         !sameIssue(listed, fresh) ||
         !due(fresh, current) ||
         current.stage !== operation.stage ||
-        fresh.remote.pulls.some((pull) => pull.state === "open")
+        current.expectedSha !== operation.expectedSha ||
+        (!retryCopyReview(fresh, current) &&
+          fresh.remote.pulls.some((pull) => pull.state === "open"))
       )
         continue;
       processed++;

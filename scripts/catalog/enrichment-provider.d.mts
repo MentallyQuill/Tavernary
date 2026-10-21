@@ -26,6 +26,8 @@ export type JsonRepairMetadata = {
 };
 
 export type ProviderErrorCode =
+  | "budget-exhausted"
+  | "provider-configuration-invalid"
   | "provider-timeout"
   | "provider-rate-limited"
   | "provider-server-error"

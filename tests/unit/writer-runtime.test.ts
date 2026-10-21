@@ -36,6 +36,7 @@ import * as siteWriterRuntime from "../../scripts/automation/site-writer-runtime
 import * as retention from "../../scripts/automation/retention.mjs";
 import * as dependencyUpdate from "../../scripts/automation/dependency-update.mjs";
 import * as incidents from "../../scripts/automation/incidents.mjs";
+import { assessAutomationHealth } from "../../scripts/automation/health.mjs";
 import * as restoreDrill from "../../scripts/automation/restore-drill.mjs";
 import * as preparedPublication from "../../scripts/automation/prepared-publication.mjs";
 import * as inventory from "../../scripts/automation/inventory.mjs";
@@ -975,8 +976,29 @@ test.each(AUTOMATION_KINDS)(
   },
 );
 
-test("reserved incident updates complete before an interrupted generic controller", async () => {
+function addLegacyHealthIncident(
+  fixture: ReturnType<typeof writerAdmissionFixture>,
+) {
+  const proposal = incidents.planIncidentUpdates({
+    findings: assessAutomationHealth({
+      nowMs: fixture.state.nowMs,
+      restoreDrill: { status: "active" },
+    }),
+    existingIssues: [],
+    publisherActorId: fixture.state.publisherActorId,
+  })[0];
+  fixture.state.remote.issues.push({
+    title: proposal.title,
+    body: proposal.body,
+    number: 935,
+    state: "open",
+    user: { id: fixture.state.publisherActorId, type: "Bot" },
+  } as AutomationInventoryState["remote"]["issues"][number]);
+}
+
+test("reserved incident retirement completes before an interrupted generic controller", async () => {
   const fixture = writerAdmissionFixture();
+  addLegacyHealthIncident(fixture);
   useWriterOperations(fixture, [
     operationFixture({
       identity: {
@@ -1018,8 +1040,9 @@ test("reserved incident updates complete before an interrupted generic controlle
   }
 });
 
-test("an unavailable reserved incident update does not block generic dispatch", async () => {
+test("an unavailable reserved incident retirement does not block generic dispatch", async () => {
   const fixture = writerAdmissionFixture();
+  addLegacyHealthIncident(fixture);
   useWriterOperations(fixture, [
     operationFixture({
       identity: {
@@ -1066,6 +1089,7 @@ test("an unavailable reserved incident update does not block generic dispatch", 
 
 test("all late services defer while six protected holds occupy the final seats", async () => {
   const fixture = writerAdmissionFixture();
+  addLegacyHealthIncident(fixture);
   fixture.state.local.runtimePolicy = {};
   Object.assign(fixture.options.env, {
     TAVERNARY_IMMUTABLE_RELEASES_ENABLED: "true",
@@ -1201,7 +1225,7 @@ test("a failed runtime service keeps its existing charge without spending protec
     };
     expect(result.runtime.status).toBe("unavailable");
     expect(runtime).toHaveBeenCalledOnce();
-    expect(result.health.status).toBe("unavailable");
+    expect(result.health.status).toBe("idle");
     expect(result.prepared.consumedKeys).toHaveLength(7);
     expect(result.controller.selectedKeys).toHaveLength(2);
     expect(

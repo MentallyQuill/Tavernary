@@ -8,6 +8,7 @@ import {
   planIncidentUpdates,
   reconcileIncidentUpdates,
 } from "../../scripts/automation/incidents.mjs";
+import type { IncidentIssue } from "../../scripts/automation/incidents.mjs";
 
 const finding = () =>
   assessAutomationHealth({
@@ -22,6 +23,174 @@ const env = {
   GITHUB_WORKFLOW_REF:
     "Owner/Repo/.github/workflows/automation-writer.yml@refs/heads/main",
 };
+
+function incidentIssue(number = 7): IncidentIssue {
+  const create = planIncidentUpdates({
+    findings: [finding()],
+    existingIssues: [],
+    publisherActorId: 41,
+  })[0];
+  return {
+    number,
+    title: create.title,
+    body: create.body,
+    state: "open",
+    state_reason: null,
+    user: { id: 41, type: "Bot" },
+  };
+}
+
+test("disabled incident reporting never creates, updates or reopens investigations", () => {
+  const issue = incidentIssue();
+  const input = {
+    findings: [{ ...finding(), count: 2 }],
+    publisherActorId: 41,
+    issueReportingEnabled: false,
+  };
+  expect(planIncidentUpdates({ ...input, existingIssues: [] })).toEqual([]);
+  expect(
+    planIncidentUpdates({
+      ...input,
+      existingIssues: [
+        {
+          ...issue,
+          state: "closed",
+          state_reason: "completed",
+          closed_by: { id: 41, type: "Bot" },
+        },
+      ],
+    }),
+  ).toEqual([]);
+  expect(
+    planIncidentUpdates({ ...input, existingIssues: [issue] }),
+  ).toMatchObject([{ action: "close", number: 7, stateReason: "not_planned" }]);
+});
+
+test("disabled reporting retires intact owned open incidents without a recovery finding", () => {
+  const issue = incidentIssue();
+  const mutations = planIncidentUpdates({
+    findings: [],
+    existingIssues: [
+      { ...issue, number: 8 },
+      issue,
+      { ...issue, number: 9, body: issue.body + "\nOwner note" },
+      { ...issue, number: 10, title: "Owner edited title" },
+      { ...issue, number: 11, user: { id: 41, type: "User" } },
+      { ...issue, number: 12, user: { id: 99, type: "Bot" } },
+      { ...issue, number: 13, pull_request: {} },
+      {
+        ...issue,
+        number: 14,
+        body: issue.body!.replace('"count":1', '"count":-1'),
+      },
+      { ...issue, number: 15, state: "closed", state_reason: "completed" },
+    ],
+    publisherActorId: 41,
+    issueReportingEnabled: false,
+  });
+  expect(
+    mutations.map(({ action, number, stateReason }) => ({
+      action,
+      number,
+      stateReason,
+    })),
+  ).toEqual([
+    { action: "close", number: 7, stateReason: "not_planned" },
+    { action: "close", number: 8, stateReason: "not_planned" },
+  ]);
+});
+
+test("native incident retirement records not planned and remains idle on another active finding", async () => {
+  const issue = incidentIssue();
+  const calls: Array<{ args: string[]; payload: unknown }> = [];
+  const gh = async (args: string[], input?: string) => {
+    const payload = input ? JSON.parse(input) : undefined;
+    calls.push({ args, payload });
+    if (args.includes("PATCH")) Object.assign(issue, payload);
+    return JSON.stringify(issue);
+  };
+  const load = async () => ({
+    findings: [finding()],
+    existingIssues: [structuredClone(issue)],
+    publisherActorId: 41,
+    issueReportingEnabled: false,
+  });
+  expect(await reconcileIncidentUpdates({ env, gh, load })).toEqual({
+    status: "closed",
+    number: 7,
+  });
+  expect(calls.filter(({ args }) => args.includes("PATCH"))).toEqual([
+    {
+      args: [
+        "api",
+        "repos/Owner/Repo/issues/7",
+        "--method",
+        "PATCH",
+        "--input",
+        "-",
+      ],
+      payload: { state: "closed", state_reason: "not_planned" },
+    },
+  ]);
+  expect(await reconcileIncidentUpdates({ env, gh, load })).toEqual({
+    status: "idle",
+  });
+  expect(calls).toHaveLength(2);
+});
+
+test.each([
+  { body: "Owner note replaced the generated incident" },
+  { title: "Owner edited title" },
+  { state: "closed", state_reason: "completed" },
+  { user: { id: 99, type: "Bot" } },
+])(
+  "incident retirement preserves a changed current issue: %j",
+  async (change) => {
+    const issue = incidentIssue();
+    let writes = 0;
+    const load = async () => ({
+      findings: [],
+      existingIssues: [structuredClone(issue)],
+      publisherActorId: 41,
+      issueReportingEnabled: false,
+    });
+    const gh = async (args: string[]) => {
+      if (args.includes("PATCH")) writes++;
+      return JSON.stringify({ ...issue, ...change });
+    };
+    expect(await reconcileIncidentUpdates({ env, gh, load })).toEqual({
+      status: "superseded",
+    });
+    expect(writes).toBe(0);
+  },
+);
+
+test("incident retirement recovers a lost close response without repeating the write", async () => {
+  const issue = incidentIssue();
+  let writes = 0;
+  const load = async () => ({
+    findings: [finding()],
+    existingIssues: [structuredClone(issue)],
+    publisherActorId: 41,
+    issueReportingEnabled: false,
+  });
+  const gh = async (args: string[], input?: string) => {
+    if (args.includes("PATCH")) {
+      writes++;
+      Object.assign(issue, JSON.parse(input!));
+      throw new Error("Close response lost");
+    }
+    return JSON.stringify(issue);
+  };
+  await expect(reconcileIncidentUpdates({ env, gh, load })).rejects.toThrow(
+    "Close response lost",
+  );
+  expect(await reconcileIncidentUpdates({ env, gh, load })).toEqual({
+    status: "idle",
+  });
+  expect(writes).toBe(1);
+  expect(issue).toMatchObject({ state: "closed", state_reason: "not_planned" });
+});
 
 test("a recurring shared investigation reopens before legacy investigations close", async () => {
   const { state } = await metadataMaintenanceFixture();

@@ -13,6 +13,8 @@ const failureCodeLabels = new Map([
   ["provider-network-error", "Provider network error"],
   ["provider-response-invalid", "Provider response invalid"],
   ["provider-model-mismatch", "Provider model mismatch"],
+  ["provider-configuration-invalid", "Provider configuration invalid"],
+  ["budget-exhausted", "Model allowance exhausted"],
   ["provider-error", "Provider error"],
   ["copy-output-invalid", "Copy output invalid"],
 ]);
@@ -26,6 +28,8 @@ const providerCodes = new Set([
   "provider-network-error",
   "provider-response-invalid",
   "provider-model-mismatch",
+  "provider-configuration-invalid",
+  "budget-exhausted",
 ]);
 
 const diagnosticCodes = new Set([
