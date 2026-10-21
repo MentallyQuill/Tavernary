@@ -12568,7 +12568,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Adds a SillyTavern option to delete every unused swipe while keeping the displayed one, with popup and STscript commands for quick chat cleanup.",
+      "summary": "A SillyTavern extension adding a \"Delete All But This Swipe\" option to the message deletion prompt, plus /keepswipe and /cleanallswipes commands, to purge unused swipes in one action (README features).",
       "canonicalUrl": "https://github.com/Avilnetro/all-but-this-swipe",
       "catalogedAt": "2026-08-07T03:57:02.777Z",
       "catalogCohort": "standard",
@@ -12730,7 +12730,7 @@
           "https://github.com/Avilnetro/all-but-this-swipe"
         ],
         "summary": [
-          "Adds a SillyTavern option to delete every unused swipe while keeping the displayed one, with popup and STscript commands for quick chat cleanup."
+          "A SillyTavern extension adding a \"Delete All But This Swipe\" option to the message deletion prompt, plus /keepswipe and /cleanallswipes commands, to purge unused swipes in one action (README features)."
         ],
         "kind": [
           "extension"

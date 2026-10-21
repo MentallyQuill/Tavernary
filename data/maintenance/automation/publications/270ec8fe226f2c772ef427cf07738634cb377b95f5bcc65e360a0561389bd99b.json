@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "270ec8fe226f2c772ef427cf07738634cb377b95f5bcc65e360a0561389bd99b",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1189004275:avilnetro-all-but-this-swipe",
+      "inputDigest": "eb766409f73c9c22b1c12758643290616773fe7ceaf1b933ffaa88e499202e88",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1189004275",
+    "identity": "github:1189004275"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39564030175,
+    "sourceSha": "ffd90b209001981a4ad19e219bf1cf27833ad258"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/avilnetro-all-but-this-swipe.json",
+      "sha256": "00843055ec5bfbfb6adda220e38fab16c53b65985591cad33902318f017403a1",
+      "gitBlobSha": "d0f88c98b5bb7cded90b2cace864204f1bbc9e40"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/270ec8fe226f2c772ef427cf07738634cb377b95f5bcc65e360a0561389bd99b.json",
+      "sha256": "2ee1855bb0d6b8be3aa6f122a9ce526d0413d8c7d2f75eefde682de15f111139",
+      "gitBlobSha": "fc36ff99e5d467e05ae44ec02388d56cbe36dd28"
+    }
+  ]
+}
