@@ -475,10 +475,16 @@ test("completed handoffs cannot bypass persisted backoff or an active worker", (
       }),
     ).toEqual([]);
 });
-test("the completion CLI fetches authoritative run metadata and dispatches only the shared writer", async () => {
+test("the completion CLI authenticates a result and requests a batched writer pass", async () => {
   const input = fixture();
   const gh = vi.fn(async (args: string[]) =>
-    args[0] === "api" ? JSON.stringify(input.run) : "",
+    args[0] !== "api"
+      ? ""
+      : JSON.stringify(
+          args[1].endsWith(`/runs/${input.run.id}`)
+            ? input.run
+            : { total_count: 0, workflow_runs: [] },
+        ),
   );
   const env = {
     GITHUB_REPOSITORY: input.repository,
@@ -498,11 +504,7 @@ test("the completion CLI fetches authoritative run metadata and dispatches only 
     "--ref",
     "main",
     "-f",
-    "mode=publish",
-    "-f",
-    `operation_key=${input.operation.key}`,
-    "-f",
-    `result_run_id=${input.run.id}`,
+    "mode=reconcile",
   ]);
 });
 
@@ -603,3 +605,150 @@ test.each(["generation", "diagnostic"])(
     });
   },
 );
+
+test("an authenticated prepared source is published despite twenty older unprepared operations", () => {
+  const input = fixture();
+  const older = Array.from({ length: 20 }, (_, index) =>
+    operationFixture({
+      identity: {
+        ...input.operation.identity,
+        subject: `source:unprepared-${index}`,
+      },
+      createdAt: "2026-09-01T00:00:00.000Z",
+    }),
+  );
+  expect(
+    selectPreparedWakes({
+      ...input,
+      operations: [...older, input.operation],
+      runs: [input.run],
+      nowMs: AUTOMATION_NOW,
+    }),
+  ).toEqual([{ operationKey: input.operation.key, runId: input.run.id }]);
+});
+
+test("a reserved prepared source survives more than twenty older completed results", () => {
+  const input = fixture();
+  const older = Array.from({ length: 20 }, (_, index) =>
+    operationFixture({
+      identity: {
+        ...input.operation.identity,
+        subject: `source:prepared-${index}`,
+      },
+      createdAt: "2026-09-01T00:00:00.000Z",
+    }),
+  );
+  const runs = older.map((operation, index) => ({
+    ...structuredClone(input.run),
+    id: 2000 + index,
+    display_title: `Automation prepare ${operation.key}`,
+  }));
+  expect(
+    selectPreparedWakes({
+      ...input,
+      operations: [...older, input.operation],
+      runs: [...runs, input.run],
+      priorityKeys: [input.operation.key],
+      limit: 1,
+      nowMs: AUTOMATION_NOW,
+    }),
+  ).toEqual([{ operationKey: input.operation.key, runId: input.run.id }]);
+});
+
+test("successful source preparation shares an already queued reconciliation", async () => {
+  const input = fixture();
+  const calls: string[][] = [];
+  const write = vi.fn();
+  const gh = async (args: string[]) => {
+    calls.push(args);
+    if (args[0] !== "api")
+      throw new Error("A second writer must not be dispatched");
+    return JSON.stringify(
+      args[1].endsWith(`/runs/${input.run.id}`)
+        ? input.run
+        : {
+            total_count: 1,
+            workflow_runs: [{ display_title: "Automation reconcile" }],
+          },
+    );
+  };
+  expect(
+    await runPreparedWakeCli({
+      env: {
+        ...generationWakeEnv,
+        TAVERNARY_PUBLISHER_BOT_ID: String(input.publisherActorId),
+      },
+      runId: input.run.id,
+      gh,
+      write,
+    }),
+  ).toBe(0);
+  expect(calls.some((args) => args[0] === "workflow")).toBe(false);
+  expect(JSON.parse(write.mock.calls[0][0])).toMatchObject({
+    status: "coalesced",
+    operationKey: input.operation.key,
+    runId: input.run.id,
+  });
+});
+
+test.each(["apply-kit-submission", "apply-kit-withdrawal"])(
+  "a successful %s result retains its explicit publication handoff",
+  async (workflow) => {
+    const input = fixture();
+    input.run.path = `.github/workflows/${workflow}.yml`;
+    const calls: string[][] = [];
+    const gh = async (args: string[]) => {
+      calls.push(args);
+      return args[0] === "api" ? JSON.stringify(input.run) : "";
+    };
+    expect(
+      await runPreparedWakeCli({
+        env: {
+          ...generationWakeEnv,
+          TAVERNARY_PUBLISHER_BOT_ID: String(input.publisherActorId),
+        },
+        runId: input.run.id,
+        gh,
+        write: () => {},
+      }),
+    ).toBe(0);
+    expect(calls.at(-1)).toEqual([
+      "workflow",
+      "run",
+      "automation-writer.yml",
+      "--repo",
+      input.repository,
+      "--ref",
+      "main",
+      "-f",
+      "mode=publish",
+      "-f",
+      `operation_key=${input.operation.key}`,
+      "-f",
+      `result_run_id=${input.run.id}`,
+    ]);
+  },
+);
+
+test("reserved and ordinary prepared batches never publish two versions of one source", () => {
+  const input = fixture();
+  const previous = operationFixture({
+    identity: { ...input.operation.identity, inputDigest: "f".repeat(64) },
+    createdAt: "2026-09-01T00:00:00.000Z",
+  });
+  const previousRun = {
+    ...structuredClone(input.run),
+    id: 2000,
+    display_title: `Automation prepare ${previous.key}`,
+  };
+  expect(
+    selectPreparedWakes({
+      ...input,
+      operations: [previous, input.operation],
+      runs: [previousRun, input.run],
+      priorityKeys: [input.operation.key],
+      limit: 2,
+      nowMs: AUTOMATION_NOW,
+    }),
+  ).toEqual([{ operationKey: input.operation.key, runId: input.run.id }]);
+});

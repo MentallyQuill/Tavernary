@@ -178,6 +178,7 @@ export function selectWriterAdmissionReservations(
     limit: number;
     consumedKeys?: readonly string[];
     consumedSubjects?: readonly string[];
+    preparedRefreshKeys?: readonly string[];
   },
 ): import("./operation.mjs").AutomationOperation[];
 export function runAutomationWriterReconciliation(input?: {
