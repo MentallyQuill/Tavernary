@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0c9e567580bbc66ea0dcf6bd6ef4bb4704525ce9b3901c2af87745e426747914",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1297079548:al4xdev-alex-tavern",
+      "inputDigest": "c47a6327846e156e05fc4103cedbbbd6229a85a1dd685678be7311a73a0f5f8b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1297079548",
+    "identity": "github:1297079548"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39513448271,
+    "sourceSha": "6c8c32df7b464215db3b67201df0d4c968c67b67"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/al4xdev-alex-tavern.json",
+      "sha256": "dfaa6c090ad57eb49631d6e6ef5bc04f0e6a6e37d59b157310e404895b54469c",
+      "gitBlobSha": "5f1c9f003fd051fe4a149a7cfa2bc14a8077cfc5"
+    }
+  ]
+}
