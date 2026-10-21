@@ -50,10 +50,12 @@ export function planIncidentUpdates({
   findings,
   existingIssues,
   publisherActorId,
+  issueReportingEnabled = true,
 }) {
   if (
     !Number.isSafeInteger(publisherActorId) ||
     publisherActorId < 1 ||
+    typeof issueReportingEnabled !== "boolean" ||
     !Array.isArray(findings) ||
     findings.length > 100_000 ||
     !Array.isArray(existingIssues) ||
@@ -67,6 +69,30 @@ export function planIncidentUpdates({
     if (seen.has(finding.key))
       throw new Error("Automation health finding is duplicated.");
     seen.add(finding.key);
+  }
+  if (!issueReportingEnabled)
+    return existingIssues
+      .flatMap((issue) => {
+        if (!owned(issue, publisherActorId) || issue.state !== "open")
+          return [];
+        const key =
+          /^<!-- tavernary-automation-incident:v1:([a-f0-9]{64}) -->/u.exec(
+            issue.body ?? "",
+          )?.[1];
+        if (!key || !intact(issue, key)) return [];
+        return [
+          {
+            action: "close",
+            number: issue.number,
+            key,
+            title: issue.title,
+            body: issue.body,
+            stateReason: "not_planned",
+          },
+        ];
+      })
+      .sort((left, right) => left.number - right.number);
+  for (const finding of findings) {
     const marker = `<!-- tavernary-automation-incident:v1:${finding.key} -->`;
     const matches = existingIssues
       .filter(
@@ -90,6 +116,7 @@ export function planIncidentUpdates({
           key: finding.key,
           title: issue.title,
           body: issue.body,
+          stateReason: "completed",
         });
       continue;
     }
@@ -198,7 +225,7 @@ export async function reconcileIncidentUpdates({
   }
   const payload =
     mutation.action === "close"
-      ? { state: "closed", state_reason: "completed" }
+      ? { state: "closed", state_reason: mutation.stateReason }
       : {
           title: mutation.title,
           body: mutation.body,
@@ -213,6 +240,8 @@ export async function reconcileIncidentUpdates({
     !intact(response, mutation.key) ||
     response.body !== mutation.body ||
     (mutation.number && response.number !== mutation.number) ||
+    (mutation.action === "close" &&
+      response.state_reason !== mutation.stateReason) ||
     response.state !== (mutation.action === "close" ? "closed" : "open")
   )
     throw new Error("Automation incident mutation is unconfirmed.");

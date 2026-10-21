@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import { classifyAutomationFailure } from "../automation/failure.mjs";
 import { planAutomationRetry } from "../automation/retry.mjs";
+import { retryableCopyReviewPull } from "../automation/project-operations.mjs";
 
 import {
   ownerRequestBranch,
@@ -101,13 +102,13 @@ export function planProjectGenerationFailure(input) {
     input.issue?.state !== "open" ||
     !labels.includes("issue-admitted") ||
     !labels.includes(routingLabel(input.producer)) ||
-    labels.includes("submission-pr-open") ||
+    (labels.includes("submission-pr-open") && !input.retryCopyReview) ||
     labels.some((label) => BLOCKING_LABELS.has(label))
   ) {
     return { action: "noop" };
   }
   const desired =
-    input.ownedPull?.state === "open"
+    input.ownedPull?.state === "open" && !input.retryCopyReview
       ? "submission-pr-open"
       : "submission-retryable";
   const diagnostic = projectGenerationDiagnostic({ code: input.reasonCode });
@@ -211,10 +212,21 @@ export async function reconcileProjectGenerationFailure(input) {
       repository: input.repository,
       branch,
     }) ?? null;
+  const retryCopyReview = (currentIssue) =>
+    ownedPull &&
+    input.producer === "project-submission" &&
+    retryableCopyReviewPull({
+      issue: currentIssue,
+      pull: ownedPull,
+      publisherActorId: input.publisherActorId,
+      repository: input.repository,
+      catalog: { projects: [], sources: [] },
+    });
   let plan = planProjectGenerationFailure({
     issue,
     producer: input.producer,
     ownedPull,
+    retryCopyReview: retryCopyReview(issue),
     runUrl: input.runUrl,
     reasonCode: input.reasonCode,
     redditRetryState: input.redditRetryState,
@@ -235,6 +247,7 @@ export async function reconcileProjectGenerationFailure(input) {
     issue: currentIssue,
     producer: input.producer,
     ownedPull,
+    retryCopyReview: retryCopyReview(currentIssue),
     runUrl: input.runUrl,
     reasonCode: input.reasonCode,
     redditRetryState: input.redditRetryState,
@@ -336,6 +349,7 @@ async function main() {
   }
   await reconcileProjectGenerationFailure({
     repository,
+    publisherActorId: Number(process.env.TAVERNARY_PUBLISHER_BOT_ID),
     issueNumber,
     producer,
     runUrl,

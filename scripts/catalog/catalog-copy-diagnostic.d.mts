@@ -3,6 +3,8 @@ export type CopyReviewFailurePhase =
 
 export type CopyReviewFailureCode =
   | import("./enrichment-provider.mjs").ProviderErrorCode
+  | "provider-configuration-invalid"
+  | "budget-exhausted"
   | "provider-error"
   | "copy-output-invalid";
 

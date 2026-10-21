@@ -6,8 +6,22 @@ import {
 } from "./catalog-copy-diagnostic.mjs";
 import { createCatalogCopyProvider } from "./catalog-copy-provider.mjs";
 import { modelProviderOptionsFromEnvironment } from "./model-provider-configuration.mjs";
+import { EnrichmentProviderError } from "./enrichment-provider.mjs";
 
 const trustedAuthorities = new Set(["repository-owner", "tavernary-staff"]);
+
+export function requireCatalogSummaryReview(copy) {
+  if (copy.reviewStatus === "validated") return copy;
+  const diagnostic = copy.diagnostic;
+  const code = ["provider-error", "copy-output-invalid"].includes(
+    diagnostic.failure_code,
+  )
+    ? "provider-response-invalid"
+    : diagnostic.failure_code;
+  throw new EnrichmentProviderError(code, diagnostic.diagnostic_code, {
+    latencyMs: diagnostic.latency_ms,
+  });
+}
 
 function unavailableCopyReview(submittedSummary, diagnostic) {
   return {

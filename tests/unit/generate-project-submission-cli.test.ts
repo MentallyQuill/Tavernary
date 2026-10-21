@@ -788,7 +788,7 @@ test("keeps automatic tags when a verified owner supplies a manual summary", asy
   });
 });
 
-test("routes unavailable verified-owner copy review to manual publication", async () => {
+test("keeps unavailable verified-owner copy review in automatic retry", async () => {
   const submittedSummary = [
     "You pick a sentence boundary and write your reply there.",
     "The original remainder stays available as non-canonical reference.",
@@ -802,34 +802,23 @@ test("routes unavailable verified-owner copy review to manual publication", asyn
     throw new Error("Manual metadata must not enter enrichment.");
   });
 
-  const draft = await prepareProjectSubmissionDraft(
-    repositorySubmissionFixture({
-      user: { id: 11, login: "Owner" },
-      ownerId: 11,
-      metadata: {
-        summary: { mode: "manual", value: submittedSummary },
-        tags: {
-          mode: "manual",
-          values: ["add-structured-reasoning"],
+  await expect(
+    prepareProjectSubmissionDraft(
+      repositorySubmissionFixture({
+        user: { id: 11, login: "Owner" },
+        ownerId: 11,
+        metadata: {
+          summary: { mode: "manual", value: submittedSummary },
+          tags: {
+            mode: "manual",
+            values: ["add-structured-reasoning"],
+          },
         },
-      },
-      enrich,
-      copySummary,
-    }),
-  );
-
-  expect(draft.record.summary).toBe(submittedSummary.replace(/\s+/gu, " "));
-  expect(draft.copyResult).toBeNull();
-  expect(draft.copyReviewStatus).toBe("unavailable");
-  expect(draft.copyReviewReasonCode).toBe("copy-review-unavailable");
-  expect(draft.copyReviewDiagnostic).toEqual({
-    failure_phase: "initial-provider",
-    failure_code: "provider-timeout",
-    diagnostic_code: null,
-    attempt_count: 1,
-    latency_ms: 900,
-  });
-  expect(draft.publicationMode).toBe("manual");
+        enrich,
+        copySummary,
+      }),
+    ),
+  ).rejects.toMatchObject({ code: "provider-timeout" });
 });
 
 test.each([["http-401"], ["http-403"]] as const)(
