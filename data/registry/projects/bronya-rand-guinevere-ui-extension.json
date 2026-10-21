@@ -3,7 +3,7 @@
   "id": "bronya-rand-guinevere-ui-extension",
   "name": "Guinevere UI Extension",
   "kind": "extension",
-  "summary": "Guinevere UI Extension overhauls the SillyTavern interface so users can customize their chat environment to personal taste. It provides theming and layout controls that tailor the roleplay frontend.",
+  "summary": "Guinevere UI Extension is a SillyTavern extension offering one-click UI overhauls via multiple HTML, CSS, and JS theme packs, while staying compatible with existing ST Custom Themes (README features 1–3).",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",

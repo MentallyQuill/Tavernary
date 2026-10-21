@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "23e28e758b9fc1cd8c97e88b992083d2419475090b462f97400f4a2b8f58ad9d",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-929287817:bronya-rand-guinevere-ui-extension",
+      "inputDigest": "74443f7d67a94217365905edccc2b0b69c8fdc3b078767cda516b085043ee26a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-929287817",
+    "identity": "github:929287817"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39572598018,
+    "sourceSha": "ac04b23ccb644507e1e9342dfcf5bf324d14042d"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/bronya-rand-guinevere-ui-extension.json",
+      "sha256": "e1cd9136b599f34409065c323d6f6466e9e245d5138f43a0a57a25acb2b4c0fe",
+      "gitBlobSha": "86a82701827866306858959a01a5a3ef2a1a4537"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/23e28e758b9fc1cd8c97e88b992083d2419475090b462f97400f4a2b8f58ad9d.json",
+      "sha256": "9130d857b016db9a6d3111e8657b0c0b16f131ffb4f4cd69e0f6e0b4865aaca0",
+      "gitBlobSha": "4fc0bea7995515027880d2023192731168d1986f"
+    }
+  ]
+}

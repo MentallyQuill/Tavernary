@@ -18391,7 +18391,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Guinevere UI Extension overhauls the SillyTavern interface so users can customize their chat environment to personal taste. It provides theming and layout controls that tailor the roleplay frontend.",
+      "summary": "Guinevere UI Extension is a SillyTavern extension offering one-click UI overhauls via multiple HTML, CSS, and JS theme packs, while staying compatible with existing ST Custom Themes (README features 1–3).",
       "canonicalUrl": "https://github.com/Bronya-Rand/Guinevere-UI-Extension",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -18586,7 +18586,7 @@
           "https://github.com/Bronya-Rand/Guinevere-UI-Extension"
         ],
         "summary": [
-          "Guinevere UI Extension overhauls the SillyTavern interface so users can customize their chat environment to personal taste. It provides theming and layout controls that tailor the roleplay frontend."
+          "Guinevere UI Extension is a SillyTavern extension offering one-click UI overhauls via multiple HTML, CSS, and JS theme packs, while staying compatible with existing ST Custom Themes (README features 1–3)."
         ],
         "kind": [
           "extension"
@@ -46552,6 +46552,188 @@
           "i5031337"
         ],
         "relationships": []
+      }
+    },
+    {
+      "id": "i5031337-st-castward",
+      "name": "ST-Castward",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "rpg-systems",
+      "summary": "Local model friendly. Tracks customizable user and NPC profiles, stats, levels, items, abilities. Define separate systems to easily switch between genres. On-the-fly expression and TTS voice generation available.",
+      "canonicalUrl": "https://github.com/i5031337/ST-Castward",
+      "catalogedAt": "2026-10-21T11:44:36.473Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-rpg-gameplay",
+          "label": "Add RPG gameplay",
+          "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
+          "facet": "goal"
+        },
+        {
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-characters-and-personas",
+          "label": "Manage characters and personas",
+          "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-inventory-and-quests",
+          "label": "Manage inventory and quests",
+          "description": "Track equipment, items, objectives, quests, or progression records.",
+          "facet": "goal"
+        },
+        {
+          "id": "secondary-model",
+          "label": "Secondary-model workflow",
+          "description": "Delegates supporting tasks to a separately configured model or connection.",
+          "facet": "trait"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "59047b66fbc8a6520edf1b5ab863f5c73e1af6eb",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "i5031337"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-21T03:15:36.000Z",
+        "activeWeeks12": 6,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 10920,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-10-21T11:44:36.473Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/i5031337/ST-Castward.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "ST-Castward"
+      },
+      "fork": {
+        "parentName": "SillyNPC",
+        "parentProjectId": "brutalkoala-sillynpc",
+        "parentUrl": null,
+        "status": "published"
+      },
+      "search": {
+        "title": [
+          "ST-Castward"
+        ],
+        "aliases": [],
+        "source": [
+          "i5031337-st-castward",
+          "github-1384472391",
+          "i5031337/ST-Castward",
+          "https://github.com/i5031337/ST-Castward"
+        ],
+        "summary": [
+          "Local model friendly. Tracks customizable user and NPC profiles, stats, levels, items, abilities. Define separate systems to easily switch between genres. On-the-fly expression and TTS voice generation available."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "RPG systems and suites"
+        ],
+        "tags": [
+          "Add RPG gameplay",
+          "tabletop mechanics",
+          "game master tools",
+          "RPG systems",
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals",
+          "Manage characters and personas",
+          "persona management",
+          "character management",
+          "identity management",
+          "Manage inventory and quests",
+          "quest tracking",
+          "inventory management",
+          "equipment tracking",
+          "Secondary-model workflow",
+          "helper model",
+          "auxiliary model",
+          "separate connection profile",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "i5031337"
+        ],
+        "relationships": [
+          "SillyNPC",
+          "brutalkoala-sillynpc"
+        ]
       }
     },
     {
