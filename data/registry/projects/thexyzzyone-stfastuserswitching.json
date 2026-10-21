@@ -3,7 +3,7 @@
   "id": "thexyzzyone-stfastuserswitching",
   "name": "ST Fast User Switching",
   "kind": "extension",
-  "summary": "This SillyTavern extension enables multi-user account switching on shared installs. It adds a top-bar avatar button that opens a picker for quickly logging in as another enabled user.",
+  "summary": "SillyTavern extension for multi-user installs: adds a top-bar avatar button that opens a picker of other enabled login users for instant switching (README).",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
