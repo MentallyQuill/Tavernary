@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "231d223bfd9ffcb05e87cab82d60065d5d464ebe1768cdc8a93128cd179f9500",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-983964699:nemovonnirgend-nemopresetext",
+      "inputDigest": "ed069dcae0fc51e2ad593b766a1a75cae0ab210240f06a123fee0d9f29c7364a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-983964699",
+    "identity": "github:983964699"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39569206661,
+    "sourceSha": "7161cd1e71c0cc82b859db934b802975ff118f56"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/nemovonnirgend-nemopresetext.json",
+      "sha256": "3dc31e1810094e36710c6d01f6d813accd66c14a43b48c45ce272c46802100e1",
+      "gitBlobSha": "565ceaf77c96625453a437eaaaa4f9cd663c8489"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/231d223bfd9ffcb05e87cab82d60065d5d464ebe1768cdc8a93128cd179f9500.json",
+      "sha256": "3f1571f4a336368bfa3ad4dadc26a8b73c63257262148b9e1693751a20d71a58",
+      "gitBlobSha": "09a95ce47d4f4b70b6d6bba8e1a58186be158443"
+    }
+  ]
+}

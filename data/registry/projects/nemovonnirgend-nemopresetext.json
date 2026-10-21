@@ -3,18 +3,14 @@
   "id": "nemovonnirgend-nemopresetext",
   "name": "NemoPresetExt",
   "kind": "extension",
-  "summary": "NemoPresetExt is a SillyTavern extension providing the core package for Nemo prompt directives and custom divider configuration. It manages NemoEngine installation and connects to Nemo Hub for related components.",
+  "summary": "NemoPresetExt is the complete Nemo prompt workstation for SillyTavern, combining prompt organization, preset and character navigation, reasoning capture, and prompt directives in one extension (README).",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "source_id": "github-983964699",
-  "tags": [
-    "guide-model-responses",
-    "manage-prompts-and-presets",
-    "build-extensions-and-scripts"
-  ],
+  "tags": ["manage-prompts-and-presets", "guide-model-responses"],
   "listing_status": "active",
   "listing_status_reason": null,
   "metadata_policy": {

@@ -79878,7 +79878,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "NemoPresetExt is a SillyTavern extension providing the core package for Nemo prompt directives and custom divider configuration. It manages NemoEngine installation and connects to Nemo Hub for related components.",
+      "summary": "NemoPresetExt is the complete Nemo prompt workstation for SillyTavern, combining prompt organization, preset and character navigation, reasoning capture, and prompt directives in one extension (README).",
       "canonicalUrl": "https://github.com/NemoVonNirgend/NemoPresetExt",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -79891,21 +79891,15 @@
       ],
       "tags": [
         {
-          "id": "guide-model-responses",
-          "label": "Guide model responses",
-          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-          "facet": "goal"
-        },
-        {
           "id": "manage-prompts-and-presets",
           "label": "Manage prompts and presets",
           "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
           "facet": "goal"
         },
         {
-          "id": "build-extensions-and-scripts",
-          "label": "Build extensions and scripts",
-          "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
           "facet": "goal"
         }
       ],
@@ -80105,7 +80099,7 @@
           "https://github.com/NemoVonNirgend/NemoPresetExt"
         ],
         "summary": [
-          "NemoPresetExt is a SillyTavern extension providing the core package for Nemo prompt directives and custom divider configuration. It manages NemoEngine installation and connects to Nemo Hub for related components."
+          "NemoPresetExt is the complete Nemo prompt workstation for SillyTavern, combining prompt organization, preset and character navigation, reasoning capture, and prompt directives in one extension (README)."
         ],
         "kind": [
           "extension"
@@ -80114,19 +80108,15 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Guide model responses",
-          "response steering",
-          "generation control",
-          "instruction control",
           "Manage prompts and presets",
           "prompt management",
           "prompt engineering",
           "preset organization",
           "template management",
-          "Build extensions and scripts",
-          "extension development",
-          "custom scripting",
-          "plugin development"
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control"
         ],
         "frontends": [
           "SillyTavern"
