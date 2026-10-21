@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "dfaker-st-clickable-actions",
+  "sourceId": "github-1034747621",
+  "sourceIdentity": "github:1034747621",
+  "inputDigest": "40d1834bf2f59aaf3543efbc0515d420db28b26e341fef8816c8ee9dc010cb15",
+  "fingerprint": "e9f9e660714c134858f11c65cdbc557c377c81778dc01e4286445aabc83b90a8",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "e6198942c17b279bf7a0d9a805ac20903218329fd05a983dd6c98408e99b22e8",
+  "outputDigest": "c2cf8824d77f8e9e48155ab11f8883c0b3231178a9a3391bc11b5047ee1d5431",
+  "headSha": "54fd0085c5f30dd057976fe7c685ff389e00c668",
+  "observedAt": "2026-10-21T09:59:03.746Z"
+}

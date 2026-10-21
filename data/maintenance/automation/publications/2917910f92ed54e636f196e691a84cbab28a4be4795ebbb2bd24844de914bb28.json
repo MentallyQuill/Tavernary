@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2917910f92ed54e636f196e691a84cbab28a4be4795ebbb2bd24844de914bb28",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1034747621:dfaker-st-clickable-actions",
+      "inputDigest": "40d1834bf2f59aaf3543efbc0515d420db28b26e341fef8816c8ee9dc010cb15",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1034747621",
+    "identity": "github:1034747621"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39581042812,
+    "sourceSha": "70007489ec0454a5dfc80d918144e768cf53df5a"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/dfaker-st-clickable-actions.json",
+      "sha256": "ccf540f31685bb7d86325a1a4004293377bad9740047a1f8db21c379d0c72630",
+      "gitBlobSha": "d21ad815c239f0626a50bc17dc9f8f3d526307d0"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/2917910f92ed54e636f196e691a84cbab28a4be4795ebbb2bd24844de914bb28.json",
+      "sha256": "445b64b271fe8b0119066cf0715397864ac4b25017b4fa5cb378a94764955989",
+      "gitBlobSha": "0622b3ba497418a1fdb6bf13ccd35eaf744fa755"
+    }
+  ]
+}
