@@ -3,6 +3,10 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 import { generatedCatalog as catalog } from "../helpers/generated-catalog";
 import { sitePath } from "../helpers/site-path";
 
+test.beforeEach(async ({ page }) => {
+  await page.clock.setFixedTime(new Date(catalog.generatedAt));
+});
+
 const forkRelationshipChild =
   catalog.projects.find(
     ({ id, fork }) =>

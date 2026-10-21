@@ -39,6 +39,7 @@ import { KitShareNotice } from "@/features/kits/components/kit-share-notice";
 import { useKitBuilder } from "@/features/kits/use-kit-builder";
 import { useKitShareFeedback } from "@/features/kits/use-kit-share-feedback";
 import { useProjectBatchSelection } from "@/features/kits/use-project-batch-selection";
+import { useCurrentTime } from "@/hooks/use-current-time";
 import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
 import { useTransitionPresence } from "@/hooks/use-transition-presence";
 import type { Catalog } from "../catalog-types";
@@ -75,6 +76,7 @@ type AddedStatus = {
 
 export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const router = useRouter();
+  const now = useCurrentTime(catalog.generatedAt);
   const { query, setQuery, pushQuery, removeRelationship } = useCatalogQuery(
     catalog.tagVocabulary,
   );
@@ -119,10 +121,10 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   }, [query.kits.sort, query.mode, query.search, query.sort]);
   const context = useMemo(
     () => ({
-      now: catalog.generatedAt,
+      now,
       tagVocabulary: catalog.tagVocabulary,
     }),
-    [catalog.generatedAt, catalog.tagVocabulary],
+    [now, catalog.tagVocabulary],
   );
   const projectSearchIndex = useMemo(
     () =>
@@ -594,7 +596,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             query={query}
             projects={catalog.projects}
             tagVocabulary={catalog.tagVocabulary}
-            now={catalog.generatedAt}
+            now={now}
             onToggle={toggleFilter}
             onClear={clearFilters}
           />
@@ -607,7 +609,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
                 : visibleProjects.length
             }
             query={query}
-            refreshedLabel={relativeRefresh(lastRefresh, catalog.generatedAt)}
+            refreshedLabel={relativeRefresh(lastRefresh, now)}
             filterCount={filterCount}
             onSort={updateProjectSort}
             onKitSort={updateKitSort}
@@ -642,7 +644,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
           {query.mode === "kits" ? (
             <KitGrid
               kits={selectedKits}
-              now={catalog.generatedAt}
+              now={now}
               selectedKitId={query.selectedKitId}
               onSelect={workspace.selectKit}
               onCopyLink={kitShare.copy}
@@ -660,7 +662,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
           ) : (
             <ProjectGrid
               projects={visibleProjects}
-              now={catalog.generatedAt}
+              now={now}
               relationshipChildId={
                 relationshipProjects ? query.relationship : ""
               }
@@ -695,7 +697,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               ? (catalog.kits.find(({ id }) => id === inspectedKitId) ?? null)
               : null
           }
-          now={catalog.generatedAt}
+          now={now}
           onCopyLink={kitShare.copy}
           onCollapse={workspace.toggleCollapsed}
           onDuplicate={workspace.startDuplicate}
@@ -759,7 +761,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             query={query}
             projects={catalog.projects}
             tagVocabulary={catalog.tagVocabulary}
-            now={catalog.generatedAt}
+            now={now}
             onToggle={toggleFilter}
             onClear={clearFilters}
             onClose={closeFilters}

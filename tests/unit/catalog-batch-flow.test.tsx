@@ -8,6 +8,7 @@ import {
   within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { renderToString } from "react-dom/server";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
 const navigation = vi.hoisted(() => ({ push: vi.fn() }));
@@ -152,6 +153,67 @@ afterEach(() => {
 });
 
 describe("catalog Kit batch flow", () => {
+  test("ages source activity against the current time when the catalog is old", () => {
+    mockDesktopMatchMedia();
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-10-20T15:00:00Z"));
+    const recursion = project();
+    recursion.activity = {
+      latestSourceActivityAt: "2026-10-08T02:55:07Z",
+      activeWeeks12: 1,
+      weeklyActivity: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+      ],
+      evidenceStatus: "complete",
+      dormant: false,
+    };
+    recursion.refreshedAt = "2026-10-08T14:39:08Z";
+
+    const page = (
+      <CatalogPage
+        catalog={{
+          ...catalog,
+          generatedAt: "2026-10-11T13:56:41Z",
+          projects: [recursion],
+        }}
+      />
+    );
+
+    const container = document.createElement("div");
+    document.body.append(container);
+    container.innerHTML = renderToString(page);
+    expect(within(container).getByText("3d ago")).toBeVisible();
+
+    const hydrationErrors: unknown[] = [];
+    render(page, {
+      container,
+      hydrate: true,
+      onRecoverableError: (error) => hydrationErrors.push(error),
+    });
+
+    expect(screen.getByText("12d ago")).toBeVisible();
+    expect(screen.getByText("Catalog refreshed 12d ago")).toBeVisible();
+    expect(hydrationErrors).toEqual([]);
+
+    act(() => {
+      vi.advanceTimersByTime(24 * 60 * 60 * 1000);
+    });
+
+    expect(screen.getByText("13d ago")).toBeVisible();
+    expect(screen.getByText("Catalog refreshed 13d ago")).toBeVisible();
+  });
+
   test("preserves spaces while typing a multi-word catalog search", async () => {
     mockDesktopMatchMedia();
     const user = userEvent.setup();
