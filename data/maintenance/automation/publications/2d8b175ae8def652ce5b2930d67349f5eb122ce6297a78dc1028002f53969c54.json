@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2d8b175ae8def652ce5b2930d67349f5eb122ce6297a78dc1028002f53969c54",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1112751408:hexicy-st-characterpreview",
+      "inputDigest": "c915ce4624811b83dc2b0aa87bf43e6b52a2941f815380988471b290bcbf3d02",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1112751408",
+    "identity": "github:1112751408"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39622449636,
+    "sourceSha": "9a30f9140902844d28b01cf42730dc495d94bd52"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/hexicy-st-characterpreview.json",
+      "sha256": "1a5e02471a13c646a2e3a9fa24957abd395526e75a67a59b228045f348feb403",
+      "gitBlobSha": "3afe793552e7ae2955c0c3b881d9c2705695c6f5"
+    }
+  ]
+}
