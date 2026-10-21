@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "27899cef66f421f16ccbfa301abc045c720b2b8c2734c04b0cd09f82056d9fb6",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1288668022:brucestarkallen-sillytavern-plot-essential-and-instructions-maker",
+      "inputDigest": "95ac260422f3a0cfbe66b3a8a7a735999e5c8f682edb1d0b55d1a5abcf6c57ff",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1288668022",
+    "identity": "github:1288668022"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39577790194,
+    "sourceSha": "3f23914aa2d002b6ec3ece3aff6c4bf57471b7d7"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/brucestarkallen-sillytavern-plot-essential-and-instructions-maker.json",
+      "sha256": "a7825713a5e09506943d587d37a78b5077c040c6da99f8770fb02ecb0d1766da",
+      "gitBlobSha": "e584d92e8df397ae16fc990fae0acc2a3cd09c96"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/27899cef66f421f16ccbfa301abc045c720b2b8c2734c04b0cd09f82056d9fb6.json",
+      "sha256": "a74ed0b8e17ed236b9f21768c1c5d7e30b231d5d572f5bc12b958d999d3cac87",
+      "gitBlobSha": "df0edc2ff64b320044adb50047659c56ea3e07b0"
+    }
+  ]
+}

@@ -19303,7 +19303,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "A floating AI editor for Plot Essential, instruction, and worldbook documents, using conversational surgical edits, reviewable diffs, references, sessions, Compare, and undo.",
+      "summary": "SillyTavern extension where a floating AI agent edits Plot Essential lore documents, AI instruction sets, and worldbooks through surgical, reviewable, undoable diff edits (readme, floating chat panel section).",
       "canonicalUrl": "https://github.com/brucestarkallen/SillyTavern-Plot-Essential-and-Instructions-Maker",
       "catalogedAt": "2026-08-08T04:26:19.337Z",
       "catalogCohort": "standard",
@@ -19316,21 +19316,9 @@
       ],
       "tags": [
         {
-          "id": "agentic-tool-use",
-          "label": "Agentic tool use",
-          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
-          "facet": "trait"
-        },
-        {
           "id": "build-worlds-and-lore",
           "label": "Build worlds and lore",
           "description": "Create fictional settings, lore, locations, factions, or other world material.",
-          "facet": "goal"
-        },
-        {
-          "id": "inspect-prompts-and-generations",
-          "label": "Inspect prompts and generations",
-          "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
           "facet": "goal"
         },
         {
@@ -19344,6 +19332,18 @@
           "label": "Manage prompts and presets",
           "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
           "facet": "goal"
+        },
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        },
+        {
+          "id": "agentic-tool-use",
+          "label": "Agentic tool use",
+          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
+          "facet": "trait"
         },
         {
           "id": "non-destructive",
@@ -19502,7 +19502,7 @@
           "https://github.com/brucestarkallen/SillyTavern-Plot-Essential-and-Instructions-Maker"
         ],
         "summary": [
-          "A floating AI editor for Plot Essential, instruction, and worldbook documents, using conversational surgical edits, reviewable diffs, references, sessions, Compare, and undo."
+          "SillyTavern extension where a floating AI agent edits Plot Essential lore documents, AI instruction sets, and worldbooks through surgical, reviewable, undoable diff edits (readme, floating chat panel section)."
         ],
         "kind": [
           "extension"
@@ -19511,20 +19511,11 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Agentic tool use",
-          "tool calling",
-          "AI agents",
-          "agent mode",
           "Build worlds and lore",
           "worldbuilding",
           "character worldbuilding",
           "lore creation",
           "setting design",
-          "Inspect prompts and generations",
-          "prompt inspection",
-          "generation diagnostics",
-          "review validation",
-          "request debugging",
           "Manage lorebooks",
           "World Info management",
           "worldbook organization",
@@ -19534,6 +19525,14 @@
           "prompt engineering",
           "preset organization",
           "template management",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
+          "Agentic tool use",
+          "tool calling",
+          "AI agents",
+          "agent mode",
           "Non-destructive",
           "reversible workflow",
           "preserves originals",
