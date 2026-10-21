@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0d40e117214fd967acb01689b1284b13c80b25eac9b9b2e2b6d63b431dfc3a54",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-953212287:bmen25124-sillytavern-worldinfo-recommender",
+      "inputDigest": "4f874c514294a4bfec07879c9f31b03e4b93cff6ae9dee2542ebd145fcc3e380",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-953212287",
+    "identity": "github:953212287"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39555426970,
+    "sourceSha": "069561dfe4e76bc13ac696f07115f7c3aa8b59ee"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/bmen25124-sillytavern-worldinfo-recommender.json",
+      "sha256": "2b87b43bc2bd5b8c32b8c380f4fa2e4d44e6a839f1357a2ecf7725bf7c8c047e",
+      "gitBlobSha": "ec613fedcadc8e5f02425dbe8348d340aa70a62d"
+    }
+  ]
+}

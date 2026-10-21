@@ -5,12 +5,9 @@
   "source_identity": "github:bmen25124/sillytavern-worldinfo-recommender",
   "evidence_fingerprint": "c4068c06e9b9bb6bfe026ca8e997edd8580e4a4548efce18de3a690645bd1063",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-06T14:36:52.709Z",
-  "retry": {
-    "attempts": 6,
-    "last_failure_at": "2026-10-06T14:36:52.709Z"
-  },
+  "reviewed_at": "2026-10-21T06:27:28.035Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
