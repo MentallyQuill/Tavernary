@@ -5,12 +5,9 @@
   "source_identity": "github:brutalkoala/sillynpc",
   "evidence_fingerprint": "51d5cfaca1816cdd5328be752045514d568fe22855430cb73f298a14faf88ce1",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-04T13:33:32.352Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-10-04T13:33:32.352Z"
-  },
+  "reviewed_at": "2026-10-21T15:15:01.693Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

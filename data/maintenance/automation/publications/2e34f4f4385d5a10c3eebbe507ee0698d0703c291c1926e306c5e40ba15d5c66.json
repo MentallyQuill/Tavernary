@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2e34f4f4385d5a10c3eebbe507ee0698d0703c291c1926e306c5e40ba15d5c66",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1354538739:brutalkoala-sillynpc",
+      "inputDigest": "07c2e73940b7197c38b187739a7b6e1909fd819cc1d725566be357783191d037",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1354538739",
+    "identity": "github:1354538739"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39623808760,
+    "sourceSha": "c2347b2f8c53f8af96e0ba747afbb9410f198029"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/brutalkoala-sillynpc.json",
+      "sha256": "d0384905ce93b8c61d1588d55c7adcd8d0afe9acbea6b0d009fa78b991ec9125",
+      "gitBlobSha": "67c91be05449354cea87dd9dfc54f912dff2af47"
+    }
+  ]
+}
