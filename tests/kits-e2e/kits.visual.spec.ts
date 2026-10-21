@@ -1,6 +1,11 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { sitePath } from "../helpers/site-path";
 
+test.beforeEach(async ({ page }) => {
+  // Match the deterministic date used by scripts/kits/build-test-export.mjs.
+  await page.clock.setFixedTime(new Date("2026-07-24T12:00:00.000Z"));
+});
+
 async function openKits(
   page: Page,
   viewport: { width: number; height: number },
