@@ -54527,7 +54527,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "A ComfyUI image studio for SillyTavern that generates pictures from scene, character, or freeform prompts, with prompts written by a separate connection profile so roleplay and image generation use different backends.",
+      "summary": "SillyTavern-Atelier is a ComfyUI image studio extension for SillyTavern in one panel, offering Scene, Character, and Freeform modes that auto-write prompts via a separate connection profile (README).",
       "canonicalUrl": "https://github.com/keepsanity/SillyTavern-Atelier",
       "catalogedAt": "2026-08-23T13:59:21.248Z",
       "catalogCohort": "standard",
@@ -54539,12 +54539,6 @@
         }
       ],
       "tags": [
-        {
-          "id": "add-visual-immersion",
-          "label": "Add visual immersion",
-          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
-          "facet": "goal"
-        },
         {
           "id": "generate-images",
           "label": "Generate images",
@@ -54558,9 +54552,15 @@
           "facet": "goal"
         },
         {
-          "id": "secondary-model",
-          "label": "Secondary-model workflow",
-          "description": "Delegates supporting tasks to a separately configured model or connection.",
+          "id": "manage-prompts-and-presets",
+          "label": "Manage prompts and presets",
+          "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
+          "facet": "goal"
+        },
+        {
+          "id": "multilingual",
+          "label": "Multilingual",
+          "description": "Explicitly supports use, authoring, or interfaces in multiple languages.",
           "facet": "trait"
         }
       ],
@@ -54734,7 +54734,7 @@
           "https://github.com/keepsanity/SillyTavern-Atelier"
         ],
         "summary": [
-          "A ComfyUI image studio for SillyTavern that generates pictures from scene, character, or freeform prompts, with prompts written by a separate connection profile so roleplay and image generation use different backends."
+          "SillyTavern-Atelier is a ComfyUI image studio extension for SillyTavern in one panel, offering Scene, Character, and Freeform modes that auto-write prompts via a separate connection profile (README)."
         ],
         "kind": [
           "extension"
@@ -54743,10 +54743,6 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Add visual immersion",
-          "roleplay visuals",
-          "visual novel presentation",
-          "scene visuals",
           "Generate images",
           "image generation",
           "AI art generation",
@@ -54756,10 +54752,15 @@
           "model routing",
           "task routing",
           "connection routing",
-          "Secondary-model workflow",
-          "helper model",
-          "auxiliary model",
-          "separate connection profile"
+          "Manage prompts and presets",
+          "prompt management",
+          "prompt engineering",
+          "preset organization",
+          "template management",
+          "Multilingual",
+          "multiple languages",
+          "internationalized",
+          "cross-language support"
         ],
         "frontends": [
           "SillyTavern"

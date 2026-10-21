@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2a7a50e57324f9beae4ac89d5f19c5cf137b5f1642c703109bdeca195c413a58",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1327848464:keepsanity-sillytavern-atelier",
+      "inputDigest": "d516e65430843583266c8ee7b09078a6216ca1f108aa70103e5e3ca0954eb221",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1327848464",
+    "identity": "github:1327848464"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39598830034,
+    "sourceSha": "ad23cd3b327849fa520c09cb26cd11264fa47093"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/keepsanity-sillytavern-atelier.json",
+      "sha256": "e06b34df3d7741a01390b5f3e52b12810a58b4fa99e2bb2fa9a2d178cb5ca51a",
+      "gitBlobSha": "3aedb458d68445566c1147d7ee34b0489f2bb574"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/2a7a50e57324f9beae4ac89d5f19c5cf137b5f1642c703109bdeca195c413a58.json",
+      "sha256": "eaaf5a269b500ba3ed9d5901f3f4204bcd73e8692e82004e97b783ce1dd49589",
+      "gitBlobSha": "caadd8e96245e35127605d6aeb7a462b35d43007"
+    }
+  ]
+}
