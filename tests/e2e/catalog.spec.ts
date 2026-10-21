@@ -17,6 +17,7 @@ import {
 } from "../helpers/generated-catalog";
 import { sitePath } from "../helpers/site-path";
 
+const browserNow = new Date();
 const claudePresetCount = catalog.projects.filter(
   ({ kind, preset }) =>
     kind === "preset" &&
@@ -25,8 +26,7 @@ const claudePresetCount = catalog.projects.filter(
 const recursionSearchCount = generatedProjectSearchCount("recursion");
 const newViewCount = catalog.projects.filter(
   ({ catalogedAt, catalogCohort }) => {
-    const age =
-      new Date(catalog.generatedAt).getTime() - new Date(catalogedAt).getTime();
+    const age = browserNow.getTime() - new Date(catalogedAt).getTime();
     return (
       catalogCohort === "standard" &&
       Number.isFinite(age) &&
@@ -93,6 +93,7 @@ function displayedProjectName(name: string) {
 }
 
 test.beforeEach(async ({ page }) => {
+  await page.clock.setFixedTime(browserNow);
   await page.goto(sitePath());
   await expect(page.locator(".catalog-shell")).toHaveAttribute(
     "data-hydrated",
@@ -1250,6 +1251,7 @@ test(
       "data-hydrated",
       "true",
     );
+    const search = page.getByRole("searchbox", { name: "Search projects" });
     for (const [
       state,
       accessibleCopy,
@@ -1283,11 +1285,18 @@ test(
         "Credible malicious or compromised behavior",
       ],
     ] as const) {
+      await search.fill("");
       const indicator = page
         .getByRole("button", {
           name: `TavernKeeper scan: ${accessibleCopy}`,
         })
         .first();
+      const controls = await indicator.getAttribute("aria-controls");
+      if (!controls) throw new Error("Missing scan fixture project ID");
+      // Render the fixture card before opening its portal. Scrolling the full
+      // lazy-rendered catalog can hide the anchor while WebKit enters the panel.
+      await search.fill(controls.replace(/^tavernkeeper-scan-/u, ""));
+      await expect(page.locator(".project-card")).toHaveCount(1);
 
       await expect(indicator).toHaveCSS(
         "color",
