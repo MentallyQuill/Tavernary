@@ -418,6 +418,24 @@ dispatch and produce a sanitized configuration diagnostic; verified cached work
 and catalog facts remain publishable. Inventory health uses the configured token
 allowance when valid and its existing default when invalid.
 
+The exhausted-allowance health finding reflects whether the current preparation batch
+can be reserved under the current daily and optional monthly/price controls.
+Health checks probe the same reservation rules without saving tickets, consuming
+allowance, refunding charges or moving retry deadlines. A saved refusal from an
+older operation does not itself prove that today's allowance is exhausted. Missing
+or invalid budget evidence cannot establish recovery.
+
+Automation health findings appear in the canonical writer's Actions output and
+step summary; production does not create, update, or reopen investigation issues.
+Repeated advisory failures share one `automation:advisory` finding with an
+affected-operation count. Persistent invalid model output remains visible after
+three bounded retries while durable retry state controls the next attempt.
+`provider-response-invalid` and the fixed
+`policy-review-output-invalid` detail distinguish invalid structured content from
+an unclassified failure without exposing model output or credentials. Only
+legacy incident reports authored by the configured numeric Publisher Bot identity bypass
+the public intake limit; ordinary users and other bots keep the existing policy.
+
 The current primary reservation covers three attempts and up to 180,000
 requested tokens; configured
 JSON repair reserves one further request and 15,000 tokens. Unused or unknown
@@ -518,12 +536,11 @@ Inspect the two private reports for selection mode, manual exclusions, cursors,
 model/repair/rate-limit metrics and sanitized project reasons. Full deployment
 finalization records the actual verified run once, and replay recovers an
 already-committed approval without repeating model work. A terminal
-`complete-with-errors` report leaves failed projects provisional and opens the
-existing bounded native incident `[automation] Catalog enrichment has unresolved
-projects`. A later clean full report closes it only with native publication,
-retained-bundle and browser confirmation. Running, missing or edited proof
-cannot clear the incident. The native incident mechanism respects owner edits
-and dismissals. Historical `Catalog enrichment errors` notices remain under
+`complete-with-errors` report leaves failed projects provisional and records an
+`enrichment-unresolved` health finding in Actions. A later clean full report
+clears it only with native publication, retained-bundle and browser confirmation.
+Running, missing or edited proof cannot clear the finding.
+Historical `Catalog enrichment errors` notices remain under
 owner control instead of being rewritten by the removed shell publisher.
 
 When a canary fails, repair the affected source/provider and create a new owner
@@ -991,14 +1008,14 @@ Node 26 is not eligible before its official October 28, 2026 LTS date. The
 serialized writer creates a constrained runtime PR and merges only after native
 CI proves its exact head on both current and candidate runtimes. Closing or
 drafting that PR preserves the owner's manual decision. Failed candidates retain
-the working runtime and public export. An incident warns 90 days before end of
+the working runtime and public export. An Actions health finding warns 90 days before end of
 support; an expired runtime stays unhealthy until a supported transition merges.
 
 The weekly restore drill authenticates the immutable bundle for the active
 deployment, checks its integrity, restores it into a fresh temporary workspace,
 and verifies Chromium and WebKit with outbound browser/provider requests blocked.
 It has read-only credentials and performs no public deployment. A failed or
-missing drill raises one operational incident. Recovery needs a successful native
+missing drill produces an Actions health finding. Recovery needs a successful native
 restore and offline browser job less than eight days old.
 
 The owner can request either check on current main with the GitHub CLI:
@@ -1019,21 +1036,23 @@ forty-eight hours, due factual report imports at twenty-four hours, and eligible
 automatic submission/publication progress at two hours. A fresh companion clock
 does not prove a repository was checked. Successful unchanged source checks
 persist their own observation time; failed checks preserve prior observations.
-Manual review waits and an explicit owner restore are excluded from automatic
+Explicit manual decisions and an owner restore are excluded from automatic
 stalled-work notices.
 
-Incidents use numeric Publisher custody and one stable fingerprint. Unchanged
-findings produce no comments or repeated edits. One incident mutation fits within
-the existing twenty-operation pass; failure to write it does not discard the
-catalog controller's result. The writer checks fresh findings and issue custody
-before mutation. Starting another attempt is insufficient to close a stalled
-work notice. Closure requires an observed recovery; absent proof leaves it open.
+Health findings use stable fingerprints and fixed reason codes in Actions;
+unattended processing does not depend on someone reviewing a GitHub incident.
+The writer retires intact legacy Publisher-owned incident issues as `not_planned`,
+at most one per pass, after rechecking their numeric author and exact content.
+Retirement removes the obsolete review queue; it does not assert recovery or
+erase failure evidence. Human-authored issues, edited notices, and explicit
+closures remain protected. Durable retries continue independently.
 
-Inspect the indicated operation receipt and Actions run, repair the credential,
-provider or allowance, and let the next scheduled pass observe recovery. The
-diagnostics contain fixed reason codes and public operation identities, not raw
-provider errors or credentials. A human closure or body edit is preserved.
-Closing a notice as not planned explicitly dismisses it.
+When owner-authored submission copy cannot pass automated review, generation
+fails with a classified provider reason and retries after its saved deadline.
+It cannot produce a manual publication fallback. Existing untouched project PRs
+created by that fallback are regenerated and validated again before automatic
+publication. Deliberately manual transactions and changed PR heads stay protected.
+Provider diagnostics contain no raw model output or credentials.
 
 Metadata, advisory, optional report, project submission and owner-request producers reserve global model
 allowance before dispatch. Their successful result carries safe usage evidence;

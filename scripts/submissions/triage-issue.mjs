@@ -35,7 +35,8 @@ const triageLabels = {
   },
   "needs-maintainer-review": {
     color: "0e8a16",
-    description: "Submission passed automation and awaits maintainer review.",
+    description:
+      "Submission is admitted for automated generation and publication.",
   },
   "needs-information": {
     color: "d93f0b",
@@ -53,7 +54,7 @@ const triageLabels = {
   },
   "submission-pr-open": {
     color: "5319e7",
-    description: "Submission has an open generated maintainer-review PR.",
+    description: "Submission has an open generated validation PR.",
   },
   "submission-declined": {
     color: "6e7781",
@@ -256,7 +257,7 @@ function decisionComment(decision) {
   if (decision.status === "waiting-on-fork-parent") {
     return `${decision.dependency.name} is the immediate upstream of this fork and must complete Tavernary review first. This submission will resume automatically after that review.`;
   }
-  return "Automated admission passes. Tavernary will create or update the maintainer review pull request.";
+  return "Automated admission passes. Tavernary will create or update the validation pull request and publish after its automated checks pass.";
 }
 
 export function buildProjectSubmissionTriage(decision, context) {

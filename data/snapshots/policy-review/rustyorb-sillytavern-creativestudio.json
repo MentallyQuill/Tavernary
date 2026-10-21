@@ -3,14 +3,11 @@
   "project_id": "rustyorb-sillytavern-creativestudio",
   "source_id": "github-1383785103",
   "source_identity": "github:rustyorb/sillytavern-creativestudio",
-  "evidence_fingerprint": "9f2234295d844eb874b28b28327ef692c9edc51fe2db4bbdee7bc7bdebf2c746",
+  "evidence_fingerprint": "41b5c6979ccf26ff3d642e1166084bd408c2df9104ad4777c052375ff0f5797e",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-25T04:09:48.118Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-09-25T04:09:48.118Z"
-  },
+  "reviewed_at": "2026-10-19T21:22:15.361Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

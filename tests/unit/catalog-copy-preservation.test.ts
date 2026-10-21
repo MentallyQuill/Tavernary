@@ -1,7 +1,54 @@
 import { expect, test, vi } from "vitest";
 
-import { preserveCatalogSummary } from "../../scripts/catalog/catalog-copy-preservation.mjs";
+import {
+  preserveCatalogSummary,
+  requireCatalogSummaryReview,
+} from "../../scripts/catalog/catalog-copy-preservation.mjs";
 import { EnrichmentProviderError } from "../../scripts/catalog/enrichment-provider.mjs";
+import { classifyAutomationFailure } from "../../scripts/automation/failure.mjs";
+
+test("invalid copy and repair remain classified for unattended retry", async () => {
+  const copy = await preserveCatalogSummary({
+    authorityType: "repository-owner",
+    submittedSummary: "Owner wording stays exact.",
+    copySummary: async () => ({ summary: "invalid" }) as never,
+  });
+  let failure;
+  try {
+    requireCatalogSummaryReview(copy);
+  } catch (error) {
+    failure = classifyAutomationFailure({
+      diagnosticCode: (error as EnrichmentProviderError).code,
+    });
+  }
+  expect(failure).toEqual({
+    kind: "transient",
+    reasonCode: "provider-response-invalid",
+  });
+});
+
+test.each(["budget-exhausted", "provider-configuration-invalid"])(
+  "%s keeps its configuration cooldown instead of becoming invalid model output",
+  async (code) => {
+    const copy = await preserveCatalogSummary({
+      authorityType: "repository-owner",
+      submittedSummary: "Owner wording stays exact.",
+      copySummary: async () => {
+        throw Object.assign(new Error("private details"), { code });
+      },
+    });
+    let failure;
+    try {
+      requireCatalogSummaryReview(copy);
+    } catch (error) {
+      failure = classifyAutomationFailure({
+        diagnosticCode: (error as EnrichmentProviderError).code,
+      });
+      expect((error as Error).message).not.toContain("private details");
+    }
+    expect(failure).toEqual({ kind: "configuration", reasonCode: code });
+  },
+);
 
 test("validates a first-pass owner summary without a failure diagnostic", async () => {
   const copySummary = vi.fn().mockResolvedValue({

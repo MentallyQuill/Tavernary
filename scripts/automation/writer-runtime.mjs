@@ -26,6 +26,7 @@ import {
 import {
   reserveModelPreparation,
   assessModelProviderCircuit,
+  modelPreparationBudgetPolicy,
 } from "./model-preparation.mjs";
 import { isReportNarrativeRetry } from "./report-operations.mjs";
 import { enrichmentCheckpointNeedsModel } from "./enrichment-preparation.mjs";
@@ -640,37 +641,7 @@ export async function runModelWriterPreparation({
     const tokensPerDay = parseModelDailyTokens(
       env.TAVERNARY_MODEL_DAILY_TOKENS,
     );
-    let prices;
-    try {
-      prices = env.TAVERNARY_MODEL_PRICES
-        ? JSON.parse(env.TAVERNARY_MODEL_PRICES)
-        : {};
-    } catch {
-      throw Object.assign(new Error("Model prices are invalid."), {
-        code: "provider-configuration-invalid",
-      });
-    }
-    if (!prices || typeof prices !== "object" || Array.isArray(prices))
-      throw Object.assign(new Error("Model prices are invalid."), {
-        code: "provider-configuration-invalid",
-      });
-    const monthlyUsd = env.TAVERNARY_MODEL_MONTHLY_USD
-      ? Number(env.TAVERNARY_MODEL_MONTHLY_USD)
-      : undefined;
-    const modelRequest = (model, requestCount, requestedTokens) => ({
-      model,
-      requestCount,
-      requestedTokens,
-      ...(Object.hasOwn(prices, model)
-        ? { price: { model, ...prices[model] } }
-        : {}),
-    });
-    const requests = [
-      modelRequest(env.UTILITY_MODEL, 3, 180000),
-      ...(env.TAVERNARY_ENRICHMENT_MODEL
-        ? [modelRequest(env.TAVERNARY_ENRICHMENT_MODEL, 1, 15000)]
-        : []),
-    ];
+    const { requests, monthlyUsd } = modelPreparationBudgetPolicy(env);
     const path = "data/maintenance/automation/model-budgets/global.json";
     const requestId = request
       ? `generation-request-${request.runId}`
@@ -1841,11 +1812,25 @@ export async function runAutomationWriterReconciliation({
   let restoreDrill;
   const healthInput = async (state) => {
     let tokensPerDay;
+    let dailyTokenLimitKnown = true;
+    let reservation;
     try {
       tokensPerDay = parseModelDailyTokens(env.TAVERNARY_MODEL_DAILY_TOKENS);
     } catch {
       // Invalid optional model configuration cannot block verified facts.
       tokensPerDay = DEFAULT_MODEL_DAILY_TOKENS;
+      dailyTokenLimitKnown = false;
+      reservation = null;
+    }
+    if (
+      reservation !== null &&
+      (env.UTILITY_MODEL || env.TAVERNARY_MODEL_MONTHLY_USD)
+    ) {
+      try {
+        reservation = modelPreparationBudgetPolicy(env);
+      } catch {
+        reservation = null;
+      }
     }
     if (state.local.runtimePolicy !== undefined) {
       try {
@@ -1863,9 +1848,14 @@ export async function runAutomationWriterReconciliation({
     }
     return {
       // The separate read-only drill has no publication authority. Only native
-      // completed restore/browser steps can recover its operational incident.
+      // completed restore/browser steps can verify its health recovery.
+      issueReportingEnabled: false,
       findings: [
-        ...assessInventoryHealth(state, { tokensPerDay }),
+        ...assessInventoryHealth(state, {
+          tokensPerDay,
+          reservation,
+          dailyTokenLimitKnown,
+        }),
         ...assessAutomationHealth({
           nowMs: state.nowMs,
           restoreDrill,
@@ -1926,6 +1916,40 @@ export async function runAutomationWriterReconciliation({
       });
     } catch {
       health = { status: "unavailable" };
+    }
+  }
+  health = { ...health, findings: initialHealth?.findings ?? [] };
+  if (env.GITHUB_STEP_SUMMARY) {
+    const active = health.findings.filter(
+      (finding) => finding.status === "active",
+    );
+    const details = active.length
+      ? [
+          "| Finding | Subject | Reason | Affected |",
+          "| --- | --- | --- | --- |",
+          ...active
+            .slice(0, 100)
+            .map(
+              (finding) =>
+                `| ${finding.code} | ${finding.subject} | ${finding.reason} | ${finding.count} |`,
+            ),
+          ...(active.length > 100
+            ? [
+                `\nShowing 100 of ${active.length} active findings; see the writer output for all findings.`,
+              ]
+            : []),
+        ].join("\n")
+      : health.status === "unavailable"
+        ? "Automation health diagnostics are unavailable."
+        : "No active automation health findings.";
+    try {
+      await writeFile(
+        env.GITHUB_STEP_SUMMARY,
+        `### Automation health\n\n${details}\n\n`,
+        { flag: "a" },
+      );
+    } catch {
+      // Summary presentation cannot block durable retries or incident retirement.
     }
   }
   const genericLimit =

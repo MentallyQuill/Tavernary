@@ -9,21 +9,36 @@
     "url": "https://github.com/jschm42/taleweaver",
     "description": "A next-generation AI-powered text adventure engine featuring dynamic storytelling, procedural world-building, and immersive visual/auditory generation.",
     "default_branch": "main",
-    "head_sha": "de741a18276cbfbae50c0175c4aec605f42fbfd0",
-    "head_committed_at": "2026-10-01T09:57:34.000Z",
+    "head_sha": "942c22a9cc3a08bc0d4a94431a21eda94427c3a2",
+    "head_committed_at": "2026-10-19T19:43:57.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-12T10:29:44.000Z",
-    "size_kb": 234322
+    "size_kb": 236075
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-01T09:57:34.000Z",
+    "latest_source_activity_at": "2026-10-19T19:36:03.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-19T19:36:03.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-18T18:20:16.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-10T16:38:47.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-09-28",
-        "latest_at": "2026-10-01T09:57:34.000Z",
+        "latest_at": "2026-10-04T13:40:00.000Z",
         "precision": "exact"
       },
       {
@@ -50,22 +65,22 @@
     "provisional_weeks": null,
     "latest_release_at": "2026-09-24T08:09:03.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-30T13:51:54.026Z",
+    "baseline_completed_at": "2026-10-20T12:51:28.240Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "de741a18276cbfbae50c0175c4aec605f42fbfd0"
+    "evidence_head_sha": "942c22a9cc3a08bc0d4a94431a21eda94427c3a2"
   },
   "community": {
-    "stars_count": 21,
-    "forks_count": 4,
+    "stars_count": 23,
+    "forks_count": 5,
     "watchers_count": 1,
-    "aggregate": 26
+    "aggregate": 29
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-20T12:54:23.546Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -77,7 +92,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-20T12:51:28.240Z",
     "stale_since": null
   }
 }

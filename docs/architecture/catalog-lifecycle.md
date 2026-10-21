@@ -48,8 +48,9 @@ Uncategorized state.
    open with `needs-information`.
 3. An admitted issue creates one deterministic
    `automation/project-submission-<issue-number>` branch and one generated pull
-   request. The PR is the sole human review and may be corrected directly by
-   maintainers.
+   request. The PR records the automated validation transaction and publishes
+   after required checks pass. Temporary copy-review failures retry automatically.
+   Explicit manual decisions and edited generated heads remain protected.
 4. A generated project can begin as curated or provisional, but never without
    a valid kind/primary-function pair. An intake-only model review may confirm
    the submitted Extension value or attach a `classification-review` mismatch

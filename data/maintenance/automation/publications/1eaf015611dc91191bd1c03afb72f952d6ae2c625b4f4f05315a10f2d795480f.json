@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1eaf015611dc91191bd1c03afb72f952d6ae2c625b4f4f05315a10f2d795480f",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1292206739:lukasstraub2-sillytavern-imagepdf",
+      "inputDigest": "09d6b97e89cc8e57c50ad9924e741ff0055ac08e0969b0acf5ac1870a2fbca75",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1292206739",
+    "identity": "github:1292206739"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39358091475,
+    "sourceSha": "7df1b76010fb4757d53540c39a554edf14285c88"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/lukasstraub2-sillytavern-imagepdf.json",
+      "sha256": "f337d74432e235ea482d73c51aceb3cb490960aef2d3fa18721ed4952e6394ac",
+      "gitBlobSha": "6419c3420b99ba2c6e2e9a100ed10fad14a1eabb"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/1eaf015611dc91191bd1c03afb72f952d6ae2c625b4f4f05315a10f2d795480f.json",
+      "sha256": "3f9a790cff40ee5b55de5caad4a2ff5560303c2b76e9a8d6f51fc3a4543aaaf6",
+      "gitBlobSha": "54784b4145944b0f9a021c018c35ed471b30a8b2"
+    }
+  ]
+}

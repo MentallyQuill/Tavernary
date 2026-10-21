@@ -31,6 +31,10 @@ export interface UnavailablePreservedCatalogSummary {
 export type PreservedCatalogSummary =
   ValidatedPreservedCatalogSummary | UnavailablePreservedCatalogSummary;
 
+export function requireCatalogSummaryReview(
+  copy: PreservedCatalogSummary,
+): ValidatedPreservedCatalogSummary;
+
 export function preserveCatalogSummary(input: {
   authorityType: "repository-owner" | "tavernary-staff";
   submittedSummary: string;

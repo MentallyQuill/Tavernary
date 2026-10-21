@@ -5,12 +5,9 @@
   "source_identity": "github:zeadenbeake/sillytavern-loregovernor",
   "evidence_fingerprint": "6c4d4f0bb4a1c6ff047ff4c6626da601ddc7c687c8af3e93b75bfbfeec05cf8a",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-18T10:13:09.677Z",
-  "retry": {
-    "attempts": 8,
-    "last_failure_at": "2026-09-18T10:13:09.677Z"
-  },
+  "reviewed_at": "2026-10-20T21:59:56.435Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

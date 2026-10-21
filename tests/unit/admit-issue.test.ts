@@ -115,6 +115,58 @@ function openIssues(count: number) {
   }));
 }
 
+test("Publisher incidents bypass public intake without labels, comments or closure", async () => {
+  const incidentEvent = event(11);
+  Object.assign(incidentEvent.issue, {
+    user: { id: 42, login: "tavernary-publisher[bot]", type: "Bot" },
+    body: `<!-- tavernary-automation-incident:v1:${"a".repeat(64)} -->\n\nIncident`,
+  });
+  const requests: string[] = [];
+  const decision = await processIssueAdmission({
+    event: incidentEvent,
+    publisherActorId: 42,
+    request: async (path) => {
+      requests.push(path);
+      return path.includes("?state=open") ? openIssues(11) : [];
+    },
+  });
+  expect(decision).toMatchObject({
+    admitted: false,
+    reason: "publisher-incident",
+    route: "none",
+  });
+  expect(requests).toEqual([]);
+});
+
+test.each([
+  { configuredId: undefined, authorId: 42, type: "Bot", marker: true },
+  { configuredId: 99, authorId: 42, type: "Bot", marker: true },
+  { configuredId: 42, authorId: 42, type: "User", marker: true },
+  { configuredId: 42, authorId: 42, type: "Bot", marker: false },
+])(
+  "incident-shaped content does not grant an intake bypass: %j",
+  async ({ configuredId, authorId, type, marker }) => {
+    const incidentEvent = event(11);
+    Object.assign(incidentEvent.issue, {
+      user: { id: authorId, login: "submitter", type },
+      body: marker
+        ? `<!-- tavernary-automation-incident:v1:${"a".repeat(64)} -->\n\nIncident`
+        : "Ordinary issue",
+    });
+    const writes: string[] = [];
+    const result = await processIssueAdmission({
+      event: incidentEvent,
+      publisherActorId: configuredId,
+      request: async (path, options) => {
+        if (options?.method === "PATCH") writes.push(options.body!);
+        return path.includes("?state=open") ? openIssues(11) : [];
+      },
+    });
+    expect(result).toMatchObject({ admitted: false, reason: "over-limit" });
+    expect(writes).toContain('{"state":"closed","state_reason":"not_planned"}');
+  },
+);
+
 test("resolves a manual admission dispatch from the live open issue", async () => {
   const dispatchEvent = {
     action: "workflow_dispatch",

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "17acb50e7dd981a67742fe0ca19cbfe33c7599aa1d19492cccdf524d04819e43",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1268160811:enclavum-otaku",
+      "inputDigest": "8efdb8b035875a94ee724d7e8045815c9513ece0c60bc66c72e59423b0dcac60",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1268160811",
+    "identity": "github:1268160811"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39348750701,
+    "sourceSha": "b7aca7a19a065872998d94edc529a4f7306ce028"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/enclavum-otaku.json",
+      "sha256": "a41a2fe9b318f86744094ea95698e0b89ee01352b76e899aad381de4caa2f90c",
+      "gitBlobSha": "3b057aa5cf244b920cec179d4d00e763f23579d6"
+    }
+  ]
+}

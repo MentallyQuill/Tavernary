@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0a615e64cc1f68ae6e1f6663acf44e60434632e9a0b61b862bc5d38ce987a1e4",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-830588458:splitclover-rewrite-extension",
+      "inputDigest": "40d120c051412de7c61db6b90b95e6d902336d88132e3132993fe414eccd0fa2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-830588458",
+    "identity": "github:830588458"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39506891071,
+    "sourceSha": "910aa6a91877e8586667759b781a78ed305a9345"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/splitclover-rewrite-extension.json",
+      "sha256": "bb7d7c090441157afa7a5d6a071e3c93f5b44f4debf0299da80a6d51e3dcc2c9",
+      "gitBlobSha": "04e88a202b18d7effa0726bbd6a68d4e6a6ea0ef"
+    }
+  ]
+}

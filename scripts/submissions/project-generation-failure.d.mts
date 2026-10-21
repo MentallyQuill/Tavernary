@@ -17,6 +17,7 @@ export function planProjectGenerationFailure(input: {
   };
   producer: "project-submission" | "project-owner-request";
   ownedPull: { state: string } | null;
+  retryCopyReview?: boolean;
   runUrl: string;
   reasonCode: string;
   nowMs?: number;
@@ -27,6 +28,7 @@ export function planProjectGenerationFailure(input: {
 
 export function reconcileProjectGenerationFailure(input: {
   repository: string;
+  publisherActorId?: number;
   issueNumber: number;
   producer: "project-submission" | "project-owner-request";
   runUrl: string;

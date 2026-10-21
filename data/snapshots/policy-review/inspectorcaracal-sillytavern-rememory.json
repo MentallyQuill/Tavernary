@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "inspectorcaracal-sillytavern-rememory",
+  "source_id": "github-983108844",
+  "source_identity": "github:inspectorcaracal/sillytavern-rememory",
+  "evidence_fingerprint": "777a7d5446456e126881021a826ef737ea73fa5d4ea2d4f86a3e00290de51b14",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-10-20T00:12:14.731Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

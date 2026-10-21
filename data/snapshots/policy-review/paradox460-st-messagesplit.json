@@ -5,12 +5,9 @@
   "source_identity": "github:paradox460/st-messagesplit",
   "evidence_fingerprint": "0bcc86b3f0861c9802888345223689c94b4c945399a2b99494e55d59ac32e325",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-25T13:05:37.225Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-09-25T13:05:37.225Z"
-  },
+  "reviewed_at": "2026-10-21T01:56:59.822Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

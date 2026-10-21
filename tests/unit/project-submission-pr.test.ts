@@ -113,7 +113,7 @@ test("uses one deterministic issue-owned branch", () => {
   expect(submissionBranch(123)).toBe("automation/project-submission-123");
 });
 
-test("renders the issue link, evidence groups, warnings, checklist, and marker", () => {
+test("renders the issue link, evidence groups, warnings, automatic notice, and marker", () => {
   const body = renderSubmissionPullRequest(reviewFixture);
 
   expect(body).toContain("Closes #123");
@@ -121,9 +121,7 @@ test("renders the issue link, evidence groups, warnings, checklist, and marker",
   expect(body).toContain("## Observed");
   expect(body).toContain("## Inferred");
   expect(body).toContain("## Warnings");
-  expect(body).toContain(
-    "- [ ] Canonical source and permanent identity are correct",
-  );
+  expect(body).toContain("no maintainer approval is required");
   expect(body).toContain("Owner \\[Repo\\]");
   expect(body).toContain(
     "- **Source url:** [https://github.com/envy-ai/ai\\_rpg](<https://github.com/envy-ai/ai_rpg>)",
@@ -195,7 +193,7 @@ test("renders a dedicated non-mutating classification mismatch warning", () => {
   expect(body).toContain("Interface and workflow");
   expect(body).toContain("submitted value remains");
   expect(body).toContain(
-    "- [ ] Possible primary-function mismatch was reviewed",
+    "This advisory warning does not block automatic publication",
   );
 });
 

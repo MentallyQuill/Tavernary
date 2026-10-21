@@ -3,14 +3,11 @@
   "project_id": "tavernai-tavernai",
   "source_id": "github-1271548133",
   "source_identity": "github:tavernai/tavernai",
-  "evidence_fingerprint": "68f04698ee35ac14519ec49c75a3521a65423d303715b53e13a1bec3b591bf4f",
+  "evidence_fingerprint": "d1c60c1d536b609804688125143b14d1630fef3a1165d5eb4c6b8213f178e508",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-22T12:56:01.303Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-22T12:56:01.303Z"
-  },
+  "reviewed_at": "2026-10-20T12:19:41.823Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

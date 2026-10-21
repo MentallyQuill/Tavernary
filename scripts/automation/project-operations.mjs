@@ -110,6 +110,34 @@ function trustedPull(pull, transaction, input, producer, issue) {
   );
 }
 
+export function retryableCopyReviewPull({ issue, pull, ...input }) {
+  const transaction = parseProjectPublicationTransaction(pull.body ?? "");
+  const labels = (issue.labels ?? []).map((label) => label.name ?? label);
+  const parsed = issueManifest(issue, "project", input.catalog, true);
+  return (
+    issue.state === "open" &&
+    pull.state === "open" &&
+    pull.head?.ref === `automation/project-submission-${issue.number}` &&
+    labels.includes("issue-admitted") &&
+    labels.includes("project-submission") &&
+    !labels.some((label) => protectedLabels.has(label)) &&
+    transaction?.publication_mode === "manual" &&
+    transaction.operation === "create" &&
+    transaction.copy_result === null &&
+    ["repository-owner", "tavernary-staff"].includes(
+      transaction.authority_type,
+    ) &&
+    trustedPull(pull, transaction, input, "project-submission", issue) &&
+    parsed.valid &&
+    parsed.manifest.metadata.summary.mode === "manual" &&
+    fingerprintProjectPublicationInput(parsed.manifest) ===
+      transaction.input_digest &&
+    pull.body.includes(
+      "## Catalog-copy review\n\nContextual catalog-copy review was unavailable, so the submitted owner wording was preserved with only catalog-required whitespace normalization.",
+    )
+  );
+}
+
 function trustedGenerationRuns(input, issue, producer, key) {
   const title = `${producer === "project-submission" ? "Project" : "Owner request"} #${issue.number}: Create review PR`;
   return input.runs
@@ -499,7 +527,18 @@ export function discoverProjectOperations(input) {
       operations.push(operation);
       continue;
     }
-    if (!admitted || transaction.publication_mode !== "automatic") continue;
+    if (!admitted) continue;
+    if (transaction.publication_mode !== "automatic") {
+      if (!retryableCopyReviewPull({ ...input, issue, pull })) continue;
+      operation.expectedSha = pull.head.sha;
+      generationRecovery(
+        operation,
+        input,
+        trustedGenerationRuns(input, issue, producer, operation.key),
+      );
+      operations.push(operation);
+      continue;
+    }
     operation.expectedSha = pull.head.sha;
     if (
       transaction.input_digest !== manifestDigest ||

@@ -86,11 +86,10 @@ A green request means the request was recorded, not that the full rollout has
 finished. Inspect `data/reports/enrichment-canary.json` and
 `data/reports/enrichment-report.json` for status, frozen scope, cursors, manual
 exclusions and provider metrics. A terminal `complete-with-errors` report keeps
-affected projects provisional and creates one `[automation] Catalog enrichment
-has unresolved projects` incident with sanitized reasons in the private report.
-A later clean, verified full deployment resolves the incident. Owner edits and
-dismissals remain authoritative; historical `Catalog enrichment errors` issues
-are left for the owner to retain or close.
+affected projects provisional and records an `enrichment-unresolved` health
+finding in the canonical writer's Actions output and summary. A later clean,
+verified full deployment clears the finding. Automated health reporting does
+not create GitHub issues; the private report retains sanitized failure reasons.
 
 Useful when automatic summaries are missing or a provider-contract change
 requires re-enriching automatic records.

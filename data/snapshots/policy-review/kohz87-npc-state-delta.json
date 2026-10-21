@@ -3,14 +3,11 @@
   "project_id": "kohz87-npc-state-delta",
   "source_id": "github-1366168231",
   "source_identity": "github:kohz87/npc_state_delta",
-  "evidence_fingerprint": "b4aa93798f7692754f485208ade41c49b8925c6bffdb37d529f9d596aa2ba581",
+  "evidence_fingerprint": "d79fa480f20c43d4fb5a7661689d1f1db1285ad7ba264684a45810c0c1a676c5",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-02T19:41:02.921Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-10-02T19:41:02.921Z"
-  },
+  "reviewed_at": "2026-10-20T23:30:19.013Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

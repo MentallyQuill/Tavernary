@@ -468,7 +468,7 @@ test.each(["getter", "call"] as const)(
   },
 );
 
-test("real advisory semantic rejection emits provider-output without typed provider logging", async () => {
+test("real advisory semantic rejection retains a classified failure and its acquisition boundary", async () => {
   const fixture = await acquisitionFixture();
   const observe = vi
     .spyOn(metadataPreparation, "observeMetadataSource")
@@ -518,6 +518,14 @@ test("real advisory semantic rejection emits provider-output without typed provi
     expect(stderr.mock.calls).toEqual([
       [
         JSON.stringify({
+          event: "catalog-preparation-provider-diagnostic",
+          operation_key: fixture.operation.key,
+          provider_code: "provider-response-invalid",
+          detail: "policy-review-output-invalid",
+        }),
+      ],
+      [
+        JSON.stringify({
           event: "catalog-preparation-stage-diagnostic",
           phase: "acquire-data",
           operation_key: fixture.operation.key,
@@ -533,11 +541,11 @@ test("real advisory semantic rejection emits provider-output without typed provi
     ]);
     expect(fixture.input.write.mock.calls).toEqual([
       [
-        '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
+        '{"status":"unavailable","failure":{"kind":"transient","reasonCode":"provider-response-invalid"}}',
       ],
     ]);
     expect(await readFile(join(directory, "diagnostic.json"), "utf8")).toBe(
-      `{"schema_version":1,"operation_key":"${fixture.operation.key}","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}\n`,
+      `{"schema_version":1,"operation_key":"${fixture.operation.key}","failure":{"kind":"transient","reasonCode":"provider-response-invalid"}}\n`,
     );
   } finally {
     observe.mockRestore();
@@ -1033,7 +1041,7 @@ test("invalid provider responses retain only the approved structured-response de
   expect(result.exitCode).toBe(1);
   expect(result.stdout).toEqual([
     [
-      '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
+      '{"status":"unavailable","failure":{"kind":"transient","reasonCode":"provider-response-invalid"}}',
     ],
   ]);
   expect(result.files).toEqual(["diagnostic.json"]);
@@ -1050,7 +1058,7 @@ test("invalid provider responses retain only the approved structured-response de
   ]);
 });
 
-test("all current provider codes keep their original classifications while emitting fixed labels", async () => {
+test("current provider codes retain known causes while emitting fixed labels", async () => {
   const cases = [
     ["provider-timeout", null, "transient", "provider-timeout"],
     ["provider-rate-limited", null, "transient", "provider-rate-limited"],
@@ -1063,7 +1071,12 @@ test("all current provider codes keep their original classifications while emitt
     ],
     ["provider-request-failed", null, "unknown", "unclassified-failure"],
     ["provider-network-error", null, "transient", "provider-network-error"],
-    ["provider-response-invalid", null, "unknown", "unclassified-failure"],
+    [
+      "provider-response-invalid",
+      null,
+      "transient",
+      "provider-response-invalid",
+    ],
     [
       "provider-model-mismatch",
       null,
@@ -1097,7 +1110,7 @@ test("all current provider codes keep their original classifications while emitt
           detail,
         }),
       ],
-      ...(kind === "unknown"
+      ...(kind === "unknown" || code === "provider-response-invalid"
         ? [preparationStage(result.input.event.inputs.operation_key)]
         : []),
     ]);
@@ -1115,6 +1128,7 @@ test("the approved provider-detail pairs survive without broadening their failur
     ["provider-response-invalid", "json-schema-invalid"],
     ["provider-response-invalid", "response-too-large"],
     ["provider-response-invalid", "provider-envelope-invalid"],
+    ["provider-response-invalid", "policy-review-output-invalid"],
     ["provider-authentication-failed", "http-401"],
     ["provider-authentication-failed", "http-403"],
   ] as const;
@@ -1142,7 +1156,9 @@ test("the approved provider-detail pairs survive without broadening their failur
             kind: "configuration",
             reasonCode: "provider-authentication-failed",
           }
-        : { kind: "unknown", reasonCode: "unclassified-failure" },
+        : code === "provider-response-invalid"
+          ? { kind: "transient", reasonCode: "provider-response-invalid" }
+          : { kind: "unknown", reasonCode: "unclassified-failure" },
     );
   }
 });
@@ -1190,11 +1206,11 @@ test("provider-controlled detail and exception fields never escape the literal l
     ]);
     expect(result.stdout).toEqual([
       [
-        '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
+        '{"status":"unavailable","failure":{"kind":"transient","reasonCode":"provider-response-invalid"}}',
       ],
     ]);
     expect(result.diagnostic).toBe(
-      `{"schema_version":1,"operation_key":"${result.input.event.inputs.operation_key}","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}\n`,
+      `{"schema_version":1,"operation_key":"${result.input.event.inputs.operation_key}","failure":{"kind":"transient","reasonCode":"provider-response-invalid"}}\n`,
     );
   }
 });
@@ -1262,19 +1278,21 @@ test("lookalikes and missing or unknown provider codes never emit provider-detai
     undefined,
     "secret thrown text",
   ];
-  for (const error of errors) {
+  for (const [index, error] of errors.entries()) {
     const result = await failedPreparation(error);
+    const failure =
+      index < 2
+        ? { kind: "transient", reasonCode: "provider-response-invalid" }
+        : { kind: "unknown", reasonCode: "unclassified-failure" };
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toEqual([
       preparationStage(result.input.event.inputs.operation_key),
     ]);
     expect(result.stdout).toEqual([
-      [
-        '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
-      ],
+      [JSON.stringify({ status: "unavailable", failure })],
     ]);
     expect(result.diagnostic).toBe(
-      `{"schema_version":1,"operation_key":"${result.input.event.inputs.operation_key}","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}\n`,
+      `${JSON.stringify({ schema_version: 1, operation_key: result.input.event.inputs.operation_key, failure })}\n`,
     );
   }
   const statusOnly = await failedPreparation(
@@ -1347,10 +1365,12 @@ test("provider diagnostics require the complete real producer-context assertion 
           ]
         : [],
     );
+    const failure =
+      input === failedLoad || input === failedAssertion
+        ? { kind: "transient", reasonCode: "provider-response-invalid" }
+        : { kind: "unknown", reasonCode: "unclassified-failure" };
     expect(result.stdout).toEqual([
-      [
-        '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
-      ],
+      [JSON.stringify({ status: "unavailable", failure })],
     ]);
     expect(result.files).not.toContain("result.json");
     expect(result.diagnostic ?? "").not.toContain("secret prompt key");
@@ -1530,11 +1550,11 @@ test("an unavailable supplementary stderr sink cannot interrupt the v1 failure p
     ).toBe(1);
     expect(input.write.mock.calls).toEqual([
       [
-        '{"status":"unavailable","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}',
+        '{"status":"unavailable","failure":{"kind":"transient","reasonCode":"provider-response-invalid"}}',
       ],
     ]);
     expect(await readFile(join(directory, "diagnostic.json"), "utf8")).toBe(
-      `{"schema_version":1,"operation_key":"${input.event.inputs.operation_key}","failure":{"kind":"unknown","reasonCode":"unclassified-failure"}}\n`,
+      `{"schema_version":1,"operation_key":"${input.event.inputs.operation_key}","failure":{"kind":"transient","reasonCode":"provider-response-invalid"}}\n`,
     );
     expect(input.prepare).toHaveBeenCalledOnce();
     expect(stderr).toHaveBeenCalledTimes(2);

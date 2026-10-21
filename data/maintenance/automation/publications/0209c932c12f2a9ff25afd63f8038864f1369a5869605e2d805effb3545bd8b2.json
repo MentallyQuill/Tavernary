@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0209c932c12f2a9ff25afd63f8038864f1369a5869605e2d805effb3545bd8b2",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1341130248:shin-f-world-info-gallery",
+      "inputDigest": "3690e204386a4f370b58843123d61cbecf1352dc77b437b77e5933c405a09122",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1341130248",
+    "identity": "github:1341130248"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39386395459,
+    "sourceSha": "98a3aa28b5ce7e7a59819a8b1a5e56c26c9949f2"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/shin-f-world-info-gallery.json",
+      "sha256": "074b53256a8b4aacfde753df44f10fabd2955e7c188abed0afce48c2e458d78c",
+      "gitBlobSha": "23ec5b5376c96e05eb9b4886a583684c7cc1322c"
+    }
+  ]
+}

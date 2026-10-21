@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1d8ebef8a76fa34dc7e410a15cc492aa4bcaa437aa7a9b41a7250fb2a55e79ce",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1221907257:decidetto-me-accent-color-changer",
+      "inputDigest": "9f31fa06cfdb6b10687171939b98c9831ede66c03f267086cc3e65e731f58524",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1221907257",
+    "identity": "github:1221907257"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39354587109,
+    "sourceSha": "dc7998903b63a20d92fe4657844370c78185fec5"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/decidetto-me-accent-color-changer.json",
+      "sha256": "816858da34be83f5855ace37759654f741df27eb944ef6afa50ed391e6509405",
+      "gitBlobSha": "c51aa343bd9b7396d49f60f5ca7fd6a917ba62c4"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/1d8ebef8a76fa34dc7e410a15cc492aa4bcaa437aa7a9b41a7250fb2a55e79ce.json",
+      "sha256": "f3b993aff17829ae80ad915128efff97c6a58728f9a7366a47569184355efb0a",
+      "gitBlobSha": "43d8390d0ce652becd59808ca51b4cc9131f9b4b"
+    }
+  ]
+}

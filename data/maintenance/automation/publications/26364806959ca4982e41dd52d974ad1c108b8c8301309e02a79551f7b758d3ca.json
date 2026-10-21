@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "26364806959ca4982e41dd52d974ad1c108b8c8301309e02a79551f7b758d3ca",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1059754623:aikohanasaki-sillytavern-lorebookordering",
+      "inputDigest": "083826e4fd6cae507e6c266e12b2f184caa3e31515d9233f8215b7d5997d34d1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1059754623",
+    "identity": "github:1059754623"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39423777793,
+    "sourceSha": "711ea06430b4389bff294aecafd52eb697adf61a"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/aikohanasaki-sillytavern-lorebookordering.json",
+      "sha256": "3ff3ced5cb15f857e3c59f6ad658031616569b5fd201c7ae2a578997f38d7458",
+      "gitBlobSha": "a980492db42365cf8cb5b230bfbc02c094dd1322"
+    }
+  ]
+}

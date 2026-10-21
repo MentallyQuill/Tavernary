@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "02cc5ac26c9df3af4df3bb3f367cb6a5c5d2f22d89339130fcbfc5561656b957",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1274936565:paradox460-st-messagesplit",
+      "inputDigest": "9c635ece8e669204c3c55d88ccb235c45c7567b773e4c2d666a89c798b3ede65",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1274936565",
+    "identity": "github:1274936565"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39530155509,
+    "sourceSha": "c98191c3af7657f9136b5e9899df463e076d42af"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/paradox460-st-messagesplit.json",
+      "sha256": "fcdf9e69015b77dab0cc740015a27c5f9da8908d6380cea9abcb4370f670ceee",
+      "gitBlobSha": "4b5664d548d67ef6b64db745c2ad81518d442adf"
+    }
+  ]
+}

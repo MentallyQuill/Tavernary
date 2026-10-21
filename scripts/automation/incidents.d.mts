@@ -14,6 +14,7 @@ export interface IncidentInput {
   findings: HealthFinding[];
   existingIssues: IncidentIssue[];
   publisherActorId: number;
+  issueReportingEnabled?: boolean;
 }
 export interface IncidentMutation {
   action: "create" | "close" | "reopen" | "update";
@@ -21,6 +22,7 @@ export interface IncidentMutation {
   number?: number;
   title: string;
   body: string;
+  stateReason?: "completed" | "not_planned";
 }
 export function planIncidentUpdates(input: IncidentInput): IncidentMutation[];
 export function reconcileIncidentUpdates(input: {

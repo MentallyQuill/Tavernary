@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0b58db5f3d647b2a0ddc6be1a7511b853fb03c73d8966090b1d856b8d46ef2da",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-772263541:sillytavern-extension-groupgreetings",
+      "inputDigest": "bf27273ac9a0393564658fdf72cada41dbe1a339221d060f3c0d2fb7e9550196",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-772263541",
+    "identity": "github:772263541"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39523434507,
+    "sourceSha": "230ebd0daf964f354e2168cc56f9fa89a1a49970"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/sillytavern-extension-groupgreetings.json",
+      "sha256": "7d53731ab2f82cc1c17dd8c3b52b6940e6fcd5a1d45c20ed0053c6e2fe80be58",
+      "gitBlobSha": "50d3dfcb78164e1cfcc1c5c7e4b16629779763a8"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1c64ab68a9f4e4336922ff00dbed0e468e75e594646616d0dabb49d30c4f0aa8",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1311326828:sofizzticated-sillytavern-scrolltolast",
+      "inputDigest": "7e3a4446f1d9e9fc2b61a2e5750656f3fcf47b154da2f1838361cf0295fa4e00",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1311326828",
+    "identity": "github:1311326828"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39535050049,
+    "sourceSha": "ceac649b11b28183ffbcc6e46f3fd119f1ec7330"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/sofizzticated-sillytavern-scrolltolast.json",
+      "sha256": "cb96df6c3ebe4dcc832942de8e41d4083b9567450d2622df8ce8715be6d32ed3",
+      "gitBlobSha": "a0761f8b732e89e5082e251b0cd64586b97331e6"
+    }
+  ]
+}

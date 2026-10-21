@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2515423dea283501213b760e578a0936fba24f684e5a2915f11b6d67d1b5c56e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1271548133:tavernai-tavernai",
+      "inputDigest": "59275905a9b0d5da0ccb4dc31b8c750160ae9795cf3d04c81b33306607e9ca53",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1271548133",
+    "identity": "github:1271548133"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39421302178,
+    "sourceSha": "d0ed72a708de5592ccc845e1891753a0682e1a51"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/tavernai-tavernai.json",
+      "sha256": "130955a4ec6976f3100b4dc98a031cbdf9f0bcc00a2ded3b3b57ee4f4cf75ab4",
+      "gitBlobSha": "5dfde0e70a78cb4965543925de340e1572503c59"
+    }
+  ]
+}

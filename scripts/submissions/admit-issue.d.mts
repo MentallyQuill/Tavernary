@@ -8,7 +8,7 @@ export interface AdmissionEvent {
     body?: string;
     state: string;
     author_association: string;
-    user: { id: number; login: string };
+    user: { id: number; login: string; type?: string };
     labels: Array<string | { name: string }>;
   };
 }
@@ -48,6 +48,7 @@ export function listOpenIssues(input: {
 export function processIssueAdmission(input: {
   event: AdmissionEvent;
   request: GitHubRequest;
+  publisherActorId?: number;
 }): Promise<AdmissionResult>;
 
 export function issueAdmissionOutputs(

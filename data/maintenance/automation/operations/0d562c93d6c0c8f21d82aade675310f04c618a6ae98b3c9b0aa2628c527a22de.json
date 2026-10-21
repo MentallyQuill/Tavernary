@@ -8,20 +8,20 @@
       "inputDigest": "b3549a63b4c255f28c6fc5f4ac9a39dfe46767a61b4fc3fedc603c4dbc4582fc",
       "policyVersion": "2026-07-29"
     },
-    "stage": "admitted",
+    "stage": "deployment-confirmed",
     "createdAt": "2026-10-08T14:39:08.801Z",
-    "nextEligibleAt": "2026-10-18T00:40:31.058Z",
-    "expectedSha": null,
+    "nextEligibleAt": "2026-10-21T03:56:34.790Z",
+    "expectedSha": "fbab899ff7de04882d5d8a904d9cc767a2be7718",
     "workerRunId": null,
     "retry": {
       "failure": {
         "kind": "transient",
-        "reasonCode": "github-inventory-unavailable"
+        "reasonCode": "provider-unavailable"
       },
-      "transientAttempts": 3,
-      "immediateAttempts": 3
+      "transientAttempts": 0,
+      "immediateAttempts": 0
     }
   },
-  "updatedAt": "2026-10-18T00:25:31.058Z",
+  "updatedAt": "2026-10-21T03:51:14.332Z",
   "completedAt": null
 }

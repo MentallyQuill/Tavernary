@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "05d9d7c37150ede96092e49cc2fbe7290a58533f8fed7921a795220ec54ba4c0",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1319688315:zeadenbeake-sillytavern-loregovernor",
+      "inputDigest": "9d0fbf78cffe890e9cd605645dfc0acc9d9d6f8d728a4a0e228c5d0321133187",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1319688315",
+    "identity": "github:1319688315"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39504676729,
+    "sourceSha": "051ba6965ba812db6d37121c8fa38fda68e07f67"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/zeadenbeake-sillytavern-loregovernor.json",
+      "sha256": "4aca5c185e411d75bce3015c1252836a62a2877cd37cc2fa97d40cf9a9a0fe87",
+      "gitBlobSha": "23975695423fd28b6c8e8b88b8d0ebc8681431ab"
+    }
+  ]
+}

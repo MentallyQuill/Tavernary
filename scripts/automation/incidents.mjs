@@ -14,9 +14,11 @@ function body(finding) {
     ...(finding.revision ? { revision: finding.revision } : {}),
   };
   const guidance =
-    finding.code === "enrichment-unresolved"
-      ? "Inspect `data/reports/enrichment-report.json` for the frozen run, project IDs and sanitized terminal reasons. Repair the affected source or provider, then request enrichment from the owner-only Catalog enrichment request Action. A later clean, verified full deployment closes this incident."
-      : "Inspect the corresponding Actions run and repair the reported dependency or operation. Catalog processing continues independently.";
+    finding.subject === "automation:advisory"
+      ? "Repeated advisory failures are tracked together here. Inspect the Catalog: Advisory policy review Actions runs and their fixed provider diagnostics. Affected counts operations still failing; older per-operation investigations are superseded by this issue. Catalog processing continues independently."
+      : finding.code === "enrichment-unresolved"
+        ? "Inspect `data/reports/enrichment-report.json` for the frozen run, project IDs and sanitized terminal reasons. Repair the affected source or provider, then request enrichment from the owner-only Catalog enrichment request Action. A later clean, verified full deployment closes this incident."
+        : "Inspect the corresponding Actions run and repair the reported dependency or operation. Catalog processing continues independently.";
   return `<!-- tavernary-automation-incident:v1:${finding.key} -->\n\n${HEALTH_TITLES[finding.code]}. ${guidance}\n\nSubject: \`${finding.subject}\`\nReason: \`${finding.reason}\`\nAffected: ${finding.count}\n\n<!-- evidence:${JSON.stringify(evidence)} -->`;
 }
 function intact(issue, key) {
@@ -48,10 +50,12 @@ export function planIncidentUpdates({
   findings,
   existingIssues,
   publisherActorId,
+  issueReportingEnabled = true,
 }) {
   if (
     !Number.isSafeInteger(publisherActorId) ||
     publisherActorId < 1 ||
+    typeof issueReportingEnabled !== "boolean" ||
     !Array.isArray(findings) ||
     findings.length > 100_000 ||
     !Array.isArray(existingIssues) ||
@@ -65,6 +69,30 @@ export function planIncidentUpdates({
     if (seen.has(finding.key))
       throw new Error("Automation health finding is duplicated.");
     seen.add(finding.key);
+  }
+  if (!issueReportingEnabled)
+    return existingIssues
+      .flatMap((issue) => {
+        if (!owned(issue, publisherActorId) || issue.state !== "open")
+          return [];
+        const key =
+          /^<!-- tavernary-automation-incident:v1:([a-f0-9]{64}) -->/u.exec(
+            issue.body ?? "",
+          )?.[1];
+        if (!key || !intact(issue, key)) return [];
+        return [
+          {
+            action: "close",
+            number: issue.number,
+            key,
+            title: issue.title,
+            body: issue.body,
+            stateReason: "not_planned",
+          },
+        ];
+      })
+      .sort((left, right) => left.number - right.number);
+  for (const finding of findings) {
     const marker = `<!-- tavernary-automation-incident:v1:${finding.key} -->`;
     const matches = existingIssues
       .filter(
@@ -88,6 +116,7 @@ export function planIncidentUpdates({
           key: finding.key,
           title: issue.title,
           body: issue.body,
+          stateReason: "completed",
         });
       continue;
     }
@@ -126,7 +155,7 @@ export function planIncidentUpdates({
       });
   }
   return mutations.sort((left, right) => {
-    const order = { create: 0, close: 1, reopen: 2, update: 3 };
+    const order = { create: 0, reopen: 1, close: 2, update: 3 };
     return (
       order[left.action] - order[right.action] ||
       (left.number ?? Number.MAX_SAFE_INTEGER) -
@@ -196,7 +225,7 @@ export async function reconcileIncidentUpdates({
   }
   const payload =
     mutation.action === "close"
-      ? { state: "closed", state_reason: "completed" }
+      ? { state: "closed", state_reason: mutation.stateReason }
       : {
           title: mutation.title,
           body: mutation.body,
@@ -211,6 +240,8 @@ export async function reconcileIncidentUpdates({
     !intact(response, mutation.key) ||
     response.body !== mutation.body ||
     (mutation.number && response.number !== mutation.number) ||
+    (mutation.action === "close" &&
+      response.state_reason !== mutation.stateReason) ||
     response.state !== (mutation.action === "close" ? "closed" : "open")
   )
     throw new Error("Automation incident mutation is unconfirmed.");

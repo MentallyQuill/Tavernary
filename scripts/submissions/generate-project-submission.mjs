@@ -3,7 +3,10 @@ import { dirname, relative, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import trustedEditorRegistry from "../../data/maintenance/trusted-tavernary-editors.json" with { type: "json" };
-import { preserveCatalogSummary } from "../catalog/catalog-copy-preservation.mjs";
+import {
+  preserveCatalogSummary,
+  requireCatalogSummaryReview,
+} from "../catalog/catalog-copy-preservation.mjs";
 import { enrichRecord } from "../catalog/enrich-readmes.mjs";
 import { createEnrichmentProvider } from "../catalog/enrichment-provider.mjs";
 import { loadEnrichmentSource } from "../catalog/enrichment-source.mjs";
@@ -441,11 +444,7 @@ function manualSummaryCopyDraftOptions(copy) {
     copyMode: copy.mode,
     copyReviewStatus: copy.reviewStatus,
     copyReviewDiagnostic: copy.diagnostic,
-    ...(copy.reviewStatus === "unavailable"
-      ? { copyReviewReasonCode: copy.reasonCode }
-      : {}),
-    publicationMode:
-      copy.reviewStatus === "unavailable" ? "manual" : "automatic",
+    publicationMode: "automatic",
   };
 }
 
@@ -526,24 +525,26 @@ export async function prepareProjectSubmissionDraft({
   });
   const manualSummaryCopy =
     metadataRequest.summary.mode === "manual"
-      ? await preserveCatalogSummary({
-          authorityType: metadataAuthority.authorityType,
-          submittedSummary: metadataRequest.summary.value,
-          protectedTerms: protectedTermsForSubmission({
-            record: {
-              name:
-                inspection.repository?.name ??
-                decision.identity.name ??
-                decision.identity.pathSlug ??
-                "",
-            },
-            decision,
-            data,
-            submittedDescription: metadataRequest.summary.value,
+      ? requireCatalogSummaryReview(
+          await preserveCatalogSummary({
+            authorityType: metadataAuthority.authorityType,
+            submittedSummary: metadataRequest.summary.value,
+            protectedTerms: protectedTermsForSubmission({
+              record: {
+                name:
+                  inspection.repository?.name ??
+                  decision.identity.name ??
+                  decision.identity.pathSlug ??
+                  "",
+              },
+              decision,
+              data,
+              submittedDescription: metadataRequest.summary.value,
+            }),
+            copySummary: sourceClients.copySummary,
+            loadBudgetGuard: sourceClients.loadBudgetGuard,
           }),
-          copySummary: sourceClients.copySummary,
-          loadBudgetGuard: sourceClients.loadBudgetGuard,
-        })
+        )
       : null;
 
   if (!isRepositoryIdentity(decision.identity)) {

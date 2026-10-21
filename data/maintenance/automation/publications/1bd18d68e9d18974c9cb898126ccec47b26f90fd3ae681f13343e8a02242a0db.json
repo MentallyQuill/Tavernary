@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1bd18d68e9d18974c9cb898126ccec47b26f90fd3ae681f13343e8a02242a0db",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1243718543:cha1latte-marinara-theme-maker",
+      "inputDigest": "9fdbb82523c32b354d6b1356a2f2052ba52dff2d87f38ce9906f853c80501721",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1243718543",
+    "identity": "github:1243718543"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39375107273,
+    "sourceSha": "f4558cb6b4bcae72a19e09bfbfc75fea25a8e5dd"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/cha1latte-marinara-theme-maker.json",
+      "sha256": "d71e876947c72d69b728c02858744ac4605465f526e361d7567a4c35ca34c195",
+      "gitBlobSha": "2655afa03296850630ab474a98e6590f0c6d71bf"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/1bd18d68e9d18974c9cb898126ccec47b26f90fd3ae681f13343e8a02242a0db.json",
+      "sha256": "7b4d976cc95e78ade40f39b428265e6df97afb4f1a5988fa9733e3905fe741d4",
+      "gitBlobSha": "a993c5f12948494b9d54bfdfeb31eefd40adee46"
+    }
+  ]
+}

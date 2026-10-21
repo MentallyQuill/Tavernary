@@ -407,6 +407,12 @@ async function generate(
     rm: fixture.rm,
     mkdir: vi.fn(async () => undefined),
     now: "2026-07-29T13:00:00.000Z",
+    copySummary: async (input: Record<string, unknown>) => ({
+      summary: String(input.submittedSummary),
+      result: "accepted-unchanged" as const,
+      change_reasons: [],
+      policy_signal: "none",
+    }),
     ...overrides,
   });
 }
@@ -695,7 +701,7 @@ test("revalidates and writes one card edit with a card-scoped input fingerprint"
   });
 });
 
-test("keeps verified owner copy for manual review when copy review is unavailable", async () => {
+test("retries unavailable owner copy review before writing catalog changes", async () => {
   const manifest = editManifest();
   manifest.proposed.summary = "Owner-authored summary stays exact";
   const fixture = harness(manifest);
@@ -707,48 +713,18 @@ test("keeps verified owner copy for manual review when copy review is unavailabl
     );
   });
 
-  const generated = await generate(fixture, {
-    copySummary,
-    enrichMetadata: async () => ({
-      tags: [{ id: "automation", evidence: ["readme:1-2"] }],
+  await expect(
+    generate(fixture, {
+      copySummary,
+      enrichMetadata: async () => ({
+        tags: [{ id: "automation", evidence: ["readme:1-2"] }],
+      }),
     }),
+  ).rejects.toMatchObject({
+    code: "provider-response-invalid",
+    diagnosticCode: "json-invalid",
   });
-
-  expect(copySummary).toHaveBeenCalledOnce();
-  expect(JSON.parse(fixture.storage.get(projectPath) ?? "")).toMatchObject({
-    summary: "Owner-authored summary stays exact",
-    metadata_policy: {
-      summary: {
-        mode: "manual",
-        note: "Verified repository owner selection.",
-      },
-    },
-  });
-  expect(generated.report).toMatchObject({
-    publication_mode: "manual",
-    submitted_summary: "Owner-authored summary stays exact",
-    published_summary: "Owner-authored summary stays exact",
-    copy_mode: "preserve",
-    copy_result: null,
-    copy_results: [
-      {
-        project_id: "owner-alpha",
-        mode: "preserve",
-        review_status: "unavailable",
-        reason_code: "copy-review-unavailable",
-        diagnostic: {
-          failure_phase: "initial-provider",
-          failure_code: "provider-response-invalid",
-          diagnostic_code: "json-invalid",
-          attempt_count: 1,
-          latency_ms: 300,
-        },
-        submitted_summary: "Owner-authored summary stays exact",
-        published_summary: "Owner-authored summary stays exact",
-        copy_result: null,
-      },
-    ],
-  });
+  expect(fixture.writes).toEqual([]);
 });
 
 test("writes one owner-selected summary and six manual tags to only the selected card", async () => {

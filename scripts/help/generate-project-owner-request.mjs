@@ -11,7 +11,10 @@ import { projectGenerationDiagnostic } from "../submissions/project-generation-f
 
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
 import { fingerprintSourceRecord } from "../../src/features/help/project-owner-record.mjs";
-import { preserveCatalogSummary } from "../catalog/catalog-copy-preservation.mjs";
+import {
+  preserveCatalogSummary,
+  requireCatalogSummaryReview,
+} from "../catalog/catalog-copy-preservation.mjs";
 import { validateEnrichmentOutput } from "../catalog/enrichment-contract.mjs";
 import { enrichRecord } from "../catalog/enrich-readmes.mjs";
 import { loadEnrichmentSource } from "../catalog/enrichment-source.mjs";
@@ -732,19 +735,21 @@ async function resolveOwnerMetadata(input, final, snapshot, catalogedAt) {
       const summaryChanged =
         request.isNew || request.original?.summary !== request.proposed.summary;
       if (summaryChanged) {
-        const copied = await preserveCatalogSummary({
-          authorityType: final.decision.authorityType,
-          submittedSummary: request.proposed.summary,
-          protectedTerms: ownerProtectedTerms(
-            final,
-            record,
-            request.proposed.summary,
-          ),
-          copySummary: cached("copy")
-            ? async () => cached("copy")
-            : input.copySummary,
-          loadBudgetGuard: input.loadBudgetGuard,
-        });
+        const copied = requireCatalogSummaryReview(
+          await preserveCatalogSummary({
+            authorityType: final.decision.authorityType,
+            submittedSummary: request.proposed.summary,
+            protectedTerms: ownerProtectedTerms(
+              final,
+              record,
+              request.proposed.summary,
+            ),
+            copySummary: cached("copy")
+              ? async () => cached("copy")
+              : input.copySummary,
+            loadBudgetGuard: input.loadBudgetGuard,
+          }),
+        );
         summary = copied.publishedSummary;
         if (copied.reviewStatus === "validated" && copied.copyResult)
           await save(record, "copy", digest, {

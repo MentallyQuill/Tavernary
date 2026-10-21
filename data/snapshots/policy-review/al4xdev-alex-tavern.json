@@ -5,12 +5,9 @@
   "source_identity": "github:al4xdev/alex-tavern",
   "evidence_fingerprint": "dde6f604a80bb92af7acaa4836406e8bce070477cb391f1ce84720222347edce",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-14T08:53:32.032Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-14T08:53:32.032Z"
-  },
+  "reviewed_at": "2026-10-20T23:13:05.876Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

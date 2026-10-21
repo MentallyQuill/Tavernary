@@ -34,6 +34,7 @@ const safeProviderDetails = {
     "json-schema-invalid",
     "response-too-large",
     "provider-envelope-invalid",
+    "policy-review-output-invalid",
   ],
   "provider-model-mismatch": [],
 };
@@ -243,12 +244,15 @@ export async function runCatalogPreparationCli(options = {}) {
         });
     if (producerContextVerified)
       logSafeProviderDiagnostic(error, providerCode, operationKey);
-    if (stageDiagnosticsEnabled && failure.kind === "unknown")
+    const needsStageDiagnostic =
+      failure.kind === "unknown" ||
+      providerCode === "provider-response-invalid";
+    if (stageDiagnosticsEnabled && needsStageDiagnostic)
       logSafeStageDiagnostic(phase, producerContextVerified, operationKey);
     if (
       stageDiagnosticsEnabled &&
       producerContextVerified &&
-      failure.kind === "unknown" &&
+      needsStageDiagnostic &&
       phase === "acquire-data"
     )
       logSafeAcquisitionDiagnostic(acquisitionPhase, operationKey);

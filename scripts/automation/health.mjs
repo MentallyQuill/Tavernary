@@ -5,6 +5,7 @@ import {
   MAX_MODEL_DAILY_REQUESTS,
   validateModelBudgetState,
   validateModelDailyTokens,
+  reserveModelBudget,
 } from "./model-budget.mjs";
 import { assessModelProviderCircuit } from "./model-preparation.mjs";
 import {
@@ -29,7 +30,7 @@ export const HEALTH_TITLES = Object.freeze({
   "restore-drill-failed": "The retained site bundle failed its recovery drill",
 });
 const subjectPattern =
-  /^(?:refresh:(?:github|codeberg)|operation:[a-f0-9]{64}|dependency:(?:model-provider|publisher|budget)|deployment:(?:pages|restore-drill)|enrichment:catalog|runtime:node|pull:[1-9]\d*)$/u;
+  /^(?:refresh:(?:github|codeberg)|operation:[a-f0-9]{64}|automation:advisory|dependency:(?:model-provider|publisher|budget)|deployment:(?:pages|restore-drill)|enrichment:catalog|runtime:node|pull:[1-9]\d*)$/u;
 const reasons = new Set([
   ...AUTOMATION_FAILURE_REASON_CODES,
   "observation-stale",
@@ -37,6 +38,7 @@ const reasons = new Set([
   "deployment-unconfirmed",
   "checks-failed",
   "failure-classified",
+  "incident-grouped",
   "verified-recovery",
   "runtime-eol",
   "runtime-eol-soon",
@@ -182,7 +184,11 @@ export function assessAutomationHealth({
   for (const operation of operations) {
     if (!operation.automatic || operation.stage === "discovered") continue;
     const subject = `operation:${operation.key}`;
+    const invalidOutput =
+      operation.retry?.failure.reasonCode === "provider-response-invalid" &&
+      operation.retry.transientAttempts >= 3;
     if (
+      !invalidOutput &&
       ["transient", "configuration", "permanent", "superseded"].includes(
         operation.retry?.failure.kind,
       )
@@ -220,11 +226,17 @@ export function assessAutomationHealth({
         );
     }
     if (
-      operation.retry?.failure.kind === "unknown" &&
-      operation.retry.immediateAttempts >= 3
+      invalidOutput ||
+      (operation.retry?.failure.kind === "unknown" &&
+        operation.retry.immediateAttempts >= 3)
     )
       result.push(
-        finding("unknown-failure", subject, true, "unclassified-failure"),
+        finding(
+          "unknown-failure",
+          subject,
+          true,
+          invalidOutput ? "provider-response-invalid" : "unclassified-failure",
+        ),
       );
     else if (
       !operation.retry &&
@@ -360,7 +372,11 @@ function finalizedSubmissionReceipt(operation, state) {
 
 export function assessInventoryHealth(
   state,
-  { tokensPerDay = DEFAULT_MODEL_DAILY_TOKENS } = {},
+  {
+    tokensPerDay = DEFAULT_MODEL_DAILY_TOKENS,
+    reservation,
+    dailyTokenLimitKnown = true,
+  } = {},
 ) {
   validateModelDailyTokens(tokensPerDay);
   const current = new Map(
@@ -556,6 +572,47 @@ export function assessInventoryHealth(
   const day = budget?.days.find(
     (value) => value.day === new Date(state.nowMs).toISOString().slice(0, 10),
   );
+  const dailyExhausted = Boolean(
+    day &&
+    (day.requests >= MAX_MODEL_DAILY_REQUESTS ||
+      (dailyTokenLimitKnown && day.tokens >= tokensPerDay)),
+  );
+  let reservationBlocked = false;
+  if (budget && reservation !== undefined && reservation !== null) {
+    try {
+      if (
+        !reservation ||
+        !Array.isArray(reservation.requests) ||
+        reservation.requests.length < 1 ||
+        reservation.requests.length > 2
+      )
+        throw new Error("Model health reservation is unavailable.");
+      let probe = budget;
+      for (const [index, request] of reservation.requests.entries()) {
+        const decision = reserveModelBudget(
+          probe,
+          {
+            ...request,
+            operationKey: "0".repeat(64),
+            requestId: `health-${index}`,
+          },
+          {
+            nowMs: state.nowMs,
+            tokensPerDay,
+            monthlyUsd: reservation.monthlyUsd,
+          },
+        );
+        if (!decision.allowed) {
+          reservationBlocked = true;
+          break;
+        }
+        probe = decision.state;
+      }
+    } catch {
+      // Missing prices or invalid optional configuration cannot prove recovery.
+      reservationBlocked = true;
+    }
+  }
   const findings = assessAutomationHealth({
     nowMs: state.nowMs,
     operations,
@@ -573,22 +630,22 @@ export function assessInventoryHealth(
       : {}),
     circuits: [...circuits.values()],
     dependencies,
-    ...(budget ||
-    failures.some(
-      (operation) => operation.retry.failure.reasonCode === "budget-exhausted",
-    )
+    ...((reservation !== null || dailyExhausted) &&
+    (budget ||
+      failures.some(
+        (operation) =>
+          operation.retry.failure.reasonCode === "budget-exhausted",
+      ))
       ? {
           budget: {
             exhausted:
-              Boolean(
-                day &&
-                (day.requests >= MAX_MODEL_DAILY_REQUESTS ||
-                  day.tokens >= tokensPerDay),
-              ) ||
-              failures.some(
-                (operation) =>
-                  operation.retry.failure.reasonCode === "budget-exhausted",
-              ),
+              dailyExhausted ||
+              reservationBlocked ||
+              (!budget &&
+                failures.some(
+                  (operation) =>
+                    operation.retry.failure.reasonCode === "budget-exhausted",
+                )),
           },
         }
       : {}),
@@ -654,10 +711,43 @@ export function assessInventoryHealth(
       ),
     );
   }
+  const advisorySubjects = new Set(
+    operations
+      .filter((operation) => operation.identity.kind === "advisory")
+      .map((operation) => `operation:${operation.key}`),
+  );
+  const advisoryFailures = findings.filter(
+    (value) =>
+      value.code === "unknown-failure" &&
+      value.status === "active" &&
+      advisorySubjects.has(value.subject),
+  );
+  findings.push(
+    finding(
+      "unknown-failure",
+      "automation:advisory",
+      advisoryFailures.length > 0,
+      advisoryFailures.some(
+        (value) => value.reason === "provider-response-invalid",
+      )
+        ? "provider-response-invalid"
+        : advisoryFailures.length
+          ? "unclassified-failure"
+          : "verified-recovery",
+      advisoryFailures.length,
+    ),
+  );
   return findings.map((value) =>
-    value.code === "submission-stalled" &&
-    finalizedSubmissionReceipt(current.get(value.subject.slice(10)), state)
-      ? finding(value.code, value.subject, false, "verified-recovery")
-      : value,
+    value.code === "unknown-failure" &&
+    value.status === "active" &&
+    advisorySubjects.has(value.subject)
+      ? finding(value.code, value.subject, false, "incident-grouped")
+      : value.code === "submission-stalled" &&
+          finalizedSubmissionReceipt(
+            current.get(value.subject.slice(10)),
+            state,
+          )
+        ? finding(value.code, value.subject, false, "verified-recovery")
+        : value,
   );
 }

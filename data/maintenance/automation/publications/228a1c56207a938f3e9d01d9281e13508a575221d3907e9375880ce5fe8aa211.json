@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "228a1c56207a938f3e9d01d9281e13508a575221d3907e9375880ce5fe8aa211",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1195300925:hydall-glaze",
+      "inputDigest": "bafc5dda39fa33de4865aec6e0be7820d1eb0dcb98b22d92b549ad897a79df87",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1195300925",
+    "identity": "github:1195300925"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39397393328,
+    "sourceSha": "28196b8dc263156ca935326e750fb57efc21cf5e"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/hydall-glaze.json",
+      "sha256": "3f6427be521677bae84f8dc14697fb749ae1572ecfb3b085fd967350ae882f44",
+      "gitBlobSha": "73122695b312b552637e571716fe71f6baa678ab"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/228a1c56207a938f3e9d01d9281e13508a575221d3907e9375880ce5fe8aa211.json",
+      "sha256": "dda1fc6846e68ce255e28a158bd685ea622b36cd3f629b34fddd6eedd8a56a9e",
+      "gitBlobSha": "e4d37e7d3fba9d71b60e2d106d7d34d7aeb1199c"
+    }
+  ]
+}

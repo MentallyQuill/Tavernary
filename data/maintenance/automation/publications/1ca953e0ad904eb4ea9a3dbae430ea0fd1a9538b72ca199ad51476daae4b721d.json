@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1ca953e0ad904eb4ea9a3dbae430ea0fd1a9538b72ca199ad51476daae4b721d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1297591852:hornysilicon-innervoice",
+      "inputDigest": "acc1c9b691815947b14d8427441d0c67e492b5edc3e4f1622d909c50b9af796f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1297591852",
+    "identity": "github:1297591852"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39535783027,
+    "sourceSha": "5f836523873c1ffbc70694f786fe8c5120540451"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/hornysilicon-innervoice.json",
+      "sha256": "4d2260bec016fc77a3cdce815d0db38e03fdd14328fdff7a25e510b81a6f855c",
+      "gitBlobSha": "c7c0bf1a2a22bdf2fa16559f60a5809a4eb42190"
+    }
+  ]
+}
