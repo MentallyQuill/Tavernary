@@ -21986,7 +21986,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Win95 Theme Marinara is a CSS-only extension that re-skins Marinara Engine with authentic Windows 95 styling. The v3.0 release dropped the JavaScript layer for a leaner pure-CSS approach that's simpler to maintain.",
+      "summary": "A CSS-only client extension that re-skins Marinara Engine as authentic Windows 95 with beveled buttons, blue title bars, and pixel fonts while leaving the app's layout untouched (README).",
       "canonicalUrl": "https://github.com/cha1latte/win95-theme-marinara",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -22073,7 +22073,7 @@
           "https://github.com/cha1latte/win95-theme-marinara"
         ],
         "summary": [
-          "Win95 Theme Marinara is a CSS-only extension that re-skins Marinara Engine with authentic Windows 95 styling. The v3.0 release dropped the JavaScript layer for a leaner pure-CSS approach that's simpler to maintain."
+          "A CSS-only client extension that re-skins Marinara Engine as authentic Windows 95 with beveled buttons, blue title bars, and pixel fonts while leaving the app's layout untouched (README)."
         ],
         "kind": [
           "extension"
@@ -111342,7 +111342,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "A lightweight SillyTavern extension that scrolls to a selected last AI or user message on chat load or on demand, with configurable position and motion.",
+      "summary": "A lightweight SillyTavern extension that scrolls chats to a configurable last message on load or via a wand-menu button, choosing target (AI, user, or last) and alignment (start, middle, end). (README)",
       "canonicalUrl": "https://github.com/SoFizzticated/SillyTavern-ScrollToLast",
       "catalogedAt": "2026-08-08T05:41:09.086Z",
       "catalogCohort": "standard",
@@ -111354,12 +111354,6 @@
         }
       ],
       "tags": [
-        {
-          "id": "customize-the-interface",
-          "label": "Customize the interface",
-          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
-          "facet": "goal"
-        },
         {
           "id": "organize-chats-and-messages",
           "label": "Organize chats and messages",
@@ -111510,7 +111504,7 @@
           "https://github.com/SoFizzticated/SillyTavern-ScrollToLast"
         ],
         "summary": [
-          "A lightweight SillyTavern extension that scrolls to a selected last AI or user message on chat load or on demand, with configurable position and motion."
+          "A lightweight SillyTavern extension that scrolls chats to a configurable last message on load or via a wand-menu button, choosing target (AI, user, or last) and alignment (start, middle, end). (README)"
         ],
         "kind": [
           "extension"
@@ -111519,10 +111513,6 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Customize the interface",
-          "interface theming",
-          "layout customization",
-          "UI personalization",
           "Organize chats and messages",
           "chat organization",
           "message bookmarks",
@@ -114446,7 +114436,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Preset Search is a SillyTavern extension that adds a simple search function for finding presets. It provides a quick way to locate preset configurations without manual browsing through the interface.",
+      "summary": "Preset Search is a SillyTavern extension that lets you search through presets easily, built because the author wanted this function for a while (readme, subzero5544/preset-search).",
       "canonicalUrl": "https://github.com/subzero5544/preset-search",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -114608,7 +114598,7 @@
           "https://github.com/subzero5544/preset-search"
         ],
         "summary": [
-          "Preset Search is a SillyTavern extension that adds a simple search function for finding presets. It provides a quick way to locate preset configurations without manual browsing through the interface."
+          "Preset Search is a SillyTavern extension that lets you search through presets easily, built because the author wanted this function for a while (readme, subzero5544/preset-search)."
         ],
         "kind": [
           "extension"

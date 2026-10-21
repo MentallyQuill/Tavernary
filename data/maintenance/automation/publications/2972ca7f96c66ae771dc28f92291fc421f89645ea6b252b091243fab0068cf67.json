@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2972ca7f96c66ae771dc28f92291fc421f89645ea6b252b091243fab0068cf67",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-999180993:subzero5544-preset-search",
+      "inputDigest": "c0c7f3b96d8dff2389e3c5b7d0015bfcf98a4e6c8969a1ccad5815b986ac0bb5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-999180993",
+    "identity": "github:999180993"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39579962888,
+    "sourceSha": "1a29dc6a6f110067f5ca062884661696f6cee7bf"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/subzero5544-preset-search.json",
+      "sha256": "a353b9af1a33ff6f67ddba7780c21b42a31eea90270dff1f48ab70ec77759da4",
+      "gitBlobSha": "854cd497b3e906b75e4fff469e2ccdd98f0c2c35"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/2972ca7f96c66ae771dc28f92291fc421f89645ea6b252b091243fab0068cf67.json",
+      "sha256": "6a70041eee29049b79cc9507275707e0fcaece92bd835045e6c81bfcbcf1324f",
+      "gitBlobSha": "be0f657817f0674ed775c8e446a018309f5c704d"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2c0d303d7e350c36f7b729ff0c89b661c74bca6536f2768e443e4e07df300375",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1221894927:cha1latte-win95-theme-marinara",
+      "inputDigest": "5f3c53a07658177afa3caba0cb5d1be955e3de4ca32cf3ada42706aeb9734c1d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1221894927",
+    "identity": "github:1221894927"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39601666587,
+    "sourceSha": "a341e8fc768fba13fd1520c54e0ac3245fe02792"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/cha1latte-win95-theme-marinara.json",
+      "sha256": "9eb6d91d1f921e8a14ba104a01ba42494e76721df9dbf4aa91f339efba25caaf",
+      "gitBlobSha": "46bf70a2a7e9c67ceb886dbba8d8bbd38e40028e"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/2c0d303d7e350c36f7b729ff0c89b661c74bca6536f2768e443e4e07df300375.json",
+      "sha256": "20cef11b442296bc4f630bea4afdd6dda01972ec6d81796e0c0f6abbc89552c2",
+      "gitBlobSha": "a60455ce58b8e3e3ef9e631c1b689fc84250124b"
+    }
+  ]
+}

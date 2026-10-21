@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "258b7ab25eea3305cc2cb87a5d817c9b31117cdedaa91031d4cff63fdb1b8e2c",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1311326828:sofizzticated-sillytavern-scrolltolast",
+      "inputDigest": "56e6fd6a5f676501f0f14066cd32ee73a88a07e07fffa6a55ccbca68165b9722",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1311326828",
+    "identity": "github:1311326828"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39575622389,
+    "sourceSha": "e0e8c5988ee51dd6022058bdf0e4b9728c458f12"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/sofizzticated-sillytavern-scrolltolast.json",
+      "sha256": "6548ea0d7f0f705ff00abebc84a219814631d92dcacb5b3091474d86c3b021f3",
+      "gitBlobSha": "99d5dc9dc7103e00ca751f17d342b637f92ff762"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/258b7ab25eea3305cc2cb87a5d817c9b31117cdedaa91031d4cff63fdb1b8e2c.json",
+      "sha256": "d3e14503ed0e7000a0497b9274a1abdcce6dda5eda08be19bb58dce980341b78",
+      "gitBlobSha": "6a6ffb7dbaba416e98d9f642e236210ffc280843"
+    }
+  ]
+}

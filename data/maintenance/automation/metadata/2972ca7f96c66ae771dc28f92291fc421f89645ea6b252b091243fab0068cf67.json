@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "subzero5544-preset-search",
+  "sourceId": "github-999180993",
+  "sourceIdentity": "github:999180993",
+  "inputDigest": "c0c7f3b96d8dff2389e3c5b7d0015bfcf98a4e6c8969a1ccad5815b986ac0bb5",
+  "fingerprint": "18526ec44e1518d63aa537d4813c85b0f7ebfbd3edb952bfbe5748f3458a30d2",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "bbaf6adebb9fa18a4455ab958ec209a9c5513d87732cf63c25e2e7bf07488a7c",
+  "outputDigest": "e6697cd59b1b03dc58561a4238ae350b4f6e84ba9e66eb3d14999ac0919be766",
+  "headSha": "7d67370c5df889ea46b24c711631d97701fe21e7",
+  "observedAt": "2026-10-21T09:50:31.097Z"
+}

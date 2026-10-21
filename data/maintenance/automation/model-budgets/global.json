@@ -8882,8 +8882,11 @@
         "runId": 39575622389,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 3,
+        "tokens": 136266
+      }
     },
     {
       "id": "6368328bb26c13d87a3b7ddae8da36af6f1a533bb7d3b0001198cd852571d140",
@@ -8901,8 +8904,11 @@
         "runId": 39575622389,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "68b565b4c327f164d85cff7a9e223c5405e415d66e04788e53eb8e4c1360c407",
@@ -9002,8 +9008,11 @@
         "runId": 39579962888,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 43074
+      }
     },
     {
       "id": "ddce024e37b653fc70da22b08c8daa756ab3d4bb90a789df68440750223afe94",
@@ -9021,8 +9030,11 @@
         "runId": 39579962888,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "6d92a443413a70206cdec5abe7a4b0bad4aee1337ea5bda1efb1e8129dd9e89d",
@@ -9216,8 +9228,11 @@
         "runId": 39601666587,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 3,
+        "tokens": 133397
+      }
     },
     {
       "id": "79b708ffb6fb0fc81180127da75ee4e57a0e92ecc1eacebd39394d228aee3d78",
@@ -9235,8 +9250,11 @@
         "runId": 39601666587,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "cbeb7b49717cb6e0507843b19372b8f4da3b3767f1aad0cf0223494071443317",
