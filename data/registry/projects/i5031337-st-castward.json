@@ -1,0 +1,30 @@
+{
+  "schema_version": 6,
+  "id": "i5031337-st-castward",
+  "name": "ST-Castward",
+  "kind": "extension",
+  "summary": "Local model friendly. Tracks customizable user and NPC profiles, stats, levels, items, abilities. Define separate systems to easily switch between genres. On-the-fly expression and TTS voice generation available.",
+  "metadata_status": "curated",
+  "source_id": "github-1384472391",
+  "frontends": ["sillytavern"],
+  "primary_function": "rpg-systems",
+  "tags": [
+    "add-rpg-gameplay",
+    "add-visual-immersion",
+    "manage-characters-and-personas",
+    "manage-inventory-and-quests",
+    "secondary-model",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-10-21T11:44:36.473Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "automatic" }
+  }
+}
