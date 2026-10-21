@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "37ce8ff3c2051f6381f327f0ebe476db7e116d4ee7300b4a9046fc05f50c4abe",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1384472391:i5031337-st-castward",
+      "inputDigest": "ef31c9d3b539550dd6c54399bb3be783ffec6f8ee2672e17270b246ccedbbdcd",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-21T11:44:36.473Z",
+    "nextEligibleAt": null,
+    "expectedSha": "9268b4543d4917ae7c62c840ef540e5b5d6aa613",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-21T21:01:11.496Z",
+  "completedAt": null
+}
