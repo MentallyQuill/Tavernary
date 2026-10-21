@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "i5031337-st-castward",
+  "source_id": "github-1384472391",
+  "source_identity": "github:i5031337/st-castward",
+  "evidence_fingerprint": "cbc0188455bd93c974f788bceb2d4b700d3092784666eb3b9722c151e1a42e42",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-10-21T16:00:49.802Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

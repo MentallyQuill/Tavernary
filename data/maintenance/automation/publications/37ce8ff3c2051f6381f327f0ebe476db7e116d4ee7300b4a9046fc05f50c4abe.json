@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "37ce8ff3c2051f6381f327f0ebe476db7e116d4ee7300b4a9046fc05f50c4abe",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1384472391:i5031337-st-castward",
+      "inputDigest": "ef31c9d3b539550dd6c54399bb3be783ffec6f8ee2672e17270b246ccedbbdcd",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-21T11:44:36.473Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1384472391",
+    "identity": "github:1384472391"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39630783930,
+    "sourceSha": "1f0dbde1e6420bd6a0b8bdd328fd85b590225b12"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/i5031337-st-castward.json",
+      "sha256": "a4f2923873e98a37df9556c1206683f28166378508e3930ada85c51c6eb6a506",
+      "gitBlobSha": "d37cd98fbbf0cfffc008230ae6069c3e85b97e15"
+    }
+  ]
+}
