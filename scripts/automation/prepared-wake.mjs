@@ -140,8 +140,46 @@ export function selectPreparedWakes({
     priorityRank.set(key, priorityRank.size);
   }
   operations.forEach(validateAutomationOperation);
+  const known = new Map(
+    operations.map((operation) => [operation.key, operation]),
+  );
+  const selected = new Map();
+  for (const run of runs) {
+    const wake = planPreparedWake({
+      run,
+      repository,
+      publisherActorId,
+      diagnostic: includeDiagnostics && run.conclusion !== "success",
+    });
+    if (
+      !wake ||
+      !known.has(wake.operationKey) ||
+      ![kinds[run.path.slice(".github/workflows/".length, -4)]]
+        .flat()
+        .includes(known.get(wake.operationKey).identity.kind)
+    )
+      continue;
+    if (
+      !selected.has(wake.operationKey) ||
+      selected.get(wake.operationKey).runId < wake.runId
+    )
+      selected.set(wake.operationKey, wake);
+  }
+  // Select among authenticated results, so unprepared backlog cannot consume
+  // publication slots. Keep every duplicate peer so a blocked key stays blocked.
+  const prepared = operations.filter((operation) =>
+    selected.has(operation.key),
+  );
   const current = new Map(
-    selectDueOperations(operations, { nowMs, limit: 20 })
+    [true, false]
+      .flatMap((priority) =>
+        selectDueOperations(
+          prepared.filter(
+            (operation) => priorityRank.has(operation.key) === priority,
+          ),
+          { nowMs, limit: 20 },
+        ),
+      )
       .filter(
         (operation) =>
           ![
@@ -154,29 +192,9 @@ export function selectPreparedWakes({
       )
       .map((operation) => [operation.key, operation]),
   );
-  const selected = new Map();
-  for (const run of runs) {
-    const wake = planPreparedWake({
-      run,
-      repository,
-      publisherActorId,
-      diagnostic: includeDiagnostics && run.conclusion !== "success",
-    });
-    if (
-      !wake ||
-      !current.has(wake.operationKey) ||
-      ![kinds[run.path.slice(".github/workflows/".length, -4)]]
-        .flat()
-        .includes(current.get(wake.operationKey).identity.kind)
-    )
-      continue;
-    if (
-      !selected.has(wake.operationKey) ||
-      selected.get(wake.operationKey).runId < wake.runId
-    )
-      selected.set(wake.operationKey, wake);
-  }
+  const subjects = new Set();
   return [...selected.values()]
+    .filter((wake) => current.has(wake.operationKey))
     .sort(
       (left, right) =>
         (priorityRank.get(left.operationKey) ?? priorityRank.size) -
@@ -186,6 +204,12 @@ export function selectPreparedWakes({
           .createdAt.localeCompare(current.get(right.operationKey).createdAt) ||
         left.operationKey.localeCompare(right.operationKey),
     )
+    .filter((wake) => {
+      const subject = current.get(wake.operationKey).identity.subject;
+      if (subjects.has(subject)) return false;
+      subjects.add(subject);
+      return true;
+    })
     .slice(0, limit);
 }
 export async function runPreparedWakeCli(options = {}) {
@@ -342,7 +366,13 @@ export async function runPreparedWakeCli(options = {}) {
       write(JSON.stringify({ status: "ignored" }));
       return 0;
     }
-    if (wake.diagnostic) {
+    // Catalog results share the next bounded reconciliation batch. Direct Kit
+    // publication retains its explicit handoff outside catalog reconciliation.
+    const directSubmission = [
+      ".github/workflows/apply-kit-submission.yml",
+      ".github/workflows/apply-kit-withdrawal.yml",
+    ].includes(run.path);
+    if (wake.diagnostic || !directSubmission) {
       const outcome = await wakeAutomationWriter({ repository, gh });
       write(JSON.stringify({ ...wake, ...outcome }));
       return 0;

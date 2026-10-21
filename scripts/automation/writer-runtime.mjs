@@ -1446,34 +1446,64 @@ export async function runReconciledFinalization({
 }
 export function selectWriterAdmissionReservations(
   operations,
-  { nowMs, limit, consumedKeys = [], consumedSubjects = [] },
+  {
+    nowMs,
+    limit,
+    consumedKeys = [],
+    consumedSubjects = [],
+    preparedRefreshKeys = [],
+  },
 ) {
   if (!Number.isSafeInteger(limit) || limit < 0 || limit > 20)
     throw new Error("Writer admission quota is invalid.");
   operations.forEach(validateAutomationOperation);
   selectDueOperations([], { nowMs, limit });
+  if (
+    !Array.isArray(preparedRefreshKeys) ||
+    preparedRefreshKeys.length > 20 ||
+    new Set(preparedRefreshKeys).size !== preparedRefreshKeys.length ||
+    Array.from(preparedRefreshKeys).some(
+      (key) => typeof key !== "string" || !/^[a-f0-9]{64}$/u.test(key),
+    )
+  )
+    throw new Error("Prepared refresh keys are invalid.");
+  const readyRefreshes = new Set(preparedRefreshKeys);
   const reportSeats = [2, 9].filter((seat) => seat < limit).length;
+  // Refresh collection must keep advancing even when optional model work is old.
+  const refreshSeats = [0, 3, 5, 7, 10, 13, 15, 18].filter(
+    (seat) => seat < limit,
+  ).length;
   const consumed = new Set(consumedKeys);
   const subjects = new Set(consumedSubjects);
   const selected = [];
-  for (const [kinds, quota] of [[["report-import"], reportSeats]]) {
+  for (const [kinds, quota] of [
+    [["report-import"], reportSeats],
+    [["refresh"], refreshSeats],
+  ]) {
     const familyKeys = new Set(
       operations
         .filter((operation) => kinds.includes(operation.identity.kind))
         .map((operation) => operation.key),
     );
-    const candidates = selectDueOperations(
-      operations.filter(
-        (operation) =>
-          familyKeys.has(operation.key) &&
-          !consumed.has(operation.key) &&
-          !subjects.has(operation.identity.subject),
-      ),
-      { nowMs, limit: quota },
-    );
-    for (const operation of candidates) {
-      subjects.add(operation.identity.subject);
-      selected.push(operation);
+    let used = 0;
+    const refreshFamily = kinds.includes("refresh");
+    // Ready results use the same refresh share before starting more collection.
+    for (const ready of refreshFamily ? [true, false] : [false]) {
+      const candidates = selectDueOperations(
+        operations.filter(
+          (operation) =>
+            familyKeys.has(operation.key) &&
+            !consumed.has(operation.key) &&
+            !subjects.has(operation.identity.subject) &&
+            (!refreshFamily || readyRefreshes.has(operation.key) === ready),
+        ),
+        { nowMs, limit: quota - used },
+      );
+      for (const operation of candidates) {
+        subjects.add(operation.identity.subject);
+        selected.push(operation);
+        used++;
+      }
     }
   }
   return selected;
@@ -1623,7 +1653,17 @@ export async function runAutomationWriterReconciliation({
   }
   const availableSlots =
     20 - enrichmentSlot - generation.slots - generationRequests.slots;
+  const preparedRefreshKeys = selectPreparedWakes({
+    runs: state.remote.runs,
+    operations: state.operations.filter(
+      (operation) => operation.identity.kind === "refresh",
+    ),
+    repository: state.repository,
+    publisherActorId: state.publisherActorId,
+    nowMs: state.nowMs,
+  }).map((wake) => wake.operationKey);
   const reservations = selectWriterAdmissionReservations(state.operations, {
+    preparedRefreshKeys,
     nowMs: state.nowMs,
     limit: availableSlots,
     consumedKeys: [...consumed],

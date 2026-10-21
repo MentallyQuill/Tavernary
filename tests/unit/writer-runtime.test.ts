@@ -1,3 +1,4 @@
+import { selectPreparedWakes } from "../../scripts/automation/prepared-wake.mjs";
 import { mkdtemp, access, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
@@ -27,6 +28,7 @@ import { operationKey } from "../../scripts/automation/operation.mjs";
 import { AUTOMATION_KINDS } from "../../scripts/automation/operation.mjs";
 import {
   preparedResultFixture,
+  preparedResultContextFixture,
   catalogInventoryFixture,
   AUTOMATION_NOW,
 } from "../helpers/automation-fixtures";
@@ -2567,4 +2569,177 @@ test("artifact download is bounded, binary, and restricted to the known GitHub a
     }),
   ).rejects.toThrow();
   expect(run).toHaveBeenCalledTimes(1);
+});
+
+test("overdue repository refreshes retain eight admissions under an older metadata backlog", () => {
+  const nowMs = AUTOMATION_NOW;
+  const metadata = Array.from({ length: 30 }, (_, index) =>
+    operationFixture({
+      identity: {
+        ...operationFixture().identity,
+        kind: "metadata",
+        subject: `source:metadata-backlog-${index}`,
+      },
+      createdAt: "2026-09-01T00:00:00.000Z",
+    }),
+  );
+  const refreshes = Array.from({ length: 10 }, (_, index) =>
+    operationFixture({
+      identity: {
+        ...operationFixture().identity,
+        kind: "refresh",
+        subject: `source:refresh-backlog-${index}`,
+      },
+      createdAt: new Date(AUTOMATION_NOW - (10 - index) * 1000).toISOString(),
+    }),
+  );
+  const selected = selectWriterAdmissionReservations(
+    [...metadata, ...refreshes],
+    { nowMs, limit: 20 },
+  );
+  expect(selected.map((operation) => operation.key)).toEqual(
+    refreshes.slice(0, 8).map((operation) => operation.key),
+  );
+  const blocked = refreshes
+    .slice(0, 8)
+    .map((operation) => ({ ...operation, workerRunId: 701 }));
+  expect(
+    selectWriterAdmissionReservations([...metadata, ...refreshes, ...blocked], {
+      nowMs,
+      limit: 20,
+    }).map((operation) => operation.key),
+  ).toEqual(refreshes.slice(8).map((operation) => operation.key));
+});
+
+test("a ready refresh uses its reserved share before older collection and model backlogs", () => {
+  const input = preparedResultContextFixture();
+  const ready = {
+    ...input.operation,
+    createdAt: new Date(AUTOMATION_NOW - 1000).toISOString(),
+  };
+  const collection = Array.from({ length: 8 }, (_, index) =>
+    operationFixture({
+      identity: { ...ready.identity, subject: `source:older-refresh-${index}` },
+      createdAt: new Date(AUTOMATION_NOW - 60000 + index).toISOString(),
+    }),
+  );
+  const metadata = Array.from({ length: 25 }, (_, index) =>
+    operationFixture({
+      identity: {
+        ...ready.identity,
+        kind: "metadata",
+        subject: `source:older-model-${index}`,
+      },
+      createdAt: new Date(AUTOMATION_NOW - 120000 + index).toISOString(),
+    }),
+  );
+  const operations = [...metadata, ...collection, ready];
+  const runs = [ready, ...metadata].map((operation, index) => ({
+    ...structuredClone(input.run),
+    id: 2000 + index,
+    path:
+      operation.identity.kind === "metadata"
+        ? ".github/workflows/enrich-catalog.yml"
+        : ".github/workflows/refresh-catalog.yml",
+    display_title: `Automation prepare ${operation.key}`,
+  }));
+  const readyRefreshes = selectPreparedWakes({
+    runs,
+    operations: operations.filter(
+      (operation) => operation.identity.kind === "refresh",
+    ),
+    repository: input.currentState.repository,
+    publisherActorId: input.publisherActorId,
+    nowMs: AUTOMATION_NOW,
+  });
+  const selected = selectWriterAdmissionReservations(operations, {
+    nowMs: AUTOMATION_NOW,
+    limit: 20,
+    preparedRefreshKeys: readyRefreshes.map((wake) => wake.operationKey),
+  });
+  expect(selected.map((operation) => operation.key)).toEqual([
+    ready.key,
+    ...collection.slice(0, 7).map((operation) => operation.key),
+  ]);
+});
+
+test("the real writer publishes a younger ready refresh while dispatching older collection", async () => {
+  const fixture = writerAdmissionFixture();
+  const nowMs = fixture.state.nowMs;
+  const base = fixture.backgrounds[0].receipt;
+  const ready = operationFixture({
+    identity: {
+      ...base.operation.identity,
+      kind: "refresh",
+      subject: "source:github-42",
+    },
+    createdAt: new Date(nowMs - 120000).toISOString(),
+    nextEligibleAt: new Date(nowMs - 120000).toISOString(),
+    retry: structuredClone(base.operation.retry),
+  });
+  const prepared = diagnosticReplayFixture(
+    {
+      ...structuredClone(base),
+      updatedAt: new Date(nowMs - 1000).toISOString(),
+      operation: ready,
+    },
+    90000000000,
+    new Date(nowMs - 1000).toISOString(),
+  );
+  prepared.run.conclusion = "success";
+  prepared.artifact.name = `automation-prepared-${ready.key}`;
+  const collection = Array.from({ length: 8 }, (_, index) =>
+    operationFixture({
+      identity: {
+        ...ready.identity,
+        subject: `source:pending-collection-${index}`,
+      },
+      createdAt: new Date(nowMs - 86400000 + index).toISOString(),
+    }),
+  );
+  const backgrounds = [...fixture.backgrounds];
+  useWriterOperations(fixture, [
+    ...backgrounds.map((value) => value.state.operations[0]),
+    ...collection,
+    ready,
+  ]);
+  fixture.backgrounds.push(prepared);
+  fixture.state.remote.runs = [
+    ...backgrounds.map((value) => value.run),
+    prepared.run,
+  ];
+  fixture.state.receipts = [
+    ...backgrounds.map((value) => structuredClone(value.receipt)),
+    prepared.receipt,
+  ];
+  const publish = vi
+    .spyOn(preparedPublication, "publishPreparedOperations")
+    .mockResolvedValue({
+      published: 1,
+      recovered: 0,
+      waiting: 0,
+      regenerated: 0,
+      rejected: 0,
+    });
+  try {
+    const result = (await runAutomationWriterReconciliation(
+      fixture.options,
+    )) as {
+      prepared: { consumedKeys: string[]; published: number };
+      controller: { selectedKeys: string[] };
+    };
+    expect(result.prepared.published).toBe(1);
+    expect(publish.mock.calls[0][0].wakes).toEqual([
+      { operationKey: ready.key, runId: prepared.run.id },
+    ]);
+    expect(result.controller.selectedKeys).toEqual(
+      collection.slice(0, 7).map((operation) => operation.key),
+    );
+    expect(
+      result.prepared.consumedKeys.length +
+        result.controller.selectedKeys.length,
+    ).toBeLessThanOrEqual(20);
+  } finally {
+    fixture.restore();
+  }
 });
