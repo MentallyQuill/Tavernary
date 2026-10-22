@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "silly-tavern-1015",
+  "status": "published",
+  "title": "Silly Tavern",
+  "description": "stuff",
+  "author": { "github_user_id": 219606630, "login": "KaitMill12" },
+  "source_issue_number": 1015,
+  "project_ids": [
+    "aikohanasaki-aikobots",
+    "aikohanasaki-sillytavern-memorybooks",
+    "mekineer-com-openalma",
+    "vadash-extension-summaryception"
+  ],
+  "published_at": "2026-10-22T22:08:22.069Z",
+  "updated_at": "2026-10-22T22:08:22.069Z"
+}
