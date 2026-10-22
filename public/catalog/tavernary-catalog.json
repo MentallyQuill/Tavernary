@@ -68642,7 +68642,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Story Orchestrator runs SillyTavern stories as deterministic checkpoint graphs over a live chat. It tracks typed qualities on a blackboard and extracts state off the response path to steer pacing without AI calls.",
+      "summary": "A SillyTavern extension that plays authored stories over a chat: a scene graph, a second memory model, and rollback on swipes keep facts consistent (README intro; Memory features).",
       "canonicalUrl": "https://github.com/MaxiPawlowski/story-orchestrator",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -68655,15 +68655,27 @@
       ],
       "tags": [
         {
-          "id": "preserve-story-continuity",
-          "label": "Preserve story continuity",
-          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
-          "facet": "goal"
-        },
-        {
           "id": "plan-stories-and-scenes",
           "label": "Plan stories and scenes",
           "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
+          "facet": "goal"
+        },
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
+          "facet": "goal"
+        },
+        {
+          "id": "maintain-long-term-memory",
+          "label": "Maintain long-term memory",
+          "description": "Preserve and recall important information across long chats or separate sessions.",
+          "facet": "goal"
+        },
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
           "facet": "goal"
         },
         {
@@ -68673,16 +68685,10 @@
           "facet": "goal"
         },
         {
-          "id": "rules-driven",
-          "label": "Rules-driven",
-          "description": "Uses explicit rules, schemas, calculations, or deterministic mechanics to constrain behavior.",
-          "facet": "trait"
-        },
-        {
-          "id": "non-destructive",
-          "label": "Non-destructive",
-          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
-          "facet": "trait"
+          "id": "route-tasks-across-models",
+          "label": "Route tasks across models",
+          "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
+          "facet": "goal"
         }
       ],
       "tavernKeeper": {
@@ -69197,7 +69203,7 @@
           "https://github.com/MaxiPawlowski/story-orchestrator"
         ],
         "summary": [
-          "Story Orchestrator runs SillyTavern stories as deterministic checkpoint graphs over a live chat. It tracks typed qualities on a blackboard and extracts state off the response path to steer pacing without AI calls."
+          "A SillyTavern extension that plays authored stories over a chat: a scene graph, a second memory model, and rollback on swipes keep facts consistent (README intro; Memory features)."
         ],
         "kind": [
           "extension"
@@ -69206,26 +69212,30 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Preserve story continuity",
-          "continuity tracking",
-          "canon consistency",
-          "story coherence",
           "Plan stories and scenes",
           "story planning",
           "plot direction",
           "scene planning",
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control",
+          "Maintain long-term memory",
+          "durable memory",
+          "persistent memory",
+          "remember across chats",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
           "Track characters and world state",
           "state tracking",
           "stat trackers",
           "world state tracking",
-          "Rules-driven",
-          "deterministic mechanics",
-          "rule based",
-          "schema driven",
-          "Non-destructive",
-          "reversible workflow",
-          "preserves originals",
-          "safe overlay"
+          "Route tasks across models",
+          "model routing",
+          "task routing",
+          "connection routing"
         ],
         "frontends": [
           "SillyTavern"
@@ -73623,7 +73633,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "WeatherTweaker is a Marinara Engine extension for adjusting weather effect visuals during chat. A toolbar popup lets users tweak opacity, speed, size, count, brightness, contrast, and tint live.",
+      "summary": "WeatherTweaker (README) is a Marinara Engine extension adding a chat-toolbar popup to tweak weather in real time: 17 presets, particle/scene sliders, standalone render, and per-chat localStorage persistence.",
       "canonicalUrl": "https://github.com/Mitaska/WeatherTweaker",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -73646,6 +73656,12 @@
           "label": "Customize the interface",
           "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
           "facet": "goal"
+        },
+        {
+          "id": "persistent-state",
+          "label": "Persistent state",
+          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
+          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -73787,7 +73803,7 @@
           "https://github.com/Mitaska/WeatherTweaker"
         ],
         "summary": [
-          "WeatherTweaker is a Marinara Engine extension for adjusting weather effect visuals during chat. A toolbar popup lets users tweak opacity, speed, size, count, brightness, contrast, and tint live."
+          "WeatherTweaker (README) is a Marinara Engine extension adding a chat-toolbar popup to tweak weather in real time: 17 presets, particle/scene sliders, standalone render, and per-chat localStorage persistence."
         ],
         "kind": [
           "extension"
@@ -73803,7 +73819,11 @@
           "Customize the interface",
           "interface theming",
           "layout customization",
-          "UI personalization"
+          "UI personalization",
+          "Persistent state",
+          "durable state",
+          "state persistence",
+          "cross-session state"
         ],
         "frontends": [
           "Marinara Engine"
@@ -120937,7 +120957,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "character-worldbuilding",
-      "summary": "SillyTavern extension that swaps Character or Persona descriptions with trigger-aware dynamic fields for evolving alter egos and stages.",
+      "summary": "A SillyTavern extension (README: Overview) that swaps a Character's or Persona's static Description on demand with organized, trigger-aware Dynamic Fields, injecting only fields relevant to each arc or alter ego.",
       "canonicalUrl": "https://github.com/Vectricity/st-aspect-evolutia",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -120956,15 +120976,21 @@
           "facet": "goal"
         },
         {
-          "id": "guide-model-responses",
-          "label": "Guide model responses",
-          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
+          "id": "manage-prompts-and-presets",
+          "label": "Manage prompts and presets",
+          "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
           "facet": "goal"
         },
         {
-          "id": "persistent-state",
-          "label": "Persistent state",
-          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
+          "id": "manage-context-limits",
+          "label": "Manage context limits",
+          "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
+          "facet": "goal"
+        },
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
           "facet": "trait"
         }
       ],
@@ -121111,7 +121137,7 @@
           "https://github.com/Vectricity/st-aspect-evolutia"
         ],
         "summary": [
-          "SillyTavern extension that swaps Character or Persona descriptions with trigger-aware dynamic fields for evolving alter egos and stages."
+          "A SillyTavern extension (README: Overview) that swaps a Character's or Persona's static Description on demand with organized, trigger-aware Dynamic Fields, injecting only fields relevant to each arc or alter ego."
         ],
         "kind": [
           "extension"
@@ -121124,14 +121150,19 @@
           "persona management",
           "character management",
           "identity management",
-          "Guide model responses",
-          "response steering",
-          "generation control",
-          "instruction control",
-          "Persistent state",
-          "durable state",
-          "state persistence",
-          "cross-session state"
+          "Manage prompts and presets",
+          "prompt management",
+          "prompt engineering",
+          "preset organization",
+          "template management",
+          "Manage context limits",
+          "context compression",
+          "context window management",
+          "token budgeting",
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay"
         ],
         "frontends": [
           "SillyTavern"

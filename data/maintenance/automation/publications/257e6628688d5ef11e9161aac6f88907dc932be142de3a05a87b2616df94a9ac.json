@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "257e6628688d5ef11e9161aac6f88907dc932be142de3a05a87b2616df94a9ac",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1082708357:maxipawlowski-story-orchestrator",
+      "inputDigest": "65d28e00ecd437b9f2295e8db41d0a38bf499e01bfe2a29fe1bff0a9ca582ade",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1082708357",
+    "identity": "github:1082708357"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39723656964,
+    "sourceSha": "908c1f021654c9061e9dacdefeadacd56f96b03a"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/maxipawlowski-story-orchestrator.json",
+      "sha256": "b402b6be57127410e3d9b4b2e8e27e8e1fb238211043cc7546f074f894d16ccc",
+      "gitBlobSha": "138d50a4a9968f36dcc3ca69fe50270d42110c30"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/257e6628688d5ef11e9161aac6f88907dc932be142de3a05a87b2616df94a9ac.json",
+      "sha256": "7c1c0ed3616e80c6d00a8b01684216ac29efabaad66a3581dee85d92c6cb06e1",
+      "gitBlobSha": "8c9df59ecf08abb5e944fa1edf4db07f9c0a259a"
+    }
+  ]
+}

@@ -3,7 +3,7 @@
   "id": "maxipawlowski-story-orchestrator",
   "name": "Story Orchestrator",
   "kind": "extension",
-  "summary": "Story Orchestrator runs SillyTavern stories as deterministic checkpoint graphs over a live chat. It tracks typed qualities on a blackboard and extracts state off the response path to steer pacing without AI calls.",
+  "summary": "A SillyTavern extension that plays authored stories over a chat: a scene graph, a second memory model, and rollback on swipes keep facts consistent (README intro; Memory features).",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
@@ -11,11 +11,12 @@
   "catalog_cohort": "seed",
   "source_id": "github-1082708357",
   "tags": [
-    "preserve-story-continuity",
     "plan-stories-and-scenes",
+    "guide-model-responses",
+    "maintain-long-term-memory",
+    "preserve-story-continuity",
     "track-characters-and-world-state",
-    "rules-driven",
-    "non-destructive"
+    "route-tasks-across-models"
   ],
   "listing_status": "active",
   "listing_status_reason": null,

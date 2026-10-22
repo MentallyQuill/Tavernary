@@ -3,7 +3,7 @@
   "id": "vectricity-st-aspect-evolutia",
   "name": "ST Aspect Evolutia",
   "kind": "extension",
-  "summary": "SillyTavern extension that swaps Character or Persona descriptions with trigger-aware dynamic fields for evolving alter egos and stages.",
+  "summary": "A SillyTavern extension (README: Overview) that swaps a Character's or Persona's static Description on demand with organized, trigger-aware Dynamic Fields, injecting only fields relevant to each arc or alter ego.",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "character-worldbuilding",
@@ -12,8 +12,9 @@
   "source_id": "github-1225316984",
   "tags": [
     "manage-characters-and-personas",
-    "guide-model-responses",
-    "persistent-state"
+    "manage-prompts-and-presets",
+    "manage-context-limits",
+    "non-destructive"
   ],
   "listing_status": "active",
   "listing_status_reason": null,

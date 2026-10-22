@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3eeee89313e178175e711b857b71bfffbc0ae59811a28f06d4394b06e9fe088c",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1239088102:mitaska-weathertweaker",
+      "inputDigest": "116734f7da6532529a21b7ab6696891129b474ded55357e005359bb79305b6ed",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1239088102",
+    "identity": "github:1239088102"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 38972438174,
+    "sourceSha": "6b2305ec5ed98886b22b9299f3c0c72a11bcdbfd"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/mitaska-weathertweaker.json",
+      "sha256": "46ec3f05839704bbafef65944a7efaa68f7970702f7653fd9793d71ba7cc5300",
+      "gitBlobSha": "202395d0e815656c9c004e9d26eb3de9aa861bcc"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/3eeee89313e178175e711b857b71bfffbc0ae59811a28f06d4394b06e9fe088c.json",
+      "sha256": "bc8ddfbf35ad25f9f7bff10d519749e37fb763f7c8c0f03b8ec2431a75187ba4",
+      "gitBlobSha": "fd2dc360f29849d452a53e7b30c51679a2d32141"
+    }
+  ]
+}

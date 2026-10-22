@@ -1763,8 +1763,11 @@
         "runId": 38972438174,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 48067
+      }
     },
     {
       "id": "c4d435af0f5c75902b17e7169a0eecebd810e6b7e741ebbfdc72550373d91731",
@@ -1782,8 +1785,11 @@
         "runId": 38972438174,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "fd03097079dec17f4d8cf99e88fb03ebd044485e94e800dafc88ca620ef0959f",
@@ -9751,8 +9757,11 @@
         "runId": 39722545051,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 47316
+      }
     },
     {
       "id": "3672fd1716dad560a1d7af2b0a831a4fad26e39dfe2e780cf8411d5513787cf3",
@@ -9770,8 +9779,11 @@
         "runId": 39722545051,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "2a28277164b1131e34a3d1c5a7bf3e322314971a23a2bb6b9cdf4295c203cb64",
@@ -9789,8 +9801,11 @@
         "runId": 39723656964,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 58450
+      }
     },
     {
       "id": "fe95663da2964d82a4630b1fd66b10163a4b7a70622ea4b3113249a7146259b8",
@@ -9808,8 +9823,11 @@
         "runId": 39723656964,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     }
   ]
 }

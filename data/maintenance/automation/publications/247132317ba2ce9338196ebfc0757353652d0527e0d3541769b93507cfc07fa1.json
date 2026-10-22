@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "247132317ba2ce9338196ebfc0757353652d0527e0d3541769b93507cfc07fa1",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1225316984:vectricity-st-aspect-evolutia",
+      "inputDigest": "279ff36018daabe799a696ff06094c7d432c83b53deb8851be15dbb7e144777c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1225316984",
+    "identity": "github:1225316984"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39722545051,
+    "sourceSha": "ef6d28ca20a87039bdf6d98f993420a3aa631f3d"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/vectricity-st-aspect-evolutia.json",
+      "sha256": "bc819d83a9b6aaf99d986c0f5c43e1d298423d90d0811044ab2e330af0a302b4",
+      "gitBlobSha": "bbd226d8e80492040511cffde43656d02f2e4b32"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/247132317ba2ce9338196ebfc0757353652d0527e0d3541769b93507cfc07fa1.json",
+      "sha256": "9100d7eceaff74699d59d4295d845757cfd1e021a17567e34cb428c7d707f669",
+      "gitBlobSha": "bfc3aa30ad59105a437ff986418b789ec449bbc5"
+    }
+  ]
+}

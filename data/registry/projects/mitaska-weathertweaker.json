@@ -3,14 +3,18 @@
   "id": "mitaska-weathertweaker",
   "name": "WeatherTweaker",
   "kind": "extension",
-  "summary": "WeatherTweaker is a Marinara Engine extension for adjusting weather effect visuals during chat. A toolbar popup lets users tweak opacity, speed, size, count, brightness, contrast, and tint live.",
+  "summary": "WeatherTweaker (README) is a Marinara Engine extension adding a chat-toolbar popup to tweak weather in real time: 17 presets, particle/scene sliders, standalone render, and per-chat localStorage persistence.",
   "metadata_status": "curated",
   "frontends": ["marinara-engine"],
   "primary_function": "interface-workflow",
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "source_id": "github-1239088102",
-  "tags": ["add-visual-immersion", "customize-the-interface"],
+  "tags": [
+    "add-visual-immersion",
+    "customize-the-interface",
+    "persistent-state"
+  ],
   "listing_status": "active",
   "listing_status_reason": null,
   "metadata_policy": {
