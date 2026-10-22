@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "42cd3855eca15071bb9c0652c185ded3b42272f89ff6c7ead372fd284167a44e",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1296928830:prolix-oc-lumiverse-xtimeline",
+      "inputDigest": "2ebf8786675a3e89723fd561e1c84715d34ee841baf3b097649cd3edf329ab8a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1296928830",
+    "identity": "github:1296928830"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 38976817367,
+    "sourceSha": "beee6ed8034f7452ea54abe24fae0f2d952fd205"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/prolix-oc-lumiverse-xtimeline.json",
+      "sha256": "c44873c0830b1d0a3d69d0077393ec87deabe3575beeb1a07d2b9aaddd93b541",
+      "gitBlobSha": "36a009093c6cc932a386cece1c53bb1eb9d4ecfe"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/42cd3855eca15071bb9c0652c185ded3b42272f89ff6c7ead372fd284167a44e.json",
+      "sha256": "1103e0cae702bd33f24771be6f3ae111a4622326c85b1507af7be174a014c94d",
+      "gitBlobSha": "5de02961580ae21d50edc7cdf94af69145a5f9ce"
+    }
+  ]
+}

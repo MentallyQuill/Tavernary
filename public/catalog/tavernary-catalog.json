@@ -89436,7 +89436,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Lumiverse XTimeline adds a Twitter-like timeline to the frontend for posting weaves as character personas and replying in threads.",
+      "summary": "A private Twitter-like timeline extension for Lumiverse where users write weaves as a selected persona, reply in threads, and invite character cards or Council members to post in character (README: Lumiverse Timeline).",
       "canonicalUrl": "https://github.com/prolix-oc/Lumiverse-XTimeline",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -89455,10 +89455,10 @@
           "facet": "goal"
         },
         {
-          "id": "multi-user",
-          "label": "Multi-user",
-          "description": "Supports several human users, shared communities, or collaborative sessions.",
-          "facet": "trait"
+          "id": "run-group-roleplay",
+          "label": "Run group roleplay",
+          "description": "Coordinate scenes involving several AI characters in the same conversation.",
+          "facet": "goal"
         }
       ],
       "tavernKeeper": {
@@ -89625,7 +89625,7 @@
           "https://github.com/prolix-oc/Lumiverse-XTimeline"
         ],
         "summary": [
-          "Lumiverse XTimeline adds a Twitter-like timeline to the frontend for posting weaves as character personas and replying in threads."
+          "A private Twitter-like timeline extension for Lumiverse where users write weaves as a selected persona, reply in threads, and invite character cards or Council members to post in character (README: Lumiverse Timeline)."
         ],
         "kind": [
           "extension"
@@ -89638,10 +89638,10 @@
           "persona management",
           "character management",
           "identity management",
-          "Multi-user",
-          "multiplayer",
-          "shared sessions",
-          "community hosting"
+          "Run group roleplay",
+          "multi-character roleplay",
+          "group chats",
+          "ensemble scenes"
         ],
         "frontends": [
           "Lumiverse"
@@ -200886,7 +200886,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "Lumiverse XTimeline adds a Twitter-like timeline to the frontend for posting weaves as character personas and replying in threads.",
+            "summary": "A private Twitter-like timeline extension for Lumiverse where users write weaves as a selected persona, reply in threads, and invite character cards or Council members to post in character (README: Lumiverse Timeline).",
             "canonicalUrl": "https://github.com/prolix-oc/Lumiverse-XTimeline",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -200905,10 +200905,10 @@
                 "facet": "goal"
               },
               {
-                "id": "multi-user",
-                "label": "Multi-user",
-                "description": "Supports several human users, shared communities, or collaborative sessions.",
-                "facet": "trait"
+                "id": "run-group-roleplay",
+                "label": "Run group roleplay",
+                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "facet": "goal"
               }
             ],
             "tavernKeeper": {
@@ -201075,7 +201075,7 @@
                 "https://github.com/prolix-oc/Lumiverse-XTimeline"
               ],
               "summary": [
-                "Lumiverse XTimeline adds a Twitter-like timeline to the frontend for posting weaves as character personas and replying in threads."
+                "A private Twitter-like timeline extension for Lumiverse where users write weaves as a selected persona, reply in threads, and invite character cards or Council members to post in character (README: Lumiverse Timeline)."
               ],
               "kind": [
                 "extension"
@@ -201088,10 +201088,10 @@
                 "persona management",
                 "character management",
                 "identity management",
-                "Multi-user",
-                "multiplayer",
-                "shared sessions",
-                "community hosting"
+                "Run group roleplay",
+                "multi-character roleplay",
+                "group chats",
+                "ensemble scenes"
               ],
               "frontends": [
                 "Lumiverse"

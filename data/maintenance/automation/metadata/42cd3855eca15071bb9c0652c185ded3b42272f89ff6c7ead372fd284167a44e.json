@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "prolix-oc-lumiverse-xtimeline",
+  "sourceId": "github-1296928830",
+  "sourceIdentity": "github:1296928830",
+  "inputDigest": "2ebf8786675a3e89723fd561e1c84715d34ee841baf3b097649cd3edf329ab8a",
+  "fingerprint": "8e71b61e952b3404e5284665106cab4f168c207c78c0d219fadb426e2b0b16d4",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "59b0c41da5cc2115910fb9ae761b859cb5311877e54f253cad48f230141401d9",
+  "outputDigest": "9ae75e3f87e475b1f59781a4997c91fc08a3e70964c11fbbe240d845c8ac15cb",
+  "headSha": "63fc719b976d3a4e84d704e7e717ea5c94a29b77",
+  "observedAt": "2026-10-16T22:37:58.068Z"
+}
