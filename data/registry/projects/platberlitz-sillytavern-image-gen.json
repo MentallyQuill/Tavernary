@@ -3,7 +3,7 @@
   "id": "platberlitz-sillytavern-image-gen",
   "name": "SillyTavern Image Gen",
   "kind": "extension",
-  "summary": "SillyTavern Image Gen is an extension that adds AI image generation to roleplay sessions. It supports multiple backends across SillyTavern and Marinara Engine for flexible model selection.",
+  "summary": "SillyTavern extension for image generation (README: \"Image generation in SillyTavern\") with 18 backends plus custom APIs, 44 style presets, three LLM prompt modes, and a two-step chat-scene prompt pipeline.",
   "metadata_status": "curated",
   "frontends": ["sillytavern", "marinara-engine"],
   "primary_function": "interface-workflow",
@@ -11,10 +11,10 @@
   "catalog_cohort": "seed",
   "source_id": "github-1132564534",
   "tags": [
-    "automate-roleplay-workflows",
     "generate-images",
-    "connect-external-services",
-    "visual-workflow"
+    "manage-prompts-and-presets",
+    "multi-stage-generation",
+    "model-agnostic"
   ],
   "listing_status": "active",
   "listing_status_reason": null,

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "27310f72fc1ba239fc5bc7c91c091fdd20c91732bc0c9064737a7a2a0f6991f9",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1132564534:platberlitz-sillytavern-image-gen",
+      "inputDigest": "20d6d73d866d93cb2f48dc454d95f78fbee9272ca5312be123ccf365539358ea",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1132564534",
+    "identity": "github:1132564534"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39731922830,
+    "sourceSha": "8cd05cb23c39b277ba04a9f6ca85ac0711cd5a58"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/platberlitz-sillytavern-image-gen.json",
+      "sha256": "a8c3201c95237b3c9278fc01e058ec9dd0e918b9ce3778f957ff41c464857bef",
+      "gitBlobSha": "ebc05578c6a1bbdadc88360f6c532402c9e1142f"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/27310f72fc1ba239fc5bc7c91c091fdd20c91732bc0c9064737a7a2a0f6991f9.json",
+      "sha256": "02bb8b660782273eed7d0c586b0e1049c1db7f4d179afe617a454558d951a670",
+      "gitBlobSha": "acc9e762d3ca52785c98b8b79f8e88944137d7af"
+    }
+  ]
+}

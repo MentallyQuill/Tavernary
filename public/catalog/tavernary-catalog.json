@@ -87554,7 +87554,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "SillyTavern Image Gen is an extension that adds AI image generation to roleplay sessions. It supports multiple backends across SillyTavern and Marinara Engine for flexible model selection.",
+      "summary": "SillyTavern extension for image generation (README: \"Image generation in SillyTavern\") with 18 backends plus custom APIs, 44 style presets, three LLM prompt modes, and a two-step chat-scene prompt pipeline.",
       "canonicalUrl": "https://github.com/platberlitz/sillytavern-image-gen",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -87572,27 +87572,27 @@
       ],
       "tags": [
         {
-          "id": "automate-roleplay-workflows",
-          "label": "Automate roleplay workflows",
-          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
-          "facet": "goal"
-        },
-        {
           "id": "generate-images",
           "label": "Generate images",
           "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
           "facet": "goal"
         },
         {
-          "id": "connect-external-services",
-          "label": "Connect external services",
-          "description": "Bridge roleplay workflows to messaging, media, note-taking, automation, or other services.",
+          "id": "manage-prompts-and-presets",
+          "label": "Manage prompts and presets",
+          "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
           "facet": "goal"
         },
         {
-          "id": "visual-workflow",
-          "label": "Visual workflow",
-          "description": "Uses nodes, diagrams, canvases, maps, or drag-and-drop builders to define behavior.",
+          "id": "multi-stage-generation",
+          "label": "Multi-stage generation",
+          "description": "Builds a final result through multiple model calls, passes, branches, or review stages.",
+          "facet": "trait"
+        },
+        {
+          "id": "model-agnostic",
+          "label": "Model-agnostic",
+          "description": "Works across a broad range of model providers rather than requiring one model family.",
           "facet": "trait"
         }
       ],
@@ -87810,7 +87810,7 @@
           "https://github.com/platberlitz/sillytavern-image-gen"
         ],
         "summary": [
-          "SillyTavern Image Gen is an extension that adds AI image generation to roleplay sessions. It supports multiple backends across SillyTavern and Marinara Engine for flexible model selection."
+          "SillyTavern extension for image generation (README: \"Image generation in SillyTavern\") with 18 backends plus custom APIs, 44 style presets, three LLM prompt modes, and a two-step chat-scene prompt pipeline."
         ],
         "kind": [
           "extension"
@@ -87819,24 +87819,24 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Automate roleplay workflows",
-          "automation",
-          "workflow automation",
-          "task automation",
-          "triggered actions",
           "Generate images",
           "image generation",
           "AI art generation",
           "scene illustration",
           "picture generation",
-          "Connect external services",
-          "service integrations",
-          "external bridges",
-          "third-party connections",
-          "Visual workflow",
-          "node editor",
-          "flowchart builder",
-          "graphical workflow"
+          "Manage prompts and presets",
+          "prompt management",
+          "prompt engineering",
+          "preset organization",
+          "template management",
+          "Multi-stage generation",
+          "generation pipeline",
+          "parallel model calls",
+          "multi-pass generation",
+          "Model-agnostic",
+          "bring your own model",
+          "BYOM",
+          "provider independent"
         ],
         "frontends": [
           "SillyTavern",
@@ -158876,7 +158876,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "SillyTavern Image Gen is an extension that adds AI image generation to roleplay sessions. It supports multiple backends across SillyTavern and Marinara Engine for flexible model selection.",
+            "summary": "SillyTavern extension for image generation (README: \"Image generation in SillyTavern\") with 18 backends plus custom APIs, 44 style presets, three LLM prompt modes, and a two-step chat-scene prompt pipeline.",
             "canonicalUrl": "https://github.com/platberlitz/sillytavern-image-gen",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -158894,27 +158894,27 @@
             ],
             "tags": [
               {
-                "id": "automate-roleplay-workflows",
-                "label": "Automate roleplay workflows",
-                "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "connect-external-services",
-                "label": "Connect external services",
-                "description": "Bridge roleplay workflows to messaging, media, note-taking, automation, or other services.",
+                "id": "manage-prompts-and-presets",
+                "label": "Manage prompts and presets",
+                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
                 "facet": "goal"
               },
               {
-                "id": "visual-workflow",
-                "label": "Visual workflow",
-                "description": "Uses nodes, diagrams, canvases, maps, or drag-and-drop builders to define behavior.",
+                "id": "multi-stage-generation",
+                "label": "Multi-stage generation",
+                "description": "Builds a final result through multiple model calls, passes, branches, or review stages.",
+                "facet": "trait"
+              },
+              {
+                "id": "model-agnostic",
+                "label": "Model-agnostic",
+                "description": "Works across a broad range of model providers rather than requiring one model family.",
                 "facet": "trait"
               }
             ],
@@ -159132,7 +159132,7 @@
                 "https://github.com/platberlitz/sillytavern-image-gen"
               ],
               "summary": [
-                "SillyTavern Image Gen is an extension that adds AI image generation to roleplay sessions. It supports multiple backends across SillyTavern and Marinara Engine for flexible model selection."
+                "SillyTavern extension for image generation (README: \"Image generation in SillyTavern\") with 18 backends plus custom APIs, 44 style presets, three LLM prompt modes, and a two-step chat-scene prompt pipeline."
               ],
               "kind": [
                 "extension"
@@ -159141,24 +159141,24 @@
                 "Interface and workflow"
               ],
               "tags": [
-                "Automate roleplay workflows",
-                "automation",
-                "workflow automation",
-                "task automation",
-                "triggered actions",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Connect external services",
-                "service integrations",
-                "external bridges",
-                "third-party connections",
-                "Visual workflow",
-                "node editor",
-                "flowchart builder",
-                "graphical workflow"
+                "Manage prompts and presets",
+                "prompt management",
+                "prompt engineering",
+                "preset organization",
+                "template management",
+                "Multi-stage generation",
+                "generation pipeline",
+                "parallel model calls",
+                "multi-pass generation",
+                "Model-agnostic",
+                "bring your own model",
+                "BYOM",
+                "provider independent"
               ],
               "frontends": [
                 "SillyTavern",
@@ -251209,7 +251209,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "SillyTavern Image Gen is an extension that adds AI image generation to roleplay sessions. It supports multiple backends across SillyTavern and Marinara Engine for flexible model selection.",
+            "summary": "SillyTavern extension for image generation (README: \"Image generation in SillyTavern\") with 18 backends plus custom APIs, 44 style presets, three LLM prompt modes, and a two-step chat-scene prompt pipeline.",
             "canonicalUrl": "https://github.com/platberlitz/sillytavern-image-gen",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -251227,27 +251227,27 @@
             ],
             "tags": [
               {
-                "id": "automate-roleplay-workflows",
-                "label": "Automate roleplay workflows",
-                "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "connect-external-services",
-                "label": "Connect external services",
-                "description": "Bridge roleplay workflows to messaging, media, note-taking, automation, or other services.",
+                "id": "manage-prompts-and-presets",
+                "label": "Manage prompts and presets",
+                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
                 "facet": "goal"
               },
               {
-                "id": "visual-workflow",
-                "label": "Visual workflow",
-                "description": "Uses nodes, diagrams, canvases, maps, or drag-and-drop builders to define behavior.",
+                "id": "multi-stage-generation",
+                "label": "Multi-stage generation",
+                "description": "Builds a final result through multiple model calls, passes, branches, or review stages.",
+                "facet": "trait"
+              },
+              {
+                "id": "model-agnostic",
+                "label": "Model-agnostic",
+                "description": "Works across a broad range of model providers rather than requiring one model family.",
                 "facet": "trait"
               }
             ],
@@ -251465,7 +251465,7 @@
                 "https://github.com/platberlitz/sillytavern-image-gen"
               ],
               "summary": [
-                "SillyTavern Image Gen is an extension that adds AI image generation to roleplay sessions. It supports multiple backends across SillyTavern and Marinara Engine for flexible model selection."
+                "SillyTavern extension for image generation (README: \"Image generation in SillyTavern\") with 18 backends plus custom APIs, 44 style presets, three LLM prompt modes, and a two-step chat-scene prompt pipeline."
               ],
               "kind": [
                 "extension"
@@ -251474,24 +251474,24 @@
                 "Interface and workflow"
               ],
               "tags": [
-                "Automate roleplay workflows",
-                "automation",
-                "workflow automation",
-                "task automation",
-                "triggered actions",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Connect external services",
-                "service integrations",
-                "external bridges",
-                "third-party connections",
-                "Visual workflow",
-                "node editor",
-                "flowchart builder",
-                "graphical workflow"
+                "Manage prompts and presets",
+                "prompt management",
+                "prompt engineering",
+                "preset organization",
+                "template management",
+                "Multi-stage generation",
+                "generation pipeline",
+                "parallel model calls",
+                "multi-pass generation",
+                "Model-agnostic",
+                "bring your own model",
+                "BYOM",
+                "provider independent"
               ],
               "frontends": [
                 "SillyTavern",
