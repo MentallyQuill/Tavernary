@@ -8,20 +8,13 @@
       "inputDigest": "5f3c53a07658177afa3caba0cb5d1be955e3de4ca32cf3ada42706aeb9734c1d",
       "policyVersion": "2026-07-29"
     },
-    "stage": "admitted",
+    "stage": "deployment-confirmed",
     "createdAt": "2026-10-08T14:39:08.801Z",
-    "nextEligibleAt": "2026-10-21T08:48:26.493Z",
-    "expectedSha": null,
+    "nextEligibleAt": "2026-10-22T12:34:29.837Z",
+    "expectedSha": "0727ffa6555a9f9208cd27707dca0befb54f023d",
     "workerRunId": null,
-    "retry": {
-      "failure": {
-        "kind": "transient",
-        "reasonCode": "workflow-result-unavailable"
-      },
-      "transientAttempts": 0,
-      "immediateAttempts": 0
-    }
+    "retry": null
   },
-  "updatedAt": "2026-10-21T08:33:26.493Z",
+  "updatedAt": "2026-10-22T12:19:29.837Z",
   "completedAt": null
 }
