@@ -3,22 +3,22 @@
   "mode": "ordinary",
   "deployment": {
     "schema_version": 1,
-    "sourceSha": "e6de72a97cbfdccd725dfc91ff57003f4a8e12a2",
+    "sourceSha": "91d3c49e47fd5c08533ece9c4aeea4ec2fd3c2a5",
     "status": "confirmed",
-    "buildId": "run-39725104220-attempt-1",
-    "bundleDigest": "0d3360fc325918296a27d6a985d5c0dfebda7416d58c63a2d7ea87ba4c91f8ab",
-    "confirmedAt": "2026-10-22T05:03:07.123Z",
+    "buildId": "run-39729463681-attempt-1",
+    "bundleDigest": "923f40ea824800153204bb0c89766414e38e562f54eacee63dad672937f2ddad",
+    "confirmedAt": "2026-10-22T05:48:02.161Z",
     "confirmation": {
-      "sourceSha": "e6de72a97cbfdccd725dfc91ff57003f4a8e12a2",
-      "catalogDigest": "20f35c9f6e5c15c7864dba0d53a8299d0465546a258b1982d03a722dda3dc370",
+      "sourceSha": "91d3c49e47fd5c08533ece9c4aeea4ec2fd3c2a5",
+      "catalogDigest": "06c727ab4fb61b5ab83e6f36c75a248b26235f0035c561f6494bb91fac3d3ec3",
       "targetDigest": "fd53f6edbec58f1812e3c29d3fefe90077f3cfd0f2055533676b7f80b26c56a5",
-      "buildDigest": "0d3360fc325918296a27d6a985d5c0dfebda7416d58c63a2d7ea87ba4c91f8ab",
+      "buildDigest": "923f40ea824800153204bb0c89766414e38e562f54eacee63dad672937f2ddad",
       "essentialSmokePassed": true
     },
-    "workflowRunId": 39725104220
+    "workflowRunId": 39729463681
   },
-  "observedAt": "2026-10-22T05:03:29.767Z",
-  "confirmingRunId": 39725104220,
+  "observedAt": "2026-10-22T05:48:20.880Z",
+  "confirmingRunId": 39729463681,
   "rollbackBaselineSha": null,
   "rollbackReason": null,
   "ownerActorId": null
