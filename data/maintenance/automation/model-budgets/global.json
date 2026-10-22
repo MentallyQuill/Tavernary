@@ -9967,7 +9967,10 @@
       "reservedMicrousd": 0,
       "createdAt": "2026-10-22T10:48:52.467Z",
       "expiresAt": "2026-10-22T11:33:52.467Z",
-      "producer": null,
+      "producer": {
+        "runId": 39766489323,
+        "workflow": ".github/workflows/review-catalog-policy.yml"
+      },
       "settled": false,
       "usage": null
     },
@@ -9983,7 +9986,10 @@
       "reservedMicrousd": 0,
       "createdAt": "2026-10-22T10:48:52.467Z",
       "expiresAt": "2026-10-22T11:33:52.467Z",
-      "producer": null,
+      "producer": {
+        "runId": 39766489323,
+        "workflow": ".github/workflows/review-catalog-policy.yml"
+      },
       "settled": false,
       "usage": null
     }
