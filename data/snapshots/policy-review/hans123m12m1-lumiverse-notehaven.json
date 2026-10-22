@@ -5,12 +5,9 @@
   "source_identity": "github:hans123m12m1/lumiverse-notehaven",
   "evidence_fingerprint": "81b609622380bfb4871fc4c54cc3ae43e9c7169d8566aef35fa19c75b75b4abd",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-23T13:04:54.120Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-09-23T13:04:54.120Z"
-  },
+  "reviewed_at": "2026-10-22T11:10:40.461Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

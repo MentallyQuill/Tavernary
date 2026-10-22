@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2b8994008d1094e72ccaf6ecd036251b2126a5012f932cea8ce7f39dc36cad70",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1124349811:elouannd-context-image-generation",
+      "inputDigest": "161719b7745ee4b4d482075d463774d56b0104174380f0ad8bcb244a3369acf5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1124349811",
+    "identity": "github:1124349811"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39770407036,
+    "sourceSha": "abba0a6e57c93cc286e5efb46dbe260d55c59fe6"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/elouannd-context-image-generation.json",
+      "sha256": "e49203500f7a1486bd23f2a2a4b447b726db3d878725a9f4ec88a5dede66fa1b",
+      "gitBlobSha": "55485fe4d538aa0871b34c4229a16b5874ba53d6"
+    }
+  ]
+}

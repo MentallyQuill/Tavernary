@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2f79fcb51eea9af730cd89896de7851137e9f42f001f3a775d5f1882d4126d07",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1289162242:hibanan-css-default-scoped",
+      "inputDigest": "163b4f5f3ec0b89ee6c0080150857b11abe9e59c14952fbdb123997b84ee4c48",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1289162242",
+    "identity": "github:1289162242"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39771372756,
+    "sourceSha": "dedec29622e5bc623defc60d1fbeb3f32994b46c"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/hibanan-css-default-scoped.json",
+      "sha256": "a2c7a5a351ae52f3183ff5b9d5453c7ec9ebe37ccb1dd133ce7e488ee9dac43a",
+      "gitBlobSha": "0535448ab8a8b2b38640a147ffe6c2332f2c23a2"
+    }
+  ]
+}

@@ -5,12 +5,9 @@
   "source_identity": "github:elouannd/context-image-generation",
   "evidence_fingerprint": "49a01497e0385c57be0c7648c544262cb03971da2e85ac8bbdba462bb39d80a4",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-04T13:25:43.923Z",
-  "retry": {
-    "attempts": 6,
-    "last_failure_at": "2026-10-04T13:25:43.923Z"
-  },
+  "reviewed_at": "2026-10-22T11:25:52.733Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

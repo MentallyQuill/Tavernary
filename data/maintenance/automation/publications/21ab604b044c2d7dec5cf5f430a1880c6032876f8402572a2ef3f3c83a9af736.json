@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "21ab604b044c2d7dec5cf5f430a1880c6032876f8402572a2ef3f3c83a9af736",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1303981975:hans123m12m1-lumiverse-notehaven",
+      "inputDigest": "66fe56aebf36126d4d20b8fb8a5b33cd8a93c764dffc2dbf69db7cd79f0c8294",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1303981975",
+    "identity": "github:1303981975"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39768502440,
+    "sourceSha": "2c6026756303bd09f948ebe3073f77c441df8bb0"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/hans123m12m1-lumiverse-notehaven.json",
+      "sha256": "3d33d08703e2b022eac8b63d9185d6083e0eea1c6f0dd31c16bdbb19bb57c35f",
+      "gitBlobSha": "afcb6acc040b9919b58f3d0b11bbc5eed8de990e"
+    }
+  ]
+}

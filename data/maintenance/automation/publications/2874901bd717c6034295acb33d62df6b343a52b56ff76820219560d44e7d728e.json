@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2874901bd717c6034295acb33d62df6b343a52b56ff76820219560d44e7d728e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1303700120:thexyzzyone-stgroupresponderselector",
+      "inputDigest": "7ad750fa4faa3abd14f5f30928793e6b0f1f9e043b8d8c247a01dfb994711ae1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1303700120",
+    "identity": "github:1303700120"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39769465257,
+    "sourceSha": "95c569b63550f1bd7f2ef0c01015761b3ea66426"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/thexyzzyone-stgroupresponderselector.json",
+      "sha256": "9ada9e7cd99e24ac21732f8782e4ef2bd0c9662dbd1b6bf1ba4495c17e073a7c",
+      "gitBlobSha": "2f68d08a354e112fafb74ff86c74deea5dc58bf7"
+    }
+  ]
+}

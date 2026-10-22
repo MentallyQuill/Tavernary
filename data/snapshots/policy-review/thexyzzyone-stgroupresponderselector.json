@@ -5,12 +5,9 @@
   "source_identity": "github:thexyzzyone/stgroupresponderselector",
   "evidence_fingerprint": "fffbcfd30e45ff73876ecf7d3d85e388ef93442c9e8b852d750be5bbfcc9ca59",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-26T12:37:37.857Z",
-  "retry": {
-    "attempts": 5,
-    "last_failure_at": "2026-09-26T12:37:37.857Z"
-  },
+  "reviewed_at": "2026-10-22T11:18:23.063Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

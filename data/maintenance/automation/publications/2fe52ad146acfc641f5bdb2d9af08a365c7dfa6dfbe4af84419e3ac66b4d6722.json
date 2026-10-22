@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2fe52ad146acfc641f5bdb2d9af08a365c7dfa6dfbe4af84419e3ac66b4d6722",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-795258518:sillytavern-extension-topinfobar",
+      "inputDigest": "c70c048ab080df1e2c60b34266ba3b2f1941ffd6140f42f52a4396f99801f372",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-795258518",
+    "identity": "github:795258518"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39773444921,
+    "sourceSha": "26ddba9f806cda465129f3c28395b159606941bb"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/sillytavern-extension-topinfobar.json",
+      "sha256": "df91606a74a86a54e61af086bb74def4c54d01afdb7ada97498b616e966466f2",
+      "gitBlobSha": "7fc381661f91136123e9a4c903dab763e5be354b"
+    }
+  ]
+}

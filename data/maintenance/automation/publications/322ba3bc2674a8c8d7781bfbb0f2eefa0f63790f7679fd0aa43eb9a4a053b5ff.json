@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "322ba3bc2674a8c8d7781bfbb0f2eefa0f63790f7679fd0aa43eb9a4a053b5ff",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1328729525:selinawynters-ops-st-toasttome",
+      "inputDigest": "d34491b10a30fa53f1145e5749ccfa287a7ee35cbf27b04bdc5fd91b9d731aaa",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1328729525",
+    "identity": "github:1328729525"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39774490669,
+    "sourceSha": "51f2d15798528a92a3529c75c387692e471a9257"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/selinawynters-ops-st-toasttome.json",
+      "sha256": "ea040fa62d8b3e87e78e0fe0faddc64064593cf03fa4fa56470efde30a137792",
+      "gitBlobSha": "ca501b83f80142031971679d65bd022e3a819b3a"
+    }
+  ]
+}

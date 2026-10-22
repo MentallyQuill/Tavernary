@@ -5,12 +5,9 @@
   "source_identity": "github:hibanan/css-default-scoped",
   "evidence_fingerprint": "16f119d753f978faf4797476ae2d933ab9d499e3e34ba6a16bc3fe94bf0dc49b",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-30T14:10:38.875Z",
-  "retry": {
-    "attempts": 5,
-    "last_failure_at": "2026-09-30T14:10:38.875Z"
-  },
+  "reviewed_at": "2026-10-22T11:33:20.986Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
