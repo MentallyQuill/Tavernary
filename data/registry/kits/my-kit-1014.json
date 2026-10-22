@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "id": "my-kit-1014",
+  "status": "published",
+  "title": "My kit",
+  "description": "yoh",
+  "author": { "github_user_id": 334749245, "login": "JohnDevKSA" },
+  "source_issue_number": 1014,
+  "project_ids": [
+    "al4xdev-alex-tavern",
+    "deiomo-writer-s-block-unlimited",
+    "lsennn-deus-ex-machina",
+    "nemovonnirgend-nemoengine",
+    "0cyris-sillytavern-openrouter-tts",
+    "lukathehero-sillytavern-claudesubscription",
+    "sillyanonymous-sillytavern-characterlibrary",
+    "vibecoder9000-extension-tokenusage",
+    "ryah-st-freaky-d20-preset",
+    "86482t-sillytavern-personage",
+    "virgilianshailer-llm-tools",
+    "sawa-25-sillytavern-memorylayers",
+    "zorgonatis-stabs-edh",
+    "evening-truth-carrd-prompt",
+    "le-emotionalism-1-1-5-prompt",
+    "realistic-frankenstein-preset"
+  ],
+  "published_at": "2026-10-22T15:35:32.279Z",
+  "updated_at": "2026-10-22T15:35:32.279Z"
+}
