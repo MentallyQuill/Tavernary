@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updatedAt": "2026-10-23T03:26:42.821Z",
+  "updatedAt": "2026-10-23T03:35:08.592Z",
   "days": [
     {
       "day": "2026-10-10",
@@ -64,15 +64,15 @@
     },
     {
       "day": "2026-10-23",
-      "requests": 56,
-      "tokens": 2730000
+      "requests": 60,
+      "tokens": 2925000
     }
   ],
   "months": [
     {
       "month": "2026-10",
       "reservedMicrousd": 0,
-      "unpricedTokens": 54015000
+      "unpricedTokens": 54210000
     }
   ],
   "tickets": [
@@ -11193,6 +11193,38 @@
         "runId": 39895495303,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
+      "settled": false,
+      "usage": null
+    },
+    {
+      "id": "f1e25774fcbba407c262f1fd71377cb282eb76e06a2369800e9228051582d2b6",
+      "operationKey": "38a744b4f2a0ca687da2e0353a93b4192edae91bd91c01b06cf64dd85ea61ad2",
+      "requestId": "writer-39850451664:0",
+      "day": "2026-10-23",
+      "model": "z-ai/glm-5.3-flash",
+      "requestCount": 3,
+      "requestedTokens": 180000,
+      "price": null,
+      "reservedMicrousd": 0,
+      "createdAt": "2026-10-23T03:35:08.592Z",
+      "expiresAt": "2026-10-23T04:20:08.592Z",
+      "producer": null,
+      "settled": false,
+      "usage": null
+    },
+    {
+      "id": "767e3a219f0a7081bc6dafe4c9098d24c72da97e2b42f84ba8e6925cb62b0a38",
+      "operationKey": "38a744b4f2a0ca687da2e0353a93b4192edae91bd91c01b06cf64dd85ea61ad2",
+      "requestId": "writer-39850451664:1",
+      "day": "2026-10-23",
+      "model": "gpt-5.6-luna",
+      "requestCount": 1,
+      "requestedTokens": 15000,
+      "price": null,
+      "reservedMicrousd": 0,
+      "createdAt": "2026-10-23T03:35:08.592Z",
+      "expiresAt": "2026-10-23T04:20:08.592Z",
+      "producer": null,
       "settled": false,
       "usage": null
     }
