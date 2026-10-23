@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "330dcf20ed463fb9cf4516c72f3a7b578a167af9523256016161704b0040eebd",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1268032451:zapoverde-sillytavern-triggeryze",
+      "inputDigest": "b155fda3807a66460c51faf3d9b5ee1c311d2ae17c536e3cd56acd092e448eb3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1268032451",
+    "identity": "github:1268032451"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39885666118,
+    "sourceSha": "9f451423bb7771ea05de15b0dba0355d31b9bd54"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/zapoverde-sillytavern-triggeryze.json",
+      "sha256": "2ed5baf14ac738f10c8c51a8585bfbc6684f52eff7018eb6a3423938add6d966",
+      "gitBlobSha": "57914dd4abb6cf2aaf1c869e30b924643d938743"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/330dcf20ed463fb9cf4516c72f3a7b578a167af9523256016161704b0040eebd.json",
+      "sha256": "7b3364a10d21e4cb8abb767e6286e84404cc3d2a453f189456b8e39c066f1210",
+      "gitBlobSha": "c397c6baae7ff503bdb755464f422a215f490f2f"
+    }
+  ]
+}

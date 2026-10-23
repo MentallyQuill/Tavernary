@@ -5,12 +5,9 @@
   "source_identity": "github:manjove1/forged-by-primus-portfolio",
   "evidence_fingerprint": "5e37745a6f987fed8db0d0825d8aaacdd944a185b19a588cb91281ed6530950b",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-25T08:16:10.232Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-25T08:16:10.232Z"
-  },
+  "reviewed_at": "2026-10-23T01:29:47.891Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

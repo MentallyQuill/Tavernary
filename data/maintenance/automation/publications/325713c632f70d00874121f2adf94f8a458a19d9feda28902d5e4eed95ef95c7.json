@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "325713c632f70d00874121f2adf94f8a458a19d9feda28902d5e4eed95ef95c7",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1203226910:wewwaistyping-slayimages",
+      "inputDigest": "3e477f14d8591b10c74d0ee8c6987a714c360f8cec67077a972469647f9d20b6",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1203226910",
+    "identity": "github:1203226910"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39884953464,
+    "sourceSha": "a0d89b163d2cf2a142eff454f12ade8401adbb98"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/wewwaistyping-slayimages.json",
+      "sha256": "83e2af300f44495912857f03b8beb6aa7fef67c86c1f092311dc7f259eb990f9",
+      "gitBlobSha": "1661613a516fe9ae853e4a7d5cfd247797b0cf13"
+    }
+  ]
+}

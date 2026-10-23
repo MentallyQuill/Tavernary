@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "327f1b600593d821d1a8bc9d2f862b75cb8ef0cf9db1376a742ae3fbe5131fde",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1305418059:manjove1-forged-by-primus-portfolio",
+      "inputDigest": "de097a3abcb900e26183857efd80d3a657a30279601af3b15bed0417602ae0fc",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1305418059",
+    "identity": "github:1305418059"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39884253888,
+    "sourceSha": "5af2c3861886ac0deaa5798c4e8cee922bab31ff"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/manjove1-forged-by-primus-portfolio.json",
+      "sha256": "5b5f5108c730fbcfba7f5794f2d82bcc6b213220981aadd6d187ce16e8fdfd25",
+      "gitBlobSha": "4ab3003764a19ebcf32a44f920c87bf0049fa2c3"
+    }
+  ]
+}

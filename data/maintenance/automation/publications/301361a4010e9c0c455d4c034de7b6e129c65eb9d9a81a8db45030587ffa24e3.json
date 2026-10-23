@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "301361a4010e9c0c455d4c034de7b6e129c65eb9d9a81a8db45030587ffa24e3",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1317590696:i5031337-sillytavern-contextual-scene-painter",
+      "inputDigest": "3aa1beafa0ed810a465edfe194311b29d05d6db1e22ded9c174bb73c25292fa3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1317590696",
+    "identity": "github:1317590696"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39882150601,
+    "sourceSha": "c9ed386be76ad969d9342ed4a23a64d1ce2abfe9"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/i5031337-sillytavern-contextual-scene-painter.json",
+      "sha256": "0d59d9f0871b24a3b9af335b812dae174292b339caf2d781b1b6209ab334e96c",
+      "gitBlobSha": "3f2c89c1b80addd78848b952ebe32c2ca33655b5"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/301361a4010e9c0c455d4c034de7b6e129c65eb9d9a81a8db45030587ffa24e3.json",
+      "sha256": "be29a697327162a60820d2104ca28ee32ab3ae6a1af42fce363c77370cf2d527",
+      "gitBlobSha": "fd27fdf34e84211ec9619ec0c5a65af4fa745f77"
+    }
+  ]
+}

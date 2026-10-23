@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2f7182c07836ee557380ad81fc3f6a2395b299580c48190abba5cb311c01f5f6",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1223260183:jake9000-me-nord",
+      "inputDigest": "57a18d4bdc17e8681b792128d6ac82937784552b1c3852f35cda361d1a1358fc",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1223260183",
+    "identity": "github:1223260183"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39880645607,
+    "sourceSha": "e47723fbc42d9593ff4f2baf49a06c7183664a6b"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/jake9000-me-nord.json",
+      "sha256": "1b12af6d6bc6baa23def198471708c3bf12113401dc02ad31a10d5f43b0f53c3",
+      "gitBlobSha": "ce963202979ed7bd0835b0ba3374f1d976b74796"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/2f7182c07836ee557380ad81fc3f6a2395b299580c48190abba5cb311c01f5f6.json",
+      "sha256": "46baae777595dd2bcf061953e754c9d6676618f4efdd7546a5664d74867ecde0",
+      "gitBlobSha": "467b2074871b39f1f2c4b00ebed8990ff7c07189"
+    }
+  ]
+}

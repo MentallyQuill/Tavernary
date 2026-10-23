@@ -46259,7 +46259,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Contextual Scene Painter analyzes SillyTavern chat history and optional character, persona, or World Info details to synthesize context-aware AI image prompts on the fly.",
+      "summary": "Contextual Scene Painter is a SillyTavern extension that analyzes ongoing chat history, optionally using character card, persona, and World Info details, to synthesize context-aware image prompts on the fly (README).",
       "canonicalUrl": "https://github.com/i5031337/sillytavern-contextual-scene-painter",
       "catalogedAt": "2026-07-31T06:37:18.761Z",
       "catalogCohort": "standard",
@@ -46278,9 +46278,9 @@
           "facet": "goal"
         },
         {
-          "id": "retrieve-relevant-context",
-          "label": "Retrieve relevant context",
-          "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
           "facet": "goal"
         }
       ],
@@ -46526,7 +46526,7 @@
           "https://github.com/i5031337/sillytavern-contextual-scene-painter"
         ],
         "summary": [
-          "Contextual Scene Painter analyzes SillyTavern chat history and optional character, persona, or World Info details to synthesize context-aware AI image prompts on the fly."
+          "Contextual Scene Painter is a SillyTavern extension that analyzes ongoing chat history, optionally using character card, persona, and World Info details, to synthesize context-aware image prompts on the fly (README)."
         ],
         "kind": [
           "extension"
@@ -46540,10 +46540,10 @@
           "AI art generation",
           "scene illustration",
           "picture generation",
-          "Retrieve relevant context",
-          "context retrieval",
-          "relevant recall",
-          "knowledge retrieval"
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals"
         ],
         "frontends": [
           "SillyTavern"
@@ -50489,7 +50489,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "ME Nord is a comprehensive Nord Dark theme for Marinara Engine supporting both dark and light modes across chat, RP, and GM interfaces. It pairs with Theme Helper to fully theme hardcoded engine elements.",
+      "summary": "A comprehensive Nord Dark theme for Marinara Engine based on the Nord palette, covering dark and light modes plus chat, RP, and GM mode UI elements.",
       "canonicalUrl": "https://github.com/jake9000/me-nord",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -50648,7 +50648,7 @@
           "https://github.com/jake9000/me-nord"
         ],
         "summary": [
-          "ME Nord is a comprehensive Nord Dark theme for Marinara Engine supporting both dark and light modes across chat, RP, and GM interfaces. It pairs with Theme Helper to fully theme hardcoded engine elements."
+          "A comprehensive Nord Dark theme for Marinara Engine based on the Nord palette, covering dark and light modes plus chat, RP, and GM mode UI elements."
         ],
         "kind": [
           "extension"
@@ -130429,7 +130429,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "SillyTavern extension that scans responses for keywords and triggers automated actions when matches are detected.",
+      "summary": "SillyTavern Triggeryze parses SillyTavern model responses for keywords and operates on them, triggering automated actions on keyword matches (repo description).",
       "canonicalUrl": "https://github.com/ZapoVerde/SillyTavern-Triggeryze",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -130442,28 +130442,10 @@
       ],
       "tags": [
         {
-          "id": "guide-model-responses",
-          "label": "Guide model responses",
-          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-          "facet": "goal"
-        },
-        {
           "id": "automate-roleplay-workflows",
           "label": "Automate roleplay workflows",
           "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
           "facet": "goal"
-        },
-        {
-          "id": "modular-and-extensible",
-          "label": "Modular and extensible",
-          "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
-          "facet": "trait"
-        },
-        {
-          "id": "rules-driven",
-          "label": "Rules-driven",
-          "description": "Uses explicit rules, schemas, calculations, or deterministic mechanics to constrain behavior.",
-          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -130659,7 +130641,7 @@
           "https://github.com/ZapoVerde/SillyTavern-Triggeryze"
         ],
         "summary": [
-          "SillyTavern extension that scans responses for keywords and triggers automated actions when matches are detected."
+          "SillyTavern Triggeryze parses SillyTavern model responses for keywords and operates on them, triggering automated actions on keyword matches (repo description)."
         ],
         "kind": [
           "extension"
@@ -130668,23 +130650,11 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Guide model responses",
-          "response steering",
-          "generation control",
-          "instruction control",
           "Automate roleplay workflows",
           "automation",
           "workflow automation",
           "task automation",
-          "triggered actions",
-          "Modular and extensible",
-          "plugin architecture",
-          "modular design",
-          "extensible system",
-          "Rules-driven",
-          "deterministic mechanics",
-          "rule based",
-          "schema driven"
+          "triggered actions"
         ],
         "frontends": [
           "SillyTavern"
@@ -152546,7 +152516,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "Contextual Scene Painter analyzes SillyTavern chat history and optional character, persona, or World Info details to synthesize context-aware AI image prompts on the fly.",
+            "summary": "Contextual Scene Painter is a SillyTavern extension that analyzes ongoing chat history, optionally using character card, persona, and World Info details, to synthesize context-aware image prompts on the fly (README).",
             "canonicalUrl": "https://github.com/i5031337/sillytavern-contextual-scene-painter",
             "catalogedAt": "2026-07-31T06:37:18.761Z",
             "catalogCohort": "standard",
@@ -152565,9 +152535,9 @@
                 "facet": "goal"
               },
               {
-                "id": "retrieve-relevant-context",
-                "label": "Retrieve relevant context",
-                "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
+                "id": "add-visual-immersion",
+                "label": "Add visual immersion",
+                "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
                 "facet": "goal"
               }
             ],
@@ -152813,7 +152783,7 @@
                 "https://github.com/i5031337/sillytavern-contextual-scene-painter"
               ],
               "summary": [
-                "Contextual Scene Painter analyzes SillyTavern chat history and optional character, persona, or World Info details to synthesize context-aware AI image prompts on the fly."
+                "Contextual Scene Painter is a SillyTavern extension that analyzes ongoing chat history, optionally using character card, persona, and World Info details, to synthesize context-aware image prompts on the fly (README)."
               ],
               "kind": [
                 "extension"
@@ -152827,10 +152797,10 @@
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Retrieve relevant context",
-                "context retrieval",
-                "relevant recall",
-                "knowledge retrieval"
+                "Add visual immersion",
+                "roleplay visuals",
+                "visual novel presentation",
+                "scene visuals"
               ],
               "frontends": [
                 "SillyTavern"

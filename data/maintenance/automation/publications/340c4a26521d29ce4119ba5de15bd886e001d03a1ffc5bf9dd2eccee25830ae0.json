@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "340c4a26521d29ce4119ba5de15bd886e001d03a1ffc5bf9dd2eccee25830ae0",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1230539972:vectricity-st-aspect-vocalia",
+      "inputDigest": "10e096f1dd3e186b7630de1d87c041cc5a9a13b415249cdca311403c7af3b21d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1230539972",
+    "identity": "github:1230539972"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39886420869,
+    "sourceSha": "2b09d546cb5b3c7abb977ba56d348055592050c9"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/vectricity-st-aspect-vocalia.json",
+      "sha256": "7e0d5003b62f0b48a8bf6599a45a208ed5f224b6ad8018e6139991319d9cb2e3",
+      "gitBlobSha": "9c4dc74ec306f9b06cb37b11c6993d003f9f3803"
+    }
+  ]
+}

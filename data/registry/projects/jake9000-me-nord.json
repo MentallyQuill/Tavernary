@@ -3,7 +3,7 @@
   "id": "jake9000-me-nord",
   "name": "ME Nord",
   "kind": "extension",
-  "summary": "ME Nord is a comprehensive Nord Dark theme for Marinara Engine supporting both dark and light modes across chat, RP, and GM interfaces. It pairs with Theme Helper to fully theme hardcoded engine elements.",
+  "summary": "A comprehensive Nord Dark theme for Marinara Engine based on the Nord palette, covering dark and light modes plus chat, RP, and GM mode UI elements.",
   "metadata_status": "curated",
   "frontends": ["marinara-engine"],
   "primary_function": "interface-workflow",

@@ -5,12 +5,9 @@
   "source_identity": "github:vectricity/st-aspect-vocalia",
   "evidence_fingerprint": "55d50e809d926209d164890e75a05331be49f72f2c231546b65cd60e9ded846e",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-06T11:54:29.483Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-06T11:54:29.483Z"
-  },
+  "reviewed_at": "2026-10-23T01:53:07.435Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
