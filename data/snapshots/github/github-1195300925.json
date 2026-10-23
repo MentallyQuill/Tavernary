@@ -9,21 +9,31 @@
     "url": "https://github.com/hydall/Glaze",
     "description": "Glaze is a local, novice-friendly AI roleplay chat client for mobile devices. Works with any OpenAI-compatible (Chat Completion) LLM provider.",
     "default_branch": "stable",
-    "head_sha": "0232e134c2e8ad375d2d458bf57e3f1ab58bb359",
-    "head_committed_at": "2026-10-08T07:12:17.000Z",
+    "head_sha": "851e4cdd2972b8b85cff54a0d421452c133b417d",
+    "head_committed_at": "2026-10-21T08:20:15.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-29T13:58:23.000Z",
-    "size_kb": 122703
+    "size_kb": 146191
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-08T07:12:17.000Z",
+    "latest_source_activity_at": "2026-10-21T08:20:15.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-21T08:20:15.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-18T16:36:04.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-05",
-        "latest_at": "2026-10-08T07:12:17.000Z",
+        "latest_at": "2026-10-11T20:47:43.000Z",
         "precision": "exact"
       },
       {
@@ -70,37 +80,27 @@
         "week_start": "2026-08-03",
         "latest_at": "2026-08-09T23:13:51.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-08-02T17:59:07.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-20",
-        "latest_at": "2026-07-26T21:14:54.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-07T22:23:54.000Z",
+    "latest_release_at": "2026-10-18T16:26:13.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-06T14:16:03.206Z",
+    "baseline_completed_at": "2026-10-23T12:44:42.334Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "0232e134c2e8ad375d2d458bf57e3f1ab58bb359"
+    "evidence_head_sha": "851e4cdd2972b8b85cff54a0d421452c133b417d"
   },
   "community": {
-    "stars_count": 35,
-    "forks_count": 4,
+    "stars_count": 41,
+    "forks_count": 5,
     "watchers_count": 1,
-    "aggregate": 40
+    "aggregate": 47
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-23T12:47:08.408Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -114,7 +114,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-23T12:44:42.334Z",
     "stale_since": null
   }
 }

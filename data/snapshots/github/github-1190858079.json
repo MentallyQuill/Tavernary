@@ -9,40 +9,35 @@
     "url": "https://github.com/Archkr/Lumiverse-LumiWeather",
     "description": "Narrative weather, date, and time HUD with layered ambient effects for chat scenes.",
     "default_branch": "main",
-    "head_sha": "e4fd743b7fded4f6ecb4f724d7c2cbad2e86b606",
-    "head_committed_at": "2026-10-08T05:49:23.000Z",
+    "head_sha": "a2e5e671e6cc091e826a705418750b50cfc40430",
+    "head_committed_at": "2026-10-08T23:26:53.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-24T17:28:17.000Z",
-    "size_kb": 3964
+    "size_kb": 4324
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-08T05:49:23.000Z",
+    "latest_source_activity_at": "2026-10-08T23:26:53.000Z",
     "source_weeks": [
       {
         "week_start": "2026-10-05",
-        "latest_at": "2026-10-08T05:49:23.000Z",
+        "latest_at": "2026-10-08T23:26:53.000Z",
         "precision": "exact"
       },
       {
         "week_start": "2026-09-14",
         "latest_at": "2026-09-14T23:12:14.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-20",
-        "latest_at": "2026-07-22T04:03:43.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-09-14T22:41:51.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-08T14:39:08.801Z",
+    "baseline_completed_at": "2026-10-23T12:44:34.011Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "e4fd743b7fded4f6ecb4f724d7c2cbad2e86b606"
+    "evidence_head_sha": "a2e5e671e6cc091e826a705418750b50cfc40430"
   },
   "community": {
     "stars_count": 2,
@@ -55,7 +50,7 @@
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-23T12:46:50.447Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -63,7 +58,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-23T12:44:34.011Z",
     "stale_since": null
   }
 }
