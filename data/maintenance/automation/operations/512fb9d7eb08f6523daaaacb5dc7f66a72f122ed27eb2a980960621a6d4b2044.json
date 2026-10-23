@@ -10,7 +10,7 @@
     },
     "stage": "deployment-confirmed",
     "createdAt": "2026-10-08T14:39:08.801Z",
-    "nextEligibleAt": "2026-10-23T13:46:33.945Z",
+    "nextEligibleAt": "2026-10-23T14:02:35.065Z",
     "expectedSha": "c6e55740da926b6299bda5cd5e55e837a744a77e",
     "workerRunId": null,
     "retry": {
@@ -18,10 +18,10 @@
         "kind": "transient",
         "reasonCode": "workflow-result-unavailable"
       },
-      "transientAttempts": 0,
+      "transientAttempts": 1,
       "immediateAttempts": 0
     }
   },
-  "updatedAt": "2026-10-23T13:31:33.945Z",
+  "updatedAt": "2026-10-23T13:51:46.058Z",
   "completedAt": null
 }
