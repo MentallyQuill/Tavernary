@@ -5,12 +5,9 @@
   "source_identity": "github:rendyuwu/sillytavern-sidethread",
   "evidence_fingerprint": "fbe3e64df56d811cc71976fd83413c74cb9756ab269570567aa9f8a9a379974f",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-25T03:58:49.780Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-09-25T03:58:49.780Z"
-  },
+  "reviewed_at": "2026-10-23T03:32:37.272Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
