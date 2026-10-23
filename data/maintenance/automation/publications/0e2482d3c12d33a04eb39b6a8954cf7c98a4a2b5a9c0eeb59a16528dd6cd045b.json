@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0e2482d3c12d33a04eb39b6a8954cf7c98a4a2b5a9c0eeb59a16528dd6cd045b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-997815977:doolijb-serene-pub",
+      "inputDigest": "57bcad02b4006a9255ce007c083b5e052aefb2cb707828461e0265605ef7ab5a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-997815977",
+    "identity": "github:997815977"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39942775929,
+    "sourceSha": "53edd96912254b061210a68eddc377dce3199836"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/doolijb-serene-pub.json",
+      "sha256": "b9d8204ca6b75b6e334bf0dddc5eaab08266374122feb858ccb9a89acd53be3e",
+      "gitBlobSha": "6ba5a8cfc0fed4ad83daf567127017aab9b0b164"
+    }
+  ]
+}

@@ -5,12 +5,9 @@
   "source_identity": "github:eugenesdad/risuai-agent-plugin",
   "evidence_fingerprint": "797df8f9d035e6b17abd3898ec233082d347cc947bfe10adbf77884eaa0c5557",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-18T12:27:52.354Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-18T12:27:52.354Z"
-  },
+  "reviewed_at": "2026-10-23T11:06:38.499Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

@@ -5,12 +5,9 @@
   "source_identity": "github:myanadi/risuai-lorebook-manager",
   "evidence_fingerprint": "9dfac765a6399f68d68bf6db8f562d33b1abe222fa387ddfc2fcf4b289294ef9",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-07T14:52:25.507Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-10-07T14:52:25.507Z"
-  },
+  "reviewed_at": "2026-10-23T11:31:43.154Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1829fd6c783beabae5f8b55f5aaae6958c508bf3ec805b5a8f76c46f85a3ef34",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1267774290:myanadi-risuai-lorebook-manager",
+      "inputDigest": "0097deed2f5e424d09d33af109cd0e24ce675aa690ad55c6474318128cdcd20e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1267774290",
+    "identity": "github:1267774290"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39946589703,
+    "sourceSha": "e8c24ae52761d78d317678338c6fd925e715ce0c"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/myanadi-risuai-lorebook-manager.json",
+      "sha256": "b8820e9490da97b4d845df6a26552c08bb3da0d3a8e3a6be85d0f82f6fe48e2a",
+      "gitBlobSha": "1e4ed2c66a8ef08dd463c89dbfeff93d35c9e192"
+    }
+  ]
+}

@@ -5,12 +5,9 @@
   "source_identity": "github:enerccio/sillytavern-autosummary",
   "evidence_fingerprint": "2430ea552e2dec655504b7ad01a0721242504aab31d076e1e66277126e443b9e",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-05T16:28:26.585Z",
-  "retry": {
-    "attempts": 5,
-    "last_failure_at": "2026-10-05T16:28:26.585Z"
-  },
+  "reviewed_at": "2026-10-23T11:23:04.059Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

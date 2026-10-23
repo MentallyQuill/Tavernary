@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1ab4779c08be2a7f0095714c92c00f61a20134e0c1e0a4ce1a8dd1f1fda60f9e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1130337079:dmitryplyaskin-sillytavern-persona-management-extended",
+      "inputDigest": "fbc8fda96843069ec599dd85485c680408d858065fddd4317cc1f96647c06af2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1130337079",
+    "identity": "github:1130337079"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39948424385,
+    "sourceSha": "e854baedba7942737abb54544128b47deb3aaec2"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/dmitryplyaskin-sillytavern-persona-management-extended.json",
+      "sha256": "c1ba1744c62a9da53e50d36f9e18301656a8e286ec639fb2d4935f63110f50a7",
+      "gitBlobSha": "2e9d3b7fe744a459a943b1d66c65eb1e3a3fab3a"
+    }
+  ]
+}

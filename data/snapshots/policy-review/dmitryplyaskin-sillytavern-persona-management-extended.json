@@ -5,12 +5,9 @@
   "source_identity": "github:dmitryplyaskin/sillytavern-persona-management-extended",
   "evidence_fingerprint": "562b19e63520ac9b234566b56232a110da3baf2cc06472af1372cc28ebbcce54",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-29T14:19:48.840Z",
-  "retry": {
-    "attempts": 5,
-    "last_failure_at": "2026-09-29T14:19:48.840Z"
-  },
+  "reviewed_at": "2026-10-23T11:47:07.750Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

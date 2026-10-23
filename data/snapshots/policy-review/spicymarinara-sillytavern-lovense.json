@@ -5,12 +5,9 @@
   "source_identity": "github:spicymarinara/sillytavern-lovense",
   "evidence_fingerprint": "ddae2083a1ead9c559a52499ee2182234c6bf53409c02f162f2adc17d0da7151",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-22T07:59:33.343Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-22T07:59:33.343Z"
-  },
+  "reviewed_at": "2026-10-23T10:51:44.602Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

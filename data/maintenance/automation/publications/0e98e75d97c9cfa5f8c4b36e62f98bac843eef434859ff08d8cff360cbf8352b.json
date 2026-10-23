@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0e98e75d97c9cfa5f8c4b36e62f98bac843eef434859ff08d8cff360cbf8352b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1168003843:eugenesdad-risuai-agent-plugin",
+      "inputDigest": "728dd2fc87095db7ed239ec298dfd9fe5f9643e3b21ef29fa7fe7999e99a03f2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1168003843",
+    "identity": "github:1168003843"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39943679458,
+    "sourceSha": "4ef22dc92390049ffadb97785576b486711ef956"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/eugenesdad-risuai-agent-plugin.json",
+      "sha256": "9e744e4772fece09065579f9c4fd7c07735028e6ec2dd88c13eb9f8663f21541",
+      "gitBlobSha": "791df36bfe68e6e75e2917455222a6febbfe342d"
+    }
+  ]
+}

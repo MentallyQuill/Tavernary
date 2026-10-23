@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0da8d13f6176f43ecbaf6eb3e8ce947ad9ce20430d72d27b17187f09423f8cf2",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1096087307:spicymarinara-sillytavern-lovense",
+      "inputDigest": "0d5eaf0b356c8350c130228fa7a2220a2c77f51e2b6114b3afaa85e2387375b0",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1096087307",
+    "identity": "github:1096087307"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39941967442,
+    "sourceSha": "6152cc8aefd4a540527d4bdd5c30271de9f90a4c"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/spicymarinara-sillytavern-lovense.json",
+      "sha256": "8961e835be5d331c163b14cc21a022179e0cefbdc83cd31cfca47f55c93508d9",
+      "gitBlobSha": "776c0dd06b24d32861bd2c8efbc5d3a3f7b5698a"
+    }
+  ]
+}
