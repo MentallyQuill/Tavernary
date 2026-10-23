@@ -8,20 +8,13 @@
       "inputDigest": "79f9fbee032458dc80b32d6a1eee18e0ccd1f1a0fd2fc8299f028c145f2df2f3",
       "policyVersion": "2026-07-29"
     },
-    "stage": "admitted",
+    "stage": "published",
     "createdAt": "2026-10-08T14:39:08.801Z",
-    "nextEligibleAt": "2026-10-22T00:28:18.551Z",
-    "expectedSha": null,
+    "nextEligibleAt": null,
+    "expectedSha": "bafab5b11af682bec42b5306d706ff026275040b",
     "workerRunId": null,
-    "retry": {
-      "failure": {
-        "kind": "transient",
-        "reasonCode": "github-inventory-unavailable"
-      },
-      "transientAttempts": 9,
-      "immediateAttempts": 6
-    }
+    "retry": null
   },
-  "updatedAt": "2026-10-22T00:13:18.551Z",
+  "updatedAt": "2026-10-23T11:52:46.527Z",
   "completedAt": null
 }
