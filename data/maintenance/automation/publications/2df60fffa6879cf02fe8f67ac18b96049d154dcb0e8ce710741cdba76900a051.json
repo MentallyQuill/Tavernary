@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2df60fffa6879cf02fe8f67ac18b96049d154dcb0e8ce710741cdba76900a051",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1248922425:amousepad-lumibooks",
+      "inputDigest": "ee4055ba1c317bd167892a88f665804c1461fb45eb7ceaf2a2103b62ae78f4b8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1248922425",
+    "identity": "github:1248922425"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40033026118,
+    "sourceSha": "c9e65806122be6e0bf7c7976f68a06db047aff6b"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/amousepad-lumibooks.json",
+      "sha256": "fa5e21056a4107bc9973db390e187c03082045d1468b9cd41b92a3f690440bd3",
+      "gitBlobSha": "671ed0c2e3af90a3cf36435e30372cf297eb5810"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/2df60fffa6879cf02fe8f67ac18b96049d154dcb0e8ce710741cdba76900a051.json",
+      "sha256": "3dc0779603fa72f605d6edf0d24f2fecdbb5f374d4563f51c89766bfc9167c5f",
+      "gitBlobSha": "8b1956a1ff5dea08e84283195840c15df83e321a"
+    }
+  ]
+}

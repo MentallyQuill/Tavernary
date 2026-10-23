@@ -3,14 +3,21 @@
   "id": "amousepad-lumibooks",
   "name": "LumiBooks",
   "kind": "extension",
-  "summary": "LumiBooks is a simple memory extension for the Lumiverse frontend that adds memory functionality for roleplay sessions. It extends Lumiverse with straightforward features for recalling conversation context.",
+  "summary": "LumiBooks is a memory extension whose Memoria librarian compresses old chat messages into chapters and arcs spliced in place, with autonomous entity, lore, and secret tracking (readme, 'What it does').",
   "metadata_status": "curated",
   "frontends": ["lumiverse"],
   "primary_function": "memory-retrieval",
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "source_id": "github-1248922425",
-  "tags": ["maintain-long-term-memory"],
+  "tags": [
+    "maintain-long-term-memory",
+    "manage-context-limits",
+    "manage-lorebooks",
+    "preserve-story-continuity",
+    "track-characters-and-world-state",
+    "manage-prompts-and-presets"
+  ],
   "listing_status": "active",
   "listing_status_reason": null,
   "metadata_policy": {

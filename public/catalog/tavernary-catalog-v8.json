@@ -7153,7 +7153,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "memory-retrieval",
-      "summary": "LumiBooks is a simple memory extension for the Lumiverse frontend that adds memory functionality for roleplay sessions. It extends Lumiverse with straightforward features for recalling conversation context.",
+      "summary": "LumiBooks is a memory extension whose Memoria librarian compresses old chat messages into chapters and arcs spliced in place, with autonomous entity, lore, and secret tracking (readme, 'What it does').",
       "canonicalUrl": "https://github.com/AMousePad/LumiBooks",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -7169,6 +7169,36 @@
           "id": "maintain-long-term-memory",
           "label": "Maintain long-term memory",
           "description": "Preserve and recall important information across long chats or separate sessions.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-context-limits",
+          "label": "Manage context limits",
+          "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-lorebooks",
+          "label": "Manage lorebooks",
+          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+          "facet": "goal"
+        },
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-prompts-and-presets",
+          "label": "Manage prompts and presets",
+          "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
           "facet": "goal"
         }
       ],
@@ -7384,7 +7414,7 @@
           "https://github.com/AMousePad/LumiBooks"
         ],
         "summary": [
-          "LumiBooks is a simple memory extension for the Lumiverse frontend that adds memory functionality for roleplay sessions. It extends Lumiverse with straightforward features for recalling conversation context."
+          "LumiBooks is a memory extension whose Memoria librarian compresses old chat messages into chapters and arcs spliced in place, with autonomous entity, lore, and secret tracking (readme, 'What it does')."
         ],
         "kind": [
           "extension"
@@ -7396,7 +7426,28 @@
           "Maintain long-term memory",
           "durable memory",
           "persistent memory",
-          "remember across chats"
+          "remember across chats",
+          "Manage context limits",
+          "context compression",
+          "context window management",
+          "token budgeting",
+          "Manage lorebooks",
+          "World Info management",
+          "worldbook organization",
+          "loredeck management",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking",
+          "Manage prompts and presets",
+          "prompt management",
+          "prompt engineering",
+          "preset organization",
+          "template management"
         ],
         "frontends": [
           "Lumiverse"
