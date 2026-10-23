@@ -10946,8 +10946,11 @@
         "runId": 39888789307,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 43088
+      }
     },
     {
       "id": "72413d091e6da5dba4fc0e2c99fd0e39da103a7d22d33402614f95a8e2a0183a",
@@ -10965,8 +10968,11 @@
         "runId": 39888789307,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "8d75e93064cc0083354627a8935a9afd1e71c6715e2092d56e5ac67efb921593",
@@ -11022,8 +11028,11 @@
         "runId": 39892602829,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 2,
+        "tokens": 87398
+      }
     },
     {
       "id": "3a14d25b4feee6a982650920011f8a96f80bf96fcf189a8dafbec7b37dc3c1a0",
@@ -11041,8 +11050,11 @@
         "runId": 39892602829,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "8561663e96e1ad762cdf23382e01aa6ffdb4832a7f28748bdea65ac046e3e51c",
@@ -11098,8 +11110,11 @@
         "runId": 39894036126,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 15647
+      }
     },
     {
       "id": "8a067ed1226521b5267cf5d00dc8cd76cf8ee6508ee206e0abcdef85ac9300f8",
@@ -11117,8 +11132,11 @@
         "runId": 39894036126,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "f8e9f43d40e4422ea3c57a66c964e891277bce77323bb9c895b5a5754aa78398",

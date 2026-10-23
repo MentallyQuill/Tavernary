@@ -3,14 +3,11 @@
   "project_id": "maxipawlowski-story-orchestrator",
   "source_id": "github-1082708357",
   "source_identity": "github:maxipawlowski/story-orchestrator",
-  "evidence_fingerprint": "d5ea020b3a9ee59c891dba81d20e7b16a9116ed743f688d089e8793646744f17",
+  "evidence_fingerprint": "3c15e607b6d9b9726a7e073caf8f6dc99d5a00de217e64584456bc45c7d71161",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-07-30T09:52:41.077Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-07-30T09:52:41.077Z"
-  },
+  "reviewed_at": "2026-10-23T03:16:23.760Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

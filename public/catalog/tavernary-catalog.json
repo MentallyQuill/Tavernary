@@ -27162,7 +27162,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "rpg-systems",
-      "summary": "Dandeleon Multiverse is a SillyTavern multiverse RP world-keeper that stores full canon externally and injects condensed, spoiler-safe slices to preserve long-running roleplay.",
+      "summary": "A SillyTavern extension where an external DM LLM holds the full RP canon outside the context window and injects only condensed, spoiler-safe slices so stories run indefinitely (README,张家界 Dandeleon Multiverse intro).",
       "canonicalUrl": "https://github.com/dan0dandeleon11/dandeleon-multiverse",
       "catalogedAt": "2026-08-06T04:35:40.547Z",
       "catalogCohort": "standard",
@@ -27175,21 +27175,15 @@
       ],
       "tags": [
         {
-          "id": "maintain-long-term-memory",
-          "label": "Maintain long-term memory",
-          "description": "Preserve and recall important information across long chats or separate sessions.",
-          "facet": "goal"
-        },
-        {
           "id": "manage-context-limits",
           "label": "Manage context limits",
           "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
           "facet": "goal"
         },
         {
-          "id": "preserve-story-continuity",
-          "label": "Preserve story continuity",
-          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "id": "maintain-long-term-memory",
+          "label": "Maintain long-term memory",
+          "description": "Preserve and recall important information across long chats or separate sessions.",
           "facet": "goal"
         },
         {
@@ -27199,16 +27193,16 @@
           "facet": "goal"
         },
         {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        },
+        {
           "id": "secondary-model",
           "label": "Secondary-model workflow",
           "description": "Delegates supporting tasks to a separately configured model or connection.",
           "facet": "trait"
-        },
-        {
-          "id": "track-characters-and-world-state",
-          "label": "Track characters and world state",
-          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
-          "facet": "goal"
         }
       ],
       "tavernKeeper": {
@@ -27354,7 +27348,7 @@
           "https://github.com/dan0dandeleon11/dandeleon-multiverse"
         ],
         "summary": [
-          "Dandeleon Multiverse is a SillyTavern multiverse RP world-keeper that stores full canon externally and injects condensed, spoiler-safe slices to preserve long-running roleplay."
+          "A SillyTavern extension where an external DM LLM holds the full RP canon outside the context window and injects only condensed, spoiler-safe slices so stories run indefinitely (README,张家界 Dandeleon Multiverse intro)."
         ],
         "kind": [
           "extension"
@@ -27363,30 +27357,26 @@
           "RPG systems and suites"
         ],
         "tags": [
-          "Maintain long-term memory",
-          "durable memory",
-          "persistent memory",
-          "remember across chats",
           "Manage context limits",
           "context compression",
           "context window management",
           "token budgeting",
-          "Preserve story continuity",
-          "continuity tracking",
-          "canon consistency",
-          "story coherence",
+          "Maintain long-term memory",
+          "durable memory",
+          "persistent memory",
+          "remember across chats",
           "Retrieve relevant context",
           "context retrieval",
           "relevant recall",
           "knowledge retrieval",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
           "Secondary-model workflow",
           "helper model",
           "auxiliary model",
-          "separate connection profile",
-          "Track characters and world state",
-          "state tracking",
-          "stat trackers",
-          "world state tracking"
+          "separate connection profile"
         ],
         "frontends": [
           "SillyTavern"
@@ -43209,7 +43199,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "CSS Default Scoped is a SillyTavern extension that defaults new characters' CSS to 'Scoped to Creator's Notes only'. It removes the popup prompt on character switches while leaving any explicit preference unchanged.",
+      "summary": "CSS Default Scoped is a SillyTavern extension that defaults new characters' CSS to Scoped to Creator's Notes only, removing the popup on character switch while never overriding explicit preferences (README Features).",
       "canonicalUrl": "https://github.com/Hibanan/css-default-scoped",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -43222,22 +43212,10 @@
       ],
       "tags": [
         {
-          "id": "automate-roleplay-workflows",
-          "label": "Automate roleplay workflows",
-          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
-          "facet": "goal"
-        },
-        {
           "id": "customize-the-interface",
           "label": "Customize the interface",
           "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
           "facet": "goal"
-        },
-        {
-          "id": "non-destructive",
-          "label": "Non-destructive",
-          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
-          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -43383,7 +43361,7 @@
           "https://github.com/Hibanan/css-default-scoped"
         ],
         "summary": [
-          "CSS Default Scoped is a SillyTavern extension that defaults new characters' CSS to 'Scoped to Creator's Notes only'. It removes the popup prompt on character switches while leaving any explicit preference unchanged."
+          "CSS Default Scoped is a SillyTavern extension that defaults new characters' CSS to Scoped to Creator's Notes only, removing the popup on character switch while never overriding explicit preferences (README Features)."
         ],
         "kind": [
           "extension"
@@ -43392,19 +43370,10 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Automate roleplay workflows",
-          "automation",
-          "workflow automation",
-          "task automation",
-          "triggered actions",
           "Customize the interface",
           "interface theming",
           "layout customization",
-          "UI personalization",
-          "Non-destructive",
-          "reversible workflow",
-          "preserves originals",
-          "safe overlay"
+          "UI personalization"
         ],
         "frontends": [
           "SillyTavern"

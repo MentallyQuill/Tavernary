@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "351183cb8fa60c4d946ee3dcb5fb359261e987357b9a8a74e19f0fc0cefdb9f4",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1082708357:maxipawlowski-story-orchestrator",
+      "inputDigest": "5985dc0db4e4fc944e7728c39665d2fc5cd83ce75885c6bc80f24c80eed1169a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1082708357",
+    "identity": "github:1082708357"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 39894036126,
+    "sourceSha": "952db3a5fa43cd7e2f78ffe6b087cf4603fb8a2e"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/maxipawlowski-story-orchestrator.json",
+      "sha256": "89e95f35d259d60c618f87bb2596887c28e5cd24ded303230a0afa4de06ccab8",
+      "gitBlobSha": "8c8b94265e243fd8acea0e7ef0b66817a82580e5"
+    }
+  ]
+}

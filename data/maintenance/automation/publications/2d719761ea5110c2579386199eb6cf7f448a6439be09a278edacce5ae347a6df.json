@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2d719761ea5110c2579386199eb6cf7f448a6439be09a278edacce5ae347a6df",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1289162242:hibanan-css-default-scoped",
+      "inputDigest": "94896e7970c49334d5201863aa7b5ee59f47ccc186d02a3c7bae22ab642ac9dd",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1289162242",
+    "identity": "github:1289162242"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39888789307,
+    "sourceSha": "41b8d334ec2e461d5bf44fb81d07ed2383483522"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/hibanan-css-default-scoped.json",
+      "sha256": "f66977f739cd386af7266614aa46ae38ee63675cb438bd2650c94aebdbe86338",
+      "gitBlobSha": "97a26cd6a61d8e4e6fbe6c15316687b1bbf71742"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/2d719761ea5110c2579386199eb6cf7f448a6439be09a278edacce5ae347a6df.json",
+      "sha256": "5e6f9323a4a864aed7187a1e958ecd951e50b291a8d6740e563b909dccc7fffb",
+      "gitBlobSha": "cb66481df9a6ce12f401295f34e71fbf9248fda6"
+    }
+  ]
+}
