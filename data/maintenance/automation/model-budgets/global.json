@@ -11208,7 +11208,10 @@
       "reservedMicrousd": 0,
       "createdAt": "2026-10-23T03:35:08.592Z",
       "expiresAt": "2026-10-23T04:20:08.592Z",
-      "producer": null,
+      "producer": {
+        "runId": 39896182077,
+        "workflow": ".github/workflows/enrich-catalog.yml"
+      },
       "settled": false,
       "usage": null
     },
@@ -11224,7 +11227,10 @@
       "reservedMicrousd": 0,
       "createdAt": "2026-10-23T03:35:08.592Z",
       "expiresAt": "2026-10-23T04:20:08.592Z",
-      "producer": null,
+      "producer": {
+        "runId": 39896182077,
+        "workflow": ".github/workflows/enrich-catalog.yml"
+      },
       "settled": false,
       "usage": null
     }
