@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "lackyas-sillytavern-presence",
+  "sourceId": "github-875709373",
+  "sourceIdentity": "github:875709373",
+  "inputDigest": "29d7cd616ce981e3459348c4cd97f9793a36b9f280e8e63a28bfc5e4c9d23f95",
+  "fingerprint": "24779e1a7b3a7ed50ed2f9ec3b9585a5ea76b464c087f23c7ae51e03e3059ee2",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "2eb5d0ec6825429e5cd536cd29774ff467cfe741dd9e1acdf5b516b4c1df439a",
+  "outputDigest": "c0845c59f7aaf7893377e3d9065db14b6e58d71d47c72e1874b3ba6bacd11dad",
+  "headSha": "8b9fed2c02548e39006f9c81e83bbc91dbe64c29",
+  "observedAt": "2026-10-22T23:55:36.088Z"
+}

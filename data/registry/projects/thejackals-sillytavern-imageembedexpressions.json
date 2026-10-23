@@ -3,7 +3,7 @@
   "id": "thejackals-sillytavern-imageembedexpressions",
   "name": "SillyTavern-ImageEmbedExpressions",
   "kind": "extension",
-  "summary": "This SillyTavern extension embeds character expression images directly into chat conversations. It displays visual reactions inline with dialogue, letting characters show expressive images alongside their messages.",
+  "summary": "A SillyTavern extension that adds character expression images to chats, letting users display matching sprite expressions during conversations (README: \"Add your Character Expressions on your Chats!\").",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",

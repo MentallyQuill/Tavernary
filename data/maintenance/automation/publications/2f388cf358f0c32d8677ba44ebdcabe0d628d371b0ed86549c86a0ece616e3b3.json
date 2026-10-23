@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2f388cf358f0c32d8677ba44ebdcabe0d628d371b0ed86549c86a0ece616e3b3",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-875709373:lackyas-sillytavern-presence",
+      "inputDigest": "29d7cd616ce981e3459348c4cd97f9793a36b9f280e8e63a28bfc5e4c9d23f95",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-875709373",
+    "identity": "github:875709373"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39874839524,
+    "sourceSha": "d4e7d3a85e873bf50840f2b1196dcb1222f03f7a"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/lackyas-sillytavern-presence.json",
+      "sha256": "6d11bea9696eb0df14709572350e7fa8eb66ccb7f208e2eea57137fb6bb1cf3e",
+      "gitBlobSha": "ca8444fcc62c1be4552b271a66e4814df928f96b"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/2f388cf358f0c32d8677ba44ebdcabe0d628d371b0ed86549c86a0ece616e3b3.json",
+      "sha256": "95c4da650e3f6a0616dd0a9ec0a9f401dca3e657da55785c687c03100d31d72a",
+      "gitBlobSha": "106315badd70a9adb633b3956a3f63d2b38409b6"
+    }
+  ]
+}

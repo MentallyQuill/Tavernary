@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2e74747dd89d43a9b3ef0b98dada9f0fee5ff35eb34856b24230511b3fb249a1",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1111731551:thejackals-sillytavern-imageembedexpressions",
+      "inputDigest": "5a7fbbe497f64513e5459b92f03205ad5de316af832d95f799231096d3dc16fe",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1111731551",
+    "identity": "github:1111731551"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39871491582,
+    "sourceSha": "0c0eea7a29c2a02caf5258086fbe1bbb2fb9d9c6"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/thejackals-sillytavern-imageembedexpressions.json",
+      "sha256": "a23984b97fd570e189f4d30f34ab737ede57673f7b95acbc442af31e2213d7aa",
+      "gitBlobSha": "113846e6dc1cfe28b95bdf911445664b8c895c4a"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/2e74747dd89d43a9b3ef0b98dada9f0fee5ff35eb34856b24230511b3fb249a1.json",
+      "sha256": "a75124c9026967d6a119e4e69b1cb036732ce31fef57c56a2bd20a08bd7a1bb9",
+      "gitBlobSha": "ba81e901da4aede89ac15b8718902922c017be6a"
+    }
+  ]
+}

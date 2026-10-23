@@ -34199,7 +34199,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "memory-retrieval",
-      "summary": "SillyTavern-AutoSummary automatically chunks, summarizes, and compresses long-term chat history in the background, preserving lore, character state, and story continuity.",
+      "summary": "SillyTavern-AutoSummary is a SillyTavern extension that chunks and compresses long-term chat history in the background, optimizing prompt tokens while preserving lore, character state, and continuity. (README)",
       "canonicalUrl": "https://github.com/Enerccio/SillyTavern-AutoSummary",
       "catalogedAt": "2026-08-03T08:16:12.910Z",
       "catalogCohort": "standard",
@@ -34212,10 +34212,10 @@
       ],
       "tags": [
         {
-          "id": "background-operation",
-          "label": "Background operation",
-          "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
-          "facet": "trait"
+          "id": "manage-context-limits",
+          "label": "Manage context limits",
+          "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
+          "facet": "goal"
         },
         {
           "id": "maintain-long-term-memory",
@@ -34224,16 +34224,16 @@
           "facet": "goal"
         },
         {
-          "id": "manage-context-limits",
-          "label": "Manage context limits",
-          "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
-          "facet": "goal"
-        },
-        {
           "id": "preserve-story-continuity",
           "label": "Preserve story continuity",
           "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
           "facet": "goal"
+        },
+        {
+          "id": "background-operation",
+          "label": "Background operation",
+          "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
+          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -34379,7 +34379,7 @@
           "https://github.com/Enerccio/SillyTavern-AutoSummary"
         ],
         "summary": [
-          "SillyTavern-AutoSummary automatically chunks, summarizes, and compresses long-term chat history in the background, preserving lore, character state, and story continuity."
+          "SillyTavern-AutoSummary is a SillyTavern extension that chunks and compresses long-term chat history in the background, optimizing prompt tokens while preserving lore, character state, and continuity. (README)"
         ],
         "kind": [
           "extension"
@@ -34388,22 +34388,22 @@
           "Memory and retrieval"
         ],
         "tags": [
-          "Background operation",
-          "asynchronous processing",
-          "quiet generation",
-          "background tasks",
-          "Maintain long-term memory",
-          "durable memory",
-          "persistent memory",
-          "remember across chats",
           "Manage context limits",
           "context compression",
           "context window management",
           "token budgeting",
+          "Maintain long-term memory",
+          "durable memory",
+          "persistent memory",
+          "remember across chats",
           "Preserve story continuity",
           "continuity tracking",
           "canon consistency",
-          "story coherence"
+          "story coherence",
+          "Background operation",
+          "asynchronous processing",
+          "quiet generation",
+          "background tasks"
         ],
         "frontends": [
           "SillyTavern"
@@ -57119,7 +57119,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "SillyTavern-Presence is a community extension for the SillyTavern frontend. The original repository is no longer maintained, and users are directed to a forked version for current updates.",
+      "summary": "SillyTavern-Presence is an extension giving each individual character their own memory (repository description). The lackyas README notes it is no longer maintained, with updates in leandrojofre's fork.",
       "canonicalUrl": "https://github.com/lackyas/SillyTavern-Presence",
       "catalogedAt": "2026-07-27T22:02:51.162Z",
       "catalogCohort": "standard",
@@ -57130,7 +57130,14 @@
           "description": "Works with the SillyTavern roleplay frontend."
         }
       ],
-      "tags": [],
+      "tags": [
+        {
+          "id": "maintain-long-term-memory",
+          "label": "Maintain long-term memory",
+          "description": "Preserve and recall important information across long chats or separate sessions.",
+          "facet": "goal"
+        }
+      ],
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
@@ -57295,7 +57302,7 @@
           "https://github.com/lackyas/SillyTavern-Presence"
         ],
         "summary": [
-          "SillyTavern-Presence is a community extension for the SillyTavern frontend. The original repository is no longer maintained, and users are directed to a forked version for current updates."
+          "SillyTavern-Presence is an extension giving each individual character their own memory (repository description). The lackyas README notes it is no longer maintained, with updates in leandrojofre's fork."
         ],
         "kind": [
           "extension"
@@ -57303,7 +57310,12 @@
         "primaryFunction": [
           "Interface and workflow"
         ],
-        "tags": [],
+        "tags": [
+          "Maintain long-term memory",
+          "durable memory",
+          "persistent memory",
+          "remember across chats"
+        ],
         "frontends": [
           "SillyTavern"
         ],
@@ -117312,7 +117324,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "This SillyTavern extension embeds character expression images directly into chat conversations. It displays visual reactions inline with dialogue, letting characters show expressive images alongside their messages.",
+      "summary": "A SillyTavern extension that adds character expression images to chats, letting users display matching sprite expressions during conversations (README: \"Add your Character Expressions on your Chats!\").",
       "canonicalUrl": "https://github.com/THEJACKALS/SillyTavern-ImageEmbedExpressions",
       "catalogedAt": "2026-07-26T00:00:00Z",
       "catalogCohort": "standard",
@@ -117505,7 +117517,7 @@
           "https://github.com/THEJACKALS/SillyTavern-ImageEmbedExpressions"
         ],
         "summary": [
-          "This SillyTavern extension embeds character expression images directly into chat conversations. It displays visual reactions inline with dialogue, letting characters show expressive images alongside their messages."
+          "A SillyTavern extension that adds character expression images to chats, letting users display matching sprite expressions during conversations (README: \"Add your Character Expressions on your Chats!\")."
         ],
         "kind": [
           "extension"
@@ -229582,7 +229594,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "SillyTavern-Presence is a community extension for the SillyTavern frontend. The original repository is no longer maintained, and users are directed to a forked version for current updates.",
+            "summary": "SillyTavern-Presence is an extension giving each individual character their own memory (repository description). The lackyas README notes it is no longer maintained, with updates in leandrojofre's fork.",
             "canonicalUrl": "https://github.com/lackyas/SillyTavern-Presence",
             "catalogedAt": "2026-07-27T22:02:51.162Z",
             "catalogCohort": "standard",
@@ -229593,7 +229605,14 @@
                 "description": "Works with the SillyTavern roleplay frontend."
               }
             ],
-            "tags": [],
+            "tags": [
+              {
+                "id": "maintain-long-term-memory",
+                "label": "Maintain long-term memory",
+                "description": "Preserve and recall important information across long chats or separate sessions.",
+                "facet": "goal"
+              }
+            ],
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
@@ -229758,7 +229777,7 @@
                 "https://github.com/lackyas/SillyTavern-Presence"
               ],
               "summary": [
-                "SillyTavern-Presence is a community extension for the SillyTavern frontend. The original repository is no longer maintained, and users are directed to a forked version for current updates."
+                "SillyTavern-Presence is an extension giving each individual character their own memory (repository description). The lackyas README notes it is no longer maintained, with updates in leandrojofre's fork."
               ],
               "kind": [
                 "extension"
@@ -229766,7 +229785,12 @@
               "primaryFunction": [
                 "Interface and workflow"
               ],
-              "tags": [],
+              "tags": [
+                "Maintain long-term memory",
+                "durable memory",
+                "persistent memory",
+                "remember across chats"
+              ],
               "frontends": [
                 "SillyTavern"
               ],
