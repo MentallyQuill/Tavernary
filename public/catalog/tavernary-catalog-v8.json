@@ -80701,7 +80701,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "A SillyTavern extension for saving multiple versions of character card fields within a single card. It auto-saves originals, shows token counts, and switches via the /altfield command.",
+      "summary": "SillyTavern extension for saving and managing multiple versions of six character fields within one card, with auto-save, token counts, and /altfield switching that preserves originals (README Overview, Features).",
       "canonicalUrl": "https://github.com/nbrown725/SillyTavern-AlternateDescriptions",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -80720,9 +80720,9 @@
           "facet": "goal"
         },
         {
-          "id": "persistent-state",
-          "label": "Persistent state",
-          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
           "facet": "trait"
         }
       ],
@@ -80872,7 +80872,7 @@
           "https://github.com/nbrown725/SillyTavern-AlternateDescriptions"
         ],
         "summary": [
-          "A SillyTavern extension for saving multiple versions of character card fields within a single card. It auto-saves originals, shows token counts, and switches via the /altfield command."
+          "SillyTavern extension for saving and managing multiple versions of six character fields within one card, with auto-save, token counts, and /altfield switching that preserves originals (README Overview, Features)."
         ],
         "kind": [
           "extension"
@@ -80885,10 +80885,10 @@
           "persona management",
           "character management",
           "identity management",
-          "Persistent state",
-          "durable state",
-          "state persistence",
-          "cross-session state"
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay"
         ],
         "frontends": [
           "SillyTavern"
@@ -181959,7 +181959,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "A SillyTavern extension for saving multiple versions of character card fields within a single card. It auto-saves originals, shows token counts, and switches via the /altfield command.",
+            "summary": "SillyTavern extension for saving and managing multiple versions of six character fields within one card, with auto-save, token counts, and /altfield switching that preserves originals (README Overview, Features).",
             "canonicalUrl": "https://github.com/nbrown725/SillyTavern-AlternateDescriptions",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -181978,9 +181978,9 @@
                 "facet": "goal"
               },
               {
-                "id": "persistent-state",
-                "label": "Persistent state",
-                "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
+                "id": "non-destructive",
+                "label": "Non-destructive",
+                "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
                 "facet": "trait"
               }
             ],
@@ -182130,7 +182130,7 @@
                 "https://github.com/nbrown725/SillyTavern-AlternateDescriptions"
               ],
               "summary": [
-                "A SillyTavern extension for saving multiple versions of character card fields within a single card. It auto-saves originals, shows token counts, and switches via the /altfield command."
+                "SillyTavern extension for saving and managing multiple versions of six character fields within one card, with auto-save, token counts, and /altfield switching that preserves originals (README Overview, Features)."
               ],
               "kind": [
                 "extension"
@@ -182143,10 +182143,10 @@
                 "persona management",
                 "character management",
                 "identity management",
-                "Persistent state",
-                "durable state",
-                "state persistence",
-                "cross-session state"
+                "Non-destructive",
+                "reversible workflow",
+                "preserves originals",
+                "safe overlay"
               ],
               "frontends": [
                 "SillyTavern"
