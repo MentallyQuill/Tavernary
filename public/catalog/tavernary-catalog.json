@@ -6529,7 +6529,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "a8a27c131e08426222b5e85d1586577e4569aa0c",
+        "currentSha": "56468d07df1b97e7cc8fd78aa6085ad4d0e0dbe2",
         "report": {
           "reportId": "be274a08a699eb7f5076376cbf511d9d2bf0191293350cb3e653858bc7dee2be",
           "riskLevel": "low",
@@ -6632,6 +6632,11 @@
           },
           {
             "provider": "github",
+            "login": "dependabot[bot]",
+            "botOrAi": true
+          },
+          {
+            "provider": "github",
             "login": "justinSelf",
             "botOrAi": false
           }
@@ -6640,7 +6645,7 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-08T07:49:14.000Z",
+        "latestSourceActivityAt": "2026-10-13T06:08:26.000Z",
         "activeWeeks12": 6,
         "weeklyActivity": [
           false,
@@ -6659,21 +6664,21 @@
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-10-08T07:57:12.000Z",
+      "latestReleaseAt": "2026-10-13T06:21:01.000Z",
       "community": {
-        "stars": 15,
+        "stars": 14,
         "forks": 5,
         "watchers": 0,
-        "aggregate": 20
+        "aggregate": 19
       },
-      "repositorySizeKb": 7471,
+      "repositorySizeKb": 20251,
       "license": {
         "status": "osi-approved",
         "label": "GPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-23T12:49:59.624Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -6723,6 +6728,7 @@
           "amiantos",
           "claude",
           "jabelardo",
+          "dependabot[bot]",
           "justinSelf"
         ],
         "relationships": []
@@ -10271,7 +10277,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-23T12:49:28.116Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -54054,10 +54060,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 0,
+        "stars": 1,
         "forks": 0,
         "watchers": 0,
-        "aggregate": 0
+        "aggregate": 1
       },
       "repositorySizeKb": 142,
       "license": {
@@ -54066,7 +54072,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-23T12:49:39.375Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -110115,7 +110121,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "SillyTavern Greeting Tools overhauls greeting management in SillyTavern, letting users organize greetings with titles and descriptions. It adds AI-powered generation, a redesigned popup, and inline chat selection.",
+      "summary": "SillyTavern Greeting Tools overhaul of greeting management in SillyTavern: organize character greetings with titles, descriptions, and AI-powered generation via a redesigned popup and inline chat selector (README).",
       "canonicalUrl": "https://github.com/SillyTavern/SillyTavern-GreetingTools",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -110131,12 +110137,6 @@
           "id": "manage-characters-and-personas",
           "label": "Manage characters and personas",
           "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
-          "facet": "goal"
-        },
-        {
-          "id": "automate-roleplay-workflows",
-          "label": "Automate roleplay workflows",
-          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
           "facet": "goal"
         }
       ],
@@ -110289,7 +110289,7 @@
           "https://github.com/SillyTavern/SillyTavern-GreetingTools"
         ],
         "summary": [
-          "SillyTavern Greeting Tools overhauls greeting management in SillyTavern, letting users organize greetings with titles and descriptions. It adds AI-powered generation, a redesigned popup, and inline chat selection."
+          "SillyTavern Greeting Tools overhaul of greeting management in SillyTavern: organize character greetings with titles, descriptions, and AI-powered generation via a redesigned popup and inline chat selector (README)."
         ],
         "kind": [
           "extension"
@@ -110301,12 +110301,7 @@
           "Manage characters and personas",
           "persona management",
           "character management",
-          "identity management",
-          "Automate roleplay workflows",
-          "automation",
-          "workflow automation",
-          "task automation",
-          "triggered actions"
+          "identity management"
         ],
         "frontends": [
           "SillyTavern"
@@ -119946,7 +119941,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "memory-retrieval",
-      "summary": "Summaryception fork is a SillyTavern memory plug-in designed to simplify conversation memory management. It streamlines memory handling through a minimalist approach, prioritizing simplicity over complex features.",
+      "summary": "Summaryception is a SillyTavern extension that gives long roleplay chats layered recursive memory: recent messages stay verbatim, older chat is compressed into layered memories and hidden from the model (README).",
       "canonicalUrl": "https://github.com/vadash/Extension-Summaryception",
       "catalogedAt": "2026-07-27T15:17:57.249Z",
       "catalogCohort": "standard",
@@ -119971,9 +119966,21 @@
           "facet": "goal"
         },
         {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        },
+        {
           "id": "non-destructive",
           "label": "Non-destructive",
           "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+          "facet": "trait"
+        },
+        {
+          "id": "background-operation",
+          "label": "Background operation",
+          "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
           "facet": "trait"
         }
       ],
@@ -120850,7 +120857,7 @@
           "https://github.com/vadash/Extension-Summaryception"
         ],
         "summary": [
-          "Summaryception fork is a SillyTavern memory plug-in designed to simplify conversation memory management. It streamlines memory handling through a minimalist approach, prioritizing simplicity over complex features."
+          "Summaryception is a SillyTavern extension that gives long roleplay chats layered recursive memory: recent messages stay verbatim, older chat is compressed into layered memories and hidden from the model (README)."
         ],
         "kind": [
           "extension"
@@ -120867,10 +120874,18 @@
           "context compression",
           "context window management",
           "token budgeting",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
           "Non-destructive",
           "reversible workflow",
           "preserves originals",
-          "safe overlay"
+          "safe overlay",
+          "Background operation",
+          "asynchronous processing",
+          "quiet generation",
+          "background tasks"
         ],
         "frontends": [
           "SillyTavern"
@@ -170505,7 +170520,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "memory-retrieval",
-            "summary": "Summaryception fork is a SillyTavern memory plug-in designed to simplify conversation memory management. It streamlines memory handling through a minimalist approach, prioritizing simplicity over complex features.",
+            "summary": "Summaryception is a SillyTavern extension that gives long roleplay chats layered recursive memory: recent messages stay verbatim, older chat is compressed into layered memories and hidden from the model (README).",
             "canonicalUrl": "https://github.com/vadash/Extension-Summaryception",
             "catalogedAt": "2026-07-27T15:17:57.249Z",
             "catalogCohort": "standard",
@@ -170530,9 +170545,21 @@
                 "facet": "goal"
               },
               {
+                "id": "preserve-story-continuity",
+                "label": "Preserve story continuity",
+                "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+                "facet": "goal"
+              },
+              {
                 "id": "non-destructive",
                 "label": "Non-destructive",
                 "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+                "facet": "trait"
+              },
+              {
+                "id": "background-operation",
+                "label": "Background operation",
+                "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
                 "facet": "trait"
               }
             ],
@@ -171409,7 +171436,7 @@
                 "https://github.com/vadash/Extension-Summaryception"
               ],
               "summary": [
-                "Summaryception fork is a SillyTavern memory plug-in designed to simplify conversation memory management. It streamlines memory handling through a minimalist approach, prioritizing simplicity over complex features."
+                "Summaryception is a SillyTavern extension that gives long roleplay chats layered recursive memory: recent messages stay verbatim, older chat is compressed into layered memories and hidden from the model (README)."
               ],
               "kind": [
                 "extension"
@@ -171426,10 +171453,18 @@
                 "context compression",
                 "context window management",
                 "token budgeting",
+                "Preserve story continuity",
+                "continuity tracking",
+                "canon consistency",
+                "story coherence",
                 "Non-destructive",
                 "reversible workflow",
                 "preserves originals",
-                "safe overlay"
+                "safe overlay",
+                "Background operation",
+                "asynchronous processing",
+                "quiet generation",
+                "background tasks"
               ],
               "frontends": [
                 "SillyTavern"
@@ -176359,7 +176394,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "memory-retrieval",
-            "summary": "Summaryception fork is a SillyTavern memory plug-in designed to simplify conversation memory management. It streamlines memory handling through a minimalist approach, prioritizing simplicity over complex features.",
+            "summary": "Summaryception is a SillyTavern extension that gives long roleplay chats layered recursive memory: recent messages stay verbatim, older chat is compressed into layered memories and hidden from the model (README).",
             "canonicalUrl": "https://github.com/vadash/Extension-Summaryception",
             "catalogedAt": "2026-07-27T15:17:57.249Z",
             "catalogCohort": "standard",
@@ -176384,9 +176419,21 @@
                 "facet": "goal"
               },
               {
+                "id": "preserve-story-continuity",
+                "label": "Preserve story continuity",
+                "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+                "facet": "goal"
+              },
+              {
                 "id": "non-destructive",
                 "label": "Non-destructive",
                 "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+                "facet": "trait"
+              },
+              {
+                "id": "background-operation",
+                "label": "Background operation",
+                "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
                 "facet": "trait"
               }
             ],
@@ -177263,7 +177310,7 @@
                 "https://github.com/vadash/Extension-Summaryception"
               ],
               "summary": [
-                "Summaryception fork is a SillyTavern memory plug-in designed to simplify conversation memory management. It streamlines memory handling through a minimalist approach, prioritizing simplicity over complex features."
+                "Summaryception is a SillyTavern extension that gives long roleplay chats layered recursive memory: recent messages stay verbatim, older chat is compressed into layered memories and hidden from the model (README)."
               ],
               "kind": [
                 "extension"
@@ -177280,10 +177327,18 @@
                 "context compression",
                 "context window management",
                 "token budgeting",
+                "Preserve story continuity",
+                "continuity tracking",
+                "canon consistency",
+                "story coherence",
                 "Non-destructive",
                 "reversible workflow",
                 "preserves originals",
-                "safe overlay"
+                "safe overlay",
+                "Background operation",
+                "asynchronous processing",
+                "quiet generation",
+                "background tasks"
               ],
               "frontends": [
                 "SillyTavern"
@@ -208726,7 +208781,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "memory-retrieval",
-            "summary": "Summaryception fork is a SillyTavern memory plug-in designed to simplify conversation memory management. It streamlines memory handling through a minimalist approach, prioritizing simplicity over complex features.",
+            "summary": "Summaryception is a SillyTavern extension that gives long roleplay chats layered recursive memory: recent messages stay verbatim, older chat is compressed into layered memories and hidden from the model (README).",
             "canonicalUrl": "https://github.com/vadash/Extension-Summaryception",
             "catalogedAt": "2026-07-27T15:17:57.249Z",
             "catalogCohort": "standard",
@@ -208751,9 +208806,21 @@
                 "facet": "goal"
               },
               {
+                "id": "preserve-story-continuity",
+                "label": "Preserve story continuity",
+                "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+                "facet": "goal"
+              },
+              {
                 "id": "non-destructive",
                 "label": "Non-destructive",
                 "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+                "facet": "trait"
+              },
+              {
+                "id": "background-operation",
+                "label": "Background operation",
+                "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
                 "facet": "trait"
               }
             ],
@@ -209630,7 +209697,7 @@
                 "https://github.com/vadash/Extension-Summaryception"
               ],
               "summary": [
-                "Summaryception fork is a SillyTavern memory plug-in designed to simplify conversation memory management. It streamlines memory handling through a minimalist approach, prioritizing simplicity over complex features."
+                "Summaryception is a SillyTavern extension that gives long roleplay chats layered recursive memory: recent messages stay verbatim, older chat is compressed into layered memories and hidden from the model (README)."
               ],
               "kind": [
                 "extension"
@@ -209647,10 +209714,18 @@
                 "context compression",
                 "context window management",
                 "token budgeting",
+                "Preserve story continuity",
+                "continuity tracking",
+                "canon consistency",
+                "story coherence",
                 "Non-destructive",
                 "reversible workflow",
                 "preserves originals",
-                "safe overlay"
+                "safe overlay",
+                "Background operation",
+                "asynchronous processing",
+                "quiet generation",
+                "background tasks"
               ],
               "frontends": [
                 "SillyTavern"
@@ -248234,7 +248309,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "memory-retrieval",
-            "summary": "Summaryception fork is a SillyTavern memory plug-in designed to simplify conversation memory management. It streamlines memory handling through a minimalist approach, prioritizing simplicity over complex features.",
+            "summary": "Summaryception is a SillyTavern extension that gives long roleplay chats layered recursive memory: recent messages stay verbatim, older chat is compressed into layered memories and hidden from the model (README).",
             "canonicalUrl": "https://github.com/vadash/Extension-Summaryception",
             "catalogedAt": "2026-07-27T15:17:57.249Z",
             "catalogCohort": "standard",
@@ -248259,9 +248334,21 @@
                 "facet": "goal"
               },
               {
+                "id": "preserve-story-continuity",
+                "label": "Preserve story continuity",
+                "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+                "facet": "goal"
+              },
+              {
                 "id": "non-destructive",
                 "label": "Non-destructive",
                 "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+                "facet": "trait"
+              },
+              {
+                "id": "background-operation",
+                "label": "Background operation",
+                "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
                 "facet": "trait"
               }
             ],
@@ -249138,7 +249225,7 @@
                 "https://github.com/vadash/Extension-Summaryception"
               ],
               "summary": [
-                "Summaryception fork is a SillyTavern memory plug-in designed to simplify conversation memory management. It streamlines memory handling through a minimalist approach, prioritizing simplicity over complex features."
+                "Summaryception is a SillyTavern extension that gives long roleplay chats layered recursive memory: recent messages stay verbatim, older chat is compressed into layered memories and hidden from the model (README)."
               ],
               "kind": [
                 "extension"
@@ -249155,10 +249242,18 @@
                 "context compression",
                 "context window management",
                 "token budgeting",
+                "Preserve story continuity",
+                "continuity tracking",
+                "canon consistency",
+                "story coherence",
                 "Non-destructive",
                 "reversible workflow",
                 "preserves originals",
-                "safe overlay"
+                "safe overlay",
+                "Background operation",
+                "asynchronous processing",
+                "quiet generation",
+                "background tasks"
               ],
               "frontends": [
                 "SillyTavern"

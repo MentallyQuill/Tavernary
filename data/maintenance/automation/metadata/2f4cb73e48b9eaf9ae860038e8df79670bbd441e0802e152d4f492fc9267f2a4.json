@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "sillytavern-sillytavern-greetingtools",
+  "sourceId": "github-1158265980",
+  "sourceIdentity": "github:1158265980",
+  "inputDigest": "f6d05e0865207bfc4d6e9df32646794b9d7878222bff7e4e56f36b028a70c539",
+  "fingerprint": "48d2fe3c40733cbf5c2a92a830489dd9a0b7e104665a2e1fc5811b9c47c12335",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "8aa0ccef9ee5fe2bfc791eefd94739e6ee5d8b32760269e24ea2736fa08d8cb3",
+  "outputDigest": "41d5a8a69d1fe5cc076d6835c05929700352667914f9858dc74ef7949d70885b",
+  "headSha": "30dbe54e9f9e4e7da8539c6b3178ac8a5118bc18",
+  "observedAt": "2026-10-24T01:00:14.787Z"
+}

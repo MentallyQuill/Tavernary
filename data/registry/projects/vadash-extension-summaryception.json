@@ -3,7 +3,7 @@
   "id": "vadash-extension-summaryception",
   "name": "Summaryception fork",
   "kind": "extension",
-  "summary": "Summaryception fork is a SillyTavern memory plug-in designed to simplify conversation memory management. It streamlines memory handling through a minimalist approach, prioritizing simplicity over complex features.",
+  "summary": "Summaryception is a SillyTavern extension that gives long roleplay chats layered recursive memory: recent messages stay verbatim, older chat is compressed into layered memories and hidden from the model (README).",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
@@ -13,7 +13,9 @@
   "tags": [
     "maintain-long-term-memory",
     "manage-context-limits",
-    "non-destructive"
+    "preserve-story-continuity",
+    "non-destructive",
+    "background-operation"
   ],
   "listing_status": "active",
   "listing_status_reason": null,

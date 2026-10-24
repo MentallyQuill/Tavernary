@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2f4cb73e48b9eaf9ae860038e8df79670bbd441e0802e152d4f492fc9267f2a4",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1158265980:sillytavern-sillytavern-greetingtools",
+      "inputDigest": "f6d05e0865207bfc4d6e9df32646794b9d7878222bff7e4e56f36b028a70c539",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1158265980",
+    "identity": "github:1158265980"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40047684477,
+    "sourceSha": "f2fbca1b4a6a3ac2d566a7a7659c86bbb157e1d0"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/sillytavern-sillytavern-greetingtools.json",
+      "sha256": "a17c32132d57447779f79de51ab7f37cb0e2f3e0aca5dcdfe33428b3e06d0def",
+      "gitBlobSha": "5b9d45879bbb2f9dbbb7ba6983077c8bbc75de93"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/2f4cb73e48b9eaf9ae860038e8df79670bbd441e0802e152d4f492fc9267f2a4.json",
+      "sha256": "092b4c785a43ca56763ca8e40456dd1c8966f64a75dc55edb15b4982b5c346ad",
+      "gitBlobSha": "ef0d9cd760a25a509fe65f363d7c333cefc0b939"
+    }
+  ]
+}

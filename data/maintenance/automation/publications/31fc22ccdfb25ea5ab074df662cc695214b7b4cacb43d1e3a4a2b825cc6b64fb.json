@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "31fc22ccdfb25ea5ab074df662cc695214b7b4cacb43d1e3a4a2b825cc6b64fb",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1287253091:vadash-extension-summaryception",
+      "inputDigest": "9080a2258981b6cf804c2f5b7e10cf6ae0ca279cf9a070953ab574e1172bbce7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1287253091",
+    "identity": "github:1287253091"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40048295419,
+    "sourceSha": "c7ce4402ece5cb1511e89b8508e3c841175abeea"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/vadash-extension-summaryception.json",
+      "sha256": "8da65b0b5a9f5ca1af16a5ab5845f2ba95377eb75e748ded7ba70390532966d0",
+      "gitBlobSha": "b118092a204320e101ef6d165a393270104dde55"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/31fc22ccdfb25ea5ab074df662cc695214b7b4cacb43d1e3a4a2b825cc6b64fb.json",
+      "sha256": "e657399b4d67d81d64a2e0eeaf3f263da42726ab22d876ef957db47231cb2637",
+      "gitBlobSha": "f687e2bf747ba9a46be088d29d955cec8ff64ed6"
+    }
+  ]
+}
