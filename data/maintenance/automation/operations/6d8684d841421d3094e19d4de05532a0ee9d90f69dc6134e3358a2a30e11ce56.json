@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6d8684d841421d3094e19d4de05532a0ee9d90f69dc6134e3358a2a30e11ce56",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1344136924:siliconlotus-st-worldsapart",
+      "inputDigest": "339d267ac47ba6349cc8e2ef121d3ff43694d5f598ed8a58fc30868cfe4aff1a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-19T03:07:04.640Z",
+    "nextEligibleAt": "2026-10-24T09:31:12.859Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-10-24T09:25:45.261Z",
+  "completedAt": null
+}
