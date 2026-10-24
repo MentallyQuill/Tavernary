@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "thejackals-sillytavern-summaryn-resizechat",
+  "sourceId": "github-1263408079",
+  "sourceIdentity": "github:1263408079",
+  "inputDigest": "41233f71d63128ef971832e11cebd17657ed65937ea2377cb73ae2471cfc41e2",
+  "fingerprint": "6ec281f7cbde09c2f97eab00191a1f10b8be9a2114c76f8520a59f168fe163b5",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "da41ae1fdcf06e1482d053699aba805a3a07fcb0e763e69b05f9eb606e7998fb",
+  "outputDigest": "8960495224ab96df6665ce7c34c4879d4db041470f0d8442bd54182f074e9148",
+  "headSha": "43ee8b020ebbf7f3dba2127d25ea13f88ed1e328",
+  "observedAt": "2026-10-24T18:49:57.089Z"
+}

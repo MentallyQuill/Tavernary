@@ -3,19 +3,14 @@
   "id": "thejackals-sillytavern-summaryn-resizechat",
   "name": "SillyTavern SummaryN ResizeChat",
   "kind": "extension",
-  "summary": "SillyTavern SummaryN ResizeChat summarizes and resizes long chat logs to preserve consistent memory during roleplay. It condenses older messages so the AI retains key context without exceeding token limits.",
+  "summary": "Local SillyTavern extension that lets you click or shift-click chat bubbles, summarize them with the configured AI backend, preview it, then replace or insert the compact summary message (README intro).",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "source_id": "github-1263408079",
-  "tags": [
-    "maintain-long-term-memory",
-    "manage-context-limits",
-    "preserve-story-continuity",
-    "automate-roleplay-workflows"
-  ],
+  "tags": ["manage-context-limits"],
   "listing_status": "active",
   "listing_status_reason": null,
   "metadata_policy": {

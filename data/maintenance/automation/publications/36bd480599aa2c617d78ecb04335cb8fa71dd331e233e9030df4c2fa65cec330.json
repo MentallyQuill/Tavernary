@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "36bd480599aa2c617d78ecb04335cb8fa71dd331e233e9030df4c2fa65cec330",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1263408079:thejackals-sillytavern-summaryn-resizechat",
+      "inputDigest": "41233f71d63128ef971832e11cebd17657ed65937ea2377cb73ae2471cfc41e2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1263408079",
+    "identity": "github:1263408079"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40122448460,
+    "sourceSha": "abd25ef4ab5e486e3f98aae343bde7e27b299b00"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/thejackals-sillytavern-summaryn-resizechat.json",
+      "sha256": "1e9778ab551080c10bd21fc1f78f7a8908370b1c25859302ac90377a8bf6aa2a",
+      "gitBlobSha": "6bacd934597275d24fb2f4f1a45821f67a1221a5"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/36bd480599aa2c617d78ecb04335cb8fa71dd331e233e9030df4c2fa65cec330.json",
+      "sha256": "5d245eec9dbd58fc63be93632d33d4ed20a816d38b551bd21ddebe4bd7d05d78",
+      "gitBlobSha": "9b49cd0c2791251f5586343d8b3578c84580f63b"
+    }
+  ]
+}

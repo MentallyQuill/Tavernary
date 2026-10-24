@@ -4369,7 +4369,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-24T19:44:20.911Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -98853,7 +98853,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-24T19:44:08.473Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -118676,7 +118676,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-24T18:42:45.954Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -119203,7 +119203,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "memory-retrieval",
-      "summary": "SillyTavern SummaryN ResizeChat summarizes and resizes long chat logs to preserve consistent memory during roleplay. It condenses older messages so the AI retains key context without exceeding token limits.",
+      "summary": "Local SillyTavern extension that lets you click or shift-click chat bubbles, summarize them with the configured AI backend, preview it, then replace or insert the compact summary message (README intro).",
       "canonicalUrl": "https://github.com/THEJACKALS/SillyTavern-SummaryN-ResizeChat",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -119216,27 +119216,9 @@
       ],
       "tags": [
         {
-          "id": "maintain-long-term-memory",
-          "label": "Maintain long-term memory",
-          "description": "Preserve and recall important information across long chats or separate sessions.",
-          "facet": "goal"
-        },
-        {
           "id": "manage-context-limits",
           "label": "Manage context limits",
           "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
-          "facet": "goal"
-        },
-        {
-          "id": "preserve-story-continuity",
-          "label": "Preserve story continuity",
-          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
-          "facet": "goal"
-        },
-        {
-          "id": "automate-roleplay-workflows",
-          "label": "Automate roleplay workflows",
-          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
           "facet": "goal"
         }
       ],
@@ -119386,7 +119368,7 @@
           "https://github.com/THEJACKALS/SillyTavern-SummaryN-ResizeChat"
         ],
         "summary": [
-          "SillyTavern SummaryN ResizeChat summarizes and resizes long chat logs to preserve consistent memory during roleplay. It condenses older messages so the AI retains key context without exceeding token limits."
+          "Local SillyTavern extension that lets you click or shift-click chat bubbles, summarize them with the configured AI backend, preview it, then replace or insert the compact summary message (README intro)."
         ],
         "kind": [
           "extension"
@@ -119395,23 +119377,10 @@
           "Memory and retrieval"
         ],
         "tags": [
-          "Maintain long-term memory",
-          "durable memory",
-          "persistent memory",
-          "remember across chats",
           "Manage context limits",
           "context compression",
           "context window management",
-          "token budgeting",
-          "Preserve story continuity",
-          "continuity tracking",
-          "canon consistency",
-          "story coherence",
-          "Automate roleplay workflows",
-          "automation",
-          "workflow automation",
-          "task automation",
-          "triggered actions"
+          "token budgeting"
         ],
         "frontends": [
           "SillyTavern"
@@ -247394,7 +247363,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-24T18:42:45.954Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
