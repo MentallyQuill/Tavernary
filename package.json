@@ -58,7 +58,7 @@
     "@tavernary/catalog-core": "file:packages/catalog-core",
     "ajv": "^8.20.0",
     "minisearch": "^7.2.0",
-    "next": "^16.4.0",
+    "next": "^16.4.2",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },
@@ -73,7 +73,7 @@
     "ajv-formats": "^3.0.1",
     "color-name": "^2.1.1",
     "eslint": "^9.39.5",
-    "eslint-config-next": "^16.4.0",
+    "eslint-config-next": "^16.4.2",
     "fflate": "0.8.3",
     "jsdom": "^29.1.1",
     "prettier": "^3.9.10",
