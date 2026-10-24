@@ -35543,7 +35543,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-24T22:03:25.567Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -59748,7 +59748,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "memory-retrieval",
-      "summary": "StatSuite tracks persistent character state in SillyTavern, including pose, location, outfit, and inventory. It avoids the main model, injecting only the latest stat block at prompt depth 1.",
+      "summary": "StatSuite is a SillyTavern prototype persistence engine tracking outfit, location, and body state via a separate non-main model, injecting the latest stat block at Depth 1 (README, Stat Tracker overview).",
       "canonicalUrl": "https://github.com/leDissolution/StatSuite",
       "catalogedAt": "2026-07-26T00:00:00Z",
       "catalogCohort": "standard",
@@ -59767,10 +59767,10 @@
           "facet": "goal"
         },
         {
-          "id": "manage-inventory-and-quests",
-          "label": "Manage inventory and quests",
-          "description": "Track equipment, items, objectives, quests, or progression records.",
-          "facet": "goal"
+          "id": "secondary-model",
+          "label": "Secondary-model workflow",
+          "description": "Delegates supporting tasks to a separately configured model or connection.",
+          "facet": "trait"
         },
         {
           "id": "persistent-state",
@@ -59900,7 +59900,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-24T22:04:56.483Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -59922,7 +59922,7 @@
           "https://github.com/leDissolution/StatSuite"
         ],
         "summary": [
-          "StatSuite tracks persistent character state in SillyTavern, including pose, location, outfit, and inventory. It avoids the main model, injecting only the latest stat block at prompt depth 1."
+          "StatSuite is a SillyTavern prototype persistence engine tracking outfit, location, and body state via a separate non-main model, injecting the latest stat block at Depth 1 (README, Stat Tracker overview)."
         ],
         "kind": [
           "extension"
@@ -59935,10 +59935,10 @@
           "state tracking",
           "stat trackers",
           "world state tracking",
-          "Manage inventory and quests",
-          "quest tracking",
-          "inventory management",
-          "equipment tracking",
+          "Secondary-model workflow",
+          "helper model",
+          "auxiliary model",
+          "separate connection profile",
           "Persistent state",
           "durable state",
           "state persistence",
@@ -70061,7 +70061,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-24T22:02:53.957Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "ledissolution-statsuite",
+  "sourceId": "github-981213323",
+  "sourceIdentity": "github:981213323",
+  "inputDigest": "4e6bfa7a2bbac05cb8f96b49dd69bb54c0911137f18fb7a62f59ce9bc56566aa",
+  "fingerprint": "87e772f519f97dc3eae8e66972de5224dbb5aa4515e23b792b4e742dfdbcd149",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "195e7fbe9f18e245aca128a5374fe5ae1339b4d5ff48880217467d9a9fed3b82",
+  "outputDigest": "4866d89a0f1b87fb4087665f438a8f639b2afc1323f6c551ed95571e94883e86",
+  "headSha": "86e13a2aa589c6679a5658e665d9e8edff2b9f94",
+  "observedAt": "2026-10-24T22:14:46.636Z"
+}
