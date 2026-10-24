@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3d2ebb28538c3028f2e802568fc9b9c9ca9e4c22a1c085cbbea45ed9cab86c18",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1285238973:rebootflume-tipsytavern",
+      "inputDigest": "0bcc889abf39cc77896779016d5fec253d4a7b1686f7c90035934a3f2f170c2d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1285238973",
+    "identity": "github:1285238973"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40089499195,
+    "sourceSha": "198b23ee00e81621b96c64286f299a29ab7de01f"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/rebootflume-tipsytavern.json",
+      "sha256": "05d7196b43d69ef23792c5635ce69c55a26f12b010692148bfbdb79bce67a8e5",
+      "gitBlobSha": "a823164c467ebf52380d421f6b44a787e2fe2ee1"
+    }
+  ]
+}

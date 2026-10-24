@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3adfc4985241b3f4d6fa0a924a4549067af2e9a9a86c5185fa01e96c731bb7bc",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-850754623:sillytavern-extension-mermaid",
+      "inputDigest": "1e1f0f848d41e1c4470cd8e8a0bafa1513f8b8dc5dcfb8442e4eb93f9acf90b5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-850754623",
+    "identity": "github:850754623"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40089049126,
+    "sourceSha": "7dda1f922f783acdb4cf1abcd9033420927bbf9d"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/sillytavern-extension-mermaid.json",
+      "sha256": "6e4f9d89870fa60c9f6f2fe8cc2d5ed8712f57bdd250ad3193c9df6eba4e784b",
+      "gitBlobSha": "df95ca307d838d531164743e01c9ffeb07998180"
+    }
+  ]
+}

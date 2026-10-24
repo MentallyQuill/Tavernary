@@ -5,12 +5,9 @@
   "source_identity": "github:bronya-rand/guinevere-ui-extension",
   "evidence_fingerprint": "e4ac7753ddbd0066ae457f88710c141148b97b74f12d93e6fe9f8fd159fb1d90",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-12T08:58:46.542Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-12T08:58:46.542Z"
-  },
+  "reviewed_at": "2026-10-24T11:07:44.401Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

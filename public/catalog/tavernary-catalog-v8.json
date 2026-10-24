@@ -128485,7 +128485,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "character-worldbuilding",
-      "summary": "SillyTavern-ScenePulse tracks characters, relationships, quests, mood, and tension from AI responses in a real-time dashboard alongside roleplay.",
+      "summary": "SillyTavern-ScenePulse is a SillyTavern extension that automatically extracts scene data — characters, relationships, quests, mood, tension — into a real-time dashboard (README intro), with 39 built-in model presets.",
       "canonicalUrl": "https://github.com/xenofei/SillyTavern-ScenePulse",
       "catalogedAt": "2026-08-05T03:38:40.985Z",
       "catalogCohort": "standard",
@@ -128498,27 +128498,21 @@
       ],
       "tags": [
         {
-          "id": "add-visual-immersion",
-          "label": "Add visual immersion",
-          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
-          "facet": "goal"
-        },
-        {
-          "id": "model-agnostic",
-          "label": "Model-agnostic",
-          "description": "Works across a broad range of model providers rather than requiring one model family.",
-          "facet": "trait"
-        },
-        {
-          "id": "modular-and-extensible",
-          "label": "Modular and extensible",
-          "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
-          "facet": "trait"
-        },
-        {
           "id": "track-characters-and-world-state",
           "label": "Track characters and world state",
           "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-inventory-and-quests",
+          "label": "Manage inventory and quests",
+          "description": "Track equipment, items, objectives, quests, or progression records.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-prompts-and-presets",
+          "label": "Manage prompts and presets",
+          "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
           "facet": "goal"
         }
       ],
@@ -128644,7 +128638,7 @@
           "https://github.com/xenofei/SillyTavern-ScenePulse"
         ],
         "summary": [
-          "SillyTavern-ScenePulse tracks characters, relationships, quests, mood, and tension from AI responses in a real-time dashboard alongside roleplay."
+          "SillyTavern-ScenePulse is a SillyTavern extension that automatically extracts scene data — characters, relationships, quests, mood, tension — into a real-time dashboard (README intro), with 39 built-in model presets."
         ],
         "kind": [
           "extension"
@@ -128653,22 +128647,19 @@
           "Character and worldbuilding"
         ],
         "tags": [
-          "Add visual immersion",
-          "roleplay visuals",
-          "visual novel presentation",
-          "scene visuals",
-          "Model-agnostic",
-          "bring your own model",
-          "BYOM",
-          "provider independent",
-          "Modular and extensible",
-          "plugin architecture",
-          "modular design",
-          "extensible system",
           "Track characters and world state",
           "state tracking",
           "stat trackers",
-          "world state tracking"
+          "world state tracking",
+          "Manage inventory and quests",
+          "quest tracking",
+          "inventory management",
+          "equipment tracking",
+          "Manage prompts and presets",
+          "prompt management",
+          "prompt engineering",
+          "preset organization",
+          "template management"
         ],
         "frontends": [
           "SillyTavern"

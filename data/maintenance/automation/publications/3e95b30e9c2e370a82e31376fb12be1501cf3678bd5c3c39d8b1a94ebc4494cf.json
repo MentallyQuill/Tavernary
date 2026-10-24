@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3e95b30e9c2e370a82e31376fb12be1501cf3678bd5c3c39d8b1a94ebc4494cf",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1128225923:zompiexx-st-hands-free-voice",
+      "inputDigest": "ba90079789c42f593fc8f2bde78256254dd919cd539672b8f8bacf7423738672",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1128225923",
+    "identity": "github:1128225923"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40090862200,
+    "sourceSha": "2a473f4e44c3e5a176641a133925b53ee147898e"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/zompiexx-st-hands-free-voice.json",
+      "sha256": "32cc4f7a3d9941ea2d7264c3ac03f624a52acb24d6a84d2677010b9be563ae14",
+      "gitBlobSha": "e708c4a80bb812ac9708d8e0eef98268b7923fcb"
+    }
+  ]
+}

@@ -3,16 +3,15 @@
   "id": "xenofei-sillytavern-scenepulse",
   "name": "SillyTavern-ScenePulse",
   "kind": "extension",
-  "summary": "SillyTavern-ScenePulse tracks characters, relationships, quests, mood, and tension from AI responses in a real-time dashboard alongside roleplay.",
+  "summary": "SillyTavern-ScenePulse is a SillyTavern extension that automatically extracts scene data — characters, relationships, quests, mood, tension — into a real-time dashboard (README intro), with 39 built-in model presets.",
   "metadata_status": "curated",
   "source_id": "github-1184246765",
   "frontends": ["sillytavern"],
   "primary_function": "character-worldbuilding",
   "tags": [
-    "add-visual-immersion",
-    "model-agnostic",
-    "modular-and-extensible",
-    "track-characters-and-world-state"
+    "track-characters-and-world-state",
+    "manage-inventory-and-quests",
+    "manage-prompts-and-presets"
   ],
   "cataloged_at": "2026-08-05T03:38:40.985Z",
   "catalog_cohort": "standard",

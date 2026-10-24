@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3701ad525a88ec7746f85fa107360c39c0ceb11f9ad77c705fb33deef72a0494",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1158265980:sillytavern-sillytavern-greetingtools",
+      "inputDigest": "7cd09b34336f35458517f4f8341475a7dc3b04878dc24aa0ef0670424643698d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1158265980",
+    "identity": "github:1158265980"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40088176259,
+    "sourceSha": "5fe736b2b3294360ea99dad9905464fe8ffaa8b7"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/sillytavern-sillytavern-greetingtools.json",
+      "sha256": "947f6b67f8ab6229f0131400956f8eef39fa187bf4bdbb3c9cbfe403cac07731",
+      "gitBlobSha": "e4763d5966a1164a2a308f3bbaa4009725f9fa0a"
+    }
+  ]
+}

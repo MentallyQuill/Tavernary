@@ -5,12 +5,9 @@
   "source_identity": "github:aikohanasaki/sillytavern-worldinfoinfo",
   "evidence_fingerprint": "3e50a994148d58662042079f2162be399560c65b1a175e9fb919a9cc3d439e49",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-09T08:10:54.481Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-09T08:10:54.481Z"
-  },
+  "reviewed_at": "2026-10-24T11:35:05.872Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

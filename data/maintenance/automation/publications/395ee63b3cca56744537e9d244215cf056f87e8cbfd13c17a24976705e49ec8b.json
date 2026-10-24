@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "395ee63b3cca56744537e9d244215cf056f87e8cbfd13c17a24976705e49ec8b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-929287817:bronya-rand-guinevere-ui-extension",
+      "inputDigest": "099d4a75995d13a15155b8e7d01e027393c9d1d661c11b53ac2a99ffe03b2325",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-929287817",
+    "identity": "github:929287817"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40088598094,
+    "sourceSha": "b1f17c518bc6d56ebfd4500f810861f4ccf280b9"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/bronya-rand-guinevere-ui-extension.json",
+      "sha256": "c1b442c3ca2e3b630ac32c01ee12342132b99c0c2f9123ff46e2bc4466818512",
+      "gitBlobSha": "d398c70106704b494c69c2ff164f253a06fbd47d"
+    }
+  ]
+}

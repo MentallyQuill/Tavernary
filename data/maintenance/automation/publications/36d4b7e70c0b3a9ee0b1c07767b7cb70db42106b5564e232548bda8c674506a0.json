@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "36d4b7e70c0b3a9ee0b1c07767b7cb70db42106b5564e232548bda8c674506a0",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1168534011:samueras-sillytavern-multipersonacomposer",
+      "inputDigest": "c52982baee8c3324b83c1d8d8c0728f6951bc0832f590481da05a33712936785",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1168534011",
+    "identity": "github:1168534011"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40087755740,
+    "sourceSha": "f4244e0307ae3ae60b2ceb2faaccdf3e3c91f166"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/samueras-sillytavern-multipersonacomposer.json",
+      "sha256": "b2cb0f47d5eec629a824631588e3a09c85f3815a20e45f1e31949703acc651b6",
+      "gitBlobSha": "507df5c85205078e48876e159c29f9977419fb10"
+    }
+  ]
+}

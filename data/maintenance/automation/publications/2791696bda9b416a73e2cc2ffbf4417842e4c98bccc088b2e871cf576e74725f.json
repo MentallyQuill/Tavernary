@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2791696bda9b416a73e2cc2ffbf4417842e4c98bccc088b2e871cf576e74725f",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1184246765:xenofei-sillytavern-scenepulse",
+      "inputDigest": "f565b42d17bd9071b7de55c2727fe3d3e1e5a2d0332305ef7a68679c59a5b176",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1184246765",
+    "identity": "github:1184246765"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40087304911,
+    "sourceSha": "bd78400b1c4c00deaf1000d813c5b7945d38cb98"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/xenofei-sillytavern-scenepulse.json",
+      "sha256": "8036eeec58f2d323954c973e90a02d9c4ee338b62b1c91e30303824fe7475939",
+      "gitBlobSha": "6f1ee5e70460b1f9ddc3395193e24c8240f3f4f8"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/2791696bda9b416a73e2cc2ffbf4417842e4c98bccc088b2e871cf576e74725f.json",
+      "sha256": "20a967a56043f1689c34ff8da49c0c5a59987af24f431800df12de3cbb2f7534",
+      "gitBlobSha": "bf96bda0f44ac81e94bc124601395dc8d189dfe0"
+    }
+  ]
+}

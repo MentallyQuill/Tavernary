@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3dd138d60c4f76fc757336d58c722c31455638f4ce0419f2278c4a08dcfebc26",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1220986145:xays-101-smart-chat-manager-silly-tavern",
+      "inputDigest": "0a8c44e3020f48665588fa0c5a6d2f9abeeae4f2cc8b301238e1c3ba4d94f700",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1220986145",
+    "identity": "github:1220986145"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40089963974,
+    "sourceSha": "46bcd4f13b313b1be0f091b4adbac92dfb676b57"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/xays-101-smart-chat-manager-silly-tavern.json",
+      "sha256": "73a2096a0731a37794b417f4d4ce2e6e984a8ce744da46f5130b4307673b737e",
+      "gitBlobSha": "d3594e4a2ded3e53fdecccada54e160c62e8f230"
+    }
+  ]
+}
