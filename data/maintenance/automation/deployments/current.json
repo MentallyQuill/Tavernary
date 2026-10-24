@@ -5,20 +5,20 @@
     "schema_version": 1,
     "sourceSha": "918640cd1f9573cd7f45be944d8e168f9711e17e",
     "status": "confirmed",
-    "buildId": "run-40125098898-attempt-1",
-    "bundleDigest": "35d016d760833faf1056b5cfb37ccc2e5d5d61a0af03ac459620a910943e11bd",
-    "confirmedAt": "2026-10-24T19:30:19.307Z",
+    "buildId": "run-40125097983-attempt-1",
+    "bundleDigest": "5242b846415aae293cd7b6669f58b106b85dd451063ae36d1af905807c970593",
+    "confirmedAt": "2026-10-24T19:33:58.597Z",
     "confirmation": {
       "sourceSha": "918640cd1f9573cd7f45be944d8e168f9711e17e",
       "catalogDigest": "4da10cb3e7a4777ff5bbee1d93b882925f0e6146a7103e2d99fe5ca568923779",
       "targetDigest": "705d860dbb35c48ce7aeadfb70f411602f43289493c239e067224e34409e59d0",
-      "buildDigest": "35d016d760833faf1056b5cfb37ccc2e5d5d61a0af03ac459620a910943e11bd",
+      "buildDigest": "5242b846415aae293cd7b6669f58b106b85dd451063ae36d1af905807c970593",
       "essentialSmokePassed": true
     },
-    "workflowRunId": 40125098898
+    "workflowRunId": 40125097983
   },
-  "observedAt": "2026-10-24T19:30:48.891Z",
-  "confirmingRunId": 40125098898,
+  "observedAt": "2026-10-24T19:34:24.011Z",
+  "confirmingRunId": 40125097983,
   "rollbackBaselineSha": null,
   "rollbackReason": null,
   "ownerActorId": null
