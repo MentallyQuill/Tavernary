@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "38a744b4f2a0ca687da2e0353a93b4192edae91bd91c01b06cf64dd85ea61ad2",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-983108844:inspectorcaracal-sillytavern-rememory",
+      "inputDigest": "73340ded75be5c7dbc3051b0819c0b81856d8c5de5d49302f60db9d157a9608d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-22T20:36:40.778Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-983108844",
+    "identity": "github:983108844"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 39896182077,
+    "sourceSha": "9ff4004aa9d76b88c14cdd44d48b9f1179066bc3"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/inspectorcaracal-sillytavern-rememory.json",
+      "sha256": "4bacbbc5a255457d8b8585857eed76ecb19f96d63117d005ea7629cb53135e5f",
+      "gitBlobSha": "de123436d60236d95ce3882c9fcf6f2ae6601fc2"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/38a744b4f2a0ca687da2e0353a93b4192edae91bd91c01b06cf64dd85ea61ad2.json",
+      "sha256": "9690bad540fd77d1ec096f51be603800aad58e91a16f1a982d062daf9a0db43b",
+      "gitBlobSha": "a50d5ac7288296f17fb2d911349ca267d4182d9b"
+    }
+  ]
+}

@@ -3,18 +3,14 @@
   "id": "inspectorcaracal-sillytavern-rememory",
   "name": "SillyTavern ReMemory",
   "kind": "extension",
-  "summary": "ReMemory is a SillyTavern extension that manages conversation memory within roleplay sessions. It offers tools for organizing and retrieving past interactions to keep chats consistent over time.",
+  "summary": "SillyTavern ReMemory is a memory management extension for SillyTavern, adding durable conversational memory to long chats (README, repo description).",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "source_id": "github-983108844",
-  "tags": [
-    "maintain-long-term-memory",
-    "retrieve-relevant-context",
-    "preserve-story-continuity"
-  ],
+  "tags": ["maintain-long-term-memory"],
   "listing_status": "active",
   "listing_status_reason": null,
   "metadata_policy": {

@@ -49365,7 +49365,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "memory-retrieval",
-      "summary": "ReMemory is a SillyTavern extension that manages conversation memory within roleplay sessions. It offers tools for organizing and retrieving past interactions to keep chats consistent over time.",
+      "summary": "SillyTavern ReMemory is a memory management extension for SillyTavern, adding durable conversational memory to long chats (README, repo description).",
       "canonicalUrl": "https://github.com/InspectorCaracal/SillyTavern-ReMemory",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -49381,18 +49381,6 @@
           "id": "maintain-long-term-memory",
           "label": "Maintain long-term memory",
           "description": "Preserve and recall important information across long chats or separate sessions.",
-          "facet": "goal"
-        },
-        {
-          "id": "retrieve-relevant-context",
-          "label": "Retrieve relevant context",
-          "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
-          "facet": "goal"
-        },
-        {
-          "id": "preserve-story-continuity",
-          "label": "Preserve story continuity",
-          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
           "facet": "goal"
         }
       ],
@@ -49566,7 +49554,7 @@
           "https://github.com/InspectorCaracal/SillyTavern-ReMemory"
         ],
         "summary": [
-          "ReMemory is a SillyTavern extension that manages conversation memory within roleplay sessions. It offers tools for organizing and retrieving past interactions to keep chats consistent over time."
+          "SillyTavern ReMemory is a memory management extension for SillyTavern, adding durable conversational memory to long chats (README, repo description)."
         ],
         "kind": [
           "extension"
@@ -49578,15 +49566,7 @@
           "Maintain long-term memory",
           "durable memory",
           "persistent memory",
-          "remember across chats",
-          "Retrieve relevant context",
-          "context retrieval",
-          "relevant recall",
-          "knowledge retrieval",
-          "Preserve story continuity",
-          "continuity tracking",
-          "canon consistency",
-          "story coherence"
+          "remember across chats"
         ],
         "frontends": [
           "SillyTavern"
