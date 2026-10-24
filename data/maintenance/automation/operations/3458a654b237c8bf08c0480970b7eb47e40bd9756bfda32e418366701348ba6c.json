@@ -9,8 +9,8 @@
       "policyVersion": "2026-07-29"
     },
     "stage": "admitted",
-    "createdAt": "2026-10-08T14:39:08.801Z",
-    "nextEligibleAt": "2026-10-24T02:21:44.415Z",
+    "createdAt": "2026-10-23T12:49:28.116Z",
+    "nextEligibleAt": "2026-10-24T16:34:45.271Z",
     "expectedSha": null,
     "workerRunId": null,
     "retry": {
@@ -18,10 +18,10 @@
         "kind": "transient",
         "reasonCode": "github-inventory-unavailable"
       },
-      "transientAttempts": 2,
+      "transientAttempts": 3,
       "immediateAttempts": 0
     }
   },
-  "updatedAt": "2026-10-24T01:15:54.408Z",
+  "updatedAt": "2026-10-24T09:59:45.232Z",
   "completedAt": null
 }
