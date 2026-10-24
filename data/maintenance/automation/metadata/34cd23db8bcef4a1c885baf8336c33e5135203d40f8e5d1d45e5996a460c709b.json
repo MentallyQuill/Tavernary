@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "zapoverde-sillytavern-canonize",
+  "sourceId": "github-1186081011",
+  "sourceIdentity": "github:1186081011",
+  "inputDigest": "858a7c8bd4fae9a77ace9db9c7fa639169ebc628f4d2bb359de070663a79a79b",
+  "fingerprint": "a2be402fc432503b9b73279aab6ab5dd763f67f49b5062063f294542847d9041",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "fdac414e35e0ae6a3f9ebc8dca8199a25f6daa9fe2847931b47d3b6101eb1084",
+  "outputDigest": "dc600a22f01698f7a5224316d4b40eb0db9dbb8f0c946e4904f2a27ffda89a69",
+  "headSha": "a64812c5d4f7175224bd449f390addff39bfd7bc",
+  "observedAt": "2026-10-24T15:18:15.178Z"
+}

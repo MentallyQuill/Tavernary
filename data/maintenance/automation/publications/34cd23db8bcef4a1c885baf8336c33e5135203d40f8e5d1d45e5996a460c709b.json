@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "34cd23db8bcef4a1c885baf8336c33e5135203d40f8e5d1d45e5996a460c709b",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1186081011:zapoverde-sillytavern-canonize",
+      "inputDigest": "858a7c8bd4fae9a77ace9db9c7fa639169ebc628f4d2bb359de070663a79a79b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1186081011",
+    "identity": "github:1186081011"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40106297053,
+    "sourceSha": "fb0f2157237b20cda4b835a387763557268e045e"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/zapoverde-sillytavern-canonize.json",
+      "sha256": "37a51e406f1621ee733194c7613049d25e05d0c2ce9e53471fc7be451668c526",
+      "gitBlobSha": "640607b303f8d77216ff11c50b7cf27fdde24776"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/34cd23db8bcef4a1c885baf8336c33e5135203d40f8e5d1d45e5996a460c709b.json",
+      "sha256": "f52a66165c3a7eb19e5f09564b4469de0b16df398f554ccbb4abc839fc636288",
+      "gitBlobSha": "23290684f2ad81708e2568ff68bdfc1e0457fb61"
+    }
+  ]
+}

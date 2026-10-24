@@ -3,7 +3,7 @@
   "id": "zapoverde-sillytavern-canonize",
   "name": "SillyTavern Canonize",
   "kind": "extension",
-  "summary": "It periodically refreshes SillyTavern's narrative hooks, lorebook entries, and vector storage files. The extension keeps those worldbuilding and memory resources synchronized through scheduled background updates.",
+  "summary": "SillyTavern Canonize archives chat turns into a searchable vault, trims them from context, and recalls relevant lore as needed (README).",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
@@ -11,10 +11,12 @@
   "catalog_cohort": "seed",
   "source_id": "github-1186081011",
   "tags": [
+    "manage-context-limits",
     "maintain-long-term-memory",
+    "retrieve-relevant-context",
     "manage-lorebooks",
-    "automate-roleplay-workflows",
-    "background-operation"
+    "preserve-story-continuity",
+    "persistent-state"
   ],
   "listing_status": "active",
   "listing_status_reason": null,
