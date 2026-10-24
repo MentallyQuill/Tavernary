@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "42749f7d783662447b12c663277b31bf14e51877edcfcecce0bd8a43621b007a",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1372058245:pyrxpia-sola-hub",
+      "inputDigest": "b9ad3b146a1a68cf0eb4ccc8ece9c0dc1984cbdd418f577b1298e62d241576a9",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1372058245",
+    "identity": "github:1372058245"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40091698458,
+    "sourceSha": "aa050c2fd4517238a3049aa5e505965cc4ad5a47"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/pyrxpia-sola-hub.json",
+      "sha256": "6f7abb23cc21bcdef0899aa68d36bf5dfaa1275e5798d10db6376e8a14e6624a",
+      "gitBlobSha": "652811f95fa9d88eff6d041624b25eec3c0229a4"
+    }
+  ]
+}

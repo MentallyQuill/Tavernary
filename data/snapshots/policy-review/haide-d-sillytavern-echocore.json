@@ -5,12 +5,9 @@
   "source_identity": "github:haide-d/sillytavern-echocore",
   "evidence_fingerprint": "0eebde3b68fc93f9379de016fbb19e984b82a4796fd2045eddb8f0a00e6ec7ed",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-05T16:22:31.169Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-10-05T16:22:31.169Z"
-  },
+  "reviewed_at": "2026-10-24T11:47:38.759Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
