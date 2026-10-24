@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1692ede91620f3896b509dff5e61f33ffa3c00eabeec9498fa223932c4691e28",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1194042343:hibanan-extension-quietprofileselector",
+      "inputDigest": "62cef8e327866d480d53222e82dd6c6f212357f5445d29c7c41fdb9e0dbaf435",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1194042343",
+    "identity": "github:1194042343"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40103939940,
+    "sourceSha": "c4def09fe22b4107c2f6a3269a8676d8b7515695"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/hibanan-extension-quietprofileselector.json",
+      "sha256": "f3f0743fef9f6c0424a9244fc0376e9184e2d26b0945cc5c6a3e300633ac0747",
+      "gitBlobSha": "c6800cb665d7d72fbda128dd24b2c0a809d011e1"
+    }
+  ]
+}

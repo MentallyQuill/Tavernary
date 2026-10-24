@@ -5,12 +5,9 @@
   "source_identity": "github:hibanan/extension-quietprofileselector",
   "evidence_fingerprint": "8b65bf3b6e0682d843f8bc4e4fb35610832f2b16113b39bf35d0d499f4f5dcd0",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-05T16:24:55.252Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-10-05T16:24:55.252Z"
-  },
+  "reviewed_at": "2026-10-24T14:46:29.124Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
