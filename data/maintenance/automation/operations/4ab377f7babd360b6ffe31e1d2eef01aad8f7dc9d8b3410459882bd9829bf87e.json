@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4ab377f7babd360b6ffe31e1d2eef01aad8f7dc9d8b3410459882bd9829bf87e",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1305892185:kikyoicecream-next-choices",
+      "inputDigest": "e15656ba426d841ba6d4adbecdee88f6b40e75cec6764af69d7fb46f2adae13d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-25T06:54:02.959Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-25T06:39:02.959Z",
+  "completedAt": null
+}
