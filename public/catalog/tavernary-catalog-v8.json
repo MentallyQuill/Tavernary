@@ -79358,7 +79358,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "A fullscreen RisuAI lorebook editor that replaces the narrow side panel with an environment optimized for managing large worldbuilding databases.",
+      "summary": "A RisuAI plugin providing a fullscreen lorebook editor (README, Lorebook Manager header), replacing the narrow side-panel default for managing large worldbuilding databases.",
       "canonicalUrl": "https://github.com/myanadi/risuai-lorebook-manager",
       "catalogedAt": "2026-08-07T23:05:40.855Z",
       "catalogCohort": "standard",
@@ -79371,22 +79371,10 @@
       ],
       "tags": [
         {
-          "id": "build-worlds-and-lore",
-          "label": "Build worlds and lore",
-          "description": "Create fictional settings, lore, locations, factions, or other world material.",
-          "facet": "goal"
-        },
-        {
           "id": "manage-lorebooks",
           "label": "Manage lorebooks",
           "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
           "facet": "goal"
-        },
-        {
-          "id": "mobile-friendly",
-          "label": "Mobile-friendly",
-          "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
-          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -79529,7 +79517,7 @@
           "https://github.com/myanadi/risuai-lorebook-manager"
         ],
         "summary": [
-          "A fullscreen RisuAI lorebook editor that replaces the narrow side panel with an environment optimized for managing large worldbuilding databases."
+          "A RisuAI plugin providing a fullscreen lorebook editor (README, Lorebook Manager header), replacing the narrow side-panel default for managing large worldbuilding databases."
         ],
         "kind": [
           "extension"
@@ -79538,19 +79526,10 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Build worlds and lore",
-          "worldbuilding",
-          "character worldbuilding",
-          "lore creation",
-          "setting design",
           "Manage lorebooks",
           "World Info management",
           "worldbook organization",
-          "loredeck management",
-          "Mobile-friendly",
-          "mobile support",
-          "phone friendly",
-          "responsive mobile UI"
+          "loredeck management"
         ],
         "frontends": [
           "RisuAI"

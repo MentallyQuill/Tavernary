@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "49d1971ff590262649dfcc44a4d984f96c37e88d1bffe608994a5ca26da76200",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1267774290:myanadi-risuai-lorebook-manager",
+      "inputDigest": "c98da5dafa3df7f1dc1417c5d63cfeba93bb5ae9e2d2bd063e44e24d1cbd91ad",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1267774290",
+    "identity": "github:1267774290"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40166422496,
+    "sourceSha": "84920109d6fa5d618efd0997126e8e2df88df7df"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/myanadi-risuai-lorebook-manager.json",
+      "sha256": "dc97db59c0dbe946577d577b0edf5076cc2cd7984f961db10ce0e36237a1499c",
+      "gitBlobSha": "fb39ac8cba9aa94b775da079eee77608758cddd0"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/49d1971ff590262649dfcc44a4d984f96c37e88d1bffe608994a5ca26da76200.json",
+      "sha256": "4797eb0b97a0212c71c721820a9a8d0e5e90114a70f1d36a51df50cc681e4968",
+      "gitBlobSha": "c521b58d3c8e7da4b9c83a984978f1fae716b606"
+    }
+  ]
+}
