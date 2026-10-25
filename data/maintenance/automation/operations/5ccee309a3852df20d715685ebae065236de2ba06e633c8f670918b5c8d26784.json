@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5ccee309a3852df20d715685ebae065236de2ba06e633c8f670918b5c8d26784",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1160700573:pixelnull-sillytavern-deeplore",
+      "inputDigest": "79c5069bcf632d9ed7346732ecf317850fedc22d6d7d04647544e69eac5d56cd",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "superseded",
+        "reasonCode": "input-superseded"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-25T11:14:22.489Z",
+  "completedAt": null
+}
