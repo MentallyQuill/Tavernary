@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "59f59d1043aee4b974a2dffde3b64b3aa61edcb2134624624e887ffd23064082",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1058500059:welvet-sillytavern-narrator",
+      "inputDigest": "370a7a24f59ac11738588439b92f06aaec2f187d62419124ccbb1524c45db10b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1058500059",
+    "identity": "github:1058500059"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40186763289,
+    "sourceSha": "2e6940ba4b1f2275a6686be71e72550ea829a243"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/welvet-sillytavern-narrator.json",
+      "sha256": "db9e4d56c000464db93f1036b75c89738eacdc8a82a959ac229e3ae25e600b29",
+      "gitBlobSha": "71e4da318c13d79d974f064e054490d96148d515"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "55f2968d97cddf840851a78ca6527f4d86299f9d6c6586b4ab9fb5123046e51d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1038188930:coneja-chibi-bunnymo",
+      "inputDigest": "a7939e78e37f7d387ad7983e1206880d84e9669fa30bedd7884e1a0a42c6e506",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1038188930",
+    "identity": "github:1038188930"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40185347535,
+    "sourceSha": "556cff8ba8a3caaf824c3056a4daf0ee5ed869e4"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/coneja-chibi-bunnymo.json",
+      "sha256": "1dd123ecad3156bf5ff8081a7e4e724f3f879461ebc344b780086218e4c6d3c7",
+      "gitBlobSha": "b8d66ca8f94864fa45af70cf44d3b6bf9bc30bfc"
+    }
+  ]
+}

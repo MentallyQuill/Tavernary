@@ -5,12 +5,9 @@
   "source_identity": "github:0cyris/sillytavern-openrouter-tts",
   "evidence_fingerprint": "27666ec53a4e37626d3bead15207d535fd6432b566e63d49441e8e3837e0ce32",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-25T03:54:10.605Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-09-25T03:54:10.605Z"
-  },
+  "reviewed_at": "2026-10-25T11:22:36.566Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

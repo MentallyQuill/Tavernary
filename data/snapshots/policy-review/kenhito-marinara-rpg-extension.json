@@ -3,14 +3,11 @@
   "project_id": "kenhito-marinara-rpg-extension",
   "source_id": "github-1225767064",
   "source_identity": "github:kenhito/marinara-rpg-extension",
-  "evidence_fingerprint": "e8a811f214c7eeec59f98adfce73d2ebbec14c49cd68bb979a913c213c049b72",
+  "evidence_fingerprint": "749883aedad10239345e37fe8941f82345020e446ba5d0e00b48ef1dbfe0f67d",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-02T12:24:08.765Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-02T12:24:08.765Z"
-  },
+  "reviewed_at": "2026-10-25T10:21:35.605Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

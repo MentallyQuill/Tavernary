@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "56a025a5465e24bbe0dbf5e916070af7d01253c89a222a7d9702e2c63dda6e31",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1267775620:myanadi-risuai-webnovel-community",
+      "inputDigest": "a619f86c1d502c91cf204d6c53128bf8d91c14ab39f94ada049f5b296b8707dc",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1267775620",
+    "identity": "github:1267775620"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40185874750,
+    "sourceSha": "013314db92f20491b5ce5a1f159e7da8d3ee4d4a"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/myanadi-risuai-webnovel-community.json",
+      "sha256": "b1e3666e1e6f41202ab1735dce1b28dddddf00d17a6adffd4ee17b764b7aa178",
+      "gitBlobSha": "855f01501aa3a868baad76fb673f01c746fdc859"
+    }
+  ]
+}

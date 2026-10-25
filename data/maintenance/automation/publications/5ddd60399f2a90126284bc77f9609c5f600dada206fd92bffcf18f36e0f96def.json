@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5ddd60399f2a90126284bc77f9609c5f600dada206fd92bffcf18f36e0f96def",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1384238329:0cyris-sillytavern-openrouter-tts",
+      "inputDigest": "a88a61723c4db3367dd89f3e5c06af75344d32ac892e774df256d7a04195ddc1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1384238329",
+    "identity": "github:1384238329"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40188555395,
+    "sourceSha": "432e2ff910938d8f2c22af4b55a14d68f15522dd"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/0cyris-sillytavern-openrouter-tts.json",
+      "sha256": "ece7e7fd08c6ab9a36204ff9ae1594e55f62a0b9d2b778b41ad66496430b233b",
+      "gitBlobSha": "48ece0f56e42db1b45417ad6f5e2576449c4cdd2"
+    }
+  ]
+}

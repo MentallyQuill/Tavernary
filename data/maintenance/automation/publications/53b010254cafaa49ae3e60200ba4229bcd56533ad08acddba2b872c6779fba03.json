@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "53b010254cafaa49ae3e60200ba4229bcd56533ad08acddba2b872c6779fba03",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1157586991:bal-spec-sillytavern-character-memory",
+      "inputDigest": "f2ec7390c2283fdbbf0ab9f060de161838f0715708ca6c4b04adb9aa2407cc5c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1157586991",
+    "identity": "github:1157586991"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40184838647,
+    "sourceSha": "a70f48d3214200376c3b4eb0812dd21edbc94ee8"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/bal-spec-sillytavern-character-memory.json",
+      "sha256": "9f6eeada7e51398c45c2ea4d317ff5333e935f4638e8e4f860d90d8c06c53d8f",
+      "gitBlobSha": "7ae96d3c3061055b310d5d57abb502c2674715a6"
+    }
+  ]
+}

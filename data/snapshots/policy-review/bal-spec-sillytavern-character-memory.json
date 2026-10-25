@@ -3,14 +3,11 @@
   "project_id": "bal-spec-sillytavern-character-memory",
   "source_id": "github-1157586991",
   "source_identity": "github:bal-spec/sillytavern-character-memory",
-  "evidence_fingerprint": "c84901d69a71e7eb8badde26992640bb4bb240dd3399399f053090253801c8bc",
+  "evidence_fingerprint": "9d7bfa296af5c85e840e050b0b630c83a33eebbf21fecd3a92aeab32345450e7",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-15T07:58:03.592Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-15T07:58:03.592Z"
-  },
+  "reviewed_at": "2026-10-25T10:28:11.851Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "52f2d6a30f7f757af5d947d44239d63c97b1eb6d63a44ee1aea63cc67b526f43",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1225767064:kenhito-marinara-rpg-extension",
+      "inputDigest": "71740dbc7a35ca2e004dee721bf880e8b1f0a2fa9dfd516afd6d24fc05383c7b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1225767064",
+    "identity": "github:1225767064"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40184384318,
+    "sourceSha": "42254a95cb38cf700039621d7ca02b92416402d2"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/kenhito-marinara-rpg-extension.json",
+      "sha256": "5f07e18782bb888246ea3548c74be9bcb1725c55cf1fb796e171a56eb19b3652",
+      "gitBlobSha": "afe56008b6f3b94cdcd1e2b5f43dffae05d66fd8"
+    }
+  ]
+}

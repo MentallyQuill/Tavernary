@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "coneja-chibi-bunnymo",
+  "source_id": "github-1038188930",
+  "source_identity": "github:coneja-chibi/bunnymo",
+  "evidence_fingerprint": "991656d476aeb44a70efbf5503bf911f18190a4076c5f33ce5d1ef1922837ca5",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-10-25T10:35:13.423Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}
