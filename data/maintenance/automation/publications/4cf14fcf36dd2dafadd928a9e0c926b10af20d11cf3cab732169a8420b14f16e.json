@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4cf14fcf36dd2dafadd928a9e0c926b10af20d11cf3cab732169a8420b14f16e",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1189308698:kristalium-sillytavern-too-many-chats",
+      "inputDigest": "c3c549250338a64917f2a874d22e1fe693b2062731839313b165f2aa92d780f8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1189308698",
+    "identity": "github:1189308698"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40240389987,
+    "sourceSha": "caa26229e541b07f3b76c42bae50946ad092337e"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/kristalium-sillytavern-too-many-chats.json",
+      "sha256": "cc75a431ef1ba7411033aacb83d7ba1f3f1204dedf3cfb339cce3beac034d895",
+      "gitBlobSha": "07bf72fcada688c03cedf07a7335bf4fb46feacd"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/4cf14fcf36dd2dafadd928a9e0c926b10af20d11cf3cab732169a8420b14f16e.json",
+      "sha256": "1f35f18eff87859594fd6a5800597aa0b8e003fe0d975235043fab40ce77fe4b",
+      "gitBlobSha": "9ae348b281f58dbbde36fd986bc7fa3a965a1a65"
+    }
+  ]
+}

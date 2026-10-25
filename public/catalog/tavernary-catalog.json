@@ -55288,10 +55288,10 @@
       "id": "kristalium-sillytavern-too-many-chats",
       "name": "Too-Many-Chats Continued",
       "kind": "extension",
-      "metadataStatus": "provisional",
+      "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Organize, search, and actually find your SillyTavern chats.",
+      "summary": "A SillyTavern extension for organizing, searching, and actually finding your chats among many chat files (README heading).",
       "canonicalUrl": "https://github.com/kristalium/SillyTavern-Too-Many-Chats",
       "catalogedAt": "2026-07-29T06:09:48.520Z",
       "catalogCohort": "standard",
@@ -55308,12 +55308,6 @@
           "label": "Organize chats and messages",
           "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
           "facet": "goal"
-        },
-        {
-          "id": "mobile-friendly",
-          "label": "Mobile-friendly",
-          "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
-          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -55475,7 +55469,7 @@
           "https://github.com/kristalium/SillyTavern-Too-Many-Chats"
         ],
         "summary": [
-          "Organize, search, and actually find your SillyTavern chats."
+          "A SillyTavern extension for organizing, searching, and actually finding your chats among many chat files (README heading)."
         ],
         "kind": [
           "extension"
@@ -55487,11 +55481,7 @@
           "Organize chats and messages",
           "chat organization",
           "message bookmarks",
-          "conversation search",
-          "Mobile-friendly",
-          "mobile support",
-          "phone friendly",
-          "responsive mobile UI"
+          "conversation search"
         ],
         "frontends": [
           "SillyTavern"
@@ -86143,8 +86133,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "10be7c319c378019da426d2b745f373dd590915d",
+        "freshness": "stale",
+        "currentSha": "5f4af8308faea8edb366aa91efe80daa6f61559b",
         "report": {
           "reportId": "eab6baefd43bc7f251c8242a991f5c76c844f7667175f4af4381cd20c860c1c5",
           "riskLevel": "low",
@@ -86228,11 +86218,11 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-08-01T15:09:58.000Z",
-        "activeWeeks12": 1,
+        "latestSourceActivityAt": "2026-10-21T23:29:56.000Z",
+        "activeWeeks12": 0,
         "weeklyActivity": [
           false,
-          true,
+          false,
           false,
           false,
           false,
@@ -86254,14 +86244,14 @@
         "watchers": 0,
         "aggregate": 5
       },
-      "repositorySizeKb": 1258,
+      "repositorySizeKb": 1295,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T21:37:36.646Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -96498,7 +96488,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T21:37:54.822Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -110480,10 +110470,10 @@
       },
       "latestReleaseAt": "2026-04-16T22:40:48.000Z",
       "community": {
-        "stars": 22,
+        "stars": 23,
         "forks": 0,
         "watchers": 1,
-        "aggregate": 23
+        "aggregate": 24
       },
       "repositorySizeKb": 155,
       "license": {
@@ -110492,7 +110482,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T21:38:39.563Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -169042,10 +169032,10 @@
             "id": "kristalium-sillytavern-too-many-chats",
             "name": "Too-Many-Chats Continued",
             "kind": "extension",
-            "metadataStatus": "provisional",
+            "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "Organize, search, and actually find your SillyTavern chats.",
+            "summary": "A SillyTavern extension for organizing, searching, and actually finding your chats among many chat files (README heading).",
             "canonicalUrl": "https://github.com/kristalium/SillyTavern-Too-Many-Chats",
             "catalogedAt": "2026-07-29T06:09:48.520Z",
             "catalogCohort": "standard",
@@ -169062,12 +169052,6 @@
                 "label": "Organize chats and messages",
                 "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
                 "facet": "goal"
-              },
-              {
-                "id": "mobile-friendly",
-                "label": "Mobile-friendly",
-                "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -169229,7 +169213,7 @@
                 "https://github.com/kristalium/SillyTavern-Too-Many-Chats"
               ],
               "summary": [
-                "Organize, search, and actually find your SillyTavern chats."
+                "A SillyTavern extension for organizing, searching, and actually finding your chats among many chat files (README heading)."
               ],
               "kind": [
                 "extension"
@@ -169241,11 +169225,7 @@
                 "Organize chats and messages",
                 "chat organization",
                 "message bookmarks",
-                "conversation search",
-                "Mobile-friendly",
-                "mobile support",
-                "phone friendly",
-                "responsive mobile UI"
+                "conversation search"
               ],
               "frontends": [
                 "SillyTavern"
@@ -182645,8 +182625,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "10be7c319c378019da426d2b745f373dd590915d",
+              "freshness": "stale",
+              "currentSha": "5f4af8308faea8edb366aa91efe80daa6f61559b",
               "report": {
                 "reportId": "eab6baefd43bc7f251c8242a991f5c76c844f7667175f4af4381cd20c860c1c5",
                 "riskLevel": "low",
@@ -182730,11 +182710,11 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-08-01T15:09:58.000Z",
-              "activeWeeks12": 1,
+              "latestSourceActivityAt": "2026-10-21T23:29:56.000Z",
+              "activeWeeks12": 0,
               "weeklyActivity": [
                 false,
-                true,
+                false,
                 false,
                 false,
                 false,
@@ -182756,14 +182736,14 @@
               "watchers": 0,
               "aggregate": 5
             },
-            "repositorySizeKb": 1258,
+            "repositorySizeKb": 1295,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-25T21:37:36.646Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -183687,10 +183667,10 @@
             "id": "kristalium-sillytavern-too-many-chats",
             "name": "Too-Many-Chats Continued",
             "kind": "extension",
-            "metadataStatus": "provisional",
+            "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "Organize, search, and actually find your SillyTavern chats.",
+            "summary": "A SillyTavern extension for organizing, searching, and actually finding your chats among many chat files (README heading).",
             "canonicalUrl": "https://github.com/kristalium/SillyTavern-Too-Many-Chats",
             "catalogedAt": "2026-07-29T06:09:48.520Z",
             "catalogCohort": "standard",
@@ -183707,12 +183687,6 @@
                 "label": "Organize chats and messages",
                 "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
                 "facet": "goal"
-              },
-              {
-                "id": "mobile-friendly",
-                "label": "Mobile-friendly",
-                "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -183874,7 +183848,7 @@
                 "https://github.com/kristalium/SillyTavern-Too-Many-Chats"
               ],
               "summary": [
-                "Organize, search, and actually find your SillyTavern chats."
+                "A SillyTavern extension for organizing, searching, and actually finding your chats among many chat files (README heading)."
               ],
               "kind": [
                 "extension"
@@ -183886,11 +183860,7 @@
                 "Organize chats and messages",
                 "chat organization",
                 "message bookmarks",
-                "conversation search",
-                "Mobile-friendly",
-                "mobile support",
-                "phone friendly",
-                "responsive mobile UI"
+                "conversation search"
               ],
               "frontends": [
                 "SillyTavern"
@@ -197213,8 +197183,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "10be7c319c378019da426d2b745f373dd590915d",
+              "freshness": "stale",
+              "currentSha": "5f4af8308faea8edb366aa91efe80daa6f61559b",
               "report": {
                 "reportId": "eab6baefd43bc7f251c8242a991f5c76c844f7667175f4af4381cd20c860c1c5",
                 "riskLevel": "low",
@@ -197298,11 +197268,11 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-08-01T15:09:58.000Z",
-              "activeWeeks12": 1,
+              "latestSourceActivityAt": "2026-10-21T23:29:56.000Z",
+              "activeWeeks12": 0,
               "weeklyActivity": [
                 false,
-                true,
+                false,
                 false,
                 false,
                 false,
@@ -197324,14 +197294,14 @@
               "watchers": 0,
               "aggregate": 5
             },
-            "repositorySizeKb": 1258,
+            "repositorySizeKb": 1295,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-25T21:37:36.646Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -198255,10 +198225,10 @@
             "id": "kristalium-sillytavern-too-many-chats",
             "name": "Too-Many-Chats Continued",
             "kind": "extension",
-            "metadataStatus": "provisional",
+            "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "Organize, search, and actually find your SillyTavern chats.",
+            "summary": "A SillyTavern extension for organizing, searching, and actually finding your chats among many chat files (README heading).",
             "canonicalUrl": "https://github.com/kristalium/SillyTavern-Too-Many-Chats",
             "catalogedAt": "2026-07-29T06:09:48.520Z",
             "catalogCohort": "standard",
@@ -198275,12 +198245,6 @@
                 "label": "Organize chats and messages",
                 "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
                 "facet": "goal"
-              },
-              {
-                "id": "mobile-friendly",
-                "label": "Mobile-friendly",
-                "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -198442,7 +198406,7 @@
                 "https://github.com/kristalium/SillyTavern-Too-Many-Chats"
               ],
               "summary": [
-                "Organize, search, and actually find your SillyTavern chats."
+                "A SillyTavern extension for organizing, searching, and actually finding your chats among many chat files (README heading)."
               ],
               "kind": [
                 "extension"
@@ -198454,11 +198418,7 @@
                 "Organize chats and messages",
                 "chat organization",
                 "message bookmarks",
-                "conversation search",
-                "Mobile-friendly",
-                "mobile support",
-                "phone friendly",
-                "responsive mobile UI"
+                "conversation search"
               ],
               "frontends": [
                 "SillyTavern"
@@ -206935,10 +206895,10 @@
             "id": "kristalium-sillytavern-too-many-chats",
             "name": "Too-Many-Chats Continued",
             "kind": "extension",
-            "metadataStatus": "provisional",
+            "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "Organize, search, and actually find your SillyTavern chats.",
+            "summary": "A SillyTavern extension for organizing, searching, and actually finding your chats among many chat files (README heading).",
             "canonicalUrl": "https://github.com/kristalium/SillyTavern-Too-Many-Chats",
             "catalogedAt": "2026-07-29T06:09:48.520Z",
             "catalogCohort": "standard",
@@ -206955,12 +206915,6 @@
                 "label": "Organize chats and messages",
                 "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
                 "facet": "goal"
-              },
-              {
-                "id": "mobile-friendly",
-                "label": "Mobile-friendly",
-                "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -207122,7 +207076,7 @@
                 "https://github.com/kristalium/SillyTavern-Too-Many-Chats"
               ],
               "summary": [
-                "Organize, search, and actually find your SillyTavern chats."
+                "A SillyTavern extension for organizing, searching, and actually finding your chats among many chat files (README heading)."
               ],
               "kind": [
                 "extension"
@@ -207134,11 +207088,7 @@
                 "Organize chats and messages",
                 "chat organization",
                 "message bookmarks",
-                "conversation search",
-                "Mobile-friendly",
-                "mobile support",
-                "phone friendly",
-                "responsive mobile UI"
+                "conversation search"
               ],
               "frontends": [
                 "SillyTavern"
@@ -246631,8 +246581,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "10be7c319c378019da426d2b745f373dd590915d",
+              "freshness": "stale",
+              "currentSha": "5f4af8308faea8edb366aa91efe80daa6f61559b",
               "report": {
                 "reportId": "eab6baefd43bc7f251c8242a991f5c76c844f7667175f4af4381cd20c860c1c5",
                 "riskLevel": "low",
@@ -246716,11 +246666,11 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-08-01T15:09:58.000Z",
-              "activeWeeks12": 1,
+              "latestSourceActivityAt": "2026-10-21T23:29:56.000Z",
+              "activeWeeks12": 0,
               "weeklyActivity": [
                 false,
-                true,
+                false,
                 false,
                 false,
                 false,
@@ -246742,14 +246692,14 @@
               "watchers": 0,
               "aggregate": 5
             },
-            "repositorySizeKb": 1258,
+            "repositorySizeKb": 1295,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-25T21:37:36.646Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
