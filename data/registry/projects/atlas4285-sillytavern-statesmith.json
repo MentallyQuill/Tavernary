@@ -9,11 +9,9 @@
   "frontends": ["sillytavern"],
   "primary_function": "rpg-systems",
   "tags": [
+    "track-characters-and-world-state",
     "agentic-tool-use",
-    "move-and-back-up-data",
-    "multilingual",
-    "persistent-state",
-    "track-characters-and-world-state"
+    "persistent-state"
   ],
   "cataloged_at": "2026-10-03T08:33:35.477Z",
   "catalog_cohort": "standard",

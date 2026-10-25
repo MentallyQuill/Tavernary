@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "43e453b2baac8b86004af74da6f54e83a31badbca10ed6d2cbc9c8cba95d2493",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1220472991:cha1latte-marinara-avatar-background",
+      "inputDigest": "38f8625c22125c978e1029681a285277f242a946cd472840ac425741b629cdae",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1220472991",
+    "identity": "github:1220472991"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40152807459,
+    "sourceSha": "c6adea6a051b554b1ac8b77bf12d26236d248876"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/cha1latte-marinara-avatar-background.json",
+      "sha256": "493b154e7727ec21fc8711207f38ac5202fe0a072a724855808f9712d9331435",
+      "gitBlobSha": "187957e966c1db980ce57f29e870ea7850093394"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/43e453b2baac8b86004af74da6f54e83a31badbca10ed6d2cbc9c8cba95d2493.json",
+      "sha256": "c767c018bf483bd167fc2dd5b90acbb93add6e93d34e50fe5ec363c643cf39c9",
+      "gitBlobSha": "a78afdfe216fc5e084528d8ad4f267a6934efc47"
+    }
+  ]
+}

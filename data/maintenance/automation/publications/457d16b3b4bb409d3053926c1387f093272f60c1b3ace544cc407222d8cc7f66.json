@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "457d16b3b4bb409d3053926c1387f093272f60c1b3ace544cc407222d8cc7f66",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1111979731:quackified-floating-viewer",
+      "inputDigest": "e82b6ba9511a12a71b813d959c83e7c12148c796384bdeb8331086a59983af10",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1111979731",
+    "identity": "github:1111979731"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40154210637,
+    "sourceSha": "19a70a23bb0fb75284f69b303db328a6efb6c2cd"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/quackified-floating-viewer.json",
+      "sha256": "5a6d59646525c65719469aa0022524582f356e073749a22161d9df39f0fcefff",
+      "gitBlobSha": "811601e5518ebcf9465ef8efa6e3efe665f2eea4"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/457d16b3b4bb409d3053926c1387f093272f60c1b3ace544cc407222d8cc7f66.json",
+      "sha256": "ccc3d21bd89ab1a41fa88791b23bfc66cd3d2a39e89fd085f37ad107e47a62c2",
+      "gitBlobSha": "d5e050aac239566cd47bd0c86ad512fde5b3c59d"
+    }
+  ]
+}

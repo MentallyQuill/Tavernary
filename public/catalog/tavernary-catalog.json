@@ -10607,21 +10607,15 @@
       ],
       "tags": [
         {
-          "id": "agentic-tool-use",
-          "label": "Agentic tool use",
-          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
-          "facet": "trait"
-        },
-        {
-          "id": "move-and-back-up-data",
-          "label": "Move and back up data",
-          "description": "Import, export, synchronize, migrate, restore, or back up roleplay data.",
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
           "facet": "goal"
         },
         {
-          "id": "multilingual",
-          "label": "Multilingual",
-          "description": "Explicitly supports use, authoring, or interfaces in multiple languages.",
+          "id": "agentic-tool-use",
+          "label": "Agentic tool use",
+          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
           "facet": "trait"
         },
         {
@@ -10629,12 +10623,6 @@
           "label": "Persistent state",
           "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
           "facet": "trait"
-        },
-        {
-          "id": "track-characters-and-world-state",
-          "label": "Track characters and world state",
-          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
-          "facet": "goal"
         }
       ],
       "tavernKeeper": {
@@ -10852,26 +10840,18 @@
           "RPG systems and suites"
         ],
         "tags": [
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking",
           "Agentic tool use",
           "tool calling",
           "AI agents",
           "agent mode",
-          "Move and back up data",
-          "data portability",
-          "backup and restore",
-          "import and export",
-          "Multilingual",
-          "multiple languages",
-          "internationalized",
-          "cross-language support",
           "Persistent state",
           "durable state",
           "state persistence",
-          "cross-session state",
-          "Track characters and world state",
-          "state tracking",
-          "stat trackers",
-          "world state tracking"
+          "cross-session state"
         ],
         "frontends": [
           "SillyTavern"
@@ -16489,10 +16469,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 97,
+        "stars": 98,
         "forks": 8,
         "watchers": 2,
-        "aggregate": 107
+        "aggregate": 108
       },
       "repositorySizeKb": 241,
       "license": {
@@ -16501,7 +16481,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T01:52:34.597Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -21285,7 +21265,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "This Marinara Engine extension displays the currently speaking character's avatar as a soft, blurred background behind group conversations. The backdrop updates automatically to match whichever character is active.",
+      "summary": "A client-side Marinara Engine extension that renders the currently-speaking character's avatar as a soft, blurred, dimmed background behind Conversation chats, cross-fading to the last speaker in group chats (README).",
       "canonicalUrl": "https://github.com/cha1latte/marinara-avatar-background",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -21301,12 +21281,6 @@
           "id": "add-visual-immersion",
           "label": "Add visual immersion",
           "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
-          "facet": "goal"
-        },
-        {
-          "id": "run-group-roleplay",
-          "label": "Run group roleplay",
-          "description": "Coordinate scenes involving several AI characters in the same conversation.",
           "facet": "goal"
         }
       ],
@@ -21447,7 +21421,7 @@
           "https://github.com/cha1latte/marinara-avatar-background"
         ],
         "summary": [
-          "This Marinara Engine extension displays the currently speaking character's avatar as a soft, blurred background behind group conversations. The backdrop updates automatically to match whichever character is active."
+          "A client-side Marinara Engine extension that renders the currently-speaking character's avatar as a soft, blurred, dimmed background behind Conversation chats, cross-fading to the last speaker in group chats (README)."
         ],
         "kind": [
           "extension"
@@ -21459,11 +21433,7 @@
           "Add visual immersion",
           "roleplay visuals",
           "visual novel presentation",
-          "scene visuals",
-          "Run group roleplay",
-          "multi-character roleplay",
-          "group chats",
-          "ensemble scenes"
+          "scene visuals"
         ],
         "frontends": [
           "Marinara Engine"
@@ -91501,7 +91471,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Floating Viewer is a SillyTavern extension that replaces the default image popup with a floating window. Users can drag and resize the window to position images anywhere while interacting with the chat.",
+      "summary": "Floating Viewer is a SillyTavern extension that replaces the default image popup with a draggable and resizable floating window (README).",
       "canonicalUrl": "https://github.com/Quackified/Floating-Viewer",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -91512,14 +91482,7 @@
           "description": "Works with the SillyTavern roleplay frontend."
         }
       ],
-      "tags": [
-        {
-          "id": "customize-the-interface",
-          "label": "Customize the interface",
-          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
-          "facet": "goal"
-        }
-      ],
+      "tags": [],
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
@@ -91663,7 +91626,7 @@
           "https://github.com/Quackified/Floating-Viewer"
         ],
         "summary": [
-          "Floating Viewer is a SillyTavern extension that replaces the default image popup with a floating window. Users can drag and resize the window to position images anywhere while interacting with the chat."
+          "Floating Viewer is a SillyTavern extension that replaces the default image popup with a draggable and resizable floating window (README)."
         ],
         "kind": [
           "extension"
@@ -91671,12 +91634,7 @@
         "primaryFunction": [
           "Interface and workflow"
         ],
-        "tags": [
-          "Customize the interface",
-          "interface theming",
-          "layout customization",
-          "UI personalization"
-        ],
+        "tags": [],
         "frontends": [
           "SillyTavern"
         ],
@@ -125309,7 +125267,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T01:52:46.907Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -158242,10 +158200,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 97,
+              "stars": 98,
               "forks": 8,
               "watchers": 2,
-              "aggregate": 107
+              "aggregate": 108
             },
             "repositorySizeKb": 241,
             "license": {
@@ -158254,7 +158212,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-25T01:52:34.597Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -247007,7 +246965,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "Floating Viewer is a SillyTavern extension that replaces the default image popup with a floating window. Users can drag and resize the window to position images anywhere while interacting with the chat.",
+            "summary": "Floating Viewer is a SillyTavern extension that replaces the default image popup with a draggable and resizable floating window (README).",
             "canonicalUrl": "https://github.com/Quackified/Floating-Viewer",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -247018,14 +246976,7 @@
                 "description": "Works with the SillyTavern roleplay frontend."
               }
             ],
-            "tags": [
-              {
-                "id": "customize-the-interface",
-                "label": "Customize the interface",
-                "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
-                "facet": "goal"
-              }
-            ],
+            "tags": [],
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
@@ -247169,7 +247120,7 @@
                 "https://github.com/Quackified/Floating-Viewer"
               ],
               "summary": [
-                "Floating Viewer is a SillyTavern extension that replaces the default image popup with a floating window. Users can drag and resize the window to position images anywhere while interacting with the chat."
+                "Floating Viewer is a SillyTavern extension that replaces the default image popup with a draggable and resizable floating window (README)."
               ],
               "kind": [
                 "extension"
@@ -247177,12 +247128,7 @@
               "primaryFunction": [
                 "Interface and workflow"
               ],
-              "tags": [
-                "Customize the interface",
-                "interface theming",
-                "layout customization",
-                "UI personalization"
-              ],
+              "tags": [],
               "frontends": [
                 "SillyTavern"
               ],

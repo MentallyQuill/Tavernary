@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "44fbccd54a898cff9ca125d2d29b8bf9e251b77885f547aaf38d1f9f963017a6",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1191978638:ikarusv-ikarusautoimage",
+      "inputDigest": "a627512139e7f2c3893d7b28caf666b808e860a4575cd2f8fc743d2730e906d0",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1191978638",
+    "identity": "github:1191978638"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40153784411,
+    "sourceSha": "e3a06e09cc87176df56dd165452dcd6e1729f577"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/ikarusv-ikarusautoimage.json",
+      "sha256": "58556b0355c97b27310d29d75a243d19ca6726d0065c9a87f4a397ea2af9a7e8",
+      "gitBlobSha": "c7bf71ac654013842acdc0c6f830a3a23c0a51b3"
+    }
+  ]
+}

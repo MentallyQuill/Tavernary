@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4612278ff3453f50c1b0be016c946218f2596b4b89842ee7708185c104ce3118",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1388970601:atlas4285-sillytavern-statesmith",
+      "inputDigest": "da31398d1c63d174cf312eed0a61b4b2b77bf591434d89d98e10ab6e09cd39ad",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1388970601",
+    "identity": "github:1388970601"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40154655851,
+    "sourceSha": "55794a93ff7ee7f65691cb71cf0a61153b7262e8"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/atlas4285-sillytavern-statesmith.json",
+      "sha256": "0f0d2b0f0a8daee129e775c4db6899e9644a31cc2b8859c75de43bef8102b3be",
+      "gitBlobSha": "c035ab2f66e661731d475a9f96d8679784b78a9e"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/4612278ff3453f50c1b0be016c946218f2596b4b89842ee7708185c104ce3118.json",
+      "sha256": "6a2a03a81c910561bcbe9a32dcf8a38583733fe71cbb845937658c71c4d5a3be",
+      "gitBlobSha": "362b57dff29a4ae71fc7b81f567c724af6bea510"
+    }
+  ]
+}
