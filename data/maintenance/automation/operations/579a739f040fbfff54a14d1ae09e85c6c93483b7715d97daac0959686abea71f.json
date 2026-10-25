@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "579a739f040fbfff54a14d1ae09e85c6c93483b7715d97daac0959686abea71f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1399235098:pathetic777-st-tavern-architect",
+      "inputDigest": "72a319544c020eec5c40f969012b67f80b5d66d0a00b471c50e0b6afc47156b5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-25T11:39:55.130Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "github-inventory-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-25T11:34:30.265Z",
+  "completedAt": null
+}
