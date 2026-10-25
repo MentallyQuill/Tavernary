@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "dfaker-st-clickable-actions",
+  "source_id": "github-1034747621",
+  "source_identity": "github:dfaker/st-clickable-actions",
+  "evidence_fingerprint": "3f21783c9297bbdd72af670eec3fbf9b18503d328a11f2a6ad1ca2186d8686ff",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-10-25T09:13:46.797Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}
