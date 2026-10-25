@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5cc721f63e44d7d9e8361483eeb1513ec31036e5cf0e922ab4de7b82d633db7f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1334521822:sewerzone-sillytavern-sillytoast",
+      "inputDigest": "b36ada26d857bb2a5de93209df9ad03eea92301b71bf9acea88ce29324a95f02",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-25T12:11:51.085Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "workflow-result-unavailable"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-25T11:07:33.888Z",
+  "completedAt": null
+}
