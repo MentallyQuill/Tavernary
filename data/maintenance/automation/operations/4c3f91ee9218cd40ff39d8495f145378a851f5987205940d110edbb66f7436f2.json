@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4c3f91ee9218cd40ff39d8495f145378a851f5987205940d110edbb66f7436f2",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1223260183:jake9000-me-nord",
+      "inputDigest": "7d8f5f1f1f712bb20107948f7c058414db4a702f8bfc9c6c5e0e45b13b4d759e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-25T07:04:22.568Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-25T06:49:22.568Z",
+  "completedAt": null
+}
