@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4fe58e8182a4e117f2873477a58ef423823d3425fe654ee841f8564f09b85d8a",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1179684706:ayvencore-sillytavern-lorebook-manager",
+      "inputDigest": "0c8363dc743e0c1e65fca7c54a76d6dbbae6bc24df4591fbe6b3335b795b2ef9",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-25T07:04:22.568Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-25T06:49:22.568Z",
+  "completedAt": null
+}
