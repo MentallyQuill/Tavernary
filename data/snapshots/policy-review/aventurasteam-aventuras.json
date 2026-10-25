@@ -5,12 +5,9 @@
   "source_identity": "github:aventurasteam/aventuras",
   "evidence_fingerprint": "a2a292d9ea938ce0c7881a1c797e9b78eb3fdb5ceb80a51f02dde95210ff1d56",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-08T14:51:21.089Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-10-08T14:51:21.089Z"
-  },
+  "reviewed_at": "2026-10-25T02:59:08.860Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

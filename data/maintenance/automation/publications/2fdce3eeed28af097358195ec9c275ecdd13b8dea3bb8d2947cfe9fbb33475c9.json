@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2fdce3eeed28af097358195ec9c275ecdd13b8dea3bb8d2947cfe9fbb33475c9",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1126279204:aventurasteam-aventuras",
+      "inputDigest": "a473f421d7e6c0a1ab38666c44c108663ac98a7247155a0a8a405eaa149f330e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1126279204",
+    "identity": "github:1126279204"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40156471031,
+    "sourceSha": "ceed333b9441d749170fedb4288f57aa4eeabd36"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/aventurasteam-aventuras.json",
+      "sha256": "c2d2ee61f1fa2860655eb0794eff0e4d707a2310ed96fc7d9c8f13cd3f10a82c",
+      "gitBlobSha": "11f5572531789d1f7f946265f99b6151de04c4d8"
+    }
+  ]
+}
