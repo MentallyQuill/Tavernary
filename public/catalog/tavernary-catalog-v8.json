@@ -6039,14 +6039,14 @@
         "watchers": 0,
         "aggregate": 5
       },
-      "repositorySizeKb": 36216,
+      "repositorySizeKb": 36387,
       "license": {
         "status": "proprietary",
         "label": "Proprietary",
         "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T21:08:56.966Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -19573,7 +19573,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T21:08:05.834Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -65340,7 +65340,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "4ee61a368c381f2f8db43b4454f088a7388693bf",
+        "currentSha": "7b63fcd56c06bd4e367282ece2357fda88294c5b",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -65366,10 +65366,10 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-06T09:34:28.000Z",
-        "activeWeeks12": 5,
+        "latestSourceActivityAt": "2026-10-24T17:36:19.000Z",
+        "activeWeeks12": 4,
         "weeklyActivity": [
-          true,
+          false,
           false,
           false,
           true,
@@ -65385,21 +65385,21 @@
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-09-10T18:49:29.000Z",
+      "latestReleaseAt": "2026-10-24T17:48:01.000Z",
       "community": {
-        "stars": 88,
+        "stars": 104,
         "forks": 6,
         "watchers": 1,
-        "aggregate": 95
+        "aggregate": 111
       },
-      "repositorySizeKb": 88898,
+      "repositorySizeKb": 182864,
       "license": {
-        "status": "osi-approved",
-        "label": "AGPL-3.0",
-        "tooltip": "OSI-approved license detected in the repository root."
+        "status": "proprietary",
+        "label": "Proprietary",
+        "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T21:07:47.923Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -233578,14 +233578,14 @@
               "watchers": 0,
               "aggregate": 5
             },
-            "repositorySizeKb": 36216,
+            "repositorySizeKb": 36387,
             "license": {
               "status": "proprietary",
               "label": "Proprietary",
               "tooltip": "The published root license is not OSI-approved."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-25T21:08:56.966Z",
             "staleSince": null,
             "install": null,
             "fork": null,
