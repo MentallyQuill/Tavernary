@@ -18027,7 +18027,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "a8df40b911e7f1e63446431deaa1e471d1e462af",
+        "currentSha": "a480c513cd3f75c71ae2de5ae55e18e0952bdbbc",
         "report": {
           "reportId": "93633fe204a903602f0677a4b59e4a5eac287da4c0400045478a9477ff776874",
           "riskLevel": "low",
@@ -18186,11 +18186,11 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-05T04:56:08.000Z",
-        "activeWeeks12": 12,
+        "latestSourceActivityAt": "2026-10-25T03:44:27.000Z",
+        "activeWeeks12": 10,
         "weeklyActivity": [
-          true,
-          true,
+          false,
+          false,
           true,
           true,
           true,
@@ -18212,14 +18212,14 @@
         "watchers": 4,
         "aggregate": 18
       },
-      "repositorySizeKb": 6581,
+      "repositorySizeKb": 6824,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T20:19:02.440Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -35536,7 +35536,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T20:18:16.148Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -59678,10 +59678,10 @@
       },
       "latestReleaseAt": "2026-08-18T18:31:19.000Z",
       "community": {
-        "stars": 50,
+        "stars": 51,
         "forks": 6,
         "watchers": 1,
-        "aggregate": 57
+        "aggregate": 58
       },
       "repositorySizeKb": 446,
       "license": {
@@ -59690,7 +59690,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T20:19:12.253Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -89253,7 +89253,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "3d30fc5a1982b1b5d149b97e188b8ee45d89e1d2",
+        "currentSha": "5da95f713a610219ddcf6c13de8779c52018196d",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -89346,12 +89346,12 @@
           },
           {
             "provider": "github",
-            "login": "bangonicdd",
+            "login": "tasoo-oos",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "tasoo-oos",
+            "login": "bangonicdd",
             "botOrAi": false
           },
           {
@@ -89541,6 +89541,11 @@
           },
           {
             "provider": "github",
+            "login": "rsyumi",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "rakey0",
             "botOrAi": false
           },
@@ -89571,11 +89576,6 @@
           },
           {
             "provider": "github",
-            "login": "rsyumi",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
             "login": "opza",
             "botOrAi": false
           },
@@ -89597,6 +89597,11 @@
           {
             "provider": "github",
             "login": "jinook518",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "iamhelios07",
             "botOrAi": false
           },
           {
@@ -89636,6 +89641,11 @@
           },
           {
             "provider": "github",
+            "login": "Ye0l",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "SeA-luby",
             "botOrAi": false
           },
@@ -89665,15 +89675,15 @@
             "botOrAi": false
           }
         ],
-        "humanContributorCount": 79,
+        "humanContributorCount": 81,
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-09-27T13:48:06.000Z",
-        "activeWeeks12": 8,
+        "latestSourceActivityAt": "2026-10-24T06:20:39.000Z",
+        "activeWeeks12": 7,
         "weeklyActivity": [
-          true,
-          true,
+          false,
+          false,
           false,
           true,
           true,
@@ -89683,26 +89693,26 @@
           false,
           true,
           false,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-09-27T14:03:10.000Z",
+      "latestReleaseAt": "2026-10-24T06:26:35.000Z",
       "community": {
-        "stars": 369,
-        "forks": 65,
+        "stars": 416,
+        "forks": 66,
         "watchers": 3,
-        "aggregate": 437
+        "aggregate": 485
       },
-      "repositorySizeKb": 77976,
+      "repositorySizeKb": 79402,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T20:18:19.710Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -89774,8 +89784,8 @@
           "ljh5650",
           "joonsoome",
           "miladiashe",
-          "bangonicdd",
           "tasoo-oos",
+          "bangonicdd",
           "aegkmq",
           "Decikingship",
           "tammy3211",
@@ -89813,18 +89823,19 @@
           "tiamatiramisu",
           "Amoeba1234",
           "sduoooh",
+          "rsyumi",
           "rakey0",
           "dootaang",
           "alattalatta",
           "rhplus0831",
           "eltociear",
           "yaa19212-droid",
-          "rsyumi",
           "opza",
           "namda-on",
           "misisipir",
           "kmou424",
           "jinook518",
+          "iamhelios07",
           "hush27",
           "donmarble",
           "diegocostares",
@@ -89832,6 +89843,7 @@
           "broot5",
           "blueherb",
           "Yvonne-Aizawa",
+          "Ye0l",
           "SeA-luby",
           "OnlookerRs",
           "LI-NA",
@@ -158578,7 +158590,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "a8df40b911e7f1e63446431deaa1e471d1e462af",
+              "currentSha": "a480c513cd3f75c71ae2de5ae55e18e0952bdbbc",
               "report": {
                 "reportId": "93633fe204a903602f0677a4b59e4a5eac287da4c0400045478a9477ff776874",
                 "riskLevel": "low",
@@ -158737,11 +158749,11 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-05T04:56:08.000Z",
-              "activeWeeks12": 12,
+              "latestSourceActivityAt": "2026-10-25T03:44:27.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
-                true,
-                true,
+                false,
+                false,
                 true,
                 true,
                 true,
@@ -158763,14 +158775,14 @@
               "watchers": 4,
               "aggregate": 18
             },
-            "repositorySizeKb": 6581,
+            "repositorySizeKb": 6824,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-25T20:19:02.440Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -215633,7 +215645,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "a8df40b911e7f1e63446431deaa1e471d1e462af",
+              "currentSha": "a480c513cd3f75c71ae2de5ae55e18e0952bdbbc",
               "report": {
                 "reportId": "93633fe204a903602f0677a4b59e4a5eac287da4c0400045478a9477ff776874",
                 "riskLevel": "low",
@@ -215792,11 +215804,11 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-05T04:56:08.000Z",
-              "activeWeeks12": 12,
+              "latestSourceActivityAt": "2026-10-25T03:44:27.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
-                true,
-                true,
+                false,
+                false,
                 true,
                 true,
                 true,
@@ -215818,14 +215830,14 @@
               "watchers": 4,
               "aggregate": 18
             },
-            "repositorySizeKb": 6581,
+            "repositorySizeKb": 6824,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-25T20:19:02.440Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -241814,7 +241826,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "a8df40b911e7f1e63446431deaa1e471d1e462af",
+              "currentSha": "a480c513cd3f75c71ae2de5ae55e18e0952bdbbc",
               "report": {
                 "reportId": "93633fe204a903602f0677a4b59e4a5eac287da4c0400045478a9477ff776874",
                 "riskLevel": "low",
@@ -241973,11 +241985,11 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-05T04:56:08.000Z",
-              "activeWeeks12": 12,
+              "latestSourceActivityAt": "2026-10-25T03:44:27.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
-                true,
-                true,
+                false,
+                false,
                 true,
                 true,
                 true,
@@ -241999,14 +242011,14 @@
               "watchers": 4,
               "aggregate": 18
             },
-            "repositorySizeKb": 6581,
+            "repositorySizeKb": 6824,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-25T20:19:02.440Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",

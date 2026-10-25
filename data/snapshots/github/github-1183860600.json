@@ -9,18 +9,33 @@
     "url": "https://github.com/PocketRisu/PocketRisu",
     "description": "Self-hosted AI roleplay chat platform you run on your PC or personal server, forked from Risuai",
     "default_branch": "main",
-    "head_sha": "3d30fc5a1982b1b5d149b97e188b8ee45d89e1d2",
-    "head_committed_at": "2026-09-27T13:54:31.000Z",
+    "head_sha": "5da95f713a610219ddcf6c13de8779c52018196d",
+    "head_committed_at": "2026-10-24T06:20:39.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-17T02:40:46.000Z",
-    "size_kb": 77976
+    "size_kb": 79402
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-27T13:48:06.000Z",
+    "latest_source_activity_at": "2026-10-24T06:20:39.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-24T06:20:39.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-18T15:42:14.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-09T09:37:08.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-21",
         "latest_at": "2026-09-27T13:48:06.000Z",
@@ -50,42 +65,27 @@
         "week_start": "2026-08-10",
         "latest_at": "2026-08-15T08:15:09.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-08-01T01:43:22.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-20",
-        "latest_at": "2026-07-25T08:23:11.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-13",
-        "latest_at": "2026-07-18T04:55:54.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-09-27T14:03:10.000Z",
+    "latest_release_at": "2026-10-24T06:26:35.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-28T15:35:58.871Z",
+    "baseline_completed_at": "2026-10-25T20:16:20.268Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "3d30fc5a1982b1b5d149b97e188b8ee45d89e1d2"
+    "evidence_head_sha": "5da95f713a610219ddcf6c13de8779c52018196d"
   },
   "community": {
-    "stars_count": 369,
-    "forks_count": 65,
+    "stars_count": 416,
+    "forks_count": 66,
     "watchers_count": 3,
-    "aggregate": 437
+    "aggregate": 485
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-25T20:18:19.710Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -106,8 +106,8 @@
       { "login": "ljh5650", "type": "User", "provider": "github" },
       { "login": "joonsoome", "type": "User", "provider": "github" },
       { "login": "miladiashe", "type": "User", "provider": "github" },
-      { "login": "bangonicdd", "type": "User", "provider": "github" },
       { "login": "tasoo-oos", "type": "User", "provider": "github" },
+      { "login": "bangonicdd", "type": "User", "provider": "github" },
       { "login": "aegkmq", "type": "User", "provider": "github" },
       { "login": "Decikingship", "type": "User", "provider": "github" },
       { "login": "tammy3211", "type": "User", "provider": "github" },
@@ -145,18 +145,19 @@
       { "login": "tiamatiramisu", "type": "User", "provider": "github" },
       { "login": "Amoeba1234", "type": "User", "provider": "github" },
       { "login": "sduoooh", "type": "User", "provider": "github" },
+      { "login": "rsyumi", "type": "User", "provider": "github" },
       { "login": "rakey0", "type": "User", "provider": "github" },
       { "login": "dootaang", "type": "User", "provider": "github" },
       { "login": "alattalatta", "type": "User", "provider": "github" },
       { "login": "rhplus0831", "type": "User", "provider": "github" },
       { "login": "eltociear", "type": "User", "provider": "github" },
       { "login": "yaa19212-droid", "type": "User", "provider": "github" },
-      { "login": "rsyumi", "type": "User", "provider": "github" },
       { "login": "opza", "type": "User", "provider": "github" },
       { "login": "namda-on", "type": "User", "provider": "github" },
       { "login": "misisipir", "type": "User", "provider": "github" },
       { "login": "kmou424", "type": "User", "provider": "github" },
       { "login": "jinook518", "type": "User", "provider": "github" },
+      { "login": "iamhelios07", "type": "User", "provider": "github" },
       { "login": "hush27", "type": "User", "provider": "github" },
       { "login": "donmarble", "type": "User", "provider": "github" },
       { "login": "diegocostares", "type": "User", "provider": "github" },
@@ -164,6 +165,7 @@
       { "login": "broot5", "type": "User", "provider": "github" },
       { "login": "blueherb", "type": "User", "provider": "github" },
       { "login": "Yvonne-Aizawa", "type": "User", "provider": "github" },
+      { "login": "Ye0l", "type": "User", "provider": "github" },
       { "login": "SeA-luby", "type": "User", "provider": "github" },
       { "login": "OnlookerRs", "type": "User", "provider": "github" },
       { "login": "LI-NA", "type": "User", "provider": "github" },
@@ -174,7 +176,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-25T20:16:20.268Z",
     "stale_since": null
   }
 }
