@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4e2722365b569f4aa874b33b6ad8e1680618196b3c03e358f3fa419cc76b9c08",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1226984172:ikarusv-ikaruscheckpoint",
+      "inputDigest": "ad1a41821a53a686be2c9073443e5e56d66b9b5c217c52cdecf88de97a37f242",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-25T07:04:22.568Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-25T06:49:22.568Z",
+  "completedAt": null
+}
