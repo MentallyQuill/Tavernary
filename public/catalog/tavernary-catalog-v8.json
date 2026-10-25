@@ -17077,7 +17077,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "character-worldbuilding",
-      "summary": "SillyTavern extension that manages World Info from current context with LLMs, using connection profiles to recommend relevant entries.",
+      "summary": "A SillyTavern extension (WREC) that manages world info based on the current context with LLMs using connection profiles (README: Overview)",
       "canonicalUrl": "https://github.com/bmen25124/SillyTavern-WorldInfo-Recommender",
       "catalogedAt": "2026-08-10T17:02:17.465Z",
       "catalogCohort": "standard",
@@ -17094,18 +17094,6 @@
           "label": "Manage lorebooks",
           "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
           "facet": "goal"
-        },
-        {
-          "id": "retrieve-relevant-context",
-          "label": "Retrieve relevant context",
-          "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
-          "facet": "goal"
-        },
-        {
-          "id": "secondary-model",
-          "label": "Secondary-model workflow",
-          "description": "Delegates supporting tasks to a separately configured model or connection.",
-          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -17332,7 +17320,7 @@
           "https://github.com/bmen25124/SillyTavern-WorldInfo-Recommender"
         ],
         "summary": [
-          "SillyTavern extension that manages World Info from current context with LLMs, using connection profiles to recommend relevant entries."
+          "A SillyTavern extension (WREC) that manages world info based on the current context with LLMs using connection profiles (README: Overview)"
         ],
         "kind": [
           "extension"
@@ -17344,15 +17332,7 @@
           "Manage lorebooks",
           "World Info management",
           "worldbook organization",
-          "loredeck management",
-          "Retrieve relevant context",
-          "context retrieval",
-          "relevant recall",
-          "knowledge retrieval",
-          "Secondary-model workflow",
-          "helper model",
-          "auxiliary model",
-          "separate connection profile"
+          "loredeck management"
         ],
         "frontends": [
           "SillyTavern"
@@ -49132,7 +49112,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Lightweight floating navigator for SillyTavern that provides quick access to checkpoints and branches. Users can manage and jump between saved points through an unobtrusive overlay interface.",
+      "summary": "Ikarus Hub is a floating SillyTavern panel that organizes checkpoint, branch, and swipe chats per character, with a manual red deep-scan that infers missing branch parents (README Features/Usage).",
       "canonicalUrl": "https://github.com/IkarusV/IkarusCheckpoint",
       "catalogedAt": "2026-07-27T11:13:33.740Z",
       "catalogCohort": "standard",
@@ -49303,7 +49283,7 @@
           "https://github.com/IkarusV/IkarusCheckpoint"
         ],
         "summary": [
-          "Lightweight floating navigator for SillyTavern that provides quick access to checkpoints and branches. Users can manage and jump between saved points through an unobtrusive overlay interface."
+          "Ikarus Hub is a floating SillyTavern panel that organizes checkpoint, branch, and swipe chats per character, with a manual red deep-scan that infers missing branch parents (README Features/Usage)."
         ],
         "kind": [
           "extension"
@@ -92180,10 +92160,10 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "a5e0de333872f9f9e14b70f5194877ea88d96d51",
         "report": {
-          "reportId": "9606d9ff6821fb2f1ddbbb437759bb7706fe02a1f4e041d387072f1c76f98868",
+          "reportId": "d375cba7151b1d8556fdef90fd5cf75c7ef983a1bdeb230e46d5253efabb6dcc",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -92192,10 +92172,10 @@
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
           "citedFindingIds": [],
-          "scannedSha": "8a2215252a2cda9d44e237e4257ba3afdf8c2b98",
-          "treeUrl": "https://github.com/Pyrxpia/sola-hub/tree/8a2215252a2cda9d44e237e4257ba3afdf8c2b98",
-          "scannedAt": "2026-10-04T00:55:43.392Z",
-          "assessedAt": "2026-10-04T00:58:07.198Z",
+          "scannedSha": "a5e0de333872f9f9e14b70f5194877ea88d96d51",
+          "treeUrl": "https://github.com/Pyrxpia/sola-hub/tree/a5e0de333872f9f9e14b70f5194877ea88d96d51",
+          "scannedAt": "2026-10-25T07:32:20.294Z",
+          "assessedAt": "2026-10-25T07:37:00.780Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
@@ -92203,7 +92183,7 @@
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
           "javascriptAnalysisStatus": "complete",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/8a2215252a2cda9d44e237e4257ba3afdf8c2b98/5/9606d9ff6821fb2f1ddbbb437759bb7706fe02a1f4e041d387072f1c76f98868/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/a5e0de333872f9f9e14b70f5194877ea88d96d51/5/d375cba7151b1d8556fdef90fd5cf75c7ef983a1bdeb230e46d5253efabb6dcc/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/history/"
         },
         "history": [
@@ -92253,6 +92233,30 @@
             "assessmentSource": "deterministic_regrade",
             "javascriptAnalysisStatus": "complete",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/8a2215252a2cda9d44e237e4257ba3afdf8c2b98/5/9606d9ff6821fb2f1ddbbb437759bb7706fe02a1f4e041d387072f1c76f98868/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/history/"
+          },
+          {
+            "reportId": "d375cba7151b1d8556fdef90fd5cf75c7ef983a1bdeb230e46d5253efabb6dcc",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "a5e0de333872f9f9e14b70f5194877ea88d96d51",
+            "treeUrl": "https://github.com/Pyrxpia/sola-hub/tree/a5e0de333872f9f9e14b70f5194877ea88d96d51",
+            "scannedAt": "2026-10-25T07:32:20.294Z",
+            "assessedAt": "2026-10-25T07:37:00.780Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/a5e0de333872f9f9e14b70f5194877ea88d96d51/5/d375cba7151b1d8556fdef90fd5cf75c7ef983a1bdeb230e46d5253efabb6dcc/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/history/"
           }
         ],
@@ -135642,7 +135646,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "character-worldbuilding",
-            "summary": "SillyTavern extension that manages World Info from current context with LLMs, using connection profiles to recommend relevant entries.",
+            "summary": "A SillyTavern extension (WREC) that manages world info based on the current context with LLMs using connection profiles (README: Overview)",
             "canonicalUrl": "https://github.com/bmen25124/SillyTavern-WorldInfo-Recommender",
             "catalogedAt": "2026-08-10T17:02:17.465Z",
             "catalogCohort": "standard",
@@ -135659,18 +135663,6 @@
                 "label": "Manage lorebooks",
                 "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
                 "facet": "goal"
-              },
-              {
-                "id": "retrieve-relevant-context",
-                "label": "Retrieve relevant context",
-                "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
-                "facet": "goal"
-              },
-              {
-                "id": "secondary-model",
-                "label": "Secondary-model workflow",
-                "description": "Delegates supporting tasks to a separately configured model or connection.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -135897,7 +135889,7 @@
                 "https://github.com/bmen25124/SillyTavern-WorldInfo-Recommender"
               ],
               "summary": [
-                "SillyTavern extension that manages World Info from current context with LLMs, using connection profiles to recommend relevant entries."
+                "A SillyTavern extension (WREC) that manages world info based on the current context with LLMs using connection profiles (README: Overview)"
               ],
               "kind": [
                 "extension"
@@ -135909,15 +135901,7 @@
                 "Manage lorebooks",
                 "World Info management",
                 "worldbook organization",
-                "loredeck management",
-                "Retrieve relevant context",
-                "context retrieval",
-                "relevant recall",
-                "knowledge retrieval",
-                "Secondary-model workflow",
-                "helper model",
-                "auxiliary model",
-                "separate connection profile"
+                "loredeck management"
               ],
               "frontends": [
                 "SillyTavern"
@@ -244204,7 +244188,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "character-worldbuilding",
-            "summary": "SillyTavern extension that manages World Info from current context with LLMs, using connection profiles to recommend relevant entries.",
+            "summary": "A SillyTavern extension (WREC) that manages world info based on the current context with LLMs using connection profiles (README: Overview)",
             "canonicalUrl": "https://github.com/bmen25124/SillyTavern-WorldInfo-Recommender",
             "catalogedAt": "2026-08-10T17:02:17.465Z",
             "catalogCohort": "standard",
@@ -244221,18 +244205,6 @@
                 "label": "Manage lorebooks",
                 "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
                 "facet": "goal"
-              },
-              {
-                "id": "retrieve-relevant-context",
-                "label": "Retrieve relevant context",
-                "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
-                "facet": "goal"
-              },
-              {
-                "id": "secondary-model",
-                "label": "Secondary-model workflow",
-                "description": "Delegates supporting tasks to a separately configured model or connection.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -244459,7 +244431,7 @@
                 "https://github.com/bmen25124/SillyTavern-WorldInfo-Recommender"
               ],
               "summary": [
-                "SillyTavern extension that manages World Info from current context with LLMs, using connection profiles to recommend relevant entries."
+                "A SillyTavern extension (WREC) that manages world info based on the current context with LLMs using connection profiles (README: Overview)"
               ],
               "kind": [
                 "extension"
@@ -244471,15 +244443,7 @@
                 "Manage lorebooks",
                 "World Info management",
                 "worldbook organization",
-                "loredeck management",
-                "Retrieve relevant context",
-                "context retrieval",
-                "relevant recall",
-                "knowledge retrieval",
-                "Secondary-model workflow",
-                "helper model",
-                "auxiliary model",
-                "separate connection profile"
+                "loredeck management"
               ],
               "frontends": [
                 "SillyTavern"
@@ -258816,7 +258780,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "character-worldbuilding",
-            "summary": "SillyTavern extension that manages World Info from current context with LLMs, using connection profiles to recommend relevant entries.",
+            "summary": "A SillyTavern extension (WREC) that manages world info based on the current context with LLMs using connection profiles (README: Overview)",
             "canonicalUrl": "https://github.com/bmen25124/SillyTavern-WorldInfo-Recommender",
             "catalogedAt": "2026-08-10T17:02:17.465Z",
             "catalogCohort": "standard",
@@ -258833,18 +258797,6 @@
                 "label": "Manage lorebooks",
                 "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
                 "facet": "goal"
-              },
-              {
-                "id": "retrieve-relevant-context",
-                "label": "Retrieve relevant context",
-                "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
-                "facet": "goal"
-              },
-              {
-                "id": "secondary-model",
-                "label": "Secondary-model workflow",
-                "description": "Delegates supporting tasks to a separately configured model or connection.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -259071,7 +259023,7 @@
                 "https://github.com/bmen25124/SillyTavern-WorldInfo-Recommender"
               ],
               "summary": [
-                "SillyTavern extension that manages World Info from current context with LLMs, using connection profiles to recommend relevant entries."
+                "A SillyTavern extension (WREC) that manages world info based on the current context with LLMs using connection profiles (README: Overview)"
               ],
               "kind": [
                 "extension"
@@ -259083,15 +259035,7 @@
                 "Manage lorebooks",
                 "World Info management",
                 "worldbook organization",
-                "loredeck management",
-                "Retrieve relevant context",
-                "context retrieval",
-                "relevant recall",
-                "knowledge retrieval",
-                "Secondary-model workflow",
-                "helper model",
-                "auxiliary model",
-                "separate connection profile"
+                "loredeck management"
               ],
               "frontends": [
                 "SillyTavern"

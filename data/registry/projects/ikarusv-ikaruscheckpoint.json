@@ -3,7 +3,7 @@
   "id": "ikarusv-ikaruscheckpoint",
   "name": "Ikarus-Hub(Track branch/qr/checkpoint)",
   "kind": "extension",
-  "summary": "Lightweight floating navigator for SillyTavern that provides quick access to checkpoints and branches. Users can manage and jump between saved points through an unobtrusive overlay interface.",
+  "summary": "Ikarus Hub is a floating SillyTavern panel that organizes checkpoint, branch, and swipe chats per character, with a manual red deep-scan that infers missing branch parents (README Features/Usage).",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",

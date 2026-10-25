@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4e2722365b569f4aa874b33b6ad8e1680618196b3c03e358f3fa419cc76b9c08",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1226984172:ikarusv-ikaruscheckpoint",
+      "inputDigest": "ad1a41821a53a686be2c9073443e5e56d66b9b5c217c52cdecf88de97a37f242",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1226984172",
+    "identity": "github:1226984172"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40175353690,
+    "sourceSha": "5b5463f52754fa79990c2c39fd3c761003bec594"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/ikarusv-ikaruscheckpoint.json",
+      "sha256": "1e7ebeb649998456cc018e824db79d6bb9e96ede468d9c34262b066a404c5923",
+      "gitBlobSha": "a8940e988abef88cfa8afa6b86d0e54e9e326a81"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/4e2722365b569f4aa874b33b6ad8e1680618196b3c03e358f3fa419cc76b9c08.json",
+      "sha256": "067bf2960bd60bac6c8734c5a5f3589e890258d6d9ee7ed45b6c66ca84d9a188",
+      "gitBlobSha": "b81135847c2688737aad3168ec5826beb9494efb"
+    }
+  ]
+}

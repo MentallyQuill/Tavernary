@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "48f675b5b741d0c0b82bc36f8da1317c0b6156f8eceffe8119d268d0c5a17def",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-953212287:bmen25124-sillytavern-worldinfo-recommender",
+      "inputDigest": "6dd0e11faa6ab8fbb324f0b02898b8f9b1fcdead852caf079da88a99b6dd09a6",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-953212287",
+    "identity": "github:953212287"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40173734161,
+    "sourceSha": "d0500541c7f17b9d3f2126cac49e0d3c90cdc525"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/bmen25124-sillytavern-worldinfo-recommender.json",
+      "sha256": "61ca219bd5e289251576884f8e5c834448c3f1630dc60b7cd8a9cff5e2af0dca",
+      "gitBlobSha": "a86a7c7dc52a20f9351b558367941f0c7d383324"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/48f675b5b741d0c0b82bc36f8da1317c0b6156f8eceffe8119d268d0c5a17def.json",
+      "sha256": "25af41c75c8f0b3d41d0a2a02819e30877c3c37c28c9bd6f48bbd10ce1a6fc79",
+      "gitBlobSha": "e279a33626aa367138c3f14356a100231bd84159"
+    }
+  ]
+}
