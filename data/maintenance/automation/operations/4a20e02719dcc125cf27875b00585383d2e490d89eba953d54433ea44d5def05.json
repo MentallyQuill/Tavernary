@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4a20e02719dcc125cf27875b00585383d2e490d89eba953d54433ea44d5def05",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1160700573:pixelnull-sillytavern-deeplore",
+      "inputDigest": "657f62954b14bf0d2c0d03b2abede90312ac7896414e9865ab028f84c1895dc7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-25T05:11:12.311Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-25T04:56:12.311Z",
+  "completedAt": null
+}
