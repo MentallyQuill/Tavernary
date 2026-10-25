@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4d2a1ad94c0398f8c1e537023fc72f81d67df6bd7c344e875472218cbfe1bda0",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1328729525:selinawynters-ops-st-toasttome",
+      "inputDigest": "4cd1acaea677a8ffdd1e25a0b8c277f6bbebaa85bc38fca29d6d89dd1c06aabb",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-25T07:04:22.568Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-25T06:49:22.568Z",
+  "completedAt": null
+}
