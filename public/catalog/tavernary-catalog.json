@@ -49124,7 +49124,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "memory-retrieval",
-      "summary": "Human-supervised continuity workspace for long-form fiction and roleplay, using a separate editor model to review new material and propose structured-memory updates for your approval.",
+      "summary": "Story-Editor is a SillyTavern extension where a separate editor model reviews AI-written story material and proposes structured memory updates that only become canon upon approval, keeping continuity human-controlled.",
       "canonicalUrl": "https://github.com/izanagi771-stack/Story-Editor",
       "catalogedAt": "2026-08-01T12:35:05.018Z",
       "catalogCohort": "standard",
@@ -49137,18 +49137,6 @@
       ],
       "tags": [
         {
-          "id": "multi-stage-generation",
-          "label": "Multi-stage generation",
-          "description": "Builds a final result through multiple model calls, passes, branches, or review stages.",
-          "facet": "trait"
-        },
-        {
-          "id": "non-destructive",
-          "label": "Non-destructive",
-          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
-          "facet": "trait"
-        },
-        {
           "id": "preserve-story-continuity",
           "label": "Preserve story continuity",
           "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
@@ -49159,6 +49147,12 @@
           "label": "Secondary-model workflow",
           "description": "Delegates supporting tasks to a separately configured model or connection.",
           "facet": "trait"
+        },
+        {
+          "id": "maintain-long-term-memory",
+          "label": "Maintain long-term memory",
+          "description": "Preserve and recall important information across long chats or separate sessions.",
+          "facet": "goal"
         }
       ],
       "tavernKeeper": {
@@ -49335,7 +49329,7 @@
           "https://github.com/izanagi771-stack/Story-Editor"
         ],
         "summary": [
-          "Human-supervised continuity workspace for long-form fiction and roleplay, using a separate editor model to review new material and propose structured-memory updates for your approval."
+          "Story-Editor is a SillyTavern extension where a separate editor model reviews AI-written story material and proposes structured memory updates that only become canon upon approval, keeping continuity human-controlled."
         ],
         "kind": [
           "extension"
@@ -49344,14 +49338,6 @@
           "Memory and retrieval"
         ],
         "tags": [
-          "Multi-stage generation",
-          "generation pipeline",
-          "parallel model calls",
-          "multi-pass generation",
-          "Non-destructive",
-          "reversible workflow",
-          "preserves originals",
-          "safe overlay",
           "Preserve story continuity",
           "continuity tracking",
           "canon consistency",
@@ -49359,7 +49345,11 @@
           "Secondary-model workflow",
           "helper model",
           "auxiliary model",
-          "separate connection profile"
+          "separate connection profile",
+          "Maintain long-term memory",
+          "durable memory",
+          "persistent memory",
+          "remember across chats"
         ],
         "frontends": [
           "SillyTavern"
@@ -79633,7 +79623,7 @@
         "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T06:03:05.984Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -86247,7 +86237,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "memory-retrieval",
-      "summary": "DeepLore is a SillyTavern extension that pulls lore from Obsidian vaults to fix keyword matching in large world info files. It pairs keywords with AI retrieval so relevant lore fires even without exact trigger terms.",
+      "summary": "DeepLore is a SillyTavern extension that reads your Obsidian vault, using keywords plus AI retrieval to inject the right lorebook entries even when the exact word wasn't typed (README intro).",
       "canonicalUrl": "https://github.com/pixelnull/sillytavern-DeepLore",
       "catalogedAt": "2026-07-27T23:32:53.031Z",
       "catalogCohort": "standard",
@@ -86266,16 +86256,16 @@
           "facet": "goal"
         },
         {
-          "id": "manage-lorebooks",
-          "label": "Manage lorebooks",
-          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
-          "facet": "goal"
-        },
-        {
           "id": "semantic-retrieval",
           "label": "Semantic retrieval",
           "description": "Selects relevant information through embeddings, vector search, RAG, or hybrid retrieval.",
           "facet": "trait"
+        },
+        {
+          "id": "connect-external-services",
+          "label": "Connect external services",
+          "description": "Bridge roleplay workflows to messaging, media, note-taking, automation, or other services.",
+          "facet": "goal"
         }
       ],
       "tavernKeeper": {
@@ -86507,7 +86497,7 @@
           "https://github.com/pixelnull/sillytavern-DeepLore"
         ],
         "summary": [
-          "DeepLore is a SillyTavern extension that pulls lore from Obsidian vaults to fix keyword matching in large world info files. It pairs keywords with AI retrieval so relevant lore fires even without exact trigger terms."
+          "DeepLore is a SillyTavern extension that reads your Obsidian vault, using keywords plus AI retrieval to inject the right lorebook entries even when the exact word wasn't typed (README intro)."
         ],
         "kind": [
           "extension"
@@ -86520,15 +86510,15 @@
           "context retrieval",
           "relevant recall",
           "knowledge retrieval",
-          "Manage lorebooks",
-          "World Info management",
-          "worldbook organization",
-          "loredeck management",
           "Semantic retrieval",
           "semantic search",
           "vector search",
           "retrieval-augmented generation",
-          "RAG"
+          "RAG",
+          "Connect external services",
+          "service integrations",
+          "external bridges",
+          "third-party connections"
         ],
         "frontends": [
           "SillyTavern"
@@ -96238,7 +96228,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T06:03:01.677Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -110184,7 +110174,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T06:04:05.566Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",

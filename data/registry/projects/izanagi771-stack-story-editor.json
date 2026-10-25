@@ -3,16 +3,15 @@
   "id": "izanagi771-stack-story-editor",
   "name": "Story-Editor",
   "kind": "extension",
-  "summary": "Human-supervised continuity workspace for long-form fiction and roleplay, using a separate editor model to review new material and propose structured-memory updates for your approval.",
+  "summary": "Story-Editor is a SillyTavern extension where a separate editor model reviews AI-written story material and proposes structured memory updates that only become canon upon approval, keeping continuity human-controlled.",
   "metadata_status": "curated",
   "source_id": "github-1319215459",
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
   "tags": [
-    "multi-stage-generation",
-    "non-destructive",
     "preserve-story-continuity",
-    "secondary-model"
+    "secondary-model",
+    "maintain-long-term-memory"
   ],
   "cataloged_at": "2026-08-01T12:35:05.018Z",
   "catalog_cohort": "standard",

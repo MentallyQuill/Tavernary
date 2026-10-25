@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4a0a2c83cc314ea34e122354f88974a67dcb53f2dadb26491d0755f462da2f94",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1319215459:izanagi771-stack-story-editor",
+      "inputDigest": "50295d2e9c2cb6b99f4f025e86dfc41b8754a7f767e1db7f14f0103a91827812",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1319215459",
+    "identity": "github:1319215459"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40168416082,
+    "sourceSha": "549eaee11dd0d491ee82563a66241c47e3a1cd14"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/izanagi771-stack-story-editor.json",
+      "sha256": "4f524c6333524aedfe5c0330605cedeafbfe24f2259d9c8391f2b798ffde8796",
+      "gitBlobSha": "860fd21bd65fa2c7efd0c944c935edaeea72e4d5"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/4a0a2c83cc314ea34e122354f88974a67dcb53f2dadb26491d0755f462da2f94.json",
+      "sha256": "48cc618e6b5873fcf881efce7d6ab8df9f72b98236cbcee8bdd766f1d4563d9b",
+      "gitBlobSha": "0f11696e23bb4b729baebfd299ce1e9c52e9a66a"
+    }
+  ]
+}

@@ -3,7 +3,7 @@
   "id": "pixelnull-sillytavern-deeplore",
   "name": "DeepLore",
   "kind": "extension",
-  "summary": "DeepLore is a SillyTavern extension that pulls lore from Obsidian vaults to fix keyword matching in large world info files. It pairs keywords with AI retrieval so relevant lore fires even without exact trigger terms.",
+  "summary": "DeepLore is a SillyTavern extension that reads your Obsidian vault, using keywords plus AI retrieval to inject the right lorebook entries even when the exact word wasn't typed (README intro).",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
@@ -12,8 +12,8 @@
   "source_id": "github-1160700573",
   "tags": [
     "retrieve-relevant-context",
-    "manage-lorebooks",
-    "semantic-retrieval"
+    "semantic-retrieval",
+    "connect-external-services"
   ],
   "listing_status": "active",
   "listing_status_reason": null,
