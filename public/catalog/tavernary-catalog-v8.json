@@ -11073,8 +11073,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "e469a57c8c1b9db6b2b3cce20f9739e12f98dedc",
+        "freshness": "stale",
+        "currentSha": "b07fbc2b9e02cd44bb4d0fedcfc808b0eee04d1f",
         "report": {
           "reportId": "7f51433b29853581c34352d45cfd2486cc4f9a26605cd33409b82ef0ca4e7c7c",
           "riskLevel": "low",
@@ -12626,12 +12626,12 @@
           },
           {
             "provider": "github",
-            "login": "failerko",
+            "login": "a-frazier",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "a-frazier",
+            "login": "failerko",
             "botOrAi": false
           },
           {
@@ -12656,6 +12656,11 @@
           },
           {
             "provider": "github",
+            "login": "TheDWz",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "surfacecoaster",
             "botOrAi": false
           },
@@ -12671,11 +12676,6 @@
           },
           {
             "provider": "github",
-            "login": "TheDWz",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
             "login": "vire70",
             "botOrAi": false
           }
@@ -12684,10 +12684,10 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-07T22:15:47.000Z",
-        "activeWeeks12": 10,
+        "latestSourceActivityAt": "2026-10-23T17:59:05.000Z",
+        "activeWeeks12": 9,
         "weeklyActivity": [
-          true,
+          false,
           false,
           true,
           true,
@@ -12703,21 +12703,21 @@
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-09-17T13:21:17.000Z",
+      "latestReleaseAt": "2026-10-09T23:20:00.000Z",
       "community": {
-        "stars": 209,
-        "forks": 33,
+        "stars": 214,
+        "forks": 35,
         "watchers": 13,
-        "aggregate": 255
+        "aggregate": 262
       },
-      "repositorySizeKb": 48042,
+      "repositorySizeKb": 53929,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T12:42:53.270Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -12775,16 +12775,16 @@
         "maintainers": [
           "AventurasTeam",
           "unkarelian",
-          "failerko",
           "a-frazier",
+          "failerko",
           "Pento95",
           "Javedz678",
           "collegatore",
           "Fensterbank",
+          "TheDWz",
           "surfacecoaster",
           "EventideMiles",
           "Selene29",
-          "TheDWz",
           "vire70"
         ],
         "relationships": []
@@ -113097,7 +113097,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "2c9024094a59b075f6d59db348f69f1bf26ac35f",
+        "currentSha": "14ed7b6fdccf1a421596cc53acce91b281e3b388",
         "report": {
           "reportId": "13eee3bdbbe669fed240757f4b331d387653b5913f59daaf67627524d73905f7",
           "riskLevel": "low",
@@ -113167,9 +113167,9 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-08-20T00:51:26.000Z",
-        "activeWeeks12": 3,
+        "activeWeeks12": 2,
         "weeklyActivity": [
-          true,
+          false,
           false,
           false,
           true,
@@ -113188,18 +113188,18 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 5,
-        "forks": 0,
+        "forks": 1,
         "watchers": 0,
-        "aggregate": 5
+        "aggregate": 6
       },
-      "repositorySizeKb": 4224,
+      "repositorySizeKb": 4232,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T12:42:36.215Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -131643,10 +131643,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 1,
-        "forks": 0,
+        "stars": 2,
+        "forks": 1,
         "watchers": 0,
-        "aggregate": 1
+        "aggregate": 3
       },
       "repositorySizeKb": 9,
       "license": {
@@ -131655,7 +131655,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-25T12:42:31.757Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
