@@ -9,21 +9,31 @@
     "url": "https://github.com/linux4life1/front-porch-AI",
     "description": "Local-first AI character chat & roleplay for Windows/macOS/Linux — a living Realism Engine, built-in TTS & image generation, and The Stoop community character hub. Fully offline by default, open-source (AGPL-3.0). A home for Backyard AI refugees.",
     "default_branch": "main",
-    "head_sha": "2450acf91660d30b6002f05fad370a86c0bdf336",
-    "head_committed_at": "2026-10-08T04:23:22.000Z",
+    "head_sha": "660bc78c9d1090ff0152209275c011d62f605b72",
+    "head_committed_at": "2026-10-20T20:13:59.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-02-15T02:01:28.000Z",
-    "size_kb": 150378
+    "size_kb": 148744
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-08T04:00:15.000Z",
+    "latest_source_activity_at": "2026-10-20T17:43:09.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-20T17:43:09.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-18T20:12:20.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-05",
-        "latest_at": "2026-10-08T04:00:15.000Z",
+        "latest_at": "2026-10-11T23:42:44.000Z",
         "precision": "exact"
       },
       {
@@ -70,37 +80,27 @@
         "week_start": "2026-08-03",
         "latest_at": "2026-08-09T08:39:20.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-08-02T19:06:59.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-20",
-        "latest_at": "2026-07-26T08:25:54.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-08T04:59:50.000Z",
+    "latest_release_at": "2026-10-20T22:06:04.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-08T14:39:08.801Z",
+    "baseline_completed_at": "2026-10-25T12:40:50.494Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "2450acf91660d30b6002f05fad370a86c0bdf336"
+    "evidence_head_sha": "660bc78c9d1090ff0152209275c011d62f605b72"
   },
   "community": {
-    "stars_count": 74,
-    "forks_count": 13,
+    "stars_count": 79,
+    "forks_count": 16,
     "watchers_count": 3,
-    "aggregate": 90
+    "aggregate": 98
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-25T12:43:02.632Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -109,8 +109,8 @@
       { "login": "claude", "type": "User", "provider": "github" },
       { "login": "S-A-M-F", "type": "User", "provider": "github" },
       { "login": "dazpants1", "type": "User", "provider": "github" },
-      { "login": "dependabot[bot]", "type": "Bot", "provider": "github" },
       { "login": "josh-hemphill", "type": "User", "provider": "github" },
+      { "login": "dependabot[bot]", "type": "Bot", "provider": "github" },
       { "login": "willie", "type": "User", "provider": "github" },
       { "login": "MisterLotto", "type": "User", "provider": "github" },
       { "login": "github-actions[bot]", "type": "Bot", "provider": "github" },
@@ -120,7 +120,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-25T12:40:50.494Z",
     "stale_since": null
   }
 }
