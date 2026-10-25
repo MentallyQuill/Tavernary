@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4cf14fcf36dd2dafadd928a9e0c926b10af20d11cf3cab732169a8420b14f16e",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1189308698:kristalium-sillytavern-too-many-chats",
+      "inputDigest": "c3c549250338a64917f2a874d22e1fe693b2062731839313b165f2aa92d780f8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-25T07:04:22.568Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-25T06:49:22.568Z",
+  "completedAt": null
+}
