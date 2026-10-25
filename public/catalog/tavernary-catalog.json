@@ -172254,7 +172254,7 @@
       "sourceIssueNumber": 1019,
       "sourceIssueUrl": "https://github.com/MentallyQuill/Tavernary/issues/1019",
       "publishedAt": "2026-10-24T19:23:18.454Z",
-      "updatedAt": "2026-10-24T20:50:33.657Z",
+      "updatedAt": "2026-10-25T21:35:43.859Z",
       "frontends": [
         {
           "id": "sillytavern",
@@ -185896,228 +185896,6 @@
           }
         },
         {
-          "projectId": "forgottenglory-st-superobjective",
-          "name": "ST SuperObjective",
-          "kind": "extension",
-          "primaryFunction": "character-worldbuilding",
-          "availability": "available",
-          "unavailableReason": null,
-          "canonicalUrl": "https://github.com/ForgottenGlory/ST-SuperObjective",
-          "project": {
-            "id": "forgottenglory-st-superobjective",
-            "name": "ST SuperObjective",
-            "kind": "extension",
-            "metadataStatus": "curated",
-            "sourceStatus": "healthy",
-            "primaryFunction": "character-worldbuilding",
-            "summary": "SillyTavern-SuperObjective is a SillyTavern extension that manages character super-objectives during roleplay sessions. It helps maintain each character's long-term motivations and overarching goals across conversations.",
-            "canonicalUrl": "https://github.com/ForgottenGlory/ST-SuperObjective",
-            "catalogedAt": "2026-07-23T00:00:00Z",
-            "catalogCohort": "seed",
-            "frontends": [
-              {
-                "id": "sillytavern",
-                "label": "SillyTavern",
-                "description": "Works with the SillyTavern roleplay frontend."
-              }
-            ],
-            "tags": [
-              {
-                "id": "preserve-story-continuity",
-                "label": "Preserve story continuity",
-                "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
-                "facet": "goal"
-              },
-              {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "track-characters-and-world-state",
-                "label": "Track characters and world state",
-                "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
-                "facet": "goal"
-              }
-            ],
-            "tavernKeeper": {
-              "state": "teal",
-              "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "0510988bcce7ba4fdd1aed89c5b95fec3297e5ce",
-              "report": {
-                "reportId": "f99d2c673731a0a1161cf87834515c1d45c2fc27db9e4033636ce47f7235e82c",
-                "riskLevel": "low",
-                "headline": "Low concern",
-                "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
-                "minorCautions": 0,
-                "materialConcerns": 0,
-                "highDanger": 0,
-                "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
-                "citedFindingIds": [],
-                "scannedSha": "0510988bcce7ba4fdd1aed89c5b95fec3297e5ce",
-                "treeUrl": "https://github.com/ForgottenGlory/ST-SuperObjective/tree/0510988bcce7ba4fdd1aed89c5b95fec3297e5ce",
-                "scannedAt": "2026-08-24T07:15:23.560Z",
-                "assessedAt": "2026-08-24T07:17:25.617Z",
-                "scannerPolicyVersion": "5",
-                "contextualReviewPolicyVersion": "5",
-                "synthesisPolicyVersion": "5",
-                "synthesisModel": "deterministic-policy-v5",
-                "dangerBasis": "none",
-                "assessmentSource": "deterministic_regrade",
-                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/949189091/0510988bcce7ba4fdd1aed89c5b95fec3297e5ce/5/f99d2c673731a0a1161cf87834515c1d45c2fc27db9e4033636ce47f7235e82c/",
-                "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/949189091/history/"
-              },
-              "history": [
-                {
-                  "reportId": "e610ec7bdb165967a462d502aff2e11ebe48cb5c5ba4570a78af9932d218fc05",
-                  "riskLevel": "low",
-                  "headline": "No validated security concerns identified",
-                  "summary": "The project is assessed as low risk based on the validated TavernKeeper review. No material vulnerabilities, minor weaknesses, or malicious behavior were identified.",
-                  "minorCautions": 0,
-                  "materialConcerns": 0,
-                  "highDanger": 0,
-                  "maliciousEvidence": "No credible malicious behavior was identified in the validated review. This review cannot prove the absence of unknown behavior.",
-                  "citedFindingIds": [],
-                  "scannedSha": "0510988bcce7ba4fdd1aed89c5b95fec3297e5ce",
-                  "treeUrl": "https://github.com/ForgottenGlory/ST-SuperObjective/tree/0510988bcce7ba4fdd1aed89c5b95fec3297e5ce",
-                  "scannedAt": "2026-08-04T19:06:56.529Z",
-                  "assessedAt": "2026-08-05T06:06:58.865Z",
-                  "scannerPolicyVersion": "3",
-                  "contextualReviewPolicyVersion": "1",
-                  "synthesisPolicyVersion": "5",
-                  "synthesisModel": "deterministic-policy-v5",
-                  "dangerBasis": "none",
-                  "assessmentSource": "deterministic_regrade",
-                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/949189091/0510988bcce7ba4fdd1aed89c5b95fec3297e5ce/3/e610ec7bdb165967a462d502aff2e11ebe48cb5c5ba4570a78af9932d218fc05/",
-                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/949189091/history/"
-                },
-                {
-                  "reportId": "f99d2c673731a0a1161cf87834515c1d45c2fc27db9e4033636ce47f7235e82c",
-                  "riskLevel": "low",
-                  "headline": "Low concern",
-                  "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
-                  "minorCautions": 0,
-                  "materialConcerns": 0,
-                  "highDanger": 0,
-                  "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
-                  "citedFindingIds": [],
-                  "scannedSha": "0510988bcce7ba4fdd1aed89c5b95fec3297e5ce",
-                  "treeUrl": "https://github.com/ForgottenGlory/ST-SuperObjective/tree/0510988bcce7ba4fdd1aed89c5b95fec3297e5ce",
-                  "scannedAt": "2026-08-24T07:15:23.560Z",
-                  "assessedAt": "2026-08-24T07:17:25.617Z",
-                  "scannerPolicyVersion": "5",
-                  "contextualReviewPolicyVersion": "5",
-                  "synthesisPolicyVersion": "5",
-                  "synthesisModel": "deterministic-policy-v5",
-                  "dangerBasis": "none",
-                  "assessmentSource": "deterministic_regrade",
-                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/949189091/0510988bcce7ba4fdd1aed89c5b95fec3297e5ce/5/f99d2c673731a0a1161cf87834515c1d45c2fc27db9e4033636ce47f7235e82c/",
-                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/949189091/history/"
-                }
-              ],
-              "historyUrl": "/security/tavernkeeper/history/github-949189091/"
-            },
-            "attribution": {
-              "owner": {
-                "provider": "github",
-                "login": "ForgottenGlory"
-              },
-              "contributors": [],
-              "humanContributorCount": 0,
-              "status": "current"
-            },
-            "activity": {
-              "latestSourceActivityAt": null,
-              "activeWeeks12": 0,
-              "weeklyActivity": [
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false
-              ],
-              "evidenceStatus": "complete",
-              "dormant": true
-            },
-            "latestReleaseAt": "2025-03-17T21:06:29.000Z",
-            "community": {
-              "stars": 38,
-              "forks": 8,
-              "watchers": 4,
-              "aggregate": 50
-            },
-            "repositorySizeKb": 225,
-            "license": {
-              "status": "osi-approved",
-              "label": "AGPL-3.0",
-              "tooltip": "OSI-approved license detected in the repository root."
-            },
-            "preset": null,
-            "refreshedAt": "2026-10-15T11:02:06.510Z",
-            "staleSince": null,
-            "install": {
-              "kind": "sillytavern-extension-git",
-              "repositoryUrl": "https://github.com/ForgottenGlory/ST-SuperObjective.git",
-              "branch": null,
-              "manifestPath": "manifest.json",
-              "folderName": "ST-SuperObjective"
-            },
-            "fork": null,
-            "search": {
-              "title": [
-                "ST SuperObjective"
-              ],
-              "aliases": [],
-              "source": [
-                "forgottenglory-st-superobjective",
-                "github-949189091",
-                "ForgottenGlory/ST-SuperObjective",
-                "https://github.com/ForgottenGlory/ST-SuperObjective"
-              ],
-              "summary": [
-                "SillyTavern-SuperObjective is a SillyTavern extension that manages character super-objectives during roleplay sessions. It helps maintain each character's long-term motivations and overarching goals across conversations."
-              ],
-              "kind": [
-                "extension"
-              ],
-              "primaryFunction": [
-                "Character and worldbuilding"
-              ],
-              "tags": [
-                "Preserve story continuity",
-                "continuity tracking",
-                "canon consistency",
-                "story coherence",
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Track characters and world state",
-                "state tracking",
-                "stat trackers",
-                "world state tracking"
-              ],
-              "frontends": [
-                "SillyTavern"
-              ],
-              "compatibility": [],
-              "maintainers": [
-                "ForgottenGlory"
-              ],
-              "relationships": []
-            }
-          }
-        },
-        {
           "projectId": "xenofei-sillytavern-scenepulse",
           "name": "SillyTavern-ScenePulse",
           "kind": "extension",
@@ -186463,7 +186241,7 @@
       ],
       "supporterCount": 0,
       "trendingScore": 0,
-      "supportRefreshedAt": "2026-10-24T20:50:33.657Z",
+      "supportRefreshedAt": "2026-10-25T21:35:43.859Z",
       "supportStale": false,
       "flaggedProjectCount": 0,
       "search": {
@@ -186513,7 +186291,6 @@
           "The-HawThorne-Directives",
           "VectFox",
           "Summaryception",
-          "ST SuperObjective",
           "SillyTavern-ScenePulse",
           "Gallery-Plus-Plus"
         ],
@@ -186607,7 +186384,6 @@
           "The-HawThorne-Directives",
           "VectFox",
           "Summaryception",
-          "ST SuperObjective",
           "SillyTavern-ScenePulse",
           "Gallery-Plus-Plus",
           "sillytavern-sillytavern",
@@ -186653,7 +186429,6 @@
           "coneja-chibi-the-hawthorne-directives",
           "kritblade-vectfox",
           "lodactio-extension-summaryception",
-          "forgottenglory-st-superobjective",
           "xenofei-sillytavern-scenepulse",
           "serioos-gallery-plus-plus"
         ]
