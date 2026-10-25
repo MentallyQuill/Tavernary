@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4ddd5970d0b1018fb8989dd0b89b88f4d8017f9296c4cc5b01ea3ad38821bd9a",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1273112032:mentallyquill-directive",
+      "inputDigest": "1ba747a1d72852870df0b5acfaaef0a3e8fe8015b002cb2fc24959f50978be65",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-25T07:04:22.568Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-25T06:49:22.568Z",
+  "completedAt": null
+}
