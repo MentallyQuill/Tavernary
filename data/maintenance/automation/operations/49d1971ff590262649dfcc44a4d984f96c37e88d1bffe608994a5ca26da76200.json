@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "49d1971ff590262649dfcc44a4d984f96c37e88d1bffe608994a5ca26da76200",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1267774290:myanadi-risuai-lorebook-manager",
+      "inputDigest": "c98da5dafa3df7f1dc1417c5d63cfeba93bb5ae9e2d2bd063e44e24d1cbd91ad",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-25T05:11:12.311Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-25T04:56:12.311Z",
+  "completedAt": null
+}
