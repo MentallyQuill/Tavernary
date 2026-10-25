@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "52b159b909804d2f87a513ba275b3e61aebc3aa721f7a2ebd83b0538e74400de",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1212009993:multihogaurelius-sillytavern-multihogdndframework",
+      "inputDigest": "340d09dab96e5a559aee516575286a1825bef3528c83e1f59a537fc3d86745f4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-25T07:04:22.568Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-25T06:49:22.568Z",
+  "completedAt": null
+}
