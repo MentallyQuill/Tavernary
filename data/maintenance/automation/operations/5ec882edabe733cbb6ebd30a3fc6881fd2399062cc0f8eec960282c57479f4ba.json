@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5ec882edabe733cbb6ebd30a3fc6881fd2399062cc0f8eec960282c57479f4ba",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1199215475:icefog72-sillytavern-morereasoning",
+      "inputDigest": "bc901a133a2962a31c075fa5b2fd592f9b9a583a92ea0ff9ecde253c6af4b4fa",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-26T08:33:08.885Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-26T08:18:08.885Z",
+  "completedAt": null
+}
