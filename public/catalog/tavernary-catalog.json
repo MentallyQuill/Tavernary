@@ -36766,10 +36766,10 @@
       },
       "latestReleaseAt": "2026-04-13T20:52:45.000Z",
       "community": {
-        "stars": 18,
+        "stars": 19,
         "forks": 2,
         "watchers": 0,
-        "aggregate": 20
+        "aggregate": 21
       },
       "repositorySizeKb": 4288,
       "license": {
@@ -36778,7 +36778,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-26T07:39:43.900Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -38275,19 +38275,19 @@
       },
       "latestReleaseAt": "2026-09-28T04:56:05.000Z",
       "community": {
-        "stars": 75,
-        "forks": 12,
-        "watchers": 3,
-        "aggregate": 90
+        "stars": 79,
+        "forks": 13,
+        "watchers": 4,
+        "aggregate": 96
       },
-      "repositorySizeKb": 18362,
+      "repositorySizeKb": 13003,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-26T07:40:20.212Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -57318,7 +57318,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-26T07:39:25.317Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -248066,7 +248066,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-26T07:39:25.317Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
