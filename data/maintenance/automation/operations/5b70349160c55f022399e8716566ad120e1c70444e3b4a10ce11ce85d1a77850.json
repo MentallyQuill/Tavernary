@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5b70349160c55f022399e8716566ad120e1c70444e3b4a10ce11ce85d1a77850",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1158773851:mkrrussell0411-star-character-stats-extension",
+      "inputDigest": "9028ea72e2b4096b67baa07b81af7c256c3d3c0145e042d98ad6b4e235604cd4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-26T08:33:08.885Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-26T08:18:08.885Z",
+  "completedAt": null
+}
