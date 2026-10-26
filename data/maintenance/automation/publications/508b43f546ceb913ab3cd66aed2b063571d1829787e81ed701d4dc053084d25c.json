@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "508b43f546ceb913ab3cd66aed2b063571d1829787e81ed701d4dc053084d25c",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1167832752:morgoookru-st-chat-finder",
+      "inputDigest": "c9b9e36d1f85f72f6a3b5407be44f1d3fb4ae91e30a5f6ccb98aa3c71dabc773",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1167832752",
+    "identity": "github:1167832752"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40246362185,
+    "sourceSha": "1e420baf0a6a99e3dc2c278b8f368bff0b24289d"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/morgoookru-st-chat-finder.json",
+      "sha256": "cb286660d48f677c60423ec5e0489379aee677aa5845eac9381902b8598b28b4",
+      "gitBlobSha": "2bb8089aa8f5063745d755d8f11dbbb0fb17cf66"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/508b43f546ceb913ab3cd66aed2b063571d1829787e81ed701d4dc053084d25c.json",
+      "sha256": "e5e85d545fb9c1c9092ed89b34d3ef835c21ff409ffe2c4dd8ac80891cc77fd5",
+      "gitBlobSha": "21bad09083a8902196d60a33714d853d87d207c5"
+    }
+  ]
+}

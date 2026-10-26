@@ -72049,7 +72049,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "rpg-systems",
-      "summary": "Directive is a SillyTavern extension delivering a Star Trek roleplaying experience. It integrates character and worldbuilding elements that frame sessions around the Star Trek setting.",
+      "summary": "A SillyTavern extension for persistent Star Trek-inspired roleplay, combining AI-generated narrative with structured campaign, mission, ship, and relationship systems.",
       "canonicalUrl": "https://github.com/MentallyQuill/Directive",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -72062,21 +72062,15 @@
       ],
       "tags": [
         {
-          "id": "preserve-story-continuity",
-          "label": "Preserve story continuity",
-          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
-          "facet": "goal"
-        },
-        {
-          "id": "plan-stories-and-scenes",
-          "label": "Plan stories and scenes",
-          "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
-          "facet": "goal"
-        },
-        {
           "id": "add-rpg-gameplay",
           "label": "Add RPG gameplay",
           "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
+          "facet": "goal"
+        },
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
           "facet": "goal"
         },
         {
@@ -72084,18 +72078,6 @@
           "label": "Track characters and world state",
           "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
           "facet": "goal"
-        },
-        {
-          "id": "rules-driven",
-          "label": "Rules-driven",
-          "description": "Uses explicit rules, schemas, calculations, or deterministic mechanics to constrain behavior.",
-          "facet": "trait"
-        },
-        {
-          "id": "multi-stage-generation",
-          "label": "Multi-stage generation",
-          "description": "Builds a final result through multiple model calls, passes, branches, or review stages.",
-          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -72322,7 +72304,7 @@
           "https://github.com/MentallyQuill/Directive"
         ],
         "summary": [
-          "Directive is a SillyTavern extension delivering a Star Trek roleplaying experience. It integrates character and worldbuilding elements that frame sessions around the Star Trek setting."
+          "A SillyTavern extension for persistent Star Trek-inspired roleplay, combining AI-generated narrative with structured campaign, mission, ship, and relationship systems."
         ],
         "kind": [
           "extension"
@@ -72331,30 +72313,18 @@
           "RPG systems and suites"
         ],
         "tags": [
-          "Preserve story continuity",
-          "continuity tracking",
-          "canon consistency",
-          "story coherence",
-          "Plan stories and scenes",
-          "story planning",
-          "plot direction",
-          "scene planning",
           "Add RPG gameplay",
           "tabletop mechanics",
           "game master tools",
           "RPG systems",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
           "Track characters and world state",
           "state tracking",
           "stat trackers",
-          "world state tracking",
-          "Rules-driven",
-          "deterministic mechanics",
-          "rule based",
-          "schema driven",
-          "Multi-stage generation",
-          "generation pipeline",
-          "parallel model calls",
-          "multi-pass generation"
+          "world state tracking"
         ],
         "frontends": [
           "SillyTavern"
@@ -78159,7 +78129,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "ST Chat Finder is a SillyTavern extension that lets users search for and replace text within their chat conversations. It provides find-and-replace functionality across message history for quick content edits.",
+      "summary": "A simple SillyTavern extension for finding and replacing text across your chats, letting you fix or revise past messages in bulk (source: repository description).",
       "canonicalUrl": "https://github.com/MorgoookRU/st-chat-finder",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -78171,12 +78141,6 @@
         }
       ],
       "tags": [
-        {
-          "id": "organize-chats-and-messages",
-          "label": "Organize chats and messages",
-          "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
-          "facet": "goal"
-        },
         {
           "id": "edit-and-refine-messages",
           "label": "Edit and refine messages",
@@ -78330,7 +78294,7 @@
           "https://github.com/MorgoookRU/st-chat-finder"
         ],
         "summary": [
-          "ST Chat Finder is a SillyTavern extension that lets users search for and replace text within their chat conversations. It provides find-and-replace functionality across message history for quick content edits."
+          "A simple SillyTavern extension for finding and replacing text across your chats, letting you fix or revise past messages in bulk (source: repository description)."
         ],
         "kind": [
           "extension"
@@ -78339,10 +78303,6 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Organize chats and messages",
-          "chat organization",
-          "message bookmarks",
-          "conversation search",
           "Edit and refine messages",
           "message rewriting",
           "chat editing",
@@ -101682,7 +101642,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Toast Tome replaces SillyTavern’s default toast layer with a searchable grimoire-styled history popup, offering severity filters, suppression, persistent logs, copying, and export.",
+      "summary": "A SillyTavern DreamTavern extension that overrides the default toastr layer, keeps toast history in a searchable grimoire-styled popup with filters, pattern suppression, persistence, and export (README: Features table).",
       "canonicalUrl": "https://github.com/selinawynters-ops/ST---ToastTome",
       "catalogedAt": "2026-08-10T15:52:34.332Z",
       "catalogCohort": "standard",
@@ -101701,21 +101661,15 @@
           "facet": "goal"
         },
         {
-          "id": "mobile-friendly",
-          "label": "Mobile-friendly",
-          "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
-          "facet": "trait"
-        },
-        {
-          "id": "organize-chats-and-messages",
-          "label": "Organize chats and messages",
-          "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
-          "facet": "goal"
-        },
-        {
           "id": "persistent-state",
           "label": "Persistent state",
           "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
+          "facet": "trait"
+        },
+        {
+          "id": "mobile-friendly",
+          "label": "Mobile-friendly",
+          "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
           "facet": "trait"
         }
       ],
@@ -101913,7 +101867,7 @@
           "https://github.com/selinawynters-ops/ST---ToastTome"
         ],
         "summary": [
-          "Toast Tome replaces SillyTavern’s default toast layer with a searchable grimoire-styled history popup, offering severity filters, suppression, persistent logs, copying, and export."
+          "A SillyTavern DreamTavern extension that overrides the default toastr layer, keeps toast history in a searchable grimoire-styled popup with filters, pattern suppression, persistence, and export (README: Features table)."
         ],
         "kind": [
           "extension"
@@ -101926,18 +101880,14 @@
           "interface theming",
           "layout customization",
           "UI personalization",
-          "Mobile-friendly",
-          "mobile support",
-          "phone friendly",
-          "responsive mobile UI",
-          "Organize chats and messages",
-          "chat organization",
-          "message bookmarks",
-          "conversation search",
           "Persistent state",
           "durable state",
           "state persistence",
-          "cross-session state"
+          "cross-session state",
+          "Mobile-friendly",
+          "mobile support",
+          "phone friendly",
+          "responsive mobile UI"
         ],
         "frontends": [
           "SillyTavern"
@@ -116270,7 +116220,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "A proxy that lets llamaswap coordinate with ComfyUI to safely reclaim GPU VRAM. It signals when memory is free, automating resource handoff and preventing crashes in image generation workflows.",
+      "summary": "go-llamaswap Comfy Proxy is a lightweight reverse proxy for ComfyUI that integrates llama-swap, sharing VRAM between ComfyUI and LLMs and signaling when VRAM is safe to reclaim (README).",
       "canonicalUrl": "https://github.com/Sulphuratum/go-llamaswap-comfy-proxy",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -116281,26 +116231,7 @@
           "description": "Works with the Marinara Engine roleplay frontend."
         }
       ],
-      "tags": [
-        {
-          "id": "automate-roleplay-workflows",
-          "label": "Automate roleplay workflows",
-          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
-          "facet": "goal"
-        },
-        {
-          "id": "generate-images",
-          "label": "Generate images",
-          "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
-          "facet": "goal"
-        },
-        {
-          "id": "connect-external-services",
-          "label": "Connect external services",
-          "description": "Bridge roleplay workflows to messaging, media, note-taking, automation, or other services.",
-          "facet": "goal"
-        }
-      ],
+      "tags": [],
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
@@ -116441,7 +116372,7 @@
           "https://github.com/Sulphuratum/go-llamaswap-comfy-proxy"
         ],
         "summary": [
-          "A proxy that lets llamaswap coordinate with ComfyUI to safely reclaim GPU VRAM. It signals when memory is free, automating resource handoff and preventing crashes in image generation workflows."
+          "go-llamaswap Comfy Proxy is a lightweight reverse proxy for ComfyUI that integrates llama-swap, sharing VRAM between ComfyUI and LLMs and signaling when VRAM is safe to reclaim (README)."
         ],
         "kind": [
           "extension"
@@ -116449,22 +116380,7 @@
         "primaryFunction": [
           "Interface and workflow"
         ],
-        "tags": [
-          "Automate roleplay workflows",
-          "automation",
-          "workflow automation",
-          "task automation",
-          "triggered actions",
-          "Generate images",
-          "image generation",
-          "AI art generation",
-          "scene illustration",
-          "picture generation",
-          "Connect external services",
-          "service integrations",
-          "external bridges",
-          "third-party connections"
-        ],
+        "tags": [],
         "frontends": [
           "Marinara Engine"
         ],

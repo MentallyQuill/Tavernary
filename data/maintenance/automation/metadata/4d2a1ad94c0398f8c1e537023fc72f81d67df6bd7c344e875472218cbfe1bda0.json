@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "selinawynters-ops-st-toasttome",
+  "sourceId": "github-1328729525",
+  "sourceIdentity": "github:1328729525",
+  "inputDigest": "4cd1acaea677a8ffdd1e25a0b8c277f6bbebaa85bc38fca29d6d89dd1c06aabb",
+  "fingerprint": "8f8c67e18d63726a07812834b816a444a6f5e291a21a5f80213e312853327e69",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "3939cf88c95064fe59b9093497cf094045fa96699e406cc4db0ffc8f19776dc0",
+  "outputDigest": "a30bd627fa6482195e3a3e0e556b7bdd92e0d3788fb92328d8f40e96bb5209d3",
+  "headSha": "5329885719b9edd098a6350e86b0d615e2d34339",
+  "observedAt": "2026-10-25T23:27:12.222Z"
+}

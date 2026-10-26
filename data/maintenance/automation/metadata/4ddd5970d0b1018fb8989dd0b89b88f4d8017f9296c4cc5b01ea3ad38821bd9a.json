@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "mentallyquill-directive",
+  "sourceId": "github-1273112032",
+  "sourceIdentity": "github:1273112032",
+  "inputDigest": "1ba747a1d72852870df0b5acfaaef0a3e8fe8015b002cb2fc24959f50978be65",
+  "fingerprint": "ee74c8fe306996c01f4a4f789af6b63291b79c0bed4de504834f555604949bc8",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "874c0524584cd54bf766cea52d801121f80286a21594502d3a1bcb430a99be0f",
+  "outputDigest": "7f7ecb4d617268bad39214b41f4021ec0dbf0423770ebcd5939d7e7abf4e80bb",
+  "headSha": "0ed0e2e9c985443c4cf8cd4ed2cbbbaa7b3636af",
+  "observedAt": "2026-10-25T23:56:08.485Z"
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4ddd5970d0b1018fb8989dd0b89b88f4d8017f9296c4cc5b01ea3ad38821bd9a",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1273112032:mentallyquill-directive",
+      "inputDigest": "1ba747a1d72852870df0b5acfaaef0a3e8fe8015b002cb2fc24959f50978be65",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1273112032",
+    "identity": "github:1273112032"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40246896005,
+    "sourceSha": "116c744a5b523136d25e0b52ecaca2e070303f4b"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/mentallyquill-directive.json",
+      "sha256": "4af6e0d83d7931cedb97e43ae978c576f6a60777c5acdc31887a8d701de8a00c",
+      "gitBlobSha": "7a1c1036b685b9986ecc6a0c5fbef9c6d5e13166"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/4ddd5970d0b1018fb8989dd0b89b88f4d8017f9296c4cc5b01ea3ad38821bd9a.json",
+      "sha256": "e0dd3e61ba1db67e17821220c523287ca6fb08a60d1ec6b8f4587addd1d0473e",
+      "gitBlobSha": "3151f1c27f702193d0427587786aa8d072da0833"
+    }
+  ]
+}

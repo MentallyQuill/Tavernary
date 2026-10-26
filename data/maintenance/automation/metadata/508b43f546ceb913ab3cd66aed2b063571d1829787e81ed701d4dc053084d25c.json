@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "morgoookru-st-chat-finder",
+  "sourceId": "github-1167832752",
+  "sourceIdentity": "github:1167832752",
+  "inputDigest": "c9b9e36d1f85f72f6a3b5407be44f1d3fb4ae91e30a5f6ccb98aa3c71dabc773",
+  "fingerprint": "7d3fd9a7896eaf7e2b1ff4399d8de3699375eaaf7cba715cf2b4c7df3849d503",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "8d261cdd092c198d3d6c4c034b6ff452aab7fe0e1d49d6a80e511cf09299f56d",
+  "outputDigest": "bf5f0a6261a9e9994310ab59aa3baeff66b1cf58952a85f7663e5d3f23b6c64d",
+  "headSha": "387e08efd3c9d47c2c0baeca4553fec96a402976",
+  "observedAt": "2026-10-25T23:48:42.659Z"
+}

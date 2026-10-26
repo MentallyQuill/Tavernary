@@ -3,18 +3,14 @@
   "id": "sulphuratum-go-llamaswap-comfy-proxy",
   "name": "go-llamaswap Comfy Proxy",
   "kind": "extension",
-  "summary": "A proxy that lets llamaswap coordinate with ComfyUI to safely reclaim GPU VRAM. It signals when memory is free, automating resource handoff and preventing crashes in image generation workflows.",
+  "summary": "go-llamaswap Comfy Proxy is a lightweight reverse proxy for ComfyUI that integrates llama-swap, sharing VRAM between ComfyUI and LLMs and signaling when VRAM is safe to reclaim (README).",
   "metadata_status": "curated",
   "frontends": ["marinara-engine"],
   "primary_function": "interface-workflow",
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "source_id": "github-1274104920",
-  "tags": [
-    "automate-roleplay-workflows",
-    "generate-images",
-    "connect-external-services"
-  ],
+  "tags": [],
   "listing_status": "active",
   "listing_status_reason": null,
   "metadata_policy": {

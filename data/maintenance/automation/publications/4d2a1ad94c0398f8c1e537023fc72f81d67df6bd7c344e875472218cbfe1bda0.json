@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4d2a1ad94c0398f8c1e537023fc72f81d67df6bd7c344e875472218cbfe1bda0",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1328729525:selinawynters-ops-st-toasttome",
+      "inputDigest": "4cd1acaea677a8ffdd1e25a0b8c277f6bbebaa85bc38fca29d6d89dd1c06aabb",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1328729525",
+    "identity": "github:1328729525"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40244765374,
+    "sourceSha": "8b257da9950ead3201537bd9d8851622cf4fc50a"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/selinawynters-ops-st-toasttome.json",
+      "sha256": "f712f9650c6c26e23e710438d6e543a1a38cd4e5306c2ca892239976bb25a580",
+      "gitBlobSha": "0531d38266c94f97ca84a210ebfb82b910ea2650"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/4d2a1ad94c0398f8c1e537023fc72f81d67df6bd7c344e875472218cbfe1bda0.json",
+      "sha256": "83fe9c140e9c588fbf53c8a00605bb8c0110fe34f9374970a9d76f76d3285fac",
+      "gitBlobSha": "2f0c16dc47a51f74e2f0b456405cb5b70c8156c1"
+    }
+  ]
+}
