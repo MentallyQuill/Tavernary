@@ -9,18 +9,28 @@
     "url": "https://github.com/rustyorb/SillyTavern-CreativeStudio",
     "description": "SillyTavern extension: one line (or nothing) → a complete, linked roleplay: card, openings, lorebook, preset, regex, Quick Replies, plus ComfyUI portraits and expression sprites. Hands-free AI with undo, provenance and a full creator's workbench.",
     "default_branch": "master",
-    "head_sha": "26c2a15771d9a78e198c9e278cb1760aab0a06fe",
-    "head_committed_at": "2026-09-26T18:14:40.000Z",
+    "head_sha": "ce372d05f8b0340918c8f5f35accb0c6607bb072",
+    "head_committed_at": "2026-10-19T07:03:26.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-23T16:08:42.000Z",
-    "size_kb": 8904
+    "size_kb": 9331
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-26T18:14:40.000Z",
+    "latest_source_activity_at": "2026-10-19T07:03:26.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-19T07:03:26.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-18T22:20:59.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-21",
         "latest_at": "2026-09-26T18:14:40.000Z",
@@ -30,22 +40,22 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-25T03:52:50.829Z",
+    "baseline_completed_at": "2026-10-26T14:26:14.650Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "26c2a15771d9a78e198c9e278cb1760aab0a06fe"
+    "evidence_head_sha": "ce372d05f8b0340918c8f5f35accb0c6607bb072"
   },
   "community": {
-    "stars_count": 7,
+    "stars_count": 8,
     "forks_count": 1,
     "watchers_count": 0,
-    "aggregate": 8
+    "aggregate": 9
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-26T14:28:41.507Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -53,7 +63,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-26T14:26:14.650Z",
     "stale_since": null
   }
 }
