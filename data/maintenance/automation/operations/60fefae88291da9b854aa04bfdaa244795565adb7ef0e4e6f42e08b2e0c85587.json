@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "60fefae88291da9b854aa04bfdaa244795565adb7ef0e4e6f42e08b2e0c85587",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1054966103:coneja-chibi-carrotkernel",
+      "inputDigest": "4641c35cfd81dbcecf11d9ba550d8c62ecf3751c4752c9304025635fbafed5d8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-26T09:39:16.316Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 3,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-26T09:24:16.316Z",
+  "completedAt": null
+}
