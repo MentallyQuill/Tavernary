@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5665e03f22e0fa07a2130da1323dd4f384b4f5c8c21f3d0aeff83fd6126a71d4",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1123999916:prompt-and-circumstance-storymode",
+      "inputDigest": "57b17d696a3030644be1836cb17f8a4dc2914cbaa2f07f3fbe06c334a47f5576",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-26T00:37:43.185Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-26T00:22:43.185Z",
+  "completedAt": null
+}
