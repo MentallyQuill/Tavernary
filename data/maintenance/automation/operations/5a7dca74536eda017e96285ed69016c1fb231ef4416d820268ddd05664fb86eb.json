@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5a7dca74536eda017e96285ed69016c1fb231ef4416d820268ddd05664fb86eb",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1152199549:finn-hecker-ryokanapp",
+      "inputDigest": "bb6e691e250f21bb1d6911b515b0d7a290643fb8e68e399f2875e5b93f9c8320",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-26T08:33:08.885Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-26T08:18:08.885Z",
+  "completedAt": null
+}
