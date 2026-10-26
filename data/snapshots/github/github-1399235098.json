@@ -9,18 +9,23 @@
     "url": "https://github.com/pathetic777/st-tavern-architect",
     "description": "3D Scene & Architecture Generator for SillyTavern via Dual-Agent & Three.js (Real-time Spatial Rendering)",
     "default_branch": "main",
-    "head_sha": "d35214731058763836533e801f639d0a36340b0f",
-    "head_committed_at": "2026-10-02T10:35:16.000Z",
+    "head_sha": "7f5c8d9c06c5b9dd6bee483a4fabc225ec9e29e0",
+    "head_committed_at": "2026-10-11T13:13:49.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-10-01T05:49:39.000Z",
-    "size_kb": 37
+    "size_kb": 60
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-02T10:35:16.000Z",
+    "latest_source_activity_at": "2026-10-11T13:08:14.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-11T13:08:14.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-28",
         "latest_at": "2026-10-02T10:35:16.000Z",
@@ -28,24 +33,24 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": null,
+    "latest_release_at": "2026-10-11T12:59:44.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-02T19:16:53.759Z",
+    "baseline_completed_at": "2026-10-26T05:57:10.130Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "d35214731058763836533e801f639d0a36340b0f"
+    "evidence_head_sha": "7f5c8d9c06c5b9dd6bee483a4fabc225ec9e29e0"
   },
   "community": {
-    "stars_count": 13,
+    "stars_count": 15,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 13
+    "aggregate": 15
   },
   "license": {
     "status": "proprietary",
     "spdx_id": null,
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-26T05:59:16.050Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -55,7 +60,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-26T05:57:10.130Z",
     "stale_since": null
   }
 }
