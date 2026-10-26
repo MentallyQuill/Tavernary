@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "76ee66db1001ac27b25ab8c14d4def46ca843c0c7bac6cb6d901d34e70e8f17f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1034514716:enclave0775-intiface-central-sillytavern-plugin",
+      "inputDigest": "30ab6e6826d7c6709f477b36b81dc9d4c77ccbbf6bf2701503200215a76a2586",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": "6e5d6b883738e1176388507953cedd7726fb2733",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-26T17:40:40.512Z",
+  "completedAt": null
+}
