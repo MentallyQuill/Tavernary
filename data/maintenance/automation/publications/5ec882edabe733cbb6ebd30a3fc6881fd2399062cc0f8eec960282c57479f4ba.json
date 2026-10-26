@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5ec882edabe733cbb6ebd30a3fc6881fd2399062cc0f8eec960282c57479f4ba",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1199215475:icefog72-sillytavern-morereasoning",
+      "inputDigest": "bc901a133a2962a31c075fa5b2fd592f9b9a583a92ea0ff9ecde253c6af4b4fa",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1199215475",
+    "identity": "github:1199215475"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40306244344,
+    "sourceSha": "d9fe10b9a28d2d4b04fd93cb7ea334662bec99b7"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/icefog72-sillytavern-morereasoning.json",
+      "sha256": "96ac4e211a69095b2c398afc76767ad3fd43e2264bc28d5129ce05fc42bd0f47",
+      "gitBlobSha": "8c505773f9f0aa6f1956e8d3571160bec125b21a"
+    }
+  ]
+}

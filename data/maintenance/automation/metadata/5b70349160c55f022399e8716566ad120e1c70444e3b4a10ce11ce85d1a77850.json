@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "mkrrussell0411-star-character-stats-extension",
+  "sourceId": "github-1158773851",
+  "sourceIdentity": "github:1158773851",
+  "inputDigest": "9028ea72e2b4096b67baa07b81af7c256c3d3c0145e042d98ad6b4e235604cd4",
+  "fingerprint": "5b35e577856abf034e2231b5a4932d645544a6331d3c17409d52225dc471f32f",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "3f713c7ec7171bf9fddc45fe5b0329a88b8cbb1946ef1266f4cc3b756cbd019f",
+  "outputDigest": "dd41dd667861d43e1efc55645b4653e34b22375fe06128e4550916dd9a58fdb8",
+  "headSha": "75100e0c0849a2af37092236057aefaaeda9eb0d",
+  "observedAt": "2026-10-26T09:54:24.955Z"
+}

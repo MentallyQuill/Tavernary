@@ -5206,8 +5206,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "c08d3d4c2919d7c040fdbb1c45e64ddc28e80b1d",
+        "freshness": "stale",
+        "currentSha": "13f53e0ccfe5e05d695caffb1f7a96de2eecd5a7",
         "report": {
           "reportId": "3209bc9493e88f05e3ef138be5bac7ff807d2181abc26676c4f62d3331848bf3",
           "riskLevel": "low",
@@ -5291,7 +5291,7 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-06-11T17:36:56.000Z",
+        "latestSourceActivityAt": "2026-10-23T15:17:08.000Z",
         "activeWeeks12": 0,
         "weeklyActivity": [
           false,
@@ -5308,23 +5308,23 @@
           false
         ],
         "evidenceStatus": "complete",
-        "dormant": true
+        "dormant": false
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 35,
-        "forks": 5,
+        "stars": 36,
+        "forks": 7,
         "watchers": 1,
-        "aggregate": 41
+        "aggregate": 44
       },
-      "repositorySizeKb": 374,
+      "repositorySizeKb": 256,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-26T08:47:18.845Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -9494,7 +9494,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-26T08:46:11.308Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -62500,9 +62500,9 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 19,
-        "forks": 4,
+        "forks": 5,
         "watchers": 1,
-        "aggregate": 24
+        "aggregate": 25
       },
       "repositorySizeKb": 184,
       "license": {
@@ -62511,7 +62511,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-26T08:45:04.851Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -71354,10 +71354,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 4,
+        "stars": 5,
         "forks": 1,
         "watchers": 1,
-        "aggregate": 6
+        "aggregate": 7
       },
       "repositorySizeKb": 118133,
       "license": {
@@ -71366,7 +71366,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-26T08:46:55.015Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -74015,7 +74015,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "character-worldbuilding",
-      "summary": "This SillyTavern extension tracks character statistics and growth mechanics within roleplay sessions. It automatically injects contextual stat information into prompts and compares values to real-world scales.",
+      "summary": "This Character Stats & Growth extension for SillyTavern tracks character statistics with growth mechanics and real-world scale comparisons, automatically injecting contextual stat information into prompts (README intro).",
       "canonicalUrl": "https://github.com/mkrrussell0411-star/Character-stats-extension",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -74028,21 +74028,15 @@
       ],
       "tags": [
         {
-          "id": "automate-roleplay-workflows",
-          "label": "Automate roleplay workflows",
-          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
           "facet": "goal"
         },
         {
           "id": "add-rpg-gameplay",
           "label": "Add RPG gameplay",
           "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
-          "facet": "goal"
-        },
-        {
-          "id": "track-characters-and-world-state",
-          "label": "Track characters and world state",
-          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
           "facet": "goal"
         }
       ],
@@ -74187,7 +74181,7 @@
           "https://github.com/mkrrussell0411-star/Character-stats-extension"
         ],
         "summary": [
-          "This SillyTavern extension tracks character statistics and growth mechanics within roleplay sessions. It automatically injects contextual stat information into prompts and compares values to real-world scales."
+          "This Character Stats & Growth extension for SillyTavern tracks character statistics with growth mechanics and real-world scale comparisons, automatically injecting contextual stat information into prompts (README intro)."
         ],
         "kind": [
           "extension"
@@ -74196,19 +74190,14 @@
           "Character and worldbuilding"
         ],
         "tags": [
-          "Automate roleplay workflows",
-          "automation",
-          "workflow automation",
-          "task automation",
-          "triggered actions",
-          "Add RPG gameplay",
-          "tabletop mechanics",
-          "game master tools",
-          "RPG systems",
           "Track characters and world state",
           "state tracking",
           "stat trackers",
-          "world state tracking"
+          "world state tracking",
+          "Add RPG gameplay",
+          "tabletop mechanics",
+          "game master tools",
+          "RPG systems"
         ],
         "frontends": [
           "SillyTavern"
@@ -74227,7 +74216,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "frontend",
-      "summary": "Quest Keeper AI is a desktop RPG companion that pairs an AI Dungeon Master with a visual game engine. It gives every action mechanical weight, tracks quest progress, and keeps the world persistent across sessions.",
+      "summary": "Desktop RPG companion pairing an AI Dungeon Master with a visual game engine per the README, giving every action mechanical weight, tracking quest progress, and persisting your world across sessions.",
       "canonicalUrl": "https://github.com/Mnehmos/mnehmos.quest-keeper.game",
       "catalogedAt": "2026-07-27T21:28:32.641Z",
       "catalogCohort": "standard",
@@ -74240,21 +74229,9 @@
       ],
       "tags": [
         {
-          "id": "add-visual-immersion",
-          "label": "Add visual immersion",
-          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
-          "facet": "goal"
-        },
-        {
           "id": "add-rpg-gameplay",
           "label": "Add RPG gameplay",
           "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
-          "facet": "goal"
-        },
-        {
-          "id": "track-characters-and-world-state",
-          "label": "Track characters and world state",
-          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
           "facet": "goal"
         },
         {
@@ -74264,16 +74241,10 @@
           "facet": "goal"
         },
         {
-          "id": "rules-driven",
-          "label": "Rules-driven",
-          "description": "Uses explicit rules, schemas, calculations, or deterministic mechanics to constrain behavior.",
-          "facet": "trait"
-        },
-        {
-          "id": "persistent-state",
-          "label": "Persistent state",
-          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
-          "facet": "trait"
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
         }
       ],
       "tavernKeeper": {
@@ -74686,7 +74657,7 @@
           "https://github.com/Mnehmos/mnehmos.quest-keeper.game"
         ],
         "summary": [
-          "Quest Keeper AI is a desktop RPG companion that pairs an AI Dungeon Master with a visual game engine. It gives every action mechanical weight, tracks quest progress, and keeps the world persistent across sessions."
+          "Desktop RPG companion pairing an AI Dungeon Master with a visual game engine per the README, giving every action mechanical weight, tracking quest progress, and persisting your world across sessions."
         ],
         "kind": [
           "frontend"
@@ -74695,30 +74666,18 @@
           "Frontend"
         ],
         "tags": [
-          "Add visual immersion",
-          "roleplay visuals",
-          "visual novel presentation",
-          "scene visuals",
           "Add RPG gameplay",
           "tabletop mechanics",
           "game master tools",
           "RPG systems",
-          "Track characters and world state",
-          "state tracking",
-          "stat trackers",
-          "world state tracking",
           "Manage inventory and quests",
           "quest tracking",
           "inventory management",
           "equipment tracking",
-          "Rules-driven",
-          "deterministic mechanics",
-          "rule based",
-          "schema driven",
-          "Persistent state",
-          "durable state",
-          "state persistence",
-          "cross-session state"
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
         ],
         "frontends": [
           "Quest Keeper"
@@ -90862,7 +90821,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-26T08:47:08.832Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -92555,7 +92514,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "frontend",
-      "summary": "TipsyTavern is a desktop AI roleplaying chat client with character cards, personas, and multi-provider streaming, using keyword-activated world books and request context inspection.",
+      "summary": "TipsyTavern is a Tauri-based desktop AI roleplay client with character cards, world books, and personas, plus an Inspector that shows exactly what is sent to the LLM each request (readme, Features).",
       "canonicalUrl": "https://github.com/RebootFlume/TipsyTavern",
       "catalogedAt": "2026-08-06T05:16:43.662Z",
       "catalogCohort": "standard",
@@ -92567,18 +92526,6 @@
         }
       ],
       "tags": [
-        {
-          "id": "customize-the-interface",
-          "label": "Customize the interface",
-          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
-          "facet": "goal"
-        },
-        {
-          "id": "inspect-prompts-and-generations",
-          "label": "Inspect prompts and generations",
-          "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
-          "facet": "goal"
-        },
         {
           "id": "manage-characters-and-personas",
           "label": "Manage characters and personas",
@@ -92592,15 +92539,27 @@
           "facet": "goal"
         },
         {
+          "id": "manage-context-limits",
+          "label": "Manage context limits",
+          "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
+          "facet": "goal"
+        },
+        {
+          "id": "inspect-prompts-and-generations",
+          "label": "Inspect prompts and generations",
+          "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+          "facet": "goal"
+        },
+        {
+          "id": "customize-the-interface",
+          "label": "Customize the interface",
+          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
+          "facet": "goal"
+        },
+        {
           "id": "model-agnostic",
           "label": "Model-agnostic",
           "description": "Works across a broad range of model providers rather than requiring one model family.",
-          "facet": "trait"
-        },
-        {
-          "id": "streaming-aware",
-          "label": "Streaming-aware",
-          "description": "Observes, transforms, or reacts to model output while it is still streaming.",
           "facet": "trait"
         }
       ],
@@ -92817,7 +92776,7 @@
           "https://github.com/RebootFlume/TipsyTavern"
         ],
         "summary": [
-          "TipsyTavern is a desktop AI roleplaying chat client with character cards, personas, and multi-provider streaming, using keyword-activated world books and request context inspection."
+          "TipsyTavern is a Tauri-based desktop AI roleplay client with character cards, world books, and personas, plus an Inspector that shows exactly what is sent to the LLM each request (readme, Features)."
         ],
         "kind": [
           "frontend"
@@ -92826,15 +92785,6 @@
           "Frontend"
         ],
         "tags": [
-          "Customize the interface",
-          "interface theming",
-          "layout customization",
-          "UI personalization",
-          "Inspect prompts and generations",
-          "prompt inspection",
-          "generation diagnostics",
-          "review validation",
-          "request debugging",
           "Manage characters and personas",
           "persona management",
           "character management",
@@ -92843,14 +92793,23 @@
           "World Info management",
           "worldbook organization",
           "loredeck management",
+          "Manage context limits",
+          "context compression",
+          "context window management",
+          "token budgeting",
+          "Inspect prompts and generations",
+          "prompt inspection",
+          "generation diagnostics",
+          "review validation",
+          "request debugging",
+          "Customize the interface",
+          "interface theming",
+          "layout customization",
+          "UI personalization",
           "Model-agnostic",
           "bring your own model",
           "BYOM",
-          "provider independent",
-          "Streaming-aware",
-          "live token processing",
-          "stream processing",
-          "incremental output handling"
+          "provider independent"
         ],
         "frontends": [
           "TipsyTavern"
@@ -142135,8 +142094,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "c08d3d4c2919d7c040fdbb1c45e64ddc28e80b1d",
+              "freshness": "stale",
+              "currentSha": "13f53e0ccfe5e05d695caffb1f7a96de2eecd5a7",
               "report": {
                 "reportId": "3209bc9493e88f05e3ef138be5bac7ff807d2181abc26676c4f62d3331848bf3",
                 "riskLevel": "low",
@@ -142220,7 +142179,7 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-06-11T17:36:56.000Z",
+              "latestSourceActivityAt": "2026-10-23T15:17:08.000Z",
               "activeWeeks12": 0,
               "weeklyActivity": [
                 false,
@@ -142237,23 +142196,23 @@
                 false
               ],
               "evidenceStatus": "complete",
-              "dormant": true
+              "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 35,
-              "forks": 5,
+              "stars": 36,
+              "forks": 7,
               "watchers": 1,
-              "aggregate": 41
+              "aggregate": 44
             },
-            "repositorySizeKb": 374,
+            "repositorySizeKb": 256,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-26T08:47:18.845Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -199682,8 +199641,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "c08d3d4c2919d7c040fdbb1c45e64ddc28e80b1d",
+              "freshness": "stale",
+              "currentSha": "13f53e0ccfe5e05d695caffb1f7a96de2eecd5a7",
               "report": {
                 "reportId": "3209bc9493e88f05e3ef138be5bac7ff807d2181abc26676c4f62d3331848bf3",
                 "riskLevel": "low",
@@ -199767,7 +199726,7 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-06-11T17:36:56.000Z",
+              "latestSourceActivityAt": "2026-10-23T15:17:08.000Z",
               "activeWeeks12": 0,
               "weeklyActivity": [
                 false,
@@ -199784,23 +199743,23 @@
                 false
               ],
               "evidenceStatus": "complete",
-              "dormant": true
+              "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 35,
-              "forks": 5,
+              "stars": 36,
+              "forks": 7,
               "watchers": 1,
-              "aggregate": 41
+              "aggregate": 44
             },
-            "repositorySizeKb": 374,
+            "repositorySizeKb": 256,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-26T08:47:18.845Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",

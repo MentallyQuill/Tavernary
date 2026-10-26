@@ -3,18 +3,18 @@
   "id": "rebootflume-tipsytavern",
   "name": "TipsyTavern",
   "kind": "frontend",
-  "summary": "TipsyTavern is a desktop AI roleplaying chat client with character cards, personas, and multi-provider streaming, using keyword-activated world books and request context inspection.",
+  "summary": "TipsyTavern is a Tauri-based desktop AI roleplay client with character cards, world books, and personas, plus an Inspector that shows exactly what is sent to the LLM each request (readme, Features).",
   "metadata_status": "curated",
   "source_id": "github-1285238973",
   "frontends": ["tipsytavern"],
   "primary_function": "frontend",
   "tags": [
-    "customize-the-interface",
-    "inspect-prompts-and-generations",
     "manage-characters-and-personas",
     "manage-lorebooks",
-    "model-agnostic",
-    "streaming-aware"
+    "manage-context-limits",
+    "inspect-prompts-and-generations",
+    "customize-the-interface",
+    "model-agnostic"
   ],
   "cataloged_at": "2026-08-06T05:16:43.662Z",
   "catalog_cohort": "standard",

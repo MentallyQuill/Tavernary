@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5b70349160c55f022399e8716566ad120e1c70444e3b4a10ce11ce85d1a77850",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1158773851:mkrrussell0411-star-character-stats-extension",
+      "inputDigest": "9028ea72e2b4096b67baa07b81af7c256c3d3c0145e042d98ad6b4e235604cd4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1158773851",
+    "identity": "github:1158773851"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40303087629,
+    "sourceSha": "1d6abdf26c978a5e650d981b7b1e3e1a02e2c36c"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/mkrrussell0411-star-character-stats-extension.json",
+      "sha256": "2649a92c8d1ed42d411db8057da855f25ed05df010152ed26dfc2c6fbdee3f04",
+      "gitBlobSha": "3edc88d23be8c5ff1d2504f4bf5d3f61f8411e6c"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/5b70349160c55f022399e8716566ad120e1c70444e3b4a10ce11ce85d1a77850.json",
+      "sha256": "7d73da4af0df22aa1910bb2a1ed00c516e7af90060645787900d0cf6ed55340f",
+      "gitBlobSha": "0636cdcb409edc22158247ad8ecacc2c223fdca7"
+    }
+  ]
+}

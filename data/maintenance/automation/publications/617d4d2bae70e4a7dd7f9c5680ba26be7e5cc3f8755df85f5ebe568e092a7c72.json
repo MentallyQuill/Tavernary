@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "617d4d2bae70e4a7dd7f9c5680ba26be7e5cc3f8755df85f5ebe568e092a7c72",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1285238973:rebootflume-tipsytavern",
+      "inputDigest": "ccc74ec78767c610a166714f93e83743cfc8b54d408d5dcd14416a4a8ee7c831",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1285238973",
+    "identity": "github:1285238973"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40311421806,
+    "sourceSha": "5dad08d8dbd7d1512cba35b6df0974ae62f28b43"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/rebootflume-tipsytavern.json",
+      "sha256": "e8a7b37fe0c32d436d386230d825ad40143eeae50e8cde9726ce6ab6b61f74ec",
+      "gitBlobSha": "8d3fc562701c6ecae30b725f0f58ca5c62c9d314"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/617d4d2bae70e4a7dd7f9c5680ba26be7e5cc3f8755df85f5ebe568e092a7c72.json",
+      "sha256": "ee033741d542e64dbbcc393a5c33b90bcf0999154370710a2740792dbe323806",
+      "gitBlobSha": "66939cae25c6b843de47cc1a3ce991740ef47df3"
+    }
+  ]
+}

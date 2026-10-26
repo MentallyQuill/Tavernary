@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "rebootflume-tipsytavern",
+  "sourceId": "github-1285238973",
+  "sourceIdentity": "github:1285238973",
+  "inputDigest": "ccc74ec78767c610a166714f93e83743cfc8b54d408d5dcd14416a4a8ee7c831",
+  "fingerprint": "f164af4690548141895cae98f2d9d0922af3229ed2bbed3e7b27f9ee4da4709a",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "321bd46fb09efd1c491970d52434374200710fa4e6af54b6ffcdc7e24e8717b9",
+  "outputDigest": "51b16266f5b994b945237206a8da995aba3d60042a97c6efbcb63f851e1aaee2",
+  "headSha": "72a16543e849267d93cdeb8aba2ac31647565f59",
+  "observedAt": "2026-10-26T10:58:12.322Z"
+}

@@ -9,8 +9,8 @@
     "url": "https://github.com/aikohanasaki/SillyTavern-WorldInfoInfo",
     "description": "See which WorldInfo entries were active in the last generated message.",
     "default_branch": "master",
-    "head_sha": "c08d3d4c2919d7c040fdbb1c45e64ddc28e80b1d",
-    "head_committed_at": "2026-06-11T17:36:56.000Z",
+    "head_sha": "13f53e0ccfe5e05d695caffb1f7a96de2eecd5a7",
+    "head_committed_at": "2026-10-23T15:17:08.000Z",
     "archived": false,
     "fork": true,
     "parent": {
@@ -20,48 +20,45 @@
       "url": "https://github.com/LenAnderson/SillyTavern-WorldInfoInfo"
     },
     "created_at": "2025-10-10T22:40:33.000Z",
-    "size_kb": 374
+    "size_kb": 256
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-06-11T17:36:56.000Z",
+    "latest_source_activity_at": "2026-10-23T15:17:08.000Z",
     "source_weeks": [
       {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-11T17:36:56.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-01",
-        "latest_at": "2026-06-07T00:29:20.000Z",
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-23T15:17:08.000Z",
         "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T01:06:55.971Z",
-    "baseline_attempts": 0
+    "baseline_completed_at": "2026-10-26T08:45:09.252Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "13f53e0ccfe5e05d695caffb1f7a96de2eecd5a7"
   },
   "community": {
-    "stars_count": 35,
-    "forks_count": 5,
+    "stars_count": 36,
+    "forks_count": 7,
     "watchers_count": 1,
-    "aggregate": 41
+    "aggregate": 44
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-26T08:47:18.845Z",
   "stale_since": null,
   "contributors": {
     "accounts": [],
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T06:46:55.988Z",
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-26T08:45:09.252Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }

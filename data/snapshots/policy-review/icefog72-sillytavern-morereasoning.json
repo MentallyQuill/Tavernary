@@ -5,12 +5,9 @@
   "source_identity": "github:icefog72/sillytavern-morereasoning",
   "evidence_fingerprint": "d1d39157ba2958333750daa6a719ec31b7b701a5c9a2c316b9662db0f8985ebb",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-01T14:45:19.720Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-10-01T14:45:19.720Z"
-  },
+  "reviewed_at": "2026-10-26T10:18:19.566Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5949ade6dc10fd7c86f192b0089f0045c5f19735e935d8e8cf3125f5da47645e",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1101728981:mnehmos-mnehmos-quest-keeper-game",
+      "inputDigest": "590617ef09fb35d0dd6d01a8378568153885001bec08f415406e889fda9802ba",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1101728981",
+    "identity": "github:1101728981"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40300857772,
+    "sourceSha": "c2c0a75a4c4780cb2b7d06fe9458ab916ac04344"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/mnehmos-mnehmos-quest-keeper-game.json",
+      "sha256": "b5cca8b2592b0ad8efa8da95d07f67595bbd681d39dc85ce5c4d23ab4f02a360",
+      "gitBlobSha": "369925dc675a226956ce4619b0ff727b426a421a"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/5949ade6dc10fd7c86f192b0089f0045c5f19735e935d8e8cf3125f5da47645e.json",
+      "sha256": "812b6eea87eef6a5f673e965cd1178d90a7229b6553c02a11f143ecf8f957078",
+      "gitBlobSha": "b2864cc92221c620de380882f758a46ebd2d3afb"
+    }
+  ]
+}
