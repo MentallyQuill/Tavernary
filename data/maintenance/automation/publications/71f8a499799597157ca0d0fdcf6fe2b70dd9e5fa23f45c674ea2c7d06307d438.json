@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "71f8a499799597157ca0d0fdcf6fe2b70dd9e5fa23f45c674ea2c7d06307d438",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1152852989:noiwontaaaaaaddddv-sillytavern-ciphers-dialogue",
+      "inputDigest": "f21fcd0b4db37fe3aa3219520f54c00e2a932f9c9c299e6fd4e7b5bc2102c392",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1152852989",
+    "identity": "github:1152852989"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40333628427,
+    "sourceSha": "285f960a2124e876ea30539a4c7ca4710a5b1069"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/noiwontaaaaaaddddv-sillytavern-ciphers-dialogue.json",
+      "sha256": "caf5bb6b82976f061b2ff138e272c8bd4f84e90978106358493cd4eb80d63f79",
+      "gitBlobSha": "283974288d007fdfa05c2f48fbfe64b741121e3f"
+    }
+  ]
+}

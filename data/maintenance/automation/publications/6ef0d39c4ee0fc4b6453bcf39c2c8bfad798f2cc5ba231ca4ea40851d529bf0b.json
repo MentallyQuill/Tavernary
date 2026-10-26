@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6ef0d39c4ee0fc4b6453bcf39c2c8bfad798f2cc5ba231ca4ea40851d529bf0b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1327833509:mokimoko-sillytavern-chatblockcleaner",
+      "inputDigest": "360018a45c9d486f6f4fc33dfe11f7973c4451906062ea7ac2479da8f06a74e5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1327833509",
+    "identity": "github:1327833509"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40329978959,
+    "sourceSha": "c9376f599a9cfc00d9d8bb018652060bb4660aec"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/mokimoko-sillytavern-chatblockcleaner.json",
+      "sha256": "2117926c3cf94fd77df2048678ef22aa9504707337f3229ecf036009eb631a7e",
+      "gitBlobSha": "d387ae80cee81b409f4ba79fbdb0ac0fe4c8802b"
+    }
+  ]
+}

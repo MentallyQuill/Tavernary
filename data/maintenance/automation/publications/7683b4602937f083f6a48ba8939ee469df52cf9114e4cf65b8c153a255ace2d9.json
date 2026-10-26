@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7683b4602937f083f6a48ba8939ee469df52cf9114e4cf65b8c153a255ace2d9",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1115422590:unkarelian-openvault",
+      "inputDigest": "3a43402724cf52363ab99b79ecc42aa44e068e23c7029241c98390059964fe53",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1115422590",
+    "identity": "github:1115422590"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40334890022,
+    "sourceSha": "3cbd44e52f47f4f2f516136a7608407d84d01a50"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/unkarelian-openvault.json",
+      "sha256": "847ad5f600b6b3a2d2da051a0cbe865a24adc22a2c1a2a6c9065acdf4791be99",
+      "gitBlobSha": "75481afdc5e50f7ca3518f0e52c0a416f2a6ef19"
+    }
+  ]
+}

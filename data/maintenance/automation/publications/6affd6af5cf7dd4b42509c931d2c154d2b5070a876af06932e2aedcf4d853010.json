@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6affd6af5cf7dd4b42509c931d2c154d2b5070a876af06932e2aedcf4d853010",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1179684706:ayvencore-sillytavern-lorebook-manager",
+      "inputDigest": "385ea01a6ea2bcf0f52b9b1b386e2d69741f4b575bbe9882e35a978df564cdb4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1179684706",
+    "identity": "github:1179684706"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40328824604,
+    "sourceSha": "567faab2113eefaf96c89d6dc3b66a1607867e52"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/ayvencore-sillytavern-lorebook-manager.json",
+      "sha256": "97deff7f85bac09c1be85170ac6d5fbd24eb261667b2d02cef41d301a1e8b852",
+      "gitBlobSha": "a939c8ec98ed706a01c2ffa9d3c3d326e0fa9908"
+    }
+  ]
+}

@@ -5,12 +5,9 @@
   "source_identity": "github:prolix-oc/lumiverse-xtimeline",
   "evidence_fingerprint": "145fdf50cb2bd9303be23c64fcb35f29c8fee44cba7d2d7838d13ef95ea7630c",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-06T14:32:48.693Z",
-  "retry": {
-    "attempts": 6,
-    "last_failure_at": "2026-10-06T14:32:48.693Z"
-  },
+  "reviewed_at": "2026-10-26T13:31:10.858Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

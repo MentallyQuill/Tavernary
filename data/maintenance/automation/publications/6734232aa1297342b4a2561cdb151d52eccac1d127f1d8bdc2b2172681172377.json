@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6734232aa1297342b4a2561cdb151d52eccac1d127f1d8bdc2b2172681172377",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1391011894:lainholic-synapse-engine",
+      "inputDigest": "a8ed6e4f33205b8b54bb907d5414fe6e80c120b02fa1689a6aff5d1d99d9973e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1391011894",
+    "identity": "github:1391011894"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40325885967,
+    "sourceSha": "7479bbcdb860f0e096d2425d3e0b06c1bcb6f0fc"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/lainholic-synapse-engine.json",
+      "sha256": "a38584b8613286d6724d4e889981709d2fa07cb3e9e333a966768049dd356517",
+      "gitBlobSha": "e43cedd64c3c215b3b16ff41f3ce1182f7562674"
+    }
+  ]
+}

@@ -5,12 +5,9 @@
   "source_identity": "github:myanadi/risuai-gpt-image",
   "evidence_fingerprint": "b2ee1c79b4c11ef8c56e67e06424992e1c78dd9e05bbc5bb74fb091a10e3d150",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-03T12:52:36.305Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-10-03T12:52:36.305Z"
-  },
+  "reviewed_at": "2026-10-26T14:13:54.563Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

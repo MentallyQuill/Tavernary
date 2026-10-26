@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "enclave0775-intiface-central-sillytavern-plugin",
+  "source_id": "github-1034514716",
+  "source_identity": "github:enclave0775/intiface_central-sillytavern-plugin",
+  "evidence_fingerprint": "8fa23a29bd6b49dd2cecfe74a780ca3d094cc4346d36e0a0219aebd47bc387fb",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-10-26T14:05:06.808Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

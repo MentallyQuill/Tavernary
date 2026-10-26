@@ -5,12 +5,9 @@
   "source_identity": "github:avilnetro/all-but-this-swipe",
   "evidence_fingerprint": "0f6b5b70101cc9f9b7f43dffbeea3bdcb717cd0c91942c8236f26e55705ea8db",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-08T14:53:09.388Z",
-  "retry": {
-    "attempts": 9,
-    "last_failure_at": "2026-10-08T14:53:09.388Z"
-  },
+  "reviewed_at": "2026-10-26T13:39:47.898Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

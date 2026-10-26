@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "773806f60b10ca75f401156527fa203a147854b566d17f4b736d5d5b1601cf3c",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1267778093:myanadi-risuai-gpt-image",
+      "inputDigest": "722a1bb4bc2783af1070ddada92a4358cb515834eebd56bececf0c8b39e9d14b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1267778093",
+    "identity": "github:1267778093"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40337575644,
+    "sourceSha": "f19ee31b083e49e7d85f1b2997a313ef8ca09eaf"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/myanadi-risuai-gpt-image.json",
+      "sha256": "1104b422cb4b6ecd4f6db508c612c8c5f1e975a3ca4762be2fe641cead1cee0c",
+      "gitBlobSha": "ac3d57a0a10019c32094259691df7a0f3c9065f1"
+    }
+  ]
+}

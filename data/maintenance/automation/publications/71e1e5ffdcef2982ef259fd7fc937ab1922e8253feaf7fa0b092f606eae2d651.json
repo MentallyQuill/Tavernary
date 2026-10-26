@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "71e1e5ffdcef2982ef259fd7fc937ab1922e8253feaf7fa0b092f606eae2d651",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1189004275:avilnetro-all-but-this-swipe",
+      "inputDigest": "5e6e143de3137ac2051697a410c301be030d8b7f91ef605ceeb3403991a7fee9",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1189004275",
+    "identity": "github:1189004275"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40332430187,
+    "sourceSha": "cf8a688ef0018e74de2b2a08b0af9b9d7ce84d17"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/avilnetro-all-but-this-swipe.json",
+      "sha256": "d54a4bf7ed9854d71ad080b7c20b34bd3c27ddb3c0121c83db0e2ce8ec4a5721",
+      "gitBlobSha": "4f5fb056c5e4aec7043da8db3af2a0413a811dcf"
+    }
+  ]
+}

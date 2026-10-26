@@ -5,12 +5,9 @@
   "source_identity": "github:noiwontaaaaaaddddv/sillytavern-ciphers-dialogue-",
   "evidence_fingerprint": "68a6cf50d2b462ca6f7989dac42c3c7ea9fdc3c9385d98e2dfaecdbbade768f2",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-04T13:26:50.718Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-10-04T13:26:50.718Z"
-  },
+  "reviewed_at": "2026-10-26T13:47:54.400Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

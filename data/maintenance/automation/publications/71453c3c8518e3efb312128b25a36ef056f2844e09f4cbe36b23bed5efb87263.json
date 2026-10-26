@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "71453c3c8518e3efb312128b25a36ef056f2844e09f4cbe36b23bed5efb87263",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1296928830:prolix-oc-lumiverse-xtimeline",
+      "inputDigest": "b671caa86a7ad64ee000072f59b22f287964a157cee05855823dd631c89ad1e1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1296928830",
+    "identity": "github:1296928830"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40331152110,
+    "sourceSha": "8232ab6eaa62827d3cc0c2920ce0fce4e83c7c1e"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/prolix-oc-lumiverse-xtimeline.json",
+      "sha256": "55f63702654e13265dcda98327563223d7a8a7160f1d4f1191a02703ef70796d",
+      "gitBlobSha": "4db4722f4f27143305c12230b99d592a9df48965"
+    }
+  ]
+}
