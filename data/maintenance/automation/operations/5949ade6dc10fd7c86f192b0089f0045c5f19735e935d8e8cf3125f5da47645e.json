@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5949ade6dc10fd7c86f192b0089f0045c5f19735e935d8e8cf3125f5da47645e",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1101728981:mnehmos-mnehmos-quest-keeper-game",
+      "inputDigest": "590617ef09fb35d0dd6d01a8378568153885001bec08f415406e889fda9802ba",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-26T00:37:43.185Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-26T00:22:43.185Z",
+  "completedAt": null
+}
