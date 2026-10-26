@@ -91436,7 +91436,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "StoryMode is a Silly Tavern extension that supports narrative storytelling sessions. It manages story structure and prompt context, helping users run guided, immersive roleplay adventures.",
+      "summary": "StoryMode is a SillyTavern extension providing tools for a stronger narrative experience while chatting with LLMs (README Overview).",
       "canonicalUrl": "https://github.com/Prompt-And-Circumstance/StoryMode",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -91449,21 +91449,9 @@
       ],
       "tags": [
         {
-          "id": "preserve-story-continuity",
-          "label": "Preserve story continuity",
-          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
-          "facet": "goal"
-        },
-        {
           "id": "plan-stories-and-scenes",
           "label": "Plan stories and scenes",
           "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
-          "facet": "goal"
-        },
-        {
-          "id": "guide-model-responses",
-          "label": "Guide model responses",
-          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
           "facet": "goal"
         }
       ],
@@ -91589,7 +91577,7 @@
           "https://github.com/Prompt-And-Circumstance/StoryMode"
         ],
         "summary": [
-          "StoryMode is a Silly Tavern extension that supports narrative storytelling sessions. It manages story structure and prompt context, helping users run guided, immersive roleplay adventures."
+          "StoryMode is a SillyTavern extension providing tools for a stronger narrative experience while chatting with LLMs (README Overview)."
         ],
         "kind": [
           "extension"
@@ -91598,18 +91586,10 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Preserve story continuity",
-          "continuity tracking",
-          "canon consistency",
-          "story coherence",
           "Plan stories and scenes",
           "story planning",
           "plot direction",
-          "scene planning",
-          "Guide model responses",
-          "response steering",
-          "generation control",
-          "instruction control"
+          "scene planning"
         ],
         "frontends": [
           "SillyTavern"
@@ -161076,7 +161056,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "StoryMode is a Silly Tavern extension that supports narrative storytelling sessions. It manages story structure and prompt context, helping users run guided, immersive roleplay adventures.",
+            "summary": "StoryMode is a SillyTavern extension providing tools for a stronger narrative experience while chatting with LLMs (README Overview).",
             "canonicalUrl": "https://github.com/Prompt-And-Circumstance/StoryMode",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -161089,21 +161069,9 @@
             ],
             "tags": [
               {
-                "id": "preserve-story-continuity",
-                "label": "Preserve story continuity",
-                "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
-                "facet": "goal"
-              },
-              {
                 "id": "plan-stories-and-scenes",
                 "label": "Plan stories and scenes",
                 "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
-                "facet": "goal"
-              },
-              {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
                 "facet": "goal"
               }
             ],
@@ -161229,7 +161197,7 @@
                 "https://github.com/Prompt-And-Circumstance/StoryMode"
               ],
               "summary": [
-                "StoryMode is a Silly Tavern extension that supports narrative storytelling sessions. It manages story structure and prompt context, helping users run guided, immersive roleplay adventures."
+                "StoryMode is a SillyTavern extension providing tools for a stronger narrative experience while chatting with LLMs (README Overview)."
               ],
               "kind": [
                 "extension"
@@ -161238,18 +161206,10 @@
                 "Interface and workflow"
               ],
               "tags": [
-                "Preserve story continuity",
-                "continuity tracking",
-                "canon consistency",
-                "story coherence",
                 "Plan stories and scenes",
                 "story planning",
                 "plot direction",
-                "scene planning",
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control"
+                "scene planning"
               ],
               "frontends": [
                 "SillyTavern"
@@ -299515,7 +299475,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "StoryMode is a Silly Tavern extension that supports narrative storytelling sessions. It manages story structure and prompt context, helping users run guided, immersive roleplay adventures.",
+            "summary": "StoryMode is a SillyTavern extension providing tools for a stronger narrative experience while chatting with LLMs (README Overview).",
             "canonicalUrl": "https://github.com/Prompt-And-Circumstance/StoryMode",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -299528,21 +299488,9 @@
             ],
             "tags": [
               {
-                "id": "preserve-story-continuity",
-                "label": "Preserve story continuity",
-                "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
-                "facet": "goal"
-              },
-              {
                 "id": "plan-stories-and-scenes",
                 "label": "Plan stories and scenes",
                 "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
-                "facet": "goal"
-              },
-              {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
                 "facet": "goal"
               }
             ],
@@ -299668,7 +299616,7 @@
                 "https://github.com/Prompt-And-Circumstance/StoryMode"
               ],
               "summary": [
-                "StoryMode is a Silly Tavern extension that supports narrative storytelling sessions. It manages story structure and prompt context, helping users run guided, immersive roleplay adventures."
+                "StoryMode is a SillyTavern extension providing tools for a stronger narrative experience while chatting with LLMs (README Overview)."
               ],
               "kind": [
                 "extension"
@@ -299677,18 +299625,10 @@
                 "Interface and workflow"
               ],
               "tags": [
-                "Preserve story continuity",
-                "continuity tracking",
-                "canon consistency",
-                "story coherence",
                 "Plan stories and scenes",
                 "story planning",
                 "plot direction",
-                "scene planning",
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control"
+                "scene planning"
               ],
               "frontends": [
                 "SillyTavern"

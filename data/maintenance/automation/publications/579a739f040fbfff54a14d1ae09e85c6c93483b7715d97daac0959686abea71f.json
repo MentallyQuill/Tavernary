@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "579a739f040fbfff54a14d1ae09e85c6c93483b7715d97daac0959686abea71f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1399235098:pathetic777-st-tavern-architect",
+      "inputDigest": "72a319544c020eec5c40f969012b67f80b5d66d0a00b471c50e0b6afc47156b5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1399235098",
+    "identity": "github:1399235098"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40254535741,
+    "sourceSha": "8cb4951344f377ec7c9004101bbbf53ee6ac3851"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/pathetic777-st-tavern-architect.json",
+      "sha256": "37a9e63db247ea42c7f79d4f1686017a8c36687f7fb1a1a1bdf41dc4908275db",
+      "gitBlobSha": "874a61c823856a2fc371cfe9389b0edbe726e8d7"
+    }
+  ]
+}

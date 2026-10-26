@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5665e03f22e0fa07a2130da1323dd4f384b4f5c8c21f3d0aeff83fd6126a71d4",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1123999916:prompt-and-circumstance-storymode",
+      "inputDigest": "57b17d696a3030644be1836cb17f8a4dc2914cbaa2f07f3fbe06c334a47f5576",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1123999916",
+    "identity": "github:1123999916"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40253312277,
+    "sourceSha": "ffc51eef95e415ab7e138c468fb5cd4839cc10a4"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/prompt-and-circumstance-storymode.json",
+      "sha256": "91bf0bc646d71dd9f1e429f6f6779705617cfd75870528c525c50034bee0c39c",
+      "gitBlobSha": "fafebafd7fc78543001272ef4eb28da02b54e23a"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/5665e03f22e0fa07a2130da1323dd4f384b4f5c8c21f3d0aeff83fd6126a71d4.json",
+      "sha256": "e6cbd2353b59ffe2cafe1f0842ab7d06c6ab1d6a4e37b5fdd8bc4a2178280f07",
+      "gitBlobSha": "5d548fa06810c16441f50d0ba8ef95ba8e50101c"
+    }
+  ]
+}
