@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "60c7ed6881cda2bd99c2e772815b6b7974fcc34f9b140df7a5739fe00cc4620c",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-732327589:sakhavhyand-sillytavern-anothercharmanager",
+      "inputDigest": "bc2c9ac1ca629099d3de40feff60c40d43407a4f055d8aacc50c5a0ae7a6aa6c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-26T09:39:16.316Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-26T09:24:16.316Z",
+  "completedAt": null
+}
