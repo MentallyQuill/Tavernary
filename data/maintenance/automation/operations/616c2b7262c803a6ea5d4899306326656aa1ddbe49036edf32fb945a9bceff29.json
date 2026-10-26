@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "616c2b7262c803a6ea5d4899306326656aa1ddbe49036edf32fb945a9bceff29",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-994448098:nbrown725-sillytavern-alternatedescriptions",
+      "inputDigest": "04d4e1c53fb662c03a947706264ad54406140bd88abab67a31c1d3fb0185fc0f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-26T09:39:16.316Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-26T09:24:16.316Z",
+  "completedAt": null
+}
