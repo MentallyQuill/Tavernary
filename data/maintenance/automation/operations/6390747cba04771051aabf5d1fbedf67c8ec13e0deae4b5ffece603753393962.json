@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6390747cba04771051aabf5d1fbedf67c8ec13e0deae4b5ffece603753393962",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1168534011:samueras-sillytavern-multipersonacomposer",
+      "inputDigest": "66c3401ba9b19bf1b152a1b6e6c5f6c1ee7f0cc6581b1179ec1c5e078d8ce440",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-26T11:34:20.318Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-26T11:19:20.318Z",
+  "completedAt": null
+}
