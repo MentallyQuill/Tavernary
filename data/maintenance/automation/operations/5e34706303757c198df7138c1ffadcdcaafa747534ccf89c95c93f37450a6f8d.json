@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5e34706303757c198df7138c1ffadcdcaafa747534ccf89c95c93f37450a6f8d",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1285750198:archkr-lumiverse-lumiworld",
+      "inputDigest": "595a9f0c4f3bb9ae01927859178c54ffb9d9574737ca2e07fc38472a2a4b6aa2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-26T08:33:08.885Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-26T08:18:08.885Z",
+  "completedAt": null
+}
