@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5efc47e58da1244e293eba55fc92dc57ec90f9447f0dded1a52954045e4840ca",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1158773851:mkrrussell0411-star-character-stats-extension",
+      "inputDigest": "1a641d3328466b2262d56542933d05461935e60c03aa00e5a4284c86e2b9184e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-26T09:39:16.316Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-26T09:24:16.316Z",
+  "completedAt": null
+}
