@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6478d927530e1687587c955a0ef40ca6e8d9b93798c949cbaf12aa557673f03e",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1235264700:amousepad-lumiagent",
+      "inputDigest": "8e89b3ee2da1ffa8167318099639ebda26f5b6295f716b95f1f25fe42aaab8a6",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-26T11:34:20.318Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-26T11:19:20.318Z",
+  "completedAt": null
+}
