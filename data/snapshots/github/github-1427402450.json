@@ -1,0 +1,61 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1427402450",
+  "repository": {
+    "id": 1427402450,
+    "owner": "HakaiGod420",
+    "name": "st-opening-scenes",
+    "url": "https://github.com/HakaiGod420/st-opening-scenes",
+    "description": "SillyTavern extension that writes first messages / opening scenarios which actually fit the character card.",
+    "default_branch": "main",
+    "head_sha": "d76e1bd08bde18b8b1b6afdaa111dbd131916b24",
+    "head_committed_at": "2026-10-21T15:15:27.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-10-20T18:17:19.000Z",
+    "size_kb": 2376
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-10-21T15:15:27.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-21T15:15:27.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-10-21T15:17:16.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-10-27T21:35:09.314Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "d76e1bd08bde18b8b1b6afdaa111dbd131916b24"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-10-27T21:35:09.314Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "HakaiGod420", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-10-27T21:35:09.314Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

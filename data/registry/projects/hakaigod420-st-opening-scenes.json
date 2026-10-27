@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "hakaigod420-st-opening-scenes",
+  "name": "st-opening-scenes",
+  "kind": "extension",
+  "summary": "A SillyTavern extension that drafts character opening messages from the card itself, generating 1–4 divergent takes across nine vibes and letting you apply the winner as a greeting or chat message (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1427402450",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": ["create-character-cards"],
+  "cataloged_at": "2026-10-27T21:35:09.314Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
