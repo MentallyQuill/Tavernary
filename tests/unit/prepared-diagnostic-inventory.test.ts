@@ -1,5 +1,6 @@
 import { expect, test, vi } from "vitest";
 import { mkdir, writeFile, readFile, rm } from "node:fs/promises";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { productionInventoryRoot } from "../helpers/production-inventory-root.mjs";
 import * as inventory from "../../scripts/automation/inventory.mjs";
@@ -33,7 +34,30 @@ import { createPolicyEvidenceFingerprint } from "../../scripts/moderation/catalo
 
 const repository = "MentallyQuill/Tavernary";
 const publisherActorId = 41_982_982;
-const nowMs = Date.parse("2026-10-16T12:00:00Z");
+// The fixtures build receipts and runs around this clock while copying real
+// operations out of data/. A hard-coded instant silently expires: once the
+// catalog contains an operation newer than the clock, its fixture receipt
+// predates the operation it describes and every derived decision flips.
+const nowMs =
+  readdirSync("data/maintenance/automation/operations")
+    .filter((file) => file.endsWith(".json"))
+    .map((file) => {
+      try {
+        return Date.parse(
+          JSON.parse(
+            readFileSync(
+              join("data/maintenance/automation/operations", file),
+              "utf8",
+            ),
+          ).operation.createdAt,
+        );
+      } catch {
+        return Number.NEGATIVE_INFINITY;
+      }
+    })
+    .filter(Number.isFinite)
+    .reduce((latest, value) => Math.max(latest, value), 0) +
+  60 * 60 * 1000;
 const workflows = {
   refresh: "refresh-catalog.yml",
   metadata: "enrich-catalog.yml",
