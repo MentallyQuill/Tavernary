@@ -5,12 +5,9 @@
   "source_identity": "github:sewerzone/sillytavern-sillytoast",
   "evidence_fingerprint": "146dabbdf4799455a82c449cab5670c85b6c6e041548023166e272b4b7a0397d",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-17T12:56:44.137Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-17T12:56:44.137Z"
-  },
+  "reviewed_at": "2026-10-27T12:16:44.846Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

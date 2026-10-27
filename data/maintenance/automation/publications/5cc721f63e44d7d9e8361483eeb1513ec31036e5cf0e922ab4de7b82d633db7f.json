@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5cc721f63e44d7d9e8361483eeb1513ec31036e5cf0e922ab4de7b82d633db7f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1334521822:sewerzone-sillytavern-sillytoast",
+      "inputDigest": "b36ada26d857bb2a5de93209df9ad03eea92301b71bf9acea88ce29324a95f02",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1334521822",
+    "identity": "github:1334521822"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40502392828,
+    "sourceSha": "54658b3de76404c73d2cd7a89009e81133746480"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/sewerzone-sillytavern-sillytoast.json",
+      "sha256": "e791addf05bcf01a6927639146a88b7b13f595161633b1a018a39129b56ee693",
+      "gitBlobSha": "19265cc7cb9b00732e06572a901ab9a0b589c75c"
+    }
+  ]
+}
