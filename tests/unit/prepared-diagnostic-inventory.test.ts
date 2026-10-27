@@ -1,6 +1,5 @@
 import { expect, test, vi } from "vitest";
 import { mkdir, writeFile, readFile, rm } from "node:fs/promises";
-import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { productionInventoryRoot } from "../helpers/production-inventory-root.mjs";
 import * as inventory from "../../scripts/automation/inventory.mjs";
@@ -34,37 +33,17 @@ import { createPolicyEvidenceFingerprint } from "../../scripts/moderation/catalo
 
 const repository = "MentallyQuill/Tavernary";
 const publisherActorId = 41_982_982;
-// The fixtures build receipts and runs around this clock while copying real
-// operations out of data/. A hard-coded instant silently expires: once the
-// catalog contains an operation newer than the clock, its fixture receipt
-// predates the operation it describes and every derived decision flips.
-const nowMs =
-  readdirSync("data/maintenance/automation/operations")
-    .filter((file) => file.endsWith(".json"))
-    .map((file) => {
-      try {
-        return Date.parse(
-          JSON.parse(
-            readFileSync(
-              join("data/maintenance/automation/operations", file),
-              "utf8",
-            ),
-          ).operation.createdAt,
-        );
-      } catch {
-        return Number.NEGATIVE_INFINITY;
-      }
-    })
-    .filter(Number.isFinite)
-    .reduce((latest, value) => Math.max(latest, value), 0) +
-  60 * 60 * 1000;
+const nowMs = Date.parse("2026-10-16T12:00:00Z");
 const workflows = {
   refresh: "refresh-catalog.yml",
   metadata: "enrich-catalog.yml",
   advisory: "review-catalog-policy.yml",
 };
 
-async function diagnosticFixture(kind: keyof typeof workflows = "metadata") {
+async function diagnosticFixture(
+  kind: keyof typeof workflows = "metadata",
+  seedNowMs = nowMs,
+) {
   const canonical = await productionInventoryRoot();
   const calls: string[][] = [];
   const runs: ProjectInventoryRun[] = [];
@@ -116,15 +95,23 @@ async function diagnosticFixture(kind: keyof typeof workflows = "metadata") {
     gh,
     repository,
     publisherActorId,
-    nowMs,
+    nowMs: seedNowMs,
     history: undefined as GithubAutomationInventory | undefined,
     reportIndex: {
       schema_version: 5 as const,
-      generated_at: new Date(nowMs).toISOString(),
+      generated_at: new Date(seedNowMs).toISOString(),
       reports: [],
     },
   };
   const initial = await inventory.loadAutomationInventory(input);
+  // Discovery reads current catalog snapshots independently of stored receipts.
+  // Leave room for the producer run and receipt before the fixture observation.
+  input.nowMs = initial.operations.reduce(
+    (latest, operation) =>
+      Math.max(latest, Date.parse(operation.createdAt) + 3 * 3_600_000),
+    seedNowMs,
+  );
+  input.reportIndex.generated_at = new Date(input.nowMs).toISOString();
   const operation = initial.operations.find(
     (value) => value.identity.kind === kind,
   )!;
@@ -140,9 +127,9 @@ async function diagnosticFixture(kind: keyof typeof workflows = "metadata") {
     display_title: `Automation prepare ${operation.key}`,
     actor: { id: publisherActorId, type: "Bot" },
     created_at: new Date(
-      Math.max(Date.parse(operation.createdAt), nowMs - 3 * 3_600_000),
+      Math.max(Date.parse(operation.createdAt), input.nowMs - 3 * 3_600_000),
     ).toISOString(),
-    updated_at: new Date(nowMs - 2 * 3_600_000).toISOString(),
+    updated_at: new Date(input.nowMs - 2 * 3_600_000).toISOString(),
     status: "completed",
     conclusion: "failure",
   } satisfies ProjectInventoryRun;
@@ -152,14 +139,14 @@ async function diagnosticFixture(kind: keyof typeof workflows = "metadata") {
     operation: {
       ...operation,
       workerRunId: null,
-      nextEligibleAt: new Date(nowMs - 60_000).toISOString(),
+      nextEligibleAt: new Date(input.nowMs - 60_000).toISOString(),
       retry: {
         failure: { kind: "unknown", reasonCode: "unclassified-failure" },
         transientAttempts: 1,
         immediateAttempts: 2,
       },
     },
-    updatedAt: new Date(nowMs - 3_600_000).toISOString(),
+    updatedAt: new Date(input.nowMs - 3_600_000).toISOString(),
     completedAt: null,
   };
   const saveReceipt = async () => {
@@ -197,6 +184,30 @@ async function diagnosticFixture(kind: keyof typeof workflows = "metadata") {
     },
   };
 }
+
+test("canonical diagnostics remain loadable after their seed clock expires", async () => {
+  const fixture = await diagnosticFixture(
+    "metadata",
+    Date.parse("2000-01-01T12:00:00Z"),
+  );
+  try {
+    expect(() => validateAutomationReceipt(fixture.receipt)).not.toThrow();
+    const scoped = await inventory.loadPreparedDiagnosticInventory({
+      ...fixture.input,
+      operation: fixture.operation,
+      evidenceRun: fixture.run,
+    });
+    expect(scoped).not.toBeNull();
+    expect(
+      isPreparedDiagnosticObsolete({
+        state: scoped!,
+        evidence: fixture.evidence,
+      }),
+    ).toBe(true);
+  } finally {
+    await fixture.cleanup();
+  }
+}, 30_000);
 
 async function nativeFixture() {
   const fixture = preparedReplayFixture();
@@ -465,8 +476,10 @@ test("fresh global receipt additions, changed handles and cleared references pre
       fixture.runs.push({
         ...fixture.run,
         id,
-        created_at: new Date(nowMs - 8 * 86_400_000).toISOString(),
-        updated_at: new Date(nowMs - 30 * 60_000).toISOString(),
+        created_at: new Date(
+          fixture.input.nowMs - 8 * 86_400_000,
+        ).toISOString(),
+        updated_at: new Date(fixture.input.nowMs - 30 * 60_000).toISOString(),
         path: ".github/workflows/automation-worker.yml",
         display_title: `Automation ${fixture.operation.key}`,
       });
@@ -798,8 +811,8 @@ test("a fresh peer between comparison and failure persistence produces the exact
     const peer = {
       ...fixture.run,
       id: 702,
-      created_at: new Date(nowMs + 1000).toISOString(),
-      updated_at: new Date(nowMs + 1000).toISOString(),
+      created_at: new Date(fixture.input.nowMs + 1000).toISOString(),
+      updated_at: new Date(fixture.input.nowMs + 1000).toISOString(),
       status: "pending",
       conclusion: null,
       path: ".github/workflows/automation-worker.yml",
@@ -953,9 +966,9 @@ test("failure persistence reloads canonical receipt changes between comparison a
       await fixture.saveReceipt();
     };
     fixture.receipt.operation.nextEligibleAt = new Date(
-      nowMs + 86_400_000,
+      fixture.input.nowMs + 86_400_000,
     ).toISOString();
-    fixture.receipt.updatedAt = new Date(nowMs).toISOString();
+    fixture.receipt.updatedAt = new Date(fixture.input.nowMs).toISOString();
     await fixture.saveReceipt();
     expect(
       await persistPreparedFailure({
@@ -967,7 +980,7 @@ test("failure persistence reloads canonical receipt changes between comparison a
     ).toMatchObject({ persisted: false });
     expect(writes).toEqual([]);
     fixture.receipt.operation.nextEligibleAt = new Date(
-      nowMs - 60_000,
+      fixture.input.nowMs - 60_000,
     ).toISOString();
     fixture.receipt.operation.retry!.transientAttempts = 3;
     fixture.receipt.operation.retry!.immediateAttempts = 1;
@@ -1046,7 +1059,7 @@ test("advisory review-state changes are freshly classified before the exact key 
           status,
           maintenance_issue_number: null,
           category: null,
-          reviewed_at: new Date(nowMs).toISOString(),
+          reviewed_at: new Date(fixture.input.nowMs).toISOString(),
         }),
       );
       const full = await inventory.loadAutomationInventory(fixture.input);
@@ -1118,7 +1131,7 @@ test("missing or invalid exact receipts and retired keys with no live receipt ha
         schema_version: 1,
         operationKey: fixture.operation.key,
         expectedSha: fixture.revision,
-        completedAt: new Date(nowMs).toISOString(),
+        completedAt: new Date(fixture.input.nowMs).toISOString(),
         retiredFromSha: fixture.revision,
         receiptBlobSha: "a".repeat(40),
         publicationBlobSha: "b".repeat(40),
@@ -1174,7 +1187,7 @@ test("a target beyond the global twenty worker diagnostics falls back when its c
         id: receipt.operation.workerRunId!,
         path: ".github/workflows/automation-worker.yml",
         display_title: `Automation ${receipt.operation.key}`,
-        updated_at: new Date(nowMs - 30 * 60_000).toISOString(),
+        updated_at: new Date(fixture.input.nowMs - 30 * 60_000).toISOString(),
         repository: { id: 42, full_name: repository },
         head_repository: { id: 42, full_name: repository },
       });
@@ -1232,7 +1245,7 @@ test.each(["obsolete", "equal-clock"])(
         .slice(0, 20);
       expect(selected).toHaveLength(20);
       const scenarioNowMs = Math.max(
-        nowMs,
+        fixture.input.nowMs,
         Math.max(
           ...selected.map((operation) => Date.parse(operation.createdAt)),
         ) +
@@ -1626,7 +1639,7 @@ test("metadata cache, visibility, source, repository and vocabulary changes are 
       headSha: snapshot.repository.head_sha,
       normalizedContent: "Fresh canonical source",
       vocabularyHash: full.local.vocabularyHash as string,
-      nowMs,
+      nowMs: fixture.input.nowMs,
     });
     for (const variant of [
       "cache",
@@ -1807,8 +1820,8 @@ test("lost completed producer custody falls back before worker diagnostic recons
     const newer = {
       ...original,
       id: 702,
-      created_at: new Date(nowMs).toISOString(),
-      updated_at: new Date(nowMs).toISOString(),
+      created_at: new Date(fixture.input.nowMs).toISOString(),
+      updated_at: new Date(fixture.input.nowMs).toISOString(),
     };
     fixture.runs.splice(
       0,
