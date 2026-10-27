@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "coragon77-storyarc",
+  "name": "StoryArc",
+  "kind": "extension",
+  "summary": "SillyTavern extension: plans story arcs for existing long-running roleplays",
+  "metadata_status": "provisional",
+  "source_id": "github-1434118511",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [],
+  "cataloged_at": "2026-10-27T21:35:11.264Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

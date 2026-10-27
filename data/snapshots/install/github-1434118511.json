@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1434118511",
+  "head_sha": "b1f89ff8e19d220f9e3ee6b1335fc9dd37158892",
+  "observed_at": "2026-10-27T21:35:40.009Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "StoryArc",
+  "manifest": {
+    "display_name": "Story Arc",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
