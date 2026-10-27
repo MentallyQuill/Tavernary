@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "serioos-hover-edit",
+  "name": "Hover-Edit",
+  "kind": "extension",
+  "summary": "SillyTavern extension that jumps you into edit mode right where the cursor hovers via a rebindingable hotkey like Alt+E, with word selection, scroll-back, and message copy or delete hotkeys; see README Features.",
+  "metadata_status": "curated",
+  "source_id": "github-1433997749",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["edit-and-refine-messages"],
+  "cataloged_at": "2026-10-27T21:35:10.604Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
