@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1433997749",
+  "head_sha": "1e6db8a3e2449e421a30aa0e7bbe4c3e08c52d6c",
+  "observed_at": "2026-10-27T21:35:19.199Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Hover-Edit",
+  "manifest": {
+    "display_name": "Hover Edit",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
