@@ -122,9 +122,10 @@ test("renders every published Kit", async ({ page }) => {
   await page.getByRole("button", { name: "Kits", exact: true }).click();
 
   await expect(page.locator(".kit-card")).toHaveCount(publishedKits.length);
-  for (const { title } of publishedKits) {
+  for (const { id, title } of publishedKits) {
+    const card = page.locator(`.kit-card[aria-labelledby="${id}-title"]`);
     await expect(
-      page.getByRole("heading", { name: title, exact: true }),
+      card.getByRole("heading", { name: title, exact: true }),
     ).toBeVisible();
   }
 });
