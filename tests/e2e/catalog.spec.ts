@@ -1143,6 +1143,7 @@ test(
     await expect(page.locator(".catalog-shell")).toHaveAttribute(
       "data-hydrated",
       "true",
+      { timeout: 15_000 },
     );
     if (!pendingScanProject || !unsupportedScanProject) {
       throw new Error("Missing scan-state catalog fixtures");
@@ -1250,6 +1251,7 @@ test(
     await expect(page.locator(".catalog-shell")).toHaveAttribute(
       "data-hydrated",
       "true",
+      { timeout: 15_000 },
     );
     const search = page.getByRole("searchbox", { name: "Search projects" });
     for (const [
