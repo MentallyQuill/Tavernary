@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "34318765c2b2b30b8ad46649341ca196f4b39eedfefa01eb5e1ad08244690857",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1174672121:sillyanonymous-sillytavern-ui-shortcuts",
+      "inputDigest": "1d6ad384beafd924dbcb7f0a660117ce3557e28975e53c861840ad5008c97db5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1174672121",
+    "identity": "github:1174672121"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40496401396,
+    "sourceSha": "10da4af98110d8572d66540157f6d747ee99f8ad"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/sillyanonymous-sillytavern-ui-shortcuts.json",
+      "sha256": "1f33bbb4ff6344a4f123e815d9574a3f75821f345f536a1d85688a5a3c4e1196",
+      "gitBlobSha": "0235fbaaf751144a9963b308e6f705ac592ec48d"
+    }
+  ]
+}

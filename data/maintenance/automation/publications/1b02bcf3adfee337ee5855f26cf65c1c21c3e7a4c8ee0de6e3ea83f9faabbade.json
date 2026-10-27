@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1b02bcf3adfee337ee5855f26cf65c1c21c3e7a4c8ee0de6e3ea83f9faabbade",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-711475454:elthial-sillytavern-map",
+      "inputDigest": "44704617f08d265175fd75b7786179a8f3558e1bdaeb1cce4008b461174773be",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-711475454",
+    "identity": "github:711475454"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40495498289,
+    "sourceSha": "b234851868d16bc810317bc9313557f6c3523916"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/elthial-sillytavern-map.json",
+      "sha256": "d15f65a793dea3e2076b740ff69ef0401abf33b994ae371bb4110a9e40685f10",
+      "gitBlobSha": "2751e124676d5624dc126a702129b94c72398bcb"
+    }
+  ]
+}

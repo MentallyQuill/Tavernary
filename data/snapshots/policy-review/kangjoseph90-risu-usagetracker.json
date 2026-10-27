@@ -5,12 +5,9 @@
   "source_identity": "github:kangjoseph90/risu-usagetracker",
   "evidence_fingerprint": "0f08c9b8fa6b787a67e0c725c933bc155b59bf2973e5d790d70cb4ebbd595e8d",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-03T12:18:15.392Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-03T12:18:15.392Z"
-  },
+  "reviewed_at": "2026-10-27T11:37:13.291Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

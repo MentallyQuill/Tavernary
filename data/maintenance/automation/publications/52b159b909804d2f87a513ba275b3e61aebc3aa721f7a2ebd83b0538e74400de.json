@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "52b159b909804d2f87a513ba275b3e61aebc3aa721f7a2ebd83b0538e74400de",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1212009993:multihogaurelius-sillytavern-multihogdndframework",
+      "inputDigest": "340d09dab96e5a559aee516575286a1825bef3528c83e1f59a537fc3d86745f4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1212009993",
+    "identity": "github:1212009993"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40501410935,
+    "sourceSha": "fe0279994a526ec233de3acf4d9fe8fb6c4a99ca"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/multihogaurelius-sillytavern-multihogdndframework.json",
+      "sha256": "5b8b0db92fe81c377f34d6df2cb88b742feb16117814f7780c3096f7727cc636",
+      "gitBlobSha": "e7cf4dc9b80c9975c781aaebf706a80ccfcbb871"
+    }
+  ]
+}

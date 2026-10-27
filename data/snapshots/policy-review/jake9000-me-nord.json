@@ -5,12 +5,9 @@
   "source_identity": "github:jake9000/me-nord",
   "evidence_fingerprint": "7b035504075d58efc51ade3e408c240e93fe42c36cc7b2af0902f24e2218a370",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-10T12:29:15.435Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-10T12:29:15.435Z"
-  },
+  "reviewed_at": "2026-10-27T12:01:09.889Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

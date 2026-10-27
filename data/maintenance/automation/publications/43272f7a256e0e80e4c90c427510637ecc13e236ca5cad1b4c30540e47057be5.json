@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "43272f7a256e0e80e4c90c427510637ecc13e236ca5cad1b4c30540e47057be5",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1167832752:morgoookru-st-chat-finder",
+      "inputDigest": "81d770a4326df45ec06c6bf1047a6544da7ba3ba164f82698458ba695aa328f4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1167832752",
+    "identity": "github:1167832752"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40498334090,
+    "sourceSha": "a7fae0fabe2f7b9cfe4179c902651be9375dcddf"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/morgoookru-st-chat-finder.json",
+      "sha256": "468aef7dd1376609fac35143aaed63a44dfd091f4555d123eab05dab4f3dfcd1",
+      "gitBlobSha": "6b50a74a2a556673e9fcc8ce59e2055b087fe2a7"
+    }
+  ]
+}

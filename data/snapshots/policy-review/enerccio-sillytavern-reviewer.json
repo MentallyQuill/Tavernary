@@ -5,12 +5,9 @@
   "source_identity": "github:enerccio/sillytavern-reviewer",
   "evidence_fingerprint": "53b65966c45fb2b3ff2e10c7fec6a9c5d72f57de5e0da759dfbcc1c6053b88f9",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-27T13:19:48.571Z",
-  "retry": {
-    "attempts": 5,
-    "last_failure_at": "2026-09-27T13:19:48.571Z"
-  },
+  "reviewed_at": "2026-10-27T11:52:21.555Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

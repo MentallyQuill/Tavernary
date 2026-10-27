@@ -5,12 +5,9 @@
   "source_identity": "github:elthial/sillytavern-map",
   "evidence_fingerprint": "e33ff2680a0aa45a787f560e9ab2fbfc9644eee3171d0ae6675f74407f3c0ba9",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-30T14:14:22.001Z",
-  "retry": {
-    "attempts": 7,
-    "last_failure_at": "2026-09-30T14:14:22.001Z"
-  },
+  "reviewed_at": "2026-10-27T11:22:06.917Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

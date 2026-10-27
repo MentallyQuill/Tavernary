@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "34554f49079f3466150a1bb6a76d8541fe30273e7a5f48a740ac068fa0a90f87",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1082494236:kangjoseph90-risu-usagetracker",
+      "inputDigest": "7d64fadd77fb9ba4c4322edc049a67e72d8fd8b414de45c82649e268139a37b2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1082494236",
+    "identity": "github:1082494236"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40497422389,
+    "sourceSha": "b68acf9e92e6e34261a736012de5649aabb33fec"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/kangjoseph90-risu-usagetracker.json",
+      "sha256": "a5c9e4ec80663746bef1d7e3e79d4809c36a5512fb3049072cda56d8c667e098",
+      "gitBlobSha": "ba8cb76c924b0711a22623d2a832708877562a04"
+    }
+  ]
+}

@@ -5,12 +5,9 @@
   "source_identity": "github:sillyanonymous/sillytavern-uishortcuts",
   "evidence_fingerprint": "39fd545a132405ae8552e9912c276d0f186d180f1f74e926563e03f8cc1d77ce",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-27T13:19:04.635Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-27T13:19:04.635Z"
-  },
+  "reviewed_at": "2026-10-27T11:29:12.525Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

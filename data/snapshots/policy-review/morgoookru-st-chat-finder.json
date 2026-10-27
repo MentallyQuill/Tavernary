@@ -5,12 +5,9 @@
   "source_identity": "github:morgoookru/st-chat-finder",
   "evidence_fingerprint": "54ce6234dd1dc714db8087532aae968367b8b43611a19637e82e3b880ab35720",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-01T14:44:14.326Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-10-01T14:44:14.326Z"
-  },
+  "reviewed_at": "2026-10-27T11:44:48.949Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
