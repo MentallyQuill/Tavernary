@@ -562,6 +562,11 @@ test("filled desktop actions use Graphite Teal ink and card Kit glyphs are cente
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(sitePath());
+  await expect(page.locator(".catalog-shell")).toHaveAttribute(
+    "data-hydrated",
+    "true",
+    { timeout: 15_000 },
+  );
 
   const expectedInk = "rgb(22, 16, 8)";
   const submitProject = page.getByRole("link", { name: "Submit Project" });

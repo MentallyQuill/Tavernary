@@ -14,6 +14,7 @@ for (const [name, width] of [
     await expect(page.locator(".catalog-shell")).toHaveAttribute(
       "data-hydrated",
       "true",
+      { timeout: 15_000 },
     );
     await page.evaluate(() => document.fonts.ready);
     const header = page.locator(".site-header");
