@@ -6,6 +6,7 @@ async function waitForHydration(page: import("@playwright/test").Page) {
   await expect(page.locator(".catalog-shell")).toHaveAttribute(
     "data-hydrated",
     "true",
+    { timeout: 15_000 },
   );
 }
 

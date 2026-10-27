@@ -1,4 +1,16 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+
+import tags from "../../data/vocabularies/tags.json" with { type: "json" };
+import {
+  publicTagVocabulary,
+  type TagVocabulary,
+} from "../../scripts/catalog/tag-vocabulary.mjs";
+import {
+  TAG_FACET_PREVIEW_LIMIT,
+  TagBrowser,
+} from "../../src/features/catalog/components/tag-browser";
 
 import {
   installGitHubReviewRecorder,
@@ -105,7 +117,20 @@ const ownerFrontendVisualFixture = [
   "A deliberately long frontend name",
 ] as const;
 
-async function stabilizeOwnerFrontendVisualFixture(page: Page) {
+const ownerTagVisualFixture = [
+  "preserve-story-continuity",
+  "plan-stories-and-scenes",
+  "add-rpg-gameplay",
+  "track-characters-and-world-state",
+  "rules-driven",
+  "multi-stage-generation",
+] as const;
+
+async function stabilizeOwnerVisualFixture(page: Page) {
+  await page.getByLabel("Tag policy").selectOption("automatic");
+  await expect(
+    page.getByRole("searchbox", { name: "Tag search", exact: true }),
+  ).toBeDisabled();
   const group = page.getByRole("group", { name: "Supported frontends" });
   const choices = group.locator(":scope > .help-choice");
   await expect(choices.first()).toBeVisible();
@@ -139,6 +164,28 @@ async function stabilizeOwnerFrontendVisualFixture(page: Page) {
       group.append(choice);
     }
   }, ownerFrontendVisualFixture);
+
+  // Render stable screenshot data through the real component so enrichment
+  // cannot change chip wrapping, the count, or checked and disabled styling.
+  const tagMarkup = renderToStaticMarkup(
+    createElement(TagBrowser, {
+      tags: publicTagVocabulary(tags as TagVocabulary).filter((tag) =>
+        tag.applicable_kinds.includes("extension"),
+      ),
+      selected: ownerTagVisualFixture,
+      onToggle: () => undefined,
+      previewLimit: TAG_FACET_PREVIEW_LIMIT,
+      maxSelections: 6,
+      searchLabel: "Tag search",
+      limitLabel: "Up to six per card",
+      disabled: true,
+    }),
+  );
+  await page
+    .locator(".owner-card-fields .tag-browser")
+    .evaluate((element, markup) => {
+      element.outerHTML = markup;
+    }, tagMarkup);
 }
 
 test("desktop catalog applies graphite surfaces and teal interaction roles", async ({
@@ -1116,7 +1163,7 @@ test("captures the complete Menu surface on Windows", async ({ page }) => {
   await page
     .getByRole("textbox", { name: "Summary", exact: true })
     .fill("x".repeat(219));
-  await stabilizeOwnerFrontendVisualFixture(page);
+  await stabilizeOwnerVisualFixture(page);
   await expect(page.locator(".help-content")).toHaveScreenshot(
     "help-owner-near-limit.png",
     { maxDiffPixels: 3000 },
