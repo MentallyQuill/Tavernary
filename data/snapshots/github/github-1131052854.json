@@ -9,18 +9,28 @@
     "url": "https://github.com/haide-D/SillyTavern-EchoCore",
     "description": null,
     "default_branch": "main",
-    "head_sha": "f4e2deafa3e8b2da6dfd36de2ba6bd94dab6a297",
-    "head_committed_at": "2026-09-19T04:38:56.000Z",
+    "head_sha": "3c3b7f88798f2ef20df383e8fa20f4fce4aa8654",
+    "head_committed_at": "2026-10-26T01:47:33.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-09T12:00:38.000Z",
-    "size_kb": 28703
+    "size_kb": 28727
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-19T04:38:56.000Z",
+    "latest_source_activity_at": "2026-10-26T01:47:33.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-26T01:47:33.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-17T07:29:56.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-14",
         "latest_at": "2026-09-19T04:38:56.000Z",
@@ -40,37 +50,27 @@
         "week_start": "2026-08-17",
         "latest_at": "2026-08-23T12:37:41.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-03",
-        "latest_at": "2026-08-05T02:13:56.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-08-02T09:14:39.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-09-19T04:39:17.000Z",
+    "latest_release_at": "2026-10-26T01:47:46.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-25T04:12:16.402Z",
+    "baseline_completed_at": "2026-10-28T14:09:36.774Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "f4e2deafa3e8b2da6dfd36de2ba6bd94dab6a297"
+    "evidence_head_sha": "3c3b7f88798f2ef20df383e8fa20f4fce4aa8654"
   },
   "community": {
-    "stars_count": 259,
+    "stars_count": 264,
     "forks_count": 7,
     "watchers_count": 1,
-    "aggregate": 267
+    "aggregate": 272
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-28T14:12:13.109Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -78,7 +78,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-28T14:09:36.774Z",
     "stale_since": null
   }
 }

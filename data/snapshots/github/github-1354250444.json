@@ -7,23 +7,38 @@
     "owner": "starlitcode",
     "name": "Lumiverse-Auto-Refine",
     "url": "https://github.com/starlitcode/Lumiverse-Auto-Refine",
-    "description": "Rewrites finished Al  replies to your own writing rules. A Lumiverse  Spindle extension.",
+    "description": "Lumiverse extension that rewrites finished replies, or your own messages, with a prompt of writing rules you can read and edit. A rewrite is saved only if it passes its checks, and the original is kept so you can put it back.",
     "default_branch": "stable",
-    "head_sha": "2c79be975e09d35cc274531fa030727e5c9448a8",
-    "head_committed_at": "2026-10-08T12:58:07.000Z",
+    "head_sha": "1d9b3406d4fd9a03ef2d562fedab79370685b0b8",
+    "head_committed_at": "2026-10-27T23:06:34.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-02T03:05:23.000Z",
-    "size_kb": 18985
+    "size_kb": 27180
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-08T12:58:07.000Z",
+    "latest_source_activity_at": "2026-10-26T20:30:01.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-26T20:30:01.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-25T15:00:22.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-18T22:47:58.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-05",
-        "latest_at": "2026-10-08T12:58:07.000Z",
+        "latest_at": "2026-10-11T03:59:51.000Z",
         "precision": "exact"
       },
       {
@@ -55,9 +70,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-08T14:39:08.801Z",
+    "baseline_completed_at": "2026-10-28T14:09:19.379Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "2c79be975e09d35cc274531fa030727e5c9448a8"
+    "evidence_head_sha": "1d9b3406d4fd9a03ef2d562fedab79370685b0b8"
   },
   "community": {
     "stars_count": 1,
@@ -70,7 +85,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-28T14:11:39.046Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -81,7 +96,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-28T14:09:19.379Z",
     "stale_since": null
   }
 }

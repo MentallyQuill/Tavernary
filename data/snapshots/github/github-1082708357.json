@@ -9,21 +9,36 @@
     "url": "https://github.com/MaxiPawlowski/story-orchestrator",
     "description": null,
     "default_branch": "master",
-    "head_sha": "3abb2c4929f41ebbbe75e638ffe4afc2928d231a",
-    "head_committed_at": "2026-10-08T14:03:23.000Z",
+    "head_sha": "04935505367be57440febf9ae5bf2b30a15de2b4",
+    "head_committed_at": "2026-10-28T12:24:00.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-10-24T16:38:09.000Z",
-    "size_kb": 61782
+    "size_kb": 73496
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-08T13:42:18.000Z",
+    "latest_source_activity_at": "2026-10-28T12:16:24.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-28T12:16:24.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-25T23:24:33.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-18T18:24:50.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-05",
-        "latest_at": "2026-10-08T13:42:18.000Z",
+        "latest_at": "2026-10-11T20:52:57.000Z",
         "precision": "exact"
       },
       {
@@ -47,27 +62,54 @@
         "precision": "exact"
       }
     ],
-    "provisional_weeks": null,
+    "provisional_weeks": [
+      true,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
     "latest_release_at": null,
-    "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-08T14:39:08.801Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
     "baseline_attempts": 1,
     "evidence_head_sha": "3abb2c4929f41ebbbe75e638ffe4afc2928d231a"
   },
   "community": {
-    "stars_count": 4,
+    "stars_count": 5,
     "forks_count": 1,
     "watchers_count": 0,
-    "aggregate": 5
+    "aggregate": 6
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-28T14:11:38.190Z",
   "stale_since": null,
-  "activity_scan": null,
+  "activity_scan": {
+    "head_sha": "04935505367be57440febf9ae5bf2b30a15de2b4",
+    "cutoff_at": "2026-07-20T14:09:16.562Z",
+    "next_page": 26,
+    "next_index": 0,
+    "resolved_weeks": [
+      "2026-09-21",
+      "2026-09-28",
+      "2026-10-05",
+      "2026-10-12",
+      "2026-10-19",
+      "2026-10-26"
+    ],
+    "pending_commit": null
+  },
   "contributors": {
     "accounts": [
       { "login": "MaxiPawlowski", "type": "User", "provider": "github" }
@@ -75,7 +117,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-28T14:09:16.562Z",
     "stale_since": null
   }
 }
