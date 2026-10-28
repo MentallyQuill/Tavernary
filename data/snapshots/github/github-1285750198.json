@@ -9,18 +9,28 @@
     "url": "https://github.com/Archkr/Lumiverse-LumiWorld",
     "description": "A prompt interceptor that asks a controller model how the world should react before the main model replies.",
     "default_branch": "main",
-    "head_sha": "a6b74c7d58c45a364f280b89ae221dac53e5c903",
-    "head_committed_at": "2026-10-01T23:23:41.000Z",
+    "head_sha": "8303ddbef42f194ea15e784c31330ca1eda859b9",
+    "head_committed_at": "2026-10-22T02:47:56.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-01T05:38:22.000Z",
-    "size_kb": 1586
+    "size_kb": 1796
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-01T23:20:08.000Z",
+    "latest_source_activity_at": "2026-10-22T02:47:56.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-22T02:47:56.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-17T08:25:52.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-28",
         "latest_at": "2026-10-01T23:20:08.000Z",
@@ -30,19 +40,14 @@
         "week_start": "2026-09-21",
         "latest_at": "2026-09-27T00:11:50.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-13",
-        "latest_at": "2026-07-17T01:23:21.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-01T23:24:43.000Z",
+    "latest_release_at": "2026-10-22T02:50:53.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-02T13:56:01.628Z",
+    "baseline_completed_at": "2026-10-28T14:09:39.982Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "a6b74c7d58c45a364f280b89ae221dac53e5c903"
+    "evidence_head_sha": "8303ddbef42f194ea15e784c31330ca1eda859b9"
   },
   "community": {
     "stars_count": 3,
@@ -55,7 +60,7 @@
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-28T14:12:01.376Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -63,7 +68,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-28T14:09:39.982Z",
     "stale_since": null
   }
 }

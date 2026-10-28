@@ -7,23 +7,28 @@
     "owner": "Finn-Hecker",
     "name": "RyokanApp",
     "url": "https://github.com/Finn-Hecker/RyokanApp",
-    "description": "Open source AI roleplay app for Windows & Android with character chat, browser multiplayer, and local or API models.",
+    "description": "Interactive AI storytelling app for Windows & Android with browser multiplayer, and local or API models.",
     "default_branch": "main",
-    "head_sha": "029bf7cb66aa929b5e30a9440fe8c6e9d57fcfb8",
-    "head_committed_at": "2026-10-08T13:47:18.000Z",
+    "head_sha": "f7f04d2408bc4284d992b5604297c39e108294c4",
+    "head_committed_at": "2026-10-15T16:32:44.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-02-07T14:16:53.000Z",
-    "size_kb": 8171
+    "size_kb": 8740
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-08T13:47:18.000Z",
+    "latest_source_activity_at": "2026-10-15T16:32:44.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-15T16:32:44.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-05",
-        "latest_at": "2026-10-08T13:47:18.000Z",
+        "latest_at": "2026-10-10T15:21:45.000Z",
         "precision": "exact"
       },
       {
@@ -50,24 +55,14 @@
         "week_start": "2026-08-31",
         "latest_at": "2026-09-05T15:57:13.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-03",
-        "latest_at": "2026-08-05T18:15:09.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-08-02T15:00:34.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-09-30T18:58:33.000Z",
+    "latest_release_at": "2026-10-09T14:58:03.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-05T16:09:10.348Z",
+    "baseline_completed_at": "2026-10-28T14:09:28.902Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "029bf7cb66aa929b5e30a9440fe8c6e9d57fcfb8"
+    "evidence_head_sha": "f7f04d2408bc4284d992b5604297c39e108294c4"
   },
   "community": {
     "stars_count": 16,
@@ -80,7 +75,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-28T14:11:45.213Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -90,7 +85,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-28T14:09:28.902Z",
     "stale_since": null
   }
 }
