@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "60fefae88291da9b854aa04bfdaa244795565adb7ef0e4e6f42e08b2e0c85587",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1054966103:coneja-chibi-carrotkernel",
+      "inputDigest": "4641c35cfd81dbcecf11d9ba550d8c62ecf3751c4752c9304025635fbafed5d8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1054966103",
+    "identity": "github:1054966103"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40691877096,
+    "sourceSha": "0dc50cf5fff2a96303cc5d0fcf212882b6d730f5"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/coneja-chibi-carrotkernel.json",
+      "sha256": "9479813428def6ac3c2de99a7f01f9bf7e44d99e7172f6fbc6bdba9ffccf4cff",
+      "gitBlobSha": "e26826c7680f418b32cea1d70364b8ba8afc9556"
+    }
+  ]
+}

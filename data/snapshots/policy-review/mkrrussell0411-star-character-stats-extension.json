@@ -5,12 +5,9 @@
   "source_identity": "github:mkrrussell0411-star/character-stats-extension",
   "evidence_fingerprint": "467a4fecb630c3da577f4477f07a3b8a454709fff42c8163f2adfa268f9bdc98",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-15T12:54:34.223Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-15T12:54:34.223Z"
-  },
+  "reviewed_at": "2026-10-28T12:41:51.111Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

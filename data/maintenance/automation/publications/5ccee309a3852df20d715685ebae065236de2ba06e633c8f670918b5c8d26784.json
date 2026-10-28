@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5ccee309a3852df20d715685ebae065236de2ba06e633c8f670918b5c8d26784",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1160700573:pixelnull-sillytavern-deeplore",
+      "inputDigest": "79c5069bcf632d9ed7346732ecf317850fedc22d6d7d04647544e69eac5d56cd",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1160700573",
+    "identity": "github:1160700573"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40688747848,
+    "sourceSha": "6a35cb9082df113180acc8e3372ce33bbcbdb965"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/pixelnull-sillytavern-deeplore.json",
+      "sha256": "21a7009db7ffc889d254ca910a4738e964a964c7b4dce3c1953238c15d68135c",
+      "gitBlobSha": "b21d2b499fcd8c00875ba8fc141e3bfa293b4ab0"
+    }
+  ]
+}

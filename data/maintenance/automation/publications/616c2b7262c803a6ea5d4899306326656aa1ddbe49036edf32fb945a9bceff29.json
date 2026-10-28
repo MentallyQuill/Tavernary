@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "616c2b7262c803a6ea5d4899306326656aa1ddbe49036edf32fb945a9bceff29",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-994448098:nbrown725-sillytavern-alternatedescriptions",
+      "inputDigest": "04d4e1c53fb662c03a947706264ad54406140bd88abab67a31c1d3fb0185fc0f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-994448098",
+    "identity": "github:994448098"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40692872433,
+    "sourceSha": "0dc8d2e41b68c72e1ee3b0115608fa0dbe90c7e3"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/nbrown725-sillytavern-alternatedescriptions.json",
+      "sha256": "86ebc272f504e20437a7fc8dd10e27cfcdef4cfe50def788e626f616ff79df2f",
+      "gitBlobSha": "80f302102d5a8faf08db8459cae3661b38c39aa3"
+    }
+  ]
+}

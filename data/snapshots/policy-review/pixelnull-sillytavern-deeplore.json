@@ -5,12 +5,9 @@
   "source_identity": "github:pixelnull/sillytavern-deeplore",
   "evidence_fingerprint": "b26de0ad5aa540bda1b856caa729b364a63737bf2a7d3712782ad2570548fb05",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-23T08:00:26.842Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-23T08:00:26.842Z"
-  },
+  "reviewed_at": "2026-10-28T12:34:11.520Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
