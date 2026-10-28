@@ -5,12 +5,9 @@
   "source_identity": "github:loggo-presets/typingindicatorplus",
   "evidence_fingerprint": "e2ff7cb519f32452d6cd86e5448fd2be0ceecfee9ddf772ea90d28eb227e0de9",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-21T14:29:04.182Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-09-21T14:29:04.182Z"
-  },
+  "reviewed_at": "2026-10-28T13:18:21.707Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

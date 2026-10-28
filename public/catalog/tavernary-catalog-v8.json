@@ -8698,10 +8698,10 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "8303ddbef42f194ea15e784c31330ca1eda859b9",
         "report": {
-          "reportId": "145f6963b50ff4f746e5c91ea0d28b043a459ad0abac65d094fb5b8cf23379b3",
+          "reportId": "7a426905400e595029143d025ea3482424f503fc5690d9512468701fd8c6a6fb",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -8710,10 +8710,10 @@
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
           "citedFindingIds": [],
-          "scannedSha": "a6b74c7d58c45a364f280b89ae221dac53e5c903",
-          "treeUrl": "https://github.com/Archkr/Lumiverse-LumiWorld/tree/a6b74c7d58c45a364f280b89ae221dac53e5c903",
-          "scannedAt": "2026-10-02T14:09:50.929Z",
-          "assessedAt": "2026-10-02T14:12:19.553Z",
+          "scannedSha": "8303ddbef42f194ea15e784c31330ca1eda859b9",
+          "treeUrl": "https://github.com/Archkr/Lumiverse-LumiWorld/tree/8303ddbef42f194ea15e784c31330ca1eda859b9",
+          "scannedAt": "2026-10-28T15:31:25.499Z",
+          "assessedAt": "2026-10-28T15:44:09.080Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
@@ -8721,7 +8721,7 @@
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
           "javascriptAnalysisStatus": "incomplete",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1285750198/a6b74c7d58c45a364f280b89ae221dac53e5c903/5/145f6963b50ff4f746e5c91ea0d28b043a459ad0abac65d094fb5b8cf23379b3/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1285750198/8303ddbef42f194ea15e784c31330ca1eda859b9/5/7a426905400e595029143d025ea3482424f503fc5690d9512468701fd8c6a6fb/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1285750198/history/"
         },
         "history": [
@@ -8819,6 +8819,30 @@
             "assessmentSource": "deterministic_regrade",
             "javascriptAnalysisStatus": "incomplete",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1285750198/a6b74c7d58c45a364f280b89ae221dac53e5c903/5/145f6963b50ff4f746e5c91ea0d28b043a459ad0abac65d094fb5b8cf23379b3/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1285750198/history/"
+          },
+          {
+            "reportId": "7a426905400e595029143d025ea3482424f503fc5690d9512468701fd8c6a6fb",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "8303ddbef42f194ea15e784c31330ca1eda859b9",
+            "treeUrl": "https://github.com/Archkr/Lumiverse-LumiWorld/tree/8303ddbef42f194ea15e784c31330ca1eda859b9",
+            "scannedAt": "2026-10-28T15:31:25.499Z",
+            "assessedAt": "2026-10-28T15:44:09.080Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "incomplete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1285750198/8303ddbef42f194ea15e784c31330ca1eda859b9/5/7a426905400e595029143d025ea3482424f503fc5690d9512468701fd8c6a6fb/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1285750198/history/"
           }
         ],
@@ -131620,7 +131644,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "dd7c939fa08c7b0f1d9bdf8155b94365122c7cff",
+        "currentSha": "57a639ca5183faf253f25ecef6f4094360342f14",
         "report": {
           "reportId": "0d1ab5f2d5a673501996858e9cd5f1661e2ab766cad0c40095c668d69a5c248e",
           "riskLevel": "low",
@@ -132072,12 +132096,12 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-04T01:22:28.000Z",
-        "activeWeeks12": 11,
+        "latestSourceActivityAt": "2026-10-27T22:26:11.000Z",
+        "activeWeeks12": 8,
         "weeklyActivity": [
-          true,
-          true,
-          true,
+          false,
+          false,
+          false,
           true,
           true,
           true,
@@ -132093,19 +132117,19 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 11,
+        "stars": 12,
         "forks": 0,
         "watchers": 0,
-        "aggregate": 11
+        "aggregate": 12
       },
-      "repositorySizeKb": 10650,
+      "repositorySizeKb": 14255,
       "license": {
         "status": "missing",
         "label": "Missing",
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-28T14:14:28.957Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -213019,7 +213043,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "dd7c939fa08c7b0f1d9bdf8155b94365122c7cff",
+              "currentSha": "57a639ca5183faf253f25ecef6f4094360342f14",
               "report": {
                 "reportId": "0d1ab5f2d5a673501996858e9cd5f1661e2ab766cad0c40095c668d69a5c248e",
                 "riskLevel": "low",
@@ -213471,12 +213495,12 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-04T01:22:28.000Z",
-              "activeWeeks12": 11,
+              "latestSourceActivityAt": "2026-10-27T22:26:11.000Z",
+              "activeWeeks12": 8,
               "weeklyActivity": [
-                true,
-                true,
-                true,
+                false,
+                false,
+                false,
                 true,
                 true,
                 true,
@@ -213492,19 +213516,19 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 11,
+              "stars": 12,
               "forks": 0,
               "watchers": 0,
-              "aggregate": 11
+              "aggregate": 12
             },
-            "repositorySizeKb": 10650,
+            "repositorySizeKb": 14255,
             "license": {
               "status": "missing",
               "label": "Missing",
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-28T14:14:28.957Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -241119,7 +241143,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "dd7c939fa08c7b0f1d9bdf8155b94365122c7cff",
+              "currentSha": "57a639ca5183faf253f25ecef6f4094360342f14",
               "report": {
                 "reportId": "0d1ab5f2d5a673501996858e9cd5f1661e2ab766cad0c40095c668d69a5c248e",
                 "riskLevel": "low",
@@ -241571,12 +241595,12 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-04T01:22:28.000Z",
-              "activeWeeks12": 11,
+              "latestSourceActivityAt": "2026-10-27T22:26:11.000Z",
+              "activeWeeks12": 8,
               "weeklyActivity": [
-                true,
-                true,
-                true,
+                false,
+                false,
+                false,
                 true,
                 true,
                 true,
@@ -241592,19 +241616,19 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 11,
+              "stars": 12,
               "forks": 0,
               "watchers": 0,
-              "aggregate": 11
+              "aggregate": 12
             },
-            "repositorySizeKb": 10650,
+            "repositorySizeKb": 14255,
             "license": {
               "status": "missing",
               "label": "Missing",
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-28T14:14:28.957Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -285809,7 +285833,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "dd7c939fa08c7b0f1d9bdf8155b94365122c7cff",
+              "currentSha": "57a639ca5183faf253f25ecef6f4094360342f14",
               "report": {
                 "reportId": "0d1ab5f2d5a673501996858e9cd5f1661e2ab766cad0c40095c668d69a5c248e",
                 "riskLevel": "low",
@@ -286261,12 +286285,12 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-04T01:22:28.000Z",
-              "activeWeeks12": 11,
+              "latestSourceActivityAt": "2026-10-27T22:26:11.000Z",
+              "activeWeeks12": 8,
               "weeklyActivity": [
-                true,
-                true,
-                true,
+                false,
+                false,
+                false,
                 true,
                 true,
                 true,
@@ -286282,19 +286306,19 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 11,
+              "stars": 12,
               "forks": 0,
               "watchers": 0,
-              "aggregate": 11
+              "aggregate": 12
             },
-            "repositorySizeKb": 10650,
+            "repositorySizeKb": 14255,
             "license": {
               "status": "missing",
               "label": "Missing",
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-28T14:14:28.957Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",

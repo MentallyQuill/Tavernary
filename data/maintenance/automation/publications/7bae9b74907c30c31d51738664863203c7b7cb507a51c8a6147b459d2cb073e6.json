@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7bae9b74907c30c31d51738664863203c7b7cb507a51c8a6147b459d2cb073e6",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1256518687:hornysilicon-charsaver",
+      "inputDigest": "1f53eac5e65f998e028aa580b8dc76781279708b415d2220874272f5a0d7a838",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1256518687",
+    "identity": "github:1256518687"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40697656754,
+    "sourceSha": "d0beb9b7c3942503dc9df7d76df743df5d9bf611"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/hornysilicon-charsaver.json",
+      "sha256": "77dbfad074698a75475396a51fa4b16709942bfe670324d7191032b4e2f4c5d4",
+      "gitBlobSha": "4fdef683fbe7db4adc450fe7bd44faebb899ecec"
+    }
+  ]
+}

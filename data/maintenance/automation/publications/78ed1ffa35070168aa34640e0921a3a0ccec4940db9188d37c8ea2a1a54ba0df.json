@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "78ed1ffa35070168aa34640e0921a3a0ccec4940db9188d37c8ea2a1a54ba0df",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1132429516:loggo-presets-typingindicatorplus",
+      "inputDigest": "7afbd8a76227f6febd1478d41cf93be854a1a13b3f8145b5d321387e285144ed",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1132429516",
+    "identity": "github:1132429516"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40695133031,
+    "sourceSha": "ead024c007924994638ecf20513ca1c5875b5ef6"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/loggo-presets-typingindicatorplus.json",
+      "sha256": "18821640bf238cd024eb7f04d926b13c556a48dfd53dad9fd2145408f1911202",
+      "gitBlobSha": "86bb8d398e8c4cc16a3e3c926b7c4f8e8b835ca4"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7a54741f407e86b6dd6540921b251a66f52c4805ef88bf84bb56cc9ba201cabb",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1388970601:atlas4285-sillytavern-statesmith",
+      "inputDigest": "a7bbd76ad055e177d155af3726638e2faac670a8a62331bc56393c6ed8e0d1c0",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1388970601",
+    "identity": "github:1388970601"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40696358989,
+    "sourceSha": "3807b4bd8b6446b656c532a54e14f2ac45b2e201"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/atlas4285-sillytavern-statesmith.json",
+      "sha256": "d86a6509ed8ac61b57e168348d76df7c40fd3469b32a0bfbe187234314484f72",
+      "gitBlobSha": "d008c3d2005379b8c371b017881c06f7447b2ccc"
+    }
+  ]
+}

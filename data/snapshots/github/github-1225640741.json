@@ -9,18 +9,33 @@
     "url": "https://github.com/ZDOSt/Story-Engine",
     "description": null,
     "default_branch": "main",
-    "head_sha": "dd7c939fa08c7b0f1d9bdf8155b94365122c7cff",
-    "head_committed_at": "2026-10-04T01:22:28.000Z",
+    "head_sha": "57a639ca5183faf253f25ecef6f4094360342f14",
+    "head_committed_at": "2026-10-27T22:26:11.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-30T13:40:09.000Z",
-    "size_kb": 10650
+    "size_kb": 14255
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-04T01:22:28.000Z",
+    "latest_source_activity_at": "2026-10-27T22:26:11.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-27T22:26:11.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-25T20:59:19.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-13T01:20:31.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-28",
         "latest_at": "2026-10-04T01:22:28.000Z",
@@ -60,43 +75,23 @@
         "week_start": "2026-08-10",
         "latest_at": "2026-08-15T04:30:59.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-03",
-        "latest_at": "2026-08-08T14:45:14.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-08-02T23:18:22.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-20",
-        "latest_at": "2026-07-26T17:43:25.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-13",
-        "latest_at": "2026-07-19T07:30:04.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-28T15:35:58.871Z",
+    "baseline_completed_at": "2026-10-28T14:12:02.153Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "dd7c939fa08c7b0f1d9bdf8155b94365122c7cff"
+    "evidence_head_sha": "57a639ca5183faf253f25ecef6f4094360342f14"
   },
   "community": {
-    "stars_count": 11,
+    "stars_count": 12,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 11
+    "aggregate": 12
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-28T14:14:28.957Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -104,7 +99,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-28T14:12:02.153Z",
     "stale_since": null
   }
 }
