@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7c7004538f0ff2fbdc0b1452880c2a9078e4d8beb39246db0d3bafa8624d63b1",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1220472991:cha1latte-marinara-avatar-background",
+      "inputDigest": "7437c46aa85848a58c0ef672ba115f860ba5efe596ada3448ba818fb93fcb008",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1220472991",
+    "identity": "github:1220472991"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40869483291,
+    "sourceSha": "ae506a69abe46e2bbd0737272bbc57cb158dd95e"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/cha1latte-marinara-avatar-background.json",
+      "sha256": "378dca9b2ae6c9089c674189ff4ef4ade473702eeea9d091be8044e8f7bfd703",
+      "gitBlobSha": "6a6186cf307288653f5fb50e11a28005619104b7"
+    }
+  ]
+}

@@ -5,12 +5,9 @@
   "source_identity": "github:cha1latte/marinara-avatar-background",
   "evidence_fingerprint": "e738852d1b0023ded82ef1ddbce5d6cfd2e6423d3488e9dbd548c5d58f617927",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-04T13:28:35.901Z",
-  "retry": {
-    "attempts": 5,
-    "last_failure_at": "2026-10-04T13:28:35.901Z"
-  },
+  "reviewed_at": "2026-10-29T11:59:11.230Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
