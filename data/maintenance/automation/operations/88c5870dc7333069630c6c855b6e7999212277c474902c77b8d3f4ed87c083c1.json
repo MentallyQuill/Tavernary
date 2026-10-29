@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "88c5870dc7333069630c6c855b6e7999212277c474902c77b8d3f4ed87c083c1",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1326245935:deiomo-writer-s-block-unlimited",
+      "inputDigest": "7cfaffcf28eb91548ebd6f51e8cc6634bf411bcdb4fc61950f16a4f7ede0975f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": "5364ac23da9bb60a69b0e5bdde5504ba4e4fe8db",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-29T19:22:02.099Z",
+  "completedAt": null
+}
