@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7fa0e74ec8a6caa62fa1d595299943949fd18521eb07562114a84649a2a65f9c",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1277371044:xays-101-chaotic-lorebooks-silly-tavern",
+      "inputDigest": "07db771bbbf35ef70dff8d0510b61030d970a0492d7cb95a5eadf6fdcf4da3dd",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1277371044",
+    "identity": "github:1277371044"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40871372220,
+    "sourceSha": "106d7e7bf87b26ed6f4ec3ccd02bb49ca208d32f"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/xays-101-chaotic-lorebooks-silly-tavern.json",
+      "sha256": "854a16c4a5e3e9b7efe2deb83ae75a41513dfe549cbdb19b8bfa18ea8ddac4a7",
+      "gitBlobSha": "f805ae05c1410fa866db371794be4222d693fb37"
+    }
+  ]
+}

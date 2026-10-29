@@ -5,12 +5,9 @@
   "source_identity": "github:xays-101/chaotic-lorebooks-silly-tavern",
   "evidence_fingerprint": "d5e18904e8815b7341e3e6be18f8ad17351b7143b2222816356591441075633f",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-02T14:11:53.651Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-10-02T14:11:53.651Z"
-  },
+  "reviewed_at": "2026-10-29T12:13:22.377Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
