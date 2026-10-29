@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "88c5870dc7333069630c6c855b6e7999212277c474902c77b8d3f4ed87c083c1",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1326245935:deiomo-writer-s-block-unlimited",
+      "inputDigest": "7cfaffcf28eb91548ebd6f51e8cc6634bf411bcdb4fc61950f16a4f7ede0975f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1326245935",
+    "identity": "github:1326245935"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40873403723,
+    "sourceSha": "1692232d15c23a9046d04ea37bd2f955e7859764"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/deiomo-writer-s-block-unlimited.json",
+      "sha256": "bd61ec4a47c64a54d43a5a203c89c7ecf5ee8172c69c3e3e8aa14d925c43b3d4",
+      "gitBlobSha": "b01e98f9d01238311c77a474b494daa9db0d3991"
+    }
+  ]
+}
