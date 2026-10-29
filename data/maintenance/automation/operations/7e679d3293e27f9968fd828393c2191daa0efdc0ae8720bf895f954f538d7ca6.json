@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7e679d3293e27f9968fd828393c2191daa0efdc0ae8720bf895f954f538d7ca6",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-735181166:lenanderson-sillytavern-inputhistory",
+      "inputDigest": "fff4496d2c657dd01f943adc9682e248d73d108fbcdafb04768f21ca4cda6bc6",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": "221fc5be182d19c63d0b14fc0bb41ad559a24b3f",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-29T13:18:12.789Z",
+  "completedAt": null
+}
