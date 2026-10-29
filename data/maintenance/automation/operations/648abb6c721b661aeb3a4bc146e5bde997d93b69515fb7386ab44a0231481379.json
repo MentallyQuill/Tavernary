@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "648abb6c721b661aeb3a4bc146e5bde997d93b69515fb7386ab44a0231481379",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1391011894:lainholic-synapse-engine",
+      "inputDigest": "af149bcb8eb6f9e255edd18e6c94d0c75cfc09daa3292c4371946fce43d4f88d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-29T21:01:40.263Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-29T20:46:40.263Z",
+  "completedAt": null
+}
