@@ -5,12 +5,9 @@
   "source_identity": "github:lenanderson/sillytavern-inputhistory",
   "evidence_fingerprint": "40e666706f06f83fe32c88eb404535f8aecaff6fd409dcf07b45bd8c827732d4",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-17T12:57:28.381Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-09-17T12:57:28.381Z"
-  },
+  "reviewed_at": "2026-10-29T12:06:14.345Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
