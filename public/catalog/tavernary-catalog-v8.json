@@ -7101,7 +7101,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "LumiAgent is an extension that functions as a capable helper for the Lumiverse frontend. It integrates with Lumiverse to provide additional assistance and support for its users.",
+      "summary": "LumiAgent is a Lumiverse helper extension that can translate, refactor, and edit your cards, chats, and lorebooks using tools like web search, image gen, and reviewable, revertable diffs.",
       "canonicalUrl": "https://github.com/AMousePad/LumiAgent",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -7112,7 +7112,44 @@
           "description": "Works with the Lumiverse roleplay frontend."
         }
       ],
-      "tags": [],
+      "tags": [
+        {
+          "id": "agentic-tool-use",
+          "label": "Agentic tool use",
+          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
+          "facet": "trait"
+        },
+        {
+          "id": "edit-and-refine-messages",
+          "label": "Edit and refine messages",
+          "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-lorebooks",
+          "label": "Manage lorebooks",
+          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+          "facet": "goal"
+        },
+        {
+          "id": "translate-roleplay-content",
+          "label": "Translate roleplay content",
+          "description": "Translate chats, cards, lore, prompts, or other roleplay material between languages.",
+          "facet": "goal"
+        },
+        {
+          "id": "generate-images",
+          "label": "Generate images",
+          "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
+          "facet": "goal"
+        },
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+          "facet": "trait"
+        }
+      ],
       "tavernKeeper": {
         "state": "gray",
         "riskLevel": null,
@@ -7181,7 +7218,7 @@
           "https://github.com/AMousePad/LumiAgent"
         ],
         "summary": [
-          "LumiAgent is an extension that functions as a capable helper for the Lumiverse frontend. It integrates with Lumiverse to provide additional assistance and support for its users."
+          "LumiAgent is a Lumiverse helper extension that can translate, refactor, and edit your cards, chats, and lorebooks using tools like web search, image gen, and reviewable, revertable diffs."
         ],
         "kind": [
           "extension"
@@ -7189,7 +7226,33 @@
         "primaryFunction": [
           "Interface and workflow"
         ],
-        "tags": [],
+        "tags": [
+          "Agentic tool use",
+          "tool calling",
+          "AI agents",
+          "agent mode",
+          "Edit and refine messages",
+          "message rewriting",
+          "chat editing",
+          "response refinement",
+          "Manage lorebooks",
+          "World Info management",
+          "worldbook organization",
+          "loredeck management",
+          "Translate roleplay content",
+          "chat translation",
+          "AI translation",
+          "translate messages",
+          "Generate images",
+          "image generation",
+          "AI art generation",
+          "scene illustration",
+          "picture generation",
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay"
+        ],
         "frontends": [
           "Lumiverse"
         ],
@@ -223104,7 +223167,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "LumiAgent is an extension that functions as a capable helper for the Lumiverse frontend. It integrates with Lumiverse to provide additional assistance and support for its users.",
+            "summary": "LumiAgent is a Lumiverse helper extension that can translate, refactor, and edit your cards, chats, and lorebooks using tools like web search, image gen, and reviewable, revertable diffs.",
             "canonicalUrl": "https://github.com/AMousePad/LumiAgent",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -223115,7 +223178,44 @@
                 "description": "Works with the Lumiverse roleplay frontend."
               }
             ],
-            "tags": [],
+            "tags": [
+              {
+                "id": "agentic-tool-use",
+                "label": "Agentic tool use",
+                "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
+                "facet": "trait"
+              },
+              {
+                "id": "edit-and-refine-messages",
+                "label": "Edit and refine messages",
+                "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "translate-roleplay-content",
+                "label": "Translate roleplay content",
+                "description": "Translate chats, cards, lore, prompts, or other roleplay material between languages.",
+                "facet": "goal"
+              },
+              {
+                "id": "generate-images",
+                "label": "Generate images",
+                "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
+                "facet": "goal"
+              },
+              {
+                "id": "non-destructive",
+                "label": "Non-destructive",
+                "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+                "facet": "trait"
+              }
+            ],
             "tavernKeeper": {
               "state": "gray",
               "riskLevel": null,
@@ -223184,7 +223284,7 @@
                 "https://github.com/AMousePad/LumiAgent"
               ],
               "summary": [
-                "LumiAgent is an extension that functions as a capable helper for the Lumiverse frontend. It integrates with Lumiverse to provide additional assistance and support for its users."
+                "LumiAgent is a Lumiverse helper extension that can translate, refactor, and edit your cards, chats, and lorebooks using tools like web search, image gen, and reviewable, revertable diffs."
               ],
               "kind": [
                 "extension"
@@ -223192,7 +223292,33 @@
               "primaryFunction": [
                 "Interface and workflow"
               ],
-              "tags": [],
+              "tags": [
+                "Agentic tool use",
+                "tool calling",
+                "AI agents",
+                "agent mode",
+                "Edit and refine messages",
+                "message rewriting",
+                "chat editing",
+                "response refinement",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Translate roleplay content",
+                "chat translation",
+                "AI translation",
+                "translate messages",
+                "Generate images",
+                "image generation",
+                "AI art generation",
+                "scene illustration",
+                "picture generation",
+                "Non-destructive",
+                "reversible workflow",
+                "preserves originals",
+                "safe overlay"
+              ],
               "frontends": [
                 "Lumiverse"
               ],

@@ -3,14 +3,21 @@
   "id": "amousepad-lumiagent",
   "name": "LumiAgent",
   "kind": "extension",
-  "summary": "LumiAgent is an extension that functions as a capable helper for the Lumiverse frontend. It integrates with Lumiverse to provide additional assistance and support for its users.",
+  "summary": "LumiAgent is a Lumiverse helper extension that can translate, refactor, and edit your cards, chats, and lorebooks using tools like web search, image gen, and reviewable, revertable diffs.",
   "metadata_status": "curated",
   "frontends": ["lumiverse"],
   "primary_function": "interface-workflow",
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "source_id": "github-1235264700",
-  "tags": [],
+  "tags": [
+    "agentic-tool-use",
+    "edit-and-refine-messages",
+    "manage-lorebooks",
+    "translate-roleplay-content",
+    "generate-images",
+    "non-destructive"
+  ],
   "listing_status": "active",
   "listing_status_reason": null,
   "metadata_policy": {

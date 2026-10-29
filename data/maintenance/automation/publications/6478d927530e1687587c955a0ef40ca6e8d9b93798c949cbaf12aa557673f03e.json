@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6478d927530e1687587c955a0ef40ca6e8d9b93798c949cbaf12aa557673f03e",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1235264700:amousepad-lumiagent",
+      "inputDigest": "8e89b3ee2da1ffa8167318099639ebda26f5b6295f716b95f1f25fe42aaab8a6",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1235264700",
+    "identity": "github:1235264700"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40961450221,
+    "sourceSha": "ba3c4f8013e575a82315a36c2b530e49e50f4ce5"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/amousepad-lumiagent.json",
+      "sha256": "b467f02d34cba366fa57bc853a596b464489a1926b17183b7f036d487145365f",
+      "gitBlobSha": "55811e7dd736405b5a81400bb3d6921e66f19d56"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/6478d927530e1687587c955a0ef40ca6e8d9b93798c949cbaf12aa557673f03e.json",
+      "sha256": "cc9c364ef2f1c103a8126ba9b6e1c0404b103830623fa190e5ca805e8d206e5e",
+      "gitBlobSha": "c5c96a15352afcf08f5a6908413df69487920f78"
+    }
+  ]
+}
