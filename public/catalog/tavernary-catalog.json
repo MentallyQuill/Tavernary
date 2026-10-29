@@ -67579,7 +67579,7 @@
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
       "summary": "Turn your SillyTavern chats into ePubs for eReader use, including adding a \"Cover image,\" \"Series name,\" \"Book #,\" etc. Can specify exact message number ranges, reads hidden chat, etc.",
-      "canonicalUrl": "https://github.com/Matdredalia/Chat-to-ePub",
+      "canonicalUrl": "https://github.com/Matdredalia/Scrollbound",
       "catalogedAt": "2026-09-28T14:36:49.507Z",
       "catalogCohort": "standard",
       "frontends": [
@@ -67600,8 +67600,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "a112314ca179e0e382c83915b1004b39ee54ae89",
+        "freshness": "stale",
+        "currentSha": "5ba220d8dfba88fc3eaaba02c6ca4e1162656a26",
         "report": {
           "reportId": "2caaec97e97743ee9cb90ed3a93067fc61a95feb3106205148ec55b37f65f2d4",
           "riskLevel": "low",
@@ -67666,7 +67666,7 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-09-27T19:05:03.000Z",
+        "latestSourceActivityAt": "2026-10-13T13:26:58.000Z",
         "activeWeeks12": 1,
         "weeklyActivity": [
           false,
@@ -67692,21 +67692,21 @@
         "watchers": 0,
         "aggregate": 0
       },
-      "repositorySizeKb": 21,
+      "repositorySizeKb": 29,
       "license": {
         "status": "proprietary",
         "label": "Proprietary",
         "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-29T13:52:52.486Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
-        "repositoryUrl": "https://github.com/Matdredalia/Chat-to-ePub.git",
+        "repositoryUrl": "https://github.com/Matdredalia/Scrollbound.git",
         "branch": null,
         "manifestPath": "manifest.json",
-        "folderName": "Chat-to-ePub"
+        "folderName": "Scrollbound"
       },
       "fork": null,
       "search": {
@@ -67718,7 +67718,7 @@
           "matdredalia-chat-to-epub",
           "github-1389927390",
           "Matdredalia/Chat-to-ePub",
-          "https://github.com/Matdredalia/Chat-to-ePub"
+          "https://github.com/Matdredalia/Scrollbound"
         ],
         "summary": [
           "Turn your SillyTavern chats into ePubs for eReader use, including adding a \"Cover image,\" \"Series name,\" \"Book #,\" etc. Can specify exact message number ranges, reads hidden chat, etc."
@@ -207580,7 +207580,7 @@
           "primaryFunction": "interface-workflow",
           "availability": "available",
           "unavailableReason": null,
-          "canonicalUrl": "https://github.com/Matdredalia/Chat-to-ePub",
+          "canonicalUrl": "https://github.com/Matdredalia/Scrollbound",
           "project": {
             "id": "matdredalia-chat-to-epub",
             "name": "Chat-to-ePub",
@@ -207589,7 +207589,7 @@
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
             "summary": "Turn your SillyTavern chats into ePubs for eReader use, including adding a \"Cover image,\" \"Series name,\" \"Book #,\" etc. Can specify exact message number ranges, reads hidden chat, etc.",
-            "canonicalUrl": "https://github.com/Matdredalia/Chat-to-ePub",
+            "canonicalUrl": "https://github.com/Matdredalia/Scrollbound",
             "catalogedAt": "2026-09-28T14:36:49.507Z",
             "catalogCohort": "standard",
             "frontends": [
@@ -207610,8 +207610,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "a112314ca179e0e382c83915b1004b39ee54ae89",
+              "freshness": "stale",
+              "currentSha": "5ba220d8dfba88fc3eaaba02c6ca4e1162656a26",
               "report": {
                 "reportId": "2caaec97e97743ee9cb90ed3a93067fc61a95feb3106205148ec55b37f65f2d4",
                 "riskLevel": "low",
@@ -207676,7 +207676,7 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-09-27T19:05:03.000Z",
+              "latestSourceActivityAt": "2026-10-13T13:26:58.000Z",
               "activeWeeks12": 1,
               "weeklyActivity": [
                 false,
@@ -207702,21 +207702,21 @@
               "watchers": 0,
               "aggregate": 0
             },
-            "repositorySizeKb": 21,
+            "repositorySizeKb": 29,
             "license": {
               "status": "proprietary",
               "label": "Proprietary",
               "tooltip": "The published root license is not OSI-approved."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-29T13:52:52.486Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
-              "repositoryUrl": "https://github.com/Matdredalia/Chat-to-ePub.git",
+              "repositoryUrl": "https://github.com/Matdredalia/Scrollbound.git",
               "branch": null,
               "manifestPath": "manifest.json",
-              "folderName": "Chat-to-ePub"
+              "folderName": "Scrollbound"
             },
             "fork": null,
             "search": {
@@ -207728,7 +207728,7 @@
                 "matdredalia-chat-to-epub",
                 "github-1389927390",
                 "Matdredalia/Chat-to-ePub",
-                "https://github.com/Matdredalia/Chat-to-ePub"
+                "https://github.com/Matdredalia/Scrollbound"
               ],
               "summary": [
                 "Turn your SillyTavern chats into ePubs for eReader use, including adding a \"Cover image,\" \"Series name,\" \"Book #,\" etc. Can specify exact message number ranges, reads hidden chat, etc."

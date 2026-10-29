@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "source_id": "github-1389927390",
-  "head_sha": "a112314ca179e0e382c83915b1004b39ee54ae89",
-  "observed_at": "2026-09-28T14:37:04.503Z",
+  "head_sha": "5ba220d8dfba88fc3eaaba02c6ca4e1162656a26",
+  "observed_at": "2026-10-29T13:52:52.486Z",
   "status": "verified",
   "manifest_path": "manifest.json",
-  "folder_name": "Chat-to-ePub",
+  "folder_name": "Scrollbound",
   "manifest": {
-    "display_name": "Chat to EPUB",
+    "display_name": "Scrollbound",
     "key": null,
     "minimum_client_version": null
   }
