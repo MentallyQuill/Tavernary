@@ -10,11 +10,11 @@
     },
     "stage": "deployment-confirmed",
     "createdAt": "2026-10-08T14:39:08.801Z",
-    "nextEligibleAt": "2026-10-29T19:22:45.631Z",
+    "nextEligibleAt": "2026-10-29T20:07:06.458Z",
     "expectedSha": "fcc1d18234860167359142f38a155bbb7c779095",
     "workerRunId": null,
     "retry": null
   },
-  "updatedAt": "2026-10-29T19:07:45.631Z",
+  "updatedAt": "2026-10-29T19:52:06.458Z",
   "completedAt": null
 }
