@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "d14306ad53323c81f00ccb38fbcac7badba31acb3cdf2d68c4ce69d56df59a96",
+    "identity": {
+      "kind": "refresh",
+      "subject": "source:github-1140216653",
+      "inputDigest": "a5d9daaf77d63924c28163ba85b8074ae2b76d8e536a99334dcbfb9abde4b607",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-29T23:50:12.317Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-29T23:35:12.317Z",
+  "completedAt": null
+}
