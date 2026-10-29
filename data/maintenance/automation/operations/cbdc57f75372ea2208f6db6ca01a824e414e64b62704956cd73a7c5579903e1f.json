@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "cbdc57f75372ea2208f6db6ca01a824e414e64b62704956cd73a7c5579903e1f",
+    "identity": {
+      "kind": "refresh",
+      "subject": "source:github-1366168231",
+      "inputDigest": "2ac0c9cb5e800c456702e6c438ffffc8a37ce1956c7b9dec21ad1b3330f26573",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-29T15:21:27.647Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "provider-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-29T15:16:20.809Z",
+  "completedAt": null
+}
