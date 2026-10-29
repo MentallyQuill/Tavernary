@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7c612f7f9c015de59f3ac01d39678bf5074238b27eda120ca0bf36fc56529988",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1087458216:archkr-sillytavern-outfitswitch",
+      "inputDigest": "16c3dbc51300f303a11ef03c2f774ce35ed7e15c1e2562b4e84adb267da2bb71",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1087458216",
+    "identity": "github:1087458216"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40698848533,
+    "sourceSha": "ed8d6b19a8f604c9cbe20eb5b39359915d0c9379"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/archkr-sillytavern-outfitswitch.json",
+      "sha256": "cae5214fe5a5e6353be894264f9bdffc8925996ad28f696ca26b8d6ef72ce0a9",
+      "gitBlobSha": "2e63a18ee29adf33aa56963b476039a95db17865"
+    }
+  ]
+}

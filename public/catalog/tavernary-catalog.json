@@ -5548,10 +5548,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 30,
-        "forks": 0,
+        "stars": 31,
+        "forks": 1,
         "watchers": 1,
-        "aggregate": 31
+        "aggregate": 33
       },
       "repositorySizeKb": 423,
       "license": {
@@ -5560,7 +5560,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-29T06:57:49.594Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -29206,7 +29206,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-29T06:56:46.612Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -51495,7 +51495,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-29T06:56:38.995Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -103817,7 +103817,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-29T06:57:01.206Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -144054,10 +144054,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 30,
-              "forks": 0,
+              "stars": 31,
+              "forks": 1,
               "watchers": 1,
-              "aggregate": 31
+              "aggregate": 33
             },
             "repositorySizeKb": 423,
             "license": {
@@ -144066,7 +144066,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-29T06:57:49.594Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -224829,7 +224829,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-29T06:57:01.206Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -254821,7 +254821,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-29T06:57:01.206Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
