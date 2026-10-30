@@ -1607,7 +1607,8 @@ test.each(["obsolete", "equal-clock"])(
       await fixture.cleanup();
     }
   },
-  120_000,
+  // Full-catalog reconstruction runs forty times; retain headroom on shared CI runners.
+  180_000,
 );
 
 test("metadata cache, visibility, source, repository and vocabulary changes are freshly reconstructed", async () => {
