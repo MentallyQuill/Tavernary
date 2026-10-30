@@ -21820,7 +21820,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T07:19:45.044Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -23309,7 +23309,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T07:04:59.270Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -28678,7 +28678,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "This SillyTavern extension lets users browse datacat characters without leaving the frontend. It imports selected characters through SillyTavern's native PNG flow and opens them in a fresh chat at the first message.",
+      "summary": "Browse the Datacat character library from inside SillyTavern, import a selected card via the native PNG import flow, and open it in a fresh chat; works with stock SillyTavern (per README).",
       "canonicalUrl": "https://github.com/datacat-run/datacat-sillytavern-browser",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -28690,12 +28690,6 @@
         }
       ],
       "tags": [
-        {
-          "id": "connect-external-services",
-          "label": "Connect external services",
-          "description": "Bridge roleplay workflows to messaging, media, note-taking, automation, or other services.",
-          "facet": "goal"
-        },
         {
           "id": "manage-character-libraries",
           "label": "Manage character libraries",
@@ -28903,7 +28897,7 @@
           "https://github.com/datacat-run/datacat-sillytavern-browser"
         ],
         "summary": [
-          "This SillyTavern extension lets users browse datacat characters without leaving the frontend. It imports selected characters through SillyTavern's native PNG flow and opens them in a fresh chat at the first message."
+          "Browse the Datacat character library from inside SillyTavern, import a selected card via the native PNG import flow, and open it in a fresh chat; works with stock SillyTavern (per README)."
         ],
         "kind": [
           "extension"
@@ -28912,10 +28906,6 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Connect external services",
-          "service integrations",
-          "external bridges",
-          "third-party connections",
           "Manage character libraries",
           "character browsing",
           "card library",
@@ -183156,7 +183146,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-30T07:04:59.270Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -197930,7 +197920,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-30T07:04:59.270Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",

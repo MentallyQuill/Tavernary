@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "755a718bc3d3b6a36c4ff6e68af459e18ca9d1a25279d919c1fef808ace9c098",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1305445141:datacat-run-datacat-sillytavern-browser",
+      "inputDigest": "a17e684f73b6e2f4aaf84a588c58145eec5b36e22c6b788f11732b69be2e96a7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1305445141",
+    "identity": "github:1305445141"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41025639607,
+    "sourceSha": "54f3cc7161e287f99e749002999d5ddd442740ff"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/datacat-run-datacat-sillytavern-browser.json",
+      "sha256": "1aeb6daa26d40b2dd929d17d0786698b0c360903402db5a386332b04d62b1644",
+      "gitBlobSha": "36af5dc8e4f788f1a9824d4065d4e3716444b37f"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/755a718bc3d3b6a36c4ff6e68af459e18ca9d1a25279d919c1fef808ace9c098.json",
+      "sha256": "08e43ce7a1693ec04b28be57773ee6bcf966d9e31fc6ef294caa6df7b25facf2",
+      "gitBlobSha": "5f7ef54614c52d1219cf3f13a81041bdc44aed99"
+    }
+  ]
+}
