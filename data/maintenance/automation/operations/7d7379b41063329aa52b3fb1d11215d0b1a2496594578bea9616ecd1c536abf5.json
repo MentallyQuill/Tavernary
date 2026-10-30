@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7d7379b41063329aa52b3fb1d11215d0b1a2496594578bea9616ecd1c536abf5",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1054966103:coneja-chibi-carrotkernel",
+      "inputDigest": "b775d243c7af84c63d201f1f7c977d9e2a2a80f950c64c446593ecc9548b7c8c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-30T10:56:00.715Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-30T10:41:00.715Z",
+  "completedAt": null
+}
