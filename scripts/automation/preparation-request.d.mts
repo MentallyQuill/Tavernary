@@ -82,4 +82,5 @@ export function runPreparationRequestCli(options?: {
     issueNumber: number;
   }) => Promise<void>;
   write?: (value: string) => void;
+  reportError?: (value: string) => void;
 }): Promise<number>;
