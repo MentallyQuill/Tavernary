@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "datacat-run-datacat-sillytavern-browser",
+  "sourceId": "github-1305445141",
+  "sourceIdentity": "github:1305445141",
+  "inputDigest": "a17e684f73b6e2f4aaf84a588c58145eec5b36e22c6b788f11732b69be2e96a7",
+  "fingerprint": "3518a78375eb33581d5cd9b69e7b8621e17e1bee948795d790c913823aa8b505",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "58a178dd149aadc538c45846d4a2892fdfa8b13ad35daa051164d0a31565b32d",
+  "outputDigest": "80448a876b671b6755f24a43b7c3f2a1374aa043dfeb39addbc807b973ccb596",
+  "headSha": "b5451c69fcb874fc966fca549be812cfdb4f4fe4",
+  "observedAt": "2026-10-30T08:20:07.161Z"
+}
