@@ -9,18 +9,63 @@
     "url": "https://github.com/AMousePad/LumiRealm",
     "description": "Putting RisuRealm in Lumiverse",
     "default_branch": "main",
-    "head_sha": "e3a95c3469764de261e9e8db0fd441a616f0ad5e",
-    "head_committed_at": "2026-08-19T23:01:18.000Z",
+    "head_sha": "9521e5c04a6926f2d0e16551dc67b29a254aa8ca",
+    "head_committed_at": "2026-10-30T01:06:30.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-02T04:32:14.000Z",
-    "size_kb": 13835
+    "size_kb": 15043
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-19T23:01:18.000Z",
+    "latest_source_activity_at": "2026-10-30T01:06:30.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-30T01:06:30.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-14T04:58:58.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-11T11:47:33.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-10-04T03:09:00.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-27T06:32:20.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-20T12:32:18.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-13T21:59:29.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-09-02T21:34:33.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-27T21:25:30.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-17",
         "latest_at": "2026-08-19T23:01:18.000Z",
@@ -30,73 +75,39 @@
         "week_start": "2026-08-10",
         "latest_at": "2026-08-16T17:45:04.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-07-30T09:47:36.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-13",
-        "latest_at": "2026-07-19T06:50:12.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-06",
-        "latest_at": "2026-07-11T19:18:57.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-29",
-        "latest_at": "2026-06-30T03:59:44.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-22",
-        "latest_at": "2026-06-27T10:25:47.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-08",
-        "latest_at": "2026-06-08T13:02:26.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-01",
-        "latest_at": "2026-06-05T07:46:16.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": null,
+    "latest_release_at": "2026-10-30T01:58:25.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-19T07:56:49.599Z",
+    "baseline_completed_at": "2026-10-30T03:31:54.373Z",
     "baseline_attempts": 1,
-    "evidence_head_sha": "e3a95c3469764de261e9e8db0fd441a616f0ad5e"
+    "evidence_head_sha": "9521e5c04a6926f2d0e16551dc67b29a254aa8ca"
   },
   "community": {
-    "stars_count": 9,
+    "stars_count": 10,
     "forks_count": 3,
     "watchers_count": 1,
-    "aggregate": 13
+    "aggregate": 14
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-30T03:33:58.750Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "AMousePad", "type": "User", "provider": "github" },
+      { "login": "japolino", "type": "User", "provider": "github" },
       { "login": "prolix-oc", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-30T03:31:54.373Z",
     "stale_since": null
   }
 }

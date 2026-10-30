@@ -7602,7 +7602,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "e3a95c3469764de261e9e8db0fd441a616f0ad5e",
+        "currentSha": "9521e5c04a6926f2d0e16551dc67b29a254aa8ca",
         "report": {
           "reportId": "109d1fc37975890537fdd3974fc84634a84c4b5b05725e7d7cc4531d161054be",
           "riskLevel": "low",
@@ -7689,48 +7689,53 @@
         "contributors": [
           {
             "provider": "github",
+            "login": "japolino",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "prolix-oc",
             "botOrAi": false
           }
         ],
-        "humanContributorCount": 1,
+        "humanContributorCount": 2,
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-08-19T23:01:18.000Z",
-        "activeWeeks12": 3,
+        "latestSourceActivityAt": "2026-10-30T01:06:30.000Z",
+        "activeWeeks12": 9,
         "weeklyActivity": [
           false,
+          false,
+          false,
           true,
-          false,
           true,
           true,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": null,
+      "latestReleaseAt": "2026-10-30T01:58:25.000Z",
       "community": {
-        "stars": 9,
+        "stars": 10,
         "forks": 3,
         "watchers": 1,
-        "aggregate": 13
+        "aggregate": 14
       },
-      "repositorySizeKb": 13835,
+      "repositorySizeKb": 15043,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T03:33:58.750Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -7770,6 +7775,7 @@
         "compatibility": [],
         "maintainers": [
           "AMousePad",
+          "japolino",
           "prolix-oc"
         ],
         "relationships": []
@@ -113145,10 +113151,10 @@
       },
       "latestReleaseAt": "2023-09-22T18:27:25.000Z",
       "community": {
-        "stars": 124,
-        "forks": 14,
+        "stars": 127,
+        "forks": 16,
         "watchers": 3,
-        "aggregate": 141
+        "aggregate": 146
       },
       "repositorySizeKb": 3957,
       "license": {
@@ -113157,7 +113163,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T03:33:33.109Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -222945,7 +222951,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "e3a95c3469764de261e9e8db0fd441a616f0ad5e",
+              "currentSha": "9521e5c04a6926f2d0e16551dc67b29a254aa8ca",
               "report": {
                 "reportId": "109d1fc37975890537fdd3974fc84634a84c4b5b05725e7d7cc4531d161054be",
                 "riskLevel": "low",
@@ -223032,48 +223038,53 @@
               "contributors": [
                 {
                   "provider": "github",
+                  "login": "japolino",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
                   "login": "prolix-oc",
                   "botOrAi": false
                 }
               ],
-              "humanContributorCount": 1,
+              "humanContributorCount": 2,
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-08-19T23:01:18.000Z",
-              "activeWeeks12": 3,
+              "latestSourceActivityAt": "2026-10-30T01:06:30.000Z",
+              "activeWeeks12": 9,
               "weeklyActivity": [
                 false,
+                false,
+                false,
                 true,
-                false,
                 true,
                 true,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
-            "latestReleaseAt": null,
+            "latestReleaseAt": "2026-10-30T01:58:25.000Z",
             "community": {
-              "stars": 9,
+              "stars": 10,
               "forks": 3,
               "watchers": 1,
-              "aggregate": 13
+              "aggregate": 14
             },
-            "repositorySizeKb": 13835,
+            "repositorySizeKb": 15043,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-30T03:33:58.750Z",
             "staleSince": null,
             "install": null,
             "fork": null,
@@ -223113,6 +223124,7 @@
               "compatibility": [],
               "maintainers": [
                 "AMousePad",
+                "japolino",
                 "prolix-oc"
               ],
               "relationships": []
@@ -248219,10 +248231,10 @@
             },
             "latestReleaseAt": "2023-09-22T18:27:25.000Z",
             "community": {
-              "stars": 124,
-              "forks": 14,
+              "stars": 127,
+              "forks": 16,
               "watchers": 3,
-              "aggregate": 141
+              "aggregate": 146
             },
             "repositorySizeKb": 3957,
             "license": {
@@ -248231,7 +248243,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-30T03:33:33.109Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -295552,10 +295564,10 @@
             },
             "latestReleaseAt": "2023-09-22T18:27:25.000Z",
             "community": {
-              "stars": 124,
-              "forks": 14,
+              "stars": 127,
+              "forks": 16,
               "watchers": 3,
-              "aggregate": 141
+              "aggregate": 146
             },
             "repositorySizeKb": 3957,
             "license": {
@@ -295564,7 +295576,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-30T03:33:33.109Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -299441,10 +299453,10 @@
             },
             "latestReleaseAt": "2023-09-22T18:27:25.000Z",
             "community": {
-              "stars": 124,
-              "forks": 14,
+              "stars": 127,
+              "forks": 16,
               "watchers": 3,
-              "aggregate": 141
+              "aggregate": 146
             },
             "repositorySizeKb": 3957,
             "license": {
@@ -299453,7 +299465,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-30T03:33:33.109Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
