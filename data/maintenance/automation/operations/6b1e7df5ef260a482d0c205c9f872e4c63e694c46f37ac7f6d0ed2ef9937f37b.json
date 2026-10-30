@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6b1e7df5ef260a482d0c205c9f872e4c63e694c46f37ac7f6d0ed2ef9937f37b",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-948787177:bmen25124-sillytavern-roadway",
+      "inputDigest": "e5af8fe068ae0a2630b6d8d5a263e1e915c9f6fd7f0cc5596bbe494ce4925984",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-30T00:24:34.845Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-30T00:09:34.845Z",
+  "completedAt": null
+}
