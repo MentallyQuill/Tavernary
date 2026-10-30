@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "71cb8824be3689b81aec766553d97a8c516972f45267e302de1c2e18942fc105",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1313172635:aelfwyne-lore-library-lite",
+      "inputDigest": "933d7bf6acc497a25233c5d707d7443af3d5f87056c3089f4e45565846163b86",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-30T00:24:34.845Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-30T00:09:34.845Z",
+  "completedAt": null
+}
