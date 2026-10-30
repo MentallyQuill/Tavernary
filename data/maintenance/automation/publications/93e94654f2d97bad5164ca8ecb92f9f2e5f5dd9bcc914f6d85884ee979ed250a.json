@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "93e94654f2d97bad5164ca8ecb92f9f2e5f5dd9bcc914f6d85884ee979ed250a",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1282991131:m4marvin-charon",
+      "inputDigest": "c7cf695973363263c3657337001d4c14fb5ed7f1103f833166961d90d3463126",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1282991131",
+    "identity": "github:1282991131"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41058626294,
+    "sourceSha": "48ae65baf350026f2504e71191d79ea739b08eb6"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/m4marvin-charon.json",
+      "sha256": "4e56e6a24f932556d4f23e6c09878b94cf41ab9d68679a2e42529a3ea3d4500c",
+      "gitBlobSha": "36f2f3e209b825ecd8ed3744ccb91e5b7c48a48a"
+    }
+  ]
+}

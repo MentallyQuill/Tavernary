@@ -5,12 +5,9 @@
   "source_identity": "github:prolix-oc/lumiverse",
   "evidence_fingerprint": "ba23e8c628227e55eae4920f818297a21d9e35e188ad4c961ecbea11234c951d",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-11T12:26:41.127Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-11T12:26:41.127Z"
-  },
+  "reviewed_at": "2026-10-30T13:14:12.041Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
