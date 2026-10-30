@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "83bbfc9d93124b49db0c827b1315d4e70533dc97b554594bfbc9376a2ff12b46",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1360837960:lumenastrum-kotatsu-public",
+      "inputDigest": "0d4859d7559aaff0b22ce02daae631c879c3b8a779dc0647c4e451003111242a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-30T14:29:54.666Z",
+    "nextEligibleAt": "2026-10-30T15:34:58.919Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "workflow-result-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-30T15:29:53.268Z",
+  "completedAt": null
+}
