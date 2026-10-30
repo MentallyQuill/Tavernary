@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "89992867ff9664fb79e2029bdeb5b0140b4e16a53c39a857bf2f51730188f831",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1287690691:brucestarkallen-sillytavern-chat-assistant",
+      "inputDigest": "f0b074096fbad7fce34ff5472df5e4d7987d9d5fa4109e80d865a97dafc1dade",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-29T14:33:04.349Z",
+    "nextEligibleAt": "2026-10-31T07:58:30.373Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "github-inventory-unavailable"
+      },
+      "transientAttempts": 4,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-30T07:58:30.373Z",
+  "completedAt": null
+}
