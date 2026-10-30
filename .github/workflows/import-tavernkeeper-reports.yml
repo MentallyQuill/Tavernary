@@ -96,7 +96,7 @@ jobs:
               gh workflow run automation-writer.yml --repo "$GITHUB_REPOSITORY" --ref main \
                 -f operation_key="$operation_key" -f mode=prepare
             elif [[ "$workflow" == 'import-tavernkeeper-reports.yml' && "$mode" == '-' ]]; then
-              gh workflow run import-tavernkeeper-reports.yml --repo "$GITHUB_REPOSITORY" --ref main \
+              node scripts/automation/retry-workflow-dispatch.mjs import-tavernkeeper-reports.yml --repo "$GITHUB_REPOSITORY" --ref main \
                 -f operation_key="$operation_key"
             else
               exit 1

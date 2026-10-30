@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "sourceSha": "b99695c59f240b0f986383cb13b302b662fbcb00",
+  "status": "confirmed",
+  "buildId": "run-41045666962-attempt-1",
+  "bundleDigest": "78b761be7edf2d166e39b7024c2137ab21a00e8b65915298a99ea6da5f3ae1a6",
+  "confirmedAt": "2026-10-30T11:12:44.463Z",
+  "confirmation": {
+    "sourceSha": "b99695c59f240b0f986383cb13b302b662fbcb00",
+    "catalogDigest": "fafc79e8807cb9cb1bfd9f14fe5332f303cdf8c79ddbd51813e3a133fc3e5c9f",
+    "targetDigest": "31e1ca5cf6b3e3807e83b7c153018f416c107ac922190e1745581ccd64de3ec6",
+    "buildDigest": "78b761be7edf2d166e39b7024c2137ab21a00e8b65915298a99ea6da5f3ae1a6",
+    "essentialSmokePassed": true
+  },
+  "workflowRunId": 41045666962
+}

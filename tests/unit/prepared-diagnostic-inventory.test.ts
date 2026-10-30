@@ -617,9 +617,16 @@ test.each(["delta", "active"])(
         },
       ]);
     });
-    await expect(loadPreparedDiagnosticRuns(fixture.input)).rejects.toThrow(
-      /incomplete|truncated/u,
-    );
+    vi.useFakeTimers();
+    try {
+      const rejection = expect(
+        loadPreparedDiagnosticRuns(fixture.input),
+      ).rejects.toThrow(/incomplete|truncated/u);
+      await vi.runAllTimersAsync();
+      await rejection;
+    } finally {
+      vi.useRealTimers();
+    }
   },
 );
 
@@ -1600,7 +1607,8 @@ test.each(["obsolete", "equal-clock"])(
       await fixture.cleanup();
     }
   },
-  120_000,
+  // Full-catalog reconstruction runs forty times; retain headroom on shared CI runners.
+  180_000,
 );
 
 test("metadata cache, visibility, source, repository and vocabulary changes are freshly reconstructed", async () => {

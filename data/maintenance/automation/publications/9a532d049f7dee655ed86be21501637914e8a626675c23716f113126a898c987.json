@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "9a532d049f7dee655ed86be21501637914e8a626675c23716f113126a898c987",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1146891697:hayanaga-ooba-model-reloader",
+      "inputDigest": "03952238c0ae16a857bb969f27e09bf56575945412c8b3eb6d67b395aa48d77d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1146891697",
+    "identity": "github:1146891697"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41062566129,
+    "sourceSha": "c769804ada212e7e216fdf861a988769e1f35497"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/hayanaga-ooba-model-reloader.json",
+      "sha256": "7707b9c067b2337454e8982298c99b948c5f8602a6118edb57870b9e20fa1af3",
+      "gitBlobSha": "babdc4350d63fe76f5d961a93bed87f4e1d95213"
+    }
+  ]
+}

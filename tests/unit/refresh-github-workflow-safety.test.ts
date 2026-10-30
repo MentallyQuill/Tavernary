@@ -55,7 +55,9 @@ test("selects current authority before creating the dispatch credential", async 
     "node scripts/automation/preparation-request.mjs",
   );
   const credential = source.indexOf("Create fresh preparation dispatch token");
-  const dispatch = source.indexOf("gh workflow run refresh-catalog.yml");
+  const dispatch = source.indexOf(
+    "node scripts/automation/retry-workflow-dispatch.mjs refresh-catalog.yml",
+  );
   expect(select).toBeGreaterThan(-1);
   expect(select).toBeLessThan(credential);
   expect(credential).toBeLessThan(dispatch);

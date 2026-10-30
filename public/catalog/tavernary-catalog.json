@@ -3924,10 +3924,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 7,
+        "stars": 8,
         "forks": 1,
         "watchers": 1,
-        "aggregate": 9
+        "aggregate": 10
       },
       "repositorySizeKb": 208,
       "license": {
@@ -3936,7 +3936,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T14:40:25.587Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -9814,7 +9814,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T14:39:59.172Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -10927,8 +10927,8 @@
       "community": {
         "stars": 0,
         "forks": 0,
-        "watchers": 1,
-        "aggregate": 1
+        "watchers": 0,
+        "aggregate": 0
       },
       "repositorySizeKb": 78,
       "license": {
@@ -10937,7 +10937,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T10:49:14.972Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -24877,7 +24877,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "CarrotKernel is a SillyTavern extension for managing character sheets and world info entries. It serves as a spiritual successor to BunnyMoTags, continuing the lineage of professional roleplay content organization tools.",
+      "summary": "CarrotKernel is a SillyTavern helper extension and spiritual successor to BunnyMoTags offering character sheet and WorldInfo management for BunnyMo Packs (readme: 'Character Sheet & WorldInfo Management System').",
       "canonicalUrl": "https://github.com/Coneja-Chibi/CarrotKernel",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -24899,6 +24899,12 @@
           "id": "manage-characters-and-personas",
           "label": "Manage characters and personas",
           "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+          "facet": "goal"
+        },
+        {
+          "id": "connect-external-services",
+          "label": "Connect external services",
+          "description": "Bridge roleplay workflows to messaging, media, note-taking, automation, or other services.",
           "facet": "goal"
         }
       ],
@@ -25028,7 +25034,7 @@
           "https://github.com/Coneja-Chibi/CarrotKernel"
         ],
         "summary": [
-          "CarrotKernel is a SillyTavern extension for managing character sheets and world info entries. It serves as a spiritual successor to BunnyMoTags, continuing the lineage of professional roleplay content organization tools."
+          "CarrotKernel is a SillyTavern helper extension and spiritual successor to BunnyMoTags offering character sheet and WorldInfo management for BunnyMo Packs (readme: 'Character Sheet & WorldInfo Management System')."
         ],
         "kind": [
           "extension"
@@ -25044,7 +25050,11 @@
           "Manage characters and personas",
           "persona management",
           "character management",
-          "identity management"
+          "identity management",
+          "Connect external services",
+          "service integrations",
+          "external bridges",
+          "third-party connections"
         ],
         "frontends": [
           "SillyTavern"
@@ -29454,10 +29464,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 12,
+        "stars": 25,
         "forks": 0,
         "watchers": 1,
-        "aggregate": 13
+        "aggregate": 26
       },
       "repositorySizeKb": 205,
       "license": {
@@ -29484,7 +29494,7 @@
           }
         ]
       },
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T14:40:17.363Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -34090,10 +34100,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 40,
+        "stars": 41,
         "forks": 3,
         "watchers": 0,
-        "aggregate": 43
+        "aggregate": 44
       },
       "repositorySizeKb": 334,
       "license": {
@@ -34102,7 +34112,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T14:40:14.874Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -49275,7 +49285,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T14:40:53.170Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -53969,7 +53979,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T10:49:56.135Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -66121,6 +66131,183 @@
       }
     },
     {
+      "id": "lumenastrum-kotatsu-public",
+      "name": "kotatsu-public",
+      "kind": "frontend",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": "Kotatsu is SillyTavern for writing: your characters, presets, extensions and data folder in a calmer interface, with story branches, prompt receipts, a phone-sized visual-novel stage, and Mikan-chan showing you around.",
+      "canonicalUrl": "https://github.com/lumenastrum/kotatsu-public",
+      "catalogedAt": "2026-10-30T14:29:54.666Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "kotatsu-public",
+          "label": "kotatsu-public",
+          "description": "Works with the kotatsu-public roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "improve-writing-and-prose",
+          "label": "Improve writing and prose",
+          "description": "Strengthen prose, dialogue, style, pacing, subtext, or general writing quality.",
+          "facet": "goal"
+        },
+        {
+          "id": "inspect-prompts-and-generations",
+          "label": "Inspect prompts and generations",
+          "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+          "facet": "goal"
+        },
+        {
+          "id": "local-first",
+          "label": "Local-first",
+          "description": "Keeps its primary data and workflow on the user's own device.",
+          "facet": "trait"
+        },
+        {
+          "id": "manage-prompts-and-presets",
+          "label": "Manage prompts and presets",
+          "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
+          "facet": "goal"
+        },
+        {
+          "id": "mobile-friendly",
+          "label": "Mobile-friendly",
+          "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "c2baa4d98206b6479e87f60b8a5078ccb7bf5d0a",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "lumenastrum"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "siestamode",
+            "botOrAi": false
+          }
+        ],
+        "humanContributorCount": 1,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-29T22:33:52.000Z",
+        "activeWeeks12": 4,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          true,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-10-29T22:34:00.000Z",
+      "community": {
+        "stars": 20,
+        "forks": 2,
+        "watchers": 0,
+        "aggregate": 22
+      },
+      "repositorySizeKb": 87810,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-10-30T14:29:54.666Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "kotatsu-public"
+        ],
+        "aliases": [],
+        "source": [
+          "lumenastrum-kotatsu-public",
+          "github-1360837960",
+          "lumenastrum/kotatsu-public",
+          "https://github.com/lumenastrum/kotatsu-public"
+        ],
+        "summary": [
+          "Kotatsu is SillyTavern for writing: your characters, presets, extensions and data folder in a calmer interface, with story branches, prompt receipts, a phone-sized visual-novel stage, and Mikan-chan showing you around."
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals",
+          "Improve writing and prose",
+          "writing assistance",
+          "prose improvement",
+          "co-writing",
+          "Inspect prompts and generations",
+          "prompt inspection",
+          "generation diagnostics",
+          "review validation",
+          "request debugging",
+          "Local-first",
+          "stored locally",
+          "on-device data",
+          "local data ownership",
+          "Manage prompts and presets",
+          "prompt management",
+          "prompt engineering",
+          "preset organization",
+          "template management",
+          "Mobile-friendly",
+          "mobile support",
+          "phone friendly",
+          "responsive mobile UI"
+        ],
+        "frontends": [
+          "kotatsu-public"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "lumenastrum",
+          "siestamode"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "lunarblazepony-blazetracker",
       "name": "BlazeTracker",
       "kind": "extension",
@@ -67346,7 +67533,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "rpg-systems",
-      "summary": "Forged by Primus is a modular AI Dungeon Master system for long-form roleplay with durable state and context-loss recovery. It enforces structured multi-step processes to keep narratives consistent across sessions.",
+      "summary": "Forged by Primus (Manjove1) is a modular AI Dungeon Master system for long-form roleplay with durable state, enforced multi-step processes, and recovery under context loss (README, repository description).",
       "canonicalUrl": "https://github.com/Manjove1/forged-by-primus-portfolio",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -67357,44 +67544,7 @@
           "description": "Works with the SillyTavern roleplay frontend."
         }
       ],
-      "tags": [
-        {
-          "id": "maintain-long-term-memory",
-          "label": "Maintain long-term memory",
-          "description": "Preserve and recall important information across long chats or separate sessions.",
-          "facet": "goal"
-        },
-        {
-          "id": "preserve-story-continuity",
-          "label": "Preserve story continuity",
-          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
-          "facet": "goal"
-        },
-        {
-          "id": "add-structured-reasoning",
-          "label": "Add structured reasoning",
-          "description": "Introduce deliberate planning, reflection, critique, or multi-step thinking before output.",
-          "facet": "goal"
-        },
-        {
-          "id": "add-rpg-gameplay",
-          "label": "Add RPG gameplay",
-          "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
-          "facet": "goal"
-        },
-        {
-          "id": "rules-driven",
-          "label": "Rules-driven",
-          "description": "Uses explicit rules, schemas, calculations, or deterministic mechanics to constrain behavior.",
-          "facet": "trait"
-        },
-        {
-          "id": "persistent-state",
-          "label": "Persistent state",
-          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
-          "facet": "trait"
-        }
-      ],
+      "tags": [],
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
@@ -67530,7 +67680,7 @@
         "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T14:40:53.842Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -67552,7 +67702,7 @@
           "https://github.com/Manjove1/forged-by-primus-portfolio"
         ],
         "summary": [
-          "Forged by Primus is a modular AI Dungeon Master system for long-form roleplay with durable state and context-loss recovery. It enforces structured multi-step processes to keep narratives consistent across sessions."
+          "Forged by Primus (Manjove1) is a modular AI Dungeon Master system for long-form roleplay with durable state, enforced multi-step processes, and recovery under context loss (README, repository description)."
         ],
         "kind": [
           "extension"
@@ -67560,33 +67710,7 @@
         "primaryFunction": [
           "RPG systems and suites"
         ],
-        "tags": [
-          "Maintain long-term memory",
-          "durable memory",
-          "persistent memory",
-          "remember across chats",
-          "Preserve story continuity",
-          "continuity tracking",
-          "canon consistency",
-          "story coherence",
-          "Add structured reasoning",
-          "reasoning pipelines",
-          "stepped thinking",
-          "planning reasoning",
-          "planning passes",
-          "Add RPG gameplay",
-          "tabletop mechanics",
-          "game master tools",
-          "RPG systems",
-          "Rules-driven",
-          "deterministic mechanics",
-          "rule based",
-          "schema driven",
-          "Persistent state",
-          "durable state",
-          "state persistence",
-          "cross-session state"
-        ],
+        "tags": [],
         "frontends": [
           "SillyTavern"
         ],
@@ -75710,7 +75834,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T14:43:34.582Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -84231,7 +84355,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T14:40:11.213Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -87075,10 +87199,10 @@
       },
       "latestReleaseAt": "2026-07-04T09:12:20.000Z",
       "community": {
-        "stars": 87,
-        "forks": 12,
+        "stars": 90,
+        "forks": 15,
         "watchers": 4,
-        "aggregate": 103
+        "aggregate": 109
       },
       "repositorySizeKb": 46799,
       "license": {
@@ -87087,7 +87211,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T14:40:47.579Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -90957,10 +91081,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 28,
-        "forks": 4,
+        "stars": 29,
+        "forks": 5,
         "watchers": 2,
-        "aggregate": 34
+        "aggregate": 36
       },
       "repositorySizeKb": 4547,
       "license": {
@@ -90969,7 +91093,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T14:40:12.774Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -95579,7 +95703,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T14:40:42.923Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -97226,7 +97350,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T09:14:39.887Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -99192,14 +99316,14 @@
         "watchers": 1,
         "aggregate": 33
       },
-      "repositorySizeKb": 682,
+      "repositorySizeKb": 916,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T14:40:37.755Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -111615,7 +111739,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T09:15:42.722Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -115725,7 +115849,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T09:15:06.981Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -116164,10 +116288,10 @@
       },
       "latestReleaseAt": "2026-07-02T21:19:46.000Z",
       "community": {
-        "stars": 78,
+        "stars": 80,
         "forks": 12,
         "watchers": 1,
-        "aggregate": 91
+        "aggregate": 93
       },
       "repositorySizeKb": 40600,
       "license": {
@@ -116176,7 +116300,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T14:40:05.643Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -126769,7 +126893,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "memory-retrieval",
-      "summary": "An active memory extension for SillyTavern that gives characters working memory and a self-maintaining lorebook, keeping long chats coherent without manual World Info upkeep.",
+      "summary": "Chaotic-lorebooks-Silly-Tavern is an active memory extension for SillyTavern that gives characters working memory and a self-maintaining lorebook, keeping long chats coherent on any model (README).",
       "canonicalUrl": "https://github.com/XaYS-101/Chaotic-lorebooks-Silly-Tavern",
       "catalogedAt": "2026-08-08T04:55:42.901Z",
       "catalogCohort": "standard",
@@ -126781,12 +126905,6 @@
         }
       ],
       "tags": [
-        {
-          "id": "local-first",
-          "label": "Local-first",
-          "description": "Keeps its primary data and workflow on the user's own device.",
-          "facet": "trait"
-        },
         {
           "id": "maintain-long-term-memory",
           "label": "Maintain long-term memory",
@@ -126800,22 +126918,28 @@
           "facet": "goal"
         },
         {
-          "id": "model-agnostic",
-          "label": "Model-agnostic",
-          "description": "Works across a broad range of model providers rather than requiring one model family.",
-          "facet": "trait"
-        },
-        {
           "id": "preserve-story-continuity",
           "label": "Preserve story continuity",
           "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
           "facet": "goal"
         },
         {
-          "id": "retrieve-relevant-context",
-          "label": "Retrieve relevant context",
-          "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
+          "id": "manage-context-limits",
+          "label": "Manage context limits",
+          "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
           "facet": "goal"
+        },
+        {
+          "id": "model-agnostic",
+          "label": "Model-agnostic",
+          "description": "Works across a broad range of model providers rather than requiring one model family.",
+          "facet": "trait"
+        },
+        {
+          "id": "multilingual",
+          "label": "Multilingual",
+          "description": "Explicitly supports use, authoring, or interfaces in multiple languages.",
+          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -126939,7 +127063,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-30T14:43:11.456Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -126961,7 +127085,7 @@
           "https://github.com/XaYS-101/Chaotic-lorebooks-Silly-Tavern"
         ],
         "summary": [
-          "An active memory extension for SillyTavern that gives characters working memory and a self-maintaining lorebook, keeping long chats coherent without manual World Info upkeep."
+          "Chaotic-lorebooks-Silly-Tavern is an active memory extension for SillyTavern that gives characters working memory and a self-maintaining lorebook, keeping long chats coherent on any model (README)."
         ],
         "kind": [
           "extension"
@@ -126970,10 +127094,6 @@
           "Memory and retrieval"
         ],
         "tags": [
-          "Local-first",
-          "stored locally",
-          "on-device data",
-          "local data ownership",
           "Maintain long-term memory",
           "durable memory",
           "persistent memory",
@@ -126982,18 +127102,22 @@
           "World Info management",
           "worldbook organization",
           "loredeck management",
-          "Model-agnostic",
-          "bring your own model",
-          "BYOM",
-          "provider independent",
           "Preserve story continuity",
           "continuity tracking",
           "canon consistency",
           "story coherence",
-          "Retrieve relevant context",
-          "context retrieval",
-          "relevant recall",
-          "knowledge retrieval"
+          "Manage context limits",
+          "context compression",
+          "context window management",
+          "token budgeting",
+          "Model-agnostic",
+          "bring your own model",
+          "BYOM",
+          "provider independent",
+          "Multilingual",
+          "multiple languages",
+          "internationalized",
+          "cross-language support"
         ],
         "frontends": [
           "SillyTavern"
@@ -160319,10 +160443,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 28,
-              "forks": 4,
+              "stars": 29,
+              "forks": 5,
               "watchers": 2,
-              "aggregate": 34
+              "aggregate": 36
             },
             "repositorySizeKb": 4547,
             "license": {
@@ -160331,7 +160455,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-30T14:40:12.774Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -182474,10 +182598,10 @@
             },
             "latestReleaseAt": "2026-07-02T21:19:46.000Z",
             "community": {
-              "stars": 78,
+              "stars": 80,
               "forks": 12,
               "watchers": 1,
-              "aggregate": 91
+              "aggregate": 93
             },
             "repositorySizeKb": 40600,
             "license": {
@@ -182486,7 +182610,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-30T14:40:05.643Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -197078,10 +197202,10 @@
             },
             "latestReleaseAt": "2026-07-02T21:19:46.000Z",
             "community": {
-              "stars": 78,
+              "stars": 80,
               "forks": 12,
               "watchers": 1,
-              "aggregate": 91
+              "aggregate": 93
             },
             "repositorySizeKb": 40600,
             "license": {
@@ -197090,7 +197214,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-30T14:40:05.643Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -229923,10 +230047,10 @@
             },
             "latestReleaseAt": "2026-07-02T21:19:46.000Z",
             "community": {
-              "stars": 78,
+              "stars": 80,
               "forks": 12,
               "watchers": 1,
-              "aggregate": 91
+              "aggregate": 93
             },
             "repositorySizeKb": 40600,
             "license": {
@@ -229935,7 +230059,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-30T14:40:05.643Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -232133,10 +232257,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 12,
+              "stars": 25,
               "forks": 0,
               "watchers": 1,
-              "aggregate": 13
+              "aggregate": 26
             },
             "repositorySizeKb": 205,
             "license": {
@@ -232163,7 +232287,7 @@
                 }
               ]
             },
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-30T14:40:17.363Z",
             "staleSince": null,
             "install": null,
             "fork": null,
@@ -245224,7 +245348,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-30T14:40:42.923Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -276433,10 +276557,10 @@
             },
             "latestReleaseAt": "2026-07-02T21:19:46.000Z",
             "community": {
-              "stars": 78,
+              "stars": 80,
               "forks": 12,
               "watchers": 1,
-              "aggregate": 91
+              "aggregate": 93
             },
             "repositorySizeKb": 40600,
             "license": {
@@ -276445,7 +276569,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-30T14:40:05.643Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -280174,7 +280298,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "rpg-systems",
-            "summary": "Forged by Primus is a modular AI Dungeon Master system for long-form roleplay with durable state and context-loss recovery. It enforces structured multi-step processes to keep narratives consistent across sessions.",
+            "summary": "Forged by Primus (Manjove1) is a modular AI Dungeon Master system for long-form roleplay with durable state, enforced multi-step processes, and recovery under context loss (README, repository description).",
             "canonicalUrl": "https://github.com/Manjove1/forged-by-primus-portfolio",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -280185,44 +280309,7 @@
                 "description": "Works with the SillyTavern roleplay frontend."
               }
             ],
-            "tags": [
-              {
-                "id": "maintain-long-term-memory",
-                "label": "Maintain long-term memory",
-                "description": "Preserve and recall important information across long chats or separate sessions.",
-                "facet": "goal"
-              },
-              {
-                "id": "preserve-story-continuity",
-                "label": "Preserve story continuity",
-                "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
-                "facet": "goal"
-              },
-              {
-                "id": "add-structured-reasoning",
-                "label": "Add structured reasoning",
-                "description": "Introduce deliberate planning, reflection, critique, or multi-step thinking before output.",
-                "facet": "goal"
-              },
-              {
-                "id": "add-rpg-gameplay",
-                "label": "Add RPG gameplay",
-                "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
-                "facet": "goal"
-              },
-              {
-                "id": "rules-driven",
-                "label": "Rules-driven",
-                "description": "Uses explicit rules, schemas, calculations, or deterministic mechanics to constrain behavior.",
-                "facet": "trait"
-              },
-              {
-                "id": "persistent-state",
-                "label": "Persistent state",
-                "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
-                "facet": "trait"
-              }
-            ],
+            "tags": [],
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
@@ -280358,7 +280445,7 @@
               "tooltip": "The published root license is not OSI-approved."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-30T14:40:53.842Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -280380,7 +280467,7 @@
                 "https://github.com/Manjove1/forged-by-primus-portfolio"
               ],
               "summary": [
-                "Forged by Primus is a modular AI Dungeon Master system for long-form roleplay with durable state and context-loss recovery. It enforces structured multi-step processes to keep narratives consistent across sessions."
+                "Forged by Primus (Manjove1) is a modular AI Dungeon Master system for long-form roleplay with durable state, enforced multi-step processes, and recovery under context loss (README, repository description)."
               ],
               "kind": [
                 "extension"
@@ -280388,33 +280475,7 @@
               "primaryFunction": [
                 "RPG systems and suites"
               ],
-              "tags": [
-                "Maintain long-term memory",
-                "durable memory",
-                "persistent memory",
-                "remember across chats",
-                "Preserve story continuity",
-                "continuity tracking",
-                "canon consistency",
-                "story coherence",
-                "Add structured reasoning",
-                "reasoning pipelines",
-                "stepped thinking",
-                "planning reasoning",
-                "planning passes",
-                "Add RPG gameplay",
-                "tabletop mechanics",
-                "game master tools",
-                "RPG systems",
-                "Rules-driven",
-                "deterministic mechanics",
-                "rule based",
-                "schema driven",
-                "Persistent state",
-                "durable state",
-                "state persistence",
-                "cross-session state"
-              ],
+              "tags": [],
               "frontends": [
                 "SillyTavern"
               ],
@@ -297677,10 +297738,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 28,
-              "forks": 4,
+              "stars": 29,
+              "forks": 5,
               "watchers": 2,
-              "aggregate": 34
+              "aggregate": 36
             },
             "repositorySizeKb": 4547,
             "license": {
@@ -297689,7 +297750,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-30T14:40:12.774Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -297924,14 +297985,14 @@
               "watchers": 1,
               "aggregate": 33
             },
-            "repositorySizeKb": 682,
+            "repositorySizeKb": 916,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-30T14:40:37.755Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",

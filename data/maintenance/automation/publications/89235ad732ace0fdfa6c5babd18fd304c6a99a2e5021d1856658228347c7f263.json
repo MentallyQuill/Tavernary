@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "89235ad732ace0fdfa6c5babd18fd304c6a99a2e5021d1856658228347c7f263",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1248922425:amousepad-lumibooks",
+      "inputDigest": "79c5bd4bdb8397697f0f1a064bae08f677f5209b058b53d80b5cc1098e5995c0",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1248922425",
+    "identity": "github:1248922425"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41054118929,
+    "sourceSha": "157ec02fde39ab8998f5859b10e3f0990bf2cecc"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/amousepad-lumibooks.json",
+      "sha256": "e2134ae7090ede81754e98a25473c9a0fad50595c05c71ea4bf0994029a7c29c",
+      "gitBlobSha": "e0449ae01bc4a201e4d4a26c4be45d44dd241b36"
+    }
+  ]
+}

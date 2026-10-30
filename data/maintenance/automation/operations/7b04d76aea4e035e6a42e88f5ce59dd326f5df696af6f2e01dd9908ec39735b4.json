@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7b04d76aea4e035e6a42e88f5ce59dd326f5df696af6f2e01dd9908ec39735b4",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1277371044:xays-101-chaotic-lorebooks-silly-tavern",
+      "inputDigest": "8ba8dcfb849e6c20c92c51377694e1c384f74c6215dce60abe3762c374b8ccb3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-30T17:53:05.949Z",
+    "expectedSha": "8c952bc8bf42d8517405da0fff17d9399b2edc25",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-30T17:38:05.949Z",
+  "completedAt": null
+}

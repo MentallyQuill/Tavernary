@@ -4,7 +4,11 @@ import {
   validateAutomationOperation,
   selectDueOperations,
 } from "./operation.mjs";
-import { assertTrustedAutomationContext } from "./github-inventory.mjs";
+import {
+  assertTrustedAutomationContext,
+  githubFailureStatus,
+} from "./github-inventory.mjs";
+import { classifyAutomationFailure } from "./failure.mjs";
 import {
   loadAutomationInventory,
   discoverAutomationState,
@@ -331,6 +335,8 @@ export function planPreparationRequest({
 export async function runPreparationRequestCli(options = {}) {
   const env = options.env ?? process.env;
   const write = options.write ?? console.log;
+  const reportError = options.reportError ?? console.error;
+  let stage = "validate-request";
   try {
     const repository = env.GITHUB_REPOSITORY;
     const event =
@@ -357,6 +363,7 @@ export async function runPreparationRequestCli(options = {}) {
       ].includes(workflow)
     )
       throw new Error("Scheduled request workflow is invalid.");
+    stage = "load-inventory";
     const state = await (
       options.load ??
       (() =>
@@ -371,6 +378,7 @@ export async function runPreparationRequestCli(options = {}) {
             : {}),
         }))
     )();
+    stage = "plan-preparation";
     const requestRunId = Number(env.GITHUB_RUN_ID);
     if (
       workflow !== "import-tavernkeeper-reports.yml" &&
@@ -448,7 +456,17 @@ export async function runPreparationRequestCli(options = {}) {
       );
     write(JSON.stringify(plan));
     return 0;
-  } catch {
+  } catch (error) {
+    reportError(
+      JSON.stringify({
+        status: "unavailable",
+        stage,
+        failure: classifyAutomationFailure({
+          diagnosticCode: error?.code,
+          httpStatus: githubFailureStatus(error),
+        }),
+      }),
+    );
     write(JSON.stringify({ status: "unavailable" }));
     return 1;
   }

@@ -1,0 +1,30 @@
+{
+  "schema_version": 6,
+  "id": "lumenastrum-kotatsu-public",
+  "name": "kotatsu-public",
+  "kind": "frontend",
+  "summary": "Kotatsu is SillyTavern for writing: your characters, presets, extensions and data folder in a calmer interface, with story branches, prompt receipts, a phone-sized visual-novel stage, and Mikan-chan showing you around.",
+  "metadata_status": "curated",
+  "source_id": "github-1360837960",
+  "frontends": ["kotatsu-public"],
+  "primary_function": "frontend",
+  "tags": [
+    "add-visual-immersion",
+    "improve-writing-and-prose",
+    "inspect-prompts-and-generations",
+    "local-first",
+    "manage-prompts-and-presets",
+    "mobile-friendly"
+  ],
+  "cataloged_at": "2026-10-30T14:29:54.666Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "manual", "note": "Verified repository owner selection." }
+  }
+}

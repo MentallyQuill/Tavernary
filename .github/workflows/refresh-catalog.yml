@@ -103,7 +103,7 @@ jobs:
             [[ "$operation_key" =~ ^[a-f0-9]{64}$ ]]
             [[ "$source_id" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]
             [[ "$mode" == 'project' || "$mode" == 'forensic' ]]
-            gh workflow run refresh-catalog.yml --repo "$GITHUB_REPOSITORY" --ref main \
+            node scripts/automation/retry-workflow-dispatch.mjs refresh-catalog.yml --repo "$GITHUB_REPOSITORY" --ref main \
               -f operation_key="$operation_key" -f source_id="$source_id" -f mode="$mode"
           done < <(jq -r '.[] | [.inputs.operation_key, .inputs.source_id, .inputs.mode] | @tsv' "$RUNNER_TEMP/refresh-requests.json")
 
