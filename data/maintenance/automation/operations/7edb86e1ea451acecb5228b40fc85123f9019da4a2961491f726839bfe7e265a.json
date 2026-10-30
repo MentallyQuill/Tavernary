@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7edb86e1ea451acecb5228b40fc85123f9019da4a2961491f726839bfe7e265a",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-801866918:thezennou-stextension-snapshot",
+      "inputDigest": "230115be40096f40739807696b6dd4f143767cfa422a3afb1e57ed385b4dec27",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-30T10:56:00.715Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-30T10:41:00.715Z",
+  "completedAt": null
+}
