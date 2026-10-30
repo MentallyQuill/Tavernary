@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "73671d4fabb4c36141138fa41b5be74fe04d2fb43e25ab38967fd96b1743871b",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1132429516:loggo-presets-typingindicatorplus",
+      "inputDigest": "2e3a2d57571ecb2b22d097064940b9a8aa279bf5f0d5bee99a82c397795ab285",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-30T07:20:46.715Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-30T07:05:46.715Z",
+  "completedAt": null
+}
