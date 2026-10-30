@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6baf039330cfd2e56de6c0fe7b470fd0c5d806ce01a5fa039031c44b74521e80",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1146891697:hayanaga-ooba-model-reloader",
+      "inputDigest": "9d0b9878d242136e6b13ae99b7ae2fba2a2873db37aea6d27c6b8e9cd427a1f0",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1146891697",
+    "identity": "github:1146891697"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40985272372,
+    "sourceSha": "24ccd8ce063cab36a4c7e69a35ebe686821b2ca6"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/hayanaga-ooba-model-reloader.json",
+      "sha256": "5168fa277d9f5913c52f1e873571814a557af9114160a6bcf8fb9ef7889c68b6",
+      "gitBlobSha": "1b166b00d17c61aa735e537fbea6bb46d55d5b0d"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/6baf039330cfd2e56de6c0fe7b470fd0c5d806ce01a5fa039031c44b74521e80.json",
+      "sha256": "877a5c7a1e0c62a62ee12f949c647871e7792813bf33e059f74bc3cfec2f94a2",
+      "gitBlobSha": "97093afe7a32f47f30a68d171a34bbe7123c09d9"
+    }
+  ]
+}

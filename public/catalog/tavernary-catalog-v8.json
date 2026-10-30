@@ -2609,7 +2609,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "character-worldbuilding",
-      "summary": "Lore Library Lite enhances SillyTavern lorebook management with desktop and mobile layouts, streamlined organization, bulk actions, and deep World Info entry editing.",
+      "summary": "A SillyTavern extension replacing the native World Info editor with a three-panel Lorebook and campaign manager offering bulk actions and deep entry editing (README, L3).",
       "canonicalUrl": "https://github.com/aelfwyne/Lore-Library-Lite",
       "catalogedAt": "2026-08-02T05:32:38.442Z",
       "catalogCohort": "standard",
@@ -2621,12 +2621,6 @@
         }
       ],
       "tags": [
-        {
-          "id": "customize-the-interface",
-          "label": "Customize the interface",
-          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
-          "facet": "goal"
-        },
         {
           "id": "manage-lorebooks",
           "label": "Manage lorebooks",
@@ -2818,7 +2812,7 @@
           "https://github.com/aelfwyne/Lore-Library-Lite"
         ],
         "summary": [
-          "Lore Library Lite enhances SillyTavern lorebook management with desktop and mobile layouts, streamlined organization, bulk actions, and deep World Info entry editing."
+          "A SillyTavern extension replacing the native World Info editor with a three-panel Lorebook and campaign manager offering bulk actions and deep entry editing (README, L3)."
         ],
         "kind": [
           "extension"
@@ -2827,10 +2821,6 @@
           "Character and worldbuilding"
         ],
         "tags": [
-          "Customize the interface",
-          "interface theming",
-          "layout customization",
-          "UI personalization",
           "Manage lorebooks",
           "World Info management",
           "worldbook organization",
@@ -16892,7 +16882,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "SillyTavern Roadway is a SillyTavern extension that assists users in making story decisions by offering ideas to guide the narrative. It provides an interface workflow that helps shape ongoing roleplay scenarios.",
+      "summary": "SillyTavern Roadway is a SillyTavern extension that helps you make decisions about the story, offering ideas when you need direction (README overview).",
       "canonicalUrl": "https://github.com/bmen25124/SillyTavern-Roadway",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -17204,7 +17194,7 @@
           "https://github.com/bmen25124/SillyTavern-Roadway"
         ],
         "summary": [
-          "SillyTavern Roadway is a SillyTavern extension that assists users in making story decisions by offering ideas to guide the narrative. It provides an interface workflow that helps shape ongoing roleplay scenarios."
+          "SillyTavern Roadway is a SillyTavern extension that helps you make decisions about the story, offering ideas when you need direction (README overview)."
         ],
         "kind": [
           "extension"
@@ -43386,7 +43376,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "This extension lets users change the active model directly from SillyTavern's interface. It eliminates the need to open Ooba's frontend to switch models, streamlining the workflow.",
+      "summary": "A SillyTavern extension that lists installed Ooba backend models and switches the active model from ST via the Extensions menu or /obloader slash command, auto-refreshing the UI after loading (README: What it can do?).",
       "canonicalUrl": "https://github.com/Hayanaga/ooba-model-reloader",
       "catalogedAt": "2026-07-26T00:00:00Z",
       "catalogCohort": "standard",
@@ -43397,20 +43387,7 @@
           "description": "Works with the SillyTavern roleplay frontend."
         }
       ],
-      "tags": [
-        {
-          "id": "route-tasks-across-models",
-          "label": "Route tasks across models",
-          "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
-          "facet": "goal"
-        },
-        {
-          "id": "automate-roleplay-workflows",
-          "label": "Automate roleplay workflows",
-          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
-          "facet": "goal"
-        }
-      ],
+      "tags": [],
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
@@ -43557,7 +43534,7 @@
           "https://github.com/Hayanaga/ooba-model-reloader"
         ],
         "summary": [
-          "This extension lets users change the active model directly from SillyTavern's interface. It eliminates the need to open Ooba's frontend to switch models, streamlining the workflow."
+          "A SillyTavern extension that lists installed Ooba backend models and switches the active model from ST via the Extensions menu or /obloader slash command, auto-refreshing the UI after loading (README: What it can do?)."
         ],
         "kind": [
           "extension"
@@ -43565,17 +43542,7 @@
         "primaryFunction": [
           "Interface and workflow"
         ],
-        "tags": [
-          "Route tasks across models",
-          "model routing",
-          "task routing",
-          "connection routing",
-          "Automate roleplay workflows",
-          "automation",
-          "workflow automation",
-          "task automation",
-          "triggered actions"
-        ],
+        "tags": [],
         "frontends": [
           "SillyTavern"
         ],
@@ -231882,7 +231849,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "SillyTavern Roadway is a SillyTavern extension that assists users in making story decisions by offering ideas to guide the narrative. It provides an interface workflow that helps shape ongoing roleplay scenarios.",
+            "summary": "SillyTavern Roadway is a SillyTavern extension that helps you make decisions about the story, offering ideas when you need direction (README overview).",
             "canonicalUrl": "https://github.com/bmen25124/SillyTavern-Roadway",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -232194,7 +232161,7 @@
                 "https://github.com/bmen25124/SillyTavern-Roadway"
               ],
               "summary": [
-                "SillyTavern Roadway is a SillyTavern extension that assists users in making story decisions by offering ideas to guide the narrative. It provides an interface workflow that helps shape ongoing roleplay scenarios."
+                "SillyTavern Roadway is a SillyTavern extension that helps you make decisions about the story, offering ideas when you need direction (README overview)."
               ],
               "kind": [
                 "extension"
@@ -252829,7 +252796,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "This extension lets users change the active model directly from SillyTavern's interface. It eliminates the need to open Ooba's frontend to switch models, streamlining the workflow.",
+            "summary": "A SillyTavern extension that lists installed Ooba backend models and switches the active model from ST via the Extensions menu or /obloader slash command, auto-refreshing the UI after loading (README: What it can do?).",
             "canonicalUrl": "https://github.com/Hayanaga/ooba-model-reloader",
             "catalogedAt": "2026-07-26T00:00:00Z",
             "catalogCohort": "standard",
@@ -252840,20 +252807,7 @@
                 "description": "Works with the SillyTavern roleplay frontend."
               }
             ],
-            "tags": [
-              {
-                "id": "route-tasks-across-models",
-                "label": "Route tasks across models",
-                "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
-                "facet": "goal"
-              },
-              {
-                "id": "automate-roleplay-workflows",
-                "label": "Automate roleplay workflows",
-                "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
-                "facet": "goal"
-              }
-            ],
+            "tags": [],
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
@@ -253000,7 +252954,7 @@
                 "https://github.com/Hayanaga/ooba-model-reloader"
               ],
               "summary": [
-                "This extension lets users change the active model directly from SillyTavern's interface. It eliminates the need to open Ooba's frontend to switch models, streamlining the workflow."
+                "A SillyTavern extension that lists installed Ooba backend models and switches the active model from ST via the Extensions menu or /obloader slash command, auto-refreshing the UI after loading (README: What it can do?)."
               ],
               "kind": [
                 "extension"
@@ -253008,17 +252962,7 @@
               "primaryFunction": [
                 "Interface and workflow"
               ],
-              "tags": [
-                "Route tasks across models",
-                "model routing",
-                "task routing",
-                "connection routing",
-                "Automate roleplay workflows",
-                "automation",
-                "workflow automation",
-                "task automation",
-                "triggered actions"
-              ],
+              "tags": [],
               "frontends": [
                 "SillyTavern"
               ],

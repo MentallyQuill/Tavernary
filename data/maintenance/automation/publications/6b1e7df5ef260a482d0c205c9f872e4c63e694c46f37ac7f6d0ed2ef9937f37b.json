@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6b1e7df5ef260a482d0c205c9f872e4c63e694c46f37ac7f6d0ed2ef9937f37b",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-948787177:bmen25124-sillytavern-roadway",
+      "inputDigest": "e5af8fe068ae0a2630b6d8d5a263e1e915c9f6fd7f0cc5596bbe494ce4925984",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-948787177",
+    "identity": "github:948787177"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40984577819,
+    "sourceSha": "233709793708a294cd15f175ce519d1c07ef1c91"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/bmen25124-sillytavern-roadway.json",
+      "sha256": "ae454759630b4429caa79c0444a9e4621dc296cf9226b594bdc275b94c09697c",
+      "gitBlobSha": "9d8ddf743dae36dc8f5d21a492b45b44f523f0b9"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/6b1e7df5ef260a482d0c205c9f872e4c63e694c46f37ac7f6d0ed2ef9937f37b.json",
+      "sha256": "6ad37701dfe3cd2ea35c9cb7bab6ac6c5067ccaa3861e55ae67572399187669f",
+      "gitBlobSha": "d6bd43f23560c3cdd16a42b667757402646652fb"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "bmen25124-sillytavern-roadway",
+  "sourceId": "github-948787177",
+  "sourceIdentity": "github:948787177",
+  "inputDigest": "e5af8fe068ae0a2630b6d8d5a263e1e915c9f6fd7f0cc5596bbe494ce4925984",
+  "fingerprint": "a09eee6fee03c19c82f72e637f6e725ae5ebe081bfdebc120b0ab0d6415e46d4",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "9f2a9794f582ccb5682934e18b81caa725392315c51252cab2d29c75b6fa335d",
+  "outputDigest": "23a41c688975d2483ead0d7c683f616a259c860fbb821e04b713f75f5a0e3239",
+  "headSha": "8bd72bdbfecf707ebf2d15f0dd11d9fd886644ed",
+  "observedAt": "2026-10-30T01:14:34.862Z"
+}

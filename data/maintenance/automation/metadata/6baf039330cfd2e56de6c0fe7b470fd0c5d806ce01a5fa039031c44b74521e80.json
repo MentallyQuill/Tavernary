@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "hayanaga-ooba-model-reloader",
+  "sourceId": "github-1146891697",
+  "sourceIdentity": "github:1146891697",
+  "inputDigest": "9d0b9878d242136e6b13ae99b7ae2fba2a2873db37aea6d27c6b8e9cd427a1f0",
+  "fingerprint": "62355283a6614ee1de5187398fb9d948bb2efdf2be2ccf680a725f6755b4d4a5",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "6c47275757a2e3cf23793f89435244b0382d89516e2926520b4e0d10599e1325",
+  "outputDigest": "4587121b21f6eba46efeeb06109d4d28ea9c58684a06e20c7c4e17f4628b25d7",
+  "headSha": "2f381c877c1d3be6f4cd5ccbc87a6cf522c0f2c8",
+  "observedAt": "2026-10-30T01:21:26.826Z"
+}

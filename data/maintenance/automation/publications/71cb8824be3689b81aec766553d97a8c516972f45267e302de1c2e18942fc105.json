@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "71cb8824be3689b81aec766553d97a8c516972f45267e302de1c2e18942fc105",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1313172635:aelfwyne-lore-library-lite",
+      "inputDigest": "933d7bf6acc497a25233c5d707d7443af3d5f87056c3089f4e45565846163b86",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1313172635",
+    "identity": "github:1313172635"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 40986613084,
+    "sourceSha": "a1416e819d04d80f71823ad3bd39ed83953b9c6b"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/aelfwyne-lore-library-lite.json",
+      "sha256": "3792e60000b81cefc0176fe029b619ded17ceb33f7527a53f3b4a505cd0bc4cf",
+      "gitBlobSha": "8df54b02e04e9db2b760a25b29eeeb2680a3e8aa"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/71cb8824be3689b81aec766553d97a8c516972f45267e302de1c2e18942fc105.json",
+      "sha256": "590bdf538ad9d25888c1414b9c0e021b5dd8710ace0a0a60a09cad7f9f134bd1",
+      "gitBlobSha": "84c3de1960dec872b1568feb47caf64f3ee87ca7"
+    }
+  ]
+}
