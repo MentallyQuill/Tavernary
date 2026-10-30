@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 import {
   GithubInventoryUnavailableError,
   loadAutomationWorkerRuns,
@@ -23,6 +23,21 @@ import { loadAutomationInventory } from "../../scripts/automation/inventory.mjs"
 import { productionInventoryRoot } from "../helpers/production-inventory-root.mjs";
 import { operationKey } from "../../scripts/automation/operation.mjs";
 
+// Exercise real retry decisions without wall-clock waits in this invalid-response matrix.
+vi.mock("../../scripts/automation/github-retry.mjs", async (importOriginal) => {
+  const actual =
+    await importOriginal<
+      typeof import("../../scripts/automation/github-retry.mjs")
+    >();
+  return {
+    ...actual,
+    retryGithubRequest: <T>(
+      request: () => Promise<T>,
+      options: Parameters<typeof actual.retryGithubRequest>[1],
+    ) =>
+      actual.retryGithubRequest(request, { ...options, sleep: async () => {} }),
+  };
+});
 async function loadRunSlice(
   scope: "active" | "delta",
   read: (args: string[]) => Promise<string>,
@@ -86,7 +101,7 @@ test.each(
     ].map((slice) => ({ scope, ...slice })),
   ),
 )(
-  "$scope rejects $name after two complete attempts",
+  "$scope rejects $name after bounded complete attempts",
   async ({ scope, total, rows }) => {
     const pages: string[] = [];
     await expect(
@@ -95,11 +110,11 @@ test.each(
         return JSON.stringify([{ total_count: total, workflow_runs: rows }]);
       }),
     ).rejects.toBeInstanceOf(GithubInventoryUnavailableError);
-    expect(pages).toEqual(["page=1", "page=1"]);
+    expect(pages).toEqual(["page=1", "page=1", "page=1"]);
   },
 );
 
-test("an incomplete active census retries once before refusing absence authority", async () => {
+test("an incomplete active census exhausts bounded retries before refusing absence authority", async () => {
   let activeReads = 0;
   await expect(
     loadGithubAutomationInventory({
@@ -121,7 +136,7 @@ test("an incomplete active census retries once before refusing absence authority
       },
     }),
   ).rejects.toMatchObject({ code: "github-inventory-unavailable" });
-  expect(activeReads).toBe(2);
+  expect(activeReads).toBe(3);
 });
 
 test.each(
@@ -156,7 +171,7 @@ test.each(
       await expect(result).rejects.toBeInstanceOf(
         GithubInventoryUnavailableError,
       );
-      expect(pages).toEqual([1, 2, 1, 2]);
+      expect(pages).toEqual([1, 2, 1, 2, 1, 2]);
     } else {
       expect(await result).toEqual([{ id: 999, status: "waiting" }]);
       expect(pages).toEqual([1, 2, 1]);
@@ -165,7 +180,7 @@ test.each(
 );
 
 test.each(["active", "delta"] as const)(
-  "%s preserves native failures without retrying them as incomplete slices",
+  "%s preserves native failures and retries only server errors",
   async (scope) => {
     for (const status of [401, 403, 429, 503]) {
       const error = Object.assign(new Error("HTTP unavailable"), { status });
@@ -176,7 +191,7 @@ test.each(["active", "delta"] as const)(
           throw error;
         }),
       ).rejects.toBe(error);
-      expect(reads).toBe(1);
+      expect(reads).toBe(status >= 500 ? 3 : 1);
     }
   },
 );
@@ -251,7 +266,7 @@ test.each(["initial", "revalidation"] as const)(
           }),
       }),
     ).rejects.toBeInstanceOf(GithubInventoryUnavailableError);
-    expect(reads).toBe(2);
+    expect(reads).toBe(3);
     expect(effects.receipts).toEqual([]);
     expect(effects.dispatches).toEqual([]);
     expect(JSON.stringify({ operation, local: state.local })).toBe(before);

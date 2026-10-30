@@ -1,3 +1,4 @@
+import { retryGithubRequest } from "./github-retry.mjs";
 import { downloadPreparedArtifact } from "./prepared-artifact-download.mjs";
 import {
   trustedOperationWorkerRuns,
@@ -122,8 +123,16 @@ export function assertCanonicalWriterContext(env, repository, event = {}) {
     throw new Error("Canonical writer custody is invalid.");
 }
 
+function readGithubInventory(gh, args) {
+  return retryGithubRequest(() => gh(args), {
+    retryable: (error) => {
+      const status = githubFailureStatus(error);
+      return status >= 500 && status <= 599;
+    },
+  });
+}
 async function inventoryPage(gh, path, fields, page) {
-  const raw = await gh([
+  const raw = await readGithubInventory(gh, [
     "api",
     "--method",
     "GET",
@@ -222,25 +231,30 @@ async function boundedRunWindow(read, start, end) {
   ];
 }
 async function completeRunPages(gh, path, fields) {
-  for (let attempt = 0; attempt < 2; attempt++) {
-    const value = await boundedRunPages(gh, path, fields);
-    const rows = runPages(value);
-    const validRows = rows.every(
-      (run) =>
-        Number.isSafeInteger(run?.id) &&
-        run.id > 0 &&
-        typeof run.status === "string",
-    );
-    if (
-      value.some((page) => page.total_count > 1000) ||
-      (validRows &&
-        new Set(rows.map((run) => run.id)).size === rows.length &&
-        value.every((page) => page.total_count >= page.workflow_runs.length) &&
-        rows.length >= Math.max(...value.map((page) => page.total_count)))
-    )
-      return value;
-  }
-  throw new GithubInventoryUnavailableError();
+  return retryGithubRequest(
+    async () => {
+      const value = await boundedRunPages(gh, path, fields);
+      const rows = runPages(value);
+      const validRows = rows.every(
+        (run) =>
+          Number.isSafeInteger(run?.id) &&
+          run.id > 0 &&
+          typeof run.status === "string",
+      );
+      if (
+        value.some((page) => page.total_count > 1000) ||
+        (validRows &&
+          new Set(rows.map((run) => run.id)).size === rows.length &&
+          value.every(
+            (page) => page.total_count >= page.workflow_runs.length,
+          ) &&
+          rows.length >= Math.max(...value.map((page) => page.total_count)))
+      )
+        return value;
+      throw new GithubInventoryUnavailableError();
+    },
+    { retryable: (error) => error instanceof GithubInventoryUnavailableError },
+  );
 }
 export async function loadAutomationWorkerRuns({
   gh,
@@ -294,7 +308,7 @@ export async function loadPreparedDiagnosticRuns({
   const root = repositoryPath(repository);
   const main = async () => {
     const reference = JSON.parse(
-      await gh(["api", `${root}/git/ref/heads/main`]),
+      await readGithubInventory(gh, ["api", `${root}/git/ref/heads/main`]),
     );
     if (!/^[a-f0-9]{40}$/u.test(reference?.object?.sha ?? ""))
       throw new Error("GitHub returned an invalid authoritative inventory.");
@@ -398,7 +412,10 @@ export async function loadPreparedDiagnosticRuns({
   const refreshedIds = new Set();
   for (const id of ids) {
     try {
-      const raw = await gh(["api", `${root}/actions/runs/${id}`]);
+      const raw = await readGithubInventory(gh, [
+        "api",
+        `${root}/actions/runs/${id}`,
+      ]);
       if (Buffer.byteLength(raw, "utf8") > 4 * 1024 * 1024)
         throw new Error("GitHub inventory page exceeds its byte bound.");
       const run = JSON.parse(raw);
@@ -578,7 +595,7 @@ export async function loadGenerationOwnerRequestRuns({
 }
 async function loadFinalizationInventory({ gh, root, repository, operation }) {
   const read = async (path) => {
-    const text = await gh(["api", `${root}/${path}`]);
+    const text = await readGithubInventory(gh, ["api", `${root}/${path}`]);
     if (Buffer.byteLength(text, "utf8") > 4 * 1024 * 1024)
       throw new Error(
         "Finalization inventory response exceeds its byte bound.",
@@ -657,7 +674,10 @@ export async function loadGithubAutomationInventory({
     )
       throw new Error("Submission inventory identity is invalid.");
     const issue = JSON.parse(
-      await gh(["api", `${root}/issues/${submissionIssueNumber}`]),
+      await readGithubInventory(gh, [
+        "api",
+        `${root}/issues/${submissionIssueNumber}`,
+      ]),
     );
     if (
       issue.number !== submissionIssueNumber ||
@@ -721,7 +741,9 @@ export async function loadGithubAutomationInventory({
     if (retainedIds.length > 20)
       throw new Error("Submission handoff inventory exceeds its bound.");
     const [reference, pullPages, runPages, retained] = await Promise.all([
-      gh(["api", `${root}/git/ref/heads/main`]).then(JSON.parse),
+      readGithubInventory(gh, ["api", `${root}/git/ref/heads/main`]).then(
+        JSON.parse,
+      ),
       workflow.startsWith("generate-")
         ? pages(gh, `${root}/pulls`, [
             "state=all",
@@ -754,7 +776,10 @@ export async function loadGithubAutomationInventory({
       Promise.all(
         retainedIds.map(async (id) => {
           const run = JSON.parse(
-            await gh(["api", `${root}/actions/runs/${id}`]),
+            await readGithubInventory(gh, [
+              "api",
+              `${root}/actions/runs/${id}`,
+            ]),
           );
           if (run.id !== id || typeof run.status !== "string")
             throw new Error("Submission handoff identity is invalid.");
@@ -834,7 +859,9 @@ export async function loadGithubAutomationInventory({
         (page) => page.some((row) => !recentClosure(row)),
         true,
       ),
-      gh(["api", `${root}/git/ref/heads/main`]).then(JSON.parse),
+      readGithubInventory(gh, ["api", `${root}/git/ref/heads/main`]).then(
+        JSON.parse,
+      ),
     ]);
   const issuePages = [...openIssues, closedIssues.flat().filter(recentClosure)];
   const pullPages = [...openPulls, closedPulls.flat().filter(recentClosure)];
@@ -898,7 +925,9 @@ export async function loadGithubAutomationInventory({
     for (const id of retainedAutomationRunIds([receipt])) {
       if (runs.has(id)) continue;
       try {
-        const run = JSON.parse(await gh(["api", `${root}/actions/runs/${id}`]));
+        const run = JSON.parse(
+          await readGithubInventory(gh, ["api", `${root}/actions/runs/${id}`]),
+        );
         if (run.id !== id || typeof run.status !== "string")
           throw new Error("GitHub returned an invalid saved worker.");
         runs.set(id, run);
@@ -930,7 +959,9 @@ export async function loadGithubAutomationInventory({
   for (const number of references) {
     if (issues.has(number)) continue;
     try {
-      const issue = JSON.parse(await gh(["api", `${root}/issues/${number}`]));
+      const issue = JSON.parse(
+        await readGithubInventory(gh, ["api", `${root}/issues/${number}`]),
+      );
       if (issue.number !== number || !["open", "closed"].includes(issue.state))
         throw new Error("GitHub returned an invalid pending issue reference.");
       issues.set(number, issue);

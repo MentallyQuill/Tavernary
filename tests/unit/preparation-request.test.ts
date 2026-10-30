@@ -165,3 +165,58 @@ test("the actual withdrawal request adapter retains correction feedback without 
   expect(feedback).toHaveBeenCalledWith({ state, issueNumber: 42 });
   expect(write).toHaveBeenCalledWith(JSON.stringify({ action: "wait" }));
 });
+
+test.each([
+  {
+    code: "github-inventory-unavailable",
+    kind: "transient",
+    reasonCode: "github-inventory-unavailable",
+  },
+  {
+    message: "gh api failed: HTTP 502: Server Error",
+    kind: "transient",
+    reasonCode: "provider-unavailable",
+  },
+  {
+    message: "secret-token and untrusted report contents",
+    kind: "unknown",
+    reasonCode: "unclassified-failure",
+  },
+])(
+  "inventory failures expose safe diagnostics on stderr ($reasonCode)",
+  async (failure) => {
+    const output: string[] = [];
+    const diagnostic: string[] = [];
+    const result = await runPreparationRequestCli({
+      env: {
+        GITHUB_REPOSITORY: "MentallyQuill/Tavernary",
+        GITHUB_REF: "refs/heads/main",
+        GITHUB_EVENT_NAME: "schedule",
+        GITHUB_WORKFLOW_REF:
+          "MentallyQuill/Tavernary/.github/workflows/import-tavernkeeper-reports.yml@refs/heads/main",
+      },
+      event: {},
+      load: async () => {
+        throw Object.assign(
+          new Error(failure.message ?? "private inventory details"),
+          { code: failure.code },
+        );
+      },
+      write: (value) => output.push(value),
+      reportError: (value: string) => diagnostic.push(value),
+    });
+    expect(result).toBe(1);
+    expect(output.map((value) => JSON.parse(value))).toEqual([
+      { status: "unavailable" },
+    ]);
+    expect(diagnostic.map((value) => JSON.parse(value))).toEqual([
+      {
+        status: "unavailable",
+        stage: "load-inventory",
+        failure: { kind: failure.kind, reasonCode: failure.reasonCode },
+      },
+    ]);
+    expect(diagnostic.join("\n")).not.toContain("secret-token");
+    expect(diagnostic.join("\n")).not.toContain("private inventory details");
+  },
+);
