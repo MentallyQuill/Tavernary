@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7b04d76aea4e035e6a42e88f5ce59dd326f5df696af6f2e01dd9908ec39735b4",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1277371044:xays-101-chaotic-lorebooks-silly-tavern",
+      "inputDigest": "8ba8dcfb849e6c20c92c51377694e1c384f74c6215dce60abe3762c374b8ccb3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1277371044",
+    "identity": "github:1277371044"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41046943911,
+    "sourceSha": "63e73b8fa758e8ab7cfba2d42c050d6ceb047b66"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/xays-101-chaotic-lorebooks-silly-tavern.json",
+      "sha256": "b9df524c1898c4101a858902771c5a511f1f0dad8b700607d4711c0d89619ede",
+      "gitBlobSha": "35bfb0a858ef1c8057b2dd6f22443514f1249acb"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/7b04d76aea4e035e6a42e88f5ce59dd326f5df696af6f2e01dd9908ec39735b4.json",
+      "sha256": "859faa9a47bf1c2b195a778552bca9b432cc8389e54f6448346516d3dac3bc99",
+      "gitBlobSha": "e31406649dcaa5fb19ee4c4a2d6cf800b63d0115"
+    }
+  ]
+}

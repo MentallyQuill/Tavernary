@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "98df421d71a1ebef863908dc75dea1ea012b09433e69730cf59cc4a0c1884a27",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1175596366:prolix-oc-lumiverse",
+      "inputDigest": "554b7e5d795b25b8ce690632711b1b38855b99877b677d45251905eeb5face2e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1175596366",
+    "identity": "github:1175596366"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41061395074,
+    "sourceSha": "b9ba3bf0e0dc9399dd82713db955ec94442b7f00"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/prolix-oc-lumiverse.json",
+      "sha256": "b85fd47457b80039493f0c88924b209a3fc24550673349341c6fb36d234de3dd",
+      "gitBlobSha": "744822839f068e19949ebd33a070306019cd4445"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7d7379b41063329aa52b3fb1d11215d0b1a2496594578bea9616ecd1c536abf5",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1054966103:coneja-chibi-carrotkernel",
+      "inputDigest": "b775d243c7af84c63d201f1f7c977d9e2a2a80f950c64c446593ecc9548b7c8c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1054966103",
+    "identity": "github:1054966103"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41051265872,
+    "sourceSha": "0704c43a2cb0b22f1831712f05e7c121ffd71170"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/coneja-chibi-carrotkernel.json",
+      "sha256": "7cda051e0281865c441750c26664ca76632d06c1dbc0c1e5c37faec4bc57b2fd",
+      "gitBlobSha": "b2988f613fc9d60deb3beb0f3ac95b0955a8c8fa"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/7d7379b41063329aa52b3fb1d11215d0b1a2496594578bea9616ecd1c536abf5.json",
+      "sha256": "4358580b1e415ea9216991918bc6840e9b30942569b743438a1c850169889063",
+      "gitBlobSha": "4cb0704749e365a838415dc996e61ee597ba8028"
+    }
+  ]
+}

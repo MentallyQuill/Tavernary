@@ -3,14 +3,11 @@
   "project_id": "m4marvin-charon",
   "source_id": "github-1282991131",
   "source_identity": "github:m4marvin/charon",
-  "evidence_fingerprint": "689b1558522bfe42320878b450b3130558dc79344d35ce4357414e8dab75cab8",
+  "evidence_fingerprint": "937d6b89575acd580981b41ad29a4ffdbc661090432d0d798cdb6e14aa93eb14",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-09T11:27:57.236Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-08-09T11:27:57.236Z"
-  },
+  "reviewed_at": "2026-10-30T12:53:05.730Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
