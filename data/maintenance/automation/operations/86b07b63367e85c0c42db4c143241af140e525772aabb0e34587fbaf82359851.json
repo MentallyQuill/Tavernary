@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "86b07b63367e85c0c42db4c143241af140e525772aabb0e34587fbaf82359851",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1427402450:hakaigod420-st-opening-scenes",
+      "inputDigest": "a5612d1e929e5c5fe5c4def977e6ed3b6e9c3633e1c1ce7c917f7ab2409cdc0c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-27T21:35:09.314Z",
+    "nextEligibleAt": null,
+    "expectedSha": "56e8965e547d3d906edc9af2bcb314eb1dc46ce8",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-30T03:52:03.844Z",
+  "completedAt": null
+}
