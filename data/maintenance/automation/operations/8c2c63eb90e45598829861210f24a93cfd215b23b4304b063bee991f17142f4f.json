@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8c2c63eb90e45598829861210f24a93cfd215b23b4304b063bee991f17142f4f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1079428625:furitaocanon-sillytavern-personas",
+      "inputDigest": "dd105779ed67bbc9436b6a2a3f6e798bfda368aa6ecb63ee4534261e3fe31fd6",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-30T01:04:35.105Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "github-inventory-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-10-30T00:59:25.555Z",
+  "completedAt": null
+}
