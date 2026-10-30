@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8c225a35b94220485a4a564d7a30c30070aa03798e92fc87a539e085b93470c7",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1316434519:disreconnected-sillytavern-gfx-repair",
+      "inputDigest": "e041aa8b407da0ef3d30435a23ab7dddacdb606c13b963f3b7994201e24c841f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1316434519",
+    "identity": "github:1316434519"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 40876386148,
+    "sourceSha": "2b7b5d125b9a114ae145c857b51bcdbe1f310888"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/disreconnected-sillytavern-gfx-repair.json",
+      "sha256": "1b76e3fa17e3cdfd52296e38a8a9a986f544d0f04b75c58c34f98f767b080d63",
+      "gitBlobSha": "b67e201195f67732ab02a241ffa2572cb5e9ebc1"
+    }
+  ]
+}
