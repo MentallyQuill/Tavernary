@@ -617,9 +617,16 @@ test.each(["delta", "active"])(
         },
       ]);
     });
-    await expect(loadPreparedDiagnosticRuns(fixture.input)).rejects.toThrow(
-      /incomplete|truncated/u,
-    );
+    vi.useFakeTimers();
+    try {
+      const rejection = expect(
+        loadPreparedDiagnosticRuns(fixture.input),
+      ).rejects.toThrow(/incomplete|truncated/u);
+      await vi.runAllTimersAsync();
+      await rejection;
+    } finally {
+      vi.useRealTimers();
+    }
   },
 );
 

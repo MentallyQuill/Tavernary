@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { expect, test } from "vitest";
+import { afterEach, expect, test, vi } from "vitest";
 import { zipSync, strToU8 } from "fflate";
 import {
   GithubInventoryUnavailableError,
@@ -12,6 +12,8 @@ import {
   operationFixture,
 } from "../helpers/automation-fixtures";
 import { operationKey } from "../../scripts/automation/operation.mjs";
+
+afterEach(() => vi.useRealTimers());
 
 test("scoped diagnostic active scans retry an inconsistent slice without treating it as absence", async () => {
   let incomplete = false;
@@ -45,7 +47,8 @@ test("scoped diagnostic active scans retry an inconsistent slice without treatin
       subject: "source:github-42:example-project",
     },
   });
-  await expect(
+  vi.useFakeTimers();
+  const rejection = expect(
     loadPreparedDiagnosticRuns({
       ...input,
       history,
@@ -53,7 +56,9 @@ test("scoped diagnostic active scans retry an inconsistent slice without treatin
       evidenceRun: { id: 702, status: "completed", conclusion: "failure" },
     }),
   ).rejects.toBeInstanceOf(GithubInventoryUnavailableError);
-  expect(activeReads).toBe(2);
+  await vi.runAllTimersAsync();
+  await rejection;
+  expect(activeReads).toBe(3);
 });
 
 test("truncated completed history stays usable while withholding scoped diagnostic history", async () => {

@@ -266,7 +266,7 @@ function workflowDispatchTargets(step: WorkflowStep) {
     candidates.push("automation-writer.yml");
   const command = shellCommands(step.run).join(" ");
   for (const match of command.matchAll(
-    /\bgh\s+workflow\s+run\s+(?:"([^"]+)"|'([^']+)'|([^\s\\]+))/gu,
+    /\b(?:gh\s+workflow\s+run|node\s+scripts\/automation\/retry-workflow-dispatch\.mjs)\s+(?:"([^"]+)"|'([^']+)'|([^\s\\]+))/gu,
   )) {
     candidates.push(match[1] ?? match[2] ?? match[3]);
   }
