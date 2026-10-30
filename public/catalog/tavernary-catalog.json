@@ -67346,7 +67346,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "rpg-systems",
-      "summary": "Forged by Primus is a modular AI Dungeon Master system for long-form roleplay with durable state and context-loss recovery. It enforces structured multi-step processes to keep narratives consistent across sessions.",
+      "summary": "Forged by Primus (Manjove1) is a modular AI Dungeon Master system for long-form roleplay with durable state, enforced multi-step processes, and recovery under context loss (README, repository description).",
       "canonicalUrl": "https://github.com/Manjove1/forged-by-primus-portfolio",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -67357,44 +67357,7 @@
           "description": "Works with the SillyTavern roleplay frontend."
         }
       ],
-      "tags": [
-        {
-          "id": "maintain-long-term-memory",
-          "label": "Maintain long-term memory",
-          "description": "Preserve and recall important information across long chats or separate sessions.",
-          "facet": "goal"
-        },
-        {
-          "id": "preserve-story-continuity",
-          "label": "Preserve story continuity",
-          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
-          "facet": "goal"
-        },
-        {
-          "id": "add-structured-reasoning",
-          "label": "Add structured reasoning",
-          "description": "Introduce deliberate planning, reflection, critique, or multi-step thinking before output.",
-          "facet": "goal"
-        },
-        {
-          "id": "add-rpg-gameplay",
-          "label": "Add RPG gameplay",
-          "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
-          "facet": "goal"
-        },
-        {
-          "id": "rules-driven",
-          "label": "Rules-driven",
-          "description": "Uses explicit rules, schemas, calculations, or deterministic mechanics to constrain behavior.",
-          "facet": "trait"
-        },
-        {
-          "id": "persistent-state",
-          "label": "Persistent state",
-          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
-          "facet": "trait"
-        }
-      ],
+      "tags": [],
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
@@ -67552,7 +67515,7 @@
           "https://github.com/Manjove1/forged-by-primus-portfolio"
         ],
         "summary": [
-          "Forged by Primus is a modular AI Dungeon Master system for long-form roleplay with durable state and context-loss recovery. It enforces structured multi-step processes to keep narratives consistent across sessions."
+          "Forged by Primus (Manjove1) is a modular AI Dungeon Master system for long-form roleplay with durable state, enforced multi-step processes, and recovery under context loss (README, repository description)."
         ],
         "kind": [
           "extension"
@@ -67560,33 +67523,7 @@
         "primaryFunction": [
           "RPG systems and suites"
         ],
-        "tags": [
-          "Maintain long-term memory",
-          "durable memory",
-          "persistent memory",
-          "remember across chats",
-          "Preserve story continuity",
-          "continuity tracking",
-          "canon consistency",
-          "story coherence",
-          "Add structured reasoning",
-          "reasoning pipelines",
-          "stepped thinking",
-          "planning reasoning",
-          "planning passes",
-          "Add RPG gameplay",
-          "tabletop mechanics",
-          "game master tools",
-          "RPG systems",
-          "Rules-driven",
-          "deterministic mechanics",
-          "rule based",
-          "schema driven",
-          "Persistent state",
-          "durable state",
-          "state persistence",
-          "cross-session state"
-        ],
+        "tags": [],
         "frontends": [
           "SillyTavern"
         ],
@@ -280174,7 +280111,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "rpg-systems",
-            "summary": "Forged by Primus is a modular AI Dungeon Master system for long-form roleplay with durable state and context-loss recovery. It enforces structured multi-step processes to keep narratives consistent across sessions.",
+            "summary": "Forged by Primus (Manjove1) is a modular AI Dungeon Master system for long-form roleplay with durable state, enforced multi-step processes, and recovery under context loss (README, repository description).",
             "canonicalUrl": "https://github.com/Manjove1/forged-by-primus-portfolio",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -280185,44 +280122,7 @@
                 "description": "Works with the SillyTavern roleplay frontend."
               }
             ],
-            "tags": [
-              {
-                "id": "maintain-long-term-memory",
-                "label": "Maintain long-term memory",
-                "description": "Preserve and recall important information across long chats or separate sessions.",
-                "facet": "goal"
-              },
-              {
-                "id": "preserve-story-continuity",
-                "label": "Preserve story continuity",
-                "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
-                "facet": "goal"
-              },
-              {
-                "id": "add-structured-reasoning",
-                "label": "Add structured reasoning",
-                "description": "Introduce deliberate planning, reflection, critique, or multi-step thinking before output.",
-                "facet": "goal"
-              },
-              {
-                "id": "add-rpg-gameplay",
-                "label": "Add RPG gameplay",
-                "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
-                "facet": "goal"
-              },
-              {
-                "id": "rules-driven",
-                "label": "Rules-driven",
-                "description": "Uses explicit rules, schemas, calculations, or deterministic mechanics to constrain behavior.",
-                "facet": "trait"
-              },
-              {
-                "id": "persistent-state",
-                "label": "Persistent state",
-                "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
-                "facet": "trait"
-              }
-            ],
+            "tags": [],
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
@@ -280380,7 +280280,7 @@
                 "https://github.com/Manjove1/forged-by-primus-portfolio"
               ],
               "summary": [
-                "Forged by Primus is a modular AI Dungeon Master system for long-form roleplay with durable state and context-loss recovery. It enforces structured multi-step processes to keep narratives consistent across sessions."
+                "Forged by Primus (Manjove1) is a modular AI Dungeon Master system for long-form roleplay with durable state, enforced multi-step processes, and recovery under context loss (README, repository description)."
               ],
               "kind": [
                 "extension"
@@ -280388,33 +280288,7 @@
               "primaryFunction": [
                 "RPG systems and suites"
               ],
-              "tags": [
-                "Maintain long-term memory",
-                "durable memory",
-                "persistent memory",
-                "remember across chats",
-                "Preserve story continuity",
-                "continuity tracking",
-                "canon consistency",
-                "story coherence",
-                "Add structured reasoning",
-                "reasoning pipelines",
-                "stepped thinking",
-                "planning reasoning",
-                "planning passes",
-                "Add RPG gameplay",
-                "tabletop mechanics",
-                "game master tools",
-                "RPG systems",
-                "Rules-driven",
-                "deterministic mechanics",
-                "rule based",
-                "schema driven",
-                "Persistent state",
-                "durable state",
-                "state persistence",
-                "cross-session state"
-              ],
+              "tags": [],
               "frontends": [
                 "SillyTavern"
               ],
