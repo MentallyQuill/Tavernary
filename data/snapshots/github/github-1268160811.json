@@ -7,23 +7,38 @@
     "owner": "enclavum",
     "name": "otaku",
     "url": "https://github.com/enclavum/otaku",
-    "description": "LLM frontend for creative writing and roleplay",
+    "description": "LLM frontend for roleplay and creative writing",
     "default_branch": "main",
-    "head_sha": "786321def9db607afe71f9eeb49ad06c8dd18c24",
-    "head_committed_at": "2026-10-06T06:53:01.000Z",
+    "head_sha": "2a659872e6ecec86b3563df661e2ca03d1533c80",
+    "head_committed_at": "2026-10-31T08:09:53.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-13T07:54:43.000Z",
-    "size_kb": 17264
+    "size_kb": 26816
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-06T06:29:07.000Z",
+    "latest_source_activity_at": "2026-10-31T08:09:53.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-31T08:09:53.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-24T08:16:25.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-17T07:09:03.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-05",
-        "latest_at": "2026-10-06T06:29:07.000Z",
+        "latest_at": "2026-10-11T08:35:30.000Z",
         "precision": "exact"
       },
       {
@@ -65,37 +80,27 @@
         "week_start": "2026-08-10",
         "latest_at": "2026-08-14T09:11:13.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-03",
-        "latest_at": "2026-08-09T13:44:12.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-08-01T11:48:07.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-06T06:54:14.000Z",
+    "latest_release_at": "2026-10-31T07:42:22.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-06T14:16:03.206Z",
+    "baseline_completed_at": "2026-10-31T13:48:32.012Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "786321def9db607afe71f9eeb49ad06c8dd18c24"
+    "evidence_head_sha": "2a659872e6ecec86b3563df661e2ca03d1533c80"
   },
   "community": {
-    "stars_count": 82,
-    "forks_count": 7,
+    "stars_count": 149,
+    "forks_count": 9,
     "watchers_count": 1,
-    "aggregate": 90
+    "aggregate": 159
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-31T13:50:51.641Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -103,7 +108,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-31T13:48:32.012Z",
     "stale_since": null
   }
 }
