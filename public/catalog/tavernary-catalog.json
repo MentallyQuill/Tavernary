@@ -28518,9 +28518,9 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 6,
-        "forks": 1,
+        "forks": 2,
         "watchers": 0,
-        "aggregate": 7
+        "aggregate": 8
       },
       "repositorySizeKb": 232,
       "license": {
@@ -28529,7 +28529,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-31T22:18:04.968Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -90446,31 +90446,29 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "a4a8e6897fe393eefddecd858023763ca5351895",
         "report": {
-          "reportId": "3301be1c07e69109f76796b9e69e0b6a4334c0f7172e65acb1d671a0828f4fb4",
+          "reportId": "63d5d12e1d0aca5a6c946a4f4c5a62b796d4c8802b5e6bf9a32d434b37584bf1",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
-          "minorCautions": 1,
+          "minorCautions": 0,
           "materialConcerns": 0,
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
-          "citedFindingIds": [
-            "a3b952f0b3465f58fec2a01cc7fdf3d26ec02ea84de3d6a4b228aca5116dfc07"
-          ],
-          "scannedSha": "63fc719b976d3a4e84d704e7e717ea5c94a29b77",
-          "treeUrl": "https://github.com/prolix-oc/Lumiverse-XTimeline/tree/63fc719b976d3a4e84d704e7e717ea5c94a29b77",
-          "scannedAt": "2026-08-26T21:30:42.638Z",
-          "assessedAt": "2026-08-26T21:38:32.732Z",
+          "citedFindingIds": [],
+          "scannedSha": "a4a8e6897fe393eefddecd858023763ca5351895",
+          "treeUrl": "https://github.com/prolix-oc/Lumiverse-XTimeline/tree/a4a8e6897fe393eefddecd858023763ca5351895",
+          "scannedAt": "2026-10-31T22:37:32.772Z",
+          "assessedAt": "2026-10-31T22:42:50.198Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
           "synthesisModel": "deterministic-policy-v5",
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296928830/63fc719b976d3a4e84d704e7e717ea5c94a29b77/5/3301be1c07e69109f76796b9e69e0b6a4334c0f7172e65acb1d671a0828f4fb4/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296928830/a4a8e6897fe393eefddecd858023763ca5351895/5/63d5d12e1d0aca5a6c946a4f4c5a62b796d4c8802b5e6bf9a32d434b37584bf1/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296928830/history/"
         },
         "history": [
@@ -90543,6 +90541,29 @@
             "dangerBasis": "none",
             "assessmentSource": "deterministic_regrade",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296928830/63fc719b976d3a4e84d704e7e717ea5c94a29b77/5/3301be1c07e69109f76796b9e69e0b6a4334c0f7172e65acb1d671a0828f4fb4/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296928830/history/"
+          },
+          {
+            "reportId": "63d5d12e1d0aca5a6c946a4f4c5a62b796d4c8802b5e6bf9a32d434b37584bf1",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "a4a8e6897fe393eefddecd858023763ca5351895",
+            "treeUrl": "https://github.com/prolix-oc/Lumiverse-XTimeline/tree/a4a8e6897fe393eefddecd858023763ca5351895",
+            "scannedAt": "2026-10-31T22:37:32.772Z",
+            "assessedAt": "2026-10-31T22:42:50.198Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296928830/a4a8e6897fe393eefddecd858023763ca5351895/5/63d5d12e1d0aca5a6c946a4f4c5a62b796d4c8802b5e6bf9a32d434b37584bf1/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296928830/history/"
           }
         ],
@@ -220605,31 +220626,29 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "stale",
+              "freshness": "current",
               "currentSha": "a4a8e6897fe393eefddecd858023763ca5351895",
               "report": {
-                "reportId": "3301be1c07e69109f76796b9e69e0b6a4334c0f7172e65acb1d671a0828f4fb4",
+                "reportId": "63d5d12e1d0aca5a6c946a4f4c5a62b796d4c8802b5e6bf9a32d434b37584bf1",
                 "riskLevel": "low",
                 "headline": "Low concern",
                 "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
-                "minorCautions": 1,
+                "minorCautions": 0,
                 "materialConcerns": 0,
                 "highDanger": 0,
                 "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
-                "citedFindingIds": [
-                  "a3b952f0b3465f58fec2a01cc7fdf3d26ec02ea84de3d6a4b228aca5116dfc07"
-                ],
-                "scannedSha": "63fc719b976d3a4e84d704e7e717ea5c94a29b77",
-                "treeUrl": "https://github.com/prolix-oc/Lumiverse-XTimeline/tree/63fc719b976d3a4e84d704e7e717ea5c94a29b77",
-                "scannedAt": "2026-08-26T21:30:42.638Z",
-                "assessedAt": "2026-08-26T21:38:32.732Z",
+                "citedFindingIds": [],
+                "scannedSha": "a4a8e6897fe393eefddecd858023763ca5351895",
+                "treeUrl": "https://github.com/prolix-oc/Lumiverse-XTimeline/tree/a4a8e6897fe393eefddecd858023763ca5351895",
+                "scannedAt": "2026-10-31T22:37:32.772Z",
+                "assessedAt": "2026-10-31T22:42:50.198Z",
                 "scannerPolicyVersion": "5",
                 "contextualReviewPolicyVersion": "5",
                 "synthesisPolicyVersion": "5",
                 "synthesisModel": "deterministic-policy-v5",
                 "dangerBasis": "none",
                 "assessmentSource": "deterministic_regrade",
-                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296928830/63fc719b976d3a4e84d704e7e717ea5c94a29b77/5/3301be1c07e69109f76796b9e69e0b6a4334c0f7172e65acb1d671a0828f4fb4/",
+                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296928830/a4a8e6897fe393eefddecd858023763ca5351895/5/63d5d12e1d0aca5a6c946a4f4c5a62b796d4c8802b5e6bf9a32d434b37584bf1/",
                 "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296928830/history/"
               },
               "history": [
@@ -220702,6 +220721,29 @@
                   "dangerBasis": "none",
                   "assessmentSource": "deterministic_regrade",
                   "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296928830/63fc719b976d3a4e84d704e7e717ea5c94a29b77/5/3301be1c07e69109f76796b9e69e0b6a4334c0f7172e65acb1d671a0828f4fb4/",
+                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296928830/history/"
+                },
+                {
+                  "reportId": "63d5d12e1d0aca5a6c946a4f4c5a62b796d4c8802b5e6bf9a32d434b37584bf1",
+                  "riskLevel": "low",
+                  "headline": "Low concern",
+                  "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+                  "minorCautions": 0,
+                  "materialConcerns": 0,
+                  "highDanger": 0,
+                  "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+                  "citedFindingIds": [],
+                  "scannedSha": "a4a8e6897fe393eefddecd858023763ca5351895",
+                  "treeUrl": "https://github.com/prolix-oc/Lumiverse-XTimeline/tree/a4a8e6897fe393eefddecd858023763ca5351895",
+                  "scannedAt": "2026-10-31T22:37:32.772Z",
+                  "assessedAt": "2026-10-31T22:42:50.198Z",
+                  "scannerPolicyVersion": "5",
+                  "contextualReviewPolicyVersion": "5",
+                  "synthesisPolicyVersion": "5",
+                  "synthesisModel": "deterministic-policy-v5",
+                  "dangerBasis": "none",
+                  "assessmentSource": "deterministic_regrade",
+                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296928830/a4a8e6897fe393eefddecd858023763ca5351895/5/63d5d12e1d0aca5a6c946a4f4c5a62b796d4c8802b5e6bf9a32d434b37584bf1/",
                   "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296928830/history/"
                 }
               ],
