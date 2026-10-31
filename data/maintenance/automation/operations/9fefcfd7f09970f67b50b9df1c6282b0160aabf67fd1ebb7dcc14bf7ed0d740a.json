@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "9fefcfd7f09970f67b50b9df1c6282b0160aabf67fd1ebb7dcc14bf7ed0d740a",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1243718543:cha1latte-marinara-theme-maker",
+      "inputDigest": "746e933a53b06e0e0476c86e6d4fab383eca9f8b19b11c485eef3f1b6af6f2c8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": "e1b664b0ffff4e960c69ae1d81017d6e285d7700",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-31T12:40:42.458Z",
+  "completedAt": null
+}
