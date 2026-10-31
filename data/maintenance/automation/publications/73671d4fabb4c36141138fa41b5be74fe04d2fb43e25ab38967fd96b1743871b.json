@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "73671d4fabb4c36141138fa41b5be74fe04d2fb43e25ab38967fd96b1743871b",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1132429516:loggo-presets-typingindicatorplus",
+      "inputDigest": "2e3a2d57571ecb2b22d097064940b9a8aa279bf5f0d5bee99a82c397795ab285",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1132429516",
+    "identity": "github:1132429516"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41243111967,
+    "sourceSha": "901d573f38f214b1522d9bc392a4f93e59e64c1d"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/loggo-presets-typingindicatorplus.json",
+      "sha256": "ff0f94406038d060e427351217b2855f930a27f92f86979e5042e1eed83c5d00",
+      "gitBlobSha": "42d4c38fcb58c2e0b0f6f43c592a25c11326350d"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/73671d4fabb4c36141138fa41b5be74fe04d2fb43e25ab38967fd96b1743871b.json",
+      "sha256": "4330b50a4e4a72b27a216c4dea20b07c1b163855aa0a2a0510508634bab3f638",
+      "gitBlobSha": "86987b6e297616f98687cafe10f75557bf872620"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "loggo-presets-typingindicatorplus",
+  "sourceId": "github-1132429516",
+  "sourceIdentity": "github:1132429516",
+  "inputDigest": "2e3a2d57571ecb2b22d097064940b9a8aa279bf5f0d5bee99a82c397795ab285",
+  "fingerprint": "73943e18fc4ffddea2bcca66a19721939d6ed2a0a0262592dfb5e3723912eb56",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "562264b134920939cfb70a0f3889ceb579964e0aba59169a1f2d6b73c3c9e709",
+  "outputDigest": "25f22091a601424ad941be89a71c74bf3988ce63048e767882445537bf1d1b73",
+  "headSha": "e222639d3452ad0452af61efea4846362e548476",
+  "observedAt": "2026-10-31T21:21:01.021Z"
+}
