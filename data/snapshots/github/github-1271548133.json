@@ -9,13 +9,13 @@
     "url": "https://github.com/TavernAI/TavernAI",
     "description": "An AI roleplay chat platform with the most advanced prompting system",
     "default_branch": "main",
-    "head_sha": "08dbd3e15f639e75f0450b7c1a33fa7de8695055",
-    "head_committed_at": "2026-09-27T13:27:46.000Z",
+    "head_sha": "af3008ef75190ac6f190abca06cebe74d5029088",
+    "head_committed_at": "2026-10-30T13:46:44.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-16T19:18:48.000Z",
-    "size_kb": 15037
+    "size_kb": 14994
   },
   "source_health": "healthy",
   "activity": {
@@ -30,28 +30,23 @@
         "week_start": "2026-08-24",
         "latest_at": "2026-08-24T07:45:23.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-20",
-        "latest_at": "2026-07-24T18:44:04.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-09-27T13:26:28.000Z",
+    "latest_release_at": "2026-10-30T13:34:32.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-29T14:07:49.708Z",
+    "baseline_completed_at": "2026-10-31T13:47:37.086Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "08dbd3e15f639e75f0450b7c1a33fa7de8695055"
+    "evidence_head_sha": "af3008ef75190ac6f190abca06cebe74d5029088"
   },
   "community": {
-    "stars_count": 90,
+    "stars_count": 107,
     "forks_count": 13,
     "watchers_count": 1,
-    "aggregate": 104
+    "aggregate": 121
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-31T13:49:36.465Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -63,7 +58,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-31T13:47:37.086Z",
     "stale_since": null
   }
 }
