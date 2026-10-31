@@ -9,44 +9,30 @@
     "url": "https://github.com/jake9000/me-nord",
     "description": null,
     "default_branch": "master",
-    "head_sha": "a7a8616591e6da6c56a6cc0a3f986ae8673dd730",
-    "head_committed_at": "2026-07-23T01:22:44.000Z",
+    "head_sha": "aee9d7a73ac9a560069566741bdc027f527b7090",
+    "head_committed_at": "2026-10-30T00:33:46.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-28T06:44:31.000Z",
-    "size_kb": 4004
+    "size_kb": 4008
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-06-23T01:50:16.000Z",
+    "latest_source_activity_at": "2026-10-30T00:30:02.000Z",
     "source_weeks": [
       {
-        "week_start": "2026-06-22",
-        "latest_at": "2026-06-23T01:50:16.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-25",
-        "latest_at": "2026-05-27T04:29:25.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-11",
-        "latest_at": "2026-05-16T22:59:50.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-04",
-        "latest_at": "2026-05-04T05:37:10.000Z",
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-30T00:30:02.000Z",
         "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T02:56:16.026Z",
-    "baseline_attempts": 0
+    "baseline_completed_at": "2026-10-31T02:02:12.800Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "aee9d7a73ac9a560069566741bdc027f527b7090"
   },
   "community": {
     "stars_count": 2,
@@ -59,14 +45,15 @@
     "spdx_id": null,
     "source_path": "license.txt"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-31T02:04:08.849Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "jake9000", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-31T02:02:12.800Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }

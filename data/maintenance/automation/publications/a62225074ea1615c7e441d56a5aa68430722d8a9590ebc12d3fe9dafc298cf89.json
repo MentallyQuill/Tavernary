@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a62225074ea1615c7e441d56a5aa68430722d8a9590ebc12d3fe9dafc298cf89",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1310042863:thexyzzyone-stfastuserswitching",
+      "inputDigest": "999ea8fbfbc6a2624438618e33a09d370d3b742d87c55ade5ce662996d32cbad",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1310042863",
+    "identity": "github:1310042863"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41199803535,
+    "sourceSha": "c93b026f2f44c1946c90738f0c05ebc1504de947"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/thexyzzyone-stfastuserswitching.json",
+      "sha256": "31e3332da822d87e5eab666dcccf00b958172eae48b2282b5cb0bbf4cb5b39cc",
+      "gitBlobSha": "3c1bca46cd8eb901aa3c87f72d4062b110099148"
+    }
+  ]
+}

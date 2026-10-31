@@ -5,12 +5,9 @@
   "source_identity": "github:cha1latte/marinara-theme-maker",
   "evidence_fingerprint": "93168dc2aec97ffafdc6d51ea9aed4ef57b53ba0291e8bfd01e477841c342d61",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-06T14:30:33.494Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-10-06T14:30:33.494Z"
-  },
+  "reviewed_at": "2026-10-31T12:02:17.118Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

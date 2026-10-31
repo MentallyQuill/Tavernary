@@ -5,12 +5,9 @@
   "source_identity": "github:subzero5544/preset-search",
   "evidence_fingerprint": "13f76cd97026ff2f57141d4536dc49368a045dc9a8d0866b4afb427a9c7dfacd",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-08T15:04:13.664Z",
-  "retry": {
-    "attempts": 68,
-    "last_failure_at": "2026-10-08T15:04:13.664Z"
-  },
+  "reviewed_at": "2026-10-31T11:23:54.183Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

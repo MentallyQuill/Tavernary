@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "953db7899645ceae125c1de17efdfcff6b97e6b17815b76792e5a46d77e201e8",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1095193888:neotavern-neotavern-frontend",
+      "inputDigest": "7b00f8adf4ba0e88c28b12f09a017fadcbf3e2fa747ec4c34d993ae91a46e97e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1095193888",
+    "identity": "github:1095193888"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41198138501,
+    "sourceSha": "dc28697c953e021e303297592b2142247ccecb1b"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/neotavern-neotavern-frontend.json",
+      "sha256": "74cf293f606f8e0ba78cc7f86c885150d9b1a53485fae25fcb7a498a31887154",
+      "gitBlobSha": "e6ce2147e4e4d5f4a84438d81127e40f1a8fe925"
+    }
+  ]
+}

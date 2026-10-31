@@ -5,12 +5,9 @@
   "source_identity": "github:kawaii-wolf/sillytavern-evenmoreflexiblecontinues",
   "evidence_fingerprint": "a59c78979510cf813b4c7b6fcd2fc755ebd279d25332534714ba1790c49db1db",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-20T12:36:53.521Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-20T12:36:53.521Z"
-  },
+  "reviewed_at": "2026-10-31T11:38:12.480Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

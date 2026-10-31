@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "94f935b75b199d75c4d08db79e1f6bf2eca1363da24d141f0473db45521bf14a",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1063754811:kawaii-wolf-sillytavern-evenmoreflexiblecontinues",
+      "inputDigest": "5f5534f03d3449eae6f26ed487434b001304eaf12a2f938d7e99e6cbfcbf63af",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1063754811",
+    "identity": "github:1063754811"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41197605347,
+    "sourceSha": "9120b7516d555065dd70cafe1b751378d9e7c570"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/kawaii-wolf-sillytavern-evenmoreflexiblecontinues.json",
+      "sha256": "a1446a4cf186370e4ec96bf8d74f1e1d7a32363707ded34559c89fae7dbd3e81",
+      "gitBlobSha": "19a4b6e773bf2f371d6089c8d9a759b649672442"
+    }
+  ]
+}

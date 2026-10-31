@@ -50492,8 +50492,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "a7a8616591e6da6c56a6cc0a3f986ae8673dd730",
+        "freshness": "stale",
+        "currentSha": "aee9d7a73ac9a560069566741bdc027f527b7090",
         "report": {
           "reportId": "6b87a09f81b777688fd953d37b3cf0517683cf590633721efa05d79771ceaba4",
           "riskLevel": "low",
@@ -50577,7 +50577,7 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-06-23T01:50:16.000Z",
+        "latestSourceActivityAt": "2026-10-30T00:30:02.000Z",
         "activeWeeks12": 0,
         "weeklyActivity": [
           false,
@@ -50594,7 +50594,7 @@
           false
         ],
         "evidenceStatus": "complete",
-        "dormant": true
+        "dormant": false
       },
       "latestReleaseAt": null,
       "community": {
@@ -50603,14 +50603,14 @@
         "watchers": 0,
         "aggregate": 2
       },
-      "repositorySizeKb": 4004,
+      "repositorySizeKb": 4008,
       "license": {
         "status": "proprietary",
         "label": "Proprietary",
         "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-31T02:04:08.849Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -89598,7 +89598,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "7398fa5f4fc73eaee1aaa767804312765e84ea79",
+        "currentSha": "9199177b5c06e62f7089cc804cc61305444c8c02",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -89626,6 +89626,11 @@
           },
           {
             "provider": "github",
+            "login": "kittylotus",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "TheLiquorPriest",
             "botOrAi": false
           },
@@ -89641,7 +89646,17 @@
           },
           {
             "provider": "github",
-            "login": "kittylotus",
+            "login": "japolino",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "lunchberrymail-cmyk",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "CreativityPod",
             "botOrAi": false
           },
           {
@@ -89651,12 +89666,12 @@
           },
           {
             "provider": "github",
-            "login": "mindbound",
+            "login": "CloudCompile",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "japolino",
+            "login": "mindbound",
             "botOrAi": false
           },
           {
@@ -89666,17 +89681,17 @@
           },
           {
             "provider": "github",
-            "login": "fazo96",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
             "login": "j-dandelion",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "CloudCompile",
+            "login": "fazo96",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "lperna",
             "botOrAi": false
           },
           {
@@ -89686,7 +89701,27 @@
           },
           {
             "provider": "github",
-            "login": "CreativityPod",
+            "login": "Yuliontop",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "evening-truth",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "mallang0723",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "shirunick",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "patatasbravasch-arch",
             "botOrAi": false
           },
           {
@@ -89697,6 +89732,11 @@
           {
             "provider": "github",
             "login": "Vishousdev",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "caiohenriquerls",
             "botOrAi": false
           },
           {
@@ -89716,11 +89756,6 @@
           },
           {
             "provider": "github",
-            "login": "lperna",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
             "login": "Plaguis",
             "botOrAi": false
           },
@@ -89728,46 +89763,51 @@
             "provider": "github",
             "login": "gtild88",
             "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "flfranks",
+            "botOrAi": false
           }
         ],
-        "humanContributorCount": 23,
+        "humanContributorCount": 31,
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-09-10T10:08:50.000Z",
-        "activeWeeks12": 8,
+        "latestSourceActivityAt": "2026-10-29T17:25:08.000Z",
+        "activeWeeks12": 9,
         "weeklyActivity": [
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
           false,
           false,
           false,
-          false
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-09-10T10:11:00.000Z",
+      "latestReleaseAt": "2026-10-09T19:18:58.000Z",
       "community": {
-        "stars": 192,
-        "forks": 79,
+        "stars": 199,
+        "forks": 84,
         "watchers": 3,
-        "aggregate": 274
+        "aggregate": 286
       },
-      "repositorySizeKb": 164027,
+      "repositorySizeKb": 218486,
       "license": {
         "status": "proprietary",
         "label": "Proprietary",
         "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-31T02:03:17.120Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -89823,27 +89863,35 @@
           "I-Sereya-I",
           "AMousePad",
           "Archkr",
+          "kittylotus",
           "TheLiquorPriest",
           "Sillyfrogster",
           "vectoriin",
-          "kittylotus",
-          "calif94577",
-          "mindbound",
           "japolino",
-          "DJLegends1011",
-          "fazo96",
-          "j-dandelion",
-          "CloudCompile",
-          "Tantoofaaz777",
+          "lunchberrymail-cmyk",
           "CreativityPod",
+          "calif94577",
+          "CloudCompile",
+          "mindbound",
+          "DJLegends1011",
+          "j-dandelion",
+          "fazo96",
+          "lperna",
+          "Tantoofaaz777",
+          "Yuliontop",
+          "evening-truth",
+          "mallang0723",
+          "shirunick",
+          "patatasbravasch-arch",
           "Vaitas",
           "Vishousdev",
+          "caiohenriquerls",
           "Copilot",
           "sneezejayhauser",
           "ItsAKelmi",
-          "lperna",
           "Plaguis",
-          "gtild88"
+          "gtild88",
+          "flfranks"
         ],
         "relationships": []
       }
@@ -112568,7 +112616,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-10-31T02:02:47.323Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -219173,7 +219221,7 @@
               "state": "gray",
               "riskLevel": null,
               "freshness": "unassessed",
-              "currentSha": "7398fa5f4fc73eaee1aaa767804312765e84ea79",
+              "currentSha": "9199177b5c06e62f7089cc804cc61305444c8c02",
               "report": null,
               "history": [],
               "historyUrl": null
@@ -219201,6 +219249,11 @@
                 },
                 {
                   "provider": "github",
+                  "login": "kittylotus",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
                   "login": "TheLiquorPriest",
                   "botOrAi": false
                 },
@@ -219216,7 +219269,17 @@
                 },
                 {
                   "provider": "github",
-                  "login": "kittylotus",
+                  "login": "japolino",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "lunchberrymail-cmyk",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "CreativityPod",
                   "botOrAi": false
                 },
                 {
@@ -219226,12 +219289,12 @@
                 },
                 {
                   "provider": "github",
-                  "login": "mindbound",
+                  "login": "CloudCompile",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
-                  "login": "japolino",
+                  "login": "mindbound",
                   "botOrAi": false
                 },
                 {
@@ -219241,17 +219304,17 @@
                 },
                 {
                   "provider": "github",
-                  "login": "fazo96",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
                   "login": "j-dandelion",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
-                  "login": "CloudCompile",
+                  "login": "fazo96",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "lperna",
                   "botOrAi": false
                 },
                 {
@@ -219261,7 +219324,27 @@
                 },
                 {
                   "provider": "github",
-                  "login": "CreativityPod",
+                  "login": "Yuliontop",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "evening-truth",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "mallang0723",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "shirunick",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "patatasbravasch-arch",
                   "botOrAi": false
                 },
                 {
@@ -219272,6 +219355,11 @@
                 {
                   "provider": "github",
                   "login": "Vishousdev",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "caiohenriquerls",
                   "botOrAi": false
                 },
                 {
@@ -219291,11 +219379,6 @@
                 },
                 {
                   "provider": "github",
-                  "login": "lperna",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
                   "login": "Plaguis",
                   "botOrAi": false
                 },
@@ -219303,46 +219386,51 @@
                   "provider": "github",
                   "login": "gtild88",
                   "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "flfranks",
+                  "botOrAi": false
                 }
               ],
-              "humanContributorCount": 23,
+              "humanContributorCount": 31,
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-09-10T10:08:50.000Z",
-              "activeWeeks12": 8,
+              "latestSourceActivityAt": "2026-10-29T17:25:08.000Z",
+              "activeWeeks12": 9,
               "weeklyActivity": [
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
                 false,
                 false,
                 false,
-                false
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
-            "latestReleaseAt": "2026-09-10T10:11:00.000Z",
+            "latestReleaseAt": "2026-10-09T19:18:58.000Z",
             "community": {
-              "stars": 192,
-              "forks": 79,
+              "stars": 199,
+              "forks": 84,
               "watchers": 3,
-              "aggregate": 274
+              "aggregate": 286
             },
-            "repositorySizeKb": 164027,
+            "repositorySizeKb": 218486,
             "license": {
               "status": "proprietary",
               "label": "Proprietary",
               "tooltip": "The published root license is not OSI-approved."
             },
             "preset": null,
-            "refreshedAt": "2026-10-08T14:39:08.801Z",
+            "refreshedAt": "2026-10-31T02:03:17.120Z",
             "staleSince": null,
             "install": null,
             "fork": null,
@@ -219398,27 +219486,35 @@
                 "I-Sereya-I",
                 "AMousePad",
                 "Archkr",
+                "kittylotus",
                 "TheLiquorPriest",
                 "Sillyfrogster",
                 "vectoriin",
-                "kittylotus",
-                "calif94577",
-                "mindbound",
                 "japolino",
-                "DJLegends1011",
-                "fazo96",
-                "j-dandelion",
-                "CloudCompile",
-                "Tantoofaaz777",
+                "lunchberrymail-cmyk",
                 "CreativityPod",
+                "calif94577",
+                "CloudCompile",
+                "mindbound",
+                "DJLegends1011",
+                "j-dandelion",
+                "fazo96",
+                "lperna",
+                "Tantoofaaz777",
+                "Yuliontop",
+                "evening-truth",
+                "mallang0723",
+                "shirunick",
+                "patatasbravasch-arch",
                 "Vaitas",
                 "Vishousdev",
+                "caiohenriquerls",
                 "Copilot",
                 "sneezejayhauser",
                 "ItsAKelmi",
-                "lperna",
                 "Plaguis",
-                "gtild88"
+                "gtild88",
+                "flfranks"
               ],
               "relationships": []
             }
