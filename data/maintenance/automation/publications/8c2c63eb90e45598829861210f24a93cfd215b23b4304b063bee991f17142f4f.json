@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8c2c63eb90e45598829861210f24a93cfd215b23b4304b063bee991f17142f4f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1079428625:furitaocanon-sillytavern-personas",
+      "inputDigest": "dd105779ed67bbc9436b6a2a3f6e798bfda368aa6ecb63ee4534261e3fe31fd6",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1079428625",
+    "identity": "github:1079428625"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41197062954,
+    "sourceSha": "8a5fd5ec9a74ccec32b5b21acb4990e20bf946d0"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/furitaocanon-sillytavern-personas.json",
+      "sha256": "a3e9bc8e3fd5232fda81c065c902843a56ff1bd36169adb18a15bc9cbb51d8fc",
+      "gitBlobSha": "763f342254297c41461ab7ac1ebf863d82cd6466"
+    }
+  ]
+}

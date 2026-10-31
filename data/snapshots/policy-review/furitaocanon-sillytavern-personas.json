@@ -5,12 +5,9 @@
   "source_identity": "github:furitaocanon/sillytavern-personas",
   "evidence_fingerprint": "ce3079b998b0bd602c43dcf3ee4e8dce55193eb547fb738a6561eec309b1542d",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-04T13:24:52.658Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-10-04T13:24:52.658Z"
-  },
+  "reviewed_at": "2026-10-31T11:31:15.292Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

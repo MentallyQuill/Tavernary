@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ace66429390e0560da3095fba4c990a83c2904d706823cde97765c9daad66625",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1263408079:thejackals-sillytavern-summaryn-resizechat",
+      "inputDigest": "fb07bf81e932033d8dd60db93bf74873975f1d33ba67cd14b9c51a5522ff2762",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1263408079",
+    "identity": "github:1263408079"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41201058950,
+    "sourceSha": "00b4cdc047d17237be961c8607f0de3fe1d01bbc"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/thejackals-sillytavern-summaryn-resizechat.json",
+      "sha256": "3b184b0ff2bd96b89840bd82d6ed4bb1d50dbb4448af382f4c807a7d60558e87",
+      "gitBlobSha": "65b368dc987ed10e92cdb64254b8733938f84e3e"
+    }
+  ]
+}
