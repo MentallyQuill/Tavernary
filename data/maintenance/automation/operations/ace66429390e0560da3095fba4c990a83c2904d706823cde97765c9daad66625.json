@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ace66429390e0560da3095fba4c990a83c2904d706823cde97765c9daad66625",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1263408079:thejackals-sillytavern-summaryn-resizechat",
+      "inputDigest": "fb07bf81e932033d8dd60db93bf74873975f1d33ba67cd14b9c51a5522ff2762",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": "5210c403d3ba577b4548f8ff8b0bc018196a593a",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-31T20:47:51.226Z",
+  "completedAt": null
+}
