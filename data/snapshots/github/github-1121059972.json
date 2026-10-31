@@ -28,24 +28,24 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stars_count": 10,
+    "stars_count": 11,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 10
+    "aggregate": 11
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-10-31T13:50:05.497Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "fawn1e", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-10-31T13:48:15.334Z",
     "stale_since": null
   }
 }
