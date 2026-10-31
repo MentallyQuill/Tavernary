@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6ad0823cfa41e4de7fb403f86fbcf54e40dd71d7aeef52b3d67b26f434a2b108",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-999180993:subzero5544-preset-search",
+      "inputDigest": "5d3a8c9a8ff7ff0697cd9364026a608a6c161276ca47ff86fd2a489eca52312a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-999180993",
+    "identity": "github:999180993"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41196571888,
+    "sourceSha": "7d0447ef67e7e55e56a3936c86d18bdd4ce507da"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/subzero5544-preset-search.json",
+      "sha256": "db1f300b25f892d5d203d312cdbdab9799ab6527f49d405363866ff5ff4bd25c",
+      "gitBlobSha": "4779366e3089132a2f422790420fad23a3a72484"
+    }
+  ]
+}

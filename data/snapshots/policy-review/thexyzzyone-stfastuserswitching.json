@@ -5,12 +5,9 @@
   "source_identity": "github:thexyzzyone/stfastuserswitching",
   "evidence_fingerprint": "56dea9ddb9d09ce77c6218fd28930a6b2763853aacc6ad524a7002ee7cfbb100",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-04T10:15:29.024Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-04T10:15:29.024Z"
-  },
+  "reviewed_at": "2026-10-31T12:10:39.933Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

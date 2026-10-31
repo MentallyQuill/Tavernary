@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a62225074ea1615c7e441d56a5aa68430722d8a9590ebc12d3fe9dafc298cf89",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1310042863:thexyzzyone-stfastuserswitching",
+      "inputDigest": "999ea8fbfbc6a2624438618e33a09d370d3b742d87c55ade5ce662996d32cbad",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": "e1b664b0ffff4e960c69ae1d81017d6e285d7700",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-31T12:40:42.458Z",
+  "completedAt": null
+}

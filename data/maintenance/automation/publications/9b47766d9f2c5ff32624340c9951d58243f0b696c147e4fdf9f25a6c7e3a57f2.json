@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "9b47766d9f2c5ff32624340c9951d58243f0b696c147e4fdf9f25a6c7e3a57f2",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1184246765:xenofei-sillytavern-scenepulse",
+      "inputDigest": "7edd83be7630954d4b2729e419dab19792aae5d12c2c986adc554e569318a065",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1184246765",
+    "identity": "github:1184246765"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41198696727,
+    "sourceSha": "10a8e362d9987a299ee1bcf836b59f1c1fe1b6ed"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/xenofei-sillytavern-scenepulse.json",
+      "sha256": "237a1df557d9fd50b631bc476e5ced137cdaa06f2b4b2fd70ab7e3cfa5679ccc",
+      "gitBlobSha": "65ec682ddabe7e2cf0b9f4c0ff1114dafcea3c3d"
+    }
+  ]
+}
