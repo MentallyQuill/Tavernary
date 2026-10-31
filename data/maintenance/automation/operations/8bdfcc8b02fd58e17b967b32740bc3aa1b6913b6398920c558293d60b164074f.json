@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8bdfcc8b02fd58e17b967b32740bc3aa1b6913b6398920c558293d60b164074f",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-752014538:sillytavern-extension-silence",
+      "inputDigest": "2e043642771fb906f3229627c6fe6e60316edbf19e3bfbd4158b2aec64e79a33",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-10-31T23:27:47.593Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-10-31T23:12:47.593Z",
+  "completedAt": null
+}
