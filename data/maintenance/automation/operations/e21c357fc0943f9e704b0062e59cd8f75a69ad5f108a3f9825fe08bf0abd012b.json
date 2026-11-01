@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e21c357fc0943f9e704b0062e59cd8f75a69ad5f108a3f9825fe08bf0abd012b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1186518647:virtaava-sillytavern-woven-imprint",
+      "inputDigest": "9de9fdb164d821e609e27146aca67f26b1aee5baacb4dfe0af17d3db4154043d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-10T13:54:59.489Z",
+    "nextEligibleAt": null,
+    "expectedSha": "4cfbfe95a25c7c84a78d7e5210d5272dd34114d1",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-01T13:31:00.890Z",
+  "completedAt": null
+}
