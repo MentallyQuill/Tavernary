@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c28512c60ff0c6c5274d9f622748aa4d2bf895aca9318d29ece026aed0b690ac",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1249921512:mokimoko-sillytavern-dynamicaudioredux",
+      "inputDigest": "c433ee36798628aaeecddf1ea627142a0b82e978496ba4d33648b82427364523",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-10T13:56:37.225Z",
+    "nextEligibleAt": null,
+    "expectedSha": "4cfbfe95a25c7c84a78d7e5210d5272dd34114d1",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-01T13:31:00.890Z",
+  "completedAt": null
+}
