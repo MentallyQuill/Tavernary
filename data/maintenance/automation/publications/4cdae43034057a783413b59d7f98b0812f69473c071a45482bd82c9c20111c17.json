@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4cdae43034057a783413b59d7f98b0812f69473c071a45482bd82c9c20111c17",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1114617526:mechamarmot-sillytavern-localimage",
+      "inputDigest": "803f72a4f147cf480dd793629d45c5ddb941da6fe3291190e7cefddc33f4b672",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-10T13:56:41.911Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1114617526",
+    "identity": "github:1114617526"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41308844936,
+    "sourceSha": "1c06535b11cf240b2f1136f3a054e2964c9f848a"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/mechamarmot-sillytavern-localimage.json",
+      "sha256": "a7bd1fe624e2010530cda062eccbf37d293ff1def69edfedbcfb4d9b6f879b8d",
+      "gitBlobSha": "f796c26d6974581f6f139c99590b85dce3cbcf6a"
+    }
+  ]
+}

@@ -3,14 +3,11 @@
   "project_id": "st-extensioncollection-sillytavern-worldtracker",
   "source_id": "github-1350159893",
   "source_identity": "github:st-extensioncollection/sillytavern-worldtracker",
-  "evidence_fingerprint": "16675e5bb402fa51987f93e8391add3d9f37ea28a6465567453226364483a1bc",
+  "evidence_fingerprint": "89c7b0edb29ab0a327a44a1df0948bfe5ef6ee7472011255a66c090020217036",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-25T04:01:38.882Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-09-25T04:01:38.882Z"
-  },
+  "reviewed_at": "2026-11-01T12:30:10.930Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

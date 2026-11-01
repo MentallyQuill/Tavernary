@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "910079f6fee03ee5f2dff9f6e63f200665a692d205d5157ba0a0f011e5a7c1db",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1350159893:st-extensioncollection-sillytavern-worldtracker",
+      "inputDigest": "1d620292282e080c2f0035895fce981dcee45bae9d39853d182a305117bb6447",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-10T13:54:44.063Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1350159893",
+    "identity": "github:1350159893"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41306729340,
+    "sourceSha": "8153300582afa4eba518f1f27a6e9804a25fba2d"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/st-extensioncollection-sillytavern-worldtracker.json",
+      "sha256": "93051e955992b982493220b2ac4a6779d8a0f7e4070e03b9fb8e5606f1ec9a8a",
+      "gitBlobSha": "2f1c873457194a85498c1c9a37690d7ef5efc3b9"
+    }
+  ]
+}

@@ -5,12 +5,9 @@
   "source_identity": "github:lunarblazepony/blazetracker",
   "evidence_fingerprint": "4aa867b61a8931c79eca2becb9c16ad26f0a5c1749ba2230cef9dfb48c0cce9f",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-01T14:43:21.927Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-10-01T14:43:21.927Z"
-  },
+  "reviewed_at": "2026-11-01T13:11:40.597Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

@@ -5,12 +5,9 @@
   "source_identity": "github:selinawynters-ops/paramsentinel",
   "evidence_fingerprint": "20da19bd19252c7f59e38faff7d1106b98c57e4488324cbd214e8919663f5906",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-08T14:59:01.377Z",
-  "retry": {
-    "attempts": 5,
-    "last_failure_at": "2026-10-08T14:59:01.377Z"
-  },
+  "reviewed_at": "2026-11-01T13:19:15.762Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

@@ -5,12 +5,9 @@
   "source_identity": "github:mechamarmot/sillytavern-localimage",
   "evidence_fingerprint": "9269f22ff15b06c652ae911b5c2fd174d18665f22f979c29cf658fd2c8f6f61e",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-07T14:47:08.687Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-10-07T14:47:08.687Z"
-  },
+  "reviewed_at": "2026-11-01T12:57:32.833Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

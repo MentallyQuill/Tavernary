@@ -5,12 +5,9 @@
   "source_identity": "github:raywan/sillytavernextension-randomgreeting",
   "evidence_fingerprint": "760ac34d969a64b4e84203caa880faaa591744085b3865d7d856b2ce908723dd",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-15T12:58:42.335Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-15T12:58:42.335Z"
-  },
+  "reviewed_at": "2026-11-01T12:50:45.733Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

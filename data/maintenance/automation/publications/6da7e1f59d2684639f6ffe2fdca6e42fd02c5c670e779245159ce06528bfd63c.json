@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6da7e1f59d2684639f6ffe2fdca6e42fd02c5c670e779245159ce06528bfd63c",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1295846426:raywan-sillytavernextension-randomgreeting",
+      "inputDigest": "c4432bbd4021454a0ddf9a5a05731eef156e79e2918d9bb8559f9a74fa7ec71d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-10T13:56:41.376Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1295846426",
+    "identity": "github:1295846426"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41308357809,
+    "sourceSha": "439b4e8126c2454a145e47bbb0af917d924fc9f7"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/raywan-sillytavernextension-randomgreeting.json",
+      "sha256": "5fe54bd0f5ec7d6337d7137307f3a08d452650876431b28d39d295aae8d78858",
+      "gitBlobSha": "f5b7e366179975331bd053217d503341cb2f1ad9"
+    }
+  ]
+}

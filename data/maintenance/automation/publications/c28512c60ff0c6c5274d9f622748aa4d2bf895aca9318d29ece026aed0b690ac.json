@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c28512c60ff0c6c5274d9f622748aa4d2bf895aca9318d29ece026aed0b690ac",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1249921512:mokimoko-sillytavern-dynamicaudioredux",
+      "inputDigest": "c433ee36798628aaeecddf1ea627142a0b82e978496ba4d33648b82427364523",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-10T13:56:37.225Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1249921512",
+    "identity": "github:1249921512"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41307828155,
+    "sourceSha": "18d27dca1bacf884a34db1f2af9d85cdeeb4165e"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/mokimoko-sillytavern-dynamicaudioredux.json",
+      "sha256": "93d00fa698f263e08d20ae006efe9b71a5151822422e4ef727e40d681de6872e",
+      "gitBlobSha": "46d27fa402e1d316e4718706bf834d2671d6ff92"
+    }
+  ]
+}

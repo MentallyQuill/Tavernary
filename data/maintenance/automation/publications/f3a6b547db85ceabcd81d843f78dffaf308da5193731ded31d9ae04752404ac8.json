@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f3a6b547db85ceabcd81d843f78dffaf308da5193731ded31d9ae04752404ac8",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1311856766:selinawynters-ops-paramsentinel",
+      "inputDigest": "ec0c15184e531ac6b6761ec510b84c7aef630d4330be21e65015acd2d4935700",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-10T21:58:47.673Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1311856766",
+    "identity": "github:1311856766"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41310565022,
+    "sourceSha": "2a6e51608f4950d2499db88177329d0d06cfea69"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/selinawynters-ops-paramsentinel.json",
+      "sha256": "c8f6ce5067640c9c8d4dc229a043a241663a610330744e8db1cc6a0ea16b479a",
+      "gitBlobSha": "8b10f819b36fb591bf19648430a673c501b43cd2"
+    }
+  ]
+}

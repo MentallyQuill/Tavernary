@@ -5,12 +5,9 @@
   "source_identity": "github:p-e-w/waidrin",
   "evidence_fingerprint": "cc6092ee7201a9f8951e48b4fd6941139ba63420372123e4d37c68076e2ceb2b",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-27T11:37:52.337Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-27T11:37:52.337Z"
-  },
+  "reviewed_at": "2026-11-01T13:04:15.713Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

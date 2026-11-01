@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "290fb740c5cd86630db54788705e9abe3111ba7244f8cefa8a85213e11b00daf",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1005915564:leandrojofre-sillytavern-stat-us-maximus",
+      "inputDigest": "613fb2a06c956e9f20b7de4bf30a2811bd315cdba0fab395c5f28c1187cb55b7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-10T21:59:37.828Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1005915564",
+    "identity": "github:1005915564"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41311173633,
+    "sourceSha": "9aa79d5276ee7ecc8146183d699df104d0e243b3"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/leandrojofre-sillytavern-stat-us-maximus.json",
+      "sha256": "57563b99b51de98c220dc4e096ee04542432560a00ccd14180d639d14938d2dc",
+      "gitBlobSha": "75d637e79f053779251b3dbdc4b018b4d7df2af0"
+    }
+  ]
+}

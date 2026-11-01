@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "leandrojofre-sillytavern-stat-us-maximus",
+  "source_id": "github-1005915564",
+  "source_identity": "github:leandrojofre/sillytavern-stat-us-maximus",
+  "evidence_fingerprint": "0ae693b98e93855d1671594d8741d127edbddeba7cf7b9bfbc5fd46ed88f869c",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-01T13:26:02.512Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

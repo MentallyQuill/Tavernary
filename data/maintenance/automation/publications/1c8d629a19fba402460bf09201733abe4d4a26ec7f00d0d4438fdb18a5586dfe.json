@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1c8d629a19fba402460bf09201733abe4d4a26ec7f00d0d4438fdb18a5586dfe",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1014687651:p-e-w-waidrin",
+      "inputDigest": "17579ab0e800c7023a3d767ad68091c14adc88575b8fb3384466e1488a7c7116",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-10T13:56:47.302Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1014687651",
+    "identity": "github:1014687651"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41309402699,
+    "sourceSha": "976b90e615afc7182ff2abe33741bbe791ad5204"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/p-e-w-waidrin.json",
+      "sha256": "3960014ce2449eff39f6b0e290ac40bbdb17b8b80d8520ba6cd0c43d78c65ab4",
+      "gitBlobSha": "8f81c3bdd764f0c0dc29028961700258115d8ac5"
+    }
+  ]
+}

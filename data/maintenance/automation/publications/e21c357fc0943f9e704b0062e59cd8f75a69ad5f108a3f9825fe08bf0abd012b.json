@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e21c357fc0943f9e704b0062e59cd8f75a69ad5f108a3f9825fe08bf0abd012b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1186518647:virtaava-sillytavern-woven-imprint",
+      "inputDigest": "9de9fdb164d821e609e27146aca67f26b1aee5baacb4dfe0af17d3db4154043d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-10T13:54:59.489Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1186518647",
+    "identity": "github:1186518647"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41307256540,
+    "sourceSha": "3d76cabd5c6fee0c67e483679eac9f43d25174bc"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/virtaava-sillytavern-woven-imprint.json",
+      "sha256": "916ff2f4b68b2f24d049738de20a76f4cfe7d1c2e0eb57f9bb0df8d5c1a55794",
+      "gitBlobSha": "0082d4fa355bb823479a37a3698e97ebb0db3fc4"
+    }
+  ]
+}
