@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b46eb5eec4f33f29789a2389040c65bcbdc579ac0aec1d254bf0fb885f1e8091",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1294348279:maiky93-image-generation-suite",
+      "inputDigest": "9408d2b7e82bdef1b975cf98a8e631fa34ef346315148756544fe0c726db9442",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-11-01T04:00:51.461Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-01T03:45:51.461Z",
+  "completedAt": null
+}
