@@ -7,20 +7,30 @@
     "owner": "M4Marvin",
     "name": "charon",
     "url": "https://github.com/M4Marvin/charon",
-    "description": "My take on properly building an AI character chat app — combining features from Chub, SillyTavern, and everything else I always wanted. Self-hosted, branching conversations, character cards V2+V3, lorebooks, personas.",
+    "description": "Self-hosted AI character chat with branching conversations, V2/V3 character cards, lorebooks, and personas.",
     "default_branch": "main",
-    "head_sha": "b04926fd072541e99ec5855a0bbe5b5a4eaad252",
-    "head_committed_at": "2026-10-07T20:51:57.000Z",
+    "head_sha": "df3b1486cee288d8def2aff26c9dd029b5eb9f98",
+    "head_committed_at": "2026-10-25T00:34:26.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-28T12:33:00.000Z",
-    "size_kb": 6236
+    "size_kb": 8111
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-07T20:51:57.000Z",
+    "latest_source_activity_at": "2026-10-25T00:32:40.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-25T00:32:40.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-18T18:51:20.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-05",
         "latest_at": "2026-10-07T20:51:57.000Z",
@@ -45,29 +55,14 @@
         "week_start": "2026-08-10",
         "latest_at": "2026-08-10T00:13:59.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-03",
-        "latest_at": "2026-08-09T22:31:32.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-08-01T21:25:57.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-20",
-        "latest_at": "2026-07-24T23:09:48.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": null,
+    "latest_release_at": "2026-10-25T00:27:54.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-08T14:39:08.801Z",
+    "baseline_completed_at": "2026-11-01T09:06:41.803Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "b04926fd072541e99ec5855a0bbe5b5a4eaad252"
+    "evidence_head_sha": "df3b1486cee288d8def2aff26c9dd029b5eb9f98"
   },
   "community": {
     "stars_count": 9,
@@ -80,7 +75,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-11-01T09:08:50.336Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -88,7 +83,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-11-01T09:06:41.803Z",
     "stale_since": null
   }
 }
