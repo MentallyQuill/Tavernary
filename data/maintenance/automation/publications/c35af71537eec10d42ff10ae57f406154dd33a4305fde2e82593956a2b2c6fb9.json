@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c35af71537eec10d42ff10ae57f406154dd33a4305fde2e82593956a2b2c6fb9",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-735181166:lenanderson-sillytavern-inputhistory",
+      "inputDigest": "cdfead706a6dea9cc331e7b41bdfc7cd855153932abe882ee24ea75a2a224cd2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T09:09:16.107Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-735181166",
+    "identity": "github:735181166"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41294011369,
+    "sourceSha": "b9c54407b77516bebedbaeafaf22f9555ce7f915"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/lenanderson-sillytavern-inputhistory.json",
+      "sha256": "fb6c1b7d3e5f12af8ef5fd5fb57e75bbbf2ce257d707d29f7dcf9d7669a53a8f",
+      "gitBlobSha": "585463c1126f12fd13091ddd88c9fb6812f20d52"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/c35af71537eec10d42ff10ae57f406154dd33a4305fde2e82593956a2b2c6fb9.json",
+      "sha256": "f15df4ef16df7f157a55e3f458e82a56ab9d24e26360d7b7152fdf9d51d51d37",
+      "gitBlobSha": "9c979aa231b36680f918878282cb94c5c5347100"
+    }
+  ]
+}

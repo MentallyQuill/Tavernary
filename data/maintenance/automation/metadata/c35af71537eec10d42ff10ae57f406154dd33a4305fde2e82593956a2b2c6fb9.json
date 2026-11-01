@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "lenanderson-sillytavern-inputhistory",
+  "sourceId": "github-735181166",
+  "sourceIdentity": "github:735181166",
+  "inputDigest": "cdfead706a6dea9cc331e7b41bdfc7cd855153932abe882ee24ea75a2a224cd2",
+  "fingerprint": "7b91d9f3fdc8e100ed7c4c70af527dedb441da1c304e7ffe4a0b4f69bb5aece5",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "26614ac1aad8efe20a2292721acef2d1eb3e4f3888414032bfdb0a24f5e33760",
+  "outputDigest": "3dc44f39173ed3d99ecec2e6eca2835b588c6ad65df0657ad2d9104b392d8de8",
+  "headSha": "1ba5491dbe4287f77c12a2114c9a5ddf26a7fbe8",
+  "observedAt": "2026-11-01T09:39:31.059Z"
+}

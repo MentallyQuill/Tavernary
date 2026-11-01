@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "sillytavern-extension-promptinspector",
+  "sourceId": "github-811061856",
+  "sourceIdentity": "github:811061856",
+  "inputDigest": "e29182b11ba648338dd9b4de1d35e5dc43877fc233efb9ccdcee6c358e1c76f9",
+  "fingerprint": "a6e1b544abdba3e3cbb454074654098b830ad22e69ba9c733f4cafbeaaae9804",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "67ec64209be699d3f62ac1e15c292f5410dd467b9bcc8e24c77eb9d6a73b69db",
+  "outputDigest": "708cad759ca16bbbd519f57dfc4b604e65c2ef59569a915969ede2004a66edff",
+  "headSha": "97a9fd90afbc156db27478e9097b143dc27b9c7a",
+  "observedAt": "2026-11-01T09:52:54.252Z"
+}

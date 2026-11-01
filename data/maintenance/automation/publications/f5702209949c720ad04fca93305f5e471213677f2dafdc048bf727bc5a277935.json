@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f5702209949c720ad04fca93305f5e471213677f2dafdc048bf727bc5a277935",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1316434519:disreconnected-sillytavern-gfx-repair",
+      "inputDigest": "aae6c128c97bab5b891cfc8862aa02cb06f88ae2194087b17060b23fb8ad53b6",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T09:08:05.444Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1316434519",
+    "identity": "github:1316434519"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41295415517,
+    "sourceSha": "27ce40a541060b5e6bc9dc8a0ffc1f29fffa1d1b"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/disreconnected-sillytavern-gfx-repair.json",
+      "sha256": "0bac629c2b931df59bb690bff5d19da7c3dcde0b1065e3d4c0eae5126d1010a7",
+      "gitBlobSha": "d60869bbbeae55c9fda552b0e695c0b6f5723c63"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/f5702209949c720ad04fca93305f5e471213677f2dafdc048bf727bc5a277935.json",
+      "sha256": "5d76d8e96e2ce848b378066345ddce22abdbf92717e2fc690a3951313ed8355f",
+      "gitBlobSha": "f20110a879f79227515c475d09accc389566636f"
+    }
+  ]
+}

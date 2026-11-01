@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "d12a481e5877194552958ba749bbb79031bd922e63765c1aa77cdbc6dd20d6e8",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1175839267:prolix-oc-lumiverse-simtracker",
+      "inputDigest": "371600083c0b6545252e5ab3ad35ae31145ae834d167b8cc04b8d839c99996c2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1175839267",
+    "identity": "github:1175839267"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41294483454,
+    "sourceSha": "31ce6a4678d68abe303d87e9c910c99d03f35f5f"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/prolix-oc-lumiverse-simtracker.json",
+      "sha256": "8c587b07e4b7e9c06b6cee1dff6a114dea43520e1c2b72654d0b9d3612e6a5fc",
+      "gitBlobSha": "6799d4a1e0f0f3b7ef081fd90931a6e1caf031e9"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/d12a481e5877194552958ba749bbb79031bd922e63765c1aa77cdbc6dd20d6e8.json",
+      "sha256": "977d743ec4ffa3d6a9ae25f1040b0b6c84149c5d9bbf9040e4d9da814b96419d",
+      "gitBlobSha": "87e46e9798302fb18323d806000567cc58789e96"
+    }
+  ]
+}

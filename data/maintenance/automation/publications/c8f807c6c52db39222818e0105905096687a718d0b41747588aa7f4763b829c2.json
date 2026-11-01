@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c8f807c6c52db39222818e0105905096687a718d0b41747588aa7f4763b829c2",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-811061856:sillytavern-extension-promptinspector",
+      "inputDigest": "e29182b11ba648338dd9b4de1d35e5dc43877fc233efb9ccdcee6c358e1c76f9",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-811061856",
+    "identity": "github:811061856"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41294956372,
+    "sourceSha": "9a3a3ebe82b6760d1677f770c74bf848d1065e39"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/sillytavern-extension-promptinspector.json",
+      "sha256": "7acbeb4b42911c5ab541845f5b3d12e76f4214d4af5ca76add0ae1f06b00b9fc",
+      "gitBlobSha": "9898db063600314adab43db46bcb01ea999f9ce4"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/c8f807c6c52db39222818e0105905096687a718d0b41747588aa7f4763b829c2.json",
+      "sha256": "b8d875b546474f662e8a7d1bb5ab2ad7844548e5fb14046e93662753c9f2f963",
+      "gitBlobSha": "f16a1973cacef51ed011e0a8290b339f018b5d3e"
+    }
+  ]
+}
