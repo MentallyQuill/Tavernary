@@ -108465,7 +108465,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Renders Mermaid diagrams and flowcharts directly inside SillyTavern chat messages. The extension parses code blocks at runtime, turning textual syntax into visual graphics that enhance storytelling and interface clarity.",
+      "summary": "SillyTavern Extension Mermaid draws diagrams in SillyTavern chats using the Mermaid library (README: allows you to draw diagrams using the Mermaid library).",
       "canonicalUrl": "https://github.com/SillyTavern/Extension-Mermaid",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -108478,16 +108478,10 @@
       ],
       "tags": [
         {
-          "id": "add-visual-immersion",
-          "label": "Add visual immersion",
-          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "id": "customize-the-interface",
+          "label": "Customize the interface",
+          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
           "facet": "goal"
-        },
-        {
-          "id": "visual-workflow",
-          "label": "Visual workflow",
-          "description": "Uses nodes, diagrams, canvases, maps, or drag-and-drop builders to define behavior.",
-          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -108693,7 +108687,7 @@
           "https://github.com/SillyTavern/Extension-Mermaid"
         ],
         "summary": [
-          "Renders Mermaid diagrams and flowcharts directly inside SillyTavern chat messages. The extension parses code blocks at runtime, turning textual syntax into visual graphics that enhance storytelling and interface clarity."
+          "SillyTavern Extension Mermaid draws diagrams in SillyTavern chats using the Mermaid library (README: allows you to draw diagrams using the Mermaid library)."
         ],
         "kind": [
           "extension"
@@ -108702,14 +108696,10 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Add visual immersion",
-          "roleplay visuals",
-          "visual novel presentation",
-          "scene visuals",
-          "Visual workflow",
-          "node editor",
-          "flowchart builder",
-          "graphical workflow"
+          "Customize the interface",
+          "interface theming",
+          "layout customization",
+          "UI personalization"
         ],
         "frontends": [
           "SillyTavern"

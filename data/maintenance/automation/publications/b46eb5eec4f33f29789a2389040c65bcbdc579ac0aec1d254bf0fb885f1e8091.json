@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b46eb5eec4f33f29789a2389040c65bcbdc579ac0aec1d254bf0fb885f1e8091",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1294348279:maiky93-image-generation-suite",
+      "inputDigest": "9408d2b7e82bdef1b975cf98a8e631fa34ef346315148756544fe0c726db9442",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1294348279",
+    "identity": "github:1294348279"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41277998556,
+    "sourceSha": "242d86df8c3bbbf164b981ae1ab9fb26b661d9c5"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/maiky93-image-generation-suite.json",
+      "sha256": "2dbe172456ac88ae719605bbb12e27015e1c49071b522fafc5b3f091456b3d01",
+      "gitBlobSha": "d0aa090d506603c537683943a04d8cdd7350fadb"
+    }
+  ]
+}

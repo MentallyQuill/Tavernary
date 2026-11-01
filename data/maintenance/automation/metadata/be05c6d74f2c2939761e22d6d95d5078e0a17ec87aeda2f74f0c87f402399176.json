@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "sillytavern-extension-mermaid",
+  "sourceId": "github-850754623",
+  "sourceIdentity": "github:850754623",
+  "inputDigest": "09ea85da126bef1df16e50327d056fe1061f592796e2f31dbf15517df959b2a8",
+  "fingerprint": "5d9902ecf0de460168961380ba06f50d47d093c3399c9f1aa14d27c9c7582135",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "aafec1cce21bcb730e791b0645a48a34aed202b87aa8c892c90d45c0dfcce0cd",
+  "outputDigest": "b3964683713a0eb47e765e08d93816383be9ce669b4bbabcc5899871298f3f04",
+  "headSha": "62265d550ca3dc46737c09bddf0bf328fd1f3469",
+  "observedAt": "2026-11-01T05:50:31.554Z"
+}
