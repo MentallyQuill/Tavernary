@@ -9,21 +9,36 @@
     "url": "https://github.com/Sagesheep/NarrativeEngine-P",
     "description": "Self-hosted AI Dungeon Master - run extended TTRPG campaigns with smart memory, living NPCs, and any OpenAI-compatible LLM",
     "default_branch": "main",
-    "head_sha": "2cc0addee8130719710eb73d5f04d2683baf86d9",
-    "head_committed_at": "2026-10-08T23:55:40.000Z",
+    "head_sha": "5fd2155f5f3515b04df827265a38011c04cf5afe",
+    "head_committed_at": "2026-11-01T13:16:43.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-19T11:01:33.000Z",
-    "size_kb": 70568
+    "size_kb": 74308
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-08T23:33:33.000Z",
+    "latest_source_activity_at": "2026-11-01T13:16:43.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-11-01T13:16:43.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-22T10:17:27.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-16T04:53:05.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-05",
-        "latest_at": "2026-10-08T23:33:33.000Z",
+        "latest_at": "2026-10-11T13:44:52.000Z",
         "precision": "exact"
       },
       {
@@ -65,42 +80,27 @@
         "week_start": "2026-08-10",
         "latest_at": "2026-08-16T12:03:37.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-03",
-        "latest_at": "2026-08-09T02:58:16.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-08-02T23:32:56.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-20",
-        "latest_at": "2026-07-26T21:53:18.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-09-29T10:31:57.000Z",
+    "latest_release_at": "2026-10-29T14:19:29.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-10T21:58:28.556Z",
+    "baseline_completed_at": "2026-11-01T14:23:55.451Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "2cc0addee8130719710eb73d5f04d2683baf86d9"
+    "evidence_head_sha": "5fd2155f5f3515b04df827265a38011c04cf5afe"
   },
   "community": {
-    "stars_count": 103,
-    "forks_count": 30,
-    "watchers_count": 4,
-    "aggregate": 137
+    "stars_count": 112,
+    "forks_count": 34,
+    "watchers_count": 5,
+    "aggregate": 151
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-10T22:00:26.294Z",
+  "refreshed_at": "2026-11-01T14:25:54.017Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -114,7 +114,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-10T21:58:28.556Z",
+    "refreshed_at": "2026-11-01T14:23:55.451Z",
     "stale_since": null
   }
 }

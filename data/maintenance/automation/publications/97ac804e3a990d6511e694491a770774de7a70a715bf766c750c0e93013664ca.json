@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "97ac804e3a990d6511e694491a770774de7a70a715bf766c750c0e93013664ca",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1398187837:kritblade-mvu-helper",
+      "inputDigest": "eac00b0c8947855569a0c92bef97a1b56609c5012aad7ab503ece4e31ef8da6d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T13:56:34.041Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1398187837",
+    "identity": "github:1398187837"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41317866331,
+    "sourceSha": "db69904e9df0fbf0eb3ad438f1e568afb1ce78b6"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/kritblade-mvu-helper.json",
+      "sha256": "0b64a7c225c747f2a66d6a46024641285f47ca62f3414e4804465050b4f78100",
+      "gitBlobSha": "be8457c6f907199ad68cf5723296347bc0107b07"
+    }
+  ]
+}

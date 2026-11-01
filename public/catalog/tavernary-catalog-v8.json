@@ -27713,7 +27713,7 @@
           }
         ]
       },
-      "refreshedAt": "2026-10-10T22:00:54.554Z",
+      "refreshedAt": "2026-11-01T14:27:09.795Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -34925,7 +34925,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "d5fc70eaf342f0860b589c7da2c095fcf4b5b6d3",
+        "currentSha": "e91bef09534f7ccb3ef3125b0864cf974a90a294",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -34940,7 +34940,7 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-10T19:53:04.000Z",
+        "latestSourceActivityAt": "2026-10-28T20:22:46.000Z",
         "activeWeeks12": 4,
         "weeklyActivity": [
           false,
@@ -34959,21 +34959,21 @@
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": null,
+      "latestReleaseAt": "2026-10-28T20:36:07.000Z",
       "community": {
         "stars": 0,
         "forks": 0,
         "watchers": 0,
         "aggregate": 0
       },
-      "repositorySizeKb": 14851,
+      "repositorySizeKb": 116982,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-11T13:19:54.165Z",
+      "refreshedAt": "2026-11-01T14:28:32.970Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -90819,7 +90819,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "1e4dc01329ee152f537560c3534114034e5c88f1",
+        "currentSha": "7f2c224eeb5ecb559ecb8fe2f4ec71e6d15ece15",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -90850,8 +90850,8 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-04T04:34:33.000Z",
-        "activeWeeks12": 3,
+        "latestSourceActivityAt": "2026-10-29T00:08:22.000Z",
+        "activeWeeks12": 4,
         "weeklyActivity": [
           false,
           false,
@@ -90864,26 +90864,26 @@
           true,
           false,
           true,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-10-04T04:41:38.000Z",
+      "latestReleaseAt": "2026-10-24T19:31:40.000Z",
       "community": {
-        "stars": 20,
-        "forks": 3,
+        "stars": 30,
+        "forks": 4,
         "watchers": 0,
-        "aggregate": 23
+        "aggregate": 34
       },
-      "repositorySizeKb": 2010,
+      "repositorySizeKb": 2976,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-11T13:19:54.165Z",
+      "refreshedAt": "2026-11-01T14:28:41.011Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -100422,7 +100422,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "2cc0addee8130719710eb73d5f04d2683baf86d9",
+        "currentSha": "5fd2155f5f3515b04df827265a38011c04cf5afe",
         "report": {
           "reportId": "3f82c563a8545fe1b9054da51ef5a159943276c40562254f62dd9ae12b5fc7f0",
           "riskLevel": "low",
@@ -100609,12 +100609,12 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-08T23:33:33.000Z",
-        "activeWeeks12": 12,
+        "latestSourceActivityAt": "2026-11-01T13:16:43.000Z",
+        "activeWeeks12": 9,
         "weeklyActivity": [
-          true,
-          true,
-          true,
+          false,
+          false,
+          false,
           true,
           true,
           true,
@@ -100628,21 +100628,21 @@
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-09-29T10:31:57.000Z",
+      "latestReleaseAt": "2026-10-29T14:19:29.000Z",
       "community": {
-        "stars": 103,
-        "forks": 30,
-        "watchers": 4,
-        "aggregate": 137
+        "stars": 112,
+        "forks": 34,
+        "watchers": 5,
+        "aggregate": 151
       },
-      "repositorySizeKb": 70568,
+      "repositorySizeKb": 74308,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-10T22:00:26.294Z",
+      "refreshedAt": "2026-11-01T14:25:54.017Z",
       "staleSince": null,
       "install": null,
       "fork": null,

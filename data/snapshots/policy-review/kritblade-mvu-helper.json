@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "kritblade-mvu-helper",
+  "source_id": "github-1398187837",
+  "source_identity": "github:kritblade/mvu-helper",
+  "evidence_fingerprint": "0f570a416c4594205f07af8cb5eb6a15aaa1da55854cea862db2d549b7425897",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-01T14:47:45.441Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}
