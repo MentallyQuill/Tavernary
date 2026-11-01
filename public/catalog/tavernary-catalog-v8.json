@@ -25360,10 +25360,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 4,
+        "stars": 5,
         "forks": 0,
         "watchers": 2,
-        "aggregate": 6
+        "aggregate": 7
       },
       "repositorySizeKb": 2090,
       "license": {
@@ -25372,7 +25372,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-11-01T14:25:26.081Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -57097,6 +57097,181 @@
       }
     },
     {
+      "id": "kritblade-mvu-helper",
+      "name": "mvu-helper",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "developer-infrastructure",
+      "summary": "It's a dev framework for creating Game Logic, Game Contents and Event Trigger right inside Sillytavern character card. End user can use the auto image generation and multi-LLM-call. Mainly for content creator use.",
+      "canonicalUrl": "https://github.com/KritBlade/mvu-helper",
+      "catalogedAt": "2026-11-01T13:56:34.041Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-rpg-gameplay",
+          "label": "Add RPG gameplay",
+          "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
+          "facet": "goal"
+        },
+        {
+          "id": "add-structured-reasoning",
+          "label": "Add structured reasoning",
+          "description": "Introduce deliberate planning, reflection, critique, or multi-step thinking before output.",
+          "facet": "goal"
+        },
+        {
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "agentic-tool-use",
+          "label": "Agentic tool use",
+          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
+          "facet": "trait"
+        },
+        {
+          "id": "modular-and-extensible",
+          "label": "Modular and extensible",
+          "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
+          "facet": "trait"
+        },
+        {
+          "id": "multi-stage-generation",
+          "label": "Multi-stage generation",
+          "description": "Builds a final result through multiple model calls, passes, branches, or review stages.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "06fab1d7fefbe6bb7f4597758e39cd0b2885bb65",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "KritBlade"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-30T20:39:16.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 11,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 11
+      },
+      "repositorySizeKb": 9701,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-01T13:56:34.041Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/KritBlade/mvu-helper.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "mvu-helper"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "mvu-helper"
+        ],
+        "aliases": [],
+        "source": [
+          "kritblade-mvu-helper",
+          "github-1398187837",
+          "KritBlade/mvu-helper",
+          "https://github.com/KritBlade/mvu-helper"
+        ],
+        "summary": [
+          "It's a dev framework for creating Game Logic, Game Contents and Event Trigger right inside Sillytavern character card. End user can use the auto image generation and multi-LLM-call. Mainly for content creator use."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Developer infrastructure"
+        ],
+        "tags": [
+          "Add RPG gameplay",
+          "tabletop mechanics",
+          "game master tools",
+          "RPG systems",
+          "Add structured reasoning",
+          "reasoning pipelines",
+          "stepped thinking",
+          "planning reasoning",
+          "planning passes",
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals",
+          "Agentic tool use",
+          "tool calling",
+          "AI agents",
+          "agent mode",
+          "Modular and extensible",
+          "plugin architecture",
+          "modular design",
+          "extensible system",
+          "Multi-stage generation",
+          "generation pipeline",
+          "parallel model calls",
+          "multi-pass generation"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "KritBlade"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "kritblade-vectfox",
       "name": "VectFox",
       "kind": "extension",
@@ -60875,14 +61050,14 @@
         "watchers": 0,
         "aggregate": 14
       },
-      "repositorySizeKb": 1242,
+      "repositorySizeKb": 1275,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-10T21:59:37.828Z",
+      "refreshedAt": "2026-11-01T14:26:00.930Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -67558,10 +67733,10 @@
       },
       "latestReleaseAt": "2026-03-23T23:00:00.000Z",
       "community": {
-        "stars": 13,
+        "stars": 14,
         "forks": 2,
         "watchers": 0,
-        "aggregate": 15
+        "aggregate": 16
       },
       "repositorySizeKb": 24095,
       "license": {
@@ -67570,7 +67745,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-10T13:56:52.504Z",
+      "refreshedAt": "2026-11-01T14:26:02.583Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -71487,10 +71662,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 3,
-        "forks": 1,
+        "stars": 4,
+        "forks": 2,
         "watchers": 0,
-        "aggregate": 4
+        "aggregate": 6
       },
       "repositorySizeKb": 359,
       "license": {
@@ -71499,7 +71674,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-10T13:56:41.911Z",
+      "refreshedAt": "2026-11-01T14:25:49.491Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -77127,10 +77302,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 2,
+        "stars": 3,
         "forks": 0,
         "watchers": 0,
-        "aggregate": 2
+        "aggregate": 3
       },
       "repositorySizeKb": 334,
       "license": {
@@ -77139,7 +77314,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-10T13:56:37.225Z",
+      "refreshedAt": "2026-11-01T14:25:36.205Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -85294,10 +85469,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 385,
-        "forks": 51,
-        "watchers": 20,
-        "aggregate": 456
+        "stars": 391,
+        "forks": 49,
+        "watchers": 21,
+        "aggregate": 461
       },
       "repositorySizeKb": 15855,
       "license": {
@@ -85306,7 +85481,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-10T13:56:47.302Z",
+      "refreshedAt": "2026-11-01T14:25:43.118Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -94329,7 +94504,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-10T13:56:41.376Z",
+      "refreshedAt": "2026-11-01T14:25:37.053Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -115554,8 +115729,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "5e254d64de156c4300fe3ea91edf5d37a63b5de8",
+        "freshness": "stale",
+        "currentSha": "64dbe0eaac3220e8e8bd20f2f9ed4d3f6537038e",
         "report": {
           "reportId": "f44e110c57cbf8a25e9f6c62bf4a0b61de0291af2d0d57c3ada65b361564c9a1",
           "riskLevel": "low",
@@ -115685,7 +115860,7 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-05T20:43:58.000Z",
+        "latestSourceActivityAt": "2026-10-22T01:01:53.000Z",
         "activeWeeks12": 6,
         "weeklyActivity": [
           false,
@@ -115707,18 +115882,18 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 0,
-        "forks": 1,
+        "forks": 0,
         "watchers": 1,
-        "aggregate": 2
+        "aggregate": 1
       },
-      "repositorySizeKb": 661,
+      "repositorySizeKb": 676,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-10T13:54:44.063Z",
+      "refreshedAt": "2026-11-01T14:25:32.976Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -118170,7 +118345,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-11-01T14:25:55.922Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -118276,11 +118451,11 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-09-03T14:02:24.000Z",
-        "activeWeeks12": 5,
+        "activeWeeks12": 2,
         "weeklyActivity": [
-          true,
-          true,
-          true,
+          false,
+          false,
+          false,
           false,
           true,
           false,
@@ -118308,7 +118483,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-09T17:42:17.409Z",
+      "refreshedAt": "2026-11-01T14:25:42.867Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -120365,7 +120540,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-11-01T14:25:45.733Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -126737,7 +126912,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-10T13:54:59.489Z",
+      "refreshedAt": "2026-11-01T14:25:44.386Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -166739,10 +166914,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 2,
+              "stars": 3,
               "forks": 0,
               "watchers": 0,
-              "aggregate": 2
+              "aggregate": 3
             },
             "repositorySizeKb": 334,
             "license": {
@@ -166751,7 +166926,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-10T13:56:37.225Z",
+            "refreshedAt": "2026-11-01T14:25:36.205Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -248486,8 +248661,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "5e254d64de156c4300fe3ea91edf5d37a63b5de8",
+              "freshness": "stale",
+              "currentSha": "64dbe0eaac3220e8e8bd20f2f9ed4d3f6537038e",
               "report": {
                 "reportId": "f44e110c57cbf8a25e9f6c62bf4a0b61de0291af2d0d57c3ada65b361564c9a1",
                 "riskLevel": "low",
@@ -248617,7 +248792,7 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-05T20:43:58.000Z",
+              "latestSourceActivityAt": "2026-10-22T01:01:53.000Z",
               "activeWeeks12": 6,
               "weeklyActivity": [
                 false,
@@ -248639,18 +248814,18 @@
             "latestReleaseAt": null,
             "community": {
               "stars": 0,
-              "forks": 1,
+              "forks": 0,
               "watchers": 1,
-              "aggregate": 2
+              "aggregate": 1
             },
-            "repositorySizeKb": 661,
+            "repositorySizeKb": 676,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-10T13:54:44.063Z",
+            "refreshedAt": "2026-11-01T14:25:32.976Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",

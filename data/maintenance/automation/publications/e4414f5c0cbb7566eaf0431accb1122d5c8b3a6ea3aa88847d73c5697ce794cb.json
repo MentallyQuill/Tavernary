@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e4414f5c0cbb7566eaf0431accb1122d5c8b3a6ea3aa88847d73c5697ce794cb",
+    "identity": {
+      "kind": "refresh",
+      "subject": "source:codeberg-2445404",
+      "inputDigest": "4febb5591edaa6f2764fb09d31649b4196f36ddc0122a5b42a7a3dcf485fc755",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-09T17:42:17.409Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "codeberg-2445404",
+    "identity": "codeberg:2445404"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/refresh-catalog.yml",
+    "runId": 41315883150,
+    "sourceSha": "f399d7079804417d90f958658166349c467b43af"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/codeberg/codeberg-2445404.json",
+      "sha256": "180dd6b701a1531207b835a2f6728d29de658b81acf386d7e14b34ea8dbf8bbd",
+      "gitBlobSha": "7f865962a53e710b0425f65cb9f63ff2b22428e2"
+    }
+  ]
+}
