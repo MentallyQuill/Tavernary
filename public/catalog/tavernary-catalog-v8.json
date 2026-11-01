@@ -13070,7 +13070,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-11-01T06:22:59.066Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -40659,7 +40659,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "34b7ee28acc14b87cc33b810948fcbd9c7cb732f",
+        "currentSha": "d7b89add589b43ac9f5cea4a8db5ce799d766da2",
         "report": {
           "reportId": "10049751f128dfbd71e734886b1a1547172c9dc7cdd2dbf6f37cd22213b95844",
           "riskLevel": "low",
@@ -40835,12 +40835,12 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-05T10:56:41.000Z",
-        "activeWeeks12": 12,
+        "latestSourceActivityAt": "2026-10-22T18:28:25.000Z",
+        "activeWeeks12": 9,
         "weeklyActivity": [
-          true,
-          true,
-          true,
+          false,
+          false,
+          false,
           true,
           true,
           true,
@@ -40856,19 +40856,19 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 9,
+        "stars": 10,
         "forks": 0,
         "watchers": 0,
-        "aggregate": 9
+        "aggregate": 10
       },
-      "repositorySizeKb": 5834,
+      "repositorySizeKb": 4905,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-11-01T06:24:24.201Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -68170,7 +68170,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-08T14:39:08.801Z",
+      "refreshedAt": "2026-11-01T06:23:51.192Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
