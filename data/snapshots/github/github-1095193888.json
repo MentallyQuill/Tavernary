@@ -15,7 +15,7 @@
     "fork": false,
     "parent": null,
     "created_at": "2025-11-12T18:05:04.000Z",
-    "size_kb": 3601
+    "size_kb": 4726
   },
   "source_health": "healthy",
   "activity": {
@@ -85,7 +85,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-08T14:39:08.801Z",
+  "refreshed_at": "2026-11-01T01:17:53.361Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -97,7 +97,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-08T14:39:08.801Z",
+    "refreshed_at": "2026-11-01T01:16:18.747Z",
     "stale_since": null
   }
 }
