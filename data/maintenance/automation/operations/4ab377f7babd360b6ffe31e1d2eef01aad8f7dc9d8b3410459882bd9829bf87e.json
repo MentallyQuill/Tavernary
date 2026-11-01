@@ -10,7 +10,7 @@
     },
     "stage": "admitted",
     "createdAt": "2026-10-25T12:43:05.557Z",
-    "nextEligibleAt": "2026-11-01T07:00:32.025Z",
+    "nextEligibleAt": "2026-11-02T07:27:50.149Z",
     "expectedSha": null,
     "workerRunId": null,
     "retry": {
@@ -18,10 +18,10 @@
         "kind": "configuration",
         "reasonCode": "budget-exhausted"
       },
-      "transientAttempts": 3,
+      "transientAttempts": 4,
       "immediateAttempts": 0
     }
   },
-  "updatedAt": "2026-10-31T07:00:32.025Z",
+  "updatedAt": "2026-11-01T07:27:50.149Z",
   "completedAt": null
 }
