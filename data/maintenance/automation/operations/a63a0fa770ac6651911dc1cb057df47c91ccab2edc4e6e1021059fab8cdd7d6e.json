@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a63a0fa770ac6651911dc1cb057df47c91ccab2edc4e6e1021059fab8cdd7d6e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-871361642:cierru-st-stepped-thinking",
+      "inputDigest": "9169a74cbe67016ce6a57d7d89d1906bdbfbd44ac87c7aee01d3d69954675494",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-31T13:14:02.040Z",
+    "nextEligibleAt": null,
+    "expectedSha": "9cc1dc6a8a0a9cd20036468cddf9891ac1302037",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-01T00:52:17.224Z",
+  "completedAt": null
+}
