@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1c8d629a19fba402460bf09201733abe4d4a26ec7f00d0d4438fdb18a5586dfe",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1014687651:p-e-w-waidrin",
+      "inputDigest": "17579ab0e800c7023a3d767ad68091c14adc88575b8fb3384466e1488a7c7116",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-10T13:56:47.302Z",
+    "nextEligibleAt": null,
+    "expectedSha": "4cfbfe95a25c7c84a78d7e5210d5272dd34114d1",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-01T13:31:00.890Z",
+  "completedAt": null
+}
