@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "98df421d71a1ebef863908dc75dea1ea012b09433e69730cf59cc4a0c1884a27",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1175596366:prolix-oc-lumiverse",
+      "inputDigest": "554b7e5d795b25b8ce690632711b1b38855b99877b677d45251905eeb5face2e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-11-01T01:54:46.958Z",
+    "expectedSha": "8c952bc8bf42d8517405da0fff17d9399b2edc25",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-01T01:39:46.958Z",
+  "completedAt": null
+}
