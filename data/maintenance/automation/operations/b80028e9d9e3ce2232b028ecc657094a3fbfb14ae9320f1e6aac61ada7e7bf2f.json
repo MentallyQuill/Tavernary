@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b80028e9d9e3ce2232b028ecc657094a3fbfb14ae9320f1e6aac61ada7e7bf2f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1264415646:taezn-creator-notes-html-renderer",
+      "inputDigest": "c91180a58e6543fdc6e74e9e8001e86f2420773cc1e1c121b5b83a3ba20afcbe",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-11-01T04:00:51.461Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-01T03:45:51.461Z",
+  "completedAt": null
+}
