@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "9a532d049f7dee655ed86be21501637914e8a626675c23716f113126a898c987",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1146891697:hayanaga-ooba-model-reloader",
+      "inputDigest": "03952238c0ae16a857bb969f27e09bf56575945412c8b3eb6d67b395aa48d77d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-11-01T03:44:28.557Z",
+    "expectedSha": "8c952bc8bf42d8517405da0fff17d9399b2edc25",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-01T03:29:28.557Z",
+  "completedAt": null
+}
