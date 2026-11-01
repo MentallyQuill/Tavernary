@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1398187837",
+  "head_sha": "06fab1d7fefbe6bb7f4597758e39cd0b2885bb65",
+  "observed_at": "2026-11-01T13:56:53.859Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "mvu-helper",
+  "manifest": {
+    "display_name": "MVU Helper",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
