@@ -1,0 +1,30 @@
+{
+  "schema_version": 6,
+  "id": "kritblade-mvu-helper",
+  "name": "mvu-helper",
+  "kind": "extension",
+  "summary": "It's a dev framework for creating Game Logic, Game Contents and Event Trigger right inside Sillytavern character card. End user can use the auto image generation and multi-LLM-call. Mainly for content creator use.",
+  "metadata_status": "curated",
+  "source_id": "github-1398187837",
+  "frontends": ["sillytavern"],
+  "primary_function": "developer-infrastructure",
+  "tags": [
+    "add-rpg-gameplay",
+    "add-structured-reasoning",
+    "add-visual-immersion",
+    "agentic-tool-use",
+    "modular-and-extensible",
+    "multi-stage-generation"
+  ],
+  "cataloged_at": "2026-11-01T13:56:34.041Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "manual", "note": "Verified repository owner selection." }
+  }
+}
