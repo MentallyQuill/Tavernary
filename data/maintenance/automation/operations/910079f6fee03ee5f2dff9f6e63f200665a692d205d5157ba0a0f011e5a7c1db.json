@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "910079f6fee03ee5f2dff9f6e63f200665a692d205d5157ba0a0f011e5a7c1db",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1350159893:st-extensioncollection-sillytavern-worldtracker",
+      "inputDigest": "1d620292282e080c2f0035895fce981dcee45bae9d39853d182a305117bb6447",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-10T13:54:44.063Z",
+    "nextEligibleAt": null,
+    "expectedSha": "4cfbfe95a25c7c84a78d7e5210d5272dd34114d1",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-01T13:31:00.890Z",
+  "completedAt": null
+}
