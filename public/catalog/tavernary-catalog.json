@@ -66751,7 +66751,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "frontend",
-      "summary": "Self-hosted AI character roleplay app that imports SillyTavern or Chub cards, branches conversations, and keeps chats local with lorebooks and personas.",
+      "summary": "Self-hosted web app for roleplaying with AI characters: import SillyTavern or Chub cards, chat with branching message trees and swipes, add lorebooks and personas, and keep everything local in SQLite. Per the README.",
       "canonicalUrl": "https://github.com/M4Marvin/charon",
       "catalogedAt": "2026-08-05T05:26:10.866Z",
       "catalogCohort": "standard",
@@ -66764,15 +66764,9 @@
       ],
       "tags": [
         {
-          "id": "local-first",
-          "label": "Local-first",
-          "description": "Keeps its primary data and workflow on the user's own device.",
-          "facet": "trait"
-        },
-        {
-          "id": "manage-character-libraries",
-          "label": "Manage character libraries",
-          "description": "Discover, search, browse, categorize, import, or maintain collections of character cards.",
+          "id": "manage-lorebooks",
+          "label": "Manage lorebooks",
+          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
           "facet": "goal"
         },
         {
@@ -66782,21 +66776,27 @@
           "facet": "goal"
         },
         {
-          "id": "organize-chats-and-messages",
-          "label": "Organize chats and messages",
-          "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
-          "facet": "goal"
-        },
-        {
-          "id": "retrieve-relevant-context",
-          "label": "Retrieve relevant context",
-          "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
+          "id": "manage-character-libraries",
+          "label": "Manage character libraries",
+          "description": "Discover, search, browse, categorize, import, or maintain collections of character cards.",
           "facet": "goal"
         },
         {
           "id": "self-hosted",
           "label": "Self-hosted",
           "description": "Runs as infrastructure that users deploy and operate themselves.",
+          "facet": "trait"
+        },
+        {
+          "id": "local-first",
+          "label": "Local-first",
+          "description": "Keeps its primary data and workflow on the user's own device.",
+          "facet": "trait"
+        },
+        {
+          "id": "model-agnostic",
+          "label": "Model-agnostic",
+          "description": "Works across a broad range of model providers rather than requiring one model family.",
           "facet": "trait"
         }
       ],
@@ -67112,7 +67112,7 @@
           "https://github.com/M4Marvin/charon"
         ],
         "summary": [
-          "Self-hosted AI character roleplay app that imports SillyTavern or Chub cards, branches conversations, and keeps chats local with lorebooks and personas."
+          "Self-hosted web app for roleplaying with AI characters: import SillyTavern or Chub cards, chat with branching message trees and swipes, add lorebooks and personas, and keep everything local in SQLite. Per the README."
         ],
         "kind": [
           "frontend"
@@ -67121,30 +67121,30 @@
           "Frontend"
         ],
         "tags": [
-          "Local-first",
-          "stored locally",
-          "on-device data",
-          "local data ownership",
-          "Manage character libraries",
-          "character browsing",
-          "card library",
-          "character discovery",
+          "Manage lorebooks",
+          "World Info management",
+          "worldbook organization",
+          "loredeck management",
           "Manage characters and personas",
           "persona management",
           "character management",
           "identity management",
-          "Organize chats and messages",
-          "chat organization",
-          "message bookmarks",
-          "conversation search",
-          "Retrieve relevant context",
-          "context retrieval",
-          "relevant recall",
-          "knowledge retrieval",
+          "Manage character libraries",
+          "character browsing",
+          "card library",
+          "character discovery",
           "Self-hosted",
           "self-hostable",
           "run your own server",
-          "local deployment"
+          "local deployment",
+          "Local-first",
+          "stored locally",
+          "on-device data",
+          "local data ownership",
+          "Model-agnostic",
+          "bring your own model",
+          "BYOM",
+          "provider independent"
         ],
         "frontends": [
           "charon"

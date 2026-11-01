@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "90ddcd8bf1486b4774f251f8150f63f41c2db7d617112ce2d4e1be88a92f705c",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1282991131:m4marvin-charon",
+      "inputDigest": "962387bded5e74f45190415c9f6605f4998288e633897de1bda56c1bc3ef0c40",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1282991131",
+    "identity": "github:1282991131"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41267422812,
+    "sourceSha": "36463f4b15ffdaa40395e06cb466de3d9377e805"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/m4marvin-charon.json",
+      "sha256": "8400cd660622db99aff373e2fbaeebe06286288e0c39473c51c744e2d50cc0fc",
+      "gitBlobSha": "7bcbf5ee5ddfd97d866a49ec7dc2c11bfd351352"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/90ddcd8bf1486b4774f251f8150f63f41c2db7d617112ce2d4e1be88a92f705c.json",
+      "sha256": "e891c27d9f9e104b8b7b22220f1f4f73919081e635588a4435c1658b1bf4b315",
+      "gitBlobSha": "b31614727c749a6d48d764d26cd47694f512cf8a"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "m4marvin-charon",
+  "sourceId": "github-1282991131",
+  "sourceIdentity": "github:1282991131",
+  "inputDigest": "962387bded5e74f45190415c9f6605f4998288e633897de1bda56c1bc3ef0c40",
+  "fingerprint": "b94112a6bf3534a984338e7753afabfd7178a10b4aa6b233a59e8acc7371263f",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "6acbc4859ddb529e5a8e17764ffbec9c51ed98b7ce64b77ecb9ede288ebe255d",
+  "outputDigest": "f8b4a391631112e5e08c03859a1073f133ef67207d27b828c116eae0ad9a6482",
+  "headSha": "b04926fd072541e99ec5855a0bbe5b5a4eaad252",
+  "observedAt": "2026-11-01T03:01:16.004Z"
+}
