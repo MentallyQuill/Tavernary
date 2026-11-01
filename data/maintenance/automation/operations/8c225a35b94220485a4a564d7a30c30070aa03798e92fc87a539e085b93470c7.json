@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8c225a35b94220485a4a564d7a30c30070aa03798e92fc87a539e085b93470c7",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1316434519:disreconnected-sillytavern-gfx-repair",
+      "inputDigest": "e041aa8b407da0ef3d30435a23ab7dddacdb606c13b963f3b7994201e24c841f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-11-01T01:54:46.958Z",
+    "expectedSha": "0540b38d249925cd82db201c9a7dd88abd7b611f",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-01T01:39:46.958Z",
+  "completedAt": null
+}
