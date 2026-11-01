@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "dfaker-st-char-powersearch",
+  "source_id": "github-1044610257",
+  "source_identity": "github:dfaker/st-char-powersearch",
+  "evidence_fingerprint": "f86fb05719ee859ce61bda9314af88eb37bf90e43b43311a8bd74417a9a2c238",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-10-31T12:34:57.442Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

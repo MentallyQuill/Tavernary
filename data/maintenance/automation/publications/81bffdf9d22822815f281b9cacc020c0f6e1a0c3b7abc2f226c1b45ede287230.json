@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "81bffdf9d22822815f281b9cacc020c0f6e1a0c3b7abc2f226c1b45ede287230",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1079428625:furitaocanon-sillytavern-personas",
+      "inputDigest": "a7470e52538d24ed07e427bd44fe98ecd71804926b9f844f409837c7d11a4b9a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1079428625",
+    "identity": "github:1079428625"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41253161292,
+    "sourceSha": "3133cd0471ca5d4e4770ae34a753d09a29fc0a4d"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/furitaocanon-sillytavern-personas.json",
+      "sha256": "4e69d882009dc7947a7eaecabb2dd5fa1c134e743ef6f7c283659b5321c6fcfe",
+      "gitBlobSha": "48df1eb1e1518741c9fe384d8c90109f9eb91cca"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/81bffdf9d22822815f281b9cacc020c0f6e1a0c3b7abc2f226c1b45ede287230.json",
+      "sha256": "e7faec40f36b53a40e074fe631261082570677b575b1a9209338f72e9f96b0d7",
+      "gitBlobSha": "7e3e0e62252e64dd9d206cacebb978b85e688630"
+    }
+  ]
+}

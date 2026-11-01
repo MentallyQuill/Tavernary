@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a63a0fa770ac6651911dc1cb057df47c91ccab2edc4e6e1021059fab8cdd7d6e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-871361642:cierru-st-stepped-thinking",
+      "inputDigest": "9169a74cbe67016ce6a57d7d89d1906bdbfbd44ac87c7aee01d3d69954675494",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-31T13:14:02.040Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-871361642",
+    "identity": "github:871361642"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41200442090,
+    "sourceSha": "34bf77001f2de9edc90b817930b33f6ec8006613"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/cierru-st-stepped-thinking.json",
+      "sha256": "8a896c9c4b6657f5ea3afd82a989b654f064503dd560a2ee92567027f3519702",
+      "gitBlobSha": "a195cbfefba99e854ed8d9274e987b65edd49bb5"
+    }
+  ]
+}

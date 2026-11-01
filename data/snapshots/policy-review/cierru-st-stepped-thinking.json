@@ -5,12 +5,9 @@
   "source_identity": "github:cierru/st-stepped-thinking",
   "evidence_fingerprint": "e02309535b13ec49d072028d3ab17c85405b8b3ccdadd3204467f81e75c04326",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-24T13:05:06.317Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-09-24T13:05:06.317Z"
-  },
+  "reviewed_at": "2026-10-31T12:19:12.959Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

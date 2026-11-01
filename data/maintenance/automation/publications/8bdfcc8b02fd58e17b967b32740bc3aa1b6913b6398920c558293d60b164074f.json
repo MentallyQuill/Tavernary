@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8bdfcc8b02fd58e17b967b32740bc3aa1b6913b6398920c558293d60b164074f",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-752014538:sillytavern-extension-silence",
+      "inputDigest": "2e043642771fb906f3229627c6fe6e60316edbf19e3bfbd4158b2aec64e79a33",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-752014538",
+    "identity": "github:752014538"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41257095643,
+    "sourceSha": "c1fa9829abf571b52e6ed1a360e0ea05fe01736a"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/sillytavern-extension-silence.json",
+      "sha256": "5c33ff1b571874ce2cd461b031884d2d3afb012d21f7e2614bc87be659326a98",
+      "gitBlobSha": "83edb27315e9d2c781b90dfadd4abde0651bfcb8"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/8bdfcc8b02fd58e17b967b32740bc3aa1b6913b6398920c558293d60b164074f.json",
+      "sha256": "830731d830df476d8372af86c838edc94e2f07dbf9f0787d990636c02f94640b",
+      "gitBlobSha": "8ec6caa808c3ad4edd78f33f38609c7cdd66680f"
+    }
+  ]
+}

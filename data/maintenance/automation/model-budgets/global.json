@@ -17470,8 +17470,11 @@
         "runId": 41200442090,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 8511
+      }
     },
     {
       "id": "99d13c644a55969d7f106ca05da781b1b3dcb01eb276e18be3af31441d389e1d",
@@ -17489,8 +17492,11 @@
         "runId": 41200442090,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "87462e85f4154e4fac2183b3476b90cb2a6260a482be2f04db12db275bf21281",
@@ -17552,8 +17558,11 @@
         "runId": 41201620954,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 7958
+      }
     },
     {
       "id": "281627b5d048606b39ff48fac191db26d0023fdaebef37f26ddc88aef80a9dea",
@@ -17571,8 +17580,11 @@
         "runId": 41201620954,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "2168994f298bc512b478a8fd21f17a787f898c8bd7a260b3d49d9a2795ab0d82",
@@ -17672,8 +17684,11 @@
         "runId": 41253161292,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 43131
+      }
     },
     {
       "id": "63b7745fec468d605e1efeb6160ce18b523b55eb6d5ded00b335074012d91602",
@@ -17691,8 +17706,11 @@
         "runId": 41253161292,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "9f62ee80e912120bd45857b5f0f4ccb490b05cb3b6a53d97d92775140fd84d2c",
@@ -17710,8 +17728,11 @@
         "runId": 41257095643,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 2,
+        "tokens": 85507
+      }
     },
     {
       "id": "d7635b265351420e39171fbf2264ca11f68cebea76e02d509585b18dc5823dc4",
@@ -17729,8 +17750,11 @@
         "runId": 41257095643,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     }
   ]
 }

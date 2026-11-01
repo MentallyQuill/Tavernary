@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ad526194039ae60d5df71d122196053c42f5618f61c491f2970392a6aa333103",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1044610257:dfaker-st-char-powersearch",
+      "inputDigest": "3d2f9e9aa0a24f34a2e8b8becc0231804074e25dc44e9e25f36b25edfdd7d7e3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-31T13:50:31.763Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1044610257",
+    "identity": "github:1044610257"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41201620954,
+    "sourceSha": "843b7ee7c5ac7db6a145e3f5c17c302e9a4e3d1f"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/dfaker-st-char-powersearch.json",
+      "sha256": "9deedbad5790af296b99e56f5ed7c103096ac452dcf65a5162efd4e776301fd3",
+      "gitBlobSha": "87c582068c51d0b7c4b86148f8402cb52a6653d7"
+    }
+  ]
+}

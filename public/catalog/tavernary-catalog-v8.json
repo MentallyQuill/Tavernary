@@ -40420,7 +40420,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "A SillyTavern extension that organizes personas into custom groups and tags for easier management. It includes folders, QuickPersona support, theme integration, and a backup feature for persistent settings.",
+      "summary": "SillyTavern Personas is a Persona Groups Manager extension that organizes personas into custom groups, tags, and folders with QuickPersona support, plus backups and persistent settings (README, \"Features\").",
       "canonicalUrl": "https://github.com/Furitaocanon/SillyTavern-Personas",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -40597,7 +40597,7 @@
           "https://github.com/Furitaocanon/SillyTavern-Personas"
         ],
         "summary": [
-          "A SillyTavern extension that organizes personas into custom groups and tags for easier management. It includes folders, QuickPersona support, theme integration, and a backup feature for persistent settings."
+          "SillyTavern Personas is a Persona Groups Manager extension that organizes personas into custom groups, tags, and folders with QuickPersona support, plus backups and persistent settings (README, \"Features\")."
         ],
         "kind": [
           "extension"
@@ -109085,7 +109085,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Extension-Silence is a SillyTavern frontend extension that mutes the audio player. It automatically prevents audio playback during the roleplay session without requiring manual volume adjustments.",
+      "summary": "Extension-Silence provides a Silence player that can help if the browser tab is being killed in the background; open the Extensions menu, start Silence player, and begin playback (README).",
       "canonicalUrl": "https://github.com/SillyTavern/Extension-Silence",
       "catalogedAt": "2026-07-26T19:32:09.554Z",
       "catalogCohort": "standard",
@@ -109098,16 +109098,16 @@
       ],
       "tags": [
         {
-          "id": "automate-roleplay-workflows",
-          "label": "Automate roleplay workflows",
-          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
+          "id": "add-music-and-audio",
+          "label": "Add music and audio",
+          "description": "Add music, ambient sound, playlists, or other non-speech audio to roleplay.",
           "facet": "goal"
         },
         {
-          "id": "customize-the-interface",
-          "label": "Customize the interface",
-          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
-          "facet": "goal"
+          "id": "background-operation",
+          "label": "Background operation",
+          "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
+          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -109262,7 +109262,7 @@
           "https://github.com/SillyTavern/Extension-Silence"
         ],
         "summary": [
-          "Extension-Silence is a SillyTavern frontend extension that mutes the audio player. It automatically prevents audio playback during the roleplay session without requiring manual volume adjustments."
+          "Extension-Silence provides a Silence player that can help if the browser tab is being killed in the background; open the Extensions menu, start Silence player, and begin playback (README)."
         ],
         "kind": [
           "extension"
@@ -109271,15 +109271,14 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Automate roleplay workflows",
-          "automation",
-          "workflow automation",
-          "task automation",
-          "triggered actions",
-          "Customize the interface",
-          "interface theming",
-          "layout customization",
-          "UI personalization"
+          "Add music and audio",
+          "ambient audio",
+          "roleplay music",
+          "soundscapes",
+          "Background operation",
+          "asynchronous processing",
+          "quiet generation",
+          "background tasks"
         ],
         "frontends": [
           "SillyTavern"
