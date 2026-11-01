@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ad526194039ae60d5df71d122196053c42f5618f61c491f2970392a6aa333103",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1044610257:dfaker-st-char-powersearch",
+      "inputDigest": "3d2f9e9aa0a24f34a2e8b8becc0231804074e25dc44e9e25f36b25edfdd7d7e3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-31T13:50:31.763Z",
+    "nextEligibleAt": null,
+    "expectedSha": "9cc1dc6a8a0a9cd20036468cddf9891ac1302037",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-01T00:52:17.224Z",
+  "completedAt": null
+}
