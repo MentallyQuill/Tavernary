@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "be05c6d74f2c2939761e22d6d95d5078e0a17ec87aeda2f74f0c87f402399176",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-850754623:sillytavern-extension-mermaid",
+      "inputDigest": "09ea85da126bef1df16e50327d056fe1061f592796e2f31dbf15517df959b2a8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-11-01T04:00:51.461Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-01T03:45:51.461Z",
+  "completedAt": null
+}
