@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c84c5ab2c0ad12621dcfbfca920936982c49c6ceed1c1cf71085494cecd12174",
+    "identity": {
+      "kind": "refresh",
+      "subject": "source:catalog-maintenance",
+      "inputDigest": "9f2cc3eae0f187d19461c61a82f8865aa4695deed19e0bfc57ceded7852a9dfb",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-11T13:56:41.174Z",
+    "nextEligibleAt": "2026-11-01T23:12:09.433Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-01T22:57:09.433Z",
+  "completedAt": null
+}
