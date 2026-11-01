@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c8f807c6c52db39222818e0105905096687a718d0b41747588aa7f4763b829c2",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-811061856:sillytavern-extension-promptinspector",
+      "inputDigest": "e29182b11ba648338dd9b4de1d35e5dc43877fc233efb9ccdcee6c358e1c76f9",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-08T14:39:08.801Z",
+    "nextEligibleAt": "2026-11-01T09:12:51.910Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-01T08:57:51.910Z",
+  "completedAt": null
+}
