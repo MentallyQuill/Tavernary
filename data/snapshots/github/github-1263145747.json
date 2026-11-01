@@ -9,18 +9,33 @@
     "url": "https://github.com/starlitcode/Lumiverse-Auto-Retry",
     "description": "Lumiverse extension that retries a reply when something goes wrong: an error, an empty reply, a stream that stalls, a reply cut off mid-sentence, or a refusal. Every check, phrase and retry note can be read and changed in its settings.",
     "default_branch": "stable",
-    "head_sha": "1e40ddb30ae92d5b5170df5400dcf5a35b94df7e",
-    "head_committed_at": "2026-10-10T19:51:20.000Z",
+    "head_sha": "73db36c1b40436e65ee1783e6bb3c77486c40a59",
+    "head_committed_at": "2026-11-01T13:03:05.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-08T17:04:25.000Z",
-    "size_kb": 17763
+    "size_kb": 22250
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-10T18:42:49.000Z",
+    "latest_source_activity_at": "2026-10-30T14:12:53.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-30T14:12:53.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-25T20:24:55.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-18T22:47:55.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-05",
         "latest_at": "2026-10-10T18:42:49.000Z",
@@ -65,42 +80,27 @@
         "week_start": "2026-08-10",
         "latest_at": "2026-08-16T23:31:50.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-03",
-        "latest_at": "2026-08-09T23:25:51.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-08-02T17:54:13.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-20",
-        "latest_at": "2026-07-24T21:05:06.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-10T21:57:26.129Z",
+    "baseline_completed_at": "2026-11-01T21:22:14.340Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "1e40ddb30ae92d5b5170df5400dcf5a35b94df7e"
+    "evidence_head_sha": "73db36c1b40436e65ee1783e6bb3c77486c40a59"
   },
   "community": {
-    "stars_count": 4,
-    "forks_count": 0,
+    "stars_count": 5,
+    "forks_count": 1,
     "watchers_count": 0,
-    "aggregate": 4
+    "aggregate": 6
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-10T21:59:47.654Z",
+  "refreshed_at": "2026-11-01T21:24:19.347Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -111,7 +111,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-10T21:57:26.129Z",
+    "refreshed_at": "2026-11-01T21:22:14.340Z",
     "stale_since": null
   }
 }
