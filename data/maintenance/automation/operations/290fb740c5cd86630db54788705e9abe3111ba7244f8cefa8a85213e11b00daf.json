@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "290fb740c5cd86630db54788705e9abe3111ba7244f8cefa8a85213e11b00daf",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1005915564:leandrojofre-sillytavern-stat-us-maximus",
+      "inputDigest": "613fb2a06c956e9f20b7de4bf30a2811bd315cdba0fab395c5f28c1187cb55b7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-10T21:59:37.828Z",
+    "nextEligibleAt": null,
+    "expectedSha": "4cfbfe95a25c7c84a78d7e5210d5272dd34114d1",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-01T13:31:00.890Z",
+  "completedAt": null
+}
