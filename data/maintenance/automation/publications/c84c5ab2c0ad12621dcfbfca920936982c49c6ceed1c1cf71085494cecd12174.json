@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c84c5ab2c0ad12621dcfbfca920936982c49c6ceed1c1cf71085494cecd12174",
+    "identity": {
+      "kind": "refresh",
+      "subject": "source:catalog-maintenance",
+      "inputDigest": "9f2cc3eae0f187d19461c61a82f8865aa4695deed19e0bfc57ceded7852a9dfb",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-11T13:56:41.174Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "catalog-maintenance",
+    "identity": "github-reactions:MentallyQuill/Tavernary"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/refresh-catalog.yml",
+    "runId": 41360747787,
+    "sourceSha": "5b31f76827cc204ada914bfcb0c7257f171179a6"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/github-refresh.json",
+      "sha256": "9b027e3a07dee232c7c81131aecd6103e0e7a1449a4e7d0e85c1dfdc45a0032b",
+      "gitBlobSha": "dd9fd80b82c3240fb05e889b11b6feb008de1b81"
+    },
+    {
+      "path": "data/snapshots/github/kits/232-153.json",
+      "sha256": "7f0388ac9b10f77b885bab074d62e8b13dd005bef97f71c0177ba4a2b8ee8da4",
+      "gitBlobSha": "0440d76e4df0a70ced8d5a1776c9d4b67959983a"
+    },
+    {
+      "path": "data/snapshots/github/kits/aiko-s-loadout-30.json",
+      "sha256": "66dd6cc7fb136cbf28b4ba5a71088055b82090e4194bc80ba5038be19b8d1856",
+      "gitBlobSha": "7c375211114a36540d5b67b7bcd02a3f3061ae3e"
+    },
+    {
+      "path": "data/snapshots/github/kits/anotha-one-717.json",
+      "sha256": "2c83c18fda66b8a4af38e0d5f354895116ed355d5be44fb4c5f2ec3e971ab92c",
+      "gitBlobSha": "7c88137781ab851a7f72a2b44b00b0a37dfce25b"
+    },
+    {
+      "path": "data/snapshots/github/kits/burpp-570.json",
+      "sha256": "40d48fa39bcf649a2383c937025c92912461f3f9df91eb1a1fb83b58f587c001",
+      "gitBlobSha": "0811340709ac3a3b45d43ccd5644ced24c284f65"
+    },
+    {
+      "path": "data/snapshots/github/kits/dragonx-654.json",
+      "sha256": "ec29e91a2bc5eb7199cec9b83f0dc1adc24e839516e6bc8d180eab5af81b422e",
+      "gitBlobSha": "762e9e0a2bb0dfcf85911f802232a4fb25901255"
+    },
+    {
+      "path": "data/snapshots/github/kits/hart-kits-1-744.json",
+      "sha256": "c511153e599c7e69bb25578cb60081249433e7929cf83b8de6232e624e96e48d",
+      "gitBlobSha": "10d4dbbdb348d6cc79ea48b77a180bd9676c360d"
+    },
+    {
+      "path": "data/snapshots/github/kits/hart-s-extension-list-775.json",
+      "sha256": "b83704b64439bb89b5ca35e6689efe13d4af40a9571b3ce8392706bef5622152",
+      "gitBlobSha": "ffbd1f358303e80d1baa6a0ea5bfc07713f016a8"
+    },
+    {
+      "path": "data/snapshots/github/kits/idk-bro-716.json",
+      "sha256": "fc15b02d7a177e23a6dc5345b00e33088cb9c5f480749f4a68347abdec718b3c",
+      "gitBlobSha": "190ba515e52bdecb616f103c7b39b46a308fb30d"
+    },
+    {
+      "path": "data/snapshots/github/kits/juuzz-31.json",
+      "sha256": "b90ecb830ebf37b8efde4022baed70e70adeec79a3fa66149811fecd2624990d",
+      "gitBlobSha": "b63f1fca32472b14742c323549cec5cd182d6078"
+    },
+    {
+      "path": "data/snapshots/github/kits/jvh-192.json",
+      "sha256": "8a6b2cf05b2c587ea5d4ad5dbd324e645c16a07a7ddbadedd40d91955bc41fd2",
+      "gitBlobSha": "383ac279f792c27e1cea359a5aed3b6a19c3b6f0"
+    },
+    {
+      "path": "data/snapshots/github/kits/lumi-815.json",
+      "sha256": "c302d9277e4d6b727fb30ee7b998ca8caeeb9a5f75d0683fc9b5fcafc15e85fd",
+      "gitBlobSha": "a35b4ec6b4e3fd1a90d8789ba726dd63f9af06c7"
+    },
+    {
+      "path": "data/snapshots/github/kits/megumin-best-63.json",
+      "sha256": "ba1f65641ec7d8bfab4eda6dce230b79ed123b7a53b90883bdd0d2d518df43dd",
+      "gitBlobSha": "f203ec895cabd9a4a2fb8e28f02973f8e8b701ca"
+    },
+    {
+      "path": "data/snapshots/github/kits/mike-s-simple-setup-655.json",
+      "sha256": "a5f6b87513b8c6a62139d6c8e86d11f120b36f5bcffecec7e590afc55c8453dc",
+      "gitBlobSha": "4f11b14b9a430be890dae3536bc1c6ffd5d3fada"
+    },
+    {
+      "path": "data/snapshots/github/kits/new-715.json",
+      "sha256": "4bc74bf7bc8970cd3cc1130b983e33a56e0ed29d5ca528c84370b26ae8916ad5",
+      "gitBlobSha": "82743e2e97d17582694dbd16b6bf09b32575d644"
+    },
+    {
+      "path": "data/snapshots/github/kits/retiredhippie-s-go-to-780.json",
+      "sha256": "449a6ab91c7f240dd6ebe52c4e68f426556203cbb51af7a7356cec9eff9680a3",
+      "gitBlobSha": "19ef384a7bdf00da0ddb6ac276242bab7c96968e"
+    },
+    {
+      "path": "data/snapshots/github/kits/rp-kit1-633.json",
+      "sha256": "c96b6452a7851824829722b3be536223d44e0f9bd1deb6a323911fb7d0d90545",
+      "gitBlobSha": "61094fa16400ce5ad006b330cbc880c68b25d4bd"
+    },
+    {
+      "path": "data/snapshots/github/kits/super-awesome-test-kit-109.json",
+      "sha256": "3600ba566f55deeafd348b2ebb01208a1cbe441ed37b4de3ba166799cd586365",
+      "gitBlobSha": "aabd6aace465c621d650241e53ca58b1c9cbebe0"
+    },
+    {
+      "path": "data/snapshots/github/kits/test-135.json",
+      "sha256": "ce6db031c4bfa24382d536ff925f659a3f005e087987d9b4b33258d1316829f5",
+      "gitBlobSha": "4958e62445cef9a4e59100a4cf214337e97d76fc"
+    },
+    {
+      "path": "data/snapshots/github/kits/test-visual-novel-kit-544.json",
+      "sha256": "525ef0e62b8dcc2dae67ed846322205d2c22c635fdf347ee119995e647a679d9",
+      "gitBlobSha": "4da1ae950af2c10f068c19ec4c5603d7ce9348b2"
+    },
+    {
+      "path": "data/snapshots/github/kits/teste-116.json",
+      "sha256": "532b5ab8f2e0593f97631ce89d4e6e99190f4ccfa5358010cb05047bc2963ebe",
+      "gitBlobSha": "7ab553b6e7d4475a31f8824a4a8430848ca4c18c"
+    },
+    {
+      "path": "data/snapshots/github/kits/the-kit-464.json",
+      "sha256": "8bcb92f288dbddd7408b4bf036e12f86f6c241553742d246ecc4f65daf9a567f",
+      "gitBlobSha": "54795ddc370024d3fa5dfeafd3171957870d54ce"
+    },
+    {
+      "path": "data/snapshots/github/kits/the-kit-773.json",
+      "sha256": "4999874ba2a7d0771b399444b11ed17439b4c7b62bdfc83d2d9feab6b82a39ca",
+      "gitBlobSha": "bda31053b6abb1903f4e1ceec1466f4e44bf3b50"
+    },
+    {
+      "path": "data/snapshots/github/kits/ultimate-harry-potter-18.json",
+      "sha256": "39462abb1027892d4c8446134a800ae1806afd154c37323dda2881cda8019fa9",
+      "gitBlobSha": "8c44644e0e56a85a50ed4c30e7c43b7290113cce"
+    },
+    {
+      "path": "data/snapshots/github/kits/tung-tung-896.json",
+      "sha256": "f1a6ef3cb1ccb5d56b16a73e1e4a6233d7e3fd3948d7a3c6cddcce47ec0d3c0e",
+      "gitBlobSha": "a4ae8fa85145ac0ffb0d5785dcb61e94ceb77e21"
+    },
+    {
+      "path": "data/snapshots/github/kits/111-932.json",
+      "sha256": "faab9d3ca768cb93a8ef4a8299add2632a46ac93391a4b759d8b9c8f4cf3e156",
+      "gitBlobSha": "880c4ffeea2cea337d0667d8cebed482287f101d"
+    },
+    {
+      "path": "data/snapshots/github/kits/kit-953.json",
+      "sha256": "ba593813385029afb9100c272600f7942a392d3e42341b3ef9f75891c683b70a",
+      "gitBlobSha": "f83758cceea430fc087a2fe5218101b4cdd6c3da"
+    },
+    {
+      "path": "data/snapshots/github/kits/my-kit-1014.json",
+      "sha256": "f0a7a177f6d2b5323da4ae3457f287b665356a75039bf4bc6e5e4c4acf18137e",
+      "gitBlobSha": "41350dc3a7635f6e4327b5d005f6de041da81b38"
+    },
+    {
+      "path": "data/snapshots/github/kits/silly-tavern-1015.json",
+      "sha256": "1439bb018ab375ab8841215c3d5ee8068162406e924cd8d432939d304fdbd005",
+      "gitBlobSha": "128a008cdab7c134d648f66e68afaffefa9035f2"
+    },
+    {
+      "path": "data/snapshots/github/kits/jjn-1021.json",
+      "sha256": "5a1b17867210627886a4cd2a362b51aa6d2a6a7b13842cdfeb4b3109d3a4a573",
+      "gitBlobSha": "fb7742ff3debda4d6d7389d82489380ea597f0b0"
+    },
+    {
+      "path": "data/snapshots/github/kits/hart-s-extension-list-1019.json",
+      "sha256": "848d66facc5b869b13ad6082d6c9d944d3257a6559a89fc810c050a1784b2e78",
+      "gitBlobSha": "3c745ca909cd0b02d7ae7244ba4fd72ffc7c7929"
+    }
+  ]
+}

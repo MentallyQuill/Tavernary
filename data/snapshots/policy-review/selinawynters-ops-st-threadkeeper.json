@@ -5,12 +5,9 @@
   "source_identity": "github:selinawynters-ops/st---threadkeeper",
   "evidence_fingerprint": "9e8385de953dd59f05801a187eeb3c59a43c7846d7024cdde3fc05c2f4ba62a4",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-12T08:54:05.186Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-12T08:54:05.186Z"
-  },
+  "reviewed_at": "2026-11-02T14:49:15.046Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

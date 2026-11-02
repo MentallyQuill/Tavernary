@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b8478ef959f0b257d2fd80ddafc117d6a1884fceed1933150adea71309c67d82",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1294022879:japolino-inlay-illustrator",
+      "inputDigest": "d9291e1abf5c866ec5d540e549b76f22728dfb0c24c4f1668d4a025bd85d244f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-13T14:48:28.822Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1294022879",
+    "identity": "github:1294022879"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41467794338,
+    "sourceSha": "c052ebb648b0d4b3ecd098dadddeaf544fda05a5"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/japolino-inlay-illustrator.json",
+      "sha256": "de23b663c45aa0b198b7bd78b18575be2b0c51ff7756daf6c268bb3fc3e7c5c6",
+      "gitBlobSha": "7c86e653f3fdba7d936ea4175dd466202e8ad91f"
+    }
+  ]
+}

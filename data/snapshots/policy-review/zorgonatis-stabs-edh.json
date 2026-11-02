@@ -5,12 +5,9 @@
   "source_identity": "github:zorgonatis/stabs-edh",
   "evidence_fingerprint": "99a1ea63e23f298bbe96b7ec00be746136f892c5fe2c68eefa0d9f6cc75d0775",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-19T12:10:44.926Z",
-  "retry": {
-    "attempts": 9,
-    "last_failure_at": "2026-09-19T12:10:44.926Z"
-  },
+  "reviewed_at": "2026-11-02T14:16:23.687Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

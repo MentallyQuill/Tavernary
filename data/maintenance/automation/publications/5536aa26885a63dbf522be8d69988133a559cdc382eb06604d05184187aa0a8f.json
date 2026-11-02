@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5536aa26885a63dbf522be8d69988133a559cdc382eb06604d05184187aa0a8f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1181949380:cgstever-statefullore",
+      "inputDigest": "99a0022c8858d53ca8f77b16fbb0e1d8b2234115334349dc28ba269fedcff07b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-13T14:48:28.307Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1181949380",
+    "identity": "github:1181949380"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41466532220,
+    "sourceSha": "5ab6c3bfb31c2dafb02e64e8a9f924ea149fbedd"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/cgstever-statefullore.json",
+      "sha256": "fb345ea7fc4aa420482ac54938a6c2d2aae68d7a6f110c106d9919610e1fd9eb",
+      "gitBlobSha": "e7e76de842efa527e6924c2131dfca27dbb9068e"
+    }
+  ]
+}

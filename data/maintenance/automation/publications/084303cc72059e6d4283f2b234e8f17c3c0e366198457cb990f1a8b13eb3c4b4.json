@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "084303cc72059e6d4283f2b234e8f17c3c0e366198457cb990f1a8b13eb3c4b4",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1100996755:zorgonatis-stabs-edh",
+      "inputDigest": "0a1fbc1666a2ab5bd4264081ae4d8d1a9afe98eef91b6477584cd78adbc948d1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-13T14:46:35.617Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1100996755",
+    "identity": "github:1100996755"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41460066019,
+    "sourceSha": "9856fd05851e7a91ae76a0ba3a6d83f8e4d515d0"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/zorgonatis-stabs-edh.json",
+      "sha256": "1814de4013c44ba274e783548e0a2e4d91c7823ee687a27bd268d954c5b7a7f1",
+      "gitBlobSha": "e194e27fbd8fe46d60e9acfdf400221b432477be"
+    }
+  ]
+}

@@ -1,34 +1,34 @@
 {
   "schema_version": 3,
-  "mode": "project",
-  "started_at": "2026-10-11T13:56:30.359Z",
-  "completed_at": "2026-10-11T13:56:41.174Z",
+  "mode": "incremental",
+  "started_at": "2026-11-01T23:10:59.793Z",
+  "completed_at": "2026-11-01T23:10:59.793Z",
   "counts": {
-    "total": 1,
-    "checked": 1,
-    "changed": 1,
+    "total": 0,
+    "checked": 0,
+    "changed": 0,
     "unchanged": 0,
     "provisional": 1,
     "degraded": 0,
     "unavailable": 4,
     "failed": 0,
     "compared": 0,
-    "baseline": 1,
+    "baseline": 0,
     "fallback": 0
   },
   "api": {
-    "graphql_requests": 1,
-    "graphql_points": 1,
-    "graphql_remaining": 4996,
-    "rest_requests": 19
+    "graphql_requests": 0,
+    "graphql_points": 0,
+    "graphql_remaining": null,
+    "rest_requests": 0
   },
   "providers": {
     "github": {
-      "checked": 1,
-      "changed": 1,
+      "checked": 0,
+      "changed": 0,
       "failed": 0,
-      "requests": 20,
-      "remaining": 4996
+      "requests": 0,
+      "remaining": null
     },
     "codeberg": {
       "checked": 0,
@@ -38,15 +38,8 @@
       "remaining": null
     }
   },
-  "duration_ms": 10815,
-  "source_timings": [
-    {
-      "source_id": "github-1396079564",
-      "outcome": "baseline",
-      "duration_ms": 9535,
-      "error_code": null
-    }
-  ],
-  "snapshot_changes": true,
+  "duration_ms": 0,
+  "source_timings": [],
+  "snapshot_changes": false,
   "deployment_requested": false
 }

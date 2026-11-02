@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "50ea2ec89ba5928a2d47866460d17cee68b7e8cc60e792d9a13a12e995744d53",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-920038768:bmen25124-sillytavern-custom-scenario",
+      "inputDigest": "36658fc9848546c7e50b2e28bbfda6db0a149c94c50ac0f9b1b156f33e05e023",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-13T14:48:25.743Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-920038768",
+    "identity": "github:920038768"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41462698828,
+    "sourceSha": "65b7643b45716cbdd0183f99b519c96f0bec3586"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/bmen25124-sillytavern-custom-scenario.json",
+      "sha256": "733d9e6fd5a5711d9278b0fc6fd9a13d5f08a232883d9c6ea0d81fd49b01c18e",
+      "gitBlobSha": "96dc6972ae551f1f38f0b01181e61f59f28e845f"
+    }
+  ]
+}

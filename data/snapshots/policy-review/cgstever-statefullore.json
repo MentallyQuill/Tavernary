@@ -5,12 +5,9 @@
   "source_identity": "github:cgstever/statefullore",
   "evidence_fingerprint": "0b26a77b8bc6c4a3ec93f168e6faee50deae20f2d43606c7f8d0913bac3a8d06",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-17T12:50:52.097Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-17T12:50:52.097Z"
-  },
+  "reviewed_at": "2026-11-02T14:57:05.396Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

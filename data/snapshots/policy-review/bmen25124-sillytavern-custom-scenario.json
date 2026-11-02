@@ -5,12 +5,9 @@
   "source_identity": "github:bmen25124/sillytavern-custom-scenario",
   "evidence_fingerprint": "8daca122cae3d364f8dea6c5a26e3fa351e700955c90798af351a6a9ce2b29f6",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-06T11:59:15.657Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-06T11:59:15.657Z"
-  },
+  "reviewed_at": "2026-11-02T14:32:58.291Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

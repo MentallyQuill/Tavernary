@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "bc013f8b32c637cb9ffb088d638809372f4e1d0ba7cfcc766fdb9581619b11d6",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1311748930:aeoness-swipe-sculpt",
+      "inputDigest": "cbb9544f73991d140b62daa3a023ea787e54fa0534782502375092f76fcaeb85",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-13T14:45:48.335Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1311748930",
+    "identity": "github:1311748930"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41457497350,
+    "sourceSha": "b46b45fc9305ed0921ce2b16d87e985c0cd85012"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/aeoness-swipe-sculpt.json",
+      "sha256": "4009beed5e3778b174c0a0b9227bb22d8975361c21831b00fb10cddb530d914b",
+      "gitBlobSha": "7b56bcc319fd5845b506f3198b5a0b7afe7859c1"
+    }
+  ]
+}

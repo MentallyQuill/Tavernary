@@ -5,12 +5,9 @@
   "source_identity": "github:japolino/inlay-illustrator",
   "evidence_fingerprint": "9125b506e1744fcfab347b1821c88ac5bfbd2f58d61129234bb5be3a717eec35",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-27T13:22:42.648Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-27T13:22:42.648Z"
-  },
+  "reviewed_at": "2026-11-02T15:05:07.915Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "aa999343b7a52f5ad0ff71e8464adee2830f6cb08090e38a1b7b831397e03950",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1140294800:tyranomaster-expressions-plus",
+      "inputDigest": "daa5696cd00fe6895623bef6f20721f6fd0782e2c2a65d30bc763f8f56617de3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-13T14:48:26.510Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1140294800",
+    "identity": "github:1140294800"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41464026100,
+    "sourceSha": "515cd693e6e31628d8c2e486038217b92553bed1"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/tyranomaster-expressions-plus.json",
+      "sha256": "f58af876bd02ed164a7a3f50f4ed10ae6f70c0f19fa3d33f85b7e094c9d7d2d4",
+      "gitBlobSha": "a35bc9ddc8b63e19c273acf4d508d6ddd71fe908"
+    }
+  ]
+}

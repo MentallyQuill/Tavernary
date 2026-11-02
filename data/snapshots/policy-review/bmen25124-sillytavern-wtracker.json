@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "bmen25124-sillytavern-wtracker",
+  "source_id": "github-1024412582",
+  "source_identity": "github:bmen25124/sillytavern-wtracker",
+  "evidence_fingerprint": "817c46ffb18674eeed02f88ef0d314a49baeb0c192b4331574ea0eddc5be5f4e",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-02T14:08:33.524Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "fe89ea64c9548452cffabe4a7d745c9c2c77e00b4575ed4877e5ae8c44dfa065",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1024412582:bmen25124-sillytavern-wtracker",
+      "inputDigest": "6402b6407de233c865b6039aa548996e6001b32b8f915b587dfa0ac28ee2641b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-13T14:46:00.537Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1024412582",
+    "identity": "github:1024412582"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41458843236,
+    "sourceSha": "7bb38041c3f86318ba6d4981e00534fd1326aa79"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/bmen25124-sillytavern-wtracker.json",
+      "sha256": "13a35586ebecd40e0f71c47e8811c9011ce5c4c13aec3ad2bacdc0dcdbbff9ef",
+      "gitBlobSha": "9a5839b5e7c5c3798b2afcb55764b6763191cf83"
+    }
+  ]
+}

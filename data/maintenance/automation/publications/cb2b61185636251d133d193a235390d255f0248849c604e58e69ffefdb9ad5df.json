@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "cb2b61185636251d133d193a235390d255f0248849c604e58e69ffefdb9ad5df",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-794692686:sillytavern-extension-notebook",
+      "inputDigest": "4ac4dcda4ce16afb9466f86beb7ede337ae92ad8a9341e987d6f42ac3d48211f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-13T14:48:32.615Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-794692686",
+    "identity": "github:794692686"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41469372885,
+    "sourceSha": "bc1caeda5d74886edd173bdc4db7dbc82a947e02"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/sillytavern-extension-notebook.json",
+      "sha256": "accb63dc1a9180e356b4a95be289c32032a34013fe481f280e2fec8eff9482bd",
+      "gitBlobSha": "3380fc1b2dd5f909efa51e87b32373a8d550d3b8"
+    }
+  ]
+}

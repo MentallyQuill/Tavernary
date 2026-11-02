@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a02f899dfe34de6931a6d2179f0aea7348c42e38e91b328db5e71df0d01b86b9",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1219416060:selinawynters-ops-st-threadkeeper",
+      "inputDigest": "b7ee79114e93adf1569a67166aee0bbe6c96367f5fa89a220f7546108ff65963",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-13T14:48:27.914Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1219416060",
+    "identity": "github:1219416060"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41465279497,
+    "sourceSha": "22db182376f136f383fcdefffc1c17201d62dd8c"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/selinawynters-ops-st-threadkeeper.json",
+      "sha256": "119a52868f597ae0104b1c07902a42aa25300182906848a9252a3ace475c6e44",
+      "gitBlobSha": "0292ae4c28d88e3b0469024666bc76840f2e28ac"
+    }
+  ]
+}
