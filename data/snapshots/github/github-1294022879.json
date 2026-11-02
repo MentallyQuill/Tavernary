@@ -9,18 +9,58 @@
     "url": "https://github.com/japolino/inlay-illustrator",
     "description": "Persistent character image generation with dynamic visual memory, context-aware prompt parsing, inline chat images, asset mode, Anima/ComfyUI prompt output, and optional tag cleanup.",
     "default_branch": "stable",
-    "head_sha": "68cc000e5e4c9116439d3c38cac7d21f29a85163",
-    "head_committed_at": "2026-08-31T03:18:56.000Z",
+    "head_sha": "e523c413e32633c95281618dc6f5e167e37994db",
+    "head_committed_at": "2026-11-02T01:17:26.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-08T18:09:20.000Z",
-    "size_kb": 9457
+    "size_kb": 11479
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-31T03:18:56.000Z",
+    "latest_source_activity_at": "2026-11-02T01:17:26.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-02T01:17:26.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-11-01T19:38:36.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-25T23:20:03.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-17T17:52:51.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-10-04T03:51:57.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-24T23:00:31.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-19T18:04:28.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-10T19:23:40.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-31",
         "latest_at": "2026-08-31T03:18:56.000Z",
@@ -30,53 +70,23 @@
         "week_start": "2026-08-17",
         "latest_at": "2026-08-23T03:13:09.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-10",
-        "latest_at": "2026-08-14T17:33:51.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-03",
-        "latest_at": "2026-08-08T02:57:05.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-07-27T17:48:18.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-20",
-        "latest_at": "2026-07-26T03:00:52.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-13",
-        "latest_at": "2026-07-19T01:32:05.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-06",
-        "latest_at": "2026-07-12T19:09:42.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-10T12:16:03.030Z",
+    "baseline_completed_at": "2026-11-02T17:16:13.092Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "68cc000e5e4c9116439d3c38cac7d21f29a85163"
+    "evidence_head_sha": "e523c413e32633c95281618dc6f5e167e37994db"
   },
   "community": {
-    "stars_count": 4,
-    "forks_count": 1,
+    "stars_count": 6,
+    "forks_count": 3,
     "watchers_count": 0,
-    "aggregate": 5
+    "aggregate": 9
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-10-13T14:48:28.822Z",
+  "refreshed_at": "2026-11-02T17:18:28.506Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -87,7 +97,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-13T14:46:34.406Z",
+    "refreshed_at": "2026-11-02T17:16:13.092Z",
     "stale_since": null
   }
 }
