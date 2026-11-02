@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "bc013f8b32c637cb9ffb088d638809372f4e1d0ba7cfcc766fdb9581619b11d6",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1311748930:aeoness-swipe-sculpt",
+      "inputDigest": "cbb9544f73991d140b62daa3a023ea787e54fa0534782502375092f76fcaeb85",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-13T14:45:48.335Z",
+    "nextEligibleAt": "2026-11-02T17:15:03.271Z",
+    "expectedSha": "da8fd530e932cab86621dc32fc6b5ba3169b2e0f",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-02T17:00:03.271Z",
+  "completedAt": null
+}
