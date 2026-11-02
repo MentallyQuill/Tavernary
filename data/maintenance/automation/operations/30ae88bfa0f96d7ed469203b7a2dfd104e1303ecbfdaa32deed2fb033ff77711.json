@@ -9,8 +9,8 @@
       "policyVersion": "2026-07-29"
     },
     "stage": "admitted",
-    "createdAt": "2026-10-13T14:48:25.497Z",
-    "nextEligibleAt": "2026-11-02T15:25:44.864Z",
+    "createdAt": "2026-11-02T16:10:40.196Z",
+    "nextEligibleAt": "2026-11-02T17:35:50.246Z",
     "expectedSha": null,
     "workerRunId": null,
     "retry": {
@@ -18,10 +18,10 @@
         "kind": "unknown",
         "reasonCode": "unclassified-failure"
       },
-      "transientAttempts": 0,
-      "immediateAttempts": 1
+      "transientAttempts": 1,
+      "immediateAttempts": 2
     }
   },
-  "updatedAt": "2026-11-02T15:20:29.356Z",
+  "updatedAt": "2026-11-02T17:20:03.721Z",
   "completedAt": null
 }
