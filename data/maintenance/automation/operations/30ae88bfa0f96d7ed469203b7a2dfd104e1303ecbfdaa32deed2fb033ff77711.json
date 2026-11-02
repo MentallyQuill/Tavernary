@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "30ae88bfa0f96d7ed469203b7a2dfd104e1303ecbfdaa32deed2fb033ff77711",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1221210115:chechelpo-simulith",
+      "inputDigest": "9c8cf871e8ebe3970d1d957b5b30b14ee562f718e635d8dec6971e3665f0f7c8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-13T14:48:25.497Z",
+    "nextEligibleAt": "2026-11-02T15:25:44.864Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-11-02T15:20:29.356Z",
+  "completedAt": null
+}
