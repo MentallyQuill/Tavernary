@@ -32523,7 +32523,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "character-worldbuilding",
-      "summary": "Add multiple toggleable context blocks to SillyTavern personas, stored per persona and injected after the main description for richer character context without interface clutter.",
+      "summary": "A SillyTavern extension that adds multiple toggleable contextual description blocks per user persona, injected after the main persona description to enrich context without UI clutter. Evidence: README intro and Features.",
       "canonicalUrl": "https://github.com/dmitryplyaskin/SillyTavern-User-Persona-Extended",
       "catalogedAt": "2026-08-10T17:28:41.941Z",
       "catalogCohort": "standard",
@@ -32536,15 +32536,15 @@
       ],
       "tags": [
         {
-          "id": "guide-model-responses",
-          "label": "Guide model responses",
-          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-          "facet": "goal"
-        },
-        {
           "id": "manage-characters-and-personas",
           "label": "Manage characters and personas",
           "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+          "facet": "goal"
+        },
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
           "facet": "goal"
         }
       ],
@@ -32636,10 +32636,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 13,
+        "stars": 14,
         "forks": 1,
         "watchers": 0,
-        "aggregate": 14
+        "aggregate": 15
       },
       "repositorySizeKb": 26,
       "license": {
@@ -32648,7 +32648,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-14T13:01:33.364Z",
+      "refreshedAt": "2026-11-03T09:11:30.646Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -32670,7 +32670,7 @@
           "https://github.com/dmitryplyaskin/SillyTavern-User-Persona-Extended"
         ],
         "summary": [
-          "Add multiple toggleable context blocks to SillyTavern personas, stored per persona and injected after the main description for richer character context without interface clutter."
+          "A SillyTavern extension that adds multiple toggleable contextual description blocks per user persona, injected after the main persona description to enrich context without UI clutter. Evidence: README intro and Features."
         ],
         "kind": [
           "extension"
@@ -32679,14 +32679,14 @@
           "Character and worldbuilding"
         ],
         "tags": [
-          "Guide model responses",
-          "response steering",
-          "generation control",
-          "instruction control",
           "Manage characters and personas",
           "persona management",
           "character management",
-          "identity management"
+          "identity management",
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control"
         ],
         "frontends": [
           "SillyTavern"
@@ -57695,7 +57695,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "A SillyTavern extension that automatically tracks and visualizes token usage across chat sessions. It surfaces cost statistics so you can monitor spending patterns alongside your prompt consumption.",
+      "summary": "SillyTavern extension that tracks, visualizes, and calculates costs for chat tokens using exact API-reported usage, with per-model pricing rules, timeframe charts, background generation tracking, and JSON backup tools.",
       "canonicalUrl": "https://github.com/kurohomeless/SillyTavern-Token-and-Cost-Statistics",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -57711,6 +57711,12 @@
           "id": "monitor-token-usage-and-cost",
           "label": "Monitor token usage and cost",
           "description": "Measure, visualize, budget, or report model token consumption and spending.",
+          "facet": "goal"
+        },
+        {
+          "id": "move-and-back-up-data",
+          "label": "Move and back up data",
+          "description": "Import, export, synchronize, migrate, restore, or back up roleplay data.",
           "facet": "goal"
         },
         {
@@ -57871,7 +57877,7 @@
           "https://github.com/kurohomeless/SillyTavern-Token-and-Cost-Statistics"
         ],
         "summary": [
-          "A SillyTavern extension that automatically tracks and visualizes token usage across chat sessions. It surfaces cost statistics so you can monitor spending patterns alongside your prompt consumption."
+          "SillyTavern extension that tracks, visualizes, and calculates costs for chat tokens using exact API-reported usage, with per-model pricing rules, timeframe charts, background generation tracking, and JSON backup tools."
         ],
         "kind": [
           "extension"
@@ -57884,6 +57890,10 @@
           "usage analytics",
           "cost tracking",
           "token statistics",
+          "Move and back up data",
+          "data portability",
+          "backup and restore",
+          "import and export",
           "Background operation",
           "asynchronous processing",
           "quiet generation",
@@ -83928,7 +83938,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "3844bfe2d82d35177a3cf77ce8adfbc9051aeadd",
+        "currentSha": "b2d6f175981bb51f05d09a30e99d8dd41d31eb32",
         "report": {
           "reportId": "f0866aac17ff18b826733e6b10034744643f088da5eabc511476d8c3dce65d42",
           "riskLevel": "low",
@@ -84230,40 +84240,40 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-09T21:31:15.000Z",
-        "activeWeeks12": 9,
+        "latestSourceActivityAt": "2026-11-01T09:01:19.000Z",
+        "activeWeeks12": 11,
         "weeklyActivity": [
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
           false,
-          false,
-          false
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-10-09T22:20:53.000Z",
+      "latestReleaseAt": "2026-11-01T09:05:12.000Z",
       "community": {
-        "stars": 78,
-        "forks": 4,
+        "stars": 82,
+        "forks": 5,
         "watchers": 0,
-        "aggregate": 82
+        "aggregate": 87
       },
-      "repositorySizeKb": 80900,
+      "repositorySizeKb": 79630,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-14T13:01:37.239Z",
+      "refreshedAt": "2026-11-03T09:11:21.957Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -84970,7 +84980,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-14T13:01:37.386Z",
+      "refreshedAt": "2026-11-03T09:13:47.047Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -125338,9 +125348,9 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 15,
-        "forks": 7,
+        "forks": 8,
         "watchers": 0,
-        "aggregate": 22
+        "aggregate": 23
       },
       "repositorySizeKb": 760,
       "license": {
@@ -125349,7 +125359,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-14T13:01:32.103Z",
+      "refreshedAt": "2026-11-03T09:11:18.469Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -185067,7 +185077,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "A SillyTavern extension that automatically tracks and visualizes token usage across chat sessions. It surfaces cost statistics so you can monitor spending patterns alongside your prompt consumption.",
+            "summary": "SillyTavern extension that tracks, visualizes, and calculates costs for chat tokens using exact API-reported usage, with per-model pricing rules, timeframe charts, background generation tracking, and JSON backup tools.",
             "canonicalUrl": "https://github.com/kurohomeless/SillyTavern-Token-and-Cost-Statistics",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -185083,6 +185093,12 @@
                 "id": "monitor-token-usage-and-cost",
                 "label": "Monitor token usage and cost",
                 "description": "Measure, visualize, budget, or report model token consumption and spending.",
+                "facet": "goal"
+              },
+              {
+                "id": "move-and-back-up-data",
+                "label": "Move and back up data",
+                "description": "Import, export, synchronize, migrate, restore, or back up roleplay data.",
                 "facet": "goal"
               },
               {
@@ -185243,7 +185259,7 @@
                 "https://github.com/kurohomeless/SillyTavern-Token-and-Cost-Statistics"
               ],
               "summary": [
-                "A SillyTavern extension that automatically tracks and visualizes token usage across chat sessions. It surfaces cost statistics so you can monitor spending patterns alongside your prompt consumption."
+                "SillyTavern extension that tracks, visualizes, and calculates costs for chat tokens using exact API-reported usage, with per-model pricing rules, timeframe charts, background generation tracking, and JSON backup tools."
               ],
               "kind": [
                 "extension"
@@ -185256,6 +185272,10 @@
                 "usage analytics",
                 "cost tracking",
                 "token statistics",
+                "Move and back up data",
+                "data portability",
+                "backup and restore",
+                "import and export",
                 "Background operation",
                 "asynchronous processing",
                 "quiet generation",
@@ -199960,7 +199980,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "A SillyTavern extension that automatically tracks and visualizes token usage across chat sessions. It surfaces cost statistics so you can monitor spending patterns alongside your prompt consumption.",
+            "summary": "SillyTavern extension that tracks, visualizes, and calculates costs for chat tokens using exact API-reported usage, with per-model pricing rules, timeframe charts, background generation tracking, and JSON backup tools.",
             "canonicalUrl": "https://github.com/kurohomeless/SillyTavern-Token-and-Cost-Statistics",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -199976,6 +199996,12 @@
                 "id": "monitor-token-usage-and-cost",
                 "label": "Monitor token usage and cost",
                 "description": "Measure, visualize, budget, or report model token consumption and spending.",
+                "facet": "goal"
+              },
+              {
+                "id": "move-and-back-up-data",
+                "label": "Move and back up data",
+                "description": "Import, export, synchronize, migrate, restore, or back up roleplay data.",
                 "facet": "goal"
               },
               {
@@ -200136,7 +200162,7 @@
                 "https://github.com/kurohomeless/SillyTavern-Token-and-Cost-Statistics"
               ],
               "summary": [
-                "A SillyTavern extension that automatically tracks and visualizes token usage across chat sessions. It surfaces cost statistics so you can monitor spending patterns alongside your prompt consumption."
+                "SillyTavern extension that tracks, visualizes, and calculates costs for chat tokens using exact API-reported usage, with per-model pricing rules, timeframe charts, background generation tracking, and JSON backup tools."
               ],
               "kind": [
                 "extension"
@@ -200149,6 +200175,10 @@
                 "usage analytics",
                 "cost tracking",
                 "token statistics",
+                "Move and back up data",
+                "data portability",
+                "backup and restore",
+                "import and export",
                 "Background operation",
                 "asynchronous processing",
                 "quiet generation",
@@ -237642,9 +237672,9 @@
             "latestReleaseAt": null,
             "community": {
               "stars": 15,
-              "forks": 7,
+              "forks": 8,
               "watchers": 0,
-              "aggregate": 22
+              "aggregate": 23
             },
             "repositorySizeKb": 760,
             "license": {
@@ -237653,7 +237683,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-14T13:01:32.103Z",
+            "refreshedAt": "2026-11-03T09:11:18.469Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",

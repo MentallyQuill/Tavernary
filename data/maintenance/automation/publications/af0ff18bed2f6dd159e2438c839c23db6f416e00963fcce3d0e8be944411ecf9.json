@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "af0ff18bed2f6dd159e2438c839c23db6f416e00963fcce3d0e8be944411ecf9",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1087049931:dmitryplyaskin-sillytavern-user-persona-extended",
+      "inputDigest": "13c89ba8da7ddf9290316e584addce59b740c8026aeddbc4ded125162657e13e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:01:33.364Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1087049931",
+    "identity": "github:1087049931"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41619119232,
+    "sourceSha": "f559d4247acf9d1188520b7994b20b953a2a4100"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/dmitryplyaskin-sillytavern-user-persona-extended.json",
+      "sha256": "d33296da1e122865fd469c47185933f3cef388edf37690480d7139b4a075abdd",
+      "gitBlobSha": "6b3fe12135d300f1c0ba8e7f5d02fb6856329ce8"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/af0ff18bed2f6dd159e2438c839c23db6f416e00963fcce3d0e8be944411ecf9.json",
+      "sha256": "42f9ecb0c8d8e017bc69790c2de25bbac055009852b088238de502b88a8949fe",
+      "gitBlobSha": "1479d472eeae5adcc7d889aedd54e03961d1aa25"
+    }
+  ]
+}

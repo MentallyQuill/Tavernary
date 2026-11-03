@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8c41ec0888be8d52a65704b46a3e9d0686d91d0a432b9a0fa083f67b1f40989c",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1247868572:kurohomeless-sillytavern-token-and-cost-statistics",
+      "inputDigest": "d2701ef7ac5b4ae7aa0fd3b90c52f38a072bf250adba1dcfc6ef941f18c84be4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:01:13.540Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1247868572",
+    "identity": "github:1247868572"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41612137963,
+    "sourceSha": "c0db7f6b333d7858fba227b546e147269ae1cd38"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/kurohomeless-sillytavern-token-and-cost-statistics.json",
+      "sha256": "7b3909a62edf1c11fa1fdf457489a645646b36400deac5cef5569aebde67ce38",
+      "gitBlobSha": "fd254beceb44a9e8fb9721e5f53531c5e285f8e2"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/8c41ec0888be8d52a65704b46a3e9d0686d91d0a432b9a0fa083f67b1f40989c.json",
+      "sha256": "00767fc8f341358ad38fc0f295d429c2426e318d45ada762a0ffb47db57e645f",
+      "gitBlobSha": "78c94fdbfb53c8cd7ec52ebaec6c7c0eaad28586"
+    }
+  ]
+}

@@ -19336,8 +19336,11 @@
         "runId": 41612137963,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 47110
+      }
     },
     {
       "id": "705349c656b7aebcb3a3cc53eee2554aed093f9c70b038467fe28173eab4ebfe",
@@ -19355,8 +19358,11 @@
         "runId": 41612137963,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "4493d71ac1bd78fecd462abfd305b6a9d0f3437c36024c9571b7b53201fb2990",
@@ -19450,8 +19456,11 @@
         "runId": 41619119232,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 3,
+        "tokens": 138075
+      }
     },
     {
       "id": "8ac8418d49bd20343e84ab4dcfff5110087b34ef159740f892fd64e607514694",
@@ -19469,8 +19478,11 @@
         "runId": 41619119232,
         "workflow": ".github/workflows/enrich-catalog.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "f83a585148a9da2660c86969b7b1a1419fc71eaca9122ef1d3686d48b930cd2a",
@@ -19488,8 +19500,11 @@
         "runId": 41620340419,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 8326
+      }
     },
     {
       "id": "63d67a69e5125735a283a4f8aa651a2e35890a13b85d25a1694e2e322b4d3a4f",
@@ -19507,8 +19522,11 @@
         "runId": 41620340419,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     }
   ]
 }
