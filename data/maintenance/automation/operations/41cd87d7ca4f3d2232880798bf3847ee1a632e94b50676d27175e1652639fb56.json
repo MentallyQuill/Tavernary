@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "41cd87d7ca4f3d2232880798bf3847ee1a632e94b50676d27175e1652639fb56",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1254077407:mentallyquill-wandlight",
+      "inputDigest": "d8db9b0f56c809e83551b13630480f15b5a82e4d7b9965362b3ead97a404f771",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-15T05:14:44.501Z",
+    "nextEligibleAt": null,
+    "expectedSha": "2975db926d6f4c9f99e7e399da7cd475a716d9e8",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-03T14:33:36.244Z",
+  "completedAt": null
+}
