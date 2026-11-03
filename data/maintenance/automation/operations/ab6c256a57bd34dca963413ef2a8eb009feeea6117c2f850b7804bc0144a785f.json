@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ab6c256a57bd34dca963413ef2a8eb009feeea6117c2f850b7804bc0144a785f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1234743592:cfigure-lumiverse-shutter",
+      "inputDigest": "f2c8fcb057771f2836212c89e77962899dd1e99de66c2db5b4db285493a3e374",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-15T05:13:58.541Z",
+    "nextEligibleAt": null,
+    "expectedSha": "2975db926d6f4c9f99e7e399da7cd475a716d9e8",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-03T14:33:36.244Z",
+  "completedAt": null
+}
