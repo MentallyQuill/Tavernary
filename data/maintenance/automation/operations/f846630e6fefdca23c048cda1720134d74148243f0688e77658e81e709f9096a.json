@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f846630e6fefdca23c048cda1720134d74148243f0688e77658e81e709f9096a",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-957795776:samueras-guidedgenerations-extension",
+      "inputDigest": "bf5291950ab95d5cb5186eb2664cd171bcf782a3c39c83bdcf7f147a51f5b7ff",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:01:01.224Z",
+    "nextEligibleAt": "2026-11-03T06:57:24.901Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-03T06:42:24.901Z",
+  "completedAt": null
+}
