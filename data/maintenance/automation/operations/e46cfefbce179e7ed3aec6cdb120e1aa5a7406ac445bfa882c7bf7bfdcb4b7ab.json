@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e46cfefbce179e7ed3aec6cdb120e1aa5a7406ac445bfa882c7bf7bfdcb4b7ab",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1252414946:mokimoko-sillytavern-landingpageredux",
+      "inputDigest": "26e0c262f694e2d7a46b5fbf70f2dfc5262f41939536aff22c62455a02fa69ce",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:00:46.917Z",
+    "nextEligibleAt": "2026-11-03T06:57:24.901Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-03T06:42:24.901Z",
+  "completedAt": null
+}
