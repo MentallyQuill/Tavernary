@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a02f899dfe34de6931a6d2179f0aea7348c42e38e91b328db5e71df0d01b86b9",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1219416060:selinawynters-ops-st-threadkeeper",
+      "inputDigest": "b7ee79114e93adf1569a67166aee0bbe6c96367f5fa89a220f7546108ff65963",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-13T14:48:27.914Z",
+    "nextEligibleAt": "2026-11-03T04:18:51.035Z",
+    "expectedSha": "da8fd530e932cab86621dc32fc6b5ba3169b2e0f",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-03T04:03:51.035Z",
+  "completedAt": null
+}
