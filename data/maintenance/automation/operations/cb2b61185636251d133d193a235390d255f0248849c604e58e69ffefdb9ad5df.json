@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "cb2b61185636251d133d193a235390d255f0248849c604e58e69ffefdb9ad5df",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-794692686:sillytavern-extension-notebook",
+      "inputDigest": "4ac4dcda4ce16afb9466f86beb7ede337ae92ad8a9341e987d6f42ac3d48211f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-13T14:48:32.615Z",
+    "nextEligibleAt": "2026-11-03T04:18:51.035Z",
+    "expectedSha": "da8fd530e932cab86621dc32fc6b5ba3169b2e0f",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-03T04:03:51.035Z",
+  "completedAt": null
+}
