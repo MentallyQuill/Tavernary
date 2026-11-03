@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5f08f0185fe518e0e477bdde23803df0aa4acded8838d93ea3e97b4a319a1e66",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1184263874:gentleburr-sillytavern-smartimport",
+      "inputDigest": "2c95cd5270558893403ecc27e3f9250dbcd8acc0fc15639b4526615783208181",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-03T09:09:41.906Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1184263874",
+    "identity": "github:1184263874"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41615690745,
+    "sourceSha": "326ac185a192e16611f3dab5ac749bf512254cbb"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/gentleburr-sillytavern-smartimport.json",
+      "sha256": "2e742faf1c9bc52d3e58adace6ff91a45ec5cbe148313b1d7d356ca99ddcf1fe",
+      "gitBlobSha": "50bc3ba00045ffc946eb497713cdf87aebdd9139"
+    }
+  ]
+}

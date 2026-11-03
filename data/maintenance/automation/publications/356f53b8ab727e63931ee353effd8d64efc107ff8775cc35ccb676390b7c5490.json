@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "356f53b8ab727e63931ee353effd8d64efc107ff8775cc35ccb676390b7c5490",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-954256242:oldaccountpendingdelete-sillytavern-loretips",
+      "inputDigest": "9f4302f7fb235ee2a5cc439ca674710d9ce98dc9194e13873d1751bb996de53b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-03T09:08:59.977Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-954256242",
+    "identity": "github:954256242"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41614441584,
+    "sourceSha": "25786ce1064fd8402857f952721933a7566a390a"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/oldaccountpendingdelete-sillytavern-loretips.json",
+      "sha256": "bc9266c7da2a4aa07bf5e5097605d5b3135badc784a337a44fa5993b22ce1852",
+      "gitBlobSha": "718f7e959d083eb109ff79dbb86b45ffc753d603"
+    }
+  ]
+}

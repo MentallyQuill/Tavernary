@@ -5,12 +5,9 @@
   "source_identity": "github:gentleburr/sillytavern-smartimport",
   "evidence_fingerprint": "1c029987ccf350065216f930816156652f1fbb3f9f98802fdfe38824753ee8f9",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-08T08:11:50.721Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-08T08:11:50.721Z"
-  },
+  "reviewed_at": "2026-11-03T10:02:45.807Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
