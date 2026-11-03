@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "aa999343b7a52f5ad0ff71e8464adee2830f6cb08090e38a1b7b831397e03950",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1140294800:tyranomaster-expressions-plus",
+      "inputDigest": "daa5696cd00fe6895623bef6f20721f6fd0782e2c2a65d30bc763f8f56617de3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-13T14:48:26.510Z",
+    "nextEligibleAt": "2026-11-03T04:18:51.035Z",
+    "expectedSha": "da8fd530e932cab86621dc32fc6b5ba3169b2e0f",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-03T04:03:51.035Z",
+  "completedAt": null
+}
