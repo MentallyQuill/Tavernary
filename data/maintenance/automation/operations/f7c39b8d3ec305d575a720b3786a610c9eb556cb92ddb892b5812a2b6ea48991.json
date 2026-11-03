@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f7c39b8d3ec305d575a720b3786a610c9eb556cb92ddb892b5812a2b6ea48991",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1218770712:noineri-vibe-tavern",
+      "inputDigest": "4d04b72a7176650070f7dec00d37c6a947681e80b9b0a332688a4d92739163c8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:01:37.239Z",
+    "nextEligibleAt": "2026-11-03T09:11:55.252Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-03T08:56:55.252Z",
+  "completedAt": null
+}
