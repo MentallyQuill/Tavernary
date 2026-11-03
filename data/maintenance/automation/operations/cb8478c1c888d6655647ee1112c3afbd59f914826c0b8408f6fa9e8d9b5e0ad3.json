@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "cb8478c1c888d6655647ee1112c3afbd59f914826c0b8408f6fa9e8d9b5e0ad3",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1265351175:rivelledays-sillytavern-astraprojecta",
+      "inputDigest": "fc13f8985a41a68e8602bd1d3725095999363216be3d9f4e24f7f9ff57d03d99",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-14T13:04:04.585Z",
+    "nextEligibleAt": null,
+    "expectedSha": "2975db926d6f4c9f99e7e399da7cd475a716d9e8",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-03T14:33:36.244Z",
+  "completedAt": null
+}
