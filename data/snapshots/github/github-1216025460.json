@@ -30,16 +30,16 @@
   },
   "community": {
     "stars_count": 8,
-    "forks_count": 0,
+    "forks_count": 1,
     "watchers_count": 0,
-    "aggregate": 8
+    "aggregate": 9
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "Apache-2.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-14T13:01:03.427Z",
+  "refreshed_at": "2026-11-03T06:54:02.667Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -47,7 +47,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-14T12:58:42.489Z",
+    "refreshed_at": "2026-11-03T06:51:54.634Z",
     "stale_since": null
   }
 }
