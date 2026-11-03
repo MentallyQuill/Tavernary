@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "50ea2ec89ba5928a2d47866460d17cee68b7e8cc60e792d9a13a12e995744d53",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-920038768:bmen25124-sillytavern-custom-scenario",
+      "inputDigest": "36658fc9848546c7e50b2e28bbfda6db0a149c94c50ac0f9b1b156f33e05e023",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-13T14:48:25.743Z",
+    "nextEligibleAt": "2026-11-03T04:18:51.035Z",
+    "expectedSha": "da8fd530e932cab86621dc32fc6b5ba3169b2e0f",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-03T04:03:51.035Z",
+  "completedAt": null
+}
