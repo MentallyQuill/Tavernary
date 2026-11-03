@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "446ac82c75866dd36ce67c060cf7a41e5cb09e83f57d1cb7f120177953e83ae3",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1252414946:mokimoko-sillytavern-landingpageredux",
+      "inputDigest": "51239940e02d72d127ba19cc529b7740155adfd90253c5d4f7037f182e8faf25",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:00:46.917Z",
+    "nextEligibleAt": "2026-11-03T06:43:53.953Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-03T06:28:53.953Z",
+  "completedAt": null
+}
