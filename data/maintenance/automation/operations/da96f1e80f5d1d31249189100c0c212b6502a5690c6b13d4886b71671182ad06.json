@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "da96f1e80f5d1d31249189100c0c212b6502a5690c6b13d4886b71671182ad06",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-957795776:samueras-guidedgenerations-extension",
+      "inputDigest": "5101b12c3ba140729895ab6cace780d3db8267fae32d3ee0a99b8c66f5d0a404",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:01:01.224Z",
+    "nextEligibleAt": "2026-11-03T06:43:53.953Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 3,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-03T06:28:53.953Z",
+  "completedAt": null
+}
