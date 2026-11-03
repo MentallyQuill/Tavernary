@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "bfac666370d2c2b290c8af8cde5c5ec1d0af68a183d0d78319d990a7692ac460",
+    "identity": {
+      "kind": "refresh",
+      "subject": "source:github-1372071122",
+      "inputDigest": "9627c3844e06b6d7544fd0feae9bffd337f24323732a506e456fc6eefa18f50a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-15T10:17:30.782Z",
+    "nextEligibleAt": "2026-11-03T15:45:27.566Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "github-inventory-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-03T15:40:24.128Z",
+  "completedAt": null
+}
