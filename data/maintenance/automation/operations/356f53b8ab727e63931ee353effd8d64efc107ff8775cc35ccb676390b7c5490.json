@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "356f53b8ab727e63931ee353effd8d64efc107ff8775cc35ccb676390b7c5490",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-954256242:oldaccountpendingdelete-sillytavern-loretips",
+      "inputDigest": "9f4302f7fb235ee2a5cc439ca674710d9ce98dc9194e13873d1751bb996de53b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:01:24.017Z",
+    "nextEligibleAt": "2026-11-03T09:11:55.252Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-03T08:56:55.252Z",
+  "completedAt": null
+}
