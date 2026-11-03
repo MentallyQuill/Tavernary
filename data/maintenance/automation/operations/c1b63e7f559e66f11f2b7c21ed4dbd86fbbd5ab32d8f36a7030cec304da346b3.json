@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c1b63e7f559e66f11f2b7c21ed4dbd86fbbd5ab32d8f36a7030cec304da346b3",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1065981948:unkarelian-timeline-memory",
+      "inputDigest": "2ab0f2159fd6617b971938be20e87909a8834c7e54a5fe88fd1cf03863416ad2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-15T05:15:11.379Z",
+    "nextEligibleAt": null,
+    "expectedSha": "2975db926d6f4c9f99e7e399da7cd475a716d9e8",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-03T14:33:36.244Z",
+  "completedAt": null
+}
