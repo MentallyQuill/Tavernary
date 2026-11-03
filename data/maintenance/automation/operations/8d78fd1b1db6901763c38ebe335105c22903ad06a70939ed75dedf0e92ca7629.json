@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8d78fd1b1db6901763c38ebe335105c22903ad06a70939ed75dedf0e92ca7629",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1216025460:eval3n4-sillytavern-starmem",
+      "inputDigest": "8e97cdc1df720cf91d82c24fd84d1ee3a1b6fb8b6338ca972945476ee6ae29fb",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:01:03.427Z",
+    "nextEligibleAt": "2026-11-03T06:57:24.901Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-03T06:42:24.901Z",
+  "completedAt": null
+}
