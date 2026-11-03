@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c90d23e819ad8bfe90ab120209a18e7887e52acf8f42444d899b8dd5fdb03e42",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1200081605:senjinthedragon-smart-memory",
+      "inputDigest": "621e08c1228281de810db1d5a6305ddf0efafeee98bf61493739f2e64b3b3a92",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:01:47.209Z",
+    "nextEligibleAt": "2026-11-03T13:38:47.613Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-11-03T13:33:47.410Z",
+  "completedAt": null
+}
