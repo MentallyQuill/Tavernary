@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "867287601c162d4a590f6f69a04023310bd82f88354c92ccd832dfe12407799f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1126135302:vibecoder9000-extension-tokenusage",
+      "inputDigest": "ecb935df38e1fb234c09101e5f5a98cc8adccf1a535611621dfe89caf3158096",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:01:32.103Z",
+    "nextEligibleAt": "2026-11-03T09:11:55.252Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 5,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-03T08:56:55.252Z",
+  "completedAt": null
+}
