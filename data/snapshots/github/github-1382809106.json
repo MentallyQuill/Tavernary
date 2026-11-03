@@ -35,18 +35,19 @@
     "evidence_head_sha": "dc5b6034ac7e202ecb40f33fb8d84d5dc6b8c475"
   },
   "community": {
-    "stars_count": 10,
-    "forks_count": 3,
+    "stars_count": 12,
+    "forks_count": 5,
     "watchers_count": 0,
-    "aggregate": 13
+    "aggregate": 17
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-15T06:56:17.623Z",
+  "refreshed_at": "2026-11-03T15:25:30.630Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "Dulgadurbit", "type": "User", "provider": "github" }
@@ -54,8 +55,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-15T06:56:17.623Z",
+    "refreshed_at": "2026-11-03T15:23:12.904Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }
