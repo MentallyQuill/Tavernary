@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "da2496204c533ccc568a7943a683fb41f651bd0ba95b15a8be329123c1c5473a",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1370082694:atlas4285-sillytavern-nextactions",
+      "inputDigest": "7c66caaf78232e09477d6dc577d4e44a0737bd657e827f7d934a41edb26a9ab5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-15T05:14:30.061Z",
+    "nextEligibleAt": null,
+    "expectedSha": "2975db926d6f4c9f99e7e399da7cd475a716d9e8",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-03T14:33:36.244Z",
+  "completedAt": null
+}
