@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c44076de2e9c6671ee32d46efae9039d2a4225c94071439b3ea85808b4b7f4ef",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-861668394:dummytbanana-st-group-utils",
+      "inputDigest": "3fb6551362d2a36975e771a8df059adcd27cf92265a04fdeccace12418434306",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-13T15:19:36.208Z",
+    "nextEligibleAt": "2026-11-03T04:55:52.832Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 3,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-03T04:40:52.832Z",
+  "completedAt": null
+}
