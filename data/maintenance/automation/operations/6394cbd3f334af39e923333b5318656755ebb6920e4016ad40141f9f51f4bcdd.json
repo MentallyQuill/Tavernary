@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6394cbd3f334af39e923333b5318656755ebb6920e4016ad40141f9f51f4bcdd",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1216025460:eval3n4-sillytavern-starmem",
+      "inputDigest": "75a75a9d766b6efd5bc1c63584295c9d5bcce724c87dc6bee1945ae4eb3f39b5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:01:03.427Z",
+    "nextEligibleAt": "2026-11-03T06:43:53.953Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 4,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-03T06:28:53.953Z",
+  "completedAt": null
+}
