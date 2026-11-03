@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "416b48a310c0db22c5900c218caa9f2ad6ea036f1c842513d524c3f9f36104f5",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1307266714:sawa-25-sillytavern-memorylayers",
+      "inputDigest": "1077f681187350658b66c8720e8706dc27b2257503d8f50219c5b27f846980e4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-14T13:01:43.367Z",
+    "nextEligibleAt": null,
+    "expectedSha": "2975db926d6f4c9f99e7e399da7cd475a716d9e8",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-03T14:33:36.244Z",
+  "completedAt": null
+}
