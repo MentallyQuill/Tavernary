@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "af0ff18bed2f6dd159e2438c839c23db6f416e00963fcce3d0e8be944411ecf9",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1087049931:dmitryplyaskin-sillytavern-user-persona-extended",
+      "inputDigest": "13c89ba8da7ddf9290316e584addce59b740c8026aeddbc4ded125162657e13e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:01:33.364Z",
+    "nextEligibleAt": "2026-11-03T09:11:55.252Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-03T08:56:55.252Z",
+  "completedAt": null
+}
