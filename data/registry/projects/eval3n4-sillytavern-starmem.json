@@ -3,18 +3,18 @@
   "id": "eval3n4-sillytavern-starmem",
   "name": "SillyTavern-STARmem",
   "kind": "extension",
-  "summary": "STARmem is a SillyTavern memory extension for long-form roleplay, using deterministic retrieval, async fact extraction, and replayable traces in one Memory Viewer timeline.",
+  "summary": "SillyTavern-STARmem (README) gives SillyTavern chats persistent, structured memory: an LLM extracts durable facts on write, while deterministic BM25 and typed-graph retrieval supplies context with replayable traces.",
   "metadata_status": "curated",
   "source_id": "github-1216025460",
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
   "tags": [
-    "background-operation",
-    "inspect-prompts-and-generations",
     "maintain-long-term-memory",
-    "persistent-state",
     "retrieve-relevant-context",
-    "rules-driven"
+    "persistent-state",
+    "semantic-retrieval",
+    "rules-driven",
+    "inspect-prompts-and-generations"
   ],
   "cataloged_at": "2026-08-06T03:57:07.562Z",
   "catalog_cohort": "standard",

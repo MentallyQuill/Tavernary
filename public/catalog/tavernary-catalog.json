@@ -7889,7 +7889,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "memory-retrieval",
-      "summary": "Lumiverse LumiMind is a work-in-progress frontend extension for the Lumiverse platform. The project contributes additional capabilities to its host frontend, with further features yet to be defined.",
+      "summary": "Lumiverse LumiMind is an extension that gives characters private, evolving subjective minds, tracking secrets and differing beliefs across a conversation and injecting the current unresolved state (README, 0.3.3).",
       "canonicalUrl": "https://github.com/Archkr/Lumiverse-LumiMind",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -7900,7 +7900,44 @@
           "description": "Works with the Lumiverse roleplay frontend."
         }
       ],
-      "tags": [],
+      "tags": [
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        },
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        },
+        {
+          "id": "persistent-state",
+          "label": "Persistent state",
+          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
+          "facet": "trait"
+        },
+        {
+          "id": "run-group-roleplay",
+          "label": "Run group roleplay",
+          "description": "Coordinate scenes involving several AI characters in the same conversation.",
+          "facet": "goal"
+        },
+        {
+          "id": "background-operation",
+          "label": "Background operation",
+          "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
+          "facet": "trait"
+        },
+        {
+          "id": "inspect-prompts-and-generations",
+          "label": "Inspect prompts and generations",
+          "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+          "facet": "goal"
+        }
+      ],
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
@@ -8153,7 +8190,7 @@
           "https://github.com/Archkr/Lumiverse-LumiMind"
         ],
         "summary": [
-          "Lumiverse LumiMind is a work-in-progress frontend extension for the Lumiverse platform. The project contributes additional capabilities to its host frontend, with further features yet to be defined."
+          "Lumiverse LumiMind is an extension that gives characters private, evolving subjective minds, tracking secrets and differing beliefs across a conversation and injecting the current unresolved state (README, 0.3.3)."
         ],
         "kind": [
           "extension"
@@ -8161,7 +8198,33 @@
         "primaryFunction": [
           "Memory and retrieval"
         ],
-        "tags": [],
+        "tags": [
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
+          "Persistent state",
+          "durable state",
+          "state persistence",
+          "cross-session state",
+          "Run group roleplay",
+          "multi-character roleplay",
+          "group chats",
+          "ensemble scenes",
+          "Background operation",
+          "asynchronous processing",
+          "quiet generation",
+          "background tasks",
+          "Inspect prompts and generations",
+          "prompt inspection",
+          "generation diagnostics",
+          "review validation",
+          "request debugging"
+        ],
         "frontends": [
           "Lumiverse"
         ],
@@ -37397,7 +37460,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "memory-retrieval",
-      "summary": "STARmem is a SillyTavern memory extension for long-form roleplay, using deterministic retrieval, async fact extraction, and replayable traces in one Memory Viewer timeline.",
+      "summary": "SillyTavern-STARmem (README) gives SillyTavern chats persistent, structured memory: an LLM extracts durable facts on write, while deterministic BM25 and typed-graph retrieval supplies context with replayable traces.",
       "canonicalUrl": "https://github.com/EvaL3n4/SillyTavern-STARmem",
       "catalogedAt": "2026-08-06T03:57:07.562Z",
       "catalogCohort": "standard",
@@ -37410,21 +37473,15 @@
       ],
       "tags": [
         {
-          "id": "background-operation",
-          "label": "Background operation",
-          "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
-          "facet": "trait"
-        },
-        {
-          "id": "inspect-prompts-and-generations",
-          "label": "Inspect prompts and generations",
-          "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
-          "facet": "goal"
-        },
-        {
           "id": "maintain-long-term-memory",
           "label": "Maintain long-term memory",
           "description": "Preserve and recall important information across long chats or separate sessions.",
+          "facet": "goal"
+        },
+        {
+          "id": "retrieve-relevant-context",
+          "label": "Retrieve relevant context",
+          "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
           "facet": "goal"
         },
         {
@@ -37434,16 +37491,22 @@
           "facet": "trait"
         },
         {
-          "id": "retrieve-relevant-context",
-          "label": "Retrieve relevant context",
-          "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
-          "facet": "goal"
+          "id": "semantic-retrieval",
+          "label": "Semantic retrieval",
+          "description": "Selects relevant information through embeddings, vector search, RAG, or hybrid retrieval.",
+          "facet": "trait"
         },
         {
           "id": "rules-driven",
           "label": "Rules-driven",
           "description": "Uses explicit rules, schemas, calculations, or deterministic mechanics to constrain behavior.",
           "facet": "trait"
+        },
+        {
+          "id": "inspect-prompts-and-generations",
+          "label": "Inspect prompts and generations",
+          "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+          "facet": "goal"
         }
       ],
       "tavernKeeper": {
@@ -37566,7 +37629,7 @@
           "https://github.com/EvaL3n4/SillyTavern-STARmem"
         ],
         "summary": [
-          "STARmem is a SillyTavern memory extension for long-form roleplay, using deterministic retrieval, async fact extraction, and replayable traces in one Memory Viewer timeline."
+          "SillyTavern-STARmem (README) gives SillyTavern chats persistent, structured memory: an LLM extracts durable facts on write, while deterministic BM25 and typed-graph retrieval supplies context with replayable traces."
         ],
         "kind": [
           "extension"
@@ -37575,31 +37638,32 @@
           "Memory and retrieval"
         ],
         "tags": [
-          "Background operation",
-          "asynchronous processing",
-          "quiet generation",
-          "background tasks",
-          "Inspect prompts and generations",
-          "prompt inspection",
-          "generation diagnostics",
-          "review validation",
-          "request debugging",
           "Maintain long-term memory",
           "durable memory",
           "persistent memory",
           "remember across chats",
-          "Persistent state",
-          "durable state",
-          "state persistence",
-          "cross-session state",
           "Retrieve relevant context",
           "context retrieval",
           "relevant recall",
           "knowledge retrieval",
+          "Persistent state",
+          "durable state",
+          "state persistence",
+          "cross-session state",
+          "Semantic retrieval",
+          "semantic search",
+          "vector search",
+          "retrieval-augmented generation",
+          "RAG",
           "Rules-driven",
           "deterministic mechanics",
           "rule based",
-          "schema driven"
+          "schema driven",
+          "Inspect prompts and generations",
+          "prompt inspection",
+          "generation diagnostics",
+          "review validation",
+          "request debugging"
         ],
         "frontends": [
           "SillyTavern"
@@ -69433,7 +69497,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "character-worldbuilding",
-      "summary": "ST Card Editor is a web-based tool for editing SillyTavern character cards. It combines drag-and-drop editing, AI-assisted translation, character generation, and reference image creation in a single interface.",
+      "summary": "ST Card Editor is a web studio for editing, translating, and AI-generating SillyTavern character cards, with full-text search over all fields and the lorebook plus card health reports (README).",
       "canonicalUrl": "https://github.com/maxime-fleury/ST-cardEditor",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -69446,21 +69510,21 @@
       ],
       "tags": [
         {
-          "id": "create-character-cards",
-          "label": "Create character cards",
-          "description": "Generate or author ready-to-use AI roleplay character cards.",
-          "facet": "goal"
-        },
-        {
           "id": "manage-characters-and-personas",
           "label": "Manage characters and personas",
           "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
           "facet": "goal"
         },
         {
-          "id": "generate-images",
-          "label": "Generate images",
-          "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
+          "id": "create-character-cards",
+          "label": "Create character cards",
+          "description": "Generate or author ready-to-use AI roleplay character cards.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-lorebooks",
+          "label": "Manage lorebooks",
+          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
           "facet": "goal"
         },
         {
@@ -69470,10 +69534,10 @@
           "facet": "goal"
         },
         {
-          "id": "visual-workflow",
-          "label": "Visual workflow",
-          "description": "Uses nodes, diagrams, canvases, maps, or drag-and-drop builders to define behavior.",
-          "facet": "trait"
+          "id": "generate-images",
+          "label": "Generate images",
+          "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
+          "facet": "goal"
         }
       ],
       "tavernKeeper": {
@@ -69639,7 +69703,7 @@
           "https://github.com/maxime-fleury/ST-cardEditor"
         ],
         "summary": [
-          "ST Card Editor is a web-based tool for editing SillyTavern character cards. It combines drag-and-drop editing, AI-assisted translation, character generation, and reference image creation in a single interface."
+          "ST Card Editor is a web studio for editing, translating, and AI-generating SillyTavern character cards, with full-text search over all fields and the lorebook plus card health reports (README)."
         ],
         "kind": [
           "extension"
@@ -69648,27 +69712,27 @@
           "Character and worldbuilding"
         ],
         "tags": [
-          "Create character cards",
-          "character card generation",
-          "character creator",
-          "make characters",
           "Manage characters and personas",
           "persona management",
           "character management",
           "identity management",
-          "Generate images",
-          "image generation",
-          "AI art generation",
-          "scene illustration",
-          "picture generation",
+          "Create character cards",
+          "character card generation",
+          "character creator",
+          "make characters",
+          "Manage lorebooks",
+          "World Info management",
+          "worldbook organization",
+          "loredeck management",
           "Translate roleplay content",
           "chat translation",
           "AI translation",
           "translate messages",
-          "Visual workflow",
-          "node editor",
-          "flowchart builder",
-          "graphical workflow"
+          "Generate images",
+          "image generation",
+          "AI art generation",
+          "scene illustration",
+          "picture generation"
         ],
         "frontends": [
           "SillyTavern"
@@ -76420,7 +76484,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "SillyTavern extension replacing the default landing page with an immersive character picker (README): filter by tag, assign tag wallpapers, swap personas from the sidebar, and pick sprites or avatar cards.",
+      "summary": "SillyTavern extension that replaces the default landing page with an immersive character picker, adding tag filtering, per-tag wallpapers, sidebar persona swapping, and sprite or avatar card views (readme).",
       "canonicalUrl": "https://github.com/mokimoko/SillyTavern-LandingPageRedux",
       "catalogedAt": "2026-09-27T14:08:02.527Z",
       "catalogCohort": "standard",
@@ -76437,6 +76501,12 @@
         }
       ],
       "tags": [
+        {
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
+        },
         {
           "id": "customize-the-interface",
           "label": "Customize the interface",
@@ -76570,7 +76640,7 @@
           "https://github.com/mokimoko/SillyTavern-LandingPageRedux"
         ],
         "summary": [
-          "SillyTavern extension replacing the default landing page with an immersive character picker (README): filter by tag, assign tag wallpapers, swap personas from the sidebar, and pick sprites or avatar cards."
+          "SillyTavern extension that replaces the default landing page with an immersive character picker, adding tag filtering, per-tag wallpapers, sidebar persona swapping, and sprite or avatar card views (readme)."
         ],
         "kind": [
           "extension"
@@ -76579,6 +76649,10 @@
           "Interface and workflow"
         ],
         "tags": [
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals",
           "Customize the interface",
           "interface theming",
           "layout customization",
@@ -99937,7 +100011,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control.",
+      "summary": "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README).",
       "canonicalUrl": "https://github.com/Samueras/GuidedGenerations-Extension",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -99954,12 +100028,6 @@
           "label": "Guide model responses",
           "description": "Shape what the model says, how it behaves, or which instructions it follows.",
           "facet": "goal"
-        },
-        {
-          "id": "modular-and-extensible",
-          "label": "Modular and extensible",
-          "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
-          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -100151,7 +100219,7 @@
           "https://github.com/Samueras/GuidedGenerations-Extension"
         ],
         "summary": [
-          "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control."
+          "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README)."
         ],
         "kind": [
           "extension"
@@ -100163,11 +100231,7 @@
           "Guide model responses",
           "response steering",
           "generation control",
-          "instruction control",
-          "Modular and extensible",
-          "plugin architecture",
-          "modular design",
-          "extensible system"
+          "instruction control"
         ],
         "frontends": [
           "SillyTavern"
@@ -136167,7 +136231,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control.",
+            "summary": "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README).",
             "canonicalUrl": "https://github.com/Samueras/GuidedGenerations-Extension",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -136184,12 +136248,6 @@
                 "label": "Guide model responses",
                 "description": "Shape what the model says, how it behaves, or which instructions it follows.",
                 "facet": "goal"
-              },
-              {
-                "id": "modular-and-extensible",
-                "label": "Modular and extensible",
-                "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -136381,7 +136439,7 @@
                 "https://github.com/Samueras/GuidedGenerations-Extension"
               ],
               "summary": [
-                "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control."
+                "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README)."
               ],
               "kind": [
                 "extension"
@@ -136393,11 +136451,7 @@
                 "Guide model responses",
                 "response steering",
                 "generation control",
-                "instruction control",
-                "Modular and extensible",
-                "plugin architecture",
-                "modular design",
-                "extensible system"
+                "instruction control"
               ],
               "frontends": [
                 "SillyTavern"
@@ -159239,7 +159293,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control.",
+            "summary": "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README).",
             "canonicalUrl": "https://github.com/Samueras/GuidedGenerations-Extension",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -159256,12 +159310,6 @@
                 "label": "Guide model responses",
                 "description": "Shape what the model says, how it behaves, or which instructions it follows.",
                 "facet": "goal"
-              },
-              {
-                "id": "modular-and-extensible",
-                "label": "Modular and extensible",
-                "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -159453,7 +159501,7 @@
                 "https://github.com/Samueras/GuidedGenerations-Extension"
               ],
               "summary": [
-                "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control."
+                "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README)."
               ],
               "kind": [
                 "extension"
@@ -159465,11 +159513,7 @@
                 "Guide model responses",
                 "response steering",
                 "generation control",
-                "instruction control",
-                "Modular and extensible",
-                "plugin architecture",
-                "modular design",
-                "extensible system"
+                "instruction control"
               ],
               "frontends": [
                 "SillyTavern"
@@ -170272,7 +170316,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control.",
+            "summary": "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README).",
             "canonicalUrl": "https://github.com/Samueras/GuidedGenerations-Extension",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -170289,12 +170333,6 @@
                 "label": "Guide model responses",
                 "description": "Shape what the model says, how it behaves, or which instructions it follows.",
                 "facet": "goal"
-              },
-              {
-                "id": "modular-and-extensible",
-                "label": "Modular and extensible",
-                "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -170486,7 +170524,7 @@
                 "https://github.com/Samueras/GuidedGenerations-Extension"
               ],
               "summary": [
-                "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control."
+                "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README)."
               ],
               "kind": [
                 "extension"
@@ -170498,11 +170536,7 @@
                 "Guide model responses",
                 "response steering",
                 "generation control",
-                "instruction control",
-                "Modular and extensible",
-                "plugin architecture",
-                "modular design",
-                "extensible system"
+                "instruction control"
               ],
               "frontends": [
                 "SillyTavern"
@@ -183677,7 +183711,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control.",
+            "summary": "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README).",
             "canonicalUrl": "https://github.com/Samueras/GuidedGenerations-Extension",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -183694,12 +183728,6 @@
                 "label": "Guide model responses",
                 "description": "Shape what the model says, how it behaves, or which instructions it follows.",
                 "facet": "goal"
-              },
-              {
-                "id": "modular-and-extensible",
-                "label": "Modular and extensible",
-                "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -183891,7 +183919,7 @@
                 "https://github.com/Samueras/GuidedGenerations-Extension"
               ],
               "summary": [
-                "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control."
+                "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README)."
               ],
               "kind": [
                 "extension"
@@ -183903,11 +183931,7 @@
                 "Guide model responses",
                 "response steering",
                 "generation control",
-                "instruction control",
-                "Modular and extensible",
-                "plugin architecture",
-                "modular design",
-                "extensible system"
+                "instruction control"
               ],
               "frontends": [
                 "SillyTavern"
@@ -198409,7 +198433,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control.",
+            "summary": "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README).",
             "canonicalUrl": "https://github.com/Samueras/GuidedGenerations-Extension",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -198426,12 +198450,6 @@
                 "label": "Guide model responses",
                 "description": "Shape what the model says, how it behaves, or which instructions it follows.",
                 "facet": "goal"
-              },
-              {
-                "id": "modular-and-extensible",
-                "label": "Modular and extensible",
-                "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -198623,7 +198641,7 @@
                 "https://github.com/Samueras/GuidedGenerations-Extension"
               ],
               "summary": [
-                "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control."
+                "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README)."
               ],
               "kind": [
                 "extension"
@@ -198635,11 +198653,7 @@
                 "Guide model responses",
                 "response steering",
                 "generation control",
-                "instruction control",
-                "Modular and extensible",
-                "plugin architecture",
-                "modular design",
-                "extensible system"
+                "instruction control"
               ],
               "frontends": [
                 "SillyTavern"
@@ -253345,7 +253359,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control.",
+            "summary": "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README).",
             "canonicalUrl": "https://github.com/Samueras/GuidedGenerations-Extension",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -253362,12 +253376,6 @@
                 "label": "Guide model responses",
                 "description": "Shape what the model says, how it behaves, or which instructions it follows.",
                 "facet": "goal"
-              },
-              {
-                "id": "modular-and-extensible",
-                "label": "Modular and extensible",
-                "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -253559,7 +253567,7 @@
                 "https://github.com/Samueras/GuidedGenerations-Extension"
               ],
               "summary": [
-                "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control."
+                "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README)."
               ],
               "kind": [
                 "extension"
@@ -253571,11 +253579,7 @@
                 "Guide model responses",
                 "response steering",
                 "generation control",
-                "instruction control",
-                "Modular and extensible",
-                "plugin architecture",
-                "modular design",
-                "extensible system"
+                "instruction control"
               ],
               "frontends": [
                 "SillyTavern"
@@ -262835,7 +262839,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "character-worldbuilding",
-            "summary": "ST Card Editor is a web-based tool for editing SillyTavern character cards. It combines drag-and-drop editing, AI-assisted translation, character generation, and reference image creation in a single interface.",
+            "summary": "ST Card Editor is a web studio for editing, translating, and AI-generating SillyTavern character cards, with full-text search over all fields and the lorebook plus card health reports (README).",
             "canonicalUrl": "https://github.com/maxime-fleury/ST-cardEditor",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -262848,21 +262852,21 @@
             ],
             "tags": [
               {
-                "id": "create-character-cards",
-                "label": "Create character cards",
-                "description": "Generate or author ready-to-use AI roleplay character cards.",
-                "facet": "goal"
-              },
-              {
                 "id": "manage-characters-and-personas",
                 "label": "Manage characters and personas",
                 "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
                 "facet": "goal"
               },
               {
-                "id": "generate-images",
-                "label": "Generate images",
-                "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
+                "id": "create-character-cards",
+                "label": "Create character cards",
+                "description": "Generate or author ready-to-use AI roleplay character cards.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
                 "facet": "goal"
               },
               {
@@ -262872,10 +262876,10 @@
                 "facet": "goal"
               },
               {
-                "id": "visual-workflow",
-                "label": "Visual workflow",
-                "description": "Uses nodes, diagrams, canvases, maps, or drag-and-drop builders to define behavior.",
-                "facet": "trait"
+                "id": "generate-images",
+                "label": "Generate images",
+                "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
+                "facet": "goal"
               }
             ],
             "tavernKeeper": {
@@ -263041,7 +263045,7 @@
                 "https://github.com/maxime-fleury/ST-cardEditor"
               ],
               "summary": [
-                "ST Card Editor is a web-based tool for editing SillyTavern character cards. It combines drag-and-drop editing, AI-assisted translation, character generation, and reference image creation in a single interface."
+                "ST Card Editor is a web studio for editing, translating, and AI-generating SillyTavern character cards, with full-text search over all fields and the lorebook plus card health reports (README)."
               ],
               "kind": [
                 "extension"
@@ -263050,27 +263054,27 @@
                 "Character and worldbuilding"
               ],
               "tags": [
-                "Create character cards",
-                "character card generation",
-                "character creator",
-                "make characters",
                 "Manage characters and personas",
                 "persona management",
                 "character management",
                 "identity management",
-                "Generate images",
-                "image generation",
-                "AI art generation",
-                "scene illustration",
-                "picture generation",
+                "Create character cards",
+                "character card generation",
+                "character creator",
+                "make characters",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
                 "Translate roleplay content",
                 "chat translation",
                 "AI translation",
                 "translate messages",
-                "Visual workflow",
-                "node editor",
-                "flowchart builder",
-                "graphical workflow"
+                "Generate images",
+                "image generation",
+                "AI art generation",
+                "scene illustration",
+                "picture generation"
               ],
               "frontends": [
                 "SillyTavern"
@@ -265758,7 +265762,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control.",
+            "summary": "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README).",
             "canonicalUrl": "https://github.com/Samueras/GuidedGenerations-Extension",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -265775,12 +265779,6 @@
                 "label": "Guide model responses",
                 "description": "Shape what the model says, how it behaves, or which instructions it follows.",
                 "facet": "goal"
-              },
-              {
-                "id": "modular-and-extensible",
-                "label": "Modular and extensible",
-                "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -265972,7 +265970,7 @@
                 "https://github.com/Samueras/GuidedGenerations-Extension"
               ],
               "summary": [
-                "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control."
+                "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README)."
               ],
               "kind": [
                 "extension"
@@ -265984,11 +265982,7 @@
                 "Guide model responses",
                 "response steering",
                 "generation control",
-                "instruction control",
-                "Modular and extensible",
-                "plugin architecture",
-                "modular design",
-                "extensible system"
+                "instruction control"
               ],
               "frontends": [
                 "SillyTavern"
@@ -293594,7 +293588,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control.",
+            "summary": "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README).",
             "canonicalUrl": "https://github.com/Samueras/GuidedGenerations-Extension",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -293611,12 +293605,6 @@
                 "label": "Guide model responses",
                 "description": "Shape what the model says, how it behaves, or which instructions it follows.",
                 "facet": "goal"
-              },
-              {
-                "id": "modular-and-extensible",
-                "label": "Modular and extensible",
-                "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -293808,7 +293796,7 @@
                 "https://github.com/Samueras/GuidedGenerations-Extension"
               ],
               "summary": [
-                "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control."
+                "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README)."
               ],
               "kind": [
                 "extension"
@@ -293820,11 +293808,7 @@
                 "Guide model responses",
                 "response steering",
                 "generation control",
-                "instruction control",
-                "Modular and extensible",
-                "plugin architecture",
-                "modular design",
-                "extensible system"
+                "instruction control"
               ],
               "frontends": [
                 "SillyTavern"
@@ -297147,7 +297131,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control.",
+            "summary": "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README).",
             "canonicalUrl": "https://github.com/Samueras/GuidedGenerations-Extension",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -297164,12 +297148,6 @@
                 "label": "Guide model responses",
                 "description": "Shape what the model says, how it behaves, or which instructions it follows.",
                 "facet": "goal"
-              },
-              {
-                "id": "modular-and-extensible",
-                "label": "Modular and extensible",
-                "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -297361,7 +297339,7 @@
                 "https://github.com/Samueras/GuidedGenerations-Extension"
               ],
               "summary": [
-                "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control."
+                "SillyTavern extension porting the Guided Generations Quick Reply set natively, offering modular, context-aware tools to shape and guide AI responses for roleplay via integrated buttons and menus (README)."
               ],
               "kind": [
                 "extension"
@@ -297373,11 +297351,7 @@
                 "Guide model responses",
                 "response steering",
                 "generation control",
-                "instruction control",
-                "Modular and extensible",
-                "plugin architecture",
-                "modular design",
-                "extensible system"
+                "instruction control"
               ],
               "frontends": [
                 "SillyTavern"

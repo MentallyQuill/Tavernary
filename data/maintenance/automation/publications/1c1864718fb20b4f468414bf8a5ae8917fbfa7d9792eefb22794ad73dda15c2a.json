@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1c1864718fb20b4f468414bf8a5ae8917fbfa7d9792eefb22794ad73dda15c2a",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1303183395:archkr-lumiverse-lumimind",
+      "inputDigest": "b949d4f9ba22eee76da414747bf7077a00c4e2554de067ae158d89f14bba1787",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-03T06:54:24.750Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1303183395",
+    "identity": "github:1303183395"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41602701899,
+    "sourceSha": "01d41299ff81dc885170bf73b608ede6630f988e"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/archkr-lumiverse-lumimind.json",
+      "sha256": "8ec4d33192fba0742715c409f6d4e6488fff27654abda5b49bbca2480e1e794e",
+      "gitBlobSha": "f8e544897d9b533a013cac6016a48f51a5c308c8"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/1c1864718fb20b4f468414bf8a5ae8917fbfa7d9792eefb22794ad73dda15c2a.json",
+      "sha256": "f8c22cb64b00b9b3c2328949a08f6dd9e7f627faa433801fe2af71bc921738d3",
+      "gitBlobSha": "fcc51f9d07611c31ea3b60e27622252faa582e79"
+    }
+  ]
+}

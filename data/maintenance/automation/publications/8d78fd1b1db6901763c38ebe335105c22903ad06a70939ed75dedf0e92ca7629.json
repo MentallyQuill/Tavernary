@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8d78fd1b1db6901763c38ebe335105c22903ad06a70939ed75dedf0e92ca7629",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1216025460:eval3n4-sillytavern-starmem",
+      "inputDigest": "8e97cdc1df720cf91d82c24fd84d1ee3a1b6fb8b6338ca972945476ee6ae29fb",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-03T06:54:02.667Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1216025460",
+    "identity": "github:1216025460"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41603657090,
+    "sourceSha": "d8899644617e23fd660e75023e7d8b2c3a24fe6e"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/eval3n4-sillytavern-starmem.json",
+      "sha256": "89abe2574bf1355a42193b0859fca8bd7bd9057ca8cdc7d8701a7c46255ea2da",
+      "gitBlobSha": "99c3009644f1768f4f031520a16b84fb676fc0e3"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/8d78fd1b1db6901763c38ebe335105c22903ad06a70939ed75dedf0e92ca7629.json",
+      "sha256": "da8dbff6403d10ebf8ab465100f1769f6516b54b5ebc1daf32b43df2e8b6ffe6",
+      "gitBlobSha": "29f29064011d892f4205a12e3651e9db2f621682"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f846630e6fefdca23c048cda1720134d74148243f0688e77658e81e709f9096a",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-957795776:samueras-guidedgenerations-extension",
+      "inputDigest": "bf5291950ab95d5cb5186eb2664cd171bcf782a3c39c83bdcf7f147a51f5b7ff",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-03T06:44:29.526Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-957795776",
+    "identity": "github:957795776"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41601627879,
+    "sourceSha": "b25c528803d07379baade3200d5bb04cd17148e6"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/samueras-guidedgenerations-extension.json",
+      "sha256": "9ed48ac60de7ff53e028b4b23127dc2b76be320ee4c3d224e92df6ace65fb157",
+      "gitBlobSha": "53213ae45b87cd5e36f0f66415c46f81e1b06636"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/f846630e6fefdca23c048cda1720134d74148243f0688e77658e81e709f9096a.json",
+      "sha256": "cd69a875ca704e90512019cb7b4666acbbde2170acd0e9e1ccb073df38c7b4b3",
+      "gitBlobSha": "a9bda84933cbb7fdc7bdc33a92c9892685419eab"
+    }
+  ]
+}

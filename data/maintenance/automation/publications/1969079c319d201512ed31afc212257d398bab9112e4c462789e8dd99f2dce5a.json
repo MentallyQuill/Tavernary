@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1969079c319d201512ed31afc212257d398bab9112e4c462789e8dd99f2dce5a",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1300836750:maxime-fleury-st-card-editor",
+      "inputDigest": "0343065bf6ef615a64a67ed0224a87e595f0562bdd8ab1bf855880304c8acbdb",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-03T06:44:59.470Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1300836750",
+    "identity": "github:1300836750"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41598825110,
+    "sourceSha": "f1261b913b49da477cfc7c8717342894c1b37653"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/maxime-fleury-st-card-editor.json",
+      "sha256": "fe56c2515706e4c0d2391e60cc836fa20cc8b9e63bf057afac4128aaa2b1d17b",
+      "gitBlobSha": "90e099575fb2f9a1182d6196185511cee4b2f343"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/1969079c319d201512ed31afc212257d398bab9112e4c462789e8dd99f2dce5a.json",
+      "sha256": "0cdb703b04a6991aa39c2b98776d4acfa58abbc1a46491dfa08b7d1cd7993da1",
+      "gitBlobSha": "661c1b6fbaa83e76d0e19d0b4fa039f1b67264e0"
+    }
+  ]
+}

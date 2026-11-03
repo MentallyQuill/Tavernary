@@ -3,14 +3,21 @@
   "id": "archkr-lumiverse-lumimind",
   "name": "Lumiverse LumiMind",
   "kind": "extension",
-  "summary": "Lumiverse LumiMind is a work-in-progress frontend extension for the Lumiverse platform. The project contributes additional capabilities to its host frontend, with further features yet to be defined.",
+  "summary": "Lumiverse LumiMind is an extension that gives characters private, evolving subjective minds, tracking secrets and differing beliefs across a conversation and injecting the current unresolved state (README, 0.3.3).",
   "metadata_status": "curated",
   "frontends": ["lumiverse"],
   "primary_function": "memory-retrieval",
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "source_id": "github-1303183395",
-  "tags": [],
+  "tags": [
+    "track-characters-and-world-state",
+    "preserve-story-continuity",
+    "persistent-state",
+    "run-group-roleplay",
+    "background-operation",
+    "inspect-prompts-and-generations"
+  ],
   "listing_status": "active",
   "listing_status_reason": null,
   "metadata_policy": {

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e46cfefbce179e7ed3aec6cdb120e1aa5a7406ac445bfa882c7bf7bfdcb4b7ab",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1252414946:mokimoko-sillytavern-landingpageredux",
+      "inputDigest": "26e0c262f694e2d7a46b5fbf70f2dfc5262f41939536aff22c62455a02fa69ce",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-03T06:55:23.097Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1252414946",
+    "identity": "github:1252414946"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 41599794954,
+    "sourceSha": "ff6d45fa533753a87237e4fd8e378296b9b4cf29"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/mokimoko-sillytavern-landingpageredux.json",
+      "sha256": "aeaf644c9c01c8ffdfcb5976ac256c580fde6185f9dbc97f880d67de545c82a9",
+      "gitBlobSha": "72df03ef70655dcee22d36466229b7168b9a53e3"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/e46cfefbce179e7ed3aec6cdb120e1aa5a7406ac445bfa882c7bf7bfdcb4b7ab.json",
+      "sha256": "e89b142fd970efd6e0d4c52664b39716146f7ff0f75d6b0b98e0d1242941d3bb",
+      "gitBlobSha": "027236dfc148471d8fc59afb65de53c4a948c6e2"
+    }
+  ]
+}
