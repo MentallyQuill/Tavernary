@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1c1864718fb20b4f468414bf8a5ae8917fbfa7d9792eefb22794ad73dda15c2a",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1303183395:archkr-lumiverse-lumimind",
+      "inputDigest": "b949d4f9ba22eee76da414747bf7077a00c4e2554de067ae158d89f14bba1787",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:01:04.174Z",
+    "nextEligibleAt": "2026-11-03T06:57:24.901Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-03T06:42:24.901Z",
+  "completedAt": null
+}
