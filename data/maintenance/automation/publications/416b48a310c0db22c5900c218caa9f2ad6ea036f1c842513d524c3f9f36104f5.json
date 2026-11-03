@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "416b48a310c0db22c5900c218caa9f2ad6ea036f1c842513d524c3f9f36104f5",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1307266714:sawa-25-sillytavern-memorylayers",
+      "inputDigest": "1077f681187350658b66c8720e8706dc27b2257503d8f50219c5b27f846980e4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:01:43.367Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1307266714",
+    "identity": "github:1307266714"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41644404028,
+    "sourceSha": "6db0f662e0e03ca77a79dc79c307acae5446a305"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/sawa-25-sillytavern-memorylayers.json",
+      "sha256": "2bc76722b7e396b0736549e3e531c751d18750fb951c61e0d3b4085bd189b6ae",
+      "gitBlobSha": "2f88cb6034ed7a707f219bd0939f5d94dde1d80d"
+    }
+  ]
+}

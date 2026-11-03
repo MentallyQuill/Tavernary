@@ -5,12 +5,9 @@
   "source_identity": "github:unkarelian/timeline-memory",
   "evidence_fingerprint": "7f858630bed510f6624c731ef4dd287f209e73830861af2684f86aac80d43939",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-15T12:51:55.257Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-15T12:51:55.257Z"
-  },
+  "reviewed_at": "2026-11-03T14:28:03.745Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "cb8478c1c888d6655647ee1112c3afbd59f914826c0b8408f6fa9e8d9b5e0ad3",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1265351175:rivelledays-sillytavern-astraprojecta",
+      "inputDigest": "fc13f8985a41a68e8602bd1d3725095999363216be3d9f4e24f7f9ff57d03d99",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:04:04.585Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1265351175",
+    "identity": "github:1265351175"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41648069836,
+    "sourceSha": "41d6c9f740b6cb0deb6b7b4b318cc10242fad23c"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/rivelledays-sillytavern-astraprojecta.json",
+      "sha256": "d532c85f8d9f9cb762e39348b88a76e73057947f2c7a8a5318227b35ad760c09",
+      "gitBlobSha": "deafa85bf101ec123ee158ea2172bb0b929947d3"
+    }
+  ]
+}

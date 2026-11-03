@@ -5,12 +5,9 @@
   "source_identity": "github:mentallyquill/wandlight",
   "evidence_fingerprint": "c23458cccbcdd67169e7066d0ceaa5afcc7d5a60dcc5e9b38db1bb753a35ac4b",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-10T22:59:06.901Z",
-  "retry": {
-    "attempts": 25,
-    "last_failure_at": "2026-08-10T22:59:06.901Z"
-  },
+  "reviewed_at": "2026-11-03T14:18:34.962Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

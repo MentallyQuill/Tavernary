@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e5f547e2d7efa20cea92ce33ff9120002adcaccf715b0b594e539259a93396ff",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-933528919:p-e-w-sorcery",
+      "inputDigest": "e1885d021ff5a9ebb6a7a30fccab8d5f165eeb3181eebeff345c0dc73f588e66",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:01:43.248Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-933528919",
+    "identity": "github:933528919"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41643114679,
+    "sourceSha": "2be383966076a08602c0bfa85893ce2c25e8c41f"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/p-e-w-sorcery.json",
+      "sha256": "5a840405126a2c26ff30ddc2b83225e03a15554f507f4810c465aa65f4a695e2",
+      "gitBlobSha": "1588549b29e4408affb3e01bf69e58dd7cd1ed90"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "bb7e51acd36de32e300fda504a043ef11957855760f526a47d8fc198a0b02300",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1247868572:kurohomeless-sillytavern-token-and-cost-statistics",
+      "inputDigest": "37e2d1a69e090560cd4afafe4bb6f3ee2959247cf4c45ce542f41b82566e3408",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:01:13.540Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1247868572",
+    "identity": "github:1247868572"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41641799217,
+    "sourceSha": "f55eed994fcf4502366eb4bbdf09c76d041a14ad"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/kurohomeless-sillytavern-token-and-cost-statistics.json",
+      "sha256": "d52bcc5b97e3666c685c839f76c350d33478830506c3fc133f41794cb3adc0d2",
+      "gitBlobSha": "d56ef3d59a3f598b0f12d3068a2dcaec5c195f66"
+    }
+  ]
+}

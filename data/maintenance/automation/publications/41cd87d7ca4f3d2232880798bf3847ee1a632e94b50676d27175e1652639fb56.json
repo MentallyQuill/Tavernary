@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "41cd87d7ca4f3d2232880798bf3847ee1a632e94b50676d27175e1652639fb56",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1254077407:mentallyquill-wandlight",
+      "inputDigest": "d8db9b0f56c809e83551b13630480f15b5a82e4d7b9965362b3ead97a404f771",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-15T05:14:44.501Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1254077407",
+    "identity": "github:1254077407"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41652185740,
+    "sourceSha": "5a7fef809fcd2bd0d6ab867ada06fc45ade66b59"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/mentallyquill-wandlight.json",
+      "sha256": "34d03a2c94fed3b649869c8a4550bf1d901531612f8832fe2be2f1dd2d0fdb35",
+      "gitBlobSha": "0852bcd6dd3688023a94494b52e4f73458a5e4f7"
+    }
+  ]
+}

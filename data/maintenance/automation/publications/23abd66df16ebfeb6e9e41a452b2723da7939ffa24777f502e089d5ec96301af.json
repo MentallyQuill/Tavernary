@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "23abd66df16ebfeb6e9e41a452b2723da7939ffa24777f502e089d5ec96301af",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1216512802:zapoverde-sillytavern-mobilyze",
+      "inputDigest": "bea4a0de1a7cd088ac4c8d44cda308702e504380f9351da0f7372d7b29217c1f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-14T13:03:57.020Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1216512802",
+    "identity": "github:1216512802"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41646719230,
+    "sourceSha": "b71e2b7b0c2dd2b5a8b1d11b390feea540a29cec"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/zapoverde-sillytavern-mobilyze.json",
+      "sha256": "7263ac29b9dd0d5ad1f8f9825a59c5aa401786517835b1d9215e72f4ef633f93",
+      "gitBlobSha": "ee788f3779047ec8b2d1d0fe06a391d0355733c1"
+    }
+  ]
+}

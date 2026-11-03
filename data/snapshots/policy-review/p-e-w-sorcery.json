@@ -5,12 +5,9 @@
   "source_identity": "github:p-e-w/sorcery",
   "evidence_fingerprint": "5a279ba5f97d18b66e21067b9b2c2a30209af92c55a1727cb10f893e147b4b04",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-02T12:29:47.736Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-09-02T12:29:47.736Z"
-  },
+  "reviewed_at": "2026-11-03T13:19:10.676Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

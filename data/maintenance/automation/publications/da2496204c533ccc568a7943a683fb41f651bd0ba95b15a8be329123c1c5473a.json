@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "da2496204c533ccc568a7943a683fb41f651bd0ba95b15a8be329123c1c5473a",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1370082694:atlas4285-sillytavern-nextactions",
+      "inputDigest": "7c66caaf78232e09477d6dc577d4e44a0737bd657e827f7d934a41edb26a9ab5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-15T05:14:30.061Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1370082694",
+    "identity": "github:1370082694"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41650741111,
+    "sourceSha": "2ef2df6c8bee3d4c97b1e9f5466eca772541d202"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/atlas4285-sillytavern-nextactions.json",
+      "sha256": "ca71ab62e2f72688aa563794c75c277d42d56ebdfdff96a2b9919b4272643d54",
+      "gitBlobSha": "ffe9fd16d79d3eef15afbe094cb2927e75fc5010"
+    }
+  ]
+}

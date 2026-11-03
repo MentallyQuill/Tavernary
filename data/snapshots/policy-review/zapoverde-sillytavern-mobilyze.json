@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "zapoverde-sillytavern-mobilyze",
+  "source_id": "github-1216512802",
+  "source_identity": "github:zapoverde/sillytavern-mobilyze",
+  "evidence_fingerprint": "bfc706b52ced96df8f29a6475b9f0e10cf76456713d404e16a7f143f90958881",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-03T13:43:30.664Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}
