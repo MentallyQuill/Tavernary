@@ -55,18 +55,19 @@
     "evidence_head_sha": "a19eaf62cd26b64683a569381e1a64e80ff44666"
   },
   "community": {
-    "stars_count": 11,
+    "stars_count": 13,
     "forks_count": 3,
     "watchers_count": 1,
-    "aggregate": 15
+    "aggregate": 17
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-15T10:01:12.564Z",
+  "refreshed_at": "2026-11-03T15:26:13.799Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "MentallyQuill", "type": "User", "provider": "github" }
@@ -74,8 +75,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-15T10:01:12.564Z",
+    "refreshed_at": "2026-11-03T15:23:53.026Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }
