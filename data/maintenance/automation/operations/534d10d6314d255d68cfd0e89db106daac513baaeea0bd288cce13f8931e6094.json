@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "534d10d6314d255d68cfd0e89db106daac513baaeea0bd288cce13f8931e6094",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-736459676:lenanderson-sillytavern-triggercards",
+      "inputDigest": "c3ab32ca2a80873a4bff15cd5703fc132fa7cb5db853f7a0a5d61441ffe8974d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-15T12:48:12.256Z",
+    "nextEligibleAt": null,
+    "expectedSha": "57ddac3dfbea107035d0303684a7293c443891f9",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-04T14:51:47.392Z",
+  "completedAt": null
+}
