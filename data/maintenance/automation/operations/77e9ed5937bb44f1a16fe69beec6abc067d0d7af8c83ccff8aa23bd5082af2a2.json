@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "77e9ed5937bb44f1a16fe69beec6abc067d0d7af8c83ccff8aa23bd5082af2a2",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1189674883:arif-salah-megumin-suite",
+      "inputDigest": "e1d3f3d0accdf5cb622d524acf047e6b8e6c72fbdf942cb623377ca3b84fc5a3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-15T12:47:56.588Z",
+    "nextEligibleAt": null,
+    "expectedSha": "57ddac3dfbea107035d0303684a7293c443891f9",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-04T14:51:47.392Z",
+  "completedAt": null
+}
