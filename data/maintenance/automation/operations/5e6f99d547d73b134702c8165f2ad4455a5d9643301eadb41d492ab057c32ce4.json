@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5e6f99d547d73b134702c8165f2ad4455a5d9643301eadb41d492ab057c32ce4",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1372071122:iamarxs-anyworld",
+      "inputDigest": "784c3135213c288a1b1de9cd7d54e0dc794b68eafb4607e5ed74aa765092a358",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-15T10:17:30.782Z",
+    "nextEligibleAt": "2026-11-04T02:34:32.145Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-04T02:19:32.145Z",
+  "completedAt": null
+}
