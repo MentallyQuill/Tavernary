@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "622f2d5c8b8a75a2c0b9d91db18492aa689ec8b87c80324b0517b14c822bf7db",
+    "identity": {
+      "kind": "report-import",
+      "subject": "report:4de50e2dfaedd32d653628919a6fbd2eed4936a0d8339b42bdf63e578efa6fd1",
+      "inputDigest": "fdcdd9b8be3114233adec2a23b1cb1e29887bacacb632d55b2107d27f62b12b2",
+      "policyVersion": "5.5"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-04T03:24:07.957Z",
+    "nextEligibleAt": null,
+    "expectedSha": "ba37c5fcdd5ad8c11d1b7be001ed59c24013fbd6",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-04T03:45:53.912Z",
+  "completedAt": null
+}
