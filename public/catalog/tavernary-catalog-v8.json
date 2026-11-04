@@ -25834,10 +25834,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 3,
+        "stars": 6,
         "forks": 0,
         "watchers": 0,
-        "aggregate": 3
+        "aggregate": 6
       },
       "repositorySizeKb": 116,
       "license": {
@@ -25846,7 +25846,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-15T12:51:09.413Z",
+      "refreshedAt": "2026-11-04T20:59:21.413Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -64656,7 +64656,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "9ef9272d678f0d50a0f37c6548201cc60f42e365",
+        "currentSha": "6715df3de303adc626b1f8631e3893b9e321ef30",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -64683,9 +64683,9 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-09-30T02:52:26.000Z",
-        "activeWeeks12": 3,
+        "activeWeeks12": 2,
         "weeklyActivity": [
-          true,
+          false,
           false,
           false,
           false,
@@ -64708,14 +64708,14 @@
         "watchers": 0,
         "aggregate": 10
       },
-      "repositorySizeKb": 236496,
+      "repositorySizeKb": 243896,
       "license": {
         "status": "missing",
         "label": "Missing",
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-15T12:51:13.582Z",
+      "refreshedAt": "2026-11-04T20:59:33.886Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -122397,7 +122397,7 @@
       "name": "RPGraph",
       "kind": "frontend",
       "metadataStatus": "curated",
-      "sourceStatus": "healthy",
+      "sourceStatus": "stale",
       "primaryFunction": "frontend",
       "summary": "RPgraph Studio is a local-first desktop app for AI roleplay combining a visual node workflow with rich RP chat. An in-world character phone with apps runs alongside, with all data kept on the user's machine.",
       "canonicalUrl": "https://github.com/unrefined803/RPGraph",
@@ -122439,8 +122439,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
-        "currentSha": "19ce077d2d2442a2ad6932d59aed2c6b3717473f",
+        "freshness": "unavailable",
+        "currentSha": null,
         "report": {
           "reportId": "970b065efe033139b151c534848ec321106764784e177b9609e0f1b53cbaa75a",
           "riskLevel": "low",
@@ -122704,7 +122704,7 @@
       },
       "preset": null,
       "refreshedAt": "2026-10-15T12:50:50.943Z",
-      "staleSince": null,
+      "staleSince": "2026-11-04T20:55:40.221Z",
       "install": null,
       "fork": null,
       "search": {
@@ -150355,10 +150355,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 3,
+              "stars": 6,
               "forks": 0,
               "watchers": 0,
-              "aggregate": 3
+              "aggregate": 6
             },
             "repositorySizeKb": 116,
             "license": {
@@ -150367,7 +150367,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-15T12:51:09.413Z",
+            "refreshedAt": "2026-11-04T20:59:21.413Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -170358,10 +170358,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 3,
+              "stars": 6,
               "forks": 0,
               "watchers": 0,
-              "aggregate": 3
+              "aggregate": 6
             },
             "repositorySizeKb": 116,
             "license": {
@@ -170370,7 +170370,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-15T12:51:09.413Z",
+            "refreshedAt": "2026-11-04T20:59:21.413Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -178742,10 +178742,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 3,
+              "stars": 6,
               "forks": 0,
               "watchers": 0,
-              "aggregate": 3
+              "aggregate": 6
             },
             "repositorySizeKb": 116,
             "license": {
@@ -178754,7 +178754,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-15T12:51:09.413Z",
+            "refreshedAt": "2026-11-04T20:59:21.413Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -191822,10 +191822,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 3,
+              "stars": 6,
               "forks": 0,
               "watchers": 0,
-              "aggregate": 3
+              "aggregate": 6
             },
             "repositorySizeKb": 116,
             "license": {
@@ -191834,7 +191834,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-15T12:51:09.413Z",
+            "refreshedAt": "2026-11-04T20:59:21.413Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
