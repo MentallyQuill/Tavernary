@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "482e0b50a51d920c4da993e6266ea3cf2d94836141caca92fe66df3e87b0564f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1162122304:plastic-labs-sillytavern-honcho",
+      "inputDigest": "49a844671a3f7ce400aeceb0b98ec2c5c745316ca0e1edd4a4872e6098878ca4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-15T12:48:25.802Z",
+    "nextEligibleAt": null,
+    "expectedSha": "57ddac3dfbea107035d0303684a7293c443891f9",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-04T14:51:47.392Z",
+  "completedAt": null
+}
