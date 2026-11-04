@@ -46888,10 +46888,10 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "578f2cb402094dacc2f3e139feca56a11c7d63af",
         "report": {
-          "reportId": "d083449fc007c10f0acfe7d1da4ab4e8e28ddfed9d566154098340371b0e626a",
+          "reportId": "4de50e2dfaedd32d653628919a6fbd2eed4936a0d8339b42bdf63e578efa6fd1",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -46900,17 +46900,17 @@
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
           "citedFindingIds": [],
-          "scannedSha": "25b45e3486948baad7cb9460e53a61bf9dfd9819",
-          "treeUrl": "https://github.com/iamarxs/AnyWorld/tree/25b45e3486948baad7cb9460e53a61bf9dfd9819",
-          "scannedAt": "2026-10-15T15:11:40.639Z",
-          "assessedAt": "2026-10-18T16:11:26.460Z",
+          "scannedSha": "578f2cb402094dacc2f3e139feca56a11c7d63af",
+          "treeUrl": "https://github.com/iamarxs/AnyWorld/tree/578f2cb402094dacc2f3e139feca56a11c7d63af",
+          "scannedAt": "2026-11-04T03:24:07.957Z",
+          "assessedAt": "2026-11-04T03:31:13.513Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
           "synthesisModel": "deterministic-policy-v5",
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372071122/25b45e3486948baad7cb9460e53a61bf9dfd9819/5/d083449fc007c10f0acfe7d1da4ab4e8e28ddfed9d566154098340371b0e626a/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372071122/578f2cb402094dacc2f3e139feca56a11c7d63af/5/4de50e2dfaedd32d653628919a6fbd2eed4936a0d8339b42bdf63e578efa6fd1/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372071122/history/"
         },
         "history": [
@@ -46935,6 +46935,29 @@
             "dangerBasis": "none",
             "assessmentSource": "deterministic_regrade",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372071122/25b45e3486948baad7cb9460e53a61bf9dfd9819/5/d083449fc007c10f0acfe7d1da4ab4e8e28ddfed9d566154098340371b0e626a/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372071122/history/"
+          },
+          {
+            "reportId": "4de50e2dfaedd32d653628919a6fbd2eed4936a0d8339b42bdf63e578efa6fd1",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "578f2cb402094dacc2f3e139feca56a11c7d63af",
+            "treeUrl": "https://github.com/iamarxs/AnyWorld/tree/578f2cb402094dacc2f3e139feca56a11c7d63af",
+            "scannedAt": "2026-11-04T03:24:07.957Z",
+            "assessedAt": "2026-11-04T03:31:13.513Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372071122/578f2cb402094dacc2f3e139feca56a11c7d63af/5/4de50e2dfaedd32d653628919a6fbd2eed4936a0d8339b42bdf63e578efa6fd1/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372071122/history/"
           }
         ],
@@ -53075,8 +53098,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "fa726dcf9dcbf2e350c02f942a6c2e58ee77da46",
+        "freshness": "stale",
+        "currentSha": "e6a06b144aa293e07ee62a5dd9b74f9078e68420",
         "report": {
           "reportId": "5d97b9c0e60ea07b8ffaaec4b4f1a9e36dfe9cee837cd7eef4c6ceee62a6d781",
           "riskLevel": "low",
@@ -53471,10 +53494,10 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-14T08:54:59.000Z",
-        "activeWeeks12": 4,
+        "latestSourceActivityAt": "2026-10-16T07:03:04.000Z",
+        "activeWeeks12": 3,
         "weeklyActivity": [
-          true,
+          false,
           false,
           false,
           false,
@@ -53490,21 +53513,21 @@
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-10-14T08:57:07.000Z",
+      "latestReleaseAt": "2026-10-16T07:03:34.000Z",
       "community": {
-        "stars": 11,
+        "stars": 12,
         "forks": 3,
         "watchers": 1,
-        "aggregate": 15
+        "aggregate": 16
       },
-      "repositorySizeKb": 343,
+      "repositorySizeKb": 381,
       "license": {
         "status": "missing",
         "label": "Missing",
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-15T11:03:30.761Z",
+      "refreshedAt": "2026-11-04T03:38:38.591Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -116483,7 +116506,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-15T11:03:15.034Z",
+      "refreshedAt": "2026-11-04T03:38:34.415Z",
       "staleSince": null,
       "install": null,
       "fork": null,
