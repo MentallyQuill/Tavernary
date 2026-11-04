@@ -5,12 +5,9 @@
   "source_identity": "github:hype-hosting/sillytavern-roulette",
   "evidence_fingerprint": "e6599bd62f1f4fd13a6b86b83682104606300c3fb02fff757fad344ec7b6347b",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-24T12:59:52.769Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-09-24T12:59:52.769Z"
-  },
+  "reviewed_at": "2026-11-04T14:11:35.288Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

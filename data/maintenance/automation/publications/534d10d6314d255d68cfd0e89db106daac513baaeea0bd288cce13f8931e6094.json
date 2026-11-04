@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "534d10d6314d255d68cfd0e89db106daac513baaeea0bd288cce13f8931e6094",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-736459676:lenanderson-sillytavern-triggercards",
+      "inputDigest": "c3ab32ca2a80873a4bff15cd5703fc132fa7cb5db853f7a0a5d61441ffe8974d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-15T12:48:12.256Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-736459676",
+    "identity": "github:736459676"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41843247888,
+    "sourceSha": "1599bc98bcf3c9d9b30b9a102ae654f100e735bf"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/lenanderson-sillytavern-triggercards.json",
+      "sha256": "bdd7a25215c539505f16f8879a4cc1dfde321c77f96cd2965cdb629a447caab2",
+      "gitBlobSha": "1bbd4d72cd59155e80ce38dc039b8667e3cc5188"
+    }
+  ]
+}

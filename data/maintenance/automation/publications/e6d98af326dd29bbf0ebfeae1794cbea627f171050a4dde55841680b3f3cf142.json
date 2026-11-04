@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e6d98af326dd29bbf0ebfeae1794cbea627f171050a4dde55841680b3f3cf142",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1230353014:hype-hosting-sillytavern-roulette",
+      "inputDigest": "2ab427803b0712e2b674493c6d38a550a84d79587b303933c07badb9e91c5897",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-15T12:48:15.910Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1230353014",
+    "identity": "github:1230353014"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41844810602,
+    "sourceSha": "a3de72f9a9516613da90952d29481aefb66244cc"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/hype-hosting-sillytavern-roulette.json",
+      "sha256": "702e706ddb5618e803f3e1f52f7f01cf76704837e1686958fdf1a1aad2d84e9e",
+      "gitBlobSha": "ae122f708ab0d579968d84cdb9355628ff90c1dd"
+    }
+  ]
+}

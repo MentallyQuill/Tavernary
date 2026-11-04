@@ -5,12 +5,9 @@
   "source_identity": "github:lenanderson/sillytavern-triggercards",
   "evidence_fingerprint": "ca4d1a48fe2a5331e8079cbec59b09ca05d6a9cd371ce0d194e065f09ada0418",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-04T13:34:30.751Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-10-04T13:34:30.751Z"
-  },
+  "reviewed_at": "2026-11-04T14:01:56.420Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

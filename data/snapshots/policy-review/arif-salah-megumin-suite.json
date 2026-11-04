@@ -3,14 +3,11 @@
   "project_id": "arif-salah-megumin-suite",
   "source_id": "github-1189674883",
   "source_identity": "github:arif-salah/megumin-suite",
-  "evidence_fingerprint": "f23a129f16f92406cb6f5f4d41afe7d92f86a2ee317917833be973dd96b91687",
+  "evidence_fingerprint": "50572bb0e04386ee4bc7ba618f8192efc7edba115265e43ad2499351492893a2",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-05T11:10:15.068Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-05T11:10:15.068Z"
-  },
+  "reviewed_at": "2026-11-04T13:36:29.104Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

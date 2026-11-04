@@ -3,14 +3,11 @@
   "project_id": "mignon-ui-mignon-ui",
   "source_id": "github-1289246212",
   "source_identity": "github:mignon-ui/mignon-ui",
-  "evidence_fingerprint": "5676be028f33d34b167f144753f02d1b99943807094b142b6cca8f0c743f3b3d",
+  "evidence_fingerprint": "3884b83d335783e133c57b3101e438da0b3f9bf6ec959f08a1e2e030b0778874",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-18T12:31:38.827Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-18T12:31:38.827Z"
-  },
+  "reviewed_at": "2026-11-04T13:44:46.778Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

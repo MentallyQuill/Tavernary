@@ -5,12 +5,9 @@
   "source_identity": "github:bobthebinchicken/ultimate-persona",
   "evidence_fingerprint": "a4b27c3a31eed297ba749cffb5f5e3b292994eb84318699facf680cc8a2ee35f",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-05T16:21:35.348Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-10-05T16:21:35.348Z"
-  },
+  "reviewed_at": "2026-11-04T13:52:05.284Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

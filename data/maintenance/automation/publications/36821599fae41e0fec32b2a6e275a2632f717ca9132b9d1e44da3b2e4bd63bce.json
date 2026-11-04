@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "36821599fae41e0fec32b2a6e275a2632f717ca9132b9d1e44da3b2e4bd63bce",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-999164615:subzero5544-favorites-carousel",
+      "inputDigest": "d0baba80a185d26074f4dd867e097159b9f8d4355c7906787551fd90c11b4b5e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-15T12:49:14.149Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-999164615",
+    "identity": "github:999164615"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41847760090,
+    "sourceSha": "d764e5f851ce7ed05b48fd6b2e2ecf2a4fc9aa46"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/subzero5544-favorites-carousel.json",
+      "sha256": "72402123062de6a50357fdb56d63ba686d9916670044b18e08e88292857fa48d",
+      "gitBlobSha": "f95e735d19352bcb92bbac75eccb12c4f8c4a60f"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a3863f89a5a80158d0b42270bfa704772cda6f44e4a06c01c10cf22bb69c2e5f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1035690744:archkr-sillytavern-charactervisuals",
+      "inputDigest": "ea72a588195107ecbf193ffc83aab54e3b373bfde428ec0f705e45c924663da4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-15T12:50:45.986Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1035690744",
+    "identity": "github:1035690744"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41850654768,
+    "sourceSha": "e332cc26f4898c6a393cde245e9f9877183bd6fe"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/archkr-sillytavern-charactervisuals.json",
+      "sha256": "ae73d0553d11ada8ee70f0a0e81d902fdbc3053f00730a088560527fc85bc640",
+      "gitBlobSha": "6f8fea74918514772dab3aed57a6625405b9a7d3"
+    }
+  ]
+}

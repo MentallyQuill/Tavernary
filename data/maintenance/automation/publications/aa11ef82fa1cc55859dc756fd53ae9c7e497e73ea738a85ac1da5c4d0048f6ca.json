@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "aa11ef82fa1cc55859dc756fd53ae9c7e497e73ea738a85ac1da5c4d0048f6ca",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1289246212:mignon-ui-mignon-ui",
+      "inputDigest": "bdb2428c8d4f71e799d38a71ca06613260e094fde50a6b084eb546376e92d209",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-15T12:47:58.849Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1289246212",
+    "identity": "github:1289246212"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41840640334,
+    "sourceSha": "1adbeae9fbe455fecbbe264ef148cf9d0a546271"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/mignon-ui-mignon-ui.json",
+      "sha256": "3604b984ce4f1f0d2918faad19ec029e82c65194efcb36ae7edaac97fed6041a",
+      "gitBlobSha": "e8a2b0fea18423272450e0777b34fddd6467819d"
+    }
+  ]
+}

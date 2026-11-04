@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "9aaf2cb58f34dcf4edc11aba77fc099f535188c889953998d69d5c5f7ddb4b02",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1111275760:bobthebinchicken-ultimate-persona",
+      "inputDigest": "803e795f4ac10c19f0ec3611712d1a3c49dd4f0a23398f6349f86f89df183f5e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-15T12:48:02.714Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1111275760",
+    "identity": "github:1111275760"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41841851942,
+    "sourceSha": "962d70d869b6b44a24fa302bad825bc5edb18fc1"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/bobthebinchicken-ultimate-persona.json",
+      "sha256": "d156297b998d80ff97141ed81bddd89b5ced778c80307b479e39bfdac79e84a5",
+      "gitBlobSha": "85c13f2d265c19b6dc7caa80ef751ff46bb25e93"
+    }
+  ]
+}

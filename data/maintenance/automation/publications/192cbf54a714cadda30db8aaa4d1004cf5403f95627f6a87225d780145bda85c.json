@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "192cbf54a714cadda30db8aaa4d1004cf5403f95627f6a87225d780145bda85c",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1314351595:xays-101-backup-cleaner-silly-tavern",
+      "inputDigest": "58db10f6abddfebbb5869ee5c8ded78416fa79a1bba6f45ad30c3fde2103930c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-15T12:47:44.541Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1314351595",
+    "identity": "github:1314351595"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41838127527,
+    "sourceSha": "44648904f1edd4c83f7b2daf82f4f53153b8f486"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/xays-101-backup-cleaner-silly-tavern.json",
+      "sha256": "fd701dc815470dc777117d7e0ba9dd7ada4a3141df9587649ae3924a7a694cdf",
+      "gitBlobSha": "252daa01869a4e68949dbeb8fe8b07e464d841b4"
+    }
+  ]
+}
