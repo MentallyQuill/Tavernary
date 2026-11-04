@@ -9,18 +9,23 @@
     "url": "https://github.com/Mignon-UI/Mignon-UI",
     "description": "A beautiful, offline-first local AI roleplay frontend built with Tauri and React. Chat with multiple local (Ollama, Kobold.cpp) or cloud models in dynamic room lobbies.",
     "default_branch": "main",
-    "head_sha": "dcec65b57a2440e6fc082bed3864226e68dd3377",
-    "head_committed_at": "2026-10-03T09:49:27.000Z",
+    "head_sha": "51ad8b2f3fb5f32750e82ed964d0509766966845",
+    "head_committed_at": "2026-10-28T15:58:43.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-04T14:00:55.000Z",
-    "size_kb": 14192
+    "size_kb": 16537
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-04T16:15:19.000Z",
+    "latest_source_activity_at": "2026-10-28T15:58:43.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-28T15:58:43.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-08-31",
         "latest_at": "2026-09-04T16:15:19.000Z",
@@ -30,19 +35,14 @@
         "week_start": "2026-08-24",
         "latest_at": "2026-08-26T10:08:49.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-10",
-        "latest_at": "2026-08-16T06:41:08.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-03T12:37:17.455Z",
+    "baseline_completed_at": "2026-11-04T15:37:02.346Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "dcec65b57a2440e6fc082bed3864226e68dd3377"
+    "evidence_head_sha": "51ad8b2f3fb5f32750e82ed964d0509766966845"
   },
   "community": {
     "stars_count": 8,
@@ -55,7 +55,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-15T12:47:58.849Z",
+  "refreshed_at": "2026-11-04T15:39:22.814Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -65,7 +65,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-15T12:45:34.182Z",
+    "refreshed_at": "2026-11-04T15:37:02.346Z",
     "stale_since": null
   }
 }
