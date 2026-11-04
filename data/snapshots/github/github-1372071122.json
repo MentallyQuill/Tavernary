@@ -9,18 +9,23 @@
     "url": "https://github.com/iamarxs/AnyWorld",
     "description": "A multiplayer browser game implemented with Python, where an AI acts as the dungeon master and players type out their actions in their own words!",
     "default_branch": "main",
-    "head_sha": "25b45e3486948baad7cb9460e53a61bf9dfd9819",
-    "head_committed_at": "2026-10-12T07:48:36.000Z",
+    "head_sha": "578f2cb402094dacc2f3e139feca56a11c7d63af",
+    "head_committed_at": "2026-10-31T16:40:08.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-15T20:20:52.000Z",
-    "size_kb": 2831
+    "size_kb": 2908
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-12T07:48:36.000Z",
+    "latest_source_activity_at": "2026-10-31T16:40:08.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-31T16:40:08.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-12",
         "latest_at": "2026-10-12T07:48:36.000Z",
@@ -65,30 +70,30 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-15T10:17:30.782Z",
+    "baseline_completed_at": "2026-11-04T02:20:22.602Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "25b45e3486948baad7cb9460e53a61bf9dfd9819"
+    "evidence_head_sha": "578f2cb402094dacc2f3e139feca56a11c7d63af"
   },
   "community": {
-    "stars_count": 38,
+    "stars_count": 41,
     "forks_count": 7,
     "watchers_count": 0,
-    "aggregate": 45
+    "aggregate": 48
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-15T10:17:30.782Z",
+  "refreshed_at": "2026-11-04T02:22:17.214Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "iamarxs", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-15T10:17:30.782Z",
+    "refreshed_at": "2026-11-04T02:20:22.602Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

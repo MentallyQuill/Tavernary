@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "iamarxs-anyworld",
+  "source_id": "github-1372071122",
+  "source_identity": "github:iamarxs/anyworld",
+  "evidence_fingerprint": "dab23ab6a447e810be772499347b1f84d23a4c058f94d6b5dbb7bb2870d1ac48",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-04T03:05:50.200Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

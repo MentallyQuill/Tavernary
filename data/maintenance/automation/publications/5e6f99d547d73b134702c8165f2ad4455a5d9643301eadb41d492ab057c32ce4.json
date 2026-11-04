@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5e6f99d547d73b134702c8165f2ad4455a5d9643301eadb41d492ab057c32ce4",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1372071122:iamarxs-anyworld",
+      "inputDigest": "784c3135213c288a1b1de9cd7d54e0dc794b68eafb4607e5ed74aa765092a358",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-15T10:17:30.782Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1372071122",
+    "identity": "github:1372071122"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 41764782508,
+    "sourceSha": "d978b4bb50fc68e40595bb34581a28471f4afe92"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/iamarxs-anyworld.json",
+      "sha256": "528e770edd886f908e02ce03e69dacc409877b2d3c952fe7243b95722bd7b07e",
+      "gitBlobSha": "8ba5ec0040a7c19d0916a80cce4a3f9a51f94779"
+    }
+  ]
+}
