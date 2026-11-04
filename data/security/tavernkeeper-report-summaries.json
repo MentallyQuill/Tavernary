@@ -1,6 +1,6 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-11-04T03:25:06.796Z",
+  "generated_at": "2026-11-04T04:01:09.930Z",
   "preferred_report_ids": [
     "8585ad6405b32aa3c434a6dd81257f60a384ad8dea5df02ad5211a3f1f5768cf",
     "383b1635081f9366547124f9e19a4d52a19290f859c7f8d6ebb82930a5ca4787",
@@ -264,7 +264,6 @@
     "d5f05ea3f944f86805add92ad7a854d5467081541fae23a01054e32a6959d910",
     "85240d56f36d011ed825e565408401ba7405b2fa9bcb87b24cce28c8699d815b",
     "7d632380e475ca5c246659682abc5d7e60cd0a72895144de50ac761e0c5606e0",
-    "508a5b6e89cd9f01e1c1d3c00a6f6affeeac8458f4935691801eab269454b05e",
     "c14c86c783ac0120bda019a3462c855472c4c3b5c4177fe0867dd6dc0b2ded28",
     "05f49e65e68e7e64e576ea72505bc3dadab49e051da57c74bb1b20108b20f795",
     "f2f9d634b7c90103ef92da113ab4eb5a19f41f5e70824f3cc12560149c5ee838",
@@ -452,7 +451,8 @@
     "89a5cbef39f646dbcc36f4b8086cfc1afe3cb576de5445b5aaa2ecbf16e8b84e",
     "118a5fba9c1efd227cd22b3c1e47cdd3246f97e4d49f4c1d686b70c0a449dd91",
     "dabab3030ccb2cfb51513bfb59064edd42d765531203cfebde26a3f2d10a421a",
-    "4de50e2dfaedd32d653628919a6fbd2eed4936a0d8339b42bdf63e578efa6fd1"
+    "4de50e2dfaedd32d653628919a6fbd2eed4936a0d8339b42bdf63e578efa6fd1",
+    "b51b3d57e0b5fd72f73b991f7af6bf8dfd0c69995f617a90aa374e3c564f0591"
   ],
   "reports": [
     {
@@ -99948,6 +99948,86 @@
         "high_danger": 0,
         "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
         "cited_finding_ids": [],
+        "interaction_chains": []
+      }
+    },
+    {
+      "report_id": "b51b3d57e0b5fd72f73b991f7af6bf8dfd0c69995f617a90aa374e3c564f0591",
+      "report_digest": "b51b3d57e0b5fd72f73b991f7af6bf8dfd0c69995f617a90aa374e3c564f0591",
+      "report_version": 5,
+      "supersedes_report_id": "508a5b6e89cd9f01e1c1d3c00a6f6affeeac8458f4935691801eab269454b05e",
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "5",
+      "rule_catalog_version": "2",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "5",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v7",
+      "assessment_schema_version": "contextual-assessment-v2",
+      "source_id": "github-1248993662",
+      "provider": "github",
+      "repository_id": 1248993662,
+      "repository": "vevan/arousalPub",
+      "target_sha": "28014af455de6c27e0d80e5e91bf529ea4397fc8",
+      "completed_at": "2026-11-04T03:24:22.676Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 58,
+        "assessments": 58,
+        "observations": 0,
+        "items": 58,
+        "disposition": {
+          "expected_behavior": 56,
+          "minor_weakness": 0,
+          "material_vulnerability": 2,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 55,
+          "low": 1,
+          "medium": 2,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 58,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": { "low": 0, "medium": 1, "high": 57 },
+        "recommended_risk": { "low": 58, "material": 0, "high": 0 }
+      },
+      "coverage": {
+        "history_commits": 13,
+        "inventory_files": 1113,
+        "inventory_bytes": 11169565,
+        "tools_completed": 7,
+        "tools_not_applicable": 1,
+        "evidence_validated": 58,
+        "metadata_only_candidates": 0,
+        "review_required": 58,
+        "review_completed": 58,
+        "javascript_analysis_status": "incomplete"
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1248993662/28014af455de6c27e0d80e5e91bf529ea4397fc8/5/b51b3d57e0b5fd72f73b991f7af6bf8dfd0c69995f617a90aa374e3c564f0591/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1248993662/history/",
+      "assessed_at": "2026-11-04T04:07:46.944Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
+      "danger_basis": "none",
+      "assessment_source": "deterministic_regrade",
+      "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 2,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
+        "cited_finding_ids": [
+          "07ab5d60906b02451cdb9d305a9667db123ed0993bd3afd6d1943d6b1ef7f4a1",
+          "c9f83bc72d8a50bbeb8f5ec99e7b22cbd422f81a34a2766ebd3b30bd4da04240"
+        ],
         "interaction_chains": []
       }
     }
