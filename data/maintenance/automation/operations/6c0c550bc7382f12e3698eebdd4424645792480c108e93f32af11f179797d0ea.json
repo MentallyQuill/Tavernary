@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6c0c550bc7382f12e3698eebdd4424645792480c108e93f32af11f179797d0ea",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1114642314:mechamarmot-sillytavern-pyrunner",
+      "inputDigest": "695bea136994baee073f4543beccc6d4dcc9e3689a20cff33d39367464a15028",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T09:07:42.117Z",
+    "nextEligibleAt": "2026-11-05T08:41:00.445Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-05T08:26:00.445Z",
+  "completedAt": null
+}
