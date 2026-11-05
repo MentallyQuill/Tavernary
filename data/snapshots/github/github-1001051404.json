@@ -9,21 +9,36 @@
     "url": "https://github.com/aikohanasaki/SillyTavern-MemoryBooks",
     "description": "Saves SillyTavern chat memories to lorebooks",
     "default_branch": "main",
-    "head_sha": "b1e6ad2cd184eeb55800b25adac089ddace8573f",
-    "head_committed_at": "2026-10-12T21:57:42.000Z",
+    "head_sha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+    "head_committed_at": "2026-11-04T15:53:48.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-06-12T18:30:31.000Z",
-    "size_kb": 27980
+    "size_kb": 29172
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-12T21:57:42.000Z",
+    "latest_source_activity_at": "2026-11-04T15:53:48.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-04T15:53:48.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-11-01T06:37:02.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-23T15:11:57.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-12",
-        "latest_at": "2026-10-12T21:57:42.000Z",
+        "latest_at": "2026-10-17T15:49:14.000Z",
         "precision": "exact"
       },
       {
@@ -65,42 +80,27 @@
         "week_start": "2026-08-17",
         "latest_at": "2026-08-23T01:09:17.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-10",
-        "latest_at": "2026-08-15T21:48:17.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-03",
-        "latest_at": "2026-08-09T21:08:25.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-08-02T17:25:49.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-16T12:33:46.493Z",
+    "baseline_completed_at": "2026-11-05T10:09:46.920Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "b1e6ad2cd184eeb55800b25adac089ddace8573f"
+    "evidence_head_sha": "5a79f6672a5fdb1172c550131f8174470aac4048"
   },
   "community": {
-    "stars_count": 316,
-    "forks_count": 52,
+    "stars_count": 327,
+    "forks_count": 51,
     "watchers_count": 3,
-    "aggregate": 371
+    "aggregate": 381
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-16T12:35:43.053Z",
+  "refreshed_at": "2026-11-05T10:12:05.392Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -113,7 +113,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-16T12:33:46.493Z",
+    "refreshed_at": "2026-11-05T10:09:46.920Z",
     "stale_since": null
   }
 }

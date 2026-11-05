@@ -5,12 +5,9 @@
   "source_identity": "github:mechamarmot/sillytavern-pyrunner",
   "evidence_fingerprint": "3bb45bbdfd7fb1cbf3c3bd58c575dc7ff1e4b855b69750240ac2ca4f7ae25730",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-05T11:28:52.476Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-05T11:28:52.476Z"
-  },
+  "reviewed_at": "2026-11-05T10:15:48.628Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

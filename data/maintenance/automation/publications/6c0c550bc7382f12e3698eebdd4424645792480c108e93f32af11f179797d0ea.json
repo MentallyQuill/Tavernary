@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6c0c550bc7382f12e3698eebdd4424645792480c108e93f32af11f179797d0ea",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1114642314:mechamarmot-sillytavern-pyrunner",
+      "inputDigest": "695bea136994baee073f4543beccc6d4dcc9e3689a20cff33d39367464a15028",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-05T08:38:20.358Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1114642314",
+    "identity": "github:1114642314"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42009006661,
+    "sourceSha": "f649d187ea2645ff2d07e1b441b1935491dc5245"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/mechamarmot-sillytavern-pyrunner.json",
+      "sha256": "a3b49813e9f8ff47c64048aa45ce806a0175c1ca6208c6322bc8695e042b3005",
+      "gitBlobSha": "171bee3f60a00635bb7d3c71e599d8909ef9be28"
+    }
+  ]
+}
