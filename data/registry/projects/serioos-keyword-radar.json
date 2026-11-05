@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "serioos-keyword-radar",
+  "name": "Keyword-Radar",
+  "kind": "extension",
+  "summary": "Keyword-Radar is a SillyTavern extension that scans your draft while you type, highlighting triggered Lorebook keywords on a radar bar above the input so you can mute or force-trigger entries for one turn (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1445925626",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["manage-lorebooks"],
+  "cataloged_at": "2026-11-05T09:06:29.787Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
