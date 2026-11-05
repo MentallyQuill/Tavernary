@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4d6f41b6087d77e5ac16a95b9e79091078384a0c1c35f6b03dba22cfd256a504",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1445925626:serioos-keyword-radar",
+      "inputDigest": "f201dccb7a173e79ebd53fb58789d0b022a7e54d0417d15dafe462a16339b345",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-05T09:06:29.787Z",
+    "nextEligibleAt": null,
+    "expectedSha": "d46fb775fe4ffc0906bdf1eb12210906c3836238",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-05T11:54:30.459Z",
+  "completedAt": null
+}
