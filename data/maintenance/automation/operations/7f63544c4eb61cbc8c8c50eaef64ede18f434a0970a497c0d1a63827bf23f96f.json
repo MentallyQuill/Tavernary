@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7f63544c4eb61cbc8c8c50eaef64ede18f434a0970a497c0d1a63827bf23f96f",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1300808393:enchantedrobot-sillytavern-character-tools",
+      "inputDigest": "f23ee745d88290b3a8208c706a90fda99cd6cf9ace049d093bd005c246d44686",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T09:06:58.787Z",
+    "nextEligibleAt": "2026-11-05T08:41:00.445Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-05T08:26:00.445Z",
+  "completedAt": null
+}
