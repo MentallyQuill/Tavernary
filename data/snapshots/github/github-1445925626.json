@@ -1,0 +1,59 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1445925626",
+  "repository": {
+    "id": 1445925626,
+    "owner": "serioos",
+    "name": "Keyword-Radar",
+    "url": "https://github.com/serioos/Keyword-Radar",
+    "description": "Silly Tavern extension that shows you the Lorebook/WorldInfo keywords being activated in what you typed and lets you disable them for that turn.",
+    "default_branch": "main",
+    "head_sha": "c256bfbdf6c41fffbedc2a2849d8c676fb7001f8",
+    "head_committed_at": "2026-11-05T07:08:09.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-11-04T16:38:09.000Z",
+    "size_kb": 76
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-11-05T06:51:16.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-05T06:51:16.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-05T09:06:29.787Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "c256bfbdf6c41fffbedc2a2849d8c676fb7001f8"
+  },
+  "community": {
+    "stars_count": 1,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 1
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-11-05T09:06:29.787Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "serioos", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-05T09:06:29.787Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
