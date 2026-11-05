@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3ce99b12c18584859b24771071e2f8ed5af45e536e2e17ae2592203e3f8d7669",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1305919833:n0819-sonder-engine",
+      "inputDigest": "5cd98d3b2bd13911fe2f38f533b352bb7f5ceebfbd1771db20033d1c56a0ad79",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T07:04:54.630Z",
+    "nextEligibleAt": "2026-11-05T06:28:51.361Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-05T06:13:51.361Z",
+  "completedAt": null
+}
