@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8d6ea17d625b8ec3d0cdc417c3c75f569a08833eeb48001009f6ccfd97bd6d03",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1195775310:hapsburgtopquark388-sillytavern-streamline",
+      "inputDigest": "647c887809440bd939a8ef33b42aae5e51472e0410fc0ecc54752613a3c41ed7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T06:53:30.441Z",
+    "nextEligibleAt": "2026-11-05T04:04:51.721Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-05T03:49:51.721Z",
+  "completedAt": null
+}
