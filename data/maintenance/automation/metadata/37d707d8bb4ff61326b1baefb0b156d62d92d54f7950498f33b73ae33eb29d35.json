@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "coneja-chibi-tunnelvision",
+  "sourceId": "github-1174011234",
+  "sourceIdentity": "github:1174011234",
+  "inputDigest": "34ef055940d629357b905678f29c8c84891d8e69d42932874e82ef198d4c30e9",
+  "fingerprint": "72ad429c9fa7d03b1c1354d37cf56e3699fe86cb621a5a964587351903e6969c",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "3c6be0d10c7908eaefeb14942eb044122706d8ba925bf12660892f55d300facf",
+  "outputDigest": "953d5256e0ff135252e4503167b16a60ba29f8ae1751cf5c083d17c3c05a8180",
+  "headSha": "cf84ad17ed0f9c9a57d0be5f219cba163706c876",
+  "observedAt": "2026-11-05T11:06:31.185Z"
+}

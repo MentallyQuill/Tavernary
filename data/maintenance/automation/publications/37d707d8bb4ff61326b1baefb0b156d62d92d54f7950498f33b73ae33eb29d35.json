@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "37d707d8bb4ff61326b1baefb0b156d62d92d54f7950498f33b73ae33eb29d35",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1174011234:coneja-chibi-tunnelvision",
+      "inputDigest": "34ef055940d629357b905678f29c8c84891d8e69d42932874e82ef198d4c30e9",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-05T10:10:47.545Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1174011234",
+    "identity": "github:1174011234"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 42016002791,
+    "sourceSha": "e516ab5ba35afb3b52b60d01738e0a78ee25e5ab"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/coneja-chibi-tunnelvision.json",
+      "sha256": "80bfbe30479cd5412f9865e44158c1ff468993b83447c9c813346beb1db55c78",
+      "gitBlobSha": "642ce47fcfaaf6e8933f3760b86156e2cc8d3b66"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/37d707d8bb4ff61326b1baefb0b156d62d92d54f7950498f33b73ae33eb29d35.json",
+      "sha256": "c4b257714ac2c6815a67d76509fa88e83f85ff2c128c434d7da3f1d9011cca2d",
+      "gitBlobSha": "8bd96d0833816bbeddb9807e8c087971e7da123e"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "serioos-keyword-radar",
+  "source_id": "github-1445925626",
+  "source_identity": "github:serioos/keyword-radar",
+  "evidence_fingerprint": "04375e1d1878a314b6276702e6f01187d0a3b1d6cc783277473f16845f4b25c9",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-05T10:58:55.423Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

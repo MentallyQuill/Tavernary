@@ -26124,7 +26124,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "memory-retrieval",
-      "summary": "TunnelVision is a SillyTavern extension that lets AI browse for what to remember rather than guessing. Built as a RoleCall proof of concept, it gives the model an active remote-control interface for retrieval.",
+      "summary": "TunnelVision is a SillyTavern extension giving AI autonomous, agentic retrieval of lorebook entries, trackers, and summaries, so it browses stored context rather than guessing (README; repo description).",
       "canonicalUrl": "https://github.com/Coneja-Chibi/TunnelVision",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -26146,12 +26146,6 @@
           "id": "agentic-tool-use",
           "label": "Agentic tool use",
           "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
-          "facet": "trait"
-        },
-        {
-          "id": "semantic-retrieval",
-          "label": "Semantic retrieval",
-          "description": "Selects relevant information through embeddings, vector search, RAG, or hybrid retrieval.",
           "facet": "trait"
         }
       ],
@@ -26454,7 +26448,7 @@
           "https://github.com/Coneja-Chibi/TunnelVision"
         ],
         "summary": [
-          "TunnelVision is a SillyTavern extension that lets AI browse for what to remember rather than guessing. Built as a RoleCall proof of concept, it gives the model an active remote-control interface for retrieval."
+          "TunnelVision is a SillyTavern extension giving AI autonomous, agentic retrieval of lorebook entries, trackers, and summaries, so it browses stored context rather than guessing (README; repo description)."
         ],
         "kind": [
           "extension"
@@ -26470,12 +26464,7 @@
           "Agentic tool use",
           "tool calling",
           "AI agents",
-          "agent mode",
-          "Semantic retrieval",
-          "semantic search",
-          "vector search",
-          "retrieval-augmented generation",
-          "RAG"
+          "agent mode"
         ],
         "frontends": [
           "SillyTavern"
@@ -141368,7 +141357,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "memory-retrieval",
-            "summary": "TunnelVision is a SillyTavern extension that lets AI browse for what to remember rather than guessing. Built as a RoleCall proof of concept, it gives the model an active remote-control interface for retrieval.",
+            "summary": "TunnelVision is a SillyTavern extension giving AI autonomous, agentic retrieval of lorebook entries, trackers, and summaries, so it browses stored context rather than guessing (README; repo description).",
             "canonicalUrl": "https://github.com/Coneja-Chibi/TunnelVision",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -141390,12 +141379,6 @@
                 "id": "agentic-tool-use",
                 "label": "Agentic tool use",
                 "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
-                "facet": "trait"
-              },
-              {
-                "id": "semantic-retrieval",
-                "label": "Semantic retrieval",
-                "description": "Selects relevant information through embeddings, vector search, RAG, or hybrid retrieval.",
                 "facet": "trait"
               }
             ],
@@ -141698,7 +141681,7 @@
                 "https://github.com/Coneja-Chibi/TunnelVision"
               ],
               "summary": [
-                "TunnelVision is a SillyTavern extension that lets AI browse for what to remember rather than guessing. Built as a RoleCall proof of concept, it gives the model an active remote-control interface for retrieval."
+                "TunnelVision is a SillyTavern extension giving AI autonomous, agentic retrieval of lorebook entries, trackers, and summaries, so it browses stored context rather than guessing (README; repo description)."
               ],
               "kind": [
                 "extension"
@@ -141714,12 +141697,7 @@
                 "Agentic tool use",
                 "tool calling",
                 "AI agents",
-                "agent mode",
-                "Semantic retrieval",
-                "semantic search",
-                "vector search",
-                "retrieval-augmented generation",
-                "RAG"
+                "agent mode"
               ],
               "frontends": [
                 "SillyTavern"
@@ -173859,7 +173837,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "memory-retrieval",
-            "summary": "TunnelVision is a SillyTavern extension that lets AI browse for what to remember rather than guessing. Built as a RoleCall proof of concept, it gives the model an active remote-control interface for retrieval.",
+            "summary": "TunnelVision is a SillyTavern extension giving AI autonomous, agentic retrieval of lorebook entries, trackers, and summaries, so it browses stored context rather than guessing (README; repo description).",
             "canonicalUrl": "https://github.com/Coneja-Chibi/TunnelVision",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -173881,12 +173859,6 @@
                 "id": "agentic-tool-use",
                 "label": "Agentic tool use",
                 "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
-                "facet": "trait"
-              },
-              {
-                "id": "semantic-retrieval",
-                "label": "Semantic retrieval",
-                "description": "Selects relevant information through embeddings, vector search, RAG, or hybrid retrieval.",
                 "facet": "trait"
               }
             ],
@@ -174189,7 +174161,7 @@
                 "https://github.com/Coneja-Chibi/TunnelVision"
               ],
               "summary": [
-                "TunnelVision is a SillyTavern extension that lets AI browse for what to remember rather than guessing. Built as a RoleCall proof of concept, it gives the model an active remote-control interface for retrieval."
+                "TunnelVision is a SillyTavern extension giving AI autonomous, agentic retrieval of lorebook entries, trackers, and summaries, so it browses stored context rather than guessing (README; repo description)."
               ],
               "kind": [
                 "extension"
@@ -174205,12 +174177,7 @@
                 "Agentic tool use",
                 "tool calling",
                 "AI agents",
-                "agent mode",
-                "Semantic retrieval",
-                "semantic search",
-                "vector search",
-                "retrieval-augmented generation",
-                "RAG"
+                "agent mode"
               ],
               "frontends": [
                 "SillyTavern"
@@ -214360,7 +214327,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "memory-retrieval",
-            "summary": "TunnelVision is a SillyTavern extension that lets AI browse for what to remember rather than guessing. Built as a RoleCall proof of concept, it gives the model an active remote-control interface for retrieval.",
+            "summary": "TunnelVision is a SillyTavern extension giving AI autonomous, agentic retrieval of lorebook entries, trackers, and summaries, so it browses stored context rather than guessing (README; repo description).",
             "canonicalUrl": "https://github.com/Coneja-Chibi/TunnelVision",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -214382,12 +214349,6 @@
                 "id": "agentic-tool-use",
                 "label": "Agentic tool use",
                 "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
-                "facet": "trait"
-              },
-              {
-                "id": "semantic-retrieval",
-                "label": "Semantic retrieval",
-                "description": "Selects relevant information through embeddings, vector search, RAG, or hybrid retrieval.",
                 "facet": "trait"
               }
             ],
@@ -214690,7 +214651,7 @@
                 "https://github.com/Coneja-Chibi/TunnelVision"
               ],
               "summary": [
-                "TunnelVision is a SillyTavern extension that lets AI browse for what to remember rather than guessing. Built as a RoleCall proof of concept, it gives the model an active remote-control interface for retrieval."
+                "TunnelVision is a SillyTavern extension giving AI autonomous, agentic retrieval of lorebook entries, trackers, and summaries, so it browses stored context rather than guessing (README; repo description)."
               ],
               "kind": [
                 "extension"
@@ -214706,12 +214667,7 @@
                 "Agentic tool use",
                 "tool calling",
                 "AI agents",
-                "agent mode",
-                "Semantic retrieval",
-                "semantic search",
-                "vector search",
-                "retrieval-augmented generation",
-                "RAG"
+                "agent mode"
               ],
               "frontends": [
                 "SillyTavern"
@@ -258401,7 +258357,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "memory-retrieval",
-            "summary": "TunnelVision is a SillyTavern extension that lets AI browse for what to remember rather than guessing. Built as a RoleCall proof of concept, it gives the model an active remote-control interface for retrieval.",
+            "summary": "TunnelVision is a SillyTavern extension giving AI autonomous, agentic retrieval of lorebook entries, trackers, and summaries, so it browses stored context rather than guessing (README; repo description).",
             "canonicalUrl": "https://github.com/Coneja-Chibi/TunnelVision",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -258423,12 +258379,6 @@
                 "id": "agentic-tool-use",
                 "label": "Agentic tool use",
                 "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
-                "facet": "trait"
-              },
-              {
-                "id": "semantic-retrieval",
-                "label": "Semantic retrieval",
-                "description": "Selects relevant information through embeddings, vector search, RAG, or hybrid retrieval.",
                 "facet": "trait"
               }
             ],
@@ -258731,7 +258681,7 @@
                 "https://github.com/Coneja-Chibi/TunnelVision"
               ],
               "summary": [
-                "TunnelVision is a SillyTavern extension that lets AI browse for what to remember rather than guessing. Built as a RoleCall proof of concept, it gives the model an active remote-control interface for retrieval."
+                "TunnelVision is a SillyTavern extension giving AI autonomous, agentic retrieval of lorebook entries, trackers, and summaries, so it browses stored context rather than guessing (README; repo description)."
               ],
               "kind": [
                 "extension"
@@ -258747,12 +258697,7 @@
                 "Agentic tool use",
                 "tool calling",
                 "AI agents",
-                "agent mode",
-                "Semantic retrieval",
-                "semantic search",
-                "vector search",
-                "retrieval-augmented generation",
-                "RAG"
+                "agent mode"
               ],
               "frontends": [
                 "SillyTavern"
@@ -261931,7 +261876,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "memory-retrieval",
-            "summary": "TunnelVision is a SillyTavern extension that lets AI browse for what to remember rather than guessing. Built as a RoleCall proof of concept, it gives the model an active remote-control interface for retrieval.",
+            "summary": "TunnelVision is a SillyTavern extension giving AI autonomous, agentic retrieval of lorebook entries, trackers, and summaries, so it browses stored context rather than guessing (README; repo description).",
             "canonicalUrl": "https://github.com/Coneja-Chibi/TunnelVision",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -261953,12 +261898,6 @@
                 "id": "agentic-tool-use",
                 "label": "Agentic tool use",
                 "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
-                "facet": "trait"
-              },
-              {
-                "id": "semantic-retrieval",
-                "label": "Semantic retrieval",
-                "description": "Selects relevant information through embeddings, vector search, RAG, or hybrid retrieval.",
                 "facet": "trait"
               }
             ],
@@ -262261,7 +262200,7 @@
                 "https://github.com/Coneja-Chibi/TunnelVision"
               ],
               "summary": [
-                "TunnelVision is a SillyTavern extension that lets AI browse for what to remember rather than guessing. Built as a RoleCall proof of concept, it gives the model an active remote-control interface for retrieval."
+                "TunnelVision is a SillyTavern extension giving AI autonomous, agentic retrieval of lorebook entries, trackers, and summaries, so it browses stored context rather than guessing (README; repo description)."
               ],
               "kind": [
                 "extension"
@@ -262277,12 +262216,7 @@
                 "Agentic tool use",
                 "tool calling",
                 "AI agents",
-                "agent mode",
-                "Semantic retrieval",
-                "semantic search",
-                "vector search",
-                "retrieval-augmented generation",
-                "RAG"
+                "agent mode"
               ],
               "frontends": [
                 "SillyTavern"

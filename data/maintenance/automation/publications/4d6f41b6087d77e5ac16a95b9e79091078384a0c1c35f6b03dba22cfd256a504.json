@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4d6f41b6087d77e5ac16a95b9e79091078384a0c1c35f6b03dba22cfd256a504",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1445925626:serioos-keyword-radar",
+      "inputDigest": "f201dccb7a173e79ebd53fb58789d0b022a7e54d0417d15dafe462a16339b345",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-05T09:06:29.787Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1445925626",
+    "identity": "github:1445925626"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42014948124,
+    "sourceSha": "9ecf1e3c31dce9181bb2720a7951e77a25ab5a98"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/serioos-keyword-radar.json",
+      "sha256": "c0f76b7e3d6581da38523e44feb62f087e7c92a34108178a0378dd586f08dde3",
+      "gitBlobSha": "e8fb88a62f4543a84ad5e907c3c1271c61801e46"
+    }
+  ]
+}
