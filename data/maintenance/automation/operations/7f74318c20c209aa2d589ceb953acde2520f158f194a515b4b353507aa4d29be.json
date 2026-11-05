@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7f74318c20c209aa2d589ceb953acde2520f158f194a515b4b353507aa4d29be",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1117596524:skirianov-sidecar-ai",
+      "inputDigest": "e15d7f1ac48bcdf42a1be93819fd1f58fdc19fe27aed4cb64062a649da291b32",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T12:36:02.098Z",
+    "nextEligibleAt": "2026-11-05T13:16:14.238Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-05T13:01:14.238Z",
+  "completedAt": null
+}
