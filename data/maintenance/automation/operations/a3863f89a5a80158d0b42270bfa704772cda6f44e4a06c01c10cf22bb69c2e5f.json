@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a3863f89a5a80158d0b42270bfa704772cda6f44e4a06c01c10cf22bb69c2e5f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1035690744:archkr-sillytavern-charactervisuals",
+      "inputDigest": "ea72a588195107ecbf193ffc83aab54e3b373bfde428ec0f705e45c924663da4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-15T12:50:45.986Z",
+    "nextEligibleAt": "2026-11-05T00:27:42.988Z",
+    "expectedSha": "57ddac3dfbea107035d0303684a7293c443891f9",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-05T00:12:42.988Z",
+  "completedAt": null
+}
