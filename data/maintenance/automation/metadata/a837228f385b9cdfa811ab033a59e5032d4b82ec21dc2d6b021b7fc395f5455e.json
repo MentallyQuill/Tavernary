@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "sillytavern-extension-typingindicator",
+  "sourceId": "github-925891884",
+  "sourceIdentity": "github:925891884",
+  "inputDigest": "2f474b226c96fe8c0d1faf993eb14650daf9e849b370a4879b6c58e3297b7519",
+  "fingerprint": "934980d4b940679ffbaa9b146c2c8f09e0a92bc52c5362e0f2b82c14d8b6ca81",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "922356a5b5078c9604c4f135a9f3e2d1142fdf14357959451b9d8f76061c39dc",
+  "outputDigest": "fc8e604374eaf9d272424dfdedb2ae9897f65cc39fcbda4676f0a9079b108f3a",
+  "headSha": "3c5ef68e2c4bc4b152078965a153f12aa5aad513",
+  "observedAt": "2026-11-05T09:35:53.983Z"
+}

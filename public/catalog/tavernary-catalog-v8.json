@@ -34233,7 +34233,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "character-worldbuilding",
-      "summary": "SillyTavern Character Tools repairs and upgrades character cards, compresses card and gallery images, and merges tags through one panel with separate, repeatable workflows.",
+      "summary": "A SillyTavern extension (README, intro) that repairs/upgrades character cards, compresses their images in one pass, merges tags from a curated dictionary, and includes a sidecar for compressing gallery images.",
       "canonicalUrl": "https://github.com/EnchantedRobot/SillyTavern-Character-Tools",
       "catalogedAt": "2026-08-08T03:40:05.149Z",
       "catalogCohort": "standard",
@@ -34246,12 +34246,6 @@
       ],
       "tags": [
         {
-          "id": "add-visual-immersion",
-          "label": "Add visual immersion",
-          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
-          "facet": "goal"
-        },
-        {
           "id": "manage-character-libraries",
           "label": "Manage character libraries",
           "description": "Discover, search, browse, categorize, import, or maintain collections of character cards.",
@@ -34262,12 +34256,6 @@
           "label": "Manage characters and personas",
           "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
           "facet": "goal"
-        },
-        {
-          "id": "rules-driven",
-          "label": "Rules-driven",
-          "description": "Uses explicit rules, schemas, calculations, or deterministic mechanics to constrain behavior.",
-          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -34440,10 +34428,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 0,
+        "stars": 1,
         "forks": 1,
         "watchers": 0,
-        "aggregate": 1
+        "aggregate": 2
       },
       "repositorySizeKb": 158,
       "license": {
@@ -34452,7 +34440,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-16T09:06:58.787Z",
+      "refreshedAt": "2026-11-05T08:40:05.041Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -34474,7 +34462,7 @@
           "https://github.com/EnchantedRobot/SillyTavern-Character-Tools"
         ],
         "summary": [
-          "SillyTavern Character Tools repairs and upgrades character cards, compresses card and gallery images, and merges tags through one panel with separate, repeatable workflows."
+          "A SillyTavern extension (README, intro) that repairs/upgrades character cards, compresses their images in one pass, merges tags from a curated dictionary, and includes a sidecar for compressing gallery images."
         ],
         "kind": [
           "extension"
@@ -34483,10 +34471,6 @@
           "Character and worldbuilding"
         ],
         "tags": [
-          "Add visual immersion",
-          "roleplay visuals",
-          "visual novel presentation",
-          "scene visuals",
           "Manage character libraries",
           "character browsing",
           "card library",
@@ -34494,11 +34478,7 @@
           "Manage characters and personas",
           "persona management",
           "character management",
-          "identity management",
-          "Rules-driven",
-          "deterministic mechanics",
-          "rule based",
-          "schema driven"
+          "identity management"
         ],
         "frontends": [
           "SillyTavern"
@@ -109966,7 +109946,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "SillyTavern extension that displays a typing indicator while AI message generation is in progress. It signals active processing to users, providing immediate visual feedback that the system is working on a response.",
+      "summary": "SillyTavern Extension-TypingIndicator shows a '{{char}} is typing...' message while a message generation is in progress, giving users live visual feedback during generation (README, Typing Indicator).",
       "canonicalUrl": "https://github.com/SillyTavern/Extension-TypingIndicator",
       "catalogedAt": "2026-07-26T00:00:00Z",
       "catalogCohort": "standard",
@@ -109977,14 +109957,7 @@
           "description": "Works with the SillyTavern roleplay frontend."
         }
       ],
-      "tags": [
-        {
-          "id": "customize-the-interface",
-          "label": "Customize the interface",
-          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
-          "facet": "goal"
-        }
-      ],
+      "tags": [],
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
@@ -110108,10 +110081,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 43,
+        "stars": 46,
         "forks": 10,
         "watchers": 2,
-        "aggregate": 55
+        "aggregate": 58
       },
       "repositorySizeKb": 19,
       "license": {
@@ -110120,7 +110093,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-16T09:07:02.346Z",
+      "refreshedAt": "2026-11-05T08:40:02.912Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -110142,7 +110115,7 @@
           "https://github.com/SillyTavern/Extension-TypingIndicator"
         ],
         "summary": [
-          "SillyTavern extension that displays a typing indicator while AI message generation is in progress. It signals active processing to users, providing immediate visual feedback that the system is working on a response."
+          "SillyTavern Extension-TypingIndicator shows a '{{char}} is typing...' message while a message generation is in progress, giving users live visual feedback during generation (README, Typing Indicator)."
         ],
         "kind": [
           "extension"
@@ -110150,12 +110123,7 @@
         "primaryFunction": [
           "Interface and workflow"
         ],
-        "tags": [
-          "Customize the interface",
-          "interface theming",
-          "layout customization",
-          "UI personalization"
-        ],
+        "tags": [],
         "frontends": [
           "SillyTavern"
         ],
@@ -159258,7 +159226,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "character-worldbuilding",
-            "summary": "SillyTavern Character Tools repairs and upgrades character cards, compresses card and gallery images, and merges tags through one panel with separate, repeatable workflows.",
+            "summary": "A SillyTavern extension (README, intro) that repairs/upgrades character cards, compresses their images in one pass, merges tags from a curated dictionary, and includes a sidecar for compressing gallery images.",
             "canonicalUrl": "https://github.com/EnchantedRobot/SillyTavern-Character-Tools",
             "catalogedAt": "2026-08-08T03:40:05.149Z",
             "catalogCohort": "standard",
@@ -159271,12 +159239,6 @@
             ],
             "tags": [
               {
-                "id": "add-visual-immersion",
-                "label": "Add visual immersion",
-                "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
-                "facet": "goal"
-              },
-              {
                 "id": "manage-character-libraries",
                 "label": "Manage character libraries",
                 "description": "Discover, search, browse, categorize, import, or maintain collections of character cards.",
@@ -159287,12 +159249,6 @@
                 "label": "Manage characters and personas",
                 "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
                 "facet": "goal"
-              },
-              {
-                "id": "rules-driven",
-                "label": "Rules-driven",
-                "description": "Uses explicit rules, schemas, calculations, or deterministic mechanics to constrain behavior.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -159465,10 +159421,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 0,
+              "stars": 1,
               "forks": 1,
               "watchers": 0,
-              "aggregate": 1
+              "aggregate": 2
             },
             "repositorySizeKb": 158,
             "license": {
@@ -159477,7 +159433,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-16T09:06:58.787Z",
+            "refreshedAt": "2026-11-05T08:40:05.041Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -159499,7 +159455,7 @@
                 "https://github.com/EnchantedRobot/SillyTavern-Character-Tools"
               ],
               "summary": [
-                "SillyTavern Character Tools repairs and upgrades character cards, compresses card and gallery images, and merges tags through one panel with separate, repeatable workflows."
+                "A SillyTavern extension (README, intro) that repairs/upgrades character cards, compresses their images in one pass, merges tags from a curated dictionary, and includes a sidecar for compressing gallery images."
               ],
               "kind": [
                 "extension"
@@ -159508,10 +159464,6 @@
                 "Character and worldbuilding"
               ],
               "tags": [
-                "Add visual immersion",
-                "roleplay visuals",
-                "visual novel presentation",
-                "scene visuals",
                 "Manage character libraries",
                 "character browsing",
                 "card library",
@@ -159519,11 +159471,7 @@
                 "Manage characters and personas",
                 "persona management",
                 "character management",
-                "identity management",
-                "Rules-driven",
-                "deterministic mechanics",
-                "rule based",
-                "schema driven"
+                "identity management"
               ],
               "frontends": [
                 "SillyTavern"
@@ -232558,7 +232506,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "SillyTavern extension that displays a typing indicator while AI message generation is in progress. It signals active processing to users, providing immediate visual feedback that the system is working on a response.",
+            "summary": "SillyTavern Extension-TypingIndicator shows a '{{char}} is typing...' message while a message generation is in progress, giving users live visual feedback during generation (README, Typing Indicator).",
             "canonicalUrl": "https://github.com/SillyTavern/Extension-TypingIndicator",
             "catalogedAt": "2026-07-26T00:00:00Z",
             "catalogCohort": "standard",
@@ -232569,14 +232517,7 @@
                 "description": "Works with the SillyTavern roleplay frontend."
               }
             ],
-            "tags": [
-              {
-                "id": "customize-the-interface",
-                "label": "Customize the interface",
-                "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
-                "facet": "goal"
-              }
-            ],
+            "tags": [],
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
@@ -232700,10 +232641,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 43,
+              "stars": 46,
               "forks": 10,
               "watchers": 2,
-              "aggregate": 55
+              "aggregate": 58
             },
             "repositorySizeKb": 19,
             "license": {
@@ -232712,7 +232653,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-16T09:07:02.346Z",
+            "refreshedAt": "2026-11-05T08:40:02.912Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -232734,7 +232675,7 @@
                 "https://github.com/SillyTavern/Extension-TypingIndicator"
               ],
               "summary": [
-                "SillyTavern extension that displays a typing indicator while AI message generation is in progress. It signals active processing to users, providing immediate visual feedback that the system is working on a response."
+                "SillyTavern Extension-TypingIndicator shows a '{{char}} is typing...' message while a message generation is in progress, giving users live visual feedback during generation (README, Typing Indicator)."
               ],
               "kind": [
                 "extension"
@@ -232742,12 +232683,7 @@
               "primaryFunction": [
                 "Interface and workflow"
               ],
-              "tags": [
-                "Customize the interface",
-                "interface theming",
-                "layout customization",
-                "UI personalization"
-              ],
+              "tags": [],
               "frontends": [
                 "SillyTavern"
               ],
@@ -249805,7 +249741,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "character-worldbuilding",
-            "summary": "SillyTavern Character Tools repairs and upgrades character cards, compresses card and gallery images, and merges tags through one panel with separate, repeatable workflows.",
+            "summary": "A SillyTavern extension (README, intro) that repairs/upgrades character cards, compresses their images in one pass, merges tags from a curated dictionary, and includes a sidecar for compressing gallery images.",
             "canonicalUrl": "https://github.com/EnchantedRobot/SillyTavern-Character-Tools",
             "catalogedAt": "2026-08-08T03:40:05.149Z",
             "catalogCohort": "standard",
@@ -249818,12 +249754,6 @@
             ],
             "tags": [
               {
-                "id": "add-visual-immersion",
-                "label": "Add visual immersion",
-                "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
-                "facet": "goal"
-              },
-              {
                 "id": "manage-character-libraries",
                 "label": "Manage character libraries",
                 "description": "Discover, search, browse, categorize, import, or maintain collections of character cards.",
@@ -249834,12 +249764,6 @@
                 "label": "Manage characters and personas",
                 "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
                 "facet": "goal"
-              },
-              {
-                "id": "rules-driven",
-                "label": "Rules-driven",
-                "description": "Uses explicit rules, schemas, calculations, or deterministic mechanics to constrain behavior.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -250012,10 +249936,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 0,
+              "stars": 1,
               "forks": 1,
               "watchers": 0,
-              "aggregate": 1
+              "aggregate": 2
             },
             "repositorySizeKb": 158,
             "license": {
@@ -250024,7 +249948,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-16T09:06:58.787Z",
+            "refreshedAt": "2026-11-05T08:40:05.041Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -250046,7 +249970,7 @@
                 "https://github.com/EnchantedRobot/SillyTavern-Character-Tools"
               ],
               "summary": [
-                "SillyTavern Character Tools repairs and upgrades character cards, compresses card and gallery images, and merges tags through one panel with separate, repeatable workflows."
+                "A SillyTavern extension (README, intro) that repairs/upgrades character cards, compresses their images in one pass, merges tags from a curated dictionary, and includes a sidecar for compressing gallery images."
               ],
               "kind": [
                 "extension"
@@ -250055,10 +249979,6 @@
                 "Character and worldbuilding"
               ],
               "tags": [
-                "Add visual immersion",
-                "roleplay visuals",
-                "visual novel presentation",
-                "scene visuals",
                 "Manage character libraries",
                 "character browsing",
                 "card library",
@@ -250066,11 +249986,7 @@
                 "Manage characters and personas",
                 "persona management",
                 "character management",
-                "identity management",
-                "Rules-driven",
-                "deterministic mechanics",
-                "rule based",
-                "schema driven"
+                "identity management"
               ],
               "frontends": [
                 "SillyTavern"

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7f63544c4eb61cbc8c8c50eaef64ede18f434a0970a497c0d1a63827bf23f96f",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1300808393:enchantedrobot-sillytavern-character-tools",
+      "inputDigest": "f23ee745d88290b3a8208c706a90fda99cd6cf9ace049d093bd005c246d44686",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T09:06:58.787Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1300808393",
+    "identity": "github:1300808393"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 42002356537,
+    "sourceSha": "274dd6a2937d3cd17a52991186bd9ba2211028af"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/enchantedrobot-sillytavern-character-tools.json",
+      "sha256": "c4c2e9c66a9d1af22d9eda10bb0dc71218e42d7e8ac9a6a3a98a83ae53960b9c",
+      "gitBlobSha": "e376146e34e09c6792d28b3d560e73c6639a5e41"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/7f63544c4eb61cbc8c8c50eaef64ede18f434a0970a497c0d1a63827bf23f96f.json",
+      "sha256": "3ff80058a605bdc680a7c6386da3303190a21961d34eaa97620a462fd190d486",
+      "gitBlobSha": "4136267d3db6a01db83883d0af4eb28b8d392005"
+    }
+  ]
+}
