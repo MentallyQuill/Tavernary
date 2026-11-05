@@ -9,8 +9,8 @@
     "url": "https://github.com/aikohanasaki/Aikobots",
     "description": "Aikobots fork of ST",
     "default_branch": "v6",
-    "head_sha": "8dfd27d1f8fe6604b1f8ba75f2e3fd8712ddd265",
-    "head_committed_at": "2026-10-16T03:50:56.000Z",
+    "head_sha": "e8601cdfbf8538d2be3ef09ba8aa3432ad0f4086",
+    "head_committed_at": "2026-11-03T05:34:10.000Z",
     "archived": false,
     "fork": true,
     "parent": {
@@ -20,15 +20,30 @@
       "url": "https://github.com/SillyTavern/SillyTavern"
     },
     "created_at": "2025-06-09T15:14:49.000Z",
-    "size_kb": 265224
+    "size_kb": 261914
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-16T03:50:56.000Z",
+    "latest_source_activity_at": "2026-11-03T05:34:10.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-03T05:34:10.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-11-01T23:43:06.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-25T06:52:22.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-12",
-        "latest_at": "2026-10-16T03:50:56.000Z",
+        "latest_at": "2026-10-18T18:46:20.000Z",
         "precision": "exact"
       },
       {
@@ -70,29 +85,14 @@
         "week_start": "2026-08-17",
         "latest_at": "2026-08-23T19:01:29.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-10",
-        "latest_at": "2026-08-15T17:33:53.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-03",
-        "latest_at": "2026-08-09T18:00:07.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-08-01T22:44:16.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-16T06:51:31.918Z",
+    "baseline_completed_at": "2026-11-05T05:41:56.214Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "8dfd27d1f8fe6604b1f8ba75f2e3fd8712ddd265"
+    "evidence_head_sha": "e8601cdfbf8538d2be3ef09ba8aa3432ad0f4086"
   },
   "community": {
     "stars_count": 23,
@@ -105,7 +105,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-16T06:53:35.303Z",
+  "refreshed_at": "2026-11-05T05:44:05.598Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -116,7 +116,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T05:14:36.020Z",
     "scan": null,
-    "refreshed_at": "2026-10-16T06:51:31.918Z",
+    "refreshed_at": "2026-11-05T05:41:56.214Z",
     "stale_since": null
   }
 }
