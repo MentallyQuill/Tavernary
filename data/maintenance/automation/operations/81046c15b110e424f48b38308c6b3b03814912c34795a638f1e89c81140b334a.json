@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "81046c15b110e424f48b38308c6b3b03814912c34795a638f1e89c81140b334a",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-940123423:samueras-personatags",
+      "inputDigest": "e6a46b24907b3ff497d34efacc11094766bfc5a2fc35ddea7826fc18af87cc94",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T09:05:57.676Z",
+    "nextEligibleAt": "2026-11-05T06:28:51.361Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-05T06:13:51.361Z",
+  "completedAt": null
+}
