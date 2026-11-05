@@ -5,12 +5,9 @@
   "source_identity": "github:zapers/sillytavern-character-card-suggestions",
   "evidence_fingerprint": "16575f3d90237f7e14254285ef2f0061575d3e79b3560d58b35afb73176bc91a",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-08T12:30:58.141Z",
-  "retry": {
-    "attempts": 6,
-    "last_failure_at": "2026-10-08T12:30:58.141Z"
-  },
+  "reviewed_at": "2026-11-05T15:51:56.863Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f92c16578de2841c5cb9138decebfc198180fdb9323d152e7d316418b568584e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1233011311:mangkoodkung-another-universe",
+      "inputDigest": "e5e4790f0f2d486835c993b6adba021afb146b1c6e43c8cb7440f31fe5f2c8cd",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T12:38:13.788Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1233011311",
+    "identity": "github:1233011311"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42054788877,
+    "sourceSha": "d85fb466e409e6c46173e35569bcc023e1e16e5f"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/mangkoodkung-another-universe.json",
+      "sha256": "a5482623388f20024052eeeb8a24c30a41b8695b604b8e4b82d582598d291ac5",
+      "gitBlobSha": "02bbaa0964b098a2c6df5d43a092e301937a638c"
+    }
+  ]
+}

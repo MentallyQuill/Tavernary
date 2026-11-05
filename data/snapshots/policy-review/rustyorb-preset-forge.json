@@ -5,12 +5,9 @@
   "source_identity": "github:rustyorb/preset-forge",
   "evidence_fingerprint": "2a62066d3fc8c5ef584be6c1ef2cd3e6c2e7497e21c74f0058ce843603150663",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-20T16:50:25.116Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-20T16:50:25.116Z"
-  },
+  "reviewed_at": "2026-11-05T16:01:05.385Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

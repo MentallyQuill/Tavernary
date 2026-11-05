@@ -29,25 +29,25 @@
     "evidence_head_sha": "c0f2ca20c73b714036364ea2a1abf32e621888ab"
   },
   "community": {
-    "stars_count": 27,
+    "stars_count": 28,
     "forks_count": 6,
     "watchers_count": 1,
-    "aggregate": 34
+    "aggregate": 35
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-17T02:20:16.370Z",
+  "refreshed_at": "2026-11-05T15:42:15.535Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "hec-ovi", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-17T02:20:16.370Z",
+    "refreshed_at": "2026-11-05T15:39:55.311Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

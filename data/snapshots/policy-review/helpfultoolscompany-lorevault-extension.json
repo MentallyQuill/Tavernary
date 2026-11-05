@@ -5,12 +5,9 @@
   "source_identity": "github:helpfultoolscompany/lorevault-extension",
   "evidence_fingerprint": "35772ad6b311bcc90265eff1f411680cab31e41dd1caaac32519597c3b325b58",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-29T14:18:51.952Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-29T14:18:51.952Z"
-  },
+  "reviewed_at": "2026-11-05T15:18:37.568Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

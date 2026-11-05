@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a0c8b51c70434a6d2892945a07383347320a7a0b7194c7d38bf8fde53730fdeb",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1338955728:rustyorb-preset-forge",
+      "inputDigest": "f4284c6aae08d75b466b340f3f01c0fc736038d13be61d20a574ca1d888afc58",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T14:48:32.844Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1338955728",
+    "identity": "github:1338955728"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42060533382,
+    "sourceSha": "d36d00c262eb0e3cb4f64f5c0cc1873a830bd131"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/rustyorb-preset-forge.json",
+      "sha256": "34b6a041fb9339b7ad8864a76e13698b121362095d8867207d8ac4c0a3cf768e",
+      "gitBlobSha": "35371f5e3673cde08d7ccb959964b015bdf9276e"
+    }
+  ]
+}
