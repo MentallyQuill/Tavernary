@@ -9,12 +9,19 @@
       "policyVersion": "2026-07-29"
     },
     "stage": "admitted",
-    "createdAt": "2026-10-16T06:53:30.441Z",
-    "nextEligibleAt": "2026-11-05T04:04:51.721Z",
+    "createdAt": "2026-11-05T04:20:14.556Z",
+    "nextEligibleAt": null,
     "expectedSha": null,
     "workerRunId": null,
-    "retry": null
+    "retry": {
+      "failure": {
+        "kind": "superseded",
+        "reasonCode": "input-superseded"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
   },
-  "updatedAt": "2026-11-05T03:49:51.721Z",
+  "updatedAt": "2026-11-05T04:43:45.191Z",
   "completedAt": null
 }
