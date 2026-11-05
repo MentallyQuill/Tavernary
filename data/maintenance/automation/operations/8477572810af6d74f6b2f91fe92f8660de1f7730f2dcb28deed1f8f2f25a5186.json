@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8477572810af6d74f6b2f91fe92f8660de1f7730f2dcb28deed1f8f2f25a5186",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1001051404:aikohanasaki-sillytavern-memorybooks",
+      "inputDigest": "0a47e2cccb2c45728863dbba2dde088310f34fd6c88ff50ebdf23743a14e3a6d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T12:35:43.053Z",
+    "nextEligibleAt": "2026-11-05T10:13:59.295Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-05T09:58:59.295Z",
+  "completedAt": null
+}
