@@ -9,18 +9,23 @@
     "url": "https://github.com/ChrisDitfort/SillyTavern-InnerLore",
     "description": "Living characters & world for SillyTavern — private NPC minds, automatic lore, world progression, and triggerable events backed by per-chat SQLite state",
     "default_branch": "main",
-    "head_sha": "f36576a61c8676ebd7199cae002d4147223807ab",
-    "head_committed_at": "2026-10-09T09:02:05.000Z",
+    "head_sha": "68545a16243a4cbf61415e5a319418b3724eb299",
+    "head_committed_at": "2026-10-21T10:27:14.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-16T00:21:49.000Z",
-    "size_kb": 1739
+    "size_kb": 2224
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-09T09:02:05.000Z",
+    "latest_source_activity_at": "2026-10-21T10:27:14.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-21T10:27:14.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-05",
         "latest_at": "2026-10-09T09:02:05.000Z",
@@ -40,22 +45,22 @@
     "provisional_weeks": null,
     "latest_release_at": "2026-09-16T20:24:48.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-16T06:51:43.930Z",
+    "baseline_completed_at": "2026-11-05T06:22:26.844Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "f36576a61c8676ebd7199cae002d4147223807ab"
+    "evidence_head_sha": "68545a16243a4cbf61415e5a319418b3724eb299"
   },
   "community": {
-    "stars_count": 3,
-    "forks_count": 1,
+    "stars_count": 4,
+    "forks_count": 2,
     "watchers_count": 1,
-    "aggregate": 5
+    "aggregate": 7
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-16T06:53:43.233Z",
+  "refreshed_at": "2026-11-05T06:24:26.536Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -65,7 +70,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-16T06:51:43.930Z",
+    "refreshed_at": "2026-11-05T06:22:26.844Z",
     "stale_since": null
   }
 }

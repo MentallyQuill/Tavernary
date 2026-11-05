@@ -3755,9 +3755,9 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 19,
-        "forks": 0,
+        "forks": 1,
         "watchers": 0,
-        "aggregate": 19
+        "aggregate": 20
       },
       "repositorySizeKb": 10,
       "license": {
@@ -3766,7 +3766,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-16T06:53:44.832Z",
+      "refreshedAt": "2026-11-05T06:25:13.005Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -23657,7 +23657,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "f36576a61c8676ebd7199cae002d4147223807ab",
+        "currentSha": "68545a16243a4cbf61415e5a319418b3724eb299",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -23672,8 +23672,8 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-09T09:02:05.000Z",
-        "activeWeeks12": 3,
+        "latestSourceActivityAt": "2026-10-21T10:27:14.000Z",
+        "activeWeeks12": 4,
         "weeklyActivity": [
           false,
           false,
@@ -23685,7 +23685,7 @@
           true,
           true,
           false,
-          false,
+          true,
           false
         ],
         "evidenceStatus": "complete",
@@ -23693,19 +23693,19 @@
       },
       "latestReleaseAt": "2026-09-16T20:24:48.000Z",
       "community": {
-        "stars": 3,
-        "forks": 1,
+        "stars": 4,
+        "forks": 2,
         "watchers": 1,
-        "aggregate": 5
+        "aggregate": 7
       },
-      "repositorySizeKb": 1739,
+      "repositorySizeKb": 2224,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-16T06:53:43.233Z",
+      "refreshedAt": "2026-11-05T06:24:26.536Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -80568,19 +80568,19 @@
       },
       "latestReleaseAt": "2026-09-21T21:46:42.000Z",
       "community": {
-        "stars": 59,
+        "stars": 60,
         "forks": 5,
         "watchers": 2,
-        "aggregate": 66
+        "aggregate": 67
       },
-      "repositorySizeKb": 92656,
+      "repositorySizeKb": 104151,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-16T07:04:54.630Z",
+      "refreshedAt": "2026-11-05T06:25:54.102Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -98260,7 +98260,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-16T09:05:31.994Z",
+      "refreshedAt": "2026-11-05T06:25:14.177Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -144780,9 +144780,9 @@
             "latestReleaseAt": null,
             "community": {
               "stars": 19,
-              "forks": 0,
+              "forks": 1,
               "watchers": 0,
-              "aggregate": 19
+              "aggregate": 20
             },
             "repositorySizeKb": 10,
             "license": {
@@ -144791,7 +144791,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-16T06:53:44.832Z",
+            "refreshedAt": "2026-11-05T06:25:13.005Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
