@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "36821599fae41e0fec32b2a6e275a2632f717ca9132b9d1e44da3b2e4bd63bce",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-999164615:subzero5544-favorites-carousel",
+      "inputDigest": "d0baba80a185d26074f4dd867e097159b9f8d4355c7906787551fd90c11b4b5e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-15T12:49:14.149Z",
+    "nextEligibleAt": "2026-11-05T00:27:42.988Z",
+    "expectedSha": "57ddac3dfbea107035d0303684a7293c443891f9",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-05T00:12:42.988Z",
+  "completedAt": null
+}
