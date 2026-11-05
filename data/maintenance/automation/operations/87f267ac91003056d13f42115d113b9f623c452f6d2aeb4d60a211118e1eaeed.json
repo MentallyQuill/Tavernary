@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "87f267ac91003056d13f42115d113b9f623c452f6d2aeb4d60a211118e1eaeed",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1244123455:mokimoko-sillytavern-scenariocrafter",
+      "inputDigest": "4849e275362812d8ec28e27cd8d7e47e23ad870e3498b55f5c2dde3ad048d11e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T12:35:46.019Z",
+    "nextEligibleAt": "2026-11-05T10:13:59.295Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-05T09:58:59.295Z",
+  "completedAt": null
+}
