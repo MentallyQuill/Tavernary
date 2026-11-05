@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "28b2b606fbc9575a5b770d047ec4fe3fdc7d2adbad2e1ffb410816f1a283ec77",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1190054879:mekineer-com-openalma",
+      "inputDigest": "4be57c56221d01ed10eba23c236365ea79ffcc7b87c8f6c26d0b29bbfc69c689",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-16T12:36:16.354Z",
+    "nextEligibleAt": null,
+    "expectedSha": "0b99c5b63bbfcb4972f2832ed95e5914652d9c4e",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-05T16:11:13.028Z",
+  "completedAt": null
+}
