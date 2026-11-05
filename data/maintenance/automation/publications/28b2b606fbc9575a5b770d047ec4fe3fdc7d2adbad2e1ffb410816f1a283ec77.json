@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "28b2b606fbc9575a5b770d047ec4fe3fdc7d2adbad2e1ffb410816f1a283ec77",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1190054879:mekineer-com-openalma",
+      "inputDigest": "4be57c56221d01ed10eba23c236365ea79ffcc7b87c8f6c26d0b29bbfc69c689",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T12:36:16.354Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1190054879",
+    "identity": "github:1190054879"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42051803208,
+    "sourceSha": "7cb9bdfa6dbbf8338ee5aa4183ac01f6ef03c4ee"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/mekineer-com-openalma.json",
+      "sha256": "c1d06e505c8e00ef9ac64b52d779207c99d86a3252907124ed52a0652aea62ea",
+      "gitBlobSha": "01d930b387ed99148b71293878e40eb7c50318af"
+    }
+  ]
+}

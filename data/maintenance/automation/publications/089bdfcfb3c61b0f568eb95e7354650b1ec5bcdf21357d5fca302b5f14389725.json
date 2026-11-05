@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "089bdfcfb3c61b0f568eb95e7354650b1ec5bcdf21357d5fca302b5f14389725",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1240388057:icefog72-sillytavern-everytextlineeditor",
+      "inputDigest": "c989af767b337f219ec9f92efe608c9f00be18583f83d22ec130cf417443f9de",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T12:36:08.002Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1240388057",
+    "identity": "github:1240388057"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42050396340,
+    "sourceSha": "397c6f1ce42fb9c34f252e89b3f994e5514a318d"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/icefog72-sillytavern-everytextlineeditor.json",
+      "sha256": "5cd2136df937f11d1fd9298204bea9c607a17ea0b1dd74d086dc2e1cddd9ded7",
+      "gitBlobSha": "3ad751a8e0464d47d84ff001100b763cf2ea31cf"
+    }
+  ]
+}

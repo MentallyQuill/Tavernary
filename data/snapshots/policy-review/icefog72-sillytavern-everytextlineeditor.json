@@ -5,12 +5,9 @@
   "source_identity": "github:icefog72/sillytavern-everytextlineeditor",
   "evidence_fingerprint": "cd55ab65904aae89b9fe831cf78bfb365c4f61397c3d4b1688819eb3b9c85ca8",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-19T12:14:23.662Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-19T12:14:23.662Z"
-  },
+  "reviewed_at": "2026-11-05T15:01:09.805Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

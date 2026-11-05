@@ -9,48 +9,48 @@
     "url": "https://github.com/IceFog72/SillyTavern-EveryTextLineEditor",
     "description": null,
     "default_branch": "main",
-    "head_sha": "290870688da47363a4705284ff404bb6d56c7e4d",
-    "head_committed_at": "2026-05-24T00:39:59.000Z",
+    "head_sha": "8a902279d8a7c52d86724381df8a2adafa9cc9a3",
+    "head_committed_at": "2026-10-31T00:33:49.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-16T04:39:18.000Z",
-    "size_kb": 6604
+    "size_kb": 13534
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-05-24T00:39:59.000Z",
+    "latest_source_activity_at": "2026-10-31T00:33:49.000Z",
     "source_weeks": [
       {
-        "week_start": "2026-05-18",
-        "latest_at": "2026-05-24T00:39:59.000Z",
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-31T00:33:49.000Z",
         "precision": "exact"
       },
       {
-        "week_start": "2026-05-11",
-        "latest_at": "2026-05-17T19:25:08.000Z",
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-25T18:10:40.000Z",
         "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T14:40:11.455Z",
+    "baseline_completed_at": "2026-11-05T15:39:42.139Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "290870688da47363a4705284ff404bb6d56c7e4d"
+    "evidence_head_sha": "8a902279d8a7c52d86724381df8a2adafa9cc9a3"
   },
   "community": {
-    "stars_count": 20,
+    "stars_count": 22,
     "forks_count": 0,
     "watchers_count": 1,
-    "aggregate": 21
+    "aggregate": 23
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-16T12:36:08.002Z",
+  "refreshed_at": "2026-11-05T15:42:10.817Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -58,7 +58,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-16T12:34:00.239Z",
+    "refreshed_at": "2026-11-05T15:39:42.139Z",
     "stale_since": null
   }
 }

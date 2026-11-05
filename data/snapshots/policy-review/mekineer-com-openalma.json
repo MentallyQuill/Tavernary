@@ -3,14 +3,11 @@
   "project_id": "mekineer-com-openalma",
   "source_id": "github-1190054879",
   "source_identity": "github:mekineer-com/openalma",
-  "evidence_fingerprint": "9fdaa7ca46450ba35ed2b9f8772e70571b645f5f0a9fcd8a52ed9b965a543f2c",
+  "evidence_fingerprint": "4588d930925595ef5417c9d6f92c3a38b8eb1f5719c44b4d952771b601876041",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-24T12:58:38.917Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-09-24T12:58:38.917Z"
-  },
+  "reviewed_at": "2026-11-05T15:09:21.791Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
