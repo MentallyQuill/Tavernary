@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "87f267ac91003056d13f42115d113b9f623c452f6d2aeb4d60a211118e1eaeed",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1244123455:mokimoko-sillytavern-scenariocrafter",
+      "inputDigest": "4849e275362812d8ec28e27cd8d7e47e23ad870e3498b55f5c2dde3ad048d11e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-05T10:13:25.219Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1244123455",
+    "identity": "github:1244123455"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 42018961759,
+    "sourceSha": "4991ca365230c16cf9480415738c5492a27788fe"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/mokimoko-sillytavern-scenariocrafter.json",
+      "sha256": "1443d417da878e3c274f3f5bd046b1225cc87d488d11347c9e82e579d06dc021",
+      "gitBlobSha": "791956706786fda9c464942d84e41ea5409147bf"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/87f267ac91003056d13f42115d113b9f623c452f6d2aeb4d60a211118e1eaeed.json",
+      "sha256": "c4ae0afc86ec20b2857c260be5fd60aa3eafa948b691248548db3007cdcef089",
+      "gitBlobSha": "5bb777bfc22500313c89b32e94a7808bf6f172ce"
+    }
+  ]
+}

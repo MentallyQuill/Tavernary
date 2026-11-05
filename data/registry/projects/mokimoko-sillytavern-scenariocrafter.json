@@ -3,7 +3,7 @@
   "id": "mokimoko-sillytavern-scenariocrafter",
   "name": "SillyTavern ScenarioCrafter",
   "kind": "extension",
-  "summary": "SillyTavern ScenarioCrafter generates unique roleplay greetings by combining chosen characters, personas, and scenarios. Users can include chat history or world info as context and view the prompt sent to the LLM.",
+  "summary": "SillyTavern extension (README) offering varied scenarios: pick a character, persona, and scenario option, add optional context, start a chat, append, or rewrite the last message (inspect-prompts)",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
@@ -11,9 +11,9 @@
   "catalog_cohort": "seed",
   "source_id": "github-1244123455",
   "tags": [
-    "plan-stories-and-scenes",
-    "automate-roleplay-workflows",
-    "increase-narrative-variety"
+    "edit-and-refine-messages",
+    "inspect-prompts-and-generations",
+    "plan-stories-and-scenes"
   ],
   "listing_status": "active",
   "listing_status_reason": null,
