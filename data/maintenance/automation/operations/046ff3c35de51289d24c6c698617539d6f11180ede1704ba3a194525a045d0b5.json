@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "046ff3c35de51289d24c6c698617539d6f11180ede1704ba3a194525a045d0b5",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1398595512:serioos-gallery-plus-plus",
+      "inputDigest": "1c1cb0ff6be19f51dc3ac4fe631c87d69a2b0d031b973f1ccee4f6cdf7422054",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T12:35:50.021Z",
+    "nextEligibleAt": "2026-11-05T13:16:14.238Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-05T13:01:14.238Z",
+  "completedAt": null
+}
