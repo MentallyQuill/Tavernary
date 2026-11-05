@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "67c1b49706d5cfad3e714b99d7603980ab7f05f0fa3a6ea14a89c4934e48672d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1340428140:l1kiru-sillytavern-lorebookatlas",
+      "inputDigest": "5b95eab9d50a2468ae08578431d5f06e322cba1cafe29fa165051397722c06ec",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T12:36:06.225Z",
+    "nextEligibleAt": "2026-11-05T13:16:14.238Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-05T13:01:14.238Z",
+  "completedAt": null
+}
