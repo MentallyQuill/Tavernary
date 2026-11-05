@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e86698135fe6bede4ef753aeff172c8dbbcb14c5f0e1957be8d19543f09a0d9c",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1324619032:zapers-sillytavern-character-card-suggestions",
+      "inputDigest": "5b56b4011e61f43cd6f885caebf4265055dd06a182927bd79adb1e9a2d96ad64",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-16T14:48:15.109Z",
+    "nextEligibleAt": null,
+    "expectedSha": "43b5226fbb8877ca21a09b05ed8d54cf4fc637b7",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-05T16:26:23.979Z",
+  "completedAt": null
+}
