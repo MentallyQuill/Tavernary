@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "37d707d8bb4ff61326b1baefb0b156d62d92d54f7950498f33b73ae33eb29d35",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1174011234:coneja-chibi-tunnelvision",
+      "inputDigest": "34ef055940d629357b905678f29c8c84891d8e69d42932874e82ef198d4c30e9",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T12:35:39.802Z",
+    "nextEligibleAt": "2026-11-05T10:13:59.295Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-05T09:58:59.295Z",
+  "completedAt": null
+}
