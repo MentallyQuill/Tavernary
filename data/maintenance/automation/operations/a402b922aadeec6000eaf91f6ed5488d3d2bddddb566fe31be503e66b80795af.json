@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a402b922aadeec6000eaf91f6ed5488d3d2bddddb566fe31be503e66b80795af",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1244233593:mokimoko-sillytavern-wordcount",
+      "inputDigest": "92142782757fb23103c1e91c4e210d95282d223880bae74dc84850df3821b0f6",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T14:40:36.557Z",
+    "nextEligibleAt": "2026-11-05T16:42:39.957Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-11-05T15:41:32.195Z",
+  "completedAt": null
+}
