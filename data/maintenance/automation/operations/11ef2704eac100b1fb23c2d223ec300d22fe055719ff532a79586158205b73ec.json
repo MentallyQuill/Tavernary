@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "11ef2704eac100b1fb23c2d223ec300d22fe055719ff532a79586158205b73ec",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1372304973:chrisditfort-sillytavern-innerlore",
+      "inputDigest": "3091568596ff3c7f86f403c51a5d0ac359f591adfa861ef7cdc24ac5621c50ef",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-16T06:53:43.233Z",
+    "nextEligibleAt": "2026-11-05T06:28:51.361Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-05T06:13:51.361Z",
+  "completedAt": null
+}
