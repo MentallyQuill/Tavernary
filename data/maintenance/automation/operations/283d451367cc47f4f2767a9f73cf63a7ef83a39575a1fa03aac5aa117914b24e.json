@@ -9,19 +9,19 @@
       "policyVersion": "2026-07-29"
     },
     "stage": "admitted",
-    "createdAt": "2026-10-16T12:35:41.489Z",
-    "nextEligibleAt": "2026-11-05T10:13:59.295Z",
+    "createdAt": "2026-11-05T10:12:12.137Z",
+    "nextEligibleAt": "2026-11-06T12:22:22.034Z",
     "expectedSha": null,
     "workerRunId": null,
     "retry": {
       "failure": {
-        "kind": "transient",
-        "reasonCode": "workflow-result-unavailable"
+        "kind": "configuration",
+        "reasonCode": "budget-exhausted"
       },
-      "transientAttempts": 0,
+      "transientAttempts": 1,
       "immediateAttempts": 0
     }
   },
-  "updatedAt": "2026-11-05T09:58:59.295Z",
+  "updatedAt": "2026-11-05T12:22:22.034Z",
   "completedAt": null
 }
