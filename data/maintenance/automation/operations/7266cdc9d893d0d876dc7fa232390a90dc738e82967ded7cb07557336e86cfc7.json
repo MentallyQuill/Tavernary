@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7266cdc9d893d0d876dc7fa232390a90dc738e82967ded7cb07557336e86cfc7",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1289035231:unrefined803-rpgraph",
+      "inputDigest": "6677deca9b82410bf699053d8414b39fa2354e086af2020de647fc8bd48f0e59",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-15T12:50:50.943Z",
+    "nextEligibleAt": "2026-11-05T00:27:42.988Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-05T00:12:42.988Z",
+  "completedAt": null
+}
