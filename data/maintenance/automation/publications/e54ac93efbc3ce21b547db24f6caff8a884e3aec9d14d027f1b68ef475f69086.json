@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e54ac93efbc3ce21b547db24f6caff8a884e3aec9d14d027f1b68ef475f69086",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1434118511:coragon77-storyarc",
+      "inputDigest": "66a80e5e1d8001fc0e4b8f1e0b675128206f968f07a3c39630f6490814fb2af6",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-27T21:35:11.264Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1434118511",
+    "identity": "github:1434118511"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42156322135,
+    "sourceSha": "7b725fea27f6e44dbe5211cd9f0c27ba4d719078"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/coragon77-storyarc.json",
+      "sha256": "14a6b09ca8bcd389dce17f6754e2b84b7f1066af494487e0906433de5c576725",
+      "gitBlobSha": "330dbfe0c3ba45a3aa31cce7c5a69ef88e13181d"
+    }
+  ]
+}

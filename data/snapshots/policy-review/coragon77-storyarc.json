@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "coragon77-storyarc",
+  "source_id": "github-1434118511",
+  "source_identity": "github:coragon77/storyarc",
+  "evidence_fingerprint": "62b2ff628a88a3e478f5497c4ebc6e3c8b4631ba30f35601689bcffe7cca38be",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-06T03:25:41.265Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}
