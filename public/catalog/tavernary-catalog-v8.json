@@ -44007,7 +44007,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-17T11:47:20.613Z",
+      "refreshedAt": "2026-11-06T07:28:29.959Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -63121,7 +63121,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-18T12:10:50.720Z",
+      "refreshedAt": "2026-11-06T07:28:55.120Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -98357,10 +98357,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 17,
+        "stars": 18,
         "forks": 0,
         "watchers": 0,
-        "aggregate": 17
+        "aggregate": 18
       },
       "repositorySizeKb": 362,
       "license": {
@@ -98369,7 +98369,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-17T11:46:42.977Z",
+      "refreshedAt": "2026-11-06T07:28:08.955Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -106251,7 +106251,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "da9ea06d696910524eebb9574f6413377073ee53",
+        "currentSha": "367a18c8ca8b5cd85d06801bb7477da2c195f0a4",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -106729,17 +106729,7 @@
           },
           {
             "provider": "github",
-            "login": "ayancey",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
             "login": "DocShotgun",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "AlexVeeBee",
             "botOrAi": false
           },
           {
@@ -106754,6 +106744,16 @@
           },
           {
             "provider": "github",
+            "login": "ayancey",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "AlexVeeBee",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "valden80",
             "botOrAi": false
           },
@@ -106764,22 +106764,7 @@
           },
           {
             "provider": "github",
-            "login": "subzero5544",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "Memerlin",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "LumiWasTaken",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "khanonnie",
+            "login": "Xrystallized",
             "botOrAi": false
           },
           {
@@ -106789,27 +106774,42 @@
           },
           {
             "provider": "github",
-            "login": "Xrystallized",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
             "login": "IkariDevGIT",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "tincansimagine",
+            "login": "khanonnie",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "LumiWasTaken",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Memerlin",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "subzero5544",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Esalarc",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Ph0rk0z",
             "botOrAi": false
           },
           {
             "provider": "github",
             "login": "isaac-mcfadyen",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "smirgol",
             "botOrAi": false
           },
           {
@@ -106824,12 +106824,7 @@
           },
           {
             "provider": "github",
-            "login": "Ph0rk0z",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "Esalarc",
+            "login": "sakhavhyand",
             "botOrAi": false
           },
           {
@@ -106844,7 +106839,7 @@
           },
           {
             "provider": "github",
-            "login": "ptm0000",
+            "login": "johnbenac",
             "botOrAi": false
           },
           {
@@ -106854,12 +106849,37 @@
           },
           {
             "provider": "github",
-            "login": "johnbenac",
+            "login": "ptm0000",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "sakhavhyand",
+            "login": "smirgol",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "tincansimagine",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "zerofata",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "wrvsrx",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "fizzAI",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "mightytribble",
             "botOrAi": false
           },
           {
@@ -106879,32 +106899,7 @@
           },
           {
             "provider": "github",
-            "login": "BahamutRU",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "mightytribble",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "wrvsrx",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "zerofata",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "fizzAI",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "Boof2015",
+            "login": "eugencowie",
             "botOrAi": false
           },
           {
@@ -106914,17 +106909,22 @@
           },
           {
             "provider": "github",
-            "login": "eugencowie",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
             "login": "FriedCaper",
             "botOrAi": false
           },
           {
             "provider": "github",
+            "login": "Boof2015",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "SSJGabraham",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "BahamutRU",
             "botOrAi": false
           },
           {
@@ -107009,6 +107009,11 @@
           },
           {
             "provider": "github",
+            "login": "drake1138",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "Vhallo",
             "botOrAi": false
           },
@@ -107019,87 +107024,17 @@
           },
           {
             "provider": "github",
-            "login": "drake1138",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
             "login": "error-usernotavailable",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "AzureKarasuba",
+            "login": "iarna",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "gd1551",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "gakada",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "my-alt-acct",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "oobabooga",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "ouoertheo",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "parsedone",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "powercaller",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "Pardeshx",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "uberubert",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "wickedcode01",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "A1KESH1",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "henk717",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "Ivruix",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "Kas1o",
+            "login": "bal-spec",
             "botOrAi": false
           },
           {
@@ -107109,7 +107044,137 @@
           },
           {
             "provider": "github",
-            "login": "bal-spec",
+            "login": "Kas1o",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Ivruix",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "henk717",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "A1KESH1",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "junshanxu",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "wickedcode01",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "uberubert",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Pardeshx",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "powercaller",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "parsedone",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "ouoertheo",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "oobabooga",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "my-alt-acct",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "gakada",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "gd1551",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "KTibow",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Scarlet-t",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "eltociear",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Finadil",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Hakirus",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "dvejmz",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Cyberes",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "CoryG89",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "AliceRabbit",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "chungchandev",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Brioch",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "andrempiva",
             "botOrAi": false
           },
           {
@@ -107124,11 +107189,6 @@
           },
           {
             "provider": "github",
-            "login": "andrempiva",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
             "login": "AyeeMinerva",
             "botOrAi": false
           },
@@ -107139,62 +107199,7 @@
           },
           {
             "provider": "github",
-            "login": "Brioch",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "chungchandev",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "AliceRabbit",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "CoryG89",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "Cyberes",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "dvejmz",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "Hakirus",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "Finadil",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "eltociear",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "Scarlet-t",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "KTibow",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "SammCheese",
+            "login": "rsxdalv",
             "botOrAi": false
           },
           {
@@ -107204,12 +107209,12 @@
           },
           {
             "provider": "github",
-            "login": "iarna",
+            "login": "SammCheese",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "rsxdalv",
+            "login": "AzureKarasuba",
             "botOrAi": false
           },
           {
@@ -107229,37 +107234,7 @@
           },
           {
             "provider": "github",
-            "login": "Ni-co-la-s",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "NearEDGE",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "mschienbein",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "Miiiikachu",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "Meus-Artis",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "toby3d",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "racinmat",
+            "login": "KhreedAI",
             "botOrAi": false
           },
           {
@@ -107269,47 +107244,42 @@
           },
           {
             "provider": "github",
-            "login": "KhreedAI",
+            "login": "racinmat",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "allo-",
+            "login": "toby3d",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "allen9441",
+            "login": "Meus-Artis",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "axAilotl",
+            "login": "Miiiikachu",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "aikitoria",
+            "login": "Ni-co-la-s",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "adventchilde",
+            "login": "mschienbein",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "aalizelau",
+            "login": "NearEDGE",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "Zhongyi-Lu",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "tandede",
+            "login": "yarathenomad",
             "botOrAi": false
           },
           {
@@ -107319,7 +107289,42 @@
           },
           {
             "provider": "github",
-            "login": "yarathenomad",
+            "login": "tandede",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Zhongyi-Lu",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "aalizelau",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "adventchilde",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "aikitoria",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "axAilotl",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "allen9441",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "allo-",
             "botOrAi": false
           },
           {
@@ -107359,17 +107364,17 @@
           },
           {
             "provider": "github",
+            "login": "crsp6447",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "closuretxt",
             "botOrAi": false
           },
           {
             "provider": "github",
             "login": "coffeegrind123",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
-            "login": "crsp6447",
             "botOrAi": false
           },
           {
@@ -108198,14 +108203,14 @@
             "botOrAi": false
           }
         ],
-        "humanContributorCount": 383,
+        "humanContributorCount": 384,
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-10T10:37:06.000Z",
-        "activeWeeks12": 9,
+        "latestSourceActivityAt": "2026-11-01T22:33:01.000Z",
+        "activeWeeks12": 10,
         "weeklyActivity": [
-          true,
+          false,
           true,
           true,
           true,
@@ -108215,27 +108220,27 @@
           true,
           true,
           false,
-          false,
-          false
+          true,
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
       "latestReleaseAt": "2026-10-01T21:41:32.000Z",
       "community": {
-        "stars": 139,
-        "forks": 24,
+        "stars": 156,
+        "forks": 25,
         "watchers": 4,
-        "aggregate": 167
+        "aggregate": 185
       },
-      "repositorySizeKb": 329058,
+      "repositorySizeKb": 459193,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-17T11:45:22.622Z",
+      "refreshedAt": "2026-11-06T07:12:09.853Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -108381,46 +108386,46 @@
           "imesha10",
           "Jasonnor",
           "Touch-Night",
-          "ayancey",
           "DocShotgun",
-          "AlexVeeBee",
           "xz-dev",
           "invisietch",
+          "ayancey",
+          "AlexVeeBee",
           "valden80",
           "zgce",
-          "subzero5544",
-          "Memerlin",
-          "LumiWasTaken",
-          "khanonnie",
-          "h-a-s-k",
           "Xrystallized",
+          "h-a-s-k",
           "IkariDevGIT",
-          "tincansimagine",
+          "khanonnie",
+          "LumiWasTaken",
+          "Memerlin",
+          "subzero5544",
+          "Esalarc",
+          "Ph0rk0z",
           "isaac-mcfadyen",
-          "smirgol",
           "m-petra-fn",
           "snowby666",
-          "Ph0rk0z",
-          "Esalarc",
+          "sakhavhyand",
           "SolidSnacke",
           "CasualAutopsy",
-          "ptm0000",
-          "lucyknada",
           "johnbenac",
-          "sakhavhyand",
+          "lucyknada",
+          "ptm0000",
+          "smirgol",
+          "tincansimagine",
+          "zerofata",
+          "wrvsrx",
+          "fizzAI",
+          "mightytribble",
           "docfail",
           "blueswolf",
           "YunZLu",
-          "BahamutRU",
-          "mightytribble",
-          "wrvsrx",
-          "zerofata",
-          "fizzAI",
-          "Boof2015",
-          "Deathspike",
           "eugencowie",
+          "Deathspike",
           "FriedCaper",
+          "Boof2015",
           "SSJGabraham",
+          "BahamutRU",
           "GregW6",
           "yar3333",
           "voldomero",
@@ -108437,69 +108442,70 @@
           "caesarw",
           "cloudskytian",
           "dllt98",
+          "drake1138",
           "Vhallo",
           "Trahloc",
-          "drake1138",
           "error-usernotavailable",
-          "AzureKarasuba",
-          "gd1551",
-          "gakada",
-          "my-alt-acct",
-          "oobabooga",
-          "ouoertheo",
-          "parsedone",
-          "powercaller",
-          "Pardeshx",
-          "uberubert",
-          "wickedcode01",
-          "A1KESH1",
-          "henk717",
-          "Ivruix",
-          "Kas1o",
-          "P3il4",
+          "iarna",
           "bal-spec",
+          "P3il4",
+          "Kas1o",
+          "Ivruix",
+          "henk717",
+          "A1KESH1",
+          "junshanxu",
+          "wickedcode01",
+          "uberubert",
+          "Pardeshx",
+          "powercaller",
+          "parsedone",
+          "ouoertheo",
+          "oobabooga",
+          "my-alt-acct",
+          "gakada",
+          "gd1551",
+          "KTibow",
+          "Scarlet-t",
+          "eltociear",
+          "Finadil",
+          "Hakirus",
+          "dvejmz",
+          "Cyberes",
+          "CoryG89",
+          "AliceRabbit",
+          "chungchandev",
+          "Brioch",
+          "andrempiva",
           "BooleanWhale",
           "bubfix",
-          "andrempiva",
           "AyeeMinerva",
           "cxmplex",
-          "Brioch",
-          "chungchandev",
-          "AliceRabbit",
-          "CoryG89",
-          "Cyberes",
-          "dvejmz",
-          "Hakirus",
-          "Finadil",
-          "eltociear",
-          "Scarlet-t",
-          "KTibow",
-          "SammCheese",
-          "PeterDaveHello",
-          "iarna",
           "rsxdalv",
+          "PeterDaveHello",
+          "SammCheese",
+          "AzureKarasuba",
           "Pavdig",
           "paniphons",
           "NijikaMyWaifu",
-          "Ni-co-la-s",
-          "NearEDGE",
-          "mschienbein",
-          "Miiiikachu",
-          "Meus-Artis",
-          "toby3d",
-          "racinmat",
-          "Kristyku",
           "KhreedAI",
-          "allo-",
-          "allen9441",
-          "axAilotl",
-          "aikitoria",
-          "adventchilde",
-          "aalizelau",
-          "Zhongyi-Lu",
-          "tandede",
-          "CodeBoy2006",
+          "Kristyku",
+          "racinmat",
+          "toby3d",
+          "Meus-Artis",
+          "Miiiikachu",
+          "Ni-co-la-s",
+          "mschienbein",
+          "NearEDGE",
           "yarathenomad",
+          "CodeBoy2006",
+          "tandede",
+          "Zhongyi-Lu",
+          "aalizelau",
+          "adventchilde",
+          "aikitoria",
+          "axAilotl",
+          "allen9441",
+          "allo-",
           "anachronous",
           "ashishch432",
           "bbastex",
@@ -108507,9 +108513,9 @@
           "bumprat",
           "ceruleandeep",
           "cierru",
+          "crsp6447",
           "closuretxt",
           "coffeegrind123",
-          "crsp6447",
           "rdeforest",
           "Rojikku",
           "Roland4396",
@@ -151530,7 +151536,7 @@
               "state": "gray",
               "riskLevel": null,
               "freshness": "unassessed",
-              "currentSha": "da9ea06d696910524eebb9574f6413377073ee53",
+              "currentSha": "367a18c8ca8b5cd85d06801bb7477da2c195f0a4",
               "report": null,
               "history": [],
               "historyUrl": null
@@ -152008,17 +152014,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "ayancey",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
                   "login": "DocShotgun",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "AlexVeeBee",
                   "botOrAi": false
                 },
                 {
@@ -152033,6 +152029,16 @@
                 },
                 {
                   "provider": "github",
+                  "login": "ayancey",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "AlexVeeBee",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
                   "login": "valden80",
                   "botOrAi": false
                 },
@@ -152043,22 +152049,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "subzero5544",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "Memerlin",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "LumiWasTaken",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "khanonnie",
+                  "login": "Xrystallized",
                   "botOrAi": false
                 },
                 {
@@ -152068,27 +152059,42 @@
                 },
                 {
                   "provider": "github",
-                  "login": "Xrystallized",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
                   "login": "IkariDevGIT",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
-                  "login": "tincansimagine",
+                  "login": "khanonnie",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "LumiWasTaken",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Memerlin",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "subzero5544",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Esalarc",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Ph0rk0z",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
                   "login": "isaac-mcfadyen",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "smirgol",
                   "botOrAi": false
                 },
                 {
@@ -152103,12 +152109,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "Ph0rk0z",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "Esalarc",
+                  "login": "sakhavhyand",
                   "botOrAi": false
                 },
                 {
@@ -152123,7 +152124,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "ptm0000",
+                  "login": "johnbenac",
                   "botOrAi": false
                 },
                 {
@@ -152133,12 +152134,37 @@
                 },
                 {
                   "provider": "github",
-                  "login": "johnbenac",
+                  "login": "ptm0000",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
-                  "login": "sakhavhyand",
+                  "login": "smirgol",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "tincansimagine",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "zerofata",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "wrvsrx",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "fizzAI",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "mightytribble",
                   "botOrAi": false
                 },
                 {
@@ -152158,32 +152184,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "BahamutRU",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "mightytribble",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "wrvsrx",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "zerofata",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "fizzAI",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "Boof2015",
+                  "login": "eugencowie",
                   "botOrAi": false
                 },
                 {
@@ -152193,17 +152194,22 @@
                 },
                 {
                   "provider": "github",
-                  "login": "eugencowie",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
                   "login": "FriedCaper",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
+                  "login": "Boof2015",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
                   "login": "SSJGabraham",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "BahamutRU",
                   "botOrAi": false
                 },
                 {
@@ -152288,6 +152294,11 @@
                 },
                 {
                   "provider": "github",
+                  "login": "drake1138",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
                   "login": "Vhallo",
                   "botOrAi": false
                 },
@@ -152298,87 +152309,17 @@
                 },
                 {
                   "provider": "github",
-                  "login": "drake1138",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
                   "login": "error-usernotavailable",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
-                  "login": "AzureKarasuba",
+                  "login": "iarna",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
-                  "login": "gd1551",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "gakada",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "my-alt-acct",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "oobabooga",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "ouoertheo",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "parsedone",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "powercaller",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "Pardeshx",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "uberubert",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "wickedcode01",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "A1KESH1",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "henk717",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "Ivruix",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "Kas1o",
+                  "login": "bal-spec",
                   "botOrAi": false
                 },
                 {
@@ -152388,7 +152329,137 @@
                 },
                 {
                   "provider": "github",
-                  "login": "bal-spec",
+                  "login": "Kas1o",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Ivruix",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "henk717",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "A1KESH1",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "junshanxu",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "wickedcode01",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "uberubert",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Pardeshx",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "powercaller",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "parsedone",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "ouoertheo",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "oobabooga",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "my-alt-acct",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "gakada",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "gd1551",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "KTibow",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Scarlet-t",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "eltociear",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Finadil",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Hakirus",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "dvejmz",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Cyberes",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "CoryG89",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "AliceRabbit",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "chungchandev",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Brioch",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "andrempiva",
                   "botOrAi": false
                 },
                 {
@@ -152403,11 +152474,6 @@
                 },
                 {
                   "provider": "github",
-                  "login": "andrempiva",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
                   "login": "AyeeMinerva",
                   "botOrAi": false
                 },
@@ -152418,62 +152484,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "Brioch",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "chungchandev",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "AliceRabbit",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "CoryG89",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "Cyberes",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "dvejmz",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "Hakirus",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "Finadil",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "eltociear",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "Scarlet-t",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "KTibow",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "SammCheese",
+                  "login": "rsxdalv",
                   "botOrAi": false
                 },
                 {
@@ -152483,12 +152494,12 @@
                 },
                 {
                   "provider": "github",
-                  "login": "iarna",
+                  "login": "SammCheese",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
-                  "login": "rsxdalv",
+                  "login": "AzureKarasuba",
                   "botOrAi": false
                 },
                 {
@@ -152508,37 +152519,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "Ni-co-la-s",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "NearEDGE",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "mschienbein",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "Miiiikachu",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "Meus-Artis",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "toby3d",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "racinmat",
+                  "login": "KhreedAI",
                   "botOrAi": false
                 },
                 {
@@ -152548,47 +152529,42 @@
                 },
                 {
                   "provider": "github",
-                  "login": "KhreedAI",
+                  "login": "racinmat",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
-                  "login": "allo-",
+                  "login": "toby3d",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
-                  "login": "allen9441",
+                  "login": "Meus-Artis",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
-                  "login": "axAilotl",
+                  "login": "Miiiikachu",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
-                  "login": "aikitoria",
+                  "login": "Ni-co-la-s",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
-                  "login": "adventchilde",
+                  "login": "mschienbein",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
-                  "login": "aalizelau",
+                  "login": "NearEDGE",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
-                  "login": "Zhongyi-Lu",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "tandede",
+                  "login": "yarathenomad",
                   "botOrAi": false
                 },
                 {
@@ -152598,7 +152574,42 @@
                 },
                 {
                   "provider": "github",
-                  "login": "yarathenomad",
+                  "login": "tandede",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "Zhongyi-Lu",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "aalizelau",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "adventchilde",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "aikitoria",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "axAilotl",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "allen9441",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
+                  "login": "allo-",
                   "botOrAi": false
                 },
                 {
@@ -152638,17 +152649,17 @@
                 },
                 {
                   "provider": "github",
+                  "login": "crsp6447",
+                  "botOrAi": false
+                },
+                {
+                  "provider": "github",
                   "login": "closuretxt",
                   "botOrAi": false
                 },
                 {
                   "provider": "github",
                   "login": "coffeegrind123",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
-                  "login": "crsp6447",
                   "botOrAi": false
                 },
                 {
@@ -153477,14 +153488,14 @@
                   "botOrAi": false
                 }
               ],
-              "humanContributorCount": 383,
+              "humanContributorCount": 384,
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-10T10:37:06.000Z",
-              "activeWeeks12": 9,
+              "latestSourceActivityAt": "2026-11-01T22:33:01.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
-                true,
+                false,
                 true,
                 true,
                 true,
@@ -153494,27 +153505,27 @@
                 true,
                 true,
                 false,
-                false,
-                false
+                true,
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": "2026-10-01T21:41:32.000Z",
             "community": {
-              "stars": 139,
-              "forks": 24,
+              "stars": 156,
+              "forks": 25,
               "watchers": 4,
-              "aggregate": 167
+              "aggregate": 185
             },
-            "repositorySizeKb": 329058,
+            "repositorySizeKb": 459193,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-17T11:45:22.622Z",
+            "refreshedAt": "2026-11-06T07:12:09.853Z",
             "staleSince": null,
             "install": null,
             "fork": null,
@@ -153660,46 +153671,46 @@
                 "imesha10",
                 "Jasonnor",
                 "Touch-Night",
-                "ayancey",
                 "DocShotgun",
-                "AlexVeeBee",
                 "xz-dev",
                 "invisietch",
+                "ayancey",
+                "AlexVeeBee",
                 "valden80",
                 "zgce",
-                "subzero5544",
-                "Memerlin",
-                "LumiWasTaken",
-                "khanonnie",
-                "h-a-s-k",
                 "Xrystallized",
+                "h-a-s-k",
                 "IkariDevGIT",
-                "tincansimagine",
+                "khanonnie",
+                "LumiWasTaken",
+                "Memerlin",
+                "subzero5544",
+                "Esalarc",
+                "Ph0rk0z",
                 "isaac-mcfadyen",
-                "smirgol",
                 "m-petra-fn",
                 "snowby666",
-                "Ph0rk0z",
-                "Esalarc",
+                "sakhavhyand",
                 "SolidSnacke",
                 "CasualAutopsy",
-                "ptm0000",
-                "lucyknada",
                 "johnbenac",
-                "sakhavhyand",
+                "lucyknada",
+                "ptm0000",
+                "smirgol",
+                "tincansimagine",
+                "zerofata",
+                "wrvsrx",
+                "fizzAI",
+                "mightytribble",
                 "docfail",
                 "blueswolf",
                 "YunZLu",
-                "BahamutRU",
-                "mightytribble",
-                "wrvsrx",
-                "zerofata",
-                "fizzAI",
-                "Boof2015",
-                "Deathspike",
                 "eugencowie",
+                "Deathspike",
                 "FriedCaper",
+                "Boof2015",
                 "SSJGabraham",
+                "BahamutRU",
                 "GregW6",
                 "yar3333",
                 "voldomero",
@@ -153716,69 +153727,70 @@
                 "caesarw",
                 "cloudskytian",
                 "dllt98",
+                "drake1138",
                 "Vhallo",
                 "Trahloc",
-                "drake1138",
                 "error-usernotavailable",
-                "AzureKarasuba",
-                "gd1551",
-                "gakada",
-                "my-alt-acct",
-                "oobabooga",
-                "ouoertheo",
-                "parsedone",
-                "powercaller",
-                "Pardeshx",
-                "uberubert",
-                "wickedcode01",
-                "A1KESH1",
-                "henk717",
-                "Ivruix",
-                "Kas1o",
-                "P3il4",
+                "iarna",
                 "bal-spec",
+                "P3il4",
+                "Kas1o",
+                "Ivruix",
+                "henk717",
+                "A1KESH1",
+                "junshanxu",
+                "wickedcode01",
+                "uberubert",
+                "Pardeshx",
+                "powercaller",
+                "parsedone",
+                "ouoertheo",
+                "oobabooga",
+                "my-alt-acct",
+                "gakada",
+                "gd1551",
+                "KTibow",
+                "Scarlet-t",
+                "eltociear",
+                "Finadil",
+                "Hakirus",
+                "dvejmz",
+                "Cyberes",
+                "CoryG89",
+                "AliceRabbit",
+                "chungchandev",
+                "Brioch",
+                "andrempiva",
                 "BooleanWhale",
                 "bubfix",
-                "andrempiva",
                 "AyeeMinerva",
                 "cxmplex",
-                "Brioch",
-                "chungchandev",
-                "AliceRabbit",
-                "CoryG89",
-                "Cyberes",
-                "dvejmz",
-                "Hakirus",
-                "Finadil",
-                "eltociear",
-                "Scarlet-t",
-                "KTibow",
-                "SammCheese",
-                "PeterDaveHello",
-                "iarna",
                 "rsxdalv",
+                "PeterDaveHello",
+                "SammCheese",
+                "AzureKarasuba",
                 "Pavdig",
                 "paniphons",
                 "NijikaMyWaifu",
-                "Ni-co-la-s",
-                "NearEDGE",
-                "mschienbein",
-                "Miiiikachu",
-                "Meus-Artis",
-                "toby3d",
-                "racinmat",
-                "Kristyku",
                 "KhreedAI",
-                "allo-",
-                "allen9441",
-                "axAilotl",
-                "aikitoria",
-                "adventchilde",
-                "aalizelau",
-                "Zhongyi-Lu",
-                "tandede",
-                "CodeBoy2006",
+                "Kristyku",
+                "racinmat",
+                "toby3d",
+                "Meus-Artis",
+                "Miiiikachu",
+                "Ni-co-la-s",
+                "mschienbein",
+                "NearEDGE",
                 "yarathenomad",
+                "CodeBoy2006",
+                "tandede",
+                "Zhongyi-Lu",
+                "aalizelau",
+                "adventchilde",
+                "aikitoria",
+                "axAilotl",
+                "allen9441",
+                "allo-",
                 "anachronous",
                 "ashishch432",
                 "bbastex",
@@ -153786,9 +153798,9 @@
                 "bumprat",
                 "ceruleandeep",
                 "cierru",
+                "crsp6447",
                 "closuretxt",
                 "coffeegrind123",
-                "crsp6447",
                 "rdeforest",
                 "Rojikku",
                 "Roland4396",
@@ -171979,10 +171991,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 17,
+              "stars": 18,
               "forks": 0,
               "watchers": 0,
-              "aggregate": 17
+              "aggregate": 18
             },
             "repositorySizeKb": 362,
             "license": {
@@ -171991,7 +172003,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-17T11:46:42.977Z",
+            "refreshedAt": "2026-11-06T07:28:08.955Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -183335,10 +183347,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 17,
+              "stars": 18,
               "forks": 0,
               "watchers": 0,
-              "aggregate": 17
+              "aggregate": 18
             },
             "repositorySizeKb": 362,
             "license": {
@@ -183347,7 +183359,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-17T11:46:42.977Z",
+            "refreshedAt": "2026-11-06T07:28:08.955Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -197039,10 +197051,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 17,
+              "stars": 18,
               "forks": 0,
               "watchers": 0,
-              "aggregate": 17
+              "aggregate": 18
             },
             "repositorySizeKb": 362,
             "license": {
@@ -197051,7 +197063,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-17T11:46:42.977Z",
+            "refreshedAt": "2026-11-06T07:28:08.955Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
