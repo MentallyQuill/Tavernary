@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c084cd325bb6ac6a95b9db03542ffe9551fc54afc1a717c6735efb514cf2d2b4",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1117596524:skirianov-sidecar-ai",
+      "inputDigest": "ce61ac1c1294b76a31d257b1821633b878185fe744e4b9ac91b553203ea86365",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-05T13:17:30.582Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1117596524",
+    "identity": "github:1117596524"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42049123305,
+    "sourceSha": "c984c94ebe22e2a7cbd820f2424f2be68e5220ee"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/skirianov-sidecar-ai.json",
+      "sha256": "d00e408dcb824348eb0e142da92abddbef0648fbed0a5fbd817e286d51393c03",
+      "gitBlobSha": "ea64f84bfd41a87747e74e2af791226b4350bb70"
+    }
+  ]
+}

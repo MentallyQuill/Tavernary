@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6c784dcbc0fa5809547231b3c99b22e4ded80518507231945dcc269ed3fc658e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-599524116:sillytavern-sillytavern",
+      "inputDigest": "4cd869418be31ede38f5889bbf15cf7572af6e8315b2f8f2355947a64c861cf7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-05T13:14:16.806Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-599524116",
+    "identity": "github:599524116"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42047755073,
+    "sourceSha": "4bc981217b47fb3534d28490f0e938709b62ecbd"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/sillytavern-sillytavern.json",
+      "sha256": "73d75fe7b84f5aa83c4add906818f27164eca18f8cbdc78502a8af08051d0963",
+      "gitBlobSha": "6fe38605b336e672556da53e356652db8d61033d"
+    }
+  ]
+}

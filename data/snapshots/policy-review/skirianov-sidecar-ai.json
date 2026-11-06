@@ -5,12 +5,9 @@
   "source_identity": "github:skirianov/sidecar-ai",
   "evidence_fingerprint": "8a0e840930f9fb5d3c5f0846148dd4025bf77b3de08e1f721af7af474fa20dfc",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-06T14:26:31.396Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-10-06T14:26:31.396Z"
-  },
+  "reviewed_at": "2026-11-05T14:53:07.506Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
