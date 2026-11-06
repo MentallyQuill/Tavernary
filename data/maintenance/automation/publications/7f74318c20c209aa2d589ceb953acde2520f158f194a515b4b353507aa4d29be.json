@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7f74318c20c209aa2d589ceb953acde2520f158f194a515b4b353507aa4d29be",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1117596524:skirianov-sidecar-ai",
+      "inputDigest": "e15d7f1ac48bcdf42a1be93819fd1f58fdc19fe27aed4cb64062a649da291b32",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-05T13:17:30.582Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1117596524",
+    "identity": "github:1117596524"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 42043529043,
+    "sourceSha": "32194c7073ccba88d280f3f6984b05cbb9b9b37a"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/skirianov-sidecar-ai.json",
+      "sha256": "1781c9ddd12d2d6672899c5e3317ea9a3e52f37b034c8c8b5976446f52e2a303",
+      "gitBlobSha": "2b7707a6c33ef387203e7afd6f4166e1c9cf371a"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/7f74318c20c209aa2d589ceb953acde2520f158f194a515b4b353507aa4d29be.json",
+      "sha256": "eae5715ee544998bb8a4eab16304a846416b14c32319dc4b0b2921acd096c6f7",
+      "gitBlobSha": "92c128c9469567d6c32787c0cd7119c4718c1e29"
+    }
+  ]
+}

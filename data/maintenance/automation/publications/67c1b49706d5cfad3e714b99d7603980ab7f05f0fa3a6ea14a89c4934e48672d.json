@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "67c1b49706d5cfad3e714b99d7603980ab7f05f0fa3a6ea14a89c4934e48672d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1340428140:l1kiru-sillytavern-lorebookatlas",
+      "inputDigest": "5b95eab9d50a2468ae08578431d5f06e322cba1cafe29fa165051397722c06ec",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-05T13:18:00.885Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1340428140",
+    "identity": "github:1340428140"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42046258776,
+    "sourceSha": "40214acd6b7e03e17d1e1137d34e0240196a47fe"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/l1kiru-sillytavern-lorebookatlas.json",
+      "sha256": "cc790f903c90d8f0a109e1823dda0d619393be9ca4bc8ed72ec5e3c33fef14e0",
+      "gitBlobSha": "888c8552cce9c8c245455b85a6267449cb84ea6e"
+    }
+  ]
+}

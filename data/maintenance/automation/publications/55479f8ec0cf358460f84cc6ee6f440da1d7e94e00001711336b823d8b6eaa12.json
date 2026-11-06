@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "55479f8ec0cf358460f84cc6ee6f440da1d7e94e00001711336b823d8b6eaa12",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-599524116:sillytavern-sillytavern",
+      "inputDigest": "47b68a7e447d36c3ad11e53f8b1441a3a417a66268d7240714b9973baf7b9045",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-05T13:14:16.806Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-599524116",
+    "identity": "github:599524116"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 42044847387,
+    "sourceSha": "118be26fd017af0a60ea7f8da5575fc261d76fc2"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/sillytavern-sillytavern.json",
+      "sha256": "0fdc80aa88e86fe39043117aa2739cc6b9b28ca6d957d7e7887ecaff1f15aed2",
+      "gitBlobSha": "87c884ca83effff7fcb7f2d4efec2041c2c245c4"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/55479f8ec0cf358460f84cc6ee6f440da1d7e94e00001711336b823d8b6eaa12.json",
+      "sha256": "c9eb4e384ec53b1e1aa8bbb64d688007eed939af0c79c5dad238cf97f6a29283",
+      "gitBlobSha": "3288612865f5a00475ab9335c53607b1064341fc"
+    }
+  ]
+}

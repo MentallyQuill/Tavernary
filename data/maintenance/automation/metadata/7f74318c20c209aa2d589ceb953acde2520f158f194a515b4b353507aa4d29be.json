@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "skirianov-sidecar-ai",
+  "sourceId": "github-1117596524",
+  "sourceIdentity": "github:1117596524",
+  "inputDigest": "e15d7f1ac48bcdf42a1be93819fd1f58fdc19fe27aed4cb64062a649da291b32",
+  "fingerprint": "0a1ef393cd4a825cb70667743b591c1d8031ba5fac2b9976b9aa4467e69c2b0a",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "a0ef466112507fa52cb23dea4b3301be9abca0a43c4d44de82952c98d92b8375",
+  "outputDigest": "0609f58811dbf3d15d48743d5ccfdd4eec16c2fc5c5ee103aa956ff2edfd2b02",
+  "headSha": "9c43252ebcf4864e32d51038a96b362eb776f003",
+  "observedAt": "2026-11-05T14:19:04.391Z"
+}

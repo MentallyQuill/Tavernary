@@ -26532,10 +26532,10 @@
       "id": "coragon77-storyarc",
       "name": "StoryArc",
       "kind": "extension",
-      "metadataStatus": "provisional",
+      "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "generation-reasoning",
-      "summary": "SillyTavern extension: plans story arcs for existing long-running roleplays",
+      "summary": "SillyTavern extension: plans layered story arcs for long-running roleplays and steers the model toward them without revealing the goals. Optionally tracks who knows what, so characters only know what they learned.",
       "canonicalUrl": "https://github.com/coragon77/StoryArc",
       "catalogedAt": "2026-10-27T21:35:11.264Z",
       "catalogCohort": "standard",
@@ -26546,7 +26546,44 @@
           "description": "Works with the SillyTavern roleplay frontend."
         }
       ],
-      "tags": [],
+      "tags": [
+        {
+          "id": "plan-stories-and-scenes",
+          "label": "Plan stories and scenes",
+          "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
+          "facet": "goal"
+        },
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
+          "facet": "goal"
+        },
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        },
+        {
+          "id": "multi-stage-generation",
+          "label": "Multi-stage generation",
+          "description": "Builds a final result through multiple model calls, passes, branches, or review stages.",
+          "facet": "trait"
+        },
+        {
+          "id": "secondary-model",
+          "label": "Secondary-model workflow",
+          "description": "Delegates supporting tasks to a separately configured model or connection.",
+          "facet": "trait"
+        }
+      ],
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
@@ -26683,7 +26720,7 @@
           "https://github.com/coragon77/StoryArc"
         ],
         "summary": [
-          "SillyTavern extension: plans story arcs for existing long-running roleplays"
+          "SillyTavern extension: plans layered story arcs for long-running roleplays and steers the model toward them without revealing the goals. Optionally tracks who knows what, so characters only know what they learned."
         ],
         "kind": [
           "extension"
@@ -26691,7 +26728,32 @@
         "primaryFunction": [
           "Generation and reasoning"
         ],
-        "tags": [],
+        "tags": [
+          "Plan stories and scenes",
+          "story planning",
+          "plot direction",
+          "scene planning",
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking",
+          "Multi-stage generation",
+          "generation pipeline",
+          "parallel model calls",
+          "multi-pass generation",
+          "Secondary-model workflow",
+          "helper model",
+          "auxiliary model",
+          "separate connection profile"
+        ],
         "frontends": [
           "SillyTavern"
         ],
@@ -109206,7 +109268,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "frontend",
-      "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+      "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
       "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -109219,27 +109281,27 @@
       ],
       "tags": [
         {
-          "id": "guide-model-responses",
-          "label": "Guide model responses",
-          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-          "facet": "goal"
-        },
-        {
-          "id": "manage-prompts-and-presets",
-          "label": "Manage prompts and presets",
-          "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-          "facet": "goal"
-        },
-        {
           "id": "generate-images",
           "label": "Generate images",
           "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
           "facet": "goal"
         },
         {
-          "id": "run-group-roleplay",
-          "label": "Run group roleplay",
-          "description": "Coordinate scenes involving several AI characters in the same conversation.",
+          "id": "add-voice-interaction",
+          "label": "Add voice interaction",
+          "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-lorebooks",
+          "label": "Manage lorebooks",
+          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+          "facet": "goal"
+        },
+        {
+          "id": "build-extensions-and-scripts",
+          "label": "Build extensions and scripts",
+          "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
           "facet": "goal"
         },
         {
@@ -111244,7 +111306,7 @@
           "https://github.com/SillyTavern/SillyTavern"
         ],
         "summary": [
-          "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+          "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
         ],
         "kind": [
           "frontend"
@@ -111253,24 +111315,23 @@
           "Frontend"
         ],
         "tags": [
-          "Guide model responses",
-          "response steering",
-          "generation control",
-          "instruction control",
-          "Manage prompts and presets",
-          "prompt management",
-          "prompt engineering",
-          "preset organization",
-          "template management",
           "Generate images",
           "image generation",
           "AI art generation",
           "scene illustration",
           "picture generation",
-          "Run group roleplay",
-          "multi-character roleplay",
-          "group chats",
-          "ensemble scenes",
+          "Add voice interaction",
+          "voice chat",
+          "speech input",
+          "text to speech",
+          "Manage lorebooks",
+          "World Info management",
+          "worldbook organization",
+          "loredeck management",
+          "Build extensions and scripts",
+          "extension development",
+          "custom scripting",
+          "plugin development",
           "Mobile-friendly",
           "mobile support",
           "phone friendly",
@@ -112702,7 +112763,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "generation-reasoning",
-      "summary": "A SillyTavern extension that runs extra AI tasks alongside the main roleplay conversation, using cheaper models for commentary, relationship tracking, and meta-analysis while a primary model handles roleplay.",
+      "summary": "A SillyTavern extension that offloads secondary AI tasks like commentary sections, relationship tracking, or meta-analysis to cheap models while the main model runs the roleplay (README).",
       "canonicalUrl": "https://github.com/skirianov/sidecar-ai",
       "catalogedAt": "2026-08-11T03:52:04.985Z",
       "catalogCohort": "standard",
@@ -112714,18 +112775,6 @@
         }
       ],
       "tags": [
-        {
-          "id": "background-operation",
-          "label": "Background operation",
-          "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
-          "facet": "trait"
-        },
-        {
-          "id": "route-tasks-across-models",
-          "label": "Route tasks across models",
-          "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
-          "facet": "goal"
-        },
         {
           "id": "secondary-model",
           "label": "Secondary-model workflow",
@@ -112859,7 +112908,7 @@
           "https://github.com/skirianov/sidecar-ai"
         ],
         "summary": [
-          "A SillyTavern extension that runs extra AI tasks alongside the main roleplay conversation, using cheaper models for commentary, relationship tracking, and meta-analysis while a primary model handles roleplay."
+          "A SillyTavern extension that offloads secondary AI tasks like commentary sections, relationship tracking, or meta-analysis to cheap models while the main model runs the roleplay (README)."
         ],
         "kind": [
           "extension"
@@ -112868,14 +112917,6 @@
           "Generation and reasoning"
         ],
         "tags": [
-          "Background operation",
-          "asynchronous processing",
-          "quiet generation",
-          "background tasks",
-          "Route tasks across models",
-          "model routing",
-          "task routing",
-          "connection routing",
           "Secondary-model workflow",
           "helper model",
           "auxiliary model",
@@ -133223,7 +133264,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -133236,27 +133277,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -135261,7 +135302,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -135270,24 +135311,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -136928,7 +136968,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -136941,27 +136981,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -138966,7 +139006,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -138975,24 +139015,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -140908,7 +140947,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -140921,27 +140960,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -142946,7 +142985,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -142955,24 +142994,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -145613,7 +145651,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -145626,27 +145664,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -147651,7 +147689,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -147660,24 +147698,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -153218,7 +153255,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -153231,27 +153268,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -155256,7 +155293,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -155265,24 +155302,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -165807,7 +165843,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -165820,27 +165856,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -167845,7 +167881,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -167854,24 +167890,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -174362,7 +174397,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -174375,27 +174410,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -176400,7 +176435,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -176409,24 +176444,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -187308,7 +187342,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -187321,27 +187355,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -189346,7 +189380,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -189355,24 +189389,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -201043,7 +201076,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -201056,27 +201089,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -203081,7 +203114,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -203090,24 +203123,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -204572,7 +204604,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -204585,27 +204617,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -206610,7 +206642,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -206619,24 +206651,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -208592,7 +208623,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -208605,27 +208636,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -210630,7 +210661,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -210639,24 +210670,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -215439,7 +215469,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -215452,27 +215482,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -217477,7 +217507,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -217486,24 +217516,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -221228,7 +221257,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -221241,27 +221270,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -223266,7 +223295,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -223275,24 +223304,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -225692,7 +225720,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -225705,27 +225733,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -227730,7 +227758,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -227739,24 +227767,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -236400,7 +236427,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -236413,27 +236440,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -238438,7 +238465,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -238447,24 +238474,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -242500,7 +242526,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -242513,27 +242539,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -244538,7 +244564,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -244547,24 +244573,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -256692,7 +256717,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -256705,27 +256730,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -258730,7 +258755,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -258739,24 +258764,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -269071,7 +269095,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -269084,27 +269108,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -271109,7 +271133,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -271118,24 +271142,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -272883,7 +272906,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -272896,27 +272919,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -274921,7 +274944,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -274930,24 +274953,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -278242,7 +278264,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -278255,27 +278277,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -280280,7 +280302,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -280289,24 +280311,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -281232,7 +281253,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -281245,27 +281266,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -283270,7 +283291,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -283279,24 +283300,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -285000,7 +285020,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -285013,27 +285033,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -287038,7 +287058,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -287047,24 +287067,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -288752,7 +288771,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -288765,27 +288784,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -290790,7 +290809,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -290799,24 +290818,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -293277,7 +293295,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -293290,27 +293308,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -295315,7 +295333,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -295324,24 +295342,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
@@ -298672,7 +298689,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "frontend",
-            "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
+            "summary": "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README).",
             "canonicalUrl": "https://github.com/SillyTavern/SillyTavern",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -298685,27 +298702,27 @@
             ],
             "tags": [
               {
-                "id": "guide-model-responses",
-                "label": "Guide model responses",
-                "description": "Shape what the model says, how it behaves, or which instructions it follows.",
-                "facet": "goal"
-              },
-              {
-                "id": "manage-prompts-and-presets",
-                "label": "Manage prompts and presets",
-                "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
-                "facet": "goal"
-              },
-              {
                 "id": "generate-images",
                 "label": "Generate images",
                 "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
                 "facet": "goal"
               },
               {
-                "id": "run-group-roleplay",
-                "label": "Run group roleplay",
-                "description": "Coordinate scenes involving several AI characters in the same conversation.",
+                "id": "add-voice-interaction",
+                "label": "Add voice interaction",
+                "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+                "facet": "goal"
+              },
+              {
+                "id": "manage-lorebooks",
+                "label": "Manage lorebooks",
+                "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+                "facet": "goal"
+              },
+              {
+                "id": "build-extensions-and-scripts",
+                "label": "Build extensions and scripts",
+                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
                 "facet": "goal"
               },
               {
@@ -300710,7 +300727,7 @@
                 "https://github.com/SillyTavern/SillyTavern"
               ],
               "summary": [
-                "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions."
+                "SillyTavern is an LLM frontend for power users with a unified interface to many APIs including KoboldAI, OpenAI, Claude, and Mistral, plus WorldInfo lorebooks, image generation, TTS, and extensions (README)."
               ],
               "kind": [
                 "frontend"
@@ -300719,24 +300736,23 @@
                 "Frontend"
               ],
               "tags": [
-                "Guide model responses",
-                "response steering",
-                "generation control",
-                "instruction control",
-                "Manage prompts and presets",
-                "prompt management",
-                "prompt engineering",
-                "preset organization",
-                "template management",
                 "Generate images",
                 "image generation",
                 "AI art generation",
                 "scene illustration",
                 "picture generation",
-                "Run group roleplay",
-                "multi-character roleplay",
-                "group chats",
-                "ensemble scenes",
+                "Add voice interaction",
+                "voice chat",
+                "speech input",
+                "text to speech",
+                "Manage lorebooks",
+                "World Info management",
+                "worldbook organization",
+                "loredeck management",
+                "Build extensions and scripts",
+                "extension development",
+                "custom scripting",
+                "plugin development",
                 "Mobile-friendly",
                 "mobile support",
                 "phone friendly",
