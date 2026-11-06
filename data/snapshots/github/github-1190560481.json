@@ -7,20 +7,35 @@
     "owner": "ackness",
     "name": "covel",
     "url": "https://github.com/ackness/covel",
-    "description": "[Agentic AI-RPG Framework] Agentic AI role-playing game framework — narration, NPCs, lore, and character creation are autonomous plugin agents. Build interactive fiction with any AI provider.",
+    "description": "Open-source agentic AI role-playing framework for interactive stories, worlds and plugins. Supports multiple AI providers. Early access; public trial: https://demo.covel.cc/ (bring your own API key).",
     "default_branch": "main",
-    "head_sha": "1d5e9ba0fe6cc4980a745a49763703fae4ce5992",
-    "head_committed_at": "2026-10-16T09:59:21.000Z",
+    "head_sha": "013ee2ccb7f58fdfb3f05157cf408ccb3e90d891",
+    "head_committed_at": "2026-11-04T13:22:10.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-24T12:01:50.000Z",
-    "size_kb": 436825
+    "size_kb": 448959
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-16T09:49:31.000Z",
+    "latest_source_activity_at": "2026-11-04T11:58:17.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-04T11:58:17.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-11-01T15:38:23.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-25T09:58:32.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-12",
         "latest_at": "2026-10-16T09:49:31.000Z",
@@ -65,51 +80,41 @@
         "week_start": "2026-08-17",
         "latest_at": "2026-08-19T05:05:31.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-10",
-        "latest_at": "2026-08-14T08:35:35.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-08-02T05:16:49.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-16T10:08:43.000Z",
+    "latest_release_at": "2026-11-04T14:40:22.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-17T09:12:38.059Z",
+    "baseline_completed_at": "2026-11-05T15:40:13.616Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "1d5e9ba0fe6cc4980a745a49763703fae4ce5992"
+    "evidence_head_sha": "013ee2ccb7f58fdfb3f05157cf408ccb3e90d891"
   },
   "community": {
-    "stars_count": 58,
+    "stars_count": 66,
     "forks_count": 20,
     "watchers_count": 2,
-    "aggregate": 80
+    "aggregate": 88
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-17T09:12:38.059Z",
+  "refreshed_at": "2026-11-05T15:43:02.313Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "ackness", "type": "User", "provider": "github" },
       { "login": "claude", "type": "User", "provider": "github" },
-      { "login": "charlesli1989", "type": "User", "provider": "github" },
       { "login": "github-actions[bot]", "type": "Bot", "provider": "github" },
+      { "login": "charlesli1989", "type": "User", "provider": "github" },
       { "login": "dependabot[bot]", "type": "Bot", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-17T09:12:38.059Z",
+    "refreshed_at": "2026-11-05T15:40:13.616Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }
