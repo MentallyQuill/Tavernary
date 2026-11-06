@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "siliconlotus-st-worldsapart",
+  "source_id": "github-1344136924",
+  "source_identity": "github:siliconlotus/st-worldsapart",
+  "evidence_fingerprint": "ae1174fc977965bd4a0b75dc9932d23c7ca9ac60e0241244975c77b631c097b5",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-06T14:21:08.560Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

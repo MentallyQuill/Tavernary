@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "d624da70bb8006320b3e3ada0709f3ca2ef944f8ec187220986af957fc0e939a",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1081424481:aikohanasaki-sillytavern-modelinjection",
+      "inputDigest": "f4dc875439df8a7455d206e0da9c02ae148bc8a30e4d9ce7f91f8c52795a7a33",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-19T14:51:29.529Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1081424481",
+    "identity": "github:1081424481"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42235446602,
+    "sourceSha": "1a857af0cc45e842b5128eb664df1e5d90904e11"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/aikohanasaki-sillytavern-modelinjection.json",
+      "sha256": "67cae595cb55902544ecc427334b8d6b717ef25029815f971da66bf70b761f1f",
+      "gitBlobSha": "47e238216615682e9cf28db9108eeaa5e44aa357"
+    }
+  ]
+}
