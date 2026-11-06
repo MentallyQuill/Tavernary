@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f9ebeaf9f71e8929bb4b223e5c2486325e76bff3f151f54b05a5518395db37e1",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1356076063:xyzzy121-sillytavern-personatitletooltip",
+      "inputDigest": "f874967a4575ee7e8d0b1edba327bb99820f8260c81686fc4081e13af1bad52b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-18T12:11:28.201Z",
+    "nextEligibleAt": "2026-11-06T23:41:29.573Z",
+    "expectedSha": "38e53aad3419965485d0bdcc8055610907e6756c",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-06T23:26:29.573Z",
+  "completedAt": null
+}
