@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6c784dcbc0fa5809547231b3c99b22e4ded80518507231945dcc269ed3fc658e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-599524116:sillytavern-sillytavern",
+      "inputDigest": "4cd869418be31ede38f5889bbf15cf7572af6e8315b2f8f2355947a64c861cf7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-05T13:14:16.806Z",
+    "nextEligibleAt": null,
+    "expectedSha": "ecc0852487d722fb7f67e303571e206152513dad",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-06T02:48:57.844Z",
+  "completedAt": null
+}
