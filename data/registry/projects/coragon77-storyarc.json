@@ -3,18 +3,28 @@
   "id": "coragon77-storyarc",
   "name": "StoryArc",
   "kind": "extension",
-  "summary": "SillyTavern extension: plans story arcs for existing long-running roleplays",
-  "metadata_status": "provisional",
+  "summary": "SillyTavern extension: plans layered story arcs for long-running roleplays and steers the model toward them without revealing the goals. Optionally tracks who knows what, so characters only know what they learned.",
+  "metadata_status": "curated",
   "source_id": "github-1434118511",
   "frontends": ["sillytavern"],
   "primary_function": "generation-reasoning",
-  "tags": [],
+  "tags": [
+    "plan-stories-and-scenes",
+    "guide-model-responses",
+    "preserve-story-continuity",
+    "track-characters-and-world-state",
+    "multi-stage-generation",
+    "secondary-model"
+  ],
   "cataloged_at": "2026-10-27T21:35:11.264Z",
   "catalog_cohort": "standard",
   "listing_status": "active",
   "listing_status_reason": null,
   "metadata_policy": {
-    "summary": { "mode": "automatic" },
-    "tags": { "mode": "automatic" }
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "manual", "note": "Verified repository owner selection." }
   }
 }
