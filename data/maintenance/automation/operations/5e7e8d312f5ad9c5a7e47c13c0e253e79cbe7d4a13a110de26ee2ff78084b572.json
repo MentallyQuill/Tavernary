@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5e7e8d312f5ad9c5a7e47c13c0e253e79cbe7d4a13a110de26ee2ff78084b572",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1211103921:alphonsos88k-ste-summary-editor",
+      "inputDigest": "c1dd57cabf1769362f5cc2c8776ee7c8d9e1638fd9b64c9d5c6df610adb25c3b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-21T13:06:18.907Z",
+    "nextEligibleAt": null,
+    "expectedSha": "ee7fac62312beb409404d19955b747bcac3f251a",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-07T13:15:03.942Z",
+  "completedAt": null
+}
