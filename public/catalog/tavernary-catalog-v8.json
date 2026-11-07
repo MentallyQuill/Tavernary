@@ -54429,7 +54429,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "RisuAI plugin for managing inlay assets and syncing inlay data across devices, keeping assets organized and available across installations.",
+      "summary": "RisuAI plugin for managing inlay assets, distinguished by syncing inlay data across devices so the same inlay content stays available everywhere (README: 'manages inlay assets, and syncs inlay data across devices').",
       "canonicalUrl": "https://github.com/kangjoseph90/Risu-InlayManager",
       "catalogedAt": "2026-08-07T23:33:06.714Z",
       "catalogCohort": "standard",
@@ -54440,20 +54440,7 @@
           "description": "Works with the RisuAI roleplay frontend."
         }
       ],
-      "tags": [
-        {
-          "id": "manage-characters-and-personas",
-          "label": "Manage characters and personas",
-          "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
-          "facet": "goal"
-        },
-        {
-          "id": "move-and-back-up-data",
-          "label": "Move and back up data",
-          "description": "Import, export, synchronize, migrate, restore, or back up roleplay data.",
-          "facet": "goal"
-        }
-      ],
+      "tags": [],
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
@@ -54667,7 +54654,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-20T12:53:48.762Z",
+      "refreshedAt": "2026-11-07T01:40:01.076Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -54683,7 +54670,7 @@
           "https://github.com/kangjoseph90/Risu-InlayManager"
         ],
         "summary": [
-          "RisuAI plugin for managing inlay assets and syncing inlay data across devices, keeping assets organized and available across installations."
+          "RisuAI plugin for managing inlay assets, distinguished by syncing inlay data across devices so the same inlay content stays available everywhere (README: 'manages inlay assets, and syncs inlay data across devices')."
         ],
         "kind": [
           "extension"
@@ -54691,16 +54678,7 @@
         "primaryFunction": [
           "Interface and workflow"
         ],
-        "tags": [
-          "Manage characters and personas",
-          "persona management",
-          "character management",
-          "identity management",
-          "Move and back up data",
-          "data portability",
-          "backup and restore",
-          "import and export"
-        ],
+        "tags": [],
         "frontends": [
           "RisuAI"
         ],
