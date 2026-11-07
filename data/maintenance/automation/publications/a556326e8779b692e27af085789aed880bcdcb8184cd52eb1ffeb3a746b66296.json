@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a556326e8779b692e27af085789aed880bcdcb8184cd52eb1ffeb3a746b66296",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1244970544:calamitousfelicitousness-sillytavern-reasoningprofiles",
+      "inputDigest": "b07c55a7698b115cd946d4c4e8bd154aaa80a325dbfcce29e4295e29e92b99cd",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-21T13:06:39.850Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1244970544",
+    "identity": "github:1244970544"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42375651439,
+    "sourceSha": "2daaf89480482ace2ddd55b4e8c15469c4a0fc93"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/calamitousfelicitousness-sillytavern-reasoningprofiles.json",
+      "sha256": "f1efa32a59ff74f141298b647f101c04fa608a0e18b0c5b3553b85fb18172ada",
+      "gitBlobSha": "e3cc9bd0d6af848492987fa946aec325a460bc3e"
+    }
+  ]
+}

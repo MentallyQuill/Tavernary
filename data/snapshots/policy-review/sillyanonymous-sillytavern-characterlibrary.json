@@ -5,12 +5,9 @@
   "source_identity": "github:sillyanonymous/sillytavern-characterlibrary",
   "evidence_fingerprint": "c961c0a5e3d7a76761a68562b68214de6edf4734a3c7296bbadaa5b3006290cd",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-03T12:48:49.774Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-10-03T12:48:49.774Z"
-  },
+  "reviewed_at": "2026-11-07T12:26:30.915Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

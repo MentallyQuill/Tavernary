@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ab683488dc364d672e8cb58a7f8fe00ff01ac617ff9f3492186d1ee22ccc5444",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1133521830:platberlitz-sillytavern-character-colors",
+      "inputDigest": "0c02fbd64b50eecdced7a505cb706f57186999b884ebe38db17d5d65432cd61b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-21T13:06:11.655Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1133521830",
+    "identity": "github:1133521830"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42372966173,
+    "sourceSha": "4c5230a60b58347be229cd527db331be35ffde3e"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/platberlitz-sillytavern-character-colors.json",
+      "sha256": "0d5b857271074ba789deedbfb5669ae1a14fb4c124ecfa61b25671173ea516ad",
+      "gitBlobSha": "9adab80b8424b9f48794bf758db4cac5101568ee"
+    }
+  ]
+}
