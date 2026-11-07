@@ -41120,7 +41120,7 @@
         "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-10-20T12:53:50.311Z",
+      "refreshedAt": "2026-11-07T02:55:27.307Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -46809,7 +46809,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "59047b66fbc8a6520edf1b5ab863f5c73e1af6eb",
+        "currentSha": "d7471a40d362a297b6dbf666c85b5c378397daa9",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -46824,8 +46824,8 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-21T03:15:36.000Z",
-        "activeWeeks12": 8,
+        "latestSourceActivityAt": "2026-11-03T16:18:13.000Z",
+        "activeWeeks12": 9,
         "weeklyActivity": [
           false,
           false,
@@ -46838,26 +46838,26 @@
           true,
           true,
           true,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 0,
+        "stars": 2,
         "forks": 0,
-        "watchers": 0,
-        "aggregate": 0
+        "watchers": 1,
+        "aggregate": 3
       },
-      "repositorySizeKb": 10920,
+      "repositorySizeKb": 13569,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-21T11:44:36.473Z",
+      "refreshedAt": "2026-11-07T02:53:17.438Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -52341,8 +52341,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "942c22a9cc3a08bc0d4a94431a21eda94427c3a2",
+        "freshness": "stale",
+        "currentSha": "012599effc53f96c1e16191fcf2223cc39330b0f",
         "report": {
           "reportId": "964d565685c52922a839995d3008dc0e83b5ca5fff08185235a18a84276d0ba3",
           "riskLevel": "low",
@@ -52821,14 +52821,24 @@
             "provider": "github",
             "login": "Copilot",
             "botOrAi": true
+          },
+          {
+            "provider": "github",
+            "login": "Gam1409",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "VictoryCATiii3",
+            "botOrAi": false
           }
         ],
-        "humanContributorCount": 0,
+        "humanContributorCount": 2,
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-19T19:36:03.000Z",
-        "activeWeeks12": 8,
+        "latestSourceActivityAt": "2026-11-06T23:48:18.000Z",
+        "activeWeeks12": 9,
         "weeklyActivity": [
           false,
           false,
@@ -52841,26 +52851,26 @@
           true,
           true,
           true,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
       "latestReleaseAt": "2026-09-24T08:09:03.000Z",
       "community": {
-        "stars": 23,
-        "forks": 5,
-        "watchers": 1,
-        "aggregate": 29
+        "stars": 26,
+        "forks": 7,
+        "watchers": 3,
+        "aggregate": 36
       },
-      "repositorySizeKb": 236075,
+      "repositorySizeKb": 311934,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-20T12:54:23.546Z",
+      "refreshedAt": "2026-11-07T02:53:14.372Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -52918,7 +52928,9 @@
         "maintainers": [
           "jschm42",
           "dependabot[bot]",
-          "Copilot"
+          "Copilot",
+          "Gam1409",
+          "VictoryCATiii3"
         ],
         "relationships": []
       }
@@ -104233,7 +104245,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-20T12:56:50.614Z",
+      "refreshedAt": "2026-11-07T02:52:36.056Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -131325,7 +131337,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-20T12:54:19.341Z",
+      "refreshedAt": "2026-11-07T02:52:34.310Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -263631,7 +263643,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-20T12:56:50.614Z",
+            "refreshedAt": "2026-11-07T02:52:36.056Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
