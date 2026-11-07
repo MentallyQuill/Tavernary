@@ -9,21 +9,31 @@
     "url": "https://github.com/jschm42/taleweaver",
     "description": "A next-generation AI-powered text adventure engine featuring dynamic storytelling, procedural world-building, and immersive visual/auditory generation.",
     "default_branch": "main",
-    "head_sha": "942c22a9cc3a08bc0d4a94431a21eda94427c3a2",
-    "head_committed_at": "2026-10-19T19:43:57.000Z",
+    "head_sha": "012599effc53f96c1e16191fcf2223cc39330b0f",
+    "head_committed_at": "2026-11-06T23:48:18.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-12T10:29:44.000Z",
-    "size_kb": 236075
+    "size_kb": 311934
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-19T19:36:03.000Z",
+    "latest_source_activity_at": "2026-11-06T23:48:18.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-06T23:48:18.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-11-01T21:53:44.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-19",
-        "latest_at": "2026-10-19T19:36:03.000Z",
+        "latest_at": "2026-10-25T16:28:17.000Z",
         "precision": "exact"
       },
       {
@@ -65,34 +75,36 @@
     "provisional_weeks": null,
     "latest_release_at": "2026-09-24T08:09:03.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-20T12:51:28.240Z",
+    "baseline_completed_at": "2026-11-07T02:50:32.023Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "942c22a9cc3a08bc0d4a94431a21eda94427c3a2"
+    "evidence_head_sha": "012599effc53f96c1e16191fcf2223cc39330b0f"
   },
   "community": {
-    "stars_count": 23,
-    "forks_count": 5,
-    "watchers_count": 1,
-    "aggregate": 29
+    "stars_count": 26,
+    "forks_count": 7,
+    "watchers_count": 3,
+    "aggregate": 36
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-20T12:54:23.546Z",
+  "refreshed_at": "2026-11-07T02:53:14.372Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "jschm42", "type": "User", "provider": "github" },
       { "login": "dependabot[bot]", "type": "Bot", "provider": "github" },
-      { "login": "Copilot", "type": "Bot", "provider": "github" }
+      { "login": "Copilot", "type": "Bot", "provider": "github" },
+      { "login": "Gam1409", "type": "User", "provider": "github" },
+      { "login": "VictoryCATiii3", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-20T12:51:28.240Z",
+    "refreshed_at": "2026-11-07T02:50:32.023Z",
     "stale_since": null
   }
 }

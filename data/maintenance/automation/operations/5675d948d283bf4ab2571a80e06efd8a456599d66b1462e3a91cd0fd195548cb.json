@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5675d948d283bf4ab2571a80e06efd8a456599d66b1462e3a91cd0fd195548cb",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1139430137:sillyanonymous-sillytavern-characterlibrary",
+      "inputDigest": "469bc864ed82165482ff853a52d6faff85ae880086658105fd1def3b4eb00efd",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-21T13:06:08.465Z",
+    "nextEligibleAt": null,
+    "expectedSha": "ee7fac62312beb409404d19955b747bcac3f251a",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-07T13:15:03.942Z",
+  "completedAt": null
+}

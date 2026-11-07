@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c0e2c778401de594af75534f322b89719cd5d4e3ff75af8d47a8b6a160e034fd",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-826008663:therosin-st-extension-lua",
+      "inputDigest": "3a504e39410eb1799ac180fbec40f4043dcc3cbfefb3822fa65b590b0b9f0466",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-21T13:06:27.785Z",
+    "nextEligibleAt": null,
+    "expectedSha": "ee7fac62312beb409404d19955b747bcac3f251a",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-07T13:15:03.942Z",
+  "completedAt": null
+}

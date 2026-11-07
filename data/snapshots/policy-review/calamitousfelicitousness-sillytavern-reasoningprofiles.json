@@ -5,12 +5,9 @@
   "source_identity": "github:calamitousfelicitousness/sillytavern-reasoningprofiles",
   "evidence_fingerprint": "92a8c465f456a957d9faecd8cbd527098a2db35cc0f9b5f3974d5d19cc456b50",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-04T13:29:35.762Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-10-04T13:29:35.762Z"
-  },
+  "reviewed_at": "2026-11-07T13:10:55.995Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

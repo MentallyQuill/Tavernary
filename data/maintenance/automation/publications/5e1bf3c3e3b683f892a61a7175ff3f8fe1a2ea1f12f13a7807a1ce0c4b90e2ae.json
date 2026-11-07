@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5e1bf3c3e3b683f892a61a7175ff3f8fe1a2ea1f12f13a7807a1ce0c4b90e2ae",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1088497436:kangjoseph90-risu-inlaymanager",
+      "inputDigest": "e0806b53942a6bf461371c5b47d1895c80a6087180621d4673ca3a49cece90fe",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-20T12:53:48.762Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1088497436",
+    "identity": "github:1088497436"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 42326794584,
+    "sourceSha": "e745cb34c7ac169e5d3aa85249b9b68a247897bd"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/kangjoseph90-risu-inlaymanager.json",
+      "sha256": "b982216da69647ef53f9f18b3915c33a021e2a924958df3f65d58d2eaa5d14c7",
+      "gitBlobSha": "a79adfc3e5f4b04660cad529ee6950b602703f40"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/5e1bf3c3e3b683f892a61a7175ff3f8fe1a2ea1f12f13a7807a1ce0c4b90e2ae.json",
+      "sha256": "05b10ca56989b37f93cea9c230e69e7df75f23bc65698da0d74da1ed2cfd7347",
+      "gitBlobSha": "5e36769732136b26b2c53b9c5084503b9550f29c"
+    }
+  ]
+}

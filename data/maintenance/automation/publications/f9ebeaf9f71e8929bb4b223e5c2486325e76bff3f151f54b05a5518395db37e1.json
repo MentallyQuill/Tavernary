@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f9ebeaf9f71e8929bb4b223e5c2486325e76bff3f151f54b05a5518395db37e1",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1356076063:xyzzy121-sillytavern-personatitletooltip",
+      "inputDigest": "f874967a4575ee7e8d0b1edba327bb99820f8260c81686fc4081e13af1bad52b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-18T12:11:28.201Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1356076063",
+    "identity": "github:1356076063"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42229307041,
+    "sourceSha": "5d570f9298571d6e9c3091e63385a14b7584320b"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/xyzzy121-sillytavern-personatitletooltip.json",
+      "sha256": "52f174af3c96a1d20159940e6ed554c2bc95e95e72dafb054ec0b34a7534f85c",
+      "gitBlobSha": "55ab0064949b1fee502a200bc906c3121ccce3cd"
+    }
+  ]
+}

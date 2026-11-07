@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a4df6bf5cb1696f96fb66be66bb99a6fc3ff88c2ada4063bc88da55be797b387",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1130046949:loggo-presets-sillytavern-spellbook",
+      "inputDigest": "bcd9289eb3a0aa2d9c6b53e270c9df66601b9291c80ed09afc6ede80f7c05e55",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "finalized",
+    "createdAt": "2026-10-18T12:10:53.852Z",
+    "nextEligibleAt": null,
+    "expectedSha": "38e53aad3419965485d0bdcc8055610907e6756c",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-06T15:48:34.680Z",
+  "completedAt": "2026-11-06T15:48:34.680Z"
+}

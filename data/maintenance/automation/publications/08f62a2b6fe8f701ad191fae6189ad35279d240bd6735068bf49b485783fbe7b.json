@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "08f62a2b6fe8f701ad191fae6189ad35279d240bd6735068bf49b485783fbe7b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1302699300:myrkr146-chronicle-sillytavern",
+      "inputDigest": "e8dc5c3a6e75a2acfd34b07b028dee0ac5e3026e768644ac9783ca13d87f12bd",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-21T13:06:02.214Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1302699300",
+    "identity": "github:1302699300"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42371331152,
+    "sourceSha": "58542eaeeb843ccbc2511edb45016a9b0c44fef1"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/myrkr146-chronicle-sillytavern.json",
+      "sha256": "d13e768ea318ce0760b552bc55910c6693b82f148ea959afc0f1ab3c4d980e9c",
+      "gitBlobSha": "3689cc0310b5d9f09dcb64a3b3f07211a5e83478"
+    }
+  ]
+}

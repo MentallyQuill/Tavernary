@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "880bcf404e609933a7143a1d999ab6659313e7dd75aabc42a76804019d0287c7",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1309521887:adnv3k-sillytavern-inline-generated-media",
+      "inputDigest": "dda3ea9a60ccf9fdaa9a9487d077f0e9701702c8cdf85b4e13557972a709fe66",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-18T12:10:57.398Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1309521887",
+    "identity": "github:1309521887"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42225924725,
+    "sourceSha": "0d4ee456688af862cd483b3efa0f302e90fcd4fc"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/adnv3k-sillytavern-inline-generated-media.json",
+      "sha256": "dc88ed67b5e3de8f042f94026e434dc4de489a506728074111e3127fc0759704",
+      "gitBlobSha": "e825fe1a0ffe5cd5ad3df8363b75c8fa85a99c51"
+    }
+  ]
+}

@@ -5,12 +5,9 @@
   "source_identity": "github:alphonsos88k/ste_summary_editor",
   "evidence_fingerprint": "55a072b384f8d5625d3256890da858584422479414743d8d5e23a99ed2402a71",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-20T08:11:10.788Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-20T08:11:10.788Z"
-  },
+  "reviewed_at": "2026-11-07T12:41:25.990Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
