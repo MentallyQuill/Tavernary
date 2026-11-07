@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8ac8ef5371b9c015af3fe70bcc6befaf232c8bfc04d69b61ee157a1a7d0dfc14",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1267079391:ephemera02-sillyloresmith2",
+      "inputDigest": "424e40b9a6bb8ff4d3c55310a625e56781e447d312500cf971693f18d95d44b6",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-21T13:05:47.053Z",
+    "nextEligibleAt": "2026-11-07T16:37:27.175Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-07T16:22:27.175Z",
+  "completedAt": null
+}

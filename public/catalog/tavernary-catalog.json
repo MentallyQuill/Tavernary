@@ -1012,7 +1012,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-22T13:08:11.062Z",
+      "refreshedAt": "2026-11-07T14:16:41.010Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -6485,7 +6485,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-21T13:06:18.907Z",
+      "refreshedAt": "2026-11-07T14:15:53.842Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -19086,10 +19086,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 1,
+        "stars": 2,
         "forks": 0,
         "watchers": 0,
-        "aggregate": 1
+        "aggregate": 2
       },
       "repositorySizeKb": 1153,
       "license": {
@@ -19098,7 +19098,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-21T13:06:09.885Z",
+      "refreshedAt": "2026-11-07T14:15:17.761Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -20025,10 +20025,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 5,
+        "stars": 6,
         "forks": 0,
         "watchers": 0,
-        "aggregate": 5
+        "aggregate": 6
       },
       "repositorySizeKb": 86,
       "license": {
@@ -20037,7 +20037,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-21T13:06:39.850Z",
+      "refreshedAt": "2026-11-07T14:15:30.670Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -38167,7 +38167,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-21T13:06:28.762Z",
+      "refreshedAt": "2026-11-07T14:15:40.461Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -41593,7 +41593,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-22T13:07:59.110Z",
+      "refreshedAt": "2026-11-07T14:15:51.809Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -45994,7 +45994,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-22T13:08:10.845Z",
+      "refreshedAt": "2026-11-07T14:16:07.772Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -78295,7 +78295,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "0c235041feea98484e47a850d4641663c758e5eb",
+        "currentSha": "d98d932eaf0fd7dd5818fbd9e544c77a8cb0272d",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -78310,8 +78310,8 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-21T11:43:45.000Z",
-        "activeWeeks12": 6,
+        "latestSourceActivityAt": "2026-11-07T13:26:32.000Z",
+        "activeWeeks12": 7,
         "weeklyActivity": [
           false,
           false,
@@ -78324,26 +78324,26 @@
           true,
           true,
           true,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-10-21T14:38:19.000Z",
+      "latestReleaseAt": "2026-11-07T13:50:08.000Z",
       "community": {
-        "stars": 26,
-        "forks": 1,
+        "stars": 37,
+        "forks": 2,
         "watchers": 1,
-        "aggregate": 28
+        "aggregate": 40
       },
-      "repositorySizeKb": 21443,
+      "repositorySizeKb": 24390,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-21T16:28:23.140Z",
+      "refreshedAt": "2026-11-07T14:16:00.164Z",
       "staleSince": null,
       "install": null,
       "fork": {
@@ -80227,7 +80227,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-21T13:06:02.214Z",
+      "refreshedAt": "2026-11-07T14:15:15.971Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -87330,7 +87330,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-22T13:07:46.993Z",
+      "refreshedAt": "2026-11-07T14:15:36.884Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -88993,7 +88993,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-21T13:06:11.655Z",
+      "refreshedAt": "2026-11-07T14:15:40.396Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -92852,7 +92852,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-21T13:06:06.657Z",
+      "refreshedAt": "2026-11-07T14:10:31.948Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -96651,7 +96651,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-21T13:06:02.126Z",
+      "refreshedAt": "2026-11-07T14:15:42.185Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -104081,7 +104081,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-22T13:08:13.691Z",
+      "refreshedAt": "2026-11-07T14:18:12.629Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -104531,7 +104531,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "5c99e79ebc42b34ab65e89c553577d118b8e6de5",
+        "currentSha": "d23213c6368831d159ff9ed16423d5d5634c05f9",
         "report": {
           "reportId": "a9642214ee294084d2c5cf831c115619ea8eceada651b98c86fc54adf1321052",
           "riskLevel": "low",
@@ -104635,9 +104635,9 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-09-02T09:05:56.000Z",
-        "activeWeeks12": 3,
+        "activeWeeks12": 2,
         "weeklyActivity": [
-          true,
+          false,
           false,
           true,
           true,
@@ -104655,19 +104655,19 @@
       },
       "latestReleaseAt": "2026-08-13T14:02:15.000Z",
       "community": {
-        "stars": 149,
-        "forks": 34,
+        "stars": 160,
+        "forks": 36,
         "watchers": 3,
-        "aggregate": 186
+        "aggregate": 199
       },
-      "repositorySizeKb": 4581,
+      "repositorySizeKb": 4424,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-21T13:06:08.465Z",
+      "refreshedAt": "2026-11-07T14:15:38.787Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -119799,10 +119799,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 2,
+        "stars": 3,
         "forks": 1,
         "watchers": 2,
-        "aggregate": 5
+        "aggregate": 6
       },
       "repositorySizeKb": 6997,
       "license": {
@@ -119811,7 +119811,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-21T13:06:27.785Z",
+      "refreshedAt": "2026-11-07T14:15:26.002Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -124894,10 +124894,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 6,
+        "stars": 5,
         "forks": 1,
         "watchers": 0,
-        "aggregate": 7
+        "aggregate": 6
       },
       "repositorySizeKb": 250,
       "license": {
@@ -124906,7 +124906,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-21T13:08:05.899Z",
+      "refreshedAt": "2026-11-07T14:15:02.520Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -149145,7 +149145,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5c99e79ebc42b34ab65e89c553577d118b8e6de5",
+              "currentSha": "d23213c6368831d159ff9ed16423d5d5634c05f9",
               "report": {
                 "reportId": "a9642214ee294084d2c5cf831c115619ea8eceada651b98c86fc54adf1321052",
                 "riskLevel": "low",
@@ -149249,9 +149249,9 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-09-02T09:05:56.000Z",
-              "activeWeeks12": 3,
+              "activeWeeks12": 2,
               "weeklyActivity": [
-                true,
+                false,
                 false,
                 true,
                 true,
@@ -149269,19 +149269,19 @@
             },
             "latestReleaseAt": "2026-08-13T14:02:15.000Z",
             "community": {
-              "stars": 149,
-              "forks": 34,
+              "stars": 160,
+              "forks": 36,
               "watchers": 3,
-              "aggregate": 186
+              "aggregate": 199
             },
-            "repositorySizeKb": 4581,
+            "repositorySizeKb": 4424,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-21T13:06:08.465Z",
+            "refreshedAt": "2026-11-07T14:15:38.787Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -157011,7 +157011,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5c99e79ebc42b34ab65e89c553577d118b8e6de5",
+              "currentSha": "d23213c6368831d159ff9ed16423d5d5634c05f9",
               "report": {
                 "reportId": "a9642214ee294084d2c5cf831c115619ea8eceada651b98c86fc54adf1321052",
                 "riskLevel": "low",
@@ -157115,9 +157115,9 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-09-02T09:05:56.000Z",
-              "activeWeeks12": 3,
+              "activeWeeks12": 2,
               "weeklyActivity": [
-                true,
+                false,
                 false,
                 true,
                 true,
@@ -157135,19 +157135,19 @@
             },
             "latestReleaseAt": "2026-08-13T14:02:15.000Z",
             "community": {
-              "stars": 149,
-              "forks": 34,
+              "stars": 160,
+              "forks": 36,
               "watchers": 3,
-              "aggregate": 186
+              "aggregate": 199
             },
-            "repositorySizeKb": 4581,
+            "repositorySizeKb": 4424,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-21T13:06:08.465Z",
+            "refreshedAt": "2026-11-07T14:15:38.787Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -162347,7 +162347,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-21T13:06:11.655Z",
+            "refreshedAt": "2026-11-07T14:15:40.396Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -165206,10 +165206,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 6,
+              "stars": 5,
               "forks": 1,
               "watchers": 0,
-              "aggregate": 7
+              "aggregate": 6
             },
             "repositorySizeKb": 250,
             "license": {
@@ -165218,7 +165218,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-21T13:08:05.899Z",
+            "refreshedAt": "2026-11-07T14:15:02.520Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -169233,7 +169233,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5c99e79ebc42b34ab65e89c553577d118b8e6de5",
+              "currentSha": "d23213c6368831d159ff9ed16423d5d5634c05f9",
               "report": {
                 "reportId": "a9642214ee294084d2c5cf831c115619ea8eceada651b98c86fc54adf1321052",
                 "riskLevel": "low",
@@ -169337,9 +169337,9 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-09-02T09:05:56.000Z",
-              "activeWeeks12": 3,
+              "activeWeeks12": 2,
               "weeklyActivity": [
-                true,
+                false,
                 false,
                 true,
                 true,
@@ -169357,19 +169357,19 @@
             },
             "latestReleaseAt": "2026-08-13T14:02:15.000Z",
             "community": {
-              "stars": 149,
-              "forks": 34,
+              "stars": 160,
+              "forks": 36,
               "watchers": 3,
-              "aggregate": 186
+              "aggregate": 199
             },
-            "repositorySizeKb": 4581,
+            "repositorySizeKb": 4424,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-21T13:06:08.465Z",
+            "refreshedAt": "2026-11-07T14:15:38.787Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -180437,7 +180437,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5c99e79ebc42b34ab65e89c553577d118b8e6de5",
+              "currentSha": "d23213c6368831d159ff9ed16423d5d5634c05f9",
               "report": {
                 "reportId": "a9642214ee294084d2c5cf831c115619ea8eceada651b98c86fc54adf1321052",
                 "riskLevel": "low",
@@ -180541,9 +180541,9 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-09-02T09:05:56.000Z",
-              "activeWeeks12": 3,
+              "activeWeeks12": 2,
               "weeklyActivity": [
-                true,
+                false,
                 false,
                 true,
                 true,
@@ -180561,19 +180561,19 @@
             },
             "latestReleaseAt": "2026-08-13T14:02:15.000Z",
             "community": {
-              "stars": 149,
-              "forks": 34,
+              "stars": 160,
+              "forks": 36,
               "watchers": 3,
-              "aggregate": 186
+              "aggregate": 199
             },
-            "repositorySizeKb": 4581,
+            "repositorySizeKb": 4424,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-21T13:06:08.465Z",
+            "refreshedAt": "2026-11-07T14:15:38.787Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -193805,7 +193805,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5c99e79ebc42b34ab65e89c553577d118b8e6de5",
+              "currentSha": "d23213c6368831d159ff9ed16423d5d5634c05f9",
               "report": {
                 "reportId": "a9642214ee294084d2c5cf831c115619ea8eceada651b98c86fc54adf1321052",
                 "riskLevel": "low",
@@ -193909,9 +193909,9 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-09-02T09:05:56.000Z",
-              "activeWeeks12": 3,
+              "activeWeeks12": 2,
               "weeklyActivity": [
-                true,
+                false,
                 false,
                 true,
                 true,
@@ -193929,19 +193929,19 @@
             },
             "latestReleaseAt": "2026-08-13T14:02:15.000Z",
             "community": {
-              "stars": 149,
-              "forks": 34,
+              "stars": 160,
+              "forks": 36,
               "watchers": 3,
-              "aggregate": 186
+              "aggregate": 199
             },
-            "repositorySizeKb": 4581,
+            "repositorySizeKb": 4424,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-21T13:06:08.465Z",
+            "refreshedAt": "2026-11-07T14:15:38.787Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -213948,7 +213948,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5c99e79ebc42b34ab65e89c553577d118b8e6de5",
+              "currentSha": "d23213c6368831d159ff9ed16423d5d5634c05f9",
               "report": {
                 "reportId": "a9642214ee294084d2c5cf831c115619ea8eceada651b98c86fc54adf1321052",
                 "riskLevel": "low",
@@ -214052,9 +214052,9 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-09-02T09:05:56.000Z",
-              "activeWeeks12": 3,
+              "activeWeeks12": 2,
               "weeklyActivity": [
-                true,
+                false,
                 false,
                 true,
                 true,
@@ -214072,19 +214072,19 @@
             },
             "latestReleaseAt": "2026-08-13T14:02:15.000Z",
             "community": {
-              "stars": 149,
-              "forks": 34,
+              "stars": 160,
+              "forks": 36,
               "watchers": 3,
-              "aggregate": 186
+              "aggregate": 199
             },
-            "repositorySizeKb": 4581,
+            "repositorySizeKb": 4424,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-21T13:06:08.465Z",
+            "refreshedAt": "2026-11-07T14:15:38.787Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -218585,7 +218585,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5c99e79ebc42b34ab65e89c553577d118b8e6de5",
+              "currentSha": "d23213c6368831d159ff9ed16423d5d5634c05f9",
               "report": {
                 "reportId": "a9642214ee294084d2c5cf831c115619ea8eceada651b98c86fc54adf1321052",
                 "riskLevel": "low",
@@ -218689,9 +218689,9 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-09-02T09:05:56.000Z",
-              "activeWeeks12": 3,
+              "activeWeeks12": 2,
               "weeklyActivity": [
-                true,
+                false,
                 false,
                 true,
                 true,
@@ -218709,19 +218709,19 @@
             },
             "latestReleaseAt": "2026-08-13T14:02:15.000Z",
             "community": {
-              "stars": 149,
-              "forks": 34,
+              "stars": 160,
+              "forks": 36,
               "watchers": 3,
-              "aggregate": 186
+              "aggregate": 199
             },
-            "repositorySizeKb": 4581,
+            "repositorySizeKb": 4424,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-21T13:06:08.465Z",
+            "refreshedAt": "2026-11-07T14:15:38.787Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -224630,7 +224630,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5c99e79ebc42b34ab65e89c553577d118b8e6de5",
+              "currentSha": "d23213c6368831d159ff9ed16423d5d5634c05f9",
               "report": {
                 "reportId": "a9642214ee294084d2c5cf831c115619ea8eceada651b98c86fc54adf1321052",
                 "riskLevel": "low",
@@ -224734,9 +224734,9 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-09-02T09:05:56.000Z",
-              "activeWeeks12": 3,
+              "activeWeeks12": 2,
               "weeklyActivity": [
-                true,
+                false,
                 false,
                 true,
                 true,
@@ -224754,19 +224754,19 @@
             },
             "latestReleaseAt": "2026-08-13T14:02:15.000Z",
             "community": {
-              "stars": 149,
-              "forks": 34,
+              "stars": 160,
+              "forks": 36,
               "watchers": 3,
-              "aggregate": 186
+              "aggregate": 199
             },
-            "repositorySizeKb": 4581,
+            "repositorySizeKb": 4424,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-21T13:06:08.465Z",
+            "refreshedAt": "2026-11-07T14:15:38.787Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -231732,7 +231732,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-21T13:06:11.655Z",
+            "refreshedAt": "2026-11-07T14:15:40.396Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -234104,7 +234104,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5c99e79ebc42b34ab65e89c553577d118b8e6de5",
+              "currentSha": "d23213c6368831d159ff9ed16423d5d5634c05f9",
               "report": {
                 "reportId": "a9642214ee294084d2c5cf831c115619ea8eceada651b98c86fc54adf1321052",
                 "riskLevel": "low",
@@ -234208,9 +234208,9 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-09-02T09:05:56.000Z",
-              "activeWeeks12": 3,
+              "activeWeeks12": 2,
               "weeklyActivity": [
-                true,
+                false,
                 false,
                 true,
                 true,
@@ -234228,19 +234228,19 @@
             },
             "latestReleaseAt": "2026-08-13T14:02:15.000Z",
             "community": {
-              "stars": 149,
-              "forks": 34,
+              "stars": 160,
+              "forks": 36,
               "watchers": 3,
-              "aggregate": 186
+              "aggregate": 199
             },
-            "repositorySizeKb": 4581,
+            "repositorySizeKb": 4424,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-21T13:06:08.465Z",
+            "refreshedAt": "2026-11-07T14:15:38.787Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -254749,7 +254749,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5c99e79ebc42b34ab65e89c553577d118b8e6de5",
+              "currentSha": "d23213c6368831d159ff9ed16423d5d5634c05f9",
               "report": {
                 "reportId": "a9642214ee294084d2c5cf831c115619ea8eceada651b98c86fc54adf1321052",
                 "riskLevel": "low",
@@ -254853,9 +254853,9 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-09-02T09:05:56.000Z",
-              "activeWeeks12": 3,
+              "activeWeeks12": 2,
               "weeklyActivity": [
-                true,
+                false,
                 false,
                 true,
                 true,
@@ -254873,19 +254873,19 @@
             },
             "latestReleaseAt": "2026-08-13T14:02:15.000Z",
             "community": {
-              "stars": 149,
-              "forks": 34,
+              "stars": 160,
+              "forks": 36,
               "watchers": 3,
-              "aggregate": 186
+              "aggregate": 199
             },
-            "repositorySizeKb": 4581,
+            "repositorySizeKb": 4424,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-21T13:06:08.465Z",
+            "refreshedAt": "2026-11-07T14:15:38.787Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -262008,7 +262008,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5c99e79ebc42b34ab65e89c553577d118b8e6de5",
+              "currentSha": "d23213c6368831d159ff9ed16423d5d5634c05f9",
               "report": {
                 "reportId": "a9642214ee294084d2c5cf831c115619ea8eceada651b98c86fc54adf1321052",
                 "riskLevel": "low",
@@ -262112,9 +262112,9 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-09-02T09:05:56.000Z",
-              "activeWeeks12": 3,
+              "activeWeeks12": 2,
               "weeklyActivity": [
-                true,
+                false,
                 false,
                 true,
                 true,
@@ -262132,19 +262132,19 @@
             },
             "latestReleaseAt": "2026-08-13T14:02:15.000Z",
             "community": {
-              "stars": 149,
-              "forks": 34,
+              "stars": 160,
+              "forks": 36,
               "watchers": 3,
-              "aggregate": 186
+              "aggregate": 199
             },
-            "repositorySizeKb": 4581,
+            "repositorySizeKb": 4424,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-21T13:06:08.465Z",
+            "refreshedAt": "2026-11-07T14:15:38.787Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -264237,7 +264237,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-21T13:06:11.655Z",
+            "refreshedAt": "2026-11-07T14:15:40.396Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -264509,7 +264509,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-22T13:08:13.691Z",
+            "refreshedAt": "2026-11-07T14:18:12.629Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",

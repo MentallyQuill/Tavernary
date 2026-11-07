@@ -9,8 +9,8 @@
     "url": "https://github.com/MolfarWav/Molfar.Vertep",
     "description": "Local-first AI engine: the built-in agent Molfar reshapes your apps when you ask. Ships with Roleplay for RP sessions. A fork of Chrysalis Engine.",
     "default_branch": "main",
-    "head_sha": "0c235041feea98484e47a850d4641663c758e5eb",
-    "head_committed_at": "2026-10-21T12:37:40.000Z",
+    "head_sha": "d98d932eaf0fd7dd5818fbd9e544c77a8cb0272d",
+    "head_committed_at": "2026-11-07T13:39:31.000Z",
     "archived": false,
     "fork": true,
     "parent": {
@@ -20,15 +20,25 @@
       "url": "https://github.com/ProjectChrysalis/Chrysalis-Engine"
     },
     "created_at": "2026-09-29T17:01:48.000Z",
-    "size_kb": 21443
+    "size_kb": 24390
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-21T11:43:45.000Z",
+    "latest_source_activity_at": "2026-11-07T13:26:32.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-07T13:26:32.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-11-01T22:34:39.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-19",
-        "latest_at": "2026-10-21T11:43:45.000Z",
+        "latest_at": "2026-10-25T12:34:46.000Z",
         "precision": "exact"
       },
       {
@@ -58,24 +68,24 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-21T14:38:19.000Z",
+    "latest_release_at": "2026-11-07T13:50:08.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-21T16:25:55.792Z",
+    "baseline_completed_at": "2026-11-07T14:13:45.936Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "0c235041feea98484e47a850d4641663c758e5eb"
+    "evidence_head_sha": "d98d932eaf0fd7dd5818fbd9e544c77a8cb0272d"
   },
   "community": {
-    "stars_count": 26,
-    "forks_count": 1,
+    "stars_count": 37,
+    "forks_count": 2,
     "watchers_count": 1,
-    "aggregate": 28
+    "aggregate": 40
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-21T16:28:23.140Z",
+  "refreshed_at": "2026-11-07T14:16:00.164Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -85,7 +95,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-10-11T13:56:30.534Z",
     "scan": null,
-    "refreshed_at": "2026-10-21T16:25:55.792Z",
+    "refreshed_at": "2026-11-07T14:13:45.936Z",
     "stale_since": null
   }
 }
