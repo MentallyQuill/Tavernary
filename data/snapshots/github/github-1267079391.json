@@ -17,7 +17,7 @@
     "created_at": "2026-06-12T07:46:06.000Z",
     "size_kb": 486
   },
-  "source_health": "healthy",
+  "source_health": "unavailable",
   "activity": {
     "latest_source_activity_at": "2026-07-03T21:06:58.000Z",
     "source_weeks": [
@@ -51,7 +51,7 @@
     "source_path": "LICENSE"
   },
   "refreshed_at": "2026-10-21T13:05:47.053Z",
-  "stale_since": null,
+  "stale_since": "2026-11-07T07:17:06.420Z",
   "activity_scan": null,
   "contributors": {
     "accounts": [

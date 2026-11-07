@@ -36948,7 +36948,7 @@
       "name": "SillyLoreSmith2",
       "kind": "extension",
       "metadataStatus": "curated",
-      "sourceStatus": "healthy",
+      "sourceStatus": "stale",
       "primaryFunction": "character-worldbuilding",
       "summary": "SillyLoresmith 2 builds and maintains lorebooks for AI roleplay by turning wikis or your writing into structured entries, then exporting them to platforms like SillyTavern.",
       "canonicalUrl": "https://github.com/ephemera02/SillyLoreSmith2",
@@ -36996,8 +36996,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "e133dc6139709c291f7911b03ecf54288cacef43",
+        "freshness": "unavailable",
+        "currentSha": null,
         "report": {
           "reportId": "83ab405bffdc123ad31de8296b5610144651ee74c0eec6de64e9465495d67424",
           "riskLevel": "low",
@@ -37115,14 +37115,8 @@
       },
       "preset": null,
       "refreshedAt": "2026-10-21T13:05:47.053Z",
-      "staleSince": null,
-      "install": {
-        "kind": "sillytavern-extension-git",
-        "repositoryUrl": "https://github.com/ephemera02/SillyLoreSmith2.git",
-        "branch": null,
-        "manifestPath": null,
-        "folderName": "SillyLoreSmith2"
-      },
+      "staleSince": "2026-11-07T07:17:06.420Z",
+      "install": null,
       "fork": null,
       "search": {
         "title": [
