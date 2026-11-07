@@ -9,13 +9,13 @@
     "url": "https://github.com/Sillyanonymous/SillyTavern-CharacterLibrary",
     "description": "A powerful SillyTavern extension for discovering, organizing, and managing your character library with a modern glassmorphic interface.",
     "default_branch": "main",
-    "head_sha": "5c99e79ebc42b34ab65e89c553577d118b8e6de5",
-    "head_committed_at": "2026-09-02T09:05:56.000Z",
+    "head_sha": "d23213c6368831d159ff9ed16423d5d5634c05f9",
+    "head_committed_at": "2026-11-04T21:59:55.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-22T00:21:33.000Z",
-    "size_kb": 4581
+    "size_kb": 4424
   },
   "source_health": "healthy",
   "activity": {
@@ -30,52 +30,27 @@
         "week_start": "2026-08-24",
         "latest_at": "2026-08-26T21:21:57.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-10",
-        "latest_at": "2026-08-13T13:58:34.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-03",
-        "latest_at": "2026-08-08T17:24:30.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-13",
-        "latest_at": "2026-07-18T00:06:05.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-06",
-        "latest_at": "2026-07-12T16:35:05.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-22",
-        "latest_at": "2026-06-27T10:28:27.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-08-13T14:02:15.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-01T12:37:05.520Z",
+    "baseline_completed_at": "2026-11-07T14:13:32.428Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "5c99e79ebc42b34ab65e89c553577d118b8e6de5"
+    "evidence_head_sha": "d23213c6368831d159ff9ed16423d5d5634c05f9"
   },
   "community": {
-    "stars_count": 149,
-    "forks_count": 34,
+    "stars_count": 160,
+    "forks_count": 36,
     "watchers_count": 3,
-    "aggregate": 186
+    "aggregate": 199
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-21T13:06:08.465Z",
+  "refreshed_at": "2026-11-07T14:15:38.787Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -87,7 +62,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-21T13:03:29.356Z",
+    "refreshed_at": "2026-11-07T14:13:32.428Z",
     "stale_since": null
   }
 }
