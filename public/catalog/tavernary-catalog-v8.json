@@ -20769,8 +20769,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "d3e778b7b319d36c5441fac07769a40737b76438",
+        "freshness": "stale",
+        "currentSha": "6c985a8b641543c2158b850c99f49f80c4ae7676",
         "report": {
           "reportId": "10c2b1392bc86118f9e97bfa33c6caf74e80ced419a25505f8804210a76cedae",
           "riskLevel": "low",
@@ -20929,10 +20929,10 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-09-21T13:56:43.000Z",
-        "activeWeeks12": 3,
+        "latestSourceActivityAt": "2026-11-03T23:40:30.000Z",
+        "activeWeeks12": 2,
         "weeklyActivity": [
-          true,
+          false,
           false,
           false,
           false,
@@ -20950,12 +20950,12 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 25,
+        "stars": 27,
         "forks": 3,
         "watchers": 3,
-        "aggregate": 31
+        "aggregate": 33
       },
-      "repositorySizeKb": 1178,
+      "repositorySizeKb": 1179,
       "license": {
         "status": "missing",
         "label": "Missing",
@@ -20980,7 +20980,7 @@
           }
         ]
       },
-      "refreshedAt": "2026-10-20T12:53:57.102Z",
+      "refreshedAt": "2026-11-07T02:37:13.222Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -22519,7 +22519,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-20T12:53:58.188Z",
+      "refreshedAt": "2026-11-07T02:38:15.371Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -52912,7 +52912,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-20T12:53:53.107Z",
+      "refreshedAt": "2026-11-07T02:36:34.704Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
