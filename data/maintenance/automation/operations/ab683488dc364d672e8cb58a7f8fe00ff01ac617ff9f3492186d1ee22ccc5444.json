@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ab683488dc364d672e8cb58a7f8fe00ff01ac617ff9f3492186d1ee22ccc5444",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1133521830:platberlitz-sillytavern-character-colors",
+      "inputDigest": "0c02fbd64b50eecdced7a505cb706f57186999b884ebe38db17d5d65432cd61b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-21T13:06:11.655Z",
+    "nextEligibleAt": null,
+    "expectedSha": "ee7fac62312beb409404d19955b747bcac3f251a",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-07T13:15:03.942Z",
+  "completedAt": null
+}
