@@ -16430,10 +16430,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 35,
+        "stars": 36,
         "forks": 9,
         "watchers": 2,
-        "aggregate": 46
+        "aggregate": 47
       },
       "repositorySizeKb": 384,
       "license": {
@@ -16442,7 +16442,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-24T12:09:05.236Z",
+      "refreshedAt": "2026-11-08T14:31:44.981Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -68765,10 +68765,10 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "a36e66bdc4cf896c137e3472bb15a4e2d2b89064",
         "report": {
-          "reportId": "ca7300dc4e4f22508d853f53b62f57eb87a703e52c0d373c9121e1494fa98d96",
+          "reportId": "238e04220058f316fdf7c4aa0240dee3e8cafb3ec994b900957f3a674bf99b21",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -68777,17 +68777,17 @@
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
           "citedFindingIds": [],
-          "scannedSha": "49c35baf7176814504d07fed84389d10b7e55501",
-          "treeUrl": "https://github.com/Matdredalia/Dossier/tree/49c35baf7176814504d07fed84389d10b7e55501",
-          "scannedAt": "2026-10-05T16:25:06.198Z",
-          "assessedAt": "2026-10-05T16:27:30.927Z",
+          "scannedSha": "a36e66bdc4cf896c137e3472bb15a4e2d2b89064",
+          "treeUrl": "https://github.com/Matdredalia/Dossier/tree/a36e66bdc4cf896c137e3472bb15a4e2d2b89064",
+          "scannedAt": "2026-11-08T16:18:57.776Z",
+          "assessedAt": "2026-11-08T16:34:23.200Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
           "synthesisModel": "deterministic-policy-v5",
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1384211037/49c35baf7176814504d07fed84389d10b7e55501/5/ca7300dc4e4f22508d853f53b62f57eb87a703e52c0d373c9121e1494fa98d96/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1384211037/a36e66bdc4cf896c137e3472bb15a4e2d2b89064/5/238e04220058f316fdf7c4aa0240dee3e8cafb3ec994b900957f3a674bf99b21/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1384211037/history/"
         },
         "history": [
@@ -68835,6 +68835,29 @@
             "dangerBasis": "none",
             "assessmentSource": "deterministic_regrade",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1384211037/49c35baf7176814504d07fed84389d10b7e55501/5/ca7300dc4e4f22508d853f53b62f57eb87a703e52c0d373c9121e1494fa98d96/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1384211037/history/"
+          },
+          {
+            "reportId": "238e04220058f316fdf7c4aa0240dee3e8cafb3ec994b900957f3a674bf99b21",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "a36e66bdc4cf896c137e3472bb15a4e2d2b89064",
+            "treeUrl": "https://github.com/Matdredalia/Dossier/tree/a36e66bdc4cf896c137e3472bb15a4e2d2b89064",
+            "scannedAt": "2026-11-08T16:18:57.776Z",
+            "assessedAt": "2026-11-08T16:34:23.200Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1384211037/a36e66bdc4cf896c137e3472bb15a4e2d2b89064/5/238e04220058f316fdf7c4aa0240dee3e8cafb3ec994b900957f3a674bf99b21/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1384211037/history/"
           }
         ],
@@ -103064,6 +103087,140 @@
         "maintainers": [
           "SenriYuki",
           "baibai-git"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "serioos-free-avatar-crop",
+      "name": "Free-Avatar-Crop",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "SillyTavern extension that removes the fixed 2:3 limit from the avatar crop popup, letting characters, personas and groups use portrait, square or landscape images such as 9:16, 1:1 or 16:9 at full resolution.",
+      "canonicalUrl": "https://github.com/serioos/Free-Avatar-Crop",
+      "catalogedAt": "2026-11-08T15:56:21.386Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-characters-and-personas",
+          "label": "Manage characters and personas",
+          "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "178e0d1b6591feb03478479752f2c203d87783fb",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "serioos"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-08T15:09:40.000Z",
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 1,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 1
+      },
+      "repositorySizeKb": 0,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-08T15:56:21.386Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/serioos/Free-Avatar-Crop.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "Free-Avatar-Crop"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "Free-Avatar-Crop"
+        ],
+        "aliases": [],
+        "source": [
+          "serioos-free-avatar-crop",
+          "github-1450382594",
+          "serioos/Free-Avatar-Crop",
+          "https://github.com/serioos/Free-Avatar-Crop"
+        ],
+        "summary": [
+          "SillyTavern extension that removes the fixed 2:3 limit from the avatar crop popup, letting characters, personas and groups use portrait, square or landscape images such as 9:16, 1:1 or 16:9 at full resolution."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals",
+          "Manage characters and personas",
+          "persona management",
+          "character management",
+          "identity management"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "serioos"
         ],
         "relationships": []
       }
