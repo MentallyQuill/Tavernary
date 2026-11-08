@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "serioos-free-avatar-crop",
+  "name": "Free-Avatar-Crop",
+  "kind": "extension",
+  "summary": "SillyTavern extension that removes the fixed 2:3 limit from the avatar crop popup, letting characters, personas and groups use portrait, square or landscape images such as 9:16, 1:1 or 16:9 at full resolution.",
+  "metadata_status": "curated",
+  "source_id": "github-1450382594",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["add-visual-immersion", "manage-characters-and-personas"],
+  "cataloged_at": "2026-11-08T15:56:21.386Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
