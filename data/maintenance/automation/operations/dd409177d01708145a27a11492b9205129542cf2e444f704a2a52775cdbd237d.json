@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "dd409177d01708145a27a11492b9205129542cf2e444f704a2a52775cdbd237d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1158753341:j3tze-st-tag-pilot",
+      "inputDigest": "f0f28b25d530e98e4e207dec51edea7b0d8781ad2ebc7d34c8edbedf4f70a55a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-23T12:46:48.131Z",
+    "nextEligibleAt": "2026-11-08T08:24:15.781Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 5,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-08T08:09:15.781Z",
+  "completedAt": null
+}
