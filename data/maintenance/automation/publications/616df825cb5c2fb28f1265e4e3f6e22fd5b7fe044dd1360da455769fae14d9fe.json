@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "616df825cb5c2fb28f1265e4e3f6e22fd5b7fe044dd1360da455769fae14d9fe",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1356360868:deiomo-writers-workbench",
+      "inputDigest": "14b7a132d03a73f719cd6855fdc25d96c0fdde17a66872fb80dc9a9ea1106711",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-23T12:47:02.217Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1356360868",
+    "identity": "github:1356360868"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42470466785,
+    "sourceSha": "f8b89d1a432884c961e7855a50afcd39cc0401e8"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/deiomo-writers-workbench.json",
+      "sha256": "a601f4e7d3875b46ca10ad44b23e8a7006654b23d56ce3fff693b51ccb11115c",
+      "gitBlobSha": "984c19c787434aba37e15b95bf9ecb6a32e67f16"
+    }
+  ]
+}
