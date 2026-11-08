@@ -1,0 +1,69 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1417124072",
+  "repository": {
+    "id": 1417124072,
+    "owner": "st1ksi",
+    "name": "Extension-Blackboard",
+    "url": "https://github.com/st1ksi/Extension-Blackboard",
+    "description": "Prepare objective roleplay worlds before interaction in SillyTavern: fixed facts, independent timelines, game profiles and optional private checks to reduce quantum-ogre retcons and sycophancy.",
+    "default_branch": "main",
+    "head_sha": "ee64233aaf480e1a07b8811fc7dc153053c67e98",
+    "head_committed_at": "2026-11-06T21:26:14.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-10-13T13:31:26.000Z",
+    "size_kb": 1630
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-11-06T21:26:14.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-06T21:26:14.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-31T22:02:01.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-17T22:11:05.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-11-06T21:26:37.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-08T10:40:02.109Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "ee64233aaf480e1a07b8811fc7dc153053c67e98"
+  },
+  "community": {
+    "stars_count": 6,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 6
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-11-08T10:40:02.109Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "st1ksi", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-08T10:40:02.109Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
