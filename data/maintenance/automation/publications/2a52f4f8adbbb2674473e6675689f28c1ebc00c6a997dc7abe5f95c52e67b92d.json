@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2a52f4f8adbbb2674473e6675689f28c1ebc00c6a997dc7abe5f95c52e67b92d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1228484987:retrovioletred-sillytavern-pictureprompt",
+      "inputDigest": "11cccfad2094e15f634fad9b0fcac8ef82fd0b6a498085481bf26ba7f52c4360",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-21T13:06:02.126Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1228484987",
+    "identity": "github:1228484987"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42370810370,
+    "sourceSha": "7e749e000848c5f611a68e16ce2474d3f93333d2"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/retrovioletred-sillytavern-pictureprompt.json",
+      "sha256": "5bbe4ac98045656b8ed1b9478a06019256b7b7b2098c4b88d90bd1ae9ad7c17b",
+      "gitBlobSha": "bb11d92718ff16545158875166a93888ddbd37d3"
+    }
+  ]
+}

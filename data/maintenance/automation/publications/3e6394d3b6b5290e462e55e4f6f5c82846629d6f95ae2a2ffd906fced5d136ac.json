@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3e6394d3b6b5290e462e55e4f6f5c82846629d6f95ae2a2ffd906fced5d136ac",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1268616226:extensionmuncher-memoryloom",
+      "inputDigest": "200346c5d008db50723f63f2dc08c45145f3862c2a60a22b48a32f19b7f14f94",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-21T13:06:28.762Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1268616226",
+    "identity": "github:1268616226"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42374506176,
+    "sourceSha": "177ba32c045ac99d475ce13e019a1a20f9ba64de"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/extensionmuncher-memoryloom.json",
+      "sha256": "ae5ae38a1be156417dc1dd5ae8e59eadde2a088b5a577658d2a0b887633ba339",
+      "gitBlobSha": "08bfd5ec4234963c58a5b13d925f2a4bb7a96769"
+    }
+  ]
+}

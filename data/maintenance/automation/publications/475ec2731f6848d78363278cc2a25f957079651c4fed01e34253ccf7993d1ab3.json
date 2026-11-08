@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "475ec2731f6848d78363278cc2a25f957079651c4fed01e34253ccf7993d1ab3",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1220910140:enerccio-sillytavern-sidequery",
+      "inputDigest": "b935a17839dd57211ef1ac8597034c911fd6c7a83c63d619da30d03216ce2248",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-18T12:13:53.177Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1220910140",
+    "identity": "github:1220910140"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42231805599,
+    "sourceSha": "2d43491710c0b1775c2ce88b13fa0cc239cc8d41"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/enerccio-sillytavern-sidequery.json",
+      "sha256": "f536d711900339453b3f3394b18718ad502eca06458c2023bd9a3e24d4c3cebc",
+      "gitBlobSha": "0ced522a4d4f8bc42108e71c28ded6512e88903a"
+    }
+  ]
+}

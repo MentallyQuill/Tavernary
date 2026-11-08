@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5675d948d283bf4ab2571a80e06efd8a456599d66b1462e3a91cd0fd195548cb",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1139430137:sillyanonymous-sillytavern-characterlibrary",
+      "inputDigest": "469bc864ed82165482ff853a52d6faff85ae880086658105fd1def3b4eb00efd",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-21T13:06:08.465Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1139430137",
+    "identity": "github:1139430137"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42372381341,
+    "sourceSha": "1bebe1823c6bbd150c6ac73272750f0ab5f6f8ea"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/sillyanonymous-sillytavern-characterlibrary.json",
+      "sha256": "37220d2644cd6e69f09ed7b5ccf81e1044f22576322d66c6a688674d56ea58cd",
+      "gitBlobSha": "97f77cf56d1b00b485b95d341f6c537ac49ce735"
+    }
+  ]
+}

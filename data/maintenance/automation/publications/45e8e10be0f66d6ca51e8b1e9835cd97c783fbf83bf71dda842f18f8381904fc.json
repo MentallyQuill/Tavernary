@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "45e8e10be0f66d6ca51e8b1e9835cd97c783fbf83bf71dda842f18f8381904fc",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1112944532:pavorlov-sillytavern-interactive-map",
+      "inputDigest": "fc94abca8e6d84075c8bdc36198059cb1442da8c00a9fc45971375cb780bab18",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-18T12:11:20.003Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1112944532",
+    "identity": "github:1112944532"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42230559345,
+    "sourceSha": "bc53f38283f33e5cc02bdbe8bfca0f258bf1799a"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/pavorlov-sillytavern-interactive-map.json",
+      "sha256": "fb3d9138411995c94fe3ee727ce2ccfbe29439b8c501aed9e0dbfc224f834a26",
+      "gitBlobSha": "8f073ad07cb089c3dca949deb58b9a53f292911c"
+    }
+  ]
+}

@@ -5,12 +5,9 @@
   "source_identity": "github:closuretxt/game-manager-st",
   "evidence_fingerprint": "64a6a77a683f1b89f8f8eaf143ddec1ff2b68be3e4d9807e56a079f132589309",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-30T14:13:21.023Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-30T14:13:21.023Z"
-  },
+  "reviewed_at": "2026-11-06T13:39:38.951Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

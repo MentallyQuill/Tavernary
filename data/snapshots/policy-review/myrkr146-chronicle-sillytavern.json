@@ -5,12 +5,9 @@
   "source_identity": "github:myrkr146/chronicle-sillytavern",
   "evidence_fingerprint": "7a79df0015089f0d9b005a0d91beb48af7aaeaf0c171bad72379eb2a4f4c66d0",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-02T12:27:01.778Z",
-  "retry": {
-    "attempts": 5,
-    "last_failure_at": "2026-09-02T12:27:01.778Z"
-  },
+  "reviewed_at": "2026-11-07T12:12:35.802Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

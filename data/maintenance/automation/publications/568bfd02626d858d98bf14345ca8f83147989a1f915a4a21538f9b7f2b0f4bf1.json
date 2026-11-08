@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "568bfd02626d858d98bf14345ca8f83147989a1f915a4a21538f9b7f2b0f4bf1",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1213286113:virgilianshailer-automusic",
+      "inputDigest": "570f438e0032b2272eed72a2e598d690d36e3e1a9950aa06819ddaf4566420f3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-21T13:08:05.899Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1213286113",
+    "identity": "github:1213286113"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42375033886,
+    "sourceSha": "5fdc9b02df3e08ce3e826e1553af2dd662b6bf30"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/virgilianshailer-automusic.json",
+      "sha256": "9f7c88beaefb7aa4d8248a131c9abb3ed13d672c41c5441786186075431da651",
+      "gitBlobSha": "496ab8b69063bcab8afd2b890ca02b9448e24c55"
+    }
+  ]
+}

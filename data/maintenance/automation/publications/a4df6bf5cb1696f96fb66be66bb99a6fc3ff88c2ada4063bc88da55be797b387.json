@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a4df6bf5cb1696f96fb66be66bb99a6fc3ff88c2ada4063bc88da55be797b387",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1130046949:loggo-presets-sillytavern-spellbook",
+      "inputDigest": "bcd9289eb3a0aa2d9c6b53e270c9df66601b9291c80ed09afc6ede80f7c05e55",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-18T12:10:53.852Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1130046949",
+    "identity": "github:1130046949"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42224856298,
+    "sourceSha": "4f5d31754622cf76adc5aa06ace7ca267673b153"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/loggo-presets-sillytavern-spellbook.json",
+      "sha256": "b7d34ce5e374b18cef3e0bb8d7aa405d607f5e43088764fc84819ffe2b40c516",
+      "gitBlobSha": "9315a9f29d13e3114ae8e8aeed1fc1cfc21eda97"
+    }
+  ]
+}

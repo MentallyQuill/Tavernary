@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "803e5f2efb019882228cb30965d979ede8edd850157b40ac51177cd08665c60e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1057660249:envy-ai-ai-rpg",
+      "inputDigest": "f80d0e06c1032f86e1253ebcac3c0b7980709860311b27620a08a3b948ed16f4",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-23T12:46:27.624Z",
+    "nextEligibleAt": "2026-11-08T02:21:47.577Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-08T02:06:47.577Z",
+  "completedAt": null
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5e7e8d312f5ad9c5a7e47c13c0e253e79cbe7d4a13a110de26ee2ff78084b572",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1211103921:alphonsos88k-ste-summary-editor",
+      "inputDigest": "c1dd57cabf1769362f5cc2c8776ee7c8d9e1638fd9b64c9d5c6df610adb25c3b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-21T13:06:18.907Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1211103921",
+    "identity": "github:1211103921"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42373481544,
+    "sourceSha": "dd1df404b0b8e1c9510159deca72b30784ff479f"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/alphonsos88k-ste-summary-editor.json",
+      "sha256": "f1350410dbfe83dced72b01a095e4aa5540754eec737c42f4f968af02d1a2426",
+      "gitBlobSha": "d906adc200431e1912faed498cb6bc2a95d2f738"
+    }
+  ]
+}

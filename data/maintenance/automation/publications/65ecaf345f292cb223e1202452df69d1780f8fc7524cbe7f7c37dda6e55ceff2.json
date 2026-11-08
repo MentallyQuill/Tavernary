@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "65ecaf345f292cb223e1202452df69d1780f8fc7524cbe7f7c37dda6e55ceff2",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1349176738:closuretxt-game-manager-st",
+      "inputDigest": "6e18dc7a752b216cae0d75df8e1b359e759ef9bd876f13cc681375faf5b010a6",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-18T12:11:08.618Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1349176738",
+    "identity": "github:1349176738"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42227120191,
+    "sourceSha": "0b0b0691fcdc9b0d502db91f66eeb2ad81461f83"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/closuretxt-game-manager-st.json",
+      "sha256": "464371f716d7c6b8a2d8632da63ec850b6242dde3da906d58acce85f0566088e",
+      "gitBlobSha": "81069c8f75fda1474c24ebe7ac0cf460035e120c"
+    }
+  ]
+}

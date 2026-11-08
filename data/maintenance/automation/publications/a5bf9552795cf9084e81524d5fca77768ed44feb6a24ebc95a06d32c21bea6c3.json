@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a5bf9552795cf9084e81524d5fca77768ed44feb6a24ebc95a06d32c21bea6c3",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1275010865:q-atastrophe-lore-atlas",
+      "inputDigest": "cb3952d60c07d6feb3a02b056c8df0dd94c11440b64cad03599ecd0fed0cb0c1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-21T13:06:06.657Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1275010865",
+    "identity": "github:1275010865"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42371835492,
+    "sourceSha": "421219c20b608ffbb7c32d932c3385562a032d7a"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/q-atastrophe-lore-atlas.json",
+      "sha256": "e83c35a05d386f98b4ab6baf88c26c54c0cff9d177b7027a8643527cdb9e9a89",
+      "gitBlobSha": "0785cdcadf8529366a63752873a2981c252cad45"
+    }
+  ]
+}

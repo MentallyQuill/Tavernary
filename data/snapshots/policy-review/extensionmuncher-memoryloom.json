@@ -3,14 +3,11 @@
   "project_id": "extensionmuncher-memoryloom",
   "source_id": "github-1268616226",
   "source_identity": "github:extensionmuncher/memoryloom",
-  "evidence_fingerprint": "7aa86d46d9c28810056e7a5e98b07becced5c9d8a191355027fbea6043facfa7",
+  "evidence_fingerprint": "9f2b93d1373113f4300f0b52db82455b7769f63b40a40d022e6bb04648b50a99",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-13T08:59:55.518Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-13T08:59:55.518Z"
-  },
+  "reviewed_at": "2026-11-07T12:55:40.858Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

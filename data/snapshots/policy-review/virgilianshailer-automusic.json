@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "virgilianshailer-automusic",
+  "source_id": "github-1213286113",
+  "source_identity": "github:virgilianshailer/automusic",
+  "evidence_fingerprint": "3e22b437af9f7b8fa5d8e4306de5fe5893d33c78e7005b711d8d2424b3569c75",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-07T13:02:53.259Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

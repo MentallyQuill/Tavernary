@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a78872d14e43d48733c2e0a2263e2c1504862fdec70a4eb1b7947d2fa3c5fed2",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1169709495:mattjaybe-sillytavern-echotext",
+      "inputDigest": "35b204f3e8145c9f4658840f9be903cdee6ccdb0455089ba399353790e558ad2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-23T12:46:56.333Z",
+    "nextEligibleAt": "2026-11-08T08:24:15.781Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-08T08:09:15.781Z",
+  "completedAt": null
+}

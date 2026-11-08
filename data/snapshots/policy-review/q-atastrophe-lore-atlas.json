@@ -5,12 +5,9 @@
   "source_identity": "github:q-atastrophe/lore-atlas",
   "evidence_fingerprint": "e6993cb32aad14cc9d330ced4c3d48531f52c575b848a08b22e42d342e345d66",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-21T14:33:49.185Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-21T14:33:49.185Z"
-  },
+  "reviewed_at": "2026-11-07T12:19:06.067Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
