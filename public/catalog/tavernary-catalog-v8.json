@@ -57862,19 +57862,19 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 77,
+        "stars": 82,
         "forks": 7,
         "watchers": 2,
-        "aggregate": 86
+        "aggregate": 91
       },
-      "repositorySizeKb": 9546,
+      "repositorySizeKb": 11469,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-24T12:08:58.626Z",
+      "refreshedAt": "2026-11-08T14:31:05.840Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -69649,8 +69649,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "49c35baf7176814504d07fed84389d10b7e55501",
+        "freshness": "stale",
+        "currentSha": "a36e66bdc4cf896c137e3472bb15a4e2d2b89064",
         "report": {
           "reportId": "ca7300dc4e4f22508d853f53b62f57eb87a703e52c0d373c9121e1494fa98d96",
           "riskLevel": "low",
@@ -69737,8 +69737,8 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-09-27T18:41:42.000Z",
-        "activeWeeks12": 1,
+        "latestSourceActivityAt": "2026-10-28T05:47:15.000Z",
+        "activeWeeks12": 2,
         "weeklyActivity": [
           false,
           false,
@@ -69751,7 +69751,7 @@
           false,
           false,
           false,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -69763,14 +69763,14 @@
         "watchers": 0,
         "aggregate": 1
       },
-      "repositorySizeKb": 32,
+      "repositorySizeKb": 48,
       "license": {
         "status": "proprietary",
         "label": "Proprietary",
         "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-10-24T12:08:56.024Z",
+      "refreshedAt": "2026-11-08T14:30:43.534Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -116798,7 +116798,7 @@
     },
     {
       "id": "st1ksi-extension-blackboard",
-      "name": "Extension-Blackboard",
+      "name": "Simulation-Blackboard",
       "kind": "extension",
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
@@ -116978,7 +116978,7 @@
       "fork": null,
       "search": {
         "title": [
-          "Extension-Blackboard"
+          "Simulation-Blackboard"
         ],
         "aliases": [],
         "source": [
