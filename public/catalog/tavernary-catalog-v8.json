@@ -8546,7 +8546,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Lumiverse LumiWeather is a Lumiverse extension that displays narrative weather, date, and time as a HUD during chat scenes. It layers ambient atmospheric effects over the interface to enhance roleplay immersion.",
+      "summary": "Lumiverse LumiWeather adds a draggable weather HUD and animated scene ambience to Lumiverse chat, driven by hidden story-synced weather tags with per-chat persistence (README: Features).",
       "canonicalUrl": "https://github.com/Archkr/Lumiverse-LumiWeather",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -8563,6 +8563,24 @@
           "label": "Add visual immersion",
           "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
           "facet": "goal"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        },
+        {
+          "id": "persistent-state",
+          "label": "Persistent state",
+          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
+          "facet": "trait"
+        },
+        {
+          "id": "mobile-friendly",
+          "label": "Mobile-friendly",
+          "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
+          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -8797,7 +8815,7 @@
           "https://github.com/Archkr/Lumiverse-LumiWeather"
         ],
         "summary": [
-          "Lumiverse LumiWeather is a Lumiverse extension that displays narrative weather, date, and time as a HUD during chat scenes. It layers ambient atmospheric effects over the interface to enhance roleplay immersion."
+          "Lumiverse LumiWeather adds a draggable weather HUD and animated scene ambience to Lumiverse chat, driven by hidden story-synced weather tags with per-chat persistence (README: Features)."
         ],
         "kind": [
           "extension"
@@ -8809,7 +8827,19 @@
           "Add visual immersion",
           "roleplay visuals",
           "visual novel presentation",
-          "scene visuals"
+          "scene visuals",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking",
+          "Persistent state",
+          "durable state",
+          "state persistence",
+          "cross-session state",
+          "Mobile-friendly",
+          "mobile support",
+          "phone friendly",
+          "responsive mobile UI"
         ],
         "frontends": [
           "Lumiverse"
@@ -68146,6 +68176,214 @@
       }
     },
     {
+      "id": "lunarcadedigital-vecttauri",
+      "name": "VectTauri",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "memory-retrieval",
+      "summary": "VectTauri is a fork of VectFox that brings RAG memory to TauriTavern on Android, with a built-in Similharity layer running entirely on-device — no server, Termux, or network setup (README: Advanced RAG for TauriTavern).",
+      "canonicalUrl": "https://github.com/lunarcadedigital/VectTauri",
+      "catalogedAt": "2026-11-08T09:00:57.675Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "tauritavern",
+          "label": "TauriTavern",
+          "description": "Works with the TauriTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "local-first",
+          "label": "Local-first",
+          "description": "Keeps its primary data and workflow on the user's own device.",
+          "facet": "trait"
+        },
+        {
+          "id": "maintain-long-term-memory",
+          "label": "Maintain long-term memory",
+          "description": "Preserve and recall important information across long chats or separate sessions.",
+          "facet": "goal"
+        },
+        {
+          "id": "mobile-friendly",
+          "label": "Mobile-friendly",
+          "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
+          "facet": "trait"
+        },
+        {
+          "id": "retrieve-relevant-context",
+          "label": "Retrieve relevant context",
+          "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
+          "facet": "goal"
+        },
+        {
+          "id": "semantic-retrieval",
+          "label": "Semantic retrieval",
+          "description": "Selects relevant information through embeddings, vector search, RAG, or hybrid retrieval.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "cbf33ad37248028f0d4c8056aed322e644ba943b",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "lunarcadedigital"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "KritBlade",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "LeviTheWeasel",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Coneja-Chibi",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "prolix-oc",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Promansis",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "SirEdvin",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "r-t-k",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "TheLiquorPriest",
+            "botOrAi": false
+          }
+        ],
+        "humanContributorCount": 8,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-04T08:09:29.000Z",
+        "activeWeeks12": 5,
+        "weeklyActivity": [
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 8,
+        "forks": 0,
+        "watchers": 1,
+        "aggregate": 9
+      },
+      "repositorySizeKb": 13284,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-08T09:00:57.675Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "VectTauri"
+        ],
+        "aliases": [],
+        "source": [
+          "lunarcadedigital-vecttauri",
+          "github-1437764170",
+          "lunarcadedigital/VectTauri",
+          "https://github.com/lunarcadedigital/VectTauri"
+        ],
+        "summary": [
+          "VectTauri is a fork of VectFox that brings RAG memory to TauriTavern on Android, with a built-in Similharity layer running entirely on-device — no server, Termux, or network setup (README: Advanced RAG for TauriTavern)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Memory and retrieval"
+        ],
+        "tags": [
+          "Local-first",
+          "stored locally",
+          "on-device data",
+          "local data ownership",
+          "Maintain long-term memory",
+          "durable memory",
+          "persistent memory",
+          "remember across chats",
+          "Mobile-friendly",
+          "mobile support",
+          "phone friendly",
+          "responsive mobile UI",
+          "Retrieve relevant context",
+          "context retrieval",
+          "relevant recall",
+          "knowledge retrieval",
+          "Semantic retrieval",
+          "semantic search",
+          "vector search",
+          "retrieval-augmented generation",
+          "RAG"
+        ],
+        "frontends": [
+          "TauriTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "lunarcadedigital",
+          "KritBlade",
+          "LeviTheWeasel",
+          "Coneja-Chibi",
+          "prolix-oc",
+          "Promansis",
+          "SirEdvin",
+          "r-t-k",
+          "TheLiquorPriest"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "m4marvin-charon",
       "name": "charon",
       "kind": "frontend",
@@ -116548,6 +116786,182 @@
           "ST-ExtensionCollection",
           "Rojikku",
           "manned8463"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "st1ksi-extension-blackboard",
+      "name": "Extension-Blackboard",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "generation-reasoning",
+      "summary": "Guides the AI to prepare hidden facts, locations, inventories and NPC plans before player interaction, then resolve actions within a persistent world that keeps evolving beyond the current scene.",
+      "canonicalUrl": "https://github.com/st1ksi/Extension-Blackboard",
+      "catalogedAt": "2026-11-08T10:40:02.109Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-structured-reasoning",
+          "label": "Add structured reasoning",
+          "description": "Introduce deliberate planning, reflection, critique, or multi-step thinking before output.",
+          "facet": "goal"
+        },
+        {
+          "id": "agentic-tool-use",
+          "label": "Agentic tool use",
+          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
+          "facet": "trait"
+        },
+        {
+          "id": "build-worlds-and-lore",
+          "label": "Build worlds and lore",
+          "description": "Create fictional settings, lore, locations, factions, or other world material.",
+          "facet": "goal"
+        },
+        {
+          "id": "persistent-state",
+          "label": "Persistent state",
+          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
+          "facet": "trait"
+        },
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "ee64233aaf480e1a07b8811fc7dc153053c67e98",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "st1ksi"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-06T21:26:14.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-11-06T21:26:37.000Z",
+      "community": {
+        "stars": 6,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 6
+      },
+      "repositorySizeKb": 1630,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-08T10:40:02.109Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/st1ksi/Extension-Blackboard.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "Extension-Blackboard"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "Extension-Blackboard"
+        ],
+        "aliases": [],
+        "source": [
+          "st1ksi-extension-blackboard",
+          "github-1417124072",
+          "st1ksi/Extension-Blackboard",
+          "https://github.com/st1ksi/Extension-Blackboard"
+        ],
+        "summary": [
+          "Guides the AI to prepare hidden facts, locations, inventories and NPC plans before player interaction, then resolve actions within a persistent world that keeps evolving beyond the current scene."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Generation and reasoning"
+        ],
+        "tags": [
+          "Add structured reasoning",
+          "reasoning pipelines",
+          "stepped thinking",
+          "planning reasoning",
+          "planning passes",
+          "Agentic tool use",
+          "tool calling",
+          "AI agents",
+          "agent mode",
+          "Build worlds and lore",
+          "worldbuilding",
+          "character worldbuilding",
+          "lore creation",
+          "setting design",
+          "Persistent state",
+          "durable state",
+          "state persistence",
+          "cross-session state",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "st1ksi"
         ],
         "relationships": []
       }
