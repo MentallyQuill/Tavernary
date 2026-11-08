@@ -33933,7 +33933,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "A SillyTavern extension for Gemini-powered image generation using character and user descriptions in prompts. It uses avatars as visual references for consistent art and includes a /proimagine slash command.",
+      "summary": "SillyTavern extension for Gemini-powered image generation with character context and avatar references (README: Features), including a message wand button, prompt context injection, and a /proimagine slash command.",
       "canonicalUrl": "https://github.com/elouannd/context-image-generation",
       "catalogedAt": "2026-07-29T22:22:20.673Z",
       "catalogCohort": "standard",
@@ -33945,12 +33945,6 @@
         }
       ],
       "tags": [
-        {
-          "id": "automate-roleplay-workflows",
-          "label": "Automate roleplay workflows",
-          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
-          "facet": "goal"
-        },
         {
           "id": "generate-images",
           "label": "Generate images",
@@ -34110,7 +34104,7 @@
           "https://github.com/elouannd/context-image-generation"
         ],
         "summary": [
-          "A SillyTavern extension for Gemini-powered image generation using character and user descriptions in prompts. It uses avatars as visual references for consistent art and includes a /proimagine slash command."
+          "SillyTavern extension for Gemini-powered image generation with character context and avatar references (README: Features), including a message wand button, prompt context injection, and a /proimagine slash command."
         ],
         "kind": [
           "extension"
@@ -34119,11 +34113,6 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Automate roleplay workflows",
-          "automation",
-          "workflow automation",
-          "task automation",
-          "triggered actions",
           "Generate images",
           "image generation",
           "AI art generation",
@@ -70259,7 +70248,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "EchoText lets you directly message SillyTavern characters in tethered chats that carry over roleplay context or untethered conversations that leave the story untouched.",
+      "summary": "SillyTavern-EchoText lets you directly message characters: tethered mode carries over roleplay events while untethered mode allows standalone texting without touching the main window (README Tethered/Untethered Mode).",
       "canonicalUrl": "https://github.com/mattjaybe/SillyTavern-EchoText",
       "catalogedAt": "2026-08-05T01:06:35.655Z",
       "catalogCohort": "standard",
@@ -70278,9 +70267,9 @@
           "facet": "goal"
         },
         {
-          "id": "preserve-story-continuity",
-          "label": "Preserve story continuity",
-          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
           "facet": "goal"
         }
       ],
@@ -70410,7 +70399,7 @@
           "https://github.com/mattjaybe/SillyTavern-EchoText"
         ],
         "summary": [
-          "EchoText lets you directly message SillyTavern characters in tethered chats that carry over roleplay context or untethered conversations that leave the story untouched."
+          "SillyTavern-EchoText lets you directly message characters: tethered mode carries over roleplay events while untethered mode allows standalone texting without touching the main window (README Tethered/Untethered Mode)."
         ],
         "kind": [
           "extension"
@@ -70423,10 +70412,10 @@
           "persona management",
           "character management",
           "identity management",
-          "Preserve story continuity",
-          "continuity tracking",
-          "canon consistency",
-          "story coherence"
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control"
         ],
         "frontends": [
           "SillyTavern"
@@ -119332,7 +119321,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "frontend",
-      "summary": "SweetrollLM is a local-first AI tavern for character chat, multimodal context, and agentic work, routing between GGUF, KoboldCPP, and OpenAI-compatible providers.",
+      "summary": "SweetrollLM is a local-first AI tavern for character chat and lorebooks, blending SillyTavern comfort with LM Studio-style GGUF model management, an embedded KoboldCPP worker, and OpenAI-compatible cloud APIs (README).",
       "canonicalUrl": "https://github.com/syfr512/SweetrollLM",
       "catalogedAt": "2026-08-09T08:44:37.901Z",
       "catalogCohort": "standard",
@@ -119345,16 +119334,22 @@
       ],
       "tags": [
         {
-          "id": "agentic-tool-use",
-          "label": "Agentic tool use",
-          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
-          "facet": "trait"
-        },
-        {
           "id": "local-first",
           "label": "Local-first",
           "description": "Keeps its primary data and workflow on the user's own device.",
           "facet": "trait"
+        },
+        {
+          "id": "model-agnostic",
+          "label": "Model-agnostic",
+          "description": "Works across a broad range of model providers rather than requiring one model family.",
+          "facet": "trait"
+        },
+        {
+          "id": "manage-lorebooks",
+          "label": "Manage lorebooks",
+          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+          "facet": "goal"
         },
         {
           "id": "manage-characters-and-personas",
@@ -119363,9 +119358,9 @@
           "facet": "goal"
         },
         {
-          "id": "model-agnostic",
-          "label": "Model-agnostic",
-          "description": "Works across a broad range of model providers rather than requiring one model family.",
+          "id": "agentic-tool-use",
+          "label": "Agentic tool use",
+          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
           "facet": "trait"
         }
       ],
@@ -119437,7 +119432,7 @@
           "https://github.com/syfr512/SweetrollLM"
         ],
         "summary": [
-          "SweetrollLM is a local-first AI tavern for character chat, multimodal context, and agentic work, routing between GGUF, KoboldCPP, and OpenAI-compatible providers."
+          "SweetrollLM is a local-first AI tavern for character chat and lorebooks, blending SillyTavern comfort with LM Studio-style GGUF model management, an embedded KoboldCPP worker, and OpenAI-compatible cloud APIs (README)."
         ],
         "kind": [
           "frontend"
@@ -119446,22 +119441,26 @@
           "Frontend"
         ],
         "tags": [
-          "Agentic tool use",
-          "tool calling",
-          "AI agents",
-          "agent mode",
           "Local-first",
           "stored locally",
           "on-device data",
           "local data ownership",
+          "Model-agnostic",
+          "bring your own model",
+          "BYOM",
+          "provider independent",
+          "Manage lorebooks",
+          "World Info management",
+          "worldbook organization",
+          "loredeck management",
           "Manage characters and personas",
           "persona management",
           "character management",
           "identity management",
-          "Model-agnostic",
-          "bring your own model",
-          "BYOM",
-          "provider independent"
+          "Agentic tool use",
+          "tool calling",
+          "AI agents",
+          "agent mode"
         ],
         "frontends": [
           "SweetrollLM"

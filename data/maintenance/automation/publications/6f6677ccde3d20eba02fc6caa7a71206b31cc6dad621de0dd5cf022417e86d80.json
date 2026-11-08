@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6f6677ccde3d20eba02fc6caa7a71206b31cc6dad621de0dd5cf022417e86d80",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1260345718:syfr512-sweetrolllm",
+      "inputDigest": "b0d970bd94c4cef74fdb29a44381b0755cee8301cd2d48012910acef6acf70a0",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-08T08:22:57.648Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1260345718",
+    "identity": "github:1260345718"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 42466926914,
+    "sourceSha": "ed0544092f4734af0f005773ba357201f232f32d"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/syfr512-sweetrolllm.json",
+      "sha256": "f294ad1e3ba64cbed7c99dd6acb1c99eabd80edc08f466a9e17b04c6cce8ef0e",
+      "gitBlobSha": "881852739652729c5618a464e27efa6957c84a81"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/6f6677ccde3d20eba02fc6caa7a71206b31cc6dad621de0dd5cf022417e86d80.json",
+      "sha256": "7fed28f8e28dbc225e7998eb15de333277c4508264bbfb5d5f17da37c7866fe8",
+      "gitBlobSha": "7e97b75a8f74f77d3d6d0d6caa1d4e61074f400f"
+    }
+  ]
+}

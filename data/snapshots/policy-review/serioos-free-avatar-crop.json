@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "serioos-free-avatar-crop",
+  "source_id": "github-1450382594",
+  "source_identity": "github:serioos/free-avatar-crop",
+  "evidence_fingerprint": "fed35a2c3b711cdbc9fbacf8cbbf5ad022f882f8bb1e5fdad132c0db7318bd1c",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-08T17:17:05.309Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

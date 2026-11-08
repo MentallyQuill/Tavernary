@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "syfr512-sweetrolllm",
+  "sourceId": "github-1260345718",
+  "sourceIdentity": "github:1260345718",
+  "inputDigest": "b0d970bd94c4cef74fdb29a44381b0755cee8301cd2d48012910acef6acf70a0",
+  "fingerprint": "c3fa51f53903edd2ee88a7947a5ad6a9865905a9f14ca14143be0b4fcdf9f6a6",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "3dd755cb9372ec068c37261224c441b5c46ab36087a78f289da24e42b076c268",
+  "outputDigest": "333e90b284cd71f50fa0b6b112f93b92a2456c9989150292c2edfc0f85a43dd9",
+  "headSha": "be31cb591f9d1d423b7ad6c7f920a9e02d0b476b",
+  "observedAt": "2026-11-08T09:23:50.054Z"
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "mattjaybe-sillytavern-echotext",
+  "sourceId": "github-1169709495",
+  "sourceIdentity": "github:1169709495",
+  "inputDigest": "35b204f3e8145c9f4658840f9be903cdee6ccdb0455089ba399353790e558ad2",
+  "fingerprint": "3cc26c85fcb6ef174207fd8c78c702e071df26bb3bdc4528703c9d70e4603487",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "e943b9f823c76c0604964322b70d2f10874fac77a0012c2a7831f3307d3e9411",
+  "outputDigest": "d118f1b434ddae192347779b5d1ba24d74befa15272dfa7d11f80e4fe695a59f",
+  "headSha": "35a7940f77691807be08c4e2e153118341a90c6e",
+  "observedAt": "2026-11-08T10:06:23.506Z"
+}
