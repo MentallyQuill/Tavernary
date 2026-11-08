@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6d5b1ee36474c69f665ae26bede9b9dfe98b7aaf2485b631c277e4c7f75d870c",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1417124072:st1ksi-extension-blackboard",
+      "inputDigest": "ae96b0336accf92699dd2dfe7b74970883af8ab6ab932fa74ae0224a9874564c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-08T10:40:02.109Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "superseded",
+        "reasonCode": "input-superseded"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-08T16:24:36.066Z",
+  "completedAt": null
+}
