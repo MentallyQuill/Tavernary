@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4c287b6c6a4447217e713865832bfcb004fcc72cff4063444a628fa1212db1ba",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1268540573:enerccio-sillytavern-directcommand",
+      "inputDigest": "146eb17a6214f9bb30e6d78b551c059dc3728a0351feeccfee49522b96b1888a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-23T12:46:54.609Z",
+    "nextEligibleAt": "2026-11-08T08:24:15.781Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-08T08:09:15.781Z",
+  "completedAt": null
+}
