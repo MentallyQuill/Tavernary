@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f8d2e3be32cd1885d632c59bb4978dcc934933ab213191b54a88b1b3b6504fff",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1204673207:lodactio-extension-summaryception",
+      "inputDigest": "82961b6afe93379e75f2caa2cfb200f6b048db221a7dac1688b80f0eedc7923d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-24T12:08:33.648Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1204673207",
+    "identity": "github:1204673207"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42486333906,
+    "sourceSha": "5f110e81979348ce91947569ec9b115e54983cd8"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/lodactio-extension-summaryception.json",
+      "sha256": "2e198f3944ab7aa14123f1901a5722ec08b559c627ccd62b2d0958addb7dfccc",
+      "gitBlobSha": "be585d9060904909c027d9e78075d95eef387a31"
+    }
+  ]
+}

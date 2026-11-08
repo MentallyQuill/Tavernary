@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "icefog72-sillytavern-simpleqrbartoggle",
+  "source_id": "github-953012653",
+  "source_identity": "github:icefog72/sillytavern-simpleqrbartoggle",
+  "evidence_fingerprint": "0130106ad98dc1d6b0d6da64db776153c11f9fb2c1877014a1eab8762eb0faca",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-08T13:30:40.043Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

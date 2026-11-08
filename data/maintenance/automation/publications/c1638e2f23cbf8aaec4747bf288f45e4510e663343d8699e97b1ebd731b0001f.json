@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c1638e2f23cbf8aaec4747bf288f45e4510e663343d8699e97b1ebd731b0001f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1195300925:hydall-glaze",
+      "inputDigest": "c2289673757226f53782bef7e9db0f691bf40cba36cc62868310640ea250995f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-23T12:47:08.408Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1195300925",
+    "identity": "github:1195300925"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42481609831,
+    "sourceSha": "6c0c0fbfb128129ed4d6ddc5725832f061094d4a"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/hydall-glaze.json",
+      "sha256": "e34ba7b8993a61304749f375f8d7a922cb01ae9e1869a72b555fc2aa91390013",
+      "gitBlobSha": "876d7f99dee574b8fdf451427f715b66fa5ce803"
+    }
+  ]
+}

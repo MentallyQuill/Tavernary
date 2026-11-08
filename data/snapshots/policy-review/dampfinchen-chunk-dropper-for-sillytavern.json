@@ -5,12 +5,9 @@
   "source_identity": "github:dampfinchen/chunk-dropper-for-sillytavern",
   "evidence_fingerprint": "dc9797d91248dc93a3f1a441b8d499e54abd14dfbe4cad92b8ca894b311c7ba9",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-16T12:52:32.725Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-09-16T12:52:32.725Z"
-  },
+  "reviewed_at": "2026-11-08T12:37:07.349Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

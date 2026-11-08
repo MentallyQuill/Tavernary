@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "d136682a524445b2a21e77c73f9f98d0ea6554bbda993607e0bef078b7fbe0e0",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1327848464:keepsanity-sillytavern-atelier",
+      "inputDigest": "65075dbd20b66a4aef31fa905d1738fc18996ee686f3a8d88428a8dbf081a92e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-23T12:49:39.375Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1327848464",
+    "identity": "github:1327848464"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42482757627,
+    "sourceSha": "8fa95eb008da9a3c3b2d5585d5a309b6a26b676f"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/keepsanity-sillytavern-atelier.json",
+      "sha256": "9d88ec1f62fac30a1bb9f52df8c228b256c9c9abff09b65c2a05015ff68cc28a",
+      "gitBlobSha": "d276ced937222820e7cd8ebda87297d193b1cabc"
+    }
+  ]
+}
