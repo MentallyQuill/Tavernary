@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4c287b6c6a4447217e713865832bfcb004fcc72cff4063444a628fa1212db1ba",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1268540573:enerccio-sillytavern-directcommand",
+      "inputDigest": "146eb17a6214f9bb30e6d78b551c059dc3728a0351feeccfee49522b96b1888a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-08T08:20:22.387Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1268540573",
+    "identity": "github:1268540573"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 42468796515,
+    "sourceSha": "6aaf41201358f5868f2288e7a4f3501eeee44371"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/enerccio-sillytavern-directcommand.json",
+      "sha256": "7ce201ecee861bb3ad1224790c2b131479594c95a76090274d0cd27615df3aa4",
+      "gitBlobSha": "ca47df5a3f05aa04f440988af018a1028e53059d"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/4c287b6c6a4447217e713865832bfcb004fcc72cff4063444a628fa1212db1ba.json",
+      "sha256": "fa77f30c645697822d46bf099eabf7c5f8c8c145f491ab13619b3ef5897007fd",
+      "gitBlobSha": "489661606768d769551fdd99edb59934543f7d34"
+    }
+  ]
+}

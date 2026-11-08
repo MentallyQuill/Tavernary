@@ -35468,7 +35468,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "generation-reasoning",
-      "summary": "SillyTavern-DirectCommand gives precise, localized control over text generation turns by adding one-shot instructions to prompts without polluting long-term chat history.",
+      "summary": "SillyTavern-DirectCommand is a SillyTavern extension for precise, localized control over individual generation turns, letting you prepend or append one-shot instructions without polluting long-term chat context (README).",
       "canonicalUrl": "https://github.com/Enerccio/SillyTavern-DirectCommand",
       "catalogedAt": "2026-08-03T08:22:48.088Z",
       "catalogCohort": "standard",
@@ -35487,22 +35487,10 @@
           "facet": "goal"
         },
         {
-          "id": "inspect-prompts-and-generations",
-          "label": "Inspect prompts and generations",
-          "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+          "id": "manage-context-limits",
+          "label": "Manage context limits",
+          "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
           "facet": "goal"
-        },
-        {
-          "id": "non-destructive",
-          "label": "Non-destructive",
-          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
-          "facet": "trait"
-        },
-        {
-          "id": "persistent-state",
-          "label": "Persistent state",
-          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
-          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -35651,7 +35639,7 @@
           "https://github.com/Enerccio/SillyTavern-DirectCommand"
         ],
         "summary": [
-          "SillyTavern-DirectCommand gives precise, localized control over text generation turns by adding one-shot instructions to prompts without polluting long-term chat history."
+          "SillyTavern-DirectCommand is a SillyTavern extension for precise, localized control over individual generation turns, letting you prepend or append one-shot instructions without polluting long-term chat context (README)."
         ],
         "kind": [
           "extension"
@@ -35664,19 +35652,10 @@
           "response steering",
           "generation control",
           "instruction control",
-          "Inspect prompts and generations",
-          "prompt inspection",
-          "generation diagnostics",
-          "review validation",
-          "request debugging",
-          "Non-destructive",
-          "reversible workflow",
-          "preserves originals",
-          "safe overlay",
-          "Persistent state",
-          "durable state",
-          "state persistence",
-          "cross-session state"
+          "Manage context limits",
+          "context compression",
+          "context window management",
+          "token budgeting"
         ],
         "frontends": [
           "SillyTavern"
@@ -252190,7 +252169,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "generation-reasoning",
-            "summary": "SillyTavern-DirectCommand gives precise, localized control over text generation turns by adding one-shot instructions to prompts without polluting long-term chat history.",
+            "summary": "SillyTavern-DirectCommand is a SillyTavern extension for precise, localized control over individual generation turns, letting you prepend or append one-shot instructions without polluting long-term chat context (README).",
             "canonicalUrl": "https://github.com/Enerccio/SillyTavern-DirectCommand",
             "catalogedAt": "2026-08-03T08:22:48.088Z",
             "catalogCohort": "standard",
@@ -252209,22 +252188,10 @@
                 "facet": "goal"
               },
               {
-                "id": "inspect-prompts-and-generations",
-                "label": "Inspect prompts and generations",
-                "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+                "id": "manage-context-limits",
+                "label": "Manage context limits",
+                "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
                 "facet": "goal"
-              },
-              {
-                "id": "non-destructive",
-                "label": "Non-destructive",
-                "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
-                "facet": "trait"
-              },
-              {
-                "id": "persistent-state",
-                "label": "Persistent state",
-                "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -252373,7 +252340,7 @@
                 "https://github.com/Enerccio/SillyTavern-DirectCommand"
               ],
               "summary": [
-                "SillyTavern-DirectCommand gives precise, localized control over text generation turns by adding one-shot instructions to prompts without polluting long-term chat history."
+                "SillyTavern-DirectCommand is a SillyTavern extension for precise, localized control over individual generation turns, letting you prepend or append one-shot instructions without polluting long-term chat context (README)."
               ],
               "kind": [
                 "extension"
@@ -252386,19 +252353,10 @@
                 "response steering",
                 "generation control",
                 "instruction control",
-                "Inspect prompts and generations",
-                "prompt inspection",
-                "generation diagnostics",
-                "review validation",
-                "request debugging",
-                "Non-destructive",
-                "reversible workflow",
-                "preserves originals",
-                "safe overlay",
-                "Persistent state",
-                "durable state",
-                "state persistence",
-                "cross-session state"
+                "Manage context limits",
+                "context compression",
+                "context window management",
+                "token budgeting"
               ],
               "frontends": [
                 "SillyTavern"
@@ -296544,7 +296502,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "generation-reasoning",
-            "summary": "SillyTavern-DirectCommand gives precise, localized control over text generation turns by adding one-shot instructions to prompts without polluting long-term chat history.",
+            "summary": "SillyTavern-DirectCommand is a SillyTavern extension for precise, localized control over individual generation turns, letting you prepend or append one-shot instructions without polluting long-term chat context (README).",
             "canonicalUrl": "https://github.com/Enerccio/SillyTavern-DirectCommand",
             "catalogedAt": "2026-08-03T08:22:48.088Z",
             "catalogCohort": "standard",
@@ -296563,22 +296521,10 @@
                 "facet": "goal"
               },
               {
-                "id": "inspect-prompts-and-generations",
-                "label": "Inspect prompts and generations",
-                "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+                "id": "manage-context-limits",
+                "label": "Manage context limits",
+                "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
                 "facet": "goal"
-              },
-              {
-                "id": "non-destructive",
-                "label": "Non-destructive",
-                "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
-                "facet": "trait"
-              },
-              {
-                "id": "persistent-state",
-                "label": "Persistent state",
-                "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -296727,7 +296673,7 @@
                 "https://github.com/Enerccio/SillyTavern-DirectCommand"
               ],
               "summary": [
-                "SillyTavern-DirectCommand gives precise, localized control over text generation turns by adding one-shot instructions to prompts without polluting long-term chat history."
+                "SillyTavern-DirectCommand is a SillyTavern extension for precise, localized control over individual generation turns, letting you prepend or append one-shot instructions without polluting long-term chat context (README)."
               ],
               "kind": [
                 "extension"
@@ -296740,19 +296686,10 @@
                 "response steering",
                 "generation control",
                 "instruction control",
-                "Inspect prompts and generations",
-                "prompt inspection",
-                "generation diagnostics",
-                "review validation",
-                "request debugging",
-                "Non-destructive",
-                "reversible workflow",
-                "preserves originals",
-                "safe overlay",
-                "Persistent state",
-                "durable state",
-                "state persistence",
-                "cross-session state"
+                "Manage context limits",
+                "context compression",
+                "context window management",
+                "token budgeting"
               ],
               "frontends": [
                 "SillyTavern"
