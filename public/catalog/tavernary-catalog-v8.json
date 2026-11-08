@@ -30440,10 +30440,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 54,
+        "stars": 60,
         "forks": 1,
         "watchers": 1,
-        "aggregate": 56
+        "aggregate": 62
       },
       "repositorySizeKb": 1126,
       "license": {
@@ -30452,7 +30452,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-23T12:47:02.217Z",
+      "refreshedAt": "2026-11-08T11:05:27.183Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -116847,13 +116847,75 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "ee64233aaf480e1a07b8811fc7dc153053c67e98",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "1c6f2797e1347458bb248ff775774f39b56857fb28f39a5ee98683eb280b48fd",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 6,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "131af2ff276018072343f058400c354fdaddcbb83407a93d4f6f75aaed2d4756",
+            "903f7c3ed9b7ee1634b250580ec7a75411f21fa6ef0abfd9e87c647815b84a78",
+            "ae110e3b5def3027e28dd4addeb7e4e59057664630a9746f18acd51ff5f1b5a6",
+            "afd8f25f6736ae08e611708c8f10659366a477a9da2affc399195737e4acfe6e",
+            "d8ef9734c645e647f3923e5f7c8fd021d3dc220876c8d91d65e7f757442b4b82",
+            "d9ae887acdc454da8f49073b66097d9b21cf70be0d86249e4f39d7d28b969f64"
+          ],
+          "scannedSha": "ee64233aaf480e1a07b8811fc7dc153053c67e98",
+          "treeUrl": "https://github.com/st1ksi/Extension-Blackboard/tree/ee64233aaf480e1a07b8811fc7dc153053c67e98",
+          "scannedAt": "2026-11-08T11:14:20.487Z",
+          "assessedAt": "2026-11-08T11:21:08.736Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "javascriptAnalysisStatus": "incomplete",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1417124072/ee64233aaf480e1a07b8811fc7dc153053c67e98/5/1c6f2797e1347458bb248ff775774f39b56857fb28f39a5ee98683eb280b48fd/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1417124072/history/"
+        },
+        "history": [
+          {
+            "reportId": "1c6f2797e1347458bb248ff775774f39b56857fb28f39a5ee98683eb280b48fd",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 6,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "131af2ff276018072343f058400c354fdaddcbb83407a93d4f6f75aaed2d4756",
+              "903f7c3ed9b7ee1634b250580ec7a75411f21fa6ef0abfd9e87c647815b84a78",
+              "ae110e3b5def3027e28dd4addeb7e4e59057664630a9746f18acd51ff5f1b5a6",
+              "afd8f25f6736ae08e611708c8f10659366a477a9da2affc399195737e4acfe6e",
+              "d8ef9734c645e647f3923e5f7c8fd021d3dc220876c8d91d65e7f757442b4b82",
+              "d9ae887acdc454da8f49073b66097d9b21cf70be0d86249e4f39d7d28b969f64"
+            ],
+            "scannedSha": "ee64233aaf480e1a07b8811fc7dc153053c67e98",
+            "treeUrl": "https://github.com/st1ksi/Extension-Blackboard/tree/ee64233aaf480e1a07b8811fc7dc153053c67e98",
+            "scannedAt": "2026-11-08T11:14:20.487Z",
+            "assessedAt": "2026-11-08T11:21:08.736Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "incomplete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1417124072/ee64233aaf480e1a07b8811fc7dc153053c67e98/5/1c6f2797e1347458bb248ff775774f39b56857fb28f39a5ee98683eb280b48fd/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1417124072/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1417124072/"
       },
       "attribution": {
         "owner": {
@@ -244617,10 +244679,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 54,
+              "stars": 60,
               "forks": 1,
               "watchers": 1,
-              "aggregate": 56
+              "aggregate": 62
             },
             "repositorySizeKb": 1126,
             "license": {
@@ -244629,7 +244691,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-23T12:47:02.217Z",
+            "refreshedAt": "2026-11-08T11:05:27.183Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
