@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "98cd56ce4e39242510785e2a94e751ffc88b1d8eb3133eff87a1cdda356b6efc",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1124349811:elouannd-context-image-generation",
+      "inputDigest": "bb3a29a81aaa44072425e1c988c60624af57123f3779d8e5ecfb613fda7e34b3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-23T12:46:56.196Z",
+    "nextEligibleAt": "2026-11-08T08:24:15.781Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-08T08:09:15.781Z",
+  "completedAt": null
+}
