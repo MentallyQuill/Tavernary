@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a366da3ec998f2a43aaaa617c88a45ef85665e62fb09ceea2e11ad888fe3d6dc",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1160848402:ghostd93-bettersimtracker",
+      "inputDigest": "4b9c7e0b26e8dc3638aa9384939622e0b87de2f6819f884230f25f3bb2e1e8bb",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-24T12:11:07.080Z",
+    "nextEligibleAt": "2026-11-09T00:03:23.201Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-08T23:48:23.201Z",
+  "completedAt": null
+}
