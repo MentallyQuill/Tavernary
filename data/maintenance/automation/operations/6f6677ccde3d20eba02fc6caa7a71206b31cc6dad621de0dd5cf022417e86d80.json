@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6f6677ccde3d20eba02fc6caa7a71206b31cc6dad621de0dd5cf022417e86d80",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1260345718:syfr512-sweetrolllm",
+      "inputDigest": "b0d970bd94c4cef74fdb29a44381b0755cee8301cd2d48012910acef6acf70a0",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-23T12:46:32.098Z",
+    "nextEligibleAt": "2026-11-08T08:24:15.781Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-08T08:09:15.781Z",
+  "completedAt": null
+}
