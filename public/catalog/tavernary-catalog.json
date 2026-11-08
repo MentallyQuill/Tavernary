@@ -36769,7 +36769,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "bea1dd19a425c09eca40bf78e0a22589d3d9fb5a",
+        "currentSha": "52c780249f085dbad0c7b2561f9a0f566cea81e5",
         "report": {
           "reportId": "38e3798843e8b6da47c21054a3ec474ec8547d7a62f4c9066ee33d9d6cf3ac13",
           "riskLevel": "low",
@@ -36838,11 +36838,16 @@
           },
           {
             "provider": "github",
+            "login": "0cyris",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "fazo96",
             "botOrAi": false
           }
         ],
-        "humanContributorCount": 3,
+        "humanContributorCount": 4,
         "status": "current"
       },
       "activity": {
@@ -36867,19 +36872,19 @@
       },
       "latestReleaseAt": "2026-02-02T23:51:15.000Z",
       "community": {
-        "stars": 151,
-        "forks": 25,
+        "stars": 153,
+        "forks": 24,
         "watchers": 4,
-        "aggregate": 180
+        "aggregate": 181
       },
-      "repositorySizeKb": 45414,
+      "repositorySizeKb": 52087,
       "license": {
         "status": "missing",
         "label": "Missing",
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-23T12:46:27.624Z",
+      "refreshedAt": "2026-11-08T02:20:02.267Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -36938,6 +36943,7 @@
           "envy-ai",
           "bartkelsey",
           "funteaqueue",
+          "0cyris",
           "fazo96"
         ],
         "relationships": []
@@ -96216,7 +96222,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-22T20:38:01.149Z",
+      "refreshedAt": "2026-11-08T02:19:08.150Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
