@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1fe88a570d7189df0bc62afdf0c40d3d204cdf65c7a5789f219024e70fb6df73",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1190858079:archkr-lumiverse-lumiweather",
+      "inputDigest": "55118d99d0a5e628b9d881f80746b17f3f6fca0c207fdd2b2461b94758f09957",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-08T08:12:53.715Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1190858079",
+    "identity": "github:1190858079"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 42466360515,
+    "sourceSha": "d325a4ddef44d49ebb118c703177ad4af7a9ea09"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/archkr-lumiverse-lumiweather.json",
+      "sha256": "6e3e38f026ff8572fd8ddc0cd7c5e12b01712709920b968c20edb63793e46d37",
+      "gitBlobSha": "1f56f0b3284180b7e545f100581b3d63f8f01cd9"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/1fe88a570d7189df0bc62afdf0c40d3d204cdf65c7a5789f219024e70fb6df73.json",
+      "sha256": "fbde4f67e4cf5fc93f1d50f30615683ea5e0d7acf04add1d10fd354553022631",
+      "gitBlobSha": "ecb3c8a4337ca8d0ef8b5d81974b27974919b9e2"
+    }
+  ]
+}

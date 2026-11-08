@@ -1,0 +1,94 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1437764170",
+  "repository": {
+    "id": 1437764170,
+    "owner": "lunarcadedigital",
+    "name": "VectTauri",
+    "url": "https://github.com/lunarcadedigital/VectTauri",
+    "description": "Advanced RAG for TauriTavern - Fork of VectFox with built-in Similharity",
+    "default_branch": "main",
+    "head_sha": "cbf33ad37248028f0d4c8056aed322e644ba943b",
+    "head_committed_at": "2026-11-05T07:48:30.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-10-29T00:10:14.000Z",
+    "size_kb": 13284
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-11-04T08:09:29.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-04T08:09:29.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-11-01T23:24:06.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-23T09:38:38.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-11T15:56:01.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-21T09:00:05.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-24",
+        "latest_at": "2026-08-30T13:39:24.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-08T09:00:57.675Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "cbf33ad37248028f0d4c8056aed322e644ba943b"
+  },
+  "community": {
+    "stars_count": 8,
+    "forks_count": 0,
+    "watchers_count": 1,
+    "aggregate": 9
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-11-08T09:00:57.675Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "KritBlade", "type": "User", "provider": "github" },
+      { "login": "LeviTheWeasel", "type": "User", "provider": "github" },
+      { "login": "lunarcadedigital", "type": "User", "provider": "github" },
+      { "login": "Coneja-Chibi", "type": "User", "provider": "github" },
+      { "login": "prolix-oc", "type": "User", "provider": "github" },
+      { "login": "Promansis", "type": "User", "provider": "github" },
+      { "login": "SirEdvin", "type": "User", "provider": "github" },
+      { "login": "r-t-k", "type": "User", "provider": "github" },
+      { "login": "TheLiquorPriest", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-08T09:00:57.675Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

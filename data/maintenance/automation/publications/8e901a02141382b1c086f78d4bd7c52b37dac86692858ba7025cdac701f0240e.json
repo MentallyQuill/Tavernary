@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8e901a02141382b1c086f78d4bd7c52b37dac86692858ba7025cdac701f0240e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-819108745:sillytavern-extension-weather",
+      "inputDigest": "aacf6f5c5825fb0cb0e131c739819d9343b646947928754889d855a82b39ebf1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-24T12:08:32.965Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-819108745",
+    "identity": "github:819108745"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42485734316,
+    "sourceSha": "caf06cd19e17f1504df1add85ab65bb2192633c2"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/sillytavern-extension-weather.json",
+      "sha256": "f129e56a59fe7b632403a026cca13873641c005b82f71d51618ecce49860595d",
+      "gitBlobSha": "9f4eba2c3e8fea4e46c13be2e70254fc174f6b45"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8e901a02141382b1c086f78d4bd7c52b37dac86692858ba7025cdac701f0240e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-819108745:sillytavern-extension-weather",
+      "inputDigest": "aacf6f5c5825fb0cb0e131c739819d9343b646947928754889d855a82b39ebf1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-24T12:08:32.965Z",
+    "nextEligibleAt": null,
+    "expectedSha": "f8c677185f5a385f489744044a8e35604f4b8f84",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-08T13:52:29.570Z",
+  "completedAt": null
+}

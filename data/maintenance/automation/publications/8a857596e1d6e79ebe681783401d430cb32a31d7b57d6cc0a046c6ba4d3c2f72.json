@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8a857596e1d6e79ebe681783401d430cb32a31d7b57d6cc0a046c6ba4d3c2f72",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1091890012:amiantos-writers-guild",
+      "inputDigest": "393833f7b3921a3f636909103f40794eff5cce6b2f9e52a20e06f335a732cd7a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-23T12:49:59.624Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1091890012",
+    "identity": "github:1091890012"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42483359085,
+    "sourceSha": "3141b15a54fc0d82a318bd8c5454c5b9546afcdd"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/amiantos-writers-guild.json",
+      "sha256": "68375ec918dd2a35830772ff0a0a540e7a99cf6efa1b4fa5e736fe42252e3f14",
+      "gitBlobSha": "dc3f88ca0b465e08660adbbca791f582b68f3b2e"
+    }
+  ]
+}

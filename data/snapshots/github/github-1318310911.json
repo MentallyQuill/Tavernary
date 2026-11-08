@@ -9,18 +9,23 @@
     "url": "https://github.com/ddkhan24/hordestudio",
     "description": "SillyTavern-style character creation + AI Dungeon-style persistent worlds + a detailed virtual companion simulator, packaged as a creator-focused local web application.",
     "default_branch": "main",
-    "head_sha": "3d32ca3bfd95ffbb0e746a0448762407e442123f",
-    "head_committed_at": "2026-10-23T21:57:26.000Z",
+    "head_sha": "653329e22f315ec87d928204f8155d4548d0d6c1",
+    "head_committed_at": "2026-11-02T18:25:44.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-31T12:09:50.000Z",
-    "size_kb": 338231
+    "size_kb": 339473
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-23T21:57:26.000Z",
+    "latest_source_activity_at": "2026-10-27T19:37:44.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-27T19:37:44.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-19",
         "latest_at": "2026-10-23T21:57:26.000Z",
@@ -60,44 +65,35 @@
         "week_start": "2026-08-17",
         "latest_at": "2026-08-23T17:50:09.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-10",
-        "latest_at": "2026-08-16T14:19:54.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-03",
-        "latest_at": "2026-08-09T21:43:03.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-10-23T22:18:07.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-24T12:06:52.143Z",
+    "baseline_completed_at": "2026-11-08T14:27:18.935Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "3d32ca3bfd95ffbb0e746a0448762407e442123f"
+    "evidence_head_sha": "653329e22f315ec87d928204f8155d4548d0d6c1"
   },
   "community": {
-    "stars_count": 59,
+    "stars_count": 63,
     "forks_count": 10,
     "watchers_count": 4,
-    "aggregate": 73
+    "aggregate": 77
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-10-24T12:08:44.319Z",
+  "refreshed_at": "2026-11-08T14:29:32.125Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "ddkhan24", "type": "User", "provider": "github" },
+      { "login": "Frief84", "type": "User", "provider": "github" },
       { "login": "nmorgowicz", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-24T12:06:52.143Z",
+    "refreshed_at": "2026-11-08T14:27:18.935Z",
     "stale_since": null
   }
 }

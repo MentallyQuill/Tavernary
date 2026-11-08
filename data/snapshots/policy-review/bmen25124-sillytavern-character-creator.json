@@ -5,12 +5,9 @@
   "source_identity": "github:bmen25124/sillytavern-character-creator",
   "evidence_fingerprint": "33bb5f1384f2b3d3ec17722c576da281c81e11841140a470c03fb96f79e38285",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-21T14:37:37.819Z",
-  "retry": {
-    "attempts": 6,
-    "last_failure_at": "2026-09-21T14:37:37.819Z"
-  },
+  "reviewed_at": "2026-11-08T13:22:57.169Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

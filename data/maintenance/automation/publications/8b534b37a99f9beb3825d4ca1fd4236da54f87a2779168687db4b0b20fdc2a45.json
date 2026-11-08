@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8b534b37a99f9beb3825d4ca1fd4236da54f87a2779168687db4b0b20fdc2a45",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-956654271:bmen25124-sillytavern-character-creator",
+      "inputDigest": "05a4ffbf5360251931b8947bfc0829fc8513e2535d7592e2aed0f336a3682f55",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-24T12:08:28.829Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-956654271",
+    "identity": "github:956654271"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42484585930,
+    "sourceSha": "ad95ba2bd9788d43cabe2b0a4903c0f2bcf4d7b0"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/bmen25124-sillytavern-character-creator.json",
+      "sha256": "eb14bc2c8ce95bc4a22b24c0730ad0eaf60853b70ca2cf511ea1cdcf7036e493",
+      "gitBlobSha": "4c0e523d2439d72e0d88e9ce198dfff679363a79"
+    }
+  ]
+}

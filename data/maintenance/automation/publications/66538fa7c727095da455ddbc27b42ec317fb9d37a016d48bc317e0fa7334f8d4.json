@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "66538fa7c727095da455ddbc27b42ec317fb9d37a016d48bc317e0fa7334f8d4",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1207091736:dampfinchen-chunk-dropper-for-sillytavern",
+      "inputDigest": "b9ef38d573d26b917b93a4b19d83db6313fe9821db3ce00ed26e56e23146d113",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-23T12:47:05.193Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1207091736",
+    "identity": "github:1207091736"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42481015068,
+    "sourceSha": "a7a41164ea64fff27b417416d2ac08e9e86aedbc"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/dampfinchen-chunk-dropper-for-sillytavern.json",
+      "sha256": "52eed56391be297bd7e0feb6bebfe78a82f385a501808c6e2e9734d3dad76199",
+      "gitBlobSha": "0eb822ce5564ee21a5f78ec42f435ac93768b5b3"
+    }
+  ]
+}

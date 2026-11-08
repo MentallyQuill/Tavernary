@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "lunarcadedigital-vecttauri",
+  "name": "VectTauri",
+  "kind": "extension",
+  "summary": "VectTauri is a fork of VectFox that brings RAG memory to TauriTavern on Android, with a built-in Similharity layer running entirely on-device — no server, Termux, or network setup (README: Advanced RAG for TauriTavern).",
+  "metadata_status": "curated",
+  "source_id": "github-1437764170",
+  "frontends": ["tauritavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "local-first",
+    "maintain-long-term-memory",
+    "mobile-friendly",
+    "retrieve-relevant-context",
+    "semantic-retrieval"
+  ],
+  "cataloged_at": "2026-11-08T09:00:57.675Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

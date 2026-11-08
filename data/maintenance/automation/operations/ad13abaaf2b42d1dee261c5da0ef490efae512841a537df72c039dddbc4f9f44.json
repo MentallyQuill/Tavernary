@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ad13abaaf2b42d1dee261c5da0ef490efae512841a537df72c039dddbc4f9f44",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1225316984:vectricity-st-aspect-evolutia",
+      "inputDigest": "f6920f1bf2d87fd74ba010d4f847469b14d888a45207a26f95a3e75f18ed4054",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-23T12:46:54.509Z",
+    "nextEligibleAt": "2026-11-08T08:24:15.781Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-08T08:09:15.781Z",
+  "completedAt": null
+}

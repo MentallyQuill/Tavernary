@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b0c7b43e437cf714d0eb6f5530325890f1e29d2e74d605fdbe619f6081d1da0c",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1251530217:virgilianshailer-llm-tools",
+      "inputDigest": "df318e79efe4dee1bdfd56b1b10cc916520d849290ea18726c4686e221523168",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-24T12:08:27.769Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1251530217",
+    "identity": "github:1251530217"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42483950110,
+    "sourceSha": "579e776abb4503a4238b09b69c5b6637bc63ea6a"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/virgilianshailer-llm-tools.json",
+      "sha256": "114f0c1668c27d8bbc454883022d76780cd768e3451c579d15cd566b9c01aa2a",
+      "gitBlobSha": "f41fe3923dc7e08c13109676aa59ebd8f3c3bc03"
+    }
+  ]
+}

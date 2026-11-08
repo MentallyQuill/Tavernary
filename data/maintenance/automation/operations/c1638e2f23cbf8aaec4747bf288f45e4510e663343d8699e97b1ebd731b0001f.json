@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c1638e2f23cbf8aaec4747bf288f45e4510e663343d8699e97b1ebd731b0001f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1195300925:hydall-glaze",
+      "inputDigest": "c2289673757226f53782bef7e9db0f691bf40cba36cc62868310640ea250995f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-23T12:47:08.408Z",
+    "nextEligibleAt": "2026-11-08T19:51:02.092Z",
+    "expectedSha": "f8c677185f5a385f489744044a8e35604f4b8f84",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-08T19:36:02.092Z",
+  "completedAt": null
+}

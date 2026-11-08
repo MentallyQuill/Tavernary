@@ -5,12 +5,9 @@
   "source_identity": "github:virgilianshailer/llm-tools",
   "evidence_fingerprint": "67c135543ed0c3567d28dbc43c18f67f4a35efc0366d8e4131b574f0e0ea1903",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-27T13:21:18.197Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-27T13:21:18.197Z"
-  },
+  "reviewed_at": "2026-11-08T13:15:20.743Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

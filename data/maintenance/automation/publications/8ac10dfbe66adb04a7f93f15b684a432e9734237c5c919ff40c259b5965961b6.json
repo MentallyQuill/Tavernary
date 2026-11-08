@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8ac10dfbe66adb04a7f93f15b684a432e9734237c5c919ff40c259b5965961b6",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-953012653:icefog72-sillytavern-simpleqrbartoggle",
+      "inputDigest": "ebf7fa8083812e984ec9ebdd97caea64d40270fabb012fefa7681dc965498ffa",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-24T12:08:24.871Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-953012653",
+    "identity": "github:953012653"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42485170910,
+    "sourceSha": "f26ebd5773a40b329f5046749f80eaccc07bb616"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/icefog72-sillytavern-simpleqrbartoggle.json",
+      "sha256": "a4eb72d1150229d1222b1c7dc73c63ff5802c726f89f0b67832213baa91735b6",
+      "gitBlobSha": "ccdbbc961c5b1f84aab738694b909f22e20287a5"
+    }
+  ]
+}
