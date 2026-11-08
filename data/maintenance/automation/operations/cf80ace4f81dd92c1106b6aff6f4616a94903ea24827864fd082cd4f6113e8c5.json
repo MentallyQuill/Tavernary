@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "cf80ace4f81dd92c1106b6aff6f4616a94903ea24827864fd082cd4f6113e8c5",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1158753341:j3tze-st-tag-pilot",
+      "inputDigest": "0aca057491478ddc2fe2a1fec036787e1eaf32a45697645fbb1adc62b115dd40",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-23T12:46:48.131Z",
+    "nextEligibleAt": "2026-11-08T08:10:36.812Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-08T07:55:36.812Z",
+  "completedAt": null
+}
