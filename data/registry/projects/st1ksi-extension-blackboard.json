@@ -1,7 +1,7 @@
 {
   "schema_version": 6,
   "id": "st1ksi-extension-blackboard",
-  "name": "Extension-Blackboard",
+  "name": "Simulation-Blackboard",
   "kind": "extension",
   "summary": "Guides the AI to prepare hidden facts, locations, inventories and NPC plans before player interaction, then resolve actions within a persistent world that keeps evolving beyond the current scene.",
   "metadata_status": "curated",
