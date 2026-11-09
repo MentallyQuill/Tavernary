@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "855e635b3aa214327cedbf9f1b05e96ee151b1a01aff76b6d3e59c4e7a2c5658",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1141807728:promansis-summary-sharder",
+      "inputDigest": "53bcd30c23ad249af49ebb9f4cfe05c3af6e11c5aabef736a144b687cb927493",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T06:58:34.215Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1141807728",
+    "identity": "github:1141807728"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42635296279,
+    "sourceSha": "5076fa746fb3ad68621b74c57017356183815ba0"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/promansis-summary-sharder.json",
+      "sha256": "34e1e27d5c591a7151c2ef604383a13f63f008eae312949d65f41908330cd601",
+      "gitBlobSha": "5f35d92a0aa880ad5832f037b4b06bf98ced1f46"
+    }
+  ]
+}
