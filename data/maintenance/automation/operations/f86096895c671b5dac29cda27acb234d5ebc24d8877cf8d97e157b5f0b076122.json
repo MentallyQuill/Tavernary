@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f86096895c671b5dac29cda27acb234d5ebc24d8877cf8d97e157b5f0b076122",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1232282077:lukathehero-sillytavern-claudesubscription",
+      "inputDigest": "7880d404c8ff62bcda31667b1ff493f5b2c689a24435581445645e22b0edadab",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T03:44:56.208Z",
+    "nextEligibleAt": "2026-11-09T09:03:02.654Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-09T08:48:02.654Z",
+  "completedAt": null
+}
