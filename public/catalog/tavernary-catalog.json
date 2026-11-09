@@ -4591,7 +4591,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:32.478Z",
+      "refreshedAt": "2026-11-09T17:45:37.271Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -25237,7 +25237,7 @@
       "sourceStatus": "healthy",
       "primaryFunction": "character-worldbuilding",
       "summary": "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets.",
-      "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+      "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
       "catalogedAt": "2026-07-26T00:00:00Z",
       "catalogCohort": "standard",
       "frontends": [
@@ -25271,7 +25271,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "3d9e2ab035093f55c3e4609f2bb5de2d75fe14b3",
+        "currentSha": "c61e52904dcff72274c60e1867e7bf06d2ff254a",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -25279,9 +25279,14 @@
       "attribution": {
         "owner": {
           "provider": "github",
-          "login": "Coneja-Chibi"
+          "login": "Vaudeville-Studios"
         },
         "contributors": [
+          {
+            "provider": "github",
+            "login": "Coneja-Chibi",
+            "botOrAi": false
+          },
           {
             "provider": "github",
             "login": "github-actions[bot]",
@@ -25303,25 +25308,25 @@
             "botOrAi": false
           }
         ],
-        "humanContributorCount": 3,
+        "humanContributorCount": 4,
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-09-21T23:44:35.000Z",
+        "latestSourceActivityAt": "2026-11-03T03:53:41.000Z",
         "activeWeeks12": 3,
         "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
           true,
           false,
           false,
           false,
-          true,
           false,
-          true,
-          false,
-          false,
-          false,
-          false,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -25333,18 +25338,18 @@
         "watchers": 2,
         "aggregate": 16
       },
-      "repositorySizeKb": 39368,
+      "repositorySizeKb": 40056,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:33.476Z",
+      "refreshedAt": "2026-11-09T17:45:25.529Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
-        "repositoryUrl": "https://github.com/Coneja-Chibi/Hoplight.git",
+        "repositoryUrl": "https://github.com/Vaudeville-Studios/Hoplight.git",
         "branch": null,
         "manifestPath": null,
         "folderName": "Hoplight"
@@ -25359,7 +25364,7 @@
           "coneja-chibi-hoplight",
           "github-1305235960",
           "Coneja-Chibi/Hoplight",
-          "https://github.com/Coneja-Chibi/Hoplight"
+          "https://github.com/Vaudeville-Studios/Hoplight"
         ],
         "summary": [
           "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets."
@@ -25390,6 +25395,7 @@
         ],
         "compatibility": [],
         "maintainers": [
+          "Vaudeville-Studios",
           "Coneja-Chibi",
           "github-actions[bot]",
           "NemoVonNirgend",
@@ -28048,7 +28054,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "a0b1c60d349506c5d6d531f7bbb11444fed46f9f",
+        "currentSha": "893b1e17f00f63f08de913777063b61e8d424882",
         "report": {
           "reportId": "082c55ef10df9d4fbe980220ad859786ac6dc6374ac6c214670923f7238bb0fc",
           "riskLevel": "low",
@@ -28180,10 +28186,10 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-22T23:58:27.000Z",
-        "activeWeeks12": 10,
+        "latestSourceActivityAt": "2026-10-25T23:51:16.000Z",
+        "activeWeeks12": 9,
         "weeklyActivity": [
-          true,
+          false,
           false,
           true,
           true,
@@ -28201,19 +28207,19 @@
       },
       "latestReleaseAt": "2026-06-11T17:11:22.000Z",
       "community": {
-        "stars": 57,
+        "stars": 61,
         "forks": 9,
         "watchers": 3,
-        "aggregate": 69
+        "aggregate": 73
       },
-      "repositorySizeKb": 5509,
+      "repositorySizeKb": 9073,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:25.952Z",
+      "refreshedAt": "2026-11-09T17:45:38.383Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -75681,7 +75687,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:29.356Z",
+      "refreshedAt": "2026-11-09T17:45:23.506Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -114116,7 +114122,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "14ed7b6fdccf1a421596cc53acce91b281e3b388",
+        "currentSha": "6ac9130e8e0bd1da075da4c114e9160308b73d7a",
         "report": {
           "reportId": "13eee3bdbbe669fed240757f4b331d387653b5913f59daaf67627524d73905f7",
           "riskLevel": "low",
@@ -114183,11 +114189,9 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-08-20T00:51:26.000Z",
-        "activeWeeks12": 2,
+        "latestSourceActivityAt": "2026-11-04T02:27:26.000Z",
+        "activeWeeks12": 1,
         "weeklyActivity": [
-          true,
-          true,
           false,
           false,
           false,
@@ -114197,7 +114201,9 @@
           false,
           false,
           false,
-          false
+          false,
+          false,
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -114209,14 +114215,14 @@
         "watchers": 0,
         "aggregate": 6
       },
-      "repositorySizeKb": 4232,
+      "repositorySizeKb": 4930,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:36.215Z",
+      "refreshedAt": "2026-11-09T17:48:34.589Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -133348,9 +133354,9 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 2,
-        "forks": 1,
+        "forks": 2,
         "watchers": 0,
-        "aggregate": 3
+        "aggregate": 4
       },
       "repositorySizeKb": 9,
       "license": {
@@ -133359,7 +133365,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:31.757Z",
+      "refreshedAt": "2026-11-09T17:45:37.698Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -146780,7 +146786,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:32.478Z",
+            "refreshedAt": "2026-11-09T17:45:37.271Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -170598,7 +170604,7 @@
           "primaryFunction": "character-worldbuilding",
           "availability": "available",
           "unavailableReason": null,
-          "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+          "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
           "project": {
             "id": "coneja-chibi-hoplight",
             "name": "Hoplight",
@@ -170607,7 +170613,7 @@
             "sourceStatus": "healthy",
             "primaryFunction": "character-worldbuilding",
             "summary": "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets.",
-            "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+            "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
             "catalogedAt": "2026-07-26T00:00:00Z",
             "catalogCohort": "standard",
             "frontends": [
@@ -170641,7 +170647,7 @@
               "state": "gray",
               "riskLevel": null,
               "freshness": "unassessed",
-              "currentSha": "3d9e2ab035093f55c3e4609f2bb5de2d75fe14b3",
+              "currentSha": "c61e52904dcff72274c60e1867e7bf06d2ff254a",
               "report": null,
               "history": [],
               "historyUrl": null
@@ -170649,9 +170655,14 @@
             "attribution": {
               "owner": {
                 "provider": "github",
-                "login": "Coneja-Chibi"
+                "login": "Vaudeville-Studios"
               },
               "contributors": [
+                {
+                  "provider": "github",
+                  "login": "Coneja-Chibi",
+                  "botOrAi": false
+                },
                 {
                   "provider": "github",
                   "login": "github-actions[bot]",
@@ -170673,25 +170684,25 @@
                   "botOrAi": false
                 }
               ],
-              "humanContributorCount": 3,
+              "humanContributorCount": 4,
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-09-21T23:44:35.000Z",
+              "latestSourceActivityAt": "2026-11-03T03:53:41.000Z",
               "activeWeeks12": 3,
               "weeklyActivity": [
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
                 true,
                 false,
                 false,
                 false,
-                true,
                 false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -170703,18 +170714,18 @@
               "watchers": 2,
               "aggregate": 16
             },
-            "repositorySizeKb": 39368,
+            "repositorySizeKb": 40056,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:33.476Z",
+            "refreshedAt": "2026-11-09T17:45:25.529Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
-              "repositoryUrl": "https://github.com/Coneja-Chibi/Hoplight.git",
+              "repositoryUrl": "https://github.com/Vaudeville-Studios/Hoplight.git",
               "branch": null,
               "manifestPath": null,
               "folderName": "Hoplight"
@@ -170729,7 +170740,7 @@
                 "coneja-chibi-hoplight",
                 "github-1305235960",
                 "Coneja-Chibi/Hoplight",
-                "https://github.com/Coneja-Chibi/Hoplight"
+                "https://github.com/Vaudeville-Studios/Hoplight"
               ],
               "summary": [
                 "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets."
@@ -170760,6 +170771,7 @@
               ],
               "compatibility": [],
               "maintainers": [
+                "Vaudeville-Studios",
                 "Coneja-Chibi",
                 "github-actions[bot]",
                 "NemoVonNirgend",
@@ -172714,7 +172726,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:32.478Z",
+            "refreshedAt": "2026-11-09T17:45:37.271Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -186825,7 +186837,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:32.478Z",
+            "refreshedAt": "2026-11-09T17:45:37.271Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -195170,7 +195182,7 @@
           "primaryFunction": "character-worldbuilding",
           "availability": "available",
           "unavailableReason": null,
-          "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+          "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
           "project": {
             "id": "coneja-chibi-hoplight",
             "name": "Hoplight",
@@ -195179,7 +195191,7 @@
             "sourceStatus": "healthy",
             "primaryFunction": "character-worldbuilding",
             "summary": "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets.",
-            "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+            "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
             "catalogedAt": "2026-07-26T00:00:00Z",
             "catalogCohort": "standard",
             "frontends": [
@@ -195213,7 +195225,7 @@
               "state": "gray",
               "riskLevel": null,
               "freshness": "unassessed",
-              "currentSha": "3d9e2ab035093f55c3e4609f2bb5de2d75fe14b3",
+              "currentSha": "c61e52904dcff72274c60e1867e7bf06d2ff254a",
               "report": null,
               "history": [],
               "historyUrl": null
@@ -195221,9 +195233,14 @@
             "attribution": {
               "owner": {
                 "provider": "github",
-                "login": "Coneja-Chibi"
+                "login": "Vaudeville-Studios"
               },
               "contributors": [
+                {
+                  "provider": "github",
+                  "login": "Coneja-Chibi",
+                  "botOrAi": false
+                },
                 {
                   "provider": "github",
                   "login": "github-actions[bot]",
@@ -195245,25 +195262,25 @@
                   "botOrAi": false
                 }
               ],
-              "humanContributorCount": 3,
+              "humanContributorCount": 4,
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-09-21T23:44:35.000Z",
+              "latestSourceActivityAt": "2026-11-03T03:53:41.000Z",
               "activeWeeks12": 3,
               "weeklyActivity": [
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
                 true,
                 false,
                 false,
                 false,
-                true,
                 false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -195275,18 +195292,18 @@
               "watchers": 2,
               "aggregate": 16
             },
-            "repositorySizeKb": 39368,
+            "repositorySizeKb": 40056,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:33.476Z",
+            "refreshedAt": "2026-11-09T17:45:25.529Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
-              "repositoryUrl": "https://github.com/Coneja-Chibi/Hoplight.git",
+              "repositoryUrl": "https://github.com/Vaudeville-Studios/Hoplight.git",
               "branch": null,
               "manifestPath": null,
               "folderName": "Hoplight"
@@ -195301,7 +195318,7 @@
                 "coneja-chibi-hoplight",
                 "github-1305235960",
                 "Coneja-Chibi/Hoplight",
-                "https://github.com/Coneja-Chibi/Hoplight"
+                "https://github.com/Vaudeville-Studios/Hoplight"
               ],
               "summary": [
                 "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets."
@@ -195332,6 +195349,7 @@
               ],
               "compatibility": [],
               "maintainers": [
+                "Vaudeville-Studios",
                 "Coneja-Chibi",
                 "github-actions[bot]",
                 "NemoVonNirgend",
@@ -201039,7 +201057,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:32.478Z",
+            "refreshedAt": "2026-11-09T17:45:37.271Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -215313,7 +215331,7 @@
           "primaryFunction": "character-worldbuilding",
           "availability": "available",
           "unavailableReason": null,
-          "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+          "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
           "project": {
             "id": "coneja-chibi-hoplight",
             "name": "Hoplight",
@@ -215322,7 +215340,7 @@
             "sourceStatus": "healthy",
             "primaryFunction": "character-worldbuilding",
             "summary": "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets.",
-            "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+            "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
             "catalogedAt": "2026-07-26T00:00:00Z",
             "catalogCohort": "standard",
             "frontends": [
@@ -215356,7 +215374,7 @@
               "state": "gray",
               "riskLevel": null,
               "freshness": "unassessed",
-              "currentSha": "3d9e2ab035093f55c3e4609f2bb5de2d75fe14b3",
+              "currentSha": "c61e52904dcff72274c60e1867e7bf06d2ff254a",
               "report": null,
               "history": [],
               "historyUrl": null
@@ -215364,9 +215382,14 @@
             "attribution": {
               "owner": {
                 "provider": "github",
-                "login": "Coneja-Chibi"
+                "login": "Vaudeville-Studios"
               },
               "contributors": [
+                {
+                  "provider": "github",
+                  "login": "Coneja-Chibi",
+                  "botOrAi": false
+                },
                 {
                   "provider": "github",
                   "login": "github-actions[bot]",
@@ -215388,25 +215411,25 @@
                   "botOrAi": false
                 }
               ],
-              "humanContributorCount": 3,
+              "humanContributorCount": 4,
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-09-21T23:44:35.000Z",
+              "latestSourceActivityAt": "2026-11-03T03:53:41.000Z",
               "activeWeeks12": 3,
               "weeklyActivity": [
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
                 true,
                 false,
                 false,
                 false,
-                true,
                 false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -215418,18 +215441,18 @@
               "watchers": 2,
               "aggregate": 16
             },
-            "repositorySizeKb": 39368,
+            "repositorySizeKb": 40056,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:33.476Z",
+            "refreshedAt": "2026-11-09T17:45:25.529Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
-              "repositoryUrl": "https://github.com/Coneja-Chibi/Hoplight.git",
+              "repositoryUrl": "https://github.com/Vaudeville-Studios/Hoplight.git",
               "branch": null,
               "manifestPath": null,
               "folderName": "Hoplight"
@@ -215444,7 +215467,7 @@
                 "coneja-chibi-hoplight",
                 "github-1305235960",
                 "Coneja-Chibi/Hoplight",
-                "https://github.com/Coneja-Chibi/Hoplight"
+                "https://github.com/Vaudeville-Studios/Hoplight"
               ],
               "summary": [
                 "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets."
@@ -215475,6 +215498,7 @@
               ],
               "compatibility": [],
               "maintainers": [
+                "Vaudeville-Studios",
                 "Coneja-Chibi",
                 "github-actions[bot]",
                 "NemoVonNirgend",
@@ -243654,7 +243678,7 @@
           "primaryFunction": "character-worldbuilding",
           "availability": "available",
           "unavailableReason": null,
-          "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+          "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
           "project": {
             "id": "coneja-chibi-hoplight",
             "name": "Hoplight",
@@ -243663,7 +243687,7 @@
             "sourceStatus": "healthy",
             "primaryFunction": "character-worldbuilding",
             "summary": "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets.",
-            "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+            "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
             "catalogedAt": "2026-07-26T00:00:00Z",
             "catalogCohort": "standard",
             "frontends": [
@@ -243697,7 +243721,7 @@
               "state": "gray",
               "riskLevel": null,
               "freshness": "unassessed",
-              "currentSha": "3d9e2ab035093f55c3e4609f2bb5de2d75fe14b3",
+              "currentSha": "c61e52904dcff72274c60e1867e7bf06d2ff254a",
               "report": null,
               "history": [],
               "historyUrl": null
@@ -243705,9 +243729,14 @@
             "attribution": {
               "owner": {
                 "provider": "github",
-                "login": "Coneja-Chibi"
+                "login": "Vaudeville-Studios"
               },
               "contributors": [
+                {
+                  "provider": "github",
+                  "login": "Coneja-Chibi",
+                  "botOrAi": false
+                },
                 {
                   "provider": "github",
                   "login": "github-actions[bot]",
@@ -243729,25 +243758,25 @@
                   "botOrAi": false
                 }
               ],
-              "humanContributorCount": 3,
+              "humanContributorCount": 4,
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-09-21T23:44:35.000Z",
+              "latestSourceActivityAt": "2026-11-03T03:53:41.000Z",
               "activeWeeks12": 3,
               "weeklyActivity": [
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
                 true,
                 false,
                 false,
                 false,
-                true,
                 false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -243759,18 +243788,18 @@
               "watchers": 2,
               "aggregate": 16
             },
-            "repositorySizeKb": 39368,
+            "repositorySizeKb": 40056,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:33.476Z",
+            "refreshedAt": "2026-11-09T17:45:25.529Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
-              "repositoryUrl": "https://github.com/Coneja-Chibi/Hoplight.git",
+              "repositoryUrl": "https://github.com/Vaudeville-Studios/Hoplight.git",
               "branch": null,
               "manifestPath": null,
               "folderName": "Hoplight"
@@ -243785,7 +243814,7 @@
                 "coneja-chibi-hoplight",
                 "github-1305235960",
                 "Coneja-Chibi/Hoplight",
-                "https://github.com/Coneja-Chibi/Hoplight"
+                "https://github.com/Vaudeville-Studios/Hoplight"
               ],
               "summary": [
                 "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets."
@@ -243816,6 +243845,7 @@
               ],
               "compatibility": [],
               "maintainers": [
+                "Vaudeville-Studios",
                 "Coneja-Chibi",
                 "github-actions[bot]",
                 "NemoVonNirgend",
