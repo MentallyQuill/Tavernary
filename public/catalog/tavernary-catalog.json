@@ -70082,10 +70082,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 121,
+        "stars": 124,
         "forks": 7,
         "watchers": 2,
-        "aggregate": 130
+        "aggregate": 133
       },
       "repositorySizeKb": 491,
       "license": {
@@ -70094,7 +70094,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T06:48:44.160Z",
+      "refreshedAt": "2026-11-09T11:26:11.213Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -71567,7 +71567,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "rpg-systems",
-      "summary": "SillyTavern MazeMaster is a 2.5D roguelike RPG toolkit that extends the SillyTavern frontend with roleplay game systems. It provides structured mechanics for running roguelike adventures within the chat environment.",
+      "summary": "SillyTavern MazeMaster is a roguelike RPG adventure toolkit with procedurally generated dungeons (5x5 to 20x20), LLM-enhanced narration, session memory, 8 mini games, and full inventory management (README).",
       "canonicalUrl": "https://github.com/mechamarmot/SillyTavern-MazeMaster",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -71604,10 +71604,10 @@
           "facet": "goal"
         },
         {
-          "id": "rules-driven",
-          "label": "Rules-driven",
-          "description": "Uses explicit rules, schemas, calculations, or deterministic mechanics to constrain behavior.",
-          "facet": "trait"
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
         }
       ],
       "tavernKeeper": {
@@ -71808,7 +71808,7 @@
           "https://github.com/mechamarmot/SillyTavern-MazeMaster"
         ],
         "summary": [
-          "SillyTavern MazeMaster is a 2.5D roguelike RPG toolkit that extends the SillyTavern frontend with roleplay game systems. It provides structured mechanics for running roguelike adventures within the chat environment."
+          "SillyTavern MazeMaster is a roguelike RPG adventure toolkit with procedurally generated dungeons (5x5 to 20x20), LLM-enhanced narration, session memory, 8 mini games, and full inventory management (README)."
         ],
         "kind": [
           "extension"
@@ -71833,10 +71833,10 @@
           "quest tracking",
           "inventory management",
           "equipment tracking",
-          "Rules-driven",
-          "deterministic mechanics",
-          "rule based",
-          "schema driven"
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals"
         ],
         "frontends": [
           "SillyTavern"
@@ -73618,10 +73618,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 25,
+        "stars": 28,
         "forks": 3,
         "watchers": 2,
-        "aggregate": 30
+        "aggregate": 33
       },
       "repositorySizeKb": 23484,
       "license": {
@@ -73630,7 +73630,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T06:58:15.571Z",
+      "refreshedAt": "2026-11-09T11:27:30.160Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -92898,8 +92898,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "a5e0de333872f9f9e14b70f5194877ea88d96d51",
+        "freshness": "stale",
+        "currentSha": "eae025e76015345294bc2c59feeae3caaf842bab",
         "report": {
           "reportId": "d375cba7151b1d8556fdef90fd5cf75c7ef983a1bdeb230e46d5253efabb6dcc",
           "riskLevel": "low",
@@ -93006,8 +93006,8 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-25T04:46:08.000Z",
-        "activeWeeks12": 5,
+        "latestSourceActivityAt": "2026-11-03T03:16:46.000Z",
+        "activeWeeks12": 6,
         "weeklyActivity": [
           false,
           false,
@@ -93020,19 +93020,19 @@
           false,
           true,
           true,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 5,
+        "stars": 8,
         "forks": 1,
         "watchers": 0,
-        "aggregate": 6
+        "aggregate": 9
       },
-      "repositorySizeKb": 35324,
+      "repositorySizeKb": 44171,
       "license": {
         "status": "missing",
         "label": "Missing",
@@ -93057,7 +93057,7 @@
           }
         ]
       },
-      "refreshedAt": "2026-10-25T06:49:17.395Z",
+      "refreshedAt": "2026-11-09T11:28:16.600Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -112597,7 +112597,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T06:04:05.566Z",
+      "refreshedAt": "2026-11-09T11:26:59.406Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -119651,6 +119651,219 @@
         "compatibility": [],
         "maintainers": [
           "TCLowe1982"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "tealios-errata",
+      "name": "errata",
+      "kind": "frontend",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": "Errata is an LLM-assisted writing app where prose, characters, guidelines, and knowledge are composable fragments that assemble into structured LLM context for story generation (README: introduction).",
+      "canonicalUrl": "https://github.com/tealios/errata",
+      "catalogedAt": "2026-11-09T10:47:33.122Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "errata",
+          "label": "errata",
+          "description": "Works with the errata roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-structured-reasoning",
+          "label": "Add structured reasoning",
+          "description": "Introduce deliberate planning, reflection, critique, or multi-step thinking before output.",
+          "facet": "goal"
+        },
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
+          "facet": "goal"
+        },
+        {
+          "id": "improve-writing-and-prose",
+          "label": "Improve writing and prose",
+          "description": "Strengthen prose, dialogue, style, pacing, subtext, or general writing quality.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-prompts-and-presets",
+          "label": "Manage prompts and presets",
+          "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
+          "facet": "goal"
+        },
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        },
+        {
+          "id": "route-tasks-across-models",
+          "label": "Route tasks across models",
+          "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "4f44941e263571224e639726ba279ca9ce3b9133",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "tealios"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "nokusukun",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "keturn",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Viscerous",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "roleforgaming",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Tointer",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "pax-co",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Rurijian",
+            "botOrAi": false
+          }
+        ],
+        "humanContributorCount": 7,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-05T10:57:05.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-09-14T03:05:27.000Z",
+      "community": {
+        "stars": 144,
+        "forks": 23,
+        "watchers": 6,
+        "aggregate": 173
+      },
+      "repositorySizeKb": 4246,
+      "license": {
+        "status": "proprietary",
+        "label": "Proprietary",
+        "tooltip": "The published root license is not OSI-approved."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-09T10:47:33.122Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "errata"
+        ],
+        "aliases": [],
+        "source": [
+          "tealios-errata",
+          "github-1158150500",
+          "tealios/errata",
+          "https://github.com/tealios/errata"
+        ],
+        "summary": [
+          "Errata is an LLM-assisted writing app where prose, characters, guidelines, and knowledge are composable fragments that assemble into structured LLM context for story generation (README: introduction)."
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [
+          "Add structured reasoning",
+          "reasoning pipelines",
+          "stepped thinking",
+          "planning reasoning",
+          "planning passes",
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control",
+          "Improve writing and prose",
+          "writing assistance",
+          "prose improvement",
+          "co-writing",
+          "Manage prompts and presets",
+          "prompt management",
+          "prompt engineering",
+          "preset organization",
+          "template management",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
+          "Route tasks across models",
+          "model routing",
+          "task routing",
+          "connection routing"
+        ],
+        "frontends": [
+          "errata"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "tealios",
+          "nokusukun",
+          "keturn",
+          "Viscerous",
+          "roleforgaming",
+          "Tointer",
+          "pax-co",
+          "Rurijian"
         ],
         "relationships": []
       }
@@ -141752,10 +141965,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 25,
+              "stars": 28,
               "forks": 3,
               "watchers": 2,
-              "aggregate": 30
+              "aggregate": 33
             },
             "repositorySizeKb": 23484,
             "license": {
@@ -141764,7 +141977,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T06:58:15.571Z",
+            "refreshedAt": "2026-11-09T11:27:30.160Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -182952,10 +183165,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 121,
+              "stars": 124,
               "forks": 7,
               "watchers": 2,
-              "aggregate": 130
+              "aggregate": 133
             },
             "repositorySizeKb": 491,
             "license": {
@@ -182964,7 +183177,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T06:48:44.160Z",
+            "refreshedAt": "2026-11-09T11:26:11.213Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -196709,10 +196922,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 121,
+              "stars": 124,
               "forks": 7,
               "watchers": 2,
-              "aggregate": 130
+              "aggregate": 133
             },
             "repositorySizeKb": 491,
             "license": {
@@ -196721,7 +196934,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T06:48:44.160Z",
+            "refreshedAt": "2026-11-09T11:26:11.213Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -205506,10 +205719,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 121,
+              "stars": 124,
               "forks": 7,
               "watchers": 2,
-              "aggregate": 130
+              "aggregate": 133
             },
             "repositorySizeKb": 491,
             "license": {
@@ -205518,7 +205731,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T06:48:44.160Z",
+            "refreshedAt": "2026-11-09T11:26:11.213Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -230621,10 +230834,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 121,
+              "stars": 124,
               "forks": 7,
               "watchers": 2,
-              "aggregate": 130
+              "aggregate": 133
             },
             "repositorySizeKb": 491,
             "license": {
@@ -230633,7 +230846,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T06:48:44.160Z",
+            "refreshedAt": "2026-11-09T11:26:11.213Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -273269,10 +273482,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 25,
+              "stars": 28,
               "forks": 3,
               "watchers": 2,
-              "aggregate": 30
+              "aggregate": 33
             },
             "repositorySizeKb": 23484,
             "license": {
@@ -273281,7 +273494,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T06:58:15.571Z",
+            "refreshedAt": "2026-11-09T11:27:30.160Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -288829,10 +289042,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 121,
+              "stars": 124,
               "forks": 7,
               "watchers": 2,
-              "aggregate": 130
+              "aggregate": 133
             },
             "repositorySizeKb": 491,
             "license": {
@@ -288841,7 +289054,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T06:48:44.160Z",
+            "refreshedAt": "2026-11-09T11:26:11.213Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -293098,10 +293311,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 25,
+              "stars": 28,
               "forks": 3,
               "watchers": 2,
-              "aggregate": 30
+              "aggregate": 33
             },
             "repositorySizeKb": 23484,
             "license": {
@@ -293110,7 +293323,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T06:58:15.571Z",
+            "refreshedAt": "2026-11-09T11:27:30.160Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",

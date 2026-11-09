@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "efaa89e3851ff71b239982a41920b9ebfd46f3f84003d2e9b20ed32b79553e4b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-981213323:ledissolution-statsuite",
+      "inputDigest": "bd9a9cf54e82a2a9e86b9839437df47551975215a43a48fa58034f0a2ef444ab",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-09T02:33:40.154Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-981213323",
+    "identity": "github:981213323"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42556534016,
+    "sourceSha": "66173220c96c65d93a568a2ad90732bdf5c5a4b4"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/ledissolution-statsuite.json",
+      "sha256": "6f01243d9273df1ce67310d9d800c6c8cba83b6ac88632e844929d76fb4780b8",
+      "gitBlobSha": "29d3359ac7c637cc8e38fd36ffc9dbe82db73f06"
+    }
+  ]
+}

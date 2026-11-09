@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "mechamarmot-sillytavern-mazemaster",
+  "sourceId": "github-1120101080",
+  "sourceIdentity": "github:1120101080",
+  "inputDigest": "5e95563e5dea9b2e49e2b6444843cd3f4c45894624a2a58f594d2b91ba3d93a9",
+  "fingerprint": "2b1f3e5ebcda08093d2e53adc26c2a3b992881a8d1cbb743df4b7adb56c37bba",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "913767cd2b5e67df71fbd8b53772bc70d4168553ddc381a808fefeb39a27fe01",
+  "outputDigest": "5a902b207c5bbeb1921dab27d63379ca01ed3ba14a1212c0b411898ef5197f19",
+  "headSha": "ef8e1f899d9977cd4a814ac248a03f298391bc8e",
+  "observedAt": "2026-11-09T03:17:56.142Z"
+}

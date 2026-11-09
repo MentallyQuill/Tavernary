@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "ledissolution-statsuite",
+  "source_id": "github-981213323",
+  "source_identity": "github:ledissolution/statsuite",
+  "evidence_fingerprint": "cc5b4402388e603d8e7aa711bfbb29b3a855162a0202d6f53a122280743f5fc5",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-09T03:29:23.798Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}
