@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "hooch88-tauritavern-scenestate",
+  "name": "TauriTavern-SceneState",
+  "kind": "extension",
+  "summary": "TauriTavern-SceneState is a lightweight TauriTavern extension that shows the current in-world location, date, and time above narrator responses and gives each NPC a stable name-derived dialogue color (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1364890574",
+  "frontends": ["tauritavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["add-visual-immersion", "track-characters-and-world-state"],
+  "cataloged_at": "2026-11-09T06:24:04.902Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
