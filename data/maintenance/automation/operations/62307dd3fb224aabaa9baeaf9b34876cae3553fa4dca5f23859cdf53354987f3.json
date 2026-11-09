@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "62307dd3fb224aabaa9baeaf9b34876cae3553fa4dca5f23859cdf53354987f3",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1068235084:aikohanasaki-sillytavern-generationlocks",
+      "inputDigest": "9908a3a1e042d1c86c3d5c242e8c328ccf04d6ae0601f134007edac1d137e648",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-24T19:44:20.911Z",
+    "nextEligibleAt": "2026-11-09T02:35:12.694Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-09T02:20:12.694Z",
+  "completedAt": null
+}
