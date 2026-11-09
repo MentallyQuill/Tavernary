@@ -1,0 +1,77 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1158150500",
+  "repository": {
+    "id": 1158150500,
+    "owner": "tealios",
+    "name": "errata",
+    "url": "https://github.com/tealios/errata",
+    "description": "A modern writing app",
+    "default_branch": "master",
+    "head_sha": "4f44941e263571224e639726ba279ca9ce3b9133",
+    "head_committed_at": "2026-11-05T10:57:05.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-02-14T21:57:00.000Z",
+    "size_kb": 4246
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-11-05T10:57:05.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-05T10:57:05.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-27T20:17:40.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-14T03:05:08.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-09-14T03:05:27.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-09T10:47:33.122Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "4f44941e263571224e639726ba279ca9ce3b9133"
+  },
+  "community": {
+    "stars_count": 144,
+    "forks_count": 23,
+    "watchers_count": 6,
+    "aggregate": 173
+  },
+  "license": {
+    "status": "proprietary",
+    "spdx_id": null,
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-11-09T10:47:33.122Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "nokusukun", "type": "User", "provider": "github" },
+      { "login": "keturn", "type": "User", "provider": "github" },
+      { "login": "Viscerous", "type": "User", "provider": "github" },
+      { "login": "roleforgaming", "type": "User", "provider": "github" },
+      { "login": "Tointer", "type": "User", "provider": "github" },
+      { "login": "pax-co", "type": "User", "provider": "github" },
+      { "login": "Rurijian", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-09T10:47:33.122Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

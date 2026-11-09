@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "tealios-errata",
+  "name": "errata",
+  "kind": "frontend",
+  "summary": "Errata is an LLM-assisted writing app where prose, characters, guidelines, and knowledge are composable fragments that assemble into structured LLM context for story generation (README: introduction).",
+  "metadata_status": "curated",
+  "source_id": "github-1158150500",
+  "frontends": ["errata"],
+  "primary_function": "frontend",
+  "tags": [
+    "add-structured-reasoning",
+    "guide-model-responses",
+    "improve-writing-and-prose",
+    "manage-prompts-and-presets",
+    "preserve-story-continuity",
+    "route-tasks-across-models"
+  ],
+  "cataloged_at": "2026-11-09T10:47:33.122Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
