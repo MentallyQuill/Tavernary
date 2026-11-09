@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "68ea8abf9767c06c1d1bef1219181d4fe813d7a7d8f65fa964b35ed78a6a1c2d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1388520986:platberlitz-neconyan",
+      "inputDigest": "8f8eadce43e161417ca0b9273355d0bbbf2de6a4a280258c7f496baaf9128290",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-24T21:02:46.199Z",
+    "nextEligibleAt": "2026-11-09T02:35:12.694Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-09T02:20:12.694Z",
+  "completedAt": null
+}
