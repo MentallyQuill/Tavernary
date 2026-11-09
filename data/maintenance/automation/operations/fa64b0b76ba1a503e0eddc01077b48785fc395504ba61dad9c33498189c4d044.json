@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "fa64b0b76ba1a503e0eddc01077b48785fc395504ba61dad9c33498189c4d044",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1310625840:willasaywhat-sillytavern-voicebox-tts",
+      "inputDigest": "19133611fbacfbaf7bfcd94a32a81f61a70fe6d29bd9449f00c5360c1985e9a3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T01:52:46.907Z",
+    "nextEligibleAt": "2026-11-09T08:46:41.205Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-09T08:31:41.205Z",
+  "completedAt": null
+}
