@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "aa3c5f77f57919ca1dfead1d08444cb3f99da492924d35ffd2a9a6ecaeeb8154",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1239116905:tclowe1982-marinara-extender",
+      "inputDigest": "3b51dc2aaebf93dddc6d837e2559f0a60831aab3a21402b6a690f7c0ed1875ae",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-24T23:17:10.829Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1239116905",
+    "identity": "github:1239116905"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42557871304,
+    "sourceSha": "490523da5de9a72100b08177ecb587f91598c25a"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/tclowe1982-marinara-extender.json",
+      "sha256": "b5fb87176333fe1a38c50b604035d912af87f4549ef7be4b4affaade1223b20f",
+      "gitBlobSha": "5556702de08098b3f2f68b12f960fae74422b611"
+    }
+  ]
+}

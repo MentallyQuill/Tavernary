@@ -3,14 +3,11 @@
   "project_id": "archkr-lumiverse-lumiweather",
   "source_id": "github-1190858079",
   "source_identity": "github:archkr/lumiverse-lumiweather",
-  "evidence_fingerprint": "96bed75de95f204e05cff20461352bab38e44af08c2483d4dbb60526b79b1a42",
+  "evidence_fingerprint": "37f54cea41f9479ffbb9e8410938db4d37f5b5bccf24faa33c3a25d64a2e05a5",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-15T07:58:58.347Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-08-15T07:58:58.347Z"
-  },
+  "reviewed_at": "2026-11-08T09:42:39.990Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

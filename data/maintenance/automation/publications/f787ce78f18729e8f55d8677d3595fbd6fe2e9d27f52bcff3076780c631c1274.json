@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f787ce78f18729e8f55d8677d3595fbd6fe2e9d27f52bcff3076780c631c1274",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1317341957:0x4kgi-sillytavern-auto-pair-input-characters",
+      "inputDigest": "eb4dafb1dee918cae4579dcd48c8e7c35326cdecb3e79e0895836579bffc4460",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T08:54:15.132Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1317341957",
+    "identity": "github:1317341957"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42640770719,
+    "sourceSha": "0ea3a1e18baaf783a79fa58b001844cc34c7447f"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/0x4kgi-sillytavern-auto-pair-input-characters.json",
+      "sha256": "6c9413b4fbb2770850704d17c7ab4783fe357179889fb22630be953226a563aa",
+      "gitBlobSha": "8e000903d35d71e0170b282d3b88699af8b24862"
+    }
+  ]
+}

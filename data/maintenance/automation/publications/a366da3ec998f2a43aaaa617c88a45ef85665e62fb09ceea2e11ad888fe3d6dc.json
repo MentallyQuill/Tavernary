@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a366da3ec998f2a43aaaa617c88a45ef85665e62fb09ceea2e11ad888fe3d6dc",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1160848402:ghostd93-bettersimtracker",
+      "inputDigest": "4b9c7e0b26e8dc3638aa9384939622e0b87de2f6819f884230f25f3bb2e1e8bb",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-09T00:05:46.034Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1160848402",
+    "identity": "github:1160848402"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42543576440,
+    "sourceSha": "67ab45e312780e8142073b471658cb93937ef5e2"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/ghostd93-bettersimtracker.json",
+      "sha256": "0483c9d9b2dc6cbd14eac3894b68b20d9203147595bd5298f541b8270a49447a",
+      "gitBlobSha": "41468386e84a4ffd301c7d1cb0237bc9513cceb2"
+    }
+  ]
+}

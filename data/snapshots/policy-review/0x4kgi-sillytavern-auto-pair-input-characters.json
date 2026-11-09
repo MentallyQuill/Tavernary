@@ -3,14 +3,11 @@
   "project_id": "0x4kgi-sillytavern-auto-pair-input-characters",
   "source_id": "github-1317341957",
   "source_identity": "github:0x4kgi/sillytavern-auto-pair-input-characters",
-  "evidence_fingerprint": "2f0c6467c5dade471a682412c1e99a0b6d5dd8aec85cf28538c33f001f84b937",
+  "evidence_fingerprint": "24852014a2df19c44ee70167310865027446e940869d3c118382ebefb9bc9922",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-21T14:35:27.960Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-21T14:35:27.960Z"
-  },
+  "reviewed_at": "2026-11-09T15:04:37.742Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

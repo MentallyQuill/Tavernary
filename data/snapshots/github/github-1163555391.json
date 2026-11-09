@@ -9,21 +9,21 @@
     "url": "https://github.com/DangerDaza/Dooms-Enhancement-Suite",
     "description": "An immersive RPG enhancement extension for SillyTavern — character tracking, lore library, TTS highlighting, portrait bar, scene headers, chat bubbles, weather effects, and more.",
     "default_branch": "main",
-    "head_sha": "a0b1c60d349506c5d6d531f7bbb11444fed46f9f",
-    "head_committed_at": "2026-10-22T23:58:27.000Z",
+    "head_sha": "893b1e17f00f63f08de913777063b61e8d424882",
+    "head_committed_at": "2026-10-25T23:51:16.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-02-21T20:05:42.000Z",
-    "size_kb": 5509
+    "size_kb": 9073
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-22T23:58:27.000Z",
+    "latest_source_activity_at": "2026-10-25T23:51:16.000Z",
     "source_weeks": [
       {
         "week_start": "2026-10-19",
-        "latest_at": "2026-10-22T23:58:27.000Z",
+        "latest_at": "2026-10-25T23:51:16.000Z",
         "precision": "exact"
       },
       {
@@ -65,37 +65,27 @@
         "week_start": "2026-08-24",
         "latest_at": "2026-08-28T20:35:44.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-10",
-        "latest_at": "2026-08-11T23:05:50.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-03",
-        "latest_at": "2026-08-09T04:16:55.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-06-11T17:11:22.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-25T12:40:11.445Z",
+    "baseline_completed_at": "2026-11-09T17:43:16.933Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "a0b1c60d349506c5d6d531f7bbb11444fed46f9f"
+    "evidence_head_sha": "893b1e17f00f63f08de913777063b61e8d424882"
   },
   "community": {
-    "stars_count": 57,
+    "stars_count": 61,
     "forks_count": 9,
     "watchers_count": 3,
-    "aggregate": 69
+    "aggregate": 73
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-25T12:42:25.952Z",
+  "refreshed_at": "2026-11-09T17:45:38.383Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -110,7 +100,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-25T12:40:11.445Z",
+    "refreshed_at": "2026-11-09T17:43:16.933Z",
     "stale_since": null
   }
 }

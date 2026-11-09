@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "744470efcb7a25e0e5719d7b62f32fddbf988527e6746527fd8ee8e96fb2d812",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1364890574:hooch88-tauritavern-scenestate",
+      "inputDigest": "eff4bf4c64e840ba3d3216a5d48666b7ff28de3e5babe9d05b7bcecd02128c79",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-09T06:24:04.902Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1364890574",
+    "identity": "github:1364890574"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42579785063,
+    "sourceSha": "92d1c2e6391b2251be489ff55372d6b775410b41"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/hooch88-tauritavern-scenestate.json",
+      "sha256": "08482fc20ec41d7bde18b8526fab29618cc8bea6dda73214adc25929ac6db1ab",
+      "gitBlobSha": "df35cbc8ec8d48d5016512db34ef5f1ddc3b40bf"
+    }
+  ]
+}

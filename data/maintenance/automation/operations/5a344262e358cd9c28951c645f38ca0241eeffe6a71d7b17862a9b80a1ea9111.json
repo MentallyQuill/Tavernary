@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5a344262e358cd9c28951c645f38ca0241eeffe6a71d7b17862a9b80a1ea9111",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1275428438:mokimoko-sillytavern-storymanager",
+      "inputDigest": "ed4b7cfd55749acf7bf91450a6c224600b1caa7daf77a49f917d56d5990b2336",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-24T16:07:41.637Z",
+    "nextEligibleAt": "2026-11-09T00:03:23.201Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 5,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-08T23:48:23.201Z",
+  "completedAt": null
+}

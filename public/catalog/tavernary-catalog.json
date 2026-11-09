@@ -1689,7 +1689,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T08:54:15.132Z",
+      "refreshedAt": "2026-11-09T17:45:33.643Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -4364,7 +4364,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-24T19:44:20.911Z",
+      "refreshedAt": "2026-11-09T02:22:53.390Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -4591,7 +4591,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:32.478Z",
+      "refreshedAt": "2026-11-09T17:45:37.271Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -5768,8 +5768,8 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 1,
-        "forks": 1,
+        "stars": 2,
+        "forks": 0,
         "watchers": 0,
         "aggregate": 2
       },
@@ -5780,7 +5780,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:17.992Z",
+      "refreshedAt": "2026-11-09T17:45:34.992Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -16759,10 +16759,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 98,
+        "stars": 99,
         "forks": 8,
         "watchers": 2,
-        "aggregate": 108
+        "aggregate": 109
       },
       "repositorySizeKb": 241,
       "license": {
@@ -16771,7 +16771,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T01:52:34.597Z",
+      "refreshedAt": "2026-11-09T06:58:43.191Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -25237,7 +25237,7 @@
       "sourceStatus": "healthy",
       "primaryFunction": "character-worldbuilding",
       "summary": "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets.",
-      "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+      "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
       "catalogedAt": "2026-07-26T00:00:00Z",
       "catalogCohort": "standard",
       "frontends": [
@@ -25271,7 +25271,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "3d9e2ab035093f55c3e4609f2bb5de2d75fe14b3",
+        "currentSha": "c61e52904dcff72274c60e1867e7bf06d2ff254a",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -25279,9 +25279,14 @@
       "attribution": {
         "owner": {
           "provider": "github",
-          "login": "Coneja-Chibi"
+          "login": "Vaudeville-Studios"
         },
         "contributors": [
+          {
+            "provider": "github",
+            "login": "Coneja-Chibi",
+            "botOrAi": false
+          },
           {
             "provider": "github",
             "login": "github-actions[bot]",
@@ -25303,25 +25308,25 @@
             "botOrAi": false
           }
         ],
-        "humanContributorCount": 3,
+        "humanContributorCount": 4,
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-09-21T23:44:35.000Z",
+        "latestSourceActivityAt": "2026-11-03T03:53:41.000Z",
         "activeWeeks12": 3,
         "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
           true,
           false,
           false,
           false,
-          true,
           false,
-          true,
-          false,
-          false,
-          false,
-          false,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -25333,18 +25338,18 @@
         "watchers": 2,
         "aggregate": 16
       },
-      "repositorySizeKb": 39368,
+      "repositorySizeKb": 40056,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:33.476Z",
+      "refreshedAt": "2026-11-09T17:45:25.529Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
-        "repositoryUrl": "https://github.com/Coneja-Chibi/Hoplight.git",
+        "repositoryUrl": "https://github.com/Vaudeville-Studios/Hoplight.git",
         "branch": null,
         "manifestPath": null,
         "folderName": "Hoplight"
@@ -25359,7 +25364,7 @@
           "coneja-chibi-hoplight",
           "github-1305235960",
           "Coneja-Chibi/Hoplight",
-          "https://github.com/Coneja-Chibi/Hoplight"
+          "https://github.com/Vaudeville-Studios/Hoplight"
         ],
         "summary": [
           "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets."
@@ -25390,6 +25395,7 @@
         ],
         "compatibility": [],
         "maintainers": [
+          "Vaudeville-Studios",
           "Coneja-Chibi",
           "github-actions[bot]",
           "NemoVonNirgend",
@@ -28048,7 +28054,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "a0b1c60d349506c5d6d531f7bbb11444fed46f9f",
+        "currentSha": "893b1e17f00f63f08de913777063b61e8d424882",
         "report": {
           "reportId": "082c55ef10df9d4fbe980220ad859786ac6dc6374ac6c214670923f7238bb0fc",
           "riskLevel": "low",
@@ -28180,10 +28186,10 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-22T23:58:27.000Z",
-        "activeWeeks12": 10,
+        "latestSourceActivityAt": "2026-10-25T23:51:16.000Z",
+        "activeWeeks12": 9,
         "weeklyActivity": [
-          true,
+          false,
           false,
           true,
           true,
@@ -28201,19 +28207,19 @@
       },
       "latestReleaseAt": "2026-06-11T17:11:22.000Z",
       "community": {
-        "stars": 57,
+        "stars": 61,
         "forks": 9,
         "watchers": 3,
-        "aggregate": 69
+        "aggregate": 73
       },
-      "repositorySizeKb": 5509,
+      "repositorySizeKb": 9073,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:25.952Z",
+      "refreshedAt": "2026-11-09T17:45:38.383Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -32894,10 +32900,10 @@
       },
       "latestReleaseAt": "2026-09-12T11:32:21.000Z",
       "community": {
-        "stars": 6,
-        "forks": 0,
+        "stars": 7,
+        "forks": 2,
         "watchers": 1,
-        "aggregate": 7
+        "aggregate": 10
       },
       "repositorySizeKb": 36732,
       "license": {
@@ -32906,7 +32912,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T03:45:29.252Z",
+      "refreshedAt": "2026-11-09T09:02:20.077Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -33065,7 +33071,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:19.875Z",
+      "refreshedAt": "2026-11-09T17:45:35.507Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -33513,7 +33519,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "A SillyTavern extension for Gemini-powered image generation using character and user descriptions in prompts. It uses avatars as visual references for consistent art and includes a /proimagine slash command.",
+      "summary": "SillyTavern extension for Gemini-powered image generation with character context and avatar references (README: Features), including a message wand button, prompt context injection, and a /proimagine slash command.",
       "canonicalUrl": "https://github.com/elouannd/context-image-generation",
       "catalogedAt": "2026-07-29T22:22:20.673Z",
       "catalogCohort": "standard",
@@ -33525,12 +33531,6 @@
         }
       ],
       "tags": [
-        {
-          "id": "automate-roleplay-workflows",
-          "label": "Automate roleplay workflows",
-          "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
-          "facet": "goal"
-        },
         {
           "id": "generate-images",
           "label": "Generate images",
@@ -33687,7 +33687,7 @@
           "https://github.com/elouannd/context-image-generation"
         ],
         "summary": [
-          "A SillyTavern extension for Gemini-powered image generation using character and user descriptions in prompts. It uses avatars as visual references for consistent art and includes a /proimagine slash command."
+          "SillyTavern extension for Gemini-powered image generation with character context and avatar references (README: Features), including a message wand button, prompt context injection, and a /proimagine slash command."
         ],
         "kind": [
           "extension"
@@ -33696,11 +33696,6 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Automate roleplay workflows",
-          "automation",
-          "workflow automation",
-          "task automation",
-          "triggered actions",
           "Generate images",
           "image generation",
           "AI art generation",
@@ -35030,7 +35025,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "generation-reasoning",
-      "summary": "SillyTavern-DirectCommand gives precise, localized control over text generation turns by adding one-shot instructions to prompts without polluting long-term chat history.",
+      "summary": "SillyTavern-DirectCommand is a SillyTavern extension for precise, localized control over individual generation turns, letting you prepend or append one-shot instructions without polluting long-term chat context (README).",
       "canonicalUrl": "https://github.com/Enerccio/SillyTavern-DirectCommand",
       "catalogedAt": "2026-08-03T08:22:48.088Z",
       "catalogCohort": "standard",
@@ -35049,22 +35044,10 @@
           "facet": "goal"
         },
         {
-          "id": "inspect-prompts-and-generations",
-          "label": "Inspect prompts and generations",
-          "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+          "id": "manage-context-limits",
+          "label": "Manage context limits",
+          "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
           "facet": "goal"
-        },
-        {
-          "id": "non-destructive",
-          "label": "Non-destructive",
-          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
-          "facet": "trait"
-        },
-        {
-          "id": "persistent-state",
-          "label": "Persistent state",
-          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
-          "facet": "trait"
         }
       ],
       "tavernKeeper": {
@@ -35210,7 +35193,7 @@
           "https://github.com/Enerccio/SillyTavern-DirectCommand"
         ],
         "summary": [
-          "SillyTavern-DirectCommand gives precise, localized control over text generation turns by adding one-shot instructions to prompts without polluting long-term chat history."
+          "SillyTavern-DirectCommand is a SillyTavern extension for precise, localized control over individual generation turns, letting you prepend or append one-shot instructions without polluting long-term chat context (README)."
         ],
         "kind": [
           "extension"
@@ -35223,19 +35206,10 @@
           "response steering",
           "generation control",
           "instruction control",
-          "Inspect prompts and generations",
-          "prompt inspection",
-          "generation diagnostics",
-          "review validation",
-          "request debugging",
-          "Non-destructive",
-          "reversible workflow",
-          "preserves originals",
-          "safe overlay",
-          "Persistent state",
-          "durable state",
-          "state persistence",
-          "cross-session state"
+          "Manage context limits",
+          "context compression",
+          "context window management",
+          "token budgeting"
         ],
         "frontends": [
           "SillyTavern"
@@ -36076,7 +36050,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-24T22:03:25.567Z",
+      "refreshedAt": "2026-11-09T06:46:08.951Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -41405,10 +41379,10 @@
       },
       "latestReleaseAt": "2026-04-21T17:43:04.000Z",
       "community": {
-        "stars": 39,
+        "stars": 41,
         "forks": 4,
         "watchers": 3,
-        "aggregate": 46
+        "aggregate": 48
       },
       "repositorySizeKb": 12710,
       "license": {
@@ -41417,7 +41391,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-24T12:11:07.080Z",
+      "refreshedAt": "2026-11-09T00:05:46.034Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -44616,7 +44590,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-24T23:16:03.451Z",
+      "refreshedAt": "2026-11-09T02:35:22.273Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -44881,6 +44855,180 @@
         "compatibility": [],
         "maintainers": [
           "Hikarushmz"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "hooch88-tauritavern-scenestate",
+      "name": "TauriTavern-SceneState",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "TauriTavern-SceneState is a lightweight TauriTavern extension that shows the current in-world location, date, and time above narrator responses and gives each NPC a stable name-derived dialogue color (README).",
+      "canonicalUrl": "https://github.com/Hooch88/TauriTavern-SceneState",
+      "catalogedAt": "2026-11-09T06:24:04.902Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "tauritavern",
+          "label": "TauriTavern",
+          "description": "Works with the TauriTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "07133a3cf336a7da42624a509a848b1a403a0d2b",
+        "report": {
+          "reportId": "264705ca6282ac764d8f17fe2c22d92eebde67bd226e1a7cd007314e97ee8584",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "07133a3cf336a7da42624a509a848b1a403a0d2b",
+          "treeUrl": "https://github.com/Hooch88/TauriTavern-SceneState/tree/07133a3cf336a7da42624a509a848b1a403a0d2b",
+          "scannedAt": "2026-11-09T06:52:51.104Z",
+          "assessedAt": "2026-11-09T06:59:46.303Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1364890574/07133a3cf336a7da42624a509a848b1a403a0d2b/5/264705ca6282ac764d8f17fe2c22d92eebde67bd226e1a7cd007314e97ee8584/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1364890574/history/"
+        },
+        "history": [
+          {
+            "reportId": "264705ca6282ac764d8f17fe2c22d92eebde67bd226e1a7cd007314e97ee8584",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "07133a3cf336a7da42624a509a848b1a403a0d2b",
+            "treeUrl": "https://github.com/Hooch88/TauriTavern-SceneState/tree/07133a3cf336a7da42624a509a848b1a403a0d2b",
+            "scannedAt": "2026-11-09T06:52:51.104Z",
+            "assessedAt": "2026-11-09T06:59:46.303Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1364890574/07133a3cf336a7da42624a509a848b1a403a0d2b/5/264705ca6282ac764d8f17fe2c22d92eebde67bd226e1a7cd007314e97ee8584/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1364890574/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1364890574/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Hooch88"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-11T05:10:29.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 40,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-09T06:24:04.902Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "TauriTavern-SceneState"
+        ],
+        "aliases": [],
+        "source": [
+          "hooch88-tauritavern-scenestate",
+          "github-1364890574",
+          "Hooch88/TauriTavern-SceneState",
+          "https://github.com/Hooch88/TauriTavern-SceneState"
+        ],
+        "summary": [
+          "TauriTavern-SceneState is a lightweight TauriTavern extension that shows the current in-world location, date, and time above narrator responses and gives each NPC a stable name-derived dialogue color (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "TauriTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Hooch88"
         ],
         "relationships": []
       }
@@ -48214,8 +48362,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "440143b120fc58a35f020f93cb6ce4600eeb57ca",
+        "freshness": "stale",
+        "currentSha": "e7b7f915d6952d1d901b16a1222d89caaaaaa5e8",
         "report": {
           "reportId": "6b35190521fcd64243b0da21658f2db826ddf3cbf10a5fb0d9728685a3532348",
           "riskLevel": "low",
@@ -48490,11 +48638,11 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-19T15:33:41.000Z",
+        "latestSourceActivityAt": "2026-10-30T20:38:49.000Z",
         "activeWeeks12": 7,
         "weeklyActivity": [
           false,
-          true,
+          false,
           true,
           true,
           true,
@@ -48504,26 +48652,26 @@
           true,
           false,
           true,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 58,
+        "stars": 61,
         "forks": 6,
         "watchers": 1,
-        "aggregate": 65
+        "aggregate": 68
       },
-      "repositorySizeKb": 996,
+      "repositorySizeKb": 1176,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T06:58:43.824Z",
+      "refreshedAt": "2026-11-09T17:44:46.329Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -56203,10 +56351,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 2,
+        "stars": 3,
         "forks": 0,
         "watchers": 0,
-        "aggregate": 2
+        "aggregate": 3
       },
       "repositorySizeKb": 4890,
       "license": {
@@ -56215,7 +56363,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-24T23:17:44.001Z",
+      "refreshedAt": "2026-11-09T06:58:24.834Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -56644,10 +56792,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 58,
+        "stars": 59,
         "forks": 11,
         "watchers": 3,
-        "aggregate": 72
+        "aggregate": 73
       },
       "repositorySizeKb": 128,
       "license": {
@@ -56656,7 +56804,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T03:45:27.593Z",
+      "refreshedAt": "2026-11-09T09:00:22.711Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -59688,7 +59836,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-24T12:11:21.483Z",
+      "refreshedAt": "2026-11-09T00:05:38.662Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -61102,7 +61250,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-24T22:04:56.483Z",
+      "refreshedAt": "2026-11-09T02:33:40.154Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -66473,10 +66621,10 @@
       },
       "latestReleaseAt": "2026-09-03T23:20:57.000Z",
       "community": {
-        "stars": 8,
-        "forks": 0,
+        "stars": 10,
+        "forks": 1,
         "watchers": 2,
-        "aggregate": 10
+        "aggregate": 13
       },
       "repositorySizeKb": 109,
       "license": {
@@ -66485,7 +66633,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T03:44:56.208Z",
+      "refreshedAt": "2026-11-09T09:00:05.876Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -69386,7 +69534,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "EchoText lets you directly message SillyTavern characters in tethered chats that carry over roleplay context or untethered conversations that leave the story untouched.",
+      "summary": "SillyTavern-EchoText lets you directly message characters: tethered mode carries over roleplay events while untethered mode allows standalone texting without touching the main window (README Tethered/Untethered Mode).",
       "canonicalUrl": "https://github.com/mattjaybe/SillyTavern-EchoText",
       "catalogedAt": "2026-08-05T01:06:35.655Z",
       "catalogCohort": "standard",
@@ -69405,9 +69553,9 @@
           "facet": "goal"
         },
         {
-          "id": "preserve-story-continuity",
-          "label": "Preserve story continuity",
-          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
           "facet": "goal"
         }
       ],
@@ -69535,7 +69683,7 @@
           "https://github.com/mattjaybe/SillyTavern-EchoText"
         ],
         "summary": [
-          "EchoText lets you directly message SillyTavern characters in tethered chats that carry over roleplay context or untethered conversations that leave the story untouched."
+          "SillyTavern-EchoText lets you directly message characters: tethered mode carries over roleplay events while untethered mode allows standalone texting without touching the main window (README Tethered/Untethered Mode)."
         ],
         "kind": [
           "extension"
@@ -69548,10 +69696,10 @@
           "persona management",
           "character management",
           "identity management",
-          "Preserve story continuity",
-          "continuity tracking",
-          "canon consistency",
-          "story coherence"
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control"
         ],
         "frontends": [
           "SillyTavern"
@@ -69940,10 +70088,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 121,
+        "stars": 124,
         "forks": 7,
         "watchers": 2,
-        "aggregate": 130
+        "aggregate": 133
       },
       "repositorySizeKb": 491,
       "license": {
@@ -69952,7 +70100,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T06:48:44.160Z",
+      "refreshedAt": "2026-11-09T11:26:11.213Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -71425,7 +71573,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "rpg-systems",
-      "summary": "SillyTavern MazeMaster is a 2.5D roguelike RPG toolkit that extends the SillyTavern frontend with roleplay game systems. It provides structured mechanics for running roguelike adventures within the chat environment.",
+      "summary": "SillyTavern MazeMaster is a roguelike RPG adventure toolkit with procedurally generated dungeons (5x5 to 20x20), LLM-enhanced narration, session memory, 8 mini games, and full inventory management (README).",
       "canonicalUrl": "https://github.com/mechamarmot/SillyTavern-MazeMaster",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -71462,10 +71610,10 @@
           "facet": "goal"
         },
         {
-          "id": "rules-driven",
-          "label": "Rules-driven",
-          "description": "Uses explicit rules, schemas, calculations, or deterministic mechanics to constrain behavior.",
-          "facet": "trait"
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
         }
       ],
       "tavernKeeper": {
@@ -71632,10 +71780,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 8,
+        "stars": 9,
         "forks": 1,
         "watchers": 0,
-        "aggregate": 9
+        "aggregate": 10
       },
       "repositorySizeKb": 7865,
       "license": {
@@ -71644,7 +71792,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-24T22:02:53.957Z",
+      "refreshedAt": "2026-11-09T02:33:05.700Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -71666,7 +71814,7 @@
           "https://github.com/mechamarmot/SillyTavern-MazeMaster"
         ],
         "summary": [
-          "SillyTavern MazeMaster is a 2.5D roguelike RPG toolkit that extends the SillyTavern frontend with roleplay game systems. It provides structured mechanics for running roguelike adventures within the chat environment."
+          "SillyTavern MazeMaster is a roguelike RPG adventure toolkit with procedurally generated dungeons (5x5 to 20x20), LLM-enhanced narration, session memory, 8 mini games, and full inventory management (README)."
         ],
         "kind": [
           "extension"
@@ -71691,10 +71839,10 @@
           "quest tracking",
           "inventory management",
           "equipment tracking",
-          "Rules-driven",
-          "deterministic mechanics",
-          "rule based",
-          "schema driven"
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals"
         ],
         "frontends": [
           "SillyTavern"
@@ -73476,10 +73624,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 25,
+        "stars": 28,
         "forks": 3,
         "watchers": 2,
-        "aggregate": 30
+        "aggregate": 33
       },
       "repositorySizeKb": 23484,
       "license": {
@@ -73488,7 +73636,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T06:58:15.571Z",
+      "refreshedAt": "2026-11-09T11:27:30.160Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -75539,7 +75687,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:29.356Z",
+      "refreshedAt": "2026-11-09T17:45:23.506Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -78012,7 +78160,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-24T16:07:41.637Z",
+      "refreshedAt": "2026-11-09T00:01:49.637Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -81187,9 +81335,9 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 5,
-        "forks": 1,
+        "forks": 2,
         "watchers": 1,
-        "aggregate": 7
+        "aggregate": 8
       },
       "repositorySizeKb": 23,
       "license": {
@@ -81198,7 +81346,7 @@
         "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T06:03:05.984Z",
+      "refreshedAt": "2026-11-09T09:03:07.959Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -86861,7 +87009,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T00:48:12.492Z",
+      "refreshedAt": "2026-11-09T06:56:59.670Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -88422,7 +88570,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "6e0269d038f9ac59b9e736ec9ba3a29305eb1328",
+        "currentSha": "469f0b758d13eedfb3c5ecf8ef8d58aa0b228e95",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -88448,8 +88596,8 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-21T02:29:54.000Z",
-        "activeWeeks12": 6,
+        "latestSourceActivityAt": "2026-11-08T10:18:10.000Z",
+        "activeWeeks12": 7,
         "weeklyActivity": [
           false,
           false,
@@ -88462,26 +88610,26 @@
           true,
           true,
           true,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-10-21T03:58:58.000Z",
+      "latestReleaseAt": "2026-11-08T11:16:22.000Z",
       "community": {
-        "stars": 12,
+        "stars": 24,
         "forks": 1,
-        "watchers": 3,
-        "aggregate": 16
+        "watchers": 2,
+        "aggregate": 27
       },
-      "repositorySizeKb": 207119,
+      "repositorySizeKb": 290853,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-24T21:02:46.199Z",
+      "refreshedAt": "2026-11-09T02:32:24.293Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -91919,7 +92067,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T06:58:34.215Z",
+      "refreshedAt": "2026-11-09T17:45:13.025Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -92756,8 +92904,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "a5e0de333872f9f9e14b70f5194877ea88d96d51",
+        "freshness": "stale",
+        "currentSha": "eae025e76015345294bc2c59feeae3caaf842bab",
         "report": {
           "reportId": "d375cba7151b1d8556fdef90fd5cf75c7ef983a1bdeb230e46d5253efabb6dcc",
           "riskLevel": "low",
@@ -92864,8 +93012,8 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-25T04:46:08.000Z",
-        "activeWeeks12": 5,
+        "latestSourceActivityAt": "2026-11-03T03:16:46.000Z",
+        "activeWeeks12": 6,
         "weeklyActivity": [
           false,
           false,
@@ -92878,19 +93026,19 @@
           false,
           true,
           true,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 5,
+        "stars": 8,
         "forks": 1,
         "watchers": 0,
-        "aggregate": 6
+        "aggregate": 9
       },
-      "repositorySizeKb": 35324,
+      "repositorySizeKb": 44171,
       "license": {
         "status": "missing",
         "label": "Missing",
@@ -92915,7 +93063,7 @@
           }
         ]
       },
-      "refreshedAt": "2026-10-25T06:49:17.395Z",
+      "refreshedAt": "2026-11-09T11:28:16.600Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -93319,7 +93467,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T08:53:03.922Z",
+      "refreshedAt": "2026-11-09T17:44:41.458Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -97974,7 +98122,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T06:03:01.677Z",
+      "refreshedAt": "2026-11-09T09:03:46.325Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -99348,7 +99496,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-24T19:44:08.473Z",
+      "refreshedAt": "2026-11-09T00:03:59.185Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -102550,10 +102698,10 @@
       },
       "latestReleaseAt": "2026-05-30T03:10:12.000Z",
       "community": {
-        "stars": 18,
+        "stars": 20,
         "forks": 7,
         "watchers": 0,
-        "aggregate": 25
+        "aggregate": 27
       },
       "repositorySizeKb": 1155,
       "license": {
@@ -102562,7 +102710,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:20.374Z",
+      "refreshedAt": "2026-11-09T17:45:39.555Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -104275,7 +104423,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T08:53:59.828Z",
+      "refreshedAt": "2026-11-09T17:45:29.903Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -112455,7 +112603,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T06:04:05.566Z",
+      "refreshedAt": "2026-11-09T11:26:59.406Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -113974,7 +114122,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "14ed7b6fdccf1a421596cc53acce91b281e3b388",
+        "currentSha": "6ac9130e8e0bd1da075da4c114e9160308b73d7a",
         "report": {
           "reportId": "13eee3bdbbe669fed240757f4b331d387653b5913f59daaf67627524d73905f7",
           "riskLevel": "low",
@@ -114041,11 +114189,9 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-08-20T00:51:26.000Z",
-        "activeWeeks12": 2,
+        "latestSourceActivityAt": "2026-11-04T02:27:26.000Z",
+        "activeWeeks12": 1,
         "weeklyActivity": [
-          true,
-          true,
           false,
           false,
           false,
@@ -114055,7 +114201,9 @@
           false,
           false,
           false,
-          false
+          false,
+          false,
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -114067,14 +114215,14 @@
         "watchers": 0,
         "aggregate": 6
       },
-      "repositorySizeKb": 4232,
+      "repositorySizeKb": 4930,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:36.215Z",
+      "refreshedAt": "2026-11-09T17:48:34.589Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -114309,7 +114457,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T05:06:02.895Z",
+      "refreshedAt": "2026-11-09T09:02:07.317Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -117928,7 +118076,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "frontend",
-      "summary": "SweetrollLM is a local-first AI tavern for character chat, multimodal context, and agentic work, routing between GGUF, KoboldCPP, and OpenAI-compatible providers.",
+      "summary": "SweetrollLM is a local-first AI tavern for character chat and lorebooks, blending SillyTavern comfort with LM Studio-style GGUF model management, an embedded KoboldCPP worker, and OpenAI-compatible cloud APIs (README).",
       "canonicalUrl": "https://github.com/syfr512/SweetrollLM",
       "catalogedAt": "2026-08-09T08:44:37.901Z",
       "catalogCohort": "standard",
@@ -117941,16 +118089,22 @@
       ],
       "tags": [
         {
-          "id": "agentic-tool-use",
-          "label": "Agentic tool use",
-          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
-          "facet": "trait"
-        },
-        {
           "id": "local-first",
           "label": "Local-first",
           "description": "Keeps its primary data and workflow on the user's own device.",
           "facet": "trait"
+        },
+        {
+          "id": "model-agnostic",
+          "label": "Model-agnostic",
+          "description": "Works across a broad range of model providers rather than requiring one model family.",
+          "facet": "trait"
+        },
+        {
+          "id": "manage-lorebooks",
+          "label": "Manage lorebooks",
+          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+          "facet": "goal"
         },
         {
           "id": "manage-characters-and-personas",
@@ -117959,9 +118113,9 @@
           "facet": "goal"
         },
         {
-          "id": "model-agnostic",
-          "label": "Model-agnostic",
-          "description": "Works across a broad range of model providers rather than requiring one model family.",
+          "id": "agentic-tool-use",
+          "label": "Agentic tool use",
+          "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
           "facet": "trait"
         }
       ],
@@ -118033,7 +118187,7 @@
           "https://github.com/syfr512/SweetrollLM"
         ],
         "summary": [
-          "SweetrollLM is a local-first AI tavern for character chat, multimodal context, and agentic work, routing between GGUF, KoboldCPP, and OpenAI-compatible providers."
+          "SweetrollLM is a local-first AI tavern for character chat and lorebooks, blending SillyTavern comfort with LM Studio-style GGUF model management, an embedded KoboldCPP worker, and OpenAI-compatible cloud APIs (README)."
         ],
         "kind": [
           "frontend"
@@ -118042,22 +118196,26 @@
           "Frontend"
         ],
         "tags": [
-          "Agentic tool use",
-          "tool calling",
-          "AI agents",
-          "agent mode",
           "Local-first",
           "stored locally",
           "on-device data",
           "local data ownership",
+          "Model-agnostic",
+          "bring your own model",
+          "BYOM",
+          "provider independent",
+          "Manage lorebooks",
+          "World Info management",
+          "worldbook organization",
+          "loredeck management",
           "Manage characters and personas",
           "persona management",
           "character management",
           "identity management",
-          "Model-agnostic",
-          "bring your own model",
-          "BYOM",
-          "provider independent"
+          "Agentic tool use",
+          "tool calling",
+          "AI agents",
+          "agent mode"
         ],
         "frontends": [
           "SweetrollLM"
@@ -119451,7 +119609,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-24T23:17:10.829Z",
+      "refreshedAt": "2026-11-09T02:38:35.225Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -119499,6 +119657,311 @@
         "compatibility": [],
         "maintainers": [
           "TCLowe1982"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "tealios-errata",
+      "name": "errata",
+      "kind": "frontend",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": "Errata is an LLM-assisted writing app where prose, characters, guidelines, and knowledge are composable fragments that assemble into structured LLM context for story generation (README: introduction).",
+      "canonicalUrl": "https://github.com/tealios/errata",
+      "catalogedAt": "2026-11-09T10:47:33.122Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "errata",
+          "label": "errata",
+          "description": "Works with the errata roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-structured-reasoning",
+          "label": "Add structured reasoning",
+          "description": "Introduce deliberate planning, reflection, critique, or multi-step thinking before output.",
+          "facet": "goal"
+        },
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
+          "facet": "goal"
+        },
+        {
+          "id": "improve-writing-and-prose",
+          "label": "Improve writing and prose",
+          "description": "Strengthen prose, dialogue, style, pacing, subtext, or general writing quality.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-prompts-and-presets",
+          "label": "Manage prompts and presets",
+          "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
+          "facet": "goal"
+        },
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        },
+        {
+          "id": "route-tasks-across-models",
+          "label": "Route tasks across models",
+          "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "4f44941e263571224e639726ba279ca9ce3b9133",
+        "report": {
+          "reportId": "b6cafe10a4842fd34ef5b22108f7740a19277d56b35402ced7e1dfd0ee783471",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 22,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "07d8bd8f3085828b348cc679995ca897e8fa8680ce0ba0d40087e913fca033e3",
+            "164077d9fa698a98981da4c3eec294f1e10546b570d2b77d67fe3dd65755f50e",
+            "1b6bc3a5eaee16fb0f10e39c170ca43d7f10e577ca8e91f8f8e9daf72ef71fbf",
+            "1f4fb9c99bc29d9e035fdc63053864d8e976562939ea3ec04139f29107b68824",
+            "2a8d4ce5a6b3a9d0efcf57f53e71f45bf1664b3c7ab9f1eab19ee5524715738d",
+            "3067e7465cbbeafae6f8ff897a14929f03efd616635e46a475c9900f1d2fc0de",
+            "32d29aea9e53551708400f2b4fa8fa6e277b1ba51eb75937a1fbecdcce167947",
+            "3a71ab7224b096288356ce66b94271879d13e15d5bc6f3bf861bb47eded08021",
+            "4b8a7f5c78a8e087295cfd6c5443f9f02397440d82c024f371a8e3c98305f9f3",
+            "4c2104124b282e49e11206daca046d2a36a63756ef10cd3a8c070e18e3a4a75f",
+            "53658f20f2d1b925b479be9ff896af4f214128d96e68cd25293e8b7c894227d1",
+            "64b08613565ec2002034621136df19ab405d743fa84fb97318c2d0aa9d020d72",
+            "754186df281b5fa7e407b6838d0ede592d1dc6e48aecebab7fa1ccbd8a0c254d",
+            "8f3cdb2232dc21d52a0cafd043401d3877e7a9e7eb9e706c961fef47dc1f859b",
+            "a131b2e454927c25b8840f46cc5e00cb1e22820f20aa07cbe444a0ec7bc44e48",
+            "a3bd426e8b8c10b127060521a3f5afb6ae48338f6a34d1466bae4330bd25af2d",
+            "a5270023103a44fba931980e611f8ea6965ee95234e911f86dfe30a69f62224c",
+            "b59de33fea75b380b17c2a421e22d173dea422c1399b53500f977929341acc6f",
+            "be73adf5c4a67de38be3bc464e2b465d7d9850d3380792654933ffb17d924a14",
+            "bf2d5ec77b9dd64129a9a1028d626a02d4354415d9ec92b473908d714cd246ce",
+            "c6347ba7dba1c0989d1aa682a1e97405c57c2ac43628da0bfed8ebdb5919093f",
+            "f5b4203bf59ed2fc1c5c04d903549ab77aed88209211383a02cfbd2e96392240"
+          ],
+          "scannedSha": "4f44941e263571224e639726ba279ca9ce3b9133",
+          "treeUrl": "https://github.com/tealios/errata/tree/4f44941e263571224e639726ba279ca9ce3b9133",
+          "scannedAt": "2026-11-09T11:36:46.522Z",
+          "assessedAt": "2026-11-09T12:02:48.391Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1158150500/4f44941e263571224e639726ba279ca9ce3b9133/5/b6cafe10a4842fd34ef5b22108f7740a19277d56b35402ced7e1dfd0ee783471/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1158150500/history/"
+        },
+        "history": [
+          {
+            "reportId": "b6cafe10a4842fd34ef5b22108f7740a19277d56b35402ced7e1dfd0ee783471",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 22,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "07d8bd8f3085828b348cc679995ca897e8fa8680ce0ba0d40087e913fca033e3",
+              "164077d9fa698a98981da4c3eec294f1e10546b570d2b77d67fe3dd65755f50e",
+              "1b6bc3a5eaee16fb0f10e39c170ca43d7f10e577ca8e91f8f8e9daf72ef71fbf",
+              "1f4fb9c99bc29d9e035fdc63053864d8e976562939ea3ec04139f29107b68824",
+              "2a8d4ce5a6b3a9d0efcf57f53e71f45bf1664b3c7ab9f1eab19ee5524715738d",
+              "3067e7465cbbeafae6f8ff897a14929f03efd616635e46a475c9900f1d2fc0de",
+              "32d29aea9e53551708400f2b4fa8fa6e277b1ba51eb75937a1fbecdcce167947",
+              "3a71ab7224b096288356ce66b94271879d13e15d5bc6f3bf861bb47eded08021",
+              "4b8a7f5c78a8e087295cfd6c5443f9f02397440d82c024f371a8e3c98305f9f3",
+              "4c2104124b282e49e11206daca046d2a36a63756ef10cd3a8c070e18e3a4a75f",
+              "53658f20f2d1b925b479be9ff896af4f214128d96e68cd25293e8b7c894227d1",
+              "64b08613565ec2002034621136df19ab405d743fa84fb97318c2d0aa9d020d72",
+              "754186df281b5fa7e407b6838d0ede592d1dc6e48aecebab7fa1ccbd8a0c254d",
+              "8f3cdb2232dc21d52a0cafd043401d3877e7a9e7eb9e706c961fef47dc1f859b",
+              "a131b2e454927c25b8840f46cc5e00cb1e22820f20aa07cbe444a0ec7bc44e48",
+              "a3bd426e8b8c10b127060521a3f5afb6ae48338f6a34d1466bae4330bd25af2d",
+              "a5270023103a44fba931980e611f8ea6965ee95234e911f86dfe30a69f62224c",
+              "b59de33fea75b380b17c2a421e22d173dea422c1399b53500f977929341acc6f",
+              "be73adf5c4a67de38be3bc464e2b465d7d9850d3380792654933ffb17d924a14",
+              "bf2d5ec77b9dd64129a9a1028d626a02d4354415d9ec92b473908d714cd246ce",
+              "c6347ba7dba1c0989d1aa682a1e97405c57c2ac43628da0bfed8ebdb5919093f",
+              "f5b4203bf59ed2fc1c5c04d903549ab77aed88209211383a02cfbd2e96392240"
+            ],
+            "scannedSha": "4f44941e263571224e639726ba279ca9ce3b9133",
+            "treeUrl": "https://github.com/tealios/errata/tree/4f44941e263571224e639726ba279ca9ce3b9133",
+            "scannedAt": "2026-11-09T11:36:46.522Z",
+            "assessedAt": "2026-11-09T12:02:48.391Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1158150500/4f44941e263571224e639726ba279ca9ce3b9133/5/b6cafe10a4842fd34ef5b22108f7740a19277d56b35402ced7e1dfd0ee783471/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1158150500/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1158150500/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "tealios"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "nokusukun",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "keturn",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Viscerous",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "roleforgaming",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Tointer",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "pax-co",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Rurijian",
+            "botOrAi": false
+          }
+        ],
+        "humanContributorCount": 7,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-05T10:57:05.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-09-14T03:05:27.000Z",
+      "community": {
+        "stars": 144,
+        "forks": 23,
+        "watchers": 6,
+        "aggregate": 173
+      },
+      "repositorySizeKb": 4246,
+      "license": {
+        "status": "proprietary",
+        "label": "Proprietary",
+        "tooltip": "The published root license is not OSI-approved."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-09T10:47:33.122Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "errata"
+        ],
+        "aliases": [],
+        "source": [
+          "tealios-errata",
+          "github-1158150500",
+          "tealios/errata",
+          "https://github.com/tealios/errata"
+        ],
+        "summary": [
+          "Errata is an LLM-assisted writing app where prose, characters, guidelines, and knowledge are composable fragments that assemble into structured LLM context for story generation (README: introduction)."
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [
+          "Add structured reasoning",
+          "reasoning pipelines",
+          "stepped thinking",
+          "planning reasoning",
+          "planning passes",
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control",
+          "Improve writing and prose",
+          "writing assistance",
+          "prose improvement",
+          "co-writing",
+          "Manage prompts and presets",
+          "prompt management",
+          "prompt engineering",
+          "preset organization",
+          "template management",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
+          "Route tasks across models",
+          "model routing",
+          "task routing",
+          "connection routing"
+        ],
+        "frontends": [
+          "errata"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "tealios",
+          "nokusukun",
+          "keturn",
+          "Viscerous",
+          "roleforgaming",
+          "Tointer",
+          "pax-co",
+          "Rurijian"
         ],
         "relationships": []
       }
@@ -119733,7 +120196,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-24T18:42:45.954Z",
+      "refreshedAt": "2026-11-09T00:02:53.008Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -123678,7 +124141,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T08:54:43.335Z",
+      "refreshedAt": "2026-11-09T17:45:21.330Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -127201,7 +127664,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-24T16:07:50.836Z",
+      "refreshedAt": "2026-11-09T00:02:56.003Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -128001,7 +128464,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T01:52:46.907Z",
+      "refreshedAt": "2026-11-09T08:50:23.710Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -132891,9 +133354,9 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 2,
-        "forks": 1,
+        "forks": 2,
         "watchers": 0,
-        "aggregate": 3
+        "aggregate": 4
       },
       "repositorySizeKb": 9,
       "license": {
@@ -132902,7 +133365,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:31.757Z",
+      "refreshedAt": "2026-11-09T17:45:37.698Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -141600,10 +142063,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 25,
+              "stars": 28,
               "forks": 3,
               "watchers": 2,
-              "aggregate": 30
+              "aggregate": 33
             },
             "repositorySizeKb": 23484,
             "license": {
@@ -141612,7 +142075,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T06:58:15.571Z",
+            "refreshedAt": "2026-11-09T11:27:30.160Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -146323,7 +146786,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:32.478Z",
+            "refreshedAt": "2026-11-09T17:45:37.271Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -161085,10 +161548,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 98,
+              "stars": 99,
               "forks": 8,
               "watchers": 2,
-              "aggregate": 108
+              "aggregate": 109
             },
             "repositorySizeKb": 241,
             "license": {
@@ -161097,7 +161560,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T01:52:34.597Z",
+            "refreshedAt": "2026-11-09T06:58:43.191Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -161796,7 +162259,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T05:06:02.895Z",
+            "refreshedAt": "2026-11-09T09:02:07.317Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -165475,8 +165938,8 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 1,
-              "forks": 1,
+              "stars": 2,
+              "forks": 0,
               "watchers": 0,
               "aggregate": 2
             },
@@ -165487,7 +165950,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:17.992Z",
+            "refreshedAt": "2026-11-09T17:45:34.992Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -170141,7 +170604,7 @@
           "primaryFunction": "character-worldbuilding",
           "availability": "available",
           "unavailableReason": null,
-          "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+          "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
           "project": {
             "id": "coneja-chibi-hoplight",
             "name": "Hoplight",
@@ -170150,7 +170613,7 @@
             "sourceStatus": "healthy",
             "primaryFunction": "character-worldbuilding",
             "summary": "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets.",
-            "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+            "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
             "catalogedAt": "2026-07-26T00:00:00Z",
             "catalogCohort": "standard",
             "frontends": [
@@ -170184,7 +170647,7 @@
               "state": "gray",
               "riskLevel": null,
               "freshness": "unassessed",
-              "currentSha": "3d9e2ab035093f55c3e4609f2bb5de2d75fe14b3",
+              "currentSha": "c61e52904dcff72274c60e1867e7bf06d2ff254a",
               "report": null,
               "history": [],
               "historyUrl": null
@@ -170192,9 +170655,14 @@
             "attribution": {
               "owner": {
                 "provider": "github",
-                "login": "Coneja-Chibi"
+                "login": "Vaudeville-Studios"
               },
               "contributors": [
+                {
+                  "provider": "github",
+                  "login": "Coneja-Chibi",
+                  "botOrAi": false
+                },
                 {
                   "provider": "github",
                   "login": "github-actions[bot]",
@@ -170216,25 +170684,25 @@
                   "botOrAi": false
                 }
               ],
-              "humanContributorCount": 3,
+              "humanContributorCount": 4,
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-09-21T23:44:35.000Z",
+              "latestSourceActivityAt": "2026-11-03T03:53:41.000Z",
               "activeWeeks12": 3,
               "weeklyActivity": [
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
                 true,
                 false,
                 false,
                 false,
-                true,
                 false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -170246,18 +170714,18 @@
               "watchers": 2,
               "aggregate": 16
             },
-            "repositorySizeKb": 39368,
+            "repositorySizeKb": 40056,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:33.476Z",
+            "refreshedAt": "2026-11-09T17:45:25.529Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
-              "repositoryUrl": "https://github.com/Coneja-Chibi/Hoplight.git",
+              "repositoryUrl": "https://github.com/Vaudeville-Studios/Hoplight.git",
               "branch": null,
               "manifestPath": null,
               "folderName": "Hoplight"
@@ -170272,7 +170740,7 @@
                 "coneja-chibi-hoplight",
                 "github-1305235960",
                 "Coneja-Chibi/Hoplight",
-                "https://github.com/Coneja-Chibi/Hoplight"
+                "https://github.com/Vaudeville-Studios/Hoplight"
               ],
               "summary": [
                 "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets."
@@ -170303,6 +170771,7 @@
               ],
               "compatibility": [],
               "maintainers": [
+                "Vaudeville-Studios",
                 "Coneja-Chibi",
                 "github-actions[bot]",
                 "NemoVonNirgend",
@@ -172257,7 +172726,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:32.478Z",
+            "refreshedAt": "2026-11-09T17:45:37.271Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -182800,10 +183269,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 121,
+              "stars": 124,
               "forks": 7,
               "watchers": 2,
-              "aggregate": 130
+              "aggregate": 133
             },
             "repositorySizeKb": 491,
             "license": {
@@ -182812,7 +183281,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T06:48:44.160Z",
+            "refreshedAt": "2026-11-09T11:26:11.213Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -186368,7 +186837,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:32.478Z",
+            "refreshedAt": "2026-11-09T17:45:37.271Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -186635,7 +187104,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-24T16:07:41.637Z",
+            "refreshedAt": "2026-11-09T00:01:49.637Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -194713,7 +195182,7 @@
           "primaryFunction": "character-worldbuilding",
           "availability": "available",
           "unavailableReason": null,
-          "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+          "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
           "project": {
             "id": "coneja-chibi-hoplight",
             "name": "Hoplight",
@@ -194722,7 +195191,7 @@
             "sourceStatus": "healthy",
             "primaryFunction": "character-worldbuilding",
             "summary": "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets.",
-            "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+            "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
             "catalogedAt": "2026-07-26T00:00:00Z",
             "catalogCohort": "standard",
             "frontends": [
@@ -194756,7 +195225,7 @@
               "state": "gray",
               "riskLevel": null,
               "freshness": "unassessed",
-              "currentSha": "3d9e2ab035093f55c3e4609f2bb5de2d75fe14b3",
+              "currentSha": "c61e52904dcff72274c60e1867e7bf06d2ff254a",
               "report": null,
               "history": [],
               "historyUrl": null
@@ -194764,9 +195233,14 @@
             "attribution": {
               "owner": {
                 "provider": "github",
-                "login": "Coneja-Chibi"
+                "login": "Vaudeville-Studios"
               },
               "contributors": [
+                {
+                  "provider": "github",
+                  "login": "Coneja-Chibi",
+                  "botOrAi": false
+                },
                 {
                   "provider": "github",
                   "login": "github-actions[bot]",
@@ -194788,25 +195262,25 @@
                   "botOrAi": false
                 }
               ],
-              "humanContributorCount": 3,
+              "humanContributorCount": 4,
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-09-21T23:44:35.000Z",
+              "latestSourceActivityAt": "2026-11-03T03:53:41.000Z",
               "activeWeeks12": 3,
               "weeklyActivity": [
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
                 true,
                 false,
                 false,
                 false,
-                true,
                 false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -194818,18 +195292,18 @@
               "watchers": 2,
               "aggregate": 16
             },
-            "repositorySizeKb": 39368,
+            "repositorySizeKb": 40056,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:33.476Z",
+            "refreshedAt": "2026-11-09T17:45:25.529Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
-              "repositoryUrl": "https://github.com/Coneja-Chibi/Hoplight.git",
+              "repositoryUrl": "https://github.com/Vaudeville-Studios/Hoplight.git",
               "branch": null,
               "manifestPath": null,
               "folderName": "Hoplight"
@@ -194844,7 +195318,7 @@
                 "coneja-chibi-hoplight",
                 "github-1305235960",
                 "Coneja-Chibi/Hoplight",
-                "https://github.com/Coneja-Chibi/Hoplight"
+                "https://github.com/Vaudeville-Studios/Hoplight"
               ],
               "summary": [
                 "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets."
@@ -194875,6 +195349,7 @@
               ],
               "compatibility": [],
               "maintainers": [
+                "Vaudeville-Studios",
                 "Coneja-Chibi",
                 "github-actions[bot]",
                 "NemoVonNirgend",
@@ -196557,10 +197032,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 121,
+              "stars": 124,
               "forks": 7,
               "watchers": 2,
-              "aggregate": 130
+              "aggregate": 133
             },
             "repositorySizeKb": 491,
             "license": {
@@ -196569,7 +197044,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T06:48:44.160Z",
+            "refreshedAt": "2026-11-09T11:26:11.213Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -200582,7 +201057,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:32.478Z",
+            "refreshedAt": "2026-11-09T17:45:37.271Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -200849,7 +201324,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-24T16:07:41.637Z",
+            "refreshedAt": "2026-11-09T00:01:49.637Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -205354,10 +205829,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 121,
+              "stars": 124,
               "forks": 7,
               "watchers": 2,
-              "aggregate": 130
+              "aggregate": 133
             },
             "repositorySizeKb": 491,
             "license": {
@@ -205366,7 +205841,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T06:48:44.160Z",
+            "refreshedAt": "2026-11-09T11:26:11.213Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -213881,10 +214356,10 @@
             },
             "latestReleaseAt": "2026-04-21T17:43:04.000Z",
             "community": {
-              "stars": 39,
+              "stars": 41,
               "forks": 4,
               "watchers": 3,
-              "aggregate": 46
+              "aggregate": 48
             },
             "repositorySizeKb": 12710,
             "license": {
@@ -213893,7 +214368,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-24T12:11:07.080Z",
+            "refreshedAt": "2026-11-09T00:05:46.034Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -214856,7 +215331,7 @@
           "primaryFunction": "character-worldbuilding",
           "availability": "available",
           "unavailableReason": null,
-          "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+          "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
           "project": {
             "id": "coneja-chibi-hoplight",
             "name": "Hoplight",
@@ -214865,7 +215340,7 @@
             "sourceStatus": "healthy",
             "primaryFunction": "character-worldbuilding",
             "summary": "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets.",
-            "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+            "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
             "catalogedAt": "2026-07-26T00:00:00Z",
             "catalogCohort": "standard",
             "frontends": [
@@ -214899,7 +215374,7 @@
               "state": "gray",
               "riskLevel": null,
               "freshness": "unassessed",
-              "currentSha": "3d9e2ab035093f55c3e4609f2bb5de2d75fe14b3",
+              "currentSha": "c61e52904dcff72274c60e1867e7bf06d2ff254a",
               "report": null,
               "history": [],
               "historyUrl": null
@@ -214907,9 +215382,14 @@
             "attribution": {
               "owner": {
                 "provider": "github",
-                "login": "Coneja-Chibi"
+                "login": "Vaudeville-Studios"
               },
               "contributors": [
+                {
+                  "provider": "github",
+                  "login": "Coneja-Chibi",
+                  "botOrAi": false
+                },
                 {
                   "provider": "github",
                   "login": "github-actions[bot]",
@@ -214931,25 +215411,25 @@
                   "botOrAi": false
                 }
               ],
-              "humanContributorCount": 3,
+              "humanContributorCount": 4,
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-09-21T23:44:35.000Z",
+              "latestSourceActivityAt": "2026-11-03T03:53:41.000Z",
               "activeWeeks12": 3,
               "weeklyActivity": [
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
                 true,
                 false,
                 false,
                 false,
-                true,
                 false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -214961,18 +215441,18 @@
               "watchers": 2,
               "aggregate": 16
             },
-            "repositorySizeKb": 39368,
+            "repositorySizeKb": 40056,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:33.476Z",
+            "refreshedAt": "2026-11-09T17:45:25.529Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
-              "repositoryUrl": "https://github.com/Coneja-Chibi/Hoplight.git",
+              "repositoryUrl": "https://github.com/Vaudeville-Studios/Hoplight.git",
               "branch": null,
               "manifestPath": null,
               "folderName": "Hoplight"
@@ -214987,7 +215467,7 @@
                 "coneja-chibi-hoplight",
                 "github-1305235960",
                 "Coneja-Chibi/Hoplight",
-                "https://github.com/Coneja-Chibi/Hoplight"
+                "https://github.com/Vaudeville-Studios/Hoplight"
               ],
               "summary": [
                 "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets."
@@ -215018,6 +215498,7 @@
               ],
               "compatibility": [],
               "maintainers": [
+                "Vaudeville-Studios",
                 "Coneja-Chibi",
                 "github-actions[bot]",
                 "NemoVonNirgend",
@@ -219990,7 +220471,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-24T16:07:41.637Z",
+            "refreshedAt": "2026-11-09T00:01:49.637Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -221164,7 +221645,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T08:54:43.335Z",
+            "refreshedAt": "2026-11-09T17:45:21.330Z",
             "staleSince": null,
             "install": null,
             "fork": null,
@@ -230469,10 +230950,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 121,
+              "stars": 124,
               "forks": 7,
               "watchers": 2,
-              "aggregate": 130
+              "aggregate": 133
             },
             "repositorySizeKb": 491,
             "license": {
@@ -230481,7 +230962,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T06:48:44.160Z",
+            "refreshedAt": "2026-11-09T11:26:11.213Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -234709,10 +235190,10 @@
             },
             "latestReleaseAt": "2026-09-03T23:20:57.000Z",
             "community": {
-              "stars": 8,
-              "forks": 0,
+              "stars": 10,
+              "forks": 1,
               "watchers": 2,
-              "aggregate": 10
+              "aggregate": 13
             },
             "repositorySizeKb": 109,
             "license": {
@@ -234721,7 +235202,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T03:44:56.208Z",
+            "refreshedAt": "2026-11-09T09:00:05.876Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -243197,7 +243678,7 @@
           "primaryFunction": "character-worldbuilding",
           "availability": "available",
           "unavailableReason": null,
-          "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+          "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
           "project": {
             "id": "coneja-chibi-hoplight",
             "name": "Hoplight",
@@ -243206,7 +243687,7 @@
             "sourceStatus": "healthy",
             "primaryFunction": "character-worldbuilding",
             "summary": "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets.",
-            "canonicalUrl": "https://github.com/Coneja-Chibi/Hoplight",
+            "canonicalUrl": "https://github.com/Vaudeville-Studios/Hoplight",
             "catalogedAt": "2026-07-26T00:00:00Z",
             "catalogCohort": "standard",
             "frontends": [
@@ -243240,7 +243721,7 @@
               "state": "gray",
               "riskLevel": null,
               "freshness": "unassessed",
-              "currentSha": "3d9e2ab035093f55c3e4609f2bb5de2d75fe14b3",
+              "currentSha": "c61e52904dcff72274c60e1867e7bf06d2ff254a",
               "report": null,
               "history": [],
               "historyUrl": null
@@ -243248,9 +243729,14 @@
             "attribution": {
               "owner": {
                 "provider": "github",
-                "login": "Coneja-Chibi"
+                "login": "Vaudeville-Studios"
               },
               "contributors": [
+                {
+                  "provider": "github",
+                  "login": "Coneja-Chibi",
+                  "botOrAi": false
+                },
                 {
                   "provider": "github",
                   "login": "github-actions[bot]",
@@ -243272,25 +243758,25 @@
                   "botOrAi": false
                 }
               ],
-              "humanContributorCount": 3,
+              "humanContributorCount": 4,
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-09-21T23:44:35.000Z",
+              "latestSourceActivityAt": "2026-11-03T03:53:41.000Z",
               "activeWeeks12": 3,
               "weeklyActivity": [
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
                 true,
                 false,
                 false,
                 false,
-                true,
                 false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -243302,18 +243788,18 @@
               "watchers": 2,
               "aggregate": 16
             },
-            "repositorySizeKb": 39368,
+            "repositorySizeKb": 40056,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:33.476Z",
+            "refreshedAt": "2026-11-09T17:45:25.529Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
-              "repositoryUrl": "https://github.com/Coneja-Chibi/Hoplight.git",
+              "repositoryUrl": "https://github.com/Vaudeville-Studios/Hoplight.git",
               "branch": null,
               "manifestPath": null,
               "folderName": "Hoplight"
@@ -243328,7 +243814,7 @@
                 "coneja-chibi-hoplight",
                 "github-1305235960",
                 "Coneja-Chibi/Hoplight",
-                "https://github.com/Coneja-Chibi/Hoplight"
+                "https://github.com/Vaudeville-Studios/Hoplight"
               ],
               "summary": [
                 "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets."
@@ -243359,6 +243845,7 @@
               ],
               "compatibility": [],
               "maintainers": [
+                "Vaudeville-Studios",
                 "Coneja-Chibi",
                 "github-actions[bot]",
                 "NemoVonNirgend",
@@ -249535,7 +250022,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "generation-reasoning",
-            "summary": "SillyTavern-DirectCommand gives precise, localized control over text generation turns by adding one-shot instructions to prompts without polluting long-term chat history.",
+            "summary": "SillyTavern-DirectCommand is a SillyTavern extension for precise, localized control over individual generation turns, letting you prepend or append one-shot instructions without polluting long-term chat context (README).",
             "canonicalUrl": "https://github.com/Enerccio/SillyTavern-DirectCommand",
             "catalogedAt": "2026-08-03T08:22:48.088Z",
             "catalogCohort": "standard",
@@ -249554,22 +250041,10 @@
                 "facet": "goal"
               },
               {
-                "id": "inspect-prompts-and-generations",
-                "label": "Inspect prompts and generations",
-                "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+                "id": "manage-context-limits",
+                "label": "Manage context limits",
+                "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
                 "facet": "goal"
-              },
-              {
-                "id": "non-destructive",
-                "label": "Non-destructive",
-                "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
-                "facet": "trait"
-              },
-              {
-                "id": "persistent-state",
-                "label": "Persistent state",
-                "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -249715,7 +250190,7 @@
                 "https://github.com/Enerccio/SillyTavern-DirectCommand"
               ],
               "summary": [
-                "SillyTavern-DirectCommand gives precise, localized control over text generation turns by adding one-shot instructions to prompts without polluting long-term chat history."
+                "SillyTavern-DirectCommand is a SillyTavern extension for precise, localized control over individual generation turns, letting you prepend or append one-shot instructions without polluting long-term chat context (README)."
               ],
               "kind": [
                 "extension"
@@ -249728,19 +250203,10 @@
                 "response steering",
                 "generation control",
                 "instruction control",
-                "Inspect prompts and generations",
-                "prompt inspection",
-                "generation diagnostics",
-                "review validation",
-                "request debugging",
-                "Non-destructive",
-                "reversible workflow",
-                "preserves originals",
-                "safe overlay",
-                "Persistent state",
-                "durable state",
-                "state persistence",
-                "cross-session state"
+                "Manage context limits",
+                "context compression",
+                "context window management",
+                "token budgeting"
               ],
               "frontends": [
                 "SillyTavern"
@@ -249991,7 +250457,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-24T18:42:45.954Z",
+            "refreshedAt": "2026-11-09T00:02:53.008Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -253398,7 +253864,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T08:53:03.922Z",
+            "refreshedAt": "2026-11-09T17:44:41.458Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -253854,10 +254320,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 58,
+              "stars": 59,
               "forks": 11,
               "watchers": 3,
-              "aggregate": 72
+              "aggregate": 73
             },
             "repositorySizeKb": 128,
             "license": {
@@ -253866,7 +254332,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T03:45:27.593Z",
+            "refreshedAt": "2026-11-09T09:00:22.711Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -266722,7 +267188,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-24T16:07:50.836Z",
+            "refreshedAt": "2026-11-09T00:02:56.003Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -267435,7 +267901,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-24T12:11:21.483Z",
+            "refreshedAt": "2026-11-09T00:05:38.662Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -273138,10 +273604,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 25,
+              "stars": 28,
               "forks": 3,
               "watchers": 2,
-              "aggregate": 30
+              "aggregate": 33
             },
             "repositorySizeKb": 23484,
             "license": {
@@ -273150,7 +273616,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T06:58:15.571Z",
+            "refreshedAt": "2026-11-09T11:27:30.160Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -285873,10 +286339,10 @@
             },
             "latestReleaseAt": "2026-04-21T17:43:04.000Z",
             "community": {
-              "stars": 39,
+              "stars": 41,
               "forks": 4,
               "watchers": 3,
-              "aggregate": 46
+              "aggregate": 48
             },
             "repositorySizeKb": 12710,
             "license": {
@@ -285885,7 +286351,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-24T12:11:07.080Z",
+            "refreshedAt": "2026-11-09T00:05:46.034Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -288698,10 +289164,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 121,
+              "stars": 124,
               "forks": 7,
               "watchers": 2,
-              "aggregate": 130
+              "aggregate": 133
             },
             "repositorySizeKb": 491,
             "license": {
@@ -288710,7 +289176,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T06:48:44.160Z",
+            "refreshedAt": "2026-11-09T11:26:11.213Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -292967,10 +293433,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 25,
+              "stars": 28,
               "forks": 3,
               "watchers": 2,
-              "aggregate": 30
+              "aggregate": 33
             },
             "repositorySizeKb": 23484,
             "license": {
@@ -292979,7 +293445,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T06:58:15.571Z",
+            "refreshedAt": "2026-11-09T11:27:30.160Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -293535,7 +294001,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "generation-reasoning",
-            "summary": "SillyTavern-DirectCommand gives precise, localized control over text generation turns by adding one-shot instructions to prompts without polluting long-term chat history.",
+            "summary": "SillyTavern-DirectCommand is a SillyTavern extension for precise, localized control over individual generation turns, letting you prepend or append one-shot instructions without polluting long-term chat context (README).",
             "canonicalUrl": "https://github.com/Enerccio/SillyTavern-DirectCommand",
             "catalogedAt": "2026-08-03T08:22:48.088Z",
             "catalogCohort": "standard",
@@ -293554,22 +294020,10 @@
                 "facet": "goal"
               },
               {
-                "id": "inspect-prompts-and-generations",
-                "label": "Inspect prompts and generations",
-                "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+                "id": "manage-context-limits",
+                "label": "Manage context limits",
+                "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
                 "facet": "goal"
-              },
-              {
-                "id": "non-destructive",
-                "label": "Non-destructive",
-                "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
-                "facet": "trait"
-              },
-              {
-                "id": "persistent-state",
-                "label": "Persistent state",
-                "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
-                "facet": "trait"
               }
             ],
             "tavernKeeper": {
@@ -293715,7 +294169,7 @@
                 "https://github.com/Enerccio/SillyTavern-DirectCommand"
               ],
               "summary": [
-                "SillyTavern-DirectCommand gives precise, localized control over text generation turns by adding one-shot instructions to prompts without polluting long-term chat history."
+                "SillyTavern-DirectCommand is a SillyTavern extension for precise, localized control over individual generation turns, letting you prepend or append one-shot instructions without polluting long-term chat context (README)."
               ],
               "kind": [
                 "extension"
@@ -293728,19 +294182,10 @@
                 "response steering",
                 "generation control",
                 "instruction control",
-                "Inspect prompts and generations",
-                "prompt inspection",
-                "generation diagnostics",
-                "review validation",
-                "request debugging",
-                "Non-destructive",
-                "reversible workflow",
-                "preserves originals",
-                "safe overlay",
-                "Persistent state",
-                "durable state",
-                "state persistence",
-                "cross-session state"
+                "Manage context limits",
+                "context compression",
+                "context window management",
+                "token budgeting"
               ],
               "frontends": [
                 "SillyTavern"
@@ -298580,8 +299025,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "440143b120fc58a35f020f93cb6ce4600eeb57ca",
+              "freshness": "stale",
+              "currentSha": "e7b7f915d6952d1d901b16a1222d89caaaaaa5e8",
               "report": {
                 "reportId": "6b35190521fcd64243b0da21658f2db826ddf3cbf10a5fb0d9728685a3532348",
                 "riskLevel": "low",
@@ -298856,11 +299301,11 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-19T15:33:41.000Z",
+              "latestSourceActivityAt": "2026-10-30T20:38:49.000Z",
               "activeWeeks12": 7,
               "weeklyActivity": [
                 false,
-                true,
+                false,
                 true,
                 true,
                 true,
@@ -298870,26 +299315,26 @@
                 true,
                 false,
                 true,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 58,
+              "stars": 61,
               "forks": 6,
               "watchers": 1,
-              "aggregate": 65
+              "aggregate": 68
             },
-            "repositorySizeKb": 996,
+            "repositorySizeKb": 1176,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T06:58:43.824Z",
+            "refreshedAt": "2026-11-09T17:44:46.329Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",

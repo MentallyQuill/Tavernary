@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "elouannd-context-image-generation",
+  "sourceId": "github-1124349811",
+  "sourceIdentity": "github:1124349811",
+  "inputDigest": "bb3a29a81aaa44072425e1c988c60624af57123f3779d8e5ecfb613fda7e34b3",
+  "fingerprint": "f644724adb53562e439904833e6443ea4bd3999550268fa7195150317b347ee1",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "ad681234edfe2c518d83d1e494b291c9b3f3d957c9102e30e14400502e26ca3a",
+  "outputDigest": "b47f4cb0faa6f42ba0167741e4f528c8eb6f93a50a66de4c63d9ba1fb0a0f6ee",
+  "headSha": "4e3968d31101c518f9aaa82fbbdd83e8fca0b220",
+  "observedAt": "2026-11-08T09:58:20.882Z"
+}

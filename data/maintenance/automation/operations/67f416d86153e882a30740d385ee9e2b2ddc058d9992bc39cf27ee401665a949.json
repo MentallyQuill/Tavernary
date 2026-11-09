@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "67f416d86153e882a30740d385ee9e2b2ddc058d9992bc39cf27ee401665a949",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1133781448:mattjaybe-sillytavern-pathweaver",
+      "inputDigest": "165e1b9c761138a3dc7c47e53e5788171973d165f2f37bd7bee1241161870f2a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T06:48:44.160Z",
+    "nextEligibleAt": "2026-11-09T11:24:51.018Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-09T11:09:51.018Z",
+  "completedAt": null
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1364890574",
+  "repository": {
+    "id": 1364890574,
+    "owner": "Hooch88",
+    "name": "TauriTavern-SceneState",
+    "url": "https://github.com/Hooch88/TauriTavern-SceneState",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "07133a3cf336a7da42624a509a848b1a403a0d2b",
+    "head_committed_at": "2026-09-11T05:10:38.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-09-10T20:33:36.000Z",
+    "size_kb": 40
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-09-11T05:10:29.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-11T05:10:29.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-09T06:24:04.902Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "07133a3cf336a7da42624a509a848b1a403a0d2b"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-11-09T06:24:04.902Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "Hooch88", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-09T06:24:04.902Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

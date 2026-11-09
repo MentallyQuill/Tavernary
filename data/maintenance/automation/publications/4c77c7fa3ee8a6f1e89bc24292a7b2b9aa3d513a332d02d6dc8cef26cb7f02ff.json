@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4c77c7fa3ee8a6f1e89bc24292a7b2b9aa3d513a332d02d6dc8cef26cb7f02ff",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1450382594:serioos-free-avatar-crop",
+      "inputDigest": "47992eddac90d19ebb5804cfcbc5eb528f56619a41fcaaf68d6aa631034bf696",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-08T15:56:21.386Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1450382594",
+    "identity": "github:1450382594"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42504076699,
+    "sourceSha": "eb4e6a8e55083b649b0ea2c5da3a4e74837ba1ac"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/serioos-free-avatar-crop.json",
+      "sha256": "a5ee20dac97220f4b2a877260d7cc9b67deb031fd8e0b42528e24c3d16d8ba27",
+      "gitBlobSha": "62b2aa277b54f5f87131090ab4ba676c5bc0e3f2"
+    }
+  ]
+}

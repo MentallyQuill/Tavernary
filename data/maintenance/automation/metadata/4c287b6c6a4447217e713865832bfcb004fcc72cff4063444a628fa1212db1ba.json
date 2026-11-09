@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "enerccio-sillytavern-directcommand",
+  "sourceId": "github-1268540573",
+  "sourceIdentity": "github:1268540573",
+  "inputDigest": "146eb17a6214f9bb30e6d78b551c059dc3728a0351feeccfee49522b96b1888a",
+  "fingerprint": "a41346c661d19e88fcc6f21858a63bf4dda130035c5306472c43857503f1dc96",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "6e7775b8ce19833f7ad3fa5e05f1ae6ef45392d99474eaddbb8fbc5c9eb50945",
+  "outputDigest": "0620b62243183ec98818bfed8d4c64b0bc043b142f6f6df1ee4de4858edbf2a4",
+  "headSha": "3c547c1120a3cd56af9006a80854ea845270838c",
+  "observedAt": "2026-11-08T09:50:23.498Z"
+}

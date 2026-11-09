@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ca689972e7efc5431e7260d884a6b023447a45acff0497e77d6c14d2806fc77c",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1354125356:shin-f-persona-multi-avatars",
+      "inputDigest": "1b0b2586038fa118cdb428ac6b5b34a44f94acc45673d196c97ca46e4956ca78",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T08:53:59.828Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1354125356",
+    "identity": "github:1354125356"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42639503852,
+    "sourceSha": "c16f445c33868db8ad1e2136dc184ba84beae613"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/shin-f-persona-multi-avatars.json",
+      "sha256": "a97c443df9cf90cb5a83f08b41c858ade8b2505681f6a001999c4f7f213b476d",
+      "gitBlobSha": "93b48b3b4c710158465553ebfa85b379a3f35eec"
+    }
+  ]
+}

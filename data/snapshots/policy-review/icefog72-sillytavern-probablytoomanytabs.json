@@ -3,14 +3,11 @@
   "project_id": "icefog72-sillytavern-probablytoomanytabs",
   "source_id": "github-1065878471",
   "source_identity": "github:icefog72/sillytavern-probablytoomanytabs",
-  "evidence_fingerprint": "57a52120a7a9f41d779760bc58ad7b6edb27db000dc1dca3080b28ff6121c9ec",
+  "evidence_fingerprint": "9b9b451f44d1eb9efbec3c7a92b259478ae775b79da1bcfa9e3b174f51d72503",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-09T12:31:31.174Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-09T12:31:31.174Z"
-  },
+  "reviewed_at": "2026-11-09T14:40:39.014Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

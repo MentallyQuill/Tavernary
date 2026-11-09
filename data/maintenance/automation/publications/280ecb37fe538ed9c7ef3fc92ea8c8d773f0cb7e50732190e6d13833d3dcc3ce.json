@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "280ecb37fe538ed9c7ef3fc92ea8c8d773f0cb7e50732190e6d13833d3dcc3ce",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1163555391:dangerdaza-dooms-enhancement-suite",
+      "inputDigest": "2cd7f2769c3984b90af116992b682992fb8db7cd17c8a9d7f546d7e64e90dccf",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T12:42:25.952Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1163555391",
+    "identity": "github:1163555391"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42647990947,
+    "sourceSha": "5964348853038a2c45d6825640797ba53fac4997"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/dangerdaza-dooms-enhancement-suite.json",
+      "sha256": "894cf2508119fe7b73022e6514c9c5019ddd71ee000d54602d6c921794332109",
+      "gitBlobSha": "6d5fb0a81e2c7445135d5141f7643b0a5179df84"
+    }
+  ]
+}

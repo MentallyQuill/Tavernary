@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5f44b8e95d34e0664047515a62f51fd8b85a6ce05d946e80af3ab22349a1a5d7",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1120101080:mechamarmot-sillytavern-mazemaster",
+      "inputDigest": "5e95563e5dea9b2e49e2b6444843cd3f4c45894624a2a58f594d2b91ba3d93a9",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-09T02:33:05.700Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1120101080",
+    "identity": "github:1120101080"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 42555470614,
+    "sourceSha": "3c7bfd503576e7434638fd1d9bc6897658b08ec9"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/mechamarmot-sillytavern-mazemaster.json",
+      "sha256": "8e71f1e93f62475d49e44073d5e7a65ed540111a3b832f0555bd53fe77faaed7",
+      "gitBlobSha": "425da11d1a8a7d8574e03429d7c8dd7d4130a46d"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/5f44b8e95d34e0664047515a62f51fd8b85a6ce05d946e80af3ab22349a1a5d7.json",
+      "sha256": "f83d8ad99830b1687fee2f66166755fad6ad2f51a17321a7b0de2103969280f9",
+      "gitBlobSha": "64d3bd8414700480dddba2f94bebbd6818304acd"
+    }
+  ]
+}

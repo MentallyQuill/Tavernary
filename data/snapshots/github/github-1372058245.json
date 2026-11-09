@@ -9,18 +9,28 @@
     "url": "https://github.com/Pyrxpia/sola-hub",
     "description": null,
     "default_branch": "main",
-    "head_sha": "a5e0de333872f9f9e14b70f5194877ea88d96d51",
-    "head_committed_at": "2026-10-25T04:46:08.000Z",
+    "head_sha": "eae025e76015345294bc2c59feeae3caaf842bab",
+    "head_committed_at": "2026-11-03T03:16:46.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-15T20:09:53.000Z",
-    "size_kb": 35324
+    "size_kb": 44171
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-25T04:46:08.000Z",
+    "latest_source_activity_at": "2026-11-03T03:16:46.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-03T03:16:46.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-30T19:02:37.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-19",
         "latest_at": "2026-10-25T04:46:08.000Z",
@@ -50,18 +60,18 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-25T06:47:13.422Z",
+    "baseline_completed_at": "2026-11-09T11:25:40.716Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "a5e0de333872f9f9e14b70f5194877ea88d96d51"
+    "evidence_head_sha": "eae025e76015345294bc2c59feeae3caaf842bab"
   },
   "community": {
-    "stars_count": 5,
+    "stars_count": 8,
     "forks_count": 1,
     "watchers_count": 0,
-    "aggregate": 6
+    "aggregate": 9
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-10-25T06:49:17.395Z",
+  "refreshed_at": "2026-11-09T11:28:16.600Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -69,7 +79,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-25T06:47:13.422Z",
+    "refreshed_at": "2026-11-09T11:25:40.716Z",
     "stale_since": null
   }
 }
