@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "aa3c5f77f57919ca1dfead1d08444cb3f99da492924d35ffd2a9a6ecaeeb8154",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1239116905:tclowe1982-marinara-extender",
+      "inputDigest": "3b51dc2aaebf93dddc6d837e2559f0a60831aab3a21402b6a690f7c0ed1875ae",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-24T23:17:10.829Z",
+    "nextEligibleAt": "2026-11-09T02:35:12.694Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-09T02:20:12.694Z",
+  "completedAt": null
+}
