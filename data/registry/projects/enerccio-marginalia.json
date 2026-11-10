@@ -3,7 +3,7 @@
   "id": "enerccio-marginalia",
   "name": "Marginalia",
   "kind": "frontend",
-  "summary": "A local writing frontend for long-form fiction, with branching stories, lorebooks, context summaries, backups, and runtime extensions. Connects to OpenAI-compatible APIs and local models.",
+  "summary": "A local writing frontend for long-form fiction, with branching stories, lorebooks, context summaries, backups, and many runtime extensions. Connects to OpenAI-compatible APIs and local models.",
   "metadata_status": "curated",
   "source_id": "github-1382026046",
   "frontends": ["marginalia"],
@@ -23,8 +23,8 @@
   "metadata_policy": {
     "summary": {
       "mode": "manual",
-      "note": "Trusted Tavernary editor selection."
+      "note": "Verified repository owner selection."
     },
-    "tags": { "mode": "manual", "note": "Trusted Tavernary editor selection." }
+    "tags": { "mode": "manual", "note": "Verified repository owner selection." }
   }
 }
