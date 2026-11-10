@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f787ce78f18729e8f55d8677d3595fbd6fe2e9d27f52bcff3076780c631c1274",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1317341957:0x4kgi-sillytavern-auto-pair-input-characters",
+      "inputDigest": "eb4dafb1dee918cae4579dcd48c8e7c35326cdecb3e79e0895836579bffc4460",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-25T08:54:15.132Z",
+    "nextEligibleAt": "2026-11-10T15:53:23.928Z",
+    "expectedSha": "193387fb0d9bb79a018b2e431ad571347e23700d",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-10T15:38:23.928Z",
+  "completedAt": null
+}
