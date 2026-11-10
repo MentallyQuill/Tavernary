@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2c3b747da7e2b6f8070c63c61cb7110e4848f9ba25c82e387954bc7c4b3f652e",
+    "identity": {
+      "kind": "report-import",
+      "subject": "report:5b7d9af0a75a14995cf44146cd9ea14760e49c8f85668d4eb8d08e2562bc6f50",
+      "inputDigest": "eeb310ac25ffb9e95dd8ef3232e254ecba171dd68b658a579864f8619aad065f",
+      "policyVersion": "5.5"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-10T19:54:06.023Z",
+    "nextEligibleAt": "2026-11-10T22:02:19.778Z",
+    "expectedSha": "2f6280c2723c9d85466a37029d212c71f2d37065",
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "github-inventory-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-10T21:57:09.026Z",
+  "completedAt": null
+}
