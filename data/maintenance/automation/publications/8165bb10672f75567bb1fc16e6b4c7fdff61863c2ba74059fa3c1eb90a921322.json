@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8165bb10672f75567bb1fc16e6b4c7fdff61863c2ba74059fa3c1eb90a921322",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1288668022:brucestarkallen-sillytavern-plot-essential-and-instructions-maker",
+      "inputDigest": "81f6dfdfd907f12c548fb9bf5775a19a4794df9647a95e989ae46a1b03d42673",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T21:08:05.834Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1288668022",
+    "identity": "github:1288668022"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42836433082,
+    "sourceSha": "c89690bed583ace21f177bae012e03ad6db340e5"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/brucestarkallen-sillytavern-plot-essential-and-instructions-maker.json",
+      "sha256": "351b90f2052d27fc296edd3d93a4a556772ca5233da8ac54105da06816ab75f6",
+      "gitBlobSha": "49425d21e8a1c2b84a4989d6ef62766571be59e3"
+    }
+  ]
+}

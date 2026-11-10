@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "65dcec6eff59f098bf3d42ed8c2bcc891c62e2fafa6acd38e95e7fe05a654ffb",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1207534658:ludicdynamics-worldlines",
+      "inputDigest": "04581a0ea8c23a6275298be34f8c257f0fc3b1714f8cfa0611f898782fcd56a8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T21:07:47.923Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1207534658",
+    "identity": "github:1207534658"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42834998634,
+    "sourceSha": "d5877098e579d54d643fd6b91dce83143a375e2c"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/ludicdynamics-worldlines.json",
+      "sha256": "b510c413a4b506ab097b45a37987796cd5a6519cfc3321b4ef45aade7dfc73e2",
+      "gitBlobSha": "9813f7bce41313ec14d55e580e2570ed2229a336"
+    }
+  ]
+}

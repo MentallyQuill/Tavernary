@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "eace2a0f59af72ef278264057c5c17bb377f7ea7b3943d1855829ac6d45614cf",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-882467511:leandrojofre-sillytavern-presence",
+      "inputDigest": "8b2c4815afe508aa7411165ebb692e4123bce400db2231091335529136924904",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T20:19:12.253Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-882467511",
+    "identity": "github:882467511"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42833378591,
+    "sourceSha": "f1c00a8778962622c196b915cfab32ac2f8d471a"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/leandrojofre-sillytavern-presence.json",
+      "sha256": "dff48388b1858d268392065c456a76bf72306b95db6401c3413b1087e6582294",
+      "gitBlobSha": "288b9e734bf976bba44ff0e1825ee33c8f1b47fc"
+    }
+  ]
+}

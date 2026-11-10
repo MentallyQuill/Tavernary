@@ -3,14 +3,11 @@
   "project_id": "ludicdynamics-worldlines",
   "source_id": "github-1207534658",
   "source_identity": "github:ludicdynamics/worldlines",
-  "evidence_fingerprint": "185216b040c2cc51a6e84b5ccbbc009be480af3f6b933163c271ba3b0653a963",
+  "evidence_fingerprint": "91aedc9a9420e2ae183b69fb88a8daed36de97988cf8baa4c68d031ec2ca846c",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-10T12:28:21.597Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-10T12:28:21.597Z"
-  },
+  "reviewed_at": "2026-11-10T14:32:54.995Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

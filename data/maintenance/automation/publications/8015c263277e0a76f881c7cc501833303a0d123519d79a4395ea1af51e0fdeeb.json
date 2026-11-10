@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8015c263277e0a76f881c7cc501833303a0d123519d79a4395ea1af51e0fdeeb",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1256623355:brasen56-merged-world-tracker",
+      "inputDigest": "a059ceee5a1784f367cbb11e24e90b97b0e6f44c5ec7d36fb88223de1676b9dd",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T20:19:02.440Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1256623355",
+    "identity": "github:1256623355"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42831786114,
+    "sourceSha": "1dd6a9015d33ba8d3ea9fbf4de6821160769afb4"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/brasen56-merged-world-tracker.json",
+      "sha256": "e5847016a22b89459cd24a58ea001ce56d503e724720b420893d9cdd553ba15b",
+      "gitBlobSha": "2a43938fa47194b1e35eeb190b38d923db9a6124"
+    }
+  ]
+}
