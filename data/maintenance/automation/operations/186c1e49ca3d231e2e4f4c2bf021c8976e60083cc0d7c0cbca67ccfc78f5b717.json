@@ -10,7 +10,7 @@
     },
     "stage": "admitted",
     "createdAt": "2026-10-21T13:05:47.053Z",
-    "nextEligibleAt": "2026-11-09T08:46:41.205Z",
+    "nextEligibleAt": "2026-11-10T09:33:30.044Z",
     "expectedSha": null,
     "workerRunId": null,
     "retry": {
@@ -18,10 +18,10 @@
         "kind": "transient",
         "reasonCode": "policy-review-unavailable"
       },
-      "transientAttempts": 9,
+      "transientAttempts": 10,
       "immediateAttempts": 0
     }
   },
-  "updatedAt": "2026-11-09T08:31:41.205Z",
+  "updatedAt": "2026-11-10T09:18:30.044Z",
   "completedAt": null
 }
