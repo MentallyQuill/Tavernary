@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "wewwaistyping-slayhomepage",
+  "name": "SLAYhomepage",
+  "kind": "extension",
+  "summary": "A SillyTavern start screen replacing the empty window with recent bots: one click resumes a conversation, starts a new one, or opens all chats. 30 themes (19 game-styled), English and Russian interface (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1445819140",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-11-10T20:18:36.020Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
