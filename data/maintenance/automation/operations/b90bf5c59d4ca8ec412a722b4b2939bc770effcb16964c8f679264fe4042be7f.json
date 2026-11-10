@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b90bf5c59d4ca8ec412a722b4b2939bc770effcb16964c8f679264fe4042be7f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1281396724:valdoix-vellum-engine",
+      "inputDigest": "5df825d48e3def9dec3802796d9ff6677e10b39e1cff42cf38d37b8943d2d477",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-25T08:54:43.335Z",
+    "nextEligibleAt": "2026-11-10T19:10:08.587Z",
+    "expectedSha": "193387fb0d9bb79a018b2e431ad571347e23700d",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-10T18:55:08.587Z",
+  "completedAt": null
+}
