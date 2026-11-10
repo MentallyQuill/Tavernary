@@ -9,8 +9,8 @@
       "policyVersion": "2026-07-29"
     },
     "stage": "admitted",
-    "createdAt": "2026-10-24T12:11:07.080Z",
-    "nextEligibleAt": "2026-11-10T00:42:06.447Z",
+    "createdAt": "2026-11-09T00:05:46.034Z",
+    "nextEligibleAt": "2026-11-11T11:52:06.269Z",
     "expectedSha": null,
     "workerRunId": null,
     "retry": {
@@ -18,10 +18,10 @@
         "kind": "configuration",
         "reasonCode": "budget-exhausted"
       },
-      "transientAttempts": 0,
+      "transientAttempts": 1,
       "immediateAttempts": 0
     }
   },
-  "updatedAt": "2026-11-09T00:42:06.447Z",
+  "updatedAt": "2026-11-10T11:52:06.269Z",
   "completedAt": null
 }
