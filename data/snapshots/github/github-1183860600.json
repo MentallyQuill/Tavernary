@@ -9,21 +9,26 @@
     "url": "https://github.com/PocketRisu/PocketRisu",
     "description": "Self-hosted AI roleplay chat platform you run on your PC or personal server, forked from Risuai",
     "default_branch": "main",
-    "head_sha": "5da95f713a610219ddcf6c13de8779c52018196d",
-    "head_committed_at": "2026-10-24T06:20:39.000Z",
+    "head_sha": "40851fc9831856a36cb5c14799c1f501f32dc133",
+    "head_committed_at": "2026-11-01T13:54:46.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-17T02:40:46.000Z",
-    "size_kb": 79402
+    "size_kb": 79774
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-24T06:20:39.000Z",
+    "latest_source_activity_at": "2026-11-01T13:54:46.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-11-01T13:54:46.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-19",
-        "latest_at": "2026-10-24T06:20:39.000Z",
+        "latest_at": "2026-10-25T11:29:31.000Z",
         "precision": "exact"
       },
       {
@@ -55,37 +60,27 @@
         "week_start": "2026-08-24",
         "latest_at": "2026-08-30T17:43:48.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-17",
-        "latest_at": "2026-08-23T19:54:49.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-10",
-        "latest_at": "2026-08-15T08:15:09.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-24T06:26:35.000Z",
+    "latest_release_at": "2026-11-01T14:00:03.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-25T20:16:20.268Z",
+    "baseline_completed_at": "2026-11-10T15:45:42.003Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "5da95f713a610219ddcf6c13de8779c52018196d"
+    "evidence_head_sha": "40851fc9831856a36cb5c14799c1f501f32dc133"
   },
   "community": {
-    "stars_count": 416,
-    "forks_count": 66,
+    "stars_count": 436,
+    "forks_count": 65,
     "watchers_count": 3,
-    "aggregate": 485
+    "aggregate": 504
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-25T20:18:19.710Z",
+  "refreshed_at": "2026-11-10T15:48:28.881Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -176,7 +171,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-25T20:16:20.268Z",
+    "refreshed_at": "2026-11-10T15:45:42.003Z",
     "stale_since": null
   }
 }
