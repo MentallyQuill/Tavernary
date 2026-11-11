@@ -26856,10 +26856,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 5,
+        "stars": 6,
         "forks": 0,
         "watchers": 4,
-        "aggregate": 9
+        "aggregate": 10
       },
       "repositorySizeKb": 1356,
       "license": {
@@ -26868,7 +26868,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T07:20:59.200Z",
+      "refreshedAt": "2026-11-10T21:34:29.935Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -35075,7 +35075,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "frontend",
-      "summary": "A local writing frontend for long-form fiction, with branching stories, lorebooks, context summaries, backups, and runtime extensions. Connects to OpenAI-compatible APIs and local models.",
+      "summary": "A local writing frontend for long-form fiction, with branching stories, lorebooks, context summaries, backups, and many runtime extensions. Connects to OpenAI-compatible APIs and local models.",
       "canonicalUrl": "https://github.com/Enerccio/Marginalia",
       "catalogedAt": "2026-10-11T13:19:44.671Z",
       "catalogCohort": "standard",
@@ -35192,7 +35192,7 @@
           "https://github.com/Enerccio/Marginalia"
         ],
         "summary": [
-          "A local writing frontend for long-form fiction, with branching stories, lorebooks, context summaries, backups, and runtime extensions. Connects to OpenAI-compatible APIs and local models."
+          "A local writing frontend for long-form fiction, with branching stories, lorebooks, context summaries, backups, and many runtime extensions. Connects to OpenAI-compatible APIs and local models."
         ],
         "kind": [
           "frontend"
@@ -47285,8 +47285,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "eb8f63b74e23d94e391b81834781183c82b9f006",
+        "freshness": "stale",
+        "currentSha": "2ad2719de1382f3a0db59107eec8b962cbc8f337",
         "report": {
           "reportId": "11e9b53530ab157000a550a0e060579f74d93d0bc0b800251dcc1b8aa4c21fab",
           "riskLevel": "low",
@@ -47469,40 +47469,40 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-06T02:02:18.000Z",
+        "latestSourceActivityAt": "2026-10-28T22:10:32.000Z",
         "activeWeeks12": 3,
         "weeklyActivity": [
           false,
-          true,
-          true,
-          false,
-          false,
-          false,
-          false,
           false,
           true,
           false,
           false,
-          false
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 11,
+        "stars": 12,
         "forks": 0,
         "watchers": 0,
-        "aggregate": 11
+        "aggregate": 12
       },
-      "repositorySizeKb": 227,
+      "repositorySizeKb": 228,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T07:21:02.426Z",
+      "refreshedAt": "2026-11-10T21:33:50.014Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -103815,7 +103815,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T07:21:02.131Z",
+      "refreshedAt": "2026-11-10T21:35:14.192Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -129666,6 +129666,166 @@
         "compatibility": [],
         "maintainers": [
           "welvet"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "wewwaistyping-slayhomepage",
+      "name": "SLAYhomepage",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "A SillyTavern start screen replacing the empty window with recent bots: one click resumes a conversation, starts a new one, or opens all chats. 30 themes (19 game-styled), English and Russian interface (README).",
+      "canonicalUrl": "https://github.com/wewwaistyping/SLAYhomepage",
+      "catalogedAt": "2026-11-10T20:18:36.020Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "6c894d52652e0bef9b0344113a28be635cb55714",
+        "report": {
+          "reportId": "cdc11821342c3345b60a8f487756a66cf520aef64186a6ad339ca0b5698c83eb",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "6c894d52652e0bef9b0344113a28be635cb55714",
+          "treeUrl": "https://github.com/wewwaistyping/SLAYhomepage/tree/6c894d52652e0bef9b0344113a28be635cb55714",
+          "scannedAt": "2026-11-10T21:21:55.342Z",
+          "assessedAt": "2026-11-10T21:29:00.324Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "javascriptAnalysisStatus": "complete",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1445819140/6c894d52652e0bef9b0344113a28be635cb55714/5/cdc11821342c3345b60a8f487756a66cf520aef64186a6ad339ca0b5698c83eb/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1445819140/history/"
+        },
+        "history": [
+          {
+            "reportId": "cdc11821342c3345b60a8f487756a66cf520aef64186a6ad339ca0b5698c83eb",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "6c894d52652e0bef9b0344113a28be635cb55714",
+            "treeUrl": "https://github.com/wewwaistyping/SLAYhomepage/tree/6c894d52652e0bef9b0344113a28be635cb55714",
+            "scannedAt": "2026-11-10T21:21:55.342Z",
+            "assessedAt": "2026-11-10T21:29:00.324Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1445819140/6c894d52652e0bef9b0344113a28be635cb55714/5/cdc11821342c3345b60a8f487756a66cf520aef64186a6ad339ca0b5698c83eb/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1445819140/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1445819140/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "wewwaistyping"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-10T18:25:30.000Z",
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 1,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 1
+      },
+      "repositorySizeKb": 8444,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-10T20:18:36.020Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/wewwaistyping/SLAYhomepage.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SLAYhomepage"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SLAYhomepage"
+        ],
+        "aliases": [],
+        "source": [
+          "wewwaistyping-slayhomepage",
+          "github-1445819140",
+          "wewwaistyping/SLAYhomepage",
+          "https://github.com/wewwaistyping/SLAYhomepage"
+        ],
+        "summary": [
+          "A SillyTavern start screen replacing the empty window with recent bots: one click resumes a conversation, starts a new one, or opens all chats. 30 themes (19 game-styled), English and Russian interface (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "wewwaistyping"
         ],
         "relationships": []
       }
@@ -156037,8 +156197,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "eb8f63b74e23d94e391b81834781183c82b9f006",
+              "freshness": "stale",
+              "currentSha": "2ad2719de1382f3a0db59107eec8b962cbc8f337",
               "report": {
                 "reportId": "11e9b53530ab157000a550a0e060579f74d93d0bc0b800251dcc1b8aa4c21fab",
                 "riskLevel": "low",
@@ -156221,40 +156381,40 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-06T02:02:18.000Z",
+              "latestSourceActivityAt": "2026-10-28T22:10:32.000Z",
               "activeWeeks12": 3,
               "weeklyActivity": [
                 false,
-                true,
-                true,
-                false,
-                false,
-                false,
-                false,
                 false,
                 true,
                 false,
                 false,
-                false
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 11,
+              "stars": 12,
               "forks": 0,
               "watchers": 0,
-              "aggregate": 11
+              "aggregate": 12
             },
-            "repositorySizeKb": 227,
+            "repositorySizeKb": 228,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T07:21:02.426Z",
+            "refreshedAt": "2026-11-10T21:33:50.014Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",

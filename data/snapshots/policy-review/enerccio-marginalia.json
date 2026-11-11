@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "enerccio-marginalia",
+  "source_id": "github-1382026046",
+  "source_identity": "github:enerccio/marginalia",
+  "evidence_fingerprint": "0c50a3e5533c74c12b279649aa84f2b2a7481ff1dd67af742fc82e54a0e21d50",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-10T22:41:10.743Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

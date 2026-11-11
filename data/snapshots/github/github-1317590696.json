@@ -9,18 +9,23 @@
     "url": "https://github.com/i5031337/sillytavern-contextual-scene-painter",
     "description": "Generate context-aware in-chat and background images with one click, bypassing the active Character and Chat Preset instructions..",
     "default_branch": "main",
-    "head_sha": "eb8f63b74e23d94e391b81834781183c82b9f006",
-    "head_committed_at": "2026-10-06T02:02:18.000Z",
+    "head_sha": "2ad2719de1382f3a0db59107eec8b962cbc8f337",
+    "head_committed_at": "2026-10-28T22:10:32.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-30T18:52:46.000Z",
-    "size_kb": 227
+    "size_kb": 228
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-06T02:02:18.000Z",
+    "latest_source_activity_at": "2026-10-28T22:10:32.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-28T22:10:32.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-05",
         "latest_at": "2026-10-06T02:02:18.000Z",
@@ -30,42 +35,27 @@
         "week_start": "2026-08-24",
         "latest_at": "2026-08-30T02:20:42.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-17",
-        "latest_at": "2026-08-18T18:38:50.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-03",
-        "latest_at": "2026-08-05T22:48:10.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-08-02T02:25:36.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-06T14:16:03.206Z",
+    "baseline_completed_at": "2026-11-10T21:31:27.236Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "eb8f63b74e23d94e391b81834781183c82b9f006"
+    "evidence_head_sha": "2ad2719de1382f3a0db59107eec8b962cbc8f337"
   },
   "community": {
-    "stars_count": 11,
+    "stars_count": 12,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 11
+    "aggregate": 12
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-26T07:21:02.426Z",
+  "refreshed_at": "2026-11-10T21:33:50.014Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -73,7 +63,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-26T07:18:54.672Z",
+    "refreshed_at": "2026-11-10T21:31:27.236Z",
     "stale_since": null
   }
 }

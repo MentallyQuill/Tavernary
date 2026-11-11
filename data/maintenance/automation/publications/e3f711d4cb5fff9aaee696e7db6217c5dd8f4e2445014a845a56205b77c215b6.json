@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e3f711d4cb5fff9aaee696e7db6217c5dd8f4e2445014a845a56205b77c215b6",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1382026046:enerccio-marginalia",
+      "inputDigest": "614d0123adc79b9654822da8f226cc9d5db06547f70875643846c635e1711406",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T14:28:32.970Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1382026046",
+    "identity": "github:1382026046"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42916558164,
+    "sourceSha": "1af4a5950fd8f5e718e7f85dcbae65ce8e63bdcd"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/enerccio-marginalia.json",
+      "sha256": "0ab2d94310140c13c770adafba81ac85bfd48609ea3e500559c11da2e3697687",
+      "gitBlobSha": "5f27c111f946648e97fe19f1738a45b3f7ebb443"
+    }
+  ]
+}
