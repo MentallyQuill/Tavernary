@@ -5,12 +5,9 @@
   "source_identity": "github:archkr/lumiverse-lorerecall",
   "evidence_fingerprint": "573e8f606947b6e971714c611ac79031e0a86aa1e442a1cb0da035d4a9df5532",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-07T14:49:57.025Z",
-  "retry": {
-    "attempts": 5,
-    "last_failure_at": "2026-10-07T14:49:57.025Z"
-  },
+  "reviewed_at": "2026-11-11T14:07:10.311Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

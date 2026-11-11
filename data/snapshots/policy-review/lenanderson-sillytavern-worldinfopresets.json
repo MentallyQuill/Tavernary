@@ -5,12 +5,9 @@
   "source_identity": "github:lenanderson/sillytavern-worldinfopresets",
   "evidence_fingerprint": "f84e3a6e519002f4c0777ea6a12d1851c4bd54bc223e49318a4089953dfb1ddf",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-29T14:29:18.967Z",
-  "retry": {
-    "attempts": 5,
-    "last_failure_at": "2026-09-29T14:29:18.967Z"
-  },
+  "reviewed_at": "2026-11-11T13:29:05.758Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

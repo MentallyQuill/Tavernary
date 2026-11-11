@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e4ca9995aa9e52a2a9a1008e70724a8397df1314fbb4f4dfb9e9e7dbbcd6a994",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1273112032:mentallyquill-directive",
+      "inputDigest": "c42e11675ddaaa1065848098873534e92751dbc99f8f09f990f709910ba26800",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-26T08:46:55.015Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1273112032",
+    "identity": "github:1273112032"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43032228590,
+    "sourceSha": "d4c944a4e3961a96a116cc7d47e17fee8d2ffeee"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/mentallyquill-directive.json",
+      "sha256": "a3df11fb0d07c0f29e0dd5d99337284ab403073580c3778bafefd2203c1f25e4",
+      "gitBlobSha": "ea810f660a1513778a8d2abed4f568940a3f2c64"
+    }
+  ]
+}

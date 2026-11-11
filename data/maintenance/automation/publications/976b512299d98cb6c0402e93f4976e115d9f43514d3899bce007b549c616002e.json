@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "976b512299d98cb6c0402e93f4976e115d9f43514d3899bce007b549c616002e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1252271768:felixchaos-rpg-roleplay-platform",
+      "inputDigest": "481d53401ac5433efcf409228e52b529f4e6f9f30f472c9892f85a27e8cc02ef",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-26T07:40:20.212Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1252271768",
+    "identity": "github:1252271768"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43027760301,
+    "sourceSha": "74c31249b7cf594d8ce007a18f306b2a7c6210d1"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/felixchaos-rpg-roleplay-platform.json",
+      "sha256": "26958040a0f6f48b85a30321eeced55c4bba96b89cc81caaff4813ae2a2056a5",
+      "gitBlobSha": "ce13ebbe16c1a7001f5e142dd753153ecc242f90"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "cf2d880e4e89fb3e1cf8df5264a0e089feaaa253b9dd95f114dd769f1f7220de",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-983964699:nemovonnirgend-nemopresetext",
+      "inputDigest": "32934aa3219313a9d0cd40760ae13b7263b2453cb4c874d1c04466edef25b286",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-26T11:29:12.482Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-983964699",
+    "identity": "github:983964699"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43036675665,
+    "sourceSha": "c2306f8f1a109e0a430fd74068fd6d5fda668c01"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/nemovonnirgend-nemopresetext.json",
+      "sha256": "459ad0c1f7a969c48d6321426b2324ef5daf628b17fb4c7100638abd646c257f",
+      "gitBlobSha": "676b9c49c122618d2170a5c93d19988c897e4813"
+    }
+  ]
+}

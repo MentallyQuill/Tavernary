@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c496b9d405ba77f741710fd21d7517b48c69f4a694ada0847d8b36c87f53e1bf",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1213004871:archkr-lumiverse-lorerecall",
+      "inputDigest": "02c7357a9b49c7934f123f29354e574e7d1e4b3b63b8a83ee8cf8711ec154d6e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-26T11:28:43.725Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1213004871",
+    "identity": "github:1213004871"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43035124374,
+    "sourceSha": "8efae7d44d4ac3c997c99841cf308f0f06eb9369"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/archkr-lumiverse-lorerecall.json",
+      "sha256": "d60db87b252559363c964049ac6663d5515c4eab6b25bbec328ad6cff236b3fd",
+      "gitBlobSha": "f31ca316ac69900c219dd81929bde539fd6a1dc7"
+    }
+  ]
+}

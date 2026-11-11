@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "49e2daf2b6d84a43221f9a031bc1e09c004749b21442d696c7d49d46cdcad911",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1073960658:aikohanasaki-sillytavern-worldinfoinfo",
+      "inputDigest": "acdde7b3fb82a48739c986cc0f430dc94ef7c6c7091baa84565a6811db4e17e5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-26T08:47:18.845Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1073960658",
+    "identity": "github:1073960658"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43033600639,
+    "sourceSha": "f221a65294600ff3d5b2362304367365ab4ee8e0"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/aikohanasaki-sillytavern-worldinfoinfo.json",
+      "sha256": "5ecd0256504573b051a8b74ca7114ecbf6a51da47e38675cf4e5ffc93924ac2a",
+      "gitBlobSha": "4ac8cb5704d11ff8d03dcf369834c56b930608df"
+    }
+  ]
+}
