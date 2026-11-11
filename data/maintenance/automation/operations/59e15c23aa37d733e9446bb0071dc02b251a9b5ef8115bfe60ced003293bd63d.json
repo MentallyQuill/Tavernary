@@ -10,7 +10,7 @@
     },
     "stage": "admitted",
     "createdAt": "1970-01-01T00:00:00.000Z",
-    "nextEligibleAt": "2026-11-10T09:33:30.044Z",
+    "nextEligibleAt": "2026-11-11T15:12:29.591Z",
     "expectedSha": null,
     "workerRunId": null,
     "retry": {
@@ -18,10 +18,10 @@
         "kind": "transient",
         "reasonCode": "github-inventory-unavailable"
       },
-      "transientAttempts": 24,
+      "transientAttempts": 25,
       "immediateAttempts": 4
     }
   },
-  "updatedAt": "2026-11-10T09:18:30.044Z",
+  "updatedAt": "2026-11-11T14:57:29.591Z",
   "completedAt": null
 }
