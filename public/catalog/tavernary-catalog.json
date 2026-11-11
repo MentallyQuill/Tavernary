@@ -82036,7 +82036,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "07e6b12a9c1f9033a6e5271d79bb817a43e3099c",
+        "currentSha": "6c42fca5a271d69db60eb53c2d6de4279885dbe7",
         "report": {
           "reportId": "e744f272c7ce954d3544a66967c6c6c02ed6eb06dbc424523d5b702035c484cd",
           "riskLevel": "low",
@@ -82160,6 +82160,11 @@
           },
           {
             "provider": "github",
+            "login": "claude",
+            "botOrAi": true
+          },
+          {
+            "provider": "github",
             "login": "DrMagisto",
             "botOrAi": false
           },
@@ -82173,8 +82178,8 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-23T04:44:10.000Z",
-        "activeWeeks12": 5,
+        "latestSourceActivityAt": "2026-11-04T03:13:41.000Z",
+        "activeWeeks12": 6,
         "weeklyActivity": [
           false,
           false,
@@ -82187,26 +82192,26 @@
           false,
           true,
           true,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 95,
+        "stars": 97,
         "forks": 12,
         "watchers": 5,
-        "aggregate": 112
+        "aggregate": 114
       },
-      "repositorySizeKb": 54476,
+      "repositorySizeKb": 54965,
       "license": {
         "status": "missing",
         "label": "Missing",
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T11:29:12.482Z",
+      "refreshedAt": "2026-11-11T15:25:44.393Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -82254,6 +82259,7 @@
         "maintainers": [
           "NemoVonNirgend",
           "prolix-oc",
+          "claude",
           "DrMagisto",
           "github-actions[bot]"
         ],
