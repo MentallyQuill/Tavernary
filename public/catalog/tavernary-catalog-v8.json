@@ -37714,7 +37714,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "07df0c25498f9efd5dccf75c741f5d23404506d0",
+        "currentSha": "e28133e18750006749ddf24792cff93f9161a279",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -37729,7 +37729,7 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": null,
+        "latestSourceActivityAt": "2026-11-11T04:20:53.000Z",
         "activeWeeks12": 0,
         "weeklyActivity": [
           false,
@@ -37746,23 +37746,23 @@
           false
         ],
         "evidenceStatus": "complete",
-        "dormant": true
+        "dormant": false
       },
-      "latestReleaseAt": "2026-04-13T20:52:45.000Z",
+      "latestReleaseAt": "2026-11-11T04:02:11.000Z",
       "community": {
-        "stars": 19,
+        "stars": 18,
         "forks": 2,
         "watchers": 0,
-        "aggregate": 21
+        "aggregate": 20
       },
-      "repositorySizeKb": 4288,
+      "repositorySizeKb": 6243,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T07:39:43.900Z",
+      "refreshedAt": "2026-11-11T07:55:36.153Z",
       "staleSince": null,
       "install": null,
       "fork": null,
