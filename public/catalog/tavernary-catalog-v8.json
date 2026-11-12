@@ -23531,7 +23531,7 @@
       "name": "SillyTavern Lorebook Sticky Sort",
       "kind": "extension",
       "metadataStatus": "curated",
-      "sourceStatus": "healthy",
+      "sourceStatus": "stale",
       "primaryFunction": "interface-workflow",
       "summary": "SillyTavern extension that preserves your chosen sort order for each lorebook across sessions. It automatically restores your preferred ordering whenever you reopen the lorebook interface.",
       "canonicalUrl": "https://github.com/chesswoodspixel/SillyTavern-LorebookStickySort",
@@ -23561,8 +23561,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "5deba7bacdc36deef4fe4dcb5941ee122ab75b6c",
+        "freshness": "unavailable",
+        "currentSha": null,
         "report": {
           "reportId": "206f6bbe0224554f067c04b85ca276b9a293e3a20f89684cdb2e19eb60274adf",
           "riskLevel": "low",
@@ -23683,14 +23683,8 @@
       },
       "preset": null,
       "refreshedAt": "2026-10-27T13:26:14.670Z",
-      "staleSince": null,
-      "install": {
-        "kind": "sillytavern-extension-git",
-        "repositoryUrl": "https://github.com/chesswoodspixel/SillyTavern-LorebookStickySort.git",
-        "branch": null,
-        "manifestPath": "manifest.json",
-        "folderName": "SillyTavern-LorebookStickySort"
-      },
+      "staleSince": "2026-11-11T15:33:16.225Z",
+      "install": null,
       "fork": null,
       "search": {
         "title": [
@@ -123746,10 +123740,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 43,
+        "stars": 44,
         "forks": 11,
         "watchers": 0,
-        "aggregate": 54
+        "aggregate": 55
       },
       "repositorySizeKb": 237,
       "license": {
@@ -123758,7 +123752,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-27T13:26:05.248Z",
+      "refreshedAt": "2026-11-11T15:35:13.442Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -136058,7 +136052,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T14:29:02.684Z",
+      "refreshedAt": "2026-11-11T15:34:33.839Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
