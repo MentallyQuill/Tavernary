@@ -100615,10 +100615,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 8,
+        "stars": 10,
         "forks": 1,
         "watchers": 0,
-        "aggregate": 9
+        "aggregate": 11
       },
       "repositorySizeKb": 9331,
       "license": {
@@ -100627,7 +100627,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T14:28:41.507Z",
+      "refreshedAt": "2026-11-12T11:40:12.846Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
