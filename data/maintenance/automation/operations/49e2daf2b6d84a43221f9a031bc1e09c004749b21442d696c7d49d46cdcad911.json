@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "49e2daf2b6d84a43221f9a031bc1e09c004749b21442d696c7d49d46cdcad911",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1073960658:aikohanasaki-sillytavern-worldinfoinfo",
+      "inputDigest": "acdde7b3fb82a48739c986cc0f430dc94ef7c6c7091baa84565a6811db4e17e5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-26T08:47:18.845Z",
+    "nextEligibleAt": "2026-11-13T23:19:52.165Z",
+    "expectedSha": "638df5910c2b17be39c3bb00200bfd8e78df5281",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-13T23:04:52.165Z",
+  "completedAt": null
+}
