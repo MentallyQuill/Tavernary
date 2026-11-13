@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "788ee8259459832082860547a260cebafdd8decf92986c29b595e84dba520df0",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1339644218:arczium-st-message-chunker",
+      "inputDigest": "1e65e1c92e5b5fa22500c8d8a134ebb40088a63ebe8a02b62d3c386f3b435e5c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-26T08:46:11.308Z",
+    "nextEligibleAt": "2026-11-13T23:19:52.165Z",
+    "expectedSha": "638df5910c2b17be39c3bb00200bfd8e78df5281",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-13T23:04:52.165Z",
+  "completedAt": null
+}
