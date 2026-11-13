@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ddd594d6dfc547b16a542f214d802d95f19e63b8cb3b563ef17f9cde85c74e8d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-783765890:lenanderson-sillytavern-worldinfopresets",
+      "inputDigest": "24b1e067294b13362b90d061a6d96ba1e4be4ea01cb58060efa30b352beeb41c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-26T08:45:04.851Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-783765890",
+    "identity": "github:783765890"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43029276999,
+    "sourceSha": "cacd5075f81912c11e9f9d94817143e400bba9d1"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/lenanderson-sillytavern-worldinfopresets.json",
+      "sha256": "0778de2aedbec77f90d92a3fe7991efa82d01cd2683113237566bea3fd2606f7",
+      "gitBlobSha": "69760b17a9bd28fb5f03338c7d9a5de5343d65a1"
+    }
+  ]
+}

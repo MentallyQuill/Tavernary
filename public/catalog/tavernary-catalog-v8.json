@@ -1482,7 +1482,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:43.435Z",
+      "refreshedAt": "2026-11-10T08:34:21.003Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -5408,10 +5408,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 36,
+        "stars": 37,
         "forks": 7,
         "watchers": 1,
-        "aggregate": 44
+        "aggregate": 45
       },
       "repositorySizeKb": 256,
       "license": {
@@ -5420,7 +5420,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T08:47:18.845Z",
+      "refreshedAt": "2026-11-11T15:32:10.821Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -6084,7 +6084,7 @@
         "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T21:08:56.966Z",
+      "refreshedAt": "2026-11-10T15:48:22.050Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -7919,7 +7919,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T11:28:43.725Z",
+      "refreshedAt": "2026-11-11T15:32:10.676Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -9844,10 +9844,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 5,
+        "stars": 6,
         "forks": 0,
         "watchers": 0,
-        "aggregate": 5
+        "aggregate": 6
       },
       "repositorySizeKb": 16,
       "license": {
@@ -9856,7 +9856,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T08:46:11.308Z",
+      "refreshedAt": "2026-11-11T08:13:20.004Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -11321,8 +11321,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "b07fbc2b9e02cd44bb4d0fedcfc808b0eee04d1f",
+        "freshness": "stale",
+        "currentSha": "8f271c38b16ae392d8a76cac4687e3f8bc3e5cb1",
         "report": {
           "reportId": "530350691a21a29d8c5cd5f2a2878f6c42f338cdb7bfa64daac5bd6001a171e9",
           "riskLevel": "low",
@@ -12912,22 +12912,22 @@
           },
           {
             "provider": "github",
-            "login": "Javedz678",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
             "login": "collegatore",
             "botOrAi": false
           },
           {
             "provider": "github",
-            "login": "Fensterbank",
+            "login": "Javedz678",
             "botOrAi": false
           },
           {
             "provider": "github",
             "login": "TheDWz",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
+            "login": "Fensterbank",
             "botOrAi": false
           },
           {
@@ -12942,6 +12942,11 @@
           },
           {
             "provider": "github",
+            "login": "LostPhysx",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "Selene29",
             "botOrAi": false
           },
@@ -12951,14 +12956,14 @@
             "botOrAi": false
           }
         ],
-        "humanContributorCount": 12,
+        "humanContributorCount": 13,
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-23T17:59:05.000Z",
+        "latestSourceActivityAt": "2026-11-09T20:52:36.000Z",
         "activeWeeks12": 10,
         "weeklyActivity": [
-          true,
+          false,
           false,
           true,
           true,
@@ -12969,26 +12974,26 @@
           true,
           true,
           true,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
       "latestReleaseAt": "2026-10-09T23:20:00.000Z",
       "community": {
-        "stars": 214,
+        "stars": 216,
         "forks": 35,
         "watchers": 13,
-        "aggregate": 262
+        "aggregate": 264
       },
-      "repositorySizeKb": 53929,
+      "repositorySizeKb": 58639,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:53.270Z",
+      "refreshedAt": "2026-11-10T11:17:42.022Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -13049,12 +13054,13 @@
           "a-frazier",
           "failerko",
           "Pento95",
-          "Javedz678",
           "collegatore",
-          "Fensterbank",
+          "Javedz678",
           "TheDWz",
+          "Fensterbank",
           "surfacecoaster",
           "EventideMiles",
+          "LostPhysx",
           "Selene29",
           "vire70"
         ],
@@ -14518,7 +14524,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T00:31:43.445Z",
+      "refreshedAt": "2026-11-10T15:49:57.103Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -14768,7 +14774,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T00:31:02.796Z",
+      "refreshedAt": "2026-11-10T15:50:33.280Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -17581,10 +17587,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 134,
+        "stars": 135,
         "forks": 18,
         "watchers": 5,
-        "aggregate": 157
+        "aggregate": 158
       },
       "repositorySizeKb": 1620,
       "license": {
@@ -17593,7 +17599,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:57.529Z",
+      "refreshedAt": "2026-11-10T11:18:50.163Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -18275,7 +18281,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "a480c513cd3f75c71ae2de5ae55e18e0952bdbbc",
+        "currentSha": "f781d4a3f4aa4c095d15b8c0d369677528036a16",
         "report": {
           "reportId": "93633fe204a903602f0677a4b59e4a5eac287da4c0400045478a9477ff776874",
           "riskLevel": "low",
@@ -18434,9 +18440,11 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-25T03:44:27.000Z",
-        "activeWeeks12": 11,
+        "latestSourceActivityAt": "2026-11-05T01:12:40.000Z",
+        "activeWeeks12": 10,
         "weeklyActivity": [
+          false,
+          false,
           true,
           true,
           true,
@@ -18446,9 +18454,7 @@
           true,
           true,
           true,
-          true,
-          true,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -18460,14 +18466,14 @@
         "watchers": 4,
         "aggregate": 18
       },
-      "repositorySizeKb": 6824,
+      "repositorySizeKb": 5841,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T20:19:02.440Z",
+      "refreshedAt": "2026-11-10T15:48:28.546Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -19821,7 +19827,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T21:08:05.834Z",
+      "refreshedAt": "2026-11-10T15:48:21.326Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -20714,7 +20720,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-27T13:26:17.923Z",
+      "refreshedAt": "2026-11-12T16:10:10.779Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -21110,9 +21116,9 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "current",
-        "currentSha": "c5c0ad80146d561f70280fd6394dcd3f3ccae3b6",
+        "currentSha": "47755fea6bd6b1b7472f94398dce4c8680746464",
         "report": {
-          "reportId": "9e0309f1d491937ec9a05a3b6d695958481b816a4c67ce044c89bd0de8382e4c",
+          "reportId": "6b00fa7491d62481c5acc3c3b52792a233ae545435088d2e7b4bf590bc811ee2",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -21121,10 +21127,10 @@
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
           "citedFindingIds": [],
-          "scannedSha": "c5c0ad80146d561f70280fd6394dcd3f3ccae3b6",
-          "treeUrl": "https://github.com/cfigure/Lumiverse-prompt-viewer/tree/c5c0ad80146d561f70280fd6394dcd3f3ccae3b6",
-          "scannedAt": "2026-10-27T23:45:35.932Z",
-          "assessedAt": "2026-10-28T06:20:45.336Z",
+          "scannedSha": "47755fea6bd6b1b7472f94398dce4c8680746464",
+          "treeUrl": "https://github.com/cfigure/Lumiverse-prompt-viewer/tree/47755fea6bd6b1b7472f94398dce4c8680746464",
+          "scannedAt": "2026-11-12T16:34:43.680Z",
+          "assessedAt": "2026-11-12T16:41:55.780Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
@@ -21132,7 +21138,7 @@
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
           "javascriptAnalysisStatus": "incomplete",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1206930287/c5c0ad80146d561f70280fd6394dcd3f3ccae3b6/5/9e0309f1d491937ec9a05a3b6d695958481b816a4c67ce044c89bd0de8382e4c/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1206930287/47755fea6bd6b1b7472f94398dce4c8680746464/5/6b00fa7491d62481c5acc3c3b52792a233ae545435088d2e7b4bf590bc811ee2/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1206930287/history/"
         },
         "history": [
@@ -21207,6 +21213,30 @@
             "javascriptAnalysisStatus": "incomplete",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1206930287/c5c0ad80146d561f70280fd6394dcd3f3ccae3b6/5/9e0309f1d491937ec9a05a3b6d695958481b816a4c67ce044c89bd0de8382e4c/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1206930287/history/"
+          },
+          {
+            "reportId": "6b00fa7491d62481c5acc3c3b52792a233ae545435088d2e7b4bf590bc811ee2",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "47755fea6bd6b1b7472f94398dce4c8680746464",
+            "treeUrl": "https://github.com/cfigure/Lumiverse-prompt-viewer/tree/47755fea6bd6b1b7472f94398dce4c8680746464",
+            "scannedAt": "2026-11-12T16:34:43.680Z",
+            "assessedAt": "2026-11-12T16:41:55.780Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "incomplete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1206930287/47755fea6bd6b1b7472f94398dce4c8680746464/5/6b00fa7491d62481c5acc3c3b52792a233ae545435088d2e7b4bf590bc811ee2/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1206930287/history/"
           }
         ],
         "historyUrl": "/security/tavernkeeper/history/github-1206930287/"
@@ -21221,7 +21251,7 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-10T19:22:39.000Z",
+        "latestSourceActivityAt": "2026-11-11T15:16:56.000Z",
         "activeWeeks12": 2,
         "weeklyActivity": [
           false,
@@ -21240,21 +21270,21 @@
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-10-10T19:41:34.000Z",
+      "latestReleaseAt": "2026-11-11T16:44:52.000Z",
       "community": {
         "stars": 4,
         "forks": 1,
         "watchers": 0,
         "aggregate": 5
       },
-      "repositorySizeKb": 347,
+      "repositorySizeKb": 375,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-27T13:26:20.877Z",
+      "refreshedAt": "2026-11-12T16:10:13.695Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -23525,7 +23555,7 @@
       "name": "SillyTavern Lorebook Sticky Sort",
       "kind": "extension",
       "metadataStatus": "curated",
-      "sourceStatus": "healthy",
+      "sourceStatus": "stale",
       "primaryFunction": "interface-workflow",
       "summary": "SillyTavern extension that preserves your chosen sort order for each lorebook across sessions. It automatically restores your preferred ordering whenever you reopen the lorebook interface.",
       "canonicalUrl": "https://github.com/chesswoodspixel/SillyTavern-LorebookStickySort",
@@ -23555,8 +23585,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "5deba7bacdc36deef4fe4dcb5941ee122ab75b6c",
+        "freshness": "unavailable",
+        "currentSha": null,
         "report": {
           "reportId": "206f6bbe0224554f067c04b85ca276b9a293e3a20f89684cdb2e19eb60274adf",
           "riskLevel": "low",
@@ -23677,14 +23707,8 @@
       },
       "preset": null,
       "refreshedAt": "2026-10-27T13:26:14.670Z",
-      "staleSince": null,
-      "install": {
-        "kind": "sillytavern-extension-git",
-        "repositoryUrl": "https://github.com/chesswoodspixel/SillyTavern-LorebookStickySort.git",
-        "branch": null,
-        "manifestPath": "manifest.json",
-        "folderName": "SillyTavern-LorebookStickySort"
-      },
+      "staleSince": "2026-11-11T15:33:16.225Z",
+      "install": null,
       "fork": null,
       "search": {
         "title": [
@@ -24577,10 +24601,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 54,
+        "stars": 56,
         "forks": 19,
         "watchers": 1,
-        "aggregate": 74
+        "aggregate": 76
       },
       "repositorySizeKb": 16,
       "license": {
@@ -24589,7 +24613,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-27T13:26:21.341Z",
+      "refreshedAt": "2026-11-12T16:10:05.750Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -26850,10 +26874,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 5,
+        "stars": 6,
         "forks": 0,
         "watchers": 4,
-        "aggregate": 9
+        "aggregate": 10
       },
       "repositorySizeKb": 1356,
       "license": {
@@ -26862,7 +26886,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T07:20:59.200Z",
+      "refreshedAt": "2026-11-10T21:34:29.935Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -30738,10 +30762,10 @@
       },
       "latestReleaseAt": "2026-07-17T12:10:36.000Z",
       "community": {
-        "stars": 75,
+        "stars": 77,
         "forks": 6,
         "watchers": 1,
-        "aggregate": 82
+        "aggregate": 84
       },
       "repositorySizeKb": 213220,
       "license": {
@@ -30750,7 +30774,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T14:28:43.818Z",
+      "refreshedAt": "2026-11-11T15:31:41.852Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -31148,7 +31172,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:35.132Z",
+      "refreshedAt": "2026-11-10T07:37:47.074Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -35069,7 +35093,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "frontend",
-      "summary": "A local writing frontend for long-form fiction, with branching stories, lorebooks, context summaries, backups, and runtime extensions. Connects to OpenAI-compatible APIs and local models.",
+      "summary": "A local writing frontend for long-form fiction, with branching stories, lorebooks, context summaries, backups, and many runtime extensions. Connects to OpenAI-compatible APIs and local models.",
       "canonicalUrl": "https://github.com/Enerccio/Marginalia",
       "catalogedAt": "2026-10-11T13:19:44.671Z",
       "catalogCohort": "standard",
@@ -35186,7 +35210,7 @@
           "https://github.com/Enerccio/Marginalia"
         ],
         "summary": [
-          "A local writing frontend for long-form fiction, with branching stories, lorebooks, context summaries, backups, and runtime extensions. Connects to OpenAI-compatible APIs and local models."
+          "A local writing frontend for long-form fiction, with branching stories, lorebooks, context summaries, backups, and many runtime extensions. Connects to OpenAI-compatible APIs and local models."
         ],
         "kind": [
           "frontend"
@@ -36056,7 +36080,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T20:18:16.148Z",
+      "refreshedAt": "2026-11-10T15:48:10.022Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -36718,7 +36742,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-27T13:26:15.463Z",
+      "refreshedAt": "2026-11-12T16:08:52.983Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -37131,7 +37155,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:47.127Z",
+      "refreshedAt": "2026-11-10T08:33:13.278Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -37708,7 +37732,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "07df0c25498f9efd5dccf75c741f5d23404506d0",
+        "currentSha": "e28133e18750006749ddf24792cff93f9161a279",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -37723,7 +37747,7 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": null,
+        "latestSourceActivityAt": "2026-11-11T04:20:53.000Z",
         "activeWeeks12": 0,
         "weeklyActivity": [
           false,
@@ -37740,23 +37764,23 @@
           false
         ],
         "evidenceStatus": "complete",
-        "dormant": true
+        "dormant": false
       },
-      "latestReleaseAt": "2026-04-13T20:52:45.000Z",
+      "latestReleaseAt": "2026-11-11T04:02:11.000Z",
       "community": {
-        "stars": 19,
+        "stars": 18,
         "forks": 2,
         "watchers": 0,
-        "aggregate": 21
+        "aggregate": 20
       },
-      "repositorySizeKb": 4288,
+      "repositorySizeKb": 6243,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T07:39:43.900Z",
+      "refreshedAt": "2026-11-11T07:55:36.153Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -39203,7 +39227,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "c67f25291df3cc7748e216ccc61576021206273e",
+        "currentSha": "a892d0fbef24d5f17c1fd3f9e8eda1faa9b1864a",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -39249,11 +39273,11 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-09-28T04:44:59.000Z",
-        "activeWeeks12": 8,
+        "latestSourceActivityAt": "2026-11-01T17:01:52.000Z",
+        "activeWeeks12": 7,
         "weeklyActivity": [
-          true,
-          true,
+          false,
+          false,
           true,
           true,
           true,
@@ -39263,26 +39287,26 @@
           false,
           false,
           false,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
       "latestReleaseAt": "2026-09-28T04:56:05.000Z",
       "community": {
-        "stars": 79,
+        "stars": 81,
         "forks": 13,
         "watchers": 4,
-        "aggregate": 96
+        "aggregate": 98
       },
-      "repositorySizeKb": 13003,
+      "repositorySizeKb": 13082,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T07:40:20.212Z",
+      "refreshedAt": "2026-11-11T08:11:44.616Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -44939,7 +44963,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T14:28:53.329Z",
+      "refreshedAt": "2026-11-11T15:32:17.161Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -47280,9 +47304,9 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "current",
-        "currentSha": "eb8f63b74e23d94e391b81834781183c82b9f006",
+        "currentSha": "2ad2719de1382f3a0db59107eec8b962cbc8f337",
         "report": {
-          "reportId": "11e9b53530ab157000a550a0e060579f74d93d0bc0b800251dcc1b8aa4c21fab",
+          "reportId": "bec51ff5987d698cdcaa405241bd6bf581f7d4a2b29832c2caac47568782012c",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -47291,10 +47315,10 @@
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
           "citedFindingIds": [],
-          "scannedSha": "eb8f63b74e23d94e391b81834781183c82b9f006",
-          "treeUrl": "https://github.com/i5031337/sillytavern-contextual-scene-painter/tree/eb8f63b74e23d94e391b81834781183c82b9f006",
-          "scannedAt": "2026-10-06T14:30:48.793Z",
-          "assessedAt": "2026-10-06T14:35:52.300Z",
+          "scannedSha": "2ad2719de1382f3a0db59107eec8b962cbc8f337",
+          "treeUrl": "https://github.com/i5031337/sillytavern-contextual-scene-painter/tree/2ad2719de1382f3a0db59107eec8b962cbc8f337",
+          "scannedAt": "2026-11-11T00:20:23.099Z",
+          "assessedAt": "2026-11-11T01:39:50.615Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
@@ -47302,7 +47326,7 @@
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
           "javascriptAnalysisStatus": "complete",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/eb8f63b74e23d94e391b81834781183c82b9f006/5/11e9b53530ab157000a550a0e060579f74d93d0bc0b800251dcc1b8aa4c21fab/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/2ad2719de1382f3a0db59107eec8b962cbc8f337/5/bec51ff5987d698cdcaa405241bd6bf581f7d4a2b29832c2caac47568782012c/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/history/"
         },
         "history": [
@@ -47449,6 +47473,30 @@
             "javascriptAnalysisStatus": "complete",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/eb8f63b74e23d94e391b81834781183c82b9f006/5/11e9b53530ab157000a550a0e060579f74d93d0bc0b800251dcc1b8aa4c21fab/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/history/"
+          },
+          {
+            "reportId": "bec51ff5987d698cdcaa405241bd6bf581f7d4a2b29832c2caac47568782012c",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "2ad2719de1382f3a0db59107eec8b962cbc8f337",
+            "treeUrl": "https://github.com/i5031337/sillytavern-contextual-scene-painter/tree/2ad2719de1382f3a0db59107eec8b962cbc8f337",
+            "scannedAt": "2026-11-11T00:20:23.099Z",
+            "assessedAt": "2026-11-11T01:39:50.615Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/2ad2719de1382f3a0db59107eec8b962cbc8f337/5/bec51ff5987d698cdcaa405241bd6bf581f7d4a2b29832c2caac47568782012c/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/history/"
           }
         ],
         "historyUrl": "/security/tavernkeeper/history/github-1317590696/"
@@ -47463,40 +47511,40 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-06T02:02:18.000Z",
+        "latestSourceActivityAt": "2026-10-28T22:10:32.000Z",
         "activeWeeks12": 3,
         "weeklyActivity": [
           false,
-          true,
-          true,
-          false,
-          false,
-          false,
-          false,
           false,
           true,
           false,
           false,
-          false
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 11,
+        "stars": 12,
         "forks": 0,
         "watchers": 0,
-        "aggregate": 11
+        "aggregate": 12
       },
-      "repositorySizeKb": 227,
+      "repositorySizeKb": 228,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T07:21:02.426Z",
+      "refreshedAt": "2026-11-10T21:33:50.014Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -48968,10 +49016,10 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "e7b7f915d6952d1d901b16a1222d89caaaaaa5e8",
         "report": {
-          "reportId": "6b35190521fcd64243b0da21658f2db826ddf3cbf10a5fb0d9728685a3532348",
+          "reportId": "a78e741f5c3453338884571f5606f11c4286edf0f51ffd57d4adfac0b4e1cae6",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -48980,16 +49028,16 @@
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
           "citedFindingIds": [
-            "31191abff9a5d266b3f5263030555cc53d411f26fe5c2d93c10c12afbdcad793",
-            "3deb7af489929a67c7f0eeeb245b8e5c863d733f6c6c2e79c6448c5d7571ccd3",
-            "4c966564ebad837787fbe0a7b79c871cb2ced81552ea83643fd0aa8f53c4fbb2",
-            "729de6b125fbe81fb119934f49a46f0b851a8d35c6229dff9b4a6637012ae964",
-            "aa830bca1253d3bda3329060c5b8507b97861a0fa48fa7551ebe3c1c6e07464a"
+            "792e81320204cc2cf348012b25657b19a3ace772d4223c73f861d97c7e82f072",
+            "8d5eb6269164611fa6cf0336ad34f0ff69661fd468b95db237c0583e0f93bea1",
+            "a2e978b1cd96929f538b29e12a429ce04459d33cfdcae35ee68b2264f54c9fcb",
+            "bb1727593bd687b79d167926016b121befdd68120cc6651fcc7e3de6db08a39e",
+            "bea669e87978a926e9518294fe9824a11ba2360e42494259d454bfde6f696a63"
           ],
-          "scannedSha": "440143b120fc58a35f020f93cb6ce4600eeb57ca",
-          "treeUrl": "https://github.com/IceFog72/SillyTavern-ProbablyTooManyTabs/tree/440143b120fc58a35f020f93cb6ce4600eeb57ca",
-          "scannedAt": "2026-10-25T07:35:32.528Z",
-          "assessedAt": "2026-10-25T12:02:22.612Z",
+          "scannedSha": "e7b7f915d6952d1d901b16a1222d89caaaaaa5e8",
+          "treeUrl": "https://github.com/IceFog72/SillyTavern-ProbablyTooManyTabs/tree/e7b7f915d6952d1d901b16a1222d89caaaaaa5e8",
+          "scannedAt": "2026-11-09T18:06:03.604Z",
+          "assessedAt": "2026-11-09T21:45:56.737Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
@@ -48997,7 +49045,7 @@
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
           "javascriptAnalysisStatus": "complete",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1065878471/440143b120fc58a35f020f93cb6ce4600eeb57ca/5/6b35190521fcd64243b0da21658f2db826ddf3cbf10a5fb0d9728685a3532348/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1065878471/e7b7f915d6952d1d901b16a1222d89caaaaaa5e8/5/a78e741f5c3453338884571f5606f11c4286edf0f51ffd57d4adfac0b4e1cae6/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1065878471/history/"
         },
         "history": [
@@ -49232,6 +49280,36 @@
             "assessmentSource": "deterministic_regrade",
             "javascriptAnalysisStatus": "complete",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1065878471/440143b120fc58a35f020f93cb6ce4600eeb57ca/5/6b35190521fcd64243b0da21658f2db826ddf3cbf10a5fb0d9728685a3532348/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1065878471/history/"
+          },
+          {
+            "reportId": "a78e741f5c3453338884571f5606f11c4286edf0f51ffd57d4adfac0b4e1cae6",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 5,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "792e81320204cc2cf348012b25657b19a3ace772d4223c73f861d97c7e82f072",
+              "8d5eb6269164611fa6cf0336ad34f0ff69661fd468b95db237c0583e0f93bea1",
+              "a2e978b1cd96929f538b29e12a429ce04459d33cfdcae35ee68b2264f54c9fcb",
+              "bb1727593bd687b79d167926016b121befdd68120cc6651fcc7e3de6db08a39e",
+              "bea669e87978a926e9518294fe9824a11ba2360e42494259d454bfde6f696a63"
+            ],
+            "scannedSha": "e7b7f915d6952d1d901b16a1222d89caaaaaa5e8",
+            "treeUrl": "https://github.com/IceFog72/SillyTavern-ProbablyTooManyTabs/tree/e7b7f915d6952d1d901b16a1222d89caaaaaa5e8",
+            "scannedAt": "2026-11-09T18:06:03.604Z",
+            "assessedAt": "2026-11-09T21:45:56.737Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1065878471/e7b7f915d6952d1d901b16a1222d89caaaaaa5e8/5/a78e741f5c3453338884571f5606f11c4286edf0f51ffd57d4adfac0b4e1cae6/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1065878471/history/"
           }
         ],
@@ -51006,7 +51084,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-27T13:26:20.888Z",
+      "refreshedAt": "2026-11-12T16:09:54.674Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -55664,7 +55742,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T15:38:00.587Z",
+      "refreshedAt": "2026-11-10T11:34:02.643Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -56639,7 +56717,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:43:05.557Z",
+      "refreshedAt": "2026-11-10T11:32:18.123Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -59396,7 +59474,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T07:39:25.317Z",
+      "refreshedAt": "2026-11-11T06:50:49.406Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -61036,10 +61114,10 @@
       },
       "latestReleaseAt": "2026-08-18T18:31:19.000Z",
       "community": {
-        "stars": 51,
+        "stars": 52,
         "forks": 6,
         "watchers": 1,
-        "aggregate": 58
+        "aggregate": 59
       },
       "repositorySizeKb": 446,
       "license": {
@@ -61048,7 +61126,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T20:19:12.253Z",
+      "refreshedAt": "2026-11-10T15:48:06.504Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -63160,10 +63238,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 34,
+        "stars": 35,
         "forks": 5,
         "watchers": 3,
-        "aggregate": 42
+        "aggregate": 43
       },
       "repositorySizeKb": 5278,
       "license": {
@@ -63172,7 +63250,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T11:31:18.630Z",
+      "refreshedAt": "2026-11-11T15:27:14.593Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -63881,7 +63959,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T14:28:18.959Z",
+      "refreshedAt": "2026-11-11T15:26:31.066Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -64656,9 +64734,9 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 19,
-        "forks": 5,
+        "forks": 6,
         "watchers": 1,
-        "aggregate": 25
+        "aggregate": 26
       },
       "repositorySizeKb": 184,
       "license": {
@@ -64667,7 +64745,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T08:45:04.851Z",
+      "refreshedAt": "2026-11-11T08:11:39.365Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -64774,7 +64852,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "660bc78c9d1090ff0152209275c011d62f605b72",
+        "currentSha": "463a9fdd15d55f5f082e51cd123c4968c3545a35",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -64827,6 +64905,11 @@
           },
           {
             "provider": "github",
+            "login": "brookethia",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "cursoragent",
             "botOrAi": false
           },
@@ -64836,13 +64919,15 @@
             "botOrAi": false
           }
         ],
-        "humanContributorCount": 7,
+        "humanContributorCount": 8,
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-20T17:43:09.000Z",
-        "activeWeeks12": 11,
+        "latestSourceActivityAt": "2026-11-07T21:14:05.000Z",
+        "activeWeeks12": 10,
         "weeklyActivity": [
+          false,
+          false,
           true,
           true,
           true,
@@ -64852,28 +64937,26 @@
           true,
           true,
           true,
-          true,
-          true,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-10-20T22:06:04.000Z",
+      "latestReleaseAt": "2026-11-07T21:58:18.000Z",
       "community": {
-        "stars": 79,
-        "forks": 16,
+        "stars": 90,
+        "forks": 19,
         "watchers": 3,
-        "aggregate": 98
+        "aggregate": 112
       },
-      "repositorySizeKb": 148744,
+      "repositorySizeKb": 155784,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:43:02.632Z",
+      "refreshedAt": "2026-11-10T11:30:58.120Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -64938,6 +65021,7 @@
           "willie",
           "MisterLotto",
           "github-actions[bot]",
+          "brookethia",
           "cursoragent",
           "bigsombar"
         ],
@@ -66712,7 +66796,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "7b63fcd56c06bd4e367282ece2357fda88294c5b",
+        "currentSha": "7c78b0a0f66984976421b5fff002f898ce97c6c8",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -66738,40 +66822,40 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-24T17:36:19.000Z",
-        "activeWeeks12": 5,
+        "latestSourceActivityAt": "2026-10-26T17:27:26.000Z",
+        "activeWeeks12": 4,
         "weeklyActivity": [
-          true,
-          true,
-          true,
-          false,
-          false,
-          false,
           false,
           false,
           true,
           false,
+          false,
+          false,
+          false,
+          false,
           true,
-          false
+          false,
+          true,
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-10-24T17:48:01.000Z",
+      "latestReleaseAt": "2026-10-26T15:22:34.000Z",
       "community": {
-        "stars": 104,
-        "forks": 6,
-        "watchers": 1,
-        "aggregate": 111
+        "stars": 114,
+        "forks": 7,
+        "watchers": 2,
+        "aggregate": 123
       },
-      "repositorySizeKb": 182864,
+      "repositorySizeKb": 192523,
       "license": {
         "status": "proprietary",
         "label": "Proprietary",
         "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T21:07:47.923Z",
+      "refreshedAt": "2026-11-10T15:47:32.369Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -67717,7 +67801,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:45:04.496Z",
+      "refreshedAt": "2026-11-10T11:32:52.911Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -72182,7 +72266,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T00:33:19.395Z",
+      "refreshedAt": "2026-11-10T15:52:02.920Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -74010,7 +74094,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T08:46:55.015Z",
+      "refreshedAt": "2026-11-11T15:31:44.118Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -74684,7 +74768,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "6c3cbcdc57e9ba20a3791597e37460356aa5a426",
+        "currentSha": "d6ae15b8958ac0c256cf5c2200058fed846617cf",
         "report": {
           "reportId": "2335f3d2b3bd2e19593c6747a8c141ec9ee69040c84fed880949166be827ccb2",
           "riskLevel": "low",
@@ -74776,7 +74860,7 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-07T18:00:16.000Z",
+        "latestSourceActivityAt": "2026-11-08T15:32:51.000Z",
         "activeWeeks12": 1,
         "weeklyActivity": [
           false,
@@ -74797,19 +74881,19 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 33,
+        "stars": 35,
         "forks": 3,
         "watchers": 0,
-        "aggregate": 36
+        "aggregate": 38
       },
-      "repositorySizeKb": 182987,
+      "repositorySizeKb": 188535,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T00:32:02.042Z",
+      "refreshedAt": "2026-11-10T15:51:46.306Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -76115,7 +76199,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T00:32:40.758Z",
+      "refreshedAt": "2026-11-10T15:52:03.550Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -81450,7 +81534,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T14:29:13.320Z",
+      "refreshedAt": "2026-11-12T16:10:22.699Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -83034,7 +83118,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "07e6b12a9c1f9033a6e5271d79bb817a43e3099c",
+        "currentSha": "6c42fca5a271d69db60eb53c2d6de4279885dbe7",
         "report": {
           "reportId": "e744f272c7ce954d3544a66967c6c6c02ed6eb06dbc424523d5b702035c484cd",
           "riskLevel": "low",
@@ -83162,6 +83246,11 @@
           },
           {
             "provider": "github",
+            "login": "claude",
+            "botOrAi": true
+          },
+          {
+            "provider": "github",
             "login": "DrMagisto",
             "botOrAi": false
           },
@@ -83175,8 +83264,8 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-23T04:44:10.000Z",
-        "activeWeeks12": 5,
+        "latestSourceActivityAt": "2026-11-04T03:13:41.000Z",
+        "activeWeeks12": 6,
         "weeklyActivity": [
           false,
           false,
@@ -83189,26 +83278,26 @@
           false,
           true,
           true,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 95,
+        "stars": 97,
         "forks": 12,
         "watchers": 5,
-        "aggregate": 112
+        "aggregate": 114
       },
-      "repositorySizeKb": 54476,
+      "repositorySizeKb": 54965,
       "license": {
         "status": "missing",
         "label": "Missing",
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T11:29:12.482Z",
+      "refreshedAt": "2026-11-11T15:25:44.393Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -83256,6 +83345,7 @@
         "maintainers": [
           "NemoVonNirgend",
           "prolix-oc",
+          "claude",
           "DrMagisto",
           "github-actions[bot]"
         ],
@@ -84289,7 +84379,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T14:28:53.445Z",
+      "refreshedAt": "2026-11-11T15:31:37.232Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -86729,7 +86819,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T14:29:04.997Z",
+      "refreshedAt": "2026-11-12T16:09:40.261Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -88334,7 +88424,7 @@
         "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T05:59:16.050Z",
+      "refreshedAt": "2026-11-10T15:52:28.070Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -88956,9 +89046,9 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "current",
-        "currentSha": "5f4af8308faea8edb366aa91efe80daa6f61559b",
+        "currentSha": "6246c35440563a88bef1a719bc3a810f80d80912",
         "report": {
-          "reportId": "9dcfa8d139e2c3ce3b86fb01ad6ddd6b7437f315827f1baa8b1697e5037485d0",
+          "reportId": "456ae3d75e1dcb95410bff310b1ed1a1835b44d3963f26fd9e180c6e16d142eb",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -88967,10 +89057,10 @@
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
           "citedFindingIds": [],
-          "scannedSha": "5f4af8308faea8edb366aa91efe80daa6f61559b",
-          "treeUrl": "https://github.com/Phiarlan/SillyTavern-WorldInfoPlus/tree/5f4af8308faea8edb366aa91efe80daa6f61559b",
-          "scannedAt": "2026-10-25T22:47:09.287Z",
-          "assessedAt": "2026-10-25T22:52:33.759Z",
+          "scannedSha": "6246c35440563a88bef1a719bc3a810f80d80912",
+          "treeUrl": "https://github.com/Phiarlan/SillyTavern-WorldInfoPlus/tree/6246c35440563a88bef1a719bc3a810f80d80912",
+          "scannedAt": "2026-11-10T16:11:43.019Z",
+          "assessedAt": "2026-11-10T16:18:37.749Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
@@ -88978,7 +89068,7 @@
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
           "javascriptAnalysisStatus": "complete",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/5f4af8308faea8edb366aa91efe80daa6f61559b/5/9dcfa8d139e2c3ce3b86fb01ad6ddd6b7437f315827f1baa8b1697e5037485d0/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/6246c35440563a88bef1a719bc3a810f80d80912/5/456ae3d75e1dcb95410bff310b1ed1a1835b44d3963f26fd9e180c6e16d142eb/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/history/"
         },
         "history": [
@@ -89053,6 +89143,30 @@
             "javascriptAnalysisStatus": "complete",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/5f4af8308faea8edb366aa91efe80daa6f61559b/5/9dcfa8d139e2c3ce3b86fb01ad6ddd6b7437f315827f1baa8b1697e5037485d0/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/history/"
+          },
+          {
+            "reportId": "456ae3d75e1dcb95410bff310b1ed1a1835b44d3963f26fd9e180c6e16d142eb",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "6246c35440563a88bef1a719bc3a810f80d80912",
+            "treeUrl": "https://github.com/Phiarlan/SillyTavern-WorldInfoPlus/tree/6246c35440563a88bef1a719bc3a810f80d80912",
+            "scannedAt": "2026-11-10T16:11:43.019Z",
+            "assessedAt": "2026-11-10T16:18:37.749Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/6246c35440563a88bef1a719bc3a810f80d80912/5/456ae3d75e1dcb95410bff310b1ed1a1835b44d3963f26fd9e180c6e16d142eb/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/history/"
           }
         ],
         "historyUrl": "/security/tavernkeeper/history/github-1319221115/"
@@ -89067,8 +89181,8 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-21T23:29:56.000Z",
-        "activeWeeks12": 2,
+        "latestSourceActivityAt": "2026-10-30T18:58:39.000Z",
+        "activeWeeks12": 3,
         "weeklyActivity": [
           false,
           false,
@@ -89081,26 +89195,26 @@
           false,
           true,
           true,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 4,
+        "stars": 5,
         "forks": 1,
         "watchers": 0,
-        "aggregate": 5
+        "aggregate": 6
       },
-      "repositorySizeKb": 1295,
+      "repositorySizeKb": 1296,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T21:37:36.646Z",
+      "refreshedAt": "2026-11-10T15:48:37.612Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -90010,10 +90124,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 4,
+        "stars": 5,
         "forks": 0,
         "watchers": 1,
-        "aggregate": 5
+        "aggregate": 6
       },
       "repositorySizeKb": 372,
       "license": {
@@ -90022,7 +90136,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T14:29:00.933Z",
+      "refreshedAt": "2026-11-11T15:31:44.231Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -90996,7 +91110,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "5da95f713a610219ddcf6c13de8779c52018196d",
+        "currentSha": "40851fc9831856a36cb5c14799c1f501f32dc133",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -91422,11 +91536,11 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-24T06:20:39.000Z",
-        "activeWeeks12": 9,
+        "latestSourceActivityAt": "2026-11-01T13:54:46.000Z",
+        "activeWeeks12": 8,
         "weeklyActivity": [
-          true,
-          true,
+          false,
+          false,
           true,
           true,
           true,
@@ -91436,26 +91550,26 @@
           true,
           true,
           true,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-10-24T06:26:35.000Z",
+      "latestReleaseAt": "2026-11-01T14:00:03.000Z",
       "community": {
-        "stars": 416,
-        "forks": 66,
+        "stars": 436,
+        "forks": 65,
         "watchers": 3,
-        "aggregate": 485
+        "aggregate": 504
       },
-      "repositorySizeKb": 79402,
+      "repositorySizeKb": 79774,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T20:18:19.710Z",
+      "refreshedAt": "2026-11-10T15:48:28.881Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -93847,7 +93961,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T08:47:08.832Z",
+      "refreshedAt": "2026-11-11T15:32:17.254Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -94083,10 +94197,10 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "eae025e76015345294bc2c59feeae3caaf842bab",
         "report": {
-          "reportId": "d375cba7151b1d8556fdef90fd5cf75c7ef983a1bdeb230e46d5253efabb6dcc",
+          "reportId": "bcc22f07a95d8d12114e85fc5363b09654de881424fbce929462e21bd1d89d3e",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -94095,10 +94209,10 @@
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
           "citedFindingIds": [],
-          "scannedSha": "a5e0de333872f9f9e14b70f5194877ea88d96d51",
-          "treeUrl": "https://github.com/Pyrxpia/sola-hub/tree/a5e0de333872f9f9e14b70f5194877ea88d96d51",
-          "scannedAt": "2026-10-25T07:32:20.294Z",
-          "assessedAt": "2026-10-25T07:37:00.780Z",
+          "scannedSha": "eae025e76015345294bc2c59feeae3caaf842bab",
+          "treeUrl": "https://github.com/Pyrxpia/sola-hub/tree/eae025e76015345294bc2c59feeae3caaf842bab",
+          "scannedAt": "2026-11-09T11:56:10.862Z",
+          "assessedAt": "2026-11-09T21:16:38.992Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
@@ -94106,7 +94220,7 @@
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
           "javascriptAnalysisStatus": "complete",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/a5e0de333872f9f9e14b70f5194877ea88d96d51/5/d375cba7151b1d8556fdef90fd5cf75c7ef983a1bdeb230e46d5253efabb6dcc/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/eae025e76015345294bc2c59feeae3caaf842bab/5/bcc22f07a95d8d12114e85fc5363b09654de881424fbce929462e21bd1d89d3e/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/history/"
         },
         "history": [
@@ -94180,6 +94294,30 @@
             "assessmentSource": "deterministic_regrade",
             "javascriptAnalysisStatus": "complete",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/a5e0de333872f9f9e14b70f5194877ea88d96d51/5/d375cba7151b1d8556fdef90fd5cf75c7ef983a1bdeb230e46d5253efabb6dcc/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/history/"
+          },
+          {
+            "reportId": "bcc22f07a95d8d12114e85fc5363b09654de881424fbce929462e21bd1d89d3e",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "eae025e76015345294bc2c59feeae3caaf842bab",
+            "treeUrl": "https://github.com/Pyrxpia/sola-hub/tree/eae025e76015345294bc2c59feeae3caaf842bab",
+            "scannedAt": "2026-11-09T11:56:10.862Z",
+            "assessedAt": "2026-11-09T21:16:38.992Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/eae025e76015345294bc2c59feeae3caaf842bab/5/bcc22f07a95d8d12114e85fc5363b09654de881424fbce929462e21bd1d89d3e/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1372058245/history/"
           }
         ],
@@ -99506,7 +99644,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T21:37:54.822Z",
+      "refreshedAt": "2026-11-10T15:47:58.890Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -100501,10 +100639,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 8,
+        "stars": 10,
         "forks": 1,
         "watchers": 0,
-        "aggregate": 9
+        "aggregate": 11
       },
       "repositorySizeKb": 9331,
       "license": {
@@ -100513,7 +100651,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T14:28:41.507Z",
+      "refreshedAt": "2026-11-12T11:40:12.846Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -101949,7 +102087,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:48.514Z",
+      "refreshedAt": "2026-11-10T08:35:12.185Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -103725,7 +103863,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T07:21:02.131Z",
+      "refreshedAt": "2026-11-10T21:35:14.192Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -110851,10 +110989,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 96,
-        "forks": 17,
+        "stars": 98,
+        "forks": 19,
         "watchers": 1,
-        "aggregate": 114
+        "aggregate": 118
       },
       "repositorySizeKb": 47,
       "license": {
@@ -110863,7 +111001,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T14:28:55.029Z",
+      "refreshedAt": "2026-11-11T15:32:09.091Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -114148,10 +114286,10 @@
       },
       "latestReleaseAt": "2026-04-16T22:40:48.000Z",
       "community": {
-        "stars": 23,
-        "forks": 0,
+        "stars": 24,
+        "forks": 1,
         "watchers": 1,
-        "aggregate": 24
+        "aggregate": 26
       },
       "repositorySizeKb": 155,
       "license": {
@@ -114160,7 +114298,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T21:38:39.563Z",
+      "refreshedAt": "2026-11-10T15:49:00.149Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -116096,10 +116234,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 328,
-        "forks": 71,
+        "stars": 333,
+        "forks": 72,
         "watchers": 6,
-        "aggregate": 405
+        "aggregate": 411
       },
       "repositorySizeKb": 1640,
       "license": {
@@ -116108,7 +116246,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-27T13:26:37.927Z",
+      "refreshedAt": "2026-11-12T16:13:08.809Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -121898,7 +122036,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T11:32:45.855Z",
+      "refreshedAt": "2026-11-11T15:26:54.803Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -123626,10 +123764,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 43,
+        "stars": 44,
         "forks": 11,
         "watchers": 0,
-        "aggregate": 54
+        "aggregate": 55
       },
       "repositorySizeKb": 237,
       "license": {
@@ -123638,7 +123776,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-27T13:26:05.248Z",
+      "refreshedAt": "2026-11-11T15:35:13.442Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -128526,7 +128664,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-25T12:42:56.222Z",
+      "refreshedAt": "2026-11-10T11:18:20.495Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -129576,6 +129714,166 @@
         "compatibility": [],
         "maintainers": [
           "welvet"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "wewwaistyping-slayhomepage",
+      "name": "SLAYhomepage",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "A SillyTavern start screen replacing the empty window with recent bots: one click resumes a conversation, starts a new one, or opens all chats. 30 themes (19 game-styled), English and Russian interface (README).",
+      "canonicalUrl": "https://github.com/wewwaistyping/SLAYhomepage",
+      "catalogedAt": "2026-11-10T20:18:36.020Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
+        "currentSha": "6c894d52652e0bef9b0344113a28be635cb55714",
+        "report": {
+          "reportId": "cdc11821342c3345b60a8f487756a66cf520aef64186a6ad339ca0b5698c83eb",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "6c894d52652e0bef9b0344113a28be635cb55714",
+          "treeUrl": "https://github.com/wewwaistyping/SLAYhomepage/tree/6c894d52652e0bef9b0344113a28be635cb55714",
+          "scannedAt": "2026-11-10T21:21:55.342Z",
+          "assessedAt": "2026-11-10T21:29:00.324Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "javascriptAnalysisStatus": "complete",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1445819140/6c894d52652e0bef9b0344113a28be635cb55714/5/cdc11821342c3345b60a8f487756a66cf520aef64186a6ad339ca0b5698c83eb/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1445819140/history/"
+        },
+        "history": [
+          {
+            "reportId": "cdc11821342c3345b60a8f487756a66cf520aef64186a6ad339ca0b5698c83eb",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "6c894d52652e0bef9b0344113a28be635cb55714",
+            "treeUrl": "https://github.com/wewwaistyping/SLAYhomepage/tree/6c894d52652e0bef9b0344113a28be635cb55714",
+            "scannedAt": "2026-11-10T21:21:55.342Z",
+            "assessedAt": "2026-11-10T21:29:00.324Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1445819140/6c894d52652e0bef9b0344113a28be635cb55714/5/cdc11821342c3345b60a8f487756a66cf520aef64186a6ad339ca0b5698c83eb/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1445819140/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1445819140/"
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "wewwaistyping"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-10T18:25:30.000Z",
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 1,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 1
+      },
+      "repositorySizeKb": 8444,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-10T20:18:36.020Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/wewwaistyping/SLAYhomepage.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SLAYhomepage"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SLAYhomepage"
+        ],
+        "aliases": [],
+        "source": [
+          "wewwaistyping-slayhomepage",
+          "github-1445819140",
+          "wewwaistyping/SLAYhomepage",
+          "https://github.com/wewwaistyping/SLAYhomepage"
+        ],
+        "summary": [
+          "A SillyTavern start screen replacing the empty window with recent bots: one click resumes a conversation, starts a new one, or opens all chats. 30 themes (19 game-styled), English and Russian interface (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "wewwaistyping"
         ],
         "relationships": []
       }
@@ -131165,7 +131463,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T14:28:54.531Z",
+      "refreshedAt": "2026-11-11T15:36:25.212Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -132289,13 +132587,13 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "current",
-        "currentSha": "d5ef3a85583c176c8b871ea1eeecdbbbbc62456c",
+        "currentSha": "2f6280c2723c9d85466a37029d212c71f2d37065",
         "report": {
-          "reportId": "cd37227a84ab25995fc89fb3fcd514612d8772bf84937c3565f367bd9d13ae71",
+          "reportId": "5b7d9af0a75a14995cf44146cd9ea14760e49c8f85668d4eb8d08e2562bc6f50",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
-          "minorCautions": 85,
+          "minorCautions": 93,
           "materialConcerns": 0,
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
@@ -132304,13 +132602,13 @@
             "047f5a1799af9d2660ac874e1181b015cefe042a8032ac0fa5b2ee5c5b087652",
             "057560550cc36305f80d661af89acda054b1ba6bc9d31fc072d4f4173bea332b",
             "08a3e53c54d67ec18c94c16e196b5131163ff9bad0b309a5af197396c9ef307c",
-            "096861ea82b7532358708934fd032c6460aa9070111d55acebc660f6a74472a6",
             "0c6437cd019f2ac6e79b55b4c4029a5b03b4abd06988dc1284af22e21359a2d9",
             "10c029f1a1b7d0d19acbc023aaccbeef13a7c6793535ce4228d0eba06a8a0e6f",
             "10f369cad48de882bdc791e0cd064699fd6cfbb9ff0b42c2c11d806ad77ced3f",
             "123a057b45f4d2b6192cf29f33dccd7ff9fe4949500304e9cb7e21de4fa36e33",
             "19b6bb0a9331cdef41a4ac226d92512ba38d1d106f63fb55650471a8905d9178",
             "210e77a13f80b673c0b6cf21dcb8d192734958ed478072c8a2e4a9601ed8dc6a",
+            "274a6e2ca50ada52aabe2191518c9e2782a4e038f2715b08dfde6eac50d82219",
             "320910130f001e240c7f2b25eada7cbe7f6d3dd636eb6b0aa03389122ae53d2d",
             "3461bd6efa3aec08b961b321f63d56d41555c635e23acdf19725ccefc600840e",
             "356141c84e65b817c9c3d96f5e3f1c4402f6ee791e5c6783ecc4866cc1ad3e55",
@@ -132324,6 +132622,7 @@
             "504136311a0a7d9030f6e77fd000abf100f01c1c999c3aea7ac7c018ccb07d4f",
             "514ddf4eac9ad661d866f27cb5045565df1d78e5408749dcbfa7d2b7a0994774",
             "5a25815c0e6293e08fa0d704776fa357afe6d656ce3bd1efc1a46b44b22db828",
+            "5f0f7427d4f373aa8ca889a6ea90bb385a07b1713b590c8187e385eead2c5535",
             "626652c33b15b0d6e68848196641c576ae837e64afa4421aed9b7b4253a44c2b",
             "64ce68dcd5343e197d5194e24a1259a82f3bed55964d09b674a24e124ef07da0",
             "66de510acd5e68bd421d110eeff98b71a6518c90f547f4f61fa1f8f027b9c266",
@@ -132354,13 +132653,18 @@
             "af30053069ebb8df3f181ff798ad62beeecb7036314d288ac5da2561054893dc",
             "afdfab63af402d1dfd0821d9fbd4fb6d79b5aba6aa60054d496a54a665b7e031",
             "b2c5ddb9d3aa1afef5031c14a1df055eaba513e968318f0067150ddadfbe00d7",
+            "b3c6efda33e976af0cecf9a7959df3bdfff86bac84c9253085e958857c25ea93",
             "b430f4667800c60dfd38496b253e7f67175aef2b7d6e8445cdcb9203d029b95d",
             "b7dbbafc4284486bad3a7560b056183f03a2795ba62d05535cfd3f32f68705d2",
             "b81c607a58650723a4c66c213b8a7a3a5d99457f8e2995c0d7cd49e62e591082",
             "b8bc498407253881e849cdb7da3f5e989c4e89ddcbb126a947173f2c2836550f",
+            "b99f2300c4c48133ed3579a22fe1f41c9a19e91f71a95d567cc4be850651d933",
+            "ba92659dad00576e5acb616b1307dd6ebb63334bd440bb8baa5f8c33eab28119",
+            "bb28bd45e46e391d520d1b07d1e1cd8a760e80b53827c754899e990df1f9ad4b",
             "bc6ec9162fefd1a31c54b32c486965872a4c2eac98cfe08c26ffb70cc3fa2379",
             "bcb5662146deca2cecbba5a0d88347306875b180852210ec341d614d05753947",
             "bfbafae340c52a3b7737bb0e0790ea8e5bdf188b38094cc900b66c9b57a86ac3",
+            "c1ba8826e556eace589e80f81203cf98236a0bdee2a22bd6946f1f8781e79bcb",
             "c2b04978e9fdbbc4d7c880114bbb551f79df59df5f0733ca6d4f817018ebb14e",
             "c2ff4957efce170daf238cabc2ee805fd8f101dad82d61432860152def84ad28",
             "c6edb305503107c8058a1fa11cc428e82ced438576d2bbde325a24ed78a63f60",
@@ -132371,10 +132675,12 @@
             "d64437fe730b3e5f526d0bc398b94d19e0b773045ed593381c170da08af12acf",
             "d788266184cabbf09db4c7b9d2fc8e1c8e2ae9d0e1661fbee2906e92187c1923",
             "d82af78e53d4cbb5343d54365902c93dd10c41cddfc591f132f4d1121465b53c",
+            "da3fabd35dc11ada5034d5cee7aa113449bc08e5d66b7a9a89e2f2d953cd3c73",
             "ddd2ee54e17dc513c15f72457a0d8a5a59721375353e5568fbb251da169cc037",
             "e15a9083597dac4a1cac16ba5d5aab28608caa9bcbbb26919f8a54a08ed44270",
             "e40e30736a0b99294730f699a115daa647d5511b8f76509d317490171bbd2dab",
             "e473d80db233c84e7f384bdc21ac7418b6fa18ebdfff7d8991f73176ff851060",
+            "e4c98d70f0a6b9bde866560fc6afad495ec276691a3aa0a7331c0beb0a53b383",
             "e815f4bfb1157cf720150a66bd5c9d9447ce014d6f6af777aa3b2a0665f58a45",
             "e9a4a5e1648a77079fcd7e7000456fa8e7b2f673e4de36edac2a9d9630ce8dd9",
             "e9b2b02c5e61575a36fe6fddfefe79e7f9f99fd5bf9091d29c20438842c99ebf",
@@ -132386,10 +132692,10 @@
             "f7783e27a5ea07d03db80cf4471009d38b82610591d0f77887451d29ea54df1b",
             "fd7db3410bfb0da77d713d33cbbf2a494429ed558252712689a9728f9ece76ab"
           ],
-          "scannedSha": "d5ef3a85583c176c8b871ea1eeecdbbbbc62456c",
-          "treeUrl": "https://github.com/Zaakh/SillyTavern-zTracker/tree/d5ef3a85583c176c8b871ea1eeecdbbbbc62456c",
-          "scannedAt": "2026-10-26T03:12:25.829Z",
-          "assessedAt": "2026-10-26T03:17:56.993Z",
+          "scannedSha": "2f6280c2723c9d85466a37029d212c71f2d37065",
+          "treeUrl": "https://github.com/Zaakh/SillyTavern-zTracker/tree/2f6280c2723c9d85466a37029d212c71f2d37065",
+          "scannedAt": "2026-11-10T19:54:06.023Z",
+          "assessedAt": "2026-11-11T00:27:30.737Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
@@ -132397,7 +132703,7 @@
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
           "javascriptAnalysisStatus": "incomplete",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1138762188/d5ef3a85583c176c8b871ea1eeecdbbbbc62456c/5/cd37227a84ab25995fc89fb3fcd514612d8772bf84937c3565f367bd9d13ae71/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1138762188/2f6280c2723c9d85466a37029d212c71f2d37065/5/5b7d9af0a75a14995cf44146cd9ea14760e49c8f85668d4eb8d08e2562bc6f50/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1138762188/history/"
         },
         "history": [
@@ -132989,6 +133295,124 @@
             "javascriptAnalysisStatus": "incomplete",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1138762188/d5ef3a85583c176c8b871ea1eeecdbbbbc62456c/5/cd37227a84ab25995fc89fb3fcd514612d8772bf84937c3565f367bd9d13ae71/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1138762188/history/"
+          },
+          {
+            "reportId": "5b7d9af0a75a14995cf44146cd9ea14760e49c8f85668d4eb8d08e2562bc6f50",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 93,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "046efe32410f56969e7e533fff11c0180cd0bd79b24bfca575bc05dbb2ce778e",
+              "047f5a1799af9d2660ac874e1181b015cefe042a8032ac0fa5b2ee5c5b087652",
+              "057560550cc36305f80d661af89acda054b1ba6bc9d31fc072d4f4173bea332b",
+              "08a3e53c54d67ec18c94c16e196b5131163ff9bad0b309a5af197396c9ef307c",
+              "0c6437cd019f2ac6e79b55b4c4029a5b03b4abd06988dc1284af22e21359a2d9",
+              "10c029f1a1b7d0d19acbc023aaccbeef13a7c6793535ce4228d0eba06a8a0e6f",
+              "10f369cad48de882bdc791e0cd064699fd6cfbb9ff0b42c2c11d806ad77ced3f",
+              "123a057b45f4d2b6192cf29f33dccd7ff9fe4949500304e9cb7e21de4fa36e33",
+              "19b6bb0a9331cdef41a4ac226d92512ba38d1d106f63fb55650471a8905d9178",
+              "210e77a13f80b673c0b6cf21dcb8d192734958ed478072c8a2e4a9601ed8dc6a",
+              "274a6e2ca50ada52aabe2191518c9e2782a4e038f2715b08dfde6eac50d82219",
+              "320910130f001e240c7f2b25eada7cbe7f6d3dd636eb6b0aa03389122ae53d2d",
+              "3461bd6efa3aec08b961b321f63d56d41555c635e23acdf19725ccefc600840e",
+              "356141c84e65b817c9c3d96f5e3f1c4402f6ee791e5c6783ecc4866cc1ad3e55",
+              "3592ed8b0efbae4218cb48092964e6827314bab96f617275c632b1f6eb2f512e",
+              "3660a3981b0f11e74f096db91dfbbfff1097355ad05543de7a6a8cd11fc56aef",
+              "399740b8496a268b99efaeb0e7a012340469d2d650ac1d4bd296d4b38c3d3e4b",
+              "3a2112daf71e8b4e0c74827ce7355c3fad6c0aff4beecc16234248bcb2f98141",
+              "3b44f35eb58a0e32f5c627ab2fa0598ed5ca5f177bb5919cac806c66c48b8515",
+              "3cbb15defafab8087bec21f9d299630f568ed444ad562228d65851c8854b3b04",
+              "4c40e942a51d45ca39b7d461b845a9a3a4871d24da86439ddd283ad588d92df4",
+              "504136311a0a7d9030f6e77fd000abf100f01c1c999c3aea7ac7c018ccb07d4f",
+              "514ddf4eac9ad661d866f27cb5045565df1d78e5408749dcbfa7d2b7a0994774",
+              "5a25815c0e6293e08fa0d704776fa357afe6d656ce3bd1efc1a46b44b22db828",
+              "5f0f7427d4f373aa8ca889a6ea90bb385a07b1713b590c8187e385eead2c5535",
+              "626652c33b15b0d6e68848196641c576ae837e64afa4421aed9b7b4253a44c2b",
+              "64ce68dcd5343e197d5194e24a1259a82f3bed55964d09b674a24e124ef07da0",
+              "66de510acd5e68bd421d110eeff98b71a6518c90f547f4f61fa1f8f027b9c266",
+              "69748991b0a552e4225683bd4056a659713c0267b70d628a2b3545e230ac1b41",
+              "6988f3bfc4458146acf0d6e6e088c3ed31523c508f5d4a339e2bdd557636b32a",
+              "6a644a7034865b3014350827a803c334ec008b09ce01a6408263bb6750776ecd",
+              "72969bfdf88682cc4c7aa8f28bab2d6828dcfdf167af25f1c9abaaa89d945b4d",
+              "73b8d3304df43b3b42287a2cdf5df866b5cf1ba8ccdcc55fbc39f3884c3ce4dd",
+              "73f0803f13dde59b80f3100e4a6662d7bb91717549eb227ccd3ba971d3c6702d",
+              "75d300803918a2884ffc192401a15641331c53b0c5d83951c67162a3cff8f5a1",
+              "8263eb7f25ad1e9973bd53504d144bc9d778b728a2ff647b3894cab99e5be96f",
+              "8333995046705a4c459abbe877d90a2e5aab1aef8d730858309947fd95215ccc",
+              "845f2d1c434b9c5366a04eff64f0b3d9b279049886e055a7df1efa576eec8a7c",
+              "867b55e8ccaf173f6685b81de5b3d92863309ca936ad2a58e7ec93b2d758c752",
+              "8713ba1c51f17e7acb3fbda6dd2a8647f7be1a0d62085319d14799c5484fd9ea",
+              "89abf50a36809f53871e67c50bd10d50df4b7c2ea41ab1deb293b1a6d3c62217",
+              "8ac60f9ad49b6e75e6139315cccba64e268c864fd96b9052a9d657dcf8ed36d0",
+              "8c7fd3a4625f4e37a8162cbb36875c22cbaf8be1fdcfff0634157435cded3123",
+              "8f3de17a50cd04921799427a72d847c2a9091323379da1a378ec8330fef94f6f",
+              "9725eaf2f19bb2c30d04881f7b26cc92120782a5ee065f67ee43e1a90cf51dd3",
+              "98863bddbc47feedd0148cfcfde845f282c6b6555fc1b16407d1559b30e5c0cc",
+              "9da2013c885b0cbd0aabb39675af256e4832455923e034a7042e65fe338ffb17",
+              "a3a545ada1b8626648ff6e37fdf724b0f45a3e40c8a1df84fdbb5e688b8a5cf8",
+              "a6488323f1f4e58c919eb0d913804deedc02f1f7eaaf1823aa6dda21b1606e07",
+              "ab040994454be21e243513187b715363ad40105ac88a3fc5bf78fa31045aba1d",
+              "ac1028f4054f53913f272c3777367f55101398662f50f703f4a02beb68415bdf",
+              "ad95ed3f570d75e596e10f9d610c393b3eb5e4e22901f504beee9ec45baca28a",
+              "af30053069ebb8df3f181ff798ad62beeecb7036314d288ac5da2561054893dc",
+              "afdfab63af402d1dfd0821d9fbd4fb6d79b5aba6aa60054d496a54a665b7e031",
+              "b2c5ddb9d3aa1afef5031c14a1df055eaba513e968318f0067150ddadfbe00d7",
+              "b3c6efda33e976af0cecf9a7959df3bdfff86bac84c9253085e958857c25ea93",
+              "b430f4667800c60dfd38496b253e7f67175aef2b7d6e8445cdcb9203d029b95d",
+              "b7dbbafc4284486bad3a7560b056183f03a2795ba62d05535cfd3f32f68705d2",
+              "b81c607a58650723a4c66c213b8a7a3a5d99457f8e2995c0d7cd49e62e591082",
+              "b8bc498407253881e849cdb7da3f5e989c4e89ddcbb126a947173f2c2836550f",
+              "b99f2300c4c48133ed3579a22fe1f41c9a19e91f71a95d567cc4be850651d933",
+              "ba92659dad00576e5acb616b1307dd6ebb63334bd440bb8baa5f8c33eab28119",
+              "bb28bd45e46e391d520d1b07d1e1cd8a760e80b53827c754899e990df1f9ad4b",
+              "bc6ec9162fefd1a31c54b32c486965872a4c2eac98cfe08c26ffb70cc3fa2379",
+              "bcb5662146deca2cecbba5a0d88347306875b180852210ec341d614d05753947",
+              "bfbafae340c52a3b7737bb0e0790ea8e5bdf188b38094cc900b66c9b57a86ac3",
+              "c1ba8826e556eace589e80f81203cf98236a0bdee2a22bd6946f1f8781e79bcb",
+              "c2b04978e9fdbbc4d7c880114bbb551f79df59df5f0733ca6d4f817018ebb14e",
+              "c2ff4957efce170daf238cabc2ee805fd8f101dad82d61432860152def84ad28",
+              "c6edb305503107c8058a1fa11cc428e82ced438576d2bbde325a24ed78a63f60",
+              "cdff504c125969da535195b9938e91c699ae9c8b1d67ab05d2460a59b3a1c846",
+              "d187a31f3ffeb8a807f7bb4a9bc0b4d71524a8a2cfdba3433e1099ff77e1b90c",
+              "d1c35b5323c1e0d36b2cc28ebffd29d135c0ac4a256aef6a4a6afc05c68ca1c6",
+              "d62e3b2a680b78727fe4cf225d21b15496ea4d78e0f43d0cf5b810ebf6e60c60",
+              "d64437fe730b3e5f526d0bc398b94d19e0b773045ed593381c170da08af12acf",
+              "d788266184cabbf09db4c7b9d2fc8e1c8e2ae9d0e1661fbee2906e92187c1923",
+              "d82af78e53d4cbb5343d54365902c93dd10c41cddfc591f132f4d1121465b53c",
+              "da3fabd35dc11ada5034d5cee7aa113449bc08e5d66b7a9a89e2f2d953cd3c73",
+              "ddd2ee54e17dc513c15f72457a0d8a5a59721375353e5568fbb251da169cc037",
+              "e15a9083597dac4a1cac16ba5d5aab28608caa9bcbbb26919f8a54a08ed44270",
+              "e40e30736a0b99294730f699a115daa647d5511b8f76509d317490171bbd2dab",
+              "e473d80db233c84e7f384bdc21ac7418b6fa18ebdfff7d8991f73176ff851060",
+              "e4c98d70f0a6b9bde866560fc6afad495ec276691a3aa0a7331c0beb0a53b383",
+              "e815f4bfb1157cf720150a66bd5c9d9447ce014d6f6af777aa3b2a0665f58a45",
+              "e9a4a5e1648a77079fcd7e7000456fa8e7b2f673e4de36edac2a9d9630ce8dd9",
+              "e9b2b02c5e61575a36fe6fddfefe79e7f9f99fd5bf9091d29c20438842c99ebf",
+              "e9e4cdc3d18b25bc5cb753391fa1edfb759f6f5f85bcc59ff01b55dc4ef31411",
+              "ebb973e94ad36655f5f1470426b57dda52e1f1bd942e2201ef3105b04d4f31c5",
+              "eca11faaed9532b57ea93ddfaeafe9ff20bc6ae7fb5fdcf350599cd377348a0d",
+              "eeabff86dc3399081cce6ae3d0cf459408826d58274c44c2f5bb97748cdcd723",
+              "f7730e3afcd8b9ff5a7b88f33ecc49de21f105ba8553af5d6169250aebec4a3a",
+              "f7783e27a5ea07d03db80cf4471009d38b82610591d0f77887451d29ea54df1b",
+              "fd7db3410bfb0da77d713d33cbbf2a494429ed558252712689a9728f9ece76ab"
+            ],
+            "scannedSha": "2f6280c2723c9d85466a37029d212c71f2d37065",
+            "treeUrl": "https://github.com/Zaakh/SillyTavern-zTracker/tree/2f6280c2723c9d85466a37029d212c71f2d37065",
+            "scannedAt": "2026-11-10T19:54:06.023Z",
+            "assessedAt": "2026-11-11T00:27:30.737Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "incomplete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1138762188/2f6280c2723c9d85466a37029d212c71f2d37065/5/5b7d9af0a75a14995cf44146cd9ea14760e49c8f85668d4eb8d08e2562bc6f50/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1138762188/history/"
           }
         ],
         "historyUrl": "/security/tavernkeeper/history/github-1138762188/"
@@ -133009,10 +133433,10 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-23T14:30:50.000Z",
-        "activeWeeks12": 6,
+        "latestSourceActivityAt": "2026-11-10T14:24:59.000Z",
+        "activeWeeks12": 5,
         "weeklyActivity": [
-          true,
+          false,
           false,
           false,
           false,
@@ -133028,21 +133452,21 @@
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": null,
+      "latestReleaseAt": "2026-11-03T14:54:21.000Z",
       "community": {
         "stars": 15,
         "forks": 2,
         "watchers": 0,
         "aggregate": 17
       },
-      "repositorySizeKb": 15672,
+      "repositorySizeKb": 16352,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T02:41:54.145Z",
+      "refreshedAt": "2026-11-10T15:52:06.214Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -135652,7 +136076,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-26T14:29:02.684Z",
+      "refreshedAt": "2026-11-11T15:34:33.839Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -139258,10 +139682,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 134,
+              "stars": 135,
               "forks": 18,
               "watchers": 5,
-              "aggregate": 157
+              "aggregate": 158
             },
             "repositorySizeKb": 1620,
             "license": {
@@ -139270,7 +139694,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:57.529Z",
+            "refreshedAt": "2026-11-10T11:18:50.163Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -147159,10 +147583,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 36,
+              "stars": 37,
               "forks": 7,
               "watchers": 1,
-              "aggregate": 44
+              "aggregate": 45
             },
             "repositorySizeKb": 256,
             "license": {
@@ -147171,7 +147595,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T08:47:18.845Z",
+            "refreshedAt": "2026-11-11T15:32:10.821Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -147628,10 +148052,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 96,
-              "forks": 17,
+              "stars": 98,
+              "forks": 19,
               "watchers": 1,
-              "aggregate": 114
+              "aggregate": 118
             },
             "repositorySizeKb": 47,
             "license": {
@@ -147640,7 +148064,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T14:28:55.029Z",
+            "refreshedAt": "2026-11-11T15:32:09.091Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -155948,9 +156372,9 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "current",
-              "currentSha": "eb8f63b74e23d94e391b81834781183c82b9f006",
+              "currentSha": "2ad2719de1382f3a0db59107eec8b962cbc8f337",
               "report": {
-                "reportId": "11e9b53530ab157000a550a0e060579f74d93d0bc0b800251dcc1b8aa4c21fab",
+                "reportId": "bec51ff5987d698cdcaa405241bd6bf581f7d4a2b29832c2caac47568782012c",
                 "riskLevel": "low",
                 "headline": "Low concern",
                 "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -155959,10 +156383,10 @@
                 "highDanger": 0,
                 "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
                 "citedFindingIds": [],
-                "scannedSha": "eb8f63b74e23d94e391b81834781183c82b9f006",
-                "treeUrl": "https://github.com/i5031337/sillytavern-contextual-scene-painter/tree/eb8f63b74e23d94e391b81834781183c82b9f006",
-                "scannedAt": "2026-10-06T14:30:48.793Z",
-                "assessedAt": "2026-10-06T14:35:52.300Z",
+                "scannedSha": "2ad2719de1382f3a0db59107eec8b962cbc8f337",
+                "treeUrl": "https://github.com/i5031337/sillytavern-contextual-scene-painter/tree/2ad2719de1382f3a0db59107eec8b962cbc8f337",
+                "scannedAt": "2026-11-11T00:20:23.099Z",
+                "assessedAt": "2026-11-11T01:39:50.615Z",
                 "scannerPolicyVersion": "5",
                 "contextualReviewPolicyVersion": "5",
                 "synthesisPolicyVersion": "5",
@@ -155970,7 +156394,7 @@
                 "dangerBasis": "none",
                 "assessmentSource": "deterministic_regrade",
                 "javascriptAnalysisStatus": "complete",
-                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/eb8f63b74e23d94e391b81834781183c82b9f006/5/11e9b53530ab157000a550a0e060579f74d93d0bc0b800251dcc1b8aa4c21fab/",
+                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/2ad2719de1382f3a0db59107eec8b962cbc8f337/5/bec51ff5987d698cdcaa405241bd6bf581f7d4a2b29832c2caac47568782012c/",
                 "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/history/"
               },
               "history": [
@@ -156117,6 +156541,30 @@
                   "javascriptAnalysisStatus": "complete",
                   "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/eb8f63b74e23d94e391b81834781183c82b9f006/5/11e9b53530ab157000a550a0e060579f74d93d0bc0b800251dcc1b8aa4c21fab/",
                   "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/history/"
+                },
+                {
+                  "reportId": "bec51ff5987d698cdcaa405241bd6bf581f7d4a2b29832c2caac47568782012c",
+                  "riskLevel": "low",
+                  "headline": "Low concern",
+                  "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+                  "minorCautions": 0,
+                  "materialConcerns": 0,
+                  "highDanger": 0,
+                  "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+                  "citedFindingIds": [],
+                  "scannedSha": "2ad2719de1382f3a0db59107eec8b962cbc8f337",
+                  "treeUrl": "https://github.com/i5031337/sillytavern-contextual-scene-painter/tree/2ad2719de1382f3a0db59107eec8b962cbc8f337",
+                  "scannedAt": "2026-11-11T00:20:23.099Z",
+                  "assessedAt": "2026-11-11T01:39:50.615Z",
+                  "scannerPolicyVersion": "5",
+                  "contextualReviewPolicyVersion": "5",
+                  "synthesisPolicyVersion": "5",
+                  "synthesisModel": "deterministic-policy-v5",
+                  "dangerBasis": "none",
+                  "assessmentSource": "deterministic_regrade",
+                  "javascriptAnalysisStatus": "complete",
+                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/2ad2719de1382f3a0db59107eec8b962cbc8f337/5/bec51ff5987d698cdcaa405241bd6bf581f7d4a2b29832c2caac47568782012c/",
+                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1317590696/history/"
                 }
               ],
               "historyUrl": "/security/tavernkeeper/history/github-1317590696/"
@@ -156131,40 +156579,40 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-06T02:02:18.000Z",
+              "latestSourceActivityAt": "2026-10-28T22:10:32.000Z",
               "activeWeeks12": 3,
               "weeklyActivity": [
                 false,
-                true,
-                true,
-                false,
-                false,
-                false,
-                false,
                 false,
                 true,
                 false,
                 false,
-                false
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 11,
+              "stars": 12,
               "forks": 0,
               "watchers": 0,
-              "aggregate": 11
+              "aggregate": 12
             },
-            "repositorySizeKb": 227,
+            "repositorySizeKb": 228,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T07:21:02.426Z",
+            "refreshedAt": "2026-11-10T21:33:50.014Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -161334,10 +161782,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 328,
-              "forks": 71,
+              "stars": 333,
+              "forks": 72,
               "watchers": 6,
-              "aggregate": 405
+              "aggregate": 411
             },
             "repositorySizeKb": 1640,
             "license": {
@@ -161346,7 +161794,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-27T13:26:37.927Z",
+            "refreshedAt": "2026-11-12T16:13:08.809Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -161938,7 +162386,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "a480c513cd3f75c71ae2de5ae55e18e0952bdbbc",
+              "currentSha": "f781d4a3f4aa4c095d15b8c0d369677528036a16",
               "report": {
                 "reportId": "93633fe204a903602f0677a4b59e4a5eac287da4c0400045478a9477ff776874",
                 "riskLevel": "low",
@@ -162097,9 +162545,11 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-25T03:44:27.000Z",
-              "activeWeeks12": 11,
+              "latestSourceActivityAt": "2026-11-05T01:12:40.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
+                false,
+                false,
                 true,
                 true,
                 true,
@@ -162109,9 +162559,7 @@
                 true,
                 true,
                 true,
-                true,
-                true,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -162123,14 +162571,14 @@
               "watchers": 4,
               "aggregate": 18
             },
-            "repositorySizeKb": 6824,
+            "repositorySizeKb": 5841,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T20:19:02.440Z",
+            "refreshedAt": "2026-11-10T15:48:28.546Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -163616,10 +164064,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 54,
+              "stars": 56,
               "forks": 19,
               "watchers": 1,
-              "aggregate": 74
+              "aggregate": 76
             },
             "repositorySizeKb": 16,
             "license": {
@@ -163628,7 +164076,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-27T13:26:21.341Z",
+            "refreshedAt": "2026-11-12T16:10:05.750Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -183416,7 +183864,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "6c3cbcdc57e9ba20a3791597e37460356aa5a426",
+              "currentSha": "d6ae15b8958ac0c256cf5c2200058fed846617cf",
               "report": {
                 "reportId": "2335f3d2b3bd2e19593c6747a8c141ec9ee69040c84fed880949166be827ccb2",
                 "riskLevel": "low",
@@ -183508,7 +183956,7 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-07T18:00:16.000Z",
+              "latestSourceActivityAt": "2026-11-08T15:32:51.000Z",
               "activeWeeks12": 1,
               "weeklyActivity": [
                 false,
@@ -183529,19 +183977,19 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 33,
+              "stars": 35,
               "forks": 3,
               "watchers": 0,
-              "aggregate": 36
+              "aggregate": 38
             },
-            "repositorySizeKb": 182987,
+            "repositorySizeKb": 188535,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T00:32:02.042Z",
+            "refreshedAt": "2026-11-10T15:51:46.306Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -184857,10 +185305,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 96,
-              "forks": 17,
+              "stars": 98,
+              "forks": 19,
               "watchers": 1,
-              "aggregate": 114
+              "aggregate": 118
             },
             "repositorySizeKb": 47,
             "license": {
@@ -184869,7 +185317,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T14:28:55.029Z",
+            "refreshedAt": "2026-11-11T15:32:09.091Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -186677,7 +187125,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:45:04.496Z",
+            "refreshedAt": "2026-11-10T11:32:52.911Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -187459,9 +187907,9 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "current",
-              "currentSha": "5f4af8308faea8edb366aa91efe80daa6f61559b",
+              "currentSha": "6246c35440563a88bef1a719bc3a810f80d80912",
               "report": {
-                "reportId": "9dcfa8d139e2c3ce3b86fb01ad6ddd6b7437f315827f1baa8b1697e5037485d0",
+                "reportId": "456ae3d75e1dcb95410bff310b1ed1a1835b44d3963f26fd9e180c6e16d142eb",
                 "riskLevel": "low",
                 "headline": "Low concern",
                 "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -187470,10 +187918,10 @@
                 "highDanger": 0,
                 "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
                 "citedFindingIds": [],
-                "scannedSha": "5f4af8308faea8edb366aa91efe80daa6f61559b",
-                "treeUrl": "https://github.com/Phiarlan/SillyTavern-WorldInfoPlus/tree/5f4af8308faea8edb366aa91efe80daa6f61559b",
-                "scannedAt": "2026-10-25T22:47:09.287Z",
-                "assessedAt": "2026-10-25T22:52:33.759Z",
+                "scannedSha": "6246c35440563a88bef1a719bc3a810f80d80912",
+                "treeUrl": "https://github.com/Phiarlan/SillyTavern-WorldInfoPlus/tree/6246c35440563a88bef1a719bc3a810f80d80912",
+                "scannedAt": "2026-11-10T16:11:43.019Z",
+                "assessedAt": "2026-11-10T16:18:37.749Z",
                 "scannerPolicyVersion": "5",
                 "contextualReviewPolicyVersion": "5",
                 "synthesisPolicyVersion": "5",
@@ -187481,7 +187929,7 @@
                 "dangerBasis": "none",
                 "assessmentSource": "deterministic_regrade",
                 "javascriptAnalysisStatus": "complete",
-                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/5f4af8308faea8edb366aa91efe80daa6f61559b/5/9dcfa8d139e2c3ce3b86fb01ad6ddd6b7437f315827f1baa8b1697e5037485d0/",
+                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/6246c35440563a88bef1a719bc3a810f80d80912/5/456ae3d75e1dcb95410bff310b1ed1a1835b44d3963f26fd9e180c6e16d142eb/",
                 "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/history/"
               },
               "history": [
@@ -187556,6 +188004,30 @@
                   "javascriptAnalysisStatus": "complete",
                   "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/5f4af8308faea8edb366aa91efe80daa6f61559b/5/9dcfa8d139e2c3ce3b86fb01ad6ddd6b7437f315827f1baa8b1697e5037485d0/",
                   "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/history/"
+                },
+                {
+                  "reportId": "456ae3d75e1dcb95410bff310b1ed1a1835b44d3963f26fd9e180c6e16d142eb",
+                  "riskLevel": "low",
+                  "headline": "Low concern",
+                  "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+                  "minorCautions": 0,
+                  "materialConcerns": 0,
+                  "highDanger": 0,
+                  "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+                  "citedFindingIds": [],
+                  "scannedSha": "6246c35440563a88bef1a719bc3a810f80d80912",
+                  "treeUrl": "https://github.com/Phiarlan/SillyTavern-WorldInfoPlus/tree/6246c35440563a88bef1a719bc3a810f80d80912",
+                  "scannedAt": "2026-11-10T16:11:43.019Z",
+                  "assessedAt": "2026-11-10T16:18:37.749Z",
+                  "scannerPolicyVersion": "5",
+                  "contextualReviewPolicyVersion": "5",
+                  "synthesisPolicyVersion": "5",
+                  "synthesisModel": "deterministic-policy-v5",
+                  "dangerBasis": "none",
+                  "assessmentSource": "deterministic_regrade",
+                  "javascriptAnalysisStatus": "complete",
+                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/6246c35440563a88bef1a719bc3a810f80d80912/5/456ae3d75e1dcb95410bff310b1ed1a1835b44d3963f26fd9e180c6e16d142eb/",
+                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/history/"
                 }
               ],
               "historyUrl": "/security/tavernkeeper/history/github-1319221115/"
@@ -187570,8 +188042,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-21T23:29:56.000Z",
-              "activeWeeks12": 2,
+              "latestSourceActivityAt": "2026-10-30T18:58:39.000Z",
+              "activeWeeks12": 3,
               "weeklyActivity": [
                 false,
                 false,
@@ -187584,26 +188056,26 @@
                 false,
                 true,
                 true,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 4,
+              "stars": 5,
               "forks": 1,
               "watchers": 0,
-              "aggregate": 5
+              "aggregate": 6
             },
-            "repositorySizeKb": 1295,
+            "repositorySizeKb": 1296,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T21:37:36.646Z",
+            "refreshedAt": "2026-11-10T15:48:37.612Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -188469,7 +188941,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T00:33:19.395Z",
+            "refreshedAt": "2026-11-10T15:52:02.920Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -196941,7 +197413,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "6c3cbcdc57e9ba20a3791597e37460356aa5a426",
+              "currentSha": "d6ae15b8958ac0c256cf5c2200058fed846617cf",
               "report": {
                 "reportId": "2335f3d2b3bd2e19593c6747a8c141ec9ee69040c84fed880949166be827ccb2",
                 "riskLevel": "low",
@@ -197033,7 +197505,7 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-07T18:00:16.000Z",
+              "latestSourceActivityAt": "2026-11-08T15:32:51.000Z",
               "activeWeeks12": 1,
               "weeklyActivity": [
                 false,
@@ -197054,19 +197526,19 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 33,
+              "stars": 35,
               "forks": 3,
               "watchers": 0,
-              "aggregate": 36
+              "aggregate": 38
             },
-            "repositorySizeKb": 182987,
+            "repositorySizeKb": 188535,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T00:32:02.042Z",
+            "refreshedAt": "2026-11-10T15:51:46.306Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -198567,10 +199039,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 96,
-              "forks": 17,
+              "stars": 98,
+              "forks": 19,
               "watchers": 1,
-              "aggregate": 114
+              "aggregate": 118
             },
             "repositorySizeKb": 47,
             "license": {
@@ -198579,7 +199051,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T14:28:55.029Z",
+            "refreshedAt": "2026-11-11T15:32:09.091Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -201063,7 +201535,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:45:04.496Z",
+            "refreshedAt": "2026-11-10T11:32:52.911Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -201845,9 +202317,9 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "current",
-              "currentSha": "5f4af8308faea8edb366aa91efe80daa6f61559b",
+              "currentSha": "6246c35440563a88bef1a719bc3a810f80d80912",
               "report": {
-                "reportId": "9dcfa8d139e2c3ce3b86fb01ad6ddd6b7437f315827f1baa8b1697e5037485d0",
+                "reportId": "456ae3d75e1dcb95410bff310b1ed1a1835b44d3963f26fd9e180c6e16d142eb",
                 "riskLevel": "low",
                 "headline": "Low concern",
                 "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -201856,10 +202328,10 @@
                 "highDanger": 0,
                 "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
                 "citedFindingIds": [],
-                "scannedSha": "5f4af8308faea8edb366aa91efe80daa6f61559b",
-                "treeUrl": "https://github.com/Phiarlan/SillyTavern-WorldInfoPlus/tree/5f4af8308faea8edb366aa91efe80daa6f61559b",
-                "scannedAt": "2026-10-25T22:47:09.287Z",
-                "assessedAt": "2026-10-25T22:52:33.759Z",
+                "scannedSha": "6246c35440563a88bef1a719bc3a810f80d80912",
+                "treeUrl": "https://github.com/Phiarlan/SillyTavern-WorldInfoPlus/tree/6246c35440563a88bef1a719bc3a810f80d80912",
+                "scannedAt": "2026-11-10T16:11:43.019Z",
+                "assessedAt": "2026-11-10T16:18:37.749Z",
                 "scannerPolicyVersion": "5",
                 "contextualReviewPolicyVersion": "5",
                 "synthesisPolicyVersion": "5",
@@ -201867,7 +202339,7 @@
                 "dangerBasis": "none",
                 "assessmentSource": "deterministic_regrade",
                 "javascriptAnalysisStatus": "complete",
-                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/5f4af8308faea8edb366aa91efe80daa6f61559b/5/9dcfa8d139e2c3ce3b86fb01ad6ddd6b7437f315827f1baa8b1697e5037485d0/",
+                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/6246c35440563a88bef1a719bc3a810f80d80912/5/456ae3d75e1dcb95410bff310b1ed1a1835b44d3963f26fd9e180c6e16d142eb/",
                 "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/history/"
               },
               "history": [
@@ -201942,6 +202414,30 @@
                   "javascriptAnalysisStatus": "complete",
                   "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/5f4af8308faea8edb366aa91efe80daa6f61559b/5/9dcfa8d139e2c3ce3b86fb01ad6ddd6b7437f315827f1baa8b1697e5037485d0/",
                   "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/history/"
+                },
+                {
+                  "reportId": "456ae3d75e1dcb95410bff310b1ed1a1835b44d3963f26fd9e180c6e16d142eb",
+                  "riskLevel": "low",
+                  "headline": "Low concern",
+                  "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+                  "minorCautions": 0,
+                  "materialConcerns": 0,
+                  "highDanger": 0,
+                  "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+                  "citedFindingIds": [],
+                  "scannedSha": "6246c35440563a88bef1a719bc3a810f80d80912",
+                  "treeUrl": "https://github.com/Phiarlan/SillyTavern-WorldInfoPlus/tree/6246c35440563a88bef1a719bc3a810f80d80912",
+                  "scannedAt": "2026-11-10T16:11:43.019Z",
+                  "assessedAt": "2026-11-10T16:18:37.749Z",
+                  "scannerPolicyVersion": "5",
+                  "contextualReviewPolicyVersion": "5",
+                  "synthesisPolicyVersion": "5",
+                  "synthesisModel": "deterministic-policy-v5",
+                  "dangerBasis": "none",
+                  "assessmentSource": "deterministic_regrade",
+                  "javascriptAnalysisStatus": "complete",
+                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/6246c35440563a88bef1a719bc3a810f80d80912/5/456ae3d75e1dcb95410bff310b1ed1a1835b44d3963f26fd9e180c6e16d142eb/",
+                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/history/"
                 }
               ],
               "historyUrl": "/security/tavernkeeper/history/github-1319221115/"
@@ -201956,8 +202452,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-21T23:29:56.000Z",
-              "activeWeeks12": 2,
+              "latestSourceActivityAt": "2026-10-30T18:58:39.000Z",
+              "activeWeeks12": 3,
               "weeklyActivity": [
                 false,
                 false,
@@ -201970,26 +202466,26 @@
                 false,
                 true,
                 true,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 4,
+              "stars": 5,
               "forks": 1,
               "watchers": 0,
-              "aggregate": 5
+              "aggregate": 6
             },
-            "repositorySizeKb": 1295,
+            "repositorySizeKb": 1296,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T21:37:36.646Z",
+            "refreshedAt": "2026-11-10T15:48:37.612Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -202855,7 +203351,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T00:33:19.395Z",
+            "refreshedAt": "2026-11-10T15:52:02.920Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -204453,10 +204949,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 36,
+              "stars": 37,
               "forks": 7,
               "watchers": 1,
-              "aggregate": 44
+              "aggregate": 45
             },
             "repositorySizeKb": 256,
             "license": {
@@ -204465,7 +204961,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T08:47:18.845Z",
+            "refreshedAt": "2026-11-11T15:32:10.821Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -211076,7 +211572,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "6c3cbcdc57e9ba20a3791597e37460356aa5a426",
+              "currentSha": "d6ae15b8958ac0c256cf5c2200058fed846617cf",
               "report": {
                 "reportId": "2335f3d2b3bd2e19593c6747a8c141ec9ee69040c84fed880949166be827ccb2",
                 "riskLevel": "low",
@@ -211168,7 +211664,7 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-07T18:00:16.000Z",
+              "latestSourceActivityAt": "2026-11-08T15:32:51.000Z",
               "activeWeeks12": 1,
               "weeklyActivity": [
                 false,
@@ -211189,19 +211685,19 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 33,
+              "stars": 35,
               "forks": 3,
               "watchers": 0,
-              "aggregate": 36
+              "aggregate": 38
             },
-            "repositorySizeKb": 182987,
+            "repositorySizeKb": 188535,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T00:32:02.042Z",
+            "refreshedAt": "2026-11-10T15:51:46.306Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -217945,7 +218441,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "a480c513cd3f75c71ae2de5ae55e18e0952bdbbc",
+              "currentSha": "f781d4a3f4aa4c095d15b8c0d369677528036a16",
               "report": {
                 "reportId": "93633fe204a903602f0677a4b59e4a5eac287da4c0400045478a9477ff776874",
                 "riskLevel": "low",
@@ -218104,9 +218600,11 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-25T03:44:27.000Z",
-              "activeWeeks12": 11,
+              "latestSourceActivityAt": "2026-11-05T01:12:40.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
+                false,
+                false,
                 true,
                 true,
                 true,
@@ -218116,9 +218614,7 @@
                 true,
                 true,
                 true,
-                true,
-                true,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -218130,14 +218626,14 @@
               "watchers": 4,
               "aggregate": 18
             },
-            "repositorySizeKb": 6824,
+            "repositorySizeKb": 5841,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T20:19:02.440Z",
+            "refreshedAt": "2026-11-10T15:48:28.546Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -233669,10 +234165,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 96,
-              "forks": 17,
+              "stars": 98,
+              "forks": 19,
               "watchers": 1,
-              "aggregate": 114
+              "aggregate": 118
             },
             "repositorySizeKb": 47,
             "license": {
@@ -233681,7 +234177,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T14:28:55.029Z",
+            "refreshedAt": "2026-11-11T15:32:09.091Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -236266,7 +236762,7 @@
               "tooltip": "The published root license is not OSI-approved."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T21:08:56.966Z",
+            "refreshedAt": "2026-11-10T15:48:22.050Z",
             "staleSince": null,
             "install": null,
             "fork": null,
@@ -237489,7 +237985,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:43.435Z",
+            "refreshedAt": "2026-11-10T08:34:21.003Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -244566,7 +245062,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "a480c513cd3f75c71ae2de5ae55e18e0952bdbbc",
+              "currentSha": "f781d4a3f4aa4c095d15b8c0d369677528036a16",
               "report": {
                 "reportId": "93633fe204a903602f0677a4b59e4a5eac287da4c0400045478a9477ff776874",
                 "riskLevel": "low",
@@ -244725,9 +245221,11 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-25T03:44:27.000Z",
-              "activeWeeks12": 11,
+              "latestSourceActivityAt": "2026-11-05T01:12:40.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
+                false,
+                false,
                 true,
                 true,
                 true,
@@ -244737,9 +245235,7 @@
                 true,
                 true,
                 true,
-                true,
-                true,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
@@ -244751,14 +245247,14 @@
               "watchers": 4,
               "aggregate": 18
             },
-            "repositorySizeKb": 6824,
+            "repositorySizeKb": 5841,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T20:19:02.440Z",
+            "refreshedAt": "2026-11-10T15:48:28.546Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -245708,7 +246204,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T00:33:19.395Z",
+            "refreshedAt": "2026-11-10T15:52:02.920Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -246233,7 +246729,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T00:32:40.758Z",
+            "refreshedAt": "2026-11-10T15:52:03.550Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -251350,10 +251846,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 134,
+              "stars": 135,
               "forks": 18,
               "watchers": 5,
-              "aggregate": 157
+              "aggregate": 158
             },
             "repositorySizeKb": 1620,
             "license": {
@@ -251362,7 +251858,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:57.529Z",
+            "refreshedAt": "2026-11-10T11:18:50.163Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -252219,9 +252715,9 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "current",
-              "currentSha": "5f4af8308faea8edb366aa91efe80daa6f61559b",
+              "currentSha": "6246c35440563a88bef1a719bc3a810f80d80912",
               "report": {
-                "reportId": "9dcfa8d139e2c3ce3b86fb01ad6ddd6b7437f315827f1baa8b1697e5037485d0",
+                "reportId": "456ae3d75e1dcb95410bff310b1ed1a1835b44d3963f26fd9e180c6e16d142eb",
                 "riskLevel": "low",
                 "headline": "Low concern",
                 "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -252230,10 +252726,10 @@
                 "highDanger": 0,
                 "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
                 "citedFindingIds": [],
-                "scannedSha": "5f4af8308faea8edb366aa91efe80daa6f61559b",
-                "treeUrl": "https://github.com/Phiarlan/SillyTavern-WorldInfoPlus/tree/5f4af8308faea8edb366aa91efe80daa6f61559b",
-                "scannedAt": "2026-10-25T22:47:09.287Z",
-                "assessedAt": "2026-10-25T22:52:33.759Z",
+                "scannedSha": "6246c35440563a88bef1a719bc3a810f80d80912",
+                "treeUrl": "https://github.com/Phiarlan/SillyTavern-WorldInfoPlus/tree/6246c35440563a88bef1a719bc3a810f80d80912",
+                "scannedAt": "2026-11-10T16:11:43.019Z",
+                "assessedAt": "2026-11-10T16:18:37.749Z",
                 "scannerPolicyVersion": "5",
                 "contextualReviewPolicyVersion": "5",
                 "synthesisPolicyVersion": "5",
@@ -252241,7 +252737,7 @@
                 "dangerBasis": "none",
                 "assessmentSource": "deterministic_regrade",
                 "javascriptAnalysisStatus": "complete",
-                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/5f4af8308faea8edb366aa91efe80daa6f61559b/5/9dcfa8d139e2c3ce3b86fb01ad6ddd6b7437f315827f1baa8b1697e5037485d0/",
+                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/6246c35440563a88bef1a719bc3a810f80d80912/5/456ae3d75e1dcb95410bff310b1ed1a1835b44d3963f26fd9e180c6e16d142eb/",
                 "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/history/"
               },
               "history": [
@@ -252316,6 +252812,30 @@
                   "javascriptAnalysisStatus": "complete",
                   "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/5f4af8308faea8edb366aa91efe80daa6f61559b/5/9dcfa8d139e2c3ce3b86fb01ad6ddd6b7437f315827f1baa8b1697e5037485d0/",
                   "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/history/"
+                },
+                {
+                  "reportId": "456ae3d75e1dcb95410bff310b1ed1a1835b44d3963f26fd9e180c6e16d142eb",
+                  "riskLevel": "low",
+                  "headline": "Low concern",
+                  "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+                  "minorCautions": 0,
+                  "materialConcerns": 0,
+                  "highDanger": 0,
+                  "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+                  "citedFindingIds": [],
+                  "scannedSha": "6246c35440563a88bef1a719bc3a810f80d80912",
+                  "treeUrl": "https://github.com/Phiarlan/SillyTavern-WorldInfoPlus/tree/6246c35440563a88bef1a719bc3a810f80d80912",
+                  "scannedAt": "2026-11-10T16:11:43.019Z",
+                  "assessedAt": "2026-11-10T16:18:37.749Z",
+                  "scannerPolicyVersion": "5",
+                  "contextualReviewPolicyVersion": "5",
+                  "synthesisPolicyVersion": "5",
+                  "synthesisModel": "deterministic-policy-v5",
+                  "dangerBasis": "none",
+                  "assessmentSource": "deterministic_regrade",
+                  "javascriptAnalysisStatus": "complete",
+                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/6246c35440563a88bef1a719bc3a810f80d80912/5/456ae3d75e1dcb95410bff310b1ed1a1835b44d3963f26fd9e180c6e16d142eb/",
+                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1319221115/history/"
                 }
               ],
               "historyUrl": "/security/tavernkeeper/history/github-1319221115/"
@@ -252330,8 +252850,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-21T23:29:56.000Z",
-              "activeWeeks12": 2,
+              "latestSourceActivityAt": "2026-10-30T18:58:39.000Z",
+              "activeWeeks12": 3,
               "weeklyActivity": [
                 false,
                 false,
@@ -252344,26 +252864,26 @@
                 false,
                 true,
                 true,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 4,
+              "stars": 5,
               "forks": 1,
               "watchers": 0,
-              "aggregate": 5
+              "aggregate": 6
             },
-            "repositorySizeKb": 1295,
+            "repositorySizeKb": 1296,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T21:37:36.646Z",
+            "refreshedAt": "2026-11-10T15:48:37.612Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -253620,7 +254140,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T07:39:25.317Z",
+            "refreshedAt": "2026-11-11T06:50:49.406Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -255201,10 +255721,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 34,
+              "stars": 35,
               "forks": 5,
               "watchers": 3,
-              "aggregate": 42
+              "aggregate": 43
             },
             "repositorySizeKb": 5278,
             "license": {
@@ -255213,7 +255733,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T11:31:18.630Z",
+            "refreshedAt": "2026-11-11T15:27:14.593Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -265881,10 +266401,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 134,
+              "stars": 135,
               "forks": 18,
               "watchers": 5,
-              "aggregate": 157
+              "aggregate": 158
             },
             "repositorySizeKb": 1620,
             "license": {
@@ -265893,7 +266413,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-25T12:42:57.529Z",
+            "refreshedAt": "2026-11-10T11:18:50.163Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -268836,7 +269356,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T00:33:19.395Z",
+            "refreshedAt": "2026-11-10T15:52:02.920Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -275978,7 +276498,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "6c3cbcdc57e9ba20a3791597e37460356aa5a426",
+              "currentSha": "d6ae15b8958ac0c256cf5c2200058fed846617cf",
               "report": {
                 "reportId": "2335f3d2b3bd2e19593c6747a8c141ec9ee69040c84fed880949166be827ccb2",
                 "riskLevel": "low",
@@ -276070,7 +276590,7 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-07T18:00:16.000Z",
+              "latestSourceActivityAt": "2026-11-08T15:32:51.000Z",
               "activeWeeks12": 1,
               "weeklyActivity": [
                 false,
@@ -276091,19 +276611,19 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 33,
+              "stars": 35,
               "forks": 3,
               "watchers": 0,
-              "aggregate": 36
+              "aggregate": 38
             },
-            "repositorySizeKb": 182987,
+            "repositorySizeKb": 188535,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T00:32:02.042Z",
+            "refreshedAt": "2026-11-10T15:51:46.306Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -281177,10 +281697,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 96,
-              "forks": 17,
+              "stars": 98,
+              "forks": 19,
               "watchers": 1,
-              "aggregate": 114
+              "aggregate": 118
             },
             "repositorySizeKb": 47,
             "license": {
@@ -281189,7 +281709,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T14:28:55.029Z",
+            "refreshedAt": "2026-11-11T15:32:09.091Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -292706,7 +293226,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "6c3cbcdc57e9ba20a3791597e37460356aa5a426",
+              "currentSha": "d6ae15b8958ac0c256cf5c2200058fed846617cf",
               "report": {
                 "reportId": "2335f3d2b3bd2e19593c6747a8c141ec9ee69040c84fed880949166be827ccb2",
                 "riskLevel": "low",
@@ -292798,7 +293318,7 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-07T18:00:16.000Z",
+              "latestSourceActivityAt": "2026-11-08T15:32:51.000Z",
               "activeWeeks12": 1,
               "weeklyActivity": [
                 false,
@@ -292819,19 +293339,19 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 33,
+              "stars": 35,
               "forks": 3,
               "watchers": 0,
-              "aggregate": 36
+              "aggregate": 38
             },
-            "repositorySizeKb": 182987,
+            "repositorySizeKb": 188535,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T00:32:02.042Z",
+            "refreshedAt": "2026-11-10T15:51:46.306Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -302081,10 +302601,10 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "stale",
+              "freshness": "current",
               "currentSha": "e7b7f915d6952d1d901b16a1222d89caaaaaa5e8",
               "report": {
-                "reportId": "6b35190521fcd64243b0da21658f2db826ddf3cbf10a5fb0d9728685a3532348",
+                "reportId": "a78e741f5c3453338884571f5606f11c4286edf0f51ffd57d4adfac0b4e1cae6",
                 "riskLevel": "low",
                 "headline": "Low concern",
                 "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
@@ -302093,16 +302613,16 @@
                 "highDanger": 0,
                 "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
                 "citedFindingIds": [
-                  "31191abff9a5d266b3f5263030555cc53d411f26fe5c2d93c10c12afbdcad793",
-                  "3deb7af489929a67c7f0eeeb245b8e5c863d733f6c6c2e79c6448c5d7571ccd3",
-                  "4c966564ebad837787fbe0a7b79c871cb2ced81552ea83643fd0aa8f53c4fbb2",
-                  "729de6b125fbe81fb119934f49a46f0b851a8d35c6229dff9b4a6637012ae964",
-                  "aa830bca1253d3bda3329060c5b8507b97861a0fa48fa7551ebe3c1c6e07464a"
+                  "792e81320204cc2cf348012b25657b19a3ace772d4223c73f861d97c7e82f072",
+                  "8d5eb6269164611fa6cf0336ad34f0ff69661fd468b95db237c0583e0f93bea1",
+                  "a2e978b1cd96929f538b29e12a429ce04459d33cfdcae35ee68b2264f54c9fcb",
+                  "bb1727593bd687b79d167926016b121befdd68120cc6651fcc7e3de6db08a39e",
+                  "bea669e87978a926e9518294fe9824a11ba2360e42494259d454bfde6f696a63"
                 ],
-                "scannedSha": "440143b120fc58a35f020f93cb6ce4600eeb57ca",
-                "treeUrl": "https://github.com/IceFog72/SillyTavern-ProbablyTooManyTabs/tree/440143b120fc58a35f020f93cb6ce4600eeb57ca",
-                "scannedAt": "2026-10-25T07:35:32.528Z",
-                "assessedAt": "2026-10-25T12:02:22.612Z",
+                "scannedSha": "e7b7f915d6952d1d901b16a1222d89caaaaaa5e8",
+                "treeUrl": "https://github.com/IceFog72/SillyTavern-ProbablyTooManyTabs/tree/e7b7f915d6952d1d901b16a1222d89caaaaaa5e8",
+                "scannedAt": "2026-11-09T18:06:03.604Z",
+                "assessedAt": "2026-11-09T21:45:56.737Z",
                 "scannerPolicyVersion": "5",
                 "contextualReviewPolicyVersion": "5",
                 "synthesisPolicyVersion": "5",
@@ -302110,7 +302630,7 @@
                 "dangerBasis": "none",
                 "assessmentSource": "deterministic_regrade",
                 "javascriptAnalysisStatus": "complete",
-                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1065878471/440143b120fc58a35f020f93cb6ce4600eeb57ca/5/6b35190521fcd64243b0da21658f2db826ddf3cbf10a5fb0d9728685a3532348/",
+                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1065878471/e7b7f915d6952d1d901b16a1222d89caaaaaa5e8/5/a78e741f5c3453338884571f5606f11c4286edf0f51ffd57d4adfac0b4e1cae6/",
                 "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1065878471/history/"
               },
               "history": [
@@ -302345,6 +302865,36 @@
                   "assessmentSource": "deterministic_regrade",
                   "javascriptAnalysisStatus": "complete",
                   "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1065878471/440143b120fc58a35f020f93cb6ce4600eeb57ca/5/6b35190521fcd64243b0da21658f2db826ddf3cbf10a5fb0d9728685a3532348/",
+                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1065878471/history/"
+                },
+                {
+                  "reportId": "a78e741f5c3453338884571f5606f11c4286edf0f51ffd57d4adfac0b4e1cae6",
+                  "riskLevel": "low",
+                  "headline": "Low concern",
+                  "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+                  "minorCautions": 5,
+                  "materialConcerns": 0,
+                  "highDanger": 0,
+                  "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+                  "citedFindingIds": [
+                    "792e81320204cc2cf348012b25657b19a3ace772d4223c73f861d97c7e82f072",
+                    "8d5eb6269164611fa6cf0336ad34f0ff69661fd468b95db237c0583e0f93bea1",
+                    "a2e978b1cd96929f538b29e12a429ce04459d33cfdcae35ee68b2264f54c9fcb",
+                    "bb1727593bd687b79d167926016b121befdd68120cc6651fcc7e3de6db08a39e",
+                    "bea669e87978a926e9518294fe9824a11ba2360e42494259d454bfde6f696a63"
+                  ],
+                  "scannedSha": "e7b7f915d6952d1d901b16a1222d89caaaaaa5e8",
+                  "treeUrl": "https://github.com/IceFog72/SillyTavern-ProbablyTooManyTabs/tree/e7b7f915d6952d1d901b16a1222d89caaaaaa5e8",
+                  "scannedAt": "2026-11-09T18:06:03.604Z",
+                  "assessedAt": "2026-11-09T21:45:56.737Z",
+                  "scannerPolicyVersion": "5",
+                  "contextualReviewPolicyVersion": "5",
+                  "synthesisPolicyVersion": "5",
+                  "synthesisModel": "deterministic-policy-v5",
+                  "dangerBasis": "none",
+                  "assessmentSource": "deterministic_regrade",
+                  "javascriptAnalysisStatus": "complete",
+                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1065878471/e7b7f915d6952d1d901b16a1222d89caaaaaa5e8/5/a78e741f5c3453338884571f5606f11c4286edf0f51ffd57d4adfac0b4e1cae6/",
                   "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1065878471/history/"
                 }
               ],
@@ -306123,7 +306673,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "6c3cbcdc57e9ba20a3791597e37460356aa5a426",
+              "currentSha": "d6ae15b8958ac0c256cf5c2200058fed846617cf",
               "report": {
                 "reportId": "2335f3d2b3bd2e19593c6747a8c141ec9ee69040c84fed880949166be827ccb2",
                 "riskLevel": "low",
@@ -306215,7 +306765,7 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-07T18:00:16.000Z",
+              "latestSourceActivityAt": "2026-11-08T15:32:51.000Z",
               "activeWeeks12": 1,
               "weeklyActivity": [
                 false,
@@ -306236,19 +306786,19 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 33,
+              "stars": 35,
               "forks": 3,
               "watchers": 0,
-              "aggregate": 36
+              "aggregate": 38
             },
-            "repositorySizeKb": 182987,
+            "repositorySizeKb": 188535,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-26T00:32:02.042Z",
+            "refreshedAt": "2026-11-10T15:51:46.306Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",

@@ -5,12 +5,9 @@
   "source_identity": "github:noathouard/sillytavern-extension-npc-portait-switcher",
   "evidence_fingerprint": "828b2f57a6b3b2592ce507e188a5f237a480b93828f19c326cc548cc1199075f",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-29T13:25:59.330Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-08-29T13:25:59.330Z"
-  },
+  "reviewed_at": "2026-11-12T14:09:48.435Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f5c175e8386dfa8901780372d92539869677c375f38ee2a00beee3aab1cf1f42",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1164267316:senjinthedragon-sillytavern-discord-connector",
+      "inputDigest": "350befffb6f29b24d0647f43e3669ab75a42ef3fadee3535c60128fa71c539e0",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "finalized",
+    "createdAt": "2026-10-25T12:42:20.374Z",
+    "nextEligibleAt": null,
+    "expectedSha": "193387fb0d9bb79a018b2e431ad571347e23700d",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-10T20:09:13.762Z",
+  "completedAt": "2026-11-10T20:09:13.762Z"
+}

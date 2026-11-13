@@ -9,18 +9,23 @@
     "url": "https://github.com/cfigure/Lumiverse-prompt-viewer",
     "description": "Prompt Viewer is a Spindle extension for Lumiverse that captures and displays the assembled prompt used by real generations and Dry Runs.",
     "default_branch": "main",
-    "head_sha": "c5c0ad80146d561f70280fd6394dcd3f3ccae3b6",
-    "head_committed_at": "2026-10-10T19:38:19.000Z",
+    "head_sha": "47755fea6bd6b1b7472f94398dce4c8680746464",
+    "head_committed_at": "2026-11-11T16:43:53.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-10T11:56:15.000Z",
-    "size_kb": 347
+    "size_kb": 375
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-10T19:22:39.000Z",
+    "latest_source_activity_at": "2026-11-11T15:16:56.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-11-09",
+        "latest_at": "2026-11-11T15:16:56.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-05",
         "latest_at": "2026-10-10T19:22:39.000Z",
@@ -33,11 +38,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-10T19:41:34.000Z",
+    "latest_release_at": "2026-11-11T16:44:52.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-27T13:24:16.156Z",
+    "baseline_completed_at": "2026-11-12T16:06:57.784Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "c5c0ad80146d561f70280fd6394dcd3f3ccae3b6"
+    "evidence_head_sha": "47755fea6bd6b1b7472f94398dce4c8680746464"
   },
   "community": {
     "stars_count": 4,
@@ -50,15 +55,15 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-27T13:26:20.877Z",
+  "refreshed_at": "2026-11-12T16:10:13.695Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "cfigure", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-27T13:24:16.156Z",
+    "refreshed_at": "2026-11-12T16:06:57.784Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

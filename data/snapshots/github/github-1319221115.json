@@ -9,18 +9,23 @@
     "url": "https://github.com/Phiarlan/SillyTavern-WorldInfoPlus",
     "description": "A SillyTavern extension that makes quality-of-life changes to the World Info feature.",
     "default_branch": "main",
-    "head_sha": "5f4af8308faea8edb366aa91efe80daa6f61559b",
-    "head_committed_at": "2026-10-21T23:29:56.000Z",
+    "head_sha": "6246c35440563a88bef1a719bc3a810f80d80912",
+    "head_committed_at": "2026-10-30T18:58:39.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-08-01T11:13:26.000Z",
-    "size_kb": 1295
+    "size_kb": 1296
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-21T23:29:56.000Z",
+    "latest_source_activity_at": "2026-10-30T18:58:39.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-30T18:58:39.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-19",
         "latest_at": "2026-10-21T23:29:56.000Z",
@@ -35,22 +40,22 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-25T21:35:27.770Z",
+    "baseline_completed_at": "2026-11-10T15:45:52.104Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "5f4af8308faea8edb366aa91efe80daa6f61559b"
+    "evidence_head_sha": "6246c35440563a88bef1a719bc3a810f80d80912"
   },
   "community": {
-    "stars_count": 4,
+    "stars_count": 5,
     "forks_count": 1,
     "watchers_count": 0,
-    "aggregate": 5
+    "aggregate": 6
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-25T21:37:36.646Z",
+  "refreshed_at": "2026-11-10T15:48:37.612Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -58,7 +63,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-25T21:35:27.770Z",
+    "refreshed_at": "2026-11-10T15:45:52.104Z",
     "stale_since": null
   }
 }

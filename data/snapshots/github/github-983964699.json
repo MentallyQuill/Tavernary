@@ -9,18 +9,28 @@
     "url": "https://github.com/NemoVonNirgend/NemoPresetExt",
     "description": "A Sillytavern extension for creating drop downs for ChatCompletion presets.",
     "default_branch": "main",
-    "head_sha": "07e6b12a9c1f9033a6e5271d79bb817a43e3099c",
-    "head_committed_at": "2026-10-23T04:44:10.000Z",
+    "head_sha": "6c42fca5a271d69db60eb53c2d6de4279885dbe7",
+    "head_committed_at": "2026-11-04T03:15:17.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-05-15T07:28:20.000Z",
-    "size_kb": 54476
+    "size_kb": 54965
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-23T04:44:10.000Z",
+    "latest_source_activity_at": "2026-11-04T03:13:41.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-04T03:13:41.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-11-01T19:57:44.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-19",
         "latest_at": "2026-10-23T04:44:10.000Z",
@@ -50,31 +60,32 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-26T11:26:52.730Z",
+    "baseline_completed_at": "2026-11-11T15:22:37.652Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "07e6b12a9c1f9033a6e5271d79bb817a43e3099c"
+    "evidence_head_sha": "6c42fca5a271d69db60eb53c2d6de4279885dbe7"
   },
   "community": {
-    "stars_count": 95,
+    "stars_count": 97,
     "forks_count": 12,
     "watchers_count": 5,
-    "aggregate": 112
+    "aggregate": 114
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-10-26T11:29:12.482Z",
+  "refreshed_at": "2026-11-11T15:25:44.393Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "NemoVonNirgend", "type": "User", "provider": "github" },
       { "login": "prolix-oc", "type": "User", "provider": "github" },
+      { "login": "claude", "type": "User", "provider": "github" },
       { "login": "DrMagisto", "type": "User", "provider": "github" },
       { "login": "github-actions[bot]", "type": "Bot", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-26T11:26:52.730Z",
+    "refreshed_at": "2026-11-11T15:22:37.652Z",
     "stale_since": null
   }
 }

@@ -3,14 +3,11 @@
   "project_id": "thejackals-sillytavern-imageembedexpressions",
   "source_id": "github-1111731551",
   "source_identity": "github:thejackals/sillytavern-imageembedexpressions",
-  "evidence_fingerprint": "c806f704918d34b081d59b7694e4e2b7ad6d44f3538f4d554ebc8ee1f5ca9ef0",
+  "evidence_fingerprint": "040aa34e1e392b2da9f41bba9a2d287e86a99b7f29630e95c0f616d6e4f4ba26",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-06T11:51:04.716Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-06T11:51:04.716Z"
-  },
+  "reviewed_at": "2026-11-11T14:26:58.687Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

@@ -9,21 +9,36 @@
     "url": "https://github.com/AventurasTeam/Aventuras",
     "description": "A frontend for LLM-based text adventure",
     "default_branch": "master",
-    "head_sha": "b07fbc2b9e02cd44bb4d0fedcfc808b0eee04d1f",
-    "head_committed_at": "2026-10-25T00:53:57.000Z",
+    "head_sha": "8f271c38b16ae392d8a76cac4687e3f8bc3e5cb1",
+    "head_committed_at": "2026-11-09T20:52:36.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-01T15:03:20.000Z",
-    "size_kb": 53929
+    "size_kb": 58639
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-23T17:59:05.000Z",
+    "latest_source_activity_at": "2026-11-09T20:52:36.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-11-09",
+        "latest_at": "2026-11-09T20:52:36.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-07T00:04:51.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-11-01T16:29:35.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-19",
-        "latest_at": "2026-10-23T17:59:05.000Z",
+        "latest_at": "2026-10-25T21:57:15.000Z",
         "precision": "exact"
       },
       {
@@ -65,37 +80,27 @@
         "week_start": "2026-08-24",
         "latest_at": "2026-08-30T01:52:01.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-10",
-        "latest_at": "2026-08-16T07:27:47.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-03",
-        "latest_at": "2026-08-08T20:41:26.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-10-09T23:20:00.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-25T12:40:41.173Z",
+    "baseline_completed_at": "2026-11-10T11:15:08.508Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "b07fbc2b9e02cd44bb4d0fedcfc808b0eee04d1f"
+    "evidence_head_sha": "8f271c38b16ae392d8a76cac4687e3f8bc3e5cb1"
   },
   "community": {
-    "stars_count": 214,
+    "stars_count": 216,
     "forks_count": 35,
     "watchers_count": 13,
-    "aggregate": 262
+    "aggregate": 264
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-10-25T12:42:53.270Z",
+  "refreshed_at": "2026-11-10T11:17:42.022Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -104,19 +109,20 @@
       { "login": "a-frazier", "type": "User", "provider": "github" },
       { "login": "failerko", "type": "User", "provider": "github" },
       { "login": "Pento95", "type": "User", "provider": "github" },
-      { "login": "Javedz678", "type": "User", "provider": "github" },
       { "login": "collegatore", "type": "User", "provider": "github" },
-      { "login": "Fensterbank", "type": "User", "provider": "github" },
+      { "login": "Javedz678", "type": "User", "provider": "github" },
       { "login": "TheDWz", "type": "User", "provider": "github" },
+      { "login": "Fensterbank", "type": "User", "provider": "github" },
       { "login": "surfacecoaster", "type": "User", "provider": "github" },
       { "login": "EventideMiles", "type": "User", "provider": "github" },
+      { "login": "LostPhysx", "type": "User", "provider": "github" },
       { "login": "Selene29", "type": "User", "provider": "github" },
       { "login": "vire70", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-25T12:40:41.173Z",
+    "refreshed_at": "2026-11-10T11:15:08.508Z",
     "stale_since": null
   }
 }

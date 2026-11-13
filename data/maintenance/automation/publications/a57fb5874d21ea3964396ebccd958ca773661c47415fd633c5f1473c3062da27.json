@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a57fb5874d21ea3964396ebccd958ca773661c47415fd633c5f1473c3062da27",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1321898165:roderickwqz-sillytavern-dualmodel-engine",
+      "inputDigest": "29c18fecc35e82e4d9f6e846a291544238189845824c57964b973280b780a20a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T21:37:54.822Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1321898165",
+    "identity": "github:1321898165"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42839786305,
+    "sourceSha": "3e8a2d346d0e21399bea0cce7bbf5e9bcd40bd9f"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/roderickwqz-sillytavern-dualmodel-engine.json",
+      "sha256": "d7264378eb4dc0be5cc587857f72fc195fc5ece5669745b3a1e1752d759ffa72",
+      "gitBlobSha": "892e7f88c2d3b7e3cead0ea6bf5049845d673881"
+    }
+  ]
+}

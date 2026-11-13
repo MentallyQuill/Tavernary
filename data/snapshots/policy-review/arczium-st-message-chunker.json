@@ -5,12 +5,9 @@
   "source_identity": "github:arczium/st-message-chunker",
   "evidence_fingerprint": "408f9de3de2e2fe028b757a52b93f35f5b51810a7e8e2c506062f34ee0eeffe3",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-15T10:27:07.394Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-15T10:27:07.394Z"
-  },
+  "reviewed_at": "2026-11-11T13:38:26.127Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

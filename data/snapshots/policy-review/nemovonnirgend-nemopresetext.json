@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "nemovonnirgend-nemopresetext",
+  "source_id": "github-983964699",
+  "source_identity": "github:nemovonnirgend/nemopresetext",
+  "evidence_fingerprint": "700097cc54399fba2206d925e14b9208bf9b6f59f192964fdcb71ecfd19eb583",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-11T14:16:35.642Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}
