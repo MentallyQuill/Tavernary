@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c496b9d405ba77f741710fd21d7517b48c69f4a694ada0847d8b36c87f53e1bf",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1213004871:archkr-lumiverse-lorerecall",
+      "inputDigest": "02c7357a9b49c7934f123f29354e574e7d1e4b3b63b8a83ee8cf8711ec154d6e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-26T11:28:43.725Z",
+    "nextEligibleAt": "2026-11-13T23:19:52.165Z",
+    "expectedSha": "638df5910c2b17be39c3bb00200bfd8e78df5281",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-13T23:04:52.165Z",
+  "completedAt": null
+}
