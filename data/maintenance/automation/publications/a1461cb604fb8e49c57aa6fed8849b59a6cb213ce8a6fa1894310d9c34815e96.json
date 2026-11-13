@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a1461cb604fb8e49c57aa6fed8849b59a6cb213ce8a6fa1894310d9c34815e96",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1262742050:windy-sora-sillytavern-groupworld",
+      "inputDigest": "2baeeb3f980bfe184b5d072a5846c857c52ebb93a89bbc2fe20f4fb100be3158",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-27T13:26:18.056Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1262742050",
+    "identity": "github:1262742050"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43237117465,
+    "sourceSha": "3d12c6cc3d00c6e7c533296fc2d69c8478d26b48"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/windy-sora-sillytavern-groupworld.json",
+      "sha256": "a6ab8b0429f065beb0f9366c242320251d58d6b73db388b37685358843692495",
+      "gitBlobSha": "08f881b2010dfbf609b14ed88c34d4d10db70d92"
+    }
+  ]
+}

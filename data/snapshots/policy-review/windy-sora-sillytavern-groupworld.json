@@ -3,14 +3,11 @@
   "project_id": "windy-sora-sillytavern-groupworld",
   "source_id": "github-1262742050",
   "source_identity": "github:windy-sora/sillytavern-groupworld",
-  "evidence_fingerprint": "72b4f181fddc40b6079161613ee4a66129c16a32dec67a523ecca3bf3ee22e75",
+  "evidence_fingerprint": "5050f98c97e6f55906309c4343009469179695f4673548fd01db42f5c2f9cb0e",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-29T14:24:23.779Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-29T14:24:23.779Z"
-  },
+  "reviewed_at": "2026-11-12T14:27:35.127Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
