@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "d3865fbe7606d6535e1f4f512f88dcf31541432267300b6ea267518c9c6fe658",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1179141243:carlosnahuelcoy-sillytavern-player2",
+      "inputDigest": "4dff91128b5cc478a4bc1ee133e8fe8172b692db7eeb8740841c8a9666246080",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-28T14:11:25.732Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1179141243",
+    "identity": "github:1179141243"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43440377585,
+    "sourceSha": "bcea061afa679811ada94745971e934bc3819a2c"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/carlosnahuelcoy-sillytavern-player2.json",
+      "sha256": "bdd064192d8887108641b3bb1f882d4ad13e7d8fbd0fcb3aef7c103159b2a397",
+      "gitBlobSha": "bc0184c9d610d5b9c4de146a52e07f7009cc036a"
+    }
+  ]
+}
