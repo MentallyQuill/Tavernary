@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "id": "chay-1066",
+  "status": "published",
+  "title": "chay",
+  "description": "chay",
+  "author": { "github_user_id": 195652207, "login": "Worachat-Songmuangnu" },
+  "source_issue_number": 1066,
+  "project_ids": [
+    "sillytavern-sillytavern",
+    "rivelledays-sillytavern-moonlitechoestheme",
+    "aikohanasaki-sillytavern-memorybooks",
+    "sillyanonymous-sillytavern-characterlibrary",
+    "sillytavern-extension-topinfobar",
+    "lodactio-extension-summaryception",
+    "qvink-sillytavern-messagesummarize",
+    "samueras-guidedgenerations-extension"
+  ],
+  "published_at": "2026-11-13T11:14:12.212Z",
+  "updated_at": "2026-11-13T11:14:12.212Z"
+}

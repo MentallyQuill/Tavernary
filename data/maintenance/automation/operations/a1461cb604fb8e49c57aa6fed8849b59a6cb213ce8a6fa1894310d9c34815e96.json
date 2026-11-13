@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a1461cb604fb8e49c57aa6fed8849b59a6cb213ce8a6fa1894310d9c34815e96",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1262742050:windy-sora-sillytavern-groupworld",
+      "inputDigest": "2baeeb3f980bfe184b5d072a5846c857c52ebb93a89bbc2fe20f4fb100be3158",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-27T13:26:18.056Z",
+    "nextEligibleAt": null,
+    "expectedSha": "b1942515e8f100375f023c61e81cd620a1b730b0",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-13T01:41:56.790Z",
+  "completedAt": null
+}

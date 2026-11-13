@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5fe36176dfcf7ecaa06c11caa5dbbe0f023a9c3369460c3d34e7226af814ba53",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1221995274:aceeenvw-charswitchpro",
+      "inputDigest": "c8658505961979b6853ec54162859d8d8d7fe8cee37daa238119a2c5d30aff51",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-28T10:43:49.010Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1221995274",
+    "identity": "github:1221995274"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43437538113,
+    "sourceSha": "6d442a61eb17942e1139d64b61ee6823b284727f"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/aceeenvw-charswitchpro.json",
+      "sha256": "cdbd997dca55c343fec26279134ebf68769b8ade41d8736ec752df2499d30b14",
+      "gitBlobSha": "8e711268d87c502ecf3cc4b35eed89ad1143cb53"
+    }
+  ]
+}

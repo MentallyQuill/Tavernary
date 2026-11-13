@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "976b512299d98cb6c0402e93f4976e115d9f43514d3899bce007b549c616002e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1252271768:felixchaos-rpg-roleplay-platform",
+      "inputDigest": "481d53401ac5433efcf409228e52b529f4e6f9f30f472c9892f85a27e8cc02ef",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-26T07:40:20.212Z",
+    "nextEligibleAt": "2026-11-13T23:19:52.165Z",
+    "expectedSha": "638df5910c2b17be39c3bb00200bfd8e78df5281",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-13T23:04:52.165Z",
+  "completedAt": null
+}
