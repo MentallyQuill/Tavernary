@@ -9,18 +9,28 @@
     "url": "https://github.com/Windy-Sora/SillyTavern-GroupWorld",
     "description": "A Sillytavern programmable world runtime for multi-character AI storytelling.",
     "default_branch": "master",
-    "head_sha": "7c6c7cdc659b1c45c61c663db80bbfc1e3ff2be5",
-    "head_committed_at": "2026-10-24T09:42:21.000Z",
+    "head_sha": "09ec95540838a941f12c4d8e19e4ee110bdc7267",
+    "head_committed_at": "2026-11-04T12:40:43.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-08T09:23:25.000Z",
-    "size_kb": 4550
+    "size_kb": 4944
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-24T09:42:21.000Z",
+    "latest_source_activity_at": "2026-11-04T12:40:43.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-04T12:40:43.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-31T09:48:17.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-19",
         "latest_at": "2026-10-24T09:42:21.000Z",
@@ -35,9 +45,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-27T13:24:05.611Z",
+    "baseline_completed_at": "2026-11-13T15:37:51.994Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "7c6c7cdc659b1c45c61c663db80bbfc1e3ff2be5"
+    "evidence_head_sha": "09ec95540838a941f12c4d8e19e4ee110bdc7267"
   },
   "community": {
     "stars_count": 9,
@@ -50,7 +60,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-27T13:26:18.056Z",
+  "refreshed_at": "2026-11-13T15:40:02.695Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -60,7 +70,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-27T13:24:05.611Z",
+    "refreshed_at": "2026-11-13T15:37:51.994Z",
     "stale_since": null
   }
 }
