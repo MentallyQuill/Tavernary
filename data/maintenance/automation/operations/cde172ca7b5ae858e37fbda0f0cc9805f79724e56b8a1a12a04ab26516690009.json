@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "cde172ca7b5ae858e37fbda0f0cc9805f79724e56b8a1a12a04ab26516690009",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-733163811:lenanderson-sillytavern-landingpage",
+      "inputDigest": "0e41b4c28ba5cf4150f24cbf79df1526adbf48b6b94db06b0b194e8374a0b0f9",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-26T11:31:18.630Z",
+    "nextEligibleAt": "2026-11-13T23:19:52.165Z",
+    "expectedSha": "638df5910c2b17be39c3bb00200bfd8e78df5281",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-13T23:04:52.165Z",
+  "completedAt": null
+}
