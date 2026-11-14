@@ -5,12 +5,9 @@
   "source_identity": "github:rsxdalv/sillytavern-extension-tts-webui",
   "evidence_fingerprint": "7af46044dfafaec536bca95e29fd0b7116ba743a44e488b933d15987729aa597",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-29T13:29:30.686Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-29T13:29:30.686Z"
-  },
+  "reviewed_at": "2026-11-13T13:36:33.926Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

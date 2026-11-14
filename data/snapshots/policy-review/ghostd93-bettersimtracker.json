@@ -3,14 +3,11 @@
   "project_id": "ghostd93-bettersimtracker",
   "source_id": "github-1160848402",
   "source_identity": "github:ghostd93/bettersimtracker",
-  "evidence_fingerprint": "cbc256681f269daab61b37022b45236970540b0418f62501b903b6928971cc35",
+  "evidence_fingerprint": "348d876df7e5bb600583ecc32ea67d48b7e7c32293ae1c88d5f6e6933981ed56",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-20T12:38:47.990Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-20T12:38:47.990Z"
-  },
+  "reviewed_at": "2026-11-09T01:06:00.805Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

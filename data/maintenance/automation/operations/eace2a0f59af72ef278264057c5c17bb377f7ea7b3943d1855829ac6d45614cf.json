@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "eace2a0f59af72ef278264057c5c17bb377f7ea7b3943d1855829ac6d45614cf",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-882467511:leandrojofre-sillytavern-presence",
+      "inputDigest": "8b2c4815afe508aa7411165ebb692e4123bce400db2231091335529136924904",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "finalized",
+    "createdAt": "2026-10-25T20:19:12.253Z",
+    "nextEligibleAt": null,
+    "expectedSha": "1ff100a6c4fc684be170441cfb85e3560fa31f95",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-11T22:28:33.328Z",
+  "completedAt": "2026-11-11T22:28:33.328Z"
+}

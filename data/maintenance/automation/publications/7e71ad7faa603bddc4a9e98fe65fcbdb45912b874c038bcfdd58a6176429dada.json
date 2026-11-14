@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7e71ad7faa603bddc4a9e98fe65fcbdb45912b874c038bcfdd58a6176429dada",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-997100420:rsxdalv-sillytavern-extension-tts-webui",
+      "inputDigest": "07e9d8405bc06aa119e7df308c6131115301b444396148bd101c2fe1231a99a3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-27T13:26:43.679Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-997100420",
+    "identity": "github:997100420"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43434868710,
+    "sourceSha": "d42b3964247e5ee847529dee628f33bb28d7d931"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/rsxdalv-sillytavern-extension-tts-webui.json",
+      "sha256": "4ba5c65995106f0e46807eb2363c2d4242993bf4b1435a8dc857f70ccfeaf649",
+      "gitBlobSha": "a9775cb82ce2b99d0ca7b4a381196cb86f031a8a"
+    }
+  ]
+}

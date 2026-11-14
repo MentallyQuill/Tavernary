@@ -5,12 +5,9 @@
   "source_identity": "github:senjinthedragon/sillytavern-discord-connector",
   "evidence_fingerprint": "eaa911bc740e185f9cc01b536d9f9f01eab66e8671d319bad2d04832b71c8e36",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-02T14:07:33.481Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-10-02T14:07:33.481Z"
-  },
+  "reviewed_at": "2026-11-09T15:37:42.685Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

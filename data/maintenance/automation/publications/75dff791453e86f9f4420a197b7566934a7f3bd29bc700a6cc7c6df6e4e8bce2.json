@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "75dff791453e86f9f4420a197b7566934a7f3bd29bc700a6cc7c6df6e4e8bce2",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1183860600:pocketrisu-pocketrisu",
+      "inputDigest": "d5b4d680a9af6ecf00dc70a4ca79ab21b3ad3982bb00ff6e8f0c65f8297c1368",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T20:18:19.710Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1183860600",
+    "identity": "github:1183860600"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42830467252,
+    "sourceSha": "f9ff402f672b0f09250a9bfa04e4bf9cd24fa7e6"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/pocketrisu-pocketrisu.json",
+      "sha256": "98d511933027c168203dbf3979c348d61944c8e13fcf9c7461874e8f48efa72d",
+      "gitBlobSha": "0aae4a0cc6de3b3d0a183d25426813bf48dc74a5"
+    }
+  ]
+}

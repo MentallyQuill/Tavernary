@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "lunarcadedigital-vecttauri",
+  "source_id": "github-1437764170",
+  "source_identity": "github:lunarcadedigital/vecttauri",
+  "evidence_fingerprint": "c05b16d90db833f8f4bd6dc244a0144407d300e6bd752bf2d36835d213197cb8",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-08T10:40:07.046Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a57fb5874d21ea3964396ebccd958ca773661c47415fd633c5f1473c3062da27",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1321898165:roderickwqz-sillytavern-dualmodel-engine",
+      "inputDigest": "29c18fecc35e82e4d9f6e846a291544238189845824c57964b973280b780a20a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "finalized",
+    "createdAt": "2026-10-25T21:37:54.822Z",
+    "nextEligibleAt": null,
+    "expectedSha": "1ff100a6c4fc684be170441cfb85e3560fa31f95",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-14T00:17:05.892Z",
+  "completedAt": "2026-11-14T00:17:05.892Z"
+}

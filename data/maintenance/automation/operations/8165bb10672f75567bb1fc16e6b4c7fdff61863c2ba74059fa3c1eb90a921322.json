@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8165bb10672f75567bb1fc16e6b4c7fdff61863c2ba74059fa3c1eb90a921322",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1288668022:brucestarkallen-sillytavern-plot-essential-and-instructions-maker",
+      "inputDigest": "81f6dfdfd907f12c548fb9bf5775a19a4794df9647a95e989ae46a1b03d42673",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "finalized",
+    "createdAt": "2026-10-25T21:08:05.834Z",
+    "nextEligibleAt": null,
+    "expectedSha": "1ff100a6c4fc684be170441cfb85e3560fa31f95",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-13T23:52:48.880Z",
+  "completedAt": "2026-11-13T23:52:48.880Z"
+}

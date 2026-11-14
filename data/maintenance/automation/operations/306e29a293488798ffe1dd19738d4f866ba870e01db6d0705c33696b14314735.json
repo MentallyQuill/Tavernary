@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "306e29a293488798ffe1dd19738d4f866ba870e01db6d0705c33696b14314735",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1131052854:haide-d-sillytavern-echocore",
+      "inputDigest": "9eb9108066cffab4dbb5b0f7582ebcff78ccfc9f8f3b89aff9b73ce8f99b3290",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-28T14:12:13.109Z",
+    "nextEligibleAt": "2026-11-14T20:14:12.243Z",
+    "expectedSha": "4d159d88be5d7ca0bec4021634fbdd0ffd62ef93",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-14T19:59:12.243Z",
+  "completedAt": null
+}

@@ -5,12 +5,9 @@
   "source_identity": "github:promansis/summary-sharder",
   "evidence_fingerprint": "ac4927842cf7b90d1feeccdee30ce578b12a1c99940efb9b26af5a7893494fe8",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-12T11:48:15.801Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-12T11:48:15.801Z"
-  },
+  "reviewed_at": "2026-11-09T14:31:29.647Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

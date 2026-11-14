@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "280ecb37fe538ed9c7ef3fc92ea8c8d773f0cb7e50732190e6d13833d3dcc3ce",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1163555391:dangerdaza-dooms-enhancement-suite",
+      "inputDigest": "2cd7f2769c3984b90af116992b682992fb8db7cd17c8a9d7f546d7e64e90dccf",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "finalized",
+    "createdAt": "2026-10-25T12:42:25.952Z",
+    "nextEligibleAt": null,
+    "expectedSha": "193387fb0d9bb79a018b2e431ad571347e23700d",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-10T20:18:32.877Z",
+  "completedAt": "2026-11-10T20:18:32.877Z"
+}

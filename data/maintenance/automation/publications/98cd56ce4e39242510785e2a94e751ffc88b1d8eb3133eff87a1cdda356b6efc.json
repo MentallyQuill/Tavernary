@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "98cd56ce4e39242510785e2a94e751ffc88b1d8eb3133eff87a1cdda356b6efc",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1124349811:elouannd-context-image-generation",
+      "inputDigest": "bb3a29a81aaa44072425e1c988c60624af57123f3779d8e5ecfb613fda7e34b3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-08T08:21:34.044Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1124349811",
+    "identity": "github:1124349811"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 42469303513,
+    "sourceSha": "bfed3f0cb2dd29d290655a2b0a669018323bdb06"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/elouannd-context-image-generation.json",
+      "sha256": "694fb779343c6d1f2a55caedc6278ae311fa840d694abaa567477ec6f1f6a29b",
+      "gitBlobSha": "9faef52fc466371888ce84a340a6fb67cea99f88"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/98cd56ce4e39242510785e2a94e751ffc88b1d8eb3133eff87a1cdda356b6efc.json",
+      "sha256": "57f936277cc9957f69abacb13a18ea82266ff139214ac3510d7efc958dfe10af",
+      "gitBlobSha": "63225ca826390ae27826100fc18a3f7c7b41b72b"
+    }
+  ]
+}

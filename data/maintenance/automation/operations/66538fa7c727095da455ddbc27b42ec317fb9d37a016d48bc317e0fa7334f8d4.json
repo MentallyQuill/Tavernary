@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "66538fa7c727095da455ddbc27b42ec317fb9d37a016d48bc317e0fa7334f8d4",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1207091736:dampfinchen-chunk-dropper-for-sillytavern",
+      "inputDigest": "b9ef38d573d26b917b93a4b19d83db6313fe9821db3ce00ed26e56e23146d113",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "finalized",
+    "createdAt": "2026-10-23T12:47:05.193Z",
+    "nextEligibleAt": null,
+    "expectedSha": "f8c677185f5a385f489744044a8e35604f4b8f84",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-08T20:30:17.897Z",
+  "completedAt": "2026-11-08T20:30:17.897Z"
+}

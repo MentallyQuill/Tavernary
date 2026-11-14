@@ -5,12 +5,9 @@
   "source_identity": "github:atlas4285/sillytavern-contextcompact",
   "evidence_fingerprint": "f4df6e9d61face6eb73de7897a7a2e1029406005d5e69a9fb59ae803cb8ce6a7",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-03T09:10:59.826Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-10-03T09:10:59.826Z"
-  },
+  "reviewed_at": "2026-11-08T12:53:30.066Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

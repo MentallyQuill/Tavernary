@@ -3,14 +3,11 @@
   "project_id": "brasen56-merged-world-tracker",
   "source_id": "github-1256623355",
   "source_identity": "github:brasen56/merged_world_tracker",
-  "evidence_fingerprint": "a885412d41c7532883ece88a0aca76c5f5fccdf912103e0a6fe87c01205e211d",
+  "evidence_fingerprint": "6066d315a0b5334c574d7388dda11907e96bed0392a48f8f0ef29f16cc26d686",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-07-30T09:55:30.211Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-07-30T09:55:30.211Z"
-  },
+  "reviewed_at": "2026-11-10T14:14:30.691Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

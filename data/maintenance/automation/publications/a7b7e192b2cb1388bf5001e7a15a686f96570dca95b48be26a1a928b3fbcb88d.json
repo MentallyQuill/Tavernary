@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a7b7e192b2cb1388bf5001e7a15a686f96570dca95b48be26a1a928b3fbcb88d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1278555504:noathouard-sillytavern-extension-npc-portait-switcher",
+      "inputDigest": "4e0a6a2d41564477c262ca671bb586a6d70c4d7064a22354a771fddc0f3b6826",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-27T13:26:17.348Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1278555504",
+    "identity": "github:1278555504"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43234137370,
+    "sourceSha": "5a171a0c3d870bdd194a02c11897a19d985d9363"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/noathouard-sillytavern-extension-npc-portait-switcher.json",
+      "sha256": "45ceee2a1c7a70d5b7269685a7ff2d46ff7b2a43d47add17850dc58aa223b427",
+      "gitBlobSha": "09a8b9af04d03af28bdc4bd3e3d7fe09fe17d893"
+    }
+  ]
+}

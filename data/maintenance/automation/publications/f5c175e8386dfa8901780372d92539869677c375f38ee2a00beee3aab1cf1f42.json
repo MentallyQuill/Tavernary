@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f5c175e8386dfa8901780372d92539869677c375f38ee2a00beee3aab1cf1f42",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1164267316:senjinthedragon-sillytavern-discord-connector",
+      "inputDigest": "350befffb6f29b24d0647f43e3669ab75a42ef3fadee3535c60128fa71c539e0",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T12:42:20.374Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1164267316",
+    "identity": "github:1164267316"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42646354770,
+    "sourceSha": "ecb8ed22e40f81f11f776ea867d6bf73d9bd35df"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/senjinthedragon-sillytavern-discord-connector.json",
+      "sha256": "58c6f9a3578b79407c84447b5e62fa876a964cdef1085cb68036768c42651dcb",
+      "gitBlobSha": "710cbcf926f07911ac9320f9c9ef6e763bea778a"
+    }
+  ]
+}

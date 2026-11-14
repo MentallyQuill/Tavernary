@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5f44b8e95d34e0664047515a62f51fd8b85a6ce05d946e80af3ab22349a1a5d7",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1120101080:mechamarmot-sillytavern-mazemaster",
+      "inputDigest": "5e95563e5dea9b2e49e2b6444843cd3f4c45894624a2a58f594d2b91ba3d93a9",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-24T22:02:53.957Z",
+    "nextEligibleAt": "2026-11-09T02:35:12.694Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-09T02:20:12.694Z",
+  "completedAt": null
+}

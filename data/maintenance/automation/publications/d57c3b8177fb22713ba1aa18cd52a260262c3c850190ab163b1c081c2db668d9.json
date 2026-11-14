@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "d57c3b8177fb22713ba1aa18cd52a260262c3c850190ab163b1c081c2db668d9",
+    "identity": {
+      "kind": "report-import",
+      "subject": "report:a78e741f5c3453338884571f5606f11c4286edf0f51ffd57d4adfac0b4e1cae6",
+      "inputDigest": "77eba5d637fbab435ed24a652569e164b472733df664965ae6e8c76f92686787",
+      "policyVersion": "5.5"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-09T18:06:03.604Z",
+    "nextEligibleAt": null,
+    "expectedSha": "e7b7f915d6952d1d901b16a1222d89caaaaaa5e8",
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1065878471",
+    "identity": "github:1065878471"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/import-tavernkeeper-reports.yml",
+    "runId": 42705302011,
+    "sourceSha": "fd1bce0c56164585227a65af38613320390f529e"
+  },
+  "files": [
+    {
+      "path": "data/security/tavernkeeper-report-summaries.json",
+      "sha256": "38402679fe4983a9ef0e299c6e8d1348aaee48b8b114927a4afd43c6c067f360",
+      "gitBlobSha": "e20788815ea62e48775e470419785d1c376e8089"
+    }
+  ]
+}

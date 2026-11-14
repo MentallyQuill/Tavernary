@@ -5,12 +5,9 @@
   "source_identity": "github:enerccio/sillytavern-loreentryvcs",
   "evidence_fingerprint": "aab4062038fd929078f066d9c478b247d1e4e244c3eac78c3cd4ac7713103ffd",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-09T12:37:28.409Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-09-09T12:37:28.409Z"
-  },
+  "reviewed_at": "2026-11-10T13:57:26.324Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

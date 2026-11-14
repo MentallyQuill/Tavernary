@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "cde172ca7b5ae858e37fbda0f0cc9805f79724e56b8a1a12a04ab26516690009",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-733163811:lenanderson-sillytavern-landingpage",
+      "inputDigest": "0e41b4c28ba5cf4150f24cbf79df1526adbf48b6b94db06b0b194e8374a0b0f9",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-26T11:31:18.630Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-733163811",
+    "identity": "github:733163811"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43039801941,
+    "sourceSha": "7e5290ab8136850a92ed68ed189d181f7962fa0c"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/lenanderson-sillytavern-landingpage.json",
+      "sha256": "a859075c2f93d2c0ec95755cdeffc3ef8cc4df437c8ca664727f4f7728f48fad",
+      "gitBlobSha": "9df93754adb4c78c93438f038f3a6480ab84a01e"
+    }
+  ]
+}

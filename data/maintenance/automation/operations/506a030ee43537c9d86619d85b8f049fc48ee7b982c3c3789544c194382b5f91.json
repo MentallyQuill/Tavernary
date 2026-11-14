@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "506a030ee43537c9d86619d85b8f049fc48ee7b982c3c3789544c194382b5f91",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1319221115:phiarlan-sillytavern-worldinfoplus",
+      "inputDigest": "cd16d6e48dab97265b809d7ce07f33129ca3e3e0e95ba9ec0b4a7a7b63e0bc3a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "finalized",
+    "createdAt": "2026-10-25T21:37:36.646Z",
+    "nextEligibleAt": null,
+    "expectedSha": "1ff100a6c4fc684be170441cfb85e3560fa31f95",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-14T00:01:12.362Z",
+  "completedAt": "2026-11-14T00:01:12.362Z"
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5b6eea3cc6ffb8f893b199f89c8d09712c1f3b5c713d21bff127af3c72f3eac5",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1339530018:patcireamo-chungushub",
+      "inputDigest": "c1d104e2aaa585db9984a8eb500625d04642ac7b74e8db7ae63003253d1c1d5f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-09T06:56:59.670Z",
+    "nextEligibleAt": null,
+    "expectedSha": "13eb0ec09851fb7bce15fa2cd9920fceda584b97",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-14T01:47:07.044Z",
+  "completedAt": null
+}

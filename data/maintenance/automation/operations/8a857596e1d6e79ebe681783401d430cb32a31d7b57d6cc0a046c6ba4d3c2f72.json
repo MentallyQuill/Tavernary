@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8a857596e1d6e79ebe681783401d430cb32a31d7b57d6cc0a046c6ba4d3c2f72",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1091890012:amiantos-writers-guild",
+      "inputDigest": "393833f7b3921a3f636909103f40794eff5cce6b2f9e52a20e06f335a732cd7a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "finalized",
+    "createdAt": "2026-10-23T12:49:59.624Z",
+    "nextEligibleAt": null,
+    "expectedSha": "f8c677185f5a385f489744044a8e35604f4b8f84",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-08T21:14:28.693Z",
+  "completedAt": "2026-11-08T21:14:28.693Z"
+}

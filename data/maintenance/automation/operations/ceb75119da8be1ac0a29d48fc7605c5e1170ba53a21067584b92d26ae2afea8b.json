@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ceb75119da8be1ac0a29d48fc7605c5e1170ba53a21067584b92d26ae2afea8b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1399456536:atlas4285-sillytavern-contextcompact",
+      "inputDigest": "ef1426d5af2c98493759b2a6299b40ca9a6869845c61b054840b0e3f34688442",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "finalized",
+    "createdAt": "2026-10-23T12:49:28.116Z",
+    "nextEligibleAt": null,
+    "expectedSha": "f8c677185f5a385f489744044a8e35604f4b8f84",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-08T20:44:47.599Z",
+  "completedAt": "2026-11-08T20:44:47.599Z"
+}

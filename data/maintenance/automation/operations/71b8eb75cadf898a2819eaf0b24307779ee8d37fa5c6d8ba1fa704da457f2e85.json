@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "71b8eb75cadf898a2819eaf0b24307779ee8d37fa5c6d8ba1fa704da457f2e85",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1160848402:ghostd93-bettersimtracker",
+      "inputDigest": "942d4870a832349653ae260434227f8db703b980be2db242890574b3e04185a6",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-09T00:05:46.034Z",
+    "nextEligibleAt": "2026-11-11T11:52:06.269Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "configuration",
+        "reasonCode": "budget-exhausted"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-10T11:52:06.269Z",
+  "completedAt": null
+}

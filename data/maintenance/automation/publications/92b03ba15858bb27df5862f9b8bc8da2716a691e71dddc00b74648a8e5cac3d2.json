@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "92b03ba15858bb27df5862f9b8bc8da2716a691e71dddc00b74648a8e5cac3d2",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1437764170:lunarcadedigital-vecttauri",
+      "inputDigest": "85cf8766c4ed03571b4ee629220c9eed3798043741bfb605b50fc88e45815465",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-08T09:00:57.675Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1437764170",
+    "identity": "github:1437764170"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42472285410,
+    "sourceSha": "708109053e1110a1167bd4969d15d80f15ee09cf"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/lunarcadedigital-vecttauri.json",
+      "sha256": "eeec8f0a87a94b147af0c985820f2a15abbb92edf2c2108b26a20eb3931e240a",
+      "gitBlobSha": "ecb1afe242b5cce5fef19fa43ca63c196e558fb3"
+    }
+  ]
+}

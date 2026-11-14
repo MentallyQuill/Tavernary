@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1445819140",
+  "head_sha": "6c894d52652e0bef9b0344113a28be635cb55714",
+  "observed_at": "2026-11-10T20:18:59.883Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SLAYhomepage",
+  "manifest": {
+    "display_name": "SLAYhomepage",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

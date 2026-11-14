@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "935ca78609074efb2c731d57aab69768b039083126df6b803d23358f7f166dac",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-990716565:leandrojofre-sillytavern-kofe-script",
+      "inputDigest": "0439268fe56cfc5ed74bdef934b0dec980454d93da6630242fd9f3abbefe9c3a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-24T12:11:21.483Z",
+    "nextEligibleAt": "2026-11-08T23:45:00.129Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "policy-review-unavailable"
+      },
+      "transientAttempts": 3,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-08T23:30:00.129Z",
+  "completedAt": null
+}

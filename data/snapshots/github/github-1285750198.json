@@ -9,18 +9,23 @@
     "url": "https://github.com/Archkr/Lumiverse-LumiWorld",
     "description": "A prompt interceptor that asks a controller model how the world should react before the main model replies.",
     "default_branch": "main",
-    "head_sha": "8303ddbef42f194ea15e784c31330ca1eda859b9",
-    "head_committed_at": "2026-10-22T02:47:56.000Z",
+    "head_sha": "e516e4fb38ec9de912388b68b2d9bc4d5a9923fe",
+    "head_committed_at": "2026-11-05T17:55:50.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-01T05:38:22.000Z",
-    "size_kb": 1796
+    "size_kb": 1798
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-22T02:47:56.000Z",
+    "latest_source_activity_at": "2026-11-05T17:55:50.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-05T17:55:50.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-19",
         "latest_at": "2026-10-22T02:47:56.000Z",
@@ -45,9 +50,9 @@
     "provisional_weeks": null,
     "latest_release_at": "2026-10-22T02:50:53.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-28T14:09:39.982Z",
+    "baseline_completed_at": "2026-11-14T02:21:32.490Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "8303ddbef42f194ea15e784c31330ca1eda859b9"
+    "evidence_head_sha": "e516e4fb38ec9de912388b68b2d9bc4d5a9923fe"
   },
   "community": {
     "stars_count": 3,
@@ -60,7 +65,7 @@
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-10-28T14:12:01.376Z",
+  "refreshed_at": "2026-11-14T02:23:21.938Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -68,7 +73,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-28T14:09:39.982Z",
+    "refreshed_at": "2026-11-14T02:21:32.490Z",
     "stale_since": null
   }
 }

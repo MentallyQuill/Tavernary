@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "506a030ee43537c9d86619d85b8f049fc48ee7b982c3c3789544c194382b5f91",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1319221115:phiarlan-sillytavern-worldinfoplus",
+      "inputDigest": "cd16d6e48dab97265b809d7ce07f33129ca3e3e0e95ba9ec0b4a7a7b63e0bc3a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T21:37:36.646Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1319221115",
+    "identity": "github:1319221115"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42838004405,
+    "sourceSha": "d6c3a2d7f4a969b8d3452f06e057ac0c1496b9b8"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/phiarlan-sillytavern-worldinfoplus.json",
+      "sha256": "e79ab6f7cb6f5e758d73797c8fce8aeb8d6022387c76c5c82f981429e3592972",
+      "gitBlobSha": "25541f2c399234242ee3340b1af99e9052a9f7e0"
+    }
+  ]
+}

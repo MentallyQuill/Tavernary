@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "55396ed23f3d965effc2df1bedfd8b3874e89bc5c85716c04dd7acf579e25604",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1379666281:kohz87-world-state-alpha",
+      "inputDigest": "adb54a327a2c7954246966835d98a667f912a95bb63eef98cfbfdce18ac36791",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-09T06:58:24.834Z",
+    "nextEligibleAt": null,
+    "expectedSha": "13eb0ec09851fb7bce15fa2cd9920fceda584b97",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-14T01:47:07.044Z",
+  "completedAt": null
+}

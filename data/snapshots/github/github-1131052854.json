@@ -9,21 +9,21 @@
     "url": "https://github.com/haide-D/SillyTavern-EchoCore",
     "description": null,
     "default_branch": "main",
-    "head_sha": "3c3b7f88798f2ef20df383e8fa20f4fce4aa8654",
-    "head_committed_at": "2026-10-26T01:47:33.000Z",
+    "head_sha": "3d630d8941bef615219be641e8961ee98de8fda2",
+    "head_committed_at": "2026-10-31T06:24:08.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-09T12:00:38.000Z",
-    "size_kb": 28727
+    "size_kb": 28843
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-26T01:47:33.000Z",
+    "latest_source_activity_at": "2026-10-31T06:24:08.000Z",
     "source_weeks": [
       {
         "week_start": "2026-10-26",
-        "latest_at": "2026-10-26T01:47:33.000Z",
+        "latest_at": "2026-10-31T06:24:08.000Z",
         "precision": "exact"
       },
       {
@@ -45,19 +45,14 @@
         "week_start": "2026-08-24",
         "latest_at": "2026-08-25T12:44:24.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-17",
-        "latest_at": "2026-08-23T12:37:41.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-26T01:47:46.000Z",
+    "latest_release_at": "2026-10-31T06:24:27.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-28T14:09:36.774Z",
+    "baseline_completed_at": "2026-11-14T14:21:08.842Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "3c3b7f88798f2ef20df383e8fa20f4fce4aa8654"
+    "evidence_head_sha": "3d630d8941bef615219be641e8961ee98de8fda2"
   },
   "community": {
     "stars_count": 264,
@@ -70,7 +65,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-28T14:12:13.109Z",
+  "refreshed_at": "2026-11-14T14:23:20.572Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -78,7 +73,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-28T14:09:36.774Z",
+    "refreshed_at": "2026-11-14T14:21:08.842Z",
     "stale_since": null
   }
 }

@@ -5,12 +5,9 @@
   "source_identity": "github:leandrojofre/sillytavern-presence",
   "evidence_fingerprint": "d755577bce2ff14363872606134f17870cfada89900e43f4532be302915a49b0",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-17T12:58:02.693Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-09-17T12:58:02.693Z"
-  },
+  "reviewed_at": "2026-11-10T14:23:55.591Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

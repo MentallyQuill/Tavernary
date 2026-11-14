@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "75dff791453e86f9f4420a197b7566934a7f3bd29bc700a6cc7c6df6e4e8bce2",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1183860600:pocketrisu-pocketrisu",
+      "inputDigest": "d5b4d680a9af6ecf00dc70a4ca79ab21b3ad3982bb00ff6e8f0c65f8297c1368",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "finalized",
+    "createdAt": "2026-10-25T20:18:19.710Z",
+    "nextEligibleAt": null,
+    "expectedSha": "1ff100a6c4fc684be170441cfb85e3560fa31f95",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-10T21:47:33.777Z",
+  "completedAt": "2026-11-10T21:47:33.777Z"
+}

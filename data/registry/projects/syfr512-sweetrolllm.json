@@ -3,16 +3,17 @@
   "id": "syfr512-sweetrolllm",
   "name": "SweetrollLM",
   "kind": "frontend",
-  "summary": "SweetrollLM is a local-first AI tavern for character chat, multimodal context, and agentic work, routing between GGUF, KoboldCPP, and OpenAI-compatible providers.",
+  "summary": "SweetrollLM is a local-first AI tavern for character chat and lorebooks, blending SillyTavern comfort with LM Studio-style GGUF model management, an embedded KoboldCPP worker, and OpenAI-compatible cloud APIs (README).",
   "metadata_status": "curated",
   "source_id": "github-1260345718",
   "frontends": ["sweetrolllm"],
   "primary_function": "frontend",
   "tags": [
-    "agentic-tool-use",
     "local-first",
+    "model-agnostic",
+    "manage-lorebooks",
     "manage-characters-and-personas",
-    "model-agnostic"
+    "agentic-tool-use"
   ],
   "cataloged_at": "2026-08-09T08:44:37.901Z",
   "catalog_cohort": "standard",

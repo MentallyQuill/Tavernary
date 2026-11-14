@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "532d105020387920acf427a0a6afb2e5e91e26e3c6e666c659e8b88ef3a9b65e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1111979731:quackified-floating-viewer",
+      "inputDigest": "a9d695c4666afcc437e66430cf335d2b131a6e23f7afa2d95991beb5e216bbae",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T08:53:03.922Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1111979731",
+    "identity": "github:1111979731"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42638203545,
+    "sourceSha": "bd2124a1130cf48e791ffea9bd609237ba5fa309"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/quackified-floating-viewer.json",
+      "sha256": "6c174fa7a501e2ba337e1c3bb30736d4a02ddf83c366a4e81860c5a0e0cca103",
+      "gitBlobSha": "c53afcefa32dc01ca0afce95f661dcf9379f8abf"
+    }
+  ]
+}

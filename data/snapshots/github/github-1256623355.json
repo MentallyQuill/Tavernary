@@ -9,21 +9,31 @@
     "url": "https://github.com/brasen56/merged_world_tracker",
     "description": null,
     "default_branch": "main",
-    "head_sha": "a480c513cd3f75c71ae2de5ae55e18e0952bdbbc",
-    "head_committed_at": "2026-10-25T03:44:27.000Z",
+    "head_sha": "f781d4a3f4aa4c095d15b8c0d369677528036a16",
+    "head_committed_at": "2026-11-05T01:12:40.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-02T00:29:40.000Z",
-    "size_kb": 6824
+    "size_kb": 5841
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-25T03:44:27.000Z",
+    "latest_source_activity_at": "2026-11-05T01:12:40.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-05T01:12:40.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-11-01T22:44:40.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-19",
-        "latest_at": "2026-10-25T03:44:27.000Z",
+        "latest_at": "2026-10-25T06:08:47.000Z",
         "precision": "exact"
       },
       {
@@ -65,29 +75,14 @@
         "week_start": "2026-08-24",
         "latest_at": "2026-08-30T16:59:46.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-17",
-        "latest_at": "2026-08-23T22:37:45.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-10",
-        "latest_at": "2026-08-16T21:36:03.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-03",
-        "latest_at": "2026-08-09T15:51:33.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-25T20:16:53.679Z",
+    "baseline_completed_at": "2026-11-10T15:45:42.420Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "a480c513cd3f75c71ae2de5ae55e18e0952bdbbc"
+    "evidence_head_sha": "f781d4a3f4aa4c095d15b8c0d369677528036a16"
   },
   "community": {
     "stars_count": 14,
@@ -100,7 +95,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-25T20:19:02.440Z",
+  "refreshed_at": "2026-11-10T15:48:28.546Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -108,7 +103,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-25T20:16:53.679Z",
+    "refreshed_at": "2026-11-10T15:45:42.420Z",
     "stale_since": null
   }
 }

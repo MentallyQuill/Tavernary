@@ -1,0 +1,30 @@
+{
+  "schema_version": 6,
+  "id": "st1ksi-extension-blackboard",
+  "name": "Simulation-Blackboard",
+  "kind": "extension",
+  "summary": "Guides the AI to prepare hidden facts, locations, inventories and NPC plans before player interaction, then resolve actions within a persistent world that keeps evolving beyond the current scene.",
+  "metadata_status": "curated",
+  "source_id": "github-1417124072",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [
+    "add-structured-reasoning",
+    "agentic-tool-use",
+    "build-worlds-and-lore",
+    "persistent-state",
+    "preserve-story-continuity",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-11-08T10:40:02.109Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "manual", "note": "Verified repository owner selection." }
+  }
+}

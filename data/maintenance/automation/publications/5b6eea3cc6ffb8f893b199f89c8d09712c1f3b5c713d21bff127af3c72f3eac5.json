@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5b6eea3cc6ffb8f893b199f89c8d09712c1f3b5c713d21bff127af3c72f3eac5",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1339530018:patcireamo-chungushub",
+      "inputDigest": "c1d104e2aaa585db9984a8eb500625d04642ac7b74e8db7ae63003253d1c1d5f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-09T06:56:59.670Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1339530018",
+    "identity": "github:1339530018"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42583678468,
+    "sourceSha": "439677840c4f0093e7d740cf358b56f305aea169"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/patcireamo-chungushub.json",
+      "sha256": "9e00d22f740a1e217397ae605889e3ada16392c4b414e9baa5b22110ce49dc9d",
+      "gitBlobSha": "271d9bc74d5151cb9910d6b00f0b05c1c452905f"
+    }
+  ]
+}

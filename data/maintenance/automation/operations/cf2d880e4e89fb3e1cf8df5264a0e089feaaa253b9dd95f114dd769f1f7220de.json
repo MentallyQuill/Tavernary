@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "cf2d880e4e89fb3e1cf8df5264a0e089feaaa253b9dd95f114dd769f1f7220de",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-983964699:nemovonnirgend-nemopresetext",
+      "inputDigest": "32934aa3219313a9d0cd40760ae13b7263b2453cb4c874d1c04466edef25b286",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "finalized",
+    "createdAt": "2026-10-26T11:29:12.482Z",
+    "nextEligibleAt": null,
+    "expectedSha": "638df5910c2b17be39c3bb00200bfd8e78df5281",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-14T01:14:11.709Z",
+  "completedAt": "2026-11-14T01:14:11.709Z"
+}

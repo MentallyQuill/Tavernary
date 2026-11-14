@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e986b718de9ebd22c7e0fb6fbf399461988c983c9861233721d4436ca238a9ad",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1065878471:icefog72-sillytavern-probablytoomanytabs",
+      "inputDigest": "ca3f86975808d6618d610b245136da56f872fd3a395c2ff54263459961ae5392",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T06:58:43.824Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1065878471",
+    "identity": "github:1065878471"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42636846673,
+    "sourceSha": "fdacdd852cf935c4b51490f7469f794e7b42e794"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/icefog72-sillytavern-probablytoomanytabs.json",
+      "sha256": "7fc74fd67b3bd97e78f7fa8d46aa3cfe95c57bd78392e1fc03e47e47379cf2ab",
+      "gitBlobSha": "77f5dfd859cbd693728018c41426e6cc1d33f4d4"
+    }
+  ]
+}

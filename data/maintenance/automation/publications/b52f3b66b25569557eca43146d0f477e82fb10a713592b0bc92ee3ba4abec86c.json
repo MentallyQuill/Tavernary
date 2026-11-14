@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b52f3b66b25569557eca43146d0f477e82fb10a713592b0bc92ee3ba4abec86c",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1273118567:enerccio-sillytavern-loreentryvcs",
+      "inputDigest": "85e49659833a2f3970232062138b43637c7b1da3678a7eb0363fc85cfc9af824",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-25T20:18:16.148Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1273118567",
+    "identity": "github:1273118567"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42829116591,
+    "sourceSha": "f0f7a5c43b7861e754b6bbe5f76ccd0d12fe93c7"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/enerccio-sillytavern-loreentryvcs.json",
+      "sha256": "3d9ce0f45047be5d2e0a9001aa4a35324075f8e0ddfad69f8ddf2fc15a3c0f05",
+      "gitBlobSha": "d7c16565560f4919a67a55d4e5d8c6e7808ab7cb"
+    }
+  ]
+}

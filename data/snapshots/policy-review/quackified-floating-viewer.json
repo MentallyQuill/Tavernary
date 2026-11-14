@@ -5,12 +5,9 @@
   "source_identity": "github:quackified/floating-viewer",
   "evidence_fingerprint": "a5067ff805fa5ad43b903d707fc12d93b5a8df52ef34612369c263bb55f94907",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-02T14:05:36.176Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-10-02T14:05:36.176Z"
-  },
+  "reviewed_at": "2026-11-09T14:49:31.809Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

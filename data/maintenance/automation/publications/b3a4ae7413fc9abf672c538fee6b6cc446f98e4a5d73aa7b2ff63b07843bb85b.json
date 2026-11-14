@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b3a4ae7413fc9abf672c538fee6b6cc446f98e4a5d73aa7b2ff63b07843bb85b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1190858079:archkr-lumiverse-lumiweather",
+      "inputDigest": "04b46bd4bbe01708387ce0c823fec794f77ab71539939802cafaef685616465e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-08T08:12:53.715Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1190858079",
+    "identity": "github:1190858079"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42468222532,
+    "sourceSha": "f8355cd5cc16f6b56a0060a02f2e129712f99907"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/archkr-lumiverse-lumiweather.json",
+      "sha256": "b2a761cab4123e34a2fe6a84379ba6b9ad613deed9e648b1825258ee0bb35d5c",
+      "gitBlobSha": "7517bac1c13a272dec9100c96c15c0ce4b1d8d3d"
+    }
+  ]
+}

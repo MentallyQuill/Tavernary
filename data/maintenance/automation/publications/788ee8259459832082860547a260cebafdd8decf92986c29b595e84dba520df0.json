@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "788ee8259459832082860547a260cebafdd8decf92986c29b595e84dba520df0",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1339644218:arczium-st-message-chunker",
+      "inputDigest": "1e65e1c92e5b5fa22500c8d8a134ebb40088a63ebe8a02b62d3c386f3b435e5c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-26T08:46:11.308Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1339644218",
+    "identity": "github:1339644218"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43030733067,
+    "sourceSha": "c7159eb97c4238bfca9a302cf14747c47c1948b7"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/arczium-st-message-chunker.json",
+      "sha256": "fd6009eb643150e006ffa5719040d311e0594d282969f628318bb57280fc0bb0",
+      "gitBlobSha": "1dc50249d7724929d4f36eae5fa608730490cfe0"
+    }
+  ]
+}

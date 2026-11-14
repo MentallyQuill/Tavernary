@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "65dcec6eff59f098bf3d42ed8c2bcc891c62e2fafa6acd38e95e7fe05a654ffb",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1207534658:ludicdynamics-worldlines",
+      "inputDigest": "04581a0ea8c23a6275298be34f8c257f0fc3b1714f8cfa0611f898782fcd56a8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "finalized",
+    "createdAt": "2026-10-25T21:07:47.923Z",
+    "nextEligibleAt": null,
+    "expectedSha": "1ff100a6c4fc684be170441cfb85e3560fa31f95",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-13T22:01:16.710Z",
+  "completedAt": "2026-11-13T22:01:16.710Z"
+}

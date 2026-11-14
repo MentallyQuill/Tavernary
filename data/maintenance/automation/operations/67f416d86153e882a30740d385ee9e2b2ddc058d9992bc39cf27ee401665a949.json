@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "67f416d86153e882a30740d385ee9e2b2ddc058d9992bc39cf27ee401665a949",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1133781448:mattjaybe-sillytavern-pathweaver",
+      "inputDigest": "165e1b9c761138a3dc7c47e53e5788171973d165f2f37bd7bee1241161870f2a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-09T11:26:11.213Z",
+    "nextEligibleAt": null,
+    "expectedSha": "2b923aa4b799d02c53fb92c7d4334f4630e3f199",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-14T02:22:32.371Z",
+  "completedAt": null
+}
