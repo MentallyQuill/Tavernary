@@ -36406,7 +36406,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "SillyTavern Persistent Itemized Prompts is a SillyTavern extension that saves prompt data to local disk. It preserves prompts across browser changes or when running SillyTavern as a background service.",
+      "summary": "SillyTavern Persistent Itemized Prompts is an extension that persists your prompt information to disk (readme), so prompts survive browser changes or running SillyTavern as a service.",
       "canonicalUrl": "https://github.com/Enerccio/SillyTavern-PersistentItemizedPrompts",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -36425,22 +36425,16 @@
           "facet": "goal"
         },
         {
-          "id": "local-first",
-          "label": "Local-first",
-          "description": "Keeps its primary data and workflow on the user's own device.",
-          "facet": "trait"
-        },
-        {
-          "id": "background-operation",
-          "label": "Background operation",
-          "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
-          "facet": "trait"
-        },
-        {
           "id": "persistent-state",
           "label": "Persistent state",
           "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
           "facet": "trait"
+        },
+        {
+          "id": "move-and-back-up-data",
+          "label": "Move and back up data",
+          "description": "Import, export, synchronize, migrate, restore, or back up roleplay data.",
+          "facet": "goal"
         }
       ],
       "tavernKeeper": {
@@ -36589,7 +36583,7 @@
           "https://github.com/Enerccio/SillyTavern-PersistentItemizedPrompts"
         ],
         "summary": [
-          "SillyTavern Persistent Itemized Prompts is a SillyTavern extension that saves prompt data to local disk. It preserves prompts across browser changes or when running SillyTavern as a background service."
+          "SillyTavern Persistent Itemized Prompts is an extension that persists your prompt information to disk (readme), so prompts survive browser changes or running SillyTavern as a service."
         ],
         "kind": [
           "extension"
@@ -36603,18 +36597,14 @@
           "prompt engineering",
           "preset organization",
           "template management",
-          "Local-first",
-          "stored locally",
-          "on-device data",
-          "local data ownership",
-          "Background operation",
-          "asynchronous processing",
-          "quiet generation",
-          "background tasks",
           "Persistent state",
           "durable state",
           "state persistence",
-          "cross-session state"
+          "cross-session state",
+          "Move and back up data",
+          "data portability",
+          "backup and restore",
+          "import and export"
         ],
         "frontends": [
           "SillyTavern"
@@ -57160,16 +57150,10 @@
       ],
       "tags": [
         {
-          "id": "maintain-long-term-memory",
-          "label": "Maintain long-term memory",
-          "description": "Preserve and recall important information across long chats or separate sessions.",
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
           "facet": "goal"
-        },
-        {
-          "id": "persistent-state",
-          "label": "Persistent state",
-          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
-          "facet": "trait"
         },
         {
           "id": "preserve-story-continuity",
@@ -57178,9 +57162,15 @@
           "facet": "goal"
         },
         {
-          "id": "track-characters-and-world-state",
-          "label": "Track characters and world state",
-          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "id": "maintain-long-term-memory",
+          "label": "Maintain long-term memory",
+          "description": "Preserve and recall important information across long chats or separate sessions.",
+          "facet": "goal"
+        },
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
           "facet": "goal"
         }
       ],
@@ -57273,22 +57263,22 @@
           "Memory and retrieval"
         ],
         "tags": [
-          "Maintain long-term memory",
-          "durable memory",
-          "persistent memory",
-          "remember across chats",
-          "Persistent state",
-          "durable state",
-          "state persistence",
-          "cross-session state",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking",
           "Preserve story continuity",
           "continuity tracking",
           "canon consistency",
           "story coherence",
-          "Track characters and world state",
-          "state tracking",
-          "stat trackers",
-          "world state tracking"
+          "Maintain long-term memory",
+          "durable memory",
+          "persistent memory",
+          "remember across chats",
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control"
         ],
         "frontends": [
           "SillyTavern"
