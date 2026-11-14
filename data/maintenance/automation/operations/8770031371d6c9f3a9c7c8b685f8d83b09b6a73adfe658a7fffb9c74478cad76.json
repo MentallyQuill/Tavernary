@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8770031371d6c9f3a9c7c8b685f8d83b09b6a73adfe658a7fffb9c74478cad76",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1270778825:eum27-nai-inlay-illustrator",
+      "inputDigest": "8e916ec8a8f75719ca56dab9cb4b4fc8994155b5881333f7f9e7ed740305a9f0",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-29T00:59:44.947Z",
+    "nextEligibleAt": null,
+    "expectedSha": "4d159d88be5d7ca0bec4021634fbdd0ffd62ef93",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-14T14:16:36.869Z",
+  "completedAt": null
+}
