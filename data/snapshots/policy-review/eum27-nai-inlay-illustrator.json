@@ -5,12 +5,9 @@
   "source_identity": "github:eum27/nai-inlay-illustrator",
   "evidence_fingerprint": "b6d6d2718c4ab6217b2e2108c44bf777910e8eb100a8fd3476eba3b70033c74a",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-06T14:31:43.116Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-10-06T14:31:43.116Z"
-  },
+  "reviewed_at": "2026-11-14T13:24:42.261Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

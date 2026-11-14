@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8770031371d6c9f3a9c7c8b685f8d83b09b6a73adfe658a7fffb9c74478cad76",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1270778825:eum27-nai-inlay-illustrator",
+      "inputDigest": "8e916ec8a8f75719ca56dab9cb4b4fc8994155b5881333f7f9e7ed740305a9f0",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-29T00:59:44.947Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1270778825",
+    "identity": "github:1270778825"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43599534367,
+    "sourceSha": "22583863482d85eaccd81803d559447490179c9d"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/eum27-nai-inlay-illustrator.json",
+      "sha256": "78309aab13e0eb3790d6bc512da88082bdad7c095591fffe0f8ff3cfe6761c04",
+      "gitBlobSha": "d68ee09017940d982b985d3fc6e3baf292e1a035"
+    }
+  ]
+}
