@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "95138a60039abbd8f0c6f76137897b96940d02591c6ecc7107f08a7e69c07ef6",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1294619050:lsennn-deus-ex-machina",
+      "inputDigest": "239a974f5055b78fc638749b638ddd9645f12421d15d5c62ffc1f94f28763c0e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-29T00:58:51.701Z",
+    "nextEligibleAt": null,
+    "expectedSha": "4d159d88be5d7ca0bec4021634fbdd0ffd62ef93",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-14T14:16:36.869Z",
+  "completedAt": null
+}
