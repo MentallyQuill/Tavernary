@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b0aa2f29deeb7d17bf29b623739dfe0f2ae37e95a84213aadf81913adaf54158",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1015688972:aikohanasaki-sillytavern-worldinfolocks",
+      "inputDigest": "8848a8cc4b48a7913f628a84ecc76574f7081684b76d275403087de75d312779",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-29T06:57:49.594Z",
+    "nextEligibleAt": null,
+    "expectedSha": "4d159d88be5d7ca0bec4021634fbdd0ffd62ef93",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-14T14:16:36.869Z",
+  "completedAt": null
+}
