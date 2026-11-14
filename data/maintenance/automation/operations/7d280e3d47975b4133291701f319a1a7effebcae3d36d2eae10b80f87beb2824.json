@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7d280e3d47975b4133291701f319a1a7effebcae3d36d2eae10b80f87beb2824",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1111731551:thejackals-sillytavern-imageembedexpressions",
+      "inputDigest": "27755f06cbd0fa3c49ec431c4ad0a391a8308f8bb7cf72506799c34e2a294695",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-26T11:32:45.855Z",
+    "nextEligibleAt": "2026-11-14T15:49:13.000Z",
+    "expectedSha": "638df5910c2b17be39c3bb00200bfd8e78df5281",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-14T15:34:13.000Z",
+  "completedAt": null
+}
