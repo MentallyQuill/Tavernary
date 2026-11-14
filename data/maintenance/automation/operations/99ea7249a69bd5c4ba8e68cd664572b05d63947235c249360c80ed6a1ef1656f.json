@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "99ea7249a69bd5c4ba8e68cd664572b05d63947235c249360c80ed6a1ef1656f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1310212816:jeppsterrr-crossroads",
+      "inputDigest": "bc8eb80c60742598ab7bc1e8db05271b6dc0f40223bc4fc588b2d8a7219d76d7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-29T06:56:38.995Z",
+    "nextEligibleAt": null,
+    "expectedSha": "4d159d88be5d7ca0bec4021634fbdd0ffd62ef93",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-14T14:16:36.869Z",
+  "completedAt": null
+}
