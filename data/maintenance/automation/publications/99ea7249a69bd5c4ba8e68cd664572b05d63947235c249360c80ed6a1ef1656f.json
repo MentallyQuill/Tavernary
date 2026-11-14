@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "99ea7249a69bd5c4ba8e68cd664572b05d63947235c249360c80ed6a1ef1656f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1310212816:jeppsterrr-crossroads",
+      "inputDigest": "bc8eb80c60742598ab7bc1e8db05271b6dc0f40223bc4fc588b2d8a7219d76d7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-29T06:56:38.995Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1310212816",
+    "identity": "github:1310212816"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43600826151,
+    "sourceSha": "82d5bc65b8d792e990755b8637d68f7ffe76eed7"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/jeppsterrr-crossroads.json",
+      "sha256": "ad36baea2574f13daaa88c1f6495b7296486b11948be785dbd123eba54cecc39",
+      "gitBlobSha": "9ddac5ec09bbcd3cdd2b3308ae16991dde68e73b"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c9fed4c2ebc593f6e177648e38349f6f1dcc6a643cc80b28eec9230a5ec5b119",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1312920117:zeroxjason-sillytavern-chatrenamer",
+      "inputDigest": "bd424b3cdddececa5debf6dee708121180624683b62597d367423b03e31a47bc",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-29T01:09:13.568Z",
+    "nextEligibleAt": null,
+    "expectedSha": "4d159d88be5d7ca0bec4021634fbdd0ffd62ef93",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-14T14:16:36.869Z",
+  "completedAt": null
+}

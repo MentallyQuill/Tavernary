@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "10eb187950e9c63a9c50c574bc53ed9bf09983b348d2439360ba30fd46eeb88d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1158150500:tealios-errata",
+      "inputDigest": "9f62d355fded99603e534b8817f9e8332f69aebe8e96766da9d039c06429770b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-09T10:47:33.122Z",
+    "nextEligibleAt": null,
+    "expectedSha": "9b461d829695a0b21d3b62f24d716c54c406a7d2",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-14T02:04:31.936Z",
+  "completedAt": null
+}
