@@ -66587,7 +66587,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "SillyTavern plugin routes chat through Anthropic Pro or Max subscriptions via the Claude Agent SDK, avoiding API credits. A companion extension provides one-click connection with Claude-native settings.",
+      "summary": "Routes SillyTavern chat through the locally-installed Claude Agent SDK so Pro/Max subscriptions can be used instead of API credits, with a companion \"Claude Max\" UI extension (README, lines 2–6).",
       "canonicalUrl": "https://github.com/LukaTheHero/SillyTavern-ClaudeSubscription",
       "catalogedAt": "2026-07-23T00:00:00Z",
       "catalogCohort": "seed",
@@ -66599,12 +66599,6 @@
         }
       ],
       "tags": [
-        {
-          "id": "route-tasks-across-models",
-          "label": "Route tasks across models",
-          "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
-          "facet": "goal"
-        },
         {
           "id": "connect-external-services",
           "label": "Connect external services",
@@ -66790,7 +66784,7 @@
           "https://github.com/LukaTheHero/SillyTavern-ClaudeSubscription"
         ],
         "summary": [
-          "SillyTavern plugin routes chat through Anthropic Pro or Max subscriptions via the Claude Agent SDK, avoiding API credits. A companion extension provides one-click connection with Claude-native settings."
+          "Routes SillyTavern chat through the locally-installed Claude Agent SDK so Pro/Max subscriptions can be used instead of API credits, with a companion \"Claude Max\" UI extension (README, lines 2–6)."
         ],
         "kind": [
           "extension"
@@ -66799,10 +66793,6 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Route tasks across models",
-          "model routing",
-          "task routing",
-          "connection routing",
           "Connect external services",
           "service integrations",
           "external bridges",
@@ -240144,7 +240134,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "interface-workflow",
-            "summary": "SillyTavern plugin routes chat through Anthropic Pro or Max subscriptions via the Claude Agent SDK, avoiding API credits. A companion extension provides one-click connection with Claude-native settings.",
+            "summary": "Routes SillyTavern chat through the locally-installed Claude Agent SDK so Pro/Max subscriptions can be used instead of API credits, with a companion \"Claude Max\" UI extension (README, lines 2–6).",
             "canonicalUrl": "https://github.com/LukaTheHero/SillyTavern-ClaudeSubscription",
             "catalogedAt": "2026-07-23T00:00:00Z",
             "catalogCohort": "seed",
@@ -240156,12 +240146,6 @@
               }
             ],
             "tags": [
-              {
-                "id": "route-tasks-across-models",
-                "label": "Route tasks across models",
-                "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
-                "facet": "goal"
-              },
               {
                 "id": "connect-external-services",
                 "label": "Connect external services",
@@ -240347,7 +240331,7 @@
                 "https://github.com/LukaTheHero/SillyTavern-ClaudeSubscription"
               ],
               "summary": [
-                "SillyTavern plugin routes chat through Anthropic Pro or Max subscriptions via the Claude Agent SDK, avoiding API credits. A companion extension provides one-click connection with Claude-native settings."
+                "Routes SillyTavern chat through the locally-installed Claude Agent SDK so Pro/Max subscriptions can be used instead of API credits, with a companion \"Claude Max\" UI extension (README, lines 2–6)."
               ],
               "kind": [
                 "extension"
@@ -240356,10 +240340,6 @@
                 "Interface and workflow"
               ],
               "tags": [
-                "Route tasks across models",
-                "model routing",
-                "task routing",
-                "connection routing",
                 "Connect external services",
                 "service integrations",
                 "external bridges",

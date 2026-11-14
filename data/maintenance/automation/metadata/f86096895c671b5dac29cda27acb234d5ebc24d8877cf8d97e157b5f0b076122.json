@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "lukathehero-sillytavern-claudesubscription",
+  "sourceId": "github-1232282077",
+  "sourceIdentity": "github:1232282077",
+  "inputDigest": "7880d404c8ff62bcda31667b1ff493f5b2c689a24435581445645e22b0edadab",
+  "fingerprint": "c3c11ea374b71a59e85f9f566bac9e82993a686aa935028772b535a357c0d2b5",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "a3a3d146c05d805693d3c5968ea58b07c83b3bb8787a9e229d7b50a332f146b9",
+  "outputDigest": "0512385f47bbbe56f38a9d46dda5c3f98303ce3e43b0367037feaa3741ea33ff",
+  "headSha": "cb7ca40a5bda0271d2627b00f2590adccf812931",
+  "observedAt": "2026-11-09T10:00:46.289Z"
+}
