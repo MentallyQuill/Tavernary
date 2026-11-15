@@ -13647,7 +13647,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-29T14:33:02.926Z",
+      "refreshedAt": "2026-11-15T00:37:01.489Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -14280,16 +14280,11 @@
         "contributors": [
           {
             "provider": "github",
-            "login": "Echo-Storm",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
             "login": "thexyzzyone",
             "botOrAi": false
           }
         ],
-        "humanContributorCount": 2,
+        "humanContributorCount": 1,
         "status": "current"
       },
       "activity": {
@@ -14315,18 +14310,18 @@
       "latestReleaseAt": "2026-08-01T07:08:08.000Z",
       "community": {
         "stars": 77,
-        "forks": 7,
+        "forks": 6,
         "watchers": 1,
-        "aggregate": 85
+        "aggregate": 84
       },
-      "repositorySizeKb": 15329,
+      "repositorySizeKb": 15333,
       "license": {
         "status": "missing",
         "label": "Missing",
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-29T14:33:03.683Z",
+      "refreshedAt": "2026-11-15T00:37:34.720Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -14377,7 +14372,6 @@
         "compatibility": [],
         "maintainers": [
           "bal-spec",
-          "Echo-Storm",
           "thexyzzyone"
         ],
         "relationships": []
@@ -19604,7 +19598,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-29T14:33:04.349Z",
+      "refreshedAt": "2026-11-15T00:38:49.792Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -180369,16 +180363,11 @@
               "contributors": [
                 {
                   "provider": "github",
-                  "login": "Echo-Storm",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
                   "login": "thexyzzyone",
                   "botOrAi": false
                 }
               ],
-              "humanContributorCount": 2,
+              "humanContributorCount": 1,
               "status": "current"
             },
             "activity": {
@@ -180404,18 +180393,18 @@
             "latestReleaseAt": "2026-08-01T07:08:08.000Z",
             "community": {
               "stars": 77,
-              "forks": 7,
+              "forks": 6,
               "watchers": 1,
-              "aggregate": 85
+              "aggregate": 84
             },
-            "repositorySizeKb": 15329,
+            "repositorySizeKb": 15333,
             "license": {
               "status": "missing",
               "label": "Missing",
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-29T14:33:03.683Z",
+            "refreshedAt": "2026-11-15T00:37:34.720Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -180466,7 +180455,6 @@
               "compatibility": [],
               "maintainers": [
                 "bal-spec",
-                "Echo-Storm",
                 "thexyzzyone"
               ],
               "relationships": []
@@ -186465,16 +186453,11 @@
               "contributors": [
                 {
                   "provider": "github",
-                  "login": "Echo-Storm",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
                   "login": "thexyzzyone",
                   "botOrAi": false
                 }
               ],
-              "humanContributorCount": 2,
+              "humanContributorCount": 1,
               "status": "current"
             },
             "activity": {
@@ -186500,18 +186483,18 @@
             "latestReleaseAt": "2026-08-01T07:08:08.000Z",
             "community": {
               "stars": 77,
-              "forks": 7,
+              "forks": 6,
               "watchers": 1,
-              "aggregate": 85
+              "aggregate": 84
             },
-            "repositorySizeKb": 15329,
+            "repositorySizeKb": 15333,
             "license": {
               "status": "missing",
               "label": "Missing",
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-29T14:33:03.683Z",
+            "refreshedAt": "2026-11-15T00:37:34.720Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -186562,7 +186545,6 @@
               "compatibility": [],
               "maintainers": [
                 "bal-spec",
-                "Echo-Storm",
                 "thexyzzyone"
               ],
               "relationships": []
@@ -200014,16 +199996,11 @@
               "contributors": [
                 {
                   "provider": "github",
-                  "login": "Echo-Storm",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
                   "login": "thexyzzyone",
                   "botOrAi": false
                 }
               ],
-              "humanContributorCount": 2,
+              "humanContributorCount": 1,
               "status": "current"
             },
             "activity": {
@@ -200049,18 +200026,18 @@
             "latestReleaseAt": "2026-08-01T07:08:08.000Z",
             "community": {
               "stars": 77,
-              "forks": 7,
+              "forks": 6,
               "watchers": 1,
-              "aggregate": 85
+              "aggregate": 84
             },
-            "repositorySizeKb": 15329,
+            "repositorySizeKb": 15333,
             "license": {
               "status": "missing",
               "label": "Missing",
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-29T14:33:03.683Z",
+            "refreshedAt": "2026-11-15T00:37:34.720Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -200111,7 +200088,6 @@
               "compatibility": [],
               "maintainers": [
                 "bal-spec",
-                "Echo-Storm",
                 "thexyzzyone"
               ],
               "relationships": []
@@ -233789,7 +233765,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-29T14:33:02.926Z",
+            "refreshedAt": "2026-11-15T00:37:01.489Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -269619,16 +269595,11 @@
               "contributors": [
                 {
                   "provider": "github",
-                  "login": "Echo-Storm",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
                   "login": "thexyzzyone",
                   "botOrAi": false
                 }
               ],
-              "humanContributorCount": 2,
+              "humanContributorCount": 1,
               "status": "current"
             },
             "activity": {
@@ -269654,18 +269625,18 @@
             "latestReleaseAt": "2026-08-01T07:08:08.000Z",
             "community": {
               "stars": 77,
-              "forks": 7,
+              "forks": 6,
               "watchers": 1,
-              "aggregate": 85
+              "aggregate": 84
             },
-            "repositorySizeKb": 15329,
+            "repositorySizeKb": 15333,
             "license": {
               "status": "missing",
               "label": "Missing",
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-29T14:33:03.683Z",
+            "refreshedAt": "2026-11-15T00:37:34.720Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -269716,7 +269687,6 @@
               "compatibility": [],
               "maintainers": [
                 "bal-spec",
-                "Echo-Storm",
                 "thexyzzyone"
               ],
               "relationships": []
@@ -285521,16 +285491,11 @@
               "contributors": [
                 {
                   "provider": "github",
-                  "login": "Echo-Storm",
-                  "botOrAi": false
-                },
-                {
-                  "provider": "github",
                   "login": "thexyzzyone",
                   "botOrAi": false
                 }
               ],
-              "humanContributorCount": 2,
+              "humanContributorCount": 1,
               "status": "current"
             },
             "activity": {
@@ -285556,18 +285521,18 @@
             "latestReleaseAt": "2026-08-01T07:08:08.000Z",
             "community": {
               "stars": 77,
-              "forks": 7,
+              "forks": 6,
               "watchers": 1,
-              "aggregate": 85
+              "aggregate": 84
             },
-            "repositorySizeKb": 15329,
+            "repositorySizeKb": 15333,
             "license": {
               "status": "missing",
               "label": "Missing",
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-29T14:33:03.683Z",
+            "refreshedAt": "2026-11-15T00:37:34.720Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -285618,7 +285583,6 @@
               "compatibility": [],
               "maintainers": [
                 "bal-spec",
-                "Echo-Storm",
                 "thexyzzyone"
               ],
               "relationships": []
