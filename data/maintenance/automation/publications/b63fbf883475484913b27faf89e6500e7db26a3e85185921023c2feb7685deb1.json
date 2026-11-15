@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b63fbf883475484913b27faf89e6500e7db26a3e85185921023c2feb7685deb1",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1218157882:supker-st-copilot",
+      "inputDigest": "755970cc585a65367e56b83c48febeb59b9f10cbd83d77ef53cfb634c4044947",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-30T14:40:05.643Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1218157882",
+    "identity": "github:1218157882"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43723589066,
+    "sourceSha": "f1e762ebbd3b298c14e9ab58374ba6f679ae5205"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/supker-st-copilot.json",
+      "sha256": "0a29088f1bf7315656a1c9ddea276e352b52a83313d05739e797b5672c397ea2",
+      "gitBlobSha": "9c251c1d592d9f475b9f11854c928dd3e562fed5"
+    }
+  ]
+}

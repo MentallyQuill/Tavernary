@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ad60d222ffd651d421a2fb31987febbcd9d443b1b72d6a4268b803cf770b921f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1132967377:arif-salah-image-gen-kazuma",
+      "inputDigest": "64dc7d8b6f17700d48fd777472b3bc0efc7a99df70dc9c96ceeaa12613e50e93",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-30T14:39:59.172Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1132967377",
+    "identity": "github:1132967377"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43722891664,
+    "sourceSha": "f57403ed1b3083435c3ab85e6eca999fe2615b17"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/arif-salah-image-gen-kazuma.json",
+      "sha256": "cc86373a4ebb39e855934ced0b2f440632babcdae9c0334de2a00fb7a444e9cc",
+      "gitBlobSha": "d36b5552643998526b154fa97305b5f9c7daff75"
+    }
+  ]
+}

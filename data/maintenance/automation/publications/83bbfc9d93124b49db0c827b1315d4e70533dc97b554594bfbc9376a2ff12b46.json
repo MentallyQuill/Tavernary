@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "83bbfc9d93124b49db0c827b1315d4e70533dc97b554594bfbc9376a2ff12b46",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1360837960:lumenastrum-kotatsu-public",
+      "inputDigest": "0d4859d7559aaff0b22ce02daae631c879c3b8a779dc0647c4e451003111242a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-30T14:29:54.666Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1360837960",
+    "identity": "github:1360837960"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43721516384,
+    "sourceSha": "05c77411e2c961561d4f51cdd8d3da95a95296c0"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/lumenastrum-kotatsu-public.json",
+      "sha256": "a8d50628435fd86f407135f047eef0e7f40eccf4493fccb8ad917b57630b4c1b",
+      "gitBlobSha": "2bf3d049a55d180748a4e67c24e9de9de4d885e3"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c463fd0d016b83bebc13fc87010afd11f05082452d00c1610a6f727f08ab5a75",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-747410816:sillytavern-sillytavern-pushnotifications",
+      "inputDigest": "6ec86c3187d1458569263d5e5752655ec584c264c6d334282fe0e5bbba49aa7b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-30T09:15:42.722Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-747410816",
+    "identity": "github:747410816"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43722165710,
+    "sourceSha": "f65c0a51bb975ed17cd9a946fd05837184d45b02"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/sillytavern-sillytavern-pushnotifications.json",
+      "sha256": "45f2ced53ed6573e02568a7e5cbe7fcc99fc2053bf95bb0fcaa58673bbefe8a5",
+      "gitBlobSha": "9ca15f7e70f8e69e3ae696f1d08c86872f65c1d7"
+    }
+  ]
+}

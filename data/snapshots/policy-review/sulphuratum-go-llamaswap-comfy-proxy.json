@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "sulphuratum-go-llamaswap-comfy-proxy",
+  "source_id": "github-1274104920",
+  "source_identity": "github:sulphuratum/go-llamaswap-comfy-proxy",
+  "evidence_fingerprint": "37852fcf1fab98b9463adae39ee2ca97a10d8b1de409bccd04576e112818dce5",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-15T13:49:21.533Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}
