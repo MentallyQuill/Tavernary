@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "fc2b6e15272f7442d8badd229647f58dbaec1ab3e765f09a41e20de52faa97f8",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-986817479:rossascends-st-samplerkillswitches",
+      "inputDigest": "74ea5470591a94767e1c3c06575623e2b5726e118079e4ec1e4ad3879d5dd801",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-30T09:14:39.887Z",
+    "nextEligibleAt": "2026-11-15T20:00:39.384Z",
+    "expectedSha": "46cc7977d467ce8e74ca2b95c64cd9f190ddc5dd",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-15T19:45:39.384Z",
+  "completedAt": null
+}
