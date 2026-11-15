@@ -9,21 +9,31 @@
     "url": "https://github.com/lumenastrum/kotatsu-public",
     "description": "Kotatsu — a desktop-first SillyTavern fork with a built-in Claude subscription bridge. Public release mirror; install with one file, update from inside the app.",
     "default_branch": "main",
-    "head_sha": "c2baa4d98206b6479e87f60b8a5078ccb7bf5d0a",
-    "head_committed_at": "2026-10-29T22:33:52.000Z",
+    "head_sha": "0b4128b0b689361e50c228039a45444f25f40bfa",
+    "head_committed_at": "2026-11-15T01:02:13.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-08T02:23:31.000Z",
-    "size_kb": 87810
+    "size_kb": 90542
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-29T22:33:52.000Z",
+    "latest_source_activity_at": "2026-11-15T01:02:13.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-11-09",
+        "latest_at": "2026-11-15T01:02:13.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-07T22:45:29.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-26",
-        "latest_at": "2026-10-29T22:33:52.000Z",
+        "latest_at": "2026-10-30T20:24:04.000Z",
         "precision": "exact"
       },
       {
@@ -58,25 +68,26 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-29T22:34:00.000Z",
+    "latest_release_at": "2026-11-15T01:02:18.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-30T14:29:54.666Z",
+    "baseline_completed_at": "2026-11-15T14:55:42.698Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "c2baa4d98206b6479e87f60b8a5078ccb7bf5d0a"
+    "evidence_head_sha": "0b4128b0b689361e50c228039a45444f25f40bfa"
   },
   "community": {
-    "stars_count": 20,
+    "stars_count": 21,
     "forks_count": 2,
     "watchers_count": 0,
-    "aggregate": 22
+    "aggregate": 23
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-30T14:29:54.666Z",
+  "refreshed_at": "2026-11-15T14:58:13.662Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "lumenastrum", "type": "User", "provider": "github" },
@@ -85,8 +96,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-30T14:29:54.666Z",
+    "refreshed_at": "2026-11-15T14:55:42.698Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

@@ -9965,9 +9965,9 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 20,
-        "forks": 8,
+        "forks": 9,
         "watchers": 1,
-        "aggregate": 29
+        "aggregate": 30
       },
       "repositorySizeKb": 124,
       "license": {
@@ -9976,7 +9976,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-30T14:39:59.172Z",
+      "refreshedAt": "2026-11-15T14:57:57.100Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -11099,7 +11099,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-30T10:49:14.972Z",
+      "refreshedAt": "2026-11-15T14:57:16.713Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -17143,7 +17143,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-30T06:41:06.875Z",
+      "refreshedAt": "2026-11-15T14:57:12.513Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -21767,7 +21767,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-30T07:19:45.044Z",
+      "refreshedAt": "2026-11-15T14:57:08.071Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -23115,7 +23115,7 @@
       "name": "SillyTavern-Ghostfinder",
       "kind": "extension",
       "metadataStatus": "curated",
-      "sourceStatus": "healthy",
+      "sourceStatus": "stale",
       "primaryFunction": "interface-workflow",
       "summary": "SillyTavern-Ghostfinder navigates between boundary messages, jumping to the first unhidden messages after hidden or system messages in a chat.",
       "canonicalUrl": "https://github.com/chesswoodspixel/SillyTavern-Ghostfinder",
@@ -23139,8 +23139,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "3f6235661e9888410ff05f00ca63edd20abdf926",
+        "freshness": "unavailable",
+        "currentSha": null,
         "report": {
           "reportId": "d422eff3423b8792c09744b4539132dcd3285ddb967ec024e569681c538ececf",
           "riskLevel": "low",
@@ -23235,14 +23235,8 @@
       },
       "preset": null,
       "refreshedAt": "2026-10-30T07:04:59.270Z",
-      "staleSince": null,
-      "install": {
-        "kind": "sillytavern-extension-git",
-        "repositoryUrl": "https://github.com/chesswoodspixel/SillyTavern-Ghostfinder.git",
-        "branch": null,
-        "manifestPath": "manifest.json",
-        "folderName": "SillyTavern-Ghostfinder"
-      },
+      "staleSince": "2026-11-15T14:55:12.521Z",
+      "install": null,
       "fork": null,
       "search": {
         "title": [
@@ -54673,7 +54667,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-30T10:49:56.135Z",
+      "refreshedAt": "2026-11-15T14:57:20.586Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -61182,7 +61176,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-30T06:41:35.157Z",
+      "refreshedAt": "2026-11-15T14:57:20.237Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -67101,7 +67095,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "c2baa4d98206b6479e87f60b8a5078ccb7bf5d0a",
+        "currentSha": "0b4128b0b689361e50c228039a45444f25f40bfa",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -67122,7 +67116,7 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-29T22:33:52.000Z",
+        "latestSourceActivityAt": "2026-11-15T01:02:13.000Z",
         "activeWeeks12": 7,
         "weeklyActivity": [
           false,
@@ -67141,21 +67135,21 @@
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-10-29T22:34:00.000Z",
+      "latestReleaseAt": "2026-11-15T01:02:18.000Z",
       "community": {
-        "stars": 20,
+        "stars": 21,
         "forks": 2,
         "watchers": 0,
-        "aggregate": 22
+        "aggregate": 23
       },
-      "repositorySizeKb": 87810,
+      "repositorySizeKb": 90542,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-30T14:29:54.666Z",
+      "refreshedAt": "2026-11-15T14:58:13.662Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -80144,10 +80138,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 1,
+        "stars": 2,
         "forks": 0,
         "watchers": 0,
-        "aggregate": 1
+        "aggregate": 2
       },
       "repositorySizeKb": 31,
       "license": {
@@ -80156,7 +80150,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-30T06:40:55.805Z",
+      "refreshedAt": "2026-11-15T14:57:47.451Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -92047,7 +92041,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-30T06:36:07.074Z",
+      "refreshedAt": "2026-11-15T14:56:40.200Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -98687,7 +98681,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-30T09:14:39.887Z",
+      "refreshedAt": "2026-11-15T14:57:50.076Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -113461,7 +113455,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-30T09:15:42.722Z",
+      "refreshedAt": "2026-11-15T14:57:48.406Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -117812,7 +117806,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-30T09:15:06.981Z",
+      "refreshedAt": "2026-11-15T14:57:57.168Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -176901,7 +176895,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-30T06:41:35.157Z",
+            "refreshedAt": "2026-11-15T14:57:20.237Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -188445,7 +188439,7 @@
             "name": "SillyTavern-Ghostfinder",
             "kind": "extension",
             "metadataStatus": "curated",
-            "sourceStatus": "healthy",
+            "sourceStatus": "stale",
             "primaryFunction": "interface-workflow",
             "summary": "SillyTavern-Ghostfinder navigates between boundary messages, jumping to the first unhidden messages after hidden or system messages in a chat.",
             "canonicalUrl": "https://github.com/chesswoodspixel/SillyTavern-Ghostfinder",
@@ -188469,8 +188463,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "3f6235661e9888410ff05f00ca63edd20abdf926",
+              "freshness": "unavailable",
+              "currentSha": null,
               "report": {
                 "reportId": "d422eff3423b8792c09744b4539132dcd3285ddb967ec024e569681c538ececf",
                 "riskLevel": "low",
@@ -188565,14 +188559,8 @@
             },
             "preset": null,
             "refreshedAt": "2026-10-30T07:04:59.270Z",
-            "staleSince": null,
-            "install": {
-              "kind": "sillytavern-extension-git",
-              "repositoryUrl": "https://github.com/chesswoodspixel/SillyTavern-Ghostfinder.git",
-              "branch": null,
-              "manifestPath": "manifest.json",
-              "folderName": "SillyTavern-Ghostfinder"
-            },
+            "staleSince": "2026-11-15T14:55:12.521Z",
+            "install": null,
             "fork": null,
             "search": {
               "title": [
@@ -188997,7 +188985,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-30T06:41:35.157Z",
+            "refreshedAt": "2026-11-15T14:57:20.237Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -202225,7 +202213,7 @@
             "name": "SillyTavern-Ghostfinder",
             "kind": "extension",
             "metadataStatus": "curated",
-            "sourceStatus": "healthy",
+            "sourceStatus": "stale",
             "primaryFunction": "interface-workflow",
             "summary": "SillyTavern-Ghostfinder navigates between boundary messages, jumping to the first unhidden messages after hidden or system messages in a chat.",
             "canonicalUrl": "https://github.com/chesswoodspixel/SillyTavern-Ghostfinder",
@@ -202249,8 +202237,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "3f6235661e9888410ff05f00ca63edd20abdf926",
+              "freshness": "unavailable",
+              "currentSha": null,
               "report": {
                 "reportId": "d422eff3423b8792c09744b4539132dcd3285ddb967ec024e569681c538ececf",
                 "riskLevel": "low",
@@ -202345,14 +202333,8 @@
             },
             "preset": null,
             "refreshedAt": "2026-10-30T07:04:59.270Z",
-            "staleSince": null,
-            "install": {
-              "kind": "sillytavern-extension-git",
-              "repositoryUrl": "https://github.com/chesswoodspixel/SillyTavern-Ghostfinder.git",
-              "branch": null,
-              "manifestPath": "manifest.json",
-              "folderName": "SillyTavern-Ghostfinder"
-            },
+            "staleSince": "2026-11-15T14:55:12.521Z",
+            "install": null,
             "fork": null,
             "search": {
               "title": [
@@ -203234,7 +203216,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-30T06:41:35.157Z",
+            "refreshedAt": "2026-11-15T14:57:20.237Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -236695,7 +236677,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-30T06:41:06.875Z",
+            "refreshedAt": "2026-11-15T14:57:12.513Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
