@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "lumenastrum-kotatsu-public",
+  "source_id": "github-1360837960",
+  "source_identity": "github:lumenastrum/kotatsu-public",
+  "evidence_fingerprint": "cac81c12324867522f72e4517679536a65f89e6afaddf83078d84732e123cc1c",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-15T13:56:46.942Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

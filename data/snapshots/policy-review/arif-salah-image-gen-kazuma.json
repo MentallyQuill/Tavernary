@@ -5,12 +5,9 @@
   "source_identity": "github:arif-salah/image-gen-kazuma",
   "evidence_fingerprint": "a07a0bdc69c66ab02ac1db20e517e8cfc5d9dc0597c872c132ae098ea178c70c",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-07T08:41:33.307Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-08-07T08:41:33.307Z"
-  },
+  "reviewed_at": "2026-11-15T14:12:09.441Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

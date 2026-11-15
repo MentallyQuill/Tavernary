@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "fc2b6e15272f7442d8badd229647f58dbaec1ab3e765f09a41e20de52faa97f8",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-986817479:rossascends-st-samplerkillswitches",
+      "inputDigest": "74ea5470591a94767e1c3c06575623e2b5726e118079e4ec1e4ad3879d5dd801",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-30T09:14:39.887Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-986817479",
+    "identity": "github:986817479"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43720112998,
+    "sourceSha": "3bd7b1e238f4dbd7e206ab335d4fb666cf7c75ec"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/rossascends-st-samplerkillswitches.json",
+      "sha256": "68f5c7dc1be5a5c59cad08dc4c1d6e3d5aa079c911f17e3fb432489acf5c0332",
+      "gitBlobSha": "7e1fb8a56b88de5dcd381330d10d2022b152dfee"
+    }
+  ]
+}

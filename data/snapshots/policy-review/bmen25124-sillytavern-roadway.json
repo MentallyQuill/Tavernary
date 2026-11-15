@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "bmen25124-sillytavern-roadway",
+  "source_id": "github-948787177",
+  "source_identity": "github:bmen25124/sillytavern-roadway",
+  "evidence_fingerprint": "9a605db71005719d4f1c19b948dc28dc22d4975bac01202dce46d35628f819d8",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-15T13:16:51.005Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

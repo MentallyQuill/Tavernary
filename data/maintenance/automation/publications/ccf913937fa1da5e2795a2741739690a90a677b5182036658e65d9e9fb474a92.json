@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ccf913937fa1da5e2795a2741739690a90a677b5182036658e65d9e9fb474a92",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-958439567:leandrojofre-sillytavern-wi-bulk-mover",
+      "inputDigest": "09f2bc866f6c3ed87ce6c08815396f3a763dbeeec420aa45319e9b81a4b976ae",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-30T06:41:35.157Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-958439567",
+    "identity": "github:958439567"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43718725906,
+    "sourceSha": "4237213a6a5fb798006d92f0b075477957245adb"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/leandrojofre-sillytavern-wi-bulk-mover.json",
+      "sha256": "14ae8449c37d64bb29118ffad77e75650c0e582abffcfd3b3208214ad7d9a761",
+      "gitBlobSha": "f4da00587f6a6180e6d66a605f37656ce0313f47"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "103b9fe9856e9769d54707dc59a154ec4098473599186bc72c93a67c42fe868e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1203226910:wewwaistyping-slayimages",
+      "inputDigest": "471db221462f881ed9da98b2b69c0b545e105d756dcf0fcee5eca75a821fd59c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-29T14:33:16.408Z",
+    "nextEligibleAt": "2026-11-15T01:53:50.815Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-15T01:38:50.815Z",
+  "completedAt": null
+}

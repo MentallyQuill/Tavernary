@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "9607b43e5119139a87ab99fb7a0a361d15e299f0219cd665d261913624ef9967",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1128074609:mattjaybe-sillytavern-echochamber",
+      "inputDigest": "4f95fedebeecd8297c42e5803f41a2c22d1e8e643da6a749c22a577ff7809dee",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-15T01:56:55.597Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "superseded",
+        "reasonCode": "input-superseded"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-15T02:57:54.802Z",
+  "completedAt": null
+}
