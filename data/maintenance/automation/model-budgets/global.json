@@ -24552,8 +24552,11 @@
         "runId": 42841485069,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 7957
+      }
     },
     {
       "id": "6cc1d9546fe46d2475a59a407b1099c28eb8516ff2d789c19686c4588a1b3e7a",
@@ -24571,8 +24574,11 @@
         "runId": 42841485069,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "00696d92f9a674d5e577ba73bad42b60f70b742864648b5cb3616998fad54ec3",
@@ -24590,8 +24596,11 @@
         "runId": 42843044274,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 10765
+      }
     },
     {
       "id": "cec8ebe40691a1a187ffa6d6aa77b73905c251dce45332ec1eab905762e95088",
@@ -24609,8 +24618,11 @@
         "runId": 42843044274,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "2badac5f8bf33ceb312b4d7bd138d921704cb5d6a5dcf2912e2bf73c55ba12ab",
@@ -24628,8 +24640,11 @@
         "runId": 42914696030,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 8077
+      }
     },
     {
       "id": "5d4eedef3ffdc762f35aa84bd2dca94fb7092e86063acb9eefc8535ffb8bc312",
@@ -24647,8 +24662,11 @@
         "runId": 42914696030,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "e20bb9a7a652ae6e3db1ad1948913d7497154e3308ba2d4af4054c78560e71af",

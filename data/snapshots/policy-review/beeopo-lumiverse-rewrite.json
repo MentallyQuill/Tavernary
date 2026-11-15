@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "beeopo-lumiverse-rewrite",
+  "source_id": "github-1281629987",
+  "source_identity": "github:beeopo/lumiverse-rewrite",
+  "evidence_fingerprint": "0dd90f9bc08b271ff1ace4bbdf1b153c0b9af4212a69c00b5b3f2ed4cf712ec1",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-10T15:20:40.241Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}
