@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "bf703c76717e037c8e77de5bb41eed8f4a6b3fbf56bfcca764fc7821561f809a",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1038203769:prolix-oc-sillytavern-simtracker",
+      "inputDigest": "8a066d78dc35ff27ea23821d834dc76f869556d7f6ea9bbf98e2f325da904678",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-30T06:36:07.074Z",
+    "nextEligibleAt": "2026-11-15T19:21:26.671Z",
+    "expectedSha": "46cc7977d467ce8e74ca2b95c64cd9f190ddc5dd",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-15T19:06:26.671Z",
+  "completedAt": null
+}
