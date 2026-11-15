@@ -10,11 +10,18 @@
     },
     "stage": "admitted",
     "createdAt": "2026-10-30T07:04:59.270Z",
-    "nextEligibleAt": "2026-11-15T19:38:54.139Z",
+    "nextEligibleAt": null,
     "expectedSha": null,
     "workerRunId": null,
-    "retry": null
+    "retry": {
+      "failure": {
+        "kind": "permanent",
+        "reasonCode": "authorization-lost"
+      },
+      "transientAttempts": 1,
+      "immediateAttempts": 0
+    }
   },
-  "updatedAt": "2026-11-15T19:23:54.139Z",
+  "updatedAt": "2026-11-15T20:46:41.331Z",
   "completedAt": null
 }
