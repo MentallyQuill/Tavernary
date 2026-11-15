@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "aaee531c9895b71bf2f4132392cda41f7d0ef41d8d552acce7d41a88a5fbef57",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1092642614:chesswoodspixel-sillytavern-ghostfinder",
+      "inputDigest": "19708c301436343d5ec821ba514ab638823cbe52219859021be5696fc9c959f8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-30T07:04:59.270Z",
+    "nextEligibleAt": "2026-11-15T19:38:54.139Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-15T19:23:54.139Z",
+  "completedAt": null
+}
