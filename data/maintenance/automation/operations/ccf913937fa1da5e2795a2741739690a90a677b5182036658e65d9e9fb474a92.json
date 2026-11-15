@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ccf913937fa1da5e2795a2741739690a90a677b5182036658e65d9e9fb474a92",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-958439567:leandrojofre-sillytavern-wi-bulk-mover",
+      "inputDigest": "09f2bc866f6c3ed87ce6c08815396f3a763dbeeec420aa45319e9b81a4b976ae",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-30T06:41:35.157Z",
+    "nextEligibleAt": "2026-11-15T19:38:54.139Z",
+    "expectedSha": "46cc7977d467ce8e74ca2b95c64cd9f190ddc5dd",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-15T19:23:54.139Z",
+  "completedAt": null
+}
