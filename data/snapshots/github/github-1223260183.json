@@ -45,15 +45,15 @@
     "spdx_id": null,
     "source_path": "license.txt"
   },
-  "refreshed_at": "2026-10-31T02:04:08.849Z",
+  "refreshed_at": "2026-11-16T17:16:26.196Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "jake9000", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-31T02:02:12.800Z",
+    "refreshed_at": "2026-11-16T17:14:02.024Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

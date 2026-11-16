@@ -24759,9 +24759,9 @@
       "latestReleaseAt": "2026-01-09T09:54:24.000Z",
       "community": {
         "stars": 173,
-        "forks": 19,
+        "forks": 18,
         "watchers": 3,
-        "aggregate": 195
+        "aggregate": 194
       },
       "repositorySizeKb": 271,
       "license": {
@@ -24770,7 +24770,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T13:14:02.040Z",
+      "refreshedAt": "2026-11-16T17:17:04.587Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -49486,10 +49486,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 6,
+        "stars": 7,
         "forks": 0,
         "watchers": 1,
-        "aggregate": 7
+        "aggregate": 8
       },
       "repositorySizeKb": 106,
       "license": {
@@ -49498,7 +49498,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T13:49:31.519Z",
+      "refreshedAt": "2026-11-16T17:16:06.191Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -52345,7 +52345,7 @@
         "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T02:04:08.849Z",
+      "refreshedAt": "2026-11-16T17:16:26.196Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -60007,7 +60007,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "81c7d7a55ce5374c0c461c6e79801701c5b0fd92",
+        "currentSha": "ca25bf8a7b7f305b318ad995382406b6b30b4b72",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -60022,7 +60022,7 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-04T08:02:46.000Z",
+        "latestSourceActivityAt": "2026-11-15T15:41:59.000Z",
         "activeWeeks12": 2,
         "weeklyActivity": [
           false,
@@ -60048,14 +60048,14 @@
         "watchers": 0,
         "aggregate": 1
       },
-      "repositorySizeKb": 131,
+      "repositorySizeKb": 147,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-30T21:29:43.362Z",
+      "refreshedAt": "2026-11-16T17:15:56.063Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -91960,7 +91960,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "9199177b5c06e62f7089cc804cc61305444c8c02",
+        "currentSha": "45f8db563e1c314ed2aab227613b28eb5ea1084e",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -92136,12 +92136,12 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-29T17:25:08.000Z",
-        "activeWeeks12": 12,
+        "latestSourceActivityAt": "2026-11-01T08:29:37.000Z",
+        "activeWeeks12": 9,
         "weeklyActivity": [
-          true,
-          true,
-          true,
+          false,
+          false,
+          false,
           true,
           true,
           true,
@@ -92157,19 +92157,19 @@
       },
       "latestReleaseAt": "2026-10-09T19:18:58.000Z",
       "community": {
-        "stars": 199,
-        "forks": 84,
+        "stars": 211,
+        "forks": 87,
         "watchers": 3,
-        "aggregate": 286
+        "aggregate": 301
       },
-      "repositorySizeKb": 218486,
+      "repositorySizeKb": 222576,
       "license": {
         "status": "proprietary",
         "label": "Proprietary",
         "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T02:03:17.120Z",
+      "refreshedAt": "2026-11-16T17:16:50.681Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -115639,7 +115639,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T02:02:47.323Z",
+      "refreshedAt": "2026-11-16T17:16:01.540Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -136401,6 +136401,130 @@
         "compatibility": [],
         "maintainers": [
           "ZDOSt"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "ze-ro-soda-storybooster",
+      "name": "storybooster",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "generation-reasoning",
+      "summary": "storybooster is a SillyTavern extension that assists roleplay by supporting genre feel, character personality, and next story development (README).",
+      "canonicalUrl": "https://github.com/ze-ro-soda/storybooster",
+      "catalogedAt": "2026-11-16T17:03:13.807Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "plan-stories-and-scenes",
+          "label": "Plan stories and scenes",
+          "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "a55705c135190b6438cfab5c00c31f81c258e52e",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "ze-ro-soda"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-16T09:06:29.000Z",
+        "activeWeeks12": 5,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 4428,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-16T17:03:13.807Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/ze-ro-soda/storybooster.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "storybooster"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "storybooster"
+        ],
+        "aliases": [],
+        "source": [
+          "ze-ro-soda-storybooster",
+          "github-1312817198",
+          "ze-ro-soda/storybooster",
+          "https://github.com/ze-ro-soda/storybooster"
+        ],
+        "summary": [
+          "storybooster is a SillyTavern extension that assists roleplay by supporting genre feel, character personality, and next story development (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Generation and reasoning"
+        ],
+        "tags": [
+          "Plan stories and scenes",
+          "story planning",
+          "plot direction",
+          "scene planning"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "ze-ro-soda"
         ],
         "relationships": []
       }
@@ -228472,7 +228596,7 @@
               "state": "gray",
               "riskLevel": null,
               "freshness": "unassessed",
-              "currentSha": "9199177b5c06e62f7089cc804cc61305444c8c02",
+              "currentSha": "45f8db563e1c314ed2aab227613b28eb5ea1084e",
               "report": null,
               "history": [],
               "historyUrl": null
@@ -228648,12 +228772,12 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-29T17:25:08.000Z",
-              "activeWeeks12": 12,
+              "latestSourceActivityAt": "2026-11-01T08:29:37.000Z",
+              "activeWeeks12": 9,
               "weeklyActivity": [
-                true,
-                true,
-                true,
+                false,
+                false,
+                false,
                 true,
                 true,
                 true,
@@ -228669,19 +228793,19 @@
             },
             "latestReleaseAt": "2026-10-09T19:18:58.000Z",
             "community": {
-              "stars": 199,
-              "forks": 84,
+              "stars": 211,
+              "forks": 87,
               "watchers": 3,
-              "aggregate": 286
+              "aggregate": 301
             },
-            "repositorySizeKb": 218486,
+            "repositorySizeKb": 222576,
             "license": {
               "status": "proprietary",
               "label": "Proprietary",
               "tooltip": "The published root license is not OSI-approved."
             },
             "preset": null,
-            "refreshedAt": "2026-10-31T02:03:17.120Z",
+            "refreshedAt": "2026-11-16T17:16:50.681Z",
             "staleSince": null,
             "install": null,
             "fork": null,
@@ -301510,10 +301634,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 6,
+              "stars": 7,
               "forks": 0,
               "watchers": 1,
-              "aggregate": 7
+              "aggregate": 8
             },
             "repositorySizeKb": 106,
             "license": {
@@ -301522,7 +301646,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-31T13:49:31.519Z",
+            "refreshedAt": "2026-11-16T17:16:06.191Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
