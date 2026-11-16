@@ -6738,6 +6738,140 @@
       }
     },
     {
+      "id": "ambasas2-map",
+      "name": "map",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "character-worldbuilding",
+      "summary": "A SillyTavern extension that reads the current roleplay and organizes locations, character positions, quests, and discoveries on an interactive map (README).",
+      "canonicalUrl": "https://github.com/AmbasaS2/map",
+      "catalogedAt": "2026-11-16T08:37:23.578Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "manage-inventory-and-quests",
+          "label": "Manage inventory and quests",
+          "description": "Track equipment, items, objectives, quests, or progression records.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-maps-and-locations",
+          "label": "Manage maps and locations",
+          "description": "Represent, navigate, calculate, or update places and spatial relationships.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "63a7cd99b7a17f083af1229d472d0cda40502e40",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "AmbasaS2"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-16T05:15:50.000Z",
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 1,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 1
+      },
+      "repositorySizeKb": 5521,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-16T08:37:23.578Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/AmbasaS2/map.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "map"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "map"
+        ],
+        "aliases": [],
+        "source": [
+          "ambasas2-map",
+          "github-1296530212",
+          "AmbasaS2/map",
+          "https://github.com/AmbasaS2/map"
+        ],
+        "summary": [
+          "A SillyTavern extension that reads the current roleplay and organizes locations, character positions, quests, and discoveries on an interactive map (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Character and worldbuilding"
+        ],
+        "tags": [
+          "Manage inventory and quests",
+          "quest tracking",
+          "inventory management",
+          "equipment tracking",
+          "Manage maps and locations",
+          "interactive maps",
+          "location tracking",
+          "spatial navigation"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "AmbasaS2"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "amiantos-writers-guild",
       "name": "writers-guild",
       "kind": "frontend",
@@ -41774,6 +41908,130 @@
           "GetfroggyHoe",
           "tempestnano",
           "Howl404"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "ghostcatowo-next-turn",
+      "name": "Next-Turn",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "generation-reasoning",
+      "summary": "Next-Turn is a SillyTavern extension by ghostcatowo: send with an empty input box and it injects your preconfigured prompt instead, triggering saved instructions with one tap (README).",
+      "canonicalUrl": "https://github.com/ghostcatowo/Next-Turn",
+      "catalogedAt": "2026-11-16T08:31:38.505Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "c2ed7343a4d7c2e954567d3534d6d6ec448b5745",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "ghostcatowo"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-12T13:48:09.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 30,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-16T08:31:38.505Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/ghostcatowo/Next-Turn.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "Next-Turn"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "Next-Turn"
+        ],
+        "aliases": [],
+        "source": [
+          "ghostcatowo-next-turn",
+          "github-1415632630",
+          "ghostcatowo/Next-Turn",
+          "https://github.com/ghostcatowo/Next-Turn"
+        ],
+        "summary": [
+          "Next-Turn is a SillyTavern extension by ghostcatowo: send with an empty input box and it injects your preconfigured prompt instead, triggering saved instructions with one tap (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Generation and reasoning"
+        ],
+        "tags": [
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "ghostcatowo"
         ],
         "relationships": []
       }
@@ -114289,6 +114547,160 @@
       }
     },
     {
+      "id": "siltax03-crypto-charmm",
+      "name": "charmM",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "memory-retrieval",
+      "summary": "SillyTavern extension CHARM Memory (참메모리) automatically extracts memories, timelines, world details, and character psychology from accumulating chats, then reinjects only what matters each turn (README intro).",
+      "canonicalUrl": "https://github.com/siltax03-crypto/charmM",
+      "catalogedAt": "2026-11-16T08:30:33.414Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "maintain-long-term-memory",
+          "label": "Maintain long-term memory",
+          "description": "Preserve and recall important information across long chats or separate sessions.",
+          "facet": "goal"
+        },
+        {
+          "id": "persistent-state",
+          "label": "Persistent state",
+          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
+          "facet": "trait"
+        },
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        },
+        {
+          "id": "retrieve-relevant-context",
+          "label": "Retrieve relevant context",
+          "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "82463dda56f3b2ffb544b0206a9ef9f8f48cb499",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "siltax03-crypto"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-27T11:35:11.000Z",
+        "activeWeeks12": 7,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 1161,
+      "license": {
+        "status": "proprietary",
+        "label": "Proprietary",
+        "tooltip": "The published root license is not OSI-approved."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-16T08:30:33.414Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/siltax03-crypto/charmM.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "charmM"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "charmM"
+        ],
+        "aliases": [],
+        "source": [
+          "siltax03-crypto-charmm",
+          "github-1317958977",
+          "siltax03-crypto/charmM",
+          "https://github.com/siltax03-crypto/charmM"
+        ],
+        "summary": [
+          "SillyTavern extension CHARM Memory (참메모리) automatically extracts memories, timelines, world details, and character psychology from accumulating chats, then reinjects only what matters each turn (README intro)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Memory and retrieval"
+        ],
+        "tags": [
+          "Maintain long-term memory",
+          "durable memory",
+          "persistent memory",
+          "remember across chats",
+          "Persistent state",
+          "durable state",
+          "state persistence",
+          "cross-session state",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence",
+          "Retrieve relevant context",
+          "context retrieval",
+          "relevant recall",
+          "knowledge retrieval"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "siltax03-crypto"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "skirianov-sidecar-ai",
       "name": "sidecar-ai",
       "kind": "extension",
@@ -116784,6 +117196,141 @@
       }
     },
     {
+      "id": "st-chd-contexttracker",
+      "name": "ContextTracker",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "ContextTracker는 대화 전송 시 AI에 전달되는 누적 입력량을 원형 게이지로 확인하는 SillyTavern 확장입니다. 옵션에서 컨텍스트 크기 대비 사용량과 챗 히스토리 대비 사용량 표시를 전환할 수 있습니다.",
+      "canonicalUrl": "https://github.com/st-chd/ContextTracker",
+      "catalogedAt": "2026-11-16T08:40:25.400Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "inspect-prompts-and-generations",
+          "label": "Inspect prompts and generations",
+          "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-context-limits",
+          "label": "Manage context limits",
+          "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "a091baa2216f323ff2bd0854787fd3ff93a94581",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "st-chd"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-13T00:50:23.000Z",
+        "activeWeeks12": 3,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 54,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-16T08:40:25.400Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/st-chd/ContextTracker.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "ContextTracker"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "ContextTracker"
+        ],
+        "aliases": [],
+        "source": [
+          "st-chd-contexttracker",
+          "github-1404727570",
+          "st-chd/ContextTracker",
+          "https://github.com/st-chd/ContextTracker"
+        ],
+        "summary": [
+          "ContextTracker는 대화 전송 시 AI에 전달되는 누적 입력량을 원형 게이지로 확인하는 SillyTavern 확장입니다. 옵션에서 컨텍스트 크기 대비 사용량과 챗 히스토리 대비 사용량 표시를 전환할 수 있습니다."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Inspect prompts and generations",
+          "prompt inspection",
+          "generation diagnostics",
+          "review validation",
+          "request debugging",
+          "Manage context limits",
+          "context compression",
+          "context window management",
+          "token budgeting"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "st-chd"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "st-chd-foldy",
       "name": "Foldy",
       "kind": "extension",
@@ -118711,13 +119258,63 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "edecf1b2c7c1e7dffcec532af6d0eac4c7e9d86a",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "143e01137aa94e03195676a2a17667611512d49abbc3e3ce3f60244f6123cdf5",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 1,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "cab3c24cb807fd7833bc894749daeb0542a6858768cebb83e06914635b8cd00c"
+          ],
+          "scannedSha": "edecf1b2c7c1e7dffcec532af6d0eac4c7e9d86a",
+          "treeUrl": "https://github.com/STLoft/Paperback/tree/edecf1b2c7c1e7dffcec532af6d0eac4c7e9d86a",
+          "scannedAt": "2026-11-16T03:59:51.419Z",
+          "assessedAt": "2026-11-16T09:56:58.743Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1412742194/edecf1b2c7c1e7dffcec532af6d0eac4c7e9d86a/5/143e01137aa94e03195676a2a17667611512d49abbc3e3ce3f60244f6123cdf5/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1412742194/history/"
+        },
+        "history": [
+          {
+            "reportId": "143e01137aa94e03195676a2a17667611512d49abbc3e3ce3f60244f6123cdf5",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 1,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "cab3c24cb807fd7833bc894749daeb0542a6858768cebb83e06914635b8cd00c"
+            ],
+            "scannedSha": "edecf1b2c7c1e7dffcec532af6d0eac4c7e9d86a",
+            "treeUrl": "https://github.com/STLoft/Paperback/tree/edecf1b2c7c1e7dffcec532af6d0eac4c7e9d86a",
+            "scannedAt": "2026-11-16T03:59:51.419Z",
+            "assessedAt": "2026-11-16T09:56:58.743Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1412742194/edecf1b2c7c1e7dffcec532af6d0eac4c7e9d86a/5/143e01137aa94e03195676a2a17667611512d49abbc3e3ce3f60244f6123cdf5/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1412742194/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1412742194/"
       },
       "attribution": {
         "owner": {
@@ -125948,6 +126545,140 @@
         "maintainers": [
           "valdoix",
           "Fancyhe1"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "vatip13-spec-chatssi-memo",
+      "name": "ChatSSi-MeMo",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "A SillyTavern extension for writing personal memos the AI never sees; since v2, memos are stored in user files, so regular, new, and branched chats of a character share one memo pad (README).",
+      "canonicalUrl": "https://github.com/vatip13-spec/ChatSSi-MeMo",
+      "catalogedAt": "2026-11-16T08:37:06.214Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "persistent-state",
+          "label": "Persistent state",
+          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
+          "facet": "trait"
+        },
+        {
+          "id": "privacy-focused",
+          "label": "Privacy-focused",
+          "description": "Explicitly minimizes data exposure or gives users strong control over sensitive data.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "f8c3e3a9ff026f7209d1405a9442aa4b9694cf69",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "vatip13-spec"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-27T14:08:51.000Z",
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 106,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-16T08:37:06.214Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/vatip13-spec/ChatSSi-MeMo.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "ChatSSi-MeMo"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "ChatSSi-MeMo"
+        ],
+        "aliases": [],
+        "source": [
+          "vatip13-spec-chatssi-memo",
+          "github-1343554430",
+          "vatip13-spec/ChatSSi-MeMo",
+          "https://github.com/vatip13-spec/ChatSSi-MeMo"
+        ],
+        "summary": [
+          "A SillyTavern extension for writing personal memos the AI never sees; since v2, memos are stored in user files, so regular, new, and branched chats of a character share one memo pad (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Persistent state",
+          "durable state",
+          "state persistence",
+          "cross-session state",
+          "Privacy-focused",
+          "private by design",
+          "privacy preserving",
+          "data stays private"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "vatip13-spec"
         ],
         "relationships": []
       }
