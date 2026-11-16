@@ -10,11 +10,18 @@
     },
     "stage": "admitted",
     "createdAt": "2026-10-30T14:40:53.170Z",
-    "nextEligibleAt": "2026-11-16T05:52:27.368Z",
+    "nextEligibleAt": null,
     "expectedSha": null,
     "workerRunId": null,
-    "retry": null
+    "retry": {
+      "failure": {
+        "kind": "superseded",
+        "reasonCode": "input-superseded"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
   },
-  "updatedAt": "2026-11-16T05:37:27.368Z",
+  "updatedAt": "2026-11-16T06:08:15.653Z",
   "completedAt": null
 }
