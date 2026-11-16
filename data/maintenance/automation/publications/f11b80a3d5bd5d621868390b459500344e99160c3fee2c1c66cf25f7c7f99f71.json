@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f11b80a3d5bd5d621868390b459500344e99160c3fee2c1c66cf25f7c7f99f71",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1184439628:gu-gu-gu-gu-gu-weather-calendar-assistant",
+      "inputDigest": "4f50c663d892f42a94d5aac396e82d89c60c63750779e8b9f40109ed5511ec6a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-31T13:50:04.888Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1184439628",
+    "identity": "github:1184439628"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43895378896,
+    "sourceSha": "db0002992fe3125f8eca91aa8351153825ef4f65"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/gu-gu-gu-gu-gu-weather-calendar-assistant.json",
+      "sha256": "fcb3da86e7d816dfbf0ab9bde1db91e4d4924610574bdad8350c4260bf93eae0",
+      "gitBlobSha": "e5062f0cba661ad3e81b5a822ec0825fad179eb8"
+    }
+  ]
+}

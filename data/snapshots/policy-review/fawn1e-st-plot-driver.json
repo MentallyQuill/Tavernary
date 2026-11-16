@@ -5,12 +5,9 @@
   "source_identity": "github:fawn1e/st-plot-driver",
   "evidence_fingerprint": "85af71ad2a533ff0d1844b3d6698f0db83084d9a699b710f00dba830c587c9c7",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-22T12:51:19.711Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-22T12:51:19.711Z"
-  },
+  "reviewed_at": "2026-11-16T15:32:49.514Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
