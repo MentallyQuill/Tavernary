@@ -1,0 +1,55 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1413979627",
+  "repository": {
+    "id": 1413979627,
+    "owner": "STLoft",
+    "name": "Chat-BGM",
+    "url": "https://github.com/STLoft/Chat-BGM",
+    "description": "SillyTavern 확장: 채팅 장면을 읽고 어울리는 곡을 골라 YouTube 공식 음원으로 재생",
+    "default_branch": "main",
+    "head_sha": "645d5480b94e1d3ddf8c278e229ca8f01103ce32",
+    "head_committed_at": "2026-10-11T10:12:24.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-10-11T05:49:50.000Z",
+    "size_kb": 382
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-10-11T10:12:24.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-11T10:12:24.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-16T00:15:53.417Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "645d5480b94e1d3ddf8c278e229ca8f01103ce32"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-11-16T00:15:53.417Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "STLoft", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-16T00:15:53.417Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
