@@ -8,20 +8,13 @@
       "inputDigest": "a0970a2f8416310faf09cc498d9c374d7107bc014d5bb7c6ab9f996d07e7c00e",
       "policyVersion": "5.5"
     },
-    "stage": "admitted",
+    "stage": "finalized",
     "createdAt": "2026-11-16T03:59:51.419Z",
     "nextEligibleAt": null,
-    "expectedSha": "edecf1b2c7c1e7dffcec532af6d0eac4c7e9d86a",
+    "expectedSha": "128477e59233836e77574d2c8bb2e2137f086ecd",
     "workerRunId": null,
-    "retry": {
-      "failure": {
-        "kind": "superseded",
-        "reasonCode": "input-superseded"
-      },
-      "transientAttempts": 0,
-      "immediateAttempts": 0
-    }
+    "retry": null
   },
-  "updatedAt": "2026-11-16T05:33:17.826Z",
-  "completedAt": null
+  "updatedAt": "2026-11-16T12:36:03.777Z",
+  "completedAt": "2026-11-16T12:36:03.777Z"
 }
