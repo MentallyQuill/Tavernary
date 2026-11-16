@@ -10785,6 +10785,118 @@
       }
     },
     {
+      "id": "athenawin00-boop-lorebook-keeper",
+      "name": "lorebook-keeper",
+      "kind": "extension",
+      "metadataStatus": "provisional",
+      "sourceStatus": "healthy",
+      "primaryFunction": "memory-retrieval",
+      "summary": "채팅을 날짜별 로어북 항목으로 정리해 주는 SillyTavern 확장 — 외부 전송 없이, 잊히면 안 되는 것은 매 턴 항상",
+      "canonicalUrl": "https://github.com/athenawin00-boop/lorebook-keeper",
+      "catalogedAt": "2026-11-16T12:48:35.961Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "88ea22527d1b07dfe6081e7a34c0409d9b0c4c41",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "athenawin00-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-22T15:18:24.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 79,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-16T12:48:35.961Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/athenawin00-boop/lorebook-keeper.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "lorebook-keeper"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "lorebook-keeper"
+        ],
+        "aliases": [],
+        "source": [
+          "athenawin00-boop-lorebook-keeper",
+          "github-1381766101",
+          "athenawin00-boop/lorebook-keeper",
+          "https://github.com/athenawin00-boop/lorebook-keeper"
+        ],
+        "summary": [
+          "채팅을 날짜별 로어북 항목으로 정리해 주는 SillyTavern 확장 — 외부 전송 없이, 잊히면 안 되는 것은 매 턴 항상"
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Memory and retrieval"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "athenawin00-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "athenawin00-boop-lorebook-triage",
       "name": "lorebook-triage",
       "kind": "extension",
@@ -117633,13 +117745,63 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "37b18dec0deab0a6b12cfb2309ed27abc1d14474",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "ade9635468f183c93ad44383ae8465b1cc300dfac734a0c11014205023cb2625",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 1,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "ca60e1d5f674a3172b139bfd70e381c13ba7af49a7cb36488dcf5742600f6489"
+          ],
+          "scannedSha": "37b18dec0deab0a6b12cfb2309ed27abc1d14474",
+          "treeUrl": "https://github.com/st-chd/Foldy/tree/37b18dec0deab0a6b12cfb2309ed27abc1d14474",
+          "scannedAt": "2026-11-16T04:43:13.066Z",
+          "assessedAt": "2026-11-16T13:36:13.884Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1283172438/37b18dec0deab0a6b12cfb2309ed27abc1d14474/5/ade9635468f183c93ad44383ae8465b1cc300dfac734a0c11014205023cb2625/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1283172438/history/"
+        },
+        "history": [
+          {
+            "reportId": "ade9635468f183c93ad44383ae8465b1cc300dfac734a0c11014205023cb2625",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 1,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "ca60e1d5f674a3172b139bfd70e381c13ba7af49a7cb36488dcf5742600f6489"
+            ],
+            "scannedSha": "37b18dec0deab0a6b12cfb2309ed27abc1d14474",
+            "treeUrl": "https://github.com/st-chd/Foldy/tree/37b18dec0deab0a6b12cfb2309ed27abc1d14474",
+            "scannedAt": "2026-11-16T04:43:13.066Z",
+            "assessedAt": "2026-11-16T13:36:13.884Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1283172438/37b18dec0deab0a6b12cfb2309ed27abc1d14474/5/ade9635468f183c93ad44383ae8465b1cc300dfac734a0c11014205023cb2625/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1283172438/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1283172438/"
       },
       "attribution": {
         "owner": {
