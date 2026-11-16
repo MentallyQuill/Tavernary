@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1375792832",
+  "head_sha": "6a2f91efec32bdeb70c641d16f457644decf22b5",
+  "observed_at": "2026-11-16T07:03:40.383Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "st-markdown-toolbar",
+  "manifest": {
+    "display_name": "Markdown Toolbar",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
