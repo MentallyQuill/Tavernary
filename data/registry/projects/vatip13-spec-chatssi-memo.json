@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "vatip13-spec-chatssi-memo",
+  "name": "ChatSSi-MeMo",
+  "kind": "extension",
+  "summary": "A SillyTavern extension for writing personal memos the AI never sees; since v2, memos are stored in user files, so regular, new, and branched chats of a character share one memo pad (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1343554430",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["persistent-state", "privacy-focused"],
+  "cataloged_at": "2026-11-16T08:37:06.214Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
