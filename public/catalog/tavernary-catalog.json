@@ -77493,7 +77493,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-30T14:43:34.582Z",
+      "refreshedAt": "2026-11-16T07:17:40.558Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -115232,6 +115232,150 @@
       }
     },
     {
+      "id": "spaceship4415-st-markdown-toolbar",
+      "name": "st-markdown-toolbar",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "SillyTavern extension adding a one-tap Markdown toolbar above the input box: wrap selections in bold, quotes, or OOC markers, with live preview, reorderable and shareable button sets (README: one-tap formatting buttons).",
+      "canonicalUrl": "https://github.com/spaceship4415/st-markdown-toolbar",
+      "catalogedAt": "2026-11-16T07:03:24.563Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "customize-the-interface",
+          "label": "Customize the interface",
+          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "edit-and-refine-messages",
+          "label": "Edit and refine messages",
+          "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
+          "facet": "goal"
+        },
+        {
+          "id": "mobile-friendly",
+          "label": "Mobile-friendly",
+          "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "6a2f91efec32bdeb70c641d16f457644decf22b5",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "spaceship4415"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-18T14:26:33.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 99,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-16T07:03:24.563Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/spaceship4415/st-markdown-toolbar.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "st-markdown-toolbar"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "st-markdown-toolbar"
+        ],
+        "aliases": [],
+        "source": [
+          "spaceship4415-st-markdown-toolbar",
+          "github-1375792832",
+          "spaceship4415/st-markdown-toolbar",
+          "https://github.com/spaceship4415/st-markdown-toolbar"
+        ],
+        "summary": [
+          "SillyTavern extension adding a one-tap Markdown toolbar above the input box: wrap selections in bold, quotes, or OOC markers, with live preview, reorderable and shareable button sets (README: one-tap formatting buttons)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Customize the interface",
+          "interface theming",
+          "layout customization",
+          "UI personalization",
+          "Edit and refine messages",
+          "message rewriting",
+          "chat editing",
+          "response refinement",
+          "Mobile-friendly",
+          "mobile support",
+          "phone friendly",
+          "responsive mobile UI"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "spaceship4415"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "spaceship4415-st-nanogpt",
       "name": "st-nanogpt",
       "kind": "extension",
@@ -131100,10 +131244,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 4,
+        "stars": 5,
         "forks": 0,
         "watchers": 0,
-        "aggregate": 4
+        "aggregate": 5
       },
       "repositorySizeKb": 1166,
       "license": {
@@ -131112,7 +131256,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-30T14:43:11.456Z",
+      "refreshedAt": "2026-11-16T07:16:28.880Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
