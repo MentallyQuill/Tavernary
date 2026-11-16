@@ -5,12 +5,9 @@
   "source_identity": "github:izanagi771-stack/story-editor",
   "evidence_fingerprint": "d48399858bda678c499a40faa4e2421e2538589786a25a7e646618e93ec1f749",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-06T14:34:29.302Z",
-  "retry": {
-    "attempts": 6,
-    "last_failure_at": "2026-10-06T14:34:29.302Z"
-  },
+  "reviewed_at": "2026-11-12T14:45:23.939Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
