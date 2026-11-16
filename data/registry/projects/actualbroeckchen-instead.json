@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "actualbroeckchen-instead",
+  "name": "inSTead",
+  "kind": "extension",
+  "summary": "inSTead is a SillyTavern extension that adds an editorial feedback icon to AI messages (README), letting you request revisions generated with your existing settings and saved as swipes so the original is preserved.",
+  "metadata_status": "curated",
+  "source_id": "github-1145563299",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [
+    "edit-and-refine-messages",
+    "guide-model-responses",
+    "non-destructive"
+  ],
+  "cataloged_at": "2026-11-16T01:50:22.136Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

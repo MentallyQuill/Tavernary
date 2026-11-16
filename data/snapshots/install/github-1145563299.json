@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1145563299",
+  "head_sha": "6b5d37cae7b5722063d32355b24e9089e39fd28a",
+  "observed_at": "2026-11-16T01:50:51.571Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "inSTead",
+  "manifest": {
+    "display_name": "inSTead",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
