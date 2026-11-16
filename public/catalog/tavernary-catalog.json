@@ -2388,6 +2388,157 @@
       }
     },
     {
+      "id": "actualbroeckchen-instead",
+      "name": "inSTead",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "generation-reasoning",
+      "summary": "inSTead is a SillyTavern extension that adds an editorial feedback icon to AI messages (README), letting you request revisions generated with your existing settings and saved as swipes so the original is preserved.",
+      "canonicalUrl": "https://github.com/ActualBroeckchen/inSTead",
+      "catalogedAt": "2026-11-16T01:50:22.136Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "edit-and-refine-messages",
+          "label": "Edit and refine messages",
+          "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
+          "facet": "goal"
+        },
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
+          "facet": "goal"
+        },
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "6b5d37cae7b5722063d32355b24e9089e39fd28a",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "ActualBroeckchen"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "jtweedie",
+            "botOrAi": false
+          }
+        ],
+        "humanContributorCount": 1,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": null,
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": true
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 17,
+        "forks": 2,
+        "watchers": 0,
+        "aggregate": 19
+      },
+      "repositorySizeKb": 10852,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-16T01:50:22.136Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/ActualBroeckchen/inSTead.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "inSTead"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "inSTead"
+        ],
+        "aliases": [],
+        "source": [
+          "actualbroeckchen-instead",
+          "github-1145563299",
+          "ActualBroeckchen/inSTead",
+          "https://github.com/ActualBroeckchen/inSTead"
+        ],
+        "summary": [
+          "inSTead is a SillyTavern extension that adds an editorial feedback icon to AI messages (README), letting you request revisions generated with your existing settings and saved as swipes so the original is preserved."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Generation and reasoning"
+        ],
+        "tags": [
+          "Edit and refine messages",
+          "message rewriting",
+          "chat editing",
+          "response refinement",
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control",
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "ActualBroeckchen",
+          "jtweedie"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "adnv3k-sillytavern-inline-generated-media",
       "name": "SillyTavern-Inline-Generated-Media",
       "kind": "extension",
@@ -100548,29 +100699,58 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "stale",
+        "freshness": "current",
         "currentSha": "a7b72734afcbae51ab3089dcc1984e96732afa64",
         "report": {
-          "reportId": "2eb53e9af9c9839a7fd75f89f8a1a79f638dcfd8587e81fab9a3b707e27a171d",
+          "reportId": "37e7ac1b1f3771e5e0533061f03a4f8e64fd0265209fd149b939c966cf934959",
           "riskLevel": "low",
           "headline": "Low concern",
           "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
-          "minorCautions": 0,
+          "minorCautions": 28,
           "materialConcerns": 0,
           "highDanger": 0,
           "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
-          "citedFindingIds": [],
-          "scannedSha": "fd364d097db826e56c571eade43e3755d2ddb151",
-          "treeUrl": "https://github.com/sakhavhyand/SillyTavern-AnotherCharManager/tree/fd364d097db826e56c571eade43e3755d2ddb151",
-          "scannedAt": "2026-10-08T14:54:08.585Z",
-          "assessedAt": "2026-10-08T15:02:04.506Z",
+          "citedFindingIds": [
+            "08cc4d54c1a8840b79480b8043837bbf1d874494b4d2f17fb65e7a1347e49670",
+            "183118c91465881d33289164b1666f38a05dcfcb3ccf7be6c8e3db999c645cb4",
+            "1a19f898b62a6a20ecf396074678d9febba3ee8201d6b1d8679eba1f4f50a61d",
+            "3c1cf2d4bf66f55c1085399308823c5bf2d8dedc86211293032201345f567e9b",
+            "523ecb161d2e1febc934e22850c3a0104b72621e0d80af581dbfdb61c83c0226",
+            "5ccb02d89a1513a25714e781e2b1f0341cd3532ef5c07a548bb8fd291c6bb4d0",
+            "603986a0a86afa22e763416cd46f3fc05c387d5b1664c3b61d6500c0d5611d33",
+            "63e372e5d2547aac060346719128b3a283723d6b106afe67d38433d82e1ca9aa",
+            "6d9d788cc090123b68931e854cecde294978d426aaeed24a23dc2ca4dc20a13c",
+            "79517673344b40f4dc92e7a2ab890e16188ca81160cbf079fb95d857a0500e91",
+            "92386b1a513228af2b69d005040cc9bf2563246ce4385dcf08b128bcbf3e9c0b",
+            "a24f76df3d7670729f227c4da7c37f5565489fbc85cb5d44f9c99ebed5b496ee",
+            "a32003c0e44f9c3a596fda95890bdd54c4a74ac5deeec02e852fa21fa3969e38",
+            "a6c91b9e7dac9fdd55fda4bc86dc12966fcee814986df8475e567a8fac3cbc17",
+            "ac1028f4054f53913f272c3777367f55101398662f50f703f4a02beb68415bdf",
+            "af59b101fb753315742c44811a2a6a5508ca9c49bd8e7a7d5a6af7d2ecb9b28d",
+            "c6573d7c98c93f4f7318abead3eb29134f4e1203fa92966e52adc7893cf0f4a9",
+            "c8c2cb83751debcf6ee780825b2bdca73a242d09910751571082a900f2f483ef",
+            "c9f83bc72d8a50bbeb8f5ec99e7b22cbd422f81a34a2766ebd3b30bd4da04240",
+            "ca7e219943bd1bbe4195f14b0319487f1ad0948929ae162eeffa8bfe8690a868",
+            "cbd8b8b9000a41e42411ba017f61379c69e9f9b14d8e9decb14fffb4138fa5cf",
+            "cd4d2d19639fa4078a56ccd3dea71342ab90acdafaa7dcffc2062f77baee91d3",
+            "d5dd1412d078aeb293a503f038ac5462f7470bf0b71a73e42cdc6db88a0c70d7",
+            "d5e6a4ff073b01c9c330a055e0770a5c0d0d3c84cf091d5cc91f3372f99d91e2",
+            "e69d8d8a78c2b494e5778a67adbf3c4af3e1889687750b313eee69c474052bda",
+            "ef6b5111a0779d40be0ec70a7d694a95e3147cd755f7103acef64c2900c9f670",
+            "f3cf17ffbf3968cefbf4e1e5721a4418cffb4dccb839fb64ced28dc278afd5f0",
+            "feac2de109f6da6ebdb8a468c583d69deb1c406b60efce066a355b7ff26a0c60"
+          ],
+          "scannedSha": "a7b72734afcbae51ab3089dcc1984e96732afa64",
+          "treeUrl": "https://github.com/sakhavhyand/SillyTavern-AnotherCharManager/tree/a7b72734afcbae51ab3089dcc1984e96732afa64",
+          "scannedAt": "2026-11-16T00:59:33.289Z",
+          "assessedAt": "2026-11-16T02:45:46.747Z",
           "scannerPolicyVersion": "5",
           "contextualReviewPolicyVersion": "5",
           "synthesisPolicyVersion": "5",
           "synthesisModel": "deterministic-policy-v5",
           "dangerBasis": "none",
           "assessmentSource": "deterministic_regrade",
-          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/732327589/fd364d097db826e56c571eade43e3755d2ddb151/5/2eb53e9af9c9839a7fd75f89f8a1a79f638dcfd8587e81fab9a3b707e27a171d/",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/732327589/a7b72734afcbae51ab3089dcc1984e96732afa64/5/37e7ac1b1f3771e5e0533061f03a4f8e64fd0265209fd149b939c966cf934959/",
           "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/732327589/history/"
         },
         "history": [
@@ -100641,6 +100821,58 @@
             "dangerBasis": "none",
             "assessmentSource": "deterministic_regrade",
             "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/732327589/fd364d097db826e56c571eade43e3755d2ddb151/5/2eb53e9af9c9839a7fd75f89f8a1a79f638dcfd8587e81fab9a3b707e27a171d/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/732327589/history/"
+          },
+          {
+            "reportId": "37e7ac1b1f3771e5e0533061f03a4f8e64fd0265209fd149b939c966cf934959",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 28,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "08cc4d54c1a8840b79480b8043837bbf1d874494b4d2f17fb65e7a1347e49670",
+              "183118c91465881d33289164b1666f38a05dcfcb3ccf7be6c8e3db999c645cb4",
+              "1a19f898b62a6a20ecf396074678d9febba3ee8201d6b1d8679eba1f4f50a61d",
+              "3c1cf2d4bf66f55c1085399308823c5bf2d8dedc86211293032201345f567e9b",
+              "523ecb161d2e1febc934e22850c3a0104b72621e0d80af581dbfdb61c83c0226",
+              "5ccb02d89a1513a25714e781e2b1f0341cd3532ef5c07a548bb8fd291c6bb4d0",
+              "603986a0a86afa22e763416cd46f3fc05c387d5b1664c3b61d6500c0d5611d33",
+              "63e372e5d2547aac060346719128b3a283723d6b106afe67d38433d82e1ca9aa",
+              "6d9d788cc090123b68931e854cecde294978d426aaeed24a23dc2ca4dc20a13c",
+              "79517673344b40f4dc92e7a2ab890e16188ca81160cbf079fb95d857a0500e91",
+              "92386b1a513228af2b69d005040cc9bf2563246ce4385dcf08b128bcbf3e9c0b",
+              "a24f76df3d7670729f227c4da7c37f5565489fbc85cb5d44f9c99ebed5b496ee",
+              "a32003c0e44f9c3a596fda95890bdd54c4a74ac5deeec02e852fa21fa3969e38",
+              "a6c91b9e7dac9fdd55fda4bc86dc12966fcee814986df8475e567a8fac3cbc17",
+              "ac1028f4054f53913f272c3777367f55101398662f50f703f4a02beb68415bdf",
+              "af59b101fb753315742c44811a2a6a5508ca9c49bd8e7a7d5a6af7d2ecb9b28d",
+              "c6573d7c98c93f4f7318abead3eb29134f4e1203fa92966e52adc7893cf0f4a9",
+              "c8c2cb83751debcf6ee780825b2bdca73a242d09910751571082a900f2f483ef",
+              "c9f83bc72d8a50bbeb8f5ec99e7b22cbd422f81a34a2766ebd3b30bd4da04240",
+              "ca7e219943bd1bbe4195f14b0319487f1ad0948929ae162eeffa8bfe8690a868",
+              "cbd8b8b9000a41e42411ba017f61379c69e9f9b14d8e9decb14fffb4138fa5cf",
+              "cd4d2d19639fa4078a56ccd3dea71342ab90acdafaa7dcffc2062f77baee91d3",
+              "d5dd1412d078aeb293a503f038ac5462f7470bf0b71a73e42cdc6db88a0c70d7",
+              "d5e6a4ff073b01c9c330a055e0770a5c0d0d3c84cf091d5cc91f3372f99d91e2",
+              "e69d8d8a78c2b494e5778a67adbf3c4af3e1889687750b313eee69c474052bda",
+              "ef6b5111a0779d40be0ec70a7d694a95e3147cd755f7103acef64c2900c9f670",
+              "f3cf17ffbf3968cefbf4e1e5721a4418cffb4dccb839fb64ced28dc278afd5f0",
+              "feac2de109f6da6ebdb8a468c583d69deb1c406b60efce066a355b7ff26a0c60"
+            ],
+            "scannedSha": "a7b72734afcbae51ab3089dcc1984e96732afa64",
+            "treeUrl": "https://github.com/sakhavhyand/SillyTavern-AnotherCharManager/tree/a7b72734afcbae51ab3089dcc1984e96732afa64",
+            "scannedAt": "2026-11-16T00:59:33.289Z",
+            "assessedAt": "2026-11-16T02:45:46.747Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/732327589/a7b72734afcbae51ab3089dcc1984e96732afa64/5/37e7ac1b1f3771e5e0533061f03a4f8e64fd0265209fd149b939c966cf934959/",
             "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/732327589/history/"
           }
         ],
@@ -114535,6 +114767,171 @@
         "compatibility": [],
         "maintainers": [
           "Soyo5800"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "spaceship4415-st-nanogpt",
+      "name": "st-nanogpt",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "A SillyTavern extension for NanoGPT users: shows balance and subscription usage via a badge, generates images without the Image Generation settings, and auto-writes prompts (README: Features).",
+      "canonicalUrl": "https://github.com/spaceship4415/st-nanogpt",
+      "catalogedAt": "2026-11-16T02:03:57.103Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "generate-images",
+          "label": "Generate images",
+          "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
+          "facet": "goal"
+        },
+        {
+          "id": "mobile-friendly",
+          "label": "Mobile-friendly",
+          "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
+          "facet": "trait"
+        },
+        {
+          "id": "monitor-token-usage-and-cost",
+          "label": "Monitor token usage and cost",
+          "description": "Measure, visualize, budget, or report model token consumption and spending.",
+          "facet": "goal"
+        },
+        {
+          "id": "privacy-focused",
+          "label": "Privacy-focused",
+          "description": "Explicitly minimizes data exposure or gives users strong control over sensitive data.",
+          "facet": "trait"
+        },
+        {
+          "id": "route-tasks-across-models",
+          "label": "Route tasks across models",
+          "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "0ec3ac5afc6a6e03fb1815bb3acf2700fb7e8387",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "spaceship4415"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-13T10:46:41.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          true,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 887,
+      "license": {
+        "status": "proprietary",
+        "label": "Proprietary",
+        "tooltip": "The published root license is not OSI-approved."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-16T02:03:57.103Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/spaceship4415/st-nanogpt.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "st-nanogpt"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "st-nanogpt"
+        ],
+        "aliases": [],
+        "source": [
+          "spaceship4415-st-nanogpt",
+          "github-1403119280",
+          "spaceship4415/st-nanogpt",
+          "https://github.com/spaceship4415/st-nanogpt"
+        ],
+        "summary": [
+          "A SillyTavern extension for NanoGPT users: shows balance and subscription usage via a badge, generates images without the Image Generation settings, and auto-writes prompts (README: Features)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Generate images",
+          "image generation",
+          "AI art generation",
+          "scene illustration",
+          "picture generation",
+          "Mobile-friendly",
+          "mobile support",
+          "phone friendly",
+          "responsive mobile UI",
+          "Monitor token usage and cost",
+          "usage analytics",
+          "cost tracking",
+          "token statistics",
+          "Privacy-focused",
+          "private by design",
+          "privacy preserving",
+          "data stays private",
+          "Route tasks across models",
+          "model routing",
+          "task routing",
+          "connection routing"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "spaceship4415"
         ],
         "relationships": []
       }
@@ -305188,29 +305585,58 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "stale",
+              "freshness": "current",
               "currentSha": "a7b72734afcbae51ab3089dcc1984e96732afa64",
               "report": {
-                "reportId": "2eb53e9af9c9839a7fd75f89f8a1a79f638dcfd8587e81fab9a3b707e27a171d",
+                "reportId": "37e7ac1b1f3771e5e0533061f03a4f8e64fd0265209fd149b939c966cf934959",
                 "riskLevel": "low",
                 "headline": "Low concern",
                 "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
-                "minorCautions": 0,
+                "minorCautions": 28,
                 "materialConcerns": 0,
                 "highDanger": 0,
                 "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
-                "citedFindingIds": [],
-                "scannedSha": "fd364d097db826e56c571eade43e3755d2ddb151",
-                "treeUrl": "https://github.com/sakhavhyand/SillyTavern-AnotherCharManager/tree/fd364d097db826e56c571eade43e3755d2ddb151",
-                "scannedAt": "2026-10-08T14:54:08.585Z",
-                "assessedAt": "2026-10-08T15:02:04.506Z",
+                "citedFindingIds": [
+                  "08cc4d54c1a8840b79480b8043837bbf1d874494b4d2f17fb65e7a1347e49670",
+                  "183118c91465881d33289164b1666f38a05dcfcb3ccf7be6c8e3db999c645cb4",
+                  "1a19f898b62a6a20ecf396074678d9febba3ee8201d6b1d8679eba1f4f50a61d",
+                  "3c1cf2d4bf66f55c1085399308823c5bf2d8dedc86211293032201345f567e9b",
+                  "523ecb161d2e1febc934e22850c3a0104b72621e0d80af581dbfdb61c83c0226",
+                  "5ccb02d89a1513a25714e781e2b1f0341cd3532ef5c07a548bb8fd291c6bb4d0",
+                  "603986a0a86afa22e763416cd46f3fc05c387d5b1664c3b61d6500c0d5611d33",
+                  "63e372e5d2547aac060346719128b3a283723d6b106afe67d38433d82e1ca9aa",
+                  "6d9d788cc090123b68931e854cecde294978d426aaeed24a23dc2ca4dc20a13c",
+                  "79517673344b40f4dc92e7a2ab890e16188ca81160cbf079fb95d857a0500e91",
+                  "92386b1a513228af2b69d005040cc9bf2563246ce4385dcf08b128bcbf3e9c0b",
+                  "a24f76df3d7670729f227c4da7c37f5565489fbc85cb5d44f9c99ebed5b496ee",
+                  "a32003c0e44f9c3a596fda95890bdd54c4a74ac5deeec02e852fa21fa3969e38",
+                  "a6c91b9e7dac9fdd55fda4bc86dc12966fcee814986df8475e567a8fac3cbc17",
+                  "ac1028f4054f53913f272c3777367f55101398662f50f703f4a02beb68415bdf",
+                  "af59b101fb753315742c44811a2a6a5508ca9c49bd8e7a7d5a6af7d2ecb9b28d",
+                  "c6573d7c98c93f4f7318abead3eb29134f4e1203fa92966e52adc7893cf0f4a9",
+                  "c8c2cb83751debcf6ee780825b2bdca73a242d09910751571082a900f2f483ef",
+                  "c9f83bc72d8a50bbeb8f5ec99e7b22cbd422f81a34a2766ebd3b30bd4da04240",
+                  "ca7e219943bd1bbe4195f14b0319487f1ad0948929ae162eeffa8bfe8690a868",
+                  "cbd8b8b9000a41e42411ba017f61379c69e9f9b14d8e9decb14fffb4138fa5cf",
+                  "cd4d2d19639fa4078a56ccd3dea71342ab90acdafaa7dcffc2062f77baee91d3",
+                  "d5dd1412d078aeb293a503f038ac5462f7470bf0b71a73e42cdc6db88a0c70d7",
+                  "d5e6a4ff073b01c9c330a055e0770a5c0d0d3c84cf091d5cc91f3372f99d91e2",
+                  "e69d8d8a78c2b494e5778a67adbf3c4af3e1889687750b313eee69c474052bda",
+                  "ef6b5111a0779d40be0ec70a7d694a95e3147cd755f7103acef64c2900c9f670",
+                  "f3cf17ffbf3968cefbf4e1e5721a4418cffb4dccb839fb64ced28dc278afd5f0",
+                  "feac2de109f6da6ebdb8a468c583d69deb1c406b60efce066a355b7ff26a0c60"
+                ],
+                "scannedSha": "a7b72734afcbae51ab3089dcc1984e96732afa64",
+                "treeUrl": "https://github.com/sakhavhyand/SillyTavern-AnotherCharManager/tree/a7b72734afcbae51ab3089dcc1984e96732afa64",
+                "scannedAt": "2026-11-16T00:59:33.289Z",
+                "assessedAt": "2026-11-16T02:45:46.747Z",
                 "scannerPolicyVersion": "5",
                 "contextualReviewPolicyVersion": "5",
                 "synthesisPolicyVersion": "5",
                 "synthesisModel": "deterministic-policy-v5",
                 "dangerBasis": "none",
                 "assessmentSource": "deterministic_regrade",
-                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/732327589/fd364d097db826e56c571eade43e3755d2ddb151/5/2eb53e9af9c9839a7fd75f89f8a1a79f638dcfd8587e81fab9a3b707e27a171d/",
+                "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/732327589/a7b72734afcbae51ab3089dcc1984e96732afa64/5/37e7ac1b1f3771e5e0533061f03a4f8e64fd0265209fd149b939c966cf934959/",
                 "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/732327589/history/"
               },
               "history": [
@@ -305281,6 +305707,58 @@
                   "dangerBasis": "none",
                   "assessmentSource": "deterministic_regrade",
                   "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/732327589/fd364d097db826e56c571eade43e3755d2ddb151/5/2eb53e9af9c9839a7fd75f89f8a1a79f638dcfd8587e81fab9a3b707e27a171d/",
+                  "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/732327589/history/"
+                },
+                {
+                  "reportId": "37e7ac1b1f3771e5e0533061f03a4f8e64fd0265209fd149b939c966cf934959",
+                  "riskLevel": "low",
+                  "headline": "Low concern",
+                  "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+                  "minorCautions": 28,
+                  "materialConcerns": 0,
+                  "highDanger": 0,
+                  "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+                  "citedFindingIds": [
+                    "08cc4d54c1a8840b79480b8043837bbf1d874494b4d2f17fb65e7a1347e49670",
+                    "183118c91465881d33289164b1666f38a05dcfcb3ccf7be6c8e3db999c645cb4",
+                    "1a19f898b62a6a20ecf396074678d9febba3ee8201d6b1d8679eba1f4f50a61d",
+                    "3c1cf2d4bf66f55c1085399308823c5bf2d8dedc86211293032201345f567e9b",
+                    "523ecb161d2e1febc934e22850c3a0104b72621e0d80af581dbfdb61c83c0226",
+                    "5ccb02d89a1513a25714e781e2b1f0341cd3532ef5c07a548bb8fd291c6bb4d0",
+                    "603986a0a86afa22e763416cd46f3fc05c387d5b1664c3b61d6500c0d5611d33",
+                    "63e372e5d2547aac060346719128b3a283723d6b106afe67d38433d82e1ca9aa",
+                    "6d9d788cc090123b68931e854cecde294978d426aaeed24a23dc2ca4dc20a13c",
+                    "79517673344b40f4dc92e7a2ab890e16188ca81160cbf079fb95d857a0500e91",
+                    "92386b1a513228af2b69d005040cc9bf2563246ce4385dcf08b128bcbf3e9c0b",
+                    "a24f76df3d7670729f227c4da7c37f5565489fbc85cb5d44f9c99ebed5b496ee",
+                    "a32003c0e44f9c3a596fda95890bdd54c4a74ac5deeec02e852fa21fa3969e38",
+                    "a6c91b9e7dac9fdd55fda4bc86dc12966fcee814986df8475e567a8fac3cbc17",
+                    "ac1028f4054f53913f272c3777367f55101398662f50f703f4a02beb68415bdf",
+                    "af59b101fb753315742c44811a2a6a5508ca9c49bd8e7a7d5a6af7d2ecb9b28d",
+                    "c6573d7c98c93f4f7318abead3eb29134f4e1203fa92966e52adc7893cf0f4a9",
+                    "c8c2cb83751debcf6ee780825b2bdca73a242d09910751571082a900f2f483ef",
+                    "c9f83bc72d8a50bbeb8f5ec99e7b22cbd422f81a34a2766ebd3b30bd4da04240",
+                    "ca7e219943bd1bbe4195f14b0319487f1ad0948929ae162eeffa8bfe8690a868",
+                    "cbd8b8b9000a41e42411ba017f61379c69e9f9b14d8e9decb14fffb4138fa5cf",
+                    "cd4d2d19639fa4078a56ccd3dea71342ab90acdafaa7dcffc2062f77baee91d3",
+                    "d5dd1412d078aeb293a503f038ac5462f7470bf0b71a73e42cdc6db88a0c70d7",
+                    "d5e6a4ff073b01c9c330a055e0770a5c0d0d3c84cf091d5cc91f3372f99d91e2",
+                    "e69d8d8a78c2b494e5778a67adbf3c4af3e1889687750b313eee69c474052bda",
+                    "ef6b5111a0779d40be0ec70a7d694a95e3147cd755f7103acef64c2900c9f670",
+                    "f3cf17ffbf3968cefbf4e1e5721a4418cffb4dccb839fb64ced28dc278afd5f0",
+                    "feac2de109f6da6ebdb8a468c583d69deb1c406b60efce066a355b7ff26a0c60"
+                  ],
+                  "scannedSha": "a7b72734afcbae51ab3089dcc1984e96732afa64",
+                  "treeUrl": "https://github.com/sakhavhyand/SillyTavern-AnotherCharManager/tree/a7b72734afcbae51ab3089dcc1984e96732afa64",
+                  "scannedAt": "2026-11-16T00:59:33.289Z",
+                  "assessedAt": "2026-11-16T02:45:46.747Z",
+                  "scannerPolicyVersion": "5",
+                  "contextualReviewPolicyVersion": "5",
+                  "synthesisPolicyVersion": "5",
+                  "synthesisModel": "deterministic-policy-v5",
+                  "dangerBasis": "none",
+                  "assessmentSource": "deterministic_regrade",
+                  "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/732327589/a7b72734afcbae51ab3089dcc1984e96732afa64/5/37e7ac1b1f3771e5e0533061f03a4f8e64fd0265209fd149b939c966cf934959/",
                   "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/732327589/history/"
                 }
               ],
