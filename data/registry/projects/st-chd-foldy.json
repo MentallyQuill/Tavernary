@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "st-chd-foldy",
+  "name": "Foldy",
+  "kind": "extension",
+  "summary": "Foldy is a SillyTavern extension that adds folders to prompt, lorebook (World Info), and regex lists, letting users collapse crowded entries and manage order and settings per folder (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1283172438",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["manage-lorebooks", "manage-prompts-and-presets"],
+  "cataloged_at": "2026-11-16T04:07:07.996Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
