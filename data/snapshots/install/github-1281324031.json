@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1281324031",
+  "head_sha": "9455fc5f33dde530fca5296fe96a36f639baf7be",
+  "observed_at": "2026-11-16T00:16:19.470Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "polaroid",
+  "manifest": {
+    "display_name": "📷 Polaroid",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-polaroid",
+  "name": "polaroid",
+  "kind": "extension",
+  "summary": "A SillyTavern extension (README: \"Polaroid — SillyTavern 확장\") that generates images from scenes in AI responses and saves them to per-character polaroid albums.",
+  "metadata_status": "curated",
+  "source_id": "github-1281324031",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["add-visual-immersion", "generate-images"],
+  "cataloged_at": "2026-11-16T00:16:10.223Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
