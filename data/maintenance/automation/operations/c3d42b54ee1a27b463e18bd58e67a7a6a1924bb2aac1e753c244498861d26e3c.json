@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c3d42b54ee1a27b463e18bd58e67a7a6a1924bb2aac1e753c244498861d26e3c",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1324198592:foreverharibo-boop-simple-extension",
+      "inputDigest": "107144d2237a7400735e2ba21a516450fb21f5415da51dbb2fc3a3e086177d58",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-16T11:04:18.427Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "superseded",
+        "reasonCode": "input-superseded"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-16T12:20:55.791Z",
+  "completedAt": null
+}
