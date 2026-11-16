@@ -27813,8 +27813,11 @@
         "runId": 43906226471,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 8449
+      }
     },
     {
       "id": "6652518a7cd1b0df047a8d57ae6a9b6cb5ed0823b215d694e01058fe38ddf2f5",
@@ -27832,8 +27835,11 @@
         "runId": 43906226471,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     },
     {
       "id": "1e5307891c72a234ecde641f7bc0133216e77e53550741a0b85deb2fc11296fa",
@@ -27851,8 +27857,11 @@
         "runId": 43907855871,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 1,
+        "tokens": 8377
+      }
     },
     {
       "id": "e7efe8d46ae63ec43cdeb56e1128e3dd7fd3f46f904dc869c11746968f2d473e",
@@ -27870,8 +27879,11 @@
         "runId": 43907855871,
         "workflow": ".github/workflows/review-catalog-policy.yml"
       },
-      "settled": false,
-      "usage": null
+      "settled": true,
+      "usage": {
+        "requests": 0,
+        "tokens": 0
+      }
     }
   ]
 }
