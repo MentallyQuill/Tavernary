@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "ze-ro-soda-storybooster",
+  "name": "storybooster",
+  "kind": "extension",
+  "summary": "storybooster is a SillyTavern extension that assists roleplay by supporting genre feel, character personality, and next story development (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1312817198",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": ["plan-stories-and-scenes"],
+  "cataloged_at": "2026-11-16T17:03:13.807Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
