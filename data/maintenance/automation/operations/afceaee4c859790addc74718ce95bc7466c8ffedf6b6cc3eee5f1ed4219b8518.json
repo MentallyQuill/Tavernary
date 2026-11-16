@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "afceaee4c859790addc74718ce95bc7466c8ffedf6b6cc3eee5f1ed4219b8518",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1121059972:fawn1e-st-plot-driver",
+      "inputDigest": "085c8b46506f324f56aac51dc7ae525f4eff2268df16bc0ab5bfea2a9fd090af",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-31T13:50:05.497Z",
+    "nextEligibleAt": null,
+    "expectedSha": "4a15083408396fb97bec2b434b113718fe937a08",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-16T15:59:28.382Z",
+  "completedAt": null
+}
