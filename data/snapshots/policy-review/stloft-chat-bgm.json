@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "stloft-chat-bgm",
+  "source_id": "github-1413979627",
+  "source_identity": "github:stloft/chat-bgm",
+  "evidence_fingerprint": "e56a82f296b7d33ee57f5b6ec2f59fda8e626a2af654263660048300fa5a1dd1",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-16T01:13:38.418Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}
