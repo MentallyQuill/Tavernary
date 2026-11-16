@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1403861630",
+  "head_sha": "87a90c19062b3d4a2b7fe63193c10e366cdbfdd3",
+  "observed_at": "2026-11-16T05:40:33.510Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "st-eruda",
+  "manifest": {
+    "display_name": "Eruda Mobile Console",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
