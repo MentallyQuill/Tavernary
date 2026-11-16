@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "spaceship4415-st-nanogpt",
+  "name": "st-nanogpt",
+  "kind": "extension",
+  "summary": "A SillyTavern extension for NanoGPT users: shows balance and subscription usage via a badge, generates images without the Image Generation settings, and auto-writes prompts (README: Features).",
+  "metadata_status": "curated",
+  "source_id": "github-1403119280",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "generate-images",
+    "mobile-friendly",
+    "monitor-token-usage-and-cost",
+    "privacy-focused",
+    "route-tasks-across-models"
+  ],
+  "cataloged_at": "2026-11-16T02:03:57.103Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
