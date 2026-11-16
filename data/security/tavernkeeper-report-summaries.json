@@ -1,6 +1,6 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-11-15T17:33:25.229Z",
+  "generated_at": "2026-11-16T00:59:59.160Z",
   "preferred_report_ids": [
     "8585ad6405b32aa3c434a6dd81257f60a384ad8dea5df02ad5211a3f1f5768cf",
     "383b1635081f9366547124f9e19a4d52a19290f859c7f8d6ebb82930a5ca4787",
@@ -458,7 +458,8 @@
     "99847244f7285a1d26b3db9a6a9a35a6771b597fd078c6006f1384470176662c",
     "b102cd6ac77fb46480695e9dc3f9457661397356c17e5d511a62eb82484289a2",
     "b1f4300ab81475ecd3b0f63c79526aa8a753e68ea4ba0db64901d01275e93ac0",
-    "0d84c677e1311b51cab5eeec6d73591713f2b889472709ef05df33e405b02400"
+    "0d84c677e1311b51cab5eeec6d73591713f2b889472709ef05df33e405b02400",
+    "3fac00546ee831680378ee37fd1a69c772d23a16cb0dba023af1c07b92ad807b"
   ],
   "reports": [
     {
@@ -102390,6 +102391,85 @@
         "high_danger": 0,
         "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
         "cited_finding_ids": [],
+        "interaction_chains": []
+      }
+    },
+    {
+      "report_id": "3fac00546ee831680378ee37fd1a69c772d23a16cb0dba023af1c07b92ad807b",
+      "report_digest": "3fac00546ee831680378ee37fd1a69c772d23a16cb0dba023af1c07b92ad807b",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "5",
+      "rule_catalog_version": "2",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "5",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v7",
+      "assessment_schema_version": "contextual-assessment-v2",
+      "source_id": "github-1413979627",
+      "provider": "github",
+      "repository_id": 1413979627,
+      "repository": "STLoft/Chat-BGM",
+      "target_sha": "645d5480b94e1d3ddf8c278e229ca8f01103ce32",
+      "completed_at": "2026-11-16T00:42:44.598Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 2,
+        "assessments": 2,
+        "observations": 0,
+        "items": 2,
+        "disposition": {
+          "expected_behavior": 1,
+          "minor_weakness": 1,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 1,
+          "low": 1,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 2,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": { "low": 0, "medium": 1, "high": 1 },
+        "recommended_risk": { "low": 2, "material": 0, "high": 0 }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 7,
+        "inventory_bytes": 281984,
+        "tools_completed": 6,
+        "tools_not_applicable": 2,
+        "evidence_validated": 2,
+        "metadata_only_candidates": 0,
+        "review_required": 2,
+        "review_completed": 2,
+        "javascript_analysis_status": "complete"
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1413979627/645d5480b94e1d3ddf8c278e229ca8f01103ce32/5/3fac00546ee831680378ee37fd1a69c772d23a16cb0dba023af1c07b92ad807b/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1413979627/history/",
+      "assessed_at": "2026-11-16T01:05:43.041Z",
+      "synthesis_policy_version": "5",
+      "synthesis_model": "deterministic-policy-v5",
+      "danger_basis": "none",
+      "assessment_source": "deterministic_regrade",
+      "assessment": {
+        "risk_level": "low",
+        "headline": "Low concern",
+        "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+        "minor_cautions": 1,
+        "material_concerns": 0,
+        "high_danger": 0,
+        "malicious_evidence": "No evidence of malicious behavior was identified in the completed review.",
+        "cited_finding_ids": [
+          "96e3e79a404af2abec286e36c5bec0428a76522e1308560d6abc3882576f4228"
+        ],
         "interaction_chains": []
       }
     }
