@@ -115924,13 +115924,63 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "87a90c19062b3d4a2b7fe63193c10e366cdbfdd3",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "30e040b80dd889fa4f825bf8711d0742d0b77486a09f77ec8015b55617062e2e",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 1,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "89a06335b1abb9e93c3e769d2929e831a1577982cb725c56df79126783c3c3fc"
+          ],
+          "scannedSha": "87a90c19062b3d4a2b7fe63193c10e366cdbfdd3",
+          "treeUrl": "https://github.com/spaceship4415/st-eruda/tree/87a90c19062b3d4a2b7fe63193c10e366cdbfdd3",
+          "scannedAt": "2026-11-16T06:13:07.834Z",
+          "assessedAt": "2026-11-16T17:44:39.144Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1403861630/87a90c19062b3d4a2b7fe63193c10e366cdbfdd3/5/30e040b80dd889fa4f825bf8711d0742d0b77486a09f77ec8015b55617062e2e/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1403861630/history/"
+        },
+        "history": [
+          {
+            "reportId": "30e040b80dd889fa4f825bf8711d0742d0b77486a09f77ec8015b55617062e2e",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 1,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "89a06335b1abb9e93c3e769d2929e831a1577982cb725c56df79126783c3c3fc"
+            ],
+            "scannedSha": "87a90c19062b3d4a2b7fe63193c10e366cdbfdd3",
+            "treeUrl": "https://github.com/spaceship4415/st-eruda/tree/87a90c19062b3d4a2b7fe63193c10e366cdbfdd3",
+            "scannedAt": "2026-11-16T06:13:07.834Z",
+            "assessedAt": "2026-11-16T17:44:39.144Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1403861630/87a90c19062b3d4a2b7fe63193c10e366cdbfdd3/5/30e040b80dd889fa4f825bf8711d0742d0b77486a09f77ec8015b55617062e2e/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1403861630/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1403861630/"
       },
       "attribution": {
         "owner": {
