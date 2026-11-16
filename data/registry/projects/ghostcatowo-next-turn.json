@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "ghostcatowo-next-turn",
+  "name": "Next-Turn",
+  "kind": "extension",
+  "summary": "Next-Turn is a SillyTavern extension by ghostcatowo: send with an empty input box and it injects your preconfigured prompt instead, triggering saved instructions with one tap (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1415632630",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": ["guide-model-responses"],
+  "cataloged_at": "2026-11-16T08:31:38.505Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
