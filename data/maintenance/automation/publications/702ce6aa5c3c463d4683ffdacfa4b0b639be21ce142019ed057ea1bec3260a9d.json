@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "702ce6aa5c3c463d4683ffdacfa4b0b639be21ce142019ed057ea1bec3260a9d",
+    "identity": {
+      "kind": "refresh",
+      "subject": "source:github-732327589",
+      "inputDigest": "b9087691d47951d0e25ef21e15f3265a191251ee6bf403ed7d92a4942bbf04cd",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-30T14:40:37.755Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-732327589",
+    "identity": "github:732327589"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/refresh-catalog.yml",
+    "runId": 43779075644,
+    "sourceSha": "5faa751dee63a50fdb53c8a7e07006b9b11b28ab"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/github/github-732327589.json",
+      "sha256": "9cbfcd0186c37b428edf68a47bda4c1f9a958b632313ecaa542b5301f880722a",
+      "gitBlobSha": "26c0e0d41b16e8f7ec516bef6d1086769e20b473"
+    },
+    {
+      "path": "data/snapshots/install/github-732327589.json",
+      "sha256": "ebf62ba3bb53111e82092d7481c62b262dada629e29f9c114b8db082fc5cf07b",
+      "gitBlobSha": "c6bc3cb5a20a77712a5faa0d1226b371b68ad2ca"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "be157f240cb46f975feac3a855e619d21d26fd4dba92066aa77482f76f2af594",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1075711284:spicymarinara-rpg-companion-sillytavern",
+      "inputDigest": "8c4a9b833820063d2594945ee8d1ef0540a2e68d9beb7531f7b699834a673ef0",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-12T16:13:08.809Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1075711284",
+    "identity": "github:1075711284"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43243103755,
+    "sourceSha": "d3b33077ff577c892afeb3ce83a265d8dd472b91"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/spicymarinara-rpg-companion-sillytavern.json",
+      "sha256": "ed4e103301a96653314721decab1aeb6487e3112a3a31b90491694694825d5c0",
+      "gitBlobSha": "55ac17d762e29604c74dacfe69cc70656bc387f9"
+    }
+  ]
+}
