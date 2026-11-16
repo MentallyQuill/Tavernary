@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1317958977",
+  "head_sha": "82463dda56f3b2ffb544b0206a9ef9f8f48cb499",
+  "observed_at": "2026-11-16T08:30:44.984Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "charmM",
+  "manifest": {
+    "display_name": "참메모리",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

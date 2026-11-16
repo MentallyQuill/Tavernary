@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "siltax03-crypto-charmm",
+  "name": "charmM",
+  "kind": "extension",
+  "summary": "SillyTavern extension CHARM Memory (참메모리) automatically extracts memories, timelines, world details, and character psychology from accumulating chats, then reinjects only what matters each turn (README intro).",
+  "metadata_status": "curated",
+  "source_id": "github-1317958977",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "maintain-long-term-memory",
+    "persistent-state",
+    "preserve-story-continuity",
+    "retrieve-relevant-context"
+  ],
+  "cataloged_at": "2026-11-16T08:30:33.414Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
