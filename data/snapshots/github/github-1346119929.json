@@ -1,0 +1,64 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1346119929",
+  "repository": {
+    "id": 1346119929,
+    "owner": "AmbasaS2",
+    "name": "folio",
+    "url": "https://github.com/AmbasaS2/folio",
+    "description": "A lightweight character-first browser for finding, organizing, and opening existing SillyTavern chats without indexing chat contents.",
+    "default_branch": "main",
+    "head_sha": "acdf87da953c4af76b663cd86107f49ec59df85a",
+    "head_committed_at": "2026-11-16T05:17:54.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-08-25T12:41:54.000Z",
+    "size_kb": 3597
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-11-16T05:17:54.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-11-16",
+        "latest_at": "2026-11-16T05:17:54.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-09",
+        "latest_at": "2026-11-13T07:20:57.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-16T10:58:51.575Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "acdf87da953c4af76b663cd86107f49ec59df85a"
+  },
+  "community": {
+    "stars_count": 1,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 1
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-11-16T10:58:51.575Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "AmbasaS2", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-16T10:58:51.575Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
