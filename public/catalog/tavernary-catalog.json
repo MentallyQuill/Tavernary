@@ -2984,7 +2984,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T07:01:55.713Z",
+      "refreshedAt": "2026-11-17T17:05:04.761Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -11175,13 +11175,63 @@
       ],
       "tags": [],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "88ea22527d1b07dfe6081e7a34c0409d9b0c4c41",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "f294e2bca0ff61008528718683650e44172f53472dc32a7872683a6dab77b137",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 1,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "a25197b1b1c80ea63ef8491b920d4a1ea7809cfcd62e1ce693e95e216d6897d2"
+          ],
+          "scannedSha": "88ea22527d1b07dfe6081e7a34c0409d9b0c4c41",
+          "treeUrl": "https://github.com/athenawin00-boop/lorebook-keeper/tree/88ea22527d1b07dfe6081e7a34c0409d9b0c4c41",
+          "scannedAt": "2026-11-16T13:29:21.881Z",
+          "assessedAt": "2026-11-17T18:56:10.357Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1381766101/88ea22527d1b07dfe6081e7a34c0409d9b0c4c41/5/f294e2bca0ff61008528718683650e44172f53472dc32a7872683a6dab77b137/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1381766101/history/"
+        },
+        "history": [
+          {
+            "reportId": "f294e2bca0ff61008528718683650e44172f53472dc32a7872683a6dab77b137",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 1,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "a25197b1b1c80ea63ef8491b920d4a1ea7809cfcd62e1ce693e95e216d6897d2"
+            ],
+            "scannedSha": "88ea22527d1b07dfe6081e7a34c0409d9b0c4c41",
+            "treeUrl": "https://github.com/athenawin00-boop/lorebook-keeper/tree/88ea22527d1b07dfe6081e7a34c0409d9b0c4c41",
+            "scannedAt": "2026-11-16T13:29:21.881Z",
+            "assessedAt": "2026-11-17T18:56:10.357Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1381766101/88ea22527d1b07dfe6081e7a34c0409d9b0c4c41/5/f294e2bca0ff61008528718683650e44172f53472dc32a7872683a6dab77b137/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1381766101/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1381766101/"
       },
       "attribution": {
         "owner": {
@@ -33061,7 +33111,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T09:08:05.444Z",
+      "refreshedAt": "2026-11-17T17:06:04.144Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -57955,6 +58005,131 @@
       }
     },
     {
+      "id": "keepsanity-sillytavern-trace",
+      "name": "SillyTavern-Trace",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "developer-infrastructure",
+      "summary": "SillyTavern-Trace is a local extension that saves the model, API, and preset name alongside messages when a reply is generated, keeping provenance recorded in chat files (README).",
+      "canonicalUrl": "https://github.com/keepsanity/SillyTavern-Trace",
+      "catalogedAt": "2026-11-17T17:42:08.538Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "inspect-prompts-and-generations",
+          "label": "Inspect prompts and generations",
+          "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "b1af342babeefab77c9195f5b48eda674c29eb12",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "keepsanity"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-11T05:09:09.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 21,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-17T17:42:08.538Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/keepsanity/SillyTavern-Trace.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-Trace"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-Trace"
+        ],
+        "aliases": [],
+        "source": [
+          "keepsanity-sillytavern-trace",
+          "github-1383252515",
+          "keepsanity/SillyTavern-Trace",
+          "https://github.com/keepsanity/SillyTavern-Trace"
+        ],
+        "summary": [
+          "SillyTavern-Trace is a local extension that saves the model, API, and preset name alongside messages when a reply is generated, keeping provenance recorded in chat files (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Developer infrastructure"
+        ],
+        "tags": [
+          "Inspect prompts and generations",
+          "prompt inspection",
+          "generation diagnostics",
+          "review validation",
+          "request debugging"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "keepsanity"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "kenhito-marinara-rpg-extension",
       "name": "Marinara RPG Extension",
       "kind": "extension",
@@ -68814,7 +68989,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T07:00:43.605Z",
+      "refreshedAt": "2026-11-17T17:06:05.182Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -96425,6 +96600,140 @@
         "compatibility": [],
         "maintainers": [
           "qvink"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "qxxs921317-sillytavern-ct",
+      "name": "SillyTavern-CT",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "SillyTavern extension (SillyTavern-CT) by qxxs921317 that translates character cards into Korean and displays the result beneath the card without touching card data (README: \"실제 카드 데이터는 안 건드리고\").",
+      "canonicalUrl": "https://github.com/qxxs921317/SillyTavern-CT",
+      "catalogedAt": "2026-11-17T17:57:28.643Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+          "facet": "trait"
+        },
+        {
+          "id": "translate-roleplay-content",
+          "label": "Translate roleplay content",
+          "description": "Translate chats, cards, lore, prompts, or other roleplay material between languages.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "694a1669aba0aed2ab7c5ac44d89bcd51b804adb",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "qxxs921317"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-05T17:42:02.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          true,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 293,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-17T17:57:28.643Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/qxxs921317/SillyTavern-CT.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-CT"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-CT"
+        ],
+        "aliases": [],
+        "source": [
+          "qxxs921317-sillytavern-ct",
+          "github-1223186525",
+          "qxxs921317/SillyTavern-CT",
+          "https://github.com/qxxs921317/SillyTavern-CT"
+        ],
+        "summary": [
+          "SillyTavern extension (SillyTavern-CT) by qxxs921317 that translates character cards into Korean and displays the result beneath the card without touching card data (README: \"실제 카드 데이터는 안 건드리고\")."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay",
+          "Translate roleplay content",
+          "chat translation",
+          "AI translation",
+          "translate messages"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "qxxs921317"
         ],
         "relationships": []
       }
@@ -125967,7 +126276,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T07:02:46.494Z",
+      "refreshedAt": "2026-11-17T17:05:14.121Z",
       "staleSince": null,
       "install": null,
       "fork": null,
