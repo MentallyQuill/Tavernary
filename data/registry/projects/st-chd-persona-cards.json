@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "st-chd-persona-cards",
+  "name": "persona-cards",
+  "kind": "extension",
+  "summary": "st-chd/persona-cards is a SillyTavern extension (requires 1.15.0+) that saves and loads personas individually, exporting selected ones as PNG or JSON for import in other SillyTavern environments (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1279026138",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": ["manage-characters-and-personas", "move-and-back-up-data"],
+  "cataloged_at": "2026-11-17T20:30:12.987Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
