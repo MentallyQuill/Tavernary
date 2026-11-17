@@ -1,0 +1,66 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1412485167",
+  "repository": {
+    "id": 1412485167,
+    "owner": "athenawin00-boop",
+    "name": "persona-manager",
+    "url": "https://github.com/athenawin00-boop/persona-manager",
+    "description": "SillyTavern 페르소나를 얼굴로 찾고 태그로 묶고 한 번에 바꾸는 확장",
+    "default_branch": "main",
+    "head_sha": "c73eb8902a877ff4eb949118c1771ccc6c7677b3",
+    "head_committed_at": "2026-10-31T14:38:18.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-10-09T21:50:51.000Z",
+    "size_kb": 82
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-10-31T14:38:18.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-31T14:38:18.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-09T23:42:47.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-17T06:12:51.264Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "c73eb8902a877ff4eb949118c1771ccc6c7677b3"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-11-17T06:12:51.264Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "athenawin00-boop", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-17T06:12:51.264Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
