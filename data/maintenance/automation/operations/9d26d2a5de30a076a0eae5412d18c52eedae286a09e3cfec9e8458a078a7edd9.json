@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "9d26d2a5de30a076a0eae5412d18c52eedae286a09e3cfec9e8458a078a7edd9",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1317958809:siltax03-crypto-chatsy-phone",
+      "inputDigest": "8a1f7d8b308dfd773e2d39ff0e3014b47a3335c3b12a1a1c4d6e2ddc80a238aa",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-17T04:21:11.742Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "superseded",
+        "reasonCode": "input-superseded"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-17T05:55:33.841Z",
+  "completedAt": null
+}
