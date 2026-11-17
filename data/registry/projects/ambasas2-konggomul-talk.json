@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "ambasas2-konggomul-talk",
+  "name": "konggomul-talk",
+  "kind": "extension",
+  "summary": "SillyTavern assistant extension by AmbasaS2 for chatting outside the active RP with the current character or an invited Guest Talk character, keeping messages separate from the main roleplay conversation.",
+  "metadata_status": "curated",
+  "source_id": "github-1296529971",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["manage-characters-and-personas", "organize-chats-and-messages"],
+  "cataloged_at": "2026-11-17T05:37:21.965Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
