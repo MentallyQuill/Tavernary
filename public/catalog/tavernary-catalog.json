@@ -1289,7 +1289,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T22:17:10.773Z",
+      "refreshedAt": "2026-11-17T05:54:12.144Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -6757,13 +6757,59 @@
       ],
       "tags": [],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "acdf87da953c4af76b663cd86107f49ec59df85a",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "aa10c7a3c523433aca2827f3cc412f6a08529ad44491cb940184ca77839edc08",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "acdf87da953c4af76b663cd86107f49ec59df85a",
+          "treeUrl": "https://github.com/AmbasaS2/folio/tree/acdf87da953c4af76b663cd86107f49ec59df85a",
+          "scannedAt": "2026-11-16T11:36:49.091Z",
+          "assessedAt": "2026-11-17T06:54:34.841Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1346119929/acdf87da953c4af76b663cd86107f49ec59df85a/5/aa10c7a3c523433aca2827f3cc412f6a08529ad44491cb940184ca77839edc08/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1346119929/history/"
+        },
+        "history": [
+          {
+            "reportId": "aa10c7a3c523433aca2827f3cc412f6a08529ad44491cb940184ca77839edc08",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "acdf87da953c4af76b663cd86107f49ec59df85a",
+            "treeUrl": "https://github.com/AmbasaS2/folio/tree/acdf87da953c4af76b663cd86107f49ec59df85a",
+            "scannedAt": "2026-11-16T11:36:49.091Z",
+            "assessedAt": "2026-11-17T06:54:34.841Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1346119929/acdf87da953c4af76b663cd86107f49ec59df85a/5/aa10c7a3c523433aca2827f3cc412f6a08529ad44491cb940184ca77839edc08/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1346119929/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1346119929/"
       },
       "attribution": {
         "owner": {
@@ -6839,6 +6885,140 @@
           "Interface and workflow"
         ],
         "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "AmbasaS2"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "ambasas2-konggomul-talk",
+      "name": "konggomul-talk",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "SillyTavern assistant extension by AmbasaS2 for chatting outside the active RP with the current character or an invited Guest Talk character, keeping messages separate from the main roleplay conversation.",
+      "canonicalUrl": "https://github.com/AmbasaS2/konggomul-talk",
+      "catalogedAt": "2026-11-17T05:37:21.965Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "manage-characters-and-personas",
+          "label": "Manage characters and personas",
+          "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+          "facet": "goal"
+        },
+        {
+          "id": "organize-chats-and-messages",
+          "label": "Organize chats and messages",
+          "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "b9bafe3757422d1a225f00ccdd9e023158721443",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "AmbasaS2"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-16T05:20:02.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 2284,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-17T05:37:21.965Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/AmbasaS2/konggomul-talk.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "konggomul-talk"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "konggomul-talk"
+        ],
+        "aliases": [],
+        "source": [
+          "ambasas2-konggomul-talk",
+          "github-1296529971",
+          "AmbasaS2/konggomul-talk",
+          "https://github.com/AmbasaS2/konggomul-talk"
+        ],
+        "summary": [
+          "SillyTavern assistant extension by AmbasaS2 for chatting outside the active RP with the current character or an invited Guest Talk character, keeping messages separate from the main roleplay conversation."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Manage characters and personas",
+          "persona management",
+          "character management",
+          "identity management",
+          "Organize chats and messages",
+          "chat organization",
+          "message bookmarks",
+          "conversation search"
+        ],
         "frontends": [
           "SillyTavern"
         ],
@@ -7029,6 +7209,147 @@
         "compatibility": [],
         "maintainers": [
           "AmbasaS2"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "ambasas2-phrase-desk",
+      "name": "phrase-desk",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "A SillyTavern extension that translates multilingual roleplay messages and turns saved expressions into vocabulary notes, quizzes, and response practice (README: Phrase Desk).",
+      "canonicalUrl": "https://github.com/AmbasaS2/phrase-desk",
+      "catalogedAt": "2026-11-17T06:18:30.672Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "multilingual",
+          "label": "Multilingual",
+          "description": "Explicitly supports use, authoring, or interfaces in multiple languages.",
+          "facet": "trait"
+        },
+        {
+          "id": "translate-roleplay-content",
+          "label": "Translate roleplay content",
+          "description": "Translate chats, cards, lore, prompts, or other roleplay material between languages.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "733506e4ab28f394976e7a1b913f57cbca0325d9",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "AmbasaS2"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "github-actions[bot]",
+            "botOrAi": true
+          }
+        ],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-17T01:22:28.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 5679,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-17T06:18:30.672Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/AmbasaS2/phrase-desk.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "phrase-desk"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "phrase-desk"
+        ],
+        "aliases": [],
+        "source": [
+          "ambasas2-phrase-desk",
+          "github-1296530730",
+          "AmbasaS2/phrase-desk",
+          "https://github.com/AmbasaS2/phrase-desk"
+        ],
+        "summary": [
+          "A SillyTavern extension that translates multilingual roleplay messages and turns saved expressions into vocabulary notes, quizzes, and response practice (README: Phrase Desk)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Multilingual",
+          "multiple languages",
+          "internationalized",
+          "cross-language support",
+          "Translate roleplay content",
+          "chat translation",
+          "AI translation",
+          "translate messages"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "AmbasaS2",
+          "github-actions[bot]"
         ],
         "relationships": []
       }
@@ -11069,6 +11390,140 @@
           "World Info management",
           "worldbook organization",
           "loredeck management"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "athenawin00-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "athenawin00-boop-persona-manager",
+      "name": "persona-manager",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "character-worldbuilding",
+      "summary": "SillyTavern extension for users whose persona list has grown long; adds two screens to find personas by face, group them with tags, and switch them at once without editing original files (README).",
+      "canonicalUrl": "https://github.com/athenawin00-boop/persona-manager",
+      "catalogedAt": "2026-11-17T06:12:51.264Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "manage-characters-and-personas",
+          "label": "Manage characters and personas",
+          "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+          "facet": "goal"
+        },
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "c73eb8902a877ff4eb949118c1771ccc6c7677b3",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "athenawin00-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-31T14:38:18.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 82,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-17T06:12:51.264Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/athenawin00-boop/persona-manager.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "persona-manager"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "persona-manager"
+        ],
+        "aliases": [],
+        "source": [
+          "athenawin00-boop-persona-manager",
+          "github-1412485167",
+          "athenawin00-boop/persona-manager",
+          "https://github.com/athenawin00-boop/persona-manager"
+        ],
+        "summary": [
+          "SillyTavern extension for users whose persona list has grown long; adds two screens to find personas by face, group them with tags, and switch them at once without editing original files (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Character and worldbuilding"
+        ],
+        "tags": [
+          "Manage characters and personas",
+          "persona management",
+          "character management",
+          "identity management",
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay"
         ],
         "frontends": [
           "SillyTavern"
@@ -22880,7 +23335,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T22:18:50.255Z",
+      "refreshedAt": "2026-11-17T05:56:40.221Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -29573,9 +30028,9 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 6,
-        "forks": 2,
+        "forks": 1,
         "watchers": 0,
-        "aggregate": 8
+        "aggregate": 7
       },
       "repositorySizeKb": 232,
       "license": {
@@ -29584,7 +30039,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T22:18:04.968Z",
+      "refreshedAt": "2026-11-17T05:55:20.180Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -40540,6 +40995,118 @@
       }
     },
     {
+      "id": "foreverharibo-boop-100log",
+      "name": "100log",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "memory-retrieval",
+      "summary": "100log is a SillyTavern extension by foreverharibo-boop; the README (100LOG heading) documents no features, so purpose and workflow cannot be verified beyond the name.",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/100log",
+      "catalogedAt": "2026-11-17T04:34:54.730Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "bbc533d8a9ed99eb90f21b20e6566fd83615defc",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-13T11:24:54.000Z",
+        "activeWeeks12": 5,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 5799,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-17T04:34:54.730Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/100log.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "100log"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "100log"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-100log",
+          "github-1392412977",
+          "foreverharibo-boop/100log",
+          "https://github.com/foreverharibo-boop/100log"
+        ],
+        "summary": [
+          "100log is a SillyTavern extension by foreverharibo-boop; the README (100LOG heading) documents no features, so purpose and workflow cannot be verified beyond the name."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Memory and retrieval"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "foreverharibo-boop-cardinject",
       "name": "cardinject",
       "kind": "extension",
@@ -40720,6 +41287,140 @@
           "prompt engineering",
           "preset organization",
           "template management"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "foreverharibo-boop-persistent-custom-css",
+      "name": "Persistent-Custom-CSS",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "SillyTavern extension from foreverharibo-boop that applies persistent custom CSS, keeping user-defined interface styling intact across chats and sessions (README: \"SillyTavern 확장입니다\").",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/Persistent-Custom-CSS",
+      "catalogedAt": "2026-11-17T05:26:18.487Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "customize-the-interface",
+          "label": "Customize the interface",
+          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "persistent-state",
+          "label": "Persistent state",
+          "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "d6cbdc988966eef3e939392eb60b74d97301db2c",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-28T05:34:00.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 142,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-17T05:26:18.487Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/Persistent-Custom-CSS.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "Persistent-Custom-CSS"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "Persistent-Custom-CSS"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-persistent-custom-css",
+          "github-1301133809",
+          "foreverharibo-boop/Persistent-Custom-CSS",
+          "https://github.com/foreverharibo-boop/Persistent-Custom-CSS"
+        ],
+        "summary": [
+          "SillyTavern extension from foreverharibo-boop that applies persistent custom CSS, keeping user-defined interface styling intact across chats and sessions (README: \"SillyTavern 확장입니다\")."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Customize the interface",
+          "interface theming",
+          "layout customization",
+          "UI personalization",
+          "Persistent state",
+          "durable state",
+          "state persistence",
+          "cross-session state"
         ],
         "frontends": [
           "SillyTavern"
@@ -47390,7 +48091,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T22:16:19.688Z",
+      "refreshedAt": "2026-11-17T05:53:27.241Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -84493,9 +85194,9 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 8,
-        "forks": 2,
+        "forks": 3,
         "watchers": 0,
-        "aggregate": 10
+        "aggregate": 11
       },
       "repositorySizeKb": 482,
       "license": {
@@ -84504,7 +85205,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T01:16:21.806Z",
+      "refreshedAt": "2026-11-17T05:57:10.681Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -93158,7 +93859,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T22:17:09.612Z",
+      "refreshedAt": "2026-11-17T05:52:57.091Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -228891,7 +229592,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-31T22:17:10.773Z",
+            "refreshedAt": "2026-11-17T05:54:12.144Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -230847,7 +231548,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-31T22:17:09.612Z",
+            "refreshedAt": "2026-11-17T05:52:57.091Z",
             "staleSince": null,
             "install": null,
             "fork": null,
@@ -258178,7 +258879,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-31T22:17:10.773Z",
+            "refreshedAt": "2026-11-17T05:54:12.144Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -263866,9 +264567,9 @@
             "latestReleaseAt": null,
             "community": {
               "stars": 8,
-              "forks": 2,
+              "forks": 3,
               "watchers": 0,
-              "aggregate": 10
+              "aggregate": 11
             },
             "repositorySizeKb": 482,
             "license": {
@@ -263877,7 +264578,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-01T01:16:21.806Z",
+            "refreshedAt": "2026-11-17T05:57:10.681Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
