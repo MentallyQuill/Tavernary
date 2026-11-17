@@ -10,18 +10,18 @@
     },
     "stage": "admitted",
     "createdAt": "2026-11-16T17:36:58.841Z",
-    "nextEligibleAt": null,
+    "nextEligibleAt": "2026-11-17T22:03:24.556Z",
     "expectedSha": "a55705c135190b6438cfab5c00c31f81c258e52e",
     "workerRunId": null,
     "retry": {
       "failure": {
-        "kind": "superseded",
-        "reasonCode": "input-superseded"
+        "kind": "transient",
+        "reasonCode": "provider-rate-limited"
       },
       "transientAttempts": 0,
       "immediateAttempts": 0
     }
   },
-  "updatedAt": "2026-11-17T09:12:10.407Z",
+  "updatedAt": "2026-11-17T21:57:59.984Z",
   "completedAt": null
 }
