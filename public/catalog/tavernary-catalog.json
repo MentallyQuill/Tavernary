@@ -41452,13 +41452,59 @@
       ],
       "tags": [],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "1025ad3c9598bf0c0d97bca55f6c5a7ee2f93f3a",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "7c1d087afbafb40c559809433bc3dd974103033a69c778ce172c32a77d66b801",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "1025ad3c9598bf0c0d97bca55f6c5a7ee2f93f3a",
+          "treeUrl": "https://github.com/foreverharibo-boop/simple-extension/tree/1025ad3c9598bf0c0d97bca55f6c5a7ee2f93f3a",
+          "scannedAt": "2026-11-16T11:47:28.713Z",
+          "assessedAt": "2026-11-17T08:13:23.739Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1324198592/1025ad3c9598bf0c0d97bca55f6c5a7ee2f93f3a/5/7c1d087afbafb40c559809433bc3dd974103033a69c778ce172c32a77d66b801/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1324198592/history/"
+        },
+        "history": [
+          {
+            "reportId": "7c1d087afbafb40c559809433bc3dd974103033a69c778ce172c32a77d66b801",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "1025ad3c9598bf0c0d97bca55f6c5a7ee2f93f3a",
+            "treeUrl": "https://github.com/foreverharibo-boop/simple-extension/tree/1025ad3c9598bf0c0d97bca55f6c5a7ee2f93f3a",
+            "scannedAt": "2026-11-16T11:47:28.713Z",
+            "assessedAt": "2026-11-17T08:13:23.739Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1324198592/1025ad3c9598bf0c0d97bca55f6c5a7ee2f93f3a/5/7c1d087afbafb40c559809433bc3dd974103033a69c778ce172c32a77d66b801/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1324198592/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1324198592/"
       },
       "attribution": {
         "owner": {
@@ -57187,6 +57233,168 @@
           "Oninaig"
         ],
         "relationships": []
+      }
+    },
+    {
+      "id": "keepsanity-instead-extend",
+      "name": "inSTead-extend",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "generation-reasoning",
+      "summary": "A personal fork of inSTead for SillyTavern that revises messages with feedback and reusable global or character-specific rules (README), adding new swipes that preserve the original message.",
+      "canonicalUrl": "https://github.com/keepsanity/inSTead-extend",
+      "catalogedAt": "2026-11-17T07:18:59.581Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "edit-and-refine-messages",
+          "label": "Edit and refine messages",
+          "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
+          "facet": "goal"
+        },
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
+          "facet": "goal"
+        },
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+          "facet": "trait"
+        },
+        {
+          "id": "secondary-model",
+          "label": "Secondary-model workflow",
+          "description": "Delegates supporting tasks to a separately configured model or connection.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "fa9bd45cc48097ebb2c23678170d47ec1fe684ee",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "keepsanity"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-18T08:55:12.000Z",
+        "activeWeeks12": 3,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 10917,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-17T07:18:59.581Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/keepsanity/inSTead-extend.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "inSTead-extend"
+      },
+      "fork": {
+        "parentName": "inSTead",
+        "parentProjectId": "actualbroeckchen-instead",
+        "parentUrl": null,
+        "status": "published"
+      },
+      "search": {
+        "title": [
+          "inSTead-extend"
+        ],
+        "aliases": [],
+        "source": [
+          "keepsanity-instead-extend",
+          "github-1339544946",
+          "keepsanity/inSTead-extend",
+          "https://github.com/keepsanity/inSTead-extend"
+        ],
+        "summary": [
+          "A personal fork of inSTead for SillyTavern that revises messages with feedback and reusable global or character-specific rules (README), adding new swipes that preserve the original message."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Generation and reasoning"
+        ],
+        "tags": [
+          "Edit and refine messages",
+          "message rewriting",
+          "chat editing",
+          "response refinement",
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control",
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay",
+          "Secondary-model workflow",
+          "helper model",
+          "auxiliary model",
+          "separate connection profile"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "keepsanity"
+        ],
+        "relationships": [
+          "inSTead",
+          "actualbroeckchen-instead"
+        ]
       }
     },
     {
@@ -128578,6 +128786,118 @@
           "privacy preserving",
           "data stays private"
         ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "vatip13-spec"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "vatip13-spec-sillytavern-minesweeper",
+      "name": "sillytavern-minesweeper",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "Classic Minesweeper for SillyTavern README states this standalone extension offers light play while waiting for generation responses, using no API and never touching chat, character, or RP content.",
+      "canonicalUrl": "https://github.com/vatip13-spec/sillytavern-minesweeper",
+      "catalogedAt": "2026-11-17T07:32:13.361Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "a56cb07020c6e4bd24326b4c721468c27a7648ef",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "vatip13-spec"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-19T02:38:07.000Z",
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 52,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-17T07:32:13.361Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/vatip13-spec/sillytavern-minesweeper.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "sillytavern-minesweeper"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "sillytavern-minesweeper"
+        ],
+        "aliases": [],
+        "source": [
+          "vatip13-spec-sillytavern-minesweeper",
+          "github-1337984621",
+          "vatip13-spec/sillytavern-minesweeper",
+          "https://github.com/vatip13-spec/sillytavern-minesweeper"
+        ],
+        "summary": [
+          "Classic Minesweeper for SillyTavern README states this standalone extension offers light play while waiting for generation responses, using no API and never touching chat, character, or RP content."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [],
         "frontends": [
           "SillyTavern"
         ],
