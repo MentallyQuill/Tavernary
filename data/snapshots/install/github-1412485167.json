@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1412485167",
+  "head_sha": "c73eb8902a877ff4eb949118c1771ccc6c7677b3",
+  "observed_at": "2026-11-17T06:13:06.960Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "persona-manager",
+  "manifest": {
+    "display_name": "페르소나 매니저",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

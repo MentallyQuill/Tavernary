@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "athenawin00-boop-persona-manager",
+  "name": "persona-manager",
+  "kind": "extension",
+  "summary": "SillyTavern extension for users whose persona list has grown long; adds two screens to find personas by face, group them with tags, and switch them at once without editing original files (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1412485167",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": ["manage-characters-and-personas", "non-destructive"],
+  "cataloged_at": "2026-11-17T06:12:51.264Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
