@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1301133809",
+  "head_sha": "d6cbdc988966eef3e939392eb60b74d97301db2c",
+  "observed_at": "2026-11-17T05:26:30.852Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Persistent-Custom-CSS",
+  "manifest": {
+    "display_name": "Persistent Custom CSS",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
