@@ -6957,13 +6957,65 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "63a7cd99b7a17f083af1229d472d0cda40502e40",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "6b7521ecaee8c16efc84e32358f69f9efa70d0b07d430b368f4336b7ae9ec7cd",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 1,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "6d2f060cfee9e7ed8e03da1f12241ae84bc868ceec2011166b24fff0a7902d8a"
+          ],
+          "scannedSha": "63a7cd99b7a17f083af1229d472d0cda40502e40",
+          "treeUrl": "https://github.com/AmbasaS2/map/tree/63a7cd99b7a17f083af1229d472d0cda40502e40",
+          "scannedAt": "2026-11-16T09:37:24.459Z",
+          "assessedAt": "2026-11-17T02:34:00.984Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "javascriptAnalysisStatus": "complete",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296530212/63a7cd99b7a17f083af1229d472d0cda40502e40/5/6b7521ecaee8c16efc84e32358f69f9efa70d0b07d430b368f4336b7ae9ec7cd/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296530212/history/"
+        },
+        "history": [
+          {
+            "reportId": "6b7521ecaee8c16efc84e32358f69f9efa70d0b07d430b368f4336b7ae9ec7cd",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 1,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "6d2f060cfee9e7ed8e03da1f12241ae84bc868ceec2011166b24fff0a7902d8a"
+            ],
+            "scannedSha": "63a7cd99b7a17f083af1229d472d0cda40502e40",
+            "treeUrl": "https://github.com/AmbasaS2/map/tree/63a7cd99b7a17f083af1229d472d0cda40502e40",
+            "scannedAt": "2026-11-16T09:37:24.459Z",
+            "assessedAt": "2026-11-17T02:34:00.984Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296530212/63a7cd99b7a17f083af1229d472d0cda40502e40/5/6b7521ecaee8c16efc84e32358f69f9efa70d0b07d430b368f4336b7ae9ec7cd/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1296530212/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1296530212/"
       },
       "attribution": {
         "owner": {
@@ -29056,7 +29108,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T13:50:35.131Z",
+      "refreshedAt": "2026-11-17T02:44:22.990Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -31732,7 +31784,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T13:50:31.763Z",
+      "refreshedAt": "2026-11-17T02:41:54.530Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -35671,7 +35723,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "2a659872e6ecec86b3563df661e2ca03d1533c80",
+        "currentSha": "339ee0715d9ecab79914b68cb77b43f8f4260d76",
         "report": {
           "reportId": "071e05ae5c16a06ac87166b2d0d09612153ba1660ee264e8bc98808810f527eb",
           "riskLevel": "low",
@@ -35758,12 +35810,12 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-31T08:09:53.000Z",
-        "activeWeeks12": 12,
+        "latestSourceActivityAt": "2026-11-11T06:24:19.000Z",
+        "activeWeeks12": 9,
         "weeklyActivity": [
-          true,
-          true,
-          true,
+          false,
+          false,
+          false,
           true,
           true,
           true,
@@ -35777,21 +35829,21 @@
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-10-31T07:42:22.000Z",
+      "latestReleaseAt": "2026-11-11T06:58:44.000Z",
       "community": {
-        "stars": 149,
+        "stars": 162,
         "forks": 9,
         "watchers": 1,
-        "aggregate": 159
+        "aggregate": 172
       },
-      "repositorySizeKb": 26816,
+      "repositorySizeKb": 25460,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T13:50:51.641Z",
+      "refreshedAt": "2026-11-17T02:47:05.261Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -107058,7 +107110,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T13:50:33.327Z",
+      "refreshedAt": "2026-11-17T02:43:49.672Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -119603,6 +119655,140 @@
           "prompt engineering",
           "preset organization",
           "template management"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "st-chd"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "st-chd-stmulti-avatar",
+      "name": "STmulti-avatar",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "STmulti-avatar is a SillyTavern extension (README: github:st-chd/stmulti-avatar) that registers multiple images for characters and personas, showing different images in the list and in the chat room.",
+      "canonicalUrl": "https://github.com/st-chd/STmulti-avatar",
+      "catalogedAt": "2026-11-17T01:50:22.842Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-characters-and-personas",
+          "label": "Manage characters and personas",
+          "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "ccbc0e6d02e7bb719be36fc76e91131b505df609",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "st-chd"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-09T07:48:34.000Z",
+        "activeWeeks12": 3,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          true,
+          true,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 105,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-17T01:50:22.842Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/st-chd/STmulti-avatar.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "STmulti-avatar"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "STmulti-avatar"
+        ],
+        "aliases": [],
+        "source": [
+          "st-chd-stmulti-avatar",
+          "github-1338359295",
+          "st-chd/STmulti-avatar",
+          "https://github.com/st-chd/STmulti-avatar"
+        ],
+        "summary": [
+          "STmulti-avatar is a SillyTavern extension (README: github:st-chd/stmulti-avatar) that registers multiple images for characters and personas, showing different images in the list and in the chat room."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals",
+          "Manage characters and personas",
+          "persona management",
+          "character management",
+          "identity management"
         ],
         "frontends": [
           "SillyTavern"
@@ -137506,7 +137692,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T13:50:26.218Z",
+      "refreshedAt": "2026-11-17T02:42:05.623Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -139516,9 +139702,9 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 1,
-        "forks": 6,
+        "forks": 5,
         "watchers": 0,
-        "aggregate": 7
+        "aggregate": 6
       },
       "repositorySizeKb": 31,
       "license": {
@@ -139527,7 +139713,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T13:50:42.100Z",
+      "refreshedAt": "2026-11-17T02:46:09.781Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -169078,7 +169264,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-31T13:50:33.327Z",
+            "refreshedAt": "2026-11-17T02:43:49.672Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
