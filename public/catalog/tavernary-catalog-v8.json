@@ -26077,7 +26077,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T22:15:24.291Z",
+      "refreshedAt": "2026-11-17T04:14:18.514Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -64036,10 +64036,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 142,
-        "forks": 35,
+        "stars": 141,
+        "forks": 34,
         "watchers": 1,
-        "aggregate": 178
+        "aggregate": 176
       },
       "repositorySizeKb": 80,
       "license": {
@@ -64048,7 +64048,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T22:15:40.986Z",
+      "refreshedAt": "2026-11-17T04:16:00.371Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -106133,9 +106133,9 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 206,
-        "forks": 27,
+        "forks": 28,
         "watchers": 1,
-        "aggregate": 234
+        "aggregate": 235
       },
       "repositorySizeKb": 2204,
       "license": {
@@ -106144,7 +106144,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-10-31T22:15:54.250Z",
+      "refreshedAt": "2026-11-17T04:16:16.104Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -116785,6 +116785,118 @@
           "relevant recall",
           "knowledge retrieval"
         ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "siltax03-crypto"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "siltax03-crypto-chatsy-phone",
+      "name": "chatsy-phone",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "Chatsy Phone is a SillyTavern extension by siltax03-crypto; its README (README:1-3) documents only the project title and copyright, with no stated features.",
+      "canonicalUrl": "https://github.com/siltax03-crypto/chatsy-phone",
+      "catalogedAt": "2026-11-17T04:21:11.742Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "d7f857e689451413cee79c2c01fdddeed88a65de",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "siltax03-crypto"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-06T11:30:59.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          true,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 1137,
+      "license": {
+        "status": "proprietary",
+        "label": "Proprietary",
+        "tooltip": "The published root license is not OSI-approved."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-17T04:21:11.742Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/siltax03-crypto/chatsy-phone.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "chatsy-phone"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "chatsy-phone"
+        ],
+        "aliases": [],
+        "source": [
+          "siltax03-crypto-chatsy-phone",
+          "github-1317958809",
+          "siltax03-crypto/chatsy-phone",
+          "https://github.com/siltax03-crypto/chatsy-phone"
+        ],
+        "summary": [
+          "Chatsy Phone is a SillyTavern extension by siltax03-crypto; its README (README:1-3) documents only the project title and copyright, with no stated features."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [],
         "frontends": [
           "SillyTavern"
         ],
@@ -129159,13 +129271,65 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "f8c3e3a9ff026f7209d1405a9442aa4b9694cf69",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "7f80f9a67c31e59c32f8acc0ae350bf81093a807948292199eea4a610ea65b4e",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 1,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "eebdaec1fbf2f7d0ec59d72efc40103aa99663fc897d101d02919f2eebffa919"
+          ],
+          "scannedSha": "f8c3e3a9ff026f7209d1405a9442aa4b9694cf69",
+          "treeUrl": "https://github.com/vatip13-spec/ChatSSi-MeMo/tree/f8c3e3a9ff026f7209d1405a9442aa4b9694cf69",
+          "scannedAt": "2026-11-16T09:50:04.210Z",
+          "assessedAt": "2026-11-17T04:46:01.509Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "javascriptAnalysisStatus": "complete",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1343554430/f8c3e3a9ff026f7209d1405a9442aa4b9694cf69/5/7f80f9a67c31e59c32f8acc0ae350bf81093a807948292199eea4a610ea65b4e/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1343554430/history/"
+        },
+        "history": [
+          {
+            "reportId": "7f80f9a67c31e59c32f8acc0ae350bf81093a807948292199eea4a610ea65b4e",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 1,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "eebdaec1fbf2f7d0ec59d72efc40103aa99663fc897d101d02919f2eebffa919"
+            ],
+            "scannedSha": "f8c3e3a9ff026f7209d1405a9442aa4b9694cf69",
+            "treeUrl": "https://github.com/vatip13-spec/ChatSSi-MeMo/tree/f8c3e3a9ff026f7209d1405a9442aa4b9694cf69",
+            "scannedAt": "2026-11-16T09:50:04.210Z",
+            "assessedAt": "2026-11-17T04:46:01.509Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1343554430/f8c3e3a9ff026f7209d1405a9442aa4b9694cf69/5/7f80f9a67c31e59c32f8acc0ae350bf81093a807948292199eea4a610ea65b4e/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1343554430/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1343554430/"
       },
       "attribution": {
         "owner": {
@@ -147319,7 +147483,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-31T22:15:24.291Z",
+            "refreshedAt": "2026-11-17T04:14:18.514Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -155686,7 +155850,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-31T22:15:24.291Z",
+            "refreshedAt": "2026-11-17T04:14:18.514Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -180345,7 +180509,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-31T22:15:24.291Z",
+            "refreshedAt": "2026-11-17T04:14:18.514Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -258590,10 +258754,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 142,
-              "forks": 35,
+              "stars": 141,
+              "forks": 34,
               "watchers": 1,
-              "aggregate": 178
+              "aggregate": 176
             },
             "repositorySizeKb": 80,
             "license": {
@@ -258602,7 +258766,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-31T22:15:40.986Z",
+            "refreshedAt": "2026-11-17T04:16:00.371Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -272831,9 +272995,9 @@
             "latestReleaseAt": null,
             "community": {
               "stars": 206,
-              "forks": 27,
+              "forks": 28,
               "watchers": 1,
-              "aggregate": 234
+              "aggregate": 235
             },
             "repositorySizeKb": 2204,
             "license": {
@@ -272842,7 +273006,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-31T22:15:54.250Z",
+            "refreshedAt": "2026-11-17T04:16:16.104Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -279195,10 +279359,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 142,
-              "forks": 35,
+              "stars": 141,
+              "forks": 34,
               "watchers": 1,
-              "aggregate": 178
+              "aggregate": 176
             },
             "repositorySizeKb": 80,
             "license": {
@@ -279207,7 +279371,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-10-31T22:15:40.986Z",
+            "refreshedAt": "2026-11-17T04:16:00.371Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
