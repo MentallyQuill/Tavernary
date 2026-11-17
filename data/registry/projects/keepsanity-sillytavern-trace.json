@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "keepsanity-sillytavern-trace",
+  "name": "SillyTavern-Trace",
+  "kind": "extension",
+  "summary": "SillyTavern-Trace is a local extension that saves the model, API, and preset name alongside messages when a reply is generated, keeping provenance recorded in chat files (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1383252515",
+  "frontends": ["sillytavern"],
+  "primary_function": "developer-infrastructure",
+  "tags": ["inspect-prompts-and-generations"],
+  "cataloged_at": "2026-11-17T17:42:08.538Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
