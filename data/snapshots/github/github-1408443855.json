@@ -1,0 +1,70 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1408443855",
+  "repository": {
+    "id": 1408443855,
+    "owner": "bongbong11",
+    "name": "CHAT_CLOSET",
+    "url": "https://github.com/bongbong11/CHAT_CLOSET",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "181566e8d6221824a95f6f2b90efdee284232534",
+    "head_committed_at": "2026-11-03T16:14:28.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-10-07T07:54:15.000Z",
+    "size_kb": 3303
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-11-03T16:14:28.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-03T16:14:28.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-31T10:51:51.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-25T12:43:36.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-08T13:00:34.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-17T19:45:33.766Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "181566e8d6221824a95f6f2b90efdee284232534"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-11-17T19:45:33.766Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "codex", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-17T19:45:33.766Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
