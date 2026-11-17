@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1338359295",
+  "head_sha": "ccbc0e6d02e7bb719be36fc76e91131b505df609",
+  "observed_at": "2026-11-17T01:50:44.238Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "STmulti-avatar",
+  "manifest": {
+    "display_name": "멀티 아바타",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
