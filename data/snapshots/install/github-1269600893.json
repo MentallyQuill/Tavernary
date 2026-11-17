@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1269600893",
+  "head_sha": "f869c880aafaa59cbb4875cf8aaec7ce326b485e",
+  "observed_at": "2026-11-17T20:39:27.754Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "sillytavern_extention_dalchive",
+  "manifest": {
+    "display_name": "Dalchive",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
