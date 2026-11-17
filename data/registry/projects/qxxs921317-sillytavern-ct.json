@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "qxxs921317-sillytavern-ct",
+  "name": "SillyTavern-CT",
+  "kind": "extension",
+  "summary": "SillyTavern extension (SillyTavern-CT) by qxxs921317 that translates character cards into Korean and displays the result beneath the card without touching card data (README: \"실제 카드 데이터는 안 건드리고\").",
+  "metadata_status": "curated",
+  "source_id": "github-1223186525",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["non-destructive", "translate-roleplay-content"],
+  "cataloged_at": "2026-11-17T17:57:28.643Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
