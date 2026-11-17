@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1169766099",
+  "head_sha": "4a0968ce5c8cdf7d83503eb4ec786e1ca30c55c4",
+  "observed_at": "2026-11-17T00:55:48.839Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Character-Generator",
+  "manifest": {
+    "display_name": "캐릭터 생성",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
