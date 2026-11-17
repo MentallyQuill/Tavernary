@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "vatip13-spec-sillytavern-minesweeper",
+  "name": "sillytavern-minesweeper",
+  "kind": "extension",
+  "summary": "Classic Minesweeper for SillyTavern README states this standalone extension offers light play while waiting for generation responses, using no API and never touching chat, character, or RP content.",
+  "metadata_status": "curated",
+  "source_id": "github-1337984621",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-11-17T07:32:13.361Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
