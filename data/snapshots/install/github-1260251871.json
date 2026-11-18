@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1260251871",
+  "head_sha": "4a5b083f0faebc9ea79ebd219fc270c998409478",
+  "observed_at": "2026-11-18T08:55:06.218Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "cue-card",
+  "manifest": {
+    "display_name": "큐카드 (Cue Card)",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
