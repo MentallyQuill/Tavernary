@@ -19408,6 +19408,118 @@
       }
     },
     {
+      "id": "bongbong11-ooc-chat",
+      "name": "OOC_CHAT",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "generation-reasoning",
+      "summary": "Extension for SillyTavern by bongbong11 that provides a dedicated, separate OOC input window, letting users send out-of-character input apart from in-character chat (README: OOC Chat, v1.6.2).",
+      "canonicalUrl": "https://github.com/bongbong11/OOC_CHAT",
+      "catalogedAt": "2026-11-18T03:00:24.582Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "598adc71d17a8a54e024ee3fd433d36308f92d73",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "bongbong11"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-14T08:51:01.000Z",
+        "activeWeeks12": 5,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 163,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-18T03:00:24.582Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/bongbong11/OOC_CHAT.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "OOC_CHAT"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "OOC_CHAT"
+        ],
+        "aliases": [],
+        "source": [
+          "bongbong11-ooc-chat",
+          "github-1359401799",
+          "bongbong11/OOC_CHAT",
+          "https://github.com/bongbong11/OOC_CHAT"
+        ],
+        "summary": [
+          "Extension for SillyTavern by bongbong11 that provides a dedicated, separate OOC input window, letting users send out-of-character input apart from in-character chat (README: OOC Chat, v1.6.2)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Generation and reasoning"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "bongbong11"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "brasen56-merged-world-tracker",
       "name": "Merged World Tracker",
       "kind": "extension",
@@ -116882,13 +116994,59 @@
       ],
       "tags": [],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "4a0968ce5c8cdf7d83503eb4ec786e1ca30c55c4",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "ad97c048987988e9ff09dd16f211cb38d177cdc7471e353e2aee3ae7de33a95a",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "4a0968ce5c8cdf7d83503eb4ec786e1ca30c55c4",
+          "treeUrl": "https://github.com/siltax03-crypto/Character-Generator/tree/4a0968ce5c8cdf7d83503eb4ec786e1ca30c55c4",
+          "scannedAt": "2026-11-17T01:28:33.520Z",
+          "assessedAt": "2026-11-18T03:38:57.354Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1169766099/4a0968ce5c8cdf7d83503eb4ec786e1ca30c55c4/5/ad97c048987988e9ff09dd16f211cb38d177cdc7471e353e2aee3ae7de33a95a/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1169766099/history/"
+        },
+        "history": [
+          {
+            "reportId": "ad97c048987988e9ff09dd16f211cb38d177cdc7471e353e2aee3ae7de33a95a",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "4a0968ce5c8cdf7d83503eb4ec786e1ca30c55c4",
+            "treeUrl": "https://github.com/siltax03-crypto/Character-Generator/tree/4a0968ce5c8cdf7d83503eb4ec786e1ca30c55c4",
+            "scannedAt": "2026-11-17T01:28:33.520Z",
+            "assessedAt": "2026-11-18T03:38:57.354Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1169766099/4a0968ce5c8cdf7d83503eb4ec786e1ca30c55c4/5/ad97c048987988e9ff09dd16f211cb38d177cdc7471e353e2aee3ae7de33a95a/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1169766099/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1169766099/"
       },
       "attribution": {
         "owner": {
@@ -120336,6 +120494,168 @@
           "st-chd"
         ],
         "relationships": []
+      }
+    },
+    {
+      "id": "st-chd-rpg-companion-sillytavern",
+      "name": "rpg-companion-sillytavern",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "rpg-systems",
+      "summary": "A fork of Marinara's rpg-companion-sillytavern that auto-tracks character stats, scene info, and inner states through a customizable UI panel, with 'together' or 'separate' generation modes (README).",
+      "canonicalUrl": "https://github.com/st-chd/rpg-companion-sillytavern",
+      "catalogedAt": "2026-11-18T02:51:51.640Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-rpg-gameplay",
+          "label": "Add RPG gameplay",
+          "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
+          "facet": "goal"
+        },
+        {
+          "id": "customize-the-interface",
+          "label": "Customize the interface",
+          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "guide-model-responses",
+          "label": "Guide model responses",
+          "description": "Shape what the model says, how it behaves, or which instructions it follows.",
+          "facet": "goal"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "169686239230701ce729162c875a3c75b211e2f7",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "st-chd"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": null,
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": true
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 1733,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-18T02:51:51.640Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/st-chd/rpg-companion-sillytavern.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "rpg-companion-sillytavern"
+      },
+      "fork": {
+        "parentName": "rpg-companion-sillytavern",
+        "parentProjectId": "spicymarinara-rpg-companion-sillytavern",
+        "parentUrl": null,
+        "status": "published"
+      },
+      "search": {
+        "title": [
+          "rpg-companion-sillytavern"
+        ],
+        "aliases": [],
+        "source": [
+          "st-chd-rpg-companion-sillytavern",
+          "github-1311746709",
+          "st-chd/rpg-companion-sillytavern",
+          "https://github.com/st-chd/rpg-companion-sillytavern"
+        ],
+        "summary": [
+          "A fork of Marinara's rpg-companion-sillytavern that auto-tracks character stats, scene info, and inner states through a customizable UI panel, with 'together' or 'separate' generation modes (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "RPG systems and suites"
+        ],
+        "tags": [
+          "Add RPG gameplay",
+          "tabletop mechanics",
+          "game master tools",
+          "RPG systems",
+          "Customize the interface",
+          "interface theming",
+          "layout customization",
+          "UI personalization",
+          "Guide model responses",
+          "response steering",
+          "generation control",
+          "instruction control",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "st-chd"
+        ],
+        "relationships": [
+          "rpg-companion-sillytavern",
+          "spicymarinara-rpg-companion-sillytavern"
+        ]
       }
     },
     {
