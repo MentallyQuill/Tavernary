@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "st-chd-rpg-companion-sillytavern",
+  "name": "rpg-companion-sillytavern",
+  "kind": "extension",
+  "summary": "A fork of Marinara's rpg-companion-sillytavern that auto-tracks character stats, scene info, and inner states through a customizable UI panel, with 'together' or 'separate' generation modes (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1311746709",
+  "frontends": ["sillytavern"],
+  "primary_function": "rpg-systems",
+  "tags": [
+    "add-rpg-gameplay",
+    "customize-the-interface",
+    "guide-model-responses",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-11-18T02:51:51.640Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

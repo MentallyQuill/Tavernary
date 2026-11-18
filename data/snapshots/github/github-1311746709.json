@@ -1,0 +1,58 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1311746709",
+  "repository": {
+    "id": 1311746709,
+    "owner": "st-chd",
+    "name": "rpg-companion-sillytavern",
+    "url": "https://github.com/st-chd/rpg-companion-sillytavern",
+    "description": "SillyTavern용 RPG Companion 확장 프로그램 - AI 생성 콘텐츠를 통해 캐릭터, 퀘스트, 인벤토리 및 게임 상태를 추적하세요",
+    "default_branch": "main",
+    "head_sha": "169686239230701ce729162c875a3c75b211e2f7",
+    "head_committed_at": "2026-08-05T05:01:17.000Z",
+    "archived": false,
+    "fork": true,
+    "parent": {
+      "id": 1075711284,
+      "owner": "SpicyMarinara",
+      "name": "rpg-companion-sillytavern",
+      "url": "https://github.com/SpicyMarinara/rpg-companion-sillytavern"
+    },
+    "created_at": "2026-07-25T06:49:17.000Z",
+    "size_kb": 1733
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-18T02:51:51.640Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "169686239230701ce729162c875a3c75b211e2f7"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-11-18T02:51:51.640Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "st-chd", "type": "User", "provider": "github" }],
+    "method": "merged-pull-requests",
+    "baseline_completed_at": "2026-11-18T02:51:51.640Z",
+    "scan": null,
+    "refreshed_at": "2026-11-18T02:51:51.640Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
