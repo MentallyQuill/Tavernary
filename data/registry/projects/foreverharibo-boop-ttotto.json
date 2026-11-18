@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-ttotto",
+  "name": "ttotto",
+  "kind": "extension",
+  "summary": "ttotto is a SillyTavern extension by foreverharibo-boop whose README (titled 또또) documents no purpose or features yet, presenting a minimal, as-published starting point.",
+  "metadata_status": "curated",
+  "source_id": "github-1334330484",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": ["build-extensions-and-scripts"],
+  "cataloged_at": "2026-11-18T09:55:05.751Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

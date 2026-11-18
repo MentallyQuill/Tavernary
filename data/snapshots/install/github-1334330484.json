@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1334330484",
+  "head_sha": "ee4e63e0d5d04a71e37a373c6014c843c20d560f",
+  "observed_at": "2026-11-18T09:55:56.208Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "ttotto",
+  "manifest": {
+    "display_name": "🌀또또",
+    "key": null,
+    "minimum_client_version": "1.12.14"
+  }
+}
