@@ -19623,6 +19623,130 @@
       }
     },
     {
+      "id": "bongbong11-minigame",
+      "name": "MINIGAME",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "rpg-systems",
+      "summary": "BONG11MINIGAME — a SillyTavern extension, per README: mini-game entertainment that runs entirely within SillyTavern without needing or calling external game websites, AI, or external graphics/audio assets.",
+      "canonicalUrl": "https://github.com/bongbong11/MINIGAME",
+      "catalogedAt": "2026-11-18T07:54:02.022Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "customize-the-interface",
+          "label": "Customize the interface",
+          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "2c9bc1ce3fe98a5bb5ef6600bcf5ca52ba9c1d4e",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "bongbong11"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-22T09:49:32.000Z",
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 269,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-18T07:54:02.022Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/bongbong11/MINIGAME.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "MINIGAME"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "MINIGAME"
+        ],
+        "aliases": [],
+        "source": [
+          "bongbong11-minigame",
+          "github-1340717065",
+          "bongbong11/MINIGAME",
+          "https://github.com/bongbong11/MINIGAME"
+        ],
+        "summary": [
+          "BONG11MINIGAME — a SillyTavern extension, per README: mini-game entertainment that runs entirely within SillyTavern without needing or calling external game websites, AI, or external graphics/audio assets."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "RPG systems and suites"
+        ],
+        "tags": [
+          "Customize the interface",
+          "interface theming",
+          "layout customization",
+          "UI personalization"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "bongbong11"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "bongbong11-ooc-chat",
       "name": "OOC_CHAT",
       "kind": "extension",
@@ -98438,6 +98562,230 @@
       }
     },
     {
+      "id": "qxxs921317-forcelastinputplus",
+      "name": "ForceLastInputPlus",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "generation-reasoning",
+      "summary": "No README file found.",
+      "canonicalUrl": "https://github.com/qxxs921317/ForceLastInputPlus",
+      "catalogedAt": "2026-11-18T05:42:45.569Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "d53561a40d205a2b147b052616fe8b64a42b1941",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "qxxs921317"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-18T16:44:35.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 88,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-18T05:42:45.569Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/qxxs921317/ForceLastInputPlus.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "ForceLastInputPlus"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "ForceLastInputPlus"
+        ],
+        "aliases": [],
+        "source": [
+          "qxxs921317-forcelastinputplus",
+          "github-1350165839",
+          "qxxs921317/ForceLastInputPlus",
+          "https://github.com/qxxs921317/ForceLastInputPlus"
+        ],
+        "summary": [
+          "No README file found."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Generation and reasoning"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "qxxs921317"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "qxxs921317-sillyfontslots",
+      "name": "SillyFontSlots",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "No README file found.",
+      "canonicalUrl": "https://github.com/qxxs921317/SillyFontSlots",
+      "catalogedAt": "2026-11-18T05:26:51.502Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "0dd2f0f65555ec299366b4d121714d1045b0278b",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "qxxs921317"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-20T13:51:04.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 93,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-18T05:26:51.502Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/qxxs921317/SillyFontSlots.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyFontSlots"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyFontSlots"
+        ],
+        "aliases": [],
+        "source": [
+          "qxxs921317-sillyfontslots",
+          "github-1378119227",
+          "qxxs921317/SillyFontSlots",
+          "https://github.com/qxxs921317/SillyFontSlots"
+        ],
+        "summary": [
+          "No README file found."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "qxxs921317"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "qxxs921317-sillytavern-ct",
       "name": "SillyTavern-CT",
       "kind": "extension",
@@ -113992,6 +114340,125 @@
       }
     },
     {
+      "id": "sillytavern-extension-providerexample",
+      "name": "Extension-ProviderExample",
+      "kind": "extension",
+      "metadataStatus": "provisional",
+      "sourceStatus": "healthy",
+      "primaryFunction": "developer-infrastructure",
+      "summary": "Example extension on how to build custom API provider connections into SillyTavern",
+      "canonicalUrl": "https://github.com/SillyTavern/Extension-ProviderExample",
+      "catalogedAt": "2026-11-18T04:17:57.484Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "a4a3baeed272d34c7259546af2c0c125886bf147",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "SillyTavern"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "Wolfsblvt",
+            "botOrAi": false
+          }
+        ],
+        "humanContributorCount": 1,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-15T17:06:20.000Z",
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 1,
+        "watchers": 0,
+        "aggregate": 1
+      },
+      "repositorySizeKb": 18,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-18T04:17:57.484Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/SillyTavern/Extension-ProviderExample.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "Extension-ProviderExample"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "Extension-ProviderExample"
+        ],
+        "aliases": [],
+        "source": [
+          "sillytavern-extension-providerexample",
+          "github-1459043426",
+          "SillyTavern/Extension-ProviderExample",
+          "https://github.com/SillyTavern/Extension-ProviderExample"
+        ],
+        "summary": [
+          "Example extension on how to build custom API provider connections into SillyTavern"
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Developer infrastructure"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "SillyTavern",
+          "Wolfsblvt"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "sillytavern-extension-silence",
       "name": "Extension-Silence",
       "kind": "extension",
@@ -118360,6 +118827,118 @@
       }
     },
     {
+      "id": "siltax03-crypto-broadcast",
+      "name": "broadcast",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "No README file found.",
+      "canonicalUrl": "https://github.com/siltax03-crypto/broadcast",
+      "catalogedAt": "2026-11-18T06:34:09.631Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "fbcf6e96e258f6f4d4c92ba170edadab24b21b9d",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "siltax03-crypto"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-30T01:28:23.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 97,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-18T06:34:09.631Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/siltax03-crypto/broadcast.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "broadcast"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "broadcast"
+        ],
+        "aliases": [],
+        "source": [
+          "siltax03-crypto-broadcast",
+          "github-1131684000",
+          "siltax03-crypto/broadcast",
+          "https://github.com/siltax03-crypto/broadcast"
+        ],
+        "summary": [
+          "No README file found."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "siltax03-crypto"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "siltax03-crypto-character-generator",
       "name": "Character-Generator",
       "kind": "extension",
@@ -121413,6 +121992,118 @@
       }
     },
     {
+      "id": "st-chd-codecode",
+      "name": "codecode",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "codecode is a SillyTavern extension that improves the chat text editing experience as an enhanced fork of the CodeMirror editor extension (README: 'SillyTavern용 CodeMirror ... 개선한 포크').",
+      "canonicalUrl": "https://github.com/st-chd/codecode",
+      "catalogedAt": "2026-11-18T05:26:06.796Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "16216fecc08e1c7dd6b748403a08d88de187c17d",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "st-chd"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-09T07:45:21.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 189,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-18T05:26:06.796Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/st-chd/codecode.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "codecode"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "codecode"
+        ],
+        "aliases": [],
+        "source": [
+          "st-chd-codecode",
+          "github-1304778383",
+          "st-chd/codecode",
+          "https://github.com/st-chd/codecode"
+        ],
+        "summary": [
+          "codecode is a SillyTavern extension that improves the chat text editing experience as an enhanced fork of the CodeMirror editor extension (README: 'SillyTavern용 CodeMirror ... 개선한 포크')."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "st-chd"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "st-chd-contexttracker",
       "name": "ContextTracker",
       "kind": "extension",
@@ -122111,13 +122802,65 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "ccbc0e6d02e7bb719be36fc76e91131b505df609",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "51335729a7074921431294cb4e0a954f8843d1fac44658ae20d0e52266f761d5",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 1,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "bcbfb769673cc548464ef80b6e08b55e56f8c9a59f5b9aa0ecef57ff26fa601c"
+          ],
+          "scannedSha": "ccbc0e6d02e7bb719be36fc76e91131b505df609",
+          "treeUrl": "https://github.com/st-chd/STmulti-avatar/tree/ccbc0e6d02e7bb719be36fc76e91131b505df609",
+          "scannedAt": "2026-11-17T02:26:42.561Z",
+          "assessedAt": "2026-11-18T08:02:25.623Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "javascriptAnalysisStatus": "incomplete",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1338359295/ccbc0e6d02e7bb719be36fc76e91131b505df609/5/51335729a7074921431294cb4e0a954f8843d1fac44658ae20d0e52266f761d5/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1338359295/history/"
+        },
+        "history": [
+          {
+            "reportId": "51335729a7074921431294cb4e0a954f8843d1fac44658ae20d0e52266f761d5",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 1,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "bcbfb769673cc548464ef80b6e08b55e56f8c9a59f5b9aa0ecef57ff26fa601c"
+            ],
+            "scannedSha": "ccbc0e6d02e7bb719be36fc76e91131b505df609",
+            "treeUrl": "https://github.com/st-chd/STmulti-avatar/tree/ccbc0e6d02e7bb719be36fc76e91131b505df609",
+            "scannedAt": "2026-11-17T02:26:42.561Z",
+            "assessedAt": "2026-11-18T08:02:25.623Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "incomplete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1338359295/ccbc0e6d02e7bb719be36fc76e91131b505df609/5/51335729a7074921431294cb4e0a954f8843d1fac44658ae20d0e52266f761d5/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1338359295/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1338359295/"
       },
       "attribution": {
         "owner": {
