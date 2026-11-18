@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1293212502",
+  "head_sha": "3242016d604751deeb3c3f6e28cae7e3d6fd9f5c",
+  "observed_at": "2026-11-18T08:54:55.690Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Cherrynote",
+  "manifest": {
+    "display_name": "Aggressive Notepad 🍒",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
