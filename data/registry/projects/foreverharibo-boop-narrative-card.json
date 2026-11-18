@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-narrative-card",
+  "name": "narrative-card",
+  "kind": "extension",
+  "summary": "SillyTavern extension named narrative-card; the README states only that it is a SillyTavern extension and links to the original repository, so no specific feature is documented (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1284801740",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-11-18T13:50:09.467Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
