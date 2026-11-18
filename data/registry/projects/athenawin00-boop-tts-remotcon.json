@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "athenawin00-boop-tts-remotcon",
+  "name": "tts-remotcon",
+  "kind": "extension",
+  "summary": "tts-remotcon is a small remote control for SillyTavern's built-in TTS, letting you toggle, play, read the whole chat, swap voices, and set reading options and speed without opening the extension tab (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1412372157",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["add-voice-interaction"],
+  "cataloged_at": "2026-11-18T08:03:13.550Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
