@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "bongbong11-minigame",
+  "name": "MINIGAME",
+  "kind": "extension",
+  "summary": "BONG11MINIGAME — a SillyTavern extension, per README: mini-game entertainment that runs entirely within SillyTavern without needing or calling external game websites, AI, or external graphics/audio assets.",
+  "metadata_status": "curated",
+  "source_id": "github-1340717065",
+  "frontends": ["sillytavern"],
+  "primary_function": "rpg-systems",
+  "tags": ["customize-the-interface"],
+  "cataloged_at": "2026-11-18T07:54:02.022Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
