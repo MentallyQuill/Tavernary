@@ -336,6 +336,7 @@ jobs:
             `reason=${plan.reasonCode ?? ""}`,
             `expected_head_sha=${plan.expectedHeadSha ?? ""}`,
           ].join("\n") + "\n");
+          console.log(`Project publication: ${plan.action} (${plan.reasonCode ?? "validated"})`);
           fs.appendFileSync(
             process.env.GITHUB_STEP_SUMMARY,
             `## Project publication\n\nAction: \`${plan.action}\`\n\nReason: \`${plan.reasonCode ?? "validated"}\`\n`,

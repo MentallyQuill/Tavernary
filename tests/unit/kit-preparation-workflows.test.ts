@@ -10,7 +10,7 @@ test("the existing scheduled submission workflow performs guarded completion and
     ),
   );
   expect(workflow.on.schedule).toEqual([{ cron: "7,22,37,52 * * * *" }]);
-  expect(workflow.concurrency).toEqual({
+  expect(workflow.jobs.reconcile.concurrency).toEqual({
     group:
       "${{ github.event_name == 'issues' && format('submission-finalization-{0}', github.event.issue.number) || 'submission-reconciliation' }}",
     "cancel-in-progress": false,
