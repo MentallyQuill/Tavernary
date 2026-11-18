@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1245655279",
+  "head_sha": "f849c2556499c1a9d4c206faaede888395df173f",
+  "observed_at": "2026-11-18T13:49:10.947Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "peaches-cream-vault",
+  "manifest": {
+    "display_name": "P&C Vault",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
