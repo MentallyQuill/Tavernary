@@ -19277,6 +19277,137 @@
       }
     },
     {
+      "id": "bongbong11-chat-closet",
+      "name": "CHAT_CLOSET",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "character-worldbuilding",
+      "summary": "SillyTavern client extension by bongbong11 that manages character and persona preferences, wardrobes, and current outfits without needing a separate server plugin (README).",
+      "canonicalUrl": "https://github.com/bongbong11/CHAT_CLOSET",
+      "catalogedAt": "2026-11-17T19:45:33.766Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "manage-characters-and-personas",
+          "label": "Manage characters and personas",
+          "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "181566e8d6221824a95f6f2b90efdee284232534",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "bongbong11"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "codex",
+            "botOrAi": false
+          }
+        ],
+        "humanContributorCount": 1,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-03T16:14:28.000Z",
+        "activeWeeks12": 3,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 3303,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-17T19:45:33.766Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/bongbong11/CHAT_CLOSET.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "CHAT_CLOSET"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "CHAT_CLOSET"
+        ],
+        "aliases": [],
+        "source": [
+          "bongbong11-chat-closet",
+          "github-1408443855",
+          "bongbong11/CHAT_CLOSET",
+          "https://github.com/bongbong11/CHAT_CLOSET"
+        ],
+        "summary": [
+          "SillyTavern client extension by bongbong11 that manages character and persona preferences, wardrobes, and current outfits without needing a separate server plugin (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Character and worldbuilding"
+        ],
+        "tags": [
+          "Manage characters and personas",
+          "persona management",
+          "character management",
+          "identity management"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "bongbong11",
+          "codex"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "brasen56-merged-world-tracker",
       "name": "Merged World Tracker",
       "kind": "extension",
@@ -41349,6 +41480,118 @@
       }
     },
     {
+      "id": "foreverharibo-boop-chat-searching",
+      "name": "chat-searching",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "chat-searching is a SillyTavern extension for searching chat content, maintained by foreverharibo-boop; the README (identity github:foreverharibo-boop/chat-searching) confirms this and links to the original repository.",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/chat-searching",
+      "catalogedAt": "2026-11-18T00:28:47.300Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "6ed8639d672cf1e5a2a460e63f017e6a78039081",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-04T07:07:00.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 371,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-18T00:28:47.300Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/chat-searching.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "chat-searching"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "chat-searching"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-chat-searching",
+          "github-1293077755",
+          "foreverharibo-boop/chat-searching",
+          "https://github.com/foreverharibo-boop/chat-searching"
+        ],
+        "summary": [
+          "chat-searching is a SillyTavern extension for searching chat content, maintained by foreverharibo-boop; the README (identity github:foreverharibo-boop/chat-searching) confirms this and links to the original repository."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "foreverharibo-boop-persistent-custom-css",
       "name": "Persistent-Custom-CSS",
       "kind": "extension",
@@ -41630,6 +41873,130 @@
           "Interface and workflow"
         ],
         "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "foreverharibo-boop-swipe-compare-bookmark",
+      "name": "Swipe-Compare-Bookmark",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "Swipe-Compare-Bookmark is a SillyTavern extension, per the README title (README:1), that combines message swipe comparison with bookmarking for chat organization.",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/Swipe-Compare-Bookmark",
+      "catalogedAt": "2026-11-17T19:10:11.234Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "organize-chats-and-messages",
+          "label": "Organize chats and messages",
+          "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "9c9fba4e5ff946dbd8382052be4369b762192dd0",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-09T13:27:46.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 77,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-17T19:10:11.234Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/Swipe-Compare-Bookmark.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "Swipe-Compare-Bookmark"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "Swipe-Compare-Bookmark"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-swipe-compare-bookmark",
+          "github-1297555915",
+          "foreverharibo-boop/Swipe-Compare-Bookmark",
+          "https://github.com/foreverharibo-boop/Swipe-Compare-Bookmark"
+        ],
+        "summary": [
+          "Swipe-Compare-Bookmark is a SillyTavern extension, per the README title (README:1), that combines message swipe comparison with bookmarking for chat organization."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Organize chats and messages",
+          "chat organization",
+          "message bookmarks",
+          "conversation search"
+        ],
         "frontends": [
           "SillyTavern"
         ],
@@ -55456,6 +55823,140 @@
           "Copilot",
           "Gam1409",
           "VictoryCATiii3"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "julie0219-sillytavern-extention-dalchive",
+      "name": "sillytavern_extention_dalchive",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "character-worldbuilding",
+      "summary": "SillyTavern extension (README: Dalchive) for browsing lore across multiple worldbuilding wikis in-chat, searching characters, places, and items during roleplay with Korean translation.",
+      "canonicalUrl": "https://github.com/Julie0219/sillytavern_extention_dalchive",
+      "catalogedAt": "2026-11-17T20:39:20.029Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "retrieve-relevant-context",
+          "label": "Retrieve relevant context",
+          "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
+          "facet": "goal"
+        },
+        {
+          "id": "translate-roleplay-content",
+          "label": "Translate roleplay content",
+          "description": "Translate chats, cards, lore, prompts, or other roleplay material between languages.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "f869c880aafaa59cbb4875cf8aaec7ce326b485e",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Julie0219"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": null,
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": true
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 238,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-17T20:39:20.029Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Julie0219/sillytavern_extention_dalchive.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "sillytavern_extention_dalchive"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "sillytavern_extention_dalchive"
+        ],
+        "aliases": [],
+        "source": [
+          "julie0219-sillytavern-extention-dalchive",
+          "github-1269600893",
+          "Julie0219/sillytavern_extention_dalchive",
+          "https://github.com/Julie0219/sillytavern_extention_dalchive"
+        ],
+        "summary": [
+          "SillyTavern extension (README: Dalchive) for browsing lore across multiple worldbuilding wikis in-chat, searching characters, places, and items during roleplay with Korean translation."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Character and worldbuilding"
+        ],
+        "tags": [
+          "Retrieve relevant context",
+          "context retrieval",
+          "relevant recall",
+          "knowledge retrieval",
+          "Translate roleplay content",
+          "chat translation",
+          "AI translation",
+          "translate messages"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Julie0219"
         ],
         "relationships": []
       }
@@ -70308,7 +70809,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "df3b1486cee288d8def2aff26c9dd029b5eb9f98",
+        "currentSha": "c0c9530680fc2d6d79eeed0894248714ced4acb8",
         "report": {
           "reportId": "3b20a70ff103c83296ad1ae652aad239856b95e40e27093be2708ab937363308",
           "riskLevel": "low",
@@ -70567,21 +71068,21 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-25T00:32:40.000Z",
+        "latestSourceActivityAt": "2026-11-16T12:23:40.000Z",
         "activeWeeks12": 7,
         "weeklyActivity": [
-          true,
           false,
           false,
           false,
-          true,
-          true,
-          true,
           false,
           true,
           true,
           true,
-          false
+          false,
+          true,
+          true,
+          true,
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
@@ -70593,14 +71094,14 @@
         "watchers": 0,
         "aggregate": 10
       },
-      "repositorySizeKb": 8111,
+      "repositorySizeKb": 7360,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T09:08:50.336Z",
+      "refreshedAt": "2026-11-17T17:09:05.132Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -119704,6 +120205,140 @@
       }
     },
     {
+      "id": "st-chd-persona-cards",
+      "name": "persona-cards",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "character-worldbuilding",
+      "summary": "st-chd/persona-cards is a SillyTavern extension (requires 1.15.0+) that saves and loads personas individually, exporting selected ones as PNG or JSON for import in other SillyTavern environments (README).",
+      "canonicalUrl": "https://github.com/st-chd/persona-cards",
+      "catalogedAt": "2026-11-17T20:30:12.987Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "manage-characters-and-personas",
+          "label": "Manage characters and personas",
+          "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+          "facet": "goal"
+        },
+        {
+          "id": "move-and-back-up-data",
+          "label": "Move and back up data",
+          "description": "Import, export, synchronize, migrate, restore, or back up roleplay data.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "c24e7dff1a3ba56932bec178d9adbf1191d2ba77",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "st-chd"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-08-19T06:04:45.000Z",
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 131,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-17T20:30:12.987Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/st-chd/persona-cards.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "persona-cards"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "persona-cards"
+        ],
+        "aliases": [],
+        "source": [
+          "st-chd-persona-cards",
+          "github-1279026138",
+          "st-chd/persona-cards",
+          "https://github.com/st-chd/persona-cards"
+        ],
+        "summary": [
+          "st-chd/persona-cards is a SillyTavern extension (requires 1.15.0+) that saves and loads personas individually, exporting selected ones as PNG or JSON for import in other SillyTavern environments (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Character and worldbuilding"
+        ],
+        "tags": [
+          "Manage characters and personas",
+          "persona management",
+          "character management",
+          "identity management",
+          "Move and back up data",
+          "data portability",
+          "backup and restore",
+          "import and export"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "st-chd"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "st-chd-stmulti-avatar",
       "name": "STmulti-avatar",
       "kind": "extension",
@@ -127582,8 +128217,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "ae9549c9d2d6fe4ff1af0c1f5d489857ee4c90e5",
+        "freshness": "stale",
+        "currentSha": "e89dc31d4a4cfaeb04bf39e4fba1b1a9a0d53b6c",
         "report": {
           "reportId": "93a7f428e2adfcfbc072d7b5f4de496374652271f3e90ae8d238bdcbe6846a92",
           "riskLevel": "low",
@@ -128541,11 +129176,11 @@
       },
       "activity": {
         "latestSourceActivityAt": "2026-10-13T13:18:48.000Z",
-        "activeWeeks12": 10,
+        "activeWeeks12": 7,
         "weeklyActivity": [
-          true,
-          true,
-          true,
+          false,
+          false,
+          false,
           true,
           true,
           true,
@@ -128561,19 +129196,19 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 40,
+        "stars": 42,
         "forks": 7,
         "watchers": 4,
-        "aggregate": 51
+        "aggregate": 53
       },
-      "repositorySizeKb": 3251,
+      "repositorySizeKb": 4588,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T09:09:08.424Z",
+      "refreshedAt": "2026-11-17T17:09:55.858Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -138534,13 +139169,73 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "a55705c135190b6438cfab5c00c31f81c258e52e",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "2969b64d4cca9ee31095f0274d127169e10f3fea1ab557aeb97f351c884830ce",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 6,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [
+            "082b477ce2bf9c0b620b6fc188ea1ecf861cf2729ccfd90242c1ff9ea33f21a1",
+            "28abc4e9db3943bf4f122cd5aa04be8add098d75380a40ffd4f8eaa09453fda2",
+            "6540f55cd84c5ab9de7a14ebdc51be23eaf4fc79f4558c39110972bf1dd53771",
+            "6924c7fa2b87b25eb0ee22470a86ba1409b7eaef1d92cd420e2f0d6994cba5a3",
+            "812629823e73f6f086c92a743a79684669939817c19139efa1a048b5d3b46bc6",
+            "f9e05800982fbc7bc13a8c8c0b19774e1cf43ec2d00b75aae8c1bffbeaba8217"
+          ],
+          "scannedSha": "a55705c135190b6438cfab5c00c31f81c258e52e",
+          "treeUrl": "https://github.com/ze-ro-soda/storybooster/tree/a55705c135190b6438cfab5c00c31f81c258e52e",
+          "scannedAt": "2026-11-16T17:36:58.841Z",
+          "assessedAt": "2026-11-18T01:11:46.721Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1312817198/a55705c135190b6438cfab5c00c31f81c258e52e/5/2969b64d4cca9ee31095f0274d127169e10f3fea1ab557aeb97f351c884830ce/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1312817198/history/"
+        },
+        "history": [
+          {
+            "reportId": "2969b64d4cca9ee31095f0274d127169e10f3fea1ab557aeb97f351c884830ce",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 6,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [
+              "082b477ce2bf9c0b620b6fc188ea1ecf861cf2729ccfd90242c1ff9ea33f21a1",
+              "28abc4e9db3943bf4f122cd5aa04be8add098d75380a40ffd4f8eaa09453fda2",
+              "6540f55cd84c5ab9de7a14ebdc51be23eaf4fc79f4558c39110972bf1dd53771",
+              "6924c7fa2b87b25eb0ee22470a86ba1409b7eaef1d92cd420e2f0d6994cba5a3",
+              "812629823e73f6f086c92a743a79684669939817c19139efa1a048b5d3b46bc6",
+              "f9e05800982fbc7bc13a8c8c0b19774e1cf43ec2d00b75aae8c1bffbeaba8217"
+            ],
+            "scannedSha": "a55705c135190b6438cfab5c00c31f81c258e52e",
+            "treeUrl": "https://github.com/ze-ro-soda/storybooster/tree/a55705c135190b6438cfab5c00c31f81c258e52e",
+            "scannedAt": "2026-11-16T17:36:58.841Z",
+            "assessedAt": "2026-11-18T01:11:46.721Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1312817198/a55705c135190b6438cfab5c00c31f81c258e52e/5/2969b64d4cca9ee31095f0274d127169e10f3fea1ab557aeb97f351c884830ce/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1312817198/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1312817198/"
       },
       "attribution": {
         "owner": {
@@ -183815,8 +184510,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "ae9549c9d2d6fe4ff1af0c1f5d489857ee4c90e5",
+              "freshness": "stale",
+              "currentSha": "e89dc31d4a4cfaeb04bf39e4fba1b1a9a0d53b6c",
               "report": {
                 "reportId": "93a7f428e2adfcfbc072d7b5f4de496374652271f3e90ae8d238bdcbe6846a92",
                 "riskLevel": "low",
@@ -184774,11 +185469,11 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-10-13T13:18:48.000Z",
-              "activeWeeks12": 10,
+              "activeWeeks12": 7,
               "weeklyActivity": [
-                true,
-                true,
-                true,
+                false,
+                false,
+                false,
                 true,
                 true,
                 true,
@@ -184794,19 +185489,19 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 40,
+              "stars": 42,
               "forks": 7,
               "watchers": 4,
-              "aggregate": 51
+              "aggregate": 53
             },
-            "repositorySizeKb": 3251,
+            "repositorySizeKb": 4588,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-01T09:09:08.424Z",
+            "refreshedAt": "2026-11-17T17:09:55.858Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -189488,8 +190183,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "ae9549c9d2d6fe4ff1af0c1f5d489857ee4c90e5",
+              "freshness": "stale",
+              "currentSha": "e89dc31d4a4cfaeb04bf39e4fba1b1a9a0d53b6c",
               "report": {
                 "reportId": "93a7f428e2adfcfbc072d7b5f4de496374652271f3e90ae8d238bdcbe6846a92",
                 "riskLevel": "low",
@@ -190447,11 +191142,11 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-10-13T13:18:48.000Z",
-              "activeWeeks12": 10,
+              "activeWeeks12": 7,
               "weeklyActivity": [
-                true,
-                true,
-                true,
+                false,
+                false,
+                false,
                 true,
                 true,
                 true,
@@ -190467,19 +191162,19 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 40,
+              "stars": 42,
               "forks": 7,
               "watchers": 4,
-              "aggregate": 51
+              "aggregate": 53
             },
-            "repositorySizeKb": 3251,
+            "repositorySizeKb": 4588,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-01T09:09:08.424Z",
+            "refreshedAt": "2026-11-17T17:09:55.858Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -202867,8 +203562,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "ae9549c9d2d6fe4ff1af0c1f5d489857ee4c90e5",
+              "freshness": "stale",
+              "currentSha": "e89dc31d4a4cfaeb04bf39e4fba1b1a9a0d53b6c",
               "report": {
                 "reportId": "93a7f428e2adfcfbc072d7b5f4de496374652271f3e90ae8d238bdcbe6846a92",
                 "riskLevel": "low",
@@ -203826,11 +204521,11 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-10-13T13:18:48.000Z",
-              "activeWeeks12": 10,
+              "activeWeeks12": 7,
               "weeklyActivity": [
-                true,
-                true,
-                true,
+                false,
+                false,
+                false,
                 true,
                 true,
                 true,
@@ -203846,19 +204541,19 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 40,
+              "stars": 42,
               "forks": 7,
               "watchers": 4,
-              "aggregate": 51
+              "aggregate": 53
             },
-            "repositorySizeKb": 3251,
+            "repositorySizeKb": 4588,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-01T09:09:08.424Z",
+            "refreshedAt": "2026-11-17T17:09:55.858Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -239729,8 +240424,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "ae9549c9d2d6fe4ff1af0c1f5d489857ee4c90e5",
+              "freshness": "stale",
+              "currentSha": "e89dc31d4a4cfaeb04bf39e4fba1b1a9a0d53b6c",
               "report": {
                 "reportId": "93a7f428e2adfcfbc072d7b5f4de496374652271f3e90ae8d238bdcbe6846a92",
                 "riskLevel": "low",
@@ -240688,11 +241383,11 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-10-13T13:18:48.000Z",
-              "activeWeeks12": 10,
+              "activeWeeks12": 7,
               "weeklyActivity": [
-                true,
-                true,
-                true,
+                false,
+                false,
+                false,
                 true,
                 true,
                 true,
@@ -240708,19 +241403,19 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 40,
+              "stars": 42,
               "forks": 7,
               "watchers": 4,
-              "aggregate": 51
+              "aggregate": 53
             },
-            "repositorySizeKb": 3251,
+            "repositorySizeKb": 4588,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-01T09:09:08.424Z",
+            "refreshedAt": "2026-11-17T17:09:55.858Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -279421,8 +280116,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "ae9549c9d2d6fe4ff1af0c1f5d489857ee4c90e5",
+              "freshness": "stale",
+              "currentSha": "e89dc31d4a4cfaeb04bf39e4fba1b1a9a0d53b6c",
               "report": {
                 "reportId": "93a7f428e2adfcfbc072d7b5f4de496374652271f3e90ae8d238bdcbe6846a92",
                 "riskLevel": "low",
@@ -280380,11 +281075,11 @@
             },
             "activity": {
               "latestSourceActivityAt": "2026-10-13T13:18:48.000Z",
-              "activeWeeks12": 10,
+              "activeWeeks12": 7,
               "weeklyActivity": [
-                true,
-                true,
-                true,
+                false,
+                false,
+                false,
                 true,
                 true,
                 true,
@@ -280400,19 +281095,19 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 40,
+              "stars": 42,
               "forks": 7,
               "watchers": 4,
-              "aggregate": 51
+              "aggregate": 53
             },
-            "repositorySizeKb": 3251,
+            "repositorySizeKb": 4588,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-01T09:09:08.424Z",
+            "refreshedAt": "2026-11-17T17:09:55.858Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
