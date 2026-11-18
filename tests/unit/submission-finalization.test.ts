@@ -75,7 +75,7 @@ test("the existing completion workflow automatically wakes for Publisher-owned i
   );
   expect(workflow.on.issues).toEqual({ types: ["closed"] });
   // A later issue closure must not replace another issue's pending receipt retry.
-  expect(workflow.concurrency).toEqual({
+  expect(workflow.jobs.reconcile.concurrency).toEqual({
     group:
       "${{ github.event_name == 'issues' && format('submission-finalization-{0}', github.event.issue.number) || 'submission-reconciliation' }}",
     "cancel-in-progress": false,
