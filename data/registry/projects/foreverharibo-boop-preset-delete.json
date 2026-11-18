@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-preset-delete",
+  "name": "preset-delete",
+  "kind": "extension",
+  "summary": "preset-delete is a SillyTavern 1.18 extension for managing Chat Completion presets in bulk, giving users batch control over their preset collection (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1350355759",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["manage-prompts-and-presets"],
+  "cataloged_at": "2026-11-18T08:55:28.374Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
