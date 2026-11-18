@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1284801740",
+  "head_sha": "001a05a1d5dbf67ee0d3a6161dbf7cc9342afe19",
+  "observed_at": "2026-11-18T13:50:20.342Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "narrative-card",
+  "manifest": {
+    "display_name": "Narrative Card",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
