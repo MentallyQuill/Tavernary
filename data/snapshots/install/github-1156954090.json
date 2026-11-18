@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1156954090",
+  "head_sha": "93416be34174199782fb116bbd4b4c11ce08c53e",
+  "observed_at": "2026-11-18T13:48:50.191Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "st-edit-tools",
+  "manifest": {
+    "display_name": "Edit Tools",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
