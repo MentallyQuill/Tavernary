@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1316137085",
+  "head_sha": "bdfda380de0efec240a0e224b514bc1127c79b84",
+  "observed_at": "2026-11-18T13:49:20.246Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Forceinjectjump",
+  "manifest": {
+    "display_name": "Force Inject Jump",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
