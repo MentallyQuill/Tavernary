@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "likemood-xoxo-bookmark-w",
+  "name": "Bookmark.w",
+  "kind": "extension",
+  "summary": "No README file found.",
+  "metadata_status": "curated",
+  "source_id": "github-1228358344",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-11-18T08:55:16.237Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

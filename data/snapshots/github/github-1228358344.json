@@ -1,0 +1,57 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1228358344",
+  "repository": {
+    "id": 1228358344,
+    "owner": "likemood-xoxo",
+    "name": "Bookmark.w",
+    "url": "https://github.com/likemood-xoxo/Bookmark.w",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "bdb54e0766fe07a742dabcb77c733fd6ff403b92",
+    "head_committed_at": "2026-09-26T06:59:00.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-05-03T23:32:20.000Z",
+    "size_kb": 394
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-09-26T06:59:00.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-09-21",
+        "latest_at": "2026-09-26T06:59:00.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-18T08:55:16.237Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "bdb54e0766fe07a742dabcb77c733fd6ff403b92"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-11-18T08:55:16.237Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "likemood-xoxo", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-18T08:55:16.237Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
