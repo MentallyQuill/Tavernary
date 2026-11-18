@@ -465,6 +465,7 @@ test("fixed model budget bookkeeping preserves validated project publication", (
 test("a deployment confirmation pointer does not force a validated submission to regenerate", () => {
   expect(
     isSafeProjectPublicationBaseDrift({
+      transaction,
       changedPaths: [
         "data/maintenance/automation/deployments/current.json",
         `data/maintenance/automation/deployments/${"a".repeat(40)}.json`,
@@ -473,6 +474,7 @@ test("a deployment confirmation pointer does not force a validated submission to
   ).toBe(true);
   expect(
     isSafeProjectPublicationBaseDrift({
+      transaction,
       changedPaths: ["data/maintenance/automation/deployments/unknown.json"],
     }),
   ).toBe(false);
