@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-message-metrics-display",
+  "name": "message-metrics-display",
+  "kind": "extension",
+  "summary": "SillyTavern extension that displays each message's token count (e.g. 123t) and generation time (e.g. 4.2s) in place, targeting SillyTavern 1.13.4+ and needing no server plugin (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1400029890",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["inspect-prompts-and-generations", "monitor-token-usage-and-cost"],
+  "cataloged_at": "2026-11-19T03:34:51.276Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
