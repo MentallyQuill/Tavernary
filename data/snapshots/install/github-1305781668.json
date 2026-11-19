@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1305781668",
+  "head_sha": "988d7b732628f5bfa7ec5bf61bce9778dd9c8c92",
+  "observed_at": "2026-11-19T06:21:13.792Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Versus",
+  "manifest": {
+    "display_name": "Versus",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-versus",
+  "name": "Versus",
+  "kind": "extension",
+  "summary": "Versus is a SillyTavern extension, a fork of the original foreverharibo-boop/Versus repository; the supplied README only documents this identity and origin and gives no further feature detail.",
+  "metadata_status": "curated",
+  "source_id": "github-1305781668",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [],
+  "cataloged_at": "2026-11-19T06:20:59.651Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
