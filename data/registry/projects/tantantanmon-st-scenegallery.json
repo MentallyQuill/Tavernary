@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "tantantanmon-st-scenegallery",
+  "name": "st-SceneGallery",
+  "kind": "extension",
+  "summary": "st-SceneGallery is a SillyTavern extension for saving standout roleplay moments during chats as emotive scene cards and managing them in a gallery.",
+  "metadata_status": "curated",
+  "source_id": "github-1191674813",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "add-visual-immersion",
+    "organize-chats-and-messages",
+    "preserve-story-continuity"
+  ],
+  "cataloged_at": "2026-11-19T04:23:15.728Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
