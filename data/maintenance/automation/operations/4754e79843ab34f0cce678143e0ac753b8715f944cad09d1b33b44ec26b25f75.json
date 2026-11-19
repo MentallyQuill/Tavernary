@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4754e79843ab34f0cce678143e0ac753b8715f944cad09d1b33b44ec26b25f75",
+    "identity": {
+      "kind": "report-import",
+      "subject": "report:4bc863bccabf48f83f75124835b3589ed9938a1aee61a799e73b343cf15d2d9a",
+      "inputDigest": "1f7e2ead039c499f23ef1980a42fa5d9c5d92a4c536580712a891b115e06d102",
+      "policyVersion": "5.5"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-18T10:08:58.916Z",
+    "nextEligibleAt": "2026-11-19T04:24:18.740Z",
+    "expectedSha": "cb2c38479268a3c151fe721216d2feac1579efab",
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "provider-rate-limited"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-19T04:18:54.051Z",
+  "completedAt": null
+}
