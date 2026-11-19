@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-hanmadi",
+  "name": "hanmadi",
+  "kind": "extension",
+  "summary": "hanmadi by foreverharibo-boop is a SillyTavern extension; the README documents it only as a SillyTavern extension and points to its original repository (README: 'SillyTavern 확장입니다').",
+  "metadata_status": "curated",
+  "source_id": "github-1302491961",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [],
+  "cataloged_at": "2026-11-19T06:21:16.752Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
