@@ -10338,7 +10338,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T09:13:13.595Z",
+      "refreshedAt": "2026-11-19T16:48:22.868Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -19794,6 +19794,242 @@
         "maintainers": [
           "bongbong11",
           "codex"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "bongbong11-chatssirealty",
+      "name": "ChatssiRealty",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "rpg-systems",
+      "summary": "No README file found.",
+      "canonicalUrl": "https://github.com/bongbong11/ChatssiRealty",
+      "catalogedAt": "2026-11-19T03:34:42.249Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "87d089832e304f6a072e05a73e6271434f027c8e",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "bongbong11"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-09-28T09:11:55.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 942,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T03:34:42.249Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/bongbong11/ChatssiRealty.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "ChatssiRealty"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "ChatssiRealty"
+        ],
+        "aliases": [],
+        "source": [
+          "bongbong11-chatssirealty",
+          "github-1274210130",
+          "bongbong11/ChatssiRealty",
+          "https://github.com/bongbong11/ChatssiRealty"
+        ],
+        "summary": [
+          "No README file found."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "RPG systems and suites"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "bongbong11"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "bongbong11-in-tr",
+      "name": "in_tr",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "A SillyTavern extension that translates user input from Korean to English, letting Korean speakers roleplay in English (README: SillyTavern용 한국어→영어 인풋 번역 확장).",
+      "canonicalUrl": "https://github.com/bongbong11/in_tr",
+      "catalogedAt": "2026-11-19T03:35:05.461Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "translate-roleplay-content",
+          "label": "Translate roleplay content",
+          "description": "Translate chats, cards, lore, prompts, or other roleplay material between languages.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "969194af344fb0234fac435c393f473cd5f93289",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "bongbong11"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-16T08:26:43.000Z",
+        "activeWeeks12": 3,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 147,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T03:35:05.461Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/bongbong11/in_tr.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "in_tr"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "in_tr"
+        ],
+        "aliases": [],
+        "source": [
+          "bongbong11-in-tr",
+          "github-1372767983",
+          "bongbong11/in_tr",
+          "https://github.com/bongbong11/in_tr"
+        ],
+        "summary": [
+          "A SillyTavern extension that translates user input from Korean to English, letting Korean speakers roleplay in English (README: SillyTavern용 한국어→영어 인풋 번역 확장)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Translate roleplay content",
+          "chat translation",
+          "AI translation",
+          "translate messages"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "bongbong11"
         ],
         "relationships": []
       }
@@ -32425,6 +32661,126 @@
       }
     },
     {
+      "id": "demonroute1-sillytavern-demonroute",
+      "name": "SillyTavern-DemonRoute",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "developer-infrastructure",
+      "summary": "Provider-owned DemonRoute API connector with native key handling and model discovery. Requires SillyTavern 1.20.0+ Custom Providers API v1; use staging until released. Stable 1.19.0 unsupported.",
+      "canonicalUrl": "https://github.com/demonroute1/SillyTavern-DemonRoute",
+      "catalogedAt": "2026-11-19T04:23:47.432Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "fa4c415d7f8308e54da7c70a5546795380b01772",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "demonroute1"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-16T17:44:00.000Z",
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 35,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T04:23:47.432Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/demonroute1/SillyTavern-DemonRoute.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-DemonRoute"
+      },
+      "fork": {
+        "parentName": "Extension-ProviderExample",
+        "parentProjectId": "sillytavern-extension-providerexample",
+        "parentUrl": null,
+        "status": "published"
+      },
+      "search": {
+        "title": [
+          "SillyTavern-DemonRoute"
+        ],
+        "aliases": [],
+        "source": [
+          "demonroute1-sillytavern-demonroute",
+          "github-1460359452",
+          "demonroute1/SillyTavern-DemonRoute",
+          "https://github.com/demonroute1/SillyTavern-DemonRoute"
+        ],
+        "summary": [
+          "Provider-owned DemonRoute API connector with native key handling and model discovery. Requires SillyTavern 1.20.0+ Custom Providers API v1; use staging until released. Stable 1.19.0 unsupported."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Developer infrastructure"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "demonroute1"
+        ],
+        "relationships": [
+          "Extension-ProviderExample",
+          "sillytavern-extension-providerexample"
+        ]
+      }
+    },
+    {
       "id": "devemberteam-ops-pyre",
       "name": "Pyre",
       "kind": "frontend",
@@ -42400,6 +42756,342 @@
       }
     },
     {
+      "id": "foreverharibo-boop-chak-chak",
+      "name": "chak-chak",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "Chak-Chak (착착) by foreverharibo-boop is a SillyTavern extension (SillyTavern 확장입니다); the README provides only minimal documentation and links back to the original repository for further details.",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/chak-chak",
+      "catalogedAt": "2026-11-19T06:33:52.310Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "b452fa375fe9d189f607546b28853f6a5412b67c",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-09T14:09:49.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 169,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T06:33:52.310Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/chak-chak.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "chak-chak"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "chak-chak"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-chak-chak",
+          "github-1305417386",
+          "foreverharibo-boop/chak-chak",
+          "https://github.com/foreverharibo-boop/chak-chak"
+        ],
+        "summary": [
+          "Chak-Chak (착착) by foreverharibo-boop is a SillyTavern extension (SillyTavern 확장입니다); the README provides only minimal documentation and links back to the original repository for further details."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "foreverharibo-boop-char-pop",
+      "name": "CHAR-POP",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "CHAR-POP is a SillyTavern extension by foreverharibo-boop, maintained as a fork of the original CHAR-POP repository (README L1-L5).",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/CHAR-POP",
+      "catalogedAt": "2026-11-19T06:21:24.620Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "dc346b7e3f98f87c2a4c0943193f6b7055701dbd",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-28T05:33:34.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 86,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T06:21:24.620Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/CHAR-POP.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "CHAR-POP"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "CHAR-POP"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-char-pop",
+          "github-1274118166",
+          "foreverharibo-boop/CHAR-POP",
+          "https://github.com/foreverharibo-boop/CHAR-POP"
+        ],
+        "summary": [
+          "CHAR-POP is a SillyTavern extension by foreverharibo-boop, maintained as a fork of the original CHAR-POP repository (README L1-L5)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "foreverharibo-boop-charpoppro",
+      "name": "charpoppro",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "CHAR-POP-PRO is a SillyTavern extension by foreverharibo-boop; its README states only that it is a SillyTavern extension and links to the original repository (charpoppro README).",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/charpoppro",
+      "catalogedAt": "2026-11-19T06:20:45.917Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "6597e6e8979c32f454464cbd72ee735ad1de2c93",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-28T05:34:37.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 37,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T06:20:45.917Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/charpoppro.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "charpoppro"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "charpoppro"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-charpoppro",
+          "github-1315791558",
+          "foreverharibo-boop/charpoppro",
+          "https://github.com/foreverharibo-boop/charpoppro"
+        ],
+        "summary": [
+          "CHAR-POP-PRO is a SillyTavern extension by foreverharibo-boop; its README states only that it is a SillyTavern extension and links to the original repository (charpoppro README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "foreverharibo-boop-chat-searching",
       "name": "chat-searching",
       "kind": "extension",
@@ -42501,6 +43193,837 @@
           "Interface and workflow"
         ],
         "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "foreverharibo-boop-chatlog",
+      "name": "chatlog",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "rpg-systems",
+      "summary": "chatlog (챗로그) by foreverharibo-boop is a SillyTavern extension whose README currently supplies only its title, so no documented features or workflows are available from source evidence.",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/chatlog",
+      "catalogedAt": "2026-11-19T06:21:47.401Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "9b8bb960052c862627d7867b800e8f79ad32d2d9",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-09T13:40:40.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 556,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T06:21:47.401Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/chatlog.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "chatlog"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "chatlog"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-chatlog",
+          "github-1311208544",
+          "foreverharibo-boop/chatlog",
+          "https://github.com/foreverharibo-boop/chatlog"
+        ],
+        "summary": [
+          "chatlog (챗로그) by foreverharibo-boop is a SillyTavern extension whose README currently supplies only its title, so no documented features or workflows are available from source evidence."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "RPG systems and suites"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "foreverharibo-boop-geumanhae",
+      "name": "geumanhae",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "geumanhae (그만해) is a SillyTavern extension, documented in its README (\"SillyTavern 확장입니다\") as a frontend add-on without further feature detail.",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/geumanhae",
+      "catalogedAt": "2026-11-19T06:21:47.388Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "926cabbb5f663d22a63fcdedff35710a80003207",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-28T05:34:09.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 139,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T06:21:47.388Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/geumanhae.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "geumanhae"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "geumanhae"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-geumanhae",
+          "github-1302663123",
+          "foreverharibo-boop/geumanhae",
+          "https://github.com/foreverharibo-boop/geumanhae"
+        ],
+        "summary": [
+          "geumanhae (그만해) is a SillyTavern extension, documented in its README (\"SillyTavern 확장입니다\") as a frontend add-on without further feature detail."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "foreverharibo-boop-hanmadi",
+      "name": "hanmadi",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "generation-reasoning",
+      "summary": "hanmadi by foreverharibo-boop is a SillyTavern extension; the README documents it only as a SillyTavern extension and points to its original repository (README: 'SillyTavern 확장입니다').",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/hanmadi",
+      "catalogedAt": "2026-11-19T06:21:16.752Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "ac826d79405c620c8025b4c23212f38db8303b23",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-28T05:34:06.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 1198,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T06:21:16.752Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/hanmadi.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "hanmadi"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "hanmadi"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-hanmadi",
+          "github-1302491961",
+          "foreverharibo-boop/hanmadi",
+          "https://github.com/foreverharibo-boop/hanmadi"
+        ],
+        "summary": [
+          "hanmadi by foreverharibo-boop is a SillyTavern extension; the README documents it only as a SillyTavern extension and points to its original repository (README: 'SillyTavern 확장입니다')."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Generation and reasoning"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "foreverharibo-boop-kink",
+      "name": "kink-",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "character-worldbuilding",
+      "summary": "SillyTavern extension analyzing character cards or recent chat logs with AI to summarize a character's kinks, adult (18+) characters only (Kink Extract README)",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/kink-",
+      "catalogedAt": "2026-11-19T06:21:12.395Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "build-extensions-and-scripts",
+          "label": "Build extensions and scripts",
+          "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "2a8dbac03dfcdeea8ebb3558e0c9d3fa3e83c1b0",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-28T05:34:03.000Z",
+        "activeWeeks12": 3,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          true,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 583,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T06:21:12.395Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/kink-.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "kink-"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "kink-"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-kink",
+          "github-1301622469",
+          "foreverharibo-boop/kink-",
+          "https://github.com/foreverharibo-boop/kink-"
+        ],
+        "summary": [
+          "SillyTavern extension analyzing character cards or recent chat logs with AI to summarize a character's kinks, adult (18+) characters only (Kink Extract README)"
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Character and worldbuilding"
+        ],
+        "tags": [
+          "Build extensions and scripts",
+          "extension development",
+          "custom scripting",
+          "plugin development"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "foreverharibo-boop-lastwords",
+      "name": "lastwords",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "character-worldbuilding",
+      "summary": "lastwords (유서) is presented in its README as a SillyTavern extension; the documented evidence states only 'SillyTavern 확장입니다' plus the original repository link, with no features described.",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/lastwords",
+      "catalogedAt": "2026-11-19T03:34:59.383Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "6325d40e74bc7968629cda1b75b8d468d97e5f4b",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-28T05:34:30.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 285,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T03:34:59.383Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/lastwords.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "lastwords"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "lastwords"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-lastwords",
+          "github-1306702454",
+          "foreverharibo-boop/lastwords",
+          "https://github.com/foreverharibo-boop/lastwords"
+        ],
+        "summary": [
+          "lastwords (유서) is presented in its README as a SillyTavern extension; the documented evidence states only 'SillyTavern 확장입니다' plus the original repository link, with no features described."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Character and worldbuilding"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "foreverharibo-boop-lore-manager",
+      "name": "lore-manager",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "lore-manager (로어북 매니저) is a SillyTavern extension whose README, stated as \"로어북 매니저\", identifies it as a lorebook manager for organizing World Info entries.",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/lore-manager",
+      "catalogedAt": "2026-11-19T03:35:26.421Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "manage-lorebooks",
+          "label": "Manage lorebooks",
+          "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "b9d1af41363bfa9bf87d0dead4b3bf42b46d487c",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-18T05:41:27.000Z",
+        "activeWeeks12": 4,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 1,
+        "watchers": 0,
+        "aggregate": 1
+      },
+      "repositorySizeKb": 3971,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T03:35:26.421Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/lore-manager.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "lore-manager"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "lore-manager"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-lore-manager",
+          "github-1319052664",
+          "foreverharibo-boop/lore-manager",
+          "https://github.com/foreverharibo-boop/lore-manager"
+        ],
+        "summary": [
+          "lore-manager (로어북 매니저) is a SillyTavern extension whose README, stated as \"로어북 매니저\", identifies it as a lorebook manager for organizing World Info entries."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Manage lorebooks",
+          "World Info management",
+          "worldbook organization",
+          "loredeck management"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "foreverharibo-boop-message-metrics-display",
+      "name": "message-metrics-display",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "SillyTavern extension that displays each message's token count (e.g. 123t) and generation time (e.g. 4.2s) in place, targeting SillyTavern 1.13.4+ and needing no server plugin (README).",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/message-metrics-display",
+      "catalogedAt": "2026-11-19T03:34:51.276Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "inspect-prompts-and-generations",
+          "label": "Inspect prompts and generations",
+          "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+          "facet": "goal"
+        },
+        {
+          "id": "monitor-token-usage-and-cost",
+          "label": "Monitor token usage and cost",
+          "description": "Measure, visualize, budget, or report model token consumption and spending.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "6ae6e8fc0f327dee01758b61978901c7d877cc17",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-09T14:09:49.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 1,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 1
+      },
+      "repositorySizeKb": 94,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T03:34:51.276Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/message-metrics-display.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "message-metrics-display"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "message-metrics-display"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-message-metrics-display",
+          "github-1400029890",
+          "foreverharibo-boop/message-metrics-display",
+          "https://github.com/foreverharibo-boop/message-metrics-display"
+        ],
+        "summary": [
+          "SillyTavern extension that displays each message's token count (e.g. 123t) and generation time (e.g. 4.2s) in place, targeting SillyTavern 1.13.4+ and needing no server plugin (README)."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Inspect prompts and generations",
+          "prompt inspection",
+          "generation diagnostics",
+          "review validation",
+          "request debugging",
+          "Monitor token usage and cost",
+          "usage analytics",
+          "cost tracking",
+          "token statistics"
+        ],
         "frontends": [
           "SillyTavern"
         ],
@@ -42768,13 +44291,61 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "d6cbdc988966eef3e939392eb60b74d97301db2c",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "dde009df5a25f52e64f12985101ff2be5283f630ee8a8535d34c41287cdd93f4",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "d6cbdc988966eef3e939392eb60b74d97301db2c",
+          "treeUrl": "https://github.com/foreverharibo-boop/Persistent-Custom-CSS/tree/d6cbdc988966eef3e939392eb60b74d97301db2c",
+          "scannedAt": "2026-11-17T06:00:26.960Z",
+          "assessedAt": "2026-11-19T21:04:10.388Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "javascriptAnalysisStatus": "complete",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1301133809/d6cbdc988966eef3e939392eb60b74d97301db2c/5/dde009df5a25f52e64f12985101ff2be5283f630ee8a8535d34c41287cdd93f4/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1301133809/history/"
+        },
+        "history": [
+          {
+            "reportId": "dde009df5a25f52e64f12985101ff2be5283f630ee8a8535d34c41287cdd93f4",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "d6cbdc988966eef3e939392eb60b74d97301db2c",
+            "treeUrl": "https://github.com/foreverharibo-boop/Persistent-Custom-CSS/tree/d6cbdc988966eef3e939392eb60b74d97301db2c",
+            "scannedAt": "2026-11-17T06:00:26.960Z",
+            "assessedAt": "2026-11-19T21:04:10.388Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "javascriptAnalysisStatus": "complete",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1301133809/d6cbdc988966eef3e939392eb60b74d97301db2c/5/dde009df5a25f52e64f12985101ff2be5283f630ee8a8535d34c41287cdd93f4/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1301133809/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1301133809/"
       },
       "attribution": {
         "owner": {
@@ -42995,6 +44566,118 @@
       }
     },
     {
+      "id": "foreverharibo-boop-simple-char",
+      "name": "simple-char",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "simple-char by foreverharibo-boop is a SillyTavern extension; its README identifies it simply as 'SillyTavern 확장입니다' (a SillyTavern extension), with the original repository at github:foreverharibo-boop/simple-char.",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/simple-char",
+      "catalogedAt": "2026-11-19T06:21:55.072Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "c74310a81785ed69fbfa48dbd43a1fc83d0619d2",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-28T05:34:12.000Z",
+        "activeWeeks12": 3,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          true,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 157,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T06:21:55.072Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/simple-char.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "simple-char"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "simple-char"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-simple-char",
+          "github-1304782330",
+          "foreverharibo-boop/simple-char",
+          "https://github.com/foreverharibo-boop/simple-char"
+        ],
+        "summary": [
+          "simple-char by foreverharibo-boop is a SillyTavern extension; its README identifies it simply as 'SillyTavern 확장입니다' (a SillyTavern extension), with the original repository at github:foreverharibo-boop/simple-char."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "foreverharibo-boop-simple-extension",
       "name": "simple-extension",
       "kind": "extension",
@@ -43144,6 +44827,140 @@
           "Interface and workflow"
         ],
         "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "foreverharibo-boop-simple-persona",
+      "name": "simple-persona",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "simple-persona is a SillyTavern extension (README: 'SillyTavern 확장입니다') from foreverharibo-boop, with the original repository linked for reference; no further features are documented in the provided source.",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/simple-persona",
+      "catalogedAt": "2026-11-19T03:34:56.278Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "build-extensions-and-scripts",
+          "label": "Build extensions and scripts",
+          "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
+          "facet": "goal"
+        },
+        {
+          "id": "manage-characters-and-personas",
+          "label": "Manage characters and personas",
+          "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "4322138f187c457586187e0637f0d523382b2a79",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-28T05:33:50.000Z",
+        "activeWeeks12": 3,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          true,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 319,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T03:34:56.278Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/simple-persona.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "simple-persona"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "simple-persona"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-simple-persona",
+          "github-1297982020",
+          "foreverharibo-boop/simple-persona",
+          "https://github.com/foreverharibo-boop/simple-persona"
+        ],
+        "summary": [
+          "simple-persona is a SillyTavern extension (README: 'SillyTavern 확장입니다') from foreverharibo-boop, with the original repository linked for reference; no further features are documented in the provided source."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Build extensions and scripts",
+          "extension development",
+          "custom scripting",
+          "plugin development",
+          "Manage characters and personas",
+          "persona management",
+          "character management",
+          "identity management"
+        ],
         "frontends": [
           "SillyTavern"
         ],
@@ -43403,6 +45220,125 @@
       }
     },
     {
+      "id": "foreverharibo-boop-veereubaa",
+      "name": "veereubaa",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "veereubaa is a SillyTavern extension by foreverharibo-boop; its README (github:foreverharibo-boop/veereubaa@efdd7201) contains only the Korean title \"베에르으바아\" and no documented purpose or workflow.",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/veereubaa",
+      "catalogedAt": "2026-11-19T06:22:04.090Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "efdd7201ee413350e8489a1042e8614fd092f919",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "github-actions[bot]",
+            "botOrAi": true
+          }
+        ],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-18T14:15:27.000Z",
+        "activeWeeks12": 6,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 1,
+        "watchers": 0,
+        "aggregate": 1
+      },
+      "repositorySizeKb": 3142,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T06:22:04.090Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/veereubaa.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "veereubaa"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "veereubaa"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-veereubaa",
+          "github-1373069141",
+          "foreverharibo-boop/veereubaa",
+          "https://github.com/foreverharibo-boop/veereubaa"
+        ],
+        "summary": [
+          "veereubaa is a SillyTavern extension by foreverharibo-boop; its README (github:foreverharibo-boop/veereubaa@efdd7201) contains only the Korean title \"베에르으바아\" and no documented purpose or workflow."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop",
+          "github-actions[bot]"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "foreverharibo-boop-verba",
       "name": "verba",
       "kind": "extension",
@@ -43517,6 +45453,118 @@
         "maintainers": [
           "foreverharibo-boop",
           "github-actions[bot]"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "foreverharibo-boop-versus",
+      "name": "Versus",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "generation-reasoning",
+      "summary": "Versus is a SillyTavern extension, a fork of the original foreverharibo-boop/Versus repository; the supplied README only documents this identity and origin and gives no further feature detail.",
+      "canonicalUrl": "https://github.com/foreverharibo-boop/Versus",
+      "catalogedAt": "2026-11-19T06:20:59.651Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "988d7b732628f5bfa7ec5bf61bce9778dd9c8c92",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "foreverharibo-boop"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-28T05:34:27.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 291,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T06:20:59.651Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/foreverharibo-boop/Versus.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "Versus"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "Versus"
+        ],
+        "aliases": [],
+        "source": [
+          "foreverharibo-boop-versus",
+          "github-1305781668",
+          "foreverharibo-boop/Versus",
+          "https://github.com/foreverharibo-boop/Versus"
+        ],
+        "summary": [
+          "Versus is a SillyTavern extension, a fork of the original foreverharibo-boop/Versus repository; the supplied README only documents this identity and origin and gives no further feature detail."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Generation and reasoning"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "foreverharibo-boop"
         ],
         "relationships": []
       }
@@ -45038,6 +47086,130 @@
           "GetfroggyHoe",
           "tempestnano",
           "Howl404"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "ghostcatowo-ghostpen",
+      "name": "Ghostpen",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "generation-reasoning",
+      "summary": "Ghostpen by ghostcatowo is a SillyTavern extension, but its README (github:ghostcatowo/ghostpen@6554591) contains only the title \"Ghostpen\" with no further documentation of purpose or features.",
+      "canonicalUrl": "https://github.com/ghostcatowo/Ghostpen",
+      "catalogedAt": "2026-11-19T03:34:52.375Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "build-extensions-and-scripts",
+          "label": "Build extensions and scripts",
+          "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "6554591ec76c614d372ab2d5d20f6d074cf72a73",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "ghostcatowo"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-19T02:13:32.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 347,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T03:34:52.375Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/ghostcatowo/Ghostpen.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "Ghostpen"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "Ghostpen"
+        ],
+        "aliases": [],
+        "source": [
+          "ghostcatowo-ghostpen",
+          "github-1426789107",
+          "ghostcatowo/Ghostpen",
+          "https://github.com/ghostcatowo/Ghostpen"
+        ],
+        "summary": [
+          "Ghostpen by ghostcatowo is a SillyTavern extension, but its README (github:ghostcatowo/ghostpen@6554591) contains only the title \"Ghostpen\" with no further documentation of purpose or features."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Generation and reasoning"
+        ],
+        "tags": [
+          "Build extensions and scripts",
+          "extension development",
+          "custom scripting",
+          "plugin development"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "ghostcatowo"
         ],
         "relationships": []
       }
@@ -47070,6 +49242,140 @@
         "maintainers": [
           "Hapsburgtopquark388",
           "RealDoomSlaya"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "hati1004-scene-studio",
+      "name": "Scene-Studio",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "character-worldbuilding",
+      "summary": "Scene-Studio is a SillyTavern extension combining a scene generator with a minimap HUD, supporting scene planning and spatial location display during roleplay (README: '장면 생성기 · 미니맵 HUD (Scene Studio)').",
+      "canonicalUrl": "https://github.com/Hati1004/Scene-Studio",
+      "catalogedAt": "2026-11-19T04:23:41.532Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "manage-maps-and-locations",
+          "label": "Manage maps and locations",
+          "description": "Represent, navigate, calculate, or update places and spatial relationships.",
+          "facet": "goal"
+        },
+        {
+          "id": "plan-stories-and-scenes",
+          "label": "Plan stories and scenes",
+          "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "b7e54fe7436b233f102488c11acad2c7521607bc",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Hati1004"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-08T18:01:04.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 146,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T04:23:41.532Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Hati1004/Scene-Studio.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "Scene-Studio"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "Scene-Studio"
+        ],
+        "aliases": [],
+        "source": [
+          "hati1004-scene-studio",
+          "github-1408621208",
+          "Hati1004/Scene-Studio",
+          "https://github.com/Hati1004/Scene-Studio"
+        ],
+        "summary": [
+          "Scene-Studio is a SillyTavern extension combining a scene generator with a minimap HUD, supporting scene planning and spatial location display during roleplay (README: '장면 생성기 · 미니맵 HUD (Scene Studio)')."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Character and worldbuilding"
+        ],
+        "tags": [
+          "Manage maps and locations",
+          "interactive maps",
+          "location tracking",
+          "spatial navigation",
+          "Plan stories and scenes",
+          "story planning",
+          "plot direction",
+          "scene planning"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Hati1004"
         ],
         "relationships": []
       }
@@ -71170,6 +73476,118 @@
           "LudicDynamics",
           "nikoloside",
           "NEXTAltair"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "luisbrandao-sillytavern-director",
+      "name": "SillyTavern-Director",
+      "kind": "extension",
+      "metadataStatus": "provisional",
+      "sourceStatus": "healthy",
+      "primaryFunction": "generation-reasoning",
+      "summary": "Director for silly tavern.",
+      "canonicalUrl": "https://github.com/luisbrandao/SillyTavern-Director",
+      "catalogedAt": "2026-11-19T17:39:14.352Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "deb98ca60cc57f7195e2a4e739f378aaae29caa3",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "luisbrandao"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-10-31T19:25:32.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 9,
+        "forks": 2,
+        "watchers": 0,
+        "aggregate": 11
+      },
+      "repositorySizeKb": 234,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T17:39:14.352Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/luisbrandao/SillyTavern-Director.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-Director"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-Director"
+        ],
+        "aliases": [],
+        "source": [
+          "luisbrandao-sillytavern-director",
+          "github-1263541355",
+          "luisbrandao/SillyTavern-Director",
+          "https://github.com/luisbrandao/SillyTavern-Director"
+        ],
+        "summary": [
+          "Director for silly tavern."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Generation and reasoning"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "luisbrandao"
         ],
         "relationships": []
       }
@@ -115277,10 +117695,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 34,
+        "stars": 35,
         "forks": 7,
         "watchers": 2,
-        "aggregate": 43
+        "aggregate": 44
       },
       "repositorySizeKb": 2144,
       "license": {
@@ -115289,7 +117707,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T10:34:52.388Z",
+      "refreshedAt": "2026-11-19T16:49:23.604Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -115612,10 +118030,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 55,
+        "stars": 56,
         "forks": 10,
-        "watchers": 3,
-        "aggregate": 68
+        "watchers": 4,
+        "aggregate": 70
       },
       "repositorySizeKb": 25,
       "license": {
@@ -115624,7 +118042,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T09:14:43.697Z",
+      "refreshedAt": "2026-11-19T16:49:24.928Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -127755,6 +130173,118 @@
       }
     },
     {
+      "id": "tantantanmon-peach-whisper",
+      "name": "peach-whisper",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "generation-reasoning",
+      "summary": "Named project \"peach-whisper\" (github:tantantanmon/peach-whisper); catalog purpose is not described in available sources, which contain only the project title, so no workflow could be evidenced.",
+      "canonicalUrl": "https://github.com/Tantantanmon/peach-whisper",
+      "catalogedAt": "2026-11-19T03:34:56.533Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "59b3edc5089961394a9ee2a39eab37d8dd0537a1",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Tantantanmon"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": null,
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": true
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 491,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T03:34:56.533Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Tantantanmon/peach-whisper.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "peach-whisper"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "peach-whisper"
+        ],
+        "aliases": [],
+        "source": [
+          "tantantanmon-peach-whisper",
+          "github-1210065253",
+          "Tantantanmon/peach-whisper",
+          "https://github.com/Tantantanmon/peach-whisper"
+        ],
+        "summary": [
+          "Named project \"peach-whisper\" (github:tantantanmon/peach-whisper); catalog purpose is not described in available sources, which contain only the project title, so no workflow could be evidenced."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Generation and reasoning"
+        ],
+        "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Tantantanmon"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "tantantanmon-peaches-cream-core",
       "name": "peaches-cream-core",
       "kind": "extension",
@@ -127968,6 +130498,150 @@
           "Character and worldbuilding"
         ],
         "tags": [],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Tantantanmon"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "tantantanmon-st-scenegallery",
+      "name": "st-SceneGallery",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "memory-retrieval",
+      "summary": "st-SceneGallery is a SillyTavern extension for saving standout roleplay moments during chats as emotive scene cards and managing them in a gallery.",
+      "canonicalUrl": "https://github.com/Tantantanmon/st-SceneGallery",
+      "catalogedAt": "2026-11-19T04:23:15.728Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "organize-chats-and-messages",
+          "label": "Organize chats and messages",
+          "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
+          "facet": "goal"
+        },
+        {
+          "id": "preserve-story-continuity",
+          "label": "Preserve story continuity",
+          "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "378fe0ab678c973aac388d480ba67144add76954",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Tantantanmon"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": null,
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": true
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 51,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-19T04:23:15.728Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Tantantanmon/st-SceneGallery.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "st-SceneGallery"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "st-SceneGallery"
+        ],
+        "aliases": [],
+        "source": [
+          "tantantanmon-st-scenegallery",
+          "github-1191674813",
+          "Tantantanmon/st-SceneGallery",
+          "https://github.com/Tantantanmon/st-SceneGallery"
+        ],
+        "summary": [
+          "st-SceneGallery is a SillyTavern extension for saving standout roleplay moments during chats as emotive scene cards and managing them in a gallery."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Memory and retrieval"
+        ],
+        "tags": [
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals",
+          "Organize chats and messages",
+          "chat organization",
+          "message bookmarks",
+          "conversation search",
+          "Preserve story continuity",
+          "continuity tracking",
+          "canon consistency",
+          "story coherence"
+        ],
         "frontends": [
           "SillyTavern"
         ],
@@ -187219,10 +189893,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 55,
+              "stars": 56,
               "forks": 10,
-              "watchers": 3,
-              "aggregate": 68
+              "watchers": 4,
+              "aggregate": 70
             },
             "repositorySizeKb": 25,
             "license": {
@@ -187231,7 +189905,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-01T09:14:43.697Z",
+            "refreshedAt": "2026-11-19T16:49:24.928Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -212530,10 +215204,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 55,
+              "stars": 56,
               "forks": 10,
-              "watchers": 3,
-              "aggregate": 68
+              "watchers": 4,
+              "aggregate": 70
             },
             "repositorySizeKb": 25,
             "license": {
@@ -212542,7 +215216,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-01T09:14:43.697Z",
+            "refreshedAt": "2026-11-19T16:49:24.928Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
