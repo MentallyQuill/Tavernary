@@ -1,0 +1,23 @@
+{
+  "schema_version": 6,
+  "id": "demonroute1-sillytavern-demonroute",
+  "name": "SillyTavern-DemonRoute",
+  "kind": "extension",
+  "summary": "Provider-owned DemonRoute API connector with native key handling and model discovery. Requires SillyTavern 1.20.0+ Custom Providers API v1; use staging until released. Stable 1.19.0 unsupported.",
+  "metadata_status": "curated",
+  "source_id": "github-1460359452",
+  "frontends": ["sillytavern"],
+  "primary_function": "developer-infrastructure",
+  "tags": [],
+  "cataloged_at": "2026-11-19T04:23:47.432Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "automatic" }
+  }
+}
