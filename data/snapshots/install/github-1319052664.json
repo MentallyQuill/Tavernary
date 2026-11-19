@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1319052664",
+  "head_sha": "b9d1af41363bfa9bf87d0dead4b3bf42b46d487c",
+  "observed_at": "2026-11-19T03:35:34.701Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "lore-manager",
+  "manifest": {
+    "display_name": "로어북 매니저",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
