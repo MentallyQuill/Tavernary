@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1302491961",
+  "head_sha": "ac826d79405c620c8025b4c23212f38db8303b23",
+  "observed_at": "2026-11-19T06:21:40.855Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "hanmadi",
+  "manifest": {
+    "display_name": "한마디",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
