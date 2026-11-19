@@ -216,6 +216,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Wake serialized publication reconciliation
+        # Completion events and the scheduled sweep also wake reconciliation.
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: >-

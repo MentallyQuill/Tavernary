@@ -229,39 +229,42 @@ function generationWorkflow(transaction) {
   };
 }
 
-async function listGenerationRuns(
+async function listAssociatedGenerationRuns({
   repository,
   transaction,
   publisherActorId,
+  publicationRuns,
+  headSha,
   request,
-) {
+}) {
+  const successfulPublications = publicationRuns.filter(
+    (run) => run?.conclusion === "success",
+  );
+  if (successfulPublications.length === 0) return [];
+  const earliestPublication = Math.min(
+    ...successfulPublications.map(runCreatedAt),
+  );
+  const created = encodeURIComponent(
+    `>=${new Date(earliestPublication).toISOString()}`,
+  );
   const workflow = generationWorkflow(transaction);
   const runs = await listWorkflowRuns(
     repository,
     workflow.file,
-    "event=workflow_dispatch",
+    `event=workflow_dispatch&created=${created}`,
     request,
   );
-  return runs.filter(
-    (run) =>
-      run?.name === workflow.name &&
-      run?.path === `.github/workflows/${workflow.file}` &&
-      run?.event === "workflow_dispatch" &&
-      run?.display_title === workflow.displayTitle &&
-      run?.actor?.id === publisherActorId &&
-      run?.actor?.type === "Bot",
-  );
-}
-
-function associatedGenerationRuns(runs, publicationRuns, headSha) {
-  const successfulPublications = publicationRuns
-    .filter((run) => run?.conclusion === "success")
-    .sort((left, right) => runCreatedAt(left) - runCreatedAt(right));
-  const anchor = successfulPublications[0];
-  if (!anchor) return [];
-  const anchorCreatedAt = runCreatedAt(anchor);
   return runs
-    .filter((run) => runCreatedAt(run) >= anchorCreatedAt)
+    .filter(
+      (run) =>
+        run?.name === workflow.name &&
+        run?.path === `.github/workflows/${workflow.file}` &&
+        run?.event === "workflow_dispatch" &&
+        run?.display_title === workflow.displayTitle &&
+        run?.actor?.id === publisherActorId &&
+        run?.actor?.type === "Bot" &&
+        runCreatedAt(run) >= earliestPublication,
+    )
     .map((run) => ({ ...run, head_sha: headSha }));
 }
 
@@ -287,16 +290,14 @@ async function loadReconciliationPlan({
       pull.head.sha,
     );
   }
-  const generationRuns = associatedGenerationRuns(
-    await listGenerationRuns(
-      repository,
-      transaction,
-      publisherActorId,
-      request,
-    ),
+  const generationRuns = await listAssociatedGenerationRuns({
+    repository,
+    transaction,
+    publisherActorId,
     publicationRuns,
-    pull.head.sha,
-  );
+    headSha: pull.head.sha,
+    request,
+  });
   const [comments, actor] = await Promise.all([
     listIssueComments(repository, transaction.issue_number, request),
     loadAuthenticatedActor(),
