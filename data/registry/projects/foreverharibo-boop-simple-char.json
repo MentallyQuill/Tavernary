@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-simple-char",
+  "name": "simple-char",
+  "kind": "extension",
+  "summary": "simple-char by foreverharibo-boop is a SillyTavern extension; its README identifies it simply as 'SillyTavern 확장입니다' (a SillyTavern extension), with the original repository at github:foreverharibo-boop/simple-char.",
+  "metadata_status": "curated",
+  "source_id": "github-1304782330",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-11-19T06:21:55.072Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

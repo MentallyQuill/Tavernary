@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1304782330",
+  "head_sha": "c74310a81785ed69fbfa48dbd43a1fc83d0619d2",
+  "observed_at": "2026-11-19T06:22:08.472Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "simple-char",
+  "manifest": {
+    "display_name": "Simple Character",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
