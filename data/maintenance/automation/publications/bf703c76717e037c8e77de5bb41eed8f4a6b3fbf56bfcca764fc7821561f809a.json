@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "bf703c76717e037c8e77de5bb41eed8f4a6b3fbf56bfcca764fc7821561f809a",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1038203769:prolix-oc-sillytavern-simtracker",
+      "inputDigest": "8a066d78dc35ff27ea23821d834dc76f869556d7f6ea9bbf98e2f325da904678",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-30T06:36:07.074Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1038203769",
+    "identity": "github:1038203769"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43717296117,
+    "sourceSha": "97854aafb751a657c6163c0a3ac74a71339a8b0e"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/prolix-oc-sillytavern-simtracker.json",
+      "sha256": "b9d7a67fe98d1036e09ac45bc0520a90e1cd6716d66600e37f1a54da4f525fee",
+      "gitBlobSha": "973a2e0d2b4dfc516fbd50b0b271f2a9c67c8158"
+    }
+  ]
+}

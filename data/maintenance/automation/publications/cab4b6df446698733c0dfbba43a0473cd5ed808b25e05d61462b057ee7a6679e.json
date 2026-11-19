@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "cab4b6df446698733c0dfbba43a0473cd5ed808b25e05d61462b057ee7a6679e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1287253091:vadash-extension-summaryception",
+      "inputDigest": "24d0be658375a76dc637a718f2dd45247554861b86c007b948d38723deab330f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T09:09:08.424Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1287253091",
+    "identity": "github:1287253091"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 44119560174,
+    "sourceSha": "ee7848726ff2c48a72a4e9326a0e66badaf50fce"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/vadash-extension-summaryception.json",
+      "sha256": "79849ab2a9c1b4cd10eee479bf0e415e964dee8722f33fe7178a7771b9c0144f",
+      "gitBlobSha": "2fd46fbcec1f79aa77cb64076b05d66281718ddd"
+    }
+  ]
+}

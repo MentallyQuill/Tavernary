@@ -9,21 +9,21 @@
     "url": "https://github.com/prolix-oc/Lumiverse",
     "description": "A self-host AI chat frontend with a rich ecosystem and heavy emphasis on optimization, built from the ground up in TypeScript + Bun.",
     "default_branch": "main",
-    "head_sha": "9199177b5c06e62f7089cc804cc61305444c8c02",
-    "head_committed_at": "2026-10-29T17:25:08.000Z",
+    "head_sha": "45f8db563e1c314ed2aab227613b28eb5ea1084e",
+    "head_committed_at": "2026-11-01T08:29:37.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-07T23:15:01.000Z",
-    "size_kb": 218486
+    "size_kb": 222576
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-29T17:25:08.000Z",
+    "latest_source_activity_at": "2026-11-01T08:29:37.000Z",
     "source_weeks": [
       {
         "week_start": "2026-10-26",
-        "latest_at": "2026-10-29T17:25:08.000Z",
+        "latest_at": "2026-11-01T08:29:37.000Z",
         "precision": "exact"
       },
       {
@@ -65,42 +65,27 @@
         "week_start": "2026-08-31",
         "latest_at": "2026-09-06T22:32:52.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-24",
-        "latest_at": "2026-08-30T20:20:11.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-17",
-        "latest_at": "2026-08-23T09:02:51.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-10",
-        "latest_at": "2026-08-16T22:42:05.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-10-09T19:18:58.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-31T02:00:55.160Z",
+    "baseline_completed_at": "2026-11-16T17:14:21.382Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "9199177b5c06e62f7089cc804cc61305444c8c02"
+    "evidence_head_sha": "45f8db563e1c314ed2aab227613b28eb5ea1084e"
   },
   "community": {
-    "stars_count": 199,
-    "forks_count": 84,
+    "stars_count": 211,
+    "forks_count": 87,
     "watchers_count": 3,
-    "aggregate": 286
+    "aggregate": 301
   },
   "license": {
     "status": "proprietary",
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-10-31T02:03:17.120Z",
+  "refreshed_at": "2026-11-16T17:16:50.681Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -142,7 +127,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-31T02:00:55.160Z",
+    "refreshed_at": "2026-11-16T17:14:21.382Z",
     "stale_since": null
   }
 }

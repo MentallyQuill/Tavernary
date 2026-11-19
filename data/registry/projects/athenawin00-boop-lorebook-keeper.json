@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "athenawin00-boop-lorebook-keeper",
+  "name": "lorebook-keeper",
+  "kind": "extension",
+  "summary": "채팅을 날짜별 로어북 항목으로 정리해 주는 SillyTavern 확장 — 외부 전송 없이, 잊히면 안 되는 것은 매 턴 항상",
+  "metadata_status": "provisional",
+  "source_id": "github-1381766101",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [],
+  "cataloged_at": "2026-11-16T12:48:35.961Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

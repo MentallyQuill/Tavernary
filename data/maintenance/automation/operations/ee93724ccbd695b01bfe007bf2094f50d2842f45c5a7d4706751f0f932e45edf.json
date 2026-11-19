@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ee93724ccbd695b01bfe007bf2094f50d2842f45c5a7d4706751f0f932e45edf",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-801866918:thezennou-stextension-snapshot",
+      "inputDigest": "d75cdf00eb058be38048c07626cff459bbe7e6a465c5b4cf403c6f9f2446de71",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T07:02:46.494Z",
+    "nextEligibleAt": "2026-11-17T17:12:12.499Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "provider-network-error"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-17T17:06:46.716Z",
+  "completedAt": null
+}

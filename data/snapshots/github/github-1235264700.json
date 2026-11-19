@@ -9,18 +9,33 @@
     "url": "https://github.com/AMousePad/LumiAgent",
     "description": "A capable helper for your Lumiverse",
     "default_branch": "main",
-    "head_sha": "9658482677faefe0a5d3ecd0520fa520c9fedbe0",
-    "head_committed_at": "2026-10-11T06:53:09.000Z",
+    "head_sha": "933b04cb24b11d065484e47e5cd3ee7ac9e39e0d",
+    "head_committed_at": "2026-11-12T04:37:09.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-11T06:53:01.000Z",
-    "size_kb": 27340
+    "size_kb": 28748
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-11T06:53:09.000Z",
+    "latest_source_activity_at": "2026-11-12T04:37:09.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-11-09",
+        "latest_at": "2026-11-12T04:37:09.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-08T04:27:29.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-31T12:57:53.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-05",
         "latest_at": "2026-10-11T06:53:09.000Z",
@@ -40,32 +55,27 @@
         "week_start": "2026-08-24",
         "latest_at": "2026-08-28T08:29:38.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-17",
-        "latest_at": "2026-08-19T08:28:55.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": null,
+    "latest_release_at": "2026-11-12T04:37:20.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-29T23:42:14.586Z",
+    "baseline_completed_at": "2026-11-15T08:07:36.200Z",
     "baseline_attempts": 1,
-    "evidence_head_sha": "9658482677faefe0a5d3ecd0520fa520c9fedbe0"
+    "evidence_head_sha": "933b04cb24b11d065484e47e5cd3ee7ac9e39e0d"
   },
   "community": {
-    "stars_count": 11,
+    "stars_count": 12,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 11
+    "aggregate": 12
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENCE"
   },
-  "refreshed_at": "2026-10-29T23:44:24.049Z",
+  "refreshed_at": "2026-11-15T08:09:51.768Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -75,7 +85,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-29T23:42:14.586Z",
+    "refreshed_at": "2026-11-15T08:07:36.200Z",
     "stale_since": null
   }
 }

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f26a7f6587e47b67797c25be4ed32e6c4ffbf7526ef81a0b0c8a4474a747fc8d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1319215459:izanagi771-stack-story-editor",
+      "inputDigest": "d7343a1ee053b00259d89c3eb7316a8f019bc8a89f7112e2e4dfcf500c71ae7b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-12T16:09:54.674Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1319215459",
+    "identity": "github:1319215459"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43240229213,
+    "sourceSha": "699b0d9171a3dbd6c893ff1e6ffddacfbd2e423b"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/izanagi771-stack-story-editor.json",
+      "sha256": "1506477e597fcd8e5c6e65e3493f20332ca3e64d6153ad46bbef2d7db2021f2d",
+      "gitBlobSha": "5fe531b3677e905a39cc0139366055b6a4038fb4"
+    }
+  ]
+}

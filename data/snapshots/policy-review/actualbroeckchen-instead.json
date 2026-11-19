@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "actualbroeckchen-instead",
+  "source_id": "github-1145563299",
+  "source_identity": "github:actualbroeckchen/instead",
+  "evidence_fingerprint": "463f020865196cedcf2dd8cf6b7389964713d5e1f3c00c19bc422a9174f501ec",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-16T02:45:55.387Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

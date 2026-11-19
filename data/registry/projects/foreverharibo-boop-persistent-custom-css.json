@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-persistent-custom-css",
+  "name": "Persistent-Custom-CSS",
+  "kind": "extension",
+  "summary": "SillyTavern extension from foreverharibo-boop that applies persistent custom CSS, keeping user-defined interface styling intact across chats and sessions (README: \"SillyTavern 확장입니다\").",
+  "metadata_status": "curated",
+  "source_id": "github-1301133809",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["customize-the-interface", "persistent-state"],
+  "cataloged_at": "2026-11-17T05:26:18.487Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "st-chd-contexttracker",
+  "name": "ContextTracker",
+  "kind": "extension",
+  "summary": "ContextTracker는 대화 전송 시 AI에 전달되는 누적 입력량을 원형 게이지로 확인하는 SillyTavern 확장입니다. 옵션에서 컨텍스트 크기 대비 사용량과 챗 히스토리 대비 사용량 표시를 전환할 수 있습니다.",
+  "metadata_status": "curated",
+  "source_id": "github-1404727570",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["inspect-prompts-and-generations", "manage-context-limits"],
+  "cataloged_at": "2026-11-16T08:40:25.400Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

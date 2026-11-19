@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "00686335f92e6e48ebdb6fa183951fcb90015930ed8d0541c33322cb32bea76c",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1283172438:st-chd-foldy",
+      "inputDigest": "c033698fe9737047029f20a1bc03b455770d038e3b4e70c7f553621e252b2a73",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-16T04:07:07.996Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "superseded",
+        "reasonCode": "input-superseded"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-16T05:20:20.088Z",
+  "completedAt": null
+}

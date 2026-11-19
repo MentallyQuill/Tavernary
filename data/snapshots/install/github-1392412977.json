@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1392412977",
+  "head_sha": "bbc533d8a9ed99eb90f21b20e6566fd83615defc",
+  "observed_at": "2026-11-17T04:35:19.772Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "100log",
+  "manifest": {
+    "display_name": "100LOG",
+    "key": null,
+    "minimum_client_version": "1.12.14"
+  }
+}

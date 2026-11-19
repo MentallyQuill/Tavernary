@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1357611906",
+  "head_sha": "22eedbefda6d52310a032d192c07571eb4eb4770",
+  "observed_at": "2026-11-17T02:35:46.277Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "verba",
+  "manifest": {
+    "display_name": "베르바",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

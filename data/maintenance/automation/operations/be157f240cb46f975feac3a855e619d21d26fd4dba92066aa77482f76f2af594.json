@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "be157f240cb46f975feac3a855e619d21d26fd4dba92066aa77482f76f2af594",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1075711284:spicymarinara-rpg-companion-sillytavern",
+      "inputDigest": "8c4a9b833820063d2594945ee8d1ef0540a2e68d9beb7531f7b699834a673ef0",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-12T16:13:08.809Z",
+    "nextEligibleAt": null,
+    "expectedSha": "a10d60d10205ec666abb997f76936a39668a02a8",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-16T00:44:49.375Z",
+  "completedAt": null
+}

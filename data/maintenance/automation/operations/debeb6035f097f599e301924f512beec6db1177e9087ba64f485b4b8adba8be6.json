@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "debeb6035f097f599e301924f512beec6db1177e9087ba64f485b4b8adba8be6",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-687155351:city-unit-sillytavern-chub-search",
+      "inputDigest": "8e14ffa1c0f30aebde69af00f9c4ce53dfece7768a5d39fc19f1c6f6991c8e5d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-12T16:10:05.750Z",
+    "nextEligibleAt": null,
+    "expectedSha": "a10d60d10205ec666abb997f76936a39668a02a8",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-16T00:44:49.375Z",
+  "completedAt": null
+}

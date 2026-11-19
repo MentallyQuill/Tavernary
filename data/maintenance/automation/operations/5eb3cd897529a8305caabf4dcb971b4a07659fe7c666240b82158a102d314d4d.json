@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5eb3cd897529a8305caabf4dcb971b4a07659fe7c666240b82158a102d314d4d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1199215475:icefog72-sillytavern-morereasoning",
+      "inputDigest": "13253392297ff58bad8265d542d65e6c270065eddee6e6406b6a1a2c353d6949",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-31T13:49:31.519Z",
+    "nextEligibleAt": null,
+    "expectedSha": "4a15083408396fb97bec2b434b113718fe937a08",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-16T15:59:28.382Z",
+  "completedAt": null
+}

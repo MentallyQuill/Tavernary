@@ -1,0 +1,53 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1279026138",
+  "repository": {
+    "id": 1279026138,
+    "owner": "st-chd",
+    "name": "persona-cards",
+    "url": "https://github.com/st-chd/persona-cards",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "c24e7dff1a3ba56932bec178d9adbf1191d2ba77",
+    "head_committed_at": "2026-08-19T06:04:45.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-06-24T09:55:45.000Z",
+    "size_kb": 131
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-19T06:04:45.000Z",
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-17T20:30:12.987Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "c24e7dff1a3ba56932bec178d9adbf1191d2ba77"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-11-17T20:30:12.987Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "st-chd", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-17T20:30:12.987Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

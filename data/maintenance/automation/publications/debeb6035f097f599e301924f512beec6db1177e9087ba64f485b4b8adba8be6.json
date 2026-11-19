@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "debeb6035f097f599e301924f512beec6db1177e9087ba64f485b4b8adba8be6",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-687155351:city-unit-sillytavern-chub-search",
+      "inputDigest": "8e14ffa1c0f30aebde69af00f9c4ce53dfece7768a5d39fc19f1c6f6991c8e5d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-12T16:10:05.750Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-687155351",
+    "identity": "github:687155351"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43241739188,
+    "sourceSha": "4ebf6e33c1ffb2364dab624261d07d81c08b10f8"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/city-unit-sillytavern-chub-search.json",
+      "sha256": "a97116bbbe437fda8dd3ff78c7d6e622aca6c2d0d32905e61a9cbb2d1a312da2",
+      "gitBlobSha": "e7abf28d3d62569d54e19e7bee98afe2d4914c74"
+    }
+  ]
+}

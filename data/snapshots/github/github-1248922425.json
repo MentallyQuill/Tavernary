@@ -9,18 +9,28 @@
     "url": "https://github.com/AMousePad/LumiBooks",
     "description": "A Simple Memory Extension",
     "default_branch": "main",
-    "head_sha": "d51755e8fb10140ffac6b6394ef60bdab041ea37",
-    "head_committed_at": "2026-10-30T04:10:12.000Z",
+    "head_sha": "9b621dd43f5b4f4d9888d952e2b174bb575ece29",
+    "head_committed_at": "2026-11-12T01:24:16.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-25T07:13:23.000Z",
-    "size_kb": 9618
+    "size_kb": 7011
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-30T04:10:12.000Z",
+    "latest_source_activity_at": "2026-11-12T01:24:16.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-11-09",
+        "latest_at": "2026-11-12T01:24:16.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-06T17:15:15.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-26",
         "latest_at": "2026-10-30T04:10:12.000Z",
@@ -50,23 +60,18 @@
         "week_start": "2026-09-14",
         "latest_at": "2026-09-17T03:44:33.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-17",
-        "latest_at": "2026-08-20T05:42:02.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-30T01:01:18.000Z",
+    "latest_release_at": "2026-11-12T01:24:28.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-11-01T09:11:09.608Z",
+    "baseline_completed_at": "2026-11-18T16:38:13.459Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "d51755e8fb10140ffac6b6394ef60bdab041ea37"
+    "evidence_head_sha": "9b621dd43f5b4f4d9888d952e2b174bb575ece29"
   },
   "community": {
-    "stars_count": 12,
-    "forks_count": 4,
+    "stars_count": 13,
+    "forks_count": 3,
     "watchers_count": 0,
     "aggregate": 16
   },
@@ -75,7 +80,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-11-01T09:13:09.377Z",
+  "refreshed_at": "2026-11-18T16:41:30.955Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -85,7 +90,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-11-01T09:11:09.608Z",
+    "refreshed_at": "2026-11-18T16:38:13.459Z",
     "stale_since": null
   }
 }

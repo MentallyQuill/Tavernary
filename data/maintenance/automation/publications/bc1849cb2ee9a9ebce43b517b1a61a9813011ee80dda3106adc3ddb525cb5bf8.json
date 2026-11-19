@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "bc1849cb2ee9a9ebce43b517b1a61a9813011ee80dda3106adc3ddb525cb5bf8",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-948787177:bmen25124-sillytavern-roadway",
+      "inputDigest": "d84bf963a7f06e5ed905ff2c08be2ffe3df47b2ebd512aea7b8f1154a8f9e37d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-30T06:41:06.875Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-948787177",
+    "identity": "github:948787177"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43718045798,
+    "sourceSha": "fdd72e087ae00d5066ed312b7a70b18244621425"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/bmen25124-sillytavern-roadway.json",
+      "sha256": "3ac06ce25d88bb20e45d8df0e9f29ee7c90244e810062bc6e6f386907e818926",
+      "gitBlobSha": "8c8809b6089f0e2169baf45fbe98bcf19093290e"
+    }
+  ]
+}

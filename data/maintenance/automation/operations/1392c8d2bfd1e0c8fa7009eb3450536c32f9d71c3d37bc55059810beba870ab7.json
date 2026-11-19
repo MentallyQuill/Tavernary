@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1392c8d2bfd1e0c8fa7009eb3450536c32f9d71c3d37bc55059810beba870ab7",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1445819140:wewwaistyping-slayhomepage",
+      "inputDigest": "213e15df1f5b1a6f312c5fb90216ba0fc531f153012eb2af6046e71d2aead24a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-10T20:18:36.020Z",
+    "nextEligibleAt": null,
+    "expectedSha": "3add4fd1beecd3fed333e2ec9343d0daa951d26c",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-15T20:53:58.859Z",
+  "completedAt": null
+}

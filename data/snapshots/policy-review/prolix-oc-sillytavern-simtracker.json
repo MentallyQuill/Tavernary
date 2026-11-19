@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "prolix-oc-sillytavern-simtracker",
+  "source_id": "github-1038203769",
+  "source_identity": "github:prolix-oc/sillytavern-simtracker",
+  "evidence_fingerprint": "85d5e817a5a8709a77214792f694711dad0a952b8aa4639ea5906f38b17502ca",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-15T13:08:48.168Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

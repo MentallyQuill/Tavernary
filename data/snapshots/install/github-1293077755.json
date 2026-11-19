@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1293077755",
+  "head_sha": "6ed8639d672cf1e5a2a460e63f017e6a78039081",
+  "observed_at": "2026-11-18T00:28:57.797Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "chat-searching",
+  "manifest": {
+    "display_name": "Chat Searching",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

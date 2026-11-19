@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1415632630",
+  "head_sha": "c2ed7343a4d7c2e954567d3534d6d6ec448b5745",
+  "observed_at": "2026-11-16T08:32:22.598Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Next-Turn",
+  "manifest": {
+    "display_name": "➡️ Next Turn",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ee474d419d0526fd89ad2f027623d28449cdb891da015e93e78a593f0687f2fd",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1299124863:foreverharibo-boop-cardinject",
+      "inputDigest": "c7225e932c536706c3e7cef317d0b44dc9bd0d388765b63dba51fc0fd5ff98ea",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-16T03:42:12.853Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "superseded",
+        "reasonCode": "input-superseded"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-16T04:53:58.441Z",
+  "completedAt": null
+}

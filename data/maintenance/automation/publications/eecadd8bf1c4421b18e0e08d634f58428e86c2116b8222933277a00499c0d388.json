@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "eecadd8bf1c4421b18e0e08d634f58428e86c2116b8222933277a00499c0d388",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1101728981:mnehmos-mnehmos-quest-keeper-game",
+      "inputDigest": "9710822f5668fbaf61518a10d2f4f49620ea9b3475e2f7844e47a0533b566778",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-13T15:38:38.901Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1101728981",
+    "identity": "github:1101728981"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43447554081,
+    "sourceSha": "9a809c3bdd6e4c79f4737d02708880ad4932211d"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/mnehmos-mnehmos-quest-keeper-game.json",
+      "sha256": "cef87659e3c03bd3a96daa9012b4e531cf3bc066b522994b66e85998527d849b",
+      "gitBlobSha": "b4d1f5cc3ec14b2d242a97e6b95cb6250960ec44"
+    }
+  ]
+}

@@ -5,12 +5,9 @@
   "source_identity": "github:gu-gu-gu-gu-gu/weather-calendar-assistant",
   "evidence_fingerprint": "dd74c64556fe47d4d595c0fef6bd711d49a7a031ae234b0eda25f15f283fd42d",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-16T12:51:45.267Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-16T12:51:45.267Z"
-  },
+  "reviewed_at": "2026-11-16T15:22:42.785Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

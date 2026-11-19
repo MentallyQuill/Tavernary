@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e0cd8db40306d3a38179a0aba315f491482d3fb078068f5d89fd1d4d26b2cfc2",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1223260183:jake9000-me-nord",
+      "inputDigest": "755c0d25b0f4bceff8e2108b44a08b7fba279f091c150790cc8edfb3e7d48f66",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-31T02:04:08.849Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1223260183",
+    "identity": "github:1223260183"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43888594570,
+    "sourceSha": "9b30c9c68309c3683f6741ea5209f1705e6fb67c"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/jake9000-me-nord.json",
+      "sha256": "e6569d47080d794c65b9ff52f99d7c833d40bdd659b954c3b16f45acdc4755da",
+      "gitBlobSha": "920d60043dbde862fc29868323bf86b12fcf1719"
+    }
+  ]
+}

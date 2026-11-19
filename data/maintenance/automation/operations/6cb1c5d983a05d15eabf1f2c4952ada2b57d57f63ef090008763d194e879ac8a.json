@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6cb1c5d983a05d15eabf1f2c4952ada2b57d57f63ef090008763d194e879ac8a",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-936859577:sillytavern-sillytavern-nicknames",
+      "inputDigest": "7e6f9bf5060baec81563d7391127c8d1e026f3c8022b184bb743b87bb8f42bcc",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-10T15:49:00.149Z",
+    "nextEligibleAt": null,
+    "expectedSha": "3add4fd1beecd3fed333e2ec9343d0daa951d26c",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-15T20:53:58.859Z",
+  "completedAt": null
+}

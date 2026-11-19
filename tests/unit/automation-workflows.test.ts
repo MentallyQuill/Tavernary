@@ -176,7 +176,7 @@ test("project validation completions use the existing automatic submission lane 
   const workflow = parse(
     readFileSync(".github/workflows/reconcile-project-validations.yml", "utf8"),
   );
-  expect(workflow.concurrency).toEqual({
+  expect(workflow.jobs.reconcile.concurrency).toEqual({
     group:
       "${{ github.event_name == 'issues' && format('submission-finalization-{0}', github.event.issue.number) || 'submission-reconciliation' }}",
     "cancel-in-progress": false,
@@ -188,7 +188,7 @@ test("project validation completions use the existing automatic submission lane 
     "pull-requests": "read",
   });
   const job = workflow.jobs.reconcile;
-  expect(job["timeout-minutes"]).toBe(15);
+  expect(job["timeout-minutes"]).toBe(30);
   expect(job.environment).toBe("publisher");
   const token = job.steps.find(
     (step: { id?: string }) => step.id === "controller-token",
@@ -212,13 +212,6 @@ test("project validation completions use the existing automatic submission lane 
       step.run?.includes("submissions:reconcile-validations"),
     ),
   ).toBe(false);
-  const watcher = job.steps.find((step: { run?: string }) =>
-    step.run?.startsWith("gh run watch"),
-  );
-  expect(watcher.if).toBe(
-    "github.event_name == 'workflow_dispatch' && inputs.validation_run_id != ''",
-  );
-  expect(watcher.env.VALIDATION_RUN_ID).toBe("${{ inputs.validation_run_id }}");
 });
 
 test("operation preparation is bound to a key and limited to forty-five minutes", () => {

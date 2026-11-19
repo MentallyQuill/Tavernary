@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1359401799",
+  "head_sha": "598adc71d17a8a54e024ee3fd433d36308f92d73",
+  "observed_at": "2026-11-18T03:00:35.556Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "OOC_CHAT",
+  "manifest": {
+    "display_name": "OOC Chat",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

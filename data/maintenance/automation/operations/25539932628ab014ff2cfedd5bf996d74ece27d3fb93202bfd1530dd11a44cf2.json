@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "25539932628ab014ff2cfedd5bf996d74ece27d3fb93202bfd1530dd11a44cf2",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1248922425:amousepad-lumibooks",
+      "inputDigest": "8463da26d23beaedbf189e86d99201edd62c21214bb96ae7985a02b8b8aec200",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T09:13:09.377Z",
+    "nextEligibleAt": "2026-11-18T18:24:24.769Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "github-inventory-unavailable"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 1
+    }
+  },
+  "updatedAt": "2026-11-18T17:19:54.067Z",
+  "completedAt": null
+}

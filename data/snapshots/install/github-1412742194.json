@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1412742194",
+  "head_sha": "edecf1b2c7c1e7dffcec532af6d0eac4c7e9d86a",
+  "observed_at": "2026-11-16T03:27:46.171Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Paperback",
+  "manifest": {
+    "display_name": "📖 책으로 읽기 (Paperback)",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

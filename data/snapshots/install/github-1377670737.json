@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1377670737",
+  "head_sha": "d524cef239e758746390848cfa496aef75d7873c",
+  "observed_at": "2026-11-16T04:55:26.629Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "lorebook-triage",
+  "manifest": {
+    "display_name": "Jev Lorebook",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

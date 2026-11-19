@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "fc5d9c6bae7e35d67af3210436996b65e4ad57fd32585b96ef72d7d66f184fb1",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1313172635:aelfwyne-lore-library-lite",
+      "inputDigest": "5823b18c280a3319fafa0702203d2e60ebb6a197c1e12c6ab08734be1ab37048",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T07:01:55.713Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1313172635",
+    "identity": "github:1313172635"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 44113765608,
+    "sourceSha": "b33b78f307611e9b7441a21f3e6b3b77345ac47b"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/aelfwyne-lore-library-lite.json",
+      "sha256": "d0b7208818cbb629987c3e05ef120d334950fda5b22bb999de9aa1cb89d7b9ec",
+      "gitBlobSha": "c36c8e69378464b2cda2fa0694230f502ab30fd1"
+    }
+  ]
+}

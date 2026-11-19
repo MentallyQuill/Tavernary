@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "bongbong11-chat-closet",
+  "name": "CHAT_CLOSET",
+  "kind": "extension",
+  "summary": "SillyTavern client extension by bongbong11 that manages character and persona preferences, wardrobes, and current outfits without needing a separate server plugin (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1408443855",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": ["manage-characters-and-personas"],
+  "cataloged_at": "2026-11-17T19:45:33.766Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

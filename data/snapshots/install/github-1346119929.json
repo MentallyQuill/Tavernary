@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1346119929",
+  "head_sha": "acdf87da953c4af76b663cd86107f49ec59df85a",
+  "observed_at": "2026-11-16T10:59:10.272Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "folio",
+  "manifest": {
+    "display_name": "Folio",
+    "key": null,
+    "minimum_client_version": "1.18.0"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1148991746",
+  "head_sha": "cb2c38479268a3c151fe721216d2feac1579efab",
+  "observed_at": "2026-11-18T08:14:56.200Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-TMIGenerator",
+  "manifest": {
+    "display_name": "TMI Generator",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

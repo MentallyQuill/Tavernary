@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a9064fbfab9b31fa6962ee84d90917d744159babae63c4492c4c1e9a09c8ac0c",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1275807674:beeopo-marinara-rewrite",
+      "inputDigest": "5a1addd22458b9194a87db8853455b70ec3656d6390937e74802e755759f5d82",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-15T01:41:28.185Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "superseded",
+        "reasonCode": "input-superseded"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-16T04:15:47.160Z",
+  "completedAt": null
+}

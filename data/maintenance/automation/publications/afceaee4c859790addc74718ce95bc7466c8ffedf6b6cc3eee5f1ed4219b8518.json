@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "afceaee4c859790addc74718ce95bc7466c8ffedf6b6cc3eee5f1ed4219b8518",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1121059972:fawn1e-st-plot-driver",
+      "inputDigest": "085c8b46506f324f56aac51dc7ae525f4eff2268df16bc0ab5bfea2a9fd090af",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-31T13:50:05.497Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1121059972",
+    "identity": "github:1121059972"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43897168905,
+    "sourceSha": "a831738fb94e4bd5ac3829bbd3bb1af35a851617"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/fawn1e-st-plot-driver.json",
+      "sha256": "04758e7a79b94496bce91665d962292313318b3e26522ec5a8111ff6ed260d1b",
+      "gitBlobSha": "c652751ca373c372f0cd395a2c7a0aca5696e84b"
+    }
+  ]
+}

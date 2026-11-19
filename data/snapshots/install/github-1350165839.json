@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1350165839",
+  "head_sha": "d53561a40d205a2b147b052616fe8b64a42b1941",
+  "observed_at": "2026-11-18T05:42:48.679Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "ForceLastInputPlus",
+  "manifest": {
+    "display_name": "Force Last Input Plus 🔵",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

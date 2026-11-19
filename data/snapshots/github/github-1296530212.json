@@ -1,0 +1,64 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1296530212",
+  "repository": {
+    "id": 1296530212,
+    "owner": "AmbasaS2",
+    "name": "map",
+    "url": "https://github.com/AmbasaS2/map",
+    "description": "A SillyTavern roleplay map extension that turns the current scene into an interactive map of locations, characters, quests, and clues.",
+    "default_branch": "main",
+    "head_sha": "63a7cd99b7a17f083af1229d472d0cda40502e40",
+    "head_committed_at": "2026-11-16T05:15:50.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-07-10T13:27:35.000Z",
+    "size_kb": 5521
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-11-16T05:15:50.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-11-16",
+        "latest_at": "2026-11-16T05:15:50.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-09",
+        "latest_at": "2026-11-13T06:43:03.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-16T08:37:23.578Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "63a7cd99b7a17f083af1229d472d0cda40502e40"
+  },
+  "community": {
+    "stars_count": 1,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 1
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-11-16T08:37:23.578Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "AmbasaS2", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-16T08:37:23.578Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

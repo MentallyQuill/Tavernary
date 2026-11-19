@@ -57,7 +57,8 @@ test("wakes canonical validation reconciliation from trusted main code", async (
     issues: "read",
     "pull-requests": "read",
   });
-  expect(workflow.concurrency).toEqual({
+  expect(workflow.concurrency).toBeUndefined();
+  expect(reconcile.concurrency).toEqual({
     group:
       "${{ github.event_name == 'issues' && format('submission-finalization-{0}', github.event.issue.number) || 'submission-reconciliation' }}",
     "cancel-in-progress": false,
@@ -100,11 +101,19 @@ test("wakes canonical validation reconciliation from trusted main code", async (
   expect(reconcile.if).not.toContain("243524590");
   expect(checkout?.with?.ref).toBe("main");
   expect(setupNode?.with?.["node-version-file"]).toBe(".node-version");
-  expect(steps).toEqual(
+  const wait = workflow.jobs["await-validation"];
+  expect(wait.concurrency).toBeUndefined();
+  expect(wait.environment).toBeUndefined();
+  expect(wait.permissions).toEqual({ actions: "read" });
+  expect(wait.if).toContain("inputs.validation_run_id != ''");
+  expect(wait.if).toContain("github.ref == 'refs/heads/main'");
+  expect(reconcile.needs).toEqual(["await-validation"]);
+  expect(reconcile.if).toContain("needs.await-validation.result == 'success'");
+  expect(reconcile.if).toContain("needs.await-validation.result == 'skipped'");
+  expect(wait.steps).toEqual(
     expect.arrayContaining([
       expect.objectContaining({
         name: "Await dispatched validation completion",
-        if: expect.stringContaining("inputs.validation_run_id != ''"),
         env: {
           GH_TOKEN: "${{ github.token }}",
           VALIDATION_RUN_ID: "${{ inputs.validation_run_id }}",
@@ -113,10 +122,13 @@ test("wakes canonical validation reconciliation from trusted main code", async (
       }),
     ]),
   );
-  const waitForValidation = steps.find(
+  const waitForValidation = (wait.steps as typeof steps).find(
     (step) => step.name === "Await dispatched validation completion",
   );
   expect(waitForValidation?.run).not.toContain("--exit-status");
+  expect(steps.some((step) => step.name === waitForValidation?.name)).toBe(
+    false,
+  );
   expect(steps).toEqual(
     expect.arrayContaining([
       expect.objectContaining({

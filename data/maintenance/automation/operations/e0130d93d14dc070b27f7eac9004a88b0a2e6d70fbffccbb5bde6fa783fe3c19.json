@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e0130d93d14dc070b27f7eac9004a88b0a2e6d70fbffccbb5bde6fa783fe3c19",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1163573440:mattjaybe-sillytavern-larson",
+      "inputDigest": "ac5fa4c704d42cce5b60100b0111411ef7a90b4c89d4a69ac59414170f3f17a7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-13T15:36:38.793Z",
+    "nextEligibleAt": null,
+    "expectedSha": "a10d60d10205ec666abb997f76936a39668a02a8",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-16T00:44:49.375Z",
+  "completedAt": null
+}

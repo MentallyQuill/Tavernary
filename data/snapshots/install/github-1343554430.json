@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1343554430",
+  "head_sha": "f8c3e3a9ff026f7209d1405a9442aa4b9694cf69",
+  "observed_at": "2026-11-16T08:37:32.914Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "ChatSSi-MeMo",
+  "manifest": {
+    "display_name": "챗시 노트",
+    "key": null,
+    "minimum_client_version": "1.12.1"
+  }
+}

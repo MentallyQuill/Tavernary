@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "dbac138240cad6775554d0451c4842b0a78bfd6b158d6d2e737f5493eb9a610f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1118134327:multihogaurelius-context-injection-rng-for-dnd",
+      "inputDigest": "57b69a2103546b071125a524f94737b69e13ea149ff4ef69b5d72e728a56d729",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-31T13:49:53.206Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1118134327",
+    "identity": "github:1118134327"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43893528699,
+    "sourceSha": "15055f8ff9b34fb8a92b0e1c1978bc7b3826bd06"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/multihogaurelius-context-injection-rng-for-dnd.json",
+      "sha256": "f9a4ee8c03b4459b1c6bd014af946612a4362c5ae442d33d0fee69985ac5e60c",
+      "gitBlobSha": "89ec5d62c4ca012413785a46a8781908f86ba8b4"
+    }
+  ]
+}

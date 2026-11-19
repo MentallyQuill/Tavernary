@@ -42,14 +42,41 @@ permissions:
   issues: read
   pull-requests: read
 
-concurrency:
-  group: ${{ github.event_name == 'issues' && format('submission-finalization-{0}', github.event.issue.number) || 'submission-reconciliation' }}
-  cancel-in-progress: false
-
 jobs:
-  reconcile:
+  await-validation:
     if: >-
-      github.event_name == 'schedule' ||
+      github.ref == 'refs/heads/main' &&
+      github.event_name == 'workflow_dispatch' &&
+      inputs.validation_run_id != '' &&
+      (github.actor_id == 2625904 ||
+       github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID ||
+       github.actor == 'github-actions[bot]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      actions: read
+    steps:
+      - name: Await dispatched validation completion
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VALIDATION_RUN_ID: ${{ inputs.validation_run_id }}
+        run: >-
+          gh run watch "$VALIDATION_RUN_ID" --repo "$GITHUB_REPOSITORY"
+          --interval 5
+
+  reconcile:
+    needs:
+      - await-validation
+    # Only eligible jobs that are ready to reconcile enter this queue.
+    concurrency:
+      group: ${{ github.event_name == 'issues' && format('submission-finalization-{0}', github.event.issue.number) || 'submission-reconciliation' }}
+      cancel-in-progress: false
+    if: >-
+      !cancelled() &&
+      github.ref == 'refs/heads/main' &&
+      (needs.await-validation.result == 'success' ||
+       needs.await-validation.result == 'skipped') &&
+      (github.event_name == 'schedule' ||
       (github.event_name == 'issues' &&
        github.actor_id == vars.TAVERNARY_PUBLISHER_BOT_ID &&
        (contains(github.event.issue.labels.*.name, 'project-submission') ||
@@ -70,9 +97,9 @@ jobs:
         (github.event.workflow_run.head_branch == 'main' &&
          (github.event.workflow_run.path == '.github/workflows/publish-project-transaction.yml' ||
           github.event.workflow_run.path == '.github/workflows/generate-project-submission.yml' ||
-          github.event.workflow_run.path == '.github/workflows/generate-project-owner-request.yml'))))
+          github.event.workflow_run.path == '.github/workflows/generate-project-owner-request.yml')))))
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     environment: publisher
     permissions:
       contents: read
@@ -96,14 +123,6 @@ jobs:
         run: npm ci
       - name: Install public verification browsers
         run: npx playwright install --with-deps chromium webkit
-      - name: Await dispatched validation completion
-        if: github.event_name == 'workflow_dispatch' && inputs.validation_run_id != ''
-        env:
-          GH_TOKEN: ${{ github.token }}
-          VALIDATION_RUN_ID: ${{ inputs.validation_run_id }}
-        run: >-
-          gh run watch "$VALIDATION_RUN_ID" --repo "$GITHUB_REPOSITORY"
-          --interval 5
       - name: Create scoped submission reconciliation token
         id: controller-token
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0

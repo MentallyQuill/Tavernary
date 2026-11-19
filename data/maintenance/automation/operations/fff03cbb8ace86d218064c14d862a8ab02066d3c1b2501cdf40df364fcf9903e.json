@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "fff03cbb8ace86d218064c14d862a8ab02066d3c1b2501cdf40df364fcf9903e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-811061856:sillytavern-extension-promptinspector",
+      "inputDigest": "ad7eb10df71519164e5fe0afcc7b9a4b5be8a5272610fe4a2ec7c3f87f39de00",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T09:14:43.697Z",
+    "nextEligibleAt": "2026-11-18T21:48:55.708Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "provider-rate-limited"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-18T21:43:27.907Z",
+  "completedAt": null
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1223186525",
+  "head_sha": "694a1669aba0aed2ab7c5ac44d89bcd51b804adb",
+  "observed_at": "2026-11-17T17:57:39.483Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-CT",
+  "manifest": {
+    "display_name": "Peek 👀",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

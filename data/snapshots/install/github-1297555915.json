@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1297555915",
+  "head_sha": "9c9fba4e5ff946dbd8382052be4369b762192dd0",
+  "observed_at": "2026-11-17T19:10:33.054Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Swipe-Compare-Bookmark",
+  "manifest": {
+    "display_name": "Swipe Compare & Bookmark",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

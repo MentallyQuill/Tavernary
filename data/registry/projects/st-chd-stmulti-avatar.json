@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "st-chd-stmulti-avatar",
+  "name": "STmulti-avatar",
+  "kind": "extension",
+  "summary": "STmulti-avatar is a SillyTavern extension (README: github:st-chd/stmulti-avatar) that registers multiple images for characters and personas, showing different images in the list and in the chat room.",
+  "metadata_status": "curated",
+  "source_id": "github-1338359295",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["add-visual-immersion", "manage-characters-and-personas"],
+  "cataloged_at": "2026-11-17T01:50:22.842Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
