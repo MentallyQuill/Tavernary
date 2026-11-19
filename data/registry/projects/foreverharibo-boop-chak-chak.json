@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-chak-chak",
+  "name": "chak-chak",
+  "kind": "extension",
+  "summary": "Chak-Chak (착착) by foreverharibo-boop is a SillyTavern extension (SillyTavern 확장입니다); the README provides only minimal documentation and links back to the original repository for further details.",
+  "metadata_status": "curated",
+  "source_id": "github-1305417386",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-11-19T06:33:52.310Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

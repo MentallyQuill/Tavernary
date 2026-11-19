@@ -1,0 +1,66 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1305417386",
+  "repository": {
+    "id": 1305417386,
+    "owner": "foreverharibo-boop",
+    "name": "chak-chak",
+    "url": "https://github.com/foreverharibo-boop/chak-chak",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "b452fa375fe9d189f607546b28853f6a5412b67c",
+    "head_committed_at": "2026-11-09T14:09:49.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-07-19T04:29:25.000Z",
+    "size_kb": 169
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-11-09T14:09:49.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-11-09",
+        "latest_at": "2026-11-09T14:09:49.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-28T05:34:21.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-19T06:33:52.310Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "b452fa375fe9d189f607546b28853f6a5412b67c"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-11-19T06:33:52.310Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "foreverharibo-boop", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-19T06:33:52.310Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
