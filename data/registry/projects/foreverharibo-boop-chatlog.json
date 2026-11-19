@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-chatlog",
+  "name": "chatlog",
+  "kind": "extension",
+  "summary": "chatlog (챗로그) by foreverharibo-boop is a SillyTavern extension whose README currently supplies only its title, so no documented features or workflows are available from source evidence.",
+  "metadata_status": "curated",
+  "source_id": "github-1311208544",
+  "frontends": ["sillytavern"],
+  "primary_function": "rpg-systems",
+  "tags": [],
+  "cataloged_at": "2026-11-19T06:21:47.401Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
