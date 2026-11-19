@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1315791558",
+  "head_sha": "6597e6e8979c32f454464cbd72ee735ad1de2c93",
+  "observed_at": "2026-11-19T06:20:55.199Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "charpoppro",
+  "manifest": {
+    "display_name": "CHAR-POP-PRO",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
