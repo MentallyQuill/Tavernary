@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1191674813",
+  "head_sha": "378fe0ab678c973aac388d480ba67144add76954",
+  "observed_at": "2026-11-19T04:23:25.427Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "st-SceneGallery",
+  "manifest": {
+    "display_name": "Scene Capture",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
