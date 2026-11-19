@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1263541355",
+  "head_sha": "deb98ca60cc57f7195e2a4e739f378aaae29caa3",
+  "observed_at": "2026-11-19T17:39:53.515Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Director",
+  "manifest": {
+    "display_name": "Director",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

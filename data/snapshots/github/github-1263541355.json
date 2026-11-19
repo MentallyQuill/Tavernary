@@ -1,0 +1,57 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1263541355",
+  "repository": {
+    "id": 1263541355,
+    "owner": "luisbrandao",
+    "name": "SillyTavern-Director",
+    "url": "https://github.com/luisbrandao/SillyTavern-Director",
+    "description": "Director for silly tavern.",
+    "default_branch": "master",
+    "head_sha": "deb98ca60cc57f7195e2a4e739f378aaae29caa3",
+    "head_committed_at": "2026-10-31T19:25:32.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-06-09T03:42:41.000Z",
+    "size_kb": 234
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-10-31T19:25:32.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-31T19:25:32.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-19T17:39:14.352Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "deb98ca60cc57f7195e2a4e739f378aaae29caa3"
+  },
+  "community": {
+    "stars_count": 9,
+    "forks_count": 2,
+    "watchers_count": 0,
+    "aggregate": 11
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-11-19T17:39:14.352Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "luisbrandao", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-19T17:39:14.352Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
