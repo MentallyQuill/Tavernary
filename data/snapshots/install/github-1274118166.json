@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1274118166",
+  "head_sha": "dc346b7e3f98f87c2a4c0943193f6b7055701dbd",
+  "observed_at": "2026-11-19T06:21:57.224Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "CHAR-POP",
+  "manifest": {
+    "display_name": "CHAR-POP",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

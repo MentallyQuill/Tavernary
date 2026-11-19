@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-char-pop",
+  "name": "CHAR-POP",
+  "kind": "extension",
+  "summary": "CHAR-POP is a SillyTavern extension by foreverharibo-boop, maintained as a fork of the original CHAR-POP repository (README L1-L5).",
+  "metadata_status": "curated",
+  "source_id": "github-1274118166",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-11-19T06:21:24.620Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
