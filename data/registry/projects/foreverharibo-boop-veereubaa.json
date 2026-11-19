@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-veereubaa",
+  "name": "veereubaa",
+  "kind": "extension",
+  "summary": "veereubaa is a SillyTavern extension by foreverharibo-boop; its README (github:foreverharibo-boop/veereubaa@efdd7201) contains only the Korean title \"베에르으바아\" and no documented purpose or workflow.",
+  "metadata_status": "curated",
+  "source_id": "github-1373069141",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-11-19T06:22:04.090Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
