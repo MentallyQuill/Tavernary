@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-kink",
+  "name": "kink-",
+  "kind": "extension",
+  "summary": "SillyTavern extension analyzing character cards or recent chat logs with AI to summarize a character's kinks, adult (18+) characters only (Kink Extract README)",
+  "metadata_status": "curated",
+  "source_id": "github-1301622469",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": ["build-extensions-and-scripts"],
+  "cataloged_at": "2026-11-19T06:21:12.395Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
