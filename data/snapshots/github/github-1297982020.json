@@ -1,0 +1,71 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1297982020",
+  "repository": {
+    "id": 1297982020,
+    "owner": "foreverharibo-boop",
+    "name": "simple-persona",
+    "url": "https://github.com/foreverharibo-boop/simple-persona",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "4322138f187c457586187e0637f0d523382b2a79",
+    "head_committed_at": "2026-10-28T05:33:50.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-07-12T04:36:03.000Z",
+    "size_kb": 319
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-10-28T05:33:50.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-28T05:33:50.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-09-30T10:25:07.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-20T16:01:11.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-19T03:34:56.278Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "4322138f187c457586187e0637f0d523382b2a79"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-11-19T03:34:56.278Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "foreverharibo-boop", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-19T03:34:56.278Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

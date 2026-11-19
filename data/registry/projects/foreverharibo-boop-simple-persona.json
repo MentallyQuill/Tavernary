@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-simple-persona",
+  "name": "simple-persona",
+  "kind": "extension",
+  "summary": "simple-persona is a SillyTavern extension (README: 'SillyTavern 확장입니다') from foreverharibo-boop, with the original repository linked for reference; no further features are documented in the provided source.",
+  "metadata_status": "curated",
+  "source_id": "github-1297982020",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["build-extensions-and-scripts", "manage-characters-and-personas"],
+  "cataloged_at": "2026-11-19T03:34:56.278Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
