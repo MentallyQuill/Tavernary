@@ -1,0 +1,57 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1274210130",
+  "repository": {
+    "id": 1274210130,
+    "owner": "bongbong11",
+    "name": "ChatssiRealty",
+    "url": "https://github.com/bongbong11/ChatssiRealty",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "87d089832e304f6a072e05a73e6271434f027c8e",
+    "head_committed_at": "2026-09-28T09:11:55.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-06-19T09:32:19.000Z",
+    "size_kb": 942
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-09-28T09:11:55.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-09-28",
+        "latest_at": "2026-09-28T09:11:55.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-19T03:34:42.249Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "87d089832e304f6a072e05a73e6271434f027c8e"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-11-19T03:34:42.249Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "bongbong11", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-19T03:34:42.249Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

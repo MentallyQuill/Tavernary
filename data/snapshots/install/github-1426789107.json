@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1426789107",
+  "head_sha": "6554591ec76c614d372ab2d5d20f6d074cf72a73",
+  "observed_at": "2026-11-19T03:34:59.339Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Ghostpen",
+  "manifest": {
+    "display_name": "✒️ Ghostpen",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

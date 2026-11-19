@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "tantantanmon-peach-whisper",
+  "name": "peach-whisper",
+  "kind": "extension",
+  "summary": "Named project \"peach-whisper\" (github:tantantanmon/peach-whisper); catalog purpose is not described in available sources, which contain only the project title, so no workflow could be evidenced.",
+  "metadata_status": "curated",
+  "source_id": "github-1210065253",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [],
+  "cataloged_at": "2026-11-19T03:34:56.533Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

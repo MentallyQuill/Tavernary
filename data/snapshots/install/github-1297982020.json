@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1297982020",
+  "head_sha": "4322138f187c457586187e0637f0d523382b2a79",
+  "observed_at": "2026-11-19T03:35:07.588Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "simple-persona",
+  "manifest": {
+    "display_name": "Simple Persona",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

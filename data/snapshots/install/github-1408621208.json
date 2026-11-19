@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1408621208",
+  "head_sha": "b7e54fe7436b233f102488c11acad2c7521607bc",
+  "observed_at": "2026-11-19T04:23:49.453Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Scene-Studio",
+  "manifest": {
+    "display_name": "장면 생성기 · 미니맵 HUD (Scene Studio)",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

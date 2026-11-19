@@ -1,0 +1,65 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1408621208",
+  "repository": {
+    "id": 1408621208,
+    "owner": "Hati1004",
+    "name": "Scene-Studio",
+    "url": "https://github.com/Hati1004/Scene-Studio",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "b7e54fe7436b233f102488c11acad2c7521607bc",
+    "head_committed_at": "2026-11-08T18:01:04.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-10-07T10:33:17.000Z",
+    "size_kb": 146
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-11-08T18:01:04.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-08T18:01:04.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-18T02:51:37.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-07T10:33:47.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-19T04:23:41.532Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "b7e54fe7436b233f102488c11acad2c7521607bc"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-11-19T04:23:41.532Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "Hati1004", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-19T04:23:41.532Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
