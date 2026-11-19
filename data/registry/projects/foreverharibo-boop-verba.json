@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-verba",
+  "name": "verba",
+  "kind": "extension",
+  "summary": "verba (foreverharibo-boop) is a SillyTavern extension whose README evidence contains only the Korean title '베르바' (Verba), so no specific features are documented in the supplied source material.",
+  "metadata_status": "curated",
+  "source_id": "github-1357611906",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-11-17T02:35:25.155Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

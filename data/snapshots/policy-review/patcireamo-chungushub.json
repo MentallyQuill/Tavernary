@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "patcireamo-chungushub",
+  "source_id": "github-1339530018",
+  "source_identity": "github:patcireamo/chungushub",
+  "evidence_fingerprint": "99ab7da4e59c694df5ca9c8c2b64c1fe63d193f1e7eb671a35b85f50efd18e9c",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-09T08:09:00.186Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

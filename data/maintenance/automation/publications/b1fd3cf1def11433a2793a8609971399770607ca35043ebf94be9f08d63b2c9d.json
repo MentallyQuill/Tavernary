@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b1fd3cf1def11433a2793a8609971399770607ca35043ebf94be9f08d63b2c9d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1281629987:beeopo-lumiverse-rewrite",
+      "inputDigest": "20e781aab6e7dc34237877a4cda84dfdee1a30b62667ca8b5623c03debb7e89a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-10T15:50:33.280Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1281629987",
+    "identity": "github:1281629987"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42843044274,
+    "sourceSha": "bcdd9554f84dafa4d1b71c5eaa5ab9e9a80ad2d1"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/beeopo-lumiverse-rewrite.json",
+      "sha256": "145c1981ed248a22ac0d964f5e2f8cf86435be18e07f8064d9a5a6000661a19c",
+      "gitBlobSha": "02ae042ea1f1ecccc8f696b7298d960caff0e2e6"
+    }
+  ]
+}

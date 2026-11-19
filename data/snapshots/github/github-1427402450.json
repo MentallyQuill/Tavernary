@@ -35,18 +35,19 @@
     "evidence_head_sha": "d76e1bd08bde18b8b1b6afdaa111dbd131916b24"
   },
   "community": {
-    "stars_count": 0,
+    "stars_count": 1,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 0
+    "aggregate": 1
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-27T21:35:09.314Z",
+  "refreshed_at": "2026-11-13T15:37:02.976Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "HakaiGod420", "type": "User", "provider": "github" }
@@ -54,8 +55,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-27T21:35:09.314Z",
+    "refreshed_at": "2026-11-13T15:34:28.049Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8fe331eae70bca0bebdd10bdb968b2130d675687bcd2729fe019585fbe55c161",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1274104920:sulphuratum-go-llamaswap-comfy-proxy",
+      "inputDigest": "12d23684530934c5ee4922bf47a2a5b89ab6d790fc212bde513fcf8cd96c68ed",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-30T09:15:06.981Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1274104920",
+    "identity": "github:1274104920"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43720840798,
+    "sourceSha": "14aa2422d2c16f4f6ff6cccfbc0642b682e8975a"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/sulphuratum-go-llamaswap-comfy-proxy.json",
+      "sha256": "918e9c95c73598269183a089c1df899cbd199f47772f6afcc185625de8ae3ccf",
+      "gitBlobSha": "9edda16a8d7f2b487c586cd00186d435a1c43a06"
+    }
+  ]
+}

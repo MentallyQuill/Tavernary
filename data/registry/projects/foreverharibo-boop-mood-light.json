@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-mood-light",
+  "name": "mood-light",
+  "kind": "extension",
+  "summary": "MoodLight is a SillyTavern extension (README: \"SillyTavern 확장입니다\") whose documentation is minimal, stating only that it is an extension and pointing to its original repository for further details.",
+  "metadata_status": "curated",
+  "source_id": "github-1305550503",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-11-18T13:50:21.341Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

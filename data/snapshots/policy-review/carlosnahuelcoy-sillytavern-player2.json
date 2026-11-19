@@ -5,12 +5,9 @@
   "source_identity": "github:carlosnahuelcoy/sillytavern-player2",
   "evidence_fingerprint": "9c7a8fdf760e7bb6fc4a51467dc4a69b71d72a469ca3204ce140cf168aec0bba",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-08T12:22:14.614Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-08T12:22:14.614Z"
-  },
+  "reviewed_at": "2026-11-13T14:12:38.474Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

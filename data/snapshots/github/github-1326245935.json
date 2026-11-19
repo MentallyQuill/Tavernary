@@ -9,18 +9,23 @@
     "url": "https://github.com/deiomo/Writer-s-Block-Unlimited",
     "description": "Home to the Writer's Block preset for sillytavern",
     "default_branch": "main",
-    "head_sha": "047fe2744f1a98cc81f84f9bc4cf6b81f6893de8",
-    "head_committed_at": "2026-10-07T17:38:41.000Z",
+    "head_sha": "8b033e1393519d7aeb242334273ee1ea5e1d0047",
+    "head_committed_at": "2026-11-01T16:39:10.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-08-07T05:23:19.000Z",
-    "size_kb": 205
+    "size_kb": 356
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-04T08:48:08.000Z",
+    "latest_source_activity_at": "2026-11-01T08:20:13.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-11-01T08:20:13.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-28",
         "latest_at": "2026-10-04T08:48:08.000Z",
@@ -30,22 +35,22 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-07T14:35:00.644Z",
+    "baseline_completed_at": "2026-11-15T14:57:45.525Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "047fe2744f1a98cc81f84f9bc4cf6b81f6893de8"
+    "evidence_head_sha": "8b033e1393519d7aeb242334273ee1ea5e1d0047"
   },
   "community": {
-    "stars_count": 25,
-    "forks_count": 0,
-    "watchers_count": 1,
-    "aggregate": 26
+    "stars_count": 38,
+    "forks_count": 1,
+    "watchers_count": 2,
+    "aggregate": 41
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-30T14:40:17.363Z",
+  "refreshed_at": "2026-11-15T14:59:42.036Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -53,7 +58,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-30T14:38:09.231Z",
+    "refreshed_at": "2026-11-15T14:57:45.525Z",
     "stale_since": null
   }
 }

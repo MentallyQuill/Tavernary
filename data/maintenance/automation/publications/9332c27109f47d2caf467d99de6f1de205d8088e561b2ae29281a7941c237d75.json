@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "9332c27109f47d2caf467d99de6f1de205d8088e561b2ae29281a7941c237d75",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1403119280:spaceship4415-st-nanogpt",
+      "inputDigest": "95ac6eb7df0c64f55a5605121e9d9348b568f611fea625fd3b4160fd5d7ba2fe",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-16T02:03:57.103Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1403119280",
+    "identity": "github:1403119280"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43796581227,
+    "sourceSha": "4e0b7a809bebc111fcff32be689c4a7b1a713207"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/spaceship4415-st-nanogpt.json",
+      "sha256": "f3e3fd5caa8137de7bf1e8ad52866ff13b6670a565a617185cb4af84f75085d4",
+      "gitBlobSha": "e1e229e339f4ff90a9a9bce26b504d39c903756e"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f11b80a3d5bd5d621868390b459500344e99160c3fee2c1c66cf25f7c7f99f71",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1184439628:gu-gu-gu-gu-gu-weather-calendar-assistant",
+      "inputDigest": "4f50c663d892f42a94d5aac396e82d89c60c63750779e8b9f40109ed5511ec6a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-10-31T13:50:04.888Z",
+    "nextEligibleAt": null,
+    "expectedSha": "4a15083408396fb97bec2b434b113718fe937a08",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-16T15:59:28.382Z",
+  "completedAt": null
+}

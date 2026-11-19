@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1245652166",
+  "head_sha": "b1d984af379f7c65d77c6f1ab90b3562539dfbd0",
+  "observed_at": "2026-11-18T08:55:11.526Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "peaches-cream-core",
+  "manifest": {
+    "display_name": "Peaches & Cream Core",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

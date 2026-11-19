@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b5768ce2ab463f19fba96692acc80bc2f04e293cc0217ea2fa5351750a67ac6f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1221907257:decidetto-me-accent-color-changer",
+      "inputDigest": "32db6561388de8385721c0ddd09837f5cf6d27e062fb3c5c411423b0f52eb9f5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-29T06:56:46.612Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1221907257",
+    "identity": "github:1221907257"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43601496474,
+    "sourceSha": "0129f21edf4ed4f9413969154b3d22266f934cd7"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/decidetto-me-accent-color-changer.json",
+      "sha256": "041b9279189b855a9ffe4ba0e3d35139a3308711dede6f5c5effbfb6479865ba",
+      "gitBlobSha": "a2dbbfb8fd3e378556d06f8ea289597f3c577b9a"
+    }
+  ]
+}

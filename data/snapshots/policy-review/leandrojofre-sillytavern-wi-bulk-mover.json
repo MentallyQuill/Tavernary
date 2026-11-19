@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "leandrojofre-sillytavern-wi-bulk-mover",
+  "source_id": "github-958439567",
+  "source_identity": "github:leandrojofre/sillytavern-wi-bulk-mover",
+  "evidence_fingerprint": "1dc7dc3570102a1a7a35d7c40f7f4384b4b8e58ac53582e2dc30b1d75f227607",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-15T13:24:55.552Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

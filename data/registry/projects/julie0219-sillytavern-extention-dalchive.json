@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "julie0219-sillytavern-extention-dalchive",
+  "name": "sillytavern_extention_dalchive",
+  "kind": "extension",
+  "summary": "SillyTavern extension (README: Dalchive) for browsing lore across multiple worldbuilding wikis in-chat, searching characters, places, and items during roleplay with Korean translation.",
+  "metadata_status": "curated",
+  "source_id": "github-1269600893",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": ["retrieve-relevant-context", "translate-roleplay-content"],
+  "cataloged_at": "2026-11-17T20:39:20.029Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

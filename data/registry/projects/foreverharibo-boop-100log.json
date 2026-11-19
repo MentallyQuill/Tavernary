@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-100log",
+  "name": "100log",
+  "kind": "extension",
+  "summary": "100log is a SillyTavern extension by foreverharibo-boop; the README (100LOG heading) documents no features, so purpose and workflow cannot be verified beyond the name.",
+  "metadata_status": "curated",
+  "source_id": "github-1392412977",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [],
+  "cataloged_at": "2026-11-17T04:34:54.730Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

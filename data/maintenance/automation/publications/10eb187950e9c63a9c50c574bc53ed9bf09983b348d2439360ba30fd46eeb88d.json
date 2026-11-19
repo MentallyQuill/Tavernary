@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "10eb187950e9c63a9c50c574bc53ed9bf09983b348d2439360ba30fd46eeb88d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1158150500:tealios-errata",
+      "inputDigest": "9f62d355fded99603e534b8817f9e8332f69aebe8e96766da9d039c06429770b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-09T10:47:33.122Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1158150500",
+    "identity": "github:1158150500"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42613903510,
+    "sourceSha": "0597ea718b7d0165083330c708040abcaa2adc6c"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/tealios-errata.json",
+      "sha256": "1962f2e9de7b63cc2f3aa609c138e602346a28b23064ca877af26c00411e8af9",
+      "gitBlobSha": "3cf875d9964d9b5a07b3c6b087306477bdd65d9b"
+    }
+  ]
+}

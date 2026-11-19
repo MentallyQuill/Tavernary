@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "2b970605c24f88ef99a9c3082ae30b6a31373e06c9e21274ecf7f2b2f0a6e65c",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1375792832:spaceship4415-st-markdown-toolbar",
+      "inputDigest": "bc131a1b08371605f7f7bad3882c00e3002bd836ba0559c60a00c76805df0842",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-16T07:03:24.563Z",
+    "nextEligibleAt": "2026-11-16T08:37:26.563Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "workflow-result-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-16T08:32:22.701Z",
+  "completedAt": null
+}

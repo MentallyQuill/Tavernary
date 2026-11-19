@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6a60afc53e9de50c5d4b562476442c188dbee0cb294e3f0a992173d6ff7e0562",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1225640741:zdost-story-engine",
+      "inputDigest": "bd43b4fdb73766e4c12f16e0d80462a6f43fc5359329cb6019227f3a427ec32b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-28T14:14:28.957Z",
+    "nextEligibleAt": "2026-11-14T14:08:51.810Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "provider-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-14T14:03:25.204Z",
+  "completedAt": null
+}

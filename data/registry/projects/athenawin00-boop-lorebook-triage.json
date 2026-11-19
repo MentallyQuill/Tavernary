@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "athenawin00-boop-lorebook-triage",
+  "name": "lorebook-triage",
+  "kind": "extension",
+  "summary": "A SillyTavern extension that combats lorebook bloat by injecting only the entries each turn needs, instead of the whole lorebook, for long-running RP with dozens to hundreds of entries (README intro; repo description).",
+  "metadata_status": "curated",
+  "source_id": "github-1377670737",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": ["manage-context-limits", "manage-lorebooks"],
+  "cataloged_at": "2026-11-16T04:54:57.203Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

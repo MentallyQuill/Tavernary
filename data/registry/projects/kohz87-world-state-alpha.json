@@ -9,10 +9,10 @@
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
   "tags": [
-    "maintain-long-term-memory",
-    "persistent-state",
+    "track-characters-and-world-state",
     "preserve-story-continuity",
-    "track-characters-and-world-state"
+    "maintain-long-term-memory",
+    "guide-model-responses"
   ],
   "cataloged_at": "2026-10-02T19:16:55.241Z",
   "catalog_cohort": "standard",

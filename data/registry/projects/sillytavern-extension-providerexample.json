@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "sillytavern-extension-providerexample",
+  "name": "Extension-ProviderExample",
+  "kind": "extension",
+  "summary": "Example extension on how to build custom API provider connections into SillyTavern",
+  "metadata_status": "provisional",
+  "source_id": "github-1459043426",
+  "frontends": ["sillytavern"],
+  "primary_function": "developer-infrastructure",
+  "tags": [],
+  "cataloged_at": "2026-11-18T04:17:57.484Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

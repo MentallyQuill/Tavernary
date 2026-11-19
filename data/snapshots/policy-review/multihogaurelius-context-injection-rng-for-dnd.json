@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "multihogaurelius-context-injection-rng-for-dnd",
+  "source_id": "github-1118134327",
+  "source_identity": "github:multihogaurelius/context-injection-rng-for-dnd",
+  "evidence_fingerprint": "470357197c6acd8c274a34525b899ac8fd472032b3f792312e558f4e23e46b4d",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-16T15:11:56.989Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

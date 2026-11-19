@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-cardinject",
+  "name": "cardinject",
+  "kind": "extension",
+  "summary": "CardInject is a SillyTavern extension that uses AI to analyze character cards and automatically inject their content at suitable positions in the prompt (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1299124863",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [
+    "automate-roleplay-workflows",
+    "guide-model-responses",
+    "manage-prompts-and-presets"
+  ],
+  "cataloged_at": "2026-11-16T03:42:12.853Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

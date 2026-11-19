@@ -5,12 +5,9 @@
   "source_identity": "github:lenanderson/sillytavern-charswitch",
   "evidence_fingerprint": "abbb98ec37e405ebe6973886bcbb4ad7c6a4206e1c6fb439871b51f6d37d18d0",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-27T13:25:29.286Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-27T13:25:29.286Z"
-  },
+  "reviewed_at": "2026-11-13T14:03:56.090Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

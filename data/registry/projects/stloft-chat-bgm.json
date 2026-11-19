@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "stloft-chat-bgm",
+  "name": "Chat-BGM",
+  "kind": "extension",
+  "summary": "Chat-BGM is a SillyTavern extension that reads recent chat, picks fitting tracks only from genres you enable, and plays official YouTube audio while filtering covers and remixes (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1413979627",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["add-music-and-audio", "connect-external-services"],
+  "cataloged_at": "2026-11-16T00:15:53.417Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

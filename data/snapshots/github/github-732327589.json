@@ -9,30 +9,50 @@
     "url": "https://github.com/sakhavhyand/SillyTavern-AnotherCharManager",
     "description": "Another character management interface for SillyTavern.",
     "default_branch": "main",
-    "head_sha": "fd364d097db826e56c571eade43e3755d2ddb151",
-    "head_committed_at": "2026-10-07T18:54:18.000Z",
+    "head_sha": "a7b72734afcbae51ab3089dcc1984e96732afa64",
+    "head_committed_at": "2026-11-08T17:05:51.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2023-12-16T10:03:38.000Z",
-    "size_kb": 916
+    "size_kb": 875
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-23T19:51:30.000Z",
+    "latest_source_activity_at": "2026-11-06T12:54:25.000Z",
     "source_weeks": [
       {
-        "week_start": "2026-08-17",
-        "latest_at": "2026-08-23T19:51:30.000Z",
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-06T12:54:25.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-31T16:04:01.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-19",
+        "latest_at": "2026-10-19T12:01:23.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-16T13:03:27.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-05",
+        "latest_at": "2026-10-07T18:18:06.000Z",
         "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-08T14:39:08.801Z",
+    "baseline_completed_at": "2026-11-16T00:14:47.083Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "fd364d097db826e56c571eade43e3755d2ddb151"
+    "evidence_head_sha": "a7b72734afcbae51ab3089dcc1984e96732afa64"
   },
   "community": {
     "stars_count": 27,
@@ -45,7 +65,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-30T14:40:37.755Z",
+  "refreshed_at": "2026-11-16T00:16:45.000Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -57,7 +77,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-30T14:38:15.028Z",
+    "refreshed_at": "2026-11-16T00:14:47.083Z",
     "stale_since": null
   }
 }

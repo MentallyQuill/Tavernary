@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b0a23d6adbc975d317c2fb1b8d475087e2a6d52382a1835c5076a22e92a27460",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1413979627:stloft-chat-bgm",
+      "inputDigest": "5caacfce942c5f4e376d077f31f4b936ce37430ee6e256208216bb2be451009e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-16T00:15:53.417Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1413979627",
+    "identity": "github:1413979627"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43784859404,
+    "sourceSha": "1e6ac4810445d9eea0c9b46c24be901e2fbf077d"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/stloft-chat-bgm.json",
+      "sha256": "df51d4e2a1647ba542723db1e7e20d1d2149fb7163ffb6d17c2c5420ede51184",
+      "gitBlobSha": "1b34cbae8f6309cae59961c6fd9cba5dffd16eff"
+    }
+  ]
+}

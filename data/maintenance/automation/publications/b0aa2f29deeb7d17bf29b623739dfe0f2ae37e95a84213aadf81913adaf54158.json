@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b0aa2f29deeb7d17bf29b623739dfe0f2ae37e95a84213aadf81913adaf54158",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1015688972:aikohanasaki-sillytavern-worldinfolocks",
+      "inputDigest": "8848a8cc4b48a7913f628a84ecc76574f7081684b76d275403087de75d312779",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-29T06:57:49.594Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1015688972",
+    "identity": "github:1015688972"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43602127835,
+    "sourceSha": "e838bb8e3e3554f866837efb2b8d80fc89a4ca2f"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/aikohanasaki-sillytavern-worldinfolocks.json",
+      "sha256": "422ea8effbf3662a9953ed37b8bb8fe4b4b8250dfeb3c7e4f9f5ff47c2c5fb4e",
+      "gitBlobSha": "50a7757fcce590e0ac1786cc7d55e6c3ec0b0326"
+    }
+  ]
+}

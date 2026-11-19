@@ -9,18 +9,23 @@
     "url": "https://github.com/AMousePad/LumiRealm",
     "description": "Putting RisuRealm in Lumiverse",
     "default_branch": "main",
-    "head_sha": "9521e5c04a6926f2d0e16551dc67b29a254aa8ca",
-    "head_committed_at": "2026-10-30T01:06:30.000Z",
+    "head_sha": "d4670f447c6b14742d9c90f64ebc3c71f74c9c51",
+    "head_committed_at": "2026-11-05T08:06:58.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-02T04:32:14.000Z",
-    "size_kb": 15043
+    "size_kb": 18744
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-30T01:06:30.000Z",
+    "latest_source_activity_at": "2026-11-05T08:06:58.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-05T08:06:58.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-26",
         "latest_at": "2026-10-30T01:06:30.000Z",
@@ -65,24 +70,14 @@
         "week_start": "2026-08-24",
         "latest_at": "2026-08-27T21:25:30.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-17",
-        "latest_at": "2026-08-19T23:01:18.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-10",
-        "latest_at": "2026-08-16T17:45:04.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-30T01:58:25.000Z",
+    "latest_release_at": "2026-11-05T08:07:09.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-30T03:31:54.373Z",
+    "baseline_completed_at": "2026-11-15T08:23:03.593Z",
     "baseline_attempts": 1,
-    "evidence_head_sha": "9521e5c04a6926f2d0e16551dc67b29a254aa8ca"
+    "evidence_head_sha": "d4670f447c6b14742d9c90f64ebc3c71f74c9c51"
   },
   "community": {
     "stars_count": 10,
@@ -95,7 +90,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-10-30T03:33:58.750Z",
+  "refreshed_at": "2026-11-15T08:25:19.614Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -107,7 +102,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-30T03:31:54.373Z",
+    "refreshed_at": "2026-11-15T08:23:03.593Z",
     "stale_since": null
   }
 }

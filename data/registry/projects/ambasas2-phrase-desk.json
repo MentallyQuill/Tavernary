@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "ambasas2-phrase-desk",
+  "name": "phrase-desk",
+  "kind": "extension",
+  "summary": "A SillyTavern extension that translates multilingual roleplay messages and turns saved expressions into vocabulary notes, quizzes, and response practice (README: Phrase Desk).",
+  "metadata_status": "curated",
+  "source_id": "github-1296530730",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["multilingual", "translate-roleplay-content"],
+  "cataloged_at": "2026-11-17T06:18:30.672Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

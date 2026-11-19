@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1305550503",
+  "head_sha": "5eb14efd64ac7fae8b31eb3dddb592928591cf51",
+  "observed_at": "2026-11-18T13:50:28.013Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "mood-light",
+  "manifest": {
+    "display_name": "MoodLight",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

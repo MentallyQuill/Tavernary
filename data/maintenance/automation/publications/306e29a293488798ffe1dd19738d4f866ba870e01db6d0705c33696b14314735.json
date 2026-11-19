@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "306e29a293488798ffe1dd19738d4f866ba870e01db6d0705c33696b14314735",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1131052854:haide-d-sillytavern-echocore",
+      "inputDigest": "9eb9108066cffab4dbb5b0f7582ebcff78ccfc9f8f3b89aff9b73ce8f99b3290",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-28T14:12:13.109Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1131052854",
+    "identity": "github:1131052854"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43596828098,
+    "sourceSha": "9b684e82fad2c3edc362419a7e271a9507b64adc"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/haide-d-sillytavern-echocore.json",
+      "sha256": "9f029981395625bba34f2d94a4d50ad614363a18f3909b478b4074f8ed4da37f",
+      "gitBlobSha": "8d94d6d28ab2319d307021588cb77b36c3060170"
+    }
+  ]
+}

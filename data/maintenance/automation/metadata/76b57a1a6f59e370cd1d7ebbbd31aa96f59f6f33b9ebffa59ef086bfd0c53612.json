@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "enerccio-sillytavern-persistentitemizedprompts",
+  "sourceId": "github-1211877451",
+  "sourceIdentity": "github:1211877451",
+  "inputDigest": "608e69e373e79d02635a7c6084de9bf03560841348c69727771ad3734eb0c2e9",
+  "fingerprint": "9b73fc41beaf1ed62b517e115bd651eed3f5c90ab04ebeacda270bcb1d4f7dba",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "ae92b593c15c64ca7610662a4d3a3f0882607c7679a815af90857d859d3eb6da",
+  "outputDigest": "2da03f8602fac6ce88be27ecc17632e43bcf477ce5bb41ed32fa43808ae185d5",
+  "headSha": "e0da6549c9a5438e6b6761fdd3ea880290f64f57",
+  "observedAt": "2026-11-09T07:51:56.570Z"
+}

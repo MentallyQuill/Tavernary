@@ -1,0 +1,52 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1169766099",
+  "repository": {
+    "id": 1169766099,
+    "owner": "siltax03-crypto",
+    "name": "Character-Generator",
+    "url": "https://github.com/siltax03-crypto/Character-Generator",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "4a0968ce5c8cdf7d83503eb4ec786e1ca30c55c4",
+    "head_committed_at": "2026-07-22T17:44:22.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-03-01T07:08:39.000Z",
+    "size_kb": 62
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-17T00:55:46.942Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "4a0968ce5c8cdf7d83503eb4ec786e1ca30c55c4"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-11-17T00:55:46.942Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "siltax03-crypto", "type": "User", "provider": "github" },
+      { "login": "jinny1010", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-17T00:55:46.942Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

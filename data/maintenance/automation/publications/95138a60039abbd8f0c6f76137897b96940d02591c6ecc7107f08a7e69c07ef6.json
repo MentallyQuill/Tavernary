@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "95138a60039abbd8f0c6f76137897b96940d02591c6ecc7107f08a7e69c07ef6",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1294619050:lsennn-deus-ex-machina",
+      "inputDigest": "239a974f5055b78fc638749b638ddd9645f12421d15d5c62ffc1f94f28763c0e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-29T00:58:51.701Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1294619050",
+    "identity": "github:1294619050"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43598869785,
+    "sourceSha": "bc9093eaa4df2e4e59daaf3a7a26d28e8506bc64"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/lsennn-deus-ex-machina.json",
+      "sha256": "0b82be2b2e2a486e5d53c6db83bacac095dcc8ab805de9faab28051795fa8d0f",
+      "gitBlobSha": "84acf6e8652b7a6a61ed9b18350fd8c27e6f71e1"
+    }
+  ]
+}

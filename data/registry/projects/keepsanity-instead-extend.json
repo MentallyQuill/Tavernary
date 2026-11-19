@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "keepsanity-instead-extend",
+  "name": "inSTead-extend",
+  "kind": "extension",
+  "summary": "A personal fork of inSTead for SillyTavern that revises messages with feedback and reusable global or character-specific rules (README), adding new swipes that preserve the original message.",
+  "metadata_status": "curated",
+  "source_id": "github-1339544946",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [
+    "edit-and-refine-messages",
+    "guide-model-responses",
+    "non-destructive",
+    "secondary-model"
+  ],
+  "cataloged_at": "2026-11-17T07:18:59.581Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

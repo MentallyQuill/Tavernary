@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e96ec33142e68d5beeb4f0eecce8173468bb5b0e2a41e1e4d7c4b2386df4b6ff",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1189308698:kristalium-sillytavern-too-many-chats",
+      "inputDigest": "1acbee06ba63bbb4e86db31e96ee6a30b446ba5cba6f79be6d0725c0065e40e2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-28T23:36:58.201Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1189308698",
+    "identity": "github:1189308698"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43598170541,
+    "sourceSha": "7b55c3ad6dbe0c45f6e36372a33038da8c2c3dc7"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/kristalium-sillytavern-too-many-chats.json",
+      "sha256": "8fede61582649f2f55a36c064f0b67d4a537239cee5a07c437fb32c76d9c7e83",
+      "gitBlobSha": "42241d81f109074d81f17e58c67efc1106de71e7"
+    }
+  ]
+}

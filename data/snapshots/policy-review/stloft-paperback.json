@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "stloft-paperback",
+  "source_id": "github-1412742194",
+  "source_identity": "github:stloft/paperback",
+  "evidence_fingerprint": "15f4113214813bfcd5b1a8edc7ffba0b60e2f37e413cee05c50c0315c1f6e516",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-16T04:27:16.950Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

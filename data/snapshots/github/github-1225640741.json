@@ -9,21 +9,31 @@
     "url": "https://github.com/ZDOSt/Story-Engine",
     "description": null,
     "default_branch": "main",
-    "head_sha": "57a639ca5183faf253f25ecef6f4094360342f14",
-    "head_committed_at": "2026-10-27T22:26:11.000Z",
+    "head_sha": "767c52f52974b94f43c22ac6fd2c633e3644d407",
+    "head_committed_at": "2026-11-12T14:13:47.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-30T13:40:09.000Z",
-    "size_kb": 14255
+    "size_kb": 10128
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-27T22:26:11.000Z",
+    "latest_source_activity_at": "2026-11-12T14:13:47.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-11-09",
+        "latest_at": "2026-11-12T14:13:47.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-07T01:17:41.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-10-26",
-        "latest_at": "2026-10-27T22:26:11.000Z",
+        "latest_at": "2026-10-31T18:22:48.000Z",
         "precision": "exact"
       },
       {
@@ -65,24 +75,14 @@
         "week_start": "2026-08-24",
         "latest_at": "2026-08-30T03:58:19.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-17",
-        "latest_at": "2026-08-21T19:13:34.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-10",
-        "latest_at": "2026-08-15T04:30:59.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-10-28T14:12:02.153Z",
+    "baseline_completed_at": "2026-11-14T14:21:10.826Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "57a639ca5183faf253f25ecef6f4094360342f14"
+    "evidence_head_sha": "767c52f52974b94f43c22ac6fd2c633e3644d407"
   },
   "community": {
     "stars_count": 12,
@@ -91,7 +91,7 @@
     "aggregate": 12
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-10-28T14:14:28.957Z",
+  "refreshed_at": "2026-11-14T14:23:15.529Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -99,7 +99,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-10-28T14:12:02.153Z",
+    "refreshed_at": "2026-11-14T14:21:10.826Z",
     "stale_since": null
   }
 }

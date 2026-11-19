@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "ambasas2-folio",
+  "name": "folio",
+  "kind": "extension",
+  "summary": "A lightweight character-first browser for finding, organizing, and opening existing SillyTavern chats without indexing chat contents.",
+  "metadata_status": "provisional",
+  "source_id": "github-1346119929",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-11-16T10:58:51.575Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1324198592",
+  "head_sha": "1025ad3c9598bf0c0d97bca55f6c5a7ee2f93f3a",
+  "observed_at": "2026-11-16T11:04:31.062Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "simple-extension",
+  "manifest": {
+    "display_name": "Simple Extension",
+    "key": null,
+    "minimum_client_version": "1.18.0"
+  }
+}

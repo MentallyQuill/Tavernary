@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1403119280",
+  "head_sha": "0ec3ac5afc6a6e03fb1815bb3acf2700fb7e8387",
+  "observed_at": "2026-11-16T02:04:17.075Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "st-nanogpt",
+  "manifest": {
+    "display_name": "NanoGPT Tools",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

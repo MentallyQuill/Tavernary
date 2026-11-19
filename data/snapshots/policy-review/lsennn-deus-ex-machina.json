@@ -3,14 +3,11 @@
   "project_id": "lsennn-deus-ex-machina",
   "source_id": "github-1294619050",
   "source_identity": "github:lsennn/deus-ex-machina",
-  "evidence_fingerprint": "59ebd046e888d23fef510d375b7c8ab61abc53b85b3dbff6af195b37594ef79a",
+  "evidence_fingerprint": "f504d7128e271466ec7ad9f85e7362eca7f642351f9208c982e17038dd3e1d71",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-04T13:31:29.078Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-10-04T13:31:29.078Z"
-  },
+  "reviewed_at": "2026-11-14T13:17:29.861Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

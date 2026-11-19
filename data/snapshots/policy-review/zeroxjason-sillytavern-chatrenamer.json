@@ -5,12 +5,9 @@
   "source_identity": "github:zeroxjason/sillytavern-chatrenamer",
   "evidence_fingerprint": "695dc3a714c7d2061c7033be18c54b17b51f6f14eaac06a54c7911e10555abe2",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-02T14:13:32.753Z",
-  "retry": {
-    "attempts": 9,
-    "last_failure_at": "2026-10-02T14:13:32.753Z"
-  },
+  "reviewed_at": "2026-11-14T13:32:40.777Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

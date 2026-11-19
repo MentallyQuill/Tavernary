@@ -35,12 +35,12 @@
   },
   "community": {
     "stars_count": 31,
-    "forks_count": 1,
+    "forks_count": 2,
     "watchers_count": 1,
-    "aggregate": 33
+    "aggregate": 34
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-10-29T06:57:49.594Z",
+  "refreshed_at": "2026-11-14T14:26:54.650Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -50,7 +50,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T06:17:32.756Z",
     "scan": null,
-    "refreshed_at": "2026-10-29T06:55:27.470Z",
+    "refreshed_at": "2026-11-14T14:24:44.165Z",
     "stale_since": null
   }
 }

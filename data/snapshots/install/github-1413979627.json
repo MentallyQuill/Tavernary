@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1413979627",
+  "head_sha": "645d5480b94e1d3ddf8c278e229ca8f01103ce32",
+  "observed_at": "2026-11-16T00:16:03.032Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "Chat-BGM",
+  "manifest": {
+    "display_name": "🎵 Chat BGM",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

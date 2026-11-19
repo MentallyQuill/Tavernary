@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "55396ed23f3d965effc2df1bedfd8b3874e89bc5c85716c04dd7acf579e25604",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1379666281:kohz87-world-state-alpha",
+      "inputDigest": "adb54a327a2c7954246966835d98a667f912a95bb63eef98cfbfdce18ac36791",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-09T06:58:24.834Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1379666281",
+    "identity": "github:1379666281"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 42582684552,
+    "sourceSha": "e025ccefcb6f5adc63bb30a4948986b85b56ed30"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/kohz87-world-state-alpha.json",
+      "sha256": "311b9dba5d13c9ba30283c8c2b45b49c8ac0bcc0c5ee76d92e6032f1a4138f68",
+      "gitBlobSha": "564eb93e915dac76c4d797c7067776f03b723784"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/55396ed23f3d965effc2df1bedfd8b3874e89bc5c85716c04dd7acf579e25604.json",
+      "sha256": "5589219a9d9b537af728b3e6b1d06bd7eb8305b4d65af3c2976ecd301c5f183a",
+      "gitBlobSha": "520b45cc328e7c2a829553395f19492283449bf1"
+    }
+  ]
+}

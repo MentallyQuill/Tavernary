@@ -3,14 +3,11 @@
   "project_id": "j-dandelion-lumiverse-canvas",
   "source_id": "github-1255896031",
   "source_identity": "github:j-dandelion/lumiverse-canvas",
-  "evidence_fingerprint": "884e6344c5e029777d2b198d742fb0e079cd87e6a8fa5994a111ccf5bb20c4e3",
+  "evidence_fingerprint": "ab35ed8afb8f3e0f4b119ada6dbbf82a352a73be46f219479e0a1033b58162d2",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-13T12:59:25.029Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-13T12:59:25.029Z"
-  },
+  "reviewed_at": "2026-11-13T14:30:43.313Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

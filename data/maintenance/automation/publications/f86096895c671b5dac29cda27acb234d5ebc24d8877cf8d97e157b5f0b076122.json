@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f86096895c671b5dac29cda27acb234d5ebc24d8877cf8d97e157b5f0b076122",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1232282077:lukathehero-sillytavern-claudesubscription",
+      "inputDigest": "7880d404c8ff62bcda31667b1ff493f5b2c689a24435581445645e22b0edadab",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-09T09:00:05.876Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1232282077",
+    "identity": "github:1232282077"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 42597516426,
+    "sourceSha": "87270131062ffbf4e21b92342b3d22c93a39c26a"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/lukathehero-sillytavern-claudesubscription.json",
+      "sha256": "f5e28b2e6db441f0b06529bb6c120a27349326270f78fd99a90b3caceda8c456",
+      "gitBlobSha": "df52b14e54b67a028cbe6a6f0dbcb96cb57ccf02"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/f86096895c671b5dac29cda27acb234d5ebc24d8877cf8d97e157b5f0b076122.json",
+      "sha256": "d34b233a5668636066f7b14916f4a22e8a04baf7a4628fb6e5b3960f5913d311",
+      "gitBlobSha": "649c27be33aa32796931ebbbc225145db0a28880"
+    }
+  ]
+}

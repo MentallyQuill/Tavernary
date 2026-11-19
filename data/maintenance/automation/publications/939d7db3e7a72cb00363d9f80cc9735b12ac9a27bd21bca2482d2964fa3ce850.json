@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "939d7db3e7a72cb00363d9f80cc9735b12ac9a27bd21bca2482d2964fa3ce850",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1198459430:skyjinxx-sillytavern-finalpromptviewer",
+      "inputDigest": "57017a60e69c0aa1a6fe28a193a54f3c6d41986a2755bbd40fdc36259ddd2cf7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-28T14:12:04.008Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1198459430",
+    "identity": "github:1198459430"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43596130747,
+    "sourceSha": "d9488c6d1a2eef4fa8397b57c270b2d5010dafaa"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/skyjinxx-sillytavern-finalpromptviewer.json",
+      "sha256": "43f144de54763af251274d900024760a6d01f7c389ae8f77ee7319fe42cc8296",
+      "gitBlobSha": "8b4f311e3689c45884ac765f7a08a925b1aa2425"
+    }
+  ]
+}

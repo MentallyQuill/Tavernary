@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-lastwords",
+  "name": "lastwords",
+  "kind": "extension",
+  "summary": "lastwords (유서) is presented in its README as a SillyTavern extension; the documented evidence states only 'SillyTavern 확장입니다' plus the original repository link, with no features described.",
+  "metadata_status": "curated",
+  "source_id": "github-1306702454",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": [],
+  "cataloged_at": "2026-11-19T03:34:59.383Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

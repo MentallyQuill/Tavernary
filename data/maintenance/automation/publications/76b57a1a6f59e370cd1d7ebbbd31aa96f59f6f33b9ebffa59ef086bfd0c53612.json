@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "76b57a1a6f59e370cd1d7ebbbd31aa96f59f6f33b9ebffa59ef086bfd0c53612",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1211877451:enerccio-sillytavern-persistentitemizedprompts",
+      "inputDigest": "608e69e373e79d02635a7c6084de9bf03560841348c69727771ad3734eb0c2e9",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-09T06:46:08.951Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1211877451",
+    "identity": "github:1211877451"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 42581861268,
+    "sourceSha": "6d744557933f8e1a91f889ca25120ad575e6c466"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/enerccio-sillytavern-persistentitemizedprompts.json",
+      "sha256": "ab13ca5183e0f561b3f5f72290813284cfbd3b60b7e9033c324e2324f590b694",
+      "gitBlobSha": "636ead34343114ee5cf6b6073e1e4404c6fdda8d"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/76b57a1a6f59e370cd1d7ebbbd31aa96f59f6f33b9ebffa59ef086bfd0c53612.json",
+      "sha256": "45526ccbf9b37fab261401ce5ce11e8a07b85926958ad00cf82e561fc6492792",
+      "gitBlobSha": "66767205f1382eb00b8781a8dfeb508175da561e"
+    }
+  ]
+}

@@ -5,12 +5,9 @@
   "source_identity": "github:decidetto/me-accent-color-changer",
   "evidence_fingerprint": "2d69423c33a9f8d2116e205213c08b26cc2ea29a0cdd09c63ec1acb8e4ac147d",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-30T14:07:46.402Z",
-  "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-09-30T14:07:46.402Z"
-  },
+  "reviewed_at": "2026-11-14T13:48:51.004Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

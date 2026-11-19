@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-simple-extension",
+  "name": "simple-extension",
+  "kind": "extension",
+  "summary": "simple-extension by foreverharibo-boop is a SillyTavern extension with no documented purpose; its supplied README contains only the title 'Simple Extension' as sole evidence.",
+  "metadata_status": "curated",
+  "source_id": "github-1324198592",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-11-16T11:04:18.427Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

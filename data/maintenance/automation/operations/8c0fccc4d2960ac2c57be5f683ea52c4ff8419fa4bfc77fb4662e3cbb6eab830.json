@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8c0fccc4d2960ac2c57be5f683ea52c4ff8419fa4bfc77fb4662e3cbb6eab830",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1381766101:athenawin00-boop-lorebook-keeper",
+      "inputDigest": "7aa3bfd141501156a0bc710bc04c180d5b5724b27e2145e4ebf1733499344754",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-16T12:48:35.961Z",
+    "nextEligibleAt": "2026-11-17T15:51:31.522Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "configuration",
+        "reasonCode": "budget-exhausted"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-16T15:51:31.522Z",
+  "completedAt": null
+}

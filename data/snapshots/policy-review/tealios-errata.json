@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "tealios-errata",
+  "source_id": "github-1158150500",
+  "source_identity": "github:tealios/errata",
+  "evidence_fingerprint": "d8fca66e306d7fd38cfcf4fd250e22757d44bd722b8b181763687e6a91f5d38e",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-09T12:05:31.924Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

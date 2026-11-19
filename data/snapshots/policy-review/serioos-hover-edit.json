@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "serioos-hover-edit",
+  "source_id": "github-1433997749",
+  "source_identity": "github:serioos/hover-edit",
+  "evidence_fingerprint": "f0171b3c4dcee4519c1a217e928ad5b4bf3708e41c2b001f683e12a636b5ab2a",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-13T13:45:57.123Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

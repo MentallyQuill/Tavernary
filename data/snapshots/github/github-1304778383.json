@@ -1,0 +1,64 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1304778383",
+  "repository": {
+    "id": 1304778383,
+    "owner": "st-chd",
+    "name": "codecode",
+    "url": "https://github.com/st-chd/codecode",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "16216fecc08e1c7dd6b748403a08d88de187c17d",
+    "head_committed_at": "2026-11-09T07:45:21.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-07-18T09:40:09.000Z",
+    "size_kb": 189
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-11-09T07:45:21.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-11-09",
+        "latest_at": "2026-11-09T07:45:21.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-13T15:32:05.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-18T05:26:06.796Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "16216fecc08e1c7dd6b748403a08d88de187c17d"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-11-18T05:26:06.796Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "st-chd", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-18T05:26:06.796Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
