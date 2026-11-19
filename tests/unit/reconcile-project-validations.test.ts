@@ -1744,7 +1744,8 @@ test("late-action replanning refreshes generation runs before dispatch", async (
     headBranch: "main",
     createdAt: new Date(NOW - 10 * 60_000).toISOString(),
   });
-  const generationPath = `/repos/${REPOSITORY}/actions/workflows/generate-project-submission.yml/runs?event=workflow_dispatch&per_page=100&page=1`;
+  const created = encodeURIComponent(`>=${publisher.created_at}`);
+  const generationPath = `/repos/${REPOSITORY}/actions/workflows/generate-project-submission.yml/runs?event=workflow_dispatch&created=${created}&per_page=100&page=1`;
   const fake = new FakeGitHub([pull]);
   fake.validationPages.set(pull.head.ref, [[validation]]);
   fake.publicationPages = [[publisher]];
@@ -2042,7 +2043,7 @@ test("ignores manual, malformed, fork-owned, changed-head, and closed PRs", asyn
   expect(fake.mutationRequests()).toEqual([]);
 });
 
-test("paginates pull, validation, Publisher, and generation inventories", async () => {
+test("paginates pull, validation, and Publisher inventories without unrelated generation reads", async () => {
   const fillerPulls = Array.from({ length: 100 }, (_, index) =>
     pullFixture({
       number: 800 + index,
@@ -2119,10 +2120,11 @@ test("paginates pull, validation, Publisher, and generation inventories", async 
     method: "GET",
     path: `/repos/${REPOSITORY}/actions/workflows/publish-project-transaction.yml/runs?event=workflow_dispatch&per_page=100&page=2`,
   });
-  expect(fake.requests).toContainEqual({
-    method: "GET",
-    path: `/repos/${REPOSITORY}/actions/workflows/generate-project-submission.yml/runs?event=workflow_dispatch&per_page=100&page=2`,
-  });
+  expect(
+    fake.requests.some(({ path }) =>
+      path.includes("/generate-project-submission.yml/runs?"),
+    ),
+  ).toBe(false);
 });
 
 test("a guarded live read prevents stale mutation without aborting other PRs", async () => {

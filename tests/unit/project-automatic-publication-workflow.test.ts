@@ -397,6 +397,7 @@ test("hands every generated CI outcome to the serialized reconciler", async () =
   });
   expect(handoff.steps).toEqual([
     expect.objectContaining({
+      "continue-on-error": true,
       env: { GH_TOKEN: "${{ github.token }}" },
       run: expect.stringContaining(
         "gh workflow run reconcile-project-validations.yml",
