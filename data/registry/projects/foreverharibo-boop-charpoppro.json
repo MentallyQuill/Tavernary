@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-charpoppro",
+  "name": "charpoppro",
+  "kind": "extension",
+  "summary": "CHAR-POP-PRO is a SillyTavern extension by foreverharibo-boop; its README states only that it is a SillyTavern extension and links to the original repository (charpoppro README).",
+  "metadata_status": "curated",
+  "source_id": "github-1315791558",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-11-19T06:20:45.917Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
