@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "bongbong11-in-tr",
+  "name": "in_tr",
+  "kind": "extension",
+  "summary": "A SillyTavern extension that translates user input from Korean to English, letting Korean speakers roleplay in English (README: SillyTavern용 한국어→영어 인풋 번역 확장).",
+  "metadata_status": "curated",
+  "source_id": "github-1372767983",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["translate-roleplay-content"],
+  "cataloged_at": "2026-11-19T03:35:05.461Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
