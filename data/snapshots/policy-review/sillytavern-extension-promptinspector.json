@@ -5,12 +5,9 @@
   "source_identity": "github:sillytavern/extension-promptinspector",
   "evidence_fingerprint": "18a6f70b96a1a7830267863c5e79049d9b0ae322c901c441c295a8d8f954bbd0",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-19T12:17:51.462Z",
-  "retry": {
-    "attempts": 2,
-    "last_failure_at": "2026-09-19T12:17:51.462Z"
-  },
+  "reviewed_at": "2026-11-19T15:26:20.276Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
