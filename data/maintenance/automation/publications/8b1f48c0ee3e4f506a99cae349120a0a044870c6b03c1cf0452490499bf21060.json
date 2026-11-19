@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8b1f48c0ee3e4f506a99cae349120a0a044870c6b03c1cf0452490499bf21060",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1255896031:j-dandelion-lumiverse-canvas",
+      "inputDigest": "ee762b3a121a7bc9d83a04c42dd4a0f95faf619657768181ff77cb2d12583009",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-13T15:36:11.566Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1255896031",
+    "identity": "github:1255896031"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43443115235,
+    "sourceSha": "899127a5624517f3f6b9322f5290b5bf4fe9e69f"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/j-dandelion-lumiverse-canvas.json",
+      "sha256": "d2e971fc78cfdac0001b201bd67f27ebc0bd5ff12e7261dcd15b37ecd2bddf98",
+      "gitBlobSha": "a3f63db155bdbacd1410a716248b90719504cfca"
+    }
+  ]
+}

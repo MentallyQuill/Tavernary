@@ -5,12 +5,9 @@
   "source_identity": "github:zapoverde/sillytavern-triggeryze",
   "evidence_fingerprint": "c3eb34b3bb017b448a95b0cc9b3c03620e5072332e95b3a5d8ffbd3ba3906693",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-29T11:47:46.364Z",
-  "retry": {
-    "attempts": 8,
-    "last_failure_at": "2026-09-29T11:47:46.364Z"
-  },
+  "reviewed_at": "2026-11-16T15:42:32.088Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

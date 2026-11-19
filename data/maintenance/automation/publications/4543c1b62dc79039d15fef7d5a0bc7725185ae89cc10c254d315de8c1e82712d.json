@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4543c1b62dc79039d15fef7d5a0bc7725185ae89cc10c254d315de8c1e82712d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1305306157:ganon3264-focus",
+      "inputDigest": "b4356e4ac71033cf1a13161432df0534e7924453e9ea66e0e496dcd85b4c2105",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T06:24:24.201Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1305306157",
+    "identity": "github:1305306157"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 44110233664,
+    "sourceSha": "502e30038ceada639d2b65feca49993413e72382"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/ganon3264-focus.json",
+      "sha256": "c2a71c06f907d196a9a9278cd60f62d981484d6c444995058d8b64840c0240e4",
+      "gitBlobSha": "fc2abcd09e716287f6b93340b7de5812c376bb42"
+    }
+  ]
+}

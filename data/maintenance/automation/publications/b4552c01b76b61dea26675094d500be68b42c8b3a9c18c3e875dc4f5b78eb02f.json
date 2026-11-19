@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b4552c01b76b61dea26675094d500be68b42c8b3a9c18c3e875dc4f5b78eb02f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1220967746:cha1latte-marinara-custom-conversation-bg",
+      "inputDigest": "ddc1c1f0d9dc7be16afc24203c1087b45121f81b0de054586e383268a322cd85",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-10-31T13:50:12.431Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1220967746",
+    "identity": "github:1220967746"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43907855871,
+    "sourceSha": "14e9a9038c8d66fc1af31d159735c9f10732e79f"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/cha1latte-marinara-custom-conversation-bg.json",
+      "sha256": "3042a03eb002bb11ac92d7f70f29ed41f6330931119c0209a0ffb6ec48216dbd",
+      "gitBlobSha": "c0b800500ff7035155a048386413fce06afdfcf2"
+    }
+  ]
+}

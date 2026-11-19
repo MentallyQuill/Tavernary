@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "keepsanity-sillytavern-tmigenerator",
+  "name": "SillyTavern-TMIGenerator",
+  "kind": "extension",
+  "summary": "A SillyTavern extension that automatically generates a fun TMI fact after each character reply, shown in a collapsible box; pin favorites to send them with every request like an author's note (README).",
+  "metadata_status": "curated",
+  "source_id": "github-1148991746",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": ["guide-model-responses"],
+  "cataloged_at": "2026-11-18T08:14:44.802Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

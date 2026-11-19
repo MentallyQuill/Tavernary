@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "stloft-paperback",
+  "name": "Paperback",
+  "kind": "extension",
+  "summary": "Paperback is a SillyTavern extension that divides chat history into book-like pages you flip through, reading long conversations like a printed book. Evidence: README states chats are split into page-like sections.",
+  "metadata_status": "curated",
+  "source_id": "github-1412742194",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["organize-chats-and-messages"],
+  "cataloged_at": "2026-11-16T03:27:26.730Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

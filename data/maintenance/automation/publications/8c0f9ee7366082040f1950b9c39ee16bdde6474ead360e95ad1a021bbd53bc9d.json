@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8c0f9ee7366082040f1950b9c39ee16bdde6474ead360e95ad1a021bbd53bc9d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1145563299:actualbroeckchen-instead",
+      "inputDigest": "167771e98be3a7f6474da24c4b43a195377861b977d626a885da42d9600e81c8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-16T01:50:22.136Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1145563299",
+    "identity": "github:1145563299"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43793952814,
+    "sourceSha": "bf0732502b8149e289a354796d3730f29fbf5802"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/actualbroeckchen-instead.json",
+      "sha256": "32826589b622b549e6b24acc31399bf2bbc63ed2f70da36b9f9b1402171e0a6b",
+      "gitBlobSha": "05452323e880159ab55cb9b1122ee1568d9521ab"
+    }
+  ]
+}

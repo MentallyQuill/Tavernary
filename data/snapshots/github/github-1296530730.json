@@ -1,0 +1,77 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1296530730",
+  "repository": {
+    "id": 1296530730,
+    "owner": "AmbasaS2",
+    "name": "phrase-desk",
+    "url": "https://github.com/AmbasaS2/phrase-desk",
+    "description": "A Korean-focused SillyTavern extension for English roleplay translation, expression collection, and language study.",
+    "default_branch": "main",
+    "head_sha": "733506e4ab28f394976e7a1b913f57cbca0325d9",
+    "head_committed_at": "2026-11-17T01:22:28.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-07-10T13:28:07.000Z",
+    "size_kb": 5679
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-11-17T01:22:28.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-11-16",
+        "latest_at": "2026-11-17T01:22:28.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-09",
+        "latest_at": "2026-11-15T06:30:14.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-11T04:11:40.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-08-31",
+        "latest_at": "2026-09-02T03:58:05.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-17T06:18:30.672Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "733506e4ab28f394976e7a1b913f57cbca0325d9"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-11-17T06:18:30.672Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "AmbasaS2", "type": "User", "provider": "github" },
+      { "login": "github-actions[bot]", "type": "Bot", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-17T06:18:30.672Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

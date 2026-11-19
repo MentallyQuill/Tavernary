@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c926ffba875589c87a6bc90c7e157db5b34799161b520ff1f61d7ddf5922a440",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1292206739:lukasstraub2-sillytavern-imagepdf",
+      "inputDigest": "9457644d91e2ef8f8df28ad9aad427d6e07ffcc23159f03dbc7db12a497b2af1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T07:00:43.605Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1292206739",
+    "identity": "github:1292206739"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 44111960053,
+    "sourceSha": "c561fbe20a6ea2916c700ba7c6a91d58c08557b4"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/lukasstraub2-sillytavern-imagepdf.json",
+      "sha256": "94c77c309e68548da3ca2ac764b257e1982aa20d2072b9e25241e3fc376ef8c4",
+      "gitBlobSha": "0892a5315e52b377005c627c37d2eeb48121c657"
+    }
+  ]
+}

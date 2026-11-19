@@ -5,12 +5,9 @@
   "source_identity": "github:lukasstraub2/sillytavern-imagepdf",
   "evidence_fingerprint": "af1c1a539ad1181d341f14d0f7c0e86f94d8152f05dffc4e123528f65010232d",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-25T08:15:29.953Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-08-25T08:15:29.953Z"
-  },
+  "reviewed_at": "2026-11-17T15:15:53.352Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

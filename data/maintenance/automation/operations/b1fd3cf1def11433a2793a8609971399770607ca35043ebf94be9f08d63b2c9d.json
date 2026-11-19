@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b1fd3cf1def11433a2793a8609971399770607ca35043ebf94be9f08d63b2c9d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1281629987:beeopo-lumiverse-rewrite",
+      "inputDigest": "20e781aab6e7dc34237877a4cda84dfdee1a30b62667ca8b5623c03debb7e89a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-10T15:50:33.280Z",
+    "nextEligibleAt": null,
+    "expectedSha": "3add4fd1beecd3fed333e2ec9343d0daa951d26c",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-15T20:53:58.859Z",
+  "completedAt": null
+}

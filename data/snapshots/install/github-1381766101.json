@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1381766101",
+  "head_sha": "88ea22527d1b07dfe6081e7a34c0409d9b0c4c41",
+  "observed_at": "2026-11-16T12:50:55.619Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "lorebook-keeper",
+  "manifest": {
+    "display_name": "NonJev Lorebook",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

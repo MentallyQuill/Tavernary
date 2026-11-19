@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1306702454",
+  "head_sha": "6325d40e74bc7968629cda1b75b8d468d97e5f4b",
+  "observed_at": "2026-11-19T03:35:05.439Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "lastwords",
+  "manifest": {
+    "display_name": "유서 (Last Words)",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

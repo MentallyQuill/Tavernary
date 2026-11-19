@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1339544946",
+  "head_sha": "fa9bd45cc48097ebb2c23678170d47ec1fe684ee",
+  "observed_at": "2026-11-17T07:21:28.216Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "inSTead-extend",
+  "manifest": {
+    "display_name": "inSTead",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

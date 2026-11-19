@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1131684000",
+  "head_sha": "fbcf6e96e258f6f4d4c92ba170edadab24b21b9d",
+  "observed_at": "2026-11-18T06:34:11.906Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "broadcast",
+  "manifest": {
+    "display_name": "Broadcast Message",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

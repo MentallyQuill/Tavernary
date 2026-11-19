@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e0130d93d14dc070b27f7eac9004a88b0a2e6d70fbffccbb5bde6fa783fe3c19",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1163573440:mattjaybe-sillytavern-larson",
+      "inputDigest": "ac5fa4c704d42cce5b60100b0111411ef7a90b4c89d4a69ac59414170f3f17a7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-13T15:36:38.793Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1163573440",
+    "identity": "github:1163573440"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43441733669,
+    "sourceSha": "c4482a964c585a8544aa3228d2fb59646fecb52c"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/mattjaybe-sillytavern-larson.json",
+      "sha256": "5a2d62e04848316367410142bc031a1e5610135bea715811b695c5d5a0e026a5",
+      "gitBlobSha": "2e86d36c4f75da4623a8ea4979befe52cd585748"
+    }
+  ]
+}

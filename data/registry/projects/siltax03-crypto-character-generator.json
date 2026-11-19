@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "siltax03-crypto-character-generator",
+  "name": "Character-Generator",
+  "kind": "extension",
+  "summary": "No README file found.",
+  "metadata_status": "curated",
+  "source_id": "github-1169766099",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": [],
+  "cataloged_at": "2026-11-17T00:55:46.942Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

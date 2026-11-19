@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "spaceship4415-st-nanogpt",
+  "source_id": "github-1403119280",
+  "source_identity": "github:spaceship4415/st-nanogpt",
+  "evidence_fingerprint": "58efe3db8159d3f321469886431c57858f87546990ee5719c0c7c769efedfdbf",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-16T03:11:56.179Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

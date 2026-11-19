@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6cb1c5d983a05d15eabf1f2c4952ada2b57d57f63ef090008763d194e879ac8a",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-936859577:sillytavern-sillytavern-nicknames",
+      "inputDigest": "7e6f9bf5060baec81563d7391127c8d1e026f3c8022b184bb743b87bb8f42bcc",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-10T15:49:00.149Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-936859577",
+    "identity": "github:936859577"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 42841485069,
+    "sourceSha": "64f6cb6c8494ee7a20857a5dc4b8420da32fbdca"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/sillytavern-sillytavern-nicknames.json",
+      "sha256": "3997dd2813fd45a913570ae2370793835144228fcf4f6ed2fb4e73f559f8f6ba",
+      "gitBlobSha": "4635dcae8dc08be1a316e8b72671545dc3a93d7e"
+    }
+  ]
+}

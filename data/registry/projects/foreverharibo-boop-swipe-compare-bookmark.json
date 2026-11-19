@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-swipe-compare-bookmark",
+  "name": "Swipe-Compare-Bookmark",
+  "kind": "extension",
+  "summary": "Swipe-Compare-Bookmark is a SillyTavern extension, per the README title (README:1), that combines message swipe comparison with bookmarking for chat organization.",
+  "metadata_status": "curated",
+  "source_id": "github-1297555915",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["organize-chats-and-messages"],
+  "cataloged_at": "2026-11-17T19:10:11.234Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

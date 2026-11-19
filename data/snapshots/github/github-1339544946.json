@@ -1,0 +1,70 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1339544946",
+  "repository": {
+    "id": 1339544946,
+    "owner": "keepsanity",
+    "name": "inSTead-extend",
+    "url": "https://github.com/keepsanity/inSTead-extend",
+    "description": "A small extension to enhance swipes in SillyTavern.",
+    "default_branch": "main",
+    "head_sha": "fa9bd45cc48097ebb2c23678170d47ec1fe684ee",
+    "head_committed_at": "2026-10-18T08:55:12.000Z",
+    "archived": false,
+    "fork": true,
+    "parent": {
+      "id": 1145563299,
+      "owner": "ActualBroeckchen",
+      "name": "inSTead",
+      "url": "https://github.com/ActualBroeckchen/inSTead"
+    },
+    "created_at": "2026-08-19T12:16:56.000Z",
+    "size_kb": 10917
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-10-18T08:55:12.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-10-12",
+        "latest_at": "2026-10-18T08:55:12.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-14",
+        "latest_at": "2026-09-15T11:10:21.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-09-07",
+        "latest_at": "2026-09-09T11:03:18.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-17T07:18:59.581Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "fa9bd45cc48097ebb2c23678170d47ec1fe684ee"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-11-17T07:18:59.581Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [],
+    "method": "merged-pull-requests",
+    "baseline_completed_at": "2026-11-17T07:18:59.581Z",
+    "scan": null,
+    "refreshed_at": "2026-11-17T07:18:59.581Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

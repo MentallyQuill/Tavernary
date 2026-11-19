@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "fd377d7aecf6179a7713eba84ed4d9c9876b927c4d04683139dcd67c5fcc6998",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1412742194:stloft-paperback",
+      "inputDigest": "680db9904e1b46f1f0fcf88688d2f89cb70681f86b97286dae133a988b17a453",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-16T03:27:26.730Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1412742194",
+    "identity": "github:1412742194"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 43804046185,
+    "sourceSha": "e92126ac67b3bf1c6fb385aa02e459853e25ff28"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/stloft-paperback.json",
+      "sha256": "171b8c77f10ede4b03a35ceedd4c770865059a8d4ca041511dfcd23052b41d30",
+      "gitBlobSha": "6ac40d42d284518eb5ad330f446c541fd88ed1e8"
+    }
+  ]
+}

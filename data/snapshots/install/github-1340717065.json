@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1340717065",
+  "head_sha": "2c9bc1ce3fe98a5bb5ef6600bcf5ca52ba9c1d4e",
+  "observed_at": "2026-11-18T07:54:21.501Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "MINIGAME",
+  "manifest": {
+    "display_name": "심심풀이",
+    "key": null,
+    "minimum_client_version": "1.12.0"
+  }
+}

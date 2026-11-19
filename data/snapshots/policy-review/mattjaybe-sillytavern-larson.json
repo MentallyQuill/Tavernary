@@ -5,12 +5,9 @@
   "source_identity": "github:mattjaybe/sillytavern-larson",
   "evidence_fingerprint": "80037030212647263f486aaf291ad710ac31873a03cf85d372e55d042e58a91d",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-29T14:20:39.888Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-09-29T14:20:39.888Z"
-  },
+  "reviewed_at": "2026-11-13T14:21:32.661Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

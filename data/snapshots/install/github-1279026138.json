@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1279026138",
+  "head_sha": "c24e7dff1a3ba56932bec178d9adbf1191d2ba77",
+  "observed_at": "2026-11-17T20:30:23.549Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "persona-cards",
+  "manifest": {
+    "display_name": "Persona Cards",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

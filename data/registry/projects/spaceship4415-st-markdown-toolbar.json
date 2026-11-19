@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "spaceship4415-st-markdown-toolbar",
+  "name": "st-markdown-toolbar",
+  "kind": "extension",
+  "summary": "SillyTavern extension adding a one-tap Markdown toolbar above the input box: wrap selections in bold, quotes, or OOC markers, with live preview, reorderable and shareable button sets (README: one-tap formatting buttons).",
+  "metadata_status": "curated",
+  "source_id": "github-1375792832",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "customize-the-interface",
+    "edit-and-refine-messages",
+    "mobile-friendly"
+  ],
+  "cataloged_at": "2026-11-16T07:03:24.563Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "st-chd-codecode",
+  "name": "codecode",
+  "kind": "extension",
+  "summary": "codecode is a SillyTavern extension that improves the chat text editing experience as an enhanced fork of the CodeMirror editor extension (README: 'SillyTavern용 CodeMirror ... 개선한 포크').",
+  "metadata_status": "curated",
+  "source_id": "github-1304778383",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-11-18T05:26:06.796Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
