@@ -10,7 +10,7 @@
     },
     "stage": "admitted",
     "createdAt": "2026-11-17T06:41:57.278Z",
-    "nextEligibleAt": "2026-11-19T13:56:27.247Z",
+    "nextEligibleAt": "2026-11-20T14:12:35.456Z",
     "expectedSha": "c73eb8902a877ff4eb949118c1771ccc6c7677b3",
     "workerRunId": null,
     "retry": {
@@ -18,10 +18,10 @@
         "kind": "transient",
         "reasonCode": "provider-rate-limited"
       },
-      "transientAttempts": 3,
+      "transientAttempts": 4,
       "immediateAttempts": 0
     }
   },
-  "updatedAt": "2026-11-19T07:35:50.604Z",
+  "updatedAt": "2026-11-19T14:12:35.456Z",
   "completedAt": null
 }
