@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "ghostcatowo-ghostpen",
+  "name": "Ghostpen",
+  "kind": "extension",
+  "summary": "Ghostpen by ghostcatowo is a SillyTavern extension, but its README (github:ghostcatowo/ghostpen@6554591) contains only the title \"Ghostpen\" with no further documentation of purpose or features.",
+  "metadata_status": "curated",
+  "source_id": "github-1426789107",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": ["build-extensions-and-scripts"],
+  "cataloged_at": "2026-11-19T03:34:52.375Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
