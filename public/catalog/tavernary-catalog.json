@@ -11534,13 +11534,59 @@
         }
       ],
       "tavernKeeper": {
-        "state": "gray",
-        "riskLevel": null,
-        "freshness": "unassessed",
+        "state": "teal",
+        "riskLevel": "low",
+        "freshness": "current",
         "currentSha": "c73eb8902a877ff4eb949118c1771ccc6c7677b3",
-        "report": null,
-        "history": [],
-        "historyUrl": null
+        "report": {
+          "reportId": "f461da94a8e1b9aa7821704f7a36eed6f72d3ed33c2b621250b84de15b88f250",
+          "riskLevel": "low",
+          "headline": "Low concern",
+          "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+          "minorCautions": 0,
+          "materialConcerns": 0,
+          "highDanger": 0,
+          "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+          "citedFindingIds": [],
+          "scannedSha": "c73eb8902a877ff4eb949118c1771ccc6c7677b3",
+          "treeUrl": "https://github.com/athenawin00-boop/persona-manager/tree/c73eb8902a877ff4eb949118c1771ccc6c7677b3",
+          "scannedAt": "2026-11-17T06:41:57.278Z",
+          "assessedAt": "2026-11-20T20:49:18.956Z",
+          "scannerPolicyVersion": "5",
+          "contextualReviewPolicyVersion": "5",
+          "synthesisPolicyVersion": "5",
+          "synthesisModel": "deterministic-policy-v5",
+          "dangerBasis": "none",
+          "assessmentSource": "deterministic_regrade",
+          "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1412485167/c73eb8902a877ff4eb949118c1771ccc6c7677b3/5/f461da94a8e1b9aa7821704f7a36eed6f72d3ed33c2b621250b84de15b88f250/",
+          "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1412485167/history/"
+        },
+        "history": [
+          {
+            "reportId": "f461da94a8e1b9aa7821704f7a36eed6f72d3ed33c2b621250b84de15b88f250",
+            "riskLevel": "low",
+            "headline": "Low concern",
+            "summary": "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+            "minorCautions": 0,
+            "materialConcerns": 0,
+            "highDanger": 0,
+            "maliciousEvidence": "No evidence of malicious behavior was identified in the completed review.",
+            "citedFindingIds": [],
+            "scannedSha": "c73eb8902a877ff4eb949118c1771ccc6c7677b3",
+            "treeUrl": "https://github.com/athenawin00-boop/persona-manager/tree/c73eb8902a877ff4eb949118c1771ccc6c7677b3",
+            "scannedAt": "2026-11-17T06:41:57.278Z",
+            "assessedAt": "2026-11-20T20:49:18.956Z",
+            "scannerPolicyVersion": "5",
+            "contextualReviewPolicyVersion": "5",
+            "synthesisPolicyVersion": "5",
+            "synthesisModel": "deterministic-policy-v5",
+            "dangerBasis": "none",
+            "assessmentSource": "deterministic_regrade",
+            "reportUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1412485167/c73eb8902a877ff4eb949118c1771ccc6c7677b3/5/f461da94a8e1b9aa7821704f7a36eed6f72d3ed33c2b621250b84de15b88f250/",
+            "technicalHistoryUrl": "https://mentallyquill.github.io/TavernKeeper/reports/github/1412485167/history/"
+          }
+        ],
+        "historyUrl": "/security/tavernkeeper/history/github-1412485167/"
       },
       "attribution": {
         "owner": {
