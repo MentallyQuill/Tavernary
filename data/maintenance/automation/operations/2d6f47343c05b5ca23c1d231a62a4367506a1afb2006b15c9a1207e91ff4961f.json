@@ -8,20 +8,13 @@
       "inputDigest": "b21f94b10912bacf7e324c533da3cdf7c6d74889e74e45e57d4ab3bd30bea721",
       "policyVersion": "5.5"
     },
-    "stage": "admitted",
+    "stage": "finalized",
     "createdAt": "2026-11-17T08:06:19.611Z",
-    "nextEligibleAt": "2026-11-19T19:47:21.474Z",
-    "expectedSha": "a56cb07020c6e4bd24326b4c721468c27a7648ef",
+    "nextEligibleAt": null,
+    "expectedSha": "9826ee7855869d8f324ded5e9c132ccee5445400",
     "workerRunId": null,
-    "retry": {
-      "failure": {
-        "kind": "transient",
-        "reasonCode": "provider-rate-limited"
-      },
-      "transientAttempts": 1,
-      "immediateAttempts": 0
-    }
+    "retry": null
   },
-  "updatedAt": "2026-11-19T19:31:08.382Z",
-  "completedAt": null
+  "updatedAt": "2026-11-21T16:01:55.479Z",
+  "completedAt": "2026-11-21T16:01:55.479Z"
 }
