@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c1c2ec9f1a6bb39bbdf1a250ef207244a8a2db816fe52c20819e1b79e804c75f",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1191674813:tantantanmon-st-scenegallery",
+      "inputDigest": "6a42faad4b5626255ba00b0c7562a0dde56fcb2ec75bb114f5af321d771b9515",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-19T04:23:15.728Z",
+    "nextEligibleAt": null,
+    "expectedSha": "860b3f4845630801a9cf6961cbfcff80c895e43c",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-22T19:18:42.020Z",
+  "completedAt": null
+}
