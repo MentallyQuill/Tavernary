@@ -24,7 +24,9 @@ const systemPrompt = `${catalogCopyInstructions()}
 
 Extract only the requested factual project metadata grounded in the supplied source. The root README is primary evidence and the repository description is secondary evidence. Return only the requested fields and, when summary is requested, the required copy-policy diagnostics. Never return, change, or claim authority over primary_function or any compatibility field.
 
-For summary, write one natural source-grounded description between 120 and 220 characters inclusive. Use single-line plain text without Markdown, list syntax, URLs, or domain-style links. Explain the project's purpose and a distinctive workflow, capability, or benefit supported by source evidence without enforcing a word count or sentence count. Include at least one compact evidence reference.
+For summary.value, write a natural, standalone description for the project card, between 120 and 220 characters inclusive. Use single-line plain text without Markdown, list syntax, URLs, or domain-style links. Describe what the project does and, when supported, a distinctive workflow, capability, or benefit. Omit citations, README references, filenames, paths, commit identifiers, and comments about missing documentation from summary.value. When evidence is sparse, describe only what it supports and avoid filling space with speculation or commentary about the sources.
+
+Put compact evidence references only in summary.evidence. Include at least one reference that supports the description.
 
 For tags, select zero to six allowed tag IDs. Use each tag's inclusion and exclusion guidance. Do not invent a tag, infer a sibling card's behavior, use isolated keyword matching, or force a selection when evidence is insufficient. Include at least one compact source or line evidence reference for every selected tag.
 
