@@ -19910,7 +19910,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "A SillyTavern extension that translates user input from Korean to English, letting Korean speakers roleplay in English (README: SillyTavern용 한국어→영어 인풋 번역 확장).",
+      "summary": "Korean-to-English input translation extension for SillyTavern that automatically translates user input before it reaches the model, letting Korean users chat naturally while models receive English.",
       "canonicalUrl": "https://github.com/bongbong11/in_tr",
       "catalogedAt": "2026-11-19T03:35:05.461Z",
       "catalogCohort": "standard",
@@ -20003,7 +20003,7 @@
           "https://github.com/bongbong11/in_tr"
         ],
         "summary": [
-          "A SillyTavern extension that translates user input from Korean to English, letting Korean speakers roleplay in English (README: SillyTavern용 한국어→영어 인풋 번역 확장)."
+          "Korean-to-English input translation extension for SillyTavern that automatically translates user input before it reaches the model, letting Korean users chat naturally while models receive English."
         ],
         "kind": [
           "extension"
