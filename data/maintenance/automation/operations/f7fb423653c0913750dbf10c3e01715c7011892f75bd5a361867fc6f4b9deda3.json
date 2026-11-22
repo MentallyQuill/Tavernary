@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f7fb423653c0913750dbf10c3e01715c7011892f75bd5a361867fc6f4b9deda3",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1319052664:foreverharibo-boop-lore-manager",
+      "inputDigest": "2f70bc4c5299e939373159ee774dc46619d7745a5006b83846d808298d030a95",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-19T03:35:26.421Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "superseded",
+        "reasonCode": "input-superseded"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-22T18:47:48.261Z",
+  "completedAt": null
+}
