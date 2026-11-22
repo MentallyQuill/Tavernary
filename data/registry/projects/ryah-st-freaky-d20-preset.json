@@ -1,9 +1,9 @@
 {
   "schema_version": 6,
   "id": "ryah-st-freaky-d20-preset",
-  "name": "Freaky FrankenSIM",
+  "name": "VEXA",
   "kind": "preset",
-  "summary": "The Official Slow-Burn MAX++ Version of Freaky Frankenstein. Utilizes ARC Engine for pacing and plot, Chekhov's Gun for narrative debt, VERY in-depth relationship tracking and NPC emotion calculation",
+  "summary": "The most advanced AI RP preset you can download for free. 3D grid pathfinding, off-screen NPC agendas and Kishōtenketsu arcs, real psych models for dual emotions per NPC, a 12-axis relationship & dam engine, and more.",
   "metadata_status": "curated",
   "frontends": ["sillytavern", "lumiverse"],
   "primary_function": "preset",
@@ -15,7 +15,8 @@
     "gemma",
     "claude",
     "deepseek",
-    "minimax"
+    "minimax",
+    "mimo"
   ],
   "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-28T04:01:50.555Z",
