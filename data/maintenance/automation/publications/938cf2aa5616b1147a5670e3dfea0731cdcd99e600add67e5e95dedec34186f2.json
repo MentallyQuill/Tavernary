@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "938cf2aa5616b1147a5670e3dfea0731cdcd99e600add67e5e95dedec34186f2",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1400029890:foreverharibo-boop-message-metrics-display",
+      "inputDigest": "76b81eb6504ff65a6e0010bebcf2746c1132acb4dffa3c9a1e8223a77114877f",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-19T03:34:51.276Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1400029890",
+    "identity": "github:1400029890"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 45048463296,
+    "sourceSha": "70f2c6fb05a6708abebcdf7f62b2189412bc6d73"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/foreverharibo-boop-message-metrics-display.json",
+      "sha256": "56dfd01c0d6c5acd87846a771e6e87e6dfc684be26f5058197402b4c7995a9de",
+      "gitBlobSha": "d1e67401abb1014e9f0fa01e56b4816cfb7f3fb4"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/938cf2aa5616b1147a5670e3dfea0731cdcd99e600add67e5e95dedec34186f2.json",
+      "sha256": "205273d3578ab86b115d3fab8e407eda02d9577941fa6485d74c9d95b1eaec64",
+      "gitBlobSha": "bcea12fa3fcee57097b83d606f8aab5979ad713a"
+    }
+  ]
+}

@@ -43327,7 +43327,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "SillyTavern extension that displays each message's token count (e.g. 123t) and generation time (e.g. 4.2s) in place, targeting SillyTavern 1.13.4+ and needing no server plugin (README).",
+      "summary": "SillyTavern extension that displays each message's token count (e.g. 123t) and generation time (e.g. 4.2s) in place, requiring no separate server plugin and targeting SillyTavern 1.13.4+.",
       "canonicalUrl": "https://github.com/foreverharibo-boop/message-metrics-display",
       "catalogedAt": "2026-11-19T03:34:51.276Z",
       "catalogCohort": "standard",
@@ -43339,12 +43339,6 @@
         }
       ],
       "tags": [
-        {
-          "id": "inspect-prompts-and-generations",
-          "label": "Inspect prompts and generations",
-          "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
-          "facet": "goal"
-        },
         {
           "id": "monitor-token-usage-and-cost",
           "label": "Monitor token usage and cost",
@@ -43426,7 +43420,7 @@
           "https://github.com/foreverharibo-boop/message-metrics-display"
         ],
         "summary": [
-          "SillyTavern extension that displays each message's token count (e.g. 123t) and generation time (e.g. 4.2s) in place, targeting SillyTavern 1.13.4+ and needing no server plugin (README)."
+          "SillyTavern extension that displays each message's token count (e.g. 123t) and generation time (e.g. 4.2s) in place, requiring no separate server plugin and targeting SillyTavern 1.13.4+."
         ],
         "kind": [
           "extension"
@@ -43435,11 +43429,6 @@
           "Interface and workflow"
         ],
         "tags": [
-          "Inspect prompts and generations",
-          "prompt inspection",
-          "generation diagnostics",
-          "review validation",
-          "request debugging",
           "Monitor token usage and cost",
           "usage analytics",
           "cost tracking",
