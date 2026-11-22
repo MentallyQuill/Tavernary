@@ -47887,7 +47887,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "character-worldbuilding",
-      "summary": "Scene-Studio is a SillyTavern extension combining a scene generator with a minimap HUD, supporting scene planning and spatial location display during roleplay (README: '장면 생성기 · 미니맵 HUD (Scene Studio)').",
+      "summary": "Scene Studio is a SillyTavern extension providing a scene generator and minimap HUD, overlaying roleplay scenes with a minimap-style visual display.",
       "canonicalUrl": "https://github.com/Hati1004/Scene-Studio",
       "catalogedAt": "2026-11-19T04:23:41.532Z",
       "catalogCohort": "standard",
@@ -47900,15 +47900,15 @@
       ],
       "tags": [
         {
-          "id": "manage-maps-and-locations",
-          "label": "Manage maps and locations",
-          "description": "Represent, navigate, calculate, or update places and spatial relationships.",
+          "id": "add-visual-immersion",
+          "label": "Add visual immersion",
+          "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
           "facet": "goal"
         },
         {
-          "id": "plan-stories-and-scenes",
-          "label": "Plan stories and scenes",
-          "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
+          "id": "manage-maps-and-locations",
+          "label": "Manage maps and locations",
+          "description": "Represent, navigate, calculate, or update places and spatial relationships.",
           "facet": "goal"
         }
       ],
@@ -47986,7 +47986,7 @@
           "https://github.com/Hati1004/Scene-Studio"
         ],
         "summary": [
-          "Scene-Studio is a SillyTavern extension combining a scene generator with a minimap HUD, supporting scene planning and spatial location display during roleplay (README: '장면 생성기 · 미니맵 HUD (Scene Studio)')."
+          "Scene Studio is a SillyTavern extension providing a scene generator and minimap HUD, overlaying roleplay scenes with a minimap-style visual display."
         ],
         "kind": [
           "extension"
@@ -47995,14 +47995,14 @@
           "Character and worldbuilding"
         ],
         "tags": [
+          "Add visual immersion",
+          "roleplay visuals",
+          "visual novel presentation",
+          "scene visuals",
           "Manage maps and locations",
           "interactive maps",
           "location tracking",
-          "spatial navigation",
-          "Plan stories and scenes",
-          "story planning",
-          "plot direction",
-          "scene planning"
+          "spatial navigation"
         ],
         "frontends": [
           "SillyTavern"
