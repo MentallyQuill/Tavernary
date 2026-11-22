@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f7fb423653c0913750dbf10c3e01715c7011892f75bd5a361867fc6f4b9deda3",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1319052664:foreverharibo-boop-lore-manager",
+      "inputDigest": "2f70bc4c5299e939373159ee774dc46619d7745a5006b83846d808298d030a95",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-19T03:35:26.421Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1319052664",
+    "identity": "github:1319052664"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 45063663021,
+    "sourceSha": "bbf6b655b704bc1e85fcc12235f1a4a07bddbcdc"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/foreverharibo-boop-lore-manager.json",
+      "sha256": "35c8216901f86cb466753bf46582c0d019031456382496e34ed0e6a15cf48eff",
+      "gitBlobSha": "201b7f111d7e295717ac67ab0cb4a8eaee4f1c42"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/f7fb423653c0913750dbf10c3e01715c7011892f75bd5a361867fc6f4b9deda3.json",
+      "sha256": "a0bb0c06b9ad746116a23f2b4b17984756d4f7c44b22fb9d90f9170ce4ef88fd",
+      "gitBlobSha": "361698c78406630b96fe0cc367ba0ba486486491"
+    }
+  ]
+}

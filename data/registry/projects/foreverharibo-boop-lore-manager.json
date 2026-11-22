@@ -3,7 +3,7 @@
   "id": "foreverharibo-boop-lore-manager",
   "name": "lore-manager",
   "kind": "extension",
-  "summary": "lore-manager (로어북 매니저) is a SillyTavern extension whose README, stated as \"로어북 매니저\", identifies it as a lorebook manager for organizing World Info entries.",
+  "summary": "SillyTavern extension titled 로어북 매니저 (Lorebook Manager) that, per its name, helps users organize and manage lorebook (World Info) content.",
   "metadata_status": "curated",
   "source_id": "github-1319052664",
   "frontends": ["sillytavern"],
