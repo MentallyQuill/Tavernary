@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c1c2ec9f1a6bb39bbdf1a250ef207244a8a2db816fe52c20819e1b79e804c75f",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1191674813:tantantanmon-st-scenegallery",
+      "inputDigest": "6a42faad4b5626255ba00b0c7562a0dde56fcb2ec75bb114f5af321d771b9515",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-19T04:23:15.728Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1191674813",
+    "identity": "github:1191674813"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 45051560653,
+    "sourceSha": "2cdb3fbb92cb9c76e127a2f01f2d569705e529d2"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/tantantanmon-st-scenegallery.json",
+      "sha256": "b6ec50fc40ba39ca506c5c1c0a53a21d0cb9add33804c68ea10958a68f8be0ac",
+      "gitBlobSha": "08c48a62e4b14717e63bcb752383e3514167e355"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/c1c2ec9f1a6bb39bbdf1a250ef207244a8a2db816fe52c20819e1b79e804c75f.json",
+      "sha256": "c0503ba98a1f50c9e31d1a949aba4088c642c102702520131c8002dfb55dafb5",
+      "gitBlobSha": "0ec6beec9a5a89ad32e2489a8cdcdada69df5da1"
+    }
+  ]
+}
