@@ -340,9 +340,8 @@ export class CodebergRepositoryProvider {
 
   async readRootReadme(input) {
     const root = repositoryPath(input.repository);
-    const { data } = await this.request(
-      `/repos/${root}/contents?ref=${encodeURIComponent(input.ref)}`,
-    );
+    const query = input.ref ? `?ref=${encodeURIComponent(input.ref)}` : "";
+    const { data } = await this.request(`/repos/${root}/contents${query}`);
     const readme = (Array.isArray(data) ? data : []).find(
       (entry) =>
         entry.type === "file" &&
@@ -350,7 +349,7 @@ export class CodebergRepositoryProvider {
     );
     if (!readme) return null;
     const response = await this.request(
-      `/repos/${root}/contents/${encodeURIComponent(readme.path)}?ref=${encodeURIComponent(input.ref)}`,
+      `/repos/${root}/contents/${encodeURIComponent(readme.path)}${query}`,
     );
     return response.data;
   }

@@ -1,7 +1,7 @@
 import type { AutomationFailure } from "../automation/failure.mjs";
 
 export interface ProjectGenerationFailurePlan {
-  action: "noop" | "reconcile";
+  action: "noop" | "reconcile" | "rejected";
   labels?: string[];
   commentMarker?: string;
   commentBody?: string;
@@ -37,16 +37,19 @@ export function reconcileProjectGenerationFailure(input: {
   transientAttempts?: number;
   redditRetryState?:
     import("./project-submission-retry-state.mjs").RedditRetryState | null;
+  issueBodySha256?: string;
   request: (path: string, options?: Record<string, unknown>) => Promise<any>;
 }): Promise<ProjectGenerationFailurePlan>;
 
 export interface ProjectGenerationDiagnostic {
   schema_version: 1;
   reason_code: string;
+  issue_body_sha256?: string;
 }
 
 export function projectGenerationDiagnostic(
   error: unknown,
+  issueBody?: string,
 ): ProjectGenerationDiagnostic;
 export function parseProjectGenerationDiagnostic(
   serialized: string,

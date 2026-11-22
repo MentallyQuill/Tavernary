@@ -20,6 +20,120 @@ import {
   synchronizeKitSubmission,
 } from "../../scripts/submissions/triage-kit-issue.mjs";
 
+const validReadme = {
+  encoding: "base64",
+  content: Buffer.from(
+    "# Repo\n\nAdds searchable notes to SillyTavern chats.",
+  ).toString("base64"),
+};
+
+test.each(["missing", "placeholder", "temporary"] as const)(
+  "handles a %s upstream README without creating a review PR",
+  async (condition) => {
+    const repository = "MentallyQuill/Tavernary";
+    const issue = {
+      number: 400,
+      title: "[Project submission] owner/Ghostpen",
+      state: "open",
+      body: [
+        "### Project manifest",
+        "",
+        "\x60\x60\x60json",
+        JSON.stringify({
+          schema_version: 4,
+          project_type: "frontend",
+          primary_function: "frontend",
+          source_url: "https://github.com/owner/Ghostpen",
+          frontends: { known_ids: [], other: [] },
+          frontend_independent: false,
+          additional_context: null,
+          metadata: {
+            summary: { mode: "automatic" },
+            tags: { mode: "automatic" },
+          },
+        }),
+        "\x60\x60\x60",
+      ].join("\n"),
+      labels: ["issue-admitted", "project-submission", "submission-pr-open"],
+    };
+    const pull = {
+      number: 401,
+      state: "open",
+      user: { id: 900, type: "Bot" },
+      head: {
+        ref: "automation/project-submission-400",
+        repo: { full_name: repository },
+      },
+      base: { ref: "main", repo: { full_name: repository } },
+      body: '<!-- tavernary-project-submission-pr\n{"schema_version":1,"issue_number":400,"generated_head_sha":"abc","generated_paths":[]}\n-->',
+    };
+    const url = "/repos/" + repository;
+    const issuePath = url + "/issues/400";
+    const request = vi.fn(
+      async (path: string, options?: { method?: string; body?: string }) => {
+        if (options?.method) return {};
+        if (path === issuePath) return issue;
+        if (path === "/repos/owner/Ghostpen")
+          return {
+            id: 123,
+            owner: { login: "owner" },
+            name: "Ghostpen",
+            private: false,
+            html_url: "https://github.com/owner/Ghostpen",
+          };
+        if (path === "/repositories/123/readme") {
+          if (condition === "placeholder")
+            return {
+              encoding: "base64",
+              content: Buffer.from("# Ghostpen").toString("base64"),
+            };
+          throw Object.assign(new Error("README response"), {
+            status: condition === "missing" ? 404 : 503,
+          });
+        }
+        if (path === "/repositories/123") return { id: 123, private: false };
+        if (path === issuePath + "/comments?per_page=100") return [];
+        if (path.startsWith(url + "/pulls?"))
+          return [
+            pull,
+            { ...pull, number: 402, user: { id: 901, type: "Bot" } },
+          ];
+        throw new Error("Unexpected request " + path);
+      },
+    );
+    const writeOutput = vi.fn(async () => {});
+    const decision = await processProjectSubmissionTriage({
+      event: { repository: { full_name: repository }, issue },
+      request,
+      publisherActorId: 900,
+      catalogData: { vocabulary: { frontends: [] }, projects: [], sources: [] },
+      writeOutput,
+    });
+    expect(writeOutput).toHaveBeenCalledWith("admitted", "false");
+    const closed = request.mock.calls
+      .filter(
+        ([, opts]) =>
+          opts?.method === "PATCH" &&
+          JSON.parse(opts.body ?? "{}").state === "closed",
+      )
+      .map(([path]) => path);
+    expect(closed).toEqual(
+      condition === "temporary" ? [] : [url + "/pulls/401", issuePath],
+    );
+    expect(decision.status).toBe(
+      condition === "temporary" ? "retryable" : "rejected",
+    );
+    expect(
+      request.mock.calls.find(
+        ([path, opts]) =>
+          path === issuePath + "/comments" && opts?.method === "POST",
+      )?.[1]?.body,
+    ).toContain(
+      condition === "temporary" ? "temporary failure" : "submit it again",
+    );
+  },
+);
+
 test("parses only the minimal fields used by automated triage", () => {
   expect(
     parseIssueFields(`
@@ -997,6 +1111,7 @@ test("processes an admitted issue through injected GitHub mutations", async () =
         status: 404,
       });
     }
+    if (/^\/repositories\/\d+\/readme$/u.test(path)) return validReadme;
     if (path === "/repos/owner/repo") {
       return {
         id: 42,
@@ -1125,6 +1240,7 @@ test("closes a later issue when an earlier admitted submission has the same sour
         },
       ];
     }
+    if (/^\/repositories\/\d+\/readme$/u.test(path)) return validReadme;
     if (path === "/repos/owner/repo") {
       return {
         id: 42,
@@ -1233,6 +1349,7 @@ test("keeps the issue retryable when the admitted submission inventory is unavai
     ) {
       throw new Error("GitHub 503");
     }
+    if (/^\/repositories\/\d+\/readme$/u.test(path)) return validReadme;
     if (path === "/repos/owner/repo") {
       return {
         id: 42,
@@ -1325,6 +1442,7 @@ test("keeps upstream issue mutations on triage credentials and dispatches after 
         state: "open",
       };
     }
+    if (/^\/repositories\/\d+\/readme$/u.test(path)) return validReadme;
     if (path === "/repos/owner/child") {
       return {
         id: 42,

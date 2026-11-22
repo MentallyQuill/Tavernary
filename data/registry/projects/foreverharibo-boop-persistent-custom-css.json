@@ -11,8 +11,8 @@
   "tags": ["customize-the-interface", "persistent-state"],
   "cataloged_at": "2026-11-17T05:26:18.487Z",
   "catalog_cohort": "standard",
-  "listing_status": "active",
-  "listing_status_reason": null,
+  "listing_status": "retired",
+  "listing_status_reason": "insufficient-documentation",
   "metadata_policy": {
     "summary": { "mode": "automatic" },
     "tags": { "mode": "automatic" }

@@ -42,8 +42,16 @@ Closing an issue restores one slot immediately.
 3. GitHub shows the request status and explains any correction that is needed.
 4. A request appears in the catalog only after all required checks pass.
 
-Frontends and Extensions require a public GitHub or Codeberg repository. External
-System Presets use a stable public HTTPS page and paused automatic refresh.
+Frontends and Extensions require a public GitHub or Codeberg repository. For any
+repository submission, put a README on the default branch that explains what the
+project does or contains. A short paragraph or clear feature list is enough.
+Titles, badges, links, and install commands alone are insufficient. Tavernary
+automatically closes the issue and any generated PR when the README is missing
+or a placeholder. Update the README and submit again. Temporary fetch failures
+retry automatically.
+
+External System Presets use a stable public HTTPS page and paused automatic
+refresh.
 
 The builder's frontend choices come from the current catalog. The Extension
 primary function selected in the form remains the submitted category.
