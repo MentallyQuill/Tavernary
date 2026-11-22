@@ -20,6 +20,7 @@ body:
     id: project-url
     attributes:
       label: Project URL
+      description: Repository submissions need a README on the default branch that explains what the project does or contains.
       placeholder: https://github.com/owner/repository or https://codeberg.org/owner/repository
     validations:
       required: false

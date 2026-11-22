@@ -32,6 +32,8 @@ export function evaluateProjectSubmission(input) {
     };
   }
 
+  if (input.sourceProbe.status === "rejected") return input.sourceProbe;
+
   const existingSource = findDuplicate(input.identity, input.existingSources);
   if (existingSource) {
     return {
@@ -63,13 +65,7 @@ export function evaluateProjectSubmission(input) {
     };
   }
 
-  if (input.sourceProbe.status === "retryable") {
-    return {
-      status: "retryable",
-      code: input.sourceProbe.code,
-      message: input.sourceProbe.message,
-    };
-  }
+  if (input.sourceProbe.status === "retryable") return input.sourceProbe;
   if (input.sourceProbe.status === "definitive") {
     return {
       status: "needs-information",

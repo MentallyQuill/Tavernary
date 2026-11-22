@@ -12,6 +12,7 @@ on:
 permissions:
   contents: read
   issues: write
+  pull-requests: write
 
 concurrency:
   group: triage-project-${{ inputs.issue_number }}
@@ -46,6 +47,7 @@ jobs:
         run: node scripts/submissions/triage-issue.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAVERNARY_PUBLISHER_BOT_ID: ${{ vars.TAVERNARY_PUBLISHER_BOT_ID }}
           PUBLISHER_DISPATCH_TOKEN: ${{ steps.publisher-dispatch-token.outputs.token }}
           ISSUE_NUMBER: ${{ inputs.issue_number }}
       - name: Generate admitted submission

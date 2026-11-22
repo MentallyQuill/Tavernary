@@ -162,8 +162,9 @@ export class GitHubRepositoryProvider {
       return this.clients.readRootReadme(input);
     }
     const [owner, name] = input.repository.split("/");
+    const query = input.ref ? `?ref=${encodeURIComponent(input.ref)}` : "";
     return githubJson(
-      `/repos/${encodeURIComponent(owner)}/${encodeURIComponent(name)}/readme?ref=${encodeURIComponent(input.ref)}`,
+      `/repos/${encodeURIComponent(owner)}/${encodeURIComponent(name)}/readme${query}`,
       { token: this.token, fetchImpl: this.fetchImpl },
     );
   }

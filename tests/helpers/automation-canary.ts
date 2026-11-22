@@ -435,6 +435,13 @@ export async function automationCanary({
       return JSON.stringify([
         transaction.generated_paths.map((filename) => ({ filename })),
       ]);
+    if (route === "repositories/42/readme")
+      return JSON.stringify({
+        encoding: "base64",
+        content: Buffer.from(
+          "# Repo\n\nAdds searchable notes to SillyTavern chats.",
+        ).toString("base64"),
+      });
     if (route === "repositories/42")
       return JSON.stringify({ id: 42, owner: { id: 1, type: "User" } });
     if (route.endsWith("/actions/runs/701"))

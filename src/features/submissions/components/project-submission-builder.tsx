@@ -583,6 +583,13 @@ export function ProjectSubmissionBuilder({
               : projectType === "preset"
                 ? "System Presets may use a stable public HTTPS source URL."
                 : "Choose a project type to see its source requirements."}
+            {projectType && (
+              <span>
+                {" "}
+                If you link a GitHub or Codeberg repository, its default-branch
+                README must explain what the project does or contains.
+              </span>
+            )}
           </p>
           <InlineError
             id="project-url-error"

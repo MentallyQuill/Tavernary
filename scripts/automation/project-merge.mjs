@@ -10,7 +10,14 @@ import {
   planProjectPublication,
   isSafeProjectPublicationBaseDrift,
 } from "../publication/project-publication-planner.mjs";
+import { repositoryProvider } from "../catalog/repository-provider.mjs";
 import { parseProjectSubmissionIssue } from "../submissions/parse-project-submission.mjs";
+import {
+  isRepositoryIdentity,
+  parseSourceIdentity,
+} from "../submissions/source-identity.mjs";
+import { inspectSubmissionReadme } from "../submissions/submission-readme.mjs";
+import { closeReadmeRejectedSubmission } from "../submissions/triage-issue.mjs";
 import { parseProjectOwnerManifestIssue } from "../help/triage-project-owner-request.mjs";
 import { normalizeProjectOwnerManifest } from "../../src/features/help/project-owner-manifest.mjs";
 import {
@@ -22,6 +29,22 @@ import { verifyTrustedEditor } from "../maintenance/trusted-editor-authority.mjs
 import { validateAutomationOperation } from "./operation.mjs";
 import { publishCanonicalBatch } from "./publish.mjs";
 import { readProjectPublicationEnabled } from "./publication-setting.mjs";
+
+function githubRequest(gh) {
+  return async (path, { method, body } = {}) => {
+    const args = ["api", path.slice(1)];
+    if (method) args.push("--method", method);
+    if (body) args.push("--input", "-");
+    try {
+      const response = await (body ? gh(args, body) : gh(args));
+      return response.trim() ? JSON.parse(response) : null;
+    } catch (error) {
+      const status = /\bHTTP (\d{3})\b/u.exec(error.message)?.[1];
+      if (status) error.status = Number(status);
+      throw error;
+    }
+  };
+}
 
 async function loadProjectPlan(
   { state, operation, gh, env = process.env },
@@ -107,7 +130,10 @@ async function loadProjectPlan(
     issue.user?.type === transaction.actor.type &&
     issue.user?.login?.toLowerCase() === transaction.actor.login.toLowerCase();
   let repository = null;
-  if (transaction.source_identity?.repository_id)
+  if (
+    transaction.source_identity?.repository_id &&
+    transaction.source_identity.type === "github"
+  )
     repository = JSON.parse(
       await gh([
         "api",
@@ -162,6 +188,28 @@ async function loadProjectPlan(
         completionFormats: values[4].completion_formats,
         source,
       });
+    }
+  }
+  let repositoryIdentity = null;
+  if (producer === "project-submission" && parsed?.valid) {
+    const parsedIdentity = parseSourceIdentity(parsed.manifest.source_url);
+    if (isRepositoryIdentity(parsedIdentity)) {
+      repositoryIdentity = parsedIdentity;
+      if (parsedIdentity.provider === "codeberg") {
+        try {
+          repositoryIdentity =
+            await repositoryProvider("codeberg").resolve(parsedIdentity);
+          repository = { id: repositoryIdentity.repositoryId };
+        } catch {
+          return { action: "retry", reasonCode: "readme-fetch-failed" };
+        }
+      } else {
+        repositoryIdentity = {
+          ...parsedIdentity,
+          name: repository?.name ?? parsedIdentity.name,
+          repositoryId: repository?.id,
+        };
+      }
     }
   }
   let run;
@@ -293,7 +341,7 @@ async function loadProjectPlan(
       baseDriftSafe = false;
     }
   }
-  return planProjectPublication({
+  const decision = planProjectPublication({
     enabled: true,
     workflowRun: { ...run, name: "Site: Validate changes" },
     repository: state.repository,
@@ -323,6 +371,27 @@ async function loadProjectPlan(
       ),
     },
   });
+  if (decision.action !== "merge" || !repositoryIdentity) return decision;
+  if (repositoryIdentity.provider !== transaction.source_identity?.type) {
+    return deny("source-identity-changed");
+  }
+
+  const request = githubRequest(gh);
+  const readme = await inspectSubmissionReadme(repositoryIdentity, { request });
+  if (readme?.status === "retryable") {
+    return { action: "retry", reasonCode: readme.code };
+  }
+  if (readme?.status === "rejected") {
+    await closeReadmeRejectedSubmission({
+      repository: state.repository,
+      request,
+      publisherActorId: state.publisherActorId,
+      issue,
+      decision: readme,
+    });
+    return deny(readme.code);
+  }
+  return decision;
 }
 
 export function loadProjectMergePlan(input) {

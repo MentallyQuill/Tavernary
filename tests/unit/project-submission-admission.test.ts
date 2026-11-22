@@ -497,3 +497,19 @@ test("keeps unlisted model families out of canonical project drafts", () => {
     suggestions: [],
   });
 });
+test("rejects a confirmed README gap before generation", () => {
+  expect(
+    evaluateProjectSubmission(
+      admittedFixture({
+        sourceProbe: {
+          status: "rejected",
+          code: "readme-placeholder",
+          message: "The README must explain what the project does.",
+        },
+      }),
+    ),
+  ).toMatchObject({
+    status: "rejected",
+    code: "readme-placeholder",
+  });
+});

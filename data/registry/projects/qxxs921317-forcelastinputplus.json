@@ -11,8 +11,8 @@
   "tags": [],
   "cataloged_at": "2026-11-18T05:42:45.569Z",
   "catalog_cohort": "standard",
-  "listing_status": "active",
-  "listing_status_reason": null,
+  "listing_status": "retired",
+  "listing_status_reason": "insufficient-documentation",
   "metadata_policy": {
     "summary": { "mode": "automatic" },
     "tags": { "mode": "automatic" }

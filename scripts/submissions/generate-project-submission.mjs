@@ -24,6 +24,7 @@ import {
 } from "../catalog/repository-snapshot.mjs";
 import { repositoryProvider } from "../catalog/repository-provider.mjs";
 import { evaluateProjectSubmission } from "./admission.mjs";
+import { inspectSubmissionReadme } from "./submission-readme.mjs";
 import { projectGenerationDiagnostic } from "./project-generation-failure.mjs";
 import { draftProjectRecord } from "./draft-project-record.mjs";
 import { reconcileFrontends } from "./frontend-reconciliation.mjs";
@@ -283,7 +284,8 @@ function decisionFailure(decision) {
   if (decision.status === "needs-information") {
     return decision.errors.join(" ");
   }
-  if (decision.status === "retryable") return decision.message;
+  if (decision.status === "retryable" || decision.status === "rejected")
+    return decision.message;
   if (decision.status === "duplicate") {
     return `Source is already registered as ${decision.existingSource.name}.`;
   }
@@ -470,6 +472,16 @@ export async function prepareProjectSubmissionDraft({
     probe: sourceClients.probe ?? safeProbe,
     providers: sourceClients.providers,
   });
+  if (
+    inspection.sourceProbe.status === "ok" &&
+    inspection.repository?.visibility === "public"
+  ) {
+    inspection.sourceProbe =
+      (await inspectSubmissionReadme(inspection.identity, {
+        request,
+        providers: sourceClients.providers,
+      })) ?? inspection.sourceProbe;
+  }
   const data =
     sourceClients.catalogData ?? (await loadProjectSubmissionCatalogData());
   const frontendResolution =
@@ -509,7 +521,10 @@ export async function prepareProjectSubmissionDraft({
     warnings: [],
   });
   if (decision.status !== "admitted") {
-    throw new Error(decisionFailure(decision));
+    const error = new Error(decisionFailure(decision));
+    if (decision.status === "rejected" || decision.status === "retryable")
+      error.code = decision.code;
+    throw error;
   }
   const metadataAuthority = classifySubmissionMetadataAuthority({
     issueActor: issue.user,
@@ -1038,7 +1053,7 @@ export async function runGenerateProjectSubmissionCli(options) {
       await mkdir(dirname(failureDiagnosticPath), { recursive: true });
       await writeFile(
         failureDiagnosticPath,
-        await formatJson(projectGenerationDiagnostic(error)),
+        await formatJson(projectGenerationDiagnostic(error, issue.body ?? "")),
         "utf8",
       );
     }

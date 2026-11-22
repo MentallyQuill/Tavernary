@@ -16,6 +16,11 @@ import {
 import { reconcileFrontends } from "./frontend-reconciliation.mjs";
 import { findEarlierInflightSubmission } from "./inflight-submissions.mjs";
 import { parseProjectSubmissionIssue } from "./parse-project-submission.mjs";
+import {
+  parseSubmissionPullRequestMarker,
+  submissionBranch,
+} from "./project-submission-pr.mjs";
+import { inspectSubmissionReadme } from "./submission-readme.mjs";
 import { safeProbe } from "./safe-source-fetch.mjs";
 import {
   isRepositoryIdentity,
@@ -58,7 +63,7 @@ const triageLabels = {
   },
   "submission-declined": {
     color: "6e7781",
-    description: "Submission was declined during maintainer review.",
+    description: "Submission was declined during intake or review.",
   },
   "waiting-on-fork-parent": {
     color: "1d76db",
@@ -187,6 +192,7 @@ function decisionLabel(decision, currentLabels) {
     duplicate: "duplicate-candidate",
     "inflight-duplicate": "duplicate-candidate",
     "needs-information": "needs-information",
+    rejected: "submission-declined",
     retryable: "submission-retryable",
     "waiting-on-fork-parent": "waiting-on-fork-parent",
   }[decision.status];
@@ -249,6 +255,14 @@ function decisionComment(decision) {
       ...decision.errors.map((error) => `- ${error}`),
       "",
       correctionGuidance,
+    ].join("\n");
+  }
+  if (decision.status === "rejected") {
+    return [
+      "Tavernary declined this submission.",
+      "",
+      decision.message,
+      "Add a short explanation of the project's purpose and what it supplies or does, then [submit it again](https://tavernary.org/submit/project/).",
     ].join("\n");
   }
   if (decision.status === "retryable") {
@@ -325,7 +339,7 @@ export function buildProjectSubmissionTriage(decision, context) {
     decisionComment(decision),
   ].join("\n");
   const prAlreadyOpen = context.currentLabels.includes("submission-pr-open");
-  const closesAsDuplicate = ["duplicate", "inflight-duplicate"].includes(
+  const closes = ["duplicate", "inflight-duplicate", "rejected"].includes(
     decision.status,
   );
 
@@ -333,8 +347,8 @@ export function buildProjectSubmissionTriage(decision, context) {
     desiredTitle,
     labels,
     commentBody,
-    close: closesAsDuplicate,
-    closeReason: closesAsDuplicate ? "not_planned" : null,
+    close: closes,
+    closeReason: closes ? "not_planned" : null,
     dispatchGeneration: decision.status === "admitted" && !prAlreadyOpen,
     marker,
     issueNumber: context.issueNumber,
@@ -358,7 +372,8 @@ export async function synchronizeProjectSubmissionTriage(
   if (issue.title !== mutation.desiredTitle) {
     issuePatch.title = mutation.desiredTitle;
   }
-  if (mutation.close && issue.state !== "closed") {
+  const rejected = mutation.marker.status === "rejected";
+  if (mutation.close && !rejected && issue.state !== "closed") {
     issuePatch.state = "closed";
     issuePatch.state_reason = mutation.closeReason;
   }
@@ -371,13 +386,15 @@ export async function synchronizeProjectSubmissionTriage(
   const desiredQueueLabels = mutation.labels.filter((label) =>
     submissionQueueLabels.includes(label),
   );
-  if (!sameLabels(currentQueueLabels, desiredQueueLabels)) {
+  if (!rejected && !sameLabels(currentQueueLabels, desiredQueueLabels)) {
     await api.synchronizeLabels(issue.number, issue.labels, mutation.labels);
   }
 
   const comments = await api.listComments(issue.number);
-  const existing = comments.find((comment) =>
-    comment.body?.includes(projectSubmissionStateMarker),
+  const existing = comments.find(
+    (comment) =>
+      comment.body?.includes(projectSubmissionStateMarker) &&
+      (!rejected || comment.user?.type !== "User"),
   );
   if (existing) {
     if (existing.body !== mutation.commentBody) {
@@ -385,6 +402,17 @@ export async function synchronizeProjectSubmissionTriage(
     }
   } else {
     await api.createComment(issue.number, mutation.commentBody);
+  }
+
+  if (rejected) {
+    await api.closeOwnedPulls(issue.number);
+    if (issue.state !== "closed") {
+      await api.updateIssue(issue.number, {
+        state: "closed",
+        state_reason: "not_planned",
+        labels: mutation.labels,
+      });
+    }
   }
 
   if (writeOutput) {
@@ -802,8 +830,33 @@ export async function inspectProjectSubmissionSource(
   }
 }
 
-function triageApi(repository, request) {
+function triageApi(repository, request, publisherActorId) {
   return {
+    closeOwnedPulls: async (issueNumber) => {
+      const branch = submissionBranch(issueNumber);
+      const owner = repository.split("/")[0];
+      const pulls = await request(
+        `/repos/${repository}/pulls?state=open&head=${encodeURIComponent(`${owner}:${branch}`)}&per_page=100`,
+      );
+      for (const pull of pulls) {
+        if (
+          pull.state === "open" &&
+          pull.user?.type === "Bot" &&
+          (!publisherActorId || pull.user.id === publisherActorId) &&
+          pull.head?.ref === branch &&
+          pull.head?.repo?.full_name === repository &&
+          pull.base?.ref === "main" &&
+          pull.base?.repo?.full_name === repository &&
+          parseSubmissionPullRequestMarker(pull.body ?? "")?.issue_number ===
+            issueNumber
+        ) {
+          await request(`/repos/${repository}/pulls/${pull.number}`, {
+            method: "PATCH",
+            body: JSON.stringify({ state: "closed" }),
+          });
+        }
+      }
+    },
     updateIssue: (issueNumber, patch) =>
       request(`/repos/${repository}/issues/${issueNumber}`, {
         method: "PATCH",
@@ -850,10 +903,43 @@ function triageApi(repository, request) {
   };
 }
 
+export async function closeReadmeRejectedSubmission({
+  repository,
+  request,
+  publisherActorId,
+  issue,
+  decision,
+}) {
+  const current = await request(`/repos/${repository}/issues/${issue.number}`);
+  const labels = labelsFromIssue(current);
+  if (
+    current.state !== "open" ||
+    current.pull_request ||
+    current.body !== issue.body ||
+    !labels.includes("project-submission") ||
+    !labels.includes("issue-admitted")
+  ) {
+    return false;
+  }
+  const mutation = buildProjectSubmissionTriage(decision, {
+    issueNumber: current.number,
+    currentTitle: current.title,
+    currentLabels: labels,
+    generatedTitle: null,
+    previousMarker: null,
+  });
+  await synchronizeProjectSubmissionTriage(mutation, {
+    issue: { ...current, labels },
+    api: triageApi(repository, request, publisherActorId),
+  });
+  return true;
+}
+
 export async function processProjectSubmissionTriage({
   event,
   request,
   dispatchRequest,
+  publisherActorId,
   probe = safeProbe,
   catalogData,
   writeOutput,
@@ -912,6 +998,14 @@ export async function processProjectSubmissionTriage({
       probe,
     });
     identity = inspection.identity;
+    if (
+      inspection.sourceProbe.status === "ok" &&
+      inspection.repository?.visibility === "public"
+    ) {
+      inspection.sourceProbe =
+        (await inspectSubmissionReadme(identity, { request })) ??
+        inspection.sourceProbe;
+    }
     const frontendResolution =
       parsed.manifest.project_type === "frontend"
         ? { status: "resolved", ids: [], warnings: [] }
@@ -1082,7 +1176,7 @@ export async function processProjectSubmissionTriage({
         ? identity.repositoryId
         : undefined,
   });
-  const api = triageApi(repository, request);
+  const api = triageApi(repository, request, publisherActorId);
   const cachedApi = {
     ...api,
     listComments: async () => comments,
@@ -1145,6 +1239,7 @@ async function main() {
     event,
     request: github,
     dispatchRequest: githubWorkflowDispatch,
+    publisherActorId: Number(process.env.TAVERNARY_PUBLISHER_BOT_ID),
     writeOutput: process.env.GITHUB_OUTPUT
       ? (name, value) =>
           appendFile(process.env.GITHUB_OUTPUT, `${name}=${value}\n`, "utf8")
