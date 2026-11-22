@@ -10,7 +10,7 @@
     },
     "stage": "admitted",
     "createdAt": "2026-11-17T18:48:35.858Z",
-    "nextEligibleAt": "2026-11-22T02:27:58.558Z",
+    "nextEligibleAt": "2026-11-22T05:53:00.776Z",
     "expectedSha": "b1af342babeefab77c9195f5b48eda674c29eb12",
     "workerRunId": null,
     "retry": {
@@ -18,10 +18,10 @@
         "kind": "unknown",
         "reasonCode": "unclassified-failure"
       },
-      "transientAttempts": 0,
-      "immediateAttempts": 1
+      "transientAttempts": 1,
+      "immediateAttempts": 2
     }
   },
-  "updatedAt": "2026-11-22T02:22:37.786Z",
+  "updatedAt": "2026-11-22T05:36:58.461Z",
   "completedAt": null
 }
