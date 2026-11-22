@@ -43091,7 +43091,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "character-worldbuilding",
-      "summary": "SillyTavern extension analyzing character cards or recent chat logs with AI to summarize a character's kinks, adult (18+) characters only (Kink Extract README)",
+      "summary": "SillyTavern extension that uses AI to analyze a character card and optional recent chat logs to infer an adult character's likely kinks and sexual preferences, running only after the user confirms the character is 18+.",
       "canonicalUrl": "https://github.com/foreverharibo-boop/kink-",
       "catalogedAt": "2026-11-19T06:21:12.395Z",
       "catalogCohort": "standard",
@@ -43102,14 +43102,7 @@
           "description": "Works with the SillyTavern roleplay frontend."
         }
       ],
-      "tags": [
-        {
-          "id": "build-extensions-and-scripts",
-          "label": "Build extensions and scripts",
-          "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
-          "facet": "goal"
-        }
-      ],
+      "tags": [],
       "tavernKeeper": {
         "state": "gray",
         "riskLevel": null,
@@ -43184,7 +43177,7 @@
           "https://github.com/foreverharibo-boop/kink-"
         ],
         "summary": [
-          "SillyTavern extension analyzing character cards or recent chat logs with AI to summarize a character's kinks, adult (18+) characters only (Kink Extract README)"
+          "SillyTavern extension that uses AI to analyze a character card and optional recent chat logs to infer an adult character's likely kinks and sexual preferences, running only after the user confirms the character is 18+."
         ],
         "kind": [
           "extension"
@@ -43192,12 +43185,7 @@
         "primaryFunction": [
           "Character and worldbuilding"
         ],
-        "tags": [
-          "Build extensions and scripts",
-          "extension development",
-          "custom scripting",
-          "plugin development"
-        ],
+        "tags": [],
         "frontends": [
           "SillyTavern"
         ],
@@ -309770,7 +309758,7 @@
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "character-worldbuilding",
-            "summary": "SillyTavern extension analyzing character cards or recent chat logs with AI to summarize a character's kinks, adult (18+) characters only (Kink Extract README)",
+            "summary": "SillyTavern extension that uses AI to analyze a character card and optional recent chat logs to infer an adult character's likely kinks and sexual preferences, running only after the user confirms the character is 18+.",
             "canonicalUrl": "https://github.com/foreverharibo-boop/kink-",
             "catalogedAt": "2026-11-19T06:21:12.395Z",
             "catalogCohort": "standard",
@@ -309781,14 +309769,7 @@
                 "description": "Works with the SillyTavern roleplay frontend."
               }
             ],
-            "tags": [
-              {
-                "id": "build-extensions-and-scripts",
-                "label": "Build extensions and scripts",
-                "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
-                "facet": "goal"
-              }
-            ],
+            "tags": [],
             "tavernKeeper": {
               "state": "gray",
               "riskLevel": null,
@@ -309863,7 +309844,7 @@
                 "https://github.com/foreverharibo-boop/kink-"
               ],
               "summary": [
-                "SillyTavern extension analyzing character cards or recent chat logs with AI to summarize a character's kinks, adult (18+) characters only (Kink Extract README)"
+                "SillyTavern extension that uses AI to analyze a character card and optional recent chat logs to infer an adult character's likely kinks and sexual preferences, running only after the user confirms the character is 18+."
               ],
               "kind": [
                 "extension"
@@ -309871,12 +309852,7 @@
               "primaryFunction": [
                 "Character and worldbuilding"
               ],
-              "tags": [
-                "Build extensions and scripts",
-                "extension development",
-                "custom scripting",
-                "plugin development"
-              ],
+              "tags": [],
               "frontends": [
                 "SillyTavern"
               ],
