@@ -249,7 +249,12 @@ test("sends the exact model, hardened prompt, requested fields, and strict schem
     /repository description.*secondary/iu,
   );
   expect(body.messages[0].content).toMatch(/zero to six allowed tag IDs/iu);
-  expect(body.messages[0].content).toMatch(/evidence/iu);
+  expect(body.messages[0].content).toMatch(
+    /put compact evidence references only in summary\.evidence/iu,
+  );
+  expect(body.messages[0].content).toMatch(
+    /omit citations, README references, filenames, paths, commit identifiers, and comments about missing documentation from summary\.value/iu,
+  );
   expect(schema.required).toEqual([
     "summary",
     "tags",
