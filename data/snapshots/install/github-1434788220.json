@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1434788220",
+  "head_sha": "04403def6f909f24f799682ed014b085ccc3f0d5",
+  "observed_at": "2026-11-23T02:20:39.772Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-PocketTavern",
+  "manifest": {
+    "display_name": "Pocket Tavern",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

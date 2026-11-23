@@ -1,0 +1,74 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1434788220",
+  "repository": {
+    "id": 1434788220,
+    "owner": "brabro1",
+    "name": "SillyTavern-PocketTavern",
+    "url": "https://github.com/brabro1/SillyTavern-PocketTavern",
+    "description": "Pocket Tavern: SillyTavern, made for your phone. A phone-first app layout for SillyTavern on Android and Termux. (Alpha)",
+    "default_branch": "main",
+    "head_sha": "04403def6f909f24f799682ed014b085ccc3f0d5",
+    "head_committed_at": "2026-11-22T15:18:54.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-10-26T18:37:20.000Z",
+    "size_kb": 46498
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-11-22T15:18:54.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-11-16",
+        "latest_at": "2026-11-22T15:18:54.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-09",
+        "latest_at": "2026-11-15T03:13:06.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-08T13:30:07.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-10-26",
+        "latest_at": "2026-10-26T17:20:26.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-23T02:20:20.745Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "04403def6f909f24f799682ed014b085ccc3f0d5"
+  },
+  "community": {
+    "stars_count": 15,
+    "forks_count": 4,
+    "watchers_count": 0,
+    "aggregate": 19
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-11-23T02:20:20.745Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "brabro1", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-23T02:20:20.745Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
