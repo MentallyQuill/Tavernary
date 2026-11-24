@@ -1,20 +1,30 @@
 {
   "schema_version": 6,
   "id": "brabro1-sillytavern-pockettavern",
-  "name": "SillyTavern-PocketTavern",
+  "name": "Pocket Tavern",
   "kind": "extension",
-  "summary": "Pocket Tavern: SillyTavern, made for your phone. A phone-first app layout for SillyTavern on Android and Termux. (Alpha)",
-  "metadata_status": "provisional",
+  "summary": "A fast, calm interface for SillyTavern on phones and computers: an app-like phone layout, a two-panel desktop layout, 14 themes, character sheets and tidy chat lists. Works alongside SillyTavern and switches off cleanly.",
+  "metadata_status": "curated",
   "source_id": "github-1434788220",
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "tags": [],
+  "tags": [
+    "mobile-friendly",
+    "customize-the-interface",
+    "organize-chats-and-messages",
+    "multilingual",
+    "non-destructive",
+    "translate-roleplay-content"
+  ],
   "cataloged_at": "2026-11-23T02:20:20.745Z",
   "catalog_cohort": "standard",
   "listing_status": "active",
   "listing_status_reason": null,
   "metadata_policy": {
-    "summary": { "mode": "automatic" },
-    "tags": { "mode": "automatic" }
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "manual", "note": "Verified repository owner selection." }
   }
 }
