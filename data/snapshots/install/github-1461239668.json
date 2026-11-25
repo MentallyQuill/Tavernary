@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1461239668",
+  "head_sha": "591cd621189931916f3822a82db643d1c2162d8e",
+  "observed_at": "2026-11-25T07:44:40.075Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "SillyTavern-Desearch",
+  "manifest": {
+    "display_name": "Desearch",
+    "key": null,
+    "minimum_client_version": "1.19.0"
+  }
+}
