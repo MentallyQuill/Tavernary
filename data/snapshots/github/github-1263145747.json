@@ -9,18 +9,38 @@
     "url": "https://github.com/starlitcode/Lumiverse-Auto-Retry",
     "description": "Lumiverse extension that retries a reply when something goes wrong: an error, an empty reply, a stream that stalls, a reply cut off mid-sentence, or a refusal. Every check, phrase and retry note can be read and changed in its settings.",
     "default_branch": "stable",
-    "head_sha": "73db36c1b40436e65ee1783e6bb3c77486c40a59",
-    "head_committed_at": "2026-11-01T13:03:05.000Z",
+    "head_sha": "61983b959a6cc3f3ad1be3d642ac538746a2cbec",
+    "head_committed_at": "2026-11-25T12:46:02.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-08T17:04:25.000Z",
-    "size_kb": 22250
+    "size_kb": 37883
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-30T14:12:53.000Z",
+    "latest_source_activity_at": "2026-11-25T12:37:54.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-11-23",
+        "latest_at": "2026-11-25T12:37:54.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-16",
+        "latest_at": "2026-11-19T17:17:19.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-09",
+        "latest_at": "2026-11-13T21:50:01.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-07T10:18:15.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-26",
         "latest_at": "2026-10-30T14:12:53.000Z",
@@ -60,34 +80,14 @@
         "week_start": "2026-09-07",
         "latest_at": "2026-09-13T09:43:35.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-31",
-        "latest_at": "2026-09-06T07:00:42.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-24",
-        "latest_at": "2026-08-29T04:15:50.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-17",
-        "latest_at": "2026-08-23T23:59:17.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-10",
-        "latest_at": "2026-08-16T23:31:50.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-11-01T21:22:14.340Z",
+    "baseline_completed_at": "2026-11-25T18:06:14.587Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "73db36c1b40436e65ee1783e6bb3c77486c40a59"
+    "evidence_head_sha": "61983b959a6cc3f3ad1be3d642ac538746a2cbec"
   },
   "community": {
     "stars_count": 5,
@@ -100,7 +100,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-11-01T21:24:19.347Z",
+  "refreshed_at": "2026-11-25T18:08:57.784Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -111,7 +111,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-11-01T21:22:14.340Z",
+    "refreshed_at": "2026-11-25T18:06:14.587Z",
     "stale_since": null
   }
 }

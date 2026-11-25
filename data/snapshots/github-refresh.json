@@ -1,8 +1,8 @@
 {
   "schema_version": 3,
   "mode": "incremental",
-  "started_at": "2026-11-01T23:10:59.793Z",
-  "completed_at": "2026-11-01T23:10:59.793Z",
+  "started_at": "2026-11-25T18:05:41.438Z",
+  "completed_at": "2026-11-25T18:05:41.438Z",
   "counts": {
     "total": 0,
     "checked": 0,
@@ -10,7 +10,7 @@
     "unchanged": 0,
     "provisional": 1,
     "degraded": 0,
-    "unavailable": 4,
+    "unavailable": 8,
     "failed": 0,
     "compared": 0,
     "baseline": 0,

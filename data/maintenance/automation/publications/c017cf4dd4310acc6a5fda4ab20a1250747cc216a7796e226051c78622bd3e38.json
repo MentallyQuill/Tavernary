@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c017cf4dd4310acc6a5fda4ab20a1250747cc216a7796e226051c78622bd3e38",
+    "identity": {
+      "kind": "refresh",
+      "subject": "source:catalog-maintenance",
+      "inputDigest": "3ca20ff385f9d246ea5d9c6b69df4cf87c477d278eda453e19f99431f747deec",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T23:10:59.793Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "catalog-maintenance",
+    "identity": "github-reactions:MentallyQuill/Tavernary"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/refresh-catalog.yml",
+    "runId": 45671350831,
+    "sourceSha": "771633968535a528318935d06c9b461bd4804bab"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/github-refresh.json",
+      "sha256": "7c4f2cb09d733e15fadf06b1c2803fa568a4a55d823cc4a904440fa6312e2d1b",
+      "gitBlobSha": "a8e640eaa5521ea1882c2e448830bcedfc72163c"
+    },
+    {
+      "path": "data/snapshots/github/kits/111-932.json",
+      "sha256": "0f802efda622169179256ff19825c6c4237a097d694013f4349ff2a0d52f8ecc",
+      "gitBlobSha": "8913cb8826a10c69dfcf741cb9af063ee8b71bf8"
+    },
+    {
+      "path": "data/snapshots/github/kits/232-153.json",
+      "sha256": "27c990854778792b714beaf3b1bee446649caa422b445be798a9d6128eae825f",
+      "gitBlobSha": "f557c3747c9a16e949d6d83b798ffa311298e3f3"
+    },
+    {
+      "path": "data/snapshots/github/kits/aiko-s-loadout-30.json",
+      "sha256": "612b0f702fde8185e6ab401e113dd9d0d7bd8a7daab32689a69bb0efd3e8be1e",
+      "gitBlobSha": "f5768ad87ecb5deb76c61a37ac85de785972a78c"
+    },
+    {
+      "path": "data/snapshots/github/kits/anotha-one-717.json",
+      "sha256": "0e6389e1ed026a9ea4485b07e3148e77bbd9fb5a73ff16e30125a8a89d857fd2",
+      "gitBlobSha": "c5f3a9a93aace6317c78e7326e22a2ca5181800f"
+    },
+    {
+      "path": "data/snapshots/github/kits/burpp-570.json",
+      "sha256": "2dbdd07de6304fe5420cf32cfc2eeeee4e28c0393437d136da471745d7dbfa76",
+      "gitBlobSha": "34c9afbd67403b5788b77a8655731448475bd380"
+    },
+    {
+      "path": "data/snapshots/github/kits/dragonx-654.json",
+      "sha256": "5c99848cbcdb2665dc61877a0fbdfd1bd44feca08fd78f2fce2fda4c4ea761fb",
+      "gitBlobSha": "d7f8ad9dc2a8f7a954fb71b06c338509314f17c3"
+    },
+    {
+      "path": "data/snapshots/github/kits/hart-kits-1-744.json",
+      "sha256": "41ecc3b1f1d984f27954a9dd7325b0387e503ea1c71526648e74f66d647d965e",
+      "gitBlobSha": "58cf6366d3de49d6a9f8cb6ba6a72e30d5724dcb"
+    },
+    {
+      "path": "data/snapshots/github/kits/hart-s-extension-list-775.json",
+      "sha256": "2e3506243b9e2710d3bf356e8532faa0e3bd06e6cc76b2d1b79a2d06e6c732d2",
+      "gitBlobSha": "a43a070daed218cc354f56f4e9f7def4c642bc72"
+    },
+    {
+      "path": "data/snapshots/github/kits/idk-bro-716.json",
+      "sha256": "0fa45b14934e1fd157bf6b854f2e4226d6b3bfa13796dd36a836707eaa55b2ed",
+      "gitBlobSha": "8d5de11dbd785e4efe0c93b653597d1355064446"
+    },
+    {
+      "path": "data/snapshots/github/kits/jjn-1021.json",
+      "sha256": "a98b74b20de57b5f1d8c746e1d5e61bc75dba674e463774538918b3d8d4313a9",
+      "gitBlobSha": "d35fd67c74a48029655cb47fd9da427b7ee2ba35"
+    },
+    {
+      "path": "data/snapshots/github/kits/juuzz-31.json",
+      "sha256": "82c378b7f8d2f8fb4b7d57b522680cd18a5e5a229b7914cf43e9946fd31361ea",
+      "gitBlobSha": "f200ad45cfa22001fd6ebf344bd2663dfce6c253"
+    },
+    {
+      "path": "data/snapshots/github/kits/jvh-192.json",
+      "sha256": "78a10c0e615c16f63c57de394b14aab472be797de01c2a756262bd756efd4e51",
+      "gitBlobSha": "e1e30d33cd887fc7efd9250e7e08982cb18c291f"
+    },
+    {
+      "path": "data/snapshots/github/kits/kit-953.json",
+      "sha256": "3b11bdaa961b4be019990753fc7dd7815602cd10b818a3546b06f973d0fbaf8e",
+      "gitBlobSha": "443e15bba92dc1477325a76b2f11bd02629ccd03"
+    },
+    {
+      "path": "data/snapshots/github/kits/lumi-815.json",
+      "sha256": "167f0da8cc76af590854270f6c8bb7248c6348a0ab444243c61f26d6090d82eb",
+      "gitBlobSha": "b1185c11a1f14cfa698a573fec643bd001767a29"
+    },
+    {
+      "path": "data/snapshots/github/kits/megumin-best-63.json",
+      "sha256": "ef42dc8d781d1b5e52b1c9b6b45e80e36ff22f271aefd4e2557952fbbd4a0279",
+      "gitBlobSha": "5387220bd305e54b02193410f0a667507d568107"
+    },
+    {
+      "path": "data/snapshots/github/kits/mike-s-simple-setup-655.json",
+      "sha256": "aab3ac6f647fb091910a3927a93faf5730806faa5917a64e3adc94fc467f782b",
+      "gitBlobSha": "23ab5bb4d490d82ac9e7963b0db862828982ed52"
+    },
+    {
+      "path": "data/snapshots/github/kits/my-kit-1014.json",
+      "sha256": "2fba68de678f203e18ae5e8c97c6da207d41f997fab74529c1f46210982a3aab",
+      "gitBlobSha": "25e8895348e86c2d76724ed1e5278a53de74724e"
+    },
+    {
+      "path": "data/snapshots/github/kits/new-715.json",
+      "sha256": "e1abcc5670f9c1a2f64900417631d07d1d069f3920bb1a6f5beb8acb6249fc92",
+      "gitBlobSha": "4c90794149be57516eb2b87a3e2e1371a478170d"
+    },
+    {
+      "path": "data/snapshots/github/kits/retiredhippie-s-go-to-780.json",
+      "sha256": "68bfef69c33d5934292254337b75b283c9449f2370d2c5d34b7bb144f0021773",
+      "gitBlobSha": "17f6cea9fa68b711cffe9cae4e18a681934dee10"
+    },
+    {
+      "path": "data/snapshots/github/kits/rp-kit1-633.json",
+      "sha256": "8cbb9d510f02a7a58468fe2655a13bbcbfeb54202d218d5e3c63cb9dfd9e4298",
+      "gitBlobSha": "2a9df487b2dd47fd389e0042b81c2a637c7e70ac"
+    },
+    {
+      "path": "data/snapshots/github/kits/silly-tavern-1015.json",
+      "sha256": "9f5f8961dfe36344e02420c7e4e5e6d5b8bedde8a5a96689b487c35234192e94",
+      "gitBlobSha": "6b926ed37e69411da82c83404008a425ab4aa200"
+    },
+    {
+      "path": "data/snapshots/github/kits/super-awesome-test-kit-109.json",
+      "sha256": "ae70d8c42c76fd76ece9ef4938458751e3f8b9bb6600ee70764bf1c9c93df936",
+      "gitBlobSha": "f4d7649a671298aa438f26604189a5c70df95b3f"
+    },
+    {
+      "path": "data/snapshots/github/kits/test-135.json",
+      "sha256": "242e39737efaf32ba5ca7079aa2145cd52538be03410e8c2231fa897fee8df4a",
+      "gitBlobSha": "c534e5c01bb6eed59eefea04871913e686f22827"
+    },
+    {
+      "path": "data/snapshots/github/kits/test-visual-novel-kit-544.json",
+      "sha256": "1503f58945a6a1af395475de8eae3938de758558feb624f37de849b90e03922d",
+      "gitBlobSha": "7046e154bfa6b2b07c8c3d4c8f6ac51db5824cbd"
+    },
+    {
+      "path": "data/snapshots/github/kits/teste-116.json",
+      "sha256": "9f79837c22421fc7b6f0a48d048c4cddf4c8add3ce16d9207452a55e8058786e",
+      "gitBlobSha": "29503a0aa5843f57c2457946b8a690984d622458"
+    },
+    {
+      "path": "data/snapshots/github/kits/the-kit-464.json",
+      "sha256": "04c0760d7ab52683ad741f80bef9287ad5466f5d84d9cbe9f638f877026f2149",
+      "gitBlobSha": "cba261af6f2acbd9a2aaa69ed5c2c1baf7758230"
+    },
+    {
+      "path": "data/snapshots/github/kits/the-kit-773.json",
+      "sha256": "706c334d59cf88a598fc83ce78fcc5b5c75b43a0107edd01cc1bd89f823f069d",
+      "gitBlobSha": "630b1fc060946f6816d21016e29505ecf52099d2"
+    },
+    {
+      "path": "data/snapshots/github/kits/tung-tung-896.json",
+      "sha256": "dd6629b7a350fe5c2cc0010782545f17dcdec8dab2a52874748cb953bc3ce167",
+      "gitBlobSha": "cc7ca1b263d7cdd72fb6b40f8ab3d4918b9c550f"
+    },
+    {
+      "path": "data/snapshots/github/kits/ultimate-harry-potter-18.json",
+      "sha256": "cb8f780afae0383111878bb7e2f6b114acb34709b58050556007f47cbd575e77",
+      "gitBlobSha": "4219f254d6a9ec0d135fef3632f6f74f7069946b"
+    },
+    {
+      "path": "data/snapshots/github/kits/hart-s-extension-list-1019.json",
+      "sha256": "3b095fe9f15ddd322d6bc41087b4b03aa1f494ca98662c634567bbfbc1e5d1b9",
+      "gitBlobSha": "a412a63866fab1f201f1d8754283e316a7db3592"
+    },
+    {
+      "path": "data/snapshots/github/kits/chay-1066.json",
+      "sha256": "cd9a77ae85bf8776a3fdbf15d6bef3583fe256ce3f82de099c2a5a91da858993",
+      "gitBlobSha": "e87dc7c663422b30dbff8003b2c45baec01fd5b0"
+    },
+    {
+      "path": "data/snapshots/github/kits/testing-out-1237.json",
+      "sha256": "7130b48203092bf5e66b06d344b1b9c030d9060482e242a295f6d84c5e98c193",
+      "gitBlobSha": "3787c0b98ecb0be1a2b94640ac6af6d2b5168572"
+    },
+    {
+      "path": "data/snapshots/github/kits/csdad-1238.json",
+      "sha256": "6310fafb595700306c2a2bd6092a959506e42b0cfb466da38b25475f6c16ef40",
+      "gitBlobSha": "5effa0bb36ff4e847bf619d21086e2f4f8bedc58"
+    },
+    {
+      "path": "data/snapshots/github/kits/my-kit-1245.json",
+      "sha256": "53955fd33d1e4917af3f71ea422969477afb0ab12a91a2de997ecf86cc4e6e08",
+      "gitBlobSha": "b85845b441020e6fef67130e242dfa9b61ed5ce5"
+    }
+  ]
+}
