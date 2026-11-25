@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b63fbf883475484913b27faf89e6500e7db26a3e85185921023c2feb7685deb1",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1218157882:supker-st-copilot",
+      "inputDigest": "755970cc585a65367e56b83c48febeb59b9f10cbd83d77ef53cfb634c4044947",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-30T14:40:05.643Z",
+    "nextEligibleAt": "2026-11-25T22:55:14.501Z",
+    "expectedSha": "46cc7977d467ce8e74ca2b95c64cd9f190ddc5dd",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-25T22:40:14.501Z",
+  "completedAt": null
+}
