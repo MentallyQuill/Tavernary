@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f25b42720ff4de8ee9538b3dab7b6897d6f3016e1383edad76f7def23218fc6c",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1263541355:luisbrandao-sillytavern-director",
+      "inputDigest": "4c6f65d671cf192f876911e92f6ac92bc5554d238af5c0cd544c129544fd0125",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-19T17:39:14.352Z",
+    "nextEligibleAt": null,
+    "expectedSha": "abe90d9c126bcf59095125d7769c87a9b6bfb1b7",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-25T18:26:55.023Z",
+  "completedAt": null
+}
