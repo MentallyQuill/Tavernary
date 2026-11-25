@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ad60d222ffd651d421a2fb31987febbcd9d443b1b72d6a4268b803cf770b921f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1132967377:arif-salah-image-gen-kazuma",
+      "inputDigest": "64dc7d8b6f17700d48fd777472b3bc0efc7a99df70dc9c96ceeaa12613e50e93",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-30T14:39:59.172Z",
+    "nextEligibleAt": "2026-11-25T21:00:30.493Z",
+    "expectedSha": "46cc7977d467ce8e74ca2b95c64cd9f190ddc5dd",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-25T20:45:30.493Z",
+  "completedAt": null
+}
