@@ -1,0 +1,22 @@
+{
+  "schema_version": 6,
+  "id": "deiomo-voyageofhopesanddreams",
+  "name": "VoyageOfHopesAndDreams",
+  "kind": "preset",
+  "summary": "Undertale/Deltarune-inspired RPG preset for SillyTavern built on u/Kahvana's Voyage. Blends turn-based FIGHT, ACT, ITEM, and MERCY combat with Voyage's A-Life and Nemesis systems for a living world of self-directed NPCs.",
+  "metadata_status": "curated",
+  "source_id": "github-1459569720",
+  "frontends": ["sillytavern"],
+  "primary_function": "preset",
+  "tags": ["add-rpg-gameplay", "track-characters-and-world-state"],
+  "model_families": ["model-agnostic"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-11-25T21:06:33.857Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
