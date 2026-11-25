@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4a03540014913b71a789fd1e25a6ae0e094113f616c33815865589fe42fe0d40",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1373069141:foreverharibo-boop-veereubaa",
+      "inputDigest": "300bf55ae43792029a095c61c836caae01c63bd63629fc577501d270bb6ac322",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-19T06:22:04.090Z",
+    "nextEligibleAt": null,
+    "expectedSha": "abe90d9c126bcf59095125d7769c87a9b6bfb1b7",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-25T18:26:55.023Z",
+  "completedAt": null
+}
