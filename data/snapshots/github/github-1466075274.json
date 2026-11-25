@@ -1,0 +1,67 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1466075274",
+  "repository": {
+    "id": 1466075274,
+    "owner": "starlitcode",
+    "name": "Lumiverse-Auto-Foley",
+    "url": "https://github.com/starlitcode/Lumiverse-Auto-Foley",
+    "description": "Lumiverse extension that gives your TTS voice acting and sound effects. A second model marks how each line is said and adds the sounds of what happens, then each character, persona and NPC speaks in their own voice. Every prompt, note and question can be read and changed in its settings.",
+    "default_branch": "stable",
+    "head_sha": "78ff11aadce9bbe2848c89ed0f1fb661c3bd692a",
+    "head_committed_at": "2026-11-25T13:54:00.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-11-21T01:41:56.000Z",
+    "size_kb": 5701
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-11-25T13:54:00.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-11-23",
+        "latest_at": "2026-11-25T13:54:00.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-16",
+        "latest_at": "2026-11-21T20:40:17.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-11-25T14:18:16.113Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "78ff11aadce9bbe2848c89ed0f1fb661c3bd692a"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-11-25T14:18:16.113Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "claude", "type": "User", "provider": "github" },
+      { "login": "starlitcode", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-11-25T14:18:16.113Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
