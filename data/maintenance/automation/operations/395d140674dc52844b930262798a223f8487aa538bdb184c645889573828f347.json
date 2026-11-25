@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "395d140674dc52844b930262798a223f8487aa538bdb184c645889573828f347",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1305417386:foreverharibo-boop-chak-chak",
+      "inputDigest": "3ffb3d542a3e04e6091905f8a053a39acb898c79e9d9751d0ef8c5ecfb193feb",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-19T06:33:52.310Z",
+    "nextEligibleAt": null,
+    "expectedSha": "abe90d9c126bcf59095125d7769c87a9b6bfb1b7",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-25T18:26:55.023Z",
+  "completedAt": null
+}
