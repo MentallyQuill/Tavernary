@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a513c3e335684c62925ebe16f19f8556fb24b442344da3fd2e4bc91ac1c2fcee",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1175839267:prolix-oc-lumiverse-simtracker",
+      "inputDigest": "cd011f91c22a55ee69d85154f271fe620b971e988d86689f94ee032fefed8d50",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-01T10:35:50.524Z",
+    "nextEligibleAt": null,
+    "expectedSha": "b6ba318bc13d20802f6d60942561376dede9abe0",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-25T03:47:11.675Z",
+  "completedAt": null
+}
