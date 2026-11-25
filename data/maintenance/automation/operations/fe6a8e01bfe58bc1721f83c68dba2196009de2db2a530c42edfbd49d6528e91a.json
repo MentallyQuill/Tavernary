@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "fe6a8e01bfe58bc1721f83c68dba2196009de2db2a530c42edfbd49d6528e91a",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1461239668:desearch-ai-sillytavern-desearch",
+      "inputDigest": "f6f90e5f8c015b1011dd203b37332fb2e374f8ebeb010c657479034837da3c0e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-25T07:44:31.153Z",
+    "nextEligibleAt": "2026-11-25T09:00:58.513Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "workflow-result-unavailable"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-25T08:55:50.761Z",
+  "completedAt": null
+}
