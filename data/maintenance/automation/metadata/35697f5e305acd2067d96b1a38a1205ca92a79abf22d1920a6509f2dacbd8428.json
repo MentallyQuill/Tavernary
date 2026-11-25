@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "foreverharibo-boop-chatlog",
+  "sourceId": "github-1311208544",
+  "sourceIdentity": "github:1311208544",
+  "inputDigest": "b93f9e2c274efd1cac12be44b9b32a6ede8d71908c0dda924ab2827b4e832531",
+  "fingerprint": "87a372bb823945ccaa330ba6101bf285c943b058f289c7c456679bd4f50e76c0",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "48e6afdd2afdb364953ea1cbfe200e93767e997d426398b99fbde45380ead3a8",
+  "outputDigest": "f00f5d1a959cfc0884fc4e08ae2f22b1e23e4478ff8cb7e4a396c5dc04eba571",
+  "headSha": "9b8bb960052c862627d7867b800e8f79ad32d2d9",
+  "observedAt": "2026-11-22T16:43:30.714Z"
+}

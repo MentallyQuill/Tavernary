@@ -7,7 +7,7 @@ function headingName(line) {
   return match?.[1]?.trim() ?? null;
 }
 
-function removeNoise(raw) {
+export function removeReadmeNoise(raw) {
   return raw
     .replace(/^\uFEFF/u, "")
     .replace(/\r\n?/gu, "\n")
@@ -59,7 +59,7 @@ export function prepareReadmeText(raw, options = {}) {
     throw new Error("README maximum must be a positive integer");
   }
 
-  const cleaned = removeNoise(raw);
+  const cleaned = removeReadmeNoise(raw);
   const selected = compactText(selectDescriptiveSections(cleaned));
   const compact = selected.length > 0 ? selected : compactText(cleaned);
   return compact.length === 0 ? null : compact.slice(0, maximum);

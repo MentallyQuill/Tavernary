@@ -11,8 +11,8 @@
   "catalog_cohort": "seed",
   "source_id": "github-1275541730",
   "tags": ["automate-roleplay-workflows", "background-operation"],
-  "listing_status": "active",
-  "listing_status_reason": null,
+  "listing_status": "retired",
+  "listing_status_reason": "insufficient-documentation",
   "metadata_policy": {
     "summary": { "mode": "automatic" },
     "tags": { "mode": "automatic" }

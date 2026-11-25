@@ -1,0 +1,30 @@
+{
+  "schema_version": 6,
+  "id": "starlitcode-lumiverse-auto-foley",
+  "name": "Auto Foley",
+  "kind": "extension",
+  "summary": "Auto Foley gives your TTS replies voice acting and sound effects. A second model marks how each line is said, every character gets their own voice, and your words never change. Replays use saved audio for free.",
+  "metadata_status": "curated",
+  "source_id": "github-1466075274",
+  "frontends": ["lumiverse"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "add-music-and-audio",
+    "add-voice-interaction",
+    "hands-free",
+    "manage-characters-and-personas",
+    "non-destructive",
+    "secondary-model"
+  ],
+  "cataloged_at": "2026-11-25T14:18:16.113Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "manual", "note": "Verified repository owner selection." }
+  }
+}

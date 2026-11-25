@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1301622469",
+  "head_sha": "2a8dbac03dfcdeea8ebb3558e0c9d3fa3e83c1b0",
+  "observed_at": "2026-11-19T06:21:33.899Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "kink-",
+  "manifest": {
+    "display_name": "킨크 추출기",
+    "key": null,
+    "minimum_client_version": null
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "foreverharibo-boop-message-metrics-display",
+  "sourceId": "github-1400029890",
+  "sourceIdentity": "github:1400029890",
+  "inputDigest": "76b81eb6504ff65a6e0010bebcf2746c1132acb4dffa3c9a1e8223a77114877f",
+  "fingerprint": "6909d91855f322ab995d1b298c2a60d5017cbe589f64ba65a342157d35f2d785",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "c2f9f102cbe63a9dd3a8ac24d932486da47747f568a7fd112b7fb4ebb8be1a11",
+  "outputDigest": "06f4cf00a77680417bfa475e9c3d856b4ac05f557c0f35facb8025aa98dd098e",
+  "headSha": "6ae6e8fc0f327dee01758b61978901c7d877cc17",
+  "observedAt": "2026-11-22T17:17:52.293Z"
+}

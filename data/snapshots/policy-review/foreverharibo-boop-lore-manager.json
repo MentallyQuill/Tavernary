@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "foreverharibo-boop-lore-manager",
+  "source_id": "github-1319052664",
+  "source_identity": "github:foreverharibo-boop/lore-manager",
+  "evidence_fingerprint": "e937f4f8b58a9d1678271544da2b4656354301e1960ccbd806adb2f8d08676cc",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-19T05:57:31.382Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c463fd0d016b83bebc13fc87010afd11f05082452d00c1610a6f727f08ab5a75",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-747410816:sillytavern-sillytavern-pushnotifications",
+      "inputDigest": "6ec86c3187d1458569263d5e5752655ec584c264c6d334282fe0e5bbba49aa7b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-30T09:15:42.722Z",
+    "nextEligibleAt": "2026-11-25T21:00:30.493Z",
+    "expectedSha": "46cc7977d467ce8e74ca2b95c64cd9f190ddc5dd",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-25T20:45:30.493Z",
+  "completedAt": null
+}

@@ -79,6 +79,7 @@ export interface ProjectSubmissionTriageApi {
       title?: string;
       state?: "closed";
       state_reason?: "not_planned" | null;
+      labels?: string[];
     },
   ): Promise<unknown>;
   synchronizeLabels(
@@ -86,6 +87,7 @@ export interface ProjectSubmissionTriageApi {
     currentLabels: string[],
     desiredLabels: string[],
   ): Promise<unknown>;
+  closeOwnedPulls?(issueNumber: number): Promise<unknown>;
   listComments(
     issueNumber: number,
   ): Promise<Array<{ id: number; body?: string | null }>>;
@@ -134,10 +136,19 @@ export interface ProjectSubmissionEventContext {
   };
 }
 
+export function closeReadmeRejectedSubmission(input: {
+  repository: string;
+  request: ProjectSubmissionGitHubRequest;
+  publisherActorId?: number;
+  issue: { number: number; body?: string | null };
+  decision: import("./submission-readme.mjs").ReadmeRejection;
+}): Promise<boolean>;
+
 export function processProjectSubmissionTriage(input: {
   event: ProjectSubmissionEventContext;
   request: ProjectSubmissionGitHubRequest;
   dispatchRequest?: ProjectSubmissionGitHubRequest;
+  publisherActorId?: number;
   probe?: (url: string, options?: SafeProbeOptions) => Promise<SafeProbeResult>;
   catalogData?: {
     vocabulary: FrontendVocabulary;

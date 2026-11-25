@@ -10,7 +10,7 @@ the V1 catalog.
 | `metadata_status` | `provisional`, `curated` | Editorial confidence in fact fields. Provisional can still be visible. |
 | `sourceStatus` | `pending`, `healthy`, `stale`, `manual` | Derived runtime view of source freshness and source type constraints. |
 | `listing_status` | `active`, `quarantined`, `retired` | Card-level publication and maintenance state. |
-| `listing_status_reason` | `null`, `safety-review`, `owner-request` | Required reason when a card is not active. |
+| `listing_status_reason` | `null`, `safety-review`, `owner-request`, `insufficient-documentation` | Required reason when a card is not active. |
 | source `status` | `active`, `delisted` | Source-level gate; delisting suppresses every linked card. |
 | source `status_reason` | `null`, `removed` | Required reason for a delisted source. |
 | source `refresh_policy` | `automatic`, `paused` | Whether provider evidence refresh continues automatically. |

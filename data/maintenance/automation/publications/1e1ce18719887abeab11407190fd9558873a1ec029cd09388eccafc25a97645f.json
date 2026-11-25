@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1e1ce18719887abeab11407190fd9558873a1ec029cd09388eccafc25a97645f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-728214627:lenanderson-sillytavern-videobackgrounds",
+      "inputDigest": "5230547fea6cf0ed67144ecfd0313902421ced9678db6ce698e33c549dcfc3ba",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-02T17:17:52.477Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-728214627",
+    "identity": "github:728214627"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45451930095,
+    "sourceSha": "30b91d762405e8f986726436e09b6cb99f8bc189"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/lenanderson-sillytavern-videobackgrounds.json",
+      "sha256": "d2afd69435daadb0f6645e4468c81df7b83a5f555ce0494bbaad88647ac3c818",
+      "gitBlobSha": "d2cdbddd90086f63290d564ad2c0fd6693c5371f"
+    }
+  ]
+}

@@ -7,16 +7,8 @@ test.beforeEach(async ({ page }) => {
   await page.clock.setFixedTime(new Date(catalog.generatedAt));
 });
 
-const forkRelationshipChild =
-  catalog.projects.find(
-    ({ id, fork }) =>
-      id === "kritblade-vectfox" &&
-      fork?.status === "published" &&
-      fork.parentProjectId,
-  ) ??
-  catalog.projects.find(
-    ({ fork }) => fork?.status === "published" && fork.parentProjectId,
-  );
+// Pin a published fork so unrelated catalog changes cannot swap the screenshot subject.
+const forkRelationshipProjectId = "aikohanasaki-sillytavern-worldinfoinfo";
 // Keep screenshot geometry independent of newly submitted catalog records.
 const pendingScanProject = catalog.projects.find(
   ({ id }) => id === "agnaistic-agnai",
@@ -391,13 +383,9 @@ for (const scenario of [
   { name: "mobile", width: 390, height: 844, compact: false },
 ] as const) {
   test(`fork relationship ${scenario.name} visual`, async ({ page }) => {
-    test.skip(
-      !forkRelationshipChild,
-      "The controlled fork backfill has not been applied.",
-    );
     await page.setViewportSize(scenario);
     const parameters = new URLSearchParams({
-      relationship: forkRelationshipChild!.id,
+      relationship: forkRelationshipProjectId,
       ...(scenario.compact ? { density: "compact" } : {}),
     });
     await page.goto(`${sitePath()}?${parameters}`);
@@ -431,12 +419,8 @@ for (const scenario of [
 test("fork relationship stays in the aligned license utility row", async ({
   page,
 }) => {
-  test.skip(
-    !forkRelationshipChild,
-    "The controlled fork backfill has not been applied.",
-  );
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto(`${sitePath()}?relationship=${forkRelationshipChild!.id}`);
+  await page.goto(`${sitePath()}?relationship=${forkRelationshipProjectId}`);
   await waitForCatalogHydration(page);
   await stabilizeRefreshLabel(page);
 
@@ -480,12 +464,8 @@ test("fork relationship stays in the aligned license utility row", async ({
 test("fork relationship long names avoid control collisions", async ({
   page,
 }) => {
-  test.skip(
-    !forkRelationshipChild,
-    "The controlled fork backfill has not been applied.",
-  );
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto(`${sitePath()}?relationship=${forkRelationshipChild!.id}`);
+  await page.goto(`${sitePath()}?relationship=${forkRelationshipProjectId}`);
   await waitForCatalogHydration(page);
   await stabilizeRefreshLabel(page);
   await stabilizeRelationshipActivityAge(page);

@@ -4,6 +4,7 @@ import {
   planProjectGenerationFailure,
   reconcileProjectGenerationFailure,
   parseProjectGenerationDiagnostic,
+  projectGenerationDiagnostic,
 } from "../../scripts/submissions/project-generation-failure.mjs";
 import { renderRedditRetryState } from "../../scripts/submissions/project-submission-retry-state.mjs";
 
@@ -14,6 +15,67 @@ function issue(labels: string[], state = "open") {
     labels: labels.map((name) => ({ name })),
   };
 }
+
+test("only closes a README-rejected generation for the same issue body", async () => {
+  const current = {
+    ...issue([
+      "issue-admitted",
+      "project-submission",
+      "needs-maintainer-review",
+    ]),
+    title: "[Project submission] owner/repo",
+    body: "current manifest",
+  };
+  const diagnostic = parseProjectGenerationDiagnostic(
+    JSON.stringify(
+      projectGenerationDiagnostic({ code: "readme-placeholder" }, current.body),
+    ),
+  )!;
+  const writes: Array<{ path: string; method: string; body: string }> = [];
+  const input = {
+    repository: "MentallyQuill/Tavernary",
+    issueNumber: current.number,
+    producer: "project-submission" as const,
+    runUrl: "https://github.com/MentallyQuill/Tavernary/actions/runs/7",
+    reasonCode: diagnostic.reason_code,
+    request: async (path: string, options?: Record<string, unknown>) => {
+      if (options?.method) {
+        writes.push({
+          path,
+          method: String(options.method),
+          body: String(options.body ?? ""),
+        });
+        return {};
+      }
+      if (path.endsWith("/issues/166")) return current;
+      if (path.includes("/comments?") || path.includes("/pulls?")) return [];
+      throw new Error("Unexpected path " + path);
+    },
+  };
+  await expect(
+    reconcileProjectGenerationFailure({
+      ...input,
+      issueBodySha256: "1".repeat(64),
+    }),
+  ).resolves.toEqual({ action: "noop" });
+  expect(writes).toEqual([]);
+
+  await expect(
+    reconcileProjectGenerationFailure({
+      ...input,
+      issueBodySha256: diagnostic.issue_body_sha256,
+    }),
+  ).resolves.toEqual({ action: "rejected" });
+  expect(writes.at(-1)).toEqual({
+    path: "/repos/MentallyQuill/Tavernary/issues/166",
+    method: "PATCH",
+    body: JSON.stringify({
+      state: "closed",
+      state_reason: "not_planned",
+      labels: ["issue-admitted", "project-submission", "submission-declined"],
+    }),
+  });
+});
 
 test("moves an admitted failed generation without a PR to retryable", () => {
   expect(

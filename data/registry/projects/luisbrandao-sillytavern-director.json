@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "luisbrandao-sillytavern-director",
+  "name": "SillyTavern-Director",
+  "kind": "extension",
+  "summary": "Director for silly tavern.",
+  "metadata_status": "provisional",
+  "source_id": "github-1263541355",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [],
+  "cataloged_at": "2026-11-19T17:39:14.352Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

@@ -77,6 +77,13 @@ function fixture(
         head_repository: { full_name: state.repository },
         actor: { id: state.publisherActorId, type: "Bot" },
       });
+    if (path === "repositories/42/readme")
+      return JSON.stringify({
+        encoding: "base64",
+        content: Buffer.from(
+          "# Repo\n\nAdds searchable notes to SillyTavern chats.",
+        ).toString("base64"),
+      });
     if (path === "repositories/42")
       return JSON.stringify({ id: 42, owner: { id: 1, type: "User" } });
     throw new Error(`Unexpected request ${path}`);
@@ -103,6 +110,57 @@ function writerEnv(state: AutomationInventoryState) {
     TAVERNARY_PUBLICATION_SETTINGS_TOKEN: "fixture-read-token",
   };
 }
+
+test("closes a validated submission when its README becomes a placeholder before publication", async () => {
+  const input = fixture();
+  const original = input.gh.getMockImplementation()!;
+  const writes: Array<{
+    path: string;
+    method: string;
+    body: string | undefined;
+  }> = [];
+  input.gh.mockImplementation(async (args: string[], body?: string) => {
+    const path = args[1];
+    if (path === "repositories/42/readme")
+      return JSON.stringify({
+        encoding: "base64",
+        content: Buffer.from("# Repo").toString("base64"),
+      });
+    if (
+      args.includes("--method") &&
+      args[args.indexOf("--method") + 1] !== "GET"
+    ) {
+      writes.push({ path, method: args[args.indexOf("--method") + 1], body });
+      return "";
+    }
+    if (path.endsWith("/comments?per_page=100")) return "[]";
+    if (path.includes("/pulls?state=open"))
+      return JSON.stringify(input.input.pulls);
+    return original(args);
+  });
+  await expect(loadProjectMergePlan(input)).resolves.toEqual({
+    action: "reject",
+    reasonCode: "readme-placeholder",
+  });
+  expect(
+    writes.filter(({ body }) => body && JSON.parse(body).state === "closed"),
+  ).toEqual([
+    {
+      path: "repos/MentallyQuill/Tavernary/pulls/84",
+      method: "PATCH",
+      body: '{"state":"closed"}',
+    },
+    {
+      path: "repos/MentallyQuill/Tavernary/issues/42",
+      method: "PATCH",
+      body: JSON.stringify({
+        state: "closed",
+        state_reason: "not_planned",
+        labels: ["project-submission", "issue-admitted", "submission-declined"],
+      }),
+    },
+  ]);
+});
 
 test("the actual writer handler pauses a validated project without any write when the emergency switch is off", async () => {
   const input = fixture();

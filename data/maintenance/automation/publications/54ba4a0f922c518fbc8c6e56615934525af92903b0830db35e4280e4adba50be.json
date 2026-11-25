@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "54ba4a0f922c518fbc8c6e56615934525af92903b0830db35e4280e4adba50be",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1400029890:foreverharibo-boop-message-metrics-display",
+      "inputDigest": "3881d4bffa7e70cdda0c85cbfff85cb0b8fe0613ab5aca2b1d2ab047d263652d",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-19T03:34:51.276Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1400029890",
+    "identity": "github:1400029890"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 44467368053,
+    "sourceSha": "2034d664cd0bfeadd622462e4167b5b627b0cfa8"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/foreverharibo-boop-message-metrics-display.json",
+      "sha256": "0436638ed906c8fed51a26d8d8e0ff18749eb014fcf443d1102d4b55274f94f6",
+      "gitBlobSha": "510a0ba009b2ecc94486aca4d4c866dce9b7865e"
+    }
+  ]
+}

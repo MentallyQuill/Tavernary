@@ -7,6 +7,7 @@ const CONFIGURATION_DIAGNOSTICS = new Set([
 ]);
 
 const TRANSIENT_DIAGNOSTICS = new Set([
+  "readme-fetch-failed",
   "provider-timeout",
   "provider-network-error",
   "provider-rate-limited",

@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-kink",
+  "name": "kink-",
+  "kind": "extension",
+  "summary": "SillyTavern extension that uses AI to analyze a character card and optional recent chat logs to infer an adult character's likely kinks and sexual preferences, running only after the user confirms the character is 18+.",
+  "metadata_status": "curated",
+  "source_id": "github-1301622469",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": [],
+  "cataloged_at": "2026-11-19T06:21:12.395Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

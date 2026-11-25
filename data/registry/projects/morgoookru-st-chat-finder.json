@@ -11,8 +11,8 @@
   "catalog_cohort": "seed",
   "source_id": "github-1167832752",
   "tags": ["edit-and-refine-messages"],
-  "listing_status": "active",
-  "listing_status_reason": null,
+  "listing_status": "retired",
+  "listing_status_reason": "insufficient-documentation",
   "metadata_policy": {
     "summary": { "mode": "automatic" },
     "tags": { "mode": "automatic" }

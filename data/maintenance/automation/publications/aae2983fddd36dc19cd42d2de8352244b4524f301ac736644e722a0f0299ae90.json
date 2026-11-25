@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "aae2983fddd36dc19cd42d2de8352244b4524f301ac736644e722a0f0299ae90",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1319052664:foreverharibo-boop-lore-manager",
+      "inputDigest": "aad02d6f4fe92527122f47f916a224bc4630e553f67de8a823e92a718b4a115e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-19T03:35:26.421Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1319052664",
+    "identity": "github:1319052664"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 44468542449,
+    "sourceSha": "efc382c9cffb634ea6693a5ef78a8cc02e12b219"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/foreverharibo-boop-lore-manager.json",
+      "sha256": "d96d82cdc7d9d3dba89d418d95ef8511f5461e6441348c04ec21b76659355c41",
+      "gitBlobSha": "37feffe1a81000da917b9e9a9ca1c64a7aeae7c7"
+    }
+  ]
+}

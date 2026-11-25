@@ -8,20 +8,13 @@
       "inputDigest": "0d4859d7559aaff0b22ce02daae631c879c3b8a779dc0647c4e451003111242a",
       "policyVersion": "2026-07-29"
     },
-    "stage": "admitted",
+    "stage": "deployment-confirmed",
     "createdAt": "2026-10-30T14:29:54.666Z",
-    "nextEligibleAt": "2026-11-01T01:52:45.616Z",
-    "expectedSha": null,
+    "nextEligibleAt": "2026-11-25T21:00:30.493Z",
+    "expectedSha": "46cc7977d467ce8e74ca2b95c64cd9f190ddc5dd",
     "workerRunId": null,
-    "retry": {
-      "failure": {
-        "kind": "configuration",
-        "reasonCode": "budget-exhausted"
-      },
-      "transientAttempts": 1,
-      "immediateAttempts": 0
-    }
+    "retry": null
   },
-  "updatedAt": "2026-10-31T01:52:45.616Z",
+  "updatedAt": "2026-11-25T20:45:30.493Z",
   "completedAt": null
 }

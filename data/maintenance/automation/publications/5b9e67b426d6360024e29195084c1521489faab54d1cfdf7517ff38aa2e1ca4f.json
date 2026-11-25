@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5b9e67b426d6360024e29195084c1521489faab54d1cfdf7517ff38aa2e1ca4f",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1301622469:foreverharibo-boop-kink",
+      "inputDigest": "07cca04f2533d1e358ee511c3571c58f125eb5099b9bbb3048804017e20fe9f1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-19T06:21:12.395Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1301622469",
+    "identity": "github:1301622469"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 45046392564,
+    "sourceSha": "76f30c2794bf75ef836dce6f8b3d8194446c9087"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/foreverharibo-boop-kink.json",
+      "sha256": "7b243d08e4092e53647243397b46281dbe43312e06eeec531afdfa31d063a186",
+      "gitBlobSha": "450857d80620d0fe219598479fa730af2814f308"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/5b9e67b426d6360024e29195084c1521489faab54d1cfdf7517ff38aa2e1ca4f.json",
+      "sha256": "ffaf6552f31d22926101c8c9859bc5078b45687fad198b00ab25ade02940efbb",
+      "gitBlobSha": "b5aa9f7d46ae99796e485693d36f82b31672e253"
+    }
+  ]
+}

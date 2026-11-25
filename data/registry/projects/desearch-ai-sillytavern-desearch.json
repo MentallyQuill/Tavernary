@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "desearch-ai-sillytavern-desearch",
+  "name": "SillyTavern-Desearch",
+  "kind": "extension",
+  "summary": "A libre SillyTavern UI extension that searches the web through the existing Desearch MCP server. It returns page titles and HTTPS sources using the MCP search tool, and no server plugin is required.",
+  "metadata_status": "curated",
+  "source_id": "github-1461239668",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": ["connect-external-services"],
+  "cataloged_at": "2026-11-25T07:44:31.153Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

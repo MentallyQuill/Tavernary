@@ -44,8 +44,11 @@ Uncategorized state.
    Frontend and Preset values are derived structurally before URL
    normalization, duplicate identity, source probing, and frontend
    reconciliation run.
-2. Confirmed duplicates close before PR generation. Correctable failures remain
-   open with `needs-information`.
+2. Confirmed duplicates close before PR generation. GitHub and Codeberg
+   repositories require a README on the default branch that describes the
+   project and its purpose or contents. Missing or placeholder READMEs close
+   the issue and any generated PR. Temporary provider failures retry.
+   Other correctable failures remain open with `needs-information`.
 3. An admitted issue creates one deterministic
    `automation/project-submission-<issue-number>` branch and one generated pull
    request. The PR records the automated validation transaction and publishes
@@ -179,8 +182,9 @@ When snapshot is missing or stale, curated records can still render as pending-d
 
 - Card `listing_status: quarantined` or `retired` is removed from public cards
   without changing sibling cards.
-- A non-active card requires `listing_status_reason: safety-review` or
-  `owner-request`.
+- A non-active card requires a listing status reason. Use
+  `insufficient-documentation` when retiring a card for a missing or
+  placeholder README.
 - Source `status: delisted` removes all linked cards and requires
   `status_reason: removed` plus `refresh_policy: paused`.
 

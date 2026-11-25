@@ -5,12 +5,9 @@
   "source_identity": "github:flaxify/st-hands-free-voice",
   "evidence_fingerprint": "dc6d5343ec1a8ac4fe28efd73905a897fa09ed1be54fc6e813840ae292abf84d",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-20T08:11:55.196Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-08-20T08:11:55.196Z"
-  },
+  "reviewed_at": "2026-11-24T18:05:55.115Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

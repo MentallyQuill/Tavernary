@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4067faafab187e648dcbb828a72389123c6ff7e637595eb8415b600564c65fbe",
+    "identity": {
+      "kind": "refresh",
+      "subject": "source:codeberg-2445404",
+      "inputDigest": "2a98219a03047c04c19eec96c9c820ddac9d9824c2ed4dd3ec71563ace0217d8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-11-01T14:25:42.867Z",
+    "nextEligibleAt": "2026-11-25T21:00:30.493Z",
+    "expectedSha": "b6ba318bc13d20802f6d60942561376dede9abe0",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-25T20:45:30.493Z",
+  "completedAt": null
+}

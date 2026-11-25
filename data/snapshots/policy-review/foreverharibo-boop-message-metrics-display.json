@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "foreverharibo-boop-message-metrics-display",
+  "source_id": "github-1400029890",
+  "source_identity": "github:foreverharibo-boop/message-metrics-display",
+  "evidence_fingerprint": "98b3f8332c4f975619dac39b6635f006178f12c8a6a95bd512f1fd2104d8d871",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-19T05:47:12.414Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

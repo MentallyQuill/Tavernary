@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a867db83a5d974ef6cbbadf3e81ae0459bf5b4cbd1a8a2d8b99fa6ffa259a014",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1372767983:bongbong11-in-tr",
+      "inputDigest": "9ed3553a846bd53eaaf50d55483da1c7e7b1590f9b359b415d40c0262d01949a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-19T03:35:05.461Z",
+    "nextEligibleAt": null,
+    "expectedSha": "c6ee1d613be5d6678c2be6e3d0a96e97a15ab1ca",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-22T17:55:52.360Z",
+  "completedAt": null
+}

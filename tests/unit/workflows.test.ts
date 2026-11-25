@@ -1338,7 +1338,7 @@ test("enrichment prepares one read-only checkpoint after a separate owner reques
   expect(request.on.workflow_dispatch.inputs.model_concurrency.default).toBe(2);
   expect(JSON.stringify(request)).not.toContain("secrets.");
 });
-test("triage dispatches admitted projects without repository write access", async () => {
+test("triage dispatches admitted projects with read-only contents access", async () => {
   const triage = await workflow("triage-submission");
   const source = await readFile(
     resolve(workflowDirectory, "triage-submission.yml"),
@@ -1353,6 +1353,7 @@ test("triage dispatches admitted projects without repository write access", asyn
   expect(triage.permissions).toEqual({
     contents: "read",
     issues: "write",
+    "pull-requests": "write",
   });
   expect(triage.concurrency["cancel-in-progress"]).toBe(true);
   expect(triage.concurrency.group).toContain("${{ inputs.issue_number }}");
@@ -1393,7 +1394,11 @@ test("fork triage scopes Publisher authority to workflow dispatches", async () =
   expect(steps[triageIndex].env?.PUBLISHER_DISPATCH_TOKEN).toBe(
     "${{ steps.publisher-dispatch-token.outputs.token }}",
   );
-  expect(triage.permissions).toEqual({ contents: "read", issues: "write" });
+  expect(triage.permissions).toEqual({
+    contents: "read",
+    issues: "write",
+    "pull-requests": "write",
+  });
 });
 
 test("retries frontend dependencies from read-only catalog changes", async () => {

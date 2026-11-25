@@ -12,10 +12,13 @@ import type {
 import type { InflightSubmissionMatch } from "./inflight-submissions.mjs";
 import type { SourceIdentity } from "./source-identity.mjs";
 
+import type { ReadmeRejection } from "./submission-readme.mjs";
+
 export const submissionQueueLabels: string[];
 
 export type SourceProbeDecision =
   | { status: "ok"; httpStatus: number | null }
+  | ReadmeRejection
   | { status: "retryable"; code: string; message: string }
   | { status: "definitive"; code: string; message: string };
 
@@ -42,6 +45,7 @@ export interface ProjectSubmissionAdmissionInput {
 }
 
 export type ProjectSubmissionDecision =
+  | ReadmeRejection
   | {
       status: "duplicate";
       identity: SourceIdentity;

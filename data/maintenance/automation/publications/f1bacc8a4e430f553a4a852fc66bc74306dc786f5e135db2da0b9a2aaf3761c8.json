@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f1bacc8a4e430f553a4a852fc66bc74306dc786f5e135db2da0b9a2aaf3761c8",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1338824971:projectchrysalis-chrysalis-engine",
+      "inputDigest": "f551c085476ad32166a68ca209f5e468708594ce29887c3b9480aedffb067c42",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T14:28:41.011Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1338824971",
+    "identity": "github:1338824971"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45444391055,
+    "sourceSha": "a6ab826cd14fc37827c078e402c307a42b748338"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/projectchrysalis-chrysalis-engine.json",
+      "sha256": "8c3901d6f75aa889e74001137a14d3cbe0eeb370c546d3ad4e8125dd1d394b10",
+      "gitBlobSha": "2bf8d3036e7157450c2a6936d100d813e536f387"
+    }
+  ]
+}

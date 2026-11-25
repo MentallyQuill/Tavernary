@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5b9e67b426d6360024e29195084c1521489faab54d1cfdf7517ff38aa2e1ca4f",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1301622469:foreverharibo-boop-kink",
+      "inputDigest": "07cca04f2533d1e358ee511c3571c58f125eb5099b9bbb3048804017e20fe9f1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-19T06:21:12.395Z",
+    "nextEligibleAt": null,
+    "expectedSha": "ba8ab6143e34c10b3733d3495a96f154ddcc6fe8",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-22T18:25:49.373Z",
+  "completedAt": null
+}

@@ -87,6 +87,13 @@ function redditSubmissionFixture(overrides: Record<string, unknown> = {}) {
   };
 }
 
+const validReadme = {
+  encoding: "base64",
+  content: Buffer.from(
+    "# Repo\n\nAdds searchable notes to SillyTavern chats.",
+  ).toString("base64"),
+};
+
 function repositorySubmissionFixture({
   user,
   ownerId,
@@ -132,15 +139,18 @@ function repositorySubmissionFixture({
     },
     now: "2026-07-29T18:00:00.000Z",
     sourceClients: {
-      request: async () => ({
-        id: 42,
-        owner: { id: ownerId, login: "Owner", type: "User" },
-        name: "Repo",
-        html_url: "https://github.com/Owner/Repo",
-        visibility: "public",
-        private: false,
-        archived: false,
-      }),
+      request: async (path: string) =>
+        path === "/repositories/42/readme"
+          ? validReadme
+          : {
+              id: 42,
+              owner: { id: ownerId, login: "Owner", type: "User" },
+              name: "Repo",
+              html_url: "https://github.com/Owner/Repo",
+              visibility: "public",
+              private: false,
+              archived: false,
+            },
       catalogData: {
         vocabulary: {
           frontends: [
@@ -495,15 +505,18 @@ test("recovers an admitted v3 owner request without leaking manual copy to enric
     },
     now: "2026-07-25T18:00:00.000Z",
     sourceClients: {
-      request: async () => ({
-        id: 42,
-        owner: { id: 11, login: "Owner", type: "User" },
-        name: "Repo",
-        html_url: "https://github.com/Owner/Repo",
-        visibility: "public",
-        private: false,
-        archived: false,
-      }),
+      request: async (path: string) =>
+        path === "/repositories/42/readme"
+          ? validReadme
+          : {
+              id: 42,
+              owner: { id: 11, login: "Owner", type: "User" },
+              name: "Repo",
+              html_url: "https://github.com/Owner/Repo",
+              visibility: "public",
+              private: false,
+              archived: false,
+            },
       catalogData: {
         vocabulary: {
           frontends: [
@@ -925,6 +938,7 @@ test("discards community manual metadata before synthesized enrichment", async (
 test("prepares a Codeberg draft through the repository provider", async () => {
   const headSha = "1".repeat(40);
   const provider = {
+    readRootReadme: vi.fn(async () => ({ ...validReadme, path: "README.md" })),
     resolve: vi.fn(async (identity) => ({
       ...identity,
       repositoryId: 1699613,

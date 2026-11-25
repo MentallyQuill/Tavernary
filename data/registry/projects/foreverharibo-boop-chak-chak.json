@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-chak-chak",
+  "name": "chak-chak",
+  "kind": "extension",
+  "summary": "Chak-Chak (착착) is a SillyTavern extension. Its documentation describes it only as an extension for SillyTavern and does not detail further features or workflows.",
+  "metadata_status": "curated",
+  "source_id": "github-1305417386",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-11-19T06:33:52.310Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

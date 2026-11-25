@@ -3,7 +3,7 @@
   "id": "bongbong11-in-tr",
   "name": "in_tr",
   "kind": "extension",
-  "summary": "A SillyTavern extension that translates user input from Korean to English, letting Korean speakers roleplay in English (README: SillyTavern용 한국어→영어 인풋 번역 확장).",
+  "summary": "Korean-to-English input translation extension for SillyTavern that automatically translates user input before it reaches the model, letting Korean users chat naturally while models receive English.",
   "metadata_status": "curated",
   "source_id": "github-1372767983",
   "frontends": ["sillytavern"],

@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import { classifyAutomationFailure } from "../automation/failure.mjs";
@@ -17,6 +18,9 @@ import {
   renderRedditRetryState,
 } from "./project-submission-retry-state.mjs";
 
+import { readmeRejection } from "./submission-readme.mjs";
+import { closeReadmeRejectedSubmission } from "./triage-issue.mjs";
+
 const PRODUCERS = new Set(["project-submission", "project-owner-request"]);
 const QUEUE_LABELS = new Set([
   "needs-information",
@@ -31,6 +35,7 @@ const BLOCKING_LABELS = new Set(["needs-information", "submission-declined"]);
 const DIAGNOSTIC_REASON_CODES = new Set([
   "output-invalid",
   "generation-failed",
+  "readme-fetch-failed",
   "reddit-source-retry-scheduled",
   "provider-authentication-failed",
   "publisher-authentication-failed",
@@ -45,7 +50,21 @@ const DIAGNOSTIC_REASON_CODES = new Set([
   "provider-response-invalid",
 ]);
 
-export function projectGenerationDiagnostic(error) {
+function issueBodyHash(body) {
+  return createHash("sha256")
+    .update(body ?? "", "utf8")
+    .digest("hex");
+}
+
+export function projectGenerationDiagnostic(error, issueBody) {
+  const rejection = readmeRejection(error?.code);
+  if (rejection && typeof issueBody === "string") {
+    return {
+      schema_version: 1,
+      reason_code: rejection.code,
+      issue_body_sha256: issueBodyHash(issueBody),
+    };
+  }
   return {
     schema_version: 1,
     reason_code: DIAGNOSTIC_REASON_CODES.has(error?.code)
@@ -57,6 +76,15 @@ export function projectGenerationDiagnostic(error) {
 export function parseProjectGenerationDiagnostic(serialized) {
   try {
     const diagnostic = JSON.parse(serialized);
+    if (
+      diagnostic?.schema_version === 1 &&
+      Object.keys(diagnostic).length === 3 &&
+      readmeRejection(diagnostic.reason_code) &&
+      typeof diagnostic.issue_body_sha256 === "string" &&
+      /^[a-f0-9]{64}$/u.test(diagnostic.issue_body_sha256)
+    ) {
+      return diagnostic;
+    }
     return diagnostic?.schema_version === 1 &&
       Object.keys(diagnostic).length === 2 &&
       DIAGNOSTIC_REASON_CODES.has(diagnostic.reason_code)
@@ -67,7 +95,7 @@ export function parseProjectGenerationDiagnostic(serialized) {
   }
 }
 
-async function generationDiagnosticReason(path) {
+async function readGenerationDiagnostic(path) {
   if (!path) return null;
   let serialized;
   try {
@@ -76,7 +104,7 @@ async function generationDiagnosticReason(path) {
     if (error?.code === "ENOENT") return null;
     throw error;
   }
-  return parseProjectGenerationDiagnostic(serialized)?.reason_code ?? null;
+  return parseProjectGenerationDiagnostic(serialized);
 }
 
 function labelNames(issue) {
@@ -201,6 +229,22 @@ export async function reconcileProjectGenerationFailure(input) {
   const issue = await request(
     `/repos/${input.repository}/issues/${input.issueNumber}`,
   );
+  const rejection =
+    input.producer === "project-submission" &&
+    readmeRejection(input.reasonCode);
+  if (rejection) {
+    if (input.issueBodySha256 !== issueBodyHash(issue.body)) {
+      return { action: "noop" };
+    }
+    const closed = await closeReadmeRejectedSubmission({
+      repository: input.repository,
+      request,
+      publisherActorId: input.publisherActorId,
+      issue,
+      decision: rejection,
+    });
+    return { action: closed ? "rejected" : "noop" };
+  }
   const pulls = await request(
     `/repos/${input.repository}/pulls?state=open&head=${encodeURIComponent(`${owner}:${branch}`)}&per_page=100`,
   );
@@ -311,7 +355,7 @@ async function main() {
   const producer = process.env.GENERATION_PRODUCER;
   const runUrl = process.env.GENERATION_RUN_URL;
   const retryStatePath = process.env.REDDIT_RETRY_STATE_PATH;
-  const diagnosticReason = await generationDiagnosticReason(
+  const diagnostic = await readGenerationDiagnostic(
     process.env.GENERATION_DIAGNOSTIC_PATH,
   );
   let redditRetryState = null;
@@ -335,7 +379,7 @@ async function main() {
   }
   const reasonCode = redditRetryState
     ? "reddit-source-retry-scheduled"
-    : (diagnosticReason ??
+    : (diagnostic?.reason_code ??
       process.env.GENERATION_REASON_CODE ??
       "generation-failed");
   if (
@@ -354,6 +398,7 @@ async function main() {
     producer,
     runUrl,
     reasonCode,
+    issueBodySha256: diagnostic?.issue_body_sha256,
     redditRetryState,
     request: github,
   });

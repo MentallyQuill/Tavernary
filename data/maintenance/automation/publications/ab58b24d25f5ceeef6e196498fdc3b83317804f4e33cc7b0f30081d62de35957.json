@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "ab58b24d25f5ceeef6e196498fdc3b83317804f4e33cc7b0f30081d62de35957",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1263145747:starlitcode-lumiverse-auto-retry",
+      "inputDigest": "f359f5a2acfef3567fc8ea5bc554fafc3896ab73677a6c34e176b1dc9727f88b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T21:24:19.347Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1263145747",
+    "identity": "github:1263145747"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45446510621,
+    "sourceSha": "1204b2a5ab341b1f3f0cf25059c8f8217a18bcd7"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/starlitcode-lumiverse-auto-retry.json",
+      "sha256": "dc29b9b7f98664f009d641ffb0e2ba4684753c8dca160383e55b6c1fd010393b",
+      "gitBlobSha": "0220303c66f23c0e33361dbc26a95d71654c2907"
+    }
+  ]
+}

@@ -81,7 +81,12 @@
     "catalog_cohort": { "enum": ["seed", "standard"] },
     "listing_status": { "enum": ["active", "quarantined", "retired"] },
     "listing_status_reason": {
-      "enum": ["safety-review", "owner-request", null]
+      "enum": [
+        "safety-review",
+        "owner-request",
+        "insufficient-documentation",
+        null
+      ]
     },
     "metadata_policy": {
       "type": "object",

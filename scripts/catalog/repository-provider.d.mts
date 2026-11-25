@@ -122,7 +122,7 @@ export interface RepositoryProvider {
     repository: RepositoryObservation["repository"],
     context: ContributorContext,
   ): Promise<ContributorCollection>;
-  readRootReadme(input: { repository: string; ref: string }): Promise<{
+  readRootReadme(input: { repository: string; ref?: string }): Promise<{
     path: string;
     content: string;
     encoding: "base64";

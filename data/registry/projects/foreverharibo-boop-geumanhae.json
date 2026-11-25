@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "foreverharibo-boop-geumanhae",
+  "name": "geumanhae",
+  "kind": "extension",
+  "summary": "geumanhae (그만해) is a SillyTavern extension, documented in its README (\"SillyTavern 확장입니다\") as a frontend add-on without further feature detail.",
+  "metadata_status": "curated",
+  "source_id": "github-1302663123",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [],
+  "cataloged_at": "2026-11-19T06:21:47.388Z",
+  "catalog_cohort": "standard",
+  "listing_status": "retired",
+  "listing_status_reason": "insufficient-documentation",
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "04ede9cde5d47a4e019491af4c18d2a511ecd22a555fcccc14f2560e338f1d65",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1340717065:bongbong11-minigame",
+      "inputDigest": "3ac39416277dc232826be7fbed9ce17e55642615378d18e38161edfe0c992d61",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-18T07:54:02.022Z",
+    "nextEligibleAt": "2026-11-25T08:30:36.006Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "transient",
+        "reasonCode": "provider-rate-limited"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-25T08:25:19.397Z",
+  "completedAt": null
+}

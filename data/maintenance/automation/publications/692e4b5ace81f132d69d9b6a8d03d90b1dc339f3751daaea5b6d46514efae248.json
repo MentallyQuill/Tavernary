@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "692e4b5ace81f132d69d9b6a8d03d90b1dc339f3751daaea5b6d46514efae248",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1297772483:daddytorgo-hash-frankengarage",
+      "inputDigest": "c4afc31c87a69663aae44f4df0ec669919ffaaf704641588939c40c5989cb801",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T14:27:09.795Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1297772483",
+    "identity": "github:1297772483"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45448445485,
+    "sourceSha": "69743f85ee344540d10935fa659cfd90d28f00dc"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/daddytorgo-hash-frankengarage.json",
+      "sha256": "f3254dd732210a8a25b97c7e80c7e9a7b202b1aaf3092fc0a672b0c0c78b2004",
+      "gitBlobSha": "1df848d130f7a7a6b40aa73fc35dd197f4911518"
+    }
+  ]
+}

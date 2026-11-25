@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4a03540014913b71a789fd1e25a6ae0e094113f616c33815865589fe42fe0d40",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1373069141:foreverharibo-boop-veereubaa",
+      "inputDigest": "300bf55ae43792029a095c61c836caae01c63bd63629fc577501d270bb6ac322",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-19T06:22:04.090Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1373069141",
+    "identity": "github:1373069141"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 45049528371,
+    "sourceSha": "ddad2bbd7827757705ef7bcdf5df14dee6781444"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/foreverharibo-boop-veereubaa.json",
+      "sha256": "220ee998dcd47f2a3171fe6eaa9b2e440639cde620471279963fadfbae427f95",
+      "gitBlobSha": "48a873a64fd99526301a95f86cde12667e07c7b2"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/4a03540014913b71a789fd1e25a6ae0e094113f616c33815865589fe42fe0d40.json",
+      "sha256": "50120b3524793dd85511d86af78f5789ac32513646d75dd0e6c4bfe430996b9b",
+      "gitBlobSha": "b5aec432b9972a026421dc2e46e1382c7f39848c"
+    }
+  ]
+}

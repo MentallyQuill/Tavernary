@@ -39,17 +39,17 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stars_count": 7,
-    "forks_count": 4,
+    "stars_count": 9,
+    "forks_count": 3,
     "watchers_count": 1,
-    "aggregate": 12
+    "aggregate": 13
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-11-02T17:18:01.532Z",
+  "refreshed_at": "2026-11-25T18:08:21.139Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -58,7 +58,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T06:46:55.988Z",
     "scan": null,
-    "refreshed_at": "2026-11-02T17:16:07.719Z",
+    "refreshed_at": "2026-11-25T18:06:15.270Z",
     "stale_since": null
   }
 }

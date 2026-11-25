@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "fff03cbb8ace86d218064c14d862a8ab02066d3c1b2501cdf40df364fcf9903e",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-811061856:sillytavern-extension-promptinspector",
+      "inputDigest": "ad7eb10df71519164e5fe0afcc7b9a4b5be8a5272610fe4a2ec7c3f87f39de00",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T09:14:43.697Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-811061856",
+    "identity": "github:811061856"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 44554412235,
+    "sourceSha": "e40a9d64f820365dad1307f4ea3abeabdd2b2b7d"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/sillytavern-extension-promptinspector.json",
+      "sha256": "a39ae501b7fbcd2d0ab031b63a746166f7060aa17b48a6e1706f2a6943c02556",
+      "gitBlobSha": "c3a3f6aa4fc55d820a472bdac3bc36f4a2f2d8b3"
+    }
+  ]
+}

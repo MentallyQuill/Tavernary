@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a867db83a5d974ef6cbbadf3e81ae0459bf5b4cbd1a8a2d8b99fa6ffa259a014",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1372767983:bongbong11-in-tr",
+      "inputDigest": "9ed3553a846bd53eaaf50d55483da1c7e7b1590f9b359b415d40c0262d01949a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-19T03:35:05.461Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1372767983",
+    "identity": "github:1372767983"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 45040098057,
+    "sourceSha": "0fc106b41290f9b5cd0975458aac00eb2a530217"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/bongbong11-in-tr.json",
+      "sha256": "29bd27abc55b49e4d6321dd5cdda68c83cd27a9984aa83134cdf943b7be5a33e",
+      "gitBlobSha": "e72c859b7587e1895f9ccfc77722401aab00e8fe"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/a867db83a5d974ef6cbbadf3e81ae0459bf5b4cbd1a8a2d8b99fa6ffa259a014.json",
+      "sha256": "b6a10adfd96a3384d6a3a5ca4785b9a3bc45c8708c9592797f8787ac6c43d7b7",
+      "gitBlobSha": "2776d1f6165604ca230cb2b41094c9e6500f690a"
+    }
+  ]
+}

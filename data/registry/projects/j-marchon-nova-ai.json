@@ -1,0 +1,23 @@
+{
+  "schema_version": 6,
+  "id": "j-marchon-nova-ai",
+  "name": "nova-ai",
+  "kind": "frontend",
+  "summary": "Nova, a full role-play chat app built from scratch, with its own features. It runs in the browser, as an Android app, or on desktop (Windows and Linux), focusing on making it as easy and intuitive to use as possible",
+  "metadata_status": "curated",
+  "source_id": "github-1466717745",
+  "frontends": ["nova-ai"],
+  "primary_function": "frontend",
+  "tags": ["local-first", "mobile-friendly", "model-agnostic"],
+  "cataloged_at": "2026-11-23T23:51:44.401Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "automatic" }
+  }
+}

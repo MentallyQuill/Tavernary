@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "projectId": "tantantanmon-st-scenegallery",
+  "sourceId": "github-1191674813",
+  "sourceIdentity": "github:1191674813",
+  "inputDigest": "6a42faad4b5626255ba00b0c7562a0dde56fcb2ec75bb114f5af321d771b9515",
+  "fingerprint": "760753a2c90b41cb66ba89a77e0a68d49ce96c2440814f41bb8915423bcbcf4b",
+  "vocabularyHash": "b6afd944441b41561e4492891b0225e94b67cc11f7d33432b576f43c860278e9",
+  "policyVersion": "2026-07-29",
+  "fields": ["summary", "tags"],
+  "traitsDigest": "4e12bc8e65e8bdf8d082fa13744a9a8eb7169598c126642897a778f5f5c872b3",
+  "outputDigest": "7e4141009d61ba2f48bb47f08941c73f339d865a55cc17d5c1fab849c0dca082",
+  "headSha": "378fe0ab678c973aac388d480ba67144add76954",
+  "observedAt": "2026-11-22T17:50:40.726Z"
+}

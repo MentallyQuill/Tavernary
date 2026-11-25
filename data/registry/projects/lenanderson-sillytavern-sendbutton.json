@@ -11,8 +11,8 @@
   "catalog_cohort": "standard",
   "source_id": "github-856585955",
   "tags": ["customize-the-interface"],
-  "listing_status": "active",
-  "listing_status_reason": null,
+  "listing_status": "retired",
+  "listing_status_reason": "insufficient-documentation",
   "metadata_policy": {
     "summary": {
       "mode": "manual",

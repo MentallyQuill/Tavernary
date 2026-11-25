@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8dae12884f55a392a47882be2a87c12d53d4a790e0804946b4006690f62abeb2",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1284801740:foreverharibo-boop-narrative-card",
+      "inputDigest": "6a0bbaeef5c6b71f03f25ae7c2b2382f640a27296784089a8e49e73f9f8f5780",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-18T13:50:09.467Z",
+    "nextEligibleAt": "2026-11-26T14:56:57.331Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "configuration",
+        "reasonCode": "budget-exhausted"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-25T14:56:57.331Z",
+  "completedAt": null
+}

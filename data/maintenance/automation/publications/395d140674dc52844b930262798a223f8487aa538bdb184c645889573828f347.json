@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "395d140674dc52844b930262798a223f8487aa538bdb184c645889573828f347",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1305417386:foreverharibo-boop-chak-chak",
+      "inputDigest": "3ffb3d542a3e04e6091905f8a053a39acb898c79e9d9751d0ef8c5ecfb193feb",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-19T06:33:52.310Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1305417386",
+    "identity": "github:1305417386"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 45044175211,
+    "sourceSha": "1c9b2bc0c3533dbcf5b4ec6d6c97ca7919d74b78"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/foreverharibo-boop-chak-chak.json",
+      "sha256": "cbc9512d01d76eff51df940edc0f0bfb2792fc6443f6da7e0d1e5bdfababbb51",
+      "gitBlobSha": "234291e16600ae4d5d0833871af36b91718abd3e"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/395d140674dc52844b930262798a223f8487aa538bdb184c645889573828f347.json",
+      "sha256": "bbd5215f34bb47c36125c3c9b5e8a0c6d10274389dc4776d70616f17b1a3d167",
+      "gitBlobSha": "95aab25442120fdbe4157d9bfcf8972eab9c7914"
+    }
+  ]
+}

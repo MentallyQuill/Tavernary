@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "sagesheep-narrativeengine-p",
+  "source_id": "github-1215007786",
+  "source_identity": "github:sagesheep/narrativeengine-p",
+  "evidence_fingerprint": "6d4c184ce688547fd40d115fa3be148448ccfad651ace9a5c90d53ad1994bc97",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-24T16:55:56.310Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

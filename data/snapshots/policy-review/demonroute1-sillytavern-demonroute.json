@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "demonroute1-sillytavern-demonroute",
+  "source_id": "github-1460359452",
+  "source_identity": "github:demonroute1/sillytavern-demonroute",
+  "evidence_fingerprint": "ab4e6499003b095e52e0183b279cabe23ddd89cec9e19176b035b76ad073e57e",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-19T06:51:01.400Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7410e22fd2dbe69cb6ff89417fd3a79d051e392bca97f1531e443b9561ab155e",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1408621208:hati1004-scene-studio",
+      "inputDigest": "4ff18ef30db1d700eda89a47087787168c80872b57b83cd0613c1e37739b6592",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-19T04:23:41.532Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1408621208",
+    "identity": "github:1408621208"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 45064876505,
+    "sourceSha": "df8f64dd22e3220628ed59f9b24ad6541fc3209e"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/hati1004-scene-studio.json",
+      "sha256": "faad19ef86afb8a1d4367eadb721d21da1ad269e5cce36a193c3d14dd2ed71cd",
+      "gitBlobSha": "b7b623e4487c9b18238abf4140cec8fa54948a9c"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/7410e22fd2dbe69cb6ff89417fd3a79d051e392bca97f1531e443b9561ab155e.json",
+      "sha256": "9f7e1dd6fc1058960e5714a3e8348f061004102c056e07e30c693af8cb38eef1",
+      "gitBlobSha": "b605c5ab4452d4c175fc84f001397eb63b4ebb4d"
+    }
+  ]
+}

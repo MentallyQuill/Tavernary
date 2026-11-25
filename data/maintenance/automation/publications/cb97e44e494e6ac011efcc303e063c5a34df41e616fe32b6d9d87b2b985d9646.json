@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "cb97e44e494e6ac011efcc303e063c5a34df41e616fe32b6d9d87b2b985d9646",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-998536860:aikohanasaki-sillytavern-characterlocks",
+      "inputDigest": "6bbf0b7fb67218e4bc9f7b270294c5e70b7f6f2f91d607c2774d2770805c7797",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-02T17:17:58.312Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-998536860",
+    "identity": "github:998536860"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45453692577,
+    "sourceSha": "aa6b5af34de88c0ef352dfb38dfdf9a8a4a052dd"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/aikohanasaki-sillytavern-characterlocks.json",
+      "sha256": "2751decc399cdf8ed2141b10e9e249e2de58c17ebb562f4896dd28c63b7cb3f0",
+      "gitBlobSha": "72a515b602712907d4f9787debda9145ffb6f73e"
+    }
+  ]
+}

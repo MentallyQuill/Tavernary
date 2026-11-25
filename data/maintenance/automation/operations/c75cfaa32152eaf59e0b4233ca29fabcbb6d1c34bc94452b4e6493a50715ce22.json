@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c75cfaa32152eaf59e0b4233ca29fabcbb6d1c34bc94452b4e6493a50715ce22",
+    "identity": {
+      "kind": "report-import",
+      "subject": "report:db2ddc46fd80c7d23bbe1a76174e9476e517c8a37d35e456705696228e3ec77f",
+      "inputDigest": "a348efebdec4674c68b8b83f2c251d516992ed2219fe8c3b61b5e06d4c9d1a56",
+      "policyVersion": "5.5"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-17T21:23:28.096Z",
+    "nextEligibleAt": "2026-11-25T19:32:56.756Z",
+    "expectedSha": "f869c880aafaa59cbb4875cf8aaec7ce326b485e",
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "unknown",
+        "reasonCode": "unclassified-failure"
+      },
+      "transientAttempts": 2,
+      "immediateAttempts": 3
+    }
+  },
+  "updatedAt": "2026-11-24T19:32:56.756Z",
+  "completedAt": null
+}
