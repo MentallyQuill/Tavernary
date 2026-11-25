@@ -32551,6 +32551,137 @@
       }
     },
     {
+      "id": "desearch-ai-sillytavern-desearch",
+      "name": "SillyTavern-Desearch",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "memory-retrieval",
+      "summary": "A libre SillyTavern UI extension that searches the web through the existing Desearch MCP server. It returns page titles and HTTPS sources using the MCP search tool, and no server plugin is required.",
+      "canonicalUrl": "https://github.com/Desearch-ai/SillyTavern-Desearch",
+      "catalogedAt": "2026-11-25T07:44:31.153Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "connect-external-services",
+          "label": "Connect external services",
+          "description": "Bridge roleplay workflows to messaging, media, note-taking, automation, or other services.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "591cd621189931916f3822a82db643d1c2162d8e",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "Desearch-ai"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "vaelorzenith",
+            "botOrAi": false
+          }
+        ],
+        "humanContributorCount": 1,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-17T10:16:34.000Z",
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 163,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-25T07:44:31.153Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/Desearch-ai/SillyTavern-Desearch.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "SillyTavern-Desearch"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "SillyTavern-Desearch"
+        ],
+        "aliases": [],
+        "source": [
+          "desearch-ai-sillytavern-desearch",
+          "github-1461239668",
+          "Desearch-ai/SillyTavern-Desearch",
+          "https://github.com/Desearch-ai/SillyTavern-Desearch"
+        ],
+        "summary": [
+          "A libre SillyTavern UI extension that searches the web through the existing Desearch MCP server. It returns page titles and HTTPS sources using the MCP search tool, and no server plugin is required."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Memory and retrieval"
+        ],
+        "tags": [
+          "Connect external services",
+          "service integrations",
+          "external bridges",
+          "third-party connections"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "Desearch-ai",
+          "vaelorzenith"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "devemberteam-ops-pyre",
       "name": "Pyre",
       "kind": "frontend",
@@ -127998,7 +128129,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T14:25:45.733Z",
+      "refreshedAt": "2026-11-25T08:14:21.248Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
