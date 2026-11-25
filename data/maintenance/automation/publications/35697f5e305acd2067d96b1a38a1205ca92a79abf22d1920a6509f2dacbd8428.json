@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "35697f5e305acd2067d96b1a38a1205ca92a79abf22d1920a6509f2dacbd8428",
+    "identity": {
+      "kind": "metadata",
+      "subject": "source:github-1311208544:foreverharibo-boop-chatlog",
+      "inputDigest": "b93f9e2c274efd1cac12be44b9b32a6ede8d71908c0dda924ab2827b4e832531",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-19T06:21:47.401Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1311208544",
+    "identity": "github:1311208544"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/enrich-catalog.yml",
+    "runId": 45045275387,
+    "sourceSha": "c25439055b2bd11be15b13e7bf7fb393e10da666"
+  },
+  "files": [
+    {
+      "path": "data/registry/projects/foreverharibo-boop-chatlog.json",
+      "sha256": "acab7599e96b5265c82c7f05003dbfc28f95e065fd60a6c1226b417c745dd89b",
+      "gitBlobSha": "057a37078829921d2c385eff4663ff18086b5e04"
+    },
+    {
+      "path": "data/maintenance/automation/metadata/35697f5e305acd2067d96b1a38a1205ca92a79abf22d1920a6509f2dacbd8428.json",
+      "sha256": "b7c25a2aa0241b2fe8eec87767beb516aa97d756b2f1cca96298611b1c5ef665",
+      "gitBlobSha": "b9176ffc7e58ec12ff92484d047fd8e18625505a"
+    }
+  ]
+}

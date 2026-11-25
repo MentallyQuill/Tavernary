@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "cc240d74ce340765c5a7845fbdd81f71d72bcdc547f1ab4ec14be90dfa11d1a8",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1460359452:demonroute1-sillytavern-demonroute",
+      "inputDigest": "479f8008500cb99da18adab28d6ae5d49da98081998f2c73797e9735b8c70a8b",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-19T04:23:47.432Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1460359452",
+    "identity": "github:1460359452"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 44474947103,
+    "sourceSha": "36e4930fa81e0e8d6f7902dcaf3f26212f5a2635"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/demonroute1-sillytavern-demonroute.json",
+      "sha256": "6fb35f1b4d98a1f1d6e0b55c6cdb22fb5f2e3b7c491fb00431402e5aa14270c6",
+      "gitBlobSha": "b4d0368c05d954211e2be6f4a175da1e1caed9ed"
+    }
+  ]
+}

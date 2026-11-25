@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "luisbrandao-sillytavern-director",
+  "source_id": "github-1263541355",
+  "source_identity": "github:luisbrandao/sillytavern-director",
+  "evidence_fingerprint": "eda619a2aa433737bc5b1cfbf5fb806c157c1610a2c05237db2c84e744043947",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-19T22:11:49.254Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

@@ -4386,9 +4386,9 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 25,
-        "forks": 3,
+        "forks": 4,
         "watchers": 0,
-        "aggregate": 28
+        "aggregate": 29
       },
       "repositorySizeKb": 357,
       "license": {
@@ -4397,7 +4397,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-02T17:17:58.312Z",
+      "refreshedAt": "2026-11-25T18:08:35.063Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -42676,10 +42676,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 7,
-        "forks": 4,
+        "stars": 9,
+        "forks": 3,
         "watchers": 1,
-        "aggregate": 12
+        "aggregate": 13
       },
       "repositorySizeKb": 48,
       "license": {
@@ -42688,7 +42688,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-02T17:18:01.532Z",
+      "refreshedAt": "2026-11-25T18:08:21.139Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -43060,7 +43060,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Chak-Chak (착착) by foreverharibo-boop is a SillyTavern extension (SillyTavern 확장입니다); the README provides only minimal documentation and links back to the original repository for further details.",
+      "summary": "Chak-Chak (착착) is a SillyTavern extension. Its documentation describes it only as an extension for SillyTavern and does not detail further features or workflows.",
       "canonicalUrl": "https://github.com/foreverharibo-boop/chak-chak",
       "catalogedAt": "2026-11-19T06:33:52.310Z",
       "catalogCohort": "standard",
@@ -43146,7 +43146,7 @@
           "https://github.com/foreverharibo-boop/chak-chak"
         ],
         "summary": [
-          "Chak-Chak (착착) by foreverharibo-boop is a SillyTavern extension (SillyTavern 확장입니다); the README provides only minimal documentation and links back to the original repository for further details."
+          "Chak-Chak (착착) is a SillyTavern extension. Its documentation describes it only as an extension for SillyTavern and does not detail further features or workflows."
         ],
         "kind": [
           "extension"
@@ -43284,7 +43284,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "rpg-systems",
-      "summary": "chatlog (챗로그) by foreverharibo-boop is a SillyTavern extension whose README currently supplies only its title, so no documented features or workflows are available from source evidence.",
+      "summary": "chatlog (챗로그) is a SillyTavern extension. Its public documentation provides only the project name, so no specific features, workflows, or capabilities can be confirmed from the available evidence.",
       "canonicalUrl": "https://github.com/foreverharibo-boop/chatlog",
       "catalogedAt": "2026-11-19T06:21:47.401Z",
       "catalogCohort": "standard",
@@ -43370,7 +43370,7 @@
           "https://github.com/foreverharibo-boop/chatlog"
         ],
         "summary": [
-          "chatlog (챗로그) by foreverharibo-boop is a SillyTavern extension whose README currently supplies only its title, so no documented features or workflows are available from source evidence."
+          "chatlog (챗로그) is a SillyTavern extension. Its public documentation provides only the project name, so no specific features, workflows, or capabilities can be confirmed from the available evidence."
         ],
         "kind": [
           "extension"
@@ -44401,7 +44401,7 @@
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "veereubaa is a SillyTavern extension by foreverharibo-boop; its README (github:foreverharibo-boop/veereubaa@efdd7201) contains only the Korean title \"베에르으바아\" and no documented purpose or workflow.",
+      "summary": "veereubaa is a SillyTavern extension by foreverharibo-boop whose documentation currently provides only the Korean project title, with no description of its features, workflows, or capabilities available to summarize.",
       "canonicalUrl": "https://github.com/foreverharibo-boop/veereubaa",
       "catalogedAt": "2026-11-19T06:22:04.090Z",
       "catalogCohort": "standard",
@@ -44493,7 +44493,7 @@
           "https://github.com/foreverharibo-boop/veereubaa"
         ],
         "summary": [
-          "veereubaa is a SillyTavern extension by foreverharibo-boop; its README (github:foreverharibo-boop/veereubaa@efdd7201) contains only the Korean title \"베에르으바아\" and no documented purpose or workflow."
+          "veereubaa is a SillyTavern extension by foreverharibo-boop whose documentation currently provides only the Korean project title, with no description of its features, workflows, or capabilities available to summarize."
         ],
         "kind": [
           "extension"
@@ -155087,9 +155087,9 @@
             "latestReleaseAt": null,
             "community": {
               "stars": 25,
-              "forks": 3,
+              "forks": 4,
               "watchers": 0,
-              "aggregate": 28
+              "aggregate": 29
             },
             "repositorySizeKb": 357,
             "license": {
@@ -155098,7 +155098,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-02T17:17:58.312Z",
+            "refreshedAt": "2026-11-25T18:08:35.063Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
