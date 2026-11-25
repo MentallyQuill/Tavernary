@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "30ae88bfa0f96d7ed469203b7a2dfd104e1303ecbfdaa32deed2fb033ff77711",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1221210115:chechelpo-simulith",
+      "inputDigest": "9c8cf871e8ebe3970d1d957b5b30b14ee562f718e635d8dec6971e3665f0f7c8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-02T16:10:40.196Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1221210115",
+    "identity": "github:1221210115"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45450167275,
+    "sourceSha": "e1510ba303d8e0e97ff30864bcf86eb97e0b446e"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/chechelpo-simulith.json",
+      "sha256": "db9f12be92c6c8573e2a0a6ba90a387f685a668c12217bded031b5f07fbe524f",
+      "gitBlobSha": "e5ce4e27317a462c37981108a993872f51838ed3"
+    }
+  ]
+}

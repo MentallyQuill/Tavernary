@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "projectchrysalis-chrysalis-engine",
+  "source_id": "github-1338824971",
+  "source_identity": "github:projectchrysalis/chrysalis-engine",
+  "evidence_fingerprint": "c091db4c52dce312c9125fe15c03db5d76ce8b3c523346237349e7df561f788f",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-24T17:06:14.763Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "6a1b33243c1992e127f5d323198664fc3e1d9eb2e190901d7cc56a5b52ee5cff",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1239724267:ryah-st-freaky-d20-preset",
+      "inputDigest": "9643e3b2ec50a88499c75abe7a666d060230175cb0b29f1244133c50886ade60",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-05T15:43:52.503Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1239724267",
+    "identity": "github:1239724267"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45301119116,
+    "sourceSha": "149bdbef7801d31f2612d7dafd79f5674fa024ee"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/ryah-st-freaky-d20-preset.json",
+      "sha256": "279f87a44826952694f3dbe856d1d8d39129129aa0935c10378473ce0cf9fb0b",
+      "gitBlobSha": "d07172c120713b98d99819ec4f627cda230b4664"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "0003f45a3ed4621a43b71b2fca9b9c5c5209e14566e6f63691438d539b3c91a5",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1230298474:flaxify-st-hands-free-voice",
+      "inputDigest": "e9e7770c01f558465f53c406b110a95f6a6a91936b946c487cfd74e4ee7f271c",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-02T17:18:01.532Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1230298474",
+    "identity": "github:1230298474"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45455466384,
+    "sourceSha": "09cdd5043e5ba9438ca007ac1b8e8d5e6a6d6ca3"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/flaxify-st-hands-free-voice.json",
+      "sha256": "181eb7fc30ff973b47d21e153e50d98d20f9bbb8bf2b063d40c13f8aafac2c9b",
+      "gitBlobSha": "6aa4fb0ce09cd7f898e5e9222d6beb424101e435"
+    }
+  ]
+}

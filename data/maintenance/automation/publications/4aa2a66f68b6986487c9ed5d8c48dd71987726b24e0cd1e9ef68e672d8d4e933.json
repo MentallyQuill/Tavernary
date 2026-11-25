@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4aa2a66f68b6986487c9ed5d8c48dd71987726b24e0cd1e9ef68e672d8d4e933",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1215007786:sagesheep-narrativeengine-p",
+      "inputDigest": "2f145fc6f8fd315e1aff4c71f80224bac70e86815b08a292b9275d35ab99fb64",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T14:25:54.017Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1215007786",
+    "identity": "github:1215007786"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45442444562,
+    "sourceSha": "6f2b31025ddd71d415eb5575bcd2db666ee4b8fb"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/sagesheep-narrativeengine-p.json",
+      "sha256": "45a7ff0c2feb58d69c2b1b507098542e704b219c90cbf5c31837e4bf687ec18b",
+      "gitBlobSha": "9edcb524e31fc87651fdb1e2506827d7209c4db8"
+    }
+  ]
+}

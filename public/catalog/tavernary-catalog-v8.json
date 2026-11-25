@@ -66708,8 +66708,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "e9d83a62f5a608cc7b12e83701c2b2ef6c3bd36c",
+        "freshness": "stale",
+        "currentSha": "3540b5e46ad70a80fcde8e33bccc9f479093f2a8",
         "report": {
           "reportId": "ce3fac195ce95a199ba7f69f2443176cf507f1ccd680f651ed838fdd574fe186",
           "riskLevel": "low",
@@ -66873,40 +66873,40 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-09-01T06:01:37.000Z",
-        "activeWeeks12": 4,
+        "latestSourceActivityAt": "2026-11-16T22:29:44.000Z",
+        "activeWeeks12": 2,
         "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
           true,
+          false,
+          false,
+          false,
           true,
-          true,
-          true,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
           false
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-09-01T06:01:51.000Z",
+      "latestReleaseAt": "2026-11-16T22:32:08.000Z",
       "community": {
         "stars": 12,
-        "forks": 2,
+        "forks": 1,
         "watchers": 0,
-        "aggregate": 14
+        "aggregate": 13
       },
-      "repositorySizeKb": 1275,
+      "repositorySizeKb": 1287,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T14:26:00.930Z",
+      "refreshedAt": "2026-11-24T19:09:01.316Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -73298,8 +73298,8 @@
       },
       "latestReleaseAt": "2026-03-23T23:00:00.000Z",
       "community": {
-        "stars": 14,
-        "forks": 2,
+        "stars": 15,
+        "forks": 1,
         "watchers": 0,
         "aggregate": 16
       },
@@ -73310,7 +73310,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T14:26:02.583Z",
+      "refreshedAt": "2026-11-20T16:28:24.115Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -106138,7 +106138,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "5fd2155f5f3515b04df827265a38011c04cf5afe",
+        "currentSha": "df7aa48775f6f50db86dd87261fe5be092c2677a",
         "report": {
           "reportId": "3f82c563a8545fe1b9054da51ef5a159943276c40562254f62dd9ae12b5fc7f0",
           "riskLevel": "low",
@@ -106317,21 +106317,26 @@
           },
           {
             "provider": "github",
+            "login": "DavidGumm",
+            "botOrAi": false
+          },
+          {
+            "provider": "github",
             "login": "AradoX7",
             "botOrAi": false
           }
         ],
-        "humanContributorCount": 3,
+        "humanContributorCount": 4,
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-11-01T13:16:43.000Z",
-        "activeWeeks12": 12,
+        "latestSourceActivityAt": "2026-11-24T13:03:29.000Z",
+        "activeWeeks12": 8,
         "weeklyActivity": [
-          true,
-          true,
-          true,
-          true,
+          false,
+          false,
+          false,
+          false,
           true,
           true,
           true,
@@ -106344,21 +106349,21 @@
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-10-29T14:19:29.000Z",
+      "latestReleaseAt": "2026-11-22T11:01:53.000Z",
       "community": {
-        "stars": 112,
-        "forks": 34,
+        "stars": 135,
+        "forks": 39,
         "watchers": 5,
-        "aggregate": 151
+        "aggregate": 179
       },
-      "repositorySizeKb": 74308,
+      "repositorySizeKb": 78481,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T14:25:54.017Z",
+      "refreshedAt": "2026-11-24T19:06:07.825Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -106419,6 +106424,7 @@
           "ericsonguk",
           "claude",
           "EliteCombine2",
+          "DavidGumm",
           "AradoX7"
         ],
         "relationships": []
@@ -124425,6 +124431,181 @@
         "compatibility": [],
         "maintainers": [
           "Stalwart-Turtle"
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "starlitcode-lumiverse-auto-foley",
+      "name": "Auto Foley",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "interface-workflow",
+      "summary": "Auto Foley gives your TTS replies voice acting and sound effects. A second model marks how each line is said, every character gets their own voice, and your words never change. Replays use saved audio for free.",
+      "canonicalUrl": "https://github.com/starlitcode/Lumiverse-Auto-Foley",
+      "catalogedAt": "2026-11-25T14:18:16.113Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "lumiverse",
+          "label": "Lumiverse",
+          "description": "Works with the Lumiverse roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-music-and-audio",
+          "label": "Add music and audio",
+          "description": "Add music, ambient sound, playlists, or other non-speech audio to roleplay.",
+          "facet": "goal"
+        },
+        {
+          "id": "add-voice-interaction",
+          "label": "Add voice interaction",
+          "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+          "facet": "goal"
+        },
+        {
+          "id": "hands-free",
+          "label": "Hands-free",
+          "description": "Supports continuous or automatically sequenced interaction without routine button presses.",
+          "facet": "trait"
+        },
+        {
+          "id": "manage-characters-and-personas",
+          "label": "Manage characters and personas",
+          "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+          "facet": "goal"
+        },
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+          "facet": "trait"
+        },
+        {
+          "id": "secondary-model",
+          "label": "Secondary-model workflow",
+          "description": "Delegates supporting tasks to a separately configured model or connection.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "78ff11aadce9bbe2848c89ed0f1fb661c3bd692a",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "starlitcode"
+        },
+        "contributors": [
+          {
+            "provider": "github",
+            "login": "claude",
+            "botOrAi": true
+          }
+        ],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-25T13:54:00.000Z",
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 5701,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-25T14:18:16.113Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "Auto Foley"
+        ],
+        "aliases": [],
+        "source": [
+          "starlitcode-lumiverse-auto-foley",
+          "github-1466075274",
+          "starlitcode/Lumiverse-Auto-Foley",
+          "https://github.com/starlitcode/Lumiverse-Auto-Foley"
+        ],
+        "summary": [
+          "Auto Foley gives your TTS replies voice acting and sound effects. A second model marks how each line is said, every character gets their own voice, and your words never change. Replays use saved audio for free."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Interface and workflow"
+        ],
+        "tags": [
+          "Add music and audio",
+          "ambient audio",
+          "roleplay music",
+          "soundscapes",
+          "Add voice interaction",
+          "voice chat",
+          "speech input",
+          "text to speech",
+          "Hands-free",
+          "voice loop",
+          "automatic conversation flow",
+          "no-touch interaction",
+          "Manage characters and personas",
+          "persona management",
+          "character management",
+          "identity management",
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay",
+          "Secondary-model workflow",
+          "helper model",
+          "auxiliary model",
+          "separate connection profile"
+        ],
+        "frontends": [
+          "Lumiverse"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "starlitcode",
+          "claude"
         ],
         "relationships": []
       }

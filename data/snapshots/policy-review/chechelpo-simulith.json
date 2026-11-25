@@ -5,12 +5,9 @@
   "source_identity": "github:chechelpo/simulith",
   "evidence_fingerprint": "df88c38104b4d298bbc7221426a46f397ea0b5abcc5fb974fcdb5e8972c63ccf",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-12T11:50:28.892Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-09-12T11:50:28.892Z"
-  },
+  "reviewed_at": "2026-11-24T17:36:29.427Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

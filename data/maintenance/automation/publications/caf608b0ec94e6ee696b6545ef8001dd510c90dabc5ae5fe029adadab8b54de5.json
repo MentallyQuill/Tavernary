@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "caf608b0ec94e6ee696b6545ef8001dd510c90dabc5ae5fe029adadab8b54de5",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1408621208:hati1004-scene-studio",
+      "inputDigest": "93880a2a5be1e67cffb1bf94321ebd7784a1d935af3d3d24be2308a5266344ec",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-19T04:23:41.532Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1408621208",
+    "identity": "github:1408621208"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 44471344711,
+    "sourceSha": "835c76b22723b0f3c253ddff37958bbaaf6cd369"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/hati1004-scene-studio.json",
+      "sha256": "7e2f60dffd591fb480a9ce83d47764df171041cb289e1282fb1b378d11b62b57",
+      "gitBlobSha": "abd74b2850f9123750b13668650b731bb1744838"
+    }
+  ]
+}

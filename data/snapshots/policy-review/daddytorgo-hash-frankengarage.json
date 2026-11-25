@@ -5,12 +5,9 @@
   "source_identity": "github:daddytorgo-hash/frankengarage",
   "evidence_fingerprint": "82a87db754fc042dffd3e9c2af4535c7f9e4897c7f17b8dce85618780c333d59",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-28T19:44:23.095Z",
-  "retry": {
-    "attempts": 5,
-    "last_failure_at": "2026-08-28T19:44:23.095Z"
-  },
+  "reviewed_at": "2026-11-24T17:27:29.739Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }
