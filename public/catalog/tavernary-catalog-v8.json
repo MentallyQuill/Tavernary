@@ -20265,12 +20265,12 @@
     },
     {
       "id": "brabro1-sillytavern-pockettavern",
-      "name": "SillyTavern-PocketTavern",
+      "name": "Pocket Tavern",
       "kind": "extension",
-      "metadataStatus": "provisional",
+      "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "interface-workflow",
-      "summary": "Pocket Tavern: SillyTavern, made for your phone. A phone-first app layout for SillyTavern on Android and Termux. (Alpha)",
+      "summary": "A fast, calm interface for SillyTavern on phones and computers: an app-like phone layout, a two-panel desktop layout, 14 themes, character sheets and tidy chat lists. Works alongside SillyTavern and switches off cleanly.",
       "canonicalUrl": "https://github.com/brabro1/SillyTavern-PocketTavern",
       "catalogedAt": "2026-11-23T02:20:20.745Z",
       "catalogCohort": "standard",
@@ -20281,7 +20281,44 @@
           "description": "Works with the SillyTavern roleplay frontend."
         }
       ],
-      "tags": [],
+      "tags": [
+        {
+          "id": "mobile-friendly",
+          "label": "Mobile-friendly",
+          "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
+          "facet": "trait"
+        },
+        {
+          "id": "customize-the-interface",
+          "label": "Customize the interface",
+          "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
+          "facet": "goal"
+        },
+        {
+          "id": "organize-chats-and-messages",
+          "label": "Organize chats and messages",
+          "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
+          "facet": "goal"
+        },
+        {
+          "id": "multilingual",
+          "label": "Multilingual",
+          "description": "Explicitly supports use, authoring, or interfaces in multiple languages.",
+          "facet": "trait"
+        },
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+          "facet": "trait"
+        },
+        {
+          "id": "translate-roleplay-content",
+          "label": "Translate roleplay content",
+          "description": "Translate chats, cards, lore, prompts, or other roleplay material between languages.",
+          "facet": "goal"
+        }
+      ],
       "tavernKeeper": {
         "state": "gray",
         "riskLevel": null,
@@ -20346,7 +20383,7 @@
       "fork": null,
       "search": {
         "title": [
-          "SillyTavern-PocketTavern"
+          "Pocket Tavern"
         ],
         "aliases": [],
         "source": [
@@ -20356,7 +20393,7 @@
           "https://github.com/brabro1/SillyTavern-PocketTavern"
         ],
         "summary": [
-          "Pocket Tavern: SillyTavern, made for your phone. A phone-first app layout for SillyTavern on Android and Termux. (Alpha)"
+          "A fast, calm interface for SillyTavern on phones and computers: an app-like phone layout, a two-panel desktop layout, 14 themes, character sheets and tidy chat lists. Works alongside SillyTavern and switches off cleanly."
         ],
         "kind": [
           "extension"
@@ -20364,7 +20401,32 @@
         "primaryFunction": [
           "Interface and workflow"
         ],
-        "tags": [],
+        "tags": [
+          "Mobile-friendly",
+          "mobile support",
+          "phone friendly",
+          "responsive mobile UI",
+          "Customize the interface",
+          "interface theming",
+          "layout customization",
+          "UI personalization",
+          "Organize chats and messages",
+          "chat organization",
+          "message bookmarks",
+          "conversation search",
+          "Multilingual",
+          "multiple languages",
+          "internationalized",
+          "cross-language support",
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay",
+          "Translate roleplay content",
+          "chat translation",
+          "AI translation",
+          "translate messages"
+        ],
         "frontends": [
           "SillyTavern"
         ],
@@ -27661,7 +27723,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T14:25:26.081Z",
+      "refreshedAt": "2026-11-24T19:04:55.877Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -55939,6 +56001,144 @@
       }
     },
     {
+      "id": "j-marchon-nova-ai",
+      "name": "nova-ai",
+      "kind": "frontend",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "frontend",
+      "summary": "Nova, a full role-play chat app built from scratch, with its own features. It runs in the browser, as an Android app, or on desktop (Windows and Linux), focusing on making it as easy and intuitive to use as possible",
+      "canonicalUrl": "https://github.com/j-marchon/nova-ai",
+      "catalogedAt": "2026-11-23T23:51:44.401Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "nova-ai",
+          "label": "nova-ai",
+          "description": "Works with the nova-ai roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "local-first",
+          "label": "Local-first",
+          "description": "Keeps its primary data and workflow on the user's own device.",
+          "facet": "trait"
+        },
+        {
+          "id": "mobile-friendly",
+          "label": "Mobile-friendly",
+          "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
+          "facet": "trait"
+        },
+        {
+          "id": "model-agnostic",
+          "label": "Model-agnostic",
+          "description": "Works across a broad range of model providers rather than requiring one model family.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "7c1791578cb960d8299f0224c73d348d0fd30df1",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "j-marchon"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-23T22:42:38.000Z",
+        "activeWeeks12": 0,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": "2026-11-23T23:27:35.000Z",
+      "community": {
+        "stars": 1,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 1
+      },
+      "repositorySizeKb": 3481,
+      "license": {
+        "status": "osi-approved",
+        "label": "MIT",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-23T23:51:44.401Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "nova-ai"
+        ],
+        "aliases": [],
+        "source": [
+          "j-marchon-nova-ai",
+          "github-1466717745",
+          "j-marchon/nova-ai",
+          "https://github.com/j-marchon/nova-ai"
+        ],
+        "summary": [
+          "Nova, a full role-play chat app built from scratch, with its own features. It runs in the browser, as an Android app, or on desktop (Windows and Linux), focusing on making it as easy and intuitive to use as possible"
+        ],
+        "kind": [
+          "frontend"
+        ],
+        "primaryFunction": [
+          "Frontend"
+        ],
+        "tags": [
+          "Local-first",
+          "stored locally",
+          "on-device data",
+          "local data ownership",
+          "Mobile-friendly",
+          "mobile support",
+          "phone friendly",
+          "responsive mobile UI",
+          "Model-agnostic",
+          "bring your own model",
+          "BYOM",
+          "provider independent"
+        ],
+        "frontends": [
+          "nova-ai"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "j-marchon"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "j3tze-st-tag-pilot",
       "name": "ST-Tag-Pilot",
       "kind": "extension",
@@ -62862,7 +63062,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "06fab1d7fefbe6bb7f4597758e39cd0b2885bb65",
+        "currentSha": "2bfe4a9418a8e62f9a8e394c909824dc3ec24168",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -62877,7 +63077,7 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-30T20:39:16.000Z",
+        "latestSourceActivityAt": "2026-11-22T17:33:00.000Z",
         "activeWeeks12": 5,
         "weeklyActivity": [
           false,
@@ -62898,19 +63098,19 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 11,
+        "stars": 19,
         "forks": 0,
         "watchers": 0,
-        "aggregate": 11
+        "aggregate": 19
       },
-      "repositorySizeKb": 9701,
+      "repositorySizeKb": 10622,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T13:56:34.041Z",
+      "refreshedAt": "2026-11-24T19:06:01.831Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -70533,8 +70733,8 @@
       "community": {
         "stars": 16,
         "forks": 0,
-        "watchers": 0,
-        "aggregate": 16
+        "watchers": 1,
+        "aggregate": 17
       },
       "repositorySizeKb": 236,
       "license": {
@@ -70543,7 +70743,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T10:35:47.602Z",
+      "refreshedAt": "2026-11-24T19:05:47.038Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -77140,7 +77340,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T14:25:49.491Z",
+      "refreshedAt": "2026-11-24T19:05:26.042Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -82804,7 +83004,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T14:25:36.205Z",
+      "refreshedAt": "2026-11-24T19:06:01.311Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -90565,10 +90765,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 391,
-        "forks": 49,
-        "watchers": 21,
-        "aggregate": 461
+        "stars": 397,
+        "forks": 50,
+        "watchers": 22,
+        "aggregate": 469
       },
       "repositorySizeKb": 15855,
       "license": {
@@ -90577,7 +90777,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T14:25:43.118Z",
+      "refreshedAt": "2026-11-24T19:05:15.204Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -96879,7 +97079,7 @@
         "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T10:35:50.524Z",
+      "refreshedAt": "2026-11-24T19:05:53.339Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -99846,10 +100046,10 @@
       },
       "latestReleaseAt": "2026-07-24T17:26:40.000Z",
       "community": {
-        "stars": 0,
+        "stars": 1,
         "forks": 0,
         "watchers": 0,
-        "aggregate": 0
+        "aggregate": 1
       },
       "repositorySizeKb": 5026,
       "license": {
@@ -99858,7 +100058,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T14:25:37.053Z",
+      "refreshedAt": "2026-11-24T19:05:25.512Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -105318,12 +105518,12 @@
     },
     {
       "id": "ryah-st-freaky-d20-preset",
-      "name": "Freaky FrankenSIM",
+      "name": "VEXA",
       "kind": "preset",
       "metadataStatus": "curated",
       "sourceStatus": "healthy",
       "primaryFunction": "preset",
-      "summary": "The Official Slow-Burn MAX++ Version of Freaky Frankenstein. Utilizes ARC Engine for pacing and plot, Chekhov's Gun for narrative debt, VERY in-depth relationship tracking and NPC emotion calculation",
+      "summary": "The most advanced AI RP preset you can download for free. 3D grid pathfinding, off-screen NPC agendas and Kishōtenketsu arcs, real psych models for dual emotions per NPC, a 12-axis relationship & dam engine, and more.",
       "canonicalUrl": "https://github.com/Ryah/ST-Freaky-D20-Preset",
       "catalogedAt": "2026-07-28T04:01:50.555Z",
       "catalogCohort": "standard",
@@ -105646,6 +105846,11 @@
             "id": "minimax",
             "label": "MiniMax",
             "description": "Designed for MiniMax models."
+          },
+          {
+            "id": "mimo",
+            "label": "MiMo",
+            "description": "Designed for Xiaomi MiMo models."
           }
         ],
         "completionFormats": [
@@ -105662,7 +105867,7 @@
       "fork": null,
       "search": {
         "title": [
-          "Freaky FrankenSIM"
+          "VEXA"
         ],
         "aliases": [],
         "source": [
@@ -105672,7 +105877,7 @@
           "https://github.com/Ryah/ST-Freaky-D20-Preset"
         ],
         "summary": [
-          "The Official Slow-Burn MAX++ Version of Freaky Frankenstein. Utilizes ARC Engine for pacing and plot, Chekhov's Gun for narrative debt, VERY in-depth relationship tracking and NPC emotion calculation"
+          "The most advanced AI RP preset you can download for free. 3D grid pathfinding, off-screen NPC agendas and Kishōtenketsu arcs, real psych models for dual emotions per NPC, a 12-axis relationship & dam engine, and more."
         ],
         "kind": [
           "preset"
@@ -105731,6 +105936,8 @@
           "Haiku",
           "DeepSeek",
           "MiniMax",
+          "MiMo",
+          "Xiaomi MiMo",
           "Chat Completion"
         ],
         "maintainers": [
@@ -123590,7 +123797,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T14:25:32.976Z",
+      "refreshedAt": "2026-11-24T19:05:49.883Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -126869,13 +127076,13 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-09-03T14:02:24.000Z",
-        "activeWeeks12": 2,
+        "latestSourceActivityAt": "2026-11-13T21:02:28.000Z",
+        "activeWeeks12": 0,
         "weeklyActivity": [
           false,
-          true,
           false,
-          true,
+          false,
+          false,
           false,
           false,
           false,
@@ -126895,14 +127102,14 @@
         "watchers": 1,
         "aggregate": 1
       },
-      "repositorySizeKb": 126,
+      "repositorySizeKb": 168,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T14:25:42.867Z",
+      "refreshedAt": "2026-11-24T19:06:01.355Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -136038,7 +136245,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-01T14:25:44.386Z",
+      "refreshedAt": "2026-11-24T19:05:05.016Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -159909,6 +160116,11 @@
           "id": "minimax",
           "label": "MiniMax",
           "description": "Designed for MiniMax models."
+        },
+        {
+          "id": "mimo",
+          "label": "MiMo",
+          "description": "Designed for Xiaomi MiMo models."
         }
       ],
       "components": [
@@ -162411,7 +162623,7 @@
         },
         {
           "projectId": "ryah-st-freaky-d20-preset",
-          "name": "Freaky FrankenSIM",
+          "name": "VEXA",
           "kind": "preset",
           "primaryFunction": "preset",
           "availability": "available",
@@ -162419,12 +162631,12 @@
           "canonicalUrl": "https://github.com/Ryah/ST-Freaky-D20-Preset",
           "project": {
             "id": "ryah-st-freaky-d20-preset",
-            "name": "Freaky FrankenSIM",
+            "name": "VEXA",
             "kind": "preset",
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "preset",
-            "summary": "The Official Slow-Burn MAX++ Version of Freaky Frankenstein. Utilizes ARC Engine for pacing and plot, Chekhov's Gun for narrative debt, VERY in-depth relationship tracking and NPC emotion calculation",
+            "summary": "The most advanced AI RP preset you can download for free. 3D grid pathfinding, off-screen NPC agendas and Kishōtenketsu arcs, real psych models for dual emotions per NPC, a 12-axis relationship & dam engine, and more.",
             "canonicalUrl": "https://github.com/Ryah/ST-Freaky-D20-Preset",
             "catalogedAt": "2026-07-28T04:01:50.555Z",
             "catalogCohort": "standard",
@@ -162747,6 +162959,11 @@
                   "id": "minimax",
                   "label": "MiniMax",
                   "description": "Designed for MiniMax models."
+                },
+                {
+                  "id": "mimo",
+                  "label": "MiMo",
+                  "description": "Designed for Xiaomi MiMo models."
                 }
               ],
               "completionFormats": [
@@ -162763,7 +162980,7 @@
             "fork": null,
             "search": {
               "title": [
-                "Freaky FrankenSIM"
+                "VEXA"
               ],
               "aliases": [],
               "source": [
@@ -162773,7 +162990,7 @@
                 "https://github.com/Ryah/ST-Freaky-D20-Preset"
               ],
               "summary": [
-                "The Official Slow-Burn MAX++ Version of Freaky Frankenstein. Utilizes ARC Engine for pacing and plot, Chekhov's Gun for narrative debt, VERY in-depth relationship tracking and NPC emotion calculation"
+                "The most advanced AI RP preset you can download for free. 3D grid pathfinding, off-screen NPC agendas and Kishōtenketsu arcs, real psych models for dual emotions per NPC, a 12-axis relationship & dam engine, and more."
               ],
               "kind": [
                 "preset"
@@ -162832,6 +163049,8 @@
                 "Haiku",
                 "DeepSeek",
                 "MiniMax",
+                "MiMo",
+                "Xiaomi MiMo",
                 "Chat Completion"
               ],
               "maintainers": [
@@ -163440,7 +163659,7 @@
         ],
         "aliases": [
           "SillyBunny",
-          "Freaky FrankenSIM",
+          "VEXA",
           "SillyTavern-QOL",
           "sillytavern-contextual-scene-painter"
         ],
@@ -163485,14 +163704,16 @@
           "Sonnet",
           "Haiku",
           "DeepSeek",
-          "MiniMax"
+          "MiniMax",
+          "MiMo",
+          "Xiaomi MiMo"
         ],
         "maintainers": [
           "lennazaire-ui"
         ],
         "relationships": [
           "SillyBunny",
-          "Freaky FrankenSIM",
+          "VEXA",
           "SillyTavern-QOL",
           "sillytavern-contextual-scene-painter",
           "sillybunnyteam-sillybunny",
@@ -168167,6 +168388,11 @@
           "id": "minimax",
           "label": "MiniMax",
           "description": "Designed for MiniMax models."
+        },
+        {
+          "id": "mimo",
+          "label": "MiMo",
+          "description": "Designed for Xiaomi MiMo models."
         }
       ],
       "components": [
@@ -171015,7 +171241,7 @@
         },
         {
           "projectId": "ryah-st-freaky-d20-preset",
-          "name": "Freaky FrankenSIM",
+          "name": "VEXA",
           "kind": "preset",
           "primaryFunction": "preset",
           "availability": "available",
@@ -171023,12 +171249,12 @@
           "canonicalUrl": "https://github.com/Ryah/ST-Freaky-D20-Preset",
           "project": {
             "id": "ryah-st-freaky-d20-preset",
-            "name": "Freaky FrankenSIM",
+            "name": "VEXA",
             "kind": "preset",
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "preset",
-            "summary": "The Official Slow-Burn MAX++ Version of Freaky Frankenstein. Utilizes ARC Engine for pacing and plot, Chekhov's Gun for narrative debt, VERY in-depth relationship tracking and NPC emotion calculation",
+            "summary": "The most advanced AI RP preset you can download for free. 3D grid pathfinding, off-screen NPC agendas and Kishōtenketsu arcs, real psych models for dual emotions per NPC, a 12-axis relationship & dam engine, and more.",
             "canonicalUrl": "https://github.com/Ryah/ST-Freaky-D20-Preset",
             "catalogedAt": "2026-07-28T04:01:50.555Z",
             "catalogCohort": "standard",
@@ -171351,6 +171577,11 @@
                   "id": "minimax",
                   "label": "MiniMax",
                   "description": "Designed for MiniMax models."
+                },
+                {
+                  "id": "mimo",
+                  "label": "MiMo",
+                  "description": "Designed for Xiaomi MiMo models."
                 }
               ],
               "completionFormats": [
@@ -171367,7 +171598,7 @@
             "fork": null,
             "search": {
               "title": [
-                "Freaky FrankenSIM"
+                "VEXA"
               ],
               "aliases": [],
               "source": [
@@ -171377,7 +171608,7 @@
                 "https://github.com/Ryah/ST-Freaky-D20-Preset"
               ],
               "summary": [
-                "The Official Slow-Burn MAX++ Version of Freaky Frankenstein. Utilizes ARC Engine for pacing and plot, Chekhov's Gun for narrative debt, VERY in-depth relationship tracking and NPC emotion calculation"
+                "The most advanced AI RP preset you can download for free. 3D grid pathfinding, off-screen NPC agendas and Kishōtenketsu arcs, real psych models for dual emotions per NPC, a 12-axis relationship & dam engine, and more."
               ],
               "kind": [
                 "preset"
@@ -171436,6 +171667,8 @@
                 "Haiku",
                 "DeepSeek",
                 "MiniMax",
+                "MiMo",
+                "Xiaomi MiMo",
                 "Chat Completion"
               ],
               "maintainers": [
@@ -171459,7 +171692,7 @@
         "aliases": [
           "SillyTavern",
           "SillyTavern MemoryBooks",
-          "Freaky FrankenSIM"
+          "VEXA"
         ],
         "source": [
           "csdad-1238",
@@ -171502,7 +171735,9 @@
           "Sonnet",
           "Haiku",
           "DeepSeek",
-          "MiniMax"
+          "MiniMax",
+          "MiMo",
+          "Xiaomi MiMo"
         ],
         "maintainers": [
           "tjizzle1258-ship-it"
@@ -171510,7 +171745,7 @@
         "relationships": [
           "SillyTavern",
           "SillyTavern MemoryBooks",
-          "Freaky FrankenSIM",
+          "VEXA",
           "sillytavern-sillytavern",
           "aikohanasaki-sillytavern-memorybooks",
           "ryah-st-freaky-d20-preset"
@@ -181355,8 +181590,8 @@
             "community": {
               "stars": 16,
               "forks": 0,
-              "watchers": 0,
-              "aggregate": 16
+              "watchers": 1,
+              "aggregate": 17
             },
             "repositorySizeKb": 236,
             "license": {
@@ -181365,7 +181600,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-01T10:35:47.602Z",
+            "refreshedAt": "2026-11-24T19:05:47.038Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -184025,7 +184260,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-01T14:25:36.205Z",
+            "refreshedAt": "2026-11-24T19:06:01.311Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -188065,8 +188300,8 @@
             "community": {
               "stars": 16,
               "forks": 0,
-              "watchers": 0,
-              "aggregate": 16
+              "watchers": 1,
+              "aggregate": 17
             },
             "repositorySizeKb": 236,
             "license": {
@@ -188075,7 +188310,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-01T10:35:47.602Z",
+            "refreshedAt": "2026-11-24T19:05:47.038Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -199409,8 +199644,8 @@
             "community": {
               "stars": 16,
               "forks": 0,
-              "watchers": 0,
-              "aggregate": 16
+              "watchers": 1,
+              "aggregate": 17
             },
             "repositorySizeKb": 236,
             "license": {
@@ -199419,7 +199654,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-01T10:35:47.602Z",
+            "refreshedAt": "2026-11-24T19:05:47.038Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -213131,8 +213366,8 @@
             "community": {
               "stars": 16,
               "forks": 0,
-              "watchers": 0,
-              "aggregate": 16
+              "watchers": 1,
+              "aggregate": 17
             },
             "repositorySizeKb": 236,
             "license": {
@@ -213141,7 +213376,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-01T10:35:47.602Z",
+            "refreshedAt": "2026-11-24T19:05:47.038Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -230532,7 +230767,7 @@
               "tooltip": "The published root license is not OSI-approved."
             },
             "preset": null,
-            "refreshedAt": "2026-11-01T10:35:50.524Z",
+            "refreshedAt": "2026-11-24T19:05:53.339Z",
             "staleSince": null,
             "install": null,
             "fork": null,
@@ -233220,7 +233455,7 @@
         },
         {
           "projectId": "ryah-st-freaky-d20-preset",
-          "name": "Freaky FrankenSIM",
+          "name": "VEXA",
           "kind": "preset",
           "primaryFunction": "preset",
           "availability": "available",
@@ -233228,12 +233463,12 @@
           "canonicalUrl": "https://github.com/Ryah/ST-Freaky-D20-Preset",
           "project": {
             "id": "ryah-st-freaky-d20-preset",
-            "name": "Freaky FrankenSIM",
+            "name": "VEXA",
             "kind": "preset",
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "preset",
-            "summary": "The Official Slow-Burn MAX++ Version of Freaky Frankenstein. Utilizes ARC Engine for pacing and plot, Chekhov's Gun for narrative debt, VERY in-depth relationship tracking and NPC emotion calculation",
+            "summary": "The most advanced AI RP preset you can download for free. 3D grid pathfinding, off-screen NPC agendas and Kishōtenketsu arcs, real psych models for dual emotions per NPC, a 12-axis relationship & dam engine, and more.",
             "canonicalUrl": "https://github.com/Ryah/ST-Freaky-D20-Preset",
             "catalogedAt": "2026-07-28T04:01:50.555Z",
             "catalogCohort": "standard",
@@ -233556,6 +233791,11 @@
                   "id": "minimax",
                   "label": "MiniMax",
                   "description": "Designed for MiniMax models."
+                },
+                {
+                  "id": "mimo",
+                  "label": "MiMo",
+                  "description": "Designed for Xiaomi MiMo models."
                 }
               ],
               "completionFormats": [
@@ -233572,7 +233812,7 @@
             "fork": null,
             "search": {
               "title": [
-                "Freaky FrankenSIM"
+                "VEXA"
               ],
               "aliases": [],
               "source": [
@@ -233582,7 +233822,7 @@
                 "https://github.com/Ryah/ST-Freaky-D20-Preset"
               ],
               "summary": [
-                "The Official Slow-Burn MAX++ Version of Freaky Frankenstein. Utilizes ARC Engine for pacing and plot, Chekhov's Gun for narrative debt, VERY in-depth relationship tracking and NPC emotion calculation"
+                "The most advanced AI RP preset you can download for free. 3D grid pathfinding, off-screen NPC agendas and Kishōtenketsu arcs, real psych models for dual emotions per NPC, a 12-axis relationship & dam engine, and more."
               ],
               "kind": [
                 "preset"
@@ -233641,6 +233881,8 @@
                 "Haiku",
                 "DeepSeek",
                 "MiniMax",
+                "MiMo",
+                "Xiaomi MiMo",
                 "Chat Completion"
               ],
               "maintainers": [
@@ -233831,7 +234073,7 @@
           "Hoplight",
           "Merged World Tracker",
           "Wandlight",
-          "Freaky FrankenSIM",
+          "VEXA",
           "Writer's Block 5"
         ],
         "source": [
@@ -233896,7 +234138,7 @@
           "Hoplight",
           "Merged World Tracker",
           "Wandlight",
-          "Freaky FrankenSIM",
+          "VEXA",
           "Writer's Block 5",
           "aikohanasaki-aikobots",
           "aikohanasaki-sillytavern-memorybooks",
@@ -250694,6 +250936,11 @@
           "description": "Designed for MiniMax models."
         },
         {
+          "id": "mimo",
+          "label": "MiMo",
+          "description": "Designed for Xiaomi MiMo models."
+        },
+        {
           "id": "qwen",
           "label": "Qwen",
           "description": "Designed for Qwen-family models."
@@ -250702,11 +250949,6 @@
           "id": "mistral",
           "label": "Mistral",
           "description": "Designed for Mistral-family models."
-        },
-        {
-          "id": "mimo",
-          "label": "MiMo",
-          "description": "Designed for Xiaomi MiMo models."
         }
       ],
       "components": [
@@ -252925,7 +253167,7 @@
         },
         {
           "projectId": "ryah-st-freaky-d20-preset",
-          "name": "Freaky FrankenSIM",
+          "name": "VEXA",
           "kind": "preset",
           "primaryFunction": "preset",
           "availability": "available",
@@ -252933,12 +253175,12 @@
           "canonicalUrl": "https://github.com/Ryah/ST-Freaky-D20-Preset",
           "project": {
             "id": "ryah-st-freaky-d20-preset",
-            "name": "Freaky FrankenSIM",
+            "name": "VEXA",
             "kind": "preset",
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "preset",
-            "summary": "The Official Slow-Burn MAX++ Version of Freaky Frankenstein. Utilizes ARC Engine for pacing and plot, Chekhov's Gun for narrative debt, VERY in-depth relationship tracking and NPC emotion calculation",
+            "summary": "The most advanced AI RP preset you can download for free. 3D grid pathfinding, off-screen NPC agendas and Kishōtenketsu arcs, real psych models for dual emotions per NPC, a 12-axis relationship & dam engine, and more.",
             "canonicalUrl": "https://github.com/Ryah/ST-Freaky-D20-Preset",
             "catalogedAt": "2026-07-28T04:01:50.555Z",
             "catalogCohort": "standard",
@@ -253261,6 +253503,11 @@
                   "id": "minimax",
                   "label": "MiniMax",
                   "description": "Designed for MiniMax models."
+                },
+                {
+                  "id": "mimo",
+                  "label": "MiMo",
+                  "description": "Designed for Xiaomi MiMo models."
                 }
               ],
               "completionFormats": [
@@ -253277,7 +253524,7 @@
             "fork": null,
             "search": {
               "title": [
-                "Freaky FrankenSIM"
+                "VEXA"
               ],
               "aliases": [],
               "source": [
@@ -253287,7 +253534,7 @@
                 "https://github.com/Ryah/ST-Freaky-D20-Preset"
               ],
               "summary": [
-                "The Official Slow-Burn MAX++ Version of Freaky Frankenstein. Utilizes ARC Engine for pacing and plot, Chekhov's Gun for narrative debt, VERY in-depth relationship tracking and NPC emotion calculation"
+                "The most advanced AI RP preset you can download for free. 3D grid pathfinding, off-screen NPC agendas and Kishōtenketsu arcs, real psych models for dual emotions per NPC, a 12-axis relationship & dam engine, and more."
               ],
               "kind": [
                 "preset"
@@ -253346,6 +253593,8 @@
                 "Haiku",
                 "DeepSeek",
                 "MiniMax",
+                "MiMo",
+                "Xiaomi MiMo",
                 "Chat Completion"
               ],
               "maintainers": [
@@ -254942,7 +255191,7 @@
           "SillyTavern Claude Subscription",
           "SillyTavern Character Library",
           "Extension TokenUsage",
-          "Freaky FrankenSIM",
+          "VEXA",
           "SillyTavern-Personage",
           "LLM Tools",
           "SillyTavern-MemoryLayers",
@@ -254997,13 +255246,13 @@
           "Haiku",
           "DeepSeek",
           "MiniMax",
+          "MiMo",
+          "Xiaomi MiMo",
           "Qwen",
           "Alibaba",
           "Tongyi",
           "Mistral",
-          "Mixtral",
-          "MiMo",
-          "Xiaomi MiMo"
+          "Mixtral"
         ],
         "maintainers": [
           "JohnDevKSA"
@@ -255017,7 +255266,7 @@
           "SillyTavern Claude Subscription",
           "SillyTavern Character Library",
           "Extension TokenUsage",
-          "Freaky FrankenSIM",
+          "VEXA",
           "SillyTavern-Personage",
           "LLM Tools",
           "SillyTavern-MemoryLayers",
@@ -274393,7 +274642,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-01T14:25:32.976Z",
+            "refreshedAt": "2026-11-24T19:05:49.883Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -285246,8 +285495,8 @@
             "community": {
               "stars": 16,
               "forks": 0,
-              "watchers": 0,
-              "aggregate": 16
+              "watchers": 1,
+              "aggregate": 17
             },
             "repositorySizeKb": 236,
             "license": {
@@ -285256,7 +285505,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-01T10:35:47.602Z",
+            "refreshedAt": "2026-11-24T19:05:47.038Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -318070,7 +318319,7 @@
         },
         {
           "projectId": "ryah-st-freaky-d20-preset",
-          "name": "Freaky FrankenSIM",
+          "name": "VEXA",
           "kind": "preset",
           "primaryFunction": "preset",
           "availability": "available",
@@ -318078,12 +318327,12 @@
           "canonicalUrl": "https://github.com/Ryah/ST-Freaky-D20-Preset",
           "project": {
             "id": "ryah-st-freaky-d20-preset",
-            "name": "Freaky FrankenSIM",
+            "name": "VEXA",
             "kind": "preset",
             "metadataStatus": "curated",
             "sourceStatus": "healthy",
             "primaryFunction": "preset",
-            "summary": "The Official Slow-Burn MAX++ Version of Freaky Frankenstein. Utilizes ARC Engine for pacing and plot, Chekhov's Gun for narrative debt, VERY in-depth relationship tracking and NPC emotion calculation",
+            "summary": "The most advanced AI RP preset you can download for free. 3D grid pathfinding, off-screen NPC agendas and Kishōtenketsu arcs, real psych models for dual emotions per NPC, a 12-axis relationship & dam engine, and more.",
             "canonicalUrl": "https://github.com/Ryah/ST-Freaky-D20-Preset",
             "catalogedAt": "2026-07-28T04:01:50.555Z",
             "catalogCohort": "standard",
@@ -318406,6 +318655,11 @@
                   "id": "minimax",
                   "label": "MiniMax",
                   "description": "Designed for MiniMax models."
+                },
+                {
+                  "id": "mimo",
+                  "label": "MiMo",
+                  "description": "Designed for Xiaomi MiMo models."
                 }
               ],
               "completionFormats": [
@@ -318422,7 +318676,7 @@
             "fork": null,
             "search": {
               "title": [
-                "Freaky FrankenSIM"
+                "VEXA"
               ],
               "aliases": [],
               "source": [
@@ -318432,7 +318686,7 @@
                 "https://github.com/Ryah/ST-Freaky-D20-Preset"
               ],
               "summary": [
-                "The Official Slow-Burn MAX++ Version of Freaky Frankenstein. Utilizes ARC Engine for pacing and plot, Chekhov's Gun for narrative debt, VERY in-depth relationship tracking and NPC emotion calculation"
+                "The most advanced AI RP preset you can download for free. 3D grid pathfinding, off-screen NPC agendas and Kishōtenketsu arcs, real psych models for dual emotions per NPC, a 12-axis relationship & dam engine, and more."
               ],
               "kind": [
                 "preset"
@@ -318491,6 +318745,8 @@
                 "Haiku",
                 "DeepSeek",
                 "MiniMax",
+                "MiMo",
+                "Xiaomi MiMo",
                 "Chat Completion"
               ],
               "maintainers": [
@@ -322283,7 +322539,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-01T14:25:32.976Z",
+            "refreshedAt": "2026-11-24T19:05:49.883Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -328643,7 +328899,7 @@
           "Saga",
           "Simulation-Blackboard",
           "SillyTavern MemoryBooks",
-          "Freaky FrankenSIM",
+          "VEXA",
           "Casus-Custom-Chatfill-II",
           "ST-Castward",
           "CHAT_CLOSET",
@@ -328753,7 +329009,7 @@
           "Saga",
           "Simulation-Blackboard",
           "SillyTavern MemoryBooks",
-          "Freaky FrankenSIM",
+          "VEXA",
           "Casus-Custom-Chatfill-II",
           "ST-Castward",
           "CHAT_CLOSET",

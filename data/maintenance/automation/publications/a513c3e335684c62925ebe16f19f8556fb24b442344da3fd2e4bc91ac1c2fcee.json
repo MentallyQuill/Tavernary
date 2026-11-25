@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a513c3e335684c62925ebe16f19f8556fb24b442344da3fd2e4bc91ac1c2fcee",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1175839267:prolix-oc-lumiverse-simtracker",
+      "inputDigest": "cd011f91c22a55ee69d85154f271fe620b971e988d86689f94ee032fefed8d50",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-01T10:35:50.524Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1175839267",
+    "identity": "github:1175839267"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45438552663,
+    "sourceSha": "f1d2f186bed56533266ccbb3ea1eda7e13af606e"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/prolix-oc-lumiverse-simtracker.json",
+      "sha256": "3d62a11d945302c5096598e3c77c51d7136f11f7fb8f8df71d9382938fa5b19c",
+      "gitBlobSha": "6d4c7ec8d1615615bda81aaa3248c059cbe3303d"
+    }
+  ]
+}

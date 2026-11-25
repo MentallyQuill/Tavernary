@@ -9,18 +9,33 @@
     "url": "https://github.com/KritBlade/mvu-helper",
     "description": "Game Logic Engine Framework for SillyTavern built on MVU",
     "default_branch": "main",
-    "head_sha": "06fab1d7fefbe6bb7f4597758e39cd0b2885bb65",
-    "head_committed_at": "2026-11-01T13:29:35.000Z",
+    "head_sha": "2bfe4a9418a8e62f9a8e394c909824dc3ec24168",
+    "head_committed_at": "2026-11-23T11:46:19.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-09-30T14:10:13.000Z",
-    "size_kb": 9701
+    "size_kb": 10622
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-30T20:39:16.000Z",
+    "latest_source_activity_at": "2026-11-22T17:33:00.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-11-16",
+        "latest_at": "2026-11-22T17:33:00.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-09",
+        "latest_at": "2026-11-15T22:53:12.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-05T19:22:17.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-26",
         "latest_at": "2026-10-30T20:39:16.000Z",
@@ -50,23 +65,24 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-11-01T13:56:34.041Z",
+    "baseline_completed_at": "2026-11-24T19:03:18.356Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "06fab1d7fefbe6bb7f4597758e39cd0b2885bb65"
+    "evidence_head_sha": "2bfe4a9418a8e62f9a8e394c909824dc3ec24168"
   },
   "community": {
-    "stars_count": 11,
+    "stars_count": 19,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 11
+    "aggregate": 19
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-11-01T13:56:34.041Z",
+  "refreshed_at": "2026-11-24T19:06:01.831Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "KritBlade", "type": "User", "provider": "github" }
@@ -74,8 +90,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-11-01T13:56:34.041Z",
+    "refreshed_at": "2026-11-24T19:03:18.356Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }
