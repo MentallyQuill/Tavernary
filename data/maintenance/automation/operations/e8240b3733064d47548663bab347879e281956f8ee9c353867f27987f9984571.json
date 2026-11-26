@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e8240b3733064d47548663bab347879e281956f8ee9c353867f27987f9984571",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1087049931:dmitryplyaskin-sillytavern-user-persona-extended",
+      "inputDigest": "b3619e8a4f11fe725d4eced26b911e25b867c42fe1ddf56ec949fb8b4dd1c64a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-03T09:11:30.646Z",
+    "nextEligibleAt": null,
+    "expectedSha": "97dc9ed4d16d44b22b7e1763797bdf49323c25e2",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-26T17:11:00.101Z",
+  "completedAt": null
+}
