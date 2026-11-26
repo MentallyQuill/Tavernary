@@ -49,24 +49,24 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stars_count": 237,
-    "forks_count": 29,
+    "stars_count": 238,
+    "forks_count": 32,
     "watchers_count": 6,
-    "aggregate": 272
+    "aggregate": 276
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-11-03T06:44:29.526Z",
+  "refreshed_at": "2026-11-26T06:38:33.667Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "Samueras", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-11-03T06:42:25.280Z",
+    "refreshed_at": "2026-11-26T06:36:29.861Z",
     "stale_since": null
   }
 }
