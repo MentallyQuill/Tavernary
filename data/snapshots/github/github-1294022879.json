@@ -9,21 +9,26 @@
     "url": "https://github.com/japolino/inlay-illustrator",
     "description": "Persistent character image generation with dynamic visual memory, context-aware prompt parsing, inline chat images, asset mode, Anima/ComfyUI prompt output, and optional tag cleanup.",
     "default_branch": "stable",
-    "head_sha": "e523c413e32633c95281618dc6f5e167e37994db",
-    "head_committed_at": "2026-11-02T01:17:26.000Z",
+    "head_sha": "17807b50a8b3dcea3ff138714d7503316bcf0ece",
+    "head_committed_at": "2026-11-13T22:31:20.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-08T18:09:20.000Z",
-    "size_kb": 11479
+    "size_kb": 12730
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-11-02T01:17:26.000Z",
+    "latest_source_activity_at": "2026-11-13T22:31:20.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-11-09",
+        "latest_at": "2026-11-13T22:31:20.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-11-02",
-        "latest_at": "2026-11-02T01:17:26.000Z",
+        "latest_at": "2026-11-08T00:52:01.000Z",
         "precision": "exact"
       },
       {
@@ -60,24 +65,14 @@
         "week_start": "2026-09-07",
         "latest_at": "2026-09-10T19:23:40.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-31",
-        "latest_at": "2026-08-31T03:18:56.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-17",
-        "latest_at": "2026-08-23T03:13:09.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-11-02T17:16:13.092Z",
+    "baseline_completed_at": "2026-11-26T05:25:42.638Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "e523c413e32633c95281618dc6f5e167e37994db"
+    "evidence_head_sha": "17807b50a8b3dcea3ff138714d7503316bcf0ece"
   },
   "community": {
     "stars_count": 6,
@@ -86,7 +81,7 @@
     "aggregate": 9
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-11-02T17:18:28.506Z",
+  "refreshed_at": "2026-11-26T05:27:41.213Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -97,7 +92,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-11-02T17:16:13.092Z",
+    "refreshed_at": "2026-11-26T05:25:42.638Z",
     "stale_since": null
   }
 }
