@@ -9,30 +9,30 @@
     "url": "https://github.com/virgilianshailer/direct-ask",
     "description": "A SillyTavern extension that lets you ask the AI questions out-of-character, interview any character directly, inject narrator events into the RP chat, attach files and images, and use quick-access shortcut buttons — all without interrupting your roleplay. Video demo https://youtu.be/CInJ8DgEYdI",
     "default_branch": "main",
-    "head_sha": "02097ce6397008e00ae2a3cd0aa3458bb9211d27",
-    "head_committed_at": "2026-05-24T04:29:08.000Z",
+    "head_sha": "79fe8d1e672fa67a81aa7069c2a3e07c50ed38eb",
+    "head_committed_at": "2026-11-22T11:40:49.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-17T09:33:14.000Z",
-    "size_kb": 76
+    "size_kb": 82
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-05-24T04:29:08.000Z",
+    "latest_source_activity_at": "2026-11-22T11:40:49.000Z",
     "source_weeks": [
       {
-        "week_start": "2026-05-18",
-        "latest_at": "2026-05-24T04:29:08.000Z",
+        "week_start": "2026-11-16",
+        "latest_at": "2026-11-22T11:40:49.000Z",
         "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-04T08:56:51.523Z",
+    "baseline_completed_at": "2026-11-26T14:09:14.144Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "02097ce6397008e00ae2a3cd0aa3458bb9211d27"
+    "evidence_head_sha": "79fe8d1e672fa67a81aa7069c2a3e07c50ed38eb"
   },
   "community": {
     "stars_count": 9,
@@ -45,7 +45,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-11-03T06:55:31.478Z",
+  "refreshed_at": "2026-11-26T14:11:09.373Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -55,7 +55,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-11-03T06:53:21.699Z",
+    "refreshed_at": "2026-11-26T14:09:14.144Z",
     "stale_since": null
   }
 }
