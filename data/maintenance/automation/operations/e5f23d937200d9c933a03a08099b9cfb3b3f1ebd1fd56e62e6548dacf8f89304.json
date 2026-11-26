@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e5f23d937200d9c933a03a08099b9cfb3b3f1ebd1fd56e62e6548dacf8f89304",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-932766847:rivelledays-sillytavern-moonlitechoestheme",
+      "inputDigest": "2dbab82ec5d5fc507a532dbc1dcd556a1bbb5c7fc372dbcc7d4af3a341e403e2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-03T15:25:15.859Z",
+    "nextEligibleAt": "2026-11-27T17:04:33.258Z",
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "configuration",
+        "reasonCode": "budget-exhausted"
+      },
+      "transientAttempts": 4,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-26T17:04:33.258Z",
+  "completedAt": null
+}
