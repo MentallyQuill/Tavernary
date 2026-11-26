@@ -5,12 +5,9 @@
   "source_identity": "github:vibecoder9000/extension-tokenusage",
   "evidence_fingerprint": "482eccd0465346e4444b7c35359bbc12445781a3defb19815f8b708d3f4d275a",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-03T12:18:56.284Z",
-  "retry": {
-    "attempts": 6,
-    "last_failure_at": "2026-09-03T12:18:56.284Z"
-  },
+  "reviewed_at": "2026-11-26T16:17:49.190Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

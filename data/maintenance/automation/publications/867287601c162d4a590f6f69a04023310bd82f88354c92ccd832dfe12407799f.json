@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "867287601c162d4a590f6f69a04023310bd82f88354c92ccd832dfe12407799f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1126135302:vibecoder9000-extension-tokenusage",
+      "inputDigest": "ecb935df38e1fb234c09101e5f5a98cc8adccf1a535611621dfe89caf3158096",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-03T09:11:18.469Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1126135302",
+    "identity": "github:1126135302"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45857119927,
+    "sourceSha": "bcee71f2d0c147fae46020cfaf86d892d8e22059"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/vibecoder9000-extension-tokenusage.json",
+      "sha256": "1ee35fa99fd935fa54e060f14ebb02cd2c7423561d670e3bd9c793ee5c5a6a59",
+      "gitBlobSha": "82038a1cb68bb530fbe5c1c59ddc42c7f677d1f7"
+    }
+  ]
+}

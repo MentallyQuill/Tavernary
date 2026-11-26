@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "116b0a15c2fc3a3682e025f3146d48a41b8f66429744f06e18e8fdd521e49e0d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1218770712:noineri-vibe-tavern",
+      "inputDigest": "4514c6b68e46c4d46a226664c5e809fd3023e4c7e73ee370df368f35bd3c42b3",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-03T09:11:21.957Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1218770712",
+    "identity": "github:1218770712"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45858420581,
+    "sourceSha": "97177bd4aecb7b5c04cb8699435a06ba0c68ed7e"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/noineri-vibe-tavern.json",
+      "sha256": "4ea86e9dd32904e36e1ddadf6d1e984c19d55c805b97c229feaf422581ff0706",
+      "gitBlobSha": "fe82881f38a4c23655aeeacee767b31da5ad0566"
+    }
+  ]
+}

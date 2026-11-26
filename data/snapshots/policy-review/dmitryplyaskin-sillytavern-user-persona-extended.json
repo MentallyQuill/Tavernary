@@ -5,12 +5,9 @@
   "source_identity": "github:dmitryplyaskin/sillytavern-user-persona-extended",
   "evidence_fingerprint": "34ef1e135c5f2cbd6d151964106ad0585fa639a4c7fd099cfa878ef120f4550e",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-09-08T12:20:05.658Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-09-08T12:20:05.658Z"
-  },
+  "reviewed_at": "2026-11-26T16:35:08.243Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

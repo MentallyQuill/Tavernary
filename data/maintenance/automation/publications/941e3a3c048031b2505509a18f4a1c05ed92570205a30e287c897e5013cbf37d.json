@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "941e3a3c048031b2505509a18f4a1c05ed92570205a30e287c897e5013cbf37d",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1314154761:countcandy-sillytavern-extension-candyexpressions",
+      "inputDigest": "3afb8ca52c12823c101ee77087229a9a9f61e0428e96c4ffe13b4b78776f7e19",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-03T15:25:06.983Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1314154761",
+    "identity": "github:1314154761"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45862239476,
+    "sourceSha": "1fda2b2583b962bd2828a84a31906f2da286a505"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/countcandy-sillytavern-extension-candyexpressions.json",
+      "sha256": "1cc8c49940e1ec4e34705d7c10ac3a3b6a2679a2664c2a07924e49fc22456b58",
+      "gitBlobSha": "20e6495a0a134a395d6dc64a8b6e72d87d9b9716"
+    }
+  ]
+}

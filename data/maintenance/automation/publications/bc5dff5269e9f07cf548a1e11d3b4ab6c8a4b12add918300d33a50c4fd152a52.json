@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "bc5dff5269e9f07cf548a1e11d3b4ab6c8a4b12add918300d33a50c4fd152a52",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1298579218:owler-tavern-context-image-generation",
+      "inputDigest": "aca3525c8b9e38623103b6ab0f76eb7b7b73816c518e44fe6a63f6139656fd1e",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-03T09:13:47.047Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1298579218",
+    "identity": "github:1298579218"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45861004201,
+    "sourceSha": "e9eb43e63b5795031fa0278dd52231590b846a9f"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/owler-tavern-context-image-generation.json",
+      "sha256": "988016ae02838f3f50fc01e43a11411bae7ef853d817ffd45e1626661f8f60bf",
+      "gitBlobSha": "fb03f9f0a649b8e479a549766014309963e71a47"
+    }
+  ]
+}

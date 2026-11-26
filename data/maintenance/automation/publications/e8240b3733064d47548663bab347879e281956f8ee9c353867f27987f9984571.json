@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e8240b3733064d47548663bab347879e281956f8ee9c353867f27987f9984571",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1087049931:dmitryplyaskin-sillytavern-user-persona-extended",
+      "inputDigest": "b3619e8a4f11fe725d4eced26b911e25b867c42fe1ddf56ec949fb8b4dd1c64a",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-03T09:11:30.646Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1087049931",
+    "identity": "github:1087049931"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45859829691,
+    "sourceSha": "457e13a899d6eb6cee9fad6555fe57cd77bf6d5b"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/dmitryplyaskin-sillytavern-user-persona-extended.json",
+      "sha256": "e9aeb1e937e94f0a466721c43efad6cabe01d6be11ce05035b5699e4b813822c",
+      "gitBlobSha": "2bda2dad531597aa612b906b5f4a86a6ef042c43"
+    }
+  ]
+}

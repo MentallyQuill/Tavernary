@@ -3,14 +3,11 @@
   "project_id": "owler-tavern-context-image-generation",
   "source_id": "github-1298579218",
   "source_identity": "github:owler-tavern/context-image-generation",
-  "evidence_fingerprint": "153a062f1f88b26930badd6aa51813720881977a9dea06b7cedc197e4de2df01",
+  "evidence_fingerprint": "56bb99662cf7e42bffd7793fd02a5f82f13baec6ec9f723a543490b87d0491ea",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-10-02T14:12:41.428Z",
-  "retry": {
-    "attempts": 3,
-    "last_failure_at": "2026-10-02T14:12:41.428Z"
-  },
+  "reviewed_at": "2026-11-26T16:42:12.293Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

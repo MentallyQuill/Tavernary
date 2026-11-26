@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "963f26432fe6d65aaf090d1d37f598f947887ddd662f5941c763be6a213444e2",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1125809015:getfroggyhoe-universal-immersion-engine",
+      "inputDigest": "77ac3e6e055897f6f7dcad83ffc88355aff9b501107946a1e44162bf5d9efed6",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-03T06:56:47.637Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1125809015",
+    "identity": "github:1125809015"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45855952946,
+    "sourceSha": "4c2cc81ba40d1b57e020430b1d7003b6998c1a81"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/getfroggyhoe-universal-immersion-engine.json",
+      "sha256": "575dd67179b5123bcbd8a07aa773376c837b9b91528a4cb5574eb7c18318bcee",
+      "gitBlobSha": "a2eaaace78654f8ed87bc74bae2a3dd1c2f0311f"
+    }
+  ]
+}

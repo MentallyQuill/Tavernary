@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f220b445e01e5b07589a064ce30dc075c8d395634afc08909a59c1541268b0c8",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1303183395:archkr-lumiverse-lumimind",
+      "inputDigest": "8b46d7436f356d633c1869a73db54e78e5f0d46095a6b63d4984c0c14034d1a8",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-03T06:54:24.750Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1303183395",
+    "identity": "github:1303183395"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45853616678,
+    "sourceSha": "37a63b56405286192a43c07ad542d807ea489d7e"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/archkr-lumiverse-lumimind.json",
+      "sha256": "91d908b008634e2a9fb308306b70fcd6f55b96ad1c88bd3812ef05aaced49f56",
+      "gitBlobSha": "604574a1a1e0203547e5680d58a5626eea861475"
+    }
+  ]
+}

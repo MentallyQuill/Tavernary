@@ -5,12 +5,9 @@
   "source_identity": "github:getfroggyhoe/universal-immersion-engine",
   "evidence_fingerprint": "8b0fb3cd63fd12960561bb20115e53a043c2642645cf9fab90c6490059b084ac",
   "policy_version": "2026-07-29",
-  "status": "review-unavailable",
+  "status": "clear",
   "category": null,
-  "reviewed_at": "2026-08-28T19:38:42.182Z",
-  "retry": {
-    "attempts": 4,
-    "last_failure_at": "2026-08-28T19:38:42.182Z"
-  },
+  "reviewed_at": "2026-11-26T16:10:27.271Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
   "maintenance_issue_number": null
 }

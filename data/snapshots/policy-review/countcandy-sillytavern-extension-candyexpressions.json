@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "countcandy-sillytavern-extension-candyexpressions",
+  "source_id": "github-1314154761",
+  "source_identity": "github:countcandy/sillytavern-extension-candyexpressions",
+  "evidence_fingerprint": "461dce6bacadfb8fcc41db185e49aec366b39cc45dadcc2b2c3b5bc8d6b453a5",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-26T16:51:02.241Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}
