@@ -7980,7 +7980,7 @@
         "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-11-02T17:18:08.818Z",
+      "refreshedAt": "2026-11-26T01:29:32.776Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -32198,6 +32198,157 @@
       }
     },
     {
+      "id": "deiomo-voyageofhopesanddreams",
+      "name": "VoyageOfHopesAndDreams",
+      "kind": "preset",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "preset",
+      "summary": "Undertale/Deltarune-inspired RPG preset for SillyTavern built on u/Kahvana's Voyage. Blends turn-based FIGHT, ACT, ITEM, and MERCY combat with Voyage's A-Life and Nemesis systems for a living world of self-directed NPCs.",
+      "canonicalUrl": "https://github.com/deiomo/VoyageOfHopesAndDreams",
+      "catalogedAt": "2026-11-25T21:06:33.857Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "add-rpg-gameplay",
+          "label": "Add RPG gameplay",
+          "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
+          "facet": "goal"
+        },
+        {
+          "id": "track-characters-and-world-state",
+          "label": "Track characters and world state",
+          "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+          "facet": "goal"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "fb13fafc9b775cde5f358d5314ba794eb2420f42",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "deiomo"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-24T04:12:37.000Z",
+        "activeWeeks12": 2,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 2,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 2
+      },
+      "repositorySizeKb": 162,
+      "license": {
+        "status": "missing",
+        "label": "Missing",
+        "tooltip": "No license file was found in the repository root."
+      },
+      "preset": {
+        "version": null,
+        "publishedAt": null,
+        "artifactSizeBytes": null,
+        "modelFamilies": [
+          {
+            "id": "model-agnostic",
+            "label": "Model-Agnostic",
+            "description": "Designed to work across model families."
+          }
+        ],
+        "completionFormats": [
+          {
+            "id": "chat-completion",
+            "label": "Chat Completion",
+            "description": "Uses role-based chat messages."
+          }
+        ]
+      },
+      "refreshedAt": "2026-11-25T21:06:33.857Z",
+      "staleSince": null,
+      "install": null,
+      "fork": null,
+      "search": {
+        "title": [
+          "VoyageOfHopesAndDreams"
+        ],
+        "aliases": [],
+        "source": [
+          "deiomo-voyageofhopesanddreams",
+          "github-1459569720",
+          "deiomo/VoyageOfHopesAndDreams",
+          "https://github.com/deiomo/VoyageOfHopesAndDreams"
+        ],
+        "summary": [
+          "Undertale/Deltarune-inspired RPG preset for SillyTavern built on u/Kahvana's Voyage. Blends turn-based FIGHT, ACT, ITEM, and MERCY combat with Voyage's A-Life and Nemesis systems for a living world of self-directed NPCs."
+        ],
+        "kind": [
+          "preset"
+        ],
+        "primaryFunction": [
+          "System Preset"
+        ],
+        "tags": [
+          "Add RPG gameplay",
+          "tabletop mechanics",
+          "game master tools",
+          "RPG systems",
+          "Track characters and world state",
+          "state tracking",
+          "stat trackers",
+          "world state tracking"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [
+          "Model-Agnostic",
+          "universal",
+          "any model",
+          "Chat Completion"
+        ],
+        "maintainers": [
+          "deiomo"
+        ],
+        "relationships": []
+      }
+    },
+    {
       "id": "deiomo-writer-s-block-unlimited",
       "name": "Writer-s-Block-Unlimited",
       "kind": "preset",
@@ -53206,10 +53357,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 41,
+        "stars": 43,
         "forks": 0,
         "watchers": 2,
-        "aggregate": 43
+        "aggregate": 45
       },
       "repositorySizeKb": 30,
       "license": {
@@ -53218,7 +53369,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-02T17:18:17.210Z",
+      "refreshedAt": "2026-11-26T01:31:23.818Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -69381,9 +69532,9 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 52,
-        "forks": 13,
+        "forks": 15,
         "watchers": 3,
-        "aggregate": 68
+        "aggregate": 70
       },
       "repositorySizeKb": 212,
       "license": {
@@ -69392,7 +69543,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-02T17:18:20.117Z",
+      "refreshedAt": "2026-11-26T01:30:34.442Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -71114,9 +71265,9 @@
       "latestReleaseAt": null,
       "community": {
         "stars": 4,
-        "forks": 2,
+        "forks": 1,
         "watchers": 0,
-        "aggregate": 6
+        "aggregate": 5
       },
       "repositorySizeKb": 4389,
       "license": {
@@ -71125,7 +71276,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-02T17:18:26.312Z",
+      "refreshedAt": "2026-11-26T01:33:34.281Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -108445,7 +108596,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-02T17:18:01.691Z",
+      "refreshedAt": "2026-11-26T01:27:34.978Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -238966,7 +239117,7 @@
               "tooltip": "The published root license is not OSI-approved."
             },
             "preset": null,
-            "refreshedAt": "2026-11-02T17:18:08.818Z",
+            "refreshedAt": "2026-11-26T01:29:32.776Z",
             "staleSince": null,
             "install": null,
             "fork": null,
@@ -262661,9 +262812,9 @@
             "latestReleaseAt": null,
             "community": {
               "stars": 52,
-              "forks": 13,
+              "forks": 15,
               "watchers": 3,
-              "aggregate": 68
+              "aggregate": 70
             },
             "repositorySizeKb": 212,
             "license": {
@@ -262672,7 +262823,7 @@
               "tooltip": "No license file was found in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-02T17:18:20.117Z",
+            "refreshedAt": "2026-11-26T01:30:34.442Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -276955,10 +277106,10 @@
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 41,
+              "stars": 43,
               "forks": 0,
               "watchers": 2,
-              "aggregate": 43
+              "aggregate": 45
             },
             "repositorySizeKb": 30,
             "license": {
@@ -276967,7 +277118,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-02T17:18:17.210Z",
+            "refreshedAt": "2026-11-26T01:31:23.818Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -324863,9 +325014,9 @@
             "latestReleaseAt": null,
             "community": {
               "stars": 4,
-              "forks": 2,
+              "forks": 1,
               "watchers": 0,
-              "aggregate": 6
+              "aggregate": 5
             },
             "repositorySizeKb": 4389,
             "license": {
@@ -324874,7 +325025,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-02T17:18:26.312Z",
+            "refreshedAt": "2026-11-26T01:33:34.281Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
