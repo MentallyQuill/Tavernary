@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "f6a65e2ee1196c2b5b3023d78b9f1e1ab0d5bb2f58c4ca2f40a0839b21fc2504",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1234094202:gogutop-sillytavern-doglikeyou",
+      "inputDigest": "9240b66327d523c638e0ac4c66bea292043b1cb9f37f2d2c7d3a881e732f1ea5",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-03T06:54:55.040Z",
+    "nextEligibleAt": null,
+    "expectedSha": "97dc9ed4d16d44b22b7e1763797bdf49323c25e2",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-26T17:11:00.101Z",
+  "completedAt": null
+}
