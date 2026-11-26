@@ -9,68 +9,48 @@
     "url": "https://github.com/Archkr/Lumiverse-LumiMind",
     "description": "WIP",
     "default_branch": "main",
-    "head_sha": "02bf70d68b9f1ce69b4118b434be0196ed6c3710",
-    "head_committed_at": "2026-09-18T04:08:01.000Z",
+    "head_sha": "0ae7529402ba42efb50990f748b022dbcb4532c3",
+    "head_committed_at": "2026-11-23T16:12:27.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-16T19:45:15.000Z",
-    "size_kb": 1363
+    "size_kb": 1365
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-18T04:08:01.000Z",
+    "latest_source_activity_at": "2026-11-23T16:12:27.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-11-23",
+        "latest_at": "2026-11-23T16:12:27.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-14",
         "latest_at": "2026-09-18T04:08:01.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-24",
-        "latest_at": "2026-08-26T01:29:42.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-03",
-        "latest_at": "2026-08-06T03:15:22.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-27",
-        "latest_at": "2026-07-29T02:17:48.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-20",
-        "latest_at": "2026-07-22T23:27:32.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-13",
-        "latest_at": "2026-07-18T23:42:43.000Z",
         "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-15T12:43:56.161Z",
+    "baseline_completed_at": "2026-11-26T17:51:03.582Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "02bf70d68b9f1ce69b4118b434be0196ed6c3710"
+    "evidence_head_sha": "0ae7529402ba42efb50990f748b022dbcb4532c3"
   },
   "community": {
     "stars_count": 6,
-    "forks_count": 1,
+    "forks_count": 2,
     "watchers_count": 1,
-    "aggregate": 8
+    "aggregate": 9
   },
   "license": {
     "status": "proprietary",
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-11-03T06:54:24.750Z",
+  "refreshed_at": "2026-11-26T17:52:53.861Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -78,7 +58,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-11-03T06:52:23.171Z",
+    "refreshed_at": "2026-11-26T17:51:03.582Z",
     "stale_since": null
   }
 }
