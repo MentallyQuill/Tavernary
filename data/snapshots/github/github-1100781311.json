@@ -9,18 +9,33 @@
     "url": "https://github.com/kangjoseph90/Risu-Antigravity",
     "description": "RisuAI Plugin - A plugin powered by Google Antigravity",
     "default_branch": "main",
-    "head_sha": "e6a06b144aa293e07ee62a5dd9b74f9078e68420",
-    "head_committed_at": "2026-10-16T07:03:04.000Z",
+    "head_sha": "abec8e73025282f050a2f2935ef33bc8ee9e418a",
+    "head_committed_at": "2026-11-24T02:14:52.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-11-20T18:44:35.000Z",
-    "size_kb": 381
+    "size_kb": 594
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-16T07:03:04.000Z",
+    "latest_source_activity_at": "2026-11-24T02:14:52.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-11-23",
+        "latest_at": "2026-11-24T02:14:52.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-16",
+        "latest_at": "2026-11-19T02:16:23.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-11-09",
+        "latest_at": "2026-11-13T07:45:29.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-12",
         "latest_at": "2026-10-16T07:03:04.000Z",
@@ -38,20 +53,20 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-10-16T07:03:34.000Z",
+    "latest_release_at": "2026-11-24T02:17:07.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-11-04T03:36:36.415Z",
+    "baseline_completed_at": "2026-11-27T02:10:43.654Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "e6a06b144aa293e07ee62a5dd9b74f9078e68420"
+    "evidence_head_sha": "abec8e73025282f050a2f2935ef33bc8ee9e418a"
   },
   "community": {
-    "stars_count": 12,
-    "forks_count": 3,
+    "stars_count": 13,
+    "forks_count": 2,
     "watchers_count": 1,
     "aggregate": 16
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-11-04T03:38:38.591Z",
+  "refreshed_at": "2026-11-27T02:12:21.451Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -62,7 +77,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-11-04T03:36:36.415Z",
+    "refreshed_at": "2026-11-27T02:10:43.654Z",
     "stale_since": null
   }
 }
