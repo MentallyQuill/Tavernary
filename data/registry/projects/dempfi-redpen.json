@@ -1,0 +1,28 @@
+{
+  "schema_version": 6,
+  "id": "dempfi-redpen",
+  "name": "redpen",
+  "kind": "extension",
+  "summary": "Deletes slop from model replies with a small classifier that runs in your browser. It only cuts and never rewrites.",
+  "metadata_status": "curated",
+  "source_id": "github-1474477209",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [
+    "local-first",
+    "mobile-friendly",
+    "model-agnostic",
+    "non-destructive"
+  ],
+  "cataloged_at": "2026-11-27T17:02:13.508Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "manual", "note": "Verified repository owner selection." }
+  }
+}
