@@ -12300,7 +12300,7 @@
       "name": "SillyTavern-NextActions",
       "kind": "extension",
       "metadataStatus": "curated",
-      "sourceStatus": "healthy",
+      "sourceStatus": "stale",
       "primaryFunction": "interface-workflow",
       "summary": "Render clickable next-action buttons from structured tags in SillyTavern responses.",
       "canonicalUrl": "https://github.com/Atlas4285/SillyTavern-NextActions",
@@ -12317,8 +12317,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "5408351c6495f2a0bfe9580f869f55b137f705a0",
+        "freshness": "unavailable",
+        "currentSha": null,
         "report": {
           "reportId": "1f99d90a586207cd415141c49740e33974c4a1b2274a3962e683cf31d9f0957b",
           "riskLevel": "low",
@@ -12501,14 +12501,8 @@
       },
       "preset": null,
       "refreshedAt": "2026-11-03T15:38:59.793Z",
-      "staleSince": null,
-      "install": {
-        "kind": "sillytavern-extension-git",
-        "repositoryUrl": "https://github.com/Atlas4285/SillyTavern-NextActions.git",
-        "branch": null,
-        "manifestPath": "manifest.json",
-        "folderName": "SillyTavern-NextActions"
-      },
+      "staleSince": "2026-11-27T00:41:44.345Z",
+      "install": null,
       "fork": null,
       "search": {
         "title": [
@@ -23582,8 +23576,8 @@
       "tavernKeeper": {
         "state": "teal",
         "riskLevel": "low",
-        "freshness": "current",
-        "currentSha": "9698e78125e682b602fa7de4a90f4aa25ce8a791",
+        "freshness": "stale",
+        "currentSha": "d9e5aecf8bd11d9f6b3f874d13bbdf7d0029e776",
         "report": {
           "reportId": "8ef84bbc2080d0258acc97975cecda8796a9724609a84e3145650c22d811ccf7",
           "riskLevel": "low",
@@ -23694,8 +23688,8 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-10T14:21:27.000Z",
-        "activeWeeks12": 2,
+        "latestSourceActivityAt": "2026-11-11T19:15:52.000Z",
+        "activeWeeks12": 3,
         "weeklyActivity": [
           false,
           false,
@@ -23706,28 +23700,28 @@
           false,
           false,
           false,
-          false,
+          true,
           false,
           false
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
-      "latestReleaseAt": "2026-10-10T14:28:42.000Z",
+      "latestReleaseAt": "2026-11-11T17:36:35.000Z",
       "community": {
         "stars": 1,
         "forks": 0,
         "watchers": 0,
         "aggregate": 1
       },
-      "repositorySizeKb": 829,
+      "repositorySizeKb": 1084,
       "license": {
         "status": "osi-approved",
         "label": "MIT",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-03T15:39:00.891Z",
+      "refreshedAt": "2026-11-27T00:45:07.209Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -103625,10 +103619,10 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 36,
+        "stars": 40,
         "forks": 3,
         "watchers": 2,
-        "aggregate": 41
+        "aggregate": 45
       },
       "repositorySizeKb": 19367,
       "license": {
@@ -103637,7 +103631,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-03T15:37:51.632Z",
+      "refreshedAt": "2026-11-27T00:44:18.608Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -239501,8 +239495,8 @@
             "tavernKeeper": {
               "state": "teal",
               "riskLevel": "low",
-              "freshness": "current",
-              "currentSha": "9698e78125e682b602fa7de4a90f4aa25ce8a791",
+              "freshness": "stale",
+              "currentSha": "d9e5aecf8bd11d9f6b3f874d13bbdf7d0029e776",
               "report": {
                 "reportId": "8ef84bbc2080d0258acc97975cecda8796a9724609a84e3145650c22d811ccf7",
                 "riskLevel": "low",
@@ -239613,8 +239607,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-10-10T14:21:27.000Z",
-              "activeWeeks12": 2,
+              "latestSourceActivityAt": "2026-11-11T19:15:52.000Z",
+              "activeWeeks12": 3,
               "weeklyActivity": [
                 false,
                 false,
@@ -239625,28 +239619,28 @@
                 false,
                 false,
                 false,
-                false,
+                true,
                 false,
                 false
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
-            "latestReleaseAt": "2026-10-10T14:28:42.000Z",
+            "latestReleaseAt": "2026-11-11T17:36:35.000Z",
             "community": {
               "stars": 1,
               "forks": 0,
               "watchers": 0,
               "aggregate": 1
             },
-            "repositorySizeKb": 829,
+            "repositorySizeKb": 1084,
             "license": {
               "status": "osi-approved",
               "label": "MIT",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-03T15:39:00.891Z",
+            "refreshedAt": "2026-11-27T00:45:07.209Z",
             "staleSince": null,
             "install": null,
             "fork": null,
