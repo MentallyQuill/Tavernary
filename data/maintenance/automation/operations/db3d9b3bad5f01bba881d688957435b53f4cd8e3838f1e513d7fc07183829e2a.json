@@ -8,13 +8,13 @@
       "inputDigest": "67f91fee596ffa58f99f053451eae3280927cee0199852caba437747a99da1cd",
       "policyVersion": "2026-07-29"
     },
-    "stage": "admitted",
+    "stage": "published",
     "createdAt": "2026-11-04T15:39:23.589Z",
-    "nextEligibleAt": "2026-11-27T07:30:53.164Z",
-    "expectedSha": null,
+    "nextEligibleAt": null,
+    "expectedSha": "8ecc03becfe912bed676d486c67d2a0e24a75398",
     "workerRunId": null,
     "retry": null
   },
-  "updatedAt": "2026-11-27T07:15:53.164Z",
+  "updatedAt": "2026-11-27T07:37:01.816Z",
   "completedAt": null
 }
