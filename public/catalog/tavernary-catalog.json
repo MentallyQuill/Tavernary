@@ -15215,8 +15215,8 @@
       "community": {
         "stars": 17,
         "forks": 3,
-        "watchers": 0,
-        "aggregate": 20
+        "watchers": 1,
+        "aggregate": 21
       },
       "repositorySizeKb": 234,
       "license": {
@@ -15225,7 +15225,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-05T03:19:13.646Z",
+      "refreshedAt": "2026-11-27T17:38:04.345Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -30567,7 +30567,7 @@
         "state": "gray",
         "riskLevel": null,
         "freshness": "unassessed",
-        "currentSha": "fff9af0333be97697be2313981699ab0ce35c236",
+        "currentSha": "85dc99089e3fcc9d3a0aafc085564bd642895261",
         "report": null,
         "history": [],
         "historyUrl": null
@@ -30705,11 +30705,6 @@
           },
           {
             "provider": "github",
-            "login": "anupamme",
-            "botOrAi": false
-          },
-          {
-            "provider": "github",
             "login": "calm-prussian",
             "botOrAi": false
           },
@@ -30719,12 +30714,12 @@
             "botOrAi": false
           }
         ],
-        "humanContributorCount": 25,
+        "humanContributorCount": 24,
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-10-22T21:19:54.000Z",
-        "activeWeeks12": 7,
+        "latestSourceActivityAt": "2026-11-09T08:23:33.000Z",
+        "activeWeeks12": 8,
         "weeklyActivity": [
           true,
           true,
@@ -30735,7 +30730,7 @@
           true,
           false,
           false,
-          false,
+          true,
           false,
           false
         ],
@@ -30744,19 +30739,19 @@
       },
       "latestReleaseAt": "2026-10-22T10:27:21.000Z",
       "community": {
-        "stars": 2198,
-        "forks": 184,
-        "watchers": 9,
-        "aggregate": 2391
+        "stars": 2450,
+        "forks": 209,
+        "watchers": 10,
+        "aggregate": 2669
       },
-      "repositorySizeKb": 78495,
+      "repositorySizeKb": 103425,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-05T03:03:05.681Z",
+      "refreshedAt": "2026-11-27T17:38:12.707Z",
       "staleSince": null,
       "install": null,
       "fork": null,
@@ -30817,7 +30812,6 @@
           "wynx1123",
           "Theater-ahyeon",
           "RebootFlume",
-          "anupamme",
           "calm-prussian",
           "xnshf"
         ],
@@ -32693,6 +32687,160 @@
           "Extension-ProviderExample",
           "sillytavern-extension-providerexample"
         ]
+      }
+    },
+    {
+      "id": "dempfi-redpen",
+      "name": "redpen",
+      "kind": "extension",
+      "metadataStatus": "curated",
+      "sourceStatus": "healthy",
+      "primaryFunction": "generation-reasoning",
+      "summary": "Deletes slop from model replies with a small classifier that runs in your browser. It only cuts and never rewrites.",
+      "canonicalUrl": "https://github.com/dempfi/redpen",
+      "catalogedAt": "2026-11-27T17:02:13.508Z",
+      "catalogCohort": "standard",
+      "frontends": [
+        {
+          "id": "sillytavern",
+          "label": "SillyTavern",
+          "description": "Works with the SillyTavern roleplay frontend."
+        }
+      ],
+      "tags": [
+        {
+          "id": "local-first",
+          "label": "Local-first",
+          "description": "Keeps its primary data and workflow on the user's own device.",
+          "facet": "trait"
+        },
+        {
+          "id": "mobile-friendly",
+          "label": "Mobile-friendly",
+          "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
+          "facet": "trait"
+        },
+        {
+          "id": "model-agnostic",
+          "label": "Model-agnostic",
+          "description": "Works across a broad range of model providers rather than requiring one model family.",
+          "facet": "trait"
+        },
+        {
+          "id": "non-destructive",
+          "label": "Non-destructive",
+          "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+          "facet": "trait"
+        }
+      ],
+      "tavernKeeper": {
+        "state": "gray",
+        "riskLevel": null,
+        "freshness": "unassessed",
+        "currentSha": "e639cd6cf9663c960f201552ae6bf4cdedac3e21",
+        "report": null,
+        "history": [],
+        "historyUrl": null
+      },
+      "attribution": {
+        "owner": {
+          "provider": "github",
+          "login": "dempfi"
+        },
+        "contributors": [],
+        "humanContributorCount": 0,
+        "status": "current"
+      },
+      "activity": {
+        "latestSourceActivityAt": "2026-11-27T07:54:00.000Z",
+        "activeWeeks12": 1,
+        "weeklyActivity": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "evidenceStatus": "complete",
+        "dormant": false
+      },
+      "latestReleaseAt": null,
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "watchers": 0,
+        "aggregate": 0
+      },
+      "repositorySizeKb": 9673,
+      "license": {
+        "status": "osi-approved",
+        "label": "AGPL-3.0",
+        "tooltip": "OSI-approved license detected in the repository root."
+      },
+      "preset": null,
+      "refreshedAt": "2026-11-27T17:02:13.508Z",
+      "staleSince": null,
+      "install": {
+        "kind": "sillytavern-extension-git",
+        "repositoryUrl": "https://github.com/dempfi/redpen.git",
+        "branch": null,
+        "manifestPath": "manifest.json",
+        "folderName": "redpen"
+      },
+      "fork": null,
+      "search": {
+        "title": [
+          "redpen"
+        ],
+        "aliases": [],
+        "source": [
+          "dempfi-redpen",
+          "github-1474477209",
+          "dempfi/redpen",
+          "https://github.com/dempfi/redpen"
+        ],
+        "summary": [
+          "Deletes slop from model replies with a small classifier that runs in your browser. It only cuts and never rewrites."
+        ],
+        "kind": [
+          "extension"
+        ],
+        "primaryFunction": [
+          "Generation and reasoning"
+        ],
+        "tags": [
+          "Local-first",
+          "stored locally",
+          "on-device data",
+          "local data ownership",
+          "Mobile-friendly",
+          "mobile support",
+          "phone friendly",
+          "responsive mobile UI",
+          "Model-agnostic",
+          "bring your own model",
+          "BYOM",
+          "provider independent",
+          "Non-destructive",
+          "reversible workflow",
+          "preserves originals",
+          "safe overlay"
+        ],
+        "frontends": [
+          "SillyTavern"
+        ],
+        "compatibility": [],
+        "maintainers": [
+          "dempfi"
+        ],
+        "relationships": []
       }
     },
     {
@@ -47716,7 +47864,7 @@
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-05T04:20:14.556Z",
+      "refreshedAt": "2026-11-27T17:38:24.683Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -69271,19 +69419,19 @@
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 8,
+        "stars": 9,
         "forks": 2,
         "watchers": 0,
-        "aggregate": 10
+        "aggregate": 11
       },
-      "repositorySizeKb": 243896,
+      "repositorySizeKb": 246694,
       "license": {
         "status": "missing",
         "label": "Missing",
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-04T20:59:33.886Z",
+      "refreshedAt": "2026-11-27T17:38:51.420Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -74416,7 +74564,7 @@
         "tooltip": "The published root license is not OSI-approved."
       },
       "preset": null,
-      "refreshedAt": "2026-11-05T03:18:51.220Z",
+      "refreshedAt": "2026-11-27T17:38:17.045Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -180346,8 +180494,8 @@
             "community": {
               "stars": 17,
               "forks": 3,
-              "watchers": 0,
-              "aggregate": 20
+              "watchers": 1,
+              "aggregate": 21
             },
             "repositorySizeKb": 234,
             "license": {
@@ -180356,7 +180504,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T03:19:13.646Z",
+            "refreshedAt": "2026-11-27T17:38:04.345Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -203177,8 +203325,8 @@
             "community": {
               "stars": 17,
               "forks": 3,
-              "watchers": 0,
-              "aggregate": 20
+              "watchers": 1,
+              "aggregate": 21
             },
             "repositorySizeKb": 234,
             "license": {
@@ -203187,7 +203335,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T03:19:13.646Z",
+            "refreshedAt": "2026-11-27T17:38:04.345Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -217408,8 +217556,8 @@
             "community": {
               "stars": 17,
               "forks": 3,
-              "watchers": 0,
-              "aggregate": 20
+              "watchers": 1,
+              "aggregate": 21
             },
             "repositorySizeKb": 234,
             "license": {
@@ -217418,7 +217566,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T03:19:13.646Z",
+            "refreshedAt": "2026-11-27T17:38:04.345Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -277939,8 +278087,8 @@
             "community": {
               "stars": 17,
               "forks": 3,
-              "watchers": 0,
-              "aggregate": 20
+              "watchers": 1,
+              "aggregate": 21
             },
             "repositorySizeKb": 234,
             "license": {
@@ -277949,7 +278097,7 @@
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T03:19:13.646Z",
+            "refreshedAt": "2026-11-27T17:38:04.345Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",

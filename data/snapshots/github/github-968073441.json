@@ -9,18 +9,23 @@
     "url": "https://github.com/Darkatse/TauriTavern",
     "description": "The classic Sillytavern, now has been rewritten in Tauri/Rust.",
     "default_branch": "main",
-    "head_sha": "fff9af0333be97697be2313981699ab0ce35c236",
-    "head_committed_at": "2026-10-23T00:46:55.000Z",
+    "head_sha": "85dc99089e3fcc9d3a0aafc085564bd642895261",
+    "head_committed_at": "2026-11-09T08:23:33.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2025-04-17T13:13:08.000Z",
-    "size_kb": 78495
+    "size_kb": 103425
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-22T21:19:54.000Z",
+    "latest_source_activity_at": "2026-11-09T08:23:33.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-11-09",
+        "latest_at": "2026-11-09T08:23:33.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-19",
         "latest_at": "2026-10-22T21:19:54.000Z",
@@ -55,42 +60,27 @@
         "week_start": "2026-09-07",
         "latest_at": "2026-09-13T14:51:10.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-31",
-        "latest_at": "2026-09-06T23:15:15.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-24",
-        "latest_at": "2026-08-30T22:47:37.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-17",
-        "latest_at": "2026-08-23T23:17:04.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-10-22T10:27:21.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-11-05T03:01:00.651Z",
+    "baseline_completed_at": "2026-11-27T17:36:23.087Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "fff9af0333be97697be2313981699ab0ce35c236"
+    "evidence_head_sha": "85dc99089e3fcc9d3a0aafc085564bd642895261"
   },
   "community": {
-    "stars_count": 2198,
-    "forks_count": 184,
-    "watchers_count": 9,
-    "aggregate": 2391
+    "stars_count": 2450,
+    "forks_count": 209,
+    "watchers_count": 10,
+    "aggregate": 2669
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-11-05T03:03:05.681Z",
+  "refreshed_at": "2026-11-27T17:38:12.707Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -121,14 +111,13 @@
       { "login": "wynx1123", "type": "User", "provider": "github" },
       { "login": "Theater-ahyeon", "type": "User", "provider": "github" },
       { "login": "RebootFlume", "type": "User", "provider": "github" },
-      { "login": "anupamme", "type": "User", "provider": "github" },
       { "login": "calm-prussian", "type": "User", "provider": "github" },
       { "login": "xnshf", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-11-05T03:01:00.651Z",
+    "refreshed_at": "2026-11-27T17:36:23.087Z",
     "stale_since": null
   }
 }
