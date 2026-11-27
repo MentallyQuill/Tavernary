@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "5340636a3c254135868bba828b085ca7ab7d2e7d74e01d8f9652ea5ac6a4e6ec",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1372304973:chrisditfort-sillytavern-innerlore",
+      "inputDigest": "7986b8c6108e7c2b14503e836cbc1c994f8ec46779a5e369854bdd287f784c23",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-05T06:24:26.536Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": {
+      "failure": {
+        "kind": "permanent",
+        "reasonCode": "authorization-lost"
+      },
+      "transientAttempts": 0,
+      "immediateAttempts": 0
+    }
+  },
+  "updatedAt": "2026-11-27T20:45:57.333Z",
+  "completedAt": null
+}
