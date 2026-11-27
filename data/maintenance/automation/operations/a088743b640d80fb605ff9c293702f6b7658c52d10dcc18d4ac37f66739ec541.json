@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "a088743b640d80fb605ff9c293702f6b7658c52d10dcc18d4ac37f66739ec541",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1282991131:m4marvin-charon",
+      "inputDigest": "f69f7c2c3484f2cad9887ca6abf269fee936101d40af9039a9cf4104be2056e2",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-11-01T09:08:50.336Z",
+    "nextEligibleAt": "2026-11-27T05:41:44.289Z",
+    "expectedSha": "e040f70702df07b80115183591bca38c87adba09",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-27T05:26:44.289Z",
+  "completedAt": null
+}
