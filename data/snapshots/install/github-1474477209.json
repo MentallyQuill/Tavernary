@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_id": "github-1474477209",
+  "head_sha": "e639cd6cf9663c960f201552ae6bf4cdedac3e21",
+  "observed_at": "2026-11-27T17:02:19.822Z",
+  "status": "verified",
+  "manifest_path": "manifest.json",
+  "folder_name": "redpen",
+  "manifest": {
+    "display_name": "Redpen",
+    "key": null,
+    "minimum_client_version": null
+  }
+}
