@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "fc5d9c6bae7e35d67af3210436996b65e4ad57fd32585b96ef72d7d66f184fb1",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1313172635:aelfwyne-lore-library-lite",
+      "inputDigest": "5823b18c280a3319fafa0702203d2e60ebb6a197c1e12c6ab08734be1ab37048",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-11-01T07:01:55.713Z",
+    "nextEligibleAt": "2026-11-27T05:41:44.289Z",
+    "expectedSha": "e040f70702df07b80115183591bca38c87adba09",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-27T05:26:44.289Z",
+  "completedAt": null
+}
