@@ -9,24 +9,30 @@
     "url": "https://github.com/Rurijian/deep-swipe",
     "description": "Deep Swipe: A Sillytavern Extension for Swiping deep in context",
     "default_branch": "master",
-    "head_sha": "cd951d755d0fcdaa591af76117918d4e3744ccca",
-    "head_committed_at": "2026-04-20T19:08:25.000Z",
+    "head_sha": "806521acac0487ca861321bc1f570b8d8b2ccd80",
+    "head_committed_at": "2026-11-07T13:25:24.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-02-01T09:38:43.000Z",
-    "size_kb": 6480
+    "size_kb": 6504
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": null,
-    "source_weeks": [],
+    "latest_source_activity_at": "2026-11-07T13:25:24.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-11-02",
+        "latest_at": "2026-11-07T13:25:24.000Z",
+        "precision": "exact"
+      }
+    ],
     "provisional_weeks": null,
     "latest_release_at": "2026-02-20T01:06:12.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-04T08:43:28.053Z",
+    "baseline_completed_at": "2026-11-27T17:37:03.849Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "cd951d755d0fcdaa591af76117918d4e3744ccca"
+    "evidence_head_sha": "806521acac0487ca861321bc1f570b8d8b2ccd80"
   },
   "community": {
     "stars_count": 10,
@@ -35,7 +41,7 @@
     "aggregate": 14
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-11-05T06:25:14.177Z",
+  "refreshed_at": "2026-11-27T17:39:11.637Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -43,7 +49,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-11-05T06:23:20.338Z",
+    "refreshed_at": "2026-11-27T17:37:03.849Z",
     "stale_since": null
   }
 }
