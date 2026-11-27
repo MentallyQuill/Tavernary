@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "b4552c01b76b61dea26675094d500be68b42c8b3a9c18c3e875dc4f5b78eb02f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1220967746:cha1latte-marinara-custom-conversation-bg",
+      "inputDigest": "ddc1c1f0d9dc7be16afc24203c1087b45121f81b0de054586e383268a322cd85",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-10-31T13:50:12.431Z",
+    "nextEligibleAt": "2026-11-27T00:20:36.752Z",
+    "expectedSha": "271bf53978b62dbdcc8d4b402e3a1c41c6c81793",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-27T00:05:36.752Z",
+  "completedAt": null
+}
