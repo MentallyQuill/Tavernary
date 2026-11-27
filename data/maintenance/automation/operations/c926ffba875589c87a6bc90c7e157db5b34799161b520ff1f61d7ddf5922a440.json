@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "c926ffba875589c87a6bc90c7e157db5b34799161b520ff1f61d7ddf5922a440",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1292206739:lukasstraub2-sillytavern-imagepdf",
+      "inputDigest": "9457644d91e2ef8f8df28ad9aad427d6e07ffcc23159f03dbc7db12a497b2af1",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-11-01T07:00:43.605Z",
+    "nextEligibleAt": "2026-11-27T02:07:41.409Z",
+    "expectedSha": "e040f70702df07b80115183591bca38c87adba09",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-27T01:52:41.409Z",
+  "completedAt": null
+}
