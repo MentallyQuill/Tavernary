@@ -9,51 +9,56 @@
     "url": "https://github.com/serioos/Keyword-Radar",
     "description": "Silly Tavern extension that shows you the Lorebook/WorldInfo keywords being activated in what you typed and lets you disable them for that turn.",
     "default_branch": "main",
-    "head_sha": "c256bfbdf6c41fffbedc2a2849d8c676fb7001f8",
-    "head_committed_at": "2026-11-05T07:08:09.000Z",
+    "head_sha": "40b38135261fb2bfb651cfb47754ee00cd10e27e",
+    "head_committed_at": "2026-11-23T19:02:42.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-11-04T16:38:09.000Z",
-    "size_kb": 76
+    "size_kb": 231
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-11-05T06:51:16.000Z",
+    "latest_source_activity_at": "2026-11-23T18:55:34.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-11-23",
+        "latest_at": "2026-11-23T18:55:34.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-11-02",
-        "latest_at": "2026-11-05T06:51:16.000Z",
+        "latest_at": "2026-11-06T02:02:53.000Z",
         "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-11-05T09:06:29.787Z",
+    "baseline_completed_at": "2026-11-28T05:33:19.339Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "c256bfbdf6c41fffbedc2a2849d8c676fb7001f8"
+    "evidence_head_sha": "40b38135261fb2bfb651cfb47754ee00cd10e27e"
   },
   "community": {
-    "stars_count": 1,
+    "stars_count": 4,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 1
+    "aggregate": 4
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-11-05T09:06:29.787Z",
+  "refreshed_at": "2026-11-28T05:35:10.846Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "serioos", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-11-05T09:06:29.787Z",
+    "refreshed_at": "2026-11-28T05:33:19.339Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }
