@@ -10,18 +10,18 @@
     },
     "stage": "admitted",
     "createdAt": "2026-11-25T07:44:31.153Z",
-    "nextEligibleAt": "2026-11-25T09:00:58.513Z",
+    "nextEligibleAt": "2026-11-29T08:38:23.396Z",
     "expectedSha": null,
     "workerRunId": null,
     "retry": {
       "failure": {
-        "kind": "transient",
-        "reasonCode": "workflow-result-unavailable"
+        "kind": "configuration",
+        "reasonCode": "budget-exhausted"
       },
-      "transientAttempts": 0,
+      "transientAttempts": 1,
       "immediateAttempts": 0
     }
   },
-  "updatedAt": "2026-11-25T08:55:50.761Z",
+  "updatedAt": "2026-11-28T08:38:23.396Z",
   "completedAt": null
 }
