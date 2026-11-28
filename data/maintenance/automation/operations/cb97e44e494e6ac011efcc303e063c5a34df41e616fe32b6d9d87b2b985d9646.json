@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "cb97e44e494e6ac011efcc303e063c5a34df41e616fe32b6d9d87b2b985d9646",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-998536860:aikohanasaki-sillytavern-characterlocks",
+      "inputDigest": "6bbf0b7fb67218e4bc9f7b270294c5e70b7f6f2f91d607c2774d2770805c7797",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-11-02T17:17:58.312Z",
+    "nextEligibleAt": "2026-11-28T10:55:39.473Z",
+    "expectedSha": "771633968535a528318935d06c9b461bd4804bab",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-28T10:40:39.473Z",
+  "completedAt": null
+}
