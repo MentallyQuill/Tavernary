@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "e98f24101b8b57ca33fb587c49efb69d4b1eaa183fb3917125b35c1507b3b9a1",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1466717745:j-marchon-nova-ai",
+      "inputDigest": "e61546efc8cf80e401b70a3039de15bfbe9f6427b73c40e4faa75f8a34382578",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-23T23:51:44.401Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1466717745",
+    "identity": "github:1466717745"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45302868500,
+    "sourceSha": "70003415483eae7083d9c8c5b4ff48dbe80ae2c5"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/j-marchon-nova-ai.json",
+      "sha256": "57ee7674f187a2ad87b6f64d2c3e236da13f7822e6fdc8c197bdf18d4db7ddad",
+      "gitBlobSha": "02f82cdc1c95acedfa15d5e01f9ffc1ab18d0289"
+    }
+  ]
+}

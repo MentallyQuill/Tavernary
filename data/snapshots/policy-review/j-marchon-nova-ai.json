@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "j-marchon-nova-ai",
+  "source_id": "github-1466717745",
+  "source_identity": "github:j-marchon/nova-ai",
+  "evidence_fingerprint": "39934ae17faefc1ad171dec1f69af8c1f81d19e933d5f2f6ef27b838e17c08a1",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-24T01:10:58.975Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

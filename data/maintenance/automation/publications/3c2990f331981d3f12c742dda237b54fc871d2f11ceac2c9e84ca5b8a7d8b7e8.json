@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "3c2990f331981d3f12c742dda237b54fc871d2f11ceac2c9e84ca5b8a7d8b7e8",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1434788220:brabro1-sillytavern-pockettavern",
+      "inputDigest": "5207ef38b3d03f59e73ded32b235b0a9630f833d9312388e535bfa2b708c8045",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-23T02:20:20.745Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1434788220",
+    "identity": "github:1434788220"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45333249491,
+    "sourceSha": "bfdef6ceb6a7936cc7a93549a1d2b996c817c701"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/brabro1-sillytavern-pockettavern.json",
+      "sha256": "c3d11884fe99ffaad9938602b2cbda066f4563e8f2512619d2c67d813fe51785",
+      "gitBlobSha": "ca60268c9f4afbe54a1d1bcfd402d2a595a9f4e8"
+    }
+  ]
+}

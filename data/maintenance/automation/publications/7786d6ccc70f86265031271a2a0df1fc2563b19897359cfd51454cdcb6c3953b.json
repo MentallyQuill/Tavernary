@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "7786d6ccc70f86265031271a2a0df1fc2563b19897359cfd51454cdcb6c3953b",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1466075274:starlitcode-lumiverse-auto-foley",
+      "inputDigest": "29d051b2a077f678cf38a03e41f291f21e1ea6033c4f2ce9945ea524c3d02eb7",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-25T14:18:16.113Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1466075274",
+    "identity": "github:1466075274"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45648273607,
+    "sourceSha": "a8b07c4da89e5dd2f2f933aebfa56234c96b3db1"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/starlitcode-lumiverse-auto-foley.json",
+      "sha256": "d5dbef8ce8739d775fbfde2df825521b7532346cd590915809a9ae26ae1e5e92",
+      "gitBlobSha": "581fa02c79689874ccd4beef24011ffaa661b554"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "brabro1-sillytavern-pockettavern",
+  "source_id": "github-1434788220",
+  "source_identity": "github:brabro1/sillytavern-pockettavern",
+  "evidence_fingerprint": "6378cbdb91eadc16d7fd2f112c25c3b332d9f4cfb9cf076c066bf54dcfef5eb3",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-24T05:27:19.718Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}

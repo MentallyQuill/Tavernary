@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_id": "starlitcode-lumiverse-auto-foley",
+  "source_id": "github-1466075274",
+  "source_identity": "github:starlitcode/lumiverse-auto-foley",
+  "evidence_fingerprint": "a401b5292ec9a451c2b2199aaa15b99a4ed4307f62aebedf8d8b4c0206a52463",
+  "policy_version": "2026-07-29",
+  "status": "clear",
+  "category": null,
+  "reviewed_at": "2026-11-25T15:44:25.826Z",
+  "retry": { "attempts": 0, "last_failure_at": null },
+  "maintenance_issue_number": null
+}
