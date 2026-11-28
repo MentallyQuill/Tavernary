@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "4aa2a66f68b6986487c9ed5d8c48dd71987726b24e0cd1e9ef68e672d8d4e933",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1215007786:sagesheep-narrativeengine-p",
+      "inputDigest": "2f145fc6f8fd315e1aff4c71f80224bac70e86815b08a292b9275d35ab99fb64",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-11-01T14:25:54.017Z",
+    "nextEligibleAt": "2026-11-28T06:25:35.056Z",
+    "expectedSha": "771633968535a528318935d06c9b461bd4804bab",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-28T06:10:35.056Z",
+  "completedAt": null
+}
