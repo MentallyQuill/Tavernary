@@ -9,18 +9,23 @@
     "url": "https://github.com/SillyTavern/SillyTavern",
     "description": "LLM Frontend for Power Users.",
     "default_branch": "release",
-    "head_sha": "06bde939fb1e9c4c8d8641d810f0a916b5bce127",
-    "head_committed_at": "2026-09-14T19:01:34.000Z",
+    "head_sha": "82b64a45c34facbc98ff4b9f33c067d3ccab6a17",
+    "head_committed_at": "2026-11-19T22:08:08.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2023-02-09T10:19:24.000Z",
-    "size_kb": 215670
+    "size_kb": 216451
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-09-14T19:01:34.000Z",
+    "latest_source_activity_at": "2026-11-19T22:08:08.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-11-16",
+        "latest_at": "2026-11-19T22:08:08.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-09-14",
         "latest_at": "2026-09-14T19:01:34.000Z",
@@ -30,52 +35,27 @@
         "week_start": "2026-09-07",
         "latest_at": "2026-09-07T21:09:17.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-31",
-        "latest_at": "2026-08-31T22:58:51.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-17",
-        "latest_at": "2026-08-21T04:35:50.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-08-10",
-        "latest_at": "2026-08-16T23:36:56.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-07-06",
-        "latest_at": "2026-07-11T22:43:10.000Z",
-        "precision": "exact"
-      },
-      {
-        "week_start": "2026-06-29",
-        "latest_at": "2026-07-04T04:43:04.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-09-14T18:05:11.000Z",
+    "latest_release_at": "2026-11-19T22:25:06.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-09-15T12:43:56.161Z",
+    "baseline_completed_at": "2026-11-28T09:37:58.840Z",
     "baseline_attempts": 1,
-    "evidence_head_sha": "06bde939fb1e9c4c8d8641d810f0a916b5bce127"
+    "evidence_head_sha": "82b64a45c34facbc98ff4b9f33c067d3ccab6a17"
   },
   "community": {
-    "stars_count": 35305,
-    "forks_count": 6648,
-    "watchers_count": 162,
-    "aggregate": 42115
+    "stars_count": 36173,
+    "forks_count": 6781,
+    "watchers_count": 165,
+    "aggregate": 43119
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-11-05T13:14:16.806Z",
+  "refreshed_at": "2026-11-28T09:39:59.200Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -273,7 +253,7 @@
       { "login": "NijikaMyWaifu", "type": "User", "provider": "github" },
       { "login": "Ni-co-la-s", "type": "User", "provider": "github" },
       { "login": "NearEDGE", "type": "User", "provider": "github" },
-      { "login": "mschienbein", "type": "User", "provider": "github" },
+      { "login": "mooki000", "type": "User", "provider": "github" },
       { "login": "Miiiikachu", "type": "User", "provider": "github" },
       { "login": "Meus-Artis", "type": "User", "provider": "github" },
       { "login": "toby3d", "type": "User", "provider": "github" },
@@ -344,7 +324,7 @@
       { "login": "theunstableman", "type": "User", "provider": "github" },
       { "login": "toastli", "type": "User", "provider": "github" },
       { "login": "voodoohop", "type": "User", "provider": "github" },
-      { "login": "yokuminto", "type": "User", "provider": "github" },
+      { "login": "tsukiyakami", "type": "User", "provider": "github" },
       { "login": "zeroDtree", "type": "User", "provider": "github" },
       { "login": "zhongerxll", "type": "User", "provider": "github" },
       { "login": "40436michael", "type": "User", "provider": "github" },
@@ -476,7 +456,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-11-05T13:11:50.281Z",
+    "refreshed_at": "2026-11-28T09:37:58.840Z",
     "stale_since": null
   }
 }
