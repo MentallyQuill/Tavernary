@@ -9,18 +9,23 @@
     "url": "https://github.com/IceFog72/SillyTavern-EveryTextLineEditor",
     "description": null,
     "default_branch": "main",
-    "head_sha": "8a902279d8a7c52d86724381df8a2adafa9cc9a3",
-    "head_committed_at": "2026-10-31T00:33:49.000Z",
+    "head_sha": "c602d7c036595032037f94e8a9d2e7ce761bdcce",
+    "head_committed_at": "2026-11-25T06:10:58.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-16T04:39:18.000Z",
-    "size_kb": 13534
+    "size_kb": 13732
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-10-31T00:33:49.000Z",
+    "latest_source_activity_at": "2026-11-25T06:10:58.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-11-23",
+        "latest_at": "2026-11-25T06:10:58.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-10-26",
         "latest_at": "2026-10-31T00:33:49.000Z",
@@ -35,9 +40,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-11-05T15:39:42.139Z",
+    "baseline_completed_at": "2026-11-28T14:36:39.520Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "8a902279d8a7c52d86724381df8a2adafa9cc9a3"
+    "evidence_head_sha": "c602d7c036595032037f94e8a9d2e7ce761bdcce"
   },
   "community": {
     "stars_count": 22,
@@ -50,7 +55,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-11-05T15:42:10.817Z",
+  "refreshed_at": "2026-11-28T14:38:48.396Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -58,7 +63,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-11-05T15:39:42.139Z",
+    "refreshed_at": "2026-11-28T14:36:39.520Z",
     "stale_since": null
   }
 }
