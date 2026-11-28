@@ -4891,7 +4891,7 @@
         "state": "teal",
         "riskLevel": "low",
         "freshness": "stale",
-        "currentSha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+        "currentSha": "31c10e7c2f42cb556fee99e836711a5f624320ba",
         "report": {
           "reportId": "a79e40b8e7e1e54fca4db3c62d48b8f41c7fe1b080cef55c2eaba677222d2e18",
           "riskLevel": "low",
@@ -5075,7 +5075,7 @@
           },
           {
             "provider": "github",
-            "login": "castleofbones",
+            "login": "opalfruitai",
             "botOrAi": false
           }
         ],
@@ -5083,8 +5083,8 @@
         "status": "current"
       },
       "activity": {
-        "latestSourceActivityAt": "2026-11-04T15:53:48.000Z",
-        "activeWeeks12": 9,
+        "latestSourceActivityAt": "2026-11-25T19:41:26.000Z",
+        "activeWeeks12": 10,
         "weeklyActivity": [
           true,
           true,
@@ -5097,26 +5097,26 @@
           true,
           false,
           false,
-          false
+          true
         ],
         "evidenceStatus": "complete",
         "dormant": false
       },
       "latestReleaseAt": null,
       "community": {
-        "stars": 327,
-        "forks": 51,
+        "stars": 336,
+        "forks": 57,
         "watchers": 3,
-        "aggregate": 381
+        "aggregate": 396
       },
-      "repositorySizeKb": 29172,
+      "repositorySizeKb": 25780,
       "license": {
         "status": "osi-approved",
         "label": "AGPL-3.0",
         "tooltip": "OSI-approved license detected in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-05T10:12:05.392Z",
+      "refreshedAt": "2026-11-28T06:48:21.912Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -5177,7 +5177,7 @@
           "aikohanasaki",
           "paradox460",
           "dddanny79",
-          "castleofbones"
+          "opalfruitai"
         ],
         "relationships": []
       }
@@ -20659,7 +20659,7 @@
         "tooltip": "No license file was found in the repository root."
       },
       "preset": null,
-      "refreshedAt": "2026-11-05T10:12:12.137Z",
+      "refreshedAt": "2026-11-28T06:50:20.715Z",
       "staleSince": null,
       "install": {
         "kind": "sillytavern-extension-git",
@@ -148782,7 +148782,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+              "currentSha": "31c10e7c2f42cb556fee99e836711a5f624320ba",
               "report": {
                 "reportId": "a79e40b8e7e1e54fca4db3c62d48b8f41c7fe1b080cef55c2eaba677222d2e18",
                 "riskLevel": "low",
@@ -148966,7 +148966,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "castleofbones",
+                  "login": "opalfruitai",
                   "botOrAi": false
                 }
               ],
@@ -148974,8 +148974,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-11-04T15:53:48.000Z",
-              "activeWeeks12": 9,
+              "latestSourceActivityAt": "2026-11-25T19:41:26.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
                 true,
                 true,
@@ -148988,26 +148988,26 @@
                 true,
                 false,
                 false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 327,
-              "forks": 51,
+              "stars": 336,
+              "forks": 57,
               "watchers": 3,
-              "aggregate": 381
+              "aggregate": 396
             },
-            "repositorySizeKb": 29172,
+            "repositorySizeKb": 25780,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T10:12:05.392Z",
+            "refreshedAt": "2026-11-28T06:48:21.912Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -149068,7 +149068,7 @@
                 "aikohanasaki",
                 "paradox460",
                 "dddanny79",
-                "castleofbones"
+                "opalfruitai"
               ],
               "relationships": []
             }
@@ -152761,7 +152761,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+              "currentSha": "31c10e7c2f42cb556fee99e836711a5f624320ba",
               "report": {
                 "reportId": "a79e40b8e7e1e54fca4db3c62d48b8f41c7fe1b080cef55c2eaba677222d2e18",
                 "riskLevel": "low",
@@ -152945,7 +152945,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "castleofbones",
+                  "login": "opalfruitai",
                   "botOrAi": false
                 }
               ],
@@ -152953,8 +152953,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-11-04T15:53:48.000Z",
-              "activeWeeks12": 9,
+              "latestSourceActivityAt": "2026-11-25T19:41:26.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
                 true,
                 true,
@@ -152967,26 +152967,26 @@
                 true,
                 false,
                 false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 327,
-              "forks": 51,
+              "stars": 336,
+              "forks": 57,
               "watchers": 3,
-              "aggregate": 381
+              "aggregate": 396
             },
-            "repositorySizeKb": 29172,
+            "repositorySizeKb": 25780,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T10:12:05.392Z",
+            "refreshedAt": "2026-11-28T06:48:21.912Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -153047,7 +153047,7 @@
                 "aikohanasaki",
                 "paradox460",
                 "dddanny79",
-                "castleofbones"
+                "opalfruitai"
               ],
               "relationships": []
             }
@@ -157465,7 +157465,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+              "currentSha": "31c10e7c2f42cb556fee99e836711a5f624320ba",
               "report": {
                 "reportId": "a79e40b8e7e1e54fca4db3c62d48b8f41c7fe1b080cef55c2eaba677222d2e18",
                 "riskLevel": "low",
@@ -157649,7 +157649,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "castleofbones",
+                  "login": "opalfruitai",
                   "botOrAi": false
                 }
               ],
@@ -157657,8 +157657,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-11-04T15:53:48.000Z",
-              "activeWeeks12": 9,
+              "latestSourceActivityAt": "2026-11-25T19:41:26.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
                 true,
                 true,
@@ -157671,26 +157671,26 @@
                 true,
                 false,
                 false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 327,
-              "forks": 51,
+              "stars": 336,
+              "forks": 57,
               "watchers": 3,
-              "aggregate": 381
+              "aggregate": 396
             },
-            "repositorySizeKb": 29172,
+            "repositorySizeKb": 25780,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T10:12:05.392Z",
+            "refreshedAt": "2026-11-28T06:48:21.912Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -157751,7 +157751,7 @@
                 "aikohanasaki",
                 "paradox460",
                 "dddanny79",
-                "castleofbones"
+                "opalfruitai"
               ],
               "relationships": []
             }
@@ -165435,7 +165435,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+              "currentSha": "31c10e7c2f42cb556fee99e836711a5f624320ba",
               "report": {
                 "reportId": "a79e40b8e7e1e54fca4db3c62d48b8f41c7fe1b080cef55c2eaba677222d2e18",
                 "riskLevel": "low",
@@ -165619,7 +165619,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "castleofbones",
+                  "login": "opalfruitai",
                   "botOrAi": false
                 }
               ],
@@ -165627,8 +165627,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-11-04T15:53:48.000Z",
-              "activeWeeks12": 9,
+              "latestSourceActivityAt": "2026-11-25T19:41:26.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
                 true,
                 true,
@@ -165641,26 +165641,26 @@
                 true,
                 false,
                 false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 327,
-              "forks": 51,
+              "stars": 336,
+              "forks": 57,
               "watchers": 3,
-              "aggregate": 381
+              "aggregate": 396
             },
-            "repositorySizeKb": 29172,
+            "repositorySizeKb": 25780,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T10:12:05.392Z",
+            "refreshedAt": "2026-11-28T06:48:21.912Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -165721,7 +165721,7 @@
                 "aikohanasaki",
                 "paradox460",
                 "dddanny79",
-                "castleofbones"
+                "opalfruitai"
               ],
               "relationships": []
             }
@@ -169725,7 +169725,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+              "currentSha": "31c10e7c2f42cb556fee99e836711a5f624320ba",
               "report": {
                 "reportId": "a79e40b8e7e1e54fca4db3c62d48b8f41c7fe1b080cef55c2eaba677222d2e18",
                 "riskLevel": "low",
@@ -169909,7 +169909,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "castleofbones",
+                  "login": "opalfruitai",
                   "botOrAi": false
                 }
               ],
@@ -169917,8 +169917,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-11-04T15:53:48.000Z",
-              "activeWeeks12": 9,
+              "latestSourceActivityAt": "2026-11-25T19:41:26.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
                 true,
                 true,
@@ -169931,26 +169931,26 @@
                 true,
                 false,
                 false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 327,
-              "forks": 51,
+              "stars": 336,
+              "forks": 57,
               "watchers": 3,
-              "aggregate": 381
+              "aggregate": 396
             },
-            "repositorySizeKb": 29172,
+            "repositorySizeKb": 25780,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T10:12:05.392Z",
+            "refreshedAt": "2026-11-28T06:48:21.912Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -170011,7 +170011,7 @@
                 "aikohanasaki",
                 "paradox460",
                 "dddanny79",
-                "castleofbones"
+                "opalfruitai"
               ],
               "relationships": []
             }
@@ -173116,7 +173116,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+              "currentSha": "31c10e7c2f42cb556fee99e836711a5f624320ba",
               "report": {
                 "reportId": "a79e40b8e7e1e54fca4db3c62d48b8f41c7fe1b080cef55c2eaba677222d2e18",
                 "riskLevel": "low",
@@ -173300,7 +173300,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "castleofbones",
+                  "login": "opalfruitai",
                   "botOrAi": false
                 }
               ],
@@ -173308,8 +173308,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-11-04T15:53:48.000Z",
-              "activeWeeks12": 9,
+              "latestSourceActivityAt": "2026-11-25T19:41:26.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
                 true,
                 true,
@@ -173322,26 +173322,26 @@
                 true,
                 false,
                 false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 327,
-              "forks": 51,
+              "stars": 336,
+              "forks": 57,
               "watchers": 3,
-              "aggregate": 381
+              "aggregate": 396
             },
-            "repositorySizeKb": 29172,
+            "repositorySizeKb": 25780,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T10:12:05.392Z",
+            "refreshedAt": "2026-11-28T06:48:21.912Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -173402,7 +173402,7 @@
                 "aikohanasaki",
                 "paradox460",
                 "dddanny79",
-                "castleofbones"
+                "opalfruitai"
               ],
               "relationships": []
             }
@@ -190922,7 +190922,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+              "currentSha": "31c10e7c2f42cb556fee99e836711a5f624320ba",
               "report": {
                 "reportId": "a79e40b8e7e1e54fca4db3c62d48b8f41c7fe1b080cef55c2eaba677222d2e18",
                 "riskLevel": "low",
@@ -191106,7 +191106,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "castleofbones",
+                  "login": "opalfruitai",
                   "botOrAi": false
                 }
               ],
@@ -191114,8 +191114,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-11-04T15:53:48.000Z",
-              "activeWeeks12": 9,
+              "latestSourceActivityAt": "2026-11-25T19:41:26.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
                 true,
                 true,
@@ -191128,26 +191128,26 @@
                 true,
                 false,
                 false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 327,
-              "forks": 51,
+              "stars": 336,
+              "forks": 57,
               "watchers": 3,
-              "aggregate": 381
+              "aggregate": 396
             },
-            "repositorySizeKb": 29172,
+            "repositorySizeKb": 25780,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T10:12:05.392Z",
+            "refreshedAt": "2026-11-28T06:48:21.912Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -191208,7 +191208,7 @@
                 "aikohanasaki",
                 "paradox460",
                 "dddanny79",
-                "castleofbones"
+                "opalfruitai"
               ],
               "relationships": []
             }
@@ -196595,7 +196595,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+              "currentSha": "31c10e7c2f42cb556fee99e836711a5f624320ba",
               "report": {
                 "reportId": "a79e40b8e7e1e54fca4db3c62d48b8f41c7fe1b080cef55c2eaba677222d2e18",
                 "riskLevel": "low",
@@ -196779,7 +196779,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "castleofbones",
+                  "login": "opalfruitai",
                   "botOrAi": false
                 }
               ],
@@ -196787,8 +196787,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-11-04T15:53:48.000Z",
-              "activeWeeks12": 9,
+              "latestSourceActivityAt": "2026-11-25T19:41:26.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
                 true,
                 true,
@@ -196801,26 +196801,26 @@
                 true,
                 false,
                 false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 327,
-              "forks": 51,
+              "stars": 336,
+              "forks": 57,
               "watchers": 3,
-              "aggregate": 381
+              "aggregate": 396
             },
-            "repositorySizeKb": 29172,
+            "repositorySizeKb": 25780,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T10:12:05.392Z",
+            "refreshedAt": "2026-11-28T06:48:21.912Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -196881,7 +196881,7 @@
                 "aikohanasaki",
                 "paradox460",
                 "dddanny79",
-                "castleofbones"
+                "opalfruitai"
               ],
               "relationships": []
             }
@@ -209974,7 +209974,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+              "currentSha": "31c10e7c2f42cb556fee99e836711a5f624320ba",
               "report": {
                 "reportId": "a79e40b8e7e1e54fca4db3c62d48b8f41c7fe1b080cef55c2eaba677222d2e18",
                 "riskLevel": "low",
@@ -210158,7 +210158,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "castleofbones",
+                  "login": "opalfruitai",
                   "botOrAi": false
                 }
               ],
@@ -210166,8 +210166,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-11-04T15:53:48.000Z",
-              "activeWeeks12": 9,
+              "latestSourceActivityAt": "2026-11-25T19:41:26.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
                 true,
                 true,
@@ -210180,26 +210180,26 @@
                 true,
                 false,
                 false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 327,
-              "forks": 51,
+              "stars": 336,
+              "forks": 57,
               "watchers": 3,
-              "aggregate": 381
+              "aggregate": 396
             },
-            "repositorySizeKb": 29172,
+            "repositorySizeKb": 25780,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T10:12:05.392Z",
+            "refreshedAt": "2026-11-28T06:48:21.912Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -210260,7 +210260,7 @@
                 "aikohanasaki",
                 "paradox460",
                 "dddanny79",
-                "castleofbones"
+                "opalfruitai"
               ],
               "relationships": []
             }
@@ -221017,7 +221017,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+              "currentSha": "31c10e7c2f42cb556fee99e836711a5f624320ba",
               "report": {
                 "reportId": "a79e40b8e7e1e54fca4db3c62d48b8f41c7fe1b080cef55c2eaba677222d2e18",
                 "riskLevel": "low",
@@ -221201,7 +221201,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "castleofbones",
+                  "login": "opalfruitai",
                   "botOrAi": false
                 }
               ],
@@ -221209,8 +221209,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-11-04T15:53:48.000Z",
-              "activeWeeks12": 9,
+              "latestSourceActivityAt": "2026-11-25T19:41:26.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
                 true,
                 true,
@@ -221223,26 +221223,26 @@
                 true,
                 false,
                 false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 327,
-              "forks": 51,
+              "stars": 336,
+              "forks": 57,
               "watchers": 3,
-              "aggregate": 381
+              "aggregate": 396
             },
-            "repositorySizeKb": 29172,
+            "repositorySizeKb": 25780,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T10:12:05.392Z",
+            "refreshedAt": "2026-11-28T06:48:21.912Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -221303,7 +221303,7 @@
                 "aikohanasaki",
                 "paradox460",
                 "dddanny79",
-                "castleofbones"
+                "opalfruitai"
               ],
               "relationships": []
             }
@@ -230217,7 +230217,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+              "currentSha": "31c10e7c2f42cb556fee99e836711a5f624320ba",
               "report": {
                 "reportId": "a79e40b8e7e1e54fca4db3c62d48b8f41c7fe1b080cef55c2eaba677222d2e18",
                 "riskLevel": "low",
@@ -230401,7 +230401,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "castleofbones",
+                  "login": "opalfruitai",
                   "botOrAi": false
                 }
               ],
@@ -230409,8 +230409,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-11-04T15:53:48.000Z",
-              "activeWeeks12": 9,
+              "latestSourceActivityAt": "2026-11-25T19:41:26.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
                 true,
                 true,
@@ -230423,26 +230423,26 @@
                 true,
                 false,
                 false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 327,
-              "forks": 51,
+              "stars": 336,
+              "forks": 57,
               "watchers": 3,
-              "aggregate": 381
+              "aggregate": 396
             },
-            "repositorySizeKb": 29172,
+            "repositorySizeKb": 25780,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T10:12:05.392Z",
+            "refreshedAt": "2026-11-28T06:48:21.912Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -230503,7 +230503,7 @@
                 "aikohanasaki",
                 "paradox460",
                 "dddanny79",
-                "castleofbones"
+                "opalfruitai"
               ],
               "relationships": []
             }
@@ -256172,7 +256172,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+              "currentSha": "31c10e7c2f42cb556fee99e836711a5f624320ba",
               "report": {
                 "reportId": "a79e40b8e7e1e54fca4db3c62d48b8f41c7fe1b080cef55c2eaba677222d2e18",
                 "riskLevel": "low",
@@ -256356,7 +256356,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "castleofbones",
+                  "login": "opalfruitai",
                   "botOrAi": false
                 }
               ],
@@ -256364,8 +256364,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-11-04T15:53:48.000Z",
-              "activeWeeks12": 9,
+              "latestSourceActivityAt": "2026-11-25T19:41:26.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
                 true,
                 true,
@@ -256378,26 +256378,26 @@
                 true,
                 false,
                 false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 327,
-              "forks": 51,
+              "stars": 336,
+              "forks": 57,
               "watchers": 3,
-              "aggregate": 381
+              "aggregate": 396
             },
-            "repositorySizeKb": 29172,
+            "repositorySizeKb": 25780,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T10:12:05.392Z",
+            "refreshedAt": "2026-11-28T06:48:21.912Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -256458,7 +256458,7 @@
                 "aikohanasaki",
                 "paradox460",
                 "dddanny79",
-                "castleofbones"
+                "opalfruitai"
               ],
               "relationships": []
             }
@@ -281514,7 +281514,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+              "currentSha": "31c10e7c2f42cb556fee99e836711a5f624320ba",
               "report": {
                 "reportId": "a79e40b8e7e1e54fca4db3c62d48b8f41c7fe1b080cef55c2eaba677222d2e18",
                 "riskLevel": "low",
@@ -281698,7 +281698,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "castleofbones",
+                  "login": "opalfruitai",
                   "botOrAi": false
                 }
               ],
@@ -281706,8 +281706,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-11-04T15:53:48.000Z",
-              "activeWeeks12": 9,
+              "latestSourceActivityAt": "2026-11-25T19:41:26.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
                 true,
                 true,
@@ -281720,26 +281720,26 @@
                 true,
                 false,
                 false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 327,
-              "forks": 51,
+              "stars": 336,
+              "forks": 57,
               "watchers": 3,
-              "aggregate": 381
+              "aggregate": 396
             },
-            "repositorySizeKb": 29172,
+            "repositorySizeKb": 25780,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T10:12:05.392Z",
+            "refreshedAt": "2026-11-28T06:48:21.912Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -281800,7 +281800,7 @@
                 "aikohanasaki",
                 "paradox460",
                 "dddanny79",
-                "castleofbones"
+                "opalfruitai"
               ],
               "relationships": []
             }
@@ -293669,7 +293669,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+              "currentSha": "31c10e7c2f42cb556fee99e836711a5f624320ba",
               "report": {
                 "reportId": "a79e40b8e7e1e54fca4db3c62d48b8f41c7fe1b080cef55c2eaba677222d2e18",
                 "riskLevel": "low",
@@ -293853,7 +293853,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "castleofbones",
+                  "login": "opalfruitai",
                   "botOrAi": false
                 }
               ],
@@ -293861,8 +293861,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-11-04T15:53:48.000Z",
-              "activeWeeks12": 9,
+              "latestSourceActivityAt": "2026-11-25T19:41:26.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
                 true,
                 true,
@@ -293875,26 +293875,26 @@
                 true,
                 false,
                 false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 327,
-              "forks": 51,
+              "stars": 336,
+              "forks": 57,
               "watchers": 3,
-              "aggregate": 381
+              "aggregate": 396
             },
-            "repositorySizeKb": 29172,
+            "repositorySizeKb": 25780,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T10:12:05.392Z",
+            "refreshedAt": "2026-11-28T06:48:21.912Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -293955,7 +293955,7 @@
                 "aikohanasaki",
                 "paradox460",
                 "dddanny79",
-                "castleofbones"
+                "opalfruitai"
               ],
               "relationships": []
             }
@@ -310605,7 +310605,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+              "currentSha": "31c10e7c2f42cb556fee99e836711a5f624320ba",
               "report": {
                 "reportId": "a79e40b8e7e1e54fca4db3c62d48b8f41c7fe1b080cef55c2eaba677222d2e18",
                 "riskLevel": "low",
@@ -310789,7 +310789,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "castleofbones",
+                  "login": "opalfruitai",
                   "botOrAi": false
                 }
               ],
@@ -310797,8 +310797,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-11-04T15:53:48.000Z",
-              "activeWeeks12": 9,
+              "latestSourceActivityAt": "2026-11-25T19:41:26.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
                 true,
                 true,
@@ -310811,26 +310811,26 @@
                 true,
                 false,
                 false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 327,
-              "forks": 51,
+              "stars": 336,
+              "forks": 57,
               "watchers": 3,
-              "aggregate": 381
+              "aggregate": 396
             },
-            "repositorySizeKb": 29172,
+            "repositorySizeKb": 25780,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T10:12:05.392Z",
+            "refreshedAt": "2026-11-28T06:48:21.912Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -310891,7 +310891,7 @@
                 "aikohanasaki",
                 "paradox460",
                 "dddanny79",
-                "castleofbones"
+                "opalfruitai"
               ],
               "relationships": []
             }
@@ -315481,7 +315481,7 @@
               "state": "teal",
               "riskLevel": "low",
               "freshness": "stale",
-              "currentSha": "5a79f6672a5fdb1172c550131f8174470aac4048",
+              "currentSha": "31c10e7c2f42cb556fee99e836711a5f624320ba",
               "report": {
                 "reportId": "a79e40b8e7e1e54fca4db3c62d48b8f41c7fe1b080cef55c2eaba677222d2e18",
                 "riskLevel": "low",
@@ -315665,7 +315665,7 @@
                 },
                 {
                   "provider": "github",
-                  "login": "castleofbones",
+                  "login": "opalfruitai",
                   "botOrAi": false
                 }
               ],
@@ -315673,8 +315673,8 @@
               "status": "current"
             },
             "activity": {
-              "latestSourceActivityAt": "2026-11-04T15:53:48.000Z",
-              "activeWeeks12": 9,
+              "latestSourceActivityAt": "2026-11-25T19:41:26.000Z",
+              "activeWeeks12": 10,
               "weeklyActivity": [
                 true,
                 true,
@@ -315687,26 +315687,26 @@
                 true,
                 false,
                 false,
-                false
+                true
               ],
               "evidenceStatus": "complete",
               "dormant": false
             },
             "latestReleaseAt": null,
             "community": {
-              "stars": 327,
-              "forks": 51,
+              "stars": 336,
+              "forks": 57,
               "watchers": 3,
-              "aggregate": 381
+              "aggregate": 396
             },
-            "repositorySizeKb": 29172,
+            "repositorySizeKb": 25780,
             "license": {
               "status": "osi-approved",
               "label": "AGPL-3.0",
               "tooltip": "OSI-approved license detected in the repository root."
             },
             "preset": null,
-            "refreshedAt": "2026-11-05T10:12:05.392Z",
+            "refreshedAt": "2026-11-28T06:48:21.912Z",
             "staleSince": null,
             "install": {
               "kind": "sillytavern-extension-git",
@@ -315767,7 +315767,7 @@
                 "aikohanasaki",
                 "paradox460",
                 "dddanny79",
-                "castleofbones"
+                "opalfruitai"
               ],
               "relationships": []
             }
