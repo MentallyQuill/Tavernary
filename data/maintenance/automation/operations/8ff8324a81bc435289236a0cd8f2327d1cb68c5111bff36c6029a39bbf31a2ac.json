@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8ff8324a81bc435289236a0cd8f2327d1cb68c5111bff36c6029a39bbf31a2ac",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1459569720:deiomo-voyageofhopesanddreams",
+      "inputDigest": "c47391198b80afd8bdf43069e7a9bdeba2907b3a074f18015c3e5f4adc961808",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "published",
+    "createdAt": "2026-11-25T21:06:33.857Z",
+    "nextEligibleAt": null,
+    "expectedSha": "708bdc63a881d679d6dfa9eb713f8f4d1bd1369f",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-28T09:59:07.413Z",
+  "completedAt": null
+}
