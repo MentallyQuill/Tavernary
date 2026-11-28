@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "8ff8324a81bc435289236a0cd8f2327d1cb68c5111bff36c6029a39bbf31a2ac",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-1459569720:deiomo-voyageofhopesanddreams",
+      "inputDigest": "c47391198b80afd8bdf43069e7a9bdeba2907b3a074f18015c3e5f4adc961808",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "admitted",
+    "createdAt": "2026-11-25T21:06:33.857Z",
+    "nextEligibleAt": null,
+    "expectedSha": null,
+    "workerRunId": null,
+    "retry": null
+  },
+  "source": {
+    "id": "github-1459569720",
+    "identity": "github:1459569720"
+  },
+  "authorId": 317929880,
+  "producer": {
+    "workflow": ".github/workflows/review-catalog-policy.yml",
+    "runId": 45717754166,
+    "sourceSha": "cab4a06fb748994e22234697889c28cda86d8d22"
+  },
+  "files": [
+    {
+      "path": "data/snapshots/policy-review/deiomo-voyageofhopesanddreams.json",
+      "sha256": "a82a8cb4875b24d79616d9ebc0be4b0aba624918cefba6b0ffc6c620491eb36d",
+      "gitBlobSha": "38054f3b4fce9fa856c679b9c35c7e47a763615c"
+    }
+  ]
+}
