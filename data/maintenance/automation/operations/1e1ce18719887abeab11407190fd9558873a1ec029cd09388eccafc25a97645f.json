@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "operation": {
+    "key": "1e1ce18719887abeab11407190fd9558873a1ec029cd09388eccafc25a97645f",
+    "identity": {
+      "kind": "advisory",
+      "subject": "source:github-728214627:lenanderson-sillytavern-videobackgrounds",
+      "inputDigest": "5230547fea6cf0ed67144ecfd0313902421ced9678db6ce698e33c549dcfc3ba",
+      "policyVersion": "2026-07-29"
+    },
+    "stage": "deployment-confirmed",
+    "createdAt": "2026-11-02T17:17:52.477Z",
+    "nextEligibleAt": "2026-11-28T10:55:39.473Z",
+    "expectedSha": "771633968535a528318935d06c9b461bd4804bab",
+    "workerRunId": null,
+    "retry": null
+  },
+  "updatedAt": "2026-11-28T10:40:39.473Z",
+  "completedAt": null
+}
